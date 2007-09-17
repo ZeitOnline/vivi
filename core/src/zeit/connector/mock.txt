@@ -1,0 +1,243 @@
+=======================================
+Zope 3 Integration of the CMS Connector
+=======================================
+
+There will be a python class provided by Tomas and Ralf. This is the Zope 3
+integration::
+
+  >>> from zeit.connector.mock import Connector
+  >>> connector = Connector()
+  >>> connector
+  <zeit.connector.mock.Connector object at 0x...>
+
+IConnector Interface
+====================
+
+Verify the IConnector interface::
+
+  >>> import zope.interface.verify
+  >>> from zeit.connector.interfaces import IConnector
+  >>> zope.interface.verify.verifyClass(IConnector, Connector)
+  True
+  >>> zope.interface.verify.verifyObject(IConnector, connector)
+  True
+
+Browsing
+========
+
+The browsing interface basically allows listing collections::
+
+  >>> from pprint import pprint
+  >>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
+  [(u'2006', u'http://xml.zeit.de/2006'),
+   (u'2007', u'http://xml.zeit.de/2007'),
+   (u'online', u'http://xml.zeit.de/online'),
+   (u'politik.feed', u'http://xml.zeit.de/politik.feed'),
+   (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+
+  >>> entry = list(connector.listCollection(
+  ...     'http://xml.zeit.de/online/2007/01'))[0]
+  >>> print entry
+  (u'4schanzentournee-abgesang',
+   u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang')
+
+If the id is not valid a ValueError is raised::
+
+  >>> list(connector.listCollection(u'foobar'))
+  Traceback (most recent call last):
+    ...
+  ValueError: The id u'foobar' is invalid.
+
+
+Getting Resources
+=================
+
+Resources are retrieved by their unique ids. We retrieve the 4schzentournee read
+above::
+
+  >>> unique_id = entry[1]
+  >>> resource = connector[unique_id]
+  >>> resource
+  <zeit.connector.resource.Resource object at 0x...>
+
+  >>> resource.id
+  u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
+  >>> resource.type
+  'article'
+  >>> resource.properties[('resourcetype', 'DAV:')]
+  'article'
+  >>> resource.properties[
+  ...     ('author', 'http://namespaces.zeit.de/CMS/document')]
+  ' Ulrich Dehne'
+  >>> resource.properties[
+  ...     ('year', 'http://namespaces.zeit.de/CMS/document')]
+  '2007'
+
+If a resource does not exist, a KeyError is raised::
+
+  >>> connector['http://xml.zeit.de/foobar']
+  Traceback (most recent call last):
+    ...
+  KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
+
+
+Locking and Unlocking
+=====================
+
+Users can lock and unlock content. We continue to use the 4schanzentournee
+resource. For that we need a principal and a target date::
+
+  >>> import datetime
+  >>> from zope.security.testing import Principal
+  >>> hans = Principal('hans')
+  >>> until = datetime.datetime.now() + datetime.timedelta(days=1)
+
+
+Before we acquire the lock, the resource is not locked::
+
+  >>> connector.locked(unique_id)
+  (None, None, None)
+
+
+After locking the resource is locked::
+
+  >>> connector.lock(unique_id, hans, until)
+  >>> locked_for, locked_until, mine = connector.locked(unique_id)
+  >>> locked_for.id
+  'hans'
+  >>> locked_until
+  datetime.datetime(...)
+
+
+Note that hans has locked the resource. Dieter can override the lock::
+  
+  >>> dieter = Principal('dieter')
+  >>> connector.lock(unique_id, dieter, until)
+  >>> locked_for, locked_until, mine = connector.locked(unique_id)
+  >>> locked_for.id
+  'dieter'
+
+
+
+Adding Content to the Repository
+================================
+
+Item Assignment
++++++++++++++++
+
+Adding content or changing works by item assignement to the connector. The key
+is the unique Id of the object. Create a resource first::
+
+  >>> import StringIO
+  >>> from zeit.connector.resource import Resource
+  >>> resource = Resource(
+  ...   'http://xml.zeit.de/online/2007/02/Seehofer',
+  ...   'Seehofer', 'article', StringIO.StringIO('Seehofer schlaegt zurueck'),
+  ...   properties={('resourcetype', 'DAV:'): 'article',
+  ...               ('foo', 'foo-ns'): 'bar'})
+
+Let's have a look into the collection `/online/2007/01`. It is empty so far::
+
+  >>> list(connector.listCollection('http://xml.zeit.de/online/2007/02'))
+  []
+
+
+Add the `resource` to the connector::
+
+  >>> connector[resource.id] = resource
+
+We now can get the object back from the connector::
+
+  >>> resource_2 = connector[resource.id]
+  >>> print resource_2.data.read()
+  Seehofer schlaegt zurueck
+  >>> sorted(resource_2.properties.items())
+  [(('foo', 'foo-ns'), 'bar'), (('resourcetype', 'DAV:'), 'article')]
+
+
+Also the collection contains the resource now::
+
+  >>> list(connector.listCollection('http://xml.zeit.de/online/2007/02'))
+  [(u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer')]
+
+
+Add Method
+++++++++++
+
+Since the connector knows very well how to get the unique id from resource
+objects there is a convinience method called `add`. So let's create another
+resource and add id using the `add` method::
+
+  >>> resource = Resource(
+  ...     'http://xml.zeit.de/online/2007/02/DaimlerChrysler',
+  ...     'DaimlerChrysler', 'unkown',
+  ...     StringIO.StringIO('Zwischen Angst und Schock'))
+  >>> connector.add(resource)
+
+  >>> from pprint import pprint
+  >>> pprint(list(connector.listCollection(
+  ...     'http://xml.zeit.de/online/2007/02')))
+  [(u'DaimlerChrysler', u'http://xml.zeit.de/online/2007/02/DaimlerChrysler'),
+   (u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer')]
+
+
+Removing Content From the Repository
+====================================
+
+Removing words via the normal __delitem__ mechanismns. Let's look what we have
+first::
+
+  >>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
+  [(u'2006', u'http://xml.zeit.de/2006'),
+   (u'2007', u'http://xml.zeit.de/2007'),
+   (u'online', u'http://xml.zeit.de/online'),
+   (u'politik.feed', u'http://xml.zeit.de/politik.feed'),
+   (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+
+After remove the `politik.feed` it is also gone from the listing::
+
+  >>> del connector['http://xml.zeit.de/politik.feed']
+  >>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
+  [(u'2006', u'http://xml.zeit.de/2006'),
+   (u'2007', u'http://xml.zeit.de/2007'),
+   (u'online', u'http://xml.zeit.de/online'),
+   (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+
+
+Collections
+===========
+
+Creating collections works like creating any other resource. Create a resource
+object first::
+
+    >>> collection_id = 'http://xml.zeit.de/testing/collection'
+    >>> coll = Resource(
+    ...     collection_id, 'collection', 'collection', StringIO.StringIO(''))
+
+Add the collection rssource to the dav and see we get it back::
+    >>> connector.add(coll)
+    >>> res = connector[collection_id]
+    >>> res.type
+    'collection'
+
+Initially a collection is empty::
+
+    >>> list(connector.listCollection(collection_id))
+    []
+
+
+Remove the collection again::
+
+    >>> del connector[collection_id]
+
+
+
+Internal Id to Path Mapper
+==========================
+
+There is an internal method mapping Ids to paths on the filesystem::
+
+  >>> connector._path('http://xml.zeit.de/')
+  ()
+  >>> connector._path('http://xml.zeit.de/foo')
+  (u'foo',)

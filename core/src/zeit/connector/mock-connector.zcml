@@ -1,0 +1,7 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+  
+  <utility provides="zeit.cms.interfaces.IConnector"
+           factory="zeit.cms.connector.Connector"
+           />
+
+</configure>
