@@ -52,4 +52,8 @@
     provides=".interfaces.IToProperty"
     />
 
+  <utility 
+    provides="zope.app.locking.interfaces.ILockStorage"
+    factory=".locking.LockStorage" />
+
 </configure>

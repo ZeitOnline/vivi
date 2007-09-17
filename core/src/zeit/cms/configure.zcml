@@ -73,17 +73,6 @@
   <include package=".notification" />
 
 
-  <!-- security -->
-  <class class=".connector.WebDAVProperties">
-    <require
-      interface=".interfaces.IWebDAVReadProperties"
-      permission="zope.View" />
-    <require
-      interface=".interfaces.IWebDAVWriteProperties"
-      permission="zope.ManageContent" />
-  </class>
-
-
   <!-- configuration -->
 
   <utility 
@@ -91,10 +80,6 @@
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"
     />
-
-  <utility 
-    provides="zope.app.locking.interfaces.ILockStorage"
-    factory=".connector.LockStorage" />
 
   <adapter factory="zope.app.locking.adapter.LockingAdapter"
     for="zeit.cms.interfaces.ICMSContent"

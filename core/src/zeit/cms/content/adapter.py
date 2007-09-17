@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import StringIO
+
 import lxml.etree
 import lxml.objectify
 import xml.sax.saxutils
@@ -11,6 +13,8 @@ import zope.component
 import zope.interface
 
 import zeit.cms.content.interfaces
+import zeit.connector.interfaces
+import zeit.connector.resource
 
 
 class BaseTeaserXMLRepresentation(object):
@@ -54,6 +58,26 @@ class IndexTeaserXMLRepresentation(BaseTeaserXMLRepresentation):
 
 @zope.annotation.factory
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.interfaces.IWebDAVProperties)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def webDAVPropertiesFactory():
-    return zeit.cms.connector.WebDAVProperties()
+    return zeit.connector.resource.WebDAVProperties()
+
+
+def xmlContentToResourceAdapterFactory(typ):
+    """Adapt content type to IResource"""
+
+    @zope.interface.implementer(zeit.connector.interfaces.IResource)
+    def adapter(context):
+        try:
+            properties = zeit.connector.interfaces.IWebDAVReadProperties(context)
+        except TypeError:
+            properties = zeit.connector.resource.WebDAVProperties()
+        return zeit.connector.resource.Resource(
+            context.uniqueId, context.__name__, typ,
+            data=StringIO.StringIO(context.xml_source),
+            contentType='text/xml',
+            properties=properties)
+
+    return adapter
+
+
