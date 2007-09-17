@@ -51,6 +51,7 @@
 
   <include package="gocept.lxml" />
 
+  <include package="zeit.connector" />
 
   <!-- selenium will only be included in `selenium mode' -->
   <configure

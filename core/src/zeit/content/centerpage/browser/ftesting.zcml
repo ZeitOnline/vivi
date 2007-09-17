@@ -8,7 +8,7 @@
   <!-- used for functional testing setup -->
 
   <include package="zeit.cms" />
-  <include package="zeit.cms" file="mock-connector.zcml" />
+  <include package="zeit.connector" file="mock-connector.zcml" />
   <include package="zeit.cms" file="securitypolicy.zcml" />
   <include package="zeit.cms.browser" />
 
