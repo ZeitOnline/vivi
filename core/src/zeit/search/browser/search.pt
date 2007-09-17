@@ -4,12 +4,18 @@
     Suche
   </metal:title>
 
-  <tal:block metal:fill-slot="body"
-    tal:define="context_url context/@@absolute_url">
+  <tal:block metal:fill-slot="body">
 
-    <table tal:replace="structure view/contentTable">
+    <table
+      tal:condition="view/content"
+      tal:replace="structure view/contentTable">
       Search result
     </table>
+
+    <div tal:condition="not: view/content"
+      i18n:translate="">
+      Your search did not match any documents.
+    </div>
 
   </tal:block>
 </metal:use-macro>

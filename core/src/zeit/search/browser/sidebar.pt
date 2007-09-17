@@ -12,12 +12,19 @@
     </a> 
   </h1>
 
-  <div class="PanelContent Search">
-    <form>
+  <div class="PanelContent Search"
+    tal:define="last_search view/last_search"
+    >
+    <form tal:attributes="
+      action string:${request/getApplicationURL}/search.html">
       <label for="text">
         Volltextsuche:
       </label>
-      <input type="text" name="text" />
+      <input type="text" name="text"
+        tal:attributes="value last_search/text | nothing" />
+
+      <input type="submit" name="search" value="Suchen" />
+
       <fieldset>
         <legend>Eingrenzung</legend> 
 
@@ -25,23 +32,28 @@
           <label for="year">
             Jahr
           </label> 
-          <input type="text" name="year" value="" />
+          <input type="text" name="year" value=""
+            tal:attributes="value last_search/year | nothing" />
         </div> 
         <div>
           <label for="page">
             Seite
           </label> 
-          <input type="text" name="page" value="" />
+          <input type="text" name="page" value="" 
+            tal:attributes="value last_search/page | nothing" />
         </div>
         <div>
           <label for="volume">
             Ausgabe
           </label>
-          <select name="volume">
-            <option value=""></option>
+          <select name="volume:int"
+            tal:define="last_volume last_search/volume | nothing">
+            <option value="0"></option>
             <option
-              tal:repeat="volume python:range(53)"
-              tal:attributes="value volume"
+              tal:repeat="volume python:range(1, 54)"
+              tal:attributes="
+              value volume;
+              selected python:last_volume == volume"
               tal:content="volume"
               />
           </select>
@@ -50,11 +62,13 @@
           <label for="ressort">
             Ressort
           </label> 
-          <select name="ressort">
+          <select name="ressort"
+            tal:define="last_ressort last_search/ressort | nothing">
             <option value=""></option>
             <option
               tal:repeat="ressort view/ressorts"
-              tal:attributes="value ressort"
+              tal:attributes="value ressort;
+              selected python:last_ressort == ressort"
               tal:content="ressort"
               />
           </select>

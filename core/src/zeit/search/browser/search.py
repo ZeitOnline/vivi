@@ -8,8 +8,11 @@ import zope.cachedescriptors.property
 import zope.component
 import zope.viewlet.viewlet
 
+import zope.app.session.interfaces
+
 import zeit.connector.search
 import zeit.cms.interfaces
+
 
 class Viewlet(zope.viewlet.viewlet.ViewletBase):
 
@@ -17,6 +20,11 @@ class Viewlet(zope.viewlet.viewlet.ViewletBase):
     def ressorts(self):
         # XXX where to get the data from? bug #3751
         return ['wirtschaft', 'politik']
+
+    @property
+    def last_search(self):
+        return zope.app.session.interfaces.ISession(self.request)[
+        'zeit.search'].get('last_search', {})
 
 
 class SearchResult(object):
@@ -45,18 +53,22 @@ class Search(zeit.cms.browser.listing.Listing):
             'year', 'http://namespaces.zeit.de/document/'),
     }
 
+    def __call__(self):
+        self.save_search_terms()
+        return self.index()
+
     def get_search_term(self):
         terms = []
-        for field, value in self.request.form.items():
+        for field, var in self._search_map.items():
+            value = self.request.get(field)
             if not value:
                 continue
-            var = self._search_map[field]
             terms.append(var == value)
         if not terms:
             return None
         return reduce(operator.and_, terms)
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def content(self):
         term = self.get_search_term()
         if term is None:
@@ -65,6 +77,15 @@ class Search(zeit.cms.browser.listing.Listing):
         search_result = self.connector.search(
             [var('author'), var('year')], term)
         return [SearchResult(*r) for r in search_result]
+
+
+    def save_search_terms(self):
+        data = self.request.form
+        if not data:
+            return
+        session = zope.app.session.interfaces.ISession(self.request)[
+            'zeit.search']
+        session['last_search'] = data
 
     @zope.cachedescriptors.property.Lazy
     def connector(self):
