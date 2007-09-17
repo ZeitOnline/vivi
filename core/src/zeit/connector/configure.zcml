@@ -1,15 +1,9 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <!-- configuration -->
-
-  <utility provides="zeit.cms.interfaces.IConnector"
-    factory=".connector.connectorFactory"
-    />
-
   <adapter factory=".cache.resourceCacheFactory" />
   
   <!-- security -->
-  <class class=".connector.WebDAVProperties">
+  <class class=".resource.WebDAVProperties">
     <require
       interface=".interfaces.IWebDAVReadProperties"
       permission="zope.View" />
