@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+<!-- CMS/document -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+<!-- CMS/workflow -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    <countings>
+      <counting type="agof">
+        <code>online</code>
+      </counting>
+    </countings>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="imagecount">0</attribute>
+    <id>
+      <uniqueid/>
+      <originalpath/>
+    </id>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">04</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"> Katharina Schuler</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online, ks</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2.1.2007 - 17:09</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">Flugsicherheitsgesetz;</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Deutschland</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Kein "Qasi-Kriegsrecht"</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">schuler</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">10</attribute>
+  <references count="4"><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/terror-abschuss-schaeuble"><title>Kriegsrecht soll Abschuss erlauben</title><description>Trotz Urteil des Verfassungsgerichts: Innenminister Schäuble will erreichen, dass die Bundeswehr im Terrorfall Flugzeuge abschießen darf. Er will das Grundgesetz ändern</description></reference><reference source="auto" type="intern" year="2003" issue="41" publication="ZEIT" href="cms:/cms/work/2003/41/Luftsicherheit"><title>Frei zum Abschuss</title><description>Ein &#8222;Luftsicherheitsgesetz&#8220; soll den Einsatz der Bundeswehr gegen Zivilflugzeuge regeln. Das Grundgesetz wird zurechtgebogen</description></reference><reference source="auto" type="intern" year="2006" issue="43" publication="ZEIT" href="cms:/cms/work/2006/43/Bundeswehr"><title>Heimat, deine Fronten</title><description>Die Bundeswehr soll künftig auch Terror im Inland abwehren. Dafür will der Verteidigungsminister der Verfassung Gewalt antun (DIE ZEIT, 19. Oktober 2006)</description></reference><reference source="auto" type="intern" year="2006" issue="43" publication="ZEIT" href="cms:/cms/work/politik/dlf/2006/061228-Luftsicherheitsgesetz"><title>"Das ist für uns nicht verhandelbar"</title><description>Der SPD-Innenexperte Dieter Wiefelspütz kritisiert Bundesinnenminister Schäuble wegen seiner Überlegung, den Abschuss von entführten Passagierflugzeugen unter bestimmten Umständen zu erlauben. Moderation: Dirk-Oliver Heckmann</description></reference></references><keywordset>
+	<keyword source="auto" intaxo="yes">Terrorismus</keyword>
+	<keyword source="auto" intaxo="yes">Opfer</keyword>
+	<keyword source="auto" intaxo="yes">Kriminalität</keyword>
+	<keyword source="auto" intaxo="yes">Innere Sicherheit</keyword>
+	<keyword source="auto" intaxo="yes">Innenpolitik</keyword>
+	<keyword source="auto" intaxo="no">kontra</keyword>
+	<keyword source="auto" intaxo="no">Zivilisten</keyword>
+	<keyword source="auto" intaxo="no">Verteidigungspolitik</keyword>
+	<keyword source="auto" intaxo="no">Grundgesetz</keyword>
+	<keyword source="auto" intaxo="no">Gesetzentwürfe</keyword>
+	<keyword source="auto" intaxo="no">Gesetze</keyword>
+</keywordset></head>
+  <body bottommargin="15" leftmargin="10" topmargin="15" rightmargin="10">
+    <supertitle>Flugsicherheit</supertitle>
+    <title>Kein "Quasi-Kriegsrecht"</title>
+    <subtitle>Die SPD will vom Vorstoß Schäubles zum Abschuss von Flugzeugen nichts wissen. Verfassungsrechtler Battis hält den Plan dagegen nicht für aussichtslos</subtitle>
+    <p class="MsoNormal">Mit einem kategorischen Nein hat die SPD auf den Vorstoß von Bundesinnenminister Wolfgang Schäuble reagiert, den Abschuss von entführten Flugzeugen gesetzlich zu regeln. <a href="http://www.zeit.de/online/2007/01/terror-abschuss-schaeuble">Weil das Bundesverfassungsgericht bereits im Februar 2006 entschieden hat, dass Leben nicht gegen Leben abgewogen werden dürfe, der Abschuss also auch zur Verhinderung größerer Gefahren nicht zulässig ist, will Schäuble terroristische Angriffe aus der Luft nun zum &#8222;Quasi-Verteidigungsfall&#8220; erklären. </a>Im Krieg können auch Grundrechte, auf die das Verfassungsgericht sich bezogen hatte, außer Kraft gesetzt werden, der Abschuss wäre dann möglich. <br/><image expires="2007-02-01" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/schaeuble2-210.jpg" align="left"><bu>Wolfgang Schäuble</bu><copyright>© Andreas Rentz/Getty Images</copyright> BILD </image></p>
+    <p class="MsoNormal">Den Koalitionspartner hat Schäuble mit diesem Vorschlag gleich zweifach vergrätzt. Zum einen weil die SPD eine solche Regelung inhaltlich ablehnt, zum anderen aber auch, weil der Minister ohne jede vorherige Abstimmung an die Öffentlichkeit ging. &#8222;Es ist bedauerlich, dass der Koalitionspartner SPD diese Pläne aus der Zeitung erfährt&#8220;, sagt etwa der stellvertretende SPD-Fraktionsvorsitzende, Fritz Rudolf Körper. Vorschläge von solcher Tragweite müssten vorher abgestimmt werden. Doch selbst dann wäre offenbar nicht viel zu machen gewesen: &#8222;Der Bundesinnenminister weiß, dass eine Grundgesetzänderung dieser Art mit der SPD nicht umsetzbar ist&#8220;, so Körper. <br/></p>
+    <p class="MsoNormal">Auch der verteidigungspolitische Sprecher der SPD-Fraktion, Rainer Arnold, ärgert sich, dass &#8222;Herr Schäuble das Jahr mit alten Zöpfen anfängt&#8220;. Schließlich sei Schäuble mit diesem Formulierungsvorschlag schon beim verteidigungspolitischen Weißbuch gescheitert. Die Forderung sei sowohl völkerrechts- als auch verfassungswidrig. Die SPD wittert zudem weiteres Unheil: Die Neudefinition des Verteidigungsfalls sei der Versuch, die Bundeswehr uneingeschränkt im Inneren einzusetzen, vermutet Arnold. <br/></p>
+    <p class="MsoNormal">Und der innenpolitische Sprecher der SPD-Fraktion Dieter Wiefelspütz stellt unmissverständlich klar: &#8222;Wir wollen keinen anderen Begriff von Landesverteidigung.&#8220; Immerhin, eine &#8222;sehr schmale Grundgesetzänderung&#8220; kann er sich vorstellen. Wenn ausschließlich Terroristen an Bord seien, dann könne auch die SPD sich einen Abschuss des Flugzeugs vorstellen. <br/></p>
+    <p class="MsoNormal">Drastischer noch formulierte die Opposition ihre Kritik. &#8222;Vor einer Lizenz zum Töten&#8220; warnten die Grünen den Innenminister. Der Parlamentarische Geschäftsführer der Grünen-Fraktion im Bundestag, Volker Beck, kritisierte, Schäuble versuche das Verfassungsgericht »zu hintergehen&#8220;. Mit einem &#8222;Quasi-Verteidigungsfall&#8220; würden &#8222;die Grenzen zwischen Kriminalitätsbekämpfung und Krieg verwischt&#8220;, sagte er der <em>Netzeitung</em>. <br/></p>
+    <p class="MsoNormal">Die innenpolitische Sprecherin der FDP-Fraktion, Gisela Piltz, warnte vor einer &#8222;Militarisierung der Innenpolitik&#8220;. &#8222;Schäubles Spiel mit dem Kriegsrecht ist ein Spiel mit dem Feuer.&#8220; Die innenpolitische Sprecherin der Linksfraktion, Ulla Jelpke, sagte, wenn Schäuble sich durchsetze, käme dies einem permanenten Ausnahmezustand gleich. <br/></p>
+    <p class="MsoNormal">Juristisch gesehen ist die Sache nach Meinung des Berliner Verfassungsrechtlers Ulrich Battis allerdings keineswegs so eindeutig, wie SPD und Opposition gerne glauben machen wollen. &#8222;Die Grenzmarken, die das Verfassungsgericht in seinem Urteil von 2006 aufgestellt hat, beziehen sich einerseits auf die Polizei, andererseits auf Friedenszeiten&#8220;, sagte Battis <em>ZEIT online</em>. Sollte es Schäuble tatsächlich gelingen, den Angriff durch Terroristen als Verteidigungsfall zu definieren <span lang="EN-GB">&#8211; </span>wozu ihm bislang aber die politische Mehrheit fehlt <span lang="EN-GB">&#8211;,</span> wäre es keineswegs ausgeschlossen, dass das Verfassungsgericht dieser Argumentation folgen würde. <br/></p>
+    <p class="MsoNormal">Schäuble kann sich nach Ansicht Battis' darauf berufen, dass das Völkerrecht sich seit 2006 dramatisch gewandelt hat. So seien schließlich auch die Anschläge vom 11. September vom Weltsicherheitsrat als Angriff gewertet worden. Der anschließende Krieg in Afghanistan habe deswegen nicht als völkerrechtswidrig gegolten. <br/></p>
+    <p class="MsoNormal">Sympathisch ist dem Verfassungsrechtler der Vorstoß gleichwohl nicht. &#8222;Es gibt Situationen, die man nicht gesetzlich regeln kann&#8220;, sagt er. Es wäre besser, wenn auch ein Innenminister dies &#8222;demütig zur Kenntnis nehmen&#8220; würde. <br/></p>
+    <p class="MsoNormal">Vorerst jedenfalls sieht es fast so aus, als wenn Schäuble ohnehin nichts anderes übrig bliebe.</p>
+  </body>
+  <teaser>
+    <title>Kein "Qasi-Kriegsrecht"</title>
+    <text>Die SPD will vom Vorstoß von Innenminister Schäuble zum Abschuss von Flugzeugen nichts wissen. Verfassungsrechtler Battis hält den Plan dagegen nicht für aussichtslos</text>
+    <text_length>18</text_length>
+  </teaser>
+  <indexteaser>
+    <title>Terrorabwehr</title>
+    <text>SPD gegen Abschuss von Flugzeugen</text>
+    <text_length>33</text_length>
+    <title_length>12</title_length>
+  </indexteaser>
+</article>

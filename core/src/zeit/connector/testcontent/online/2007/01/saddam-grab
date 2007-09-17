@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+<!-- CMS/document -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+<!-- CMS/workflow -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    <countings>
+      <counting type="agof">
+        <code>online</code>
+      </counting>
+    </countings>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="imagecount">0</attribute>
+    <id>
+      <uniqueid/>
+      <originalpath/>
+    </id>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">04</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online, reuters, dpa</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">1.1.2007 - 17:20</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Racheschwüre am Grab</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">kpm</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">2</attribute>
+  <references count="15"><reference source="auto" type="intern" year="2005" issue="37" publication="ZEIT online" href="cms:/cms/work/online/2005/37/Sarkawi"><title>Krieg unter Brüdern</title><description>Der irakische Terroristen-Führer Al-Sarkawi erklärt den Schiiten im Land angeblich den Krieg. Bei einem Selbstmordanschlag in Bagdad sterben abermals 20 Menschen</description></reference><reference source="auto" type="intern" year="2006" issue="48" publication="ZEIT online" href="cms:/cms/work/online/2006/48/Irak-2411"><title>"Zutiefst besorgt"</title><description>Nach Anschlagserie in Bagdad, bei der am Donnerstag mehr als 200 Menschen starben, herrscht international Angst vor einem offenen Bürgerkrieg. Die EU mahnte, auf Vergeltung zu verzichten.</description></reference><reference source="auto" type="intern" year="2003" issue="28" publication="ZEIT" href="cms:/cms/work/2003/28/Irak"><title>Befreite schießen auf Befreier</title><description>Amerikaner und Briten fragen sich verwirrt: Was haben wir im Irak versäumt und verpatzt?</description></reference><reference source="auto" type="intern" year="2002" issue="16" publication="ZEIT" href="cms:/cms/work/2002/16/200216_irak.xml"><title>Bereit für die Nacht der langen Messer</title><description>Sie horten Raketen und Maschinengewehre in geheimen Kellern, schießen auf Saddams Soldaten: Die schiitischen Oppositionellen im Irak wollen gemeinsam mit den Amerikanern das Regime stürzen. Erstmals hat ein Reporter die Kämpfer im Untergrund besucht</description></reference><reference source="auto" type="intern" year="2004" issue="17" publication="ZEIT" href="cms:/cms/work/2004/17/Irak"><title>Das Ende der Illusionen</title><description>Der Aufstand im Irak beweist: Die Besatzer haben die Kraft des irakischen Nationalgefühls unterschätzt</description></reference><reference source="auto" type="intern" year="2006" issue="24" publication="ZEIT online" href="cms:/cms/work/online/2006/24/Irak-Al-Sarqawi-Analyse"><title>Tod eines Schlächters</title><description>Der Tod Sarqawis ist ein wichtiger Schlag gegen den Terror und kann von großer Bedeutung für die Zukunft Iraks sein. Ein Märtyrer wird er jedoch nicht werden. Eine Analyse</description></reference><reference source="auto" type="intern" year="2004" issue="35" publication="ZEIT" href="cms:/cms/work/2004/35/Nadschaf"><title>Das Gesicht des Zorns</title><description>Mokhtada al-Sadr ist ein gefährlicher Hitzkopf. Und leider der einzig verbliebene Führer der Schiiten im Irak. Die neue Regierung fürchtet, der junge Radikale aus Nadschaf könnte zum Volkshelden aufsteigen</description></reference><reference source="auto" type="intern" year="2006" issue="24" publication="ZEIT online" href="cms:/cms/work/online/2006/24/Irak-Al-Sarkawi"><title>Jubel über Tod Sarqawis</title><description>Amerikanische Soldaten haben im Irak den gefürchteten Terrorführer al-Sarqawi getötet. US-Präsident Bush sprach von einem schweren Schlag gegen El Kaida.</description></reference><reference source="auto" type="intern" year="2003" issue="42" publication="ZEIT" href="cms:/cms/work/2003/42/Irak_Widerstand"><title>"Die Amerikaner sind Barbaren"</title><description>Im Irak wird der bewaffnete Widerstand gegen die US-Soldaten populär. Jetzt fehlt nur noch, dass nationalistische Sunniten und radikale Schiieten gemeinsame Sache machen</description></reference><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/Saddam-Anschlaege"><title>30 Tote</title><description>Am Tag nach der Hinrichtung von Saddam Hussein starben mindestens 45 Iraker bei Anschlägen.</description></reference><reference source="auto" type="intern" year="2004" issue="28" publication="ZEIT" href="cms:/cms/work/2004/28/B_9frgerkrieg"><title>Ein bisschen Freiheit und viel Chaos</title><description>Der Irak ist wieder souverän &#8212; jedenfalls auf dem Papier. Die Menschen freuen sich darüber und fürchten sich vor Gewalt</description></reference><reference source="auto" type="intern" year="2003" issue="37" publication="ZEIT" href="cms:/cms/work/2003/37/Irak"><title>Das schnelle Rad des Todes</title><description>Wer steckt hinter dem Mord an dem irakischen Schiitenführer al-Hakim? Washington argwöhnt: Teheran. Plausibel ist das nicht</description></reference><reference source="auto" type="intern" year="2005" issue="46" publication="ZEIT online" href="cms:/cms/work/online/2005/46/annan_irak"><title>Überraschender Besuch</title><description>Kofi Annan taucht unerwartet im Irak auf - begleitet von viel Gewalt und dem angeblichen Tod des Stellvertreters von Saddam Hussein</description></reference><reference source="auto" type="intern" year="2003" issue="19" publication="ZEIT" href="cms:/cms/work/2003/19/Bagdad"><title>Der Vorgeschmack von Freiheit</title><description>Wie sich vier irakische Brüder auf die Zeit nach Saddam Hussein vorbereiten</description></reference><reference source="auto" type="intern" year="2005" issue="40" publication="ZEIT online" href="cms:/cms/work/online/2005/40/irak"><title>Über 60 Menschen im Irak getötet</title><description>Bush rechnet vor der Verfassungsabstimmung mit noch mehr Anschlägen</description></reference></references><keywordset>
+	<keyword source="auto" intaxo="yes">Bevölkerung</keyword>
+	<keyword source="auto" intaxo="no">Nachkriegszeit</keyword>
+	<keyword source="auto" intaxo="no">Religionen</keyword>
+	<keyword source="auto" intaxo="yes">Religion</keyword>
+	<keyword source="auto" intaxo="no">Lebensbedingungen</keyword>
+	<keyword source="auto" intaxo="yes">Innenpolitik</keyword>
+	<keyword source="auto" intaxo="no">Schiiten</keyword>
+	<keyword source="auto" intaxo="yes">Opfer</keyword>
+	<keyword source="auto" intaxo="yes">Kriminalität</keyword>
+	<keyword source="auto" intaxo="no">Kriege</keyword>
+	<keyword source="auto" intaxo="no">III.</keyword>
+</keywordset></head>
+  <body>
+    <supertitle>Irak</supertitle>
+    <title>Racheschwüre am Grab</title>
+    <subtitle>Tausende Anhänger des hingerichteten Diktators Saddan Hussein trauern. Die USA beklagen mit Jahresende 3000 im Irak gefallene Soldaten</subtitle>
+    <p>Nach dem endgültigen Ende der Ära Saddam Hussein ist die Gewalt im Irak geblieben. Am frischen Grab des am Samstag hingerichteten früheren Präsidenten schworen Hunderte seiner Anhänger Rache. <br/></p>
+    <p>Durch mehrere Autobombenanschläge wurden mehr als 70 Menschen getötet. Für eine weitere Zuspitzung der Gewalt zwischen den Bevölkerungsgruppen könnte ein im Internet veröffentlichtes, inoffizielles Video der Hinrichtung sorgen. Darauf ist zu hören, wie schiitische Vertreter den Todeskandidaten am Galgen beschimpfen.<br/></p>
+    <p>Am Sonntag zogen Hunderte zu Saddams Grab in seinem Heimatdorf Audscha. Sie knieten und beteten in der mit Marmor verkleideten Moschee, wo der wegen Verbrechen gegen die Menschlichkeit hingerichtete Ex-Machthaber in einer privaten Feier beigesetzt worden war. "Die Perser haben ihn umgebracht. Ich kann es nicht fassen. So Gott will, wir werden Vergeltung üben", sagte ein Mann aus der nordirakischen Stadt Mossul. Mit "Perser" spielte er auf die schiitische Bevölkerungsgruppe an, die im Irak den Ministerpräsidenten stellt. Im Irak und im Nachbarland Iran bilden sie die Mehrheit. Saddams Gefolgsleute gehören den Sunniten an.<br/></p>
+    <p>Die Auseinandersetzungen zwischen den Religionsgruppen haben den Irak im vergangenen Jahr an den Rand eines Bürgerkriegs gebracht. Weiter angefacht werden könnten sie nun durch die offenbar mit einem Handy gemachte Aufnahme der Hinrichtung. "Fahr' zur Hölle", ruft darauf ein Schiitenvertreter dem unter dem Galgen stehenden Saddam zu. Dann fällt die Klappe und der Körper Saddams pendelt am Strick. Die Augen sind offen und der Kopf kippt im 90-Grad-Winkel nach rechts. Im Hintergrund jubelt jemand: "Der Tyrann ist gefallen". Rund 200 Saddam-Anhänger protestierten in einem sunnitischen Viertel Bagdads gegen das Video und skandierten gegen die Schiiten gerichtete Parolen.<br/></p>
+    <p>Der Zorn über die Hinrichtung richtete sich auch gegen die USA. "Das einzige, was uns jetzt bleibt, ist uns an den Amerikanern und an der Regierung zu rächen", sagte ein Trauernder. Auch er verweilte an Saddams mit einer irakischen Flagge überzogenen Grab. Auf einem Stuhl stand ein Porträt des ehemaligen Machthabers, lächelnd und mit seinem charakteristischen Filzhut auf dem Kopf. In einem nahe gelegenen Raum diskutierten die Pilger bei Minztee und Kaffee miteinander. Oft fiel das Wort "Märtyrer" in Zusammenhang mit Saddam. In anderen Städten und Sunnitenhochburgen hielten seine Anhänger symbolische Beerdigungsfeiern ab, um den Toten ihren Respekt zu zollen.<br/></p>
+    <p>Die Regierung hatte zunächst angedeutet, Saddams Leiche könnte an einem unbekannten Ort begraben werden, damit dieser nicht zu einer Pilgerstätte würde. Nach Protesten wurde der Leichnam jedoch mitten in der Nacht nach Tikrit geflogen und umgehend in Audscha beerdigt. Am Begräbnis selbst nahmen nur wenige Menschen teil. Saddams Familie teilte mit, an dem Grab eine Bibliothek errichten zu wollen, um ihn zu ehren. Zudem solle eine Religionsschule entstehen, sagte am Sonntag Muajed al-Hasaa, der sich selbst als Cousin Saddams vorstellte.<br/></p>
+    <p>Das Terrornetzwerk al-Qaida rief die Aufständischen auf, sich zusammenzuschließen. "Alle mutigen Gruppen von Dschihad-Kämpfern" sollten sich vereinen, sagte der Vizechef der Organisation, Aiman al-Sawahri, in einer am Sonntag veröffentlichten Tonaufnahme, deren Authentizität zunächst nicht bestätigt werden konnte.<br/></p>
+    <p>In dem seit bald vier Jahren andauernden Krieg sind zehntausende Iraker getötet worden. Zum Jahreswechsel stieg die Zahl der gefallenen US-Soldaten auf 3000. Mehr als 70 Menschen starben allein am Samstag, als nur wenige Stunden nach der Hinrichtung mehrere Autobomben explodierten.<br/></p>
+    <p>Das US-Verteidigungsministerium bestätigte am Sonntag den Tod eines 22-Jährigen bei einer Heckenschützenattacke nahe Bagdad am vergangenen Donnerstag. Ein weiterer junger Soldat kam dem Pentagon zufolge bei einem Bombenanschlag am Samstag in der irakischen Hauptstadt ums Leben. Nach Berechnungen der unabhängigen Webseite iCasualties.org, die Statistiken über die Opferzahlen seit Beginn des Irakkriegs im März 2003 führt, wurde damit die Zahl 3000 erreicht und der Dezember mit 111 ums Leben gekommenen Soldaten zugleich der tödlichste Monat seit zwei Jahren.<br/></p>
+    <p>Auch die Zahl der verletzten Amerikaner im Irak steigt stetig an: Das Pentagon selbst spricht auf seiner Webseite von mittlerweile 22.000 Verwundeten. Präsident George W. Bush wird mit den Worten zitiert, er  glaube, "dass jedes Leben kostbar ist, und er trauert um jeden, der sein Leben verliert". Der Präsident werde sicherstellen, dass das Opfer der Soldaten nicht vergeblich sei. Ein Sprecher des Pentagons warnte zugleich, dass der Krieg gegen den Terror lange dauern werde.<br/></p>
+    <p>Bush selbst dankte in einer am Sonntag veröffentlichten kurzen schriftlichen Neujahrsbotschaft den amerikanischen Streitkräften für ihren Einsatz. Zugleich kündigte er an, die USA würden im neuen Jahr ihre "Offensive gegen die Feinde der Freiheit fortsetzen, die Sicherheit unseres Landes verbessern und weiter auf ein freies und geeintes Irak hinarbeiten". Ein Sieg über Terroristen und Extremisten sei die Herausforderung unserer Zeit, fuhr Bush fort. "Und wir werden den Ruf der Geschichte mit Selbstvertrauen beantworten und ohne Wankelmut für Freiheit kämpfen".<br/><br/></p>
+  </body>
+  <teaser>
+    <title>Racheschwüre am Grab</title>
+    <text>Tausende Anhänger des hingerichteten Diktators Saddan Hussein trauern. Die USA beklagen mit Jahresende 3000 im Irak gefallene Soldaten</text>
+    <text_length>18</text_length>
+  </teaser>
+  <indexteaser>
+    <title>Racheschwüre am Grab</title>
+    <text>Video der Hinrichtung Saddams heizt Wut an</text>
+    <text_length>42</text_length>
+    <title_length>20</title_length>
+  </indexteaser>
+</article>

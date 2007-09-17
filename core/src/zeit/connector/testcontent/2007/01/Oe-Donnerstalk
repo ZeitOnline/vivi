@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Oe Donnerstag</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">11</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Alfred Dorfer</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 28.12.2006 Nr. 01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">28.12.2006 - 13:42</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">28.12.2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">11</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">FC Christuskind</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">manthe</attribute>
+  </head>
+  <body>
+    <supertitle>Donnerstalk</supertitle>
+    <title>FC Christuskind</title>
+    <p>Eine der schönsten vorweihnachtlichen Meldungen schenkte uns Kurienkardinal Bertone. Der Vatikan, so die Nummer zwei im Kirchenstaat, plane, eine eigene Fußballmannschaft aufzustellen, die es schon bald mit italienischen Spitzenteams aufnehmen soll. Bertone, selbst Afficionado und Hobby-Kommentator der Spiele seines Lieblingsclubs Juve, verriet <em>La Repubblica</em> seine interessante Idee: Er möchte brasilianische Priesterseminaristen rekrutieren, um Glaube und Sport möglichst effizient zusammenzuführen. Die Symbiose der beiden Künste, nämlich Seele und Ball gleichermaßen gefühlvoll zu behandeln, um der guten Sache zum Sieg zu verhelfen, fasziniert. Wie wir aus der Geschichte wissen, muss das nicht immer mit Fairplay einhergehen, und das eine oder andere Foul der Christuskicker kann durchaus als geheiligtes Mittel zum Zweck gewertet werden. Was das Budget anlangt, sind Sorgen nicht angebracht, da der Vatikan am internationalen Aktienmarkt höchst aktiv und erfolgreich ist. Mit der Schweizer Garde besitzt er zudem eine, schon was die Adjustierung betrifft, äußerst originelle Security. Der Vatikan scheint auch durch jahrhundertelange Erfahrung prädestiniert, mit Bestechung und Korruption wie in der italienischen Serie A zurande zu kommen, diesbezüglich vielleicht sogar neue Dimensionen zu erschließen. Bleibt eigentlich nur die Frage: Wo wird gekickt? Der Petersplatz kommt aufgrund anderweitiger Nutzung nicht infrage. Eventuell der Circus Maximus &#8211; als Symbol dafür, dass anfängliche Niederlagen später durchaus in einer Erfolgsstory münden können. <br/><br/>
+
+      <a href="http://www.zeit.de/international#oesterreich"> Dieser Artikel wurde für die  wöchentliche Österreich-Ausgabe der ZEIT geschrieben »</a>
+      <br/>
+      <br/>
+      <a href="http://blog.zeit.de/oesterreich">Nachrichten aus dem Zentrum: Das Österreich-Blog auf ZEIT online »</a></p>
+  </body>
+  <indexteaser>
+    <text_length>38</text_length>
+    <title>Donnerstalk</title>
+    <title_length>11</title_length>
+    <text>Alfred Dorfer über das FC Christuskind</text>
+  </indexteaser>
+  <teaser>
+    <title>Donnerstalk</title>
+    <text>Alfred Dorfer über das FC Christuskind</text>
+  </teaser>
+</article>

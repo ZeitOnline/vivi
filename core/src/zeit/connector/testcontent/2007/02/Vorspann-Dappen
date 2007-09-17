@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Vorspann Dappen</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Wissen</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">02</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">28</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 04.01.2007 Nr. 02</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">3.1.2007 - 21:51</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">04.01.2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">28</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Wissen</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Wissenschaft</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">02</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">trash</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">zinkant</attribute>
+  </head>
+  <body>
+    <subtitle>Ob Larve, Käfer oder Qualle &#8211; die  Geschöpfe aus der</subtitle>
+    <subtitle>Werkstatt des Modellbauers  </subtitle>
+    <p>Hans Dappen</p>
+    <subtitle>sind zwar überlebensgroß, aber sonst täuschend echt und als </subtitle>
+    <subtitle>Exponate in Museen gern gesehen </subtitle>
+    <subtitle>Von Tanja Krämer</subtitle>
+    <subtitle_length>52</subtitle_length>
+  </body>
+  <indexteaser>
+    <text_length>0</text_length>
+    <title_length>0</title_length>
+  </indexteaser>
+  <teaser>
+    <text_length>0</text_length>
+  </teaser>
+</article>
