@@ -1,0 +1,8 @@
+<tal:block>
+  <div class="Text"
+    tal:content="context/__name__">
+  </div>
+  <div class="UniqueId"
+    tal:content="context/uniqueId">
+  </div>
+</tal:block>

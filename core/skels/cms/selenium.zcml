@@ -1,0 +1,14 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta">
+
+  <meta:provides feature="zeit.cms.selenium" />
+
+  <include file="base.zcml" />
+  <include package="zeit.content.article" />
+  <include package="zeit.content.article.browser" />
+
+  
+  <include package="zeit.cms" file="securitypolicy.zcml" />
+  <include file="principals-testing.zcml" />
+
+</configure>

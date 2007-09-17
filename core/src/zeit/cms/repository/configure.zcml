@@ -1,0 +1,38 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <class class=".repository.Repository">
+    <require like_class="zope.app.folder.folder.Folder" />
+  </class>
+
+  <class class=".repository.Container">
+    <require like_class="zope.app.folder.folder.Folder" />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View" />
+  </class>
+
+  <adapter factory=".repository.cmscontentFactory" />
+
+  <!-- content object creation
+
+  The adapters are registered with the identifying name. Note that those names
+  are not known yet, and therefore are filled with guessed values.
+  -->
+
+  <adapter factory=".repository.containerFactory" name="collection" />
+  <subscriber handler=".repository.initializeRepository" />
+  
+  <adapter factory=".preference.preferenceFactory" />
+
+  <adapter factory=".unknown.unknownResourceFactory" name="unknown" />
+  <adapter factory=".unknown.resourceFactory" />
+  <class class=".unknown.UnknownResource">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require interface=".interfaces.IUnknownResource"
+      permission="zope.View" />
+    <require set_schema=".interfaces.IUnknownResource"
+      permission="zope.ManageContent" />
+  </class>
+  
+</configure>
+

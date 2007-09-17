@@ -1,0 +1,55 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    for=".field.IXMLTree
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides=".interfaces.IXMLTreeWidget"
+    factory=".field.XMLTreeWidget"
+    permission="zope.Public"
+    />
+
+  <adapter factory=".adapter.TeaserXMLRepresentation" />
+  <adapter factory=".adapter.IndexTeaserXMLRepresentation" />
+  <adapter factory=".adapter.webDAVPropertiesFactory" trusted="yes" />
+
+  <adapter factory=".davtoken.fromBool" />
+  <adapter factory=".davtoken.fromNone" />
+  <adapter factory=".davtoken.fromUnicode" />
+
+  <adapter factory=".token.fromCMSContent" />
+
+  <adapter factory=".keyreference.CMSContentKeyReference" />
+
+
+  <!-- Property converters -->
+  <adapter
+    factory=".dav.UnicodeProperty"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter
+    factory=".dav.UnicodeProperty"
+    provides=".interfaces.IToProperty"
+    />
+
+  <adapter factory=".dav.ChoiceProperty"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter factory=".dav.ChoiceProperty"
+    provides=".interfaces.IToProperty"
+    />
+  
+  <adapter factory=".dav.BoolProperty"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter factory=".dav.BoolProperty"
+    provides=".interfaces.IToProperty"
+    />
+  
+  <adapter factory=".dav.DatetimeProperty"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter factory=".dav.DatetimeProperty"
+    provides=".interfaces.IToProperty"
+    />
+
+</configure>

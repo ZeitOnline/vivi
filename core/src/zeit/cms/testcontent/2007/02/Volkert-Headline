@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Volkert_Headline</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Willeke</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">02</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">02</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">04.01.2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 04.01.2007 Nr. 02</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">2</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">2</attribute>
+  </head>
+  <body>		<title>»Ich stand auf der Lokomotive«</title><subtitle>Der Mann im Zentrum der Ermittlungen bei Volkswagen, der Mann mit den Lustreisen, der Mann hinter Peter Hartz. Erstmals spricht Klaus Volkert,  der frühere Chef des VW-Betriebsrates, ausführlich über die Korruptionsaffäre und seine Zeit im Gefängnis Von stefan willeke</subtitle>
+		<title>Drei Wochen U-Haft</title><bu>machen Volkert zu einer Art Vertrauensmann der Gefangenen. Er notiert sich ganze Lebensgeschichten, einem Häftling hilft er, Briefe zu schreiben. Bald wäre er so weit, mit der Anstaltsleitung zu verhandeln</bu></body>
+</article>

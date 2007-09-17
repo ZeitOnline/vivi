@@ -1,0 +1,73 @@
+<html>
+  <metal:macro define-macro="day">
+    <div class="day">
+      <span tal:replace="day/day">25</span>
+      <a href="#" class="add-event"
+        tal:attributes="href string:$calendar_url/@@zeit.calendar.Event.AddForm?form.start=${day/date_str}">
+        [+]        
+      </a>
+    </div>
+    <tal:event repeat="event day/events">
+      <div class="event"
+        tal:attributes="class python:event.thema and 'event thema' or 'event'" >
+
+        <a href="#" title="Löschen"
+          tal:attributes="
+          href python:(view.get_navigation_url(view.selected_date) + '&delete_event=' + event.__name__)">
+          [x]
+        </a>
+        <a href="#"
+          tal:attributes="
+          href string:${event/@@absolute_url}/@@edit.html;
+          title event/title"
+          tal:content="event/title">
+          Knopfen
+        </a>
+      </div>
+    </tal:event>
+  </metal:macro>
+
+  <metal:macro define-macro="navigation">
+
+    <ul class="mode-switch"
+      tal:define="query python:view.get_navigation_query(view.selected_date)"
+      >
+      <a href="#"
+        tal:attributes="href string:$calendar_url/month.html?$query"
+        class="MonthView">
+        Monat
+      </a>
+      <a href="#"
+        tal:attributes="href string:$calendar_url/week.html?$query"
+        class="WeekView">
+        Woche
+      </a>
+    </ul>
+
+    <div class="backforward">
+      <a href="#"
+        tal:attributes="href python:view.get_navigation_url(view.fastbackward)">
+        «
+      </a> 
+      <a href="#"
+        tal:attributes="href python:view.get_navigation_url(view.backward)">
+        ‹
+      </a> 
+
+      <a href="#"
+        tal:attributes="href view/url">
+        Heute
+      </a>
+
+      <a href="#"
+        tal:attributes="href python:view.get_navigation_url(view.forward)">
+        ›
+      </a> 
+      <a href="#"
+        tal:attributes="href python:view.get_navigation_url(view.fastforward)">
+        »
+      </a> 
+    </div>
+
+  </metal:macro>
+</html>

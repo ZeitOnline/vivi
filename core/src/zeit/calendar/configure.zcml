@@ -1,0 +1,33 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <class class=".calendar.Calendar">
+    <require
+      interface=".interfaces.ICalendar"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IEditCalendar"
+      permission="zope.ManageContent" />
+  </class>
+
+  <adapter
+    for=".interfaces.ICalendar"
+    factory="zeit.cms.content.namechooser.NameChooser"
+    />
+
+  <class class=".event.Event">
+    <require
+      interface=".interfaces.ICalendarEvent"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ICalendarEvent"
+      permission="zope.ManageContent" />
+  </class>
+
+  <utility name="zeit.calendar"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <subscriber handler=".calendar.updateIndexOnEventChange" />
+
+</configure>

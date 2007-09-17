@@ -1,0 +1,23 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".token.fromNotNeeded" />
+
+  <browser:page
+    name="workflow.html"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    class=".form.WorkflowForm"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    menu="zeit-context-views"
+    title="Workflow"
+    action="@@workflow.html"
+    permission="zope.ManageContent"
+    />
+</configure>
+

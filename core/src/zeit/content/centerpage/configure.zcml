@@ -1,0 +1,28 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".centerpage.centerpageFactory" name="centerpage" />
+  <adapter factory=".centerpage.resourceFactory" />
+
+  <subscriber handler=".centerpage.mapPropertyToAttribute" />
+
+  <class class=".centerpage.CenterPage">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ICenterPage"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ICenterPage"
+      permission="zeit.EditContent" />
+  </class>
+
+  <!-- text editors -->
+  <adapter factory="zeit.xmleditor.structure.Text" name="title" />
+  <adapter factory="zeit.xmleditor.structure.Text" name="byline" />
+  <adapter factory="zeit.xmleditor.structure.Text" name="supertitle" />
+  <adapter factory="zeit.xmleditor.structure.Text" name="text" />
+  <adapter factory="zeit.xmleditor.structure.Text" name="copyright" />
+
+  <adapter factory="zeit.xmleditor.structure.Raw" name="raw" />
+  <adapter factory="zeit.xmleditor.structure.Raw" name="image" />
+
+</configure>

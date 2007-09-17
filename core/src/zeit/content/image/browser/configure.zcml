@@ -1,0 +1,120 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <resourceLibrary
+    name="zeit.content.image.drag-images"
+    require="zeit.cms.DragAndDrop">
+    <directory source="resources" include="drag-images.js" />
+  </resourceLibrary>
+
+  <browser:page
+    for="..interfaces.IImage"
+    permission="zope.View"
+    template="metadata.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IImage"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IImage"
+    template="image_view.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="drag-pane.html"
+    for="..interfaces.IImage"
+    template="image-drag.pt"
+    permission="zope.View"
+    />
+
+
+  <!-- Image data to the browser -->
+
+  <browser:page
+    name="index.html"
+    for="zeit.content.image.interfaces.IImage"
+    permission="zope.View"
+    allowed_attributes="__call__ tag"
+    class=".image.Image"
+    />
+
+  <browser:defaultView
+    for="zeit.content.image.interfaces.IImage"
+    name="index.html"
+    />
+
+  <browser:page
+    name="metadata-preview"
+    for="zeit.content.image.interfaces.IImage"
+    permission="zope.View"
+    class=".image.MetadataPreview"
+    /> 
+
+  <browser:page
+    name="preview"
+    for="zeit.content.image.interfaces.IImage"
+    permission="zope.View"
+    class=".image.Preview"
+    /> 
+  
+  <browser:page
+    name="thumbnail"
+    for="zeit.content.image.interfaces.IImage"
+    permission="zope.View"
+    class=".image.Thumbnail"
+    /> 
+
+
+  <!-- Menus -->
+
+  <browser:menuItem
+    for="zeit.content.image.interfaces.IImage"
+    menu="zeit-context-views"
+    title="Bearbeiten"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
+    />
+
+  <adapter factory=".image.ImageListRepresentation" />
+  <browser:icon
+    for="zeit.content.image.interfaces.IImage"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/imageResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zope.ManageContent"
+    class=".form.AddForm"
+    name="zeit.content.image.Add"
+    menu="zeit-add-menu" title="Image"
+    />
+
+
+  <!-- Collection -->
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="imagebrowser.html"
+    class=".imagebrowser.ImageBrowser"
+    template="imagebrowser.pt"
+    permission="zope.View"
+    menu="zeit-context-views" title="Bilder"
+    />
+
+</configure>

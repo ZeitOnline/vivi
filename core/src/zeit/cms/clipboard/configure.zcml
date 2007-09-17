@@ -1,0 +1,64 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+
+  <adapter factory=".clipboard.clipboardFactory" trusted="true" />
+  <adapter factory=".clipboard.principalAdapter" />
+
+
+  <subscriber
+    factory=".clipboard.WorkingcopyTraverser"
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy
+         zope.publisher.interfaces.IPublisherRequest"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+     />
+
+
+  <class class=".clipboard.Clipboard">
+    <require
+      interface=".interfaces.IClipboard"
+      permission="zope.ManageContent" /> 
+  </class>
+  
+  <!-- Entry -->
+  <class class=".entry.Entry">
+    <require
+      interface=".interfaces.IObjectReference"
+      permission="zope.View" /> 
+    <require
+      set_schema=".interfaces.IObjectReference"
+      permission="zope.ManageContent" /> 
+    <require
+      interface="zope.app.container.interfaces.IContained"
+      permission="zope.View" /> 
+  </class>
+  
+  <class class=".entry.Clip">
+    <require
+        permission="zope.View"
+        interface="zope.app.container.interfaces.IReadContainer" 
+        />
+    <require
+        permission="zope.ManageContent"
+        interface="zope.app.container.interfaces.IWriteContainer"
+        />
+    <require
+        permission="zope.ManageContent"
+        attributes="updateOrder"
+        />
+    <require
+        permission="zope.View"
+        interface=".interfaces.IClipSchema"
+        />
+    <require
+        permission="zope.ManageContent"
+        set_schema=".interfaces.IClipSchema"
+        />
+  </class>
+
+
+
+  <adapter factory=".entry.Entry"
+    provides="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    />
+
+</configure>

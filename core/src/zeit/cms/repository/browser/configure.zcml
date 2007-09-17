@@ -1,0 +1,207 @@
+<configure 
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <!-- Add Menu -->
+
+  <browser:menu
+    id="zeit-add-menu"
+    title="Add ..."
+    description="Menu for adding content."
+    />
+
+  <!-- Sidebar -->
+
+  <browser:viewlet
+    name="10_navtree"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="navtree_testing.pt"
+    class=".repository.HTMLTree"
+    layer="zeit.cms.browser.interfaces.ICMSTestingSkin"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    name="10_navtree"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="navtree.pt"
+    class=".repository.HTMLTree"
+    layer="zeit.cms.browser.interfaces.ICMSSkin"
+    permission="zope.View"
+    />
+
+  <!-- Collection -->
+
+  <adapter factory=".adapter.CollectionListRepresentation" />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IRepository"
+    permission="zope.View"
+    name="tree.html"
+    class=".repository.Tree"
+    allowed_interface="zeit.cms.browser.interfaces.ITree"
+    />
+
+  <resourceLibrary name="zeit.cms.repository.drag-content"
+    require="zeit.cms.DragAndDrop">
+    <directory source="resources" include="drag-content.js"/>
+  </resourceLibrary>
+
+  <browser:page
+    name="view.html"
+    for="zeit.cms.repository.interfaces.ICollection"
+    class="zeit.cms.browser.listing.Listing"
+    template="content_listing.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="view.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:containerViews
+    for="zeit.cms.repository.interfaces.ICollection"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.ICollection"
+    action="delete"
+    menu="folder-actions"
+    title="Löschen"
+    permission="zope.ManageContent"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="metadata_preview"
+    template="collection_metadata.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="hide-from-tree.html"
+    permission="zope.View"
+    class=".repository.HiddenCollections"
+    attribute="hide_collection"
+    allowed_attributes="hidden"
+    />
+
+  <browser:menuItem
+    menu="zeit-context-actions"
+    title="Verstecken"
+    action="@@hide-from-tree.html"
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zope.View"
+    filter="not: context/@@hide-from-tree.html/hidden"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="show-in-tree.html"
+    permission="zope.View"
+    class=".repository.HiddenCollections"
+    attribute="show_collection"
+    allowed_attributes="hidden"
+    />
+
+  <browser:menuItem
+    menu="zeit-context-actions"
+    title="Zeigen"
+    action="@@show-in-tree.html"
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zope.View"
+    filter="context/@@show-in-tree.html/hidden"
+    />
+
+  <browser:icon
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/collectionResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  
+  <!-- Unkown Resource -->
+
+  <adapter factory=".adapter.UnknownResourceListing" />
+  <browser:icon
+    for="zeit.cms.repository.interfaces.IUnknownResource"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/unknownResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="edit.html"
+    template="resource_edit.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.ManageContent"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="view.html"
+    template="resource_edit.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    menu="zeit-context-views"
+    title="Anzeigen"
+    action="@@view.html"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="metadata_preview"
+    template="metadata_preview.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="drag-pane.html"
+    for="zeit.cms.interfaces.ICMSContent"
+    template="drag-pane.pt"
+    permission="zope.View" />
+
+
+
+  <!-- Selenium Tests -->
+
+  <configure zcml:condition="have zeit.cms.selenium"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+    <adapter 
+      factory=".test_tree.Test" 
+      name="test_tree.html"
+      permission="zope.Public"
+      />
+
+    <adapter 
+      factory=".test_listing.Test" 
+      name="test_listing.html"
+      permission="zope.Public"
+      />
+
+  </configure>
+
+</configure>
+

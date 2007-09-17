@@ -1,0 +1,31 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <class class="lxml.objectify.ObjectifiedElement">
+    <require permission="zope.View"
+      attributes="tag xpath getparent index" />
+    <require permission="zope.ManageContent"
+      attributes="append insert makeelement __setslice__" />
+  </class>
+
+  <class class="lxml.objectify.StringElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
+
+  <class class=".structure.XInclude">
+    <require permission="zope.ManageContent"
+      interface=".interfaces.IXInclude" />
+    <require permission="zope.ManageContent"
+      set_schema=".interfaces.IXInclude" />
+  </class>
+
+  <!-- structure adapters -->
+  <adapter factory=".structure.structureFactory" />
+  <adapter factory=".structure.XInclude"
+    name="{http://www.w3.org/2001/XInclude}include" />
+  <adapter factory=".structure.Block" name="block" />
+ 
+
+  <!-- reference adapters for zeit.cms types -->
+  <adapter factory=".reference.FeedXMLReference" />
+</configure>

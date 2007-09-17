@@ -1,0 +1,24 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".image.imageFactory" name="image" />
+  <adapter factory=".image.resourceFactory" />
+  <adapter factory=".image.XMLReference" />
+  <adapter factory=".transform.ImageTransform" />
+
+  <class class=".image.Image">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IImage"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IImage"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".transform.ImageTransform">
+    <require
+      interface=".interfaces.ITransform"
+      permission="zope.View" />
+  </class>
+
+</configure>

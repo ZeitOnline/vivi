@@ -1,0 +1,27 @@
+<div
+  tal:define="panel_id string:NavtreePanel;
+              tree_view nocall:view/repository/@@tree.html;
+              tree_url tree_view/@@absolute_url;
+              panel_handlers nocall:context/@@panel_handlers"
+  tal:attributes="class python:panel_handlers.css_class(panel_id);
+                  id panel_id">
+
+  
+  <tal:replace replace="resource_library:zeit.cms.tree" />
+  
+  <h1>
+    <a href="javascript:void(null)">
+        Dateiverwaltung
+    </a> 
+  </h1>
+  
+  <div id="navtreecontents" class="PanelContent Tree"
+    tal:content="structure tree_view">
+    Navigaion wird geladen …
+  </div>
+  <script language="javascript"
+    tal:content="string:
+      var navtree = new Tree('$tree_url', 'navtreecontents', true);">
+  </script>
+
+</div>

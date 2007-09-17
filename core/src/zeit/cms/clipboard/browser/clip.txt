@@ -1,0 +1,16 @@
+=========
+Clipbaord
+=========
+
+
+Clip List Representation
+========================
+
+Verify the interface::
+
+    >>> import zope.interface.verify
+    >>> from zeit.cms.browser.interfaces import IListRepresentation
+    >>> from zeit.cms.clipboard.browser.clip import ClipListRepresentation
+    >>> zope.interface.verify.verifyClass(
+    ...     IListRepresentation, ClipListRepresentation)
+    True

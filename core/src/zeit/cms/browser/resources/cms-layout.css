@@ -1,0 +1,319 @@
+/* 
+ * layout (positioning and such) specific CSS defs */
+#header {
+    background-color: #fdfdfd;
+    border-bottom: 2px solid #4c4c4c;
+    min-height: 20px;
+}
+
+#sidebar {
+    position: absolute;
+    left: 0;
+    width: 23%;
+    top: 5%;
+    background-color: #fdfdfd;
+    border-right: 2px solid #004455;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#sidebar h1 {
+    padding-left: 0;
+    margin: 0;
+}
+
+#sidebar-dragger {
+    position: absolute;
+    left: 24%;
+    width: 10px;
+    top: 5%;
+    bottom: 0;
+    cursor: w-resize;
+    background: white url("/@@/zeit.cms/layout/sidebardragger.png") no-repeat center;
+}
+
+#sidebar.sidebar-folded {
+    display: none;
+}
+
+#sidebar-dragger.sidebar-folded {
+    left: 3px;
+    width: 10px;
+    cursor: e-resize;
+    background: white url("/@@/zeit.cms/layout/sidebardragger-open.png") no-repeat center;
+}
+
+#content.sidebar-folded {
+    left: 13px;
+}
+
+#content {
+    position: fixed;
+    left: 25%;
+    top: 5%;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color: #fdfdfd;
+    border-left: 1px solid #004455;
+    border-top: 1px solid #004455;
+}
+
+#topcontent {
+    position: absolute;
+    top: 9ex; 
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+    overflow-x: hidden;
+    padding: 1em;
+}
+
+.topcontent-small {
+    bottom: 12em !important;
+}
+
+#bottomcontent {
+    position: absolute;
+    top: auto;
+    height: 12em;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+    display: none;
+}
+
+#bottomcontent h2 {
+    margin-top: 0;
+    background-color: #0088AA;
+    color: white;
+}
+
+#bottomcontent .context-views {
+    top: 3ex;
+}
+
+#bottomcontent .context-actions ul {
+    margin-top: 0.5ex;
+}
+
+#bottomcontent .context-actions li {
+    margin-top: 0.5ex;
+}
+
+#folderActionForm {
+    bottom: 0;
+}
+
+.BottomForm div.Column {
+    width: 49%;
+    float: left;
+    margin-top: 1em;
+}
+
+#content-actions {
+    position: absolute;
+    top: 2em;
+    padding: 0.5em 0;
+}
+
+#metadata_preview {
+    position: absolute;
+    left: 0;
+    top: 9ex;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+}
+
+#metadata_preview .folder-contents {
+  list-style: none;
+}
+
+#metadata_preview .folder-contents li {
+  float: left;
+  display: block;
+  width: 10em;
+  overflow: hidden;
+  font-family: monospace;
+  margin-right: 1em;
+}
+
+#edit-form {
+    position: absolute;
+    top: 9ex;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+    padding-bottom: 20px;
+}
+
+#full-content-area {
+    position: absolute;
+    top: 2em;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #4c4c4c;
+}
+
+#actionsView {
+    clear: both;
+    margin-left: 0.5em;
+}
+
+
+/* 
+ * navigations 
+ *
+ * */
+#main-navigation li,
+#folder-actions li,
+.context-views li {
+    display: inline;
+    padding: 4px 25px;
+}
+
+#main-navigation,
+.context-views {
+    margin: 0em;
+    padding-bottom: 0;
+    text-align: right;
+}
+
+#main-navigation li.Desktop {
+    background: url("/@@/zeit.cms/icons/desktop.png") no-repeat center left;
+}
+#main-navigation li.Editor {
+    background: url("/@@/zeit.cms/icons/editor.png") no-repeat center left;
+}
+
+#main-navigation li.Kalender {
+    background: url("/@@/zeit.cms/icons/calendar.png") no-repeat center left;
+}
+
+#folder-actions {
+    margin: 0em;
+    padding: 0.5em;
+    padding-bottom: 0;
+    display: inline;
+}
+
+.heading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    overflow: hidden;
+}
+
+.context-views {
+    border-bottom: 1px solid #004455;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2em;
+    height: 30px;
+    overflow: hidden;
+}
+
+.context-views ul {
+    margin-bottom: 0.4em;
+    margin-right: 0.5em;
+}
+
+.context-views li {
+    padding: 4px 30px;
+    border: 1px solid #aaa;
+    border-right: 1px dotted #aaa;
+    border-left: 0;
+    border-bottom: 0;
+    background-repeat: no-repeat;
+    background-position: 3px center;
+}
+
+.context-views li.selected,
+.context-views li.selected:first-child {
+    background-color: #ffdd00;
+    border: 1px solid #4c4c4c;
+    border-bottom: 1px solid #ffdd00;
+}
+
+.context-views li:first-child {
+    border-left: 1px dotted #aaa;
+}
+
+.context-views li.Syndicate {
+    background-image: url("/@@/zeit.cms/icons/syndicate.png");
+}
+.context-views li.Quelltext {
+    background-image: url("/@@/zeit.cms/icons/articleSource.png");
+}
+.context-views li.Metadaten {
+    background-image: url("/@@/zeit.cms/icons/metadata.png");
+}
+.context-views li.WYSIWYG {
+    background-image: url("/@@/zeit.cms/icons/wysiwyg.png");
+}
+.context-views li.XML {
+    background-image: url("/@@/zeit.cms/icons/xml.png");
+}
+.context-views li.Bilder {
+    background-image: url("/@@/zeit.cms/icons/images.png");
+}
+.context-views li.Anzeigen {
+    background-image: url("/@@/zeit.cms/icons/view.png");
+}
+.context-views li.Bearbeiten {
+    background-image: url("/@@/zeit.cms/icons/edit.png");
+}
+.context-views li.Workflow {
+    background-image: url("/@@/zeit.cms/icons/workflow.png");
+}
+
+/* 
+ * context actions 
+ *
+ * */
+.context-actions {
+    float: right;
+    margin-right: 1em;
+}
+
+.context-actions ul {
+    margin-top: 1ex;
+}
+
+.context-actions li {
+    display: inline;
+    padding: 2px 0 2px 20px;
+    margin-left: 1em;
+}
+
+.context-actions li a {
+    color: white;
+    font-size: 80%;
+}
+
+.context-actions li.Checkout {
+    background: url("/@@/zeit.cms/icons/checkout.png") no-repeat center left;
+}
+.context-actions li.Checkin {
+    background: url("/@@/zeit.cms/icons/checkin.png") no-repeat center left;
+}
+.context-actions li.Verstecken {
+    background: url("/@@/zeit.cms/icons/hide.png") no-repeat center left;
+}
+.context-actions li.Zeigen {
+    background: url("/@@/zeit.cms/icons/show.png") no-repeat center left;
+}
+.context-actions li.AlsZielmerken {
+    background: url("/@@/zeit.cms/icons/default-feed.png") no-repeat center left;
+}

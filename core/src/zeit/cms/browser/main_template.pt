@@ -1,0 +1,236 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+  <metal:macro define-macro="page"><?xml version="1.0"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    <html xmlns="http://www.w3.org/1999/xhtml"
+        tal:define="contenttitle options/title|view/title|context/title|default"
+        >
+      <head>
+        <title>
+          <metal:title metal:define-slot="title"
+            tal:content="contenttitle"
+            i18n:translate="">
+            Zeit CMS 
+          </metal:title>
+        </title>
+        <tal:replace replace="resource_library:zeit.cms" />
+        <tal:replace replace="resource_library:zeit.cms.panels" /> 
+      </head>
+      <body id="body"
+        tal:define="
+        site_url request/getApplicationURL;
+        sidebar_css context/@@sidebar_handlers/css_class">
+        <div id="header">
+          <ul id="main-navigation">
+            <tal:repeat 
+              repeat="menu_item context/@@view_get_menu/zeit-global-views">
+              <li
+                tal:define="selected_item python:'%s %s' %(menu_item['title'], menu_item['selected']);"
+                tal:attributes="class python:menu_item['title'] and selected_item or menu_item['title']">
+                <a
+                  tal:attributes="href string:$site_url/${menu_item/action}"
+                  tal:content="menu_item/title" i18n:translate="">
+                  Checkout
+                </a>
+              </li>
+            </tal:repeat>
+          </ul>
+        </div>
+
+        <div id="sidebar" 
+             tal:define="sidebar provider:zeit.cms.Sidebar"
+             tal:condition="sidebar"
+             tal:attributes="class sidebar_css"
+             tal:content="structure sidebar">
+          Sidebar panels
+        </div>
+        <div id="sidebar-dragger"
+          tal:attributes="class sidebar_css">
+        </div>
+
+        <script tal:content="string:
+          connect(window, 'onload', function(event) {
+            var panel_handler = new PanelHandler('$site_url');
+            panel_handler.registerPanelHandlers();
+            });
+
+            connect(window, 'onload', function(event) {
+                var sidebar_dragger = new SidebarDragger('$site_url');
+                connect('sidebar-dragger', 'onclick', sidebar_dragger,
+                        'toggle');
+            });
+            ">
+          </script>
+
+        
+        <div id="content"
+          tal:attributes="class sidebar_css">
+          <div class="heading">
+            <metal:actions define-slot="context-actions">
+              <metal:actions
+                use-macro="context/@@standard_macros/context-actions" />
+            </metal:actions>
+            <h1>
+              <metal:title define-slot="content-title">
+                <tal:title tal:replace="contenttitle">
+                  Dateiliste
+                </tal:title>
+              </metal:title>
+            </h1>
+          </div>
+          
+          <metal:actions define-slot="context-views">
+            <metal:actions
+              use-macro="context/@@standard_macros/context-views" />
+          </metal:actions>
+          
+          <metal:contentslot define-slot="body">
+            content
+          </metal:contentslot>
+        </div>
+      </body>
+    </html>
+  </metal:macro>
+  
+  
+  <metal:macro define-macro="context-actions">
+    <div class="context-actions"
+    tal:define="context_url context/@@absolute_url">
+      <ul>
+        <tal:repeat 
+             repeat="menu_item context/@@view_get_menu/zeit-context-actions">
+          <li
+            tal:define="selected_item python:'%s %s' %(menu_item['title'], menu_item['selected']);
+                        class python:''.join(menu_item['title'].split())"
+              tal:attributes="class class">
+            <a
+             tal:attributes="href string:$context_url/${menu_item/action}"
+             tal:content="menu_item/title" i18n:translate="">
+              Checkout
+            </a>
+          </li>
+        </tal:repeat>
+      </ul>
+    </div>
+  </metal:macro>
+
+  <metal:macro define-macro="context-views">
+    <div class="context-views"
+      tal:define="context_url context/@@absolute_url;
+                  menu_items context/@@view_get_menu/zeit-context-views"
+      tal:condition="menu_items">
+      <ul>
+        <tal:repeat 
+          repeat="menu_item menu_items">
+          <li
+            tal:attributes="
+              class string:${menu_item/title} ${menu_item/selected}">
+            <a
+              tal:attributes="href string:$context_url/${menu_item/action}"
+              tal:content="menu_item/title" i18n:translate="">
+              Checkout
+            </a>
+          </li>
+        </tal:repeat>
+      </ul>
+    </div>
+  </metal:macro>
+  
+  <metal:macro define-macro="metadata-preview">
+    <div class="heading">
+      <metal:actions use-macro="context/@@standard_macros/context-actions" />
+      <h2>
+        Metadaten-Vorschau: 
+        <span tal:replace="context/uniqueId"/>
+      </h2>
+    </div>
+    <metal:actions use-macro="context/@@standard_macros/context-views" />
+    <div id="metadata_preview">
+      <metal:data define-slot="preview"></metal:data>
+    </div>
+  </metal:macro>
+
+  <metal:macro define-macro="content-listing">
+    <tal:block replace="resource_library:zeit.cms.filteringtable" />
+  
+
+    <form name="containerContentsForm" method="post"
+      action="" id="folderActionForm">
+
+      <div id="content-actions">
+
+        <select id="add_menu"
+            name="add_menu" onchange="add_content(this)"
+            tal:define="menu_items context/@@view_get_menu/zeit-add-menu"
+            tal:condition="menu_items" >
+          <option value="" i18n:translate="">Add ...</option>
+          <option
+            tal:repeat="menu_item menu_items"
+            tal:attributes="value string:$context_url/${menu_item/action}"
+            tal:content="menu_item/title" i18n:translate="">
+              Article
+          </option>
+        </select>
+
+        <ul id="folder-actions" 
+            tal:define="menu_items context/@@view_get_menu/folder-actions"
+            tal:condition="menu_items">
+          <li tal:repeat="menu_item menu_items"
+              tal:attributes="class menu_item/title">
+            <input type="submit"
+              tal:attributes="
+                value menu_item/title;
+                name menu_item/action" />
+          </li>
+        </ul>
+
+    </div>
+  
+      <div id="topcontent">
+        
+        <div id="tableFilter">
+          Filter: <input type="text" value="" />
+        </div>
+
+          <table
+            tal:condition="view/content"
+            tal:replace="structure view/contentTable">
+            Table with contents...
+          </table>
+
+        <span tal:condition="not:view/content" class="Info">
+          Keine Objekte in diesem Ordner vorhanden.
+        </span>
+      </div>
+      <div id="bottomcontent"></div>
+    </form>
+  </metal:macro>
+
+  <metal:macro define-macro="render_form_widget">
+    <tal:block repeat="widget widgets">
+      <div class="field" 
+        tal:define="hint widget/hint"
+        tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
+
+        <label tal:attributes="for widget/name">
+          <span i18n:translate="" tal:content="widget/label">label</span>
+          <span class="annotation" tal:condition="widget/required">(Pflichtfeld)</span>
+        </label>
+
+
+        <div class="hint" tal:content="widget/hint"/>
+
+        <div tal:condition="widget/error" class="error">
+          <span tal:replace="structure widget/error">error</span>
+        </div>
+
+        <div class="widget" tal:content="structure widget">
+          <input type="text" />
+        </div>
+      </div>
+
+    </tal:block>
+  </metal:macro>
+</html>

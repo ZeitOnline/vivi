@@ -1,0 +1,117 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".feed.FeedListRepresentation" />    
+  <browser:icon
+    for="zeit.cms.syndication.interfaces.IFeed"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/feed.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zope.ManageContent"
+    class=".form.AddForm"
+    name="zeit.cms.syndication.feed.Add"
+    menu="zeit-add-menu" title="Feed"
+    />
+
+  <!-- Feed -->
+
+  <browser:page
+    name="metadata.html"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zeit.EditContent"
+    class=".form.EditForm"
+    menu="zeit-context-views" title="Metadaten"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zeit.EditContent"
+    template="feed_sorting.pt"
+    class=".feed.EditFeedView"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views" title="Sortieren"
+    />
+
+  <browser:page
+    name="view.html"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zope.View"
+    template="feed_view.pt"
+    class=".feed.FeedView"
+    menu="zeit-context-views" title="Anzeigen"
+    />
+
+  <browser:defaultView
+    for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    name="metadata_preview"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zope.View"
+    template="metadata.pt"
+    class=".feed.FeedView"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="drag-pane.html"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zope.View"
+    template="feed-drag-pane.pt"
+    />
+
+  <browser:page
+    name="add-to-my-syndication-targets.html"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zope.View"
+    class=".feed.AddToMyTargets"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.syndication.interfaces.IFeed"
+    menu="zeit-context-actions"
+    title="Als Ziel merken"
+    action="@@add-to-my-syndication-targets.html"
+    permission="zope.View"
+    />
+
+  <resourceLibrary name="dragndrop" require="mochikit.DragAndDrop">
+    <directory source="resources" include="dragndropHandlers.js"/>
+  </resourceLibrary>
+
+  <!-- Syndication Manager -->
+
+  <browser:page
+    name="syndication_manager"
+    for="zeit.cms.interfaces.ICMSContent"
+    permission="zope.ManageContent"
+    allowed_interface=".interfaces.ISyndicationManagerView"
+    template="manager.pt"
+    class=".manager.Manager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    menu="zeit-context-views"
+    title="Syndicate"
+    action="@@syndication_manager"
+    permission="zope.ManageContent"
+    filter="context/@@syndication_manager/manager/canSyndicate"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+
+</configure>

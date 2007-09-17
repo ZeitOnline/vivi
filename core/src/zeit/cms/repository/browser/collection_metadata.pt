@@ -1,0 +1,16 @@
+<metal:macro use-macro="context/@@standard_macros/metadata-preview">
+  <metal:data fill-slot="preview">
+    <div class="folder-length">
+      <span tal:replace="python:len(context)" /> Einträge
+    </div>
+
+    <ul class="folder-contents">
+      <li
+        tal:repeat="name context"
+        tal:content="name">
+        index
+      </li>
+    </ul>
+
+  </metal:data>
+</metal:macro>

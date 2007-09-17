@@ -1,0 +1,6 @@
+<metal:use-macro use-macro="context/@@standard_macros/page">
+  <tal:block metal:fill-slot="body">
+    Unbekannte Resource – sie kann nicht bearbeitet oder angezeigt werden.
+  </tal:block>
+</metal:use-macro>
+

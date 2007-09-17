@@ -1,0 +1,19 @@
+<metal:macro use-macro="context/@@standard_macros/metadata-preview">
+  <metal:data fill-slot="preview"
+    tal:define="
+    preview nocall:context/@@metadata-preview;
+    image nocall:context/@@index.html">
+
+    <div class="image-metadata">
+      <img tal:replace="structure preview/tag" />
+      <div tal:content="context/contentType" />
+      <div>
+        <span tal:replace="image/width" />x<span tal:replace="image/height" />
+      </div>
+      <div tal:content="context/title">
+        Title
+      </div>
+
+    </div>
+  </metal:data>
+</metal:macro>

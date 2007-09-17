@@ -1,0 +1,302 @@
+/* style definitions for widgets (panels, forms); Most things go here. */
+.contentListing {
+   border-collapse: collapse;
+   width: 100%;
+   margin-top: 5ex;
+}
+
+.contentListing > tbody > tr.even > td {
+   background-color: #f2f2f2;
+}
+
+.contentListing > tbody > tr.selected > td {
+  background-color: #ffdd11;
+}
+
+.contentListing > thead > tr > th {
+  white-space: nowrap;
+}
+
+/* don't display the filter column */
+.contentListing > thead > tr > th:last-child,
+.contentListing > tbody > tr > td:last-child {
+   display: none;
+}
+
+.zc-table-sortable {
+  cursor: pointer;
+}
+
+
+
+/* 
+ * source editor 
+ *
+ * */
+#source-editor {
+  height: 100%;
+}
+
+#source-editor textarea {
+  width: 100%;
+  height: 70ex;
+}
+
+#source-editor .fckeditor  {
+  width: 100%;
+  height: 70ex;
+}
+
+/*
+ * General Panel defs 
+ * 
+ * */
+.PanelContent {
+   min-height: 6ex;
+   max-height: 50ex;
+   overflow-y: auto;
+   overflow-x: hidden; /* XXX not sure if I'm making it unusable here */
+   padding: 0.5em;
+}
+
+.folded .PanelContent {
+   display: none;  
+}
+.unfolded .PanelContent {
+   display: block;
+}
+
+.folded h1 {
+  background: #004455 url("/@@/zeit.cms/layout/unfold.png") no-repeat left center;
+  border-bottom: 1px solid white;
+}
+.unfolded h1 {
+  background: #004455 url("/@@/zeit.cms/layout/fold.png") no-repeat left center;
+}
+
+.folded h1 a {
+  color: white;
+  margin-left: 12px;
+  padding-left: 0;
+}
+
+.unfolded h1 a {
+  color: white;
+  margin-left: 12px;
+  padding-left: 0px;
+}
+
+.PanelContent {
+   border-bottom: 1px solid #0088aa;
+}
+
+
+/* Checked out documents panel */
+#WorkingcopyPanel table {
+  width: 100%;
+}
+#WorkingcopyPanel table thead tr th:first-child {
+  width: 20px;
+}
+#WorkingcopyPanel table thead tr th {
+  background-color: transparent;
+  color: #333;
+}
+
+/* 
+ * Styles for xmltree 
+ * 
+ * */
+.Tree ul {
+   list-style-position: inside;
+   padding-left: 1em;
+   margin: 0;
+}
+
+.Tree li > a {
+   margin-left: -0.5em;
+}
+
+.Tree li {
+   list-style-image: url("/@@/zeit.cms/layout/tline.png");
+   background: url("/@@/zeit.cms/layout/vline.png") repeat-y top left;
+   cursor: pointer;
+}
+.Tree li:last-child {
+   list-style-image: url("/@@/zeit.cms/layout/lline.png");
+   background-image: none;
+}
+
+.Tree li[action="collapse"] {
+   list-style-image: url("/@@/zeit.cms/layout/minus.png");
+}
+.Tree ul > li[action="collapse"].collapse:last-child {
+   list-style-image: url("/@@/zeit.cms/layout/minus_lastchild.png");
+}
+.Tree li.Root:last-child {
+   list-style: none;
+}
+
+.Tree li[action="expand"] {
+   list-style-image: url("/@@/zeit.cms/layout/plus.png");
+}
+.Tree li[action="expand"]:last-child {
+   list-style-image: url("/@@/zeit.cms/layout/plus_lastchild.png");
+}
+
+.Tree li[active] > a {
+  font-weight: bold;
+  background-color: #ffdd11;
+}
+
+.TreeHover > a {
+  border-bottom: 2px solid red !important;
+}
+
+/*
+ * Drag-Pane
+ *
+ * */
+#drag-pane {
+  position: absolute;
+  background-color: #ffdd11;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#drag-pane .text {
+  font-weight: bold;
+}
+
+.DragPaneURL {
+    display: none;
+}
+
+#clip-add-folder-box {
+  display: none;
+}
+
+
+/* 
+ * tablefilter 
+ *
+ * */
+
+#tableFilter  {
+  position: absolute;
+  right: 1em;
+}
+
+#tableFilter input {
+  font-family: sans-serif;
+  width: 20em;
+  color: #196692;
+  border: 1px solid black;
+  border-width: 2px 1px 1px 2px;
+  padding: 2px;
+}
+
+#add_menu {
+  border: 1px solid black;
+  font-family: sans-serif;
+}
+
+/* XXX should be factored out to Article */
+/* Metadata preview contents */
+/* article */
+
+#metadata_preview *[title] {
+  cursor: help;
+}
+
+#metadata_preview .super-title {
+  font-variant: small-caps;
+  display: inline;
+}
+
+#metadata_preview .super-title:after {
+  font-variant: small-caps;
+  content: ":";
+}
+
+#metadata_preview .teaser-title {
+  display: inline;
+  font-weight: bold;
+  
+}
+
+#metadata_preview .teaser-text {
+  max-width: 50%;
+}
+
+
+
+
+#metadata_preview .syndicated-in {
+  float: right;
+}
+
+.image-metadata {
+  /* the meadata view */
+  font-size: 12pt;
+}
+
+.image-metadata img {
+  float: left;
+  margin-right: 1em;
+}
+
+.image-list .image {
+  float: left;
+  border: 1px solid grey;
+  width: 100px;
+  height: 125px;
+  overflow: hidden;
+  text-align: center;
+  margin: 1px;
+  padding: 1px;
+}
+
+.image-list .image-data {
+  line-height: 100px;
+}
+
+.image-list .image-data img {
+  vertical-align: middle;
+}
+
+.image-list .image-metadata {
+  font-size: 8pt;
+}
+
+.image-view-metadata {
+  float: right;
+  font-size: 8pt;
+  margin-right: 2em;
+}
+
+.sequencewidget ul {
+  min-height: 40px;
+  padding-left: 5em;
+}
+.sequencewidget li {
+  padding-bottom: 0.5em;
+}
+.sequencewidget {
+  background: white url("/@@/zeit.cms/icons/drop-widget.png") no-repeat 1em center;
+}
+.sequencewidget img[action="delete"] {
+  margin-left: 1em;
+  margin-bottom: -0.5em;
+  cursor: pointer;
+  -moz-opacity: 0.3;
+}
+.sequencewidget img[action="delete"]:hover {
+  -moz-opacity: 1;
+}
+.drop-widget-hover {
+  background: #ccc url("/@@/zeit.cms/icons/drop-widget-hover.png") no-repeat 1em center;
+}
+.drop-widget-hover .new {
+  visibility: hidden;
+}

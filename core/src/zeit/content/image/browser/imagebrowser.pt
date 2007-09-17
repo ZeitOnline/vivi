@@ -1,0 +1,27 @@
+<metal:use-macro use-macro="context/@@standard_macros/page">
+  <metal:data fill-slot="body">
+    <tal:replace replace="resource_library:zeit.content.image.drag-images" />
+    <div id="edit-form" class="image-list">
+      <div class="image"
+        tal:repeat="image view/images">
+        <div class="image-data">
+          <a href="view.html"
+            tal:attributes="
+            href string:${image/@@absolute_url}/@@view.html;
+            title image/title">
+            <img tal:replace="structure image/@@thumbnail/tag" />
+          </a>
+          <span class="DragPaneURL"
+            tal:content="string:${image/@@absolute_url}/@@drag-pane.html">
+          </span>
+        </div>
+        <div class="image-metadata">
+          <div tal:content="image/contentType" />
+          <div tal:define="image_view nocall:image/@@index.html">
+            <span tal:replace="image_view/width" />x<span tal:replace="image_view/height" />
+          </div>
+        </div> 
+      </div>
+    </div>
+  </metal:data>
+</metal:use-macro>

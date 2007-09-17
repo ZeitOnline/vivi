@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+<!-- CMS/document -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+<!-- CMS/workflow -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    <countings>
+      <counting type="agof">
+        <code>online</code>
+      </counting>
+    </countings>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="imagecount">0</attribute>
+    <id>
+      <uniqueid/>
+      <originalpath/>
+    </id>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">04</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"> Werner A. Perger</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2.1.2007 - 18:18</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">INBE; Spanien; Eta</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Dialog abgebrochen</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">richter</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">5</attribute>
+  <references count="8"><reference source="auto" type="intern" year="2006" issue="09" publication="ZEIT online" href="cms:/cms/work/online/2006/09/spanien"><title>Eta oder al-Qaida</title><description>Zwei Jahre nach dem Terroranschlag: Ein tiefer Graben durchzieht Spaniens Demokratie</description></reference><reference source="auto" type="intern" year="2006" issue="13" publication="ZEIT online" href="cms:/cms/work/online/2006/13/ETA_Interview"><title>&#8222;Wir haben gewonnen&#8220;</title><description>Ist die &#8222;permanente Feuereinstellung&#8220; der Eta ernst zunehmen? Ein Gespräch mit dem baskischen Soziologen Joseba Arregi, der auf der Todesliste der Terroristen steht.</description></reference><reference source="auto" type="intern" year="2002" issue="32" publication="ZEIT" href="cms:/cms/work/2002/32/200232_eta_xml"><title>Die Eta ist nicht totzukriegen</title><description>Spanien und der ethnische Terror</description></reference><reference source="auto" type="intern" year="2005" issue="20" publication="ZEIT online" href="cms:/cms/work/2005/20/Baskenland"><title>Madrid will Dialog mit ETA wieder aufnehmen</title><description>Zuvor soll die Separatisten-Organisation jedoch die Waffen niederlegen. Terrorexperten sehen darauf aber keinen Hinweis - im Gegenteil</description></reference><reference source="auto" type="intern" year="2005" issue="16" publication="ZEIT online" href="cms:/cms/work/2005/16/savater"><title>&#8222;Im Grunde ist es wie unter Franco&#8220;</title><description>Vom Terror und vom guten Leben im Zeichen der Gewalt im Baskenland. Ein Gespräch mit dem spanischen Philosophen Fernando Savater, dem Gründer der Anti-Eta-Organisation &#8222;Basta Ya!&#8220;</description></reference><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/eta-zapatero"><title>Dialog als Unmöglichkeit</title><description>Nach dem Bombenanschlag am Madrider Flughafen demonstrieren Tausende gegen die ETA. Die Proteste richten sich auch gegen Zapatero</description></reference><reference source="auto" type="intern" year="2006" issue="14" publication="ZEIT" href="cms:/cms/work/2006/14/Eta"><title>Waffenstillstand und Rauchverbot</title><description>Sozialistische Realpolitik auf Spanisch: Der Gewaltverzicht der Eta könnte zum größten Erfolg von Ministerpräsident José Luis Zapatero werden</description></reference><reference source="auto" type="intern" year="2005" issue="16" publication="ZEIT" href="cms:/cms/work/2005/16/Baskenland"><title>Utopie, Terror, Angst</title><description>Vor der Wahl im Baskenland: Wann hört endlich die alltägliche Gewalt auf?</description></reference></references><keywordset>
+	<keyword source="auto" intaxo="yes">Verbrechensbekämpfung</keyword>
+	<keyword source="auto" intaxo="yes">Terrorismus</keyword>
+	<keyword source="auto" intaxo="yes">Separatismus</keyword>
+	<keyword source="auto" intaxo="yes">Recht</keyword>
+	<keyword source="auto" intaxo="yes">Polizei</keyword>
+	<keyword source="auto" intaxo="yes">Kriminalität</keyword>
+	<keyword source="auto" intaxo="yes">Justiz</keyword>
+	<keyword source="auto" intaxo="yes">Innere Sicherheit</keyword>
+	<keyword source="auto" intaxo="yes">Innenpolitik</keyword>
+	<keyword source="auto" intaxo="no">Parteien</keyword>
+	<keyword source="auto" intaxo="no">Gesetze</keyword>
+</keywordset></head>
+  <body bottommargin="15" leftmargin="10" topmargin="15" rightmargin="10">
+    <supertitle>Terrorismus</supertitle>
+    <title>Dialog abgebrochen</title>
+    <subtitle>Nach einem schweren Anschlag der Terrorgruppe Eta hat die spanische Regierung den Friedensprozess für beendet erklärt. Dennoch muss eine politische Lösung gefunden werden</subtitle>
+    <byline>Von Werner A. Perger</byline>
+    <p>Dass die Eta demnächst irgendein Lebenszeichen von sich geben würde, haben viele erwartet. Auch Spaniens Ministerpräsident Zapatero. Dass der Weg zu einem Ende der Gewalt im Baskenland, dieser lebensgefährlichen "No-go-area" für demokratische Anti-Separatisten, mühselig sein würde, hat er immer wieder gesagt. Doch von Zeitpunkt und Wucht des Anschlags der baskischen Terrororganisation auf den Madrider Flughafen, bei dem vermutlich zwei Menschen starben, wurden er und seine Sicherheitsexperten offenkundig überrascht. <image start="fileopen" height="348" loop="1" width="210" align="left" expires="2100-01-01" image_id="/cms/work/bilder/2007/01/aktuell/teaser_artikel/eta-210.jpg" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/eta-210.jpg"><title/><bu>Ein Graffiti des Eta-Logos in Pamplona an der Wand des Hauses von Salvador Ulayar, einem 1979 von der Eta ermordeten Bürgermeister. Die weißen Handabdrücke symbolisieren Anti-Eta-Protest</bu><copyright>© Rafa Rivas/AFP/Getty Images</copyright></image></p>
+    <p>Wohl oder übel hat Zapatero daraufhin die Sondierungen unterbrochen <span lang="EN-GB">&#8211;</span> der bisher größte politische Rückschlag für seine sozialistische Minderheitsregierung. Noch kurz vor dem Anschlag hatte er Zuversicht verbreitet. Jetzt blieb ihm nur, zu Besonnenheit und Gemeinsamkeit aufzurufen. War es aber falsch, für das Problem des baskischen Separatismus eine politische Lösung zu suchen? </p>
+    <p>Zapatero ist damit im Prinzip auf dem richtigen Weg, auf demselben steinigen Weg übrigens, den auch schon sein konservativer Vorgänger, Aznar, in der ersten Amtszeit als Chef einer Minderheitsregierung, zu gehen versuchte. Zapatero wollte jetzt offenbar zu viel zu schnell erreichen. Die Geduld, zu der er mahnte, braucht er jetzt selbst. Und die Bereitschaft, nicht alles <span lang="EN-GB">&#8211;</span> auch nicht den Wahlsieg 2008 <span lang="EN-GB">&#8211;</span> auf die baskische Karte zu setzen. Damit machte er sich zu sehr vom guten Willen der Eta abhängig. </p>
+  </body>
+  <teaser>
+    <title>Dialog abgebrochen</title>
+    <text>Nach einem schweren Anschlag der Terrorgruppe Eta hat die spanische Regierung den Friedensprozess für beendet erklärt. Dennoch muss eine politische Lösung gefunden werden</text>
+    <text_length>18</text_length>
+  </teaser>
+  <indexteaser>
+    <title>Eta-Terror</title>
+    <text>Spanien muss eine politische Lösung finden</text>
+    <text_length>42</text_length>
+    <title_length>10</title_length>
+  </indexteaser>
+</article>

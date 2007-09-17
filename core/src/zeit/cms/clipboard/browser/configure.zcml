@@ -1,0 +1,105 @@
+<configure 
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".entry.entryListRepresentationFactory" />
+  <adapter factory=".clip.ClipListRepresentation" />
+  <adapter factory=".clipboard.ClipboardListRepresentation" />
+
+  <browser:viewlet
+    name="40_clipboard"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    class=".clipboard.Sidebar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboard"
+    permission="zope.View"
+    name="tree.html"
+    class=".clipboard.Tree"
+    allowed_interface="zeit.cms.browser.interfaces.ITree"
+    />
+
+  <browser:pages
+    for="zeit.cms.clipboard.interfaces.IClipboard"
+    class=".clipboard.Tree"
+    permission="zope.ManageContent"
+    allowed_interface="zeit.cms.browser.interfaces.ITree">
+
+    <browser:page 
+      name="addContent"
+      attribute="addContent"
+      />
+
+    <browser:page 
+      name="addContainer"
+      attribute="addContainer"
+      />
+
+    <browser:page 
+      name="moveContent"
+      attribute="moveContent"
+      />
+
+  </browser:pages>
+
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    class=".entry.Entry"
+    permission="zope.View"
+    name="index.html"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    class=".entry.DragPane"
+    permission="zope.View"
+    name="drag-pane.html"
+    />
+
+
+  <resourceLibrary name="zeit.cms.clipboard" require="zeit.cms.DragAndDrop">
+    <directory source="resources" include="clipboard.js" />
+  </resourceLibrary>
+
+  <browser:containerViews
+    for="zeit.cms.clipboard.interfaces.IClipboard"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:page
+    name="listing.html"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    class="zeit.cms.browser.listing.Listing"
+    template="content_listing.pt"
+    permission="zope.View"
+    />
+  <browser:defaultView
+    for="zeit.cms.clipboard.interfaces.IClip"
+    name="listing.html" />
+
+
+  <browser:menuItem
+    for="zeit.cms.clipboard.interfaces.IClip"
+    action="delete"
+    menu="folder-actions"
+    title="Löschen"
+    permission="zope.ManageContent"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClip"
+    template="clip-drag.pt"
+    permission="zope.View"
+    class=".clip.ClipDragPane"
+    name="drag-pane.html"
+    />
+
+</configure>

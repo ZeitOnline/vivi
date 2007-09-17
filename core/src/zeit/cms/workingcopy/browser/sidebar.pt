@@ -1,0 +1,26 @@
+<div
+  tal:define="panel_id string:WorkingcopyPanel;
+              panel_handlers nocall:context/@@panel_handlers;
+              documents view/table;
+              workingcopy view/workingcopy;
+              workingcopy_url workingcopy/@@absolute_url"
+  tal:attributes="class python:panel_handlers.css_class(panel_id);
+                  id panel_id">
+
+  <h1>
+    <a href="#"
+      tal:attributes="href workingcopy_url">
+      Ausgecheckte Dokumente
+    </a>
+  </h1>
+  
+  <div class="PanelContent">
+    <div id="workingcopycontents">
+      <div tal:condition="not:view/content">
+        Keine ausgecheckten Dokumente
+      </div>
+
+      <div tal:condition="view/content" tal:content="structure view/table" />
+    </div>
+  </div>
+</div>

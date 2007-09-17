@@ -1,0 +1,156 @@
+% vim: fileencoding=utf9 encoding=utf8 spell spelllang=de
+%
+% $Id: seitenleiste.tex 75 2006-12-18 13:37:57Z zagy $
+% Author: Roman Joost
+
+
+\chapter{Seitenleiste}
+
+Die Seitenleiste bietet stets schnellen Zugriff auf Funktionen, die in allen
+Modulen des Editorensystems von Bedeutung sind:
+\begin{compactitem}
+  \item Ausgecheckte Dokumente
+  \item Dateiverwaltung
+  \item Clip-Verwaltung
+  \item Suche
+\end{compactitem}
+
+Für jede dieser Funktionen enthält die Seitenleiste ein Panel. Alle Panels
+können mit einem Mausklick auf ihre Kopfleiste unabhängig voneinander ein-
+oder ausgeklappt werden. Wechselt der Benutzer innerhalb eines Browserfensters
+in ein anderes Modul, bleibt der Zustand der Seitenleiste erhalten.
+
+Der Benutzer kann die Seitenleiste einklappen und wiederherstellen. Nach jeder
+Neuanmeldung ist sie ausgeklappt. Die Seitenleiste hat eine Breite von
+300~Pixeln.
+
+Beispiele/Mockups für die Seitenleiste sind auf den folgenden Seiten zu sehen.
+
+\section{Ausgecheckte Dokumente}
+    
+  \screenshot[ausgechecktedokumente]{ausgechecktedokumente.png}{%
+    Die Illustration zeigt die Seitenleiste mit ausgeklapptem Panel zur 
+    Verwaltung ausgecheckter Dateien. Der Hauptbereich zeigt 
+    Suchergebnisse einer Suche. Die gefundene Datei wurde durch einen 
+    Nutzer angeklickt und eine Vorschau wird angezeigt.}
+
+  Das Panel \guilabel{Ausgecheckte Dokumente} listet alle Dokumente, die der
+  Nutzer bearbeitet (siehe Abbildung~\vref{ausgechecktedokumente}).
+  Die Tabelle enthält zwei Spalten:
+  \begin{compactitem}
+    \item Titel des Dokumentes
+    \item Status des Dokumentes
+  \end{compactitem}
+
+
+  Wählt der Benutzer ein Dokument aus der Liste aus, erscheint eine Vorschau
+  des Dokumentes und seiner Metadaten im Hauptbereich. Wählt man mehrere
+  Dokumente aus, werden im Hauptfenster anstelle der Vorschau die Metadaten
+  aller ausgewählten Dokumente angezeigt.
+
+  Zieht der Benutzer Dokumente per Drag'n'Drop auf das Panel, werden sie
+  ausgecheckt, sofern der Benutzer das Recht dazu hat.
+
+
+  
+\section{Dateiverwaltung}
+
+  \screenshot[dateiverwaltung]{dateiverwaltung.png}{%
+    Die Ansicht zeigt links die Seitenleiste mit dem Panel zur 
+    Verwaltung von Dateien und Ordnern auf dem Backend. Der 
+    Hauptbereich zeigt Objekte die im ausgewählten Ordner links 
+    gefunden worden.}
+ 
+  Das Panel für die Dateiverwaltung zeigt die Ordner\footnote{Technische
+  Anmerkung: Im Backend gibt es keine physischen Ordner mehr, sie werden über
+  noch zu definierende Suchanfragen simuliert.}\ aus
+  dem Backend als Baum. Zu jedem Ordner zeigt die Ansicht:
+  \begin{compactitem}
+    \item den Titel und
+    \item die Anzahl der enthaltenen Dokumente.
+  \end{compactitem}
+
+  Wenn der Benutzer einen Ordner anwählt, bekommt er die enthaltenen Dokumente
+  im Hauptbereich angezeigt (siehe \vref{sec-doclist}). Zusätzlich wird der
+  Ordner expandiert, und seine Unterordner werden in der Baumnavigation
+  sichtbar.
+
+\subsection{Bildverwaltung}
+
+\screenshot[bildverwaltung]{bildverwaltung.png}{Die Ansicht zur Verwaltung von
+Bildern die im Dateisystem abgelegt sind.}
+
+Die Verwaltung der Bilder erfolgt über, die angezeigte Bildliste im 
+Hauptbereich. Wird ein Ordner in der Dateiverwaltung ausgewählt, 
+zeigt der Hauptbereich eine Dokumentenliste. Zusätzlich wird im unteren 
+Bereich der Dateiliste eine Liste der im aktuellen Ordner befindlichen 
+Bilder angezeigt. Diese werden als Miniaturbilder angezeigt.
+Eine Vorschau erhält der Benutzer nach selektieren 
+eines der Bilder im unteren Bereich des Bildschirms.
+
+Durch einen einfachen Mausklick können mehrere Bilder ausgewählt werden. Diese
+können entweder in einen anderen Ordner in der Dateiverwaltung verschoben
+werden. Auch können Bilder per Drag'n'Drop in ein ausgechecktes 
+Dokument eingefügt werden, in dem die Miniaturbilder auf ein Dokument 
+im \texttt{Ausgecheckte Dokumente} Panel gezogen wird.
+
+Eine Illustration der Bildverwaltung ist auf Seite 
+\pageref{bildverwaltung} zu sehen.
+
+\section{Virtuelle Ordner}
+
+Virtuelle Ordner sind gespeicherte Suchanfragen. Der Inhalt eines virtuellen
+Ordners ist das Suchergebnis auf dem jeweils aktuellen Datenbestand und wird
+damit ständig automatisch aktualisiert. Von Anfang an ist ein virtueller
+Ordner vorhanden, der zuletzt bearbeitete und wieder eingecheckte Dokumente
+enthält.
+
+Zunächst sind virtuelle Ordner unabhängig voneinander; das Panel zeigt sie in
+einer Liste an. In einer späteren Version könnte man Hierarchien einführen, um
+virtuelle Ordner zu kategorisieren.
+
+Um einen neuen virtuellen Ordner anzulegen, führt man im Suchpanel eine Suche
+aus und benutzt dann die Schaltfläche \guilabel{Virtuellen Ordner anlegen} auf
+der Suchergebnisseite.
+
+Wählt der Nutzer einen virtuellen Ordner an, erscheint im Hauptbereich der
+Seite eine Liste aller in diesem virtuellen Ordner enthaltenen Dokumente.
+
+
+\section{Clip-Verwaltung} \label{sec-clips}
+
+Die Clip"=Verwaltung enthält eine Liste der Clips des Benutzers. Jeden Eintrag
+kann man expandieren, um die im jeweiligen Clip enthaltenen Dokumente zu
+sehen. Wählt man einen Clip an, erscheint im Hauptbereich eine detaillierte
+Liste aller Dokumente in diesem Clip.
+
+Weiterhin besitzt das Panel eine Schaltfläche, mit der man einen neuen Clip
+anlegen kann.
+
+Zieht der Benutzer Dokumente aus einer Dokumentliste oder einem anderen Clip
+per Drag'n'Drop auf einen Clip in der Liste, werden die Dokumente zu diesem
+Clip hinzugefügt. Zieht der Nutzer die Dokumente auf einen anderen Punkt im Panel,
+wird ein neuer Clip angelegt und gleich mit den betreffenden Dokumenten
+befüllt. Der neu angelegte Clip erhält einen Standardnamen wie z.B. 
+\texttt{Neuer Clip}. Nachdem der Clip angelegt wurde, ist der Clipname 
+markiert und der Benutzer hat die Möglichkeit den Clipnamen zu ändern.
+
+\textit{Hinweis: Es ist zwischen Clips und Feeds zu unterscheiden. Clips werden
+nur für die persönliche Arbeitsorganisation verwendet. Um beispielsweise eine
+Center"=Page zu füllen werden Feeds verwendet (siehe Abschnitt
+\vref{sec-syndication}).}
+
+
+\section{Suche}
+
+  \screenshot[suche]{suche.png}{%
+    Die Seitenleiste zeigt das Suchen-Panel mit sichtbaren erweiterten 
+    Optionen. Die Suchergebnisse werden im Hauptbereich angezeigt.}
+  
+  Das Suchpanel ermöglicht eine Volltextsuche über alle Dokumente, sowohl
+  ausgecheckte, als auch Dokumente im Backend. Die Suchergebnisse erscheinen
+  in einer Liste im Hauptbereich.
+
+  Eine Suche kann um weitere Suchkriterien verfeinert werden, indem der
+  Benutzer mit der Schaltfläche \guilabel{Erweiterte Optionen} ein erweitertes
+  Suchformular im Panel aufruft. Siehe auch Abschnitt \vref{sec-suche}.

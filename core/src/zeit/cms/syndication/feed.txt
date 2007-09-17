@@ -1,0 +1,280 @@
+==========
+ZEIT Feeds
+==========
+
+Feeds contain an ordered list of documents::
+    
+    >>> from zeit.cms.syndication.feed import Feed
+    >>> feed = Feed()
+    >>> feed
+    <zeit.cms.syndication.feed.Feed object at 0x...>
+
+
+Addding and Removing
+=====================
+
+
+Feeds behave mostly like a list. An empty feed doen't contain any objects::
+
+    >>> list(feed.keys())
+    []
+
+
+We now will add objects to the feed. Let's create some fake object::
+
+    >>> import zope.interface
+    >>> from zeit.cms.interfaces import ICMSContent
+    >>> class Article(object):
+    ...     zope.interface.implements(ICMSContent)
+    ...     def __init__(self, id=None):
+    ...         self.uniqueId = id
+
+
+We add an article with id `art1` and get the id back form the `keys` method::
+
+    >>> article = Article('art1')
+    >>> feed.insert(0, article)
+    >>> list(feed.keys())
+    ['art1']
+
+
+Content is inserted in the right place::
+
+    >>> feed.insert(0, Article('art2'))
+    >>> list(feed.keys())
+    ['art2', 'art1']
+    >>> feed.insert(0, Article('art3'))
+    >>> list(feed.keys())
+    ['art3', 'art2', 'art1']
+
+
+Entries can also be removed. Note that the actual identification is *only* by
+an objects Unique Id::
+
+    >>> feed.remove(Article('art2'))
+    >>> list(feed.keys())
+    ['art3', 'art1']
+
+
+Size Limit
+++++++++++
+
+Feeds can be limited to a maximum amount of objects they contain. The default
+is 50::
+    
+    >>> feed.object_limit
+    50
+
+We set the limit to 2 now and add `art2` again::
+
+    >>> feed.object_limit = 2
+    >>> feed.insert(0, Article('art2'))
+
+The last entry `art1` has dropped out of the feed now::
+
+    >>> list(feed.keys())
+    ['art2', 'art3']
+
+
+Error Cases
++++++++++++
+
+
+It is not possible to add objects to a feed which do not have a uniqueId::
+
+    >>> article = Article()
+    >>> print article.uniqueId
+    None 
+    >>> feed.insert(0, article)
+    Traceback (most recent call last):
+        ...
+    ValueError: Cannot add objects without uniqueId.
+
+
+It is also not possible to add objects which are not ICMSConent::
+
+    >>> feed.insert(0, object())
+    Traceback (most recent call last):
+        ...
+    TypeError: ('Could not adapt', <object object at 0x...>, <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+
+
+Trying to remove an object which is not in the feed raises a ValueError::
+
+    >>> feed.remove(Article('nope'))
+    Traceback (most recent call last):
+        ...
+    ValueError: 'nope' not in feed.
+
+
+
+Creating Feeds From Resources
+=============================
+
+Feeds are cms content. So we also need to create them from resources::
+
+    >>> import StringIO
+    >>> from zeit.cms.connector import Resource
+    >>> from zeit.cms.syndication.feed import feedFactory
+    >>> resource = Resource(
+    ...    '/wirtschaft', 'wirtschaft', 'feed', 
+    ...     StringIO.StringIO('''\
+    ...     <feed xmlns="http://namespaces.zeit.de/CMS/feed">
+    ...       <container>
+    ...         <block href="/2006/siemens" />
+    ...       </container>
+    ...     </feed>'''))
+    >>> feed = feedFactory(resource)
+    >>> feed 
+    <zeit.cms.syndication.feed.Feed object at 0x...>
+    >>> list(feed.keys())
+    ['/2006/siemens']
+
+
+Pinning
+=======
+
+Pinning is a mechanism to keep contained objects at a certain position
+regardles if other objects are added. Other objects will silently float
+around.
+
+Let's fill a feed with some objects::
+
+  >>> feed = Feed()
+  >>> feed.insert(0, Article('first'))
+  >>> feed.insert(0, Article('second'))
+  >>> third = Article('third')
+  >>> feed.insert(0, third)
+  >>> feed.insert(0, Article('fourth'))
+  >>> list(feed.keys())
+  ['fourth', 'third', 'second', 'first']
+ 
+We pin the `third` article to its posistion now and add a fifth article. The
+`third` article is still at the 2nd position::
+
+  >>> feed.pin(third)
+  >>> fifth = Article('fifth')
+  >>> feed.insert(0, fifth)
+  >>> list(feed.keys())
+  ['fifth', 'third', 'fourth', 'second', 'first']
+
+
+We pin the `fifth` now and insert another article. Both `fifth` and `third`
+keep their places::
+
+  >>> feed.pin(fifth)
+  >>> feed.insert(0, Article('sixth'))
+  >>> list(feed.keys())
+  ['fifth', 'third', 'sixth', 'fourth', 'second', 'first']
+
+
+Now we unpin `third` and insert an article. `fifths` stays but `third` moves on
+now::
+
+  >>> feed.unpin(third)
+  >>> feed.insert(0, Article('seventh'))
+  >>> list(feed.keys())
+  ['fifth', 'seventh', 'third', 'sixth', 'fourth', 'second', 'first']
+
+
+The method `updateOrder` can be used to completely resort a feed::
+
+  >>> feed.updateOrder(['first', 'second', 'third', 'fourth', 'fifth',
+  ...                   'sixth', 'seventh'])
+  >>> list(feed.keys())
+  ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
+
+
+If pinned entries are moved they are pinned to their new place. `fifth` is
+still pinned::
+
+  >>> feed.unpin(third)
+  >>> feed.insert(0, Article('eighth'))
+  >>> list(feed.keys())
+  ['eighth', 'first', 'second', 'third', 'fifth', 'fourth', 'sixth', 'seventh']
+
+
+When an invalid `order` is passed to `updateOrder` a ValueError is raised::
+
+  >>> feed.updateOrder(['a', 'b', 'c'])
+  Traceback (most recent call last):
+    ...
+  ValueError: The order argument must contain the same keys as the feed.
+
+  >>> feed.updateOrder(['first', 'second', 'third', 'fourth', 'fifth',
+  ...                   'sixth', 'seventh'])
+  Traceback (most recent call last):
+    ...
+  ValueError: The order argument must contain the same keys as the feed.
+
+
+
+
+XML-Representation
+==================
+
+The XML representation of feeds contains some additional information from the
+contained object. Let's first create a feed with a title and one simple object
+in it::
+
+    >>> feed = Feed()
+    >>> feed.title = 'Politik'
+    >>> article = Article('art1')
+    >>> feed.insert(0, article)
+    >>> print feed.xml_source
+    <feed xmlns="http://namespaces.zeit.de/CMS/feed">
+      <title>Politik</title>
+      <container>
+        <block href="art1"/>
+      </container>
+      <object_limit>50</object_limit>
+    </feed>
+
+
+When an object is adaptable to ITeaser, the teaser information will be
+included::
+    
+    >>> import zope.interface
+    >>> from zeit.cms.content.interfaces import ITeaser
+    >>> art2 = Article('art2')
+    >>> art2.title = 'Teaser-Title'
+    >>> art2.text = 'Teaser-Text'
+    >>> zope.interface.directlyProvides(art2, ITeaser)
+    >>> feed.insert(0, art2)
+    >>> print feed.xml_source
+    <feed xmlns="http://namespaces.zeit.de/CMS/feed">
+      <title>Politik</title>
+      <container>
+        <block href="art2">
+          <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+            <title>Teaser-Title</title>
+            <text>Teaser-Text</text>
+          </teaser>
+        </block>
+        <block href="art1"/>
+      </container>
+      <object_limit>50</object_limit>
+    </feed>
+
+
+We can change the teaser data and just call updateMetadata to apply the
+changes::
+
+    >>> art2.title = 'New Title'
+    >>> art2.text = 'New Text'
+    >>> feed.updateMetadata(art2)
+    >>> print feed.xml_source
+    <feed xmlns="http://namespaces.zeit.de/CMS/feed">
+      <title>Politik</title>
+      <container>
+        <block href="art2">
+          <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+            <title>New Title</title>
+            <text>New Text</text>
+          </teaser>
+        </block>
+        <block href="art1"/>
+      </container>
+      <object_limit>50</object_limit>
+    </feed>
+

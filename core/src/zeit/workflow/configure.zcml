@@ -1,0 +1,11 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter factory=".workflow.Workflow" />
+  <adapter factory=".workflow.workflowProperties" />
+
+  <adapter factory=".source.fromNotNeeded" />
+
+</configure>
+

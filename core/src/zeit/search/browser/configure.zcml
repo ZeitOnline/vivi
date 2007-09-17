@@ -1,0 +1,23 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:viewlet
+    name="15_search"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    class=".search.Viewlet"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="search.html"
+    for="zope.location.interfaces.ISite"
+    template="search.pt"
+    class=".search.Search"
+    permission="zope.View"
+    />
+
+</configure>
+

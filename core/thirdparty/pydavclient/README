@@ -1,0 +1,13 @@
+pydavclient is a package which helps in accessing resources published
+via the WebDAV protocol. It provides a set of classes which directly
+refer to the resource wanted.
+
+It requires libxml2 and it's Python bindings.
+
+To test the classes use the test.py script and give a WebDAV enabled
+URI to it as a parameter.
+
+For now, there won't be an official release.
+
+To get the newest version checkout:
+  http://codespeak.net/svn/rr/pydavclient/trunk

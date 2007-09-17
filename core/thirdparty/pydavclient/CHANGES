@@ -1,0 +1,10 @@
+
+
+2005-02-04:
+  * Improved error handling in dav.davxml
+    A DavXmlParserError is now raised when the parsing
+    of a document fails.
+  * Fixed test.py so that the OPTIONS request is handled
+    corretly.
+  * Added code to insert a Host: header to
+    davbase.HTTPBasicAuthCon.request.

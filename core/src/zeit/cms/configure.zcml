@@ -1,0 +1,106 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="zeit.cms">
+
+
+  <!-- Include requirements -->
+
+  <include package="zope.app.zcmlfiles" />
+
+  <include package="zope.i18n" file="meta.zcml"/>
+  <include package="zope.i18n.locales"/>
+  <include package="zope.publisher"/>
+  <include package="zope.security" file="meta.zcml"/>
+  <include package="zope.traversing"/>
+  <include package="zope.traversing.browser"/>
+  <include package="zope.formlib" />
+  <include package="zope.viewlet" file="meta.zcml"/>
+  <include package="zope.viewlet" />
+  <include package="zope.contentprovider" />
+
+  <include package="zope.app.securitypolicy" file="meta.zcml"/>
+  <include package="zope.app.securitypolicy"/>
+  <include package="zope.app.authentication"/>
+  <include package="zope.app.server"/>
+  <include package="zope.app.tree"/>
+  <include package="zope.app.renderer" file="meta.zcml"/>
+  <include package="zope.app.renderer"/>
+  <include package="zope.app.preference" file="meta.zcml"/>
+  <include package="zope.app.preference"/>
+
+  <include package="zope.app.locking"/>
+  <include package="zope.app.keyreference"/>
+
+  <include package="zope.app.onlinehelp" file="meta.zcml"/>
+  <include package="zope.app.onlinehelp"/>
+  <include package="zope.app.apidoc" file="meta.zcml"/>
+  <include package="zope.app.apidoc"/>
+
+
+  <include package="zc.resourcelibrary" file="meta.zcml"/>
+  <include package="zc.resourcelibrary" />
+  <include package="zc.form" />
+  <include package="zc.table" />
+  <include package="zc.sourcefactory" />
+
+  <include package="zc.notification" />
+
+  <includeOverrides package="zc.datetimewidget" file="overrides.zcml"/>
+  <include package="zc.datetimewidget"/>
+
+  <include package="gocept.lxml" />
+
+
+  <!-- selenium will only be included in `selenium mode' -->
+  <configure
+    zcml:condition="have zeit.cms.selenium"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+    <include package="zc.selenium" />
+  </configure>
+
+
+  <!-- local includes -->
+
+  <include file="permissions.zcml" />
+
+  <include package=".content" />
+  <include package=".checkout"  />
+  <include package=".repository" />
+  <include package=".workingcopy" />
+  <include package=".syndication" />
+  <include package=".clipboard" />
+  <include package=".notification" />
+
+
+  <!-- security -->
+  <class class=".connector.WebDAVProperties">
+    <require
+      interface=".interfaces.IWebDAVReadProperties"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IWebDAVWriteProperties"
+      permission="zope.ManageContent" />
+  </class>
+
+
+  <!-- configuration -->
+
+  <utility 
+    name="zeit.cms"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <utility 
+    provides="zope.app.locking.interfaces.ILockStorage"
+    factory=".connector.LockStorage" />
+
+  <adapter factory="zope.app.locking.adapter.LockingAdapter"
+    for="zeit.cms.interfaces.ICMSContent"
+    trusted="yes" />
+
+  <i18n:registerTranslations directory="locales" />
+
+</configure>
+

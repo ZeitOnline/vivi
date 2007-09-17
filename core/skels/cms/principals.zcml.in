@@ -1,0 +1,21 @@
+<!-- This file defines the initial principals for your site.  -->
+<!-- You should examine it carefully to ensure this is what   -->
+<!-- you want before running Zope.                            -->
+
+<configure xmlns='http://namespaces.zope.org/zope'>
+
+
+  <principal
+    id="zope.manager"
+    title="Manager"
+    login="%(admin-user)s"
+    password="%(admin-password)s"
+    />
+
+  <grant
+    role="zope.Manager"
+    principal="zope.manager"
+    />
+
+
+</configure>

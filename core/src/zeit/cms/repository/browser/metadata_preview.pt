@@ -1,0 +1,7 @@
+<metal:macro use-macro="context/@@standard_macros/metadata-preview">
+  <metal:data fill-slot="preview">
+    DAV:resourcetype:
+    <tal:replace
+      replace="python:repr(context.dav_resource_type)" />
+  </metal:data>
+</metal:macro>

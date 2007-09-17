@@ -1,0 +1,251 @@
+/* zeit css */
+/* 
+ * normal HTML element CSS defs 
+ *
+ * */
+body {
+  background: white url("/@@/zeit.cms/layout/backgroundpattern.png") repeat top left;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  color: #4c4c4c;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+a:visited, 
+a {
+  color: #004455;
+  text-decoration: none;
+}
+
+h1 {
+  background-color: #0088aa;
+  color: white;
+  text-transform: uppercase;
+  font-size: 100%;
+  margin-top: 0;
+  min-height: 16px;
+}
+
+h1 a {
+  background-color: #004455;
+}
+h1 a:visited {
+  color: white;
+}
+
+h1 {
+  padding: 0.4em;
+  padding-left: 1em;
+  color: white;
+}
+
+h2 {
+  font-size: 9pt;
+  border: 2px solid #0088aa;
+  padding-bottom: 0.1em;
+}
+
+table tbody {
+  border: 1px solid #0088aa;
+  cursor: default;
+}
+
+table thead tr th {
+  background-color: #004455;
+  border-bottom: 1px solid #0088aa;
+  text-align: left;
+  padding: 0.5em;
+  margin: 0;
+  color: white;
+}
+
+table tr td {
+  padding: 0.1em 0.3em;
+}
+
+table.form-fields{
+  width: 99%;
+}
+
+label span {
+  font-weight: bold;
+}
+
+fieldset {
+  margin: 1em;
+  border: 1px solid #0088aa;
+}
+
+
+/* 
+ * class + ID definitions 
+ *
+ * */
+.selected {
+  background-color: #ffdd00;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+.error,
+.annotation {
+  color: red;
+  font-weight: normal;
+}
+
+.hint {
+  color: #aaa;
+}
+.hint:hover {
+  color: #4c4c4c;
+}
+
+.VisualClear {
+  clear: both;
+}
+
+.feedsorting {
+  width: 100%;
+}
+
+.feedsort-hover td, .feedsort-hover th {
+  border-bottom: 2px solid red !important;
+}
+
+.shadowTop {
+  background: transparent url("/@@/zeit.cms/layout/shadowTop.png") repeat-x 5px 0;
+  border-right: 1px solid #4c4c4c;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+.shadowLeft {
+  background: transparent url("/@@/zeit.cms/layout/shadowLeft.png") no-repeat top left;
+  border-bottom: 1px solid #4c4c4c;
+  padding-left: 5px;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+.floating-field {
+  float: left;
+  margin: 1em;
+  margin-left: 0.5em;
+}
+
+.corner {
+  background: url("images/text-corner.png") no-repeat top left;
+  z-index: 5;
+}
+
+
+/* 
+ * forms 
+ *
+ * */
+form .medium-float {
+    float: left;
+    width: 58%;
+}
+form .medium-float .field {
+    float: left;
+    margin: 5px;
+    max-width: 10em;
+}
+
+form .full-widtht {
+    right: 0;
+}
+
+form .full-width-float .field {
+    float: left;
+    margin: 5px;
+    max-width: 15em;
+}
+
+form .full-width-float .hint {
+  height: 5ex;
+}
+
+form .small-and-tall {
+    float: right;
+    width: 30%;
+}
+
+form .fullWidth {
+    right: 0;
+    clear: both;
+}
+
+form .column-left {
+    clear: both;
+    width: 58%;
+    float: left;
+}
+
+form .column-left .field {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form .column-left .field input {
+    width: 100%;
+}
+
+form .column-right {
+    float:  right;
+    width: 30%;
+}
+
+input[type="button"],
+input[type="submit"] {
+  color: black;
+  border: 1px solid black;
+  border-bottom: 2px solid #4c4c4c;
+  border-right: 2px solid #4c4c4c;
+  font-size: 8pt;
+  padding: 0.2em;
+  font-family: sans-serif;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background-color: #4c4c4c;
+  color: white;
+}
+
+input[type="button"]:active,
+input[type="submit"]:active {
+  background-color: #ffdd00;
+}
+
+
+
+/* SMALL left column, larger right column */
+form .column-left-small {
+    clear: both;
+    width: 30%;
+    float: left;
+}
+
+form .column-left-small .field {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form .column-right-small {
+    float:  right;
+    width: 58%;
+}

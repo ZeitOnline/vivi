@@ -1,0 +1,18 @@
+<html metal:use-macro="context/@@standard_macros/page">
+
+  <metal:head fill-slot="heading">
+    <h1 tal:content="string:Syndicate ${view/content/title}">
+      Wirtschaft
+    </h1>
+  </metal:head>
+
+  <meta:body metal:fill-slot="body">
+    <div id="edit-form">
+      <form method="POST">
+        <table tal:replace="structure view/table" />
+        <input name="syndicate" value="Syndicate" type="submit" />
+      </form>
+    </div>
+  </meta:body>
+
+</html>

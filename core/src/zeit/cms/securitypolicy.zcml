@@ -1,0 +1,63 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zope"
+  >
+
+  <include package="zope.app.securitypolicy" />
+
+  <securityPolicy
+    component="zope.app.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <!-- Roles -->
+  <role id="zope.Anonymous" title="Everybody"
+    description="All users have this role implicitly" />
+  <role id="zope.Manager" title="Site Manager" />
+  <role id="zope.Member" title="Site Member" />
+  <role id="zeit.Editor" title="Redakteur" />
+
+
+  <!-- Groups and other principals -->
+  <unauthenticatedPrincipal
+    id="zope.anybody"
+    title="Unauthenticated User"
+    />
+  <unauthenticatedGroup
+    id="zope.Anybody"
+    title="Unauthenticated Users" 
+    />
+  <authenticatedGroup
+    id="zope.Authenticated"
+    title="Authenticated Users" 
+    />
+  <everybodyGroup
+    id="zope.Everybody"
+    title="All Users" 
+    />
+
+  <!-- Permission grants -->
+  <grantAll role="zope.Manager" />
+
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.app.dublincore.view"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.View"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.Checkout"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.Checkin"
+    />
+
+  <grant
+    role="zeit.Editor"
+    permission="zope.ManageContent"
+    />
+
+</configure>

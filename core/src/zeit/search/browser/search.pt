@@ -1,0 +1,15 @@
+<metal:use-macro use-macro="context/@@standard_macros/page">
+
+  <metal:title fill-slot="content-title">
+    Suche
+  </metal:title>
+
+  <tal:block metal:fill-slot="body"
+    tal:define="context_url context/@@absolute_url">
+
+    <table tal:replace="structure view/contentTable">
+      Search result
+    </table>
+
+  </tal:block>
+</metal:use-macro>

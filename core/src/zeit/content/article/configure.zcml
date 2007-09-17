@@ -1,0 +1,30 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".article.articleFactory" name="article" />
+  <adapter factory=".article.resourceFactory" />
+  <adapter factory=".article.Teaser" />
+  <adapter factory=".article.IndexTeaser" />
+
+  <class class=".article.Article">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IArticle"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IArticle"
+      permission="zeit.EditContent" />
+    <require
+      interface="zeit.wysiwyg.interfaces.IHTMLContent"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.wysiwyg.interfaces.IHTMLContent"
+      permission="zope.ManageContent" />
+  </class>
+
+
+  <subscriber handler=".syndication.linkToFeed" />
+  <subscriber handler=".syndication.updateFeedOnCheckin" />
+  
+  <subscriber handler=".article.mapPropertyToAttribute" />
+
+</configure>

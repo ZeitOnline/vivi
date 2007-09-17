@@ -1,0 +1,133 @@
+/* Calendar */
+#CalendarPanel .PanelContent {
+  overflow: hidden;
+}
+
+#panel-calendar {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: right;
+  table-layout: fixed;
+}
+
+#panel-calendar th {
+  background: transparent;
+  color: inherit;
+}
+
+#panel-calendar thead {
+  border-bottom: 1px slid #0088AA;
+}
+#panel-calendar tbody {
+  border: none;
+  height: 80%;
+}
+
+#panel-calendar td {
+    width: 14%; /* 100% / 7 days */
+    height: 20%; /* 100% / 5 weeks */
+}
+
+#panel-calendar .event {
+  font-weight: bold;
+}
+
+.calendar-links {
+  top: 0;
+  height: 5ex;
+  right: 0;
+  left: 0;
+  vertical-align: center;
+  text-align: center;
+  position: absolute;
+  font-size: 150%;
+}
+
+.calendar-links .mode-switch {
+    display: inline;
+    margin-right: 6em;
+}
+
+.calendar-links .mode-switch a {
+    margin-right: 1em;
+}
+
+.calendar-links .backforward {
+    display: inline;
+}
+
+.MonthView {
+    background: url("/@@/zeit.calendar/icons/monthview.png") no-repeat left center;
+    padding-left: 20px;
+}
+.WeekView {
+    background: url("/@@/zeit.calendar/icons/weekview.png") no-repeat left center;
+    padding-left: 20px;
+}
+
+.calendar-table {
+  position: absolute;
+  top: 5ex;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+}
+
+#calendar {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+}
+
+#calendar thead {
+    height: 3ex;
+}
+
+#calendar tbody {
+  height: 80%;
+}
+
+#calendar td.day{
+    background-color: #eeeeee;
+}
+
+#calendar td.today{
+    background-color: #cccccc;
+}
+
+#calendar td {
+    vertical-align: top; 
+}
+
+#calendar.month td {
+    width: 14%; /* 100% / 7 days */
+    height: 10%; /* 100% / 6 weeks */
+}
+
+#calendar.week td {
+    width: 12.5%;
+    height: 100%;
+}
+
+#calendar td.day a.add-event {
+    visibility: hidden;
+}
+#calendar td.day:hover a.add-event {
+    visibility: visible;
+}
+#calendar td.day:hover {
+    background-color: #ffdd00;
+}
+
+#calendar .event {
+  overflow: hidden;
+  margin-top: 0.5ex;
+  white-space: nowrap;
+}
+
+#calendar .thema {
+  background-color: #e88;
+}
+
+

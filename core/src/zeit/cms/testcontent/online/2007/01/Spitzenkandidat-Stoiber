@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+<!-- CMS/document -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+<!-- CMS/workflow -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    <countings>
+      <counting type="agof">
+        <code>online</code>
+      </counting>
+    </countings>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="imagecount">0</attribute>
+    <id>
+      <uniqueid/>
+      <originalpath/>
+    </id>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">04</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">19</attribute>
+    <references count="15"><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Stoiber-Beckstein"><title>Geht er? Bleibt er?</title><description>CSU-Fraktionschef Herrmann will sich nicht festlegen, ob Stoiber Spitzenkandidat bleibt</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Stoiber-16-01"><title>Stoiber stellt sich der Fraktion</title><description>Der CSU-Parteichef trifft sich nach ersten Rückzugs-Signalen mit der Landtagsfraktion</description></reference><reference source="auto" type="intern" year="2002" issue="40" publication="ZEIT" href="cms:/cms/work/2002/40/200240_bayern.xml"><title>Fortgesetzter Stoiberismus</title><description>In Bayern ist der CSU-Vorsitzende nach seinem Traumergebnis unangreifbar. Nicht alle in der Partei freuen sich darüber</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/stoiber-wochenende"><title>Der Druck wächst</title><description>Die SPD in Bayern fordert Neuwahlen. Auch führende CSU-Politiker stellen inzwischen Edmund Stoibers Spitzenkandidatur öffentlich in Frage</description></reference><reference source="auto" type="intern" year="2007" issue="02" publication="ZEIT online" href="cms:/cms/work/online/2007/02/csu-kreuth-vorab"><title>Stoiber will bleiben</title><description>Vor der Sitzung des CSU-Präsidiums in Wildbad Kreuth hat Parteichef Edmund Stoiber seinen Führungsanspruch bekräftigt</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Stoiber-Verzicht"><title>Stoiber deutet Verzicht an</title><description>Der CSU-Chef hat den Kampf um sein politisches Überleben noch nicht aufgegeben, macht aber Zugeständnisse. Noch ist der Ausgang der Führungskrise nicht entschieden</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Stoiber-einlenken"><title>Stoiber lenkt ein</title><description>Edmund Stoiber hat angedeutet, dass er sich auch vor 2013 aus der Politik verabschieden könne. Damit reagierte er auf die massive Kritik an seiner Person.</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Stoiber-Dienstag"><title>Stoibers Schicksalstag?</title><description>Die Fraktionsspitze will das Stoiber-Drama beenden und drängt indirekt zum Rückzug. Auch mehrere Abgeordnete forderten eine schnelle Entscheidung.</description></reference><reference source="auto" type="intern" year="2007" issue="04" publication="ZEIT online" href="cms:/cms/work/online/2007/04/Stoiber-Zweikampf"><title>Stoiber soll eher gehen</title><description>Führende CSU-Politiker legen dem Ministerpräsidenten nahe, früher auszuscheiden. Um die Nachfolge an der CSU-Spitze wird weiter hart gerungen</description></reference><reference source="auto" type="intern" year="2007" issue="04" publication="ZEIT online" href="cms:/cms/work/online/2007/04/Stoiber-Nachfolge"><title>Stoiber tritt zurück</title><description>Innenminister Beckstein will neuer Ministerpräsident werden. Um den CSU-Vorsitze rangeln Wirtschaftsminister Huber und Bundesagrarminister Seehofer</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/stoiber-Kritik"><title>Stoiber-Streit eskaliert</title><description>Seine Ankündigung, bis 2013 regieren zu wollen, könnte sich als kardinaler Fehler erweisen. Die CSU-Landtagsfraktion wird ihm nun womöglich die Gefolgschaft versagen.</description></reference><reference source="auto" type="intern" year="2007" issue="04" publication="ZEIT online" href="cms:/cms/work/online/2007/04/Stoiber-Erklaerung"><title>"Das Wohl Bayerns"</title><description>Die Rücktrittserklärung von Bayerns Ministerpräsident und CSU-Chef Edmund Stoiber</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Stoiber-Zeitplan"><title>Keine Hängepartie</title><description>Die CSU-Spitze strebt nach dem Krisentreffen in Wildbad Kreuth eine rasche Lösung der Führungskrise um Ministerpräsident Edmund Stoiber an.</description></reference><reference source="auto" type="intern" year="2005" issue="45" publication="ZEIT online" href="cms:/cms/work/online/2005/45/stoiber_rom"><title>"Schwerste politische Fehler"</title><description>Nun kritisiert auch Theo Waigel Stoiber scharf. Will die Partei ihren Patriarchen überhaupt zurück haben?</description></reference><reference source="auto" type="intern" year="2007" issue="04" publication="ZEIT online" href="cms:/cms/work/online/2007/04/seehofer-huber2"><title>Offener Streit</title><description>Im Rennen um den Posten des CSU-Parteichefs kritisiert Horst Seehofer jetzt seinen Konkurrenten Huber und den designierten Ministerpräsidenten Beckstein</description></reference></references>
+    
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online, dpa</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">4.1.2007 - 13:22</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"> 070102</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">INNE; partei; Spitzenkandidatur CSU; Edmund Stoiber</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">10</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Deutschland</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Fest im Sattel</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">zyber</attribute>
+  </head>
+  <body>
+    <supertitle>CSU</supertitle>
+    <title>Fest im Sattel</title>
+    <subtitle>Edmund Stoiber soll vorzeitig zum Spitzenkandidaten für die Landtagswahlen gekürt werden. Damit will die CSU die Affäre um Gabriele Pauli beenden</subtitle>
+    <p>Als Konsequenz aus der Bespitzelungsaffäre um die Fürther Landrätin Gabriele Pauli will die CSU Ministerpräsident Edmund Stoiber stärken und ihn vorzeitig zum Spitzenkandidaten für die bayerische Landtagswahl 2008 ausrufen. Stoiber soll bereits bei der Winterklausur der CSU-Landtagsfraktion in Wildbad Kreuth vom 15. bis 18. Januar gekürt werden, wie Fraktionschef Joachim Herrmann am Dienstag ankündigte. Damit will die Partei die von Pauli losgetretene Personaldebatte um Stoiber beenden. Die Opposition wertete die Ankündigung als Panikreaktion der CSU. <image align="left" expires="2007-02-01" width="210" image_id="/cms/work/bilder/2007/01/aktuell/teaser_artikel/stoiber-210.jpg" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/stoiber-210.jpg"><title/><bu>Hat er gut lachen oder kommt er doch noch ins Rutschen? Edmund Stoiber auf dem Weg zur Spitzenkandidatur.</bu><copyright>© Berthold Stadler/AFP/Getty Images</copyright></image></p>
+    <p>&#13;
+Die 49-Jährige Stoiber-Kritikerin Pauli, die eine Entscheidung der CSU-Basis über die Spitzenkandidatur gefordert hatte, lehnte die vorzeitige Kür Stoibers ab. »Das zeigt, wie in der CSU entschieden wird, und dass die Partei nichts gilt«. Bisher gab es noch nicht einmal einen offiziellen Termin für die Entscheidung über die Spitzenkandidatur. Am 8. Januar wird aller Voraussicht nach zunächst das CSU-Präsidium eine Solidaritätsbekundung für Stoiber abgeben. CSU-Generalsekretär Markus Söder begrüßte die Ankündigung Herrmanns: »Edmund Stoiber ist und bleibt die Nummer eins der CSU.« &#13;
+</p>
+    <p>&#13;
+Herrman schrieb an seine Kollegen, es gelte bereits jetzt, die Wahlen des Jahres 2008 in den Blick zu nehmen. »Meines Erachtens liegt es nahe, dass wir deshalb in Kreuth auch bereits ein eindeutiges Votum dafür abgeben, dass Edmund Stoiber als amtierender Ministerpräsident auch erneut der Spitzenkandidat für die nächste Landtagswahl sein wird.« &#13;
+</p>
+    <p>&#13;
+SPD-Fraktionschef Franz Maget sagte hingegen: »Der CSU steht das Wasser bis zum Hals. Angesichts der anhaltenden Kritik am Ministerpräsidenten und dessen dramatischen Ansehensverlusts will die CSU in Kreuth die Notbremse ziehen.« Grünen-Fraktionschefin Margarete Bause meinte: »Das ist eine Panikreaktion. Warum sonst sollte man einen Ministerpräsidenten fast zwei Jahre vor der Wahl zum Kandidaten küren?« &#13;
+</p>
+    <p>&#13;
+Ungeachtet des Kreuther Votums will Pauli beim Kleinen CSU-Parteitag im Frühjahr den Antrag stellen, die Partei stärker an der Nominierung des Spitzenkandidaten zu beteiligen. »Dass die Mitglieder nicht übergangen werden, ist der Wunsch Vieler«, sagte sie. &#13;
+</p>
+    <p>&#13;
+Stoibers Büroleiter Michael Höhenberger hatte vor Weihnachten sein Amt abgegeben, nachdem er sich bei einem Parteifreund eingehend über Paulis Privatleben erkundigt hatte - laut Pauli auch über etwaige Alkoholprobleme oder Männerbekanntschaften. Höhenberger hatte das Telefonat zwar bestätigt, den Vorwurf der Bespitzelung aber zurückgewiesen. &#13;
+</p>
+    <p>&#13;
+Nach einer Umfrage des Meinungsforschungsinstituts Forsa glaubt fast die Hälfte der Bürger in Bayern, dass die Vorwürfe gegen Stoiber zutreffen. 49 Prozent der Bayern seien überzeugt, dass der CSU-Chef das Privatleben Paulis ausforschen ließ, um ihr zu schaden, ergab die Forsa-Umfrage im Auftrag der Münchner »Abendzeitung« (Mittwoch). 51 Prozent der CSU-Wähler stünden aber in der Auseinandersetzung um Pauli auf Seiten des Ministerpräsidenten. Befragt wurden in den vergangenen Tagen 1009 Einwohner Bayerns. <br/></p>
+    <subtitle_length>145</subtitle_length>
+  </body>
+  <teaser>
+    <title>Fest im Sattel</title>
+    <text>Edmund Stoiber soll vorzeitig zum Spitzenkandidaten für die Landtagswahlen gekürt werden. Damit will die CSU die Affäre um Gabriele Pauli beenden</text>
+    <text_length>145</text_length>
+  </teaser>
+  <indexteaser>
+    <title>CSU-Affäre</title>
+    <text>Wird Edmund Stoiber vorzeitig CSU-Spitzenkandidat?</text>
+    <text_length>50</text_length>
+    <title_length>10</title_length>
+  </indexteaser>
+</article>

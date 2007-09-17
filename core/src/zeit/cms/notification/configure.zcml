@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter factory=".notifier.principalNotificationFactory" />
+
+  <utility
+    provides="zc.notification.interfaces.INotifier"
+    factory=".notifier.SystemNotifier"
+    />
+
+</configure>

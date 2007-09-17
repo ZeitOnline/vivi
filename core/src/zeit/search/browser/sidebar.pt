@@ -1,0 +1,66 @@
+<div
+  tal:define="panel_id string:SearchPanel;
+  panel_handlers nocall:context/@@panel_handlers"
+  tal:attributes="class python:panel_handlers.css_class(panel_id);
+  id panel_id">
+
+  <tal:replace replace="resource_library:zeit.cms" />
+
+  <h1>
+    <a href="javascript:void(null)">
+      Suche
+    </a> 
+  </h1>
+
+  <div class="PanelContent Search">
+    <form>
+      <label for="text">
+        Volltextsuche:
+      </label>
+      <input type="text" name="text" />
+      <fieldset>
+        <legend>Eingrenzung</legend> 
+
+        <div>
+          <label for="year">
+            Jahr
+          </label> 
+          <input type="text" name="year" value="" />
+        </div> 
+        <div>
+          <label for="page">
+            Seite
+          </label> 
+          <input type="text" name="page" value="" />
+        </div>
+        <div>
+          <label for="volume">
+            Ausgabe
+          </label>
+          <select name="volume">
+            <option value=""></option>
+            <option
+              tal:repeat="volume python:range(53)"
+              tal:attributes="value volume"
+              tal:content="volume"
+              />
+          </select>
+        </div>
+        <div>
+          <label for="ressort">
+            Ressort
+          </label> 
+          <select name="ressort">
+            <option value=""></option>
+            <option
+              tal:repeat="ressort view/ressorts"
+              tal:attributes="value ressort"
+              tal:content="ressort"
+              />
+          </select>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+</div>

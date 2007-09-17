@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+<!-- CMS/document -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+<!-- CMS/workflow -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    <countings>
+      <counting type="agof">
+        <code>online</code>
+      </counting>
+    </countings>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="imagecount">0</attribute>
+    <id>
+      <uniqueid/>
+      <originalpath/>
+    </id>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">04</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">7</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">0</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">30.12.2006 - 18:20</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">Irak; Saddam Hussein;</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Symbol der Niederlage</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">schuler</attribute>
+  <references count="13"><reference source="auto" type="intern" year="2006" issue="52" publication="ZEIT online" href="cms:/cms/work/online/2006/52/saddam-todesstrafe-kommentar"><title>Schlechtes Vorzeichen</title><description>Saddam Husseins Exekution war ein schwerer Fehler. Ein Kommentar</description></reference><reference source="auto" type="intern" year="2006" issue="45" publication="ZEIT online" href="cms:/cms/work/online/2006/45/Saddam-Todesstrafe-Irak"><title>Märtyrer Saddam</title><description>Die Todesstrafe für den ehemaligen irakischen Diktator macht alles nur noch schlimmer. Ein Kommentar</description></reference><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/saddam-luttwak"><title>Wer wird herrschen?</title><description>Saddam Hussein hat allen Irakern enormen Schaden zugefügt. Das müssen auch die sunnitischen Araber begreifen, schreibt</description></reference><reference source="auto" type="intern" year="2004" issue="01" publication="ZEIT" href="cms:/cms/work/2004/01/Glosse_Todesstrafe"><title>Wohin mit Saddam?</title><description>Ins Gefängnis, nicht aufs Schafott</description></reference><reference source="auto" type="intern" year="2006" issue="52" publication="ZEIT online" href="cms:/cms/work/online/2006/52/Saddam-Hinrichtung"><title>Saddam hingerichtet</title><description>Der frühere irakische Diktator Saddam Hussein ist am frühen Samstagmorgen gehängt worden.</description></reference><reference source="auto" type="intern" year="2004" issue="01" publication="ZEIT" href="cms:/cms/work/2004/01/S__Hussein"><title>Mutter aller Prozesse</title><description>Ein irakisches Sondertribunal soll die Schergen des Baath-Regimes aburteilen. Ihnen droht die Todesstrafe. Saddam Hussein könnte der Erste sein</description></reference><reference source="auto" type="intern" year="2006" issue="45" publication="ZEIT online" href="cms:/cms/work/online/2006/45/Saddam-Urteil-Reaktionen"><title>Kritik an Todesurteil</title><description>George W. Bush freut sich über das Todesurteil für Saddam Hussein. Er sieht darin einen "Meilenstein" für die junge irakische Demokratie. Kritik kommt dagegen von Menschenrechtlern</description></reference><reference source="auto" type="intern" year="2005" issue="43" publication="ZEIT" href="cms:/cms/work/2005/43/Saddam-Prozess"><title>Wo steht denn der Galgen?</title><description>Prozess gegen Saddam Hussein: Die irakischen Richter möchten den Ex-Diktator so schnell wie möglich hinrichten. Die USA fürchten um die Legitimität des Tribunals</description></reference><reference source="auto" type="intern" year="2006" issue="52" publication="ZEIT online" href="cms:/cms/work/online/2006/52/saddam-todesurteil"><title>Todesurteil besiegelt</title><description>Ein irakisches Berufungsgericht hat die Todesstrafe gegen Ex-Diktator Saddam Hussein bestätigt. Nach der Bekanntgabe haben sich Hunderte von Irakern als Henker beworben</description></reference><reference source="auto" type="intern" year="2003" issue="31" publication="ZEIT online" href="cms:/cms/work/2003/31/udai"><title>Die Stunde der Heuchler</title><description>Der Tod der Saddam-Söhne Udai und Kusai ist eine große Erleichterung für die irakische Bevölkerung. Die Veröffentlichung der Fotos ihrer Leichen ist jedoch ein fragwürdiges Mittel – nicht nur in moralischer, sondern auch in politischer Hinsicht</description></reference><reference source="auto" type="intern" year="2007" issue="03" publication="ZEIT online" href="cms:/cms/work/online/2007/03/Irak-Hinrichtungen"><title>Kritik an Hinrichtungen</title><description>EU-Kommissionspräsident José Manuel Barroso hat die Hinrichtung zweier Gefolgsleute des irakischen Ex-Diktators Saddam Hussein verurteilt</description></reference><reference source="auto" type="intern" year="2007" issue="01" publication="ZEIT online" href="cms:/cms/work/online/2007/01/saddam-nachruf"><title>Der Tod des Diktators</title><description>Mit der Exekution Saddam Husseins endet eine Ära der irakischen Geschichte. Rückblick auf ein Vierteljahrhundert des Mordens und der rücksichtslosen Selbstinszenierung.</description></reference><reference source="auto" type="intern" year="2003" issue="52" publication="ZEIT online" href="cms:/cms/work/2003/52/irakneu"><title>Ausgespielt</title><description>Der Irak wird nicht in terroristischem Chaos untergehen. Nach der Ergreifung Saddam Husseins ist die Tür zum "nation building" jetzt weit aufgestoßen</description></reference></references></head>
+  <body>
+    <supertitle>Saddams Hinrichtung</supertitle>
+    <title>Symbol der Niederlage</title>
+    <subtitle>Trotz der Verbrechen Saddam Husseins: Der Irak hätte auf die Exekution verzichten sollen, kommentiert </subtitle>
+    <byline>Martin Klingst</byline>
+    <p>Saddam Hussein war ein Massenmörder, er war ein grausamer Diktator und ein blutrünstiger Despot. Es gibt keine Gräueltat, die man ihm nicht hätte zutrauen können. Und angesichts der menschenunwürdigen Verbrechen, die in seinem Namen und unter seiner Verantwortung im Irak verübt wurden, kann man nachvollziehen, dass es vielen schwer fällt, Saddam Hussein noch als einen Menschen zu bezeichnen. <br/><image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/teaser_artikel/irak-301206-410.jpg" width="410" align="center"><bu>Die Schiiten jubeln - doch haben sie wirklich gewonnen?</bu><copyright>© ESSAM AL-SUDANI/AFP/Getty Images</copyright> BILD </image></p>
+    <p>Und trotzdem war es ein schwerer Fehler, ihn zu exekutieren. Mehr noch, sein Tod am Strang war menschenunwürdig und symbolisiert die Niederlage eines noch jungen Staates und seiner Justiz, die aufgebrochen waren, nach Jahrzehnten brutaler Unterdrückung Demokratie, Menschenrechte und Rechtsstaatlichkeit zum Maßstab zu erheben.<br/></p>
+    <p>Gegen die Todesstrafe werden seit jeher viele Gründe aufgeführt. Sie sei ungerecht, weil sie einen Justizirrtum nicht mehr korrigieren könne. Sie sei archaisch, weil sie dem Rachegedanken verhaftet sei. Und sie sei grausam, weil der dem Tod Geweihte während seiner Hinrichtung oft schwer leiden müsse. Deshalb haben kürzlich sogar einige US-Bundesstaaten die Exekution mittels einer Giftspritze ausgesetzt, denn die Injektion führte in einigen Fällen zu schweren Verbrennungen.<br/></p>
+    <p>Doch gegen die Todesstrafe spricht ein viel prinzipiellerer Grund: Sie negiert die Menschenwürde und verkehrt die Aufgabe der Gemeinschaft, Leben zu schützen, in ihr Gegenteil. Ein Staat, der einen wehrlosen Menschen in seinen Händen hält &#8211; und ein inhaftierter Verbrecher ist ein solcher, gleich welche Schuld er zuvor auf sich geladen hat &#8211;muss dessen Leben schützen und darf es nicht vernichten. Die Länder der Europäischen Union nehmen deshalb nur Mitglieder auf, welche die Todesstrafe abgeschafft oder zumindest dauerhaft ausgesetzt haben. Inzwischen hat die große Mehrheit freiheitlicher, demokratischer Staaten Abstand von Hinrichtungen genommen. Die Ächtung der Todesstrafe ist auf dem Vormarsch. Doch der Irak hat sich leider anders entschieden, ein schlechtes Vorzeichen.<br/></p>
+    <subtitle_length>102</subtitle_length>
+  </body>
+  <teaser>
+    <title>Symbol der Niederlage</title>
+    <text>Trotz der Verbrechen Saddam Husseins: Der Irak hätte auf die Exekution verzichten sollen, kommentiert </text>
+    <text_length>102</text_length>
+  </teaser>
+  <indexteaser>
+    <title>Kommentar</title>
+    <text>Die Hinrichtung Saddams war ein Fehler</text>
+    <text_length>38</text_length>
+    <title_length>9</title_length>
+  </indexteaser>
+</article>

@@ -1,0 +1,149 @@
+Syndication Events
+==================
+
+
+When an article is syndicated the article stores a reference to the feed. This
+is done via an event handler. Mock an event first and create a dummy feed::
+
+    >>> import zope.component
+    >>> import zope.interface
+    >>> from zeit.cms.interfaces import ICMSContent
+    >>> from zeit.content.article.article import Article
+    >>> class Feed(object):
+    ...     zope.interface.implements(ICMSContent)
+    ...     def __init__(self, uid):
+    ...         self.uniqueId = uid
+    ...
+    ...     def updateMetadata(self, content):
+    ...         print "Feed updating metadata:", content
+
+ Initialize two feeds::
+
+    >>> feed_1 = Feed('feed-id')
+    >>> feed_2 = Feed('second-feed')
+
+... and create an event::
+
+    >>> class Event(object):
+    ...     targets = set([feed_1, feed_2])
+    >>> event = Event()
+
+We also need a mock repository::
+
+    >>> class Repository(object):
+    ...     def getContent(self, id):
+    ...         print "Repository returns:", id
+    ...         return {'feed-id': feed_1, 'second-feed': feed_2}[id]
+    ...
+    ...     def addContent(self, object):
+    ...         print "Repository add:", object
+    >>> repository = Repository()
+    >>> from zeit.cms.repository.interfaces import IRepository
+    >>> site_manager = zope.component.getSiteManager()
+    >>> site_manager.registerUtility(repository, IRepository)
+
+
+Also mock a Checkin/Checkout manager::
+
+    >>> class CoCiManager(object):
+    ...     def __init__(self, context):
+    ...         self.context = context
+    ...     def checkout(self, event=True):
+    ...         print "Checkout:", self.context
+    ...         return self.context
+    ...     def checkin(self, event=True):
+    ...         print "Checkin:", self.context
+    ...         return self.context
+    >>> from zeit.cms.checkout.interfaces import (
+    ...     ICheckoutManager, ICheckinManager)
+    >>> site_manager.registerAdapter(
+    ...     CoCiManager, (ICMSContent,), ICheckinManager)
+    >>> site_manager.registerAdapter(
+    ...     CoCiManager, (ICMSContent,), ICheckoutManager)
+
+Initially an article is not linked and not automatically updated::
+
+    >>> article = Article()
+    >>> article.syndicatedIn
+    frozenset([])
+    >>> article.automaticTeaserSyndication
+    frozenset([])
+
+We link the feed to the article now by calling the `linkToFeed` function with
+the event we created above::
+
+    >>> from zeit.content.article.syndication import linkToFeed
+    >>> linkToFeed(article, event)
+    Checkout:  <zeit.content.article.article.Article object at 0x...>
+    Checkin: <zeit.content.article.article.Article object at 0x...>
+    >>> article.syndicatedIn
+    Repository returns: feed-id
+    Repository returns: second-feed
+    frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
+    >>> article.automaticTeaserSyndication
+    Repository returns: feed-id
+    Repository returns: second-feed
+    frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
+
+
+Of course `syndicatedIn` and `automaticTeaserSyndication` is also represented
+in the XML::
+
+    >>> import lxml.etree
+    >>> print lxml.etree.tostring(article.xml, pretty_print=True)
+    <article...
+      <attribute
+        ns="http://namespaces.zeit.de/CMS/document"
+        name="syndicatedIn">feed-id</attribute>
+      <attribute
+        ns="http://namespaces.zeit.de/CMS/document"
+        name="syndicatedIn">second-feed</attribute>
+      <attribute
+        ns="http://namespaces.zeit.de/CMS/document"
+        name="automaticTeaserSyndication">feed-id</attribute>
+      <attribute
+        ns="http://namespaces.zeit.de/CMS/document"
+        name="automaticTeaserSyndication">second-feed</attribute>
+    ...
+    </article>
+    
+
+Checkin and Syndication
+=======================
+    
+When an article is syndicated it will update all the feeds noted in
+`automaticTeaserSyndication`. When we remove `second-feed` only the `feed-id`
+feed is updated::
+
+    >>> article.automaticTeaserSyndication -= frozenset([feed_2])
+    Repository returns: feed-id
+    Repository returns: second-feed
+    >>> article.automaticTeaserSyndication
+    Repository returns: feed-id
+    frozenset([<Feed object at 0x...>])
+
+Now run the checkin action::
+    
+    >>> from zeit.content.article.syndication import updateFeedOnCheckin
+    >>> event = object()  # dummy event
+    >>> updateFeedOnCheckin(article, event)
+    Repository returns: feed-id
+    Checkout:  <Feed object at 0x...>
+    Feed updating metadata: <zeit.content.article.article.Article
+      object at 0x...>
+    Checkin:  <Feed object at 0x...>
+
+
+Cleanup
+=======
+
+After tets we clean up::
+
+    >>> site_manager.unregisterUtility(repository, IRepository)
+    True
+    >>> site_manager.unregisterAdapter(
+    ...     CoCiManager, (ICMSContent,), ICheckinManager)
+    True
+    >>> site_manager.unregisterAdapter(
+    ...     CoCiManager, (ICMSContent,), ICheckoutManager)
+    True

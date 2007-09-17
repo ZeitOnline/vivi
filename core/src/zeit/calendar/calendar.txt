@@ -1,0 +1,31 @@
+================
+Calendar Utility
+================
+
+The calendar is available as a global utility. Set the site first::
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+Now get the calendar utility::
+
+    >>> import zope.component
+    >>> import zeit.calendar.interfaces
+    >>> calendar = zope.component.getUtility(
+    ...     zeit.calendar.interfaces.ICalendar)
+    >>> calendar
+    <zeit.calendar.calendar.Calendar object at 0x...>
+
+Initially it is empty::
+
+    >>> len(calendar)
+    0
+
+
+Cleanup
+=======
+
+Restore the site::
+
+    >>> zope.app.component.hooks.setSite(old_site)

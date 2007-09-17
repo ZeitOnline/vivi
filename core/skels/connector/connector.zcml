@@ -1,0 +1,4 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+  <!-- this file installs the real connector -->
+  <include package="zeit.connector" />
+</configure>

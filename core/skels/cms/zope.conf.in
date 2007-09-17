@@ -1,0 +1,52 @@
+
+# This is the configuration file for the Zope application server.
+#
+# This file is generated.  If you edit this file, your edits could
+# easily be lost.
+
+interrupt-check-interval 200
+site-definition %(site_zcml_path)s
+
+%(database-config)s
+
+<server>
+  type WSGI-HTTP
+#  type WSGI-PostmortemDebuggingHTTP
+  address %(address)s
+</server>
+
+<accesslog>
+  <logfile>
+    path %(log_dir)s/access.log
+  </logfile>
+
+  <logfile>
+    path STDOUT
+  </logfile>
+</accesslog>
+
+<eventlog>
+  <logfile>
+    path %(log_dir)s/z3.log
+    formatter zope.exceptions.log.Formatter
+  </logfile>
+  <logfile>
+    path STDOUT
+    formatter zope.exceptions.log.Formatter
+  </logfile>
+</eventlog>
+
+
+<product-config zeit.cms>
+  document-store %(document-store)s
+</product-config>
+
+<product-config zeit.ldap>
+  host %(ldap-host)s
+  port %(ldap-port)s
+  bind-dn %(ldap-bind-dn)s
+  bind-password %(ldap-bind-password)s
+  search-base %(ldap-search-base)s
+  search-scope %(ldap-search-scope)s
+  title-attribute %(ldap-title-attribute)s
+</product-config>

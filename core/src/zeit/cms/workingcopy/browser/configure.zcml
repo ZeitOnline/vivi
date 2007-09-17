@@ -1,0 +1,54 @@
+<configure 
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <browser:viewlet
+    name="20_workingcopy"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    class=".workingcopy.Sidebar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="listing.html"
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    class="zeit.cms.browser.listing.Listing"
+    template="content_listing.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    title="Inhalt" menu="zeit-context-views"
+    />
+
+
+  <browser:defaultView
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    name="listing.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:containerViews
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    action="delete"
+    menu="folder-actions"
+    title="Löschen"
+    permission="zope.ManageContent"
+    />
+
+
+  <browser:containerViews
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopyLocation"
+    contents="zope.ManageContent"
+    />
+
+</configure>
+

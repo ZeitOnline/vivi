@@ -1,0 +1,41 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+
+  <browser:view
+    for="zeit.cms.interfaces.ICMSContent"
+    name="checkout"
+    permission="zeit.Checkout"
+    allowed_attributes="canCheckout"
+    class=".manager.Checkout"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    menu="zeit-context-actions"
+    title="Checkout"
+    action="@@checkout"
+    permission="zeit.Checkout"
+    filter="context/@@checkout/canCheckout"
+    />
+
+  <browser:view
+    for="zeit.cms.interfaces.ICMSContent"
+    name="checkin"
+    permission="zeit.Checkin"
+    allowed_attributes="canCheckin"
+    class=".manager.Checkin"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    menu="zeit-context-actions"
+    title="Checkin"
+    action="@@checkin"
+    permission="zeit.Checkin"
+    filter="context/@@checkin/canCheckin"
+    />
+
+</configure>

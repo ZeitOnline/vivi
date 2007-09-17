@@ -1,0 +1,43 @@
+% vim: fileencoding=utf8 encoding=utf8 spell spelllang=de
+%
+% $Id: feeds.tex 75 2006-12-18 13:37:57Z zagy $
+% Author: Roman Joost
+
+\section{Syndizierung und Feeds} \label{sec-syndication}
+
+Ein Feed aggregiert Artikel und andere Dokumente, sowohl des CMS als auch
+extern.  Es gibt verschiedene Arten von Feeds, die alle als Asset betrachtet
+werden.  Derzeit bekannt sind die folgenden Feedtypen:
+
+\begin{description}
+
+    \item [RSS-Feeds] beziehen jeweils einen externen RSS-Feed und stellen ihn
+      im CMS zur Verfügung.
+
+    \item[Manuelle Feeds] aggregieren über Suchkriterien Dokumente des
+      CMS\footnote{Eine alternative Herangehensweise wäre, bei der
+      Veröffentlichung eines Dokuments angeben zu können in welche Feeds es
+      veröffentlicht werden soll. Welche Weg den Redaktionsprozessen gerecht
+      wird muss die Redaktion entscheiden.}.
+
+\end{description}
+
+Insbesondere die manuellen Feeds sollen komplexe Konstruktionen von
+Center"=Pages vereinfachen. Anhand geeigneter Such- und Sortierkriterien soll es
+möglich sein, Artikel ohne großen Aufwand in eine Center"=Page einzubetten. 
+
+Es ist grundsätzlich zwischen Artikeln und Center"=Pages zu 
+unterscheiden. Artikel beinhalten nur Fließtext. Center"=Pages stellen 
+eine Art Container für Inhaltstypen dar und können zum Beispiel 3-15 
+aktuelle Artikel je Kategorie anzeigen.
+
+\section{Integration von Feeds}
+
+Feeds können in Dokumente und Center"=Pages eingebettet werden. Das Hinzufügen
+von Artikeln zu einer Center"=Page soll über Feeds gelöst werden, um einfacher
+Center"=Pages veröffentlichen zu können. Gegebenenfalls
+ist es auch nicht mehr nötig die Center"=Page zu veröffentlichen um ein
+Dokument zu verlinken, da das Dokument ja über den Feed eingeblendet wird.
+
+\screenshot[]{feeddialog.png}{Integration von Feeds in eine Center"=Page.}
+

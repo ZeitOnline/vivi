@@ -1,0 +1,267 @@
+==============
+XML-Properties
+==============
+
+The xml properties map to elements or attributes in an xml document. There are
+several of them. All have in common that they are execting the instance to have
+an `xml` attribute being an `lxml.objectify` tree.
+
+
+ObjectPathProperty
+==================
+
+The ObjectPathProperty maps to an xml *element* defined by an object path.
+
+
+Root as `xml`
+-------------
+
+Normally the document root is the `xml` attribute.  Create a test class::
+
+    >>> import lxml.objectify
+    >>> import lxml.etree
+    >>> from zeit.cms.content.property import ObjectPathProperty
+    >>> class Content(object):
+    ...     xml = lxml.objectify.fromstring('<a/>')
+    ...     b = ObjectPathProperty('.b')
+    >>> content = Content()   
+
+Initially b is None, since the node doesn't exist::
+
+    >>> print content.b
+    None
+
+Let's assign some values to b. Integer::
+
+    >>> content.b = 5
+    >>> content.b
+    5
+    >>> print lxml.etree.tostring(content.xml, pretty_print=True)
+    <a>
+        <b>5</b>
+    </a>
+
+
+Float::
+
+    >>> content.b = 47.25
+    >>> content.b
+    47.25
+    >>> print lxml.etree.tostring(content.xml, pretty_print=True)
+    <a>
+        <b>47.25</b>
+    </a>
+
+
+String::
+
+    >>> content.b = 'Foo'
+    >>> content.b
+    'Foo'
+    >>> print lxml.etree.tostring(content.xml, pretty_print=True)
+    <a>
+        <b>Foo</b>
+    </a>
+
+
+Arbitrary Element as `xml`
+--------------------------
+
+The `xml` attribute can also be a sub node of an xml tree. There is a special
+object path of `None` to refer directly to the node specified by `xml`. Let's
+create a test-class::
+
+    >>> xml_tree = lxml.objectify.fromstring('<a><b/><c/><b/><b/></a>')
+    >>> class Content(object):
+    ...     xml = xml_tree.b[1]
+    ...     b = ObjectPathProperty(None)
+    >>> content = Content()   
+
+
+Initially b is an empty string, since the node exist and is empty::
+
+    >>> content.b
+    ''
+
+Let's assign some values to b. Integer::
+
+    >>> content.b = 4253890
+    >>> content.b
+    4253890
+    >>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+    <a>
+        <b/>
+        <c/>
+        <b>4253890</b>
+        <b/>
+    </a>
+
+   
+ObjectPathAttributeProperty
+===========================
+
+The ObjectPathAttributeProperty refers to a node via an object path and then to
+an attribute of that node. Given the following XML we can access the attributes
+via ObjectPathAttributeProperty::
+
+    >>> xml_tree = lxml.objectify.fromstring(
+    ...     '<doc><a href="url">link</a><count words="5" chars="20"/></doc>')
+
+Let's define a content class using the XML. Word and character count are
+integers. Since lxml.objectify only supports str/unicode attributes we give a
+hint using a zope.schema field. We are also referencing `sencences` which is
+not in the document, yet::
+
+    >>> import zope.schema
+    >>> from zeit.cms.content.property import ObjectPathAttributeProperty
+    >>> class Content(object):
+    ...     xml = xml_tree
+    ...     url = ObjectPathAttributeProperty('.a', 'href')
+    ...     words = ObjectPathAttributeProperty(
+    ...         '.count', 'words', zope.schema.Int())
+    ...     chars = ObjectPathAttributeProperty(
+    ...         '.count', 'chars', zope.schema.Int())
+    ...     sentences = ObjectPathAttributeProperty(
+    ...         '.count', 'sentences', zope.schema.Int())
+    ...
+    >>> content = Content()
+
+Access the values::
+
+    >>> content.url
+    'url'
+    >>> content.words
+    5
+    >>> content.chars
+    20
+    >>> content.sentences is None
+    True
+
+
+Setting new values::
+
+    >>> content.url = 'http://www.zeit.de'
+    >>> content.words = 53
+    >>> content.sentences = 2
+    >>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+    <doc>
+      <a href="http://www.zeit.de">link</a>
+      <count words="53" chars="20" sentences="2"/>
+    </doc>
+
+
+Setting invalid values will fail::
+
+    >>> content.words = 6.25
+    Traceback (most recent call last):
+        ...
+    WrongType: (6.25, (<type 'int'>, <type 'long'>))
+    >>> content.words
+    53
+
+
+AttributeProperty
+=================
+
+The AttributeProperty refers to elements in the structure
+`<attribute ns="namespace" name="attr-name">value</attribute` in the document
+`<head>` element. 
+
+Create a content class::
+
+    >>> from zeit.cms.content.property import AttributeProperty
+    >>> class Content(object):
+    ...     
+    ...     banner = AttributeProperty(
+    ...         'http://namespaces.zeit.de/CMS/document', 'banner')
+    ...
+
+
+Define an xml tree::
+
+    >>> xml_tree = lxml.objectify.fromstring("""\
+    ... <article>
+    ...   <head>
+    ...     <!-- CMS/document -->
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+    ...     <foo/>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
+    ...   </head>
+    ...   <body/>
+    ... </article>
+    ... """)
+
+And instanciate a content class::
+
+    >>> content = Content()
+    >>> content.xml = xml_tree
+
+Get the banner::
+
+    >>> content.banner
+    'yes'
+
+    >>> content.banner = True
+    >>> content.banner
+    True
+
+
+
+MultipleAttributeProperty
+=========================
+
+The MultipleAttributeProperty is quite like the AttributeProperty but results
+in a frozenset of the multiple values.
+
+
+Create a content class::
+
+    >>> from zeit.cms.content.property import MultipleAttributeProperty
+    >>> class Content(object):
+    ...     
+    ...     ressort = MultipleAttributeProperty(
+    ...         'http://namespaces.zeit.de/CMS/document', 'ressort')
+    ...
+
+
+Define an xml tree::
+
+    >>> xml_tree = lxml.objectify.fromstring("""\
+    ... <article>
+    ...   <head>
+    ...     <!-- CMS/document -->
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
+    ...     <foo/>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="navigation">Politik</attribute>
+    ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="navigation">Wirtschaft</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Politik</attribute>
+    ...     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Wirtschaft</attribute>
+    ...   </head>
+    ...   <body/>
+    ... </article>
+    ... """)
+
+And instanciate a content class::
+
+    >>> content = Content()
+    >>> content.xml = xml_tree
+
+Get the ressort::
+
+    >>> content.ressort
+    frozenset([..., ...])
+    >>> sorted(content.ressort)
+    ['Politik', 'Wirtschaft']
+
+Set new ressorts::
+
+    >>> content.ressort = frozenset(['Spiel', 'Spannung', 'Spass'])
+    >>> content.ressort
+    frozenset([..., ..., ...])
+    >>> sorted(content.ressort)
+    ['Spannung', 'Spass', 'Spiel']

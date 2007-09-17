@@ -1,0 +1,49 @@
+<metal:use-macro use-macro="context/@@standard_macros/page">
+  <metal:data fill-slot="body"
+    tal:define="image nocall:context/@@index.html">
+
+    <div id="edit-form">
+      <table class="image-view-metadata">
+        <tr>
+          <td>Typ</td>
+          <td tal:content="context/contentType">image/jpeg</td>
+        </tr>
+        <tr>
+          <td>Dimensionen</td>
+          <td>
+            <span tal:replace="image/width" />x<span tal:replace="image/height" />
+          </td>
+        </tr>
+        <tr>
+          <td>Löschdatum</td>
+          <td tal:content="context/expires">
+            1.1.07
+          </td>
+        </tr>
+        <tr>
+          <td>Ausgabe/Jahr</td>
+          <td>
+            <span
+              tal:replace="context/volume" />/<span
+              tal:replace="context/year" />
+          </td>
+        </tr>
+      </table>
+      <a href="#" target="_new"
+        tal:attributes="href context/@@absolute_url">
+        <img tal:replace="structure context/@@preview/tag" />
+      </a>
+      
+      <div tal:content="string: ©${context/copyrights}">
+        Zeit online
+      </div>
+      <div tal:content="string: ALT: ${context/alt}">
+        Alt
+      </div>
+      <div tal:content="string: Bildunterschrift: ${context/caption}">
+        Caption
+      </div>
+
+    </div>
+  </metal:data>
+</metal:use-macro>

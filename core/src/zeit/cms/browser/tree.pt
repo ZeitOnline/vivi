@@ -1,0 +1,24 @@
+<tal:block define="tree options/sub_data|view/getTreeData;">
+  <ul>
+    <tal:repeat repeat="item tree">
+      <li tal:define="root python: item['isroot'] and 'Root' or 'NotRoot'"
+          tal:attributes="uniqueId item/uniqueId;
+                          class root;
+                          action item/action;
+                          active item/selected">
+        <a href="#" tal:content="item/title|item/__name__"
+                    tal:attributes="href item/url">
+          2005
+        </a>
+        <span class="DragPaneURL"
+          tal:content="string:${item/url}/@@drag-pane.html">
+          http://localhost/somalia/@@drag-pane.html
+        </span>
+        <tal:block
+          define="sub_data item/sub_data"
+          condition="python:sub_data"
+          replace="structure python:view.index(sub_data=item['sub_data'])" />
+      </li>
+    </tal:repeat>
+  </ul>
+</tal:block>

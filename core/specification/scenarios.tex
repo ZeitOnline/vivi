@@ -1,0 +1,179 @@
+% vim: fileencoding=utf8 encoding=utf8 spell spelllang=de
+% $Id: scenarios.tex 71 2006-08-10 15:09:06Z zagy $
+% Author: Roman Joost 
+
+
+\chapter{Szenarios}
+
+Folgende Fallbeispiele, sogenannte Szenarios, beschreiben ein bestimmte
+Funktionalität aus Benutzersicht. Die Vorgehensweise des Benutzers und 
+das Verhalten des Systems soll dadurch verständlicher werden.
+
+\section{Volltextsuche}
+
+\textbf{Szenario: Paul sucht den Israel-Artikel von Naumann aus der Ausgabe 23/2006.}
+
+Paul öffnet das Panel \guilabel{Suchen}, gibt "`israel naumann 23/2006"' in das Feld
+\guilabel{Volltextsuche} ein und bestätigt mit Return. Im Hauptbereich
+erscheinen die Suchergebnisse. Die Liste beinhaltet alle Artikel die die Terme "`israel"' und
+"`naumann"' im Text oder einem Metadaten-Feld haben sowie aus der Ausgabe
+"`23/2006"' sind.
+
+
+\section{Suche nach bestimmten Artikeln}
+
+\textbf{Szenario: Paul sucht einen Artikel über politische Spannungen in Nahost, der im
+Ressort\footnote{Hier ist die Klassifikation der Printausgabe gemeint.}
+"`Leben"' in den 80er Jahren publiziert wurde.}
+
+Im \guilabel{Suchen-Panel} wird dem Benutzer eine Reihe von
+Formularfeldern angeboten um die Suche zu präzisieren. Diese werden
+eingeblendet, nachdem der Benutzer auf die Schaltfläche
+\guilabel{Erweiterte Optionen} klickt. Zusätzlich können Suchergebnisse
+mittels eines Filters eingeschränkt werden.
+
+\begin{compactenum}
+  \item Im Feld \guilabel{Volltextsuche} gibt Paul "`Irak Iran Israel
+  Nahost"' ein
+  \item \guilabel{Erweiterte Optionen} werden angeklickt
+  \item Ressort "`Leben"' wird ausgewählt und im Textfeld von
+  \guilabel{Jahr} "`1980-1989"' eingegeben. Die Suche wird ausgeführt.
+  \item Die Suchergebnisse werden durch das Eintippen von "`Iran"' im
+  \guilabel{Filter} Textfeld zusätzlich eingeschränkt. Nur Artikel
+  werden aufgelistet, die "`Iran"' im Titel besitzen.
+\end{compactenum}
+
+\section{Dokumente ändern}
+
+\textbf{Szenario: Alice muss Änderungen an einem Artikel für die Ausgabe 11/2006
+vornehmen. Zusätzlich soll das Dokument noch zu ihren manuell 
+angelegten Feed "`Wissen"' hinzugefügt werden.}
+
+Die Standardansicht des Desktops ist ein Suchformular. Das Auf\/finden von
+Dokumenten soll beschleunigt und erleichtert werden, verglichen mit dem
+jetzigen System. Alice benutzt nach dem Auschecken des Artikels die
+Metadatenansicht um den Artikel neu zu klassifizieren.
+
+\begin{compactenum}
+  \item Alice sucht nach dem Artikel von Ausgabe 11/2006 über das
+  Suchformular im Hauptbereich.
+  \item Im Hauptbereich wechselt die Ansicht zu den Suchergebnissen. Die
+  gefundenen Artikel werden aufgelistet.
+  \item Alice findet den gesuchten Artikel. Sie klickt den Artikel in
+  der Liste an um eine Vorschau zu erhalten.
+  \item Im unteren Bereich des Hauptbereiches erscheint eine Vorschau
+  des gewählten Artikels.
+  \item Sie klickt auf \guilabel{Bearbeiten} um den Artikel im Editor 
+  zu öffnen.
+  \item Alice ändert in der Metadatenansicht des Editors die
+  Klassifikation des Artikels. Sie fügt das Dokument zum Bereich
+  "`Wissen"' durch Anklicken der Checkbox hinzu.
+  \item Bei den Feedeinstellungen selektiert Alice den Feed namens 
+  "`Wissen"'. Zwei neue Formularelemente erscheinen um einen neuen 
+  Teasertext und Titel hinzuzufügen. Da dieser in diesem Feed gleich 
+  bleiben soll, werden die Formularelemente nicht ausgefüllt.
+\end{compactenum}
+
+
+\section{Neue Artikel anlegen}
+\textbf{Szenario: Carol legt einen neuen Artikel an, der zusätzlich 
+redigiert und veröffentlicht wird.}
+
+Carol legt einen neuen Artikel über das \guilabel{Ausgecheckte 
+Dokumente} Panel an. Automatisch bekommt der Artikel den Status "`in 
+Arbeit"'. Nach dem verschlagworten wird der Artikel zum redigieren 
+weitergereicht. Zuletzt kann er veröffentlicht werden.
+
+\begin{compactenum}
+ \item Ein neuer Artikel wird über das \guilabel{Ausgecheckte 
+ Dokumente} Panel angelegt. 
+ \item Der Editor öffnet sich und die Metadatenansicht wird angezeigt. 
+ Pflichtfelder müssen ausgefüllt sein, bevor Carol den Artikel 
+ bearbeiten kann.
+ \item Sie fügt den Text im WYSIWYG-Editor ein, speichert ihn ab und 
+ kehrt auf den Desktop zurück.
+ \item Da der Artikel vor der Veröffentlichung noch redigiert werden 
+ muss, setzt sie ihn per \guilabel{Workflow}-Auswahlmenü auf 
+ \guilabel{zu redigieren}. Sie vergibt einen Kommentar und weist den 
+ Artikel einen anderen Autor -- Dave -- zu. Der Artikel wird automatisch eingecheckt.
+ \item Als Dave sich in das System einloggt, erscheint im 
+ Benachrichtigungsfeld ein Hinweis auf das ihm zugewiesene Dokument.
+ \item Er checkt das Dokument aus, redigiert es und benutzt das 
+ \guilabel{Workflow}-Auswahlmenü um den Artikel zu veröffentlichen.
+\end{compactenum}
+
+
+\section{Feeds in eine Center"=Page einfügen und Center"=Page veröffentlichen}
+
+\textbf{Szenario: Alice hat verschiedene, manuell angelegte Feeds, die 
+wiederum verschiedene Artikel syndizieren. Einen dieser Feeds möchte 
+sie in der Center"=Page "`Wissen"' einfügen. Die Center"=Page soll danach 
+wieder veröffentlicht werden.
+}
+
+\begin{compactenum}
+ \item Sie öffnet die ausgecheckte Center"=Page "`Wissen"' in dem sie im 
+ Desktop auf \guilabel{Bearbeiten} klickt, während sie die Center"=Page 
+ ausgewählt hat.
+
+ \item Der Struktureditor erscheint. Alice öffnet ihr Panel 
+ \guilabel{Ausgecheckte Dokumente} und zieht den Feed "`Wissen"' per 
+ Drag'n'drop an den 
+ Platz an dem der Feed erscheinen soll.
+
+ \item Alice speichert die Center"=Page und schließt den Editor.
+ \item Auf dem Desktop wählt Alice die Center"=Page und benutzt die 
+ Schaltfläche \guilabel{Workflow}. Ein Menü klappt aus mit 
+ verschiedenen Statuseinträgen. Sie klickt auf 
+ \guilabel{Veröffentlichen}. 
+ \item Ein zweites Fenster erscheint in der Sie ein Kommentar zum
+ Arbeitsschritt angeben und die Veröffentlichung bestätigen kann. 
+ 
+ \item Das System checkt den Feed und die Center"=Page automatisch ein. 
+ Es setzt den Workflow-Status der Center"=Page und des Feeds auf veröffentlicht.
+
+\end{compactenum}
+
+\section{Bilder clippen}
+
+\textbf{Szenario: Alice muss ein Bild in die Center"=Page "`Wissen"' einfügen.}
+
+
+Alice erhält im Hauptbereich eine Liste von Objekten die sich im 
+angewählten, virtuellen Ordner befinden. Mittels Vorschaufunktion kann 
+sich Alice verschiedene Fotos anschauen, vergleichen und gedanklich 
+auswählen. Eine Clippfunktion ermöglicht ihr das zuordnen des Bildes zu 
+einem Clip.
+
+\begin{compactenum}
+  \item Alice benutzt die Dateiverwaltung in der Seitenleiste um in den 
+  virtuellen Ordner "`/2004/wissen"' zu navigieren. Im Hauptbereich 
+  wird der Inhalt des Ordners als Liste angezeigt. 
+  \item Alice sieht die Liste von Bildern in der Miniaturansicht, die 
+  im Ordner enthalten sind.
+  \item Sie klickt auf eines der Bilder um wiederum eine größere 
+  Vorschau zu erhalten.
+  \item Um das Bild in einen Clip zwischenzuspeichern, klickt Alice auf 
+  die Schaltfläche \guilabel{clippen} und wählt im entstandenen Menü 
+  den Namen des Clips aus. Der Name des Bildes erscheint rechts in der 
+  Clip-Verwaltung unter den Namen des Clips.
+\end{compactenum}
+
+\section{Bilder(Assets) einfügen}
+
+\textbf{Szenario: Bob soll ein Bild in einen aktuellen Artikel einfügen.}
+
+Bilder werden nicht direkt in den Text eingefügt. Eine Referenz sorgt 
+für die nötigen Informationen in der Onlineversion das richtige Bild 
+zum Artikel erscheinen zu lassen.
+
+\begin{compactenum}
+  \item Bob befindet sich im Editor, in der WYSIWYG-Ansicht. Er 
+  wechselt in der Seitenleiste auf das Panel für die Dateiverwaltung. 
+  \item Bob navigiert in den Ordner woraus das Bild eingefügt werden 
+  soll. Er erhält eine Liste von Bildern in Miniaturansicht. 
+  \item Eines der Bilder wählt er aus und zieht es per Drag'n'drop auf 
+  den Text. Eine Referenz zu diesem Bild wird automatisch hinzugefügt. 
+  Quittiert wird das hinzufügen durch das Benachrichtigungsfeld.
+\end{compactenum}
+

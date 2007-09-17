@@ -1,0 +1,12 @@
+<tal:block>
+  <img
+    tal:replace="structure context/@@thumbnail/tag" />
+
+  <div class="Text"
+    tal:content="context/title">
+  </div>
+  <div class="UniqueId"
+    tal:content="context/uniqueId">
+  </div>
+</tal:block>
+
