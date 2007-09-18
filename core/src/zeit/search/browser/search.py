@@ -25,9 +25,16 @@ import zeit.cms.interfaces
 class Viewlet(zope.viewlet.viewlet.ViewletBase):
 
     @zope.cachedescriptors.property.Lazy
-    def ressorts(self):
-        # XXX where to get the data from? bug #3751
-        return ['wirtschaft', 'politik']
+    def print_ressorts(self):
+        return zeit.cms.content.sources.PrintRessortSource()
+
+    @zope.cachedescriptors.property.Lazy
+    def navigations(self):
+        return zeit.cms.content.sources.NavigationSource()
+
+    @zope.cachedescriptors.property.Lazy
+    def serien(self):
+        return zeit.cms.content.sources.SerieSource()
 
     @property
     def last_search(self):

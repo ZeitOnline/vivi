@@ -15,8 +15,7 @@
   </h1>
 
   <div class="PanelContent Search"
-    tal:define="last_search view/last_search"
-    >
+    tal:define="last_search view/last_search">
     <form id="search-form"
       tal:attributes="
       action string:${request/getApplicationURL}/search.html;
@@ -46,13 +45,7 @@
           <input type="text" name="year" value=""
             tal:attributes="value last_search/year | nothing" />
         </div> 
-        <div class="widget">
-          <label for="page">
-            Seite
-          </label> 
-          <input type="text" name="page" value="" 
-            tal:attributes="value last_search/page | nothing" />
-        </div>
+
         <div class="widget">
           <label for="volume">
             Ausgabe
@@ -69,18 +62,59 @@
               />
           </select>
         </div>
+
         <div class="widget">
-          <label for="ressort">
-            Ressort
+          <label for="page">
+            Seite
           </label> 
-          <select name="ressort"
-            tal:define="last_ressort last_search/ressort | nothing">
+          <input type="text" name="page" value="" 
+            tal:attributes="value last_search/page | nothing" />
+        </div>
+
+        <div class="widget">
+          <label for="print_ressort">
+            Print Ressort
+          </label> 
+          <select name="print_ressort"
+            tal:define="last_print_ressort last_search/print_ressort | nothing">
             <option value=""></option>
             <option
-              tal:repeat="ressort view/ressorts"
-              tal:attributes="value ressort;
-              selected python:last_ressort == ressort"
-              tal:content="ressort"
+              tal:repeat="print_ressort view/print_ressorts"
+              tal:attributes="value print_ressort;
+              selected python:last_print_ressort == print_ressort"
+              tal:content="print_ressort"
+              />
+          </select>
+        </div>
+
+        <div class="widget">
+          <label for="navigation">
+            Navigation
+          </label> 
+          <select name="navigation"
+            tal:define="last_navigation last_search/navigation | nothing">
+            <option value=""></option>
+            <option
+              tal:repeat="navigation view/navigations"
+              tal:attributes="value navigation;
+              selected python:last_navigation == navigation"
+              tal:content="navigation"
+              />
+          </select>
+        </div>
+
+        <div class="widget">
+          <label for="serie">
+            Serie
+          </label> 
+          <select name="serie"
+            tal:define="last_serie last_search/serie | nothing">
+            <option value=""></option>
+            <option
+              tal:repeat="serie view/serien"
+              tal:attributes="value serie;
+              selected python:last_serie == serie"
+              tal:content="serie"
               />
           </select>
         </div>

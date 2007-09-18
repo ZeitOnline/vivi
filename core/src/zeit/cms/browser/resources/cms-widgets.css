@@ -132,13 +132,34 @@
   display: block;
 }
 
+.Search > form > fieldset {
+  margin: 0em;
+}
+
 .Search input[name="year"] {
-  width: 3em;
+  width: 4em;
+}
+
+.Search select[name="volume"] {
+  width: 4em;
 }
 
 .Search input[name="page"] {
   width: 2em;
 }
+
+.Search select[name="navigation"] {
+  width: 8em;
+}
+
+.Search select[name="print_ressort"] {
+  width: 8em;
+}
+
+.Search select[name="serie"] {
+  width: 8em;
+}
+
 
 
 /* 

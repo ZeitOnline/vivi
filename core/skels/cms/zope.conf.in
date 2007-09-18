@@ -40,6 +40,8 @@ site-definition %(site_zcml_path)s
 <product-config zeit.cms>
   document-store %(document-store)s
   source-serie %(source-serie)s
+  source-ressort %(source-ressort)s
+  source-print-ressort %(source-print-ressort)s
 </product-config>
 
 <product-config zeit.ldap>

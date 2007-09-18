@@ -17,19 +17,25 @@ class KeywordSource(zc.sourcefactory.basic.BasicSourceFactory):
         return iter([u'Deutschland', u'International'])
 
 
-
-class NavigationSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    def getValues(self):
-        return iter([u'Finanzen', u'Deutschland'])
-
-
-class SerieSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    url = zeit.cms.config.SERIE_URL
+class SimpleXMLSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     @gocept.cache.method.Memoize(3600)
     def getValues(self):
         request = urllib2.urlopen(self.url)
         xml = gocept.lxml.objectify.fromfile(request)
         return [unicode(serie) for serie in xml.iterchildren()]
+
+
+class PrintRessortSource(SimpleXMLSource):
+
+    url = zeit.cms.config.PRINT_RESSORT_URL
+
+
+class NavigationSource(SimpleXMLSource):
+
+    url = zeit.cms.config.RESSORT_URL
+
+
+class SerieSource(SimpleXMLSource):
+
+    url = zeit.cms.config.SERIE_URL
