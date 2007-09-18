@@ -9,9 +9,17 @@ import zope.component
 import zope.viewlet.viewlet
 
 import zope.app.session.interfaces
+import zope.app.publisher.browser.directoryresource
+
+import z3c.zrtresource.zrtresource
 
 import zeit.connector.search
 import zeit.cms.interfaces
+
+
+(zope.app.publisher.browser.directoryresource.
+ DirectoryResource.resource_factories['.js']) = (
+     z3c.zrtresource.zrtresource.ZRTFileResourceFactory)
 
 
 class Viewlet(zope.viewlet.viewlet.ViewletBase):
@@ -24,7 +32,17 @@ class Viewlet(zope.viewlet.viewlet.ViewletBase):
     @property
     def last_search(self):
         return zope.app.session.interfaces.ISession(self.request)[
-        'zeit.search'].get('last_search', {})
+            'zeit.search'].get('last_search', {})
+
+    @property
+    def form_class(self):
+        return (self.preferences.show_extended
+                and 'show-extended' or 'hide-extended' )
+
+    @zope.cachedescriptors.property.Lazy
+    def preferences(self):
+        return zope.app.preference.interfaces.IUserPreferences(
+            self.context).search_preferences
 
 
 class SearchResult(object):
@@ -86,6 +104,14 @@ class Search(zeit.cms.browser.listing.Listing):
         session = zope.app.session.interfaces.ISession(self.request)[
             'zeit.search']
         session['last_search'] = data
+
+    def toggle_extended_search(self):
+        self.preferences.show_extended = not self.preferences.show_extended
+
+    @zope.cachedescriptors.property.Lazy
+    def preferences(self):
+        return zope.app.preference.interfaces.IUserPreferences(
+            self.context).search_preferences
 
     @zope.cachedescriptors.property.Lazy
     def connector(self):

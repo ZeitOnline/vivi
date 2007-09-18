@@ -1,10 +1,12 @@
 <div
   tal:define="panel_id string:SearchPanel;
   panel_handlers nocall:context/@@panel_handlers"
-  tal:attributes="class python:panel_handlers.css_class(panel_id);
+  tal:attributes="
+  class python:panel_handlers.css_class(panel_id);
   id panel_id">
 
   <tal:replace replace="resource_library:zeit.cms" />
+  <tal:replace replace="resource_library:zeit.search" />
 
   <h1>
     <a href="javascript:void(null)">
@@ -15,8 +17,10 @@
   <div class="PanelContent Search"
     tal:define="last_search view/last_search"
     >
-    <form tal:attributes="
-      action string:${request/getApplicationURL}/search.html">
+    <form id="search-form"
+      tal:attributes="
+      action string:${request/getApplicationURL}/search.html;
+      class view/form_class">
       <label for="text">
         Volltextsuche:
       </label>
@@ -25,24 +29,31 @@
 
       <input type="submit" name="search" value="Suchen" />
 
-      <fieldset>
-        <legend>Eingrenzung</legend> 
+      <div id="search-extended-show">
+        Erweitert…
+      </div>
 
-        <div>
+      <fieldset id="search-extended-form">
+        <legend>
+          Eingrenzung 
+          <span id="search-extended-hide">(Verstecken…)</span>
+        </legend> 
+
+        <div class="widget">
           <label for="year">
             Jahr
           </label> 
           <input type="text" name="year" value=""
             tal:attributes="value last_search/year | nothing" />
         </div> 
-        <div>
+        <div class="widget">
           <label for="page">
             Seite
           </label> 
           <input type="text" name="page" value="" 
             tal:attributes="value last_search/page | nothing" />
         </div>
-        <div>
+        <div class="widget">
           <label for="volume">
             Ausgabe
           </label>
@@ -58,7 +69,7 @@
               />
           </select>
         </div>
-        <div>
+        <div class="widget">
           <label for="ressort">
             Ressort
           </label> 

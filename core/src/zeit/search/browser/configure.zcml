@@ -4,6 +4,11 @@
 
   <include package="zope.app.session" />
 
+  <resourceLibrary name="zeit.search" require="mochikit">
+    <directory source="resources" include="search.js" />
+  </resourceLibrary>
+
+
   <browser:viewlet
     name="15_search"
     for="*"
@@ -14,12 +19,27 @@
     />
 
   <browser:page
+    name="toggle-extended-search"
+    for="zope.location.interfaces.ISite"
+    class=".search.Search"
+    attribute="toggle_extended_search"
+    permission="zope.View"
+    />
+
+  <browser:page
     name="search.html"
     for="zope.location.interfaces.ISite"
     template="search.pt"
     class=".search.Search"
     permission="zope.View"
     />
+
+  <preferenceGroup
+      id="search_preferences"
+      title="Zeit CMS Search Preferences"
+      schema=".interfaces.ISearchPreferences"
+      category="true"
+      />
 
 </configure>
 
