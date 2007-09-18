@@ -334,23 +334,23 @@
   margin-right: 2em;
 }
 
-.sequencewidget ul {
+.objectsequencewidget ul {
   min-height: 40px;
   padding-left: 5em;
 }
-.sequencewidget li {
+.objectsequencewidget li {
   padding-bottom: 0.5em;
 }
-.sequencewidget {
+.objectsequencewidget {
   background: white url("/@@/zeit.cms/icons/drop-widget.png") no-repeat 1em center;
 }
-.sequencewidget img[action="delete"] {
+.objectsequencewidget img[action="delete"] {
   margin-left: 1em;
   margin-bottom: -0.5em;
   cursor: pointer;
   -moz-opacity: 0.3;
 }
-.sequencewidget img[action="delete"]:hover {
+.objectsequencewidget img[action="delete"]:hover {
   -moz-opacity: 1;
 }
 .drop-widget-hover {
