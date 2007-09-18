@@ -2,8 +2,13 @@
 # See also LICENSE.txt
 # $Id$
 
-import zc.sourcefactory.basic
+import urllib2
 
+import zc.sourcefactory.basic
+import gocept.lxml.objectify
+import gocept.cache.method
+
+import zeit.cms.config
 
 class KeywordSource(zc.sourcefactory.basic.BasicSourceFactory):
     """Get valid classifications from connector."""
@@ -21,5 +26,10 @@ class NavigationSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 class SerieSource(zc.sourcefactory.basic.BasicSourceFactory):
 
+    url = zeit.cms.config.SERIE_URL
+
+    @gocept.cache.method.Memoize(3600)
     def getValues(self):
-        return iter((u"theater", u"Terror"))
+        request = urllib2.urlopen(self.url)
+        xml = gocept.lxml.objectify.fromfile(request)
+        return [unicode(serie) for serie in xml.iterchildren()]
