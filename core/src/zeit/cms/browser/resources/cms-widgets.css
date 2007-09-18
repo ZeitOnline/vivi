@@ -103,8 +103,46 @@
   color: #333;
 }
 
+
+/* search panel */
+#search-extended-show {
+  cursor: pointer;
+  color: #004455;
+}
+
+#search-extended-hide {
+  cursor: pointer;
+  color: #004455;
+}
+
+
+.Search > form.show-extended > #search-extended-show {
+  display: none;
+}
+
+.Search > form.hide-extended > #search-extended-form {
+  display: none;
+}
+
+.Search .widget {
+  float: left
+}
+
+.Search label {
+  display: block;
+}
+
+.Search input[name="year"] {
+  width: 3em;
+}
+
+.Search input[name="page"] {
+  width: 2em;
+}
+
+
 /* 
- * Styles for xmltree 
+ * Styles for xmltree (repository panel)
  * 
  * */
 .Tree ul {
