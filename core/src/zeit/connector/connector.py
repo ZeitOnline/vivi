@@ -347,7 +347,7 @@ class Connector(zope.thread.local):
            For each match return the values of the attributes specified in attrlist
         """
         for at in attrlist:
-            expr = at.bind('_') & expr
+            expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
         # do something with return expr._collect()._render()
         holler("---SEARCH---\n%s\n------------\n" % expr._collect()._render()) # twice _collect() should be idempotent
         r = self._get_dav_resource(self._prefix) # FIXME: Dirty trick to make sure we have a _conn
