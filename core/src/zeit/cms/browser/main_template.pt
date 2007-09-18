@@ -165,7 +165,7 @@
             name="add_menu" onchange="add_content(this)"
             tal:define="menu_items context/@@view_get_menu/zeit-add-menu"
             tal:condition="menu_items" >
-          <option value="" i18n:translate="">Add ...</option>
+            <option value="" i18n:translate="">Add…</option>
           <option
             tal:repeat="menu_item menu_items"
             tal:attributes="value string:$context_url/${menu_item/action}"
