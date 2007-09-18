@@ -111,7 +111,7 @@ SidebarDragger.prototype = {
     
     toggle: function(event) {
         var dragger = this;
-        d = doSimpleXMLHttpRequest(this.url);
+        var d = doSimpleXMLHttpRequest(this.url);
         d.addCallback(function(result) {
             var css_class = result.responseText;
             dragger.setClass(css_class);
