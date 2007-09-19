@@ -2,6 +2,13 @@
 Zeit Search
 ===========
 
+Meta search
+===========
+
+The meta search aggregates results from various searches. Right now it just
+unions the result. The plan is to intersect the results and combine meta-data
+from the sources.
+
 Xapian
 ======
 
