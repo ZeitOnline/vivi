@@ -156,8 +156,10 @@
     <tal:block replace="resource_library:zeit.cms.filteringtable" />
   
 
-    <form name="containerContentsForm" method="post"
+    <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">
+
+      <metal:slot define-slot="hidden-fields"></metal:slot>
 
       <div id="content-actions">
 
