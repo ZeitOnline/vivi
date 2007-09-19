@@ -1,0 +1,183 @@
+<?xml version='1.0' ?>
+<resultset query='' queryterms='linux' operator='AND' count='32'>
+<query-debug><![CDATA[Xapian::Query(linux:(pos=1))]]></query-debug>
+<stochiastic><![CDATA[linux]]></stochiastic>
+<filter><![CDATA[]]></filter>
+<terms>
+<term frequency='32'><!-- linux -->
+linux</term></terms>
+<topterms>
+<term>Rlinux</term>
+<term>Rsoftware</term>
+<term>softwar</term>
+<term>Rsource</term>
+<term>sourc</term>
+<term>Kcomputer</term>
+<term>microsoft</term>
+<term>Ksoftware</term>
+<term>Rmicrosoft</term>
+<term>Ropen</term>
+</topterms>
+<page number='1' estimated-pages='4' size='100'>
+<result id='14065' url='http://www.zeit.de/2003/44/Open_Source' percent='99' year='2003' volume='44'><title><![CDATA[Programmierer aller Länder vereinigt Euch!]]></title>
+<author>Von Gunhild Lütge</author><sample><![CDATA[Die Online-Gemeinde rebelliert gegen das Prinzip Microsoft. Frei verfügbare Software wie Linux überzeugt jetzt sogar Betriebe und Behörden]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='8109' url='http://www.zeit.de/2004/34/microsoft' percent='95' year='2004' volume='34'><title><![CDATA[Virtuelle Wurmkur]]></title>
+<author>Von Stefan Steck für ZEIT.de</author><sample><![CDATA[Microsoft versucht, mit neuen Patches die Sicherheitslöcher von Windows zu flicken. An diesem Update hängt der Ruf des Konzerns]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='19482' url='http://www.zeit.de/2005/43/Schul-Software' percent='95' year='2005' volume='43'><title><![CDATA[Das surfende Klassenzimmer]]></title>
+<author>Von Thomas Hammer</author><sample><![CDATA[Wie der amerikanische Software-Konzern Microsoft versucht, die Hoheit über die Schulcomputer zu erlangen]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='5783' url='http://www.zeit.de/2004/14/Argument_14' percent='91' year='2004' volume='14'><title><![CDATA[Bill Gates’ starke Schwäche]]></title>
+<author>Von Gunhild Lütge</author><sample><![CDATA[Nicht Bußgelder, sondern die Software-Rebellen von Linux gefährden Microsoft /Von Gunhild Lütge]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='35440' url='http://www.zeit.de/2006/14/C-Open_Source_Kasten' percent='91' year='2006' volume='14'><title><![CDATA[Kleines Glossar]]></title>
+<author>Von Marieke Degen</author><sample><![CDATA[Die wichtigsten Begriffe, wenn es um frei zugängliche Software geht]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='24255' url='http://www.zeit.de/online/2006/03/thunderbird' percent='77' year='2006' volume='03'><title><![CDATA[Donnervogel im Steigflug]]></title>
+<author></author><sample><![CDATA[Die neue Version des E-Mail-Programms Thunderbird kann Microsofts Outlook Express das Fürchten lehren]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='58309' url='http://www.zeit.de/online/2007/29/offene-standards' percent='74' year='2007' volume='29'><title><![CDATA[Kriegt Bill Gates den Schlüssel?]]></title>
+<author>Von Michael Kurzidim</author><sample><![CDATA[Die zukunftssichere Speicherung von Dokumenten benötigt standardisierte Formate. Doch Microsoft will sein Monopol verteidigen.]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='35439' url='http://www.zeit.de/2006/14/C-OpenSource' percent='74' year='2006' volume='14'><title><![CDATA[Es werde Linux]]></title>
+<author>Von Juli Zeh</author><sample><![CDATA[Die Pioniere im Kampf um frei zugängliche Software haben Großes vor: Sie wollen die Welt retten]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='16959' url='http://www.zeit.de/2005/39/T-Simputer' percent='73' year='2005' volume='39'><title><![CDATA[Laptop mit Handkurbel]]></title>
+<author>Von Niels Boeing</author><sample><![CDATA[Genial simple Computer sollen sich in der Dritten Welt bewähren]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='47848' url='http://www.zeit.de/online/2007/12/cebit-open-source' percent='71' year='2007' volume='12'><title><![CDATA[Kultivierte Freiheit]]></title>
+<author>Von Peter M. Buhr</author><sample><![CDATA[Die Computermesse Cebit zeigt: Der Einsatz von Open-Source-Software ist inzwischen zuverlässig, sicher, günstig und frei. Vorreiter ist ein Berliner Ministerium.]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='1522' url='http://www.zeit.de/2005/14/microsoft' percent='59' year='2005' volume='14'><title><![CDATA[Microsoft zeigt sich kompromissbereit]]></title>
+<author></author><sample><![CDATA[Der Software-Riese wird den Ärger mit der EU-Kommission nicht los und macht Zugeständnisse]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='6863' url='http://www.zeit.de/2004/22/patent' percent='57' year='2004' volume='22'><title><![CDATA[Der technische Beitrag]]></title>
+<author>Von  Steffen Richter, ZEIT.de</author><sample><![CDATA[Die EU-Staaten haben eine Patentschutz-Richtlinie für Software beschlossen]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='47235' url='http://www.zeit.de/online/2007/11/drm' percent='55' year='2007' volume='11'><title><![CDATA[Vor der digitalen Entmündigung]]></title>
+<author>Von Joachim Jakobs</author><sample><![CDATA[Als Streiter für die Rechte der Urheber greift das Digital Rights Management (DRM) ums sich. Mit nervigen, teuren und fatalen Konsequenzen.]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='47236' url='http://www.zeit.de/online/2007/11/drm-fsfe' percent='55' year='2007' volume='11'><title><![CDATA[Vor der digitalen Entmündigung]]></title>
+<author>Von Joachim Jakobs - jj@office.fsfeurope.org</author><sample><![CDATA[Als Streiter für die Rechte der Urheber greift das Digital Rights Management um sich. Mit nervigen, teuren und fatalen Konsequenzen]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='21391' url='http://www.zeit.de/2005/50/Volks-PC' percent='54' year='2005' volume='50'><title><![CDATA[Günstig ist teuer…]]></title>
+<author>Von Thomas Hammer</author><sample><![CDATA[…wenn man Computer kauft, die man nicht braucht]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='14140' url='http://www.zeit.de/2003/45/Google' percent='52' year='2003' volume='45'><title><![CDATA[Das Monster]]></title>
+<author>Von Ludwig Siegele</author><sample><![CDATA[Die virtuelle Großmacht Google bearbeitet drei Viertel aller Suchanfragen im Internet. Nun planen die Manager einen ungewöhnlichen Börsengang]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='21254' url='http://www.zeit.de/2005/49/X-Box' percent='51' year='2005' volume='49'><title><![CDATA[Schlacht um die Wohnzimmerhoheit]]></title>
+<author>Von Stefan Schmitt</author><sample><![CDATA[Mit hochauflösender Grafik debütiert die Xbox 360, die erste Spielkonsole einer neuen Generation von Alleskönnern]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='15080' url='http://www.zeit.de/2002/41/200241_public_enemy_xml' percent='51' year='2002' volume='41'><title><![CDATA[Schwarze Männer online]]></title>
+<author>Von Thomas Groß</author><sample><![CDATA[Public Enemy, die ehemaligen Agitprop-Helden des Rap, lassen ein Gespenst im Internet umgehen]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='14940' url='http://www.zeit.de/2003/52/chin_Apolitik' percent='50' year='2003' volume='52'><title><![CDATA[Der weiche Schritt des Elefanten]]></title>
+<author>Von Georg Blume</author><sample><![CDATA[Chinas Außenpolitik ist wie verwandelt. Sie verabschiedet sich von alten Hassbildern und will den Nachbarn die Ängste nehmen]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='3541' url='http://www.zeit.de/2005/28/duden_125jahre' percent='50' year='2005' volume='28'><title><![CDATA[Herzlichen Glückwunsch, Duden!]]></title>
+<author>Von Heike Ejoh für ZEIT.de</author><sample><![CDATA[Der Duden feierte seinen 125. Geburtstag. Er hat die stürmischen Zeiten der Rechtschreibreform überlebt und ist digital geworden. Genügend Gründe, um zu feiern]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='7648' url='http://www.zeit.de/2004/29/Patente' percent='50' year='2004' volume='29'><title><![CDATA[Vorsicht, digitale Sperrzonen]]></title>
+<author>Von Stefan Krempl</author><sample><![CDATA[In der EU bahnt sich zwischen Ministerrat und Parlament ein Streit um die Patentierung von Software an. Microsoft und Co. dürfen auf eine neue Profitquelle hoffen]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='39133' url='http://www.zeit.de/online/2006/22/rechner-fuer-arme' percent='50' year='2006' volume='22'><title><![CDATA[Rechner für Arme]]></title>
+<author>Von Nico Brünjes</author><sample><![CDATA[Die IT-Welt entdeckt die Entwicklungsländer. Doch während sich Initiativen wie »One Laptop per Child« (OLPC) darum bemühen, viele Menschen günstig ins Netz zu bringen, greift Microsoft bereits nach dem neuen Markt.]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='912' url='http://www.zeit.de/2005/10/C-Cebit' percent='49' year='2005' volume='10'><title><![CDATA[Vom Trend, den keiner kennt]]></title>
+<author> Von Detlef Borchers</author><sample><![CDATA[Ein Rückblick zeigt: So mancher Megatrend wird zum Flop. Und echte Hits bleiben unerkannt]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='10032' url='http://www.zeit.de/2003/02/USA_PC-Hardwareindustrie' percent='49' year='2003' volume='02'><title><![CDATA[Die Elefanten bitten zum Tanz]]></title>
+<author>Von Thomas Fischermann</author><sample><![CDATA[Amerikas Computerriesen träumen von einer Welt voller tragbarer Geräte – doch die Gegenwart fällt viel gewöhnlicher aus <em>Von Thomas Fischermann</em>]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='8997' url='http://www.zeit.de/2004/43/C-Enzyklop_8adien-Test' percent='48' year='2004' volume='43'><title><![CDATA[Lernen vom Schinken in Scheiben]]></title>
+<author>Von Thomas J. Schult</author><sample><![CDATA[Was taugen die aktuellen Enzyklopädien auf CD-ROM und DVD? Ein Test]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='12969' url='http://www.zeit.de/2003/35/patent' percent='48' year='2003' volume='35'><title><![CDATA[Patente auf Software?]]></title>
+<author>Steffen Richter, ZEIT.de</author><sample><![CDATA[Die EU-Kommission will das für technische Produkte vorgesehene Patentrecht auf die Software-Entwicklung übertragen. Kritiker dieses Vorhabens warnen vor negativen Konsequenzen für die Open-Source-Bewegung und die mittelständische Wirtschaft]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='58384' url='http://www.zeit.de/2007/30/P-Tandy-Trower' percent='48' year='2007' volume='30'><title><![CDATA[»Bring mich zur Arbeit!«]]></title>
+<author>Von Jens Uehlecke</author><sample><![CDATA[Schlaue Automaten sollen uns vorlesen, chauffieren und beschützen. Entwickler Tandy Trower sieht das Zeitalter der künstlichen Intelligenz anbrechen. Ein Interview.]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='9767' url='http://www.zeit.de/2004/51/I-view_Bergmann_1' percent='47' year='2004' volume='51'><title><![CDATA[»Das ist nur die erste Bö eines Orkans«]]></title>
+<author></author><sample><![CDATA[Die Industriegesellschaft zerstört sich selbst. Wir müssen Arbeit schaffen, die wir wirklich wollen: Ein ZEIT-Gespräch mit dem amerikanischen Philosophen Frithjof Bergmann]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='5039' url='http://www.zeit.de/2004/06/M-Microsoft_neu' percent='47' year='2004' volume='06'><title><![CDATA[Die Vereinigten Staaten von Windows]]></title>
+<author>Von Ludwig Siegele</author><sample><![CDATA[Früh durchschaute Bill Gates die Mechanismen des Softwaregeschäfts. Er besetzte den Markt und verteidigte ihn mit allen Mitteln]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='6504' url='http://www.zeit.de/2004/19/Musik-Downloads' percent='46' year='2004' volume='19'><title><![CDATA[Gebrannte Kinder]]></title>
+<author>Von M. Behm und J. A. Siegle</author><sample><![CDATA[Im Kampf gegen Raubkopierer locken deutsche Plattenbosse die Hörer mit einem legalen Musikangebot – doch das ist teuer und umständlich]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='14026' url='http://www.zeit.de/2003/44/Gewerkschaften' percent='43' year='2003' volume='44'><title><![CDATA[Raues Klima, böse Zwänge]]></title>
+<author>Von Werner A. Perger</author><sample><![CDATA[Ver.di wettert gegen Reformen. Die Kollegen in Holland und Finnland verhalten sich anders – mit Erfolg]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+<result id='33817' url='http://www.zeit.de/2006/11/Vorabdruck_Google' percent='39' year='2006' volume='11'><title><![CDATA[»Das ganze Web auf dem PC«]]></title>
+<author></author><sample><![CDATA[Wie Google von einer fixen Idee zu einem mächtigen Konzern wurde, erzählen die amerikanischen Journalisten David Vise und Mark Malseed in ihrem Buch, das in diesem Monat auf Deutsch erscheint. Wir zeigen Auszüge daraus]]></sample>
+<terms>
+<term>linux</term></terms>
+</result>
+</page>
+</resultset>
