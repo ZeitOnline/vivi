@@ -11,8 +11,8 @@
             title image/title">
             <img tal:replace="structure image/@@thumbnail/tag" />
           </a>
-          <span class="DragPaneURL"
-            tal:content="string:${image/@@absolute_url}/@@drag-pane.html">
+          <span class="URL"
+            tal:content="string:${image/@@absolute_url}">
           </span>
         </div>
         <div class="image-metadata">

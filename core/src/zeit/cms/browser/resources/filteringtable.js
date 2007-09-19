@@ -60,12 +60,15 @@ FilteringTable.prototype.stringFilter = function(search_for, in_what) {
 FilteringTable.prototype.onDataSelect = function(event) {
     this.cancelMetadataLoad();
     var tr = event.target().parentNode
-    var metadata_url = getFirstElementByTagAndClassName(
-        'span', 'Metadata', tr)
-    if (!metadata_url)
+    var base_url = getFirstElementByTagAndClassName(
+        'span', 'URL', tr)
+    if (!base_url)
         return;
+
+    var metadata_url = base_url.textContent + '/@@metadata_preview';
+
     var d = wait(0.1);
-    d.addCallback(this.loadMetadataHTML(metadata_url.textContent));
+    d.addCallback(this.loadMetadataHTML(metadata_url));
     this.metadata_deferred = d;
      
     var old_selected = this.contentElement.old_selected;
@@ -79,11 +82,12 @@ FilteringTable.prototype.onDataSelect = function(event) {
 FilteringTable.prototype.onView = function(event) {
     this.cancelMetadataLoad();
     var tr = event.target().parentNode
-    var view_url= getFirstElementByTagAndClassName(
-        'span', 'ViewURL', tr)
-    if (!view_url)
+    var base_url= getFirstElementByTagAndClassName(
+        'span', 'URL', tr);
+    if (!base_url)
         return;
-    document.location = view_url.textContent;
+    view_url = base_url.textContent + '/@@view.html';
+    document.location = view_url;
 
 }
 
@@ -93,9 +97,9 @@ FilteringTable.prototype.loadMetadataHTML = function(url) {
     d.addCallbacks(
         function(result) {
             var bottomcontent = getElement('bottomcontent');
-            var topcontent = getElement('topcontent')
+            var topcontent = getElement('topcontent');
 
-            bottomcontent.innerHTML = result.responseText
+            bottomcontent.innerHTML = result.responseText;
             
             addElementClass(topcontent, 'topcontent-small');
             showElement('bottomcontent');

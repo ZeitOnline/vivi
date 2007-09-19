@@ -7,8 +7,9 @@ connect(MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
     var drag_pane_url = draggable.element.drag_pane_url;
     if (drag_pane_url == undefined) {
         try {
-             drag_pane_url = getElementsByTagAndClassName(
-                'span', 'DragPaneURL', draggable.element)[0].textContent;
+            var base_url = getFirstElementByTagAndClassName(
+             'span', 'URL', draggable.element).textContent;
+            drag_pane_url  = base_url + '/@@drag-pane.html';
         } catch (e) {
         }
     }

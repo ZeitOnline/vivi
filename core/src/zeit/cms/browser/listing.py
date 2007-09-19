@@ -33,8 +33,7 @@ class BaseListRepresentation(object):
         return self.context.__name__
 
     @zope.cachedescriptors.property.Lazy
-    def path(self):
-        # XXX
+    def uniqueId(self):
         return self.context.uniqueId
 
     @zope.cachedescriptors.property.Lazy
@@ -114,13 +113,8 @@ class MetadataColumn(zc.table.column.GetterColumn):
     def getter(self, item, formatter):
         # XXX there are too many urls in here...
         return ('<span class="SearchableText">%s</span>'
-                '<span class="Metadata">%s/@@metadata_preview</span>'
-                '<span class="DragPaneURL">%s/@@drag-pane.html</span>'
-                '<span class="ViewURL">%s/@@view.html</span>'
-                '<span class="LocalName">%s</span>' % (
-                    item.searchableText, item.url, item.url, item.url,
-                    item.url))
-
+                '<span class="URL">%s</span>' % (
+                    item.searchableText, item.url))
 
 class LockedColumn(zc.table.column.GetterColumn):
 
@@ -162,11 +156,10 @@ class GetterColumn(zc.table.column.GetterColumn):
 
     zope.interface.implements(zc.table.interfaces.ISortableColumn)
 
-
-def _none_to_blank(value, item, formatter):
-    if value is None:
-        return u''
-    return unicode(value)
+    def cell_formatter(self, value, item, formatter):
+        if value is None:
+            return u''
+        return unicode(value)
 
 
 class Listing(object):
@@ -181,28 +174,22 @@ class Listing(object):
         LockedColumn(u'', name='locked'),
         GetterColumn(
             u'Autor',
-            lambda t, c: t.author,
-            cell_formatter=_none_to_blank),
+            lambda t, c: t.author),
         GetterColumn(
             u'Titel',
-            lambda t, c: t.title,
-            cell_formatter=_none_to_blank),
+            lambda t, c: t.title),
         GetterColumn(
             u'Ausgabe',
-            lambda t, c: t.volume,
-            cell_formatter=_none_to_blank),
+            lambda t, c: t.volume),
         GetterColumn(
             u'Jahr',
-            lambda t, c: t.year,
-            cell_formatter=_none_to_blank),
+            lambda t, c: t.year),
         GetterColumn(
             u'Ressort',
-            lambda t, c: t.ressort,
-            cell_formatter=_none_to_blank),
+            lambda t, c: t.ressort),
         GetterColumn(
             u'Seite',
-            lambda t, c: t.page,
-            cell_formatter=_none_to_blank),
+            lambda t, c: t.page),
         MetadataColumn(u'Metadaten', name='metadata'),
     )
 
