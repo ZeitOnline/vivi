@@ -33,24 +33,26 @@ class IListRepresentation(zope.interface.Interface):
     """List representation of content objects"""
 
     __name__ = zope.interface.Attribute("File name")
+    uniqueId = zope.interface.Attribute("Unique ID in repository.")
+    url = zope.schema.URI(title=u"URL to the object in the CMs.")
+
     title = zope.interface.Attribute("Content title")
     author = zope.interface.Attribute("Author")
     ressort = zope.interface.Attribute("Ressort")
     searchableText = zope.interface.Attribute("Index used to search the list")
-    metadata = zope.interface.Attribute("Used to access article ids and"
-                                        "URLs from Javascript.")
     page = zope.schema.Int(title=u"Page in paper")
-
-    path = zope.interface.Attribute("Path in repository.")
-
-    url = zope.schema.URI(title=u"URL to the object in the CMs.")
 
     workflowState = zope.interface.Attribute("Workflow State")
 
     modifiedBy = zope.interface.Attribute("Datetime of last modification")
 
     def modifiedOn(format=None):
-        """Date of last modification"""
+        """Date of last modification.
+
+        format: strftime format string,
+        if format=None the formatstring is computed by using the server LOCALE
+
+        """
 
     def createdOn(format=None):
         """Returns creation date as string.
