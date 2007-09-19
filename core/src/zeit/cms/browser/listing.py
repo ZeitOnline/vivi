@@ -111,10 +111,10 @@ class CommonListRepresentation(BaseListRepresentation):
 class MetadataColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
-        # XXX there are too many urls in here...
         return ('<span class="SearchableText">%s</span>'
                 '<span class="URL">%s</span>' % (
                     item.searchableText, item.url))
+
 
 class LockedColumn(zc.table.column.GetterColumn):
 
