@@ -20,10 +20,8 @@
       tal:attributes="
       action string:${request/getApplicationURL}/search.html;
       class view/form_class">
-      <label for="text">
-        Volltextsuche:
-      </label>
-      <input type="text" name="search.text"
+      <label for="search.text">Volltextsuche:</label>
+      <input type="text" name="search.text" id="search.text"
         tal:attributes="value last_search/text | nothing" />
 
       <input type="submit" name="search" value="Suchen" />
@@ -39,15 +37,15 @@
         </legend> 
 
         <div class="widget">
-          <label for="year">
+          <label for="search.year">
             Jahr
           </label> 
-          <input type="text" name="search.year" value=""
+          <input type="text" name="search.year" id="search.year"
             tal:attributes="value last_search/year | nothing" />
         </div> 
 
         <div class="widget">
-          <label for="volume">
+          <label for="search.volume">
             Ausgabe
           </label>
           <select name="search.volume:int"
@@ -64,18 +62,18 @@
         </div>
 
         <div class="widget">
-          <label for="page">
+          <label for="search.page">
             Seite
           </label> 
-          <input type="text" name="search.page" value="" 
+          <input type="text" name="search.page" id="search.page"
             tal:attributes="value last_search/page | nothing" />
         </div>
 
         <div class="widget">
-          <label for="print_ressort">
+          <label for="search.print_ressort">
             Print Ressort
           </label> 
-          <select name="search.print_ressort"
+          <select name="search.print_ressort" name="search.print_ressort"
             tal:define="last_print_ressort last_search/print_ressort | nothing">
             <option value=""></option>
             <option
@@ -88,10 +86,10 @@
         </div>
 
         <div class="widget">
-          <label for="navigation">
+          <label for="search.navigation">
             Navigation
           </label> 
-          <select name="search.navigation"
+          <select name="search.navigation" id="search.navigation"
             tal:define="last_navigation last_search/navigation | nothing">
             <option value=""></option>
             <option
@@ -104,10 +102,10 @@
         </div>
 
         <div class="widget">
-          <label for="serie">
+          <label for="search.serie">
             Serie
           </label> 
-          <select name="search.serie"
+          <select name="search.serie" id="search.serie"
             tal:define="last_serie last_search/serie | nothing">
             <option value=""></option>
             <option
