@@ -6,16 +6,18 @@
 
   <tal:block metal:fill-slot="body">
 
-    <table
-      tal:condition="view/content"
-      tal:replace="structure view/contentTable">
-      Search result
-    </table>
+    <metal:content-listing 
+      use-macro="context/@@standard_macros/content-listing">
 
-    <div tal:condition="not: view/content"
-      i18n:translate="">
-      Your search did not match any documents.
-    </div>
+      <metal:hidden fill-slot="hidden-fields">
+        <input type="hidden"
+          tal:repeat="item view/last_search_hidden_fields"
+          tal:attributes="
+          name item/name;
+          value item/value" />
+      
+      </metal:hidden>
+    </metal:content-listing> 
 
   </tal:block>
 </metal:use-macro>
