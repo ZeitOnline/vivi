@@ -21,6 +21,11 @@ class LockingError(Exception):
     """Raised when trying to lock an already locked resource."""
 
 
+class LockedByOtherSystemError(LockingError):
+    """Raised when trying to update an resource which was not locked by us.
+    """
+
+
 class IConnector(zope.interface.Interface):
     """Connects the cms to the backend.
 

@@ -56,6 +56,7 @@ import random
 import time
 import urlparse
 
+import pytz
 import gocept.lxml.objectify
 
 import ZODB.blob
@@ -289,41 +290,17 @@ class Connector(zope.thread.local):
         return token
 
     def unlock(self, id):
-        tok = self._get_my_locktoken(id)
-        if tok:
+        token = self._get_dav_lock(id).get('locktoken')
+        if token:
             davres = self._get_dav_resource(id)
             try:
-                try:
-                    davres.unlock(locktoken=tok)
-                finally:
-                    self._put_my_lockinfo(id, None)
-            except:
-                # FIXME [13]: refine LockingError, how?
-                raise
-#                raise zeit.cms.interfaces.LockingError("DAV error %s on %s" \
-#                                                    % ("UNKNOWN", id))
+                davres.unlock(locktoken=token)
+            finally:
+                self._put_my_lockinfo(id, None)
         self._invalidate_cache(id)
 
     def locked(self, id):
-        lockdiscovery = self[id].properties[('lockdiscovery', 'DAV:')]
-        if not lockdiscovery:
-            return (None, None, False)
-
-        lock_info = gocept.lxml.objectify.fromstring(lockdiscovery)
-        davlock = {}
-
-        try:
-            lockinfo_node = lock_info.activelock
-        except AttributeError:
-            pass
-        else:
-            try:
-                davlock['owner'] = unicode(lockinfo_node['{DAV:}owner'])
-            except AttributeError:
-                davlock['owner'] = None
-            davlock['timeout']   = unicode(lockinfo_node.timeout)
-            davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
-
+        davlock = self._get_dav_lock(id)
         mylock = self._get_my_lockinfo(id)
 
         if mylock and mylock[0] != davlock.get('locktoken'): # Uh, oh
@@ -338,7 +315,9 @@ class Connector(zope.thread.local):
         if owner == 'None':
             owner = None
         if timeout == 'Infinite':
-            timeout = datetime.datetime.max
+            timeout = datetime.datetime(
+                datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999,
+                tzinfo=pytz.UTC)
 
         return (owner, timeout, mylock is not None)
 
@@ -366,10 +345,20 @@ class Connector(zope.thread.local):
             locktbl[id] = (token, principal, time)
 
     def _get_my_locktoken(self, id):
-        l = self._get_my_lockinfo(id)
-        if l: tok = l[0]
-        else: tok = None
-        return tok
+        try:
+            locker, until, myself = self.locked(id)
+        except KeyError:
+            locktoken = None
+        else:
+            if locker and not myself:
+                raise zeit.connector.interfaces.LockedByOtherSystemError(
+                    locker, until)
+        lock_info = self._get_my_lockinfo(id)
+        if lock_info:
+            token = lock_info[0]
+        else:
+            token = None
+        return token
 
     def _id2loc(self, id):
         """Transform an id to a location, e.g.
@@ -394,14 +383,7 @@ class Connector(zope.thread.local):
     def _internal_add(self, id, resource):
         """The grunt work of __setitem__() and add()
         """
-        try:
-            locker, until, myself = self.locked(id)
-        except KeyError:
-            locktoken = None
-        else:
-            if not myself:
-                raise Exception("Locked by other system.")
-            locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
+        locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
 
         autolock = (locktoken is None)
         if autolock:
@@ -472,6 +454,27 @@ class Connector(zope.thread.local):
         if res and self._conn is None:
             self._conn = res._conn # cache DAV connection
         return res
+
+    def _get_dav_lock(self, id):
+        lockdiscovery = self[id].properties[('lockdiscovery', 'DAV:')]
+        if not lockdiscovery:
+            return {}
+
+        lock_info = gocept.lxml.objectify.fromstring(lockdiscovery)
+        davlock = {}
+
+        try:
+            lockinfo_node = lock_info.activelock
+        except AttributeError:
+            pass
+        else:
+            try:
+                davlock['owner'] = unicode(lockinfo_node['{DAV:}owner'])
+            except AttributeError:
+                davlock['owner'] = None
+            davlock['timeout']   = unicode(lockinfo_node.timeout)
+            davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
+        return davlock
 
     def _invalidate_cache(self, id):
         parent, last = _id_splitlast(id)
