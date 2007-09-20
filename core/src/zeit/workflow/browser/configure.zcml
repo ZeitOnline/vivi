@@ -9,15 +9,18 @@
     name="workflow.html"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     class=".form.WorkflowForm"
-    permission="zope.View"
+    permission="zope.ManageContent"
+    menu="zeit-context-views" title="Workflow"
     />
 
-  <browser:menuItem
+  <browser:page
+    name="locks.html"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
-    menu="zeit-context-views"
-    title="Workflow"
-    action="@@workflow.html"
+    class=".lock.Lock"
     permission="zope.ManageContent"
+    menu="zeit-context-views" title="Locks"
     />
+
+
 </configure>
 

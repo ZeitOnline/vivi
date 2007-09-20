@@ -277,6 +277,9 @@
 .context-views li.Workflow {
     background-image: url("/@@/zeit.cms/icons/workflow.png");
 }
+.context-views li.Locks {
+    background-image: url("/@@/zeit.cms/icons/lock-closed.png");
+}
 
 /* 
  * context actions 
