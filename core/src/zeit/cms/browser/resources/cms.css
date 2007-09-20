@@ -155,6 +155,10 @@ fieldset {
  * forms 
  *
  * */
+.field {
+     padding: 0.5em 0;
+}
+
 form .medium-float {
     float: left;
     width: 58%;
