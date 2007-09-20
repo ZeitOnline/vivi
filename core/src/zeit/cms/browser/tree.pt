@@ -10,9 +10,8 @@
                     tal:attributes="href item/url">
           2005
         </a>
-        <span class="DragPaneURL"
-          tal:content="string:${item/url}/@@drag-pane.html">
-          http://localhost/somalia/@@drag-pane.html
+        <span class="URL" tal:content="string:${item/url}">
+          http://localhost/somalia
         </span>
         <tal:block
           define="sub_data item/sub_data"

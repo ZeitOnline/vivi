@@ -23,7 +23,7 @@ The clipboard is displayed as a tree. Initially it's empty::
         <ul>
           <li class="Root" uniqueid="">
             <a href="...">Clipboard</a>
-            <span class="DragPaneURL">.../@@drag-pane.html</span>
+            <span class="URL">...</span>
           </li>
         </ul>
       </div>
@@ -48,11 +48,11 @@ We assume, that we drag the pane over the Clipboard::
       <ul>
         <li class="Root" uniqueid="">
           <a href="...">Clipboard</a>
-          <span class="DragPaneURL">.../@@drag-pane.html</span>
+          <span class="URL">...</span>
           <ul>
             <li class="NotRoot" uniqueid="wirtschaft.feed">
               <a href="http://localhost/++skin++cms/workingcopy/zope.mgr/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
-              <span class="DragPaneURL">...wirtschaft.feed/@@drag-pane.html</span>
+              <span class="URL">...wirtschaft.feed</span>
             </li>
           </ul>
        </li>
@@ -70,15 +70,15 @@ added *before* the feed::
         <ul>
           <li class="Root" uniqueid="">
             <a href="...">Clipboard</a>
-            <span class="DragPaneURL">.../@@drag-pane.html</span>
+            <span class="URL">...</span>
             <ul>
               <li class="NotRoot" uniqueid="wirtschaft.feed">
                 <a href="...wirtschaft.feed">Wirtschaft</a>
-                <span class="DragPaneURL">...wirtschaft.feed/@@drag-pane.html</span>
+                <span class="URL">...wirtschaft.feed</span>
               </li>
               <li class="NotRoot" uniqueid="Querdax">
                 <a href="...Querdax">Querdax</a>
-                <span class="DragPaneURL">...Querdax/@@drag-pane.html</span>
+                <span class="URL">...Querdax</span>
               </li>
             </ul>
          </li>
@@ -122,19 +122,19 @@ element of the root node::
       <ul>
         <li class="Root" uniqueid="">
           <a href="...">Clipboard</a>
-          <span class="DragPaneURL">.../@@drag-pane.html</span>
+          <span class="URL">...</span>
           <ul>
             <li class="NotRoot" uniqueid="wirtschaft.feed">
               <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="DragPaneURL">...wirtschaft.feed/@@drag-pane.html</span>
+              <span class="URL">...wirtschaft.feed</span>
             </li>
             <li class="NotRoot" uniqueid="Querdax">
               <a href="...Querdax">Querdax</a>
-              <span class="DragPaneURL">...Querdax/@@drag-pane.html</span>
+              <span class="URL">...Querdax</span>
             </li>
             <li action="expand" class="NotRoot" uniqueid="New Clip">
               <a href="...">New Clip</a>
-              <span class="DragPaneURL">...New%20Clip/@@drag-pane.html</span>
+              <span class="URL">...New%20Clip</span>
             </li>
           </ul>
        </li>
@@ -150,23 +150,23 @@ Let's add another clip::
       <ul>
         <li class="Root" uniqueid="">
           <a href="...">Clipboard</a>
-          <span class="DragPaneURL">.../@@drag-pane.html</span>
+          <span class="URL">...</span>
           <ul>
             <li class="NotRoot" uniqueid="wirtschaft.feed">
               <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="DragPaneURL">...wirtschaft.feed/@@drag-pane.html</span>
+              <span class="URL">...wirtschaft.feed</span>
             </li>
             <li class="NotRoot" uniqueid="Querdax">
               <a href="...Querdax">Querdax</a>
-              <span class="DragPaneURL">...Querdax/@@drag-pane.html</span>
+              <span class="URL">...Querdax</span>
             </li>
             <li action="expand" class="NotRoot" uniqueid="New Clip">
               <a href="...">New Clip</a>
-              <span class="DragPaneURL">...New%20Clip/@@drag-pane.html</span>
+              <span class="URL">...New%20Clip</span>
             </li>
             <li action="expand" class="NotRoot" uniqueid="Second Clip">
               <a href="...">Second Clip</a>
-              <span class="DragPaneURL">...Second%20Clip/@@drag-pane.html</span>
+              <span class="URL">...Second%20Clip</span>
             </li>
           </ul>
        </li>
@@ -223,7 +223,7 @@ Expand the `New Clip` node::
             </li>
             <li action="collapse" class="NotRoot" uniqueid="New Clip">
               <a href="...">New Clip</a>
-              <span class="DragPaneURL">...</span>
+              <span class="URL">...</span>
               <ul>
                 <li class="NotRoot" uniqueid="New Clip/Querdax">
                   <a href="...Querdax">Querdax</a>
