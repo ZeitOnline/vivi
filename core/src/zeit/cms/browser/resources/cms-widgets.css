@@ -126,7 +126,7 @@
 }
 
 .Search .widget {
-  float: left
+  float: left;
 }
 
 .Search label {
@@ -251,9 +251,6 @@
   font-family: sans-serif;
   width: 20em;
   color: #196692;
-  border: 1px solid black;
-  border-width: 2px 1px 1px 2px;
-  padding: 2px;
 }
 
 #add_menu {

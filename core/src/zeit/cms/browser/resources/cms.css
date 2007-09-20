@@ -235,7 +235,9 @@ input[type="submit"]:active {
   background-color: #ffdd00;
 }
 
-
+input[type="text"] {
+  padding: 0.2em;
+}
 
 /* SMALL left column, larger right column */
 form .column-left-small {
