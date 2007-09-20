@@ -5,8 +5,9 @@
    margin-top: 5ex;
 }
 
-.contentListing > tbody > tr.even > td {
+.contentListing > tbody > tr.even {
    background-color: #f2f2f2;
+   position: static !important;
 }
 
 .contentListing > tbody > tr.selected > td {
