@@ -46,6 +46,6 @@ class IWorkflow(zope.interface.Interface):
     release_period = zc.form.field.Combination(
         (zope.schema.Datetime(title=u"Von", required=False),
          zope.schema.Datetime(title=u"Bis", required=False)),
-        title=u"Veröffentlichugnszeitraum",
+        title=u"Veröffentlichungszeitraum",
         description=u"Leer für keine Einschränkung",
         required=False)
