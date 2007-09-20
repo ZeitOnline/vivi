@@ -31,7 +31,8 @@ class LockStorage(object):
 
     def setLock(self, object, lock):
         if lock.timeout:
-            until = datetime.datetime.fromtimestamp(lock.created + lock.timeout)
+            until = datetime.datetime.fromtimestamp(
+                lock.created + lock.timeout, pytz.UTC)
         else:
             until = None
         self.connector.lock(object.uniqueId, lock.principal_id, until)
