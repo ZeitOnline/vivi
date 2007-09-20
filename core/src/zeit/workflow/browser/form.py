@@ -6,8 +6,16 @@ import zope.formlib.form
 
 import zeit.cms.browser.form
 
+_ = zope.i18nmessageid.MessageFactory('zeit.cms')
 
 class WorkflowForm(zeit.cms.browser.form.EditForm):
+
+    title = _("Workflow")
+
+    widget_groups = (
+        (_(u"Status"), ('edited', 'corrected', 'refined', 'images_added'), 'column-left'),
+        (_(u"Einstellung"), zeit.cms.browser.form.REMAINING_FIELDS, 'column-right')
+    )
 
     form_fields = zope.formlib.form.Fields(
         zeit.workflow.interfaces.IWorkflow,

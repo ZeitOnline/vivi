@@ -29,6 +29,13 @@ def _lockable(form, action):
 
 class Lock(zeit.cms.browser.form.FormBase, zope.formlib.form.Form):
 
+    title = _("Locks")
+
+    widget_groups = (
+        (_(u"Locking"), zeit.cms.browser.form.REMAINING_FIELDS,
+         'column-left'),
+    )
+
     form_fields = zope.formlib.form.Fields(
         zeit.workflow.browser.interfaces.ILockFormSchema)
 
