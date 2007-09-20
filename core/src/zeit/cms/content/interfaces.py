@@ -193,3 +193,11 @@ class IIndexTeaser(zope.interface.Interface):
                                  max_length=20)
     text = zope.schema.TextLine(title=_('Index Teaser Text'),
                                 max_length=50)
+
+
+class ILockInfo(zope.app.locking.interfaces.ILockInfo):
+    """Extended LockInfo interface."""
+
+    locked_until = zope.schema.Datetime(
+        title=u"Locked Until",
+        required=False)

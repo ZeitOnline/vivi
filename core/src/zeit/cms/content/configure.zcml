@@ -56,4 +56,17 @@
     provides="zope.app.locking.interfaces.ILockStorage"
     factory=".locking.LockStorage" />
 
+
+  <!-- Basically copied from zope.app.locking -->
+  <class class=".locking.LockInfo">
+    <require permission="zope.View"
+      attributes="principal_id created timeout locked_until" />
+    <require permission="zope.View"
+      interface="zope.interface.common.mapping.IEnumerableMapping" 
+      />
+    <require permission="zope.View"
+      interface="zope.interface.common.mapping.IWriteMapping"
+      />
+  </class>
+  
 </configure>
