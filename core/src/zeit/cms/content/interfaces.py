@@ -8,10 +8,11 @@ import zope.i18nmessageid
 import zope.interface
 import zope.schema.interfaces
 
+import zope.app.locking.interfaces
+
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-
 
 
 _ = zope.i18nmessageid.MessageFactory('zeit.cms')
