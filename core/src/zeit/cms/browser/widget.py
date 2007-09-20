@@ -47,10 +47,33 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
             zeit.cms.repository.interfaces.IRepository)
 
 
-class ObjectSequenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
+class ObjectSequenceWidgetBase(object):
+
+    def _toFormValue(self, value):
+        result = []
+        for obj in value:
+            list_repr = zope.component.queryMultiAdapter(
+                (obj, self.request),
+                zeit.cms.browser.interfaces.IListRepresentation)
+            if list_repr is None:
+                title = obj.uniqueId
+                url = None
+            else:
+                title = list_repr.title
+                url = list_repr.url
+            result.append(
+                {'uniqueId': obj.uniqueId,
+                 'title': title,
+                 'url': url})
+        return result
+
+
+class ObjectSequenceWidget(
+    ObjectSequenceWidgetBase,
+    zope.app.form.browser.widget.SimpleInputWidget):
 
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-        'sequencewidget.pt')
+        'objectsequence-edit-widget.pt')
 
     def __init__(self, context, field, request):
         super(ObjectSequenceWidget, self).__init__(context, request)
@@ -73,20 +96,6 @@ class ObjectSequenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return tuple(self.repository.getContent(unique_id)
                      for unique_id in value)
 
-    def _toFormValue(self, value):
-        result = []
-        for obj in value:
-            list_repr = zope.component.queryMultiAdapter(
-                (obj, self.request),
-                zeit.cms.browser.interfaces.IListRepresentation)
-            if list_repr is None:
-                title = obj.uniqueId
-            else:
-                title = list_repr.title
-            result.append(
-                {'uniqueId': obj.uniqueId, 'title': title})
-        return result
-
     @property
     def marker(self):
         count = len(self._getFormValue())
@@ -97,3 +106,26 @@ class ObjectSequenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+class ObjectSequenceDisplayWidget(
+    ObjectSequenceWidgetBase,
+    zope.app.form.browser.widget.DisplayWidget):
+
+    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+        'objectsequence-display-widget.pt')
+
+    def __init__(self, context, field, request):
+        super(ObjectSequenceDisplayWidget, self).__init__(context, request)
+        self.field = field
+
+    def __call__(self):
+        return self.template()
+
+    def get_values(self):
+        if self._renderedValueSet():
+            value = self._data
+        else:
+            value = self.context.default
+        return self._toFormValue(value)
+

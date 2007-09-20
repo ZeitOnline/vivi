@@ -215,6 +215,16 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectSequenceDisplayWidget"
+    permission="zope.Public"
+    />
+
   <adapter factory=".timezone.tzinfo" />
 
 

@@ -1,0 +1,12 @@
+<div class="objectsequencewidget"
+  tal:attributes="id view/name">
+  <ul>
+    <li tal:repeat="item view/get_values">
+      <a href="#"
+        tal:attributes="href item/url"
+        tal:content="item/title">
+        Bild titel
+      </a>
+    </li>
+  </ul>
+</div>
