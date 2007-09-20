@@ -44,6 +44,10 @@ site-definition %(site_zcml_path)s
   source-print-ressort %(source-print-ressort)s
 </product-config>
 
+<product-config zeit.search>
+  xapian-url %(xapian-url)s
+</product-config>
+
 <product-config zeit.ldap>
   host %(ldap-host)s
   port %(ldap-port)s
