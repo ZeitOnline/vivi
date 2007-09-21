@@ -85,9 +85,11 @@ import zeit.connector.resource
 # The property holding the "resource type".
 # Note that davlib takes (name, namespace). Ugh.
 PROP_RESTYPE = ('type', 'http://namespaces.zeit.de/CMS/document')
+# Highest possible datetime value. We use datetime-with-timezone everywhere.
+# The MAXYEAR-1 is there to protect us from passing this bound when transforming
+# into some local time
 TIME_ETERNITY = datetime.datetime(
     datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
-
 
 # Gaah. They stole print()
 # That's what I _hate_ about Python culture. They assume to know
@@ -332,7 +334,9 @@ class Connector(zope.thread.local):
         r = self._get_dav_resource(self._prefix) # FIXME: Dirty trick to make sure we have a _conn
         return [resp.get_all_properties() \
                     for resp in davresource.DAVResult( \
-                       self._conn.search(expr._collect()._render())).responses]
+                       self._conn.search(
+                           self._root, # Any URI would do here, right?
+                           body=expr._collect()._render())).responses]
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)

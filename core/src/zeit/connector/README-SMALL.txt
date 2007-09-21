@@ -192,8 +192,7 @@ resource::
     >>> connector[res.id].type
     'text'
 
-Resources may be locked (NOTE: the time argument in lock is currently ignored,
-TBD)::
+Resources may be locked::
 
     >>> from datetime import datetime, timedelta
     >>> connector.locked('http://xml.zeit.de/testing/conn1')
@@ -202,9 +201,7 @@ TBD)::
     ...                        'http://xml.zeit.de/users/frodo',
     ...                        datetime.today() + timedelta(hours=2))
     >>> connector.locked('http://xml.zeit.de/testing/conn1')
-    (u'http://xml.zeit.de/users/frodo',
-     datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
-     True)
+    (u'http://xml.zeit.de/users/frodo', datetime.datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>), True)
 
 To unlock it, you would have to supply the locktoken. The library takes
 care of that (hmmm?)::
@@ -298,6 +295,8 @@ The building blocks are search vars:
     >>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/document/')
 
 Queries are built of basic terms involving search vars stitched together into expressions:
+
+    >>> connector.search([author, volume], (year == '2007') & (month == '07'))
 
     >>> connector.search([author, volume], (year > '1997') & ((month == '07') | (month == '08')) & (ressort == 'Leben'))
   

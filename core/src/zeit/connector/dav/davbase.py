@@ -108,8 +108,13 @@ class HTTPBasicAuthCon:
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))
+        # holler("### Request ###\n %s %s\n %s\n %s\n################\n" % (
+        #         method, uri,
+        #         "\n ".join(["%s: %s"%(k,v) for k, v in headers.items()]),
+        #         body))
         con.request(method, uri, body, headers)
         resp = getresp()
+        # holler("### Response status: %d ###\n" % resp.status)
         if resp.status == 401:
             self._auth(resp, headers)
             con.request(method, uri, body, headers)
