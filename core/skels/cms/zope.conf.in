@@ -42,6 +42,7 @@ site-definition %(site_zcml_path)s
   source-serie %(source-serie)s
   source-ressort %(source-ressort)s
   source-print-ressort %(source-print-ressort)s
+  source-keyword %(source-keyword)s
 </product-config>
 
 <product-config zeit.search>

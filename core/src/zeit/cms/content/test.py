@@ -15,6 +15,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
         'adapter.txt',
+        'keyword.txt',
         'property.txt',
         'sources.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +

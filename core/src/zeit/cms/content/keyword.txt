@@ -1,0 +1,24 @@
+==============
+PRISM Keywords
+==============
+
+
+>>> import zeit.cms.content.keyword
+>>> root = zeit.cms.content.keyword.keyword_root_factory()
+>>> root.label
+u'Themen der Zeit'
+>>> root.code
+u'TdZ'
+>>> root.broader is None
+True
+>>> root.narrower
+[<zeit.cms.content.keyword.Keyword object at 0x...>,
+ <zeit.cms.content.keyword.Keyword object at 0x...>,
+ ...]
+>>> politik = root.narrower[0]
+>>> politik.label
+u'Politik'
+>>> politik.code
+u'Politik'
+>>> politik.broader == root
+True

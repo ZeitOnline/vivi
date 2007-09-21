@@ -202,3 +202,13 @@ class ILockInfo(zope.app.locking.interfaces.ILockInfo):
     locked_until = zope.schema.Datetime(
         title=u"Locked Until",
         required=False)
+
+
+class IKeyword(zope.interface.Interface):
+
+
+    code = zope.schema.TextLine()
+    label = zope.schema.TextLine()
+
+IKeyword.narrower = zope.schema.List(value_type=zope.schema.Object(IKeyword))
+IKeyword.broader = value_type=zope.schema.Object(IKeyword, required=False)
