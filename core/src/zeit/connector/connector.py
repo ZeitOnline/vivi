@@ -85,6 +85,9 @@ import zeit.connector.resource
 # The property holding the "resource type".
 # Note that davlib takes (name, namespace). Ugh.
 PROP_RESTYPE = ('type', 'http://namespaces.zeit.de/CMS/document')
+TIME_ETERNITY = datetime.datetime(
+    datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
+
 
 # Gaah. They stole print()
 # That's what I _hate_ about Python culture. They assume to know
@@ -315,9 +318,7 @@ class Connector(zope.thread.local):
         if owner == 'None':
             owner = None
         if timeout == 'Infinite':
-            timeout = datetime.datetime(
-                datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999,
-                tzinfo=pytz.UTC)
+            timeout = TIME_ETERNITY
 
         return (owner, timeout, mylock is not None)
 
@@ -328,10 +329,10 @@ class Connector(zope.thread.local):
         for at in attrlist:
             expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
         # do something with return expr._collect()._render()
-        holler("---SEARCH---\n%s\n------------\n" % expr._collect()._render()) # twice _collect() should be idempotent
         r = self._get_dav_resource(self._prefix) # FIXME: Dirty trick to make sure we have a _conn
         return [resp.get_all_properties() \
-                    for resp in davresource.DAVResult(self._conn.search(expr._collect()._render())).responses]
+                    for resp in davresource.DAVResult( \
+                       self._conn.search(expr._collect()._render())).responses]
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)
