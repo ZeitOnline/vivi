@@ -10,6 +10,8 @@ import zope.annotation.factory
 import zope.security.interfaces
 import zope.publisher.browser
 
+import zope.app.pagetemplate.viewpagetemplatefile
+
 import zc.set
 
 import zeit.cms.browser.interfaces
@@ -29,9 +31,9 @@ class Tree(zope.publisher.browser.BrowserView):
 
     zope.interface.implements(zeit.cms.browser.interfaces.ITree)
 
-    # Subclasses need to define root and treestate
+    # Subclasses need to define root and a key for the treestate
     root = None
-    treeState = None
+    key = None
 
     index = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         os.path.join(os.path.dirname(__file__), 'tree.pt'))
