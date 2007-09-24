@@ -24,6 +24,10 @@ from zeit.connector.interfaces import (
     IWebDAVReadProperties, IWebDAVWriteProperties, IWebDAVProperties)
 
 
+class ICMSContentType(zope.interface.interfaces.IInterface):
+    """Interface for content types."""
+
+
 class ICMSContent(zope.interface.Interface):
     """Interface for all CMS content being loaded from the repository.
 

@@ -60,7 +60,6 @@
     <include package="zc.selenium" />
   </configure>
 
-
   <!-- local includes -->
 
   <include file="permissions.zcml" />
@@ -87,6 +86,11 @@
     trusted="yes" />
 
   <i18n:registerTranslations directory="locales" />
+
+  <interface
+    interface=".interfaces.ICMSContent"
+    type=".interfaces.ICMSContentType"
+    />
 
 </configure>
 

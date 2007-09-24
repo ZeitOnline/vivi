@@ -25,4 +25,9 @@
   <adapter factory="zeit.xmleditor.structure.Raw" name="raw" />
   <adapter factory="zeit.xmleditor.structure.Raw" name="image" />
 
+  <interface
+    interface=".interfaces.ICenterPage"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
 </configure>

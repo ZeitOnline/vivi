@@ -26,5 +26,10 @@
   <subscriber handler=".syndication.updateFeedOnCheckin" />
   
   <subscriber handler=".article.mapPropertyToAttribute" />
+  
+  <interface
+    interface=".interfaces.IArticle"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
 
 </configure>

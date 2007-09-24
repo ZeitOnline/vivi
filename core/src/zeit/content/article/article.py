@@ -125,7 +125,6 @@ class Article(persistent.Persistent,
     images = ImageProperty()
 
     # XXX
-    keywords = ()
     navigation = None
 
     @rwproperty.getproperty

@@ -20,5 +20,10 @@
       interface=".interfaces.ITransform"
       permission="zope.View" />
   </class>
+  
+  <interface
+    interface=".interfaces.IImage"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
 
 </configure>
