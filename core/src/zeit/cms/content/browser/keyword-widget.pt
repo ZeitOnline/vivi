@@ -1,0 +1,33 @@
+<div class="keywordwidget"
+  tal:attributes="id view/name">
+  <tal:block replace="resource_library:zeit.cms.KeywordsWidget" />
+  <tal:data tal:repeat="item view/_getFormValue">
+      <input type="hidden"
+        tal:attributes="
+        name string:${view/name}.${repeat/item/index};
+        id string:${view/name}.${repeat/item/index};
+        value item/code" 
+        />
+      <input type="hidden"
+        tal:attributes="
+        name string:${view/name}.title.${repeat/item/index};
+        id string:${view/name}.title.${repeat/item/index};
+        value item/label" 
+        />
+      <input type="hidden"
+        tal:attributes="
+        name string:${view/name}.intaxonomy.${repeat/item/index};
+        id string:${view/name}.intaxonomy.${repeat/item/index};
+        value item/inTaxonomy" 
+        />
+  </tal:data>
+  <input tal:replace="structure view/marker" />
+
+  <ul>
+    <!-- data will be inserted here by javascript -->
+  </ul>
+</div>
+<script tal:content="string:
+  var widget = new KeywordsWidget('${view/name}');
+">
+</script>

@@ -68,5 +68,17 @@
       interface="zope.interface.common.mapping.IWriteMapping"
       />
   </class>
+
+  <!-- Keywords -->
+
+  <interface
+    interface=".interfaces.IKeyword"
+    type=".interfaces.IKeywordInterface" />
+
+  <class class=".keyword.Keyword">
+    <allow interface=".interfaces.IKeyword" />
+  </class>
+
+  <utility factory=".keyword.KeywordUtility" />
   
 </configure>

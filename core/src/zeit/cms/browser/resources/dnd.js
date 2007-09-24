@@ -77,35 +77,54 @@ DropWidget.prototype = {
 }
 
 
-function ObjectSequenceWidget(widget_id) {
-    var othis = this;
-    this.widget_id = widget_id;
-    this.element = getElement(widget_id);
-    this.initialize();
-    connect(this.element, 'onclick', this, 'handleClick');
-    new Droppable(this.element, {
-        hoverclass: 'drop-widget-hover',
-        ondrop: function(element, last_active_element, event) {
-            othis.handleDrop(element);
-        },
-    });
-}
+//Defines the top level Class
+function Class() { }
+Class.prototype.construct = function() {};
+Class.extend = function(def) {
+  var classDef = function() {
+      if (arguments[0] !== Class) { this.construct.apply(this, arguments); }
+  };
+
+  var proto = new this(Class);
+  var superClass = this.prototype;
+
+  for (var n in def) {
+      var item = def[n];                      
+      if (item instanceof Function) item.$ = superClass;
+      proto[n] = item;
+  }
+
+  classDef.prototype = proto;
+
+  //Give this new class the same static extend method    
+  classDef.extend = this.extend;      
+  return classDef;
+};
 
 
-ObjectSequenceWidget.prototype = {
+var ObjectSequenceWidgetBase = Class.extend({
+
+    construct: function(widget_id) {
+        var othis = this;
+        this.widget_id = widget_id;
+        this.element = getElement(widget_id);
+        this.ul_element = getFirstElementByTagAndClassName(
+            'ul', null, this.element)
+        this.initialize();
+        connect(this.element, 'onclick', this, 'handleClick');
+    },
 
     initialize: function() {
         var othis = this;
-        var ul = getFirstElementByTagAndClassName('ul', null, this.element)
-        while (ul.firstChild != null) {
-            removeElement(ul.firstChild);
+        while (this.ul_element.firstChild != null) {
+            removeElement(this.ul_element.firstChild);
         }
         var amount = Number(this.getCountField().value);
         forEach(range(amount), function(i) {
             //var value_name = this.widget_id + '.' + i;
             var title = othis.getTitleField(i).value;
             appendChildNodes(
-                ul,
+                othis.ul_element,
                 LI({'class': 'element', 'index': i},
                    title,
                    IMG({
@@ -113,15 +132,9 @@ ObjectSequenceWidget.prototype = {
                        'index': i,
                        'src': '/@@/zeit.cms/icons/delete.png'})));
         });
-
-        var new_li = LI({'class': 'new'},
-                        'Weitere Einträge durch Drag and Drop hinzufügen…');
-        appendChildNodes(ul, new_li);
-        othis.drop_target = new_li;
     },
 
     getCountField: function() {
-        var othis = this;
         return getElement(this.widget_id + '.count')
     },
 
@@ -171,6 +184,42 @@ ObjectSequenceWidget.prototype = {
         this.initialize();
     },
 
+    handleClick: function(event) {
+        var target = event.target();
+        var action = target.getAttribute('action');
+        var index = target.getAttribute('index');
+        if (action && index) {
+            var func = bind(action, this);
+            func(index);
+        }
+    },
+
+
+});
+
+
+
+var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
+
+    construct: function(widget_id) {
+        arguments.callee.$.construct.call(this, widget_id)
+        var othis = this;
+        new Droppable(this.element, {
+            hoverclass: 'drop-widget-hover',
+            ondrop: function(element, last_active_element, event) {
+                othis.handleDrop(element);
+            },
+        });
+    },
+
+    initialize: function() {
+        arguments.callee.$.initialize.call(this);
+        var new_li = LI({'class': 'new'},
+                        'Weitere Einträge durch Drag and Drop hinzufügen…');
+        appendChildNodes(this.ul_element, new_li);
+        this.drop_target = new_li;
+    },
+
     handleDrop: function(dragged_element) {
         var unique_id = dragged_element.uniqueId;
         var count_field = this.getCountField()
@@ -202,13 +251,4 @@ ObjectSequenceWidget.prototype = {
         this.initialize();        
     },
 
-    handleClick: function(event) {
-        var target = event.target();
-        var action = target.getAttribute('action');
-        var index = target.getAttribute('index');
-        if (action && index) {
-            var func = bind(action, this);
-            func(index);
-        }
-    },
-}
+});

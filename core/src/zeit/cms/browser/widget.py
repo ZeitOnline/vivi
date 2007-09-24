@@ -3,7 +3,10 @@
 # $Id$
 
 import zope.component
+import zope.interface
+import zope.schema
 
+import zope.app.form.browser.interfaces
 import zope.app.form.browser.widget
 import zope.app.form.browser.itemswidgets
 import zope.app.pagetemplate.viewpagetemplatefile
@@ -47,6 +50,17 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
             zeit.cms.repository.interfaces.IRepository)
 
 
+@zope.component.adapter(
+    zope.schema.interfaces.ITuple,
+    zope.schema.interfaces.IObject,
+    zope.publisher.interfaces.browser.IBrowserRequest)
+@zope.interface.implementer(zope.app.form.interfaces.IInputWidget)
+def objectWidgetMultiplexer(context, field, request):
+    return zope.component.getMultiAdapter(
+        (context, field, field.schema, request),
+        zope.app.form.interfaces.IInputWidget)
+
+
 class ObjectSequenceWidgetBase(object):
 
     def _toFormValue(self, value):
@@ -75,9 +89,10 @@ class ObjectSequenceWidget(
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'objectsequence-edit-widget.pt')
 
-    def __init__(self, context, field, request):
+    def __init__(self, context, field, schema, request):
         super(ObjectSequenceWidget, self).__init__(context, request)
         self.field = field
+        self.schema = schema
 
     def __call__(self):
         return self.template()
@@ -128,4 +143,3 @@ class ObjectSequenceDisplayWidget(
         else:
             value = self.context.default
         return self._toFormValue(value)
-

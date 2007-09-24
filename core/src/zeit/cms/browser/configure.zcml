@@ -61,7 +61,9 @@
 
     <include package="gocept.mochikit" />
 
-    <resourceLibrary name="zeit.cms.DragAndDrop" require="mochikit.DragAndDrop">
+    <resourceLibrary
+      name="zeit.cms.DragAndDrop"
+      require="mochikit.DragAndDrop">
       <directory source="resources" include="dnd.js" />
     </resourceLibrary>
 
@@ -71,7 +73,6 @@
         cms.css"/>
     </resourceLibrary>
 
-
     <resourceLibrary name="zeit.cms.filteringtable">
       <directory source="resources" include="filteringtable.js" />
     </resourceLibrary>
@@ -80,7 +81,6 @@
       require="zeit.cms">
       <directory source="resources" include="tree.js"/>
     </resourceLibrary>
-
 
 
     <!-- Zeit form layout -->
@@ -173,11 +173,13 @@
 
   <include package="zc.sourcefactory.browser" />
 
+  <include package="zeit.cms.content.browser" />
   <include package="zeit.cms.checkout.browser" />
   <include package="zeit.cms.repository.browser" />
   <include package="zeit.cms.workingcopy.browser"  />
   <include package="zeit.cms.syndication.browser" />
   <include package="zeit.cms.clipboard.browser" />
+
 
 
   <!-- Generic tree expand and collapse actions -->
@@ -206,9 +208,15 @@
     />
   
   <adapter
+    factory=".widget.objectWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
     for="
     zope.schema.interfaces.ITuple
     zope.schema.interfaces.IObject
+    zeit.cms.interfaces.ICMSContentType
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
     factory=".widget.ObjectSequenceWidget"

@@ -71,11 +71,9 @@ class Tree(zope.publisher.browser.BrowserView):
         uid = self.getUniqueId(obj)
 
         if self.isRoot(obj):
-            name = self.root_name
             root = True
             expanded = True
         else:
-            name = obj.__name__
             root = False
             expanded = uid in self.treeState
 
@@ -86,8 +84,8 @@ class Tree(zope.publisher.browser.BrowserView):
 
         selected = self.selected(url)
 
-        return {'title': name,
-               'id': obj.__name__,
+        return {'title': self.getTitle(obj),
+               'id': self.getId(obj),
                'action': action,
                'uniqueId': uid,
                'expanded': expanded,
@@ -95,6 +93,14 @@ class Tree(zope.publisher.browser.BrowserView):
                'isroot': root,
                'url': url,
                'selected': selected}
+
+    def getTitle(self, obj):
+        if self.isRoot(obj):
+            return self.root_name
+        return self.getId(obj)
+
+    def getId(self, obj):
+        return obj.__name__
 
     def getUrl(self, obj):
         """Returns the absolute url of obj"""

@@ -6,6 +6,7 @@
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
+import zope.interface.interfaces
 import zope.schema.interfaces
 
 import zope.app.locking.interfaces
@@ -20,6 +21,33 @@ _ = zope.i18nmessageid.MessageFactory('zeit.cms')
 
 class IXMLTreeWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
     """A widget for source editing xml trees."""
+
+
+class IKeywordInterface(zope.interface.interfaces.IInterface):
+    """The interface of the keyword interface."""
+
+
+class IKeyword(zope.interface.Interface):
+
+    code = zope.schema.TextLine()
+    label = zope.schema.TextLine()
+
+    inTaxonomy = zope.schema.Bool(
+        title=_("Keyword is contained in the taxonomy"),
+        default=False)
+
+IKeyword.narrower = zope.schema.List(value_type=zope.schema.Object(IKeyword))
+IKeyword.broader = value_type=zope.schema.Object(IKeyword, required=False)
+
+
+class IKeywords(zope.interface.Interface):
+
+    root = zope.schema.Object(
+        IKeyword,
+        title=_('Root of ontology'))
+
+    def __getitem__(code):
+        """return IKeyword with given code."""
 
 
 class ICommonMetadata(zope.interface.Interface):
@@ -55,7 +83,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Keywords"),
         required=False,
         default=(),
-        value_type=zope.schema.TextLine())
+        value_type=zope.schema.Object(IKeyword))
 
     serie = zope.schema.Choice(
         title=_("Serie"),
@@ -202,13 +230,3 @@ class ILockInfo(zope.app.locking.interfaces.ILockInfo):
     locked_until = zope.schema.Datetime(
         title=u"Locked Until",
         required=False)
-
-
-class IKeyword(zope.interface.Interface):
-
-
-    code = zope.schema.TextLine()
-    label = zope.schema.TextLine()
-
-IKeyword.narrower = zope.schema.List(value_type=zope.schema.Object(IKeyword))
-IKeyword.broader = value_type=zope.schema.Object(IKeyword, required=False)

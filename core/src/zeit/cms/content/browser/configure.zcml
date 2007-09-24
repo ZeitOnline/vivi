@@ -1,0 +1,30 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="keyword-browser.html"
+    class=".keyword.Tree"
+    permission="zope.Public"
+    />
+    
+    <resourceLibrary
+      name="zeit.cms.KeywordsWidget"
+      require="mochikit">
+      <directory source="resources" include="keywordswidget.js" />
+    </resourceLibrary>
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zeit.cms.content.interfaces.IKeywordInterface
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".keyword.KeywordsWidget"
+    permission="zope.Public"
+    />
+
+</configure>
+

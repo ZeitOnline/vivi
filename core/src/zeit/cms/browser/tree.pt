@@ -1,4 +1,5 @@
 <tal:block define="tree options/sub_data|view/getTreeData;">
+
   <ul>
     <tal:repeat repeat="item tree">
       <li tal:define="root python: item['isroot'] and 'Root' or 'NotRoot'"

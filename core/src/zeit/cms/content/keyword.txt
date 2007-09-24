@@ -4,7 +4,8 @@ PRISM Keywords
 
 
 >>> import zeit.cms.content.keyword
->>> root = zeit.cms.content.keyword.keyword_root_factory()
+>>> ontology = zeit.cms.content.keyword.KeywordUtility()
+>>> root = ontology.root
 >>> root.label
 u'Themen der Zeit'
 >>> root.code
@@ -15,6 +16,8 @@ True
 [<zeit.cms.content.keyword.Keyword object at 0x...>,
  <zeit.cms.content.keyword.Keyword object at 0x...>,
  ...]
+>>> root.inTaxonomy
+True
 >>> politik = root.narrower[0]
 >>> politik.label
 u'Politik'
