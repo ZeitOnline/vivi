@@ -1,3 +1,5 @@
+/* zrt-replace: "{SERVER-URL}" tal"request/getApplicationURL" */
+
 var KeywordsWidget = ObjectSequenceWidgetBase.extend({
 
     initialize: function() {
@@ -11,15 +13,50 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
     },
 
     showAddKeyword: function() {
-        alert('Add-Keyword-Dialog');
+        var othis = this;
+        var oarguments = arguments;
+        var lightbox_shade = DIV({'id': 'lightbox-shade'})
+        var lightbox = DIV({'id': 'lightbox'});
+        appendChildNodes(this.element, lightbox_shade, lightbox);
+        connect(lightbox_shade, 'onclick', this, 'hideAddKeyword');
+       
+        var selected_keywords = []
+        var amount = Number(this.getCountField().value);
+        forEach(range(amount), function(i) {
+            var code = oarguments.callee.$.getValueField.call(othis, i).value
+            selected_keywords.push(code);
+        });
+       
+        var url = '{SERVER-URL}/@@keyword-browser.html';
+        var tree = new Tree(url, 'lightbox');
+        tree.query_arguments['selected_keywords'] = serializeJSON(
+            selected_keywords)
+        var d = tree.loadTree();
+    },
+
+    hideAddKeyword: function() {
+        removeElement('lightbox-shade');
+        removeElement('lightbox');
+    },
+
+    addKeyword: function(keyword_url) {
+        var code_label = keyword_url.substr(10).split('/');
+        var code = code_label[0];
+        var label = code_label[1];
+        this.hideAddKeyword();
+        arguments.callee.$.add.call(this, code, label);
     },
 
     handleClick: function(event) {
         var target = event.target();
         if (target.getAttribute('name') == 'new_keyword') {
-            showAddKeyword();
+            this.showAddKeyword();
+        } else if (target.nodeName == 'A' &&
+                   target.getAttribute('href').indexOf('keyword://') == 0) {
+            this.addKeyword(target.getAttribute('href')); 
+        } else {
+            arguments.callee.$.handleClick.call(this, event);
         }
-        arguments.callee.$.handleClick.call(this, event);
     },
 
 });

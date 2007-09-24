@@ -1,0 +1,15 @@
+<tal:block>
+
+  <div class="keyword-tree">
+    <h1>Taxonomie</h1>
+    <div class="Tree"
+      tal:content="structure view/tree_template">
+    </div>
+  </div>
+
+  <div class="keyword-input">
+    <h1>Schlüsselwort hinzufügen</h1>
+    <input type="text" name="add_new_keyword" />
+  </div>
+
+</tal:block>

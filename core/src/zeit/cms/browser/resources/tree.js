@@ -1,10 +1,8 @@
-function Tree(base_url, element_id, initial_load) {
+function Tree(base_url, element_id) {
     this.base_url = base_url + '/';
     this.contentElement = getElement(element_id);
     connect(this.contentElement, 'onclick', this, 'clickHandler');
-    if (initial_load == true) {
-        this.loadTree();
-    }
+    this.query_arguments = {}
 }
 
 Tree.prototype = {
@@ -21,8 +19,9 @@ Tree.prototype = {
         var tree = this;
         var uniqueId = node.getAttribute('uniqueId');
         var url = this.base_url + '@@' + action + 'Tree' ;
-        var d = doSimpleXMLHttpRequest(url, 
-            {'uniqueId': uniqueId});
+        var query = {'uniqueId': uniqueId};
+        update(query, this.query_arguments);
+        var d = doSimpleXMLHttpRequest(url, query);
         d.addCallbacks(
             function(result) {
                 tree.replaceTree(result.responseText);
@@ -39,6 +38,7 @@ Tree.prototype = {
                 signal(tree.contentElement, 'initialload');
                 return result;
             })
+        return d;
     },
 
     replaceTree: function(content) {

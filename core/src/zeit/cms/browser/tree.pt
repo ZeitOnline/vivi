@@ -17,7 +17,8 @@
         <tal:block
           define="sub_data item/sub_data"
           condition="python:sub_data"
-          replace="structure python:view.index(sub_data=item['sub_data'])" />
+          replace="
+          structure python:view.tree_template(sub_data=item['sub_data'])" />
       </li>
     </tal:repeat>
   </ul>

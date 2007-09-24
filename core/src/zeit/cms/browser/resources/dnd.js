@@ -134,6 +134,20 @@ var ObjectSequenceWidgetBase = Class.extend({
         });
     },
 
+    increaseCount: function() {
+        var count_field = this.getCountField()
+        var count = Number(count_field.value);
+        count_field.value = count + 1;
+        return count_field.value;
+    },
+    
+    decreaseCount: function() {
+        var count_field = this.getCountField()
+        var count = Number(count_field.value);
+        count_field.value = count - 1;
+        return count_field.value;
+    },
+
     getCountField: function() {
         return getElement(this.widget_id + '.count')
     },
@@ -152,6 +166,25 @@ var ObjectSequenceWidgetBase = Class.extend({
 
     getTitleFieldName: function(index) {
         return this.widget_id + '.title.' + index;
+    },
+
+    add: function(value, title) {
+        var next_id = this.increaseCount() - 1;
+      
+        var id_field_name = this.getValueFieldName(next_id);
+        var title_field_name = this.getTitleFieldName(next_id);
+
+        appendChildNodes(
+            this.element,
+            INPUT({'type': 'hidden',
+                   'name': id_field_name,
+                   'id': id_field_name,
+                   'value': value}),
+            INPUT({'type': 'hidden',
+                   'name': title_field_name,
+                   'id': title_field_name,
+                   'value': title}));
+        this.initialize();        
     },
 
     delete: function(index) {
@@ -180,7 +213,7 @@ var ObjectSequenceWidgetBase = Class.extend({
 
             new_index += 1;
         });
-        count_field.value = amount - 1;
+        this.decreaseCount()
         this.initialize();
     },
 
@@ -222,10 +255,6 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
 
     handleDrop: function(dragged_element) {
         var unique_id = dragged_element.uniqueId;
-        var count_field = this.getCountField()
-        var count = Number(count_field.value);
-        count_field.value = count + 1;
-
         var title_element = getFirstElementByTagAndClassName(
             null, 'Text', dragged_element);
         var title;
@@ -234,21 +263,7 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
         } else {
             title = scrapeText(title_element)
         }
-      
-        var id_field_name = this.getValueFieldName(count);
-        var title_field_name = this.getTitleFieldName(count);
-
-        appendChildNodes(
-            this.element,
-            INPUT({'type': 'hidden',
-                   'name': id_field_name,
-                   'id': id_field_name,
-                   'value': unique_id}),
-            INPUT({'type': 'hidden',
-                   'name': title_field_name,
-                   'id': title_field_name,
-                   'value': title}));
-        this.initialize();        
+        arguments.callee.$.add.call(this, unique_id, title);
     },
 
 });

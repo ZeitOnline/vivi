@@ -346,14 +346,65 @@
   margin-left: 1em;
   margin-bottom: -0.5em;
   cursor: pointer;
-  -moz-opacity: 0.3;
+  opacity: 0.3;
 }
 .objectsequencewidget img[action="delete"]:hover {
-  -moz-opacity: 1;
+  opacity: 1;
 }
 .drop-widget-hover {
   background: #ccc url("/@@/zeit.cms/icons/drop-widget-hover.png") no-repeat 1em center;
 }
 .drop-widget-hover .new {
   visibility: hidden;
+}
+
+/* Lightbox */
+
+#lightbox-shade {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.7;
+}
+
+#lightbox {
+    z-index: 3;
+    background-color: white;
+    border: 1px solid black;
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+}
+
+#lightbox > .keyword-tree {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    margin: 1em;
+}
+
+
+#lightbox > .keyword-tree > .Tree {
+    overflow: auto;
+    position: absolute;
+    top: 2.1em;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#lightbox > .keyword-input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 55%;
+    margin: 1em;
 }

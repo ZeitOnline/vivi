@@ -6,7 +6,9 @@
     for="zope.location.interfaces.ISite"
     name="keyword-browser.html"
     class=".keyword.Tree"
+    template="keyword-tree.pt"
     permission="zope.Public"
+    allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
     
     <resourceLibrary

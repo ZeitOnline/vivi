@@ -11,14 +11,19 @@ import zeit.cms.browser.tree
 import zeit.cms.content.keyword
 import zeit.cms.browser.widget
 
+
 class Tree(zeit.cms.browser.tree.Tree):
 
     key = 'zeit.cms.content.keyword'
     root_name = 'root'
 
+    def __call__(self):
+        return self.index()
+
     @zope.cachedescriptors.property.Lazy
     def root(self):
-        return zeit.cms.content.keyword.keyword_root_factory()
+        return zope.component.getUtility(
+            zeit.cms.content.interfaces.IKeywords).root
 
     def isRoot(self, container):
         return container == self.root
@@ -30,7 +35,7 @@ class Tree(zeit.cms.browser.tree.Tree):
         return False
 
     def getUrl(self, obj):
-        return ''
+        return 'keyword://%s/%s' % (obj.code, obj.label)
 
     def getId(self, obj):
         return obj.code
@@ -40,6 +45,9 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     def listContainer(self, container):
         return container.narrower
+
+    def expandable(self, obj):
+        return bool(obj.narrower)
 
 
 class KeywordsWidget(zeit.cms.browser.widget.ObjectSequenceWidget):

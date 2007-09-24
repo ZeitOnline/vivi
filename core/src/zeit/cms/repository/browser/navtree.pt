@@ -21,7 +21,8 @@
   </div>
   <script language="javascript"
     tal:content="string:
-      var navtree = new Tree('$tree_url', 'navtreecontents', true);">
+      var navtree = new Tree('$tree_url', 'navtreecontents');
+      navtree.loadTree();">
   </script>
 
 </div>

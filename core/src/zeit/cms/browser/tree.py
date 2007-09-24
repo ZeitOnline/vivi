@@ -35,11 +35,12 @@ class Tree(zope.publisher.browser.BrowserView):
     root = None
     key = None
 
-    index = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-        os.path.join(os.path.dirname(__file__), 'tree.pt'))
+    tree_template = (
+        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+            os.path.join(os.path.dirname(__file__), 'tree.pt')))
 
     def __call__(self):
-        return self.index()
+        return self.tree_template()
 
     def getTreeData(self):
         result = self.getSubTree([self.root])
@@ -83,6 +84,8 @@ class Tree(zope.publisher.browser.BrowserView):
             action = None
 
         selected = self.selected(url)
+        if not selected:
+            selected = None
 
         return {'title': self.getTitle(obj),
                'id': self.getId(obj),
