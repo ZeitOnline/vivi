@@ -43,8 +43,13 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         var code_label = keyword_url.substr(10).split('/');
         var code = code_label[0];
         var label = code_label[1];
-        this.hideAddKeyword();
         arguments.callee.$.add.call(this, code, label);
+        this.hideAddKeyword();
+    },
+
+    addCustomKeyword: function(keyword_code) {
+        arguments.callee.$.add.call(this, keyword_code, keyword_code); 
+        this.hideAddKeyword();
     },
 
     handleClick: function(event) {
@@ -54,6 +59,9 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         } else if (target.nodeName == 'A' &&
                    target.getAttribute('href').indexOf('keyword://') == 0) {
             this.addKeyword(target.getAttribute('href')); 
+        } else if (target.getAttribute('name') == 'add_new_keyword_button') {
+            var code = getElement('new_keyword_code').value
+            this.addCustomKeyword(code);
         } else {
             arguments.callee.$.handleClick.call(this, event);
         }

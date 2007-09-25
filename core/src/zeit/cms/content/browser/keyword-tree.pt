@@ -9,7 +9,8 @@
 
   <div class="keyword-input">
     <h1>Schlüsselwort hinzufügen</h1>
-    <input type="text" name="add_new_keyword" />
+    <input type="text" id="new_keyword_code" name="new_keyword_code" />
+    <input type="button" name="add_new_keyword_button" value="Hinzufügen" />
   </div>
 
 </tal:block>
