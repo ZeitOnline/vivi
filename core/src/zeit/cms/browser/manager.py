@@ -1,4 +1,4 @@
-# Copyright (c) 2006 gocept gmbh & co. kg
+# Copyright (c) 2006-2007 gocept gmbh & co. kg
 # See also LICENSE.txt
 # $Id$
 import zope.viewlet.manager
