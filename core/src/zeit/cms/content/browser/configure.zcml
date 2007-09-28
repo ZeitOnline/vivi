@@ -28,5 +28,16 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zeit.cms.content.interfaces.IKeywordInterface
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".keyword.KeywordsDisplayWidget"
+    permission="zope.Public"
+    />
+
 </configure>
 

@@ -213,6 +213,11 @@
     />
 
   <adapter
+    factory=".widget.objectDisplayWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
     for="
     zope.schema.interfaces.ITuple
     zope.schema.interfaces.IObject
@@ -227,6 +232,7 @@
     for="
     zope.schema.interfaces.ITuple
     zope.schema.interfaces.IObject
+    zeit.cms.interfaces.ICMSContentType
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.interfaces.IDisplayWidget"
     factory=".widget.ObjectSequenceDisplayWidget"

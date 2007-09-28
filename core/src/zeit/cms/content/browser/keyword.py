@@ -62,3 +62,13 @@ class KeywordsWidget(zeit.cms.browser.widget.ObjectSequenceWidget):
 
     def _toFormValue(self, value):
         return value
+
+
+class KeywordsDisplayWidget(
+    zeit.cms.browser.widget.ObjectSequenceDisplayWidget):
+
+    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+        'keyword-display-widget.pt')
+
+    def _toFormValue(self, value):
+        return value

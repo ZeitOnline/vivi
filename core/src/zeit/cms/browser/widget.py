@@ -61,6 +61,17 @@ def objectWidgetMultiplexer(context, field, request):
         zope.app.form.interfaces.IInputWidget)
 
 
+@zope.component.adapter(
+    zope.schema.interfaces.ITuple,
+    zope.schema.interfaces.IObject,
+    zope.publisher.interfaces.browser.IBrowserRequest)
+@zope.interface.implementer(zope.app.form.interfaces.IDisplayWidget)
+def objectDisplayWidgetMultiplexer(context, field, request):
+    return zope.component.getMultiAdapter(
+        (context, field, field.schema, request),
+        zope.app.form.interfaces.IDisplayWidget)
+
+
 class ObjectSequenceWidgetBase(object):
 
     def _toFormValue(self, value):
@@ -130,9 +141,10 @@ class ObjectSequenceDisplayWidget(
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'objectsequence-display-widget.pt')
 
-    def __init__(self, context, field, request):
+    def __init__(self, context, field, schema, request):
         super(ObjectSequenceDisplayWidget, self).__init__(context, request)
         self.field = field
+        self.schema = schema
 
     def __call__(self):
         return self.template()
