@@ -56,9 +56,9 @@ class KeywordsWidget(zeit.cms.browser.widget.ObjectSequenceWidget):
         'keyword-widget.pt')
 
     def _toFieldValue(self, value):
-        # XXX
-        return tuple(self.repository.getContent(unique_id)
-                     for unique_id in value)
+        keywords = zope.component.getUtility(
+            zeit.cms.content.interfaces.IKeywords)
+        return tuple(keywords[code] for code in value)
 
     def _toFormValue(self, value):
         return value

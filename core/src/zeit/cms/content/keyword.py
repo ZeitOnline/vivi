@@ -45,7 +45,10 @@ class KeywordUtility(object):
         self._load_keywords()
 
     def __getitem__(self, code):
-        return self._keywords_by_code[code]
+        try:
+            return self._keywords_by_code[code]
+        except KeyError:
+            return Keyword(code, code, in_taxonomy=False)
 
     def _load_keywords(self):
 

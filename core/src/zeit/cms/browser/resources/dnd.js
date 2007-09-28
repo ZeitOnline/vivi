@@ -125,13 +125,16 @@ var ObjectSequenceWidgetBase = Class.extend({
             var title = othis.getTitleField(i).value;
             appendChildNodes(
                 othis.ul_element,
-                LI({'class': 'element', 'index': i},
-                   title,
-                   IMG({
-                       'action': 'delete',
-                       'index': i,
-                       'src': '/@@/zeit.cms/icons/delete.png'})));
+                othis.renderElement(i, title));
         });
+    },
+
+    renderElement: function(index, title) {
+        return LI({'class': 'element', 'index': index},
+                  title, 
+                  IMG({'action': 'delete',
+                       'index': index,
+                       'src': '/@@/zeit.cms/icons/delete.png'}));
     },
 
     increaseCount: function() {

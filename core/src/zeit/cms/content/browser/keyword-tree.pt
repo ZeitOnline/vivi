@@ -8,9 +8,15 @@
   </div>
 
   <div class="keyword-input">
-    <h1>Schlüsselwort hinzufügen</h1>
+    <h1>Freies Schlüsselwort hinzufügen</h1>
     <input type="text" id="new_keyword_code" name="new_keyword_code" />
     <input type="button" name="add_new_keyword_button" value="Hinzufügen" />
   </div>
 
+  <div class="keyword-list">
+    <h1>Schlüsselwörter</h1>
+    <ul id="lightbox-keyword-list">
+      <!-- filled by javascript -->
+    </ul>
+  </div>
 </tal:block>

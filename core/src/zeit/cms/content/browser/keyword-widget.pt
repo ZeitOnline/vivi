@@ -26,6 +26,7 @@
   <ul>
     <!-- data will be inserted here by javascript -->
   </ul>
+  <input type="button" name="new_keyword" value="Schlüsselwörter bearbeiten" />
 </div>
 <script tal:content="string:
   var widget = new KeywordsWidget('${view/name}');

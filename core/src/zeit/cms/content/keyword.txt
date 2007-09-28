@@ -3,9 +3,15 @@ PRISM Keywords
 ==============
 
 
+Keywords Utility
+================
+
+The keywords are provided in the PRISM format. The Keyword Utility provides the
+keywords to the CMS:
+
 >>> import zeit.cms.content.keyword
->>> ontology = zeit.cms.content.keyword.KeywordUtility()
->>> root = ontology.root
+>>> keywords = zeit.cms.content.keyword.KeywordUtility()
+>>> root = keywords.root
 >>> root.label
 u'Themen der Zeit'
 >>> root.code
@@ -24,4 +30,88 @@ u'Politik'
 >>> politik.code
 u'Politik'
 >>> politik.broader == root
+True
+>>> politik.inTaxonomy
+True
+
+When we ask the utility for a keyword which is not in the PRISM file we'll get
+a keyword where `inTaxonomy` is False:
+
+>>> foo = keywords['foo']
+>>> foo
+<zeit.cms.content.keyword.Keyword object at 0x...>
+>>> foo.code
+u'foo'
+>>> foo.label
+u'foo'
+>>> foo.inTaxonomy
+False
+
+
+Keywords Property
+=================
+
+The keyword property maps the `<keywordset>` to tuple of Keyword objects.
+Create some mock content first:
+
+>>> import lxml.objectify
+>>> import lxml.etree
+>>> import zeit.cms.content.metadata
+>>> class Content(object):
+...     keywords = zeit.cms.content.metadata.KeywordsProperty()
+>>> content = Content()
+>>> content.xml = lxml.objectify.fromstring('<a/>')
+
+The `KeywordsProperty` requires an `IKeywords` utility, so we register one:
+
+>>> import zope.component
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(keywords, zeit.cms.content.interfaces.IKeywords)
+
+Initially the keywords is empty:
+
+>>> content.keywords
+()
+
+Set a keyword:
+
+>>> content.keywords = (keywords['irak'], )
+>>> content.keywords
+(<zeit.cms.content.keyword.Keyword object at 0x...>,)
+>>> content.keywords[0].code
+u'irak'
+>>> content.keywords[0].label
+u'irak'
+
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a>
+  <head>
+    <keywordset>
+      <keyword source="manual">irak</keyword>
+    </keywordset>
+  </head>
+</a>
+
+
+Add another keyword:
+
+>>> content.keywords = (keywords['irak'], keywords['bush'])
+>>> content.keywords
+(<zeit.cms.content.keyword.Keyword object at 0x...>,
+ <zeit.cms.content.keyword.Keyword object at 0x...>)
+
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a>
+  <head>
+    <keywordset>
+      <keyword source="manual">irak</keyword>
+      <keyword source="manual">bush</keyword>
+    </keywordset>
+  </head>
+</a>
+
+
+Clean up and unregister the utility:
+
+>>> gsm.unregisterUtility(keywords, zeit.cms.content.interfaces.IKeywords)
 True

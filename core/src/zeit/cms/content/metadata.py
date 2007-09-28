@@ -6,6 +6,7 @@ import lxml.objectify
 
 import zope.component
 
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 
@@ -13,28 +14,32 @@ import zeit.cms.content.property
 class KeywordsProperty(object):
 
     def __init__(self):
-        self.path = lxml.objectify.ObjectPath('.head.keywordset')
+        self.path = lxml.objectify.ObjectPath('.head.keywordset.keyword')
 
     def __get__(self, instance, class_):
         tree = instance.xml
         taxonomy = self.taxonomy
         keywords = []
         try:
-            keyword_set = self.path.find(tree).keyword[:]
+            keyword_set = self.path.find(tree)[:]
         except AttributeError:
             # no keywords
             keyword_set = []
 
         for keyword_node in keyword_set:
             rdf_id = unicode(keyword_node)
-            try:
-                keyword = taxonomy[rdf_id]
-            except KeyError:
-                # Not in taxonomy
-                keyword = zeit.cms.content.keyword.Keyword(rdf_id, rdf_id)
+            keyword = taxonomy[rdf_id]
             keywords.append(keyword)
 
         return tuple(keywords)
+
+    def __set__(self, instance, value):
+        tree = instance.xml
+        for keyword in self.path.find(tree, []):
+            keyword.getparent().remove(keyword)
+        self.path.setattr(tree, [keyword.code for keyword in value])
+        for keyword in self.path.find(tree, []):
+            keyword.set('source', 'manual')
 
     @property
     def taxonomy(self):

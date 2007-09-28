@@ -406,5 +406,35 @@
     top: 0;
     right: 0;
     width: 55%;
+    height: 5em;
     margin: 1em;
+}
+
+#lightbox > .keyword-list {
+
+    position: absolute;
+    top: 6em;
+    right: 0;
+    width: 55%;
+    bottom: 0;
+    margin: 1em;
+    overflow-y: auto;
+}
+
+#lightbox-keyword-list {
+  min-height: 40px;
+}
+
+#lightbox-keyword-list > li {
+  padding-bottom: 0.5em;
+}
+
+#lightbox-keyword-list img[action="delete"] {
+  margin-left: 1em;
+  margin-bottom: -0.5em;
+  cursor: pointer;
+  opacity: 0.3;
+}
+#lightbox-keyword-list img[action="delete"]:hover {
+  opacity: 1;
 }
