@@ -186,15 +186,9 @@
   <!-- entry page -->
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="entrypage.html"
+    name="index.html"
     class=".entrypage.EntryPage"
     permission="zope.ManageContent"
-    />
-  
-  <browser:defaultView
-    for="zope.location.interfaces.ISite"
-    name="entrypage.html"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
 

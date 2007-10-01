@@ -10,7 +10,7 @@ import zeit.cms.repository.interfaces
 
 class EntryPage(object):
 
-    def __call__(self, *args, **kw):
+    def __call__(self):
         repository = self.context['repository']
         url = zope.component.getMultiAdapter(
             (repository, self.request), name='absolute_url')()
