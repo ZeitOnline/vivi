@@ -183,6 +183,19 @@
     template="drag-pane.pt"
     permission="zope.View" />
 
+  <!-- entry page -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="entrypage.html"
+    class=".entrypage.EntryPage"
+    permission="zope.ManageContent"
+    />
+  
+  <browser:defaultView
+    for="zope.location.interfaces.ISite"
+    name="entrypage.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
 
 
   <!-- Selenium Tests -->

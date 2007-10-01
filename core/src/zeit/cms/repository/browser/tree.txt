@@ -2,166 +2,166 @@
 Navigation Tree
 ===============
 
-Create a browser first::
+Create a browser first:
     
-    >>> import lxml.etree
-    >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
-    >>> browser = ExtendedTestBrowser()
-    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
-    >>> browser.xml_strict = True
-    >>> ns_map = {'html': 'http://www.w3.org/1999/xhtml'}
+>>> import lxml.etree
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.xml_strict = True
+>>> ns_map = {'html': 'http://www.w3.org/1999/xhtml'}
 
 
 Tree Rendering
 ==============
 
-The tree is also rendered when viewing pages outside the repository. Everything
-is collappsed right now and we have three containers::
+The tree is rendered when viewing at the repository. The user get's
+automatically redirected to it:
 
-    >>> browser.open('http://localhost/++skin++cms/')
-    >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-    ...                                ns_map)[0]
-    >>> print lxml.etree.tostring(navtree, pretty_print=True)
-    <div id="navtreecontents"...>
-      <ul>
-          <li class="Root">
-            <a href="...">Repository</a>
-            ...
-            <ul>
-              <li...2006...
-              <li...2007...
-              <li...online...
-            </ul>
-          </li>
-       </ul>
-    </div>
+>>> browser.open('http://localhost/++skin++cms/')
+>>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+...                                ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True)
+<div id="navtreecontents"...>
+  <ul>
+      <li active="True" class="Root">
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...2006...
+          <li...2007...
+          <li...online...
+        </ul>
+      </li>
+   </ul>
+</div>
 
 
 Now we expand online/2007. This is done via an ajax request. Thus the returned
-"page" only conatains the tree, not the full html page::
+"page" only conatains the tree, not the full html page:
 
-    >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-    ...              '@@expandTree?uniqueId=http://xml.zeit.de/online')
-    >>> print lxml.etree.tostring(browser.etree, pretty_print=True)
-    <ul>
-        <li active="True" class="Root">
-          <a href="...">Repository</a>
-          ...
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online')
+>>> print lxml.etree.tostring(browser.etree, pretty_print=True)
+<ul>
+    <li active="True" class="Root">
+      <a href="...">Repository</a>
+      ...
+      <ul>
+        <li...2006...
+        <li...2007...
+        <li...online...
           <ul>
+            <li...2005...
             <li...2006...
             <li...2007...
-            <li...online...
-              <ul>
-                <li...2005...
-                <li...2006...
-                <li...2007...
-              </ul>
-            </li>
           </ul>
         </li>
-     </ul>
+      </ul>
+    </li>
+ </ul>
 
 
-A full page contains the same tree of course::
+A full page contains the same tree of course:
 
-    >>> browser.open('http://localhost/++skin++cms/repository')
-    >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-    ...                                ns_map)[0]
-    >>> print lxml.etree.tostring(navtree, pretty_print=True)
-    <div id="navtreecontents"...>
-      <ul>
-          <li active="True" class="Root">
-            <a href="...">Repository</a>
-            ...
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+...                                ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True)
+<div id="navtreecontents"...>
+  <ul>
+      <li active="True" class="Root">
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...2006...
+          <li...2007...
+          <li...online...
             <ul>
+              <li...2005...
               <li...2006...
               <li...2007...
-              <li...online...
-                <ul>
-                  <li...2005...
-                  <li...2006...
-                  <li...2007...
-                </ul>
-              </li>
             </ul>
           </li>
-       </ul>
-    </div>
+        </ul>
+      </li>
+   </ul>
+</div>
 
 
 Hidden Containers
 =================
 
 Users often do not want to see certain containers, so they can hide them. Open
-`online/2005` and hide it::
+`online/2005` and hide it:
 
-    >>> browser.getLink('2005').click()
-    >>> browser.getLink('Verstecken').click()
+>>> browser.getLink('2005').click()
+>>> browser.getLink('Verstecken').click()
 
-The collection is gone now::
+The collection is gone now:
 
-    >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-    ...                                ns_map)[0]
-    >>> print lxml.etree.tostring(navtree, pretty_print=True)
-    <div id="navtreecontents"...>
-      <ul>
-          <li active="True" class="Root">
-            <a href="...">Repository</a>
-            ...
+>>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+...                                ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True)
+<div id="navtreecontents"...>
+  <ul>
+      <li active="True" class="Root">
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...2006...
+          <li...2007...
+          <li...online...
             <ul>
               <li...2006...
               <li...2007...
-              <li...online...
-                <ul>
-                  <li...2006...
-                  <li...2007...
-                </ul>
-              </li>
             </ul>
           </li>
-       </ul>
-    </div>
+        </ul>
+      </li>
+   </ul>
+</div>
 
-    '<li class="NotRoot" uniqueid="http://xml.zeit.de/2005">' in (
-        browser.contents)
-    False
+'<li class="NotRoot" uniqueid="http://xml.zeit.de/2005">' in (
+    browser.contents)
+False
 
-Once a container is hidden the `Verstecken` action is no longer available::
+Once a container is hidden the `Verstecken` action is no longer available:
 
-    >>> browser.getLink('Verstecken')
-    Traceback (most recent call last):
+>>> browser.getLink('Verstecken')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+Instead there is the `Zeigen` action:
+
+>>> browser.getLink('Zeigen').click()
+>>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+...                                ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True)
+<div id="navtreecontents"...>
+  <ul>
+      <li active="True" class="Root">
+        <a href="...">Repository</a>
         ...
-    LinkNotFoundError
-
-Instead there is the `Zeigen` action::
-
-    >>> browser.getLink('Zeigen').click()
-    >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-    ...                                ns_map)[0]
-    >>> print lxml.etree.tostring(navtree, pretty_print=True)
-    <div id="navtreecontents"...>
-      <ul>
-          <li active="True" class="Root">
-            <a href="...">Repository</a>
-            ...
+        <ul>
+          <li...2006...
+          <li...2007...
+          <li...online...
             <ul>
+              <li...2005...
               <li...2006...
               <li...2007...
-              <li...online...
-                <ul>
-                  <li...2005...
-                  <li...2006...
-                  <li...2007...
-                </ul>
-              </li>
             </ul>
           </li>
-       </ul>
-    </div>
+        </ul>
+      </li>
+   </ul>
+</div>
 
-Now, of course, after showing, the `Zeigen` action is no longer available::
+Now, of course, after showing, the `Zeigen` action is no longer available:
 
-    >>> browser.getLink('Zeigen')
-    Traceback (most recent call last):
-        ...
-    LinkNotFoundError
+>>> browser.getLink('Zeigen')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
