@@ -43,13 +43,13 @@ We have to publish another url to see if articles are listed::
         Ford wird beigesetzt
       </td>
       <td>
-        1
+        4
       </td>
       <td>
-        2007
+        2006
       </td>
       <td>
-        International
+        Online
       </td>
   ...
 

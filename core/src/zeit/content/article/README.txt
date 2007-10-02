@@ -59,9 +59,9 @@ XML::
           </subtitle>
       </body>
       <head>
-        <attribute ns="http://namespaces.zeit.de/CMS/document"
+        <attribute ns="http://namespaces.zeit.de/QPS/attributes"
           name="year">2007</attribute>
-        <attribute ns="http://namespaces.zeit.de/CMS/document"
+        <attribute ns="http://namespaces.zeit.de/QPS/attributes"
           name="volume">1</attribute>
         <attribute ns="http://namespaces.zeit.de/CMS/document"
           name="text-length">4711</attribute>
@@ -85,9 +85,9 @@ When we set an attribute multiple times it's just changed::
           </subtitle>
       </body>
       <head>
-        <attribute ns="http://namespaces.zeit.de/CMS/document"
+        <attribute ns="http://namespaces.zeit.de/QPS/attributes"
           name="year">2007</attribute>
-        <attribute ns="http://namespaces.zeit.de/CMS/document"
+        <attribute ns="http://namespaces.zeit.de/QPS/attributes"
           name="volume">1</attribute>
         <attribute ns="http://namespaces.zeit.de/CMS/document"
           name="text-length">2000</attribute>
@@ -111,9 +111,9 @@ When we set an attribute multiple times it's just changed::
           </subtitle>
       </body>
       <head>
-        <attribute ns="http://namespaces.zeit.de/CMS/document"
+        <attribute ns="http://namespaces.zeit.de/QPS/attributes"
           name="year">2007</attribute>
-        <attribute ns="http://namespaces.zeit.de/CMS/document"
+        <attribute ns="http://namespaces.zeit.de/QPS/attributes"
           name="volume">1</attribute>
         <attribute ns="http://namespaces.zeit.de/CMS/document"
           name="text-length">2000</attribute>

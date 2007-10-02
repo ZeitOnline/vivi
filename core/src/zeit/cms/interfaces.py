@@ -15,6 +15,7 @@ _ = zope.i18nmessageid.MessageFactory('zeit.cms')
 
 
 DOCUMENT_SCHEMA_NS = u"http://namespaces.zeit.de/CMS/document"
+QPS_SCHEMA_NS = u"http://namespaces.zeit.de/QPS/attributes"
 ID_NAMESPACE = u'http://xml.zeit.de/'
 TEASER_NAMESPACE = u'http://xml.zeit.de/CMS/Teaser'
 

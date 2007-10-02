@@ -124,8 +124,10 @@ class Article(persistent.Persistent,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
     images = ImageProperty()
 
-    # XXX
-    navigation = None
+    navigation = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['navigation'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'ressort')
 
     @rwproperty.getproperty
     def html(self):
