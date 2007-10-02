@@ -19,7 +19,8 @@ Tree.prototype = {
         var tree = this;
         var uniqueId = node.getAttribute('uniqueId');
         var url = this.base_url + '@@' + action + 'Tree' ;
-        var query = {'uniqueId': uniqueId};
+        var query = {'uniqueId': uniqueId,
+                     'view_url': window.location.href};
         update(query, this.query_arguments);
         var d = doSimpleXMLHttpRequest(url, query);
         d.addCallbacks(
@@ -31,7 +32,8 @@ Tree.prototype = {
 
     loadTree: function() {
         var tree = this;
-        var d = doSimpleXMLHttpRequest(this.base_url);
+        var query = {'view_url': window.location.href};
+        var d = doSimpleXMLHttpRequest(this.base_url, query);
         d.addCallbacks(
             function(result) {
                 tree.replaceTree(result.responseText);
