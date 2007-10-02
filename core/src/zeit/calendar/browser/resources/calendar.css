@@ -130,4 +130,12 @@
   background-color: #e88;
 }
 
+/* DND */
+.calendar-drop-hover {
+  display: block;
+  background-color: red;
+}
 
+div.day {
+  top: 1ex;
+}

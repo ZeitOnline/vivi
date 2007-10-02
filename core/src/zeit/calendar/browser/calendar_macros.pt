@@ -1,11 +1,18 @@
 <html>
   <metal:macro define-macro="day">
-    <div class="day">
+    <div class="day"
+         tal:define="day_url string:$calendar_url/@@zeit.calendar.Event.AddForm?form.start=${day/date_str};
+                     element_id string:calendarday${day/day}"
+         tal:attributes="id element_id"
+         >
       <span tal:replace="day/day">25</span>
       <a href="#" class="add-event"
-        tal:attributes="href string:$calendar_url/@@zeit.calendar.Event.AddForm?form.start=${day/date_str}">
+        tal:attributes="href day_url">
         [+]        
       </a>
+      <script language="javascript" tal:content="string:
+        var $element_id = new CalendarDayDND('$day_url', '$element_id');"
+        ></script>
     </div>
     <tal:event repeat="event day/events">
       <div class="event"

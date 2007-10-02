@@ -61,6 +61,9 @@
   <resourceLibrary name="zeit.calendar">
     <directory source="resources" include="calendar.css" />
   </resourceLibrary>
+  <resourceLibrary name="zeit.calendar.js" require="zeit.cms.DragAndDrop">
+    <directory source="resources" include="calendar.js" />
+  </resourceLibrary>
 
 
 </configure>
