@@ -72,6 +72,10 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         value_type=zope.schema.Object(
             zeit.content.image.interfaces.IImage))
 
+    textLength = zope.schema.Int(
+        title=u'Anschläge',
+        required=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""

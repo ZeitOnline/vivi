@@ -34,7 +34,7 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
             omit_readonly=False).omit('uniqueId') +
         zope.formlib.form.Fields(
             zeit.content.article.interfaces.IArticleMetadata,
-            omit_readonly=False))
+            omit_readonly=False).omit('textLength'))
 
     def setUpWidgets(self, ignore_request=False):
         if not ignore_request:
@@ -53,7 +53,7 @@ class EditForm(ArticleFormBase, zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.article.interfaces.IArticleMetadata,
-        render_context=True, omit_readonly=False)
+        render_context=True, omit_readonly=False).omit('textLength')
 
 
 class DisplayForm(ArticleFormBase, zeit.cms.browser.form.DisplayForm):

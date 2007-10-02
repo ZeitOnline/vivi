@@ -125,6 +125,28 @@ When we set an attribute multiple times it's just changed:
 </article>
 
 
+There is an adapter which sets the text length automatically:
+
+>>> from zeit.content.article.article import updateTextLengthOnChange
+>>> updateTextLengthOnChange(article, object())
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article>
+  <body>
+    <supertitle>Neujahrsansprache</supertitle>
+    <title>Jahr ohne &#220;berraschungen</title>
+    <subtitle>
+     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
+     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+   </subtitle>
+  </body>
+  <head>
+    ...
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
+        name="text-length">194</attribute>
+  </head>
+</article>
+
+
 Article Factory
 ===============
 

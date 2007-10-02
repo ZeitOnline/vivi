@@ -26,6 +26,7 @@
   <subscriber handler=".syndication.updateFeedOnCheckin" />
   
   <subscriber handler=".article.mapPropertyToAttribute" />
+  <subscriber handler=".article.updateTextLengthOnChange" />
   
   <interface
     interface=".interfaces.IArticle"

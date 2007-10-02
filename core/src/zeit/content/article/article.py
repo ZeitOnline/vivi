@@ -13,6 +13,7 @@ import rwproperty
 
 import zope.component
 import zope.interface
+import zope.security.proxy
 
 import zope.app.container.contained
 
@@ -223,3 +224,12 @@ def mapPropertyToAttribute(article, event):
     attribute = zeit.cms.content.property.AttributeProperty(
         event.property_namespace, event.property_name)
     attribute.__set__(article, event.new_value)
+
+
+@zope.component.adapter(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def updateTextLengthOnChange(object, event):
+    length = zope.security.proxy.removeSecurityProxy(object.xml).body.xpath(
+        'string-length()')
+    object.textLength = int(length)
