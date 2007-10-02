@@ -61,3 +61,25 @@ class IXMLReference(zope.interface.Interface):
 
     xml = zeit.cms.content.field.XMLTree(
         title=u"Reference Structure")
+
+
+class IContainer(IEditableStructure):
+    """<column>"""
+
+    label = zope.schema.TextLine(
+        title=u"Label",
+        required=False)
+    style = zope.schema.TextLine(
+        title=u"Style",
+        required=False)
+    layout = zope.schema.TextLine(
+        title=u"Layout",
+        required=False)
+
+
+class IColumn(IEditableStructure):
+    """<column>"""
+
+    layout = zope.schema.TextLine(
+        title=u"Layout",
+        required=False)
