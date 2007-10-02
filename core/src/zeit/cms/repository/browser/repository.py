@@ -55,10 +55,10 @@ class Tree(zeit.cms.browser.tree.Tree):
         return object.uniqueId
 
     def selected(self, url):
-        url = self.request.get('view_url')
-        if not url:
-            url = str(self.request.URL)
-        return url.startswith(url) or None
+        view_url = self.request.get('view_url')
+        if not view_url:
+            view_url = str(self.request.URL)
+        return view_url.startswith(url) or None
 
     @zope.cachedescriptors.property.Lazy
     def preferences(self):
