@@ -12,7 +12,7 @@ class DAVConnection(davbase.DAVConnection):
     # our first attempt lives here.
     # not needed (yet):
     #     def __init__(self, *args, **kw):
-    #         davbae.DavConnection.__init__(self, args, kw)
+    #         davbase.DavConnection.__init__(self, args, kw)
 
     def get_locking_info (self, url):
         """Query the server for locking information.

@@ -108,13 +108,8 @@ class HTTPBasicAuthCon:
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))
-        # holler("### Request ###\n %s %s\n %s\n %s\n################\n" % (
-        #         method, uri,
-        #         "\n ".join(["%s: %s"%(k,v) for k, v in headers.items()]),
-        #         body))
         con.request(method, uri, body, headers)
         resp = getresp()
-        # holler("### Response status: %d ###\n" % resp.status)
         if resp.status == 401:
             self._auth(resp, headers)
             con.request(method, uri, body, headers)
@@ -254,8 +249,12 @@ class DAVBase:
     def _request(self, method, url, body=None, extra_hdrs={}):
         "Internal method for sending a request."
         self._recursion_level = getattr(self, '_recursion_level', 0) + 1
-        self.request(method, url, body, extra_hdrs)
+#         holler("### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n#################\n" % \
+#                (method, url, "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]), body))
+        self.request(method, url, body, extra_hdrs) # that's HTTPxxxAuthCon.request, called via DAVConnection
         resp = self.getresponse()
+#         holler("### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % \
+#                (resp.status, resp.reason, "\n  ".join(["%s: %s" % h for h in resp.getheaders()])))
         if resp.status in (301, 302, 303, 305, 307):
             # redirect silently
             # Location: header *MUST* be there

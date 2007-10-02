@@ -223,8 +223,12 @@ class DAVPropstat:
         if status_nodes:
             stat_node = status_nodes[0]
             text = stat_node.text.split(' ', 3)
-            self.status = int(text[1])
-            self.reason = text[2]
+            if len(text) == 1: # That's for Hunchentoot, to be removed
+                self.status = int(text[0])
+                self.reason = None
+            else: # assume length 3 or die
+                self.status = int(text[1])
+                self.reason = text[2]
         # description
         desc = context_node.xpath('D:responsedescription', {'D' : 'DAV:'})
         if desc:
@@ -252,7 +256,6 @@ class DAVPropstat:
             # resourcetype not filled
             # This is plain and simple wrong!
             pass
-
         # locking info
         linfo = {}
         lockinfo_nodes = context_node.xpath('D:prop/D:lockdiscovery/D:activelock', {'D' : 'DAV:'})

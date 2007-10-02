@@ -7,7 +7,8 @@ Creating a connector::
   >>> from pprint import pprint
   >>> from zeit.connector.connector import Connector
   >>> from zeit.connector.cache import resourceCacheFactory
-  >>> connector = Connector(u"http://zip4clone.zeit.de:9999/cms/work/")
+  >>> connector = Connector(roots={"default": "http://zip4clone.zeit.de:9999/cms/work/",
+  ...                              "search": u"http://217.13.68.167:9999/"})
   >>> connector
   <zeit.connector.connector.Connector object at 0x...>
 
@@ -297,8 +298,14 @@ The building blocks are search vars:
 Queries are built of basic terms involving search vars stitched together into expressions:
 
     >>> connector.search([author, volume], (year == '2007') & (month == '07'))
+    [[u'http://xml.zeit.de/2006/45/Headline-Huber', 'OK', 'Peter Buhr', '23', '2007'],
+     [u'http://xml.zeit.de/2006/45/Martenstein-45', 'OK', 'Peter Buhr', '23', '2007'],
+     ...
 
     >>> connector.search([author, volume], (year > '1997') & ((month == '07') | (month == '08')) & (ressort == 'Leben'))
+    [[u'http://xml.zeit.de/2006/45/Headline-Huber', 'OK', 'Peter Buhr', '23', '2007'],
+     [u'http://xml.zeit.de/2006/45/Martenstein-45', 'OK', 'Peter Buhr', '23', '2007'],
+     ...
   
 Clean up
 ========

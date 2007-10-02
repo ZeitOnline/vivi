@@ -73,7 +73,8 @@ import zope.app.appsetup.product
 import zope.app.component.interfaces
 import zope.app.component.hooks
 
-from zeit.connector.dav import davresource
+from zeit.connector.dav import (davresource, davconnection)
+from zeit.connector.dav.davconnection import DAVConnection
 from zeit.connector.dav.davresource import (
     DAVResource, DAVCollection, DAVFile, DAVError)
 
@@ -140,15 +141,27 @@ class Connector(zope.thread.local):
 
     zope.interface.implements(zeit.connector.interfaces.IConnector)
 
-    def __init__(self, root, prefix=u'http://xml.zeit.de/'):
-        self._root = root # FIXME check that to be a legal URL. Perhaps canonicalize
+    def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
+        # NOTE: roots['default'] should be defined
+        self._roots = roots # "extra" roots, a dict. ATM only xroots['search']
+        self._conns = {} # conn cache for above. Hrrgrr. WARNING: indexed by netloc!
         self._prefix = prefix
-        ( self._root_schema,
-          self._root_netloc,
-          self._root_path,
-          self._root_query,
-          self._root_frag )   = urlparse.urlsplit(root)
-        self._conn = None
+
+    def _conn(self, root='default'):
+        """Try to get a cached connection suitable for url"""
+        # FIXME: someone will have to invalidate the connections at some point.
+        url = self._roots[root]
+        (scheme, netloc) = urlparse.urlsplit(url)[0:2]
+        snetloc = "%s://%s" % (scheme, netloc)
+        if self._conns.get(snetloc, None) is None:
+            try: # grmblmmblpython
+                host, port = netloc.split(':', 1)
+                port = int(port)
+            except ValueError:
+                host, port = netloc, None
+            # FIXME: Argh. DAVConnection should take schema as well!!!
+            self._conns[snetloc] = DAVConnection(host, port)
+        return self._conns[snetloc]
 
     def listCollection(self, id):
         """List the filenames of a collection identified by <id> (see[8]). """
@@ -213,15 +226,15 @@ class Connector(zope.thread.local):
     def _update_property_cache(self, dav_result):
         cache = self.cache.properties
         for path, response in dav_result._result.responses.items():
-            response_id = self._loc2id(urlparse.urljoin(self._root, path))
+            response_id = self._loc2id(urlparse.urljoin(self._roots['default'], path))
             properties = cache[response_id] = response.get_all_properties()
 
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
             return
-        id = self._loc2id(urlparse.urljoin(self._root, dav_response.path))
+        id = self._loc2id(urlparse.urljoin(self._roots['default'], dav_response.path))
         child_ids = self.cache.child_ids[id] = [
-            self._loc2id(urlparse.urljoin(self._root, path))
+            self._loc2id(urlparse.urljoin(self._roots['default'], path))
             for path in dav_response.get_child_names()]
         return child_ids
 
@@ -325,18 +338,32 @@ class Connector(zope.thread.local):
         return (owner, timeout, mylock is not None)
 
     def search(self, attrlist, expr):
-        """Search repository behind this connector according to expression expr
-           For each match return the values of the attributes specified in attrlist
+        """Search repository behind this connector according to <expr>.
+           For each match return the values of the attributes
+           specified in attrlist
         """
+        # Collect "result" vars as bindings "into" expression:
         for at in attrlist:
             expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
-        # do something with return expr._collect()._render()
-        r = self._get_dav_resource(self._prefix) # FIXME: Dirty trick to make sure we have a _conn
-        return [resp.get_all_properties() \
-                    for resp in davresource.DAVResult( \
-                       self._conn.search(
-                           self._root, # Any URI would do here, right?
-                           body=expr._collect()._render())).responses]
+
+        # Do we need a different conn for SEARCH?
+        # NOTE: this code may become obsolete.
+        #       We need it to use a different netloc for different xconns.
+        conn = self._conn('search')
+
+        davres = davresource.DAVResult( \
+                conn.search(self._roots.get('search', self._roots['default']),
+                            body=expr._collect()._render()))
+
+        return [[self._loc2id(urlparse.urljoin(self._roots['default'], url))] +
+                resp.get_all_properties().values() \
+                    for url, resp in davres.responses.items()]
+
+#         return [resp.get_all_properties() \
+#                     for resp in davresource.DAVResult( \
+#                        conn.search(  # "extra" root for SEARCH:
+#                            self._roots.get('search', self._roots['default']),
+#                            body=expr._collect()._render())).responses.values()]
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)
@@ -371,7 +398,7 @@ class Connector(zope.thread.local):
              http://zip4.zeit.de:9999/cms/work/2006/12/
            Just a textual transformation: replace _prefix with _root"""
         if id.startswith(self._prefix):
-            return self._root + id[len(self._prefix):]
+            return self._roots['default'] + id[len(self._prefix):]
         else:
             raise ValueError("Bad id %r (prefix is %r)" % (id, self._prefix))
 
@@ -380,10 +407,12 @@ class Connector(zope.thread.local):
              http://zip4.zeit.de:9999/cms/work/2006/12/ -->
              http://xml.zeit.de/2006/12/
            Just a textual transformation: replace _root with _prefix"""
-        if loc.startswith(self._root):
-            return self._prefix + loc[len(self._root):]
+        root = self._roots['default']
+        if loc.startswith(root):
+            return self._prefix + loc[len(root):]
         else:
-            raise ValueError("Bad location %r (root is %r)" % (loc, self._root))
+            return u"######################################"
+            ## raise ValueError("Bad location %r (root is %r)" % (loc, root))
 
     def _internal_add(self, id, resource):
         """The grunt work of __setitem__() and add()
@@ -422,11 +451,8 @@ class Connector(zope.thread.local):
            (Actually return the ETag, but don't rely on that yet)
         """
         url = self._id2loc(id)
-        hresp = DAVResource(url, conn=self._conn).head()
-        if hresp:
-            if self._conn is None:
-                self._conn = hresp._conn # cache DAV connection
-        else:
+        hresp = DAVResource(url, conn=self._conn()).head()
+        if not hresp:
             return None # FIXME throw exception?
         st = int(hresp.status)
         if  st== httplib.OK:
@@ -447,17 +473,13 @@ class Connector(zope.thread.local):
         wantcoll = (ensure == 'collection' or url.endswith('/'))
         try:
             if wantcoll:
-                res = DAVCollection(url, conn = self._conn) # FIXME auto_request?
+                res = DAVCollection(url, conn = self._conn()) # FIXME auto_request?
             elif ensure == 'file':
-                res = DAVFile(url, conn = self._conn) # FIXME auto_request?
+                res = DAVFile(url, conn = self._conn()) # FIXME auto_request?
             else: # Tis one to disappear when [14] fixed
-                res = DAVResource(url, conn = self._conn) # FIXME auto_request?
+                res = DAVResource(url, conn = self._conn()) # FIXME auto_request?
         except:
             raise # FIXME: anything goes here :-/
-        if res._conn is None:
-            res.connect()
-        if res and self._conn is None:
-            self._conn = res._conn # cache DAV connection
         return res
 
     def _get_dav_lock(self, id):
