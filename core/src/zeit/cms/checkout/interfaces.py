@@ -49,11 +49,11 @@ class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
 
 
 class ICheckoutEvent(ICheckinCheckoutEvent):
-    """Generated when a content object is checked out."""
+    """Generated when a content object was checked out."""
 
 
 class ICheckinEvent(ICheckinCheckoutEvent):
-    """Generated when a content object is checked in."""
+    """Generated when a content object was checked in."""
 
 
 class EventBase(zope.component.interfaces.ObjectEvent):
