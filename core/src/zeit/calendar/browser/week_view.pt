@@ -3,6 +3,7 @@
   <metal:fill fill-slot="body">
 
     <tal:replace replace="resource_library:zeit.calendar" />
+    <tal:replace replace="resource_library:zeit.calendar.js" />
 
     <div id="full-content-area"
       tal:define="
