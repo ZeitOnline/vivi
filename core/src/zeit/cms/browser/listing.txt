@@ -4,37 +4,37 @@ Folder Listings
 
 There is a general way to list folders as all listings should look the same.
 
-Create a browser first::
+Create a browser first:
 
-    >>> from z3c.etestbrowser.testing import ExtendedTestBrowser 
-    >>> browser = ExtendedTestBrowser()
-    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser 
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
 
 The filelisting is to be found under /repository. To get a dojo based
-FilteringTable open a specific folder::
+FilteringTable open a specific folder:
 
-    >>> browser.open('http://localhost/++skin++cms/repository/2007/01')
+>>> browser.open('http://localhost/++skin++cms/repository/2007/01')
 
-We expect a normal file listing::
+We expect a normal file listing:
 
-    >>> browser.etree.xpath("//table[@class = 'contentListing']")
-    [<Element table...>]
-    >>> columns = browser.etree.xpath("//table/thead/tr/th")
-    >>> len(columns)
-    10
+>>> browser.etree.xpath("//table[@class = 'contentListing']")
+[<Element table...>]
+>>> columns = browser.etree.xpath("//table/thead/tr/th")
+>>> len(columns)
+10
 
 Deleteing Content
 =================
 
 Deleting works by selecting the objects to remove via a checkbox and clicking
-`Löschen`. We delete the article "LB01-DOSSaufschwung" here::
+`Löschen`. We delete the article "LB01-DOSSaufschwung" here:
 
-    >>> 'LB01-DOSSaufschwung' in browser.contents
-    True
-    >>> checkbox = browser.getControl(
-    ...     name="selection_column.TEIwMS1ET1NTYXVmc2Nod3VuZw==.")
-    >>> checkbox.value = True
-    >>> browser.getControl(name='delete').click()
-    >>> 'LB01-DOSSaufschwung' in browser.contents
-    False
+>>> 'LB01-DOSSaufschwung' in browser.contents
+True
+>>> checkbox = browser.getControl(
+...     name="selection_column.TEIwMS1ET1NTYXVmc2Nod3VuZw==.")
+>>> checkbox.value = True
+>>> browser.getControl(name='delete').click()
+>>> 'LB01-DOSSaufschwung' in browser.contents
+False
