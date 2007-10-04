@@ -58,6 +58,10 @@ class EditForm(ArticleFormBase, zeit.cms.browser.form.EditForm):
 
 class DisplayForm(ArticleFormBase, zeit.cms.browser.form.DisplayForm):
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.article.interfaces.IArticleMetadata,
-        render_context=True, omit_readonly=False)
+    form_fields = (
+        zope.formlib.form.Fields(
+            zeit.content.article.interfaces.IArticleMetadata,
+            render_context=True, omit_readonly=False) +
+        zope.formlib.form.Fields(
+            zeit.content.article.interfaces.IArticle).select(
+                'syndicationLog'))

@@ -11,40 +11,25 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 
 
-class KeywordsProperty(object):
+class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
 
     def __init__(self):
-        self.path = lxml.objectify.ObjectPath('.head.keywordset.keyword')
-
-    def __get__(self, instance, class_):
-        tree = instance.xml
-        taxonomy = self.taxonomy
-        keywords = []
-        try:
-            keyword_set = self.path.find(tree)[:]
-        except AttributeError:
-            # no keywords
-            keyword_set = []
-
-        for keyword_node in keyword_set:
-            rdf_id = unicode(keyword_node)
-            keyword = taxonomy[rdf_id]
-            keywords.append(keyword)
-
-        return tuple(keywords)
+        super(KeywordsProperty, self).__init__('.head.keywordset.keyword')
 
     def __set__(self, instance, value):
+        super(KeywordsProperty, self).__set__(instance, value)
         tree = instance.xml
-        for keyword in self.path.find(tree, []):
-            keyword.getparent().remove(keyword)
-        self.path.setattr(tree, [keyword.code for keyword in value])
         for keyword in self.path.find(tree, []):
             keyword.set('source', 'manual')
 
-    @property
-    def taxonomy(self):
-        return zope.component.getUtility(
+    def _element_factory(self, node, tree):
+        taxonomy = zope.component.getUtility(
             zeit.cms.content.interfaces.IKeywords)
+        rdf_id = unicode(node)
+        return taxonomy[rdf_id]
+
+    def _node_factory(self, entry, tree):
+        return entry.code
 
 
 class CommonMetadata(object):

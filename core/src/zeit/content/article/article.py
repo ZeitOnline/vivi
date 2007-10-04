@@ -23,8 +23,10 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.interfaces
-import zeit.content.article.interfaces
 import zeit.wysiwyg.interfaces
+
+import zeit.content.article.interfaces
+import zeit.content.article.syndication
 
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
@@ -123,12 +125,16 @@ class Article(persistent.Persistent,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn')
     automaticTeaserSyndication = zeit.cms.content.property.ResourceProperty(
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
+    syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
+
     images = ImageProperty()
 
     navigation = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['navigation'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'ressort')
+
+
 
     @rwproperty.getproperty
     def html(self):

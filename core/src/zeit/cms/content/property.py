@@ -129,6 +129,39 @@ class MultipleAttributeProperty(AttributeProperty):
             self.addAttribute(instance, value)
 
 
+class MultiPropertyBase(object):
+
+    def __init__(self, path):
+        self.path = lxml.objectify.ObjectPath(path)
+
+    def __get__(self, instance, class_):
+        tree = instance.xml
+        result = []
+        try:
+            element_set = self.path.find(tree)
+        except AttributeError:
+            # no keywords
+            element_set = []
+        for node in element_set:
+            result.append(self._element_factory(node, tree))
+        return tuple(result)
+
+    def __set__(self, instance, value):
+        # Remove nodes.
+        tree = instance.xml
+        for entry in self.path.find(tree, []):
+            entry.getparent().remove(entry)
+        # Add new nodes:
+        self.path.setattr(tree, [self._node_factory(entry, tree)
+                                 for entry in value])
+
+    def _element_factory(self, node, tree):
+        raise NotImplementedError("Implemented in sub classes.")
+
+    def _node_factory(self, entry, tree):
+        raise NotImplementedError("Implemented in sub classes.")
+
+
 class ResourceProperty(MultipleAttributeProperty):
 
     def __get__(self, instance, class_):

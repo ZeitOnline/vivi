@@ -2,9 +2,11 @@
 # See also LICENSE.txt
 # $Id$
 
+import re
 import os
 import unittest
 
+import zope.testing.renormalizing
 from zope.testing import doctest
 
 import zope.app.testing.functional
@@ -24,6 +26,17 @@ ArticleSyndicationLayer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'ArticleSyndicationLayer', allow_teardown=True)
 
 
+ISO8601_REGEX = re.compile(
+    r"(?P<year>[0-9]{4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
+    r"((?P<separator>.)(?P<hour>[0-9]{2}):(?P<minute>[0-9]{2})(:(?P<second>[0-9]{2})(\.(?P<fraction>[0-9]+))?)?"
+    r"(?P<timezone>Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?")
+
+
+checker = zope.testing.renormalizing.RENormalizing([
+  (ISO8601_REGEX, '<iso8601 date>')])
+
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
@@ -35,5 +48,6 @@ def test_suite():
         layer=ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'syndication.txt',
-        layer=ArticleSyndicationLayer))
+        layer=ArticleSyndicationLayer,
+        checker=checker))
     return suite

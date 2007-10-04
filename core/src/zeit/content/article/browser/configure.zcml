@@ -56,5 +56,18 @@
     name="zeit.content.article.Add"
     menu="zeit-add-menu" title="Article"
     />
+  
+  <!-- Syndication Log -->
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zeit.content.article.interfaces.ISyndicationLogType
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.SyndicationLogDisplayWidget"
+    permission="zope.Public"
+    />
 
 </configure>

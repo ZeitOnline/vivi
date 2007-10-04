@@ -84,27 +84,43 @@ frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
 Repository returns: feed-id
 Repository returns: second-feed
 frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
+>>> log = article.syndicationLog
+Repository returns: feed-id
+Repository returns: second-feed
+>>> log
+(<zeit.content.article.syndication.SyndicationEventLog object at 0x...>,)
+>>> log[0].syndicatedOn
+datetime.datetime(..., tzinfo=...)
+>>> log[0].syndicatedIn
+frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
 
 
-Of course `syndicatedIn` and `automaticTeaserSyndication` is also represented
-in the XML:
+Of course `syndicatedIn`, `automaticTeaserSyndication` and the `syndicationLog`
+is also represented in the XML:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article...
-  <attribute
-    ns="http://namespaces.zeit.de/CMS/document"
-    name="syndicatedIn">feed-id</attribute>
-  <attribute
-    ns="http://namespaces.zeit.de/CMS/document"
-    name="syndicatedIn">second-feed</attribute>
-  <attribute
-    ns="http://namespaces.zeit.de/CMS/document"
-    name="automaticTeaserSyndication">feed-id</attribute>
-  <attribute
-    ns="http://namespaces.zeit.de/CMS/document"
-    name="automaticTeaserSyndication">second-feed</attribute>
-...
+    <attribute
+      ns="http://namespaces.zeit.de/CMS/document"
+      name="syndicatedIn">feed-id</attribute>
+    <attribute
+      ns="http://namespaces.zeit.de/CMS/document"
+      name="syndicatedIn">second-feed</attribute>
+    <attribute
+      ns="http://namespaces.zeit.de/CMS/document"
+      name="automaticTeaserSyndication">feed-id</attribute>
+    <attribute
+      ns="http://namespaces.zeit.de/CMS/document"
+      name="automaticTeaserSyndication">second-feed</attribute>...
+    <syndicationlog>
+      <entry>
+        <syndicatedOn>2007-10-04 11:43:28.191273+00:00</syndicatedOn>
+        <syndicatedIn>feed-id</syndicatedIn>
+        <syndicatedIn>second-feed</syndicatedIn>
+      </entry>
+    </syndicationlog>
+  ...  
 </article>
 
 
@@ -132,6 +148,7 @@ Checkout:  <Feed object at 0x...>
 Feed updating metadata: <zeit.content.article.article.Article
   object at 0x...>
 Checkin:  <Feed object at 0x...>
+
 
 
 Cleanup

@@ -22,6 +22,13 @@
   </class>
 
 
+  <class class=".syndication.SyndicationEventLog">
+    <require
+      interface=".interfaces.ISyndicationEventLog"
+      permission="zope.View" />
+  </class>
+
+
   <subscriber handler=".syndication.linkToFeed" />
   <subscriber handler=".syndication.updateFeedOnCheckin" />
   
@@ -31,6 +38,11 @@
   <interface
     interface=".interfaces.IArticle"
     type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+  <interface
+    interface=".interfaces.ISyndicationEventLog"
+    type=".interfaces.ISyndicationLogType"
     />
 
 </configure>

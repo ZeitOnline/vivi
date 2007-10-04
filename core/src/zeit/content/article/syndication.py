@@ -2,12 +2,58 @@
 # See also LICENSE.txt
 # $Id$
 
+import datetime
+
+import iso8601
+import lxml.objectify
+import pytz
+
 import zope.component
+import zope.interface
 
 import zeit.cms.checkout.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.article.interfaces
 
+
+class SyndicationEventLog(object):
+
+    zope.interface.implements(
+        zeit.content.article.interfaces.ISyndicationEventLog)
+
+    def __init__(self, syndicated_in, syndicated_on=None):
+        self.syndicatedIn = frozenset(syndicated_in)
+        if syndicated_on is None:
+            self.syndicatedOn = datetime.datetime.now(pytz.UTC)
+        else:
+            self.syndicatedOn = syndicated_on
+
+
+class SyndicationLogProperty(zeit.cms.content.property.MultiPropertyBase):
+
+    def __init__(self):
+        super(SyndicationLogProperty, self).__init__(
+            '.head.syndicationlog.entry')
+
+    def _element_factory(self, node, tree):
+        repository = self.repository
+        syndicated_on = iso8601.parse_date(unicode(node.syndicatedOn))
+        syndicated_in = []
+        for unique_id in node.syndicatedIn:
+            unique_id = unicode(unique_id)
+            syndicated_in.append(repository.getContent(unique_id))
+        return SyndicationEventLog(syndicated_in, syndicated_on)
+
+    def _node_factory(self, entry, tree):
+        node = tree.makeelement('entry')
+        node.syndicatedOn = entry.syndicatedOn
+        node.syndicatedIn = [feed.uniqueId for feed in entry.syndicatedIn]
+        return node
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
 
 @zope.component.adapter(
     zeit.content.article.interfaces.IArticle,
@@ -33,6 +79,7 @@ def linkToFeed(object, event):
 
     checked_out.syndicatedIn = new_syndicated_in
     checked_out.automaticTeaserSyndication = new_auto_sync
+    checked_out.syndicationLog += (SyndicationEventLog(event.targets), )
 
     manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
     manager.checkin(event=False)

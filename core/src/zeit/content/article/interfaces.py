@@ -17,6 +17,23 @@ import zeit.content.article.source
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 
 
+class ISyndicationLogType(zope.interface.interfaces.IInterface):
+    """Type for syndication logs."""
+
+
+class ISyndicationEventLog(zope.interface.Interface):
+
+    syndicatedOn = zope.schema.Datetime(
+        title=u"Syndication Time",
+        readonly=True)
+
+    syndicatedIn = zope.schema.FrozenSet(
+        title=u"Syndicated in",
+        readonly=True,
+        default=frozenset(),
+        value_type=zope.schema.Object(zeit.cms.syndication.interfaces.IFeed))
+
+
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
@@ -84,3 +101,9 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         title=u"Article is syndicated in these feeds.",
         default=frozenset(),
         value_type=zope.schema.Object(zeit.cms.syndication.interfaces.IFeed))
+
+
+    syndicationLog = zope.schema.Tuple(
+        title=u"Syndication Log",
+        default=(),
+        value_type=zope.schema.Object(ISyndicationEventLog))
