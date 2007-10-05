@@ -75,8 +75,8 @@ Browsing
 
 The browsing interface basically allows listing collections:
 
-  >>> from pprint import pprint
-  >>> pprint(list(connector.listCollection((u'http://xml.zeit.de/1998/03'))))
+>>> from pprint import pprint
+>>> pprint(list(connector.listCollection((u'http://xml.zeit.de/1998/03'))))
 [(u'plog.txt.19980109.xml', u'http://xml.zeit.de/1998/03/plog.txt.19980109.xml'),
  (u'bulk0398.txt.19980109.xml', u'http://xml.zeit.de/1998/03/bulk0398.txt.19980109.xml'),
  (u'evolution.txt.19980109.xml', u'http://xml.zeit.de/1998/03/evolution.txt.19980109.xml'),
@@ -112,7 +112,7 @@ The browsing interface basically allows listing collections:
 
 Verify the names for containers are right:
 
-  >>> pprint(list(connector.listCollection(u'http://xml.zeit.de/musik')))
+>>> pprint(list(connector.listCollection(u'http://xml.zeit.de/musik')))
 [(u'archiv', u'http://xml.zeit.de/musik/archiv/'),
  (u'adventskalender', u'http://xml.zeit.de/musik/adventskalender/'),
  (u'box_weblogs', u'http://xml.zeit.de/musik/box_weblogs'),
@@ -156,10 +156,10 @@ Get an object. We will get a cached resource:
 
 If a resource does not exist, a KeyError is raised:
 
-  >>> connector['http://xml.zeit.de/foobar']
-  Traceback (most recent call last):
-...
-  KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
+>>> connector['http://xml.zeit.de/foobar']
+Traceback (most recent call last):
+    ...
+KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
 
 The properties are cached now:
 
