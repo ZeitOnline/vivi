@@ -131,7 +131,7 @@ def connectorFactory():
     if not root:
         raise ZConfig.ConfigurationError(
             "WebDAV server not configured properly.")
-    return Connector(root)
+    return Connector({'default': root})
 
 
 class Connector(zope.thread.local):
@@ -273,6 +273,7 @@ class Connector(zope.thread.local):
         # FIXME lotsa error checking here...
         parent, name = _id_splitlast(id)
         self._get_dav_resource(parent).delete(name, self._get_my_locktoken(id))
+        self._invalidate_cache(id)
 
     def add(self, object):
         resource = zeit.connector.interfaces.IResource(object)
