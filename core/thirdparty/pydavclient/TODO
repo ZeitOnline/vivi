@@ -1,5 +1,0 @@
-Things left to do:
- - improve error handling
- - improve result handling
- - check dav compliance against other dav servers (for now only Apache2 mod_dav)
- - improve code base

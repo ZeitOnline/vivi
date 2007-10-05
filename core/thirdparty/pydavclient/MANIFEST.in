@@ -1,6 +1,0 @@
-include MANIFEST.in
-include TODO
-include CHANGES
-include LICENSE.txt
-include README
-include dav/*.py
