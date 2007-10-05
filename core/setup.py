@@ -16,6 +16,7 @@ setup(
     namespace_packages = ['zeit'],
     install_requires=[
         'ZODB3>3.7',
+        'gocept.cache',
         'gocept.lxml',
         'setuptools',
         'zope.app.appsetup',

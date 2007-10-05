@@ -12,6 +12,7 @@ def test_suite():
     suite.addTest(doctest.DocFileSuite(
         'connector.txt',
         'mock.txt',
+        'cache.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS)))
     return suite

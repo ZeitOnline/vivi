@@ -1,0 +1,127 @@
+=================
+Ressource Caching
+=================
+
+We are caching the bodies of resources. The cache removes objects a given time
+after the last access, by default 30 days.
+
+>>> from zeit.connector.cache import ResourceCache
+>>> cache = ResourceCache()
+
+
+Let's set the cache timeout to 4 second, since we don't want to wait 30 days:
+
+>>> cache.CACHE_TIMEOUT = 4
+>>> cache.UPDATE_INTERVAL = 1
+
+For getting data from the cache, the cache needs the etag from the properties:
+
+>>> properties = {('getetag', 'DAV:'): 'hurz'}
+
+Initially the cache is empty and asking for a non  cached entry yields a
+KeyError.:
+
+>>> cache.getData('some-id', properties)
+Traceback (most recent call last):
+    ...
+KeyError: "Object 'some-id' is not cached."
+
+
+Set some data. `setData` returns an open filehandle to the cache data:
+
+>>> from StringIO import StringIO
+>>> data = StringIO('datadata/end of line.')
+>>> file_handle = cache.setData('some-id', properties, data)
+>>> file_handle
+<open file '...', mode 'rb' at 0x...>
+>>> file_handle.read()
+'datadata/end of line.'
+
+We can get the data also via `getData` now:
+
+>>> cache.getData('some-id', properties)
+<open file '...', mode 'rb' at 0x...>
+
+Also the access times are noted in the cache:
+
+>>> last_access = cache._last_access_time['some-id']
+>>> isinstance(last_access, long)
+True
+>>> cache._time_to_id[last_access]
+'some-id'
+
+When we now access getData the access time will not be update since less than
+1 second has passed:
+
+>>> cache.getData('some-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> cache._last_access_time['some-id'] == last_access
+True
+
+Let's wait 1 second:
+
+>>> import time
+>>> time.sleep(1)
+
+If we access now the time will be updated:
+
+
+>>> cache.getData('some-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> new_access = cache._last_access_time['some-id']
+>>> new_access == last_access
+False
+
+Also the the time to id mapping has been updated:
+
+>>> cache._time_to_id[last_access]
+Traceback (most recent call last):
+    ...
+KeyError: ...
+>>> cache._time_to_id[new_access]
+'some-id'
+
+
+Add another resource to the cache to see how resources are removed from the
+cache:
+
+>>> data = StringIO('another text')
+>>> cache.setData('another-id', properties, data)
+<open file '...', mode 'rb' at 0x...>
+
+We now have two elements in the cache:
+
+>>> list(cache._last_access_time.keys())
+['another-id', 'some-id']
+
+Now sleep another 4 seconds and see the `some-id` will be gone after accessing:
+
+>>> time.sleep(1)
+>>> cache.getData('another-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> list(cache._last_access_time.keys())
+['another-id', 'some-id']
+
+Still there ...
+
+>>> time.sleep(1)
+>>> cache.getData('another-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> list(cache._last_access_time.keys())
+['another-id', 'some-id']
+
+Still there ...
+
+>>> time.sleep(1)
+>>> cache.getData('another-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> list(cache._last_access_time.keys())
+['another-id', 'some-id']
+
+Now it's gone:
+
+>>> time.sleep(1)
+>>> cache.getData('another-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> list(cache._last_access_time.keys())
+['another-id']
