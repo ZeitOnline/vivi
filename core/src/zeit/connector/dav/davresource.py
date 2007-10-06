@@ -199,9 +199,32 @@ class DAVDeleteFailedError ( DAVError ):
     """
     pass
 
+class DAVBadStatusLineError ( DAVError ):
+    """Exception raised when we don't grok a status line
+       (that's one of those "HTTP/1.1 200 OK" thingies around there)
+    """
+    pass
+
+# As of rfc2616: 6.1 Status Line
+_stat_patt = re.compile("^(HTTP/\d+\.\d+)\s+(\d\d\d)(?:\s+(.*))?$")
+
+def _parse_status_line(line):
+    line = line.strip("\r\n\t ")
+    m = _stat_patt.match(line)
+    # EEK! m==None should be caught by exception below, but isn't :-(
+    if m is None:
+        raise DAVBadStatusLineError, ("Can't grok status line %r" % line)
+    try:
+        # FIXME: we might try to grok protocol version (in m.group(1))
+        stat, reason = m.group(2, 3)
+        return(int(stat), reason)
+    except:
+        raise DAVBadStatusLineError, ("Can't grok status line %r" % line)
+
 #:fixme: I don't like this setup: why group properties by their status code
 # at all. Does a read operation on a property need to check in all DAVPropstat
 # objects of a DAVResource?
+
 class DAVPropstat:
     """
     """
@@ -220,15 +243,11 @@ class DAVPropstat:
     # (by calling doc.xpathEval(expr, context_node)
     def _parse_ps( self, doc, context_node ):
         status_nodes = context_node.xpath('D:status', {'D' : 'DAV:'})
-        if status_nodes:
-            stat_node = status_nodes[0]
-            text = stat_node.text.split(' ', 3)
-            if len(text) == 1: # That's for Hunchentoot, to be removed
-                self.status = int(text[0])
-                self.reason = None
-            else: # assume length 3 or die
-                self.status = int(text[1])
-                self.reason = text[2]
+        # Huzzah for copy&paste programming :-(
+        if status_nodes: # FIXME: What when more than one?
+            # may raise exception
+            self.status, self.reason = _parse_status_line(status_nodes[0].text)
+
         # description
         desc = context_node.xpath('D:responsedescription', {'D' : 'DAV:'})
         if desc:
@@ -319,7 +338,6 @@ class DAVResponse:
 
     #:new:
     def _parse_res ( self, doc, res_node ):
-        ONKOMAT = res_node
         href_nodes = _find_child(res_node, 'href')
         if not href_nodes:
             raise DAVNotFoundError, ('No href found in node %s!' % res_node.nodePath())  #:fixme: nodePath() is libxml2
@@ -327,11 +345,10 @@ class DAVResponse:
         # self.url = urllib.unquote(url_node.text.strip()).decode('utf8')
         self.url = url_node.text.strip()
         status_nodes = _find_child(res_node, 'status')
-        if status_nodes:
-            st = status_nodes[0].text
-            proto, status, reason = st.split(' ', 2)
-            self.status = status
-            self.reason = reason
+        if status_nodes: # FIXME: What when more than one?
+            # may raise exception
+            self.status, self.reason = _parse_status_line(status_nodes[0].text)
+
         pslist = _find_child(res_node, 'propstat')
         try:
             for node in pslist:
