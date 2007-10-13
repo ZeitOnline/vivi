@@ -7,7 +7,7 @@ some methods to retrieve informations about the refered to resource.
 import urllib
 from urlparse import urlparse, urlunparse, urljoin
 import httplib
-from pprint import pprint
+from pprint import pformat
 import re
 import lxml.etree as etree 
 import davbase, davconnection
@@ -177,7 +177,7 @@ class DAVNotOwnerError ( DAVError ):
 
 
 class DAVInvalidLocktokenError ( DAVError ):
-    """Exception raised if an atempt to unlock a not locked resource was made.
+    """Exception raised if an attempt to unlock a not locked resource was made.
     """
     pass
 
@@ -314,16 +314,10 @@ class DAVPropstat:
             return True
         return False
 
-    def dump ( self ):
-        print "\t\tDAVPropstat Status:", self.status
-        print "\t\tDAVPropstat Reason:", self.reason
-        print "\t\tDAVPropstat Desc:", self.description
-        print "\t\tDAVPropstat Properties:",
-        pprint(self.properties)
-        print "\t\tDAVPropstat Locking info:",
-        pprint(self.locking_info)
-        print
-#
+    def __repr__ ( self ):
+        return "DAVPropstat: Status: %r %r %r\n" % (self.status, self.reason, self.description) + \
+               "  Properties:" + pformat(self.properties, 2) + \
+               "\n  Locking info: " + pformat(self.locking_info, 2)
 
 class DAVResponse:
     """FIXME: document
@@ -389,12 +383,9 @@ class DAVResponse:
             ret.update(i)
         return ret
 
-    def dump ( self ):
-        print "\tDAVResponse for", self.url
-        print "\tDAVResponse status:", self.status, self.reason
-        for p in self.propstats:
-            p.dump()
-#
+    def __repr__ ( self ):
+        return "  DAVResponse for %s: %r %r\n  " % (self.url, self.status, self.reason) + \
+        "\n  ".join([p.__repr__() for p in self.propstats])
 
 class DAVResult:
 
@@ -468,14 +459,11 @@ class DAVResult:
         etag = pd.get(('getetag','DAV:'), None)
         return etag
 
-    def dump ( self ):
-        print '='*60
-        print "DAVResult Dump"
-        print "HTTP Status:", self.status
-        print "HTTP Reason:", self.reason
-        for r in self.responses.values():
-            r.dump()
-
+    def __repr__ ( self ):
+        return "=== DAVResult ===" + \
+               ("  Status: %d %s\n  " % (self.status, self.reason)) + \
+               "\n  ".join([r.__repr__() for r in self.responses.values()]) + \
+               "\n=================\n"
 
 class DAVResource:
     """Basic class describing an arbitrary DAV resource (file or collection)

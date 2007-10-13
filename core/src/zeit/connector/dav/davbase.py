@@ -220,10 +220,10 @@ class DAVBase:
         headers['Host'] = self._con.host
         if depth is not None:
             headers['Depth'] = str(depth)
-        if timeout is not None:
-            headers['Timeout'] = 'Second-%d' % timeout
-        else:
+        if timeout is None:
             headers['Timeout'] = 'Infinite'
+        else:
+            headers['Timeout'] = 'Second-%d' % timeout
         #:fixme: Here we should use ElementTree to construct a
         # proper XML request body
         body = XML_DOC_HEADER + \

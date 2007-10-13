@@ -207,9 +207,7 @@ Resources may be locked:
 ...                        'http://xml.zeit.de/users/frodo',
 ...                        datetime.today() + timedelta(hours=2))
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
-(u'http://xml.zeit.de/users/frodo',
- datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
- True)
+(u'http://xml.zeit.de/users/frodo', u'Second-7199', True)
 
 To unlock it, you would have to supply the locktoken. The library takes
 care of that (hmmm?):
@@ -277,36 +275,32 @@ Delete the resource:
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 
-
-
 Collections
 ===========
-
-THIS IS CURRENTLY BROKEN. SEE BUG #3717
 
 Creating collections works like creating any other resource. Create a resource
 object first:
 
-#    >>> collection_id = 'http://xml.zeit.de/testing/collection/'
-#    >>> coll = zeit.connector.resource.Resource(
-#    ...     collection_id, 'collection', 'collection', StringIO.StringIO(''))
+>>> collection_id = 'http://xml.zeit.de/testing/my-collection/'
+>>> coll = zeit.connector.resource.Resource(
+...     collection_id, 'my-collection', 'collection', StringIO.StringIO(''))
 
 Add the collection rssource to the dav and see we get it back:
 
-#    >>> connector.add(coll)
-#    >>> res = connector[collection_id]
-#    >>> res.type
-#    'collection'
+>>> connector.add(coll)
+>>> res = connector[collection_id]
+>>> res.type
+'collection'
 
 Initially a collection is empty:
 
-#    >>> list(connector.listCollection(collection_id))
-#    []
+>>> list(connector.listCollection(collection_id))
+[]
 
 
 Remove the collection again:
 
-#    >>> del connector[collection_id]
+>>> del connector[collection_id]
 
 
 Search (interface only):

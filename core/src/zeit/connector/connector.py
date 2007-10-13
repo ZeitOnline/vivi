@@ -34,8 +34,16 @@
 #      locks URLs. This does make sense when trying to avoid race conditions
 #      at resource creation.
 #      But then we'll have to enhance davresource.py
+#      [RESOLVED] Well. Partially. To wit:
+#                 * "file" resources support, as of current mod_dav lock-null.
+#                    We do use that in the case of file resources.
+#                 * mod_dav behaves bizarrely with lock-null then mkcol.
+#                    We do live with a "locking gap" when creating collections.
+#                 Note that lock-null seems to be on its way to deprecation
+#                 anyway. For me that means: avoid WebDAV for future projects.
 # [10] we'll have to enhance it anyway because it doesn't support setting
 #      lock expiry.
+#      [RESOLVED]
 # [11] Interface note: This implementation returns a lock token. The davclient
 #      implementation keeps a cache of "the" lock token for "this" DAV resource,
 #      but I fear our interface won't allow us to make use of that.
@@ -48,6 +56,7 @@
 #      Or something equivalent, like doing away with the Collection/File difference
 #      (which in my view would be more along WebDAV semantics)
 # [16] which content-type?
+# [17] Try to pass resource content around as IO object
 
 import StringIO
 import datetime
@@ -55,6 +64,7 @@ import httplib
 import random
 import time
 import urlparse
+import sys
 
 import pytz
 import gocept.lxml.objectify
@@ -76,7 +86,7 @@ import zope.app.component.hooks
 from zeit.connector.dav import (davresource, davconnection)
 from zeit.connector.dav.davconnection import DAVConnection
 from zeit.connector.dav.davresource import (
-    DAVResource, DAVCollection, DAVFile, DAVError)
+    DAVResource, DAVCollection, DAVFile, DAVError, DAVLockedError, DAVLockFailedError)
 
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -95,7 +105,6 @@ TIME_ETERNITY = datetime.datetime(
 # Gaah. They stole print()
 # That's what I _hate_ about Python culture. They assume to know
 # what's good for you.
-import sys
 def holler(txt):
     sys.__stdout__.write(txt)
 
@@ -121,6 +130,15 @@ def _id_splitlast(id):
     parent, last = id.rstrip('/').rsplit('/', 1)
     return parent + '/', last
 
+_max_timeout_days = ((sys.maxint-1) / 86400) - 1
+
+def _abs2timeout(time):
+    # Convert timedelta to int (seconds). Return None when (near) overflow
+    # Ain't there anything similar in Python? Grr.
+    d = time - datetime.datetime.now()
+    if abs(d.days) > _max_timeout_days: return None
+    # No negative or zero timeouts:
+    return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
 
 def connectorFactory():
     cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
@@ -288,32 +306,34 @@ class Connector(zope.thread.local):
             locktoken=locktoken)
         self._invalidate_cache(id)
 
+
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
-        # FIXME [9] lock non-existing resources as well?
-        davres = self._get_dav_resource(id)
+        url = self._id2loc(id)
+        token = None
         try:
-            # FIXME [10] expiry, i.e. until
-            token = davres.lock(owner=principal, depth=0)
+            # NOTE: _timeout() returns None for timeouts too long. This blends
+            #       with DAVConnection, which converts None to 'Infinite'.
+            token = self._conn().do_lock(url,
+                                         owner=principal,
+                                         depth=0,
+                                         timeout=_abs2timeout(until))
         except davresource.DAVLockedError:
             raise zeit.connector.interfaces.LockingError(
                 "%s is already locked." % id)
-        except: # FIXME how to get at exception info
-            # FIXME [13]: refine LockingError, how?
-            ### type, value, traceback = sys.exc_info()
-            raise zeit.connector.interfaces.LockingError(
-                "DAV error %s on %s" % ("UNKNOWN", id))
+        # Just pass-on other exceptions. It's more informative
+
         # FIXME [11] returning locktoken (DAV resources keep one...)
-        self._put_my_lockinfo(id, token, principal, until)
+        if token: self._put_my_lockinfo(id, token, principal, until)
         self._invalidate_cache(id)
         return token
 
-    def unlock(self, id):
-        token = self._get_dav_lock(id).get('locktoken')
-        if token:
-            davres = self._get_dav_resource(id)
+    def unlock(self, id, locktoken=None):
+        url = self._id2loc(id)
+        locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
+        if locktoken:
             try:
-                davres.unlock(locktoken=token)
+                self._conn().do_unlock(url, locktoken)
             finally:
                 self._put_my_lockinfo(id, None)
         self._invalidate_cache(id)
@@ -419,32 +439,58 @@ class Connector(zope.thread.local):
         """The grunt work of __setitem__() and add()
         """
         locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
-
         autolock = (locktoken is None)
-        if autolock:
+        iscoll = (resource.type == 'collection')
+        
+        # No meaningful lock-null resources for collections :-(
+        if autolock and not iscoll:
             locktoken = self.lock(id, "AUTOLOCK",
                                   datetime.datetime.today() + \
                                       datetime.timedelta(seconds=20))
+
         if hasattr(resource.data, 'seek'):
             resource.data.seek(0)
-        data = resource.data.read()
-        if(self._check_dav_resource(id) is None):
-            (parent, name) = _id_splitlast(id)
-            parent = self._get_dav_resource(parent, ensure='collection')
-            davres = parent.create_file(name, data, resource.contentType,
-                                        locktoken = locktoken)
-        else:
-            davres = self._get_dav_resource(id, ensure='file')
-            davres.upload(data, resource.contentType,
-                          locktoken = locktoken)
+        data = resource.data.read() # FIXME [17]: check possibility to pass data as IO object
+
+        if iscoll:
+            self._add_collection(id)
+            davres = self._get_dav_resource(id, ensure='collection')
+            # NOTE: here be race condition. Lock-null trick doesn't work,
+            #       so we lock _after_ creation
+            if autolock:
+                locktoken = self.lock(id, "AUTOLOCK",
+                                      datetime.datetime.today() + \
+                                          datetime.timedelta(seconds=20))
+        else: # We are a file resource:
+            if(self._check_dav_resource(id) is None):
+                (parent, name) = _id_splitlast(id)
+                parent = self._get_dav_resource(parent, ensure='collection')
+                davres = parent.create_file(name, data, resource.contentType,
+                                            locktoken = locktoken)
+            else:
+                davres = self._get_dav_resource(id, ensure='file')
+                davres.upload(data, resource.contentType,
+                              locktoken = locktoken)
 
         davres.change_properties(
             resource.properties,
             delmark=zeit.connector.interfaces.DeleteProperty,
             locktoken=locktoken)
-        if autolock:
-            self.unlock(id)
+
+        if autolock and locktoken: # This was _our_ lock. Cleanup:
+            self.unlock(id, locktoken=locktoken)
         self._invalidate_cache(resource.id)
+
+    # EXPERIMENTAL
+    def _add_collection(self, id):
+        # NOTE id is the collection's id. Trailing slash is assumed.
+        # Further we assume id to map to a non-existent resource, its
+        # parent is assumed to exist.
+        conn = self._conn()
+        url = self._id2loc(id)
+        davres = davresource.DAVResult(conn.mkcol(url))
+        if davres.has_errors():
+            raise DAVError, (davres,)
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
