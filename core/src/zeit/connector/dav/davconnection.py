@@ -4,9 +4,9 @@ To deprecate resource oriented approach, step by step
 """
 import davbase
 import davresource
-from dav.davbase import RedirectError
-from dav.davresource import DAVError, DAVLockedError, DAVLockFailedError, \
-                        DAVInvalidLocktokenError, DAVUnlockFailedError
+# from dav.davbase import RedirectError
+# from dav.davresource import DAVError, DAVLockedError, DAVLockFailedError, \
+#                             DAVInvalidLocktokenError, DAVUnlockFailedError
 
 class DAVConnection(davbase.DAVConnection):
     "Extends davbase.DavConnection with a couple of methods"
@@ -46,14 +46,14 @@ class DAVConnection(davbase.DAVConnection):
        #       loop until some pre-defined max redirs.
         try:
             response = self.propfind(url, body=xml, depth=0, extra_hdrs="")
-        except RedirectError, err:
+        except davbase.RedirectError, err:
             url = err.args[0]
             # re-issue request
             response = self._conn.propfind(url, body=xml, depth=0, extra_hdrs="")
             pass
         davres = davresource.DAVResult(response)
         if davres.status >= 300: # or davres.status in (404,200):
-            raise DAVError, (davres.status, davres.reason, davres)
+            raise davresource.DAVError, (davres.status, davres.reason, davres)
         return davres
 
     # Yeah. We might be tempted to override davbase.DAVConnection's
@@ -69,17 +69,17 @@ class DAVConnection(davbase.DAVConnection):
         if not r.has_errors():
             return r.lock_token
         if r.status == 423:
-            raise DAVLockedError, (r,)
+            raise davresource.DAVLockedError, (r,)
         else:
-            raise DAVLockFailedError, (r,)
+            raise davresource.DAVLockFailedError, (r,)
 
     def do_unlock(self, url, locktoken, headers={}):
         if not locktoken:
-            raise DAVInvalidLocktokenError
+            raise davresource.DAVInvalidLocktokenError
         r = davresource.DAVResult(self.unlock(url,
                                               locktoken,
                                               extra_hdrs=headers))
         if r.has_errors():
-            raise DAVUnlockFailedError, (r,)
+            raise davresource.DAVUnlockFailedError, (r,)
         else:
             return

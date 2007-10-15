@@ -380,12 +380,6 @@ class Connector(zope.thread.local):
                 resp.get_all_properties().values() \
                     for url, resp in davres.responses.items()]
 
-#         return [resp.get_all_properties() \
-#                     for resp in davresource.DAVResult( \
-#                        conn.search(  # "extra" root for SEARCH:
-#                            self._roots.get('search', self._roots['default']),
-#                            body=expr._collect()._render())).responses.values()]
-
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)
 
