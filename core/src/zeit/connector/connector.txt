@@ -316,18 +316,17 @@ The building blocks are search vars:
 >>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/document/')
 
 Queries are built of basic terms involving search vars stitched together into
-expressions:
+expressions (note that we get dummy values at the moment):
 
 >>> connector.search([author, volume], (year == '2007') & (month == '07'))
-[[u'http://xml.zeit.de/2006/45/Headline-Huber', 'OK', 'Peter Buhr', '23', '2007'],
- [u'http://xml.zeit.de/2006/45/Martenstein-45', 'OK', 'Peter Buhr', '23', '2007'],
+[[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
+ [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
  ...]
-
 
 >>> connector.search([author, volume], (year > '1997') &
 ...     ((month == '07') | (month == '08')) & (ressort == 'Leben'))
-[[u'http://xml.zeit.de/2006/45/Headline-Huber', 'OK', 'Peter Buhr', '23', '2007'],
- [u'http://xml.zeit.de/2006/45/Martenstein-45', 'OK', 'Peter Buhr', '23', '2007'],
+[[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
+ [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
  ...]
   
 Clean up
