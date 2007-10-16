@@ -475,11 +475,11 @@ class Connector(zope.thread.local):
             self.unlock(id, locktoken=locktoken)
         self._invalidate_cache(resource.id)
 
-    # EXPERIMENTAL
     def _add_collection(self, id):
-        # NOTE id is the collection's id. Trailing slash is assumed.
-        # Further we assume id to map to a non-existent resource, its
+        # NOTE id is the collection's id. Trailing slash is appended as necessary.
+        # We assume id to map to a non-existent resource, its
         # parent is assumed to exist.
+	if not id.endswith('/'): id += '/'
         conn = self._conn()
         url = self._id2loc(id)
         davres = davresource.DAVResult(conn.mkcol(url))

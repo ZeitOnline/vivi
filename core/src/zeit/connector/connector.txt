@@ -297,9 +297,27 @@ Initially a collection is empty:
 >>> list(connector.listCollection(collection_id))
 []
 
+The trailing slash is canonical for a collection ID, but may be left out: the
+resource type is boss:
 
-Remove the collection again:
+>>> other_collection_id = 'http://xml.zeit.de/testing/my-other-collection'
+>>> coll = zeit.connector.resource.Resource(
+...     other_collection_id, 'my-other-collection', 'collection', StringIO.StringIO(''))
 
+Again, add the collection:
+
+>>> connector.add(coll)
+
+Referencing doesn't work yet without the trailing slash, thus we do:
+>>> other_collection_id += '/'
+
+>>> res = connector[other_collection_id]
+>>> res.type
+'collection'
+
+Remove the collections:
+
+>>> del connector[other_collection_id]
 >>> del connector[collection_id]
 
 
