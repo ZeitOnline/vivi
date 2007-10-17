@@ -444,17 +444,23 @@ class DAVResult:
         return len(self.responses)
 
     def get_response ( self, uri ):
-        return self.responses[uri]
+	# Try both variants:
+        try:
+            return self.responses[uri]
+        except KeyError:
+            if uri.endswith('/'): uri = uri[0:-1]
+            else: uri += '/'
+            return self.responses[uri]
 
     def get_locktoken ( self, url ):
-        r  = self.responses[url]
+        r  = self.get_response(url)
         li = r.get_locking_info()
         if li.has_key('locktoken'):
             return li['locktoken']
         return None
 
     def get_etag ( self, url ):
-        r = self.responses[url]
+        r = self.get_response(url)
         pd = r.get_all_properties()
         etag = pd.get(('getetag','DAV:'), None)
         return etag
