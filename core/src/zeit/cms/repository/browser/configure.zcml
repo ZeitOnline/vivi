@@ -80,8 +80,7 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
-    name="metadata_preview"
+    for="zeit.cms.repository.interfaces.ICollection" name="metadata_preview"
     template="collection_metadata.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
@@ -132,7 +131,21 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zope.ManageContent"
+    class=".repository.CollectionAdd"
+    name="zeit.cms.repository.Add"
+    menu="zeit-add-menu" title="Folder"
+    />
   
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zope.View"
+    class=".repository.CollectionEdit"
+    name="edit.html"
+    />
+
   <!-- Unkown Resource -->
 
   <adapter factory=".adapter.UnknownResourceListing" />

@@ -11,6 +11,15 @@
       permission="zope.View" />
   </class>
 
+  <interface
+    interface=".interfaces.ICollection"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+  <adapter factory=".repository.containerFactory" name="collection" />
+  <adapter factory=".repository.collectionToResource" />
+
+
   <adapter factory=".repository.cmscontentFactory" />
 
   <!-- content object creation
@@ -19,7 +28,6 @@
   are not known yet, and therefore are filled with guessed values.
   -->
 
-  <adapter factory=".repository.containerFactory" name="collection" />
   <subscriber handler=".repository.initializeRepository" />
   
   <adapter factory=".preference.preferenceFactory" />

@@ -69,7 +69,8 @@ class IUnknownResource(zeit.cms.content.interfaces.ITextContent):
         "Resource type the dav propagated (DAV:resorucetype)")
 
 
-class ICollection(zope.app.container.interfaces.IContainer):
+class ICollection(zope.app.container.interfaces.IContainer,
+                  zeit.cms.interfaces.ICMSContent):
     """A collection."""
 
 

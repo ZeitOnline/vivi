@@ -42,3 +42,27 @@ the site root:
 ...2006...
 ...2007...
 ...online...
+
+
+Adding Folders
+==============
+
+Folders can be added just like any other content:
+
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Folder']
+>>> url = menu.value[0]
+>>> browser.open(menu.value[0])
+>>> browser.getControl("File name").value = 'new-folder'
+>>> browser.getControl("Add").click()
+
+After adding a folder we are not at @@edit.html, but on the normal view. In
+fact @@edit.html redirects us:
+
+>>> print browser.contents
+<?xml version...
+<!DOCTYPE ...
+...Keine Objekte in diesem Ordner vorhanden...
+
+>>> browser.url
+'http://localhost/++skin++cms/repository/new-folder'

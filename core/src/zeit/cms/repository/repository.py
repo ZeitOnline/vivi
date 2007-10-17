@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import StringIO
 import datetime
 import logging
 
@@ -28,8 +29,9 @@ class Container(zope.app.container.contained.Contained):
     zope.interface.implements(zeit.cms.repository.interfaces.ICollection,
                               zeit.cms.interfaces.ICMSContent)
 
-    def __init__(self, uniqueId=None):
+    def __init__(self, uniqueId=None, __name__=None):
         self.uniqueId = uniqueId
+        self.__name__ = __name__
 
     # Container interface
 
@@ -227,8 +229,8 @@ def initializeRepository(repository, event):
 def cmscontentFactory(context):
     """Master adapter for adapting Resources to CMSContent.
 
-    It creates the CMSContent by finding an adapter which is registered with the
-    name of the resource type.
+    It creates the CMSContent by finding an adapter which is registered with
+    the name of the resource type.
 
     """
     def adapter(type):
@@ -241,3 +243,18 @@ def cmscontentFactory(context):
 
     content.uniqueId = context.id
     return content
+
+
+@zope.interface.implementer(zeit.connector.interfaces.IResource)
+@zope.component.adapter(zeit.cms.repository.interfaces.ICollection)
+def collectionToResource(context):
+    try:
+        properties = zeit.connector.interfaces.IWebDAVReadProperties(
+            context)
+    except TypeError:
+        properties = zeit.connector.resource.WebDAVProperties()
+    return zeit.connector.resource.Resource(
+        context.uniqueId, context.__name__, 'collection',
+        data=StringIO.StringIO(),
+        contentType='httpd/unix-directory',
+        properties=properties)

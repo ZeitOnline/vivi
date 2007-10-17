@@ -4,13 +4,17 @@
 
 import zope.cachedescriptors.property
 import zope.component
+import zope.formlib.form
 import zope.viewlet.viewlet
 
+import zeit.cms.browser.form
 import zeit.cms.browser.tree
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
 
 import zeit.cms.repository.interfaces
+import zeit.cms.repository.repository
+
 
 class HTMLTree(zope.viewlet.viewlet.ViewletBase):
     """view class for navtree"""
@@ -104,3 +108,21 @@ class HiddenCollections(object):
         return zeit.cms.repository.interfaces.IUserPreferences(
             zeit.cms.workingcopy.interfaces.IWorkingcopy(
                 self.request.principal))
+
+
+class CollectionAdd(zeit.cms.browser.form.AddForm):
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.cms.repository.interfaces.ICollection).omit('uniqueId')
+
+    def create(self, data):
+        return zeit.cms.repository.repository.Container(**data)
+
+
+class CollectionEdit(object):
+
+    def __call__(self):
+        url = zope.component.getMultiAdapter(
+            (self.context, self.request), name='absolute_url')()
+        self.request.response.redirect(url)
+        return ''
