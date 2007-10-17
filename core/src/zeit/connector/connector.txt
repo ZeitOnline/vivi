@@ -303,7 +303,8 @@ resource type is boss:
 
 >>> other_collection_id = 'http://xml.zeit.de/testing/my-other-collection'
 >>> coll = zeit.connector.resource.Resource(
-...     other_collection_id, 'my-other-collection', 'collection', StringIO.StringIO(''))
+...     other_collection_id, 'my-other-collection', 'collection',
+...     StringIO.StringIO(''))
 
 Again, add the collection:
 
