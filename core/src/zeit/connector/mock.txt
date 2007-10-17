@@ -181,6 +181,44 @@ resource and add id using the `add` method:
  (u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer')]
 
 
+Adding Collections
+++++++++++++++++++
+
+>>> collection_id = 'http://xml.zeit.de/online/2007/03'
+>>> connector.add(resource)
+>>> resource = Resource(
+...     collection_id,
+...     '03', 'collection',
+...     StringIO.StringIO(''))
+>>> connector.add(resource)
+
+After we've hadded the collection we can query it:
+
+>>> list(connector.listCollection(collection_id))
+[]
+
+
+But we also can get the resource:
+
+>>> collection = connector[collection_id]
+>>> collection.type
+'collection'
+
+We can also add new collections to the collection:
+
+
+>>> collection_2_id = collection_id + '/foo'
+>>> resource = Resource(
+...     collection_2_id,
+...     'foo', 'collection',
+...     StringIO.StringIO(''))
+>>> connector[collection_2_id] = resource
+>>> list(connector.listCollection(collection_id))
+[(u'foo', u'http://xml.zeit.de/online/2007/03/foo')]
+>>> connector[collection_2_id].type
+'collection'
+
+
 Removing Content From the Repository
 ====================================
 
