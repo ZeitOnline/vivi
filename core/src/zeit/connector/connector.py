@@ -479,12 +479,12 @@ class Connector(zope.thread.local):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.
         # We assume id to map to a non-existent resource, its
         # parent is assumed to exist.
-	if not id.endswith('/'): id += '/'
-        conn = self._conn()
-        url = self._id2loc(id)
-        davres = davresource.DAVResult(conn.mkcol(url))
-        if davres.has_errors():
-            raise DAVError, (davres,)
+        if not id.endswith('/'): id += '/'
+            conn = self._conn()
+            url = self._id2loc(id)
+            davres = davresource.DAVResult(conn.mkcol(url))
+            if davres.has_errors():
+                raise DAVError, (davres,)
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
