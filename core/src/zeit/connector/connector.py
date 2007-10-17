@@ -135,7 +135,7 @@ _max_timeout_days = ((sys.maxint-1) / 86400) - 1
 def _abs2timeout(time):
     # Convert timedelta to int (seconds). Return None when (near) overflow
     # Ain't there anything similar in Python? Grr.
-    d = time - datetime.datetime.now()
+    d = time - datetime.datetime.now(pytz.UTC)
     if abs(d.days) > _max_timeout_days: return None
     # No negative or zero timeouts:
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
@@ -439,8 +439,8 @@ class Connector(zope.thread.local):
         # No meaningful lock-null resources for collections :-(
         if autolock and not iscoll:
             locktoken = self.lock(id, "AUTOLOCK",
-                                  datetime.datetime.today() + \
-                                      datetime.timedelta(seconds=20))
+                                  datetime.datetime.now(pytz.UTC) +
+                                  datetime.timedelta(seconds=20))
 
         if hasattr(resource.data, 'seek'):
             resource.data.seek(0)
@@ -453,8 +453,8 @@ class Connector(zope.thread.local):
             #       so we lock _after_ creation
             if autolock:
                 locktoken = self.lock(id, "AUTOLOCK",
-                                      datetime.datetime.today() + \
-                                          datetime.timedelta(seconds=20))
+                                      datetime.datetime.now(pytz.UTC) +
+                                      datetime.timedelta(seconds=20))
         else: # We are a file resource:
             if(self._check_dav_resource(id) is None):
                 (parent, name) = _id_splitlast(id)

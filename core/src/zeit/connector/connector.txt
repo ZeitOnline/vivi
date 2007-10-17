@@ -201,11 +201,12 @@ We also find `conn1` in the collection now:
 Resources may be locked:
 
 >>> from datetime import datetime, timedelta
+>>> import pytz
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
 (None, None, False)
 >>> token = connector.lock('http://xml.zeit.de/testing/conn1',
 ...                        'http://xml.zeit.de/users/frodo',
-...                        datetime.today() + timedelta(hours=2))
+...                        datetime.now(pytz.UTC) + timedelta(hours=2))
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
 (u'http://xml.zeit.de/users/frodo', u'Second-7199', True)
 
@@ -241,7 +242,7 @@ Note: name comes first -- don't ask me why:
 
 >>> token = connector.lock('http://xml.zeit.de/testing/conn3',
 ...                        'http://xml.zeit.de/users/frodo',
-...                        datetime.today() + timedelta(hours=2))
+...                        datetime.now(pytz.UTC) + timedelta(hours=2))
 >>> res.data = StringIO.StringIO("Mary had a little lamb")
 >>> res.properties[('colour', 'http://namespaces.zeit.de/test')] = (
 ...     'bright blue')
