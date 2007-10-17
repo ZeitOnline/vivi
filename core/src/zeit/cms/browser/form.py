@@ -17,6 +17,7 @@ zeit_form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(
     zope.formlib.interfaces.IPageForm)
 REMAINING_FIELDS = object()
 
+
 class WidgetGroup(object):
 
     widgets = None
