@@ -69,7 +69,8 @@ def xmlContentToResourceAdapterFactory(typ):
     @zope.interface.implementer(zeit.connector.interfaces.IResource)
     def adapter(context):
         try:
-            properties = zeit.connector.interfaces.IWebDAVReadProperties(context)
+            properties = zeit.connector.interfaces.IWebDAVReadProperties(
+                context)
         except TypeError:
             properties = zeit.connector.resource.WebDAVProperties()
         return zeit.connector.resource.Resource(
@@ -79,5 +80,3 @@ def xmlContentToResourceAdapterFactory(typ):
             properties=properties)
 
     return adapter
-
-
