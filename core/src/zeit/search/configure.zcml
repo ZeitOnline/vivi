@@ -9,6 +9,10 @@
     factory=".search.XapianSearch"
     name="xapian"
     />
+  <utility
+    factory=".search.MetadataSearch"
+    name="metadata"
+    />
 
   <utility factory=".search.MetaSearch" />
 

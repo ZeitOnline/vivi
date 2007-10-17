@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import operator
 import urllib
 import urllib2
 
@@ -73,7 +74,11 @@ class XapianSearch(object):
         return gocept.lxml.objectify.fromfile(request)
 
     def get_result(self, tree):
-        for node in tree.page.result[:]:
+        try:
+            result = tree.page.result
+        except AttributeError:
+            return
+        for node in result:
             unique_id = node.get('url').replace(
                 'http://www.zeit.de/', zeit.cms.interfaces.ID_NAMESPACE)
             result = SearchResult(unique_id)
@@ -96,6 +101,10 @@ class MetadataSearch(object):
             'volume', 'http://namespaces.zeit.de/document/'),
         'year': zeit.connector.search.SearchVar(
             'year', 'http://namespaces.zeit.de/document/'),
+        'page': zeit.connector.search.SearchVar(
+            'page', 'http://namespaces.zeit.de/document/'),
+        'title': zeit.connector.search.SearchVar(
+            'title', 'http://namespaces.zeit.de/CMS/document'),
     }
 
     indexes = set(_search_map.keys())
@@ -106,10 +115,23 @@ class MetadataSearch(object):
         term = self.get_search_term(search_terms)
         if term is None:
             return set()
+        return set(self.get_result(term))
+
+    def get_result(self, term):
         var = self._search_map.get
         search_result = self.connector.search(
-            [var('author'), var('year')], term)
-        #return [SearchResult(*r) for r in search_result]
+            [var('author'), var('title'),
+             var('year'), var('volume'), var('page')],
+            term)
+        import pdb; pdb.set_trace() 
+        for unique_id, author, title, year, volume, page in search_result:
+            result = SearchResult(unique_id)
+            result.author = author
+            result.title = title
+            result.year = year
+            result.volume = volume
+            result.page = page
+            yield result
 
     def get_search_term(self, search):
         terms = []

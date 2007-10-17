@@ -38,7 +38,7 @@ class ISearchInterface(zope.interface.Interface):
 
         If key is not in indexes the key is ignored.
 
-        returns a set of ISearchResult instances with metadata filled as
+        returns a sequence of ISearchResult instances with metadata filled as
         available.
 
         """
