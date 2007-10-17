@@ -343,7 +343,7 @@ class Connector(zope.thread.local):
         mylock = self._get_my_lockinfo(id)
 
         if mylock and mylock[0] != davlock.get('locktoken'): # Uh, oh
-            raise("Aaaah! Pirates!")
+            #raise("Aaaah! Pirates!")
             self._put_my_lockinfo(id, None)
             mylock = None
             # Our lock was stolen. Are we supposed to scream?
@@ -479,12 +479,13 @@ class Connector(zope.thread.local):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.
         # We assume id to map to a non-existent resource, its
         # parent is assumed to exist.
-        if not id.endswith('/'): id += '/'
-            conn = self._conn()
-            url = self._id2loc(id)
-            davres = davresource.DAVResult(conn.mkcol(url))
-            if davres.has_errors():
-                raise DAVError, (davres,)
+        if not id.endswith('/'):
+            id += '/'
+        conn = self._conn()
+        url = self._id2loc(id)
+        davres = davresource.DAVResult(conn.mkcol(url))
+        if davres.has_errors():
+            raise DAVError, (davres,)
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
