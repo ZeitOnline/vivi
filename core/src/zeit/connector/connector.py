@@ -65,6 +65,7 @@ import random
 import time
 import urlparse
 import sys
+import re
 
 import pytz
 import gocept.lxml.objectify
@@ -150,7 +151,6 @@ def connectorFactory():
         raise ZConfig.ConfigurationError(
             "WebDAV server not configured properly.")
     return Connector({'default': root})
-
 
 class Connector(zope.thread.local):
     """Connect to the CMS backend.
@@ -242,10 +242,12 @@ class Connector(zope.thread.local):
         return child_ids
 
     def _update_property_cache(self, dav_result):
+        now = datetime.datetime.now()
         cache = self.cache.properties
         for path, response in dav_result._result.responses.items():
             response_id = self._loc2id(urlparse.urljoin(self._roots['default'], path))
-            properties = cache[response_id] = response.get_all_properties()
+            cache[response_id] = response.get_all_properties()
+            cache[response_id][('cached-time', 'INTERNAL')] = now
 
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
@@ -526,6 +528,7 @@ class Connector(zope.thread.local):
 
     def _get_dav_lock(self, id):
         lockdiscovery = self[id].properties[('lockdiscovery', 'DAV:')]
+
         if not lockdiscovery:
             return {}
 
@@ -541,7 +544,15 @@ class Connector(zope.thread.local):
                 davlock['owner'] = unicode(lockinfo_node['{DAV:}owner'])
             except AttributeError:
                 davlock['owner'] = None
-            davlock['timeout']   = unicode(lockinfo_node.timeout)
+            # We get timeout in "Second-1337" format. Extract, add to ref time
+            try:
+	        reftime = self[id].properties[('cached-time', 'INTERNAL')]
+                timo = int(re.match("second-(\d+)",
+                                    unicode(lockinfo_node.timeout),
+                                    re.I).group(1))
+                davlock['timeout'] = reftime + datetime.timedelta(seconds=timo)
+            except:
+                davlock['timeout'] = None # ???
             davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
         return davlock
 
