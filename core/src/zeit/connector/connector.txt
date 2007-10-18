@@ -229,6 +229,10 @@ The object can be also stored dictionary-style:
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 [(u'conn2', u'http://xml.zeit.de/testing/conn2')]
 
+The trailing slash is the usual decoration for collections, but should be optional
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing'))
+[(u'conn2', u'http://xml.zeit.de/testing/conn2')]
 
 But remove `conn2` again, as we have no further use:
 

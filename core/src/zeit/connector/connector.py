@@ -351,7 +351,7 @@ class Connector(zope.thread.local):
         owner = davlock.get('owner', None)
         timeout = davlock.get('timeout', None)
 
-        if owner == 'None':
+        if owner == 'None': # This one quite strange
             owner = None
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
