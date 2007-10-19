@@ -62,4 +62,3 @@ class ITransform(zope.interface.Interface):
 class IImageGroup(zope.app.container.interfaces.IContainer,
                   zeit.cms.interfaces.ICMSContent):
     """An image group groups images with the same motif together."""
-

@@ -26,4 +26,18 @@
     type="zeit.cms.interfaces.ICMSContentType"
     />
 
+  <!-- Image group -->
+
+  <class class=".imagegroup.ImageGroup">
+    <require
+      interface=".interfaces.IImageGroup"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IImageGroup"
+      permission="zeit.EditContent" />
+  </class>
+
+  <adapter factory=".imagegroup.imageGroupToResource" />
+  <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
+
 </configure>
