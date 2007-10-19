@@ -50,7 +50,7 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.ManageContent"
     class=".form.AddForm"
     name="zeit.content.article.Add"

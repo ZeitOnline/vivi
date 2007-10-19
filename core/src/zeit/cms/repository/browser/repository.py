@@ -110,16 +110,16 @@ class HiddenCollections(object):
                 self.request.principal))
 
 
-class CollectionAdd(zeit.cms.browser.form.AddForm):
+class FolderAdd(zeit.cms.browser.form.AddForm):
 
     form_fields = zope.formlib.form.Fields(
-        zeit.cms.repository.interfaces.ICollection).omit('uniqueId')
+        zeit.cms.repository.interfaces.IFolder).omit('uniqueId')
 
     def create(self, data):
         return zeit.cms.repository.repository.Container(**data)
 
 
-class CollectionEdit(object):
+class FolderEdit(object):
 
     def __call__(self):
         url = zope.component.getMultiAdapter(

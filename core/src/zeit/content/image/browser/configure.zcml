@@ -99,7 +99,7 @@
 
 
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.ManageContent"
     class=".form.AddForm"
     name="zeit.content.image.Add"
@@ -109,7 +109,7 @@
 
   <!-- Collection -->
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     name="imagebrowser.html"
     class=".imagebrowser.ImageBrowser"
     template="imagebrowser.pt"

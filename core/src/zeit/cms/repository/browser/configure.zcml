@@ -52,7 +52,7 @@
 
   <browser:page
     name="view.html"
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     class="zeit.cms.browser.listing.Listing"
     template="content_listing.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -60,19 +60,19 @@
     />
 
   <browser:defaultView
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     name="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
   <browser:containerViews
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     contents="zope.ManageContent"
     index="zope.View"
     />
 
   <browser:menuItem
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     action="delete"
     menu="folder-actions"
     title="Löschen"
@@ -80,7 +80,7 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection" name="metadata_preview"
+    for="zeit.cms.repository.interfaces.IFolder" name="metadata_preview"
     template="collection_metadata.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
@@ -123,7 +123,7 @@
     />
 
   <browser:icon
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     name="zmi_icon"
     width="20"
     height="20"
@@ -132,17 +132,17 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.ManageContent"
-    class=".repository.CollectionAdd"
+    class=".repository.FolderAdd"
     name="zeit.cms.repository.Add"
     menu="zeit-add-menu" title="Folder"
     />
   
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.View"
-    class=".repository.CollectionEdit"
+    class=".repository.FolderEdit"
     name="edit.html"
     />
 

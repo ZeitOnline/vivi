@@ -69,9 +69,12 @@ class IUnknownResource(zeit.cms.content.interfaces.ITextContent):
         "Resource type the dav propagated (DAV:resorucetype)")
 
 
-class ICollection(zope.app.container.interfaces.IContainer,
-                  zeit.cms.interfaces.ICMSContent):
+class ICollection(zope.app.container.interfaces.IContainer):
     """A collection."""
+
+
+class IFolder(ICollection, zeit.cms.interfaces.ICMSContent):
+    """A normal folder in the cms."""
 
 
 class IRepositoryContent(zope.interface.Interface):

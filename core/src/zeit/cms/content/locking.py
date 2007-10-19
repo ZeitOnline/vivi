@@ -60,7 +60,7 @@ class LockInfo(persistent.mapping.PersistentMapping):
         self.principal_id = principal_id
         self.created = time.time()
         self.locked_until = locked_until
-        if locked_until is not None:
+        if isinstance(locked_until, datetime.datetime):
             delta = locked_until - datetime.datetime.now(pytz.UTC)
             self.timeout = (delta.days * 86400
                             + delta.seconds

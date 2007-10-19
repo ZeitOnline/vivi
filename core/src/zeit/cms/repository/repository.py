@@ -26,8 +26,7 @@ logger = logging.getLogger('zeit.cms.repository')
 class Container(zope.app.container.contained.Contained):
     """The container represents webdav collections."""
 
-    zope.interface.implements(zeit.cms.repository.interfaces.ICollection,
-                              zeit.cms.interfaces.ICMSContent)
+    zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
 
     def __init__(self, uniqueId=None, __name__=None):
         self.uniqueId = uniqueId
