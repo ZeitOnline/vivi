@@ -26,7 +26,7 @@ logger = logging.getLogger('zeit.cms.repository')
 class Container(zope.app.container.contained.Contained):
     """The container represents webdav collections."""
 
-    zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
+    zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
     def __init__(self, uniqueId=None, __name__=None):
         self.uniqueId = uniqueId
@@ -129,13 +129,19 @@ class Container(zope.app.container.contained.Contained):
             pass
 
 
+class Folder(Container):
+    """The Folder structrues content in the repository."""
+
+    zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
+
+
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
-def containerFactory(context):
-    return Container(context.id)
+def folderFactory(context):
+    return Folder(context.id)
 
 
-class Repository(persistent.Persistent, Container):
+class Repository(persistent.Persistent, Folder):
     """Access the webdav repository."""
 
     zope.interface.implements(zeit.cms.repository.interfaces.IRepository,
@@ -245,8 +251,8 @@ def cmscontentFactory(context):
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)
-@zope.component.adapter(zeit.cms.repository.interfaces.ICollection)
-def collectionToResource(context):
+@zope.component.adapter(zeit.cms.repository.interfaces.IFolder)
+def folderToResource(context):
     try:
         properties = zeit.connector.interfaces.IWebDAVReadProperties(
             context)

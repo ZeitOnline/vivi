@@ -54,6 +54,7 @@ Folders can be added just like any other content:
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
 >>> browser.getControl("File name").value = 'new-folder'
+>>> browser.handleErrors = False
 >>> browser.getControl("Add").click()
 
 After adding a folder we are not at @@edit.html, but on the normal view. In

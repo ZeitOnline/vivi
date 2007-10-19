@@ -116,7 +116,7 @@ class FolderAdd(zeit.cms.browser.form.AddForm):
         zeit.cms.repository.interfaces.IFolder).omit('uniqueId')
 
     def create(self, data):
-        return zeit.cms.repository.repository.Container(**data)
+        return zeit.cms.repository.repository.Folder(**data)
 
 
 class FolderEdit(object):
