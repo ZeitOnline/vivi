@@ -9,6 +9,7 @@ Create a browser first:
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser 
 >>> browser = ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.handleErrors = False
 
 
 The filelisting is to be found under /repository. To get a dojo based
@@ -23,6 +24,22 @@ We expect a normal file listing:
 >>> columns = browser.etree.xpath("//table/thead/tr/th")
 >>> len(columns)
 10
+
+
+Breadcrums
+==========
+
+Similar to the filelisting, we expect that breadcrumbs are displayed at
+the header bar:
+
+>>> bc = browser.etree.xpath('//ul[@id="breadcrumbs"]/li/a')
+>>> bc
+[<Element a ...>, <Element a ...>]
+>>> bc[0].text
+'repository'
+>>> bc[1].text
+'2007'
+
 
 Deleteing Content
 =================

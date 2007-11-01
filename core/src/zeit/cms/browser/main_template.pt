@@ -72,6 +72,14 @@
               <metal:actions
                 use-macro="context/@@standard_macros/context-actions" />
             </metal:actions>
+              <ul id="breadcrumbs">
+                <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
+                  <a tal:attributes="title  item/title;
+                    href   item/url;"
+                    tal:content="item/title">Directory foo</a>
+                    →
+                </li>
+              </ul>
             <h1>
               <metal:title define-slot="content-title">
                 <tal:title tal:replace="contenttitle">

@@ -173,11 +173,27 @@
  * navigations 
  *
  * */
+#breadcrumbs li,
 #main-navigation li,
 #folder-actions li,
 .context-views li {
     display: inline;
     padding: 4px 25px;
+}
+
+#breadcrumbs {
+   float: left;
+   padding: 0;
+   padding-left: 0.7em;
+   margin: 0;
+   margin-top: 0.4em;
+}
+#breadcrumbs li a,
+#breadcrumbs li {
+   color: white;
+}
+#breadcrumbs li {
+   padding: 0 0.3em;
 }
 
 #main-navigation,
@@ -197,6 +213,7 @@
 #main-navigation li.Kalender {
     background: url("/@@/zeit.cms/icons/calendar.png") no-repeat center left;
 }
+
 
 #folder-actions {
     margin: 0em;
