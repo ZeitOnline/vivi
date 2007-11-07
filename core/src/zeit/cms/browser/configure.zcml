@@ -31,121 +31,121 @@
   <!-- Skin and Templates --> 
 
   <interface
-      zcml:condition="have zeit.cms.testing"
-      interface=".interfaces.ICMSTestingSkin"
-      type="zope.publisher.interfaces.browser.IBrowserSkinType"
-      name="cms"
-      />
+    zcml:condition="have zeit.cms.testing"
+    interface=".interfaces.ICMSTestingSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
 
-    <interface
-      zcml:condition="not-have zeit.cms.testing"
-      interface=".interfaces.ICMSSkin"
-      type="zope.publisher.interfaces.browser.IBrowserSkinType"
-      name="cms"
-      />
-    
-    <browser:page
-      for="*"
-      name="standard_macros"
-      permission="zope.View"
-      class=".standardmacros.StandardMacros"
-      layer=".interfaces.ICMSLayer"
-      />
+  <interface
+    zcml:condition="not-have zeit.cms.testing"
+    interface=".interfaces.ICMSSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
 
-    <browser:page
-      for="*"
-      name="breadcrumbs"
-      permission="zope.View"
-      class=".breadcrumbs.Breadcrumbs"
-      layer=".interfaces.ICMSLayer"
-      />
+  <browser:page
+    for="*"
+    name="standard_macros"
+    permission="zope.View"
+    class=".standardmacros.StandardMacros"
+    layer=".interfaces.ICMSLayer"
+    />
 
-    <browser:page
-      for="*"
-      name="main_template"
-      permission="zope.View"
-      template="main_template.pt"
-      layer=".interfaces.ICMSLayer" />
+  <browser:page
+    for="*"
+    name="breadcrumbs"
+    permission="zope.View"
+    class=".breadcrumbs.Breadcrumbs"
+    layer=".interfaces.ICMSLayer"
+    />
 
-    <include package="gocept.mochikit" />
+  <browser:page
+    for="*"
+    name="main_template"
+    permission="zope.View"
+    template="main_template.pt"
+    layer=".interfaces.ICMSLayer" />
 
-    <resourceLibrary
-      name="zeit.cms.DragAndDrop"
-      require="mochikit.DragAndDrop">
-      <directory source="resources" include="dnd.js" />
-    </resourceLibrary>
+  <include package="gocept.mochikit" />
 
-    <resourceLibrary name="zeit.cms" require="mochikit">
-      <directory source="resources" include="cms-layout.css 
-        cms-widgets.css
-        cms.css"/>
-    </resourceLibrary>
+  <resourceLibrary
+    name="zeit.cms.DragAndDrop"
+    require="mochikit.DragAndDrop">
+    <directory source="resources" include="dnd.js" />
+  </resourceLibrary>
 
-    <resourceLibrary name="zeit.cms.filteringtable">
-      <directory source="resources" include="filteringtable.js" />
-    </resourceLibrary>
+  <resourceLibrary name="zeit.cms" require="mochikit">
+    <directory source="resources" include="cms-layout.css 
+      cms-widgets.css
+      cms.css"/>
+  </resourceLibrary>
 
-    <resourceLibrary name="zeit.cms.tree"
-      require="zeit.cms">
-      <directory source="resources" include="tree.js"/>
-    </resourceLibrary>
+  <resourceLibrary name="zeit.cms.filteringtable">
+    <directory source="resources" include="filteringtable.js" />
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.tree"
+    require="zeit.cms">
+    <directory source="resources" include="tree.js"/>
+  </resourceLibrary>
 
 
-    <!-- Zeit form layout -->
-    <adapter factory=".form.zeit_form_template" name="zeitform"/> 
-    <adapter factory=".sourceedit.form_template" name="sourceedit_form"/> 
+  <!-- Zeit form layout -->
+  <adapter factory=".form.zeit_form_template" name="zeitform"/> 
+  <adapter factory=".sourceedit.form_template" name="sourceedit_form"/> 
 
-    <!-- Sidebar -->  
+  <!-- Sidebar -->  
 
-    <browser:viewletManager
-      name="zeit.cms.Sidebar"
-      provides=".interfaces.ISidebar"
-      class=".manager.SortingViewletManager"
-      layer=".interfaces.ICMSLayer"
-      permission="zope.View"
-      />
+  <browser:viewletManager
+    name="zeit.cms.Sidebar"
+    provides=".interfaces.ISidebar"
+    class=".manager.SortingViewletManager"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
+    />
 
-    <resourceLibrary name="zeit.cms.panels">
-      <directory source="resources" include="panelHandlers.js" />
-    </resourceLibrary>
+  <resourceLibrary name="zeit.cms.panels">
+    <directory source="resources" include="panelHandlers.js" />
+  </resourceLibrary>
 
-    <adapter factory=".sidebar.panelStateFactory" trusted="yes" />
+  <adapter factory=".sidebar.panelStateFactory" trusted="yes" />
 
-    <browser:page
-      for="*"
-      name="panel_handlers"
-      class=".sidebar.Panel"
-      permission="zope.View"
-      allowed_attributes="toggle_folding"
-      />
+  <browser:page
+    for="*"
+    name="panel_handlers"
+    class=".sidebar.Panel"
+    permission="zope.View"
+    allowed_attributes="toggle_folding"
+    />
 
-    <!-- General editors -->
+  <!-- General editors -->
 
-    <browser:page
-      for="zeit.cms.content.interfaces.ITextContent"
-      permission="zope.View"
-      template="general_view.pt" 
-      name="source.html"
-      layer=".interfaces.ICMSLayer"
-      />
+  <browser:page
+    for="zeit.cms.content.interfaces.ITextContent"
+    permission="zope.View"
+    template="general_view.pt" 
+    name="source.html"
+    layer=".interfaces.ICMSLayer"
+    />
 
-    <browser:page
-      for="zeit.cms.content.interfaces.ITextContent"
-      name="text_edit.html"
-      class=".sourceedit.TextEditForm"
-      permission="zeit.EditContent"
-      menu="zeit-context-views" title="Quelltext" 
-      />
+  <browser:page
+    for="zeit.cms.content.interfaces.ITextContent"
+    name="text_edit.html"
+    class=".sourceedit.TextEditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Quelltext" 
+    />
 
-    <browser:page
-      for="zeit.cms.content.interfaces.IXMLContent"
-      name="xml_source_edit.html"
-      class=".sourceedit.XMLEditForm"
-      permission="zope.ManageContent"
-      />
+  <browser:page
+    for="zeit.cms.content.interfaces.IXMLContent"
+    name="xml_source_edit.html"
+    class=".sourceedit.XMLEditForm"
+    permission="zope.ManageContent"
+    />
 
-    <browser:menuItem
-      for="zeit.cms.content.interfaces.IXMLContent"
+  <browser:menuItem
+    for="zeit.cms.content.interfaces.IXMLContent"
     menu="zeit-context-views"
     title="Quelltext"
     action="@@xml_source_edit.html"
@@ -214,7 +214,7 @@
     factory=".widget.DropObjectWidget"
     permission="zope.Public"
     />
-  
+
   <adapter
     factory=".widget.objectWidgetMultiplexer"
     permission="zope.Public"
@@ -252,12 +252,12 @@
 
   <!-- preferences -->
   <preferenceGroup
-      id="cms_preferences"
-      title="Zeit CMS User Preferences"
-      schema=".interfaces.ICMSUserPreferences"
-      category="true"
-      />
-  
+    id="cms_preferences"
+    title="Zeit CMS User Preferences"
+    schema=".interfaces.ICMSUserPreferences"
+    category="true"
+    />
+
   <browser:page
     for="*"
     name="sidebar_toggle_folding"
