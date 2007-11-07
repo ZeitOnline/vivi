@@ -208,8 +208,7 @@ Resources may be locked:
 ...                        'http://xml.zeit.de/users/frodo',
 ...                        datetime.now(pytz.UTC) + timedelta(hours=2))
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
-(u'http://xml.zeit.de/users/frodo', 
- datetime.datetime(...), True)
+(u'http://xml.zeit.de/users/frodo', datetime.datetime(..., tzinfo=...), True)
 
 To unlock it, you would have to supply the locktoken. The library takes
 care of that (hmmm?):

@@ -242,7 +242,7 @@ class Connector(zope.thread.local):
         return child_ids
 
     def _update_property_cache(self, dav_result):
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(pytz.UTC)
         cache = self.cache.properties
         for path, response in dav_result._result.responses.items():
             response_id = self._loc2id(urlparse.urljoin(self._roots['default'], path))
