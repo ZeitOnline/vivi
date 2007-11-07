@@ -10,8 +10,7 @@ import zope.app.container.interfaces
 
 import zc.form.field
 
-
-_ = zope.i18nmessageid.MessageFactory('zeit.cms')
+from zeit.cms.i18n import MessageFactory as _
 
 
 DOCUMENT_SCHEMA_NS = u"http://namespaces.zeit.de/CMS/document"
