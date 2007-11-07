@@ -65,4 +65,4 @@ fact @@edit.html redirects us:
 ...Keine Objekte in diesem Ordner vorhanden...
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/new-folder'
+'http://localhost/++skin++cms/repository/new-folder/@@view.html'
