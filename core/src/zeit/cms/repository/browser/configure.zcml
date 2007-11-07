@@ -159,27 +159,21 @@
     />
 
   <browser:page
-    for="zeit.cms.interfaces.ICMSContent"
-    name="edit.html"
-    template="resource_edit.pt"
+    for="zeit.cms.repository.interfaces.IUnknownResource"
+    name="view.html"
+    class=".unknown.View"
+    template="unknown_resource_view.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.ManageContent"
+    permission="zope.View"
+    menu="zeit-context-views" title="Anzeigen"
     />
 
   <browser:page
-    for="zeit.cms.interfaces.ICMSContent"
-    name="view.html"
-    template="resource_edit.pt"
+    for="zeit.cms.repository.interfaces.IUnknownResource"
+    name="edit.html"
+    class=".unknown.Edit"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.View"
-    />
-
-  <browser:menuItem
-    for="zeit.cms.interfaces.ICMSContent"
-    menu="zeit-context-views"
-    title="Anzeigen"
-    action="@@view.html"
-    permission="zope.View"
+    permission="zope.ManageContent"
     />
 
   <browser:page

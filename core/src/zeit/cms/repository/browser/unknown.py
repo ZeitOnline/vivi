@@ -1,0 +1,26 @@
+# coding: utf8
+# Copyright (c) 2007 gocept gmbh & co. kg
+# See also LICENSE.txt
+# $Id$
+
+import zope.component
+
+
+class View(object):
+
+    def get_excerpt(self):
+        data = self.context.data.strip()
+        if len(data) < 100:
+            return data
+        return data[:100] + u'…'
+
+
+class Edit(object):
+
+    def __call__(self):
+        context_url = zope.component.getMultiAdapter(
+            (self.context, self.request),
+            name='absolute_url')()
+        self.request.response.redirect(
+            context_url + '/@@view.html')
+        return ''

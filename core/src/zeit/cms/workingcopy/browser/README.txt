@@ -38,7 +38,7 @@ Checkout the Somalia Article::
 Checking out redirected us to the document *in* the working copy::
 
   >>> browser.url
-  'http://localhost/++skin++cms/workingcopy/zope.mgr/Somalia/@@edit.html'
+  'http://localhost/++skin++cms/workingcopy/zope.mgr/Somalia/@@view.html'
 
 
 Looking at our working copy also shows the `Somalia` article::
