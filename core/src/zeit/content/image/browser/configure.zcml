@@ -29,6 +29,7 @@
     for="..interfaces.IImage"
     template="image_view.pt"
     permission="zope.View"
+    menu="zeit-context-views" title="Anzeigen"
     />
 
   <browser:page
@@ -127,5 +128,21 @@
     name="zeit.content.image.imagegroup.Add"
     menu="zeit-add-menu" title="Image Group"
     />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IImageGroup"
+    template="imagegroup_view.pt"
+    permission="zope.View"
+    menu="zeit-context-views" title="Anzeigen"
+    />
+  
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IImageGroup"
+    class=".imagegroup.EditForm"
+    permission="zeit.EditContent"
+    />
+
 
 </configure>

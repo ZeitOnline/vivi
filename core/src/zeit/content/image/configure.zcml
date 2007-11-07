@@ -29,6 +29,7 @@
   <!-- Image group -->
 
   <class class=".imagegroup.ImageGroup">
+    <!-- <require like_class="zeit.cms.repository.repository.Container" /> -->
     <require
       interface=".interfaces.IImageGroup"
       permission="zope.View" />

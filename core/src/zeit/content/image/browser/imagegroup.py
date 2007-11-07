@@ -17,3 +17,9 @@ class AddForm(zeit.cms.browser.form.AddForm):
     def create(self, data):
         return zeit.content.image.imagegroup.ImageGroup(**data)
 
+
+class EditForm(zeit.cms.browser.form.EditForm):
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.image.interfaces.IImageGroup,
+        render_context=True, omit_readonly=False).omit('uniqueId')
