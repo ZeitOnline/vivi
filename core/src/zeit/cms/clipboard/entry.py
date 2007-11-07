@@ -45,6 +45,10 @@ class Entry(zope.app.container.contained.Contained,
             raise ValueError("Referenced object mus have a uniqueid.")
         self._value = uid
 
+    @property
+    def referenced_unique_id(self):
+        return self._value
+
 
 class Clip(zope.app.container.ordered.OrderedContainer):
 

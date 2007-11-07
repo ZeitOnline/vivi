@@ -2,175 +2,175 @@
 Clipboard
 =========
 
-Create a testbrowser::
+Create a testbrowser:
 
-    >>> from zope.testbrowser.testing import Browser
-    >>> browser = Browser()
-    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
 
 Tree
 ====
 
-The clipboard is displayed as a tree. Initially it's empty::
+The clipboard is displayed as a tree. Initially it's empty:
 
-    >>> browser.open('http://localhost/++skin++cms/repository')
-    >>> print browser.contents
-    <?xml version...
-    <!DOCTYPE ...
-      <div class="PanelContent">
-        <div id="clipboardcontents" class="Tree">
-        <ul>
-          <li class="Root" uniqueid="">
-            <a href="...">Clipboard</a>
-            <span class="URL">...</span>
-          </li>
-        </ul>
-      </div>
-    ...
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> print browser.contents
+<?xml version...
+<!DOCTYPE ...
+  <div class="PanelContent">
+    <div id="clipboardcontents" class="Tree">
+    <ul>
+      <li class="Root" uniqueid="">
+        <a href="...">Clipboard</a>
+        <span class="URL">...</span>
+      </li>
+    </ul>
+  </div>
+...
 
 
-Open the drag pane of the wirtschaft.feed::
+Open the drag pane of the wirtschaft.feed:
 
-    >>> ajax = Browser()
-    >>> ajax.addHeader('Authorization', 'Basic mgr:mgrpw')
-    >>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
-    >>> print ajax.contents
-    <div class="Text">Wirtschaft</div>
-    <div class="UniqueId">http://xml.zeit.de/wirtschaft.feed</div>
+>>> ajax = Browser()
+>>> ajax.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
+>>> print ajax.contents
+<div class="Text">Wirtschaft</div>
+<div class="UniqueId">http://xml.zeit.de/wirtschaft.feed</div>
 
-We assume, that we drag the pane over the Clipboard::
+We assume, that we drag the pane over the Clipboard:
 
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-    ...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
-    >>> print ajax.contents
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
+...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      <span class="URL">...</span>
       <ul>
-        <li class="Root" uniqueid="">
-          <a href="...">Clipboard</a>
-          <span class="URL">...</span>
-          <ul>
-            <li class="NotRoot" uniqueid="wirtschaft.feed">
-              <a href="http://localhost/++skin++cms/workingcopy/zope.mgr/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
-              <span class="URL">...wirtschaft.feed</span>
-            </li>
-          </ul>
-       </li>
-     </ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="http://localhost/++skin++cms/workingcopy/zope.mgr/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
+          <span class="URL">...wirtschaft.feed</span>
+        </li>
+      </ul>
+   </li>
+ </ul>
 
 
 Assume we drop the object `Queerdax` on the wirtschaft.feed. `Querdax` will be
-added *before* the feed::
+added *before* the feed:
 
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-    ...           'add_to=wirtschaft.feed&'
-    ...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
-    >>> print ajax.contents
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
+...           'add_to=wirtschaft.feed&'
+...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
+>>> print ajax.contents
+    <ul>
+      <li class="Root" uniqueid="">
+        <a href="...">Clipboard</a>
+        <span class="URL">...</span>
         <ul>
-          <li class="Root" uniqueid="">
-            <a href="...">Clipboard</a>
-            <span class="URL">...</span>
-            <ul>
-              <li class="NotRoot" uniqueid="wirtschaft.feed">
-                <a href="...wirtschaft.feed">Wirtschaft</a>
-                <span class="URL">...wirtschaft.feed</span>
-              </li>
-              <li class="NotRoot" uniqueid="Querdax">
-                <a href="...Querdax">Querdax</a>
-                <span class="URL">...Querdax</span>
-              </li>
-            </ul>
-         </li>
-       </ul>
+          <li class="NotRoot" uniqueid="wirtschaft.feed">
+            <a href="...wirtschaft.feed">Wirtschaft</a>
+            <span class="URL">...wirtschaft.feed</span>
+          </li>
+          <li class="NotRoot" uniqueid="Querdax">
+            <a href="...Querdax">Querdax</a>
+            <span class="URL">...Querdax</span>
+          </li>
+        </ul>
+     </li>
+   </ul>
 
 
-Reload first the page, to get the test in sync with the "ajax"::
+Reload first the page, to get the test in sync with the "ajax":
 
-    >>> browser.url
-    'http://localhost/++skin++cms/repository'
-    >>> browser.open(browser.url)
+>>> browser.url
+'http://localhost/++skin++cms/repository'
+>>> browser.open(browser.url)
 
 
 Let's click the link in the tree. We'll be redirect to the wirtschaft.feed
-view::
+view:
 
-    >>> browser.getLink('Wirtschaft').click()
-    >>> browser.url
-    'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
+>>> browser.getLink('Wirtschaft').click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
 
 
 Adding Clips
 ============
 
 Clipboard entries can be categorised into clips. Adding clips works also via
-ajax. Fill out the form and check that the controls are there::
+ajax. Fill out the form and check that the controls are there:
 
-    >>> browser.getControl(name='title')
-    <Control name='title' type='text'>
-    >>> browser.getControl(name='add_clip')
-    <Control name='add_clip' type='button'>
+>>> browser.getControl(name='title')
+<Control name='title' type='text'>
+>>> browser.getControl(name='add_clip')
+<Control name='add_clip' type='button'>
 
 
 Actually add a clip using our "ajax" browser. The clip is appended as the last
-element of the root node::
+element of the root node:
 
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
-    ...           'title=New+Clip')
-    >>> print ajax.contents
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
+...           'title=New+Clip')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      <span class="URL">...</span>
       <ul>
-        <li class="Root" uniqueid="">
-          <a href="...">Clipboard</a>
-          <span class="URL">...</span>
-          <ul>
-            <li class="NotRoot" uniqueid="wirtschaft.feed">
-              <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="URL">...wirtschaft.feed</span>
-            </li>
-            <li class="NotRoot" uniqueid="Querdax">
-              <a href="...Querdax">Querdax</a>
-              <span class="URL">...Querdax</span>
-            </li>
-            <li action="expand" class="NotRoot" uniqueid="New Clip">
-              <a href="...">New Clip</a>
-              <span class="URL">...New%20Clip</span>
-            </li>
-          </ul>
-       </li>
-     </ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <span class="URL">...wirtschaft.feed</span>
+        </li>
+        <li class="NotRoot" uniqueid="Querdax">
+          <a href="...Querdax">Querdax</a>
+          <span class="URL">...Querdax</span>
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
+          <span class="URL">...New%20Clip</span>
+        </li>
+      </ul>
+   </li>
+ </ul>
 
 
-Let's add another clip::
-      
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
-    ...           'title=Second+Clip')
-    >>> print ajax.contents
+Let's add another clip:
+  
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
+...           'title=Second+Clip')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      <span class="URL">...</span>
       <ul>
-        <li class="Root" uniqueid="">
-          <a href="...">Clipboard</a>
-          <span class="URL">...</span>
-          <ul>
-            <li class="NotRoot" uniqueid="wirtschaft.feed">
-              <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="URL">...wirtschaft.feed</span>
-            </li>
-            <li class="NotRoot" uniqueid="Querdax">
-              <a href="...Querdax">Querdax</a>
-              <span class="URL">...Querdax</span>
-            </li>
-            <li action="expand" class="NotRoot" uniqueid="New Clip">
-              <a href="...">New Clip</a>
-              <span class="URL">...New%20Clip</span>
-            </li>
-            <li action="expand" class="NotRoot" uniqueid="Second Clip">
-              <a href="...">Second Clip</a>
-              <span class="URL">...Second%20Clip</span>
-            </li>
-          </ul>
-       </li>
-     </ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <span class="URL">...wirtschaft.feed</span>
+        </li>
+        <li class="NotRoot" uniqueid="Querdax">
+          <a href="...Querdax">Querdax</a>
+          <span class="URL">...Querdax</span>
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
+          <span class="URL">...New%20Clip</span>
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+          <a href="...">Second Clip</a>
+          <span class="URL">...Second%20Clip</span>
+        </li>
+      </ul>
+   </li>
+ </ul>
 
 
 Moving 
@@ -178,98 +178,98 @@ Moving
 
 We can now move things around. This also works via ajax. Move the `Querdax`
 to `New Clip`. The tree node is currently collapsed so we won't see the
-`Querdax` entry after moving::
+`Querdax` entry after moving:
 
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
-    ...           'object_path=Querdax&add_to=New%20Clip')
-    >>> print ajax.contents
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
+...           'object_path=Querdax&add_to=New%20Clip')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      ...
       <ul>
-        <li class="Root" uniqueid="">
-          <a href="...">Clipboard</a>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
+          ...
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+          <a href="...">Second Clip</a>
+          ...
+        </li>
+      </ul>
+   </li>
+ </ul>
+
+
+Expand the `New Clip` node:
+
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/tree.html/'
+...           '@@expandTree?uniqueId=New%20Clip')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      ...
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
+          <span class="URL">...</span>
+          <ul>
+            <li class="NotRoot" uniqueid="New Clip/Querdax">
+              <a href="...Querdax">Querdax</a>
+              ...
+            </li>
+          </ul>  
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+          <a href="...">Second Clip</a>
+          ...
+        </li>
+      </ul>
+   </li>
+ </ul>
+
+
+We can of course also move clips into clips:
+
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
+...           'object_path=Second%20Clip&add_to=New%20Clip/Querdax')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      ...
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
           ...
           <ul>
-            <li class="NotRoot" uniqueid="wirtschaft.feed">
-              <a href="...wirtschaft.feed">Wirtschaft</a>
+            <li class="NotRoot" uniqueid="New Clip/Querdax">
+              <a href="...Querdax">Querdax</a>
               ...
             </li>
-            <li action="expand" class="NotRoot" uniqueid="New Clip">
-              <a href="...">New Clip</a>
-              ...
-            </li>
-            <li action="expand" class="NotRoot" uniqueid="Second Clip">
+            <li action="expand" class="NotRoot"
+              uniqueid="New Clip/Second Clip">
               <a href="...">Second Clip</a>
               ...
             </li>
-          </ul>
-       </li>
-     </ul>
-
-
-Expand the `New Clip` node::
-
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/tree.html/'
-    ...           '@@expandTree?uniqueId=New%20Clip')
-    >>> print ajax.contents
-      <ul>
-        <li class="Root" uniqueid="">
-          <a href="...">Clipboard</a>
-          ...
-          <ul>
-            <li class="NotRoot" uniqueid="wirtschaft.feed">
-              <a href="...wirtschaft.feed">Wirtschaft</a>
-              ...
-            </li>
-            <li action="collapse" class="NotRoot" uniqueid="New Clip">
-              <a href="...">New Clip</a>
-              <span class="URL">...</span>
-              <ul>
-                <li class="NotRoot" uniqueid="New Clip/Querdax">
-                  <a href="...Querdax">Querdax</a>
-                  ...
-                </li>
-              </ul>  
-            </li>
-            <li action="expand" class="NotRoot" uniqueid="Second Clip">
-              <a href="...">Second Clip</a>
-              ...
-            </li>
-          </ul>
-       </li>
-     </ul>
-
-
-We can of course also move clips into clips::
-
-    >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
-    ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
-    ...           'object_path=Second%20Clip&add_to=New%20Clip/Querdax')
-    >>> print ajax.contents
-      <ul>
-        <li class="Root" uniqueid="">
-          <a href="...">Clipboard</a>
-          ...
-          <ul>
-            <li class="NotRoot" uniqueid="wirtschaft.feed">
-              <a href="...wirtschaft.feed">Wirtschaft</a>
-              ...
-            </li>
-            <li action="collapse" class="NotRoot" uniqueid="New Clip">
-              <a href="...">New Clip</a>
-              ...
-              <ul>
-                <li class="NotRoot" uniqueid="New Clip/Querdax">
-                  <a href="...Querdax">Querdax</a>
-                  ...
-                </li>
-                <li action="expand" class="NotRoot"
-                  uniqueid="New Clip/Second Clip">
-                  <a href="...">Second Clip</a>
-                  ...
-                </li>
-              </ul>  
-            </li>
-          </ul>
-       </li>
-     </ul>
+          </ul>  
+        </li>
+      </ul>
+   </li>
+ </ul>

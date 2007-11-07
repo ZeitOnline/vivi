@@ -3,12 +3,15 @@
 # $Id$
 
 import zope.component
+import zope.i18n
 import zope.interface
 import zope.publisher.interfaces
 
 import zeit.cms.browser.interfaces
+from  zeit.cms.i18n import MessageFactory as _
 
 import zeit.cms.clipboard.interfaces
+
 
 
 class Entry(object):
@@ -34,6 +37,40 @@ class EntryListRepresentation(object):
         return getattr(self.context, key)
 
 
+class InvalidReferenceListRepresentation(object):
+
+    zope.interface.implements(
+        zeit.cms.browser.interfaces.IListRepresentation)
+
+    author = None
+    ressort = None
+    searchableText = None
+    page = None
+    volume = None
+    year = None
+    workflowState = None
+    modifiedBy = None
+    url = None
+
+    def __init__(self, request, unique_id):
+        self.context = None
+        self.request = request
+        self.uniqueId = unique_id
+        dummy, self.__name__  = unique_id.rsplit('/', 1)
+
+    @property
+    def title(self):
+        title = _("Broken reference to ${uniqueId}",
+                  mapping=dict(uniqueId=self.uniqueId))
+        return zope.i18n.translate(title, context=self.request)
+
+    def modifiedOn(format=None):
+        return None
+
+    def createdOn(format=None):
+        return None
+
+
 @zope.component.adapter(
     zeit.cms.clipboard.interfaces.IObjectReference,
     zope.publisher.interfaces.IPublicationRequest)
@@ -43,7 +80,8 @@ def entryListRepresentationFactory(context, request):
     """Defer the list representation to the referenced object."""
     references = context.references
     if references is None:
-        return
+        return InvalidReferenceListRepresentation(
+            request, context.referenced_unique_id)
     list_repr = zope.component.getMultiAdapter(
         (references, request),
         zeit.cms.browser.interfaces.IListRepresentation)
