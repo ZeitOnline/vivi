@@ -74,11 +74,16 @@ label span {
   font-weight: bold;
 }
 
-fieldset {
+fieldset,
+pre {
   margin: 1em;
   border: 1px solid #0088aa;
 }
 
+pre {
+  padding: 1em;
+  overflow: auto;
+}
 
 /* 
  * class + ID definitions 
