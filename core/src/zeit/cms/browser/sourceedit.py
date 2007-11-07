@@ -20,8 +20,7 @@ class TextEditForm(zope.formlib.form.EditForm):
     template = zope.formlib.namedtemplate.NamedTemplate('sourceedit_form')
 
     form_fields = zope.formlib.form.Fields(
-        zeit.cms.content.interfaces.ITextContent,
-        omit_readonly=True)
+        zeit.cms.content.interfaces.ITextContent).select('data')
 
 
 class XMLEditForm(zope.formlib.form.EditForm):
