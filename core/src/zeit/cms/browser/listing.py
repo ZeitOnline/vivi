@@ -119,7 +119,9 @@ class MetadataColumn(zc.table.column.GetterColumn):
 class LockedColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
-        lockable = zope.app.locking.interfaces.ILockable(item.context)
+        lockable = zope.app.locking.interfaces.ILockable(item.context, None)
+        if lockable is None:
+            return ''
         locked = lockable.locked()
         mylock = locked and lockable.ownLock()
         if mylock:
