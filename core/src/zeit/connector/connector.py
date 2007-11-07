@@ -437,7 +437,7 @@ class Connector(zope.thread.local):
         locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
         autolock = (locktoken is None)
         iscoll = (resource.type == 'collection')
-        
+
         # No meaningful lock-null resources for collections :-(
         if autolock and not iscoll:
             locktoken = self.lock(id, "AUTOLOCK",
@@ -546,7 +546,7 @@ class Connector(zope.thread.local):
                 davlock['owner'] = None
             # We get timeout in "Second-1337" format. Extract, add to ref time
             try:
-	        reftime = self[id].properties[('cached-time', 'INTERNAL')]
+                reftime = self[id].properties[('cached-time', 'INTERNAL')]
                 timo = int(re.match("second-(\d+)",
                                     unicode(lockinfo_node.timeout),
                                     re.I).group(1))
