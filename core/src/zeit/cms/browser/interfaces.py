@@ -41,6 +41,10 @@ class IListRepresentation(zope.interface.Interface):
     ressort = zope.interface.Attribute("Ressort")
     searchableText = zope.interface.Attribute("Index used to search the list")
     page = zope.schema.Int(title=u"Page in paper")
+    volume = zope.schema.Int(title=u"Volume")
+    year = zope.schema.Int(title=u"Year")
+
+    url = zope.schema.URI(title=u"URL to View")
 
     workflowState = zope.interface.Attribute("Workflow State")
 
