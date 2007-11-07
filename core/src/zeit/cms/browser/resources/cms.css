@@ -191,7 +191,6 @@ form .fullWidth {
 }
 
 form .column-left {
-    clear: both;
     width: 58%;
     float: left;
 }
