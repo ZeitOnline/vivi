@@ -23,13 +23,11 @@ class UnknownResource(zope.app.container.contained.Contained):
     zope.interface.implements(zeit.cms.repository.interfaces.IUnknownResource,
                               zeit.cms.content.interfaces.ITextContent)
 
-    def __init__(self, data, type_info=None, properties=None):
+    def __init__(self, data, type_info=None):
         if not isinstance(data, unicode):
             raise TypeError('data must be unicode.')
         self.data = data
         self.type = type_info
-        if properties is None:
-            properties = {}
 
         # provide suitable defaults for year and volume and online
         now = datetime.datetime.now()
