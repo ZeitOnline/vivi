@@ -84,6 +84,8 @@ class FormBase(object):
 class AddForm(FormBase, zope.formlib.form.AddForm):
     """Add form."""
 
+    _checked_out = False
+
     def add(self, object):
         chooser = zope.app.container.interfaces.INameChooser(self.context)
         name = chooser.chooseName(self.suggestName(object), object)
@@ -95,6 +97,7 @@ class AddForm(FormBase, zope.formlib.form.AddForm):
             self.context[name], None)
         if manager is not None and manager.canCheckout:
             object = manager.checkout()
+            self._checked_out = True
 
         self._created_object = object
         self._finished_add = True
@@ -103,9 +106,13 @@ class AddForm(FormBase, zope.formlib.form.AddForm):
         return object.__name__
 
     def nextURL(self):
+        if self._checked_out:
+            view = 'edit.html'
+        else:
+            view = 'view.html'
         url = zope.component.getMultiAdapter(
             (self._created_object, self.request), name='absolute_url')()
-        return url + '/@@edit.html'
+        return '%s/@@%s' % (url, view)
 
 
 class EditForm(FormBase, zope.formlib.form.EditForm):
