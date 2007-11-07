@@ -19,6 +19,7 @@
   <adapter factory="zeit.xmleditor.structure.Text" name="title" />
   <adapter factory="zeit.xmleditor.structure.Text" name="byline" />
   <adapter factory="zeit.xmleditor.structure.Text" name="supertitle" />
+  <adapter factory="zeit.xmleditor.structure.Text" name="subtitle" />
   <adapter factory="zeit.xmleditor.structure.Text" name="text" />
   <adapter factory="zeit.xmleditor.structure.Text" name="copyright" />
 
