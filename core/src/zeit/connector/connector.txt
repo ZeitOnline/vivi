@@ -314,8 +314,7 @@ Again, add the collection:
 
 >>> connector.add(coll)
 
-Referencing doesn't work yet without the trailing slash, thus we do:
->>> other_collection_id += '/'
+... and get it:
 
 >>> res = connector[other_collection_id]
 >>> res.type

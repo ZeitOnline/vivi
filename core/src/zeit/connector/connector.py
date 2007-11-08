@@ -192,8 +192,7 @@ class Connector(zope.thread.local):
         # DAV access per child if our clients request details about our
         # children? Probably yes!
         __traceback_info__ = (id, )
-        if not id.endswith('/'):
-            id = id + '/'
+        id = self._get_cannonical_id(id)
         for child_id in self._get_resource_child_ids(id):
             if child_id != child_id.encode('ascii', 'replace'):
                 # We want to ignore objects with strange characters in the id.
@@ -245,13 +244,16 @@ class Connector(zope.thread.local):
         now = datetime.datetime.now(pytz.UTC)
         cache = self.cache.properties
         for path, response in dav_result._result.responses.items():
-            response_id = self._loc2id(urlparse.urljoin(self._roots['default'], path))
+            response_id = self._loc2id(urlparse.urljoin(
+                self._roots['default'], path))
             cache[response_id] = response.get_all_properties()
             cache[response_id][('cached-time', 'INTERNAL')] = now
 
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
             return
+        if not hasattr(dav_response, 'get_child_names'):
+            import pdb; pdb.set_trace() 
         id = self._loc2id(urlparse.urljoin(self._roots['default'], dav_response.path))
         child_ids = self.cache.child_ids[id] = [
             self._loc2id(urlparse.urljoin(self._roots['default'], path))
@@ -272,6 +274,7 @@ class Connector(zope.thread.local):
 
     def __getitem__(self, id):
         __traceback_info__ = (id, )
+        id = self._get_cannonical_id(id)
         try:
             content_type = self._get_resource_properties(id).get(
                 ('getcontenttype', 'DAV:'))
@@ -284,22 +287,26 @@ class Connector(zope.thread.local):
             lambda: self._get_resource_body(id),
             content_type=content_type)
 
-    def __setitem__(self, id, object): # FIXME id or path? see [3], [3a]
+    def __setitem__(self, id, object):
+        id = self._get_cannonical_id(id)
         resource = zeit.connector.interfaces.IResource(object)
         resource.id = id # override
         self._internal_add(id, resource)
 
     def __delitem__(self, id):
         # FIXME lotsa error checking here...
+        id = self._get_cannonical_id(id)
         parent, name = _id_splitlast(id)
         self._get_dav_resource(parent).delete(name, self._get_my_locktoken(id))
         self._invalidate_cache(id)
 
     def add(self, object):
         resource = zeit.connector.interfaces.IResource(object)
-        self._internal_add(resource.id, resource)
+        id = self._get_cannonical_id(resource.id)
+        self._internal_add(id, resource)
 
     def changeProperties(self, id, properties):
+        id = self._get_cannonical_id(id)
         locktoken = self._get_my_locktoken(id)
         davres = self._get_dav_resource(id)
         davres.change_properties(
@@ -311,7 +318,7 @@ class Connector(zope.thread.local):
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
-        url = self._id2loc(id)
+        url = self._id2loc(self._get_cannonical_id(id))
         token = None
         try:
             # NOTE: _timeout() returns None for timeouts too long. This blends
@@ -331,7 +338,7 @@ class Connector(zope.thread.local):
         return token
 
     def unlock(self, id, locktoken=None):
-        url = self._id2loc(id)
+        url = self._id2loc(self._get_cannonical_id(id))
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
         if locktoken:
             try:
@@ -341,6 +348,7 @@ class Connector(zope.thread.local):
         self._invalidate_cache(id)
 
     def locked(self, id):
+        id = self._get_cannonical_id(id)
         davlock = self._get_dav_lock(id)
         mylock = self._get_my_lockinfo(id)
 
@@ -426,7 +434,7 @@ class Connector(zope.thread.local):
            Just a textual transformation: replace _root with _prefix"""
         root = self._roots['default']
         if loc.startswith(root):
-            return self._prefix + loc[len(root):]
+            return self._get_cannonical_id(self._prefix + loc[len(root):])
         else:
             return u"######################################"
             ## raise ValueError("Bad location %r (root is %r)" % (loc, root))
@@ -566,6 +574,19 @@ class Connector(zope.thread.local):
                 del cache[key]
             except KeyError:
                 pass
+
+    def _get_cannonical_id(self, id):
+        """Add / for collections if not appended yet."""
+        if id.endswith('/'):
+            id = id[:-1]
+        if self.cache.properties.get(id + '/') is not None:
+            return id + '/'
+        if self.cache.properties.get(id) is not None:
+            return id
+        dav_resource = DAVResource(self._id2loc(id + '/'), conn=self._conn())
+        if dav_resource.head().status == 200:
+            return id + '/'
+        return id
 
     @property
     def cache(self):
