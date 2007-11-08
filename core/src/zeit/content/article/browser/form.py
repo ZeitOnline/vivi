@@ -14,7 +14,7 @@ import zeit.content.article.interfaces
 class ArticleFormBase(object):
 
     widget_groups = (
-        (u"Navigation", ('navigation', 'keywords', 'serie', 'classification'),
+        (u"Navigation", ('navigation', 'keywords', 'serie'),
             'small-and-tall'),
         (u"Kopf", ('year', 'volume', 'page', 'ressort'), 'medium-float'),
         (u"Optionen", ('dailyNewsletter', 'boxMostRead', 'commentsAllowed',

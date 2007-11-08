@@ -37,13 +37,6 @@ class ISyndicationEventLog(zope.interface.Interface):
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
-    classification = zope.schema.FrozenSet(
-        title=u"Klassifikation",
-        required=False,
-        default=frozenset(),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.content.sources.KeywordSource()))
-
     commentsAllowed = zope.schema.Bool(
         title=u"Kommentare erlaubt",
         default=True)

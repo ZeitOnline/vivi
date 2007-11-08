@@ -118,9 +118,6 @@ class Article(persistent.Persistent,
     dailyNewsletter = zeit.cms.content.property.AttributeProperty(
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
 
-    classification = zeit.cms.content.property.MultipleAttributeProperty(
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'topic')
-
     syndicatedIn = zeit.cms.content.property.ResourceProperty(
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn')
     automaticTeaserSyndication = zeit.cms.content.property.ResourceProperty(
@@ -133,8 +130,6 @@ class Article(persistent.Persistent,
         zeit.content.article.interfaces.IArticle['navigation'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'ressort')
-
-
 
     @rwproperty.getproperty
     def html(self):

@@ -10,12 +10,6 @@ import gocept.cache.method
 
 import zeit.cms.config
 
-class KeywordSource(zc.sourcefactory.basic.BasicSourceFactory):
-    """Get valid classifications from connector."""
-
-    def getValues(self):
-        return iter([u'Deutschland', u'International'])
-
 
 class SimpleXMLSource(zc.sourcefactory.basic.BasicSourceFactory):
 
