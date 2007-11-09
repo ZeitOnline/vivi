@@ -95,11 +95,11 @@ import zeit.connector.resource
 
 
 # The property holding the "resource type".
-# Note that davlib takes (name, namespace). Ugh.
-PROP_RESTYPE = ('type', 'http://namespaces.zeit.de/CMS/document')
+RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
+
 # Highest possible datetime value. We use datetime-with-timezone everywhere.
-# The MAXYEAR-1 is there to protect us from passing this bound when transforming
-# into some local time
+# The MAXYEAR-1 is there to protect us from passing this bound when
+# transforming into some local time
 TIME_ETERNITY = datetime.datetime(
     datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
 
@@ -202,7 +202,7 @@ class Connector(zope.thread.local):
     def _get_resource_type(self, id):
         __traceback_info__ = (id, )
         properties = self._get_resource_properties(id)
-        r_type = properties.get(PROP_RESTYPE)
+        r_type = properties.get(RESOURCE_TYPE_PROPERTY)
         if r_type is None:
             dav_type = properties.get(('resourcetype', 'DAV:'))
             content_type = properties.get(('getcontenttype', 'DAV:'), '')
@@ -476,6 +476,8 @@ class Connector(zope.thread.local):
                 davres.upload(data, resource.contentType,
                               locktoken = locktoken)
 
+        # Set the resource type from resource.type.
+        resource.properties[RESOURCE_TYPE_PROPERTY] = resource.type
         davres.change_properties(
             resource.properties,
             delmark=zeit.connector.interfaces.DeleteProperty,

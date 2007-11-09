@@ -191,7 +191,7 @@ We've set `text` as resource type. We should get `text` back, when getting the
 resource. Unforunatly we're getting `unknown` back, see bug #3749):
 
 >>> connector[res.id].type
-'unknown'
+'text'
 
 We also find `conn1` in the collection now:
 
