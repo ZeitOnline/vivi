@@ -244,6 +244,8 @@ class Connector(zope.thread.local):
         now = datetime.datetime.now(pytz.UTC)
         cache = self.cache.properties
         for path, response in dav_result._result.responses.items():
+            # response_id will be the canonical id, i.e. collections end with a
+            # slash (/)
             response_id = self._loc2id(urlparse.urljoin(
                 self._roots['default'], path))
             cache[response_id] = response.get_all_properties()
@@ -252,9 +254,8 @@ class Connector(zope.thread.local):
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
             return
-        if not hasattr(dav_response, 'get_child_names'):
-            import pdb; pdb.set_trace() 
-        id = self._loc2id(urlparse.urljoin(self._roots['default'], dav_response.path))
+        id = self._loc2id(urlparse.urljoin(self._roots['default'],
+                                           dav_response.path))
         child_ids = self.cache.child_ids[id] = [
             self._loc2id(urlparse.urljoin(self._roots['default'], path))
             for path in dav_response.get_child_names()]
@@ -434,7 +435,7 @@ class Connector(zope.thread.local):
            Just a textual transformation: replace _root with _prefix"""
         root = self._roots['default']
         if loc.startswith(root):
-            return self._get_cannonical_id(self._prefix + loc[len(root):])
+            return self._prefix + loc[len(root):]
         else:
             return u"######################################"
             ## raise ValueError("Bad location %r (root is %r)" % (loc, root))
