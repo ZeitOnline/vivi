@@ -580,6 +580,8 @@ class Connector(zope.thread.local):
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""
+        if id == self._prefix:
+            return id
         if id.endswith('/'):
             id = id[:-1]
         if self.cache.properties.get(id + '/') is not None:
