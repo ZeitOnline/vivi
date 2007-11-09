@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-09-07 16:06+0100\n"
+"PO-Revision-Date: 2007-11-09 14:19+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,103 +11,148 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
+#: src/zeit/cms/browser/form.pt:17
+#: src/zeit/cms/browser/main_template.pt:12
+#: src/zeit/cms/browser/main_template.pt:32
+#: src/zeit/cms/browser/main_template.pt:116
+#: src/zeit/cms/browser/main_template.pt:138
+#: src/zeit/cms/browser/main_template.pt:188
+#: src/zeit/cms/browser/main_template.pt:237
+#: src/zeit/cms/browser/sourceedit.pt:16
+#: src/zeit/cms/browser/sourceedit.pt:38
+msgid "${DYNAMIC_CONTENT}"
+msgstr "${DYNAMIC_CONTENT}"
+
+#: src/zeit/cms/browser/main_template.pt:187
+msgid "Add…"
+msgstr "Hinzufügen…"
+
+#. Default: ""
+#: src/zeit/cms/clipboard/browser/entry.py:63
+msgid "Broken reference to ${uniqueId}"
+msgstr "Invalide Referenz zu ${uniqueId}"
+
 #: src/zeit/cms/content/interfaces.py:100
-msgid "Index teaser text"
-msgstr "Kurzteaser-Text"
+msgid "Please take care of capiltalisation."
+msgstr "Bitte beachten Sie die Groß-/Kleinschreibung."
 
-#: src/zeit/cms/content/interfaces.py:27
-msgid "Jahr"
-msgstr "Jahr"
-
-#: src/zeit/cms/content/interfaces.py:32
-msgid "Ausgabe"
-msgstr "Ausgabe"
-
-#: src/zeit/cms/content/interfaces.py:37
-msgid "Seite"
-msgstr "Seite"
-
-#: src/zeit/cms/content/interfaces.py:42
-msgid "Ressort"
-msgstr "Ressort"
-
-#: src/zeit/cms/content/interfaces.py:48
-msgid "Authors"
-msgstr "Autoren"
-
-#: src/zeit/cms/content/interfaces.py:54
-msgid "Keywords"
-msgstr "Schlüsselwörter"
-
-#: src/zeit/cms/content/interfaces.py:60
-msgid "Serie"
-msgstr "Serie"
-
-#: src/zeit/cms/content/interfaces.py:65
-msgid "copyright"
-msgstr "copyright ©"
-
-#: src/zeit/cms/content/interfaces.py:66
-msgid "Do not enter (c)."
-msgstr "© nicht eingeben."
-
-#: src/zeit/cms/content/interfaces.py:70
-msgid "Spitzmarke"
-msgstr "Spitzmarke"
-
-#: src/zeit/cms/content/interfaces.py:71
-msgid "Case sensitive."
-msgstr "Groß-/Kleinschreibung beachten!"
-
-#: src/zeit/cms/content/interfaces.py:75
+#: src/zeit/cms/content/interfaces.py:104
 msgid "By line"
 msgstr "„Von“-Zeile"
 
-#: src/zeit/cms/content/interfaces.py:79
-msgid "Titel"
+#: src/zeit/cms/content/interfaces.py:108
+msgid "Title"
 msgstr "Titel"
 
-#: src/zeit/cms/content/interfaces.py:82
-msgid "Untertitel"
+#: src/zeit/cms/content/interfaces.py:111
+msgid "Subtitle"
 msgstr "Untertitel"
 
-#: src/zeit/cms/content/interfaces.py:86
+#: src/zeit/cms/content/interfaces.py:115
 msgid "Teaser titel"
 msgstr "Teasertitel"
 
-#: src/zeit/cms/content/interfaces.py:90
+#: src/zeit/cms/content/interfaces.py:119
 msgid "Teaser text"
 msgstr "Teasertext"
 
-#: src/zeit/cms/content/interfaces.py:95
+#: src/zeit/cms/content/interfaces.py:124
 msgid "Index teaser title"
 msgstr "Kurzteaser-Titel"
 
-#: src/zeit/cms/interfaces.py:181
-msgid "Unique Id"
-msgstr "Eindeutige ID"
+#: src/zeit/cms/content/interfaces.py:129
+msgid "Index teaser text"
+msgstr "Kurzteaser-Text"
 
-#: src/zeit/cms/interfaces.py:185
-msgid "File name"
-msgstr "Dateiname"
-
-#: src/zeit/cms/interfaces.py:198
+#: src/zeit/cms/content/interfaces.py:194
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: src/zeit/cms/interfaces.py:220
+#: src/zeit/cms/content/interfaces.py:214
 msgid "Teaser Title"
 msgstr "Teaser-Titel"
 
-#: src/zeit/cms/interfaces.py:221
+#: src/zeit/cms/content/interfaces.py:216
 msgid "Teaser Text"
 msgstr "Teaser-Text"
 
-#: src/zeit/cms/interfaces.py:228
+#: src/zeit/cms/content/interfaces.py:224
 msgid "Index Teaser Title"
 msgstr "Kurzteaser-Titel"
 
-#: src/zeit/cms/interfaces.py:230
+#: src/zeit/cms/content/interfaces.py:227
 msgid "Index Teaser Text"
 msgstr "Kurzteaser-Text"
+
+#: src/zeit/cms/content/interfaces.py:36
+msgid "Keyword is contained in the taxonomy"
+msgstr "Schlagword aus der Taxonomie."
+
+#: src/zeit/cms/content/interfaces.py:47
+msgid "Root of ontology"
+msgstr "Wurzel der Ontologie"
+
+#: src/zeit/cms/content/interfaces.py:56
+msgid "Year"
+msgstr "Jahr"
+
+#: src/zeit/cms/content/interfaces.py:61
+msgid "Volume"
+msgstr "Ausgabe"
+
+#: src/zeit/cms/content/interfaces.py:66
+msgid "Page"
+msgstr "Seite"
+
+#: src/zeit/cms/content/interfaces.py:71
+msgid "Ressort"
+msgstr "Ressort"
+
+#: src/zeit/cms/content/interfaces.py:77
+msgid "Authors"
+msgstr "Autoren"
+
+#: src/zeit/cms/content/interfaces.py:83
+msgid "Keywords"
+msgstr "Schlüsselwörter"
+
+#: src/zeit/cms/content/interfaces.py:89
+msgid "Serie"
+msgstr "Serie"
+
+#: src/zeit/cms/content/interfaces.py:94
+msgid "Copyright"
+msgstr "Copyright ©"
+
+#: src/zeit/cms/content/interfaces.py:95
+msgid "Do not enter (c)."
+msgstr "© nicht eingeben."
+
+#: src/zeit/cms/content/interfaces.py:99
+msgid "Kicker"
+msgstr "Spitzmarke"
+
+#: src/zeit/cms/interfaces.py:37
+msgid "Unique Id"
+msgstr "Eindeutige ID"
+
+#: src/zeit/cms/interfaces.py:41
+msgid "File name"
+msgstr "Dateiname"
+
+#: src/zeit/cms/permissions.zcml:10
+msgid "Checkout content"
+msgstr "Inhalt auschecken"
+
+#: src/zeit/cms/permissions.zcml:15
+msgid "Checkin content"
+msgstr "Inhalt einchecken"
+
+#: src/zeit/cms/permissions.zcml:5
+msgid "Manage content"
+msgstr "Inhalt verwalten"
+
+#: src/zeit/cms/repository/browser/navtree.pt:20
+msgid "Navigation is being loaded…"
+msgstr "Navigation wird geladen …"
 

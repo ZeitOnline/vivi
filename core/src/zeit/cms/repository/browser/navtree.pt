@@ -4,7 +4,8 @@
               tree_url tree_view/@@absolute_url;
               panel_handlers nocall:context/@@panel_handlers"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
-                  id panel_id">
+                  id panel_id"
+  i18n:domain="zeit.cms">
 
   
   <tal:replace replace="resource_library:zeit.cms.tree" />
@@ -16,8 +17,9 @@
     </a> 
   </h1>
   
-  <div id="navtreecontents" class="PanelContent Tree">
-    Navigaion wird geladen …
+  <div id="navtreecontents" class="PanelContent Tree"
+    i18n:translate="">
+    Navigation is being loaded…
   </div>
   <script language="javascript"
     tal:content="string:
