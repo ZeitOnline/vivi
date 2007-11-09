@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.connector',
-    version='0.9a4',
+    version='0.9a5',
     author='Tomas Zerolo, Christian Zagrodnick',
     author_email='tomas@tuxteam.de, cz@gocept.com',
     url='http://trac.gocept.com/zeit',
