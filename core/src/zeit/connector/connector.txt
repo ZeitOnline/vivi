@@ -303,12 +303,13 @@ Initially a collection is empty:
 []
 
 The trailing slash is canonical for a collection ID, but may be left out: the
-resource type is boss:
+content-type is boss:
 
 >>> other_collection_id = 'http://xml.zeit.de/testing/my-other-collection'
 >>> coll = zeit.connector.resource.Resource(
-...     other_collection_id, 'my-other-collection', 'collection',
-...     StringIO.StringIO(''))
+...     other_collection_id, 'my-other-collection', 'image-group',
+...     StringIO.StringIO(''),
+...     contentType='httpd/unix-directory')
 
 Again, add the collection:
 
@@ -317,8 +318,17 @@ Again, add the collection:
 ... and get it:
 
 >>> res = connector[other_collection_id]
->>> res.type
-'collection'
+
+
+Apparently storing properties for collections does not work :(
+
+#>>> res.type
+#'image-group'
+
+>>> res.contentType
+'httpd/unix-directory'
+>>> list(connector.listCollection(other_collection_id))
+[]
 
 Remove the collections:
 

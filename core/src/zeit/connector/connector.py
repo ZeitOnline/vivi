@@ -445,7 +445,10 @@ class Connector(zope.thread.local):
         """
         locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
         autolock = (locktoken is None)
-        iscoll = (resource.type == 'collection')
+        iscoll = (resource.type == 'collection'
+                  or resource.contentType == 'httpd/unix-directory')
+        if iscoll and not id.endswith('/'):
+            id = id + '/'
 
         # No meaningful lock-null resources for collections :-(
         if autolock and not iscoll:
