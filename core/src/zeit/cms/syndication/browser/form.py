@@ -7,6 +7,8 @@ import zope.formlib.form
 import zeit.cms.browser.form
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
+from zeit.cms.i18n import MessageFactory as _
+
 
 
 class FeedFormBase(object):
@@ -14,6 +16,8 @@ class FeedFormBase(object):
 
 
 class AddForm(FeedFormBase, zeit.cms.browser.form.AddForm):
+
+    title = _("Add Channel")
 
     form_fields = (
         zope.formlib.form.Fields(
@@ -28,6 +32,8 @@ class AddForm(FeedFormBase, zeit.cms.browser.form.AddForm):
 
 
 class EditForm(FeedFormBase, zeit.cms.browser.form.EditForm):
+
+    title = _("Edit Channel")
 
     form_fields = zope.formlib.form.Fields(
         zeit.cms.syndication.interfaces.IFeed,
