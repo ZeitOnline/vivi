@@ -53,17 +53,17 @@ class IKeywords(zope.interface.Interface):
 class ICommonMetadata(zope.interface.Interface):
 
     year = zope.schema.Int(
-        title=_("Jahr"),
+        title=_("Year"),
         min=1900,
         max=2100)
 
     volume = zope.schema.Int(
-        title=_("Ausgabe"),
+        title=_("Volume"),
         min=1,
         max=53)
 
     page = zope.schema.Int(
-        title=_("Seite"),
+        title=_("Page"),
         readonly=True,
         required=False)
 
@@ -91,13 +91,13 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
 
     copyrights = zope.schema.TextLine(
-        title=_("copyright"),
+        title=_("Copyright"),
         description=_("Do not enter (c)."),
         default=u"ZEIT online")
 
     supertitle = zope.schema.TextLine(
-        title=_("Spitzmarke"),
-        description=_("Case sensitive."),
+        title=_("Kicker"),
+        description=_("Please take care of capiltalisation."),
         required=False)
 
     byline = zope.schema.TextLine(
@@ -105,27 +105,27 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
 
     title = zope.schema.TextLine(
-        title=_("Titel"))
+        title=_("Title"))
 
-    subtitle = zope.schema.TextLine(
-        title=_("Untertitel"),
+    subtitle = zope.schema.Text(
+        title=_("Subtitle"),
         required=False)
 
-    teaserTitle = zope.schema.TextLine(
+    teaserTitle = zope.schema.Text(
         title=_("Teaser titel"),
         required=False)
 
-    teaserText = zope.schema.TextLine(
+    teaserText = zope.schema.Text(
         title=_("Teaser text"),
         required=False,
         max_length=170)
 
-    shortTeaserTitle = zope.schema.TextLine(
+    shortTeaserTitle = zope.schema.Text(
         title=_("Index teaser title"),
         required=False,
         max_length=20)
 
-    shortTeaserText = zope.schema.TextLine(
+    shortTeaserText = zope.schema.Text(
         title=_("Index teaser text"),
         required=False,
         max_length=50)
@@ -210,18 +210,22 @@ class IXMLContent(zeit.cms.interfaces.ICMSContent, IXMLRepresentation):
 class ITeaser(zope.interface.Interface):
     """A teaser is a brief introduction to an article or other document."""
 
-    title = zope.schema.TextLine(title=_('Teaser Title'))
-    text = zope.schema.TextLine(title=_('Teaser Text'),
-                                max_length=170)
+    title = zope.schema.Text(
+        title=_('Teaser Title'))
+    text = zope.schema.Text(
+        title=_('Teaser Text'),
+        max_length=170)
 
 
 class IIndexTeaser(zope.interface.Interface):
     """An index teaser is a *very* short in troduction to a document."""
 
-    title = zope.schema.TextLine(title=_('Index Teaser Title'),
-                                 max_length=20)
-    text = zope.schema.TextLine(title=_('Index Teaser Text'),
-                                max_length=50)
+    title = zope.schema.Text(
+        title=_('Index Teaser Title'),
+        max_length=20)
+    text = zope.schema.Text(
+        title=_('Index Teaser Text'),
+        max_length=50)
 
 
 class ILockInfo(zope.app.locking.interfaces.ILockInfo):

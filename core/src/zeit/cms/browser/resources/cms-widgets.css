@@ -439,3 +439,12 @@
 #lightbox-keyword-list img[action="delete"]:hover {
   opacity: 1;
 }
+
+#form\.subtitle,
+#form\.teaserTitle,
+#form\.teaserText,
+#form\.shortTeaserTitle,
+#form\.shortTeaserText {
+    height: 6ex;
+    width: 100%;
+}
