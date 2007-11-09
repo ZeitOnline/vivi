@@ -22,7 +22,7 @@ The repository contains objects representing collections in the WebDAV server:
 >>> from zeit.cms.repository.interfaces import IRepository
 >>> repository = zope.component.getUtility(IRepository)
 >>> repository.keys()
-[u'2006', u'2007', u'online', u'politik.feed', u'wirtschaft.feed']
+[u'online', u'2006', u'2007', u'politik.feed', u'wirtschaft.feed']
 
 >>> c_2007 = repository['online']['2007']
 >>> c_2007

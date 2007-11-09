@@ -156,7 +156,14 @@ class Repository(persistent.Persistent, Folder):
     def keys(self):
         if not self._initalizied:
             return []
-        return super(Repository, self).keys()
+        keys = super(Repository, self).keys()
+        try:
+            keys.remove(u'online')
+        except KeyError:
+            pass
+        else:
+            keys.insert(0, u'online')
+        return keys
 
     def getContent(self, unique_id):
         if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
