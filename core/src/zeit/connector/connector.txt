@@ -31,7 +31,6 @@ Cache
 
 Set up a site:
 
-
 >>> import zope.interface
 >>> import zope.app.component.hooks
 >>> import zope.annotation.attribute
