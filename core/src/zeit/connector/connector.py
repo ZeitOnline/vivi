@@ -481,9 +481,10 @@ class Connector(zope.thread.local):
                               locktoken = locktoken)
 
         # Set the resource type from resource.type.
-        resource.properties[RESOURCE_TYPE_PROPERTY] = resource.type
+        properties = dict(resource.properties)
+        properties[RESOURCE_TYPE_PROPERTY] = resource.type
         davres.change_properties(
-            resource.properties,
+            properties,
             delmark=zeit.connector.interfaces.DeleteProperty,
             locktoken=locktoken)
 
