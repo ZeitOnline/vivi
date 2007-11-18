@@ -1170,16 +1170,10 @@ class DAVCollection ( DAVResource ):
         raise DAVCreationFailedError, (res.status, res.reason, url)
 
     def _do_del ( self, url, path, locktoken=None ):
-        mytoken = locktoken or self.lock(owner=_DEFAULT_OWNER, depth='infinity')
         # issue del request and hold result
-        hdr = { 'If': _mk_if_data(url, mytoken) }
-        try:
-            res = self._conn.delete(path, hdr)
-        finally:
-            # unlock resource if it's our lock token
-            if locktoken is None:
-                self.unlock(mytoken)
-        return res
+        if locktoken: hdr = { 'If': _mk_if_data(url, mytoken) }
+        else: hdr = {}
+        return self._conn.delete(path, hdr)
 
     def delete ( self, name, locktoken=None ):
         """Delete a resource from this collection
