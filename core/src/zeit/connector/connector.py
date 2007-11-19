@@ -271,6 +271,10 @@ class Connector(zope.thread.local):
         except KeyError:
             data = self._get_dav_resource(id).get()
             data = cache.setData(id, properties, data)
+        if data is None:
+            # This apparently happens when the resource does not have a
+            # body but only properties.
+            data = StringIO.StringIO()
         return data
 
     def __getitem__(self, id):
