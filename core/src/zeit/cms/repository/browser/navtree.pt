@@ -23,7 +23,7 @@
   </div>
   <script language="javascript"
     tal:content="string:
-      var navtree = new Tree('$tree_url', 'navtreecontents);">
+      var navtree = new Tree('$tree_url', 'navtreecontents');">
   </script>
 
 </div>
