@@ -17,19 +17,9 @@
     name="10_navtree"
     for="*"
     manager="zeit.cms.browser.interfaces.ISidebar"
-    template="navtree_testing.pt"
-    class=".repository.HTMLTree"
-    layer="zeit.cms.browser.interfaces.ICMSTestingSkin"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    name="10_navtree"
-    for="*"
-    manager="zeit.cms.browser.interfaces.ISidebar"
     template="navtree.pt"
     class=".repository.HTMLTree"
-    layer="zeit.cms.browser.interfaces.ICMSSkin"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
 

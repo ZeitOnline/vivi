@@ -18,13 +18,12 @@
   </h1>
   
   <div id="navtreecontents" class="PanelContent Tree"
-    i18n:translate="">
-    Navigation is being loaded…
+    tal:content="structure tree_view">
+    Navigation tree
   </div>
   <script language="javascript"
     tal:content="string:
-      var navtree = new Tree('$tree_url', 'navtreecontents');
-      navtree.loadTree();">
+      var navtree = new Tree('$tree_url', 'navtreecontents);">
   </script>
 
 </div>
