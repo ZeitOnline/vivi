@@ -377,6 +377,39 @@ True
 False
 
 
+Locked resources w/o locking user
+=================================
+
+When a resource is locked for instance with cadaver the connector was telling
+the resource would not be locked. Verify the bug is fixed. We need the internal
+API to create an anonymous lock. Create a resource first:
+
+>>> id = 'http://xml.zeit.de/testing/lock-test'
+>>> res = Resource(id,
+...                'lock-test',
+...                'text',
+...                StringIO.StringIO('Pop goes the weasel!'),
+...                contentType = 'text/plain')
+>>> connector.add(res)
+
+Now lock:
+
+>>> dav_url = connector._id2loc(connector._get_cannonical_id(id))
+>>> token = connector._conn().do_lock(dav_url)
+
+The connector tells us it is locked now:
+
+>>> connector.locked(id)
+(None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+ False)
+
+
+Unlock the resource and remove id:
+
+>>> connector._conn().do_unlock(dav_url, token)
+>>> del connector[id]
+
+
 Clean up
 ========
 

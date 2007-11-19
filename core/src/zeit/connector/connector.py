@@ -361,13 +361,12 @@ class Connector(zope.thread.local):
             #raise("Aaaah! Pirates!")
             self._put_my_lockinfo(id, None)
             mylock = None
-            # Our lock was stolen. Are we supposed to scream?
+            # Our lock was stolen. Are we supposed to scream? 
+            # No we are not.
 
         owner = davlock.get('owner', None)
         timeout = davlock.get('timeout', None)
 
-        if owner == 'None': # This one quite strange
-            owner = None
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
 
@@ -564,14 +563,22 @@ class Connector(zope.thread.local):
             except AttributeError:
                 davlock['owner'] = None
             # We get timeout in "Second-1337" format. Extract, add to ref time
-            try:
-                reftime = self[id].properties[('cached-time', 'INTERNAL')]
-                timo = int(re.match("second-(\d+)",
-                                    unicode(lockinfo_node.timeout),
-                                    re.I).group(1))
-                davlock['timeout'] = reftime + datetime.timedelta(seconds=timo)
-            except:
-                davlock['timeout'] = None # ???
+            timeout = lockinfo_node.timeout
+            if not timeout:
+                timeout = None
+            elif timeout == 'Infinity':
+                timeout = TIME_ETERNITY
+            else:
+                m = re.match("second-(\d+)", unicode(timeout), re.I)
+                if m is None:
+                    # Better too much than not enough
+                    timeout = TIME_ETERNITY
+                else:
+                    reftime = self[id].properties[('cached-time', 'INTERNAL')]
+                    timeout = reftime + datetime.timedelta(
+                        seconds=int(m.group(1)))
+                davlock['timeout'] = timeout
+
             davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
         return davlock
 

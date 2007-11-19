@@ -226,13 +226,14 @@ class DAVBase:
             headers['Timeout'] = 'Second-%d' % timeout
         #:fixme: Here we should use ElementTree to construct a
         # proper XML request body
-        body = XML_DOC_HEADER + \
-               '<DAV:lockinfo xmlns:DAV="DAV:">' + \
-               '<DAV:lockscope><DAV:%s/></DAV:lockscope>' % scope + \
-               '<DAV:locktype><DAV:%s/></DAV:locktype>' % type + \
-               '<DAV:owner>%s</DAV:owner>\n' % owner + \
-               '</DAV:lockinfo>'
-        return self._request('LOCK', url, body, extra_hdrs=headers)
+        body = [XML_DOC_HEADER,
+               '<DAV:lockinfo xmlns:DAV="DAV:">',
+               '<DAV:lockscope><DAV:%s/></DAV:lockscope>' % scope,
+               '<DAV:locktype><DAV:%s/></DAV:locktype>' % type]
+        if owner:
+            body.append('<DAV:owner>%s</DAV:owner>\n' % owner)
+        body.append('</DAV:lockinfo>')
+        return self._request('LOCK', url, ''.join(body), extra_hdrs=headers)
 
     def unlock(self, url, locktoken, extra_hdrs=None):
         if extra_hdrs is None:
