@@ -28,6 +28,8 @@ class LockStorage(object):
             return None
         if locked_by is None and locked_until is None:
             return None
+        if locked_by is None:
+            locked_by = u'zeit.cms.unknown-dav-locker'
         return LockInfo(object, locked_by, locked_until)
 
     def setLock(self, object, lock):

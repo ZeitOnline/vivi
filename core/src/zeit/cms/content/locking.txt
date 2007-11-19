@@ -62,8 +62,8 @@ Set until:
 >>> connector.until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
 ...     days=1)
 >>> info = lock_storage.getLock(content)
->>> info.principal_id is None
-True
+>>> info.principal_id
+u'zeit.cms.unknown-dav-locker'
 >>> isinstance(info.timeout, float)
 True
 
