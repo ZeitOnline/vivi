@@ -1,0 +1,78 @@
+=======
+Locking
+=======
+
+The acutual locking is done via WebDAV. 
+
+
+Setup
+=====
+
+Mock a connector:
+
+>>> import zope.component
+>>> class Connector(object):
+...     who = None
+...     until = None
+...     def locked(self, id):
+...         return self.who, self.until, False
+... 
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> connector = Connector()
+>>> gsm.registerUtility(
+...     connector, zeit.connector.interfaces.IConnector)
+
+
+Create a fake content object:
+
+
+>>> class Content(object):
+...     uniqueId = 'foo'
+
+Lockstorage
+===========
+
+The lockstorage object is the mediator between Zope and the connector.
+
+>>> import zeit.cms.content.locking
+>>> lock_storage = zeit.cms.content.locking.LockStorage()
+
+Its `getLock` method return an Lockinfo object when the resource is locked,
+None when it's not:
+
+>>> content = Content()
+>>> lock_storage.getLock(content) is None
+True
+
+
+When who or until is not None we'll get a lock info:
+
+>>> connector.who = 'bastard locker from hell'
+>>> info = lock_storage.getLock(content)
+>>> info.principal_id
+'bastard locker from hell'
+
+Set until:
+
+>>> import datetime
+>>> import pytz
+>>> connector.who = None
+>>> connector.until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
+...     days=1)
+>>> info = lock_storage.getLock(content)
+>>> info.principal_id is None
+True
+>>> isinstance(info.timeout, float)
+True
+
+
+
+Clean up
+========
+
+>>> gsm.unregisterUtility(
+...     connector, zeit.connector.interfaces.IConnector)
+True
+

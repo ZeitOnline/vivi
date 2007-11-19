@@ -12,6 +12,7 @@ import persistent.mapping
 import zope.app.locking.interfaces
 
 import zeit.connector.interfaces
+import zeit.cms.content.interfaces
 
 
 class LockStorage(object):
@@ -25,7 +26,7 @@ class LockStorage(object):
         except KeyError:
             # resource does not exist -> no lock
             return None
-        if locked_by is None:
+        if locked_by is None and locked_until is None:
             return None
         return LockInfo(object, locked_by, locked_until)
 
