@@ -44,7 +44,7 @@ class Container(zope.app.container.contained.Contained):
 
     def __getitem__(self, key):
         '''See interface `IReadContainer`'''
-        unique_id = self._local_unique_map[key]
+        unique_id = self._get_id_for_name(key)
         __traceback_info__ = (key, unique_id)
         content = self.repository.getUncontainedContent(unique_id)
         zope.interface.directlyProvides(
