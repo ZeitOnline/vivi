@@ -109,7 +109,7 @@ class IConnector(zope.interface.Interface):
             my lock: True if the lock was issued by this system, False
                 otherwise.
 
-        returns None, None if the resource is not locked.
+        returns None, None, None if the resource is not locked.
         raises KeyError if the resource does not exist.
 
         """
