@@ -210,10 +210,20 @@ Resources may be locked:
 (u'http://xml.zeit.de/users/frodo', datetime.datetime(..., tzinfo=...), True)
 
 To unlock it, you would have to supply the locktoken. The library takes
-care of that (hmmm?):
+care of that, though:
 >>> connector.unlock('http://xml.zeit.de/testing/conn1')
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
 (None, None, False)
+
+To specify an infinte lock, timeout can be None:
+
+>>> token = connector.lock(
+...     'http://xml.zeit.de/testing/conn1',
+...     'frodo', until=None)
+>>> connector.locked('http://xml.zeit.de/testing/conn1')
+(u'frodo', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+ True)
+>>> connector.unlock('http://xml.zeit.de/testing/conn1')
 
 Remove the `conn1` after user:
 

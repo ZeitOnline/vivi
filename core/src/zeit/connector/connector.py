@@ -135,9 +135,13 @@ _max_timeout_days = ((sys.maxint-1) / 86400) - 1
 
 def _abs2timeout(time):
     # Convert timedelta to int (seconds). Return None when (near) overflow
+    # which means infinte.
     # Ain't there anything similar in Python? Grr.
+    if time is None:
+        return None
     d = time - datetime.datetime.now(pytz.UTC)
-    if abs(d.days) > _max_timeout_days: return None
+    if abs(d.days) > _max_timeout_days:
+        return None
     # No negative or zero timeouts:
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
 
