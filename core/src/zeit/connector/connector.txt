@@ -186,8 +186,8 @@ Don't forget content-type:
 ...                contentType = 'text/plain')
 >>> connector.add(res)
 
-We've set `text` as resource type. We should get `text` back, when getting the
-resource. Unforunatly we're getting `unknown` back, see bug #3749):
+We've set `text` as resource type, so we get `text` back, when getting the
+resource:
 
 >>> connector[res.id].type
 'text'
