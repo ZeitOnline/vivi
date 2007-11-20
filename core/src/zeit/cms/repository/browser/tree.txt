@@ -15,8 +15,7 @@ Create a browser first:
 Tree Rendering
 ==============
 
-The tree is rendered when viewing at the repository. The user get's
-automatically redirected to it:
+The tree is rendered  in the sidebar all the time:
 
 >>> browser.open('http://localhost/++skin++cms/')
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
