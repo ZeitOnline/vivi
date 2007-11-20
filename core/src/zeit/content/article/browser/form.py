@@ -6,6 +6,8 @@ import datetime
 
 import zope.formlib.form
 
+import zc.resourcelibrary
+
 import zeit.cms.browser.form
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
@@ -25,6 +27,11 @@ class ArticleFormBase(object):
          'column-right'),
         )
 
+    @property
+    def template(self):
+        # Sneak in the javascript for copying teaser texts
+        zc.resourcelibrary.need('zeit.content.article.teaser')
+        return super(ArticleFormBase, self).template
 
 class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
 
