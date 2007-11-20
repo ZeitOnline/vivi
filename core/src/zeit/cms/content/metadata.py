@@ -37,12 +37,7 @@ class CommonMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.content.interfaces.ICommonMetadata,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('serie', 'copyrights'))
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.cms.interfaces.QPS_SCHEMA_NS,
-        ('year', 'volume', 'ressort', 'page'))
+        ('serie', 'copyrights', 'year', 'volume', 'ressort', 'page'))
 
     # tuple/set doesn't work with webdav, yet
     #zeit.cms.content.dav.mapProperty(

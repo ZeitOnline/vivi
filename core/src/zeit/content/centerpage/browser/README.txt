@@ -162,10 +162,10 @@ page:
 >>> print browser.getControl(name='form.xml').value
 <centerpage>
   <head>
-    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Online</attribute>
-    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">2</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie"/>
-    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
     ...
   </head>
@@ -185,8 +185,8 @@ Let's change the source of the center page:
 ...  <centerpage>
 ...    <head>
 ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
-...      <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">2</attribute>
-...      <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2007</attribute>
+...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
+...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
 ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
 ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie"></attribute>
 ...    </head>
