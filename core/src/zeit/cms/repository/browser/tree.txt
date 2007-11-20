@@ -36,11 +36,41 @@ The tree is rendered  in the sidebar all the time:
 </div>
 
 
+When we visit `online` it is automatically expanded while visiting it:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online')
+>>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+...                                ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True)
+<div id="navtreecontents"...>
+ <ul>
+    <li active="True" class="Root">
+      <a href="...">Repository</a>
+      ...
+      <ul>
+        <li...online...
+          <ul>
+            <li...2005...
+            <li...2006...
+            <li...2007...
+          </ul>
+        </li>
+        <li...2006...
+        <li...2007...
+      </ul>
+    </li>
+ </ul>
+</div>
+
+
 Now we expand online/2007. This is done via an ajax request. Thus the returned
 "page" only conatains the tree, not the full html page:
 
+>>> import urllib
+>>> view_url = 'http://localhost/++skin++cms/repository'
 >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-...              '@@expandTree?uniqueId=http://xml.zeit.de/online')
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online'
+...              '&view_url=%s' % urllib.quote(view_url))
 >>> print lxml.etree.tostring(browser.etree, pretty_print=True)
 <ul>
     <li active="True" class="Root">
