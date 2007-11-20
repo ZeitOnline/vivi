@@ -21,7 +21,7 @@ class LockingError(Exception):
     """Raised when trying to lock an already locked resource."""
 
     def __init__(self, id, *args):
-        self.unique_id = id
+        self.uniqueId = id
         self.args = args
 
 
