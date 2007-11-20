@@ -90,6 +90,11 @@
     <directory source="resources" include="tree.js"/>
   </resourceLibrary>
 
+  <resourceLibrary name="zeit.cms.error"
+    require="zeit.cms">
+    <directory source="resources" include="error.css" />
+  </resourceLibrary>
+
 
   <!-- Zeit form layout -->
   <adapter factory=".form.zeit_form_template" name="zeitform"/> 
@@ -272,6 +277,17 @@
     class=".sidebar.Sidebar"
     permission="zope.View"
     allowed_attributes="css_class"
+    />
+
+  <!-- Error views -->
+
+  <browser:page
+    for="zeit.connector.interfaces.LockingError"
+    name="index.html"
+    class=".error.LockingErrorView"
+    template="locking-error.pt"
+    permission="zope.Public"
+    layer=".interfaces.ICMSLayer"
     />
 
 </configure>

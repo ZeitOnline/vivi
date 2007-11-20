@@ -1,5 +1,25 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-  
+<html xmlns="http://www.w3.org/1999/xhtml"
+  i18n:domain="zeit.cms"
+  >
+
+  <metal:macro define-macro="error-page"><!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <title i18n:translate="">Error</title>
+        <tal:replace replace="resource_library:zeit.cms.error" />
+      </head>
+      <body>
+        <div id="content">
+        <metal:contentslot define-slot="body">
+          content
+        </metal:contentslot>
+        </div>
+      </body>
+    </html>
+  </metal:macro>
+
   <metal:macro define-macro="page"><?xml version="1.0"?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"

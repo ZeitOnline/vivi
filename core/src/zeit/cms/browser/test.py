@@ -11,7 +11,7 @@ import zeit.cms.testing
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'listing.txt', 'README.txt',
+        'listing.txt', 'README.txt', 'error-views.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS)))
     return suite
