@@ -302,7 +302,12 @@ class Connector(zope.thread.local):
         # FIXME lotsa error checking here...
         id = self._get_cannonical_id(id)
         parent, name = _id_splitlast(id)
-        self._get_dav_resource(parent).delete(name, self._get_my_locktoken(id))
+        try:
+            self._get_dav_resource(parent).delete(
+                name, self._get_my_locktoken(id))
+        except davresource.DAVLockedError:
+            raise zeit.connector.interfaces.LockingError(
+                id, "Could not delete resource.")
         self._invalidate_cache(id)
 
     def add(self, object):
@@ -334,7 +339,7 @@ class Connector(zope.thread.local):
                                          timeout=_abs2timeout(until))
         except davresource.DAVLockedError:
             raise zeit.connector.interfaces.LockingError(
-                "%s is already locked." % id)
+                id, "%s is already locked." % id)
         # Just pass-on other exceptions. It's more informative
 
         # FIXME [11] returning locktoken (DAV resources keep one...)
@@ -413,7 +418,7 @@ class Connector(zope.thread.local):
         else:
             if locker and not myself:
                 raise zeit.connector.interfaces.LockedByOtherSystemError(
-                    locker, until)
+                    id, locker, until)
         lock_info = self._get_my_lockinfo(id)
         if lock_info:
             token = lock_info[0]
