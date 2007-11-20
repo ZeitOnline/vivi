@@ -23,6 +23,7 @@
     for="zeit.content.article.interfaces.IArticle"
     class=".form.DisplayForm"
     permission="zope.View"
+    menu="zeit-context-views" title="View"
     />
 
   <browser:defaultView

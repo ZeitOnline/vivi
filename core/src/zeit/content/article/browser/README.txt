@@ -28,6 +28,10 @@ The metadata preview shows the most important data in list views:
 >>> browser.getLink('Checkout')
 <Link text='Checkout' ...>
 
+Make sure we have a "view" link:
+>>> browser.getLink('View')
+<Link text='View' ...>
+
 
 We have to publish another url to see if articles are listed:
 
