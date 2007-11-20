@@ -48,7 +48,6 @@ class Tree(zope.publisher.browser.BrowserView):
 
     def getSubTree(self, objects):
         data = []
-        expanded = self.treeState
 
         for obj in objects:
             container_data = self.getObjectData(obj)
@@ -71,12 +70,11 @@ class Tree(zope.publisher.browser.BrowserView):
         expandable = self.expandable(obj)
         uid = self.getUniqueId(obj)
 
+        root = False
         if self.isRoot(obj):
             root = True
-            expanded = True
-        else:
-            root = False
-            expanded = uid in self.treeState
+
+        expanded = self.expanded(obj)
 
         if not root and expandable:
             action = expanded and 'collapse' or 'expand'
@@ -121,6 +119,11 @@ class Tree(zope.publisher.browser.BrowserView):
         if zope.app.container.interfaces.IContainer.providedBy(obj):
             return True
         return False
+
+    def expanded(self, obj):
+        if self.isRoot(obj):
+            return True
+        return self.getUniqueId(obj) in self.treeState
 
     @property
     def treeState(self):
