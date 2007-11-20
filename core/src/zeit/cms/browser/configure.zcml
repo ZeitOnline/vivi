@@ -71,7 +71,7 @@
 
   <resourceLibrary
     name="zeit.cms.DragAndDrop"
-    require="mochikit.DragAndDrop">
+    require="mochikit.DragAndDrop gocept.mochikit.jsclass">
     <directory source="resources" include="dnd.js" />
   </resourceLibrary>
 
