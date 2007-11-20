@@ -157,9 +157,9 @@ class DAVUnlockFailedError ( DAVError ):
 
 #:fixme: Maybe we should report information about the lock status as well ...
 class DAVLockedError ( DAVError ):
-    """Exception raised if an atempt to modify or lock a locked resource was made.
+    """Exception raised if an atempt to modify or lock a locked resource was
+    made.
     """
-    pass
 
 
 #:fixme: Maybe we should report information about the lock status as well ...
@@ -1178,8 +1178,6 @@ class DAVCollection ( DAVResource ):
     def delete ( self, name, locktoken=None ):
         """Delete a resource from this collection
         """
-        if locktoken is None and self.is_locked():
-            raise DAVLockedError
         # construct path
         while name and name[0] == '/':
             name = name[1:]
@@ -1187,10 +1185,10 @@ class DAVCollection ( DAVResource ):
         path = urlparse(url, 'http', 0)[2]
         # do delete
         res = self._do_del(url, path, locktoken=locktoken)
+        if res.status == 423:
+            raise DAVLockedError(res.status, res.reason, url)
         if res.status >= 300:
-            raise DAVDeleteFailedError, (res.status, res.reason, url)
+            raise DAVDeleteFailedError(res.status, res.reason, url)
         # deleted and done
         self.update()
         return
-#
-###
