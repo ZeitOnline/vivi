@@ -205,7 +205,8 @@ form .column-left .field {
     padding-right: 5px;
 }
 
-form .column-left .field input {
+form .column-left .field input, 
+form .column-left .field textarea {
     width: 100%;
 }
 
@@ -213,6 +214,28 @@ form .column-right {
     float:  right;
     width: 30%;
 }
+
+form .column-right .field input, 
+form .column-right .field textarea {
+    width: 95%;
+}
+
+form .column-left.image-form {
+  width: 40%;
+}
+
+form .column-left.image-form input {
+  width: inherit;
+}
+
+form .column-right.image-form {
+  width: 48%;
+}
+
+.image-form #form\.caption {
+  height: 8em;
+}
+
 
 input[type="button"],
 input[type="submit"] {
