@@ -97,7 +97,6 @@
 
 
   <!-- Zeit form layout -->
-  <adapter factory=".form.zeit_form_template" name="zeitform"/> 
   <adapter factory=".sourceedit.form_template" name="sourceedit_form"/> 
 
   <!-- Sidebar -->  

@@ -50,6 +50,7 @@
   <include package="zc.datetimewidget"/>
 
   <include package="gocept.lxml" />
+  <include package="gocept.form" />
 
   <include package="zeit.connector" />
 

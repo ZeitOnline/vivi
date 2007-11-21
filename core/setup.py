@@ -20,7 +20,7 @@ setup(
         'decorator',
         'gocept.cache',
         'gocept.fckeditor',
-        'gocept.form',
+        'gocept.form[formlib]',
         'gocept.lxml',
         'gocept.mochikit',
         'iso8601>=0.1.2',

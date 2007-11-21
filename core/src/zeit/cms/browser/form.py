@@ -3,18 +3,16 @@
 # $Id$
 
 import zope.formlib.form
-import zope.formlib.namedtemplate
 import zope.formlib.interfaces
 
 import zope.app.container.interfaces
-import zope.app.pagetemplate
+
+import gocept.form.grouped
 
 import zeit.cms.checkout.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
-zeit_form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(
-    zope.app.pagetemplate.ViewPageTemplateFile('form.pt'),
-    zope.formlib.interfaces.IPageForm)
 REMAINING_FIELDS = object()
 
 
@@ -29,59 +27,35 @@ class WidgetGroup(object):
 
 class FormBase(object):
 
-    template = zope.formlib.namedtemplate.NamedTemplate('zeitform')
     widget_groups = ()
 
 
     def setUpWidgets(self, ignore_request=False):
-        self.adapters = {}
-        self.widgets = None
-        remainder_group = None
-        fields = []
-        self.groups = []
+        if self.widget_groups:
+            self._convert_to_fieldgroups()
+        super(FormBase, self).setUpWidgets(ignore_request)
+
+    def _convert_to_fieldgroups(self):
+        """Convert old widget_group to gocept.form's field_groups.
+
+        This is there so we don't need to manualle rewrite all the forms. Once
+        all forms have been changed this code can be removed of course.
+
+        """
+        field_groups = []
 
         for title, field_names, css_class in self.widget_groups:
-            widget_group = WidgetGroup(title, css_class)
-
             if field_names is REMAINING_FIELDS:
-                widgets = None
-                remainder_group = widget_group
+                group = gocept.form.grouped.RemainingFields(
+                    title, css_class)
             else:
-                widgets = self._get_widgets(self.form_fields.select(
-                    *field_names), ignore_request)
-                if self.widgets is None:
-                    self.widgets = widgets
-                else:
-                    self.widgets += widgets
-                fields.extend(field_names)
-
-            widget_group.widgets = widgets
-            self.groups.append(widget_group)
-
-        # we create a default widget_group which put's all the rest of the
-        # fields in one group and renderes
-
-        if remainder_group is None:
-            remainder_group = WidgetGroup(u'')
-            self.groups.append(remainder_group)
-        widgets = self._get_widgets(self.form_fields.omit(
-            *fields), ignore_request)
-        remainder_group.widgets = widgets
-
-        if self.widgets is None:
-            self.widgets = widgets
-        else:
-            self.widgets += widgets
+                group = gocept.form.grouped.Fields(
+                    title, field_names, css_class)
+            field_groups.append(group)
+        self.field_groups = field_groups
 
 
-    def _get_widgets(self, form_fields, ignore_request):
-        return zope.formlib.form.setUpWidgets(
-            form_fields, self.prefix, self.context, self.request,
-            form=self, adapters=self.adapters,
-            ignore_request=ignore_request)
-
-
-class AddForm(FormBase, zope.formlib.form.AddForm):
+class AddForm(FormBase, gocept.form.grouped.AddForm):
     """Add form."""
 
     _checked_out = False
@@ -115,18 +89,13 @@ class AddForm(FormBase, zope.formlib.form.AddForm):
         return '%s/@@%s' % (url, view)
 
 
-class EditForm(FormBase, zope.formlib.form.EditForm):
+class EditForm(FormBase, gocept.form.grouped.EditForm):
     """Edit form."""
 
-    title = "Bearbeiten"
+    title = _("Edit")
 
-class DisplayForm(FormBase, zope.formlib.form.PageDisplayForm):
+
+class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
     """Display form."""
 
-    title = "Anzeigen"
-
-    def _get_widgets(self, form_fields, ignore_request):
-        return zope.formlib.form.setUpEditWidgets(
-            form_fields, self.prefix, self.context, self.request,
-            adapters=self.adapters, for_display=True,
-            ignore_request=ignore_request)
+    title = _("View")
