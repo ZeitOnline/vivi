@@ -14,6 +14,7 @@ import zeit.cms.workingcopy.interfaces
 
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
+from zeit.cms.i18n import MessageFactory as _
 
 
 class HTMLTree(zope.viewlet.viewlet.ViewletBase):
@@ -120,12 +121,17 @@ class FolderAdd(zeit.cms.browser.form.AddForm):
 
     form_fields = zope.formlib.form.Fields(
         zeit.cms.repository.interfaces.IFolder).omit('uniqueId')
+    title = _("Add folder")
+    widget_groups = (
+        (_('Folder'), zeit.cms.browser.form.REMAINING_FIELDS, ''),)
 
     def create(self, data):
         return zeit.cms.repository.repository.Folder(**data)
 
 
 class FolderEdit(object):
+
+    title = _("Edit folder")
 
     def __call__(self):
         url = zope.component.getMultiAdapter(
