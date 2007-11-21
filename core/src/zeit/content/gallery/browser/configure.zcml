@@ -1,0 +1,64 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+
+  <adapter
+    factory="zeit.cms.browser.listing.CommonListRepresentation"
+    for="zeit.content.gallery.interfaces.IGallery
+    zope.publisher.interfaces.IPublicationRequest"
+    provides="zeit.cms.browser.interfaces.IListRepresentation"
+    />
+
+
+  <browser:page
+    for="..interfaces.IGallery"
+    permission="zope.View"
+    template="metadata.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IGallery"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IGallery"
+    menu="zeit-context-views"
+    title="Metadaten"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IGallery"
+    class=".form.DisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IGallery"
+    name="view.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+
+  <!-- Add view -->
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    permission="zope.ManageContent"
+    class=".form.AddForm"
+    name="zeit.content.gallery.Add"
+    menu="zeit-add-menu" title="Bildergallerie"
+    />
+
+
+
+</configure>

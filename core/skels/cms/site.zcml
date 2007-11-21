@@ -33,5 +33,7 @@
   <include package="zeit.search" />
   <include package="zeit.search.browser" />
 
+  <include package="zeit.content.gallery" />
+  <include package="zeit.content.gallery.browser" />
 </configure>
 

@@ -1,0 +1,23 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".gallery.galleryFactory" name="image-gallery" />
+  <adapter factory=".gallery.resourceFactory" />
+
+  <subscriber handler=".gallery.mapPropertyToAttribute" />
+
+  <class class=".gallery.Gallery">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IGallery"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IGallery"
+      permission="zeit.EditContent" />
+  </class>
+
+  <interface
+    interface=".interfaces.IGallery"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+</configure>

@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import datetime
+
 import zope.formlib.form
 import zope.formlib.interfaces
 
@@ -16,19 +18,36 @@ from zeit.cms.i18n import MessageFactory as _
 REMAINING_FIELDS = object()
 
 
-class WidgetGroup(object):
-
-    widgets = None
-
-    def __init__(self, title, css_class=None):
-        self.title = title
-        self.css_class = css_class
-
+metadataFieldGroups = (
+    gocept.form.grouped.Fields(
+        _("Navigation"),
+        ('navigation', 'keywords', 'serie'),
+        css_class='small-and-tall'),
+    gocept.form.grouped.Fields(
+        _("Kopf"),
+        ('year', 'volume', 'page', 'ressort'),
+        css_class='medium-float'),
+    gocept.form.grouped.Fields(
+        _("Optionen"),
+        ('dailyNewsletter', 'boxMostRead', 'commentsAllowed', 'banner'),
+        css_class='medium-float'),
+    gocept.form.grouped.RemainingFields(
+        _("Texte"),
+        css_class='column-left'),
+    gocept.form.grouped.Fields(
+        _("sonstiges"),
+        ('authors', 'copyrights', 'pageBreak', 'automaticTeaserSyndication',
+         'images'),
+        css_class= 'column-right'),
+    )
 
 class FormBase(object):
 
     widget_groups = ()
 
+    def applyChanges(self, object, data):
+        return zope.formlib.form.applyChanges(
+            object, self.form_fields, data, self.adapters)
 
     def setUpWidgets(self, ignore_request=False):
         if self.widget_groups:
@@ -59,6 +78,14 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
     """Add form."""
 
     _checked_out = False
+    factory = None
+
+    def create(self, data):
+        if self.factory is None:
+            raise ValueError("No factory specified.")
+        new_object = factory()
+        self.applyChanges(new_object, data)
+        return new_object
 
     def add(self, object):
         chooser = zope.app.container.interfaces.INameChooser(self.context)
@@ -87,6 +114,15 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         url = zope.component.getMultiAdapter(
             (self._created_object, self.request), name='absolute_url')()
         return '%s/@@%s' % (url, view)
+
+    def setUpWidgets(self, ignore_request=False):
+        if not ignore_request:
+            form = self.request.form
+            if not form:
+                form['form.year'] = str(datetime.datetime.now().year)
+                form['form.volume'] = str(int(  # Strip leading 0
+                    datetime.datetime.now().strftime('%W')))
+        super(AddForm, self).setUpWidgets(ignore_request)
 
 
 class EditForm(FormBase, gocept.form.grouped.EditForm):
