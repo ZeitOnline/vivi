@@ -47,6 +47,7 @@
     template="content_listing.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
+    menu="zeit-context-views" title="View"
     />
 
   <browser:defaultView

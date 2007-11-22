@@ -29,6 +29,13 @@ doesn't support Javascript unforunately. Therefore we're just opening the url:
 ...Saddam...
 
 
+There is also a View tab:
+
+>>> browser.getLink("View")
+<Link text='View'
+  url='http://localhost/++skin++cms/repository/online/2007/01/@@view.html'>
+
+
 Entry Page
 ==========
 
