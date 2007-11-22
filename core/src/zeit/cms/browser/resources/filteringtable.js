@@ -59,13 +59,11 @@ FilteringTable.prototype.stringFilter = function(search_for, in_what) {
 // handler fired, when the user selected a table cell
 FilteringTable.prototype.onDataSelect = function(event) {
     this.cancelMetadataLoad();
-    var tr = event.target().parentNode
-    var base_url = getFirstElementByTagAndClassName(
-        'span', 'URL', tr)
+    var base_url = this.get_base_url(event);
     if (!base_url)
         return;
 
-    var metadata_url = base_url.textContent + '/@@metadata_preview';
+    var metadata_url = base_url + '/@@metadata_preview';
 
     var d = wait(0.1);
     d.addCallback(this.loadMetadataHTML(metadata_url));
@@ -75,20 +73,26 @@ FilteringTable.prototype.onDataSelect = function(event) {
     if (old_selected) {
         removeElementClass(old_selected, 'selected');
     }
+    var tr = event.target().parentNode
     this.contentElement.old_selected = tr;
     addElementClass(tr, 'selected');
 }
 
 FilteringTable.prototype.onView = function(event) {
     this.cancelMetadataLoad();
-    var tr = event.target().parentNode
-    var base_url= getFirstElementByTagAndClassName(
-        'span', 'URL', tr);
+    var base_url = this.get_base_url(event);
     if (!base_url)
         return;
-    view_url = base_url.textContent + '/@@view.html';
+    view_url = base_url + '/@@view.html';
     document.location = view_url;
+}
 
+FilteringTable.prototype.get_base_url = function(event) {
+    var tr = event.target().parentNode
+    var url_node = getFirstElementByTagAndClassName('span', 'URL', tr);
+    if (url_node) {
+        return url_node.textContent;
+    }
 }
 
 
