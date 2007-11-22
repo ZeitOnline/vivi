@@ -63,19 +63,38 @@ var ObjectReferenceWidget = Class.extend({
 
     construct: function(element) {
         var othis = this;
-        this.drop_target = $(element);
-        new Droppable(this.drop_target, {
+        this.element = $(element);
+        new Droppable(this.element, {
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
                     othis.handleDrop(element);
             },
         });
+        connect(element, 'onclick', this, 'handleClick');
     },
 
     handleDrop: function(element) {
         var input = getFirstElementByTagAndClassName(
-            'input', 'object-reference', this.drop_target);
+            'input', 'object-reference', this.element);
         input.value = element.uniqueId;
+    },
+    
+    handleClick: function(event) {
+        var target = event.target();
+        var action;
+        if (target.nodeName == 'INPUT' && target.type == 'button') {
+            var action = target.getAttribute('name');
+        }
+
+        if (action) {
+            var func = bind(action, this);
+            func();
+        }
+    },
+
+    browseObjects: function() {
+        var lightbox = new gocept.Lightbox(this.element);
+        lightbox.load_url('@@get_object_browser');
     },
 });
 
@@ -210,7 +229,6 @@ var ObjectSequenceWidgetBase = Class.extend({
 
 
 });
-
 
 
 var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({

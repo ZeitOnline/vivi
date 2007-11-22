@@ -13,7 +13,7 @@
     
     <resourceLibrary
       name="zeit.cms.KeywordsWidget"
-      require="mochikit">
+      require="mochikit gocept.mochikit.lightbox">
       <directory source="resources" include="keywordswidget.js" />
     </resourceLibrary>
 

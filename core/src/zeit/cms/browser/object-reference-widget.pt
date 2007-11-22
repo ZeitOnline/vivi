@@ -5,7 +5,7 @@
     tal:attributes="
     name view/name;
     value view/_getFormValue" />
-  <input type="button" name="object-reference-lookup" value="Lookup"
+  <input type="button" name="browseObjects" value="Lookup"
     i18n:attributes="value" />
 </div>
 <script tal:content="string:

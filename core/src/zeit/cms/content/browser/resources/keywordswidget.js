@@ -13,11 +13,9 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
     showAddKeyword: function() {
         var othis = this;
         var oarguments = arguments;
-        var lightbox_shade = DIV({'id': 'lightbox-shade'})
-        var lightbox = DIV({'id': 'lightbox'});
-        appendChildNodes(this.element, lightbox_shade, lightbox);
-        connect(lightbox_shade, 'onclick', this, 'hideAddKeyword');
-       
+
+        var lightbox = new gocept.Lightbox(this.element);
+
         var selected_keywords = []
         var amount = Number(this.getCountField().value);
         forEach(range(amount), function(i) {
@@ -34,11 +32,6 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
             othis.updateLightbox();
             return result;
         });
-    },
-
-    hideAddKeyword: function() {
-        removeElement('lightbox-shade');
-        removeElement('lightbox');
     },
 
     updateLightbox: function() {
