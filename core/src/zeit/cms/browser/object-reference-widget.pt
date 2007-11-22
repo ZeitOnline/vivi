@@ -1,0 +1,14 @@
+<div class="object-widget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id view/name">
+  <input class="object-reference" type="text"
+    tal:attributes="
+    name view/name;
+    value view/_getFormValue" />
+  <input type="button" name="object-reference-lookup" value="Lookup"
+    i18n:attributes="value" />
+</div>
+<script tal:content="string:
+  new ObjectReferenceWidget('${view/name}');
+  ">
+</script>

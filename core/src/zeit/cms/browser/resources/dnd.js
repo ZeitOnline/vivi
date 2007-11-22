@@ -3,6 +3,7 @@
 // $Id$
 
 connect(MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
+    // Generic handler for displaying the drag pane for draggables
     log("Dragging", draggable);
     var drag_pane_url = draggable.element.drag_pane_url;
     if (drag_pane_url == undefined) {
@@ -45,6 +46,7 @@ connect(MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
 
 
 connect(MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
+    // Generic handler for hiding the drag pane after dragging ended.
     var element = draggable.element;
     var dragged_element = element.dragged_element;
     if (dragged_element == undefined) return;
@@ -53,28 +55,29 @@ connect(MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
 });
 
 
-function DropWidget(element) {
-    var othis = this;
-    this.drop_target = getElement(element);
-    new Droppable(this.drop_target, {
-        hoverclass: 'drop-widget-hover',
-        ondrop: function(element, last_active_element, event) {
-                othis.handleDrop(element);
-        },
-    });
-}
+var ObjectReferenceWidget = Class.extend({
+    // Widget for referencing one object via unique id.
+    // 
+    // This is also thought to be used multiple times in one formlib field,
+    // e.g. for Tuple fields.
 
-DropWidget.prototype = {
+    construct: function(element) {
+        var othis = this;
+        this.drop_target = $(element);
+        new Droppable(this.drop_target, {
+            hoverclass: 'drop-widget-hover',
+            ondrop: function(element, last_active_element, event) {
+                    othis.handleDrop(element);
+            },
+        });
+    },
 
     handleDrop: function(element) {
         var input = getFirstElementByTagAndClassName(
             'input', 'object-reference', this.drop_target);
         input.value = element.uniqueId;
-        var span = getFirstElementByTagAndClassName(
-            'span', 'object-reference', this.drop_target);
-        span.innerHTML = element.uniqueId;
     },
-}
+});
 
 
 var ObjectSequenceWidgetBase = Class.extend({

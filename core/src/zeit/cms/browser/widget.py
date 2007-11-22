@@ -14,25 +14,14 @@ import zope.app.pagetemplate.viewpagetemplatefile
 import zeit.cms.repository.interfaces
 
 
-TEMPLATE = u"""\
-<div id="%(name)s">
-    <input class="object-reference" type="hidden"
-        name="%(name)s" value="%(value)s" />
-    <span class="object-reference">%(value)s</span>
-</div>
-<script>new DropWidget("%(name)s");</script>
-"""
+class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
-
-class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
-
-    _missing = u"Objekt hier fallen lassen."
+    _missing = u""
+    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+        'object-reference-widget.pt')
 
     def __call__(self):
-        return TEMPLATE % {
-            'name': self.name,
-            'value': self._getFormValue(),
-        }
+        return self.template()
 
     def _toFieldValue(self, input):
         if input == self._missing:

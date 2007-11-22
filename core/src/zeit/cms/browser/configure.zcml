@@ -215,7 +215,7 @@
     for="zope.schema.interfaces.IObject
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
-    factory=".widget.DropObjectWidget"
+    factory=".widget.ObjectReferenceWidget"
     permission="zope.Public"
     />
 
