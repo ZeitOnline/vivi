@@ -3,6 +3,15 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <!-- helpers -->
+
+  <browser:view
+    for="*"
+    name="get_repository"
+    class=".repository.Repository"
+    permission="zope.Public"
+    />
+
   <!-- Add Menu -->
 
   <browser:menu
@@ -207,6 +216,15 @@
       />
 
   </configure>
+
+
+  <!-- popup browser -->
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="get_object_browser"
+    template="objectbrowser.pt"
+    permission="zope.View" 
+    />
 
 </configure>
 

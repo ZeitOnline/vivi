@@ -73,3 +73,26 @@ fact @@edit.html redirects us:
 
 >>> browser.url
 'http://localhost/++skin++cms/repository/new-folder/@@view.html'
+
+
+Popup file browser
+==================
+
+The popup file browser is displayed in a lightbox for selecting objects. It is
+reachable at `get_object_browser` for every folder:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/'
+...              '@@get_object_browser')
+>>> print browser.contents
+<div id="popup-navtree" class="Tree">
+  <ul>
+      <li active="True" class="Root">
+      ...
+</div>
+  <div class="objectbrowser-content">
+<table class="contentListing">
+   ...
+</table>
+...
+</div>
+  <div class="tree-view-url">http://localhost/++skin++cms/repository/tree.html</div>

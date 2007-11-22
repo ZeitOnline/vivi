@@ -17,6 +17,13 @@ import zeit.cms.repository.repository
 from zeit.cms.i18n import MessageFactory as _
 
 
+class Repository(object):
+
+    def __call__(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+
 class HTMLTree(zope.viewlet.viewlet.ViewletBase):
     """view class for navtree"""
 

@@ -94,7 +94,13 @@ var ObjectReferenceWidget = Class.extend({
 
     browseObjects: function() {
         var lightbox = new gocept.Lightbox(this.element);
-        lightbox.load_url('@@get_object_browser');
+        var d = lightbox.load_url('@@get_object_browser');
+        d.addCallback(function(result) {
+            var url = getFirstElementByTagAndClassName(
+                'div', 'tree-view-url', lightbox.content_box).innerHTML;
+            var navtree = new Tree(url, 'popup-navtree');
+            return result;
+        });
     },
 });
 

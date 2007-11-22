@@ -1,0 +1,19 @@
+<tal:block
+  tal:define="
+  repository context/@@get_repository;
+  tree_view nocall:repository/@@tree.html"
+  ><div id="popup-navtree" class="Tree"
+    tal:content="structure tree_view">
+    Navigation tree
+  </div>
+
+  <div class="objectbrowser-content"
+    tal:content="structure context/@@view.html/contentTable">
+    Content table
+  </div>
+
+  <div class="tree-view-url"
+    tal:content="tree_view/@@absolute_url">
+  </div>
+
+</tal:block>
