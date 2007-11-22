@@ -171,6 +171,15 @@ form .medium-float .field {
     max-width: 10em;
 }
 
+form .medium-float .field label {
+  height: 3em;
+  display: block;
+}
+
+form .medium-float .field .hint {
+  display: none;
+}
+
 form .full-widtht {
     right: 0;
 }
@@ -207,7 +216,7 @@ form .column-left .field {
 
 form .column-left .field input, 
 form .column-left .field textarea {
-    width: 100%;
+    width: 95%;
 }
 
 form .column-right {
@@ -236,6 +245,31 @@ form .column-right.image-form {
   height: 8em;
 }
 
+form #form\.page,
+form #form\.volume,
+form #form\.year {
+  width: 4em;
+}
+
+/* SMALL left column, larger right column */
+form .column-left-small {
+    clear: both;
+    width: 30%;
+    float: left;
+}
+
+form .column-left-small .field {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form .column-right-small {
+    float:  right;
+    width: 58%;
+}
+
+
+/* general input field styling */
 
 input[type="button"],
 input[type="submit"] {
@@ -263,19 +297,14 @@ input[type="text"] {
   padding: 0.2em;
 }
 
-/* SMALL left column, larger right column */
-form .column-left-small {
-    clear: both;
-    width: 30%;
-    float: left;
+
+#form\.teaserTitle,
+#form\.teaserText,
+#form\.shortTeaserTitle,
+#form\.shortTeaserText {
+    height: 6ex;
 }
 
-form .column-left-small .field {
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-form .column-right-small {
-    float:  right;
-    width: 58%;
+#form\.subtitle {
+    height: 10ex;
 }
