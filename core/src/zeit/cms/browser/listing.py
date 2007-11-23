@@ -112,8 +112,9 @@ class MetadataColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
         return ('<span class="SearchableText">%s</span>'
-                '<span class="URL">%s</span>' % (
-                    item.searchableText, item.url))
+                '<span class="URL">%s</span>'
+                '<span class="uniqueId">%s</span>' % (
+                    item.searchableText, item.url, item.uniqueId))
 
 
 class LockedColumn(zc.table.column.GetterColumn):

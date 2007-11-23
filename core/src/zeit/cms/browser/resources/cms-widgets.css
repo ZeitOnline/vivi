@@ -443,24 +443,30 @@
 
 #lightbox > #popup-navtree {
   position: absolute;
-  width: 20%;
-  top: 0;
-  left: 0;
   bottom: 0;
+  left: 0;
+  top: 0;
+  width: 20%;
+
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 #lightbox > .objectbrowser-content {
   position: absolute;
+  bottom: 0;
   left: 20%;
   right: 0;
-  bottom 0;
   top: 0;
+  
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 #lightbox > .objectbrowser-content > .contentListing {
   margin-top: 0;
+}
+
+#lightbox > .tree-view-url {
+  display: none;
 }

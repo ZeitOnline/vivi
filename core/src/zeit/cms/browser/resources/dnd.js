@@ -74,27 +74,58 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     handleDrop: function(element) {
-        var input = getFirstElementByTagAndClassName(
-            'input', 'object-reference', this.element);
-        input.value = element.uniqueId;
+        this.selectObject(element.uniqueId);
     },
     
     handleClick: function(event) {
         var target = event.target();
         var action;
+        var argument;
         if (target.nodeName == 'INPUT' && target.type == 'button') {
             var action = target.getAttribute('name');
+        } else if (target.nodeName == 'A') {
+            action = "handleNewUrl";
+            argument = target.href;
+        } else if (target.nodeName == 'TD') {
+            var tr = target.parentNode;
+            var url_node = getFirstElementByTagAndClassName(
+                'span', 'uniqueId', tr);
+            if (url_node) {
+                action = 'handleObjectSelected';
+                argument = url_node.textContent;
+            }
         }
 
+
         if (action) {
+            event.stop();
             var func = bind(action, this);
-            func();
+            func(argument);
         }
     },
 
+    handleNewUrl: function(url) {
+        this.loadContentFromUrl(url + '/@@get_object_browser');
+    },
+
+    handleObjectSelected: function(unique_id) {
+        this.lightbox.close();
+        this.selectObject(unique_id);
+    },
+
     browseObjects: function() {
-        var lightbox = new gocept.Lightbox(this.element);
-        var d = lightbox.load_url('@@get_object_browser');
+        this.lightbox = new gocept.Lightbox(this.element);
+        this.loadContentFromUrl('@@get_object_browser');
+    },
+
+    selectObject: function(unique_id) {
+        var input = getFirstElementByTagAndClassName(
+            'input', 'object-reference', this.element);
+        input.value = unique_id;
+    },
+
+    loadContentFromUrl: function(url) {
+        var d = this.lightbox.load_url(url);
         d.addCallback(function(result) {
             var url = getFirstElementByTagAndClassName(
                 'div', 'tree-view-url', lightbox.content_box).innerHTML;
