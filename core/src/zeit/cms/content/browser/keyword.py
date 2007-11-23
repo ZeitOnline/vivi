@@ -50,7 +50,7 @@ class Tree(zeit.cms.browser.tree.Tree):
         return bool(obj.narrower)
 
 
-class KeywordsWidget(zeit.cms.browser.widget.ObjectSequenceWidget):
+class KeywordsWidget(zeit.cms.browser.widget.MultiObjectSequenceWidget):
 
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'keyword-widget.pt')
@@ -65,7 +65,7 @@ class KeywordsWidget(zeit.cms.browser.widget.ObjectSequenceWidget):
 
 
 class KeywordsDisplayWidget(
-    zeit.cms.browser.widget.ObjectSequenceDisplayWidget):
+    zeit.cms.browser.widget.MultiObjectSequenceDisplayWidget):
 
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'keyword-display-widget.pt')

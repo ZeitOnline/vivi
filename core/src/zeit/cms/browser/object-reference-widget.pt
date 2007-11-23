@@ -9,6 +9,7 @@
     i18n:attributes="value" />
 </div>
 <script tal:content="string:
-  new ObjectReferenceWidget('${view/name}');
+  new ObjectReferenceWidget(
+  '${view/name}', '${view/default_browsing_location/@@absolute_url}');
   ">
 </script>

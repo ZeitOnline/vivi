@@ -48,3 +48,53 @@ Looking at our working copy also shows the `Somalia` article:
 <?xml version...
 <!DOCTYPE ...
 ...Somalia...
+
+
+Object browser
+==============
+
+When the objectbrowser asks for the default location of a content object in the 
+working copy, the answer is relayed to the object in the repository.
+
+We need some setup:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>>
+>>> import zope.component
+>>> import zeit.cms.workingcopy.interfaces
+>>> import zeit.cms.browser.interfaces
+>>> workingcopy_location = zope.component.getUtility(
+...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+>>> workingcopy = workingcopy_location['zope.mgr']
+
+There is no default location for the working copy itself:
+
+>>> zope.component.getMultiAdapter(
+...     (workingcopy, zeit.cms.interfaces.ICMSContent),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+Traceback (most recent call last):
+    ...
+ComponentLookupError:
+    ((<zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>,
+      <InterfaceClass zeit.cms.interfaces.ICMSContent>),
+     <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>,
+     u'')
+
+For the somalia document we'll get the folder in the repository though:
+
+>>> somalia = workingcopy['Somalia']
+>>> location = zope.component.getMultiAdapter(
+...     (somalia, zeit.cms.interfaces.ICMSContent),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+>>> location.uniqueId
+u'http://xml.zeit.de/online/2007/01'
+
+XXX what happens when the object doesn't exist in the repository?
+
+
+Cleanup:
+
+>>> zope.app.component.hooks.setSite(old_site)
+

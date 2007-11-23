@@ -50,5 +50,8 @@
     contents="zope.ManageContent"
     />
 
+  <!-- object browser -->
+  <adapter factory=".workingcopy.localcontent_default_browsing_location" />
+
 </configure>
 

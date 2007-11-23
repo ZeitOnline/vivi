@@ -114,3 +114,12 @@ class ICMSUserPreferences(zope.interface.Interface):
     sidebarFolded = zope.schema.Bool(
         title=u"Sidebar folded?",
         default=False)
+
+
+class IDefaultBrowsingLocation(zope.interface.Interface):
+    """Object representing the default browse location for object browser.
+
+    For instance if looking for images the default location could be the image
+    folder.
+
+    """

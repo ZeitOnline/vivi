@@ -14,4 +14,8 @@ def test_suite():
         'listing.txt', 'README.txt', 'error-views.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS)))
+    suite.addTest(doctest.DocFileSuite(
+        'widget.txt',
+        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
+                     doctest.ELLIPSIS)))
     return suite

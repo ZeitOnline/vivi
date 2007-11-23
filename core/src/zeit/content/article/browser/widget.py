@@ -7,7 +7,7 @@ import zeit.cms.browser.widget
 
 
 class SyndicationLogDisplayWidget(
-    zeit.cms.browser.widget.ObjectSequenceDisplayWidget):
+    zeit.cms.browser.widget.MultiObjectSequenceDisplayWidget):
 
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'syndication-log.pt')

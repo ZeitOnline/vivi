@@ -12,7 +12,7 @@ import zope.app.form.browser.itemswidgets
 import zope.app.pagetemplate.viewpagetemplatefile
 
 import zeit.cms.repository.interfaces
-
+import zeit.cms.browser.interfaces
 
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
@@ -34,6 +34,12 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return value.uniqueId
 
     @property
+    def default_browsing_location(self):
+        return zope.component.getMultiAdapter(
+            (self.context.context, self.context.schema),
+            zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+    @zope.cachedescriptors.property.Lazy
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
@@ -61,7 +67,24 @@ def objectDisplayWidgetMultiplexer(context, field, request):
         zope.app.form.interfaces.IDisplayWidget)
 
 
-class ObjectSequenceWidgetBase(object):
+class ObjectSequenceWidget(
+    zope.app.form.browser.sequencewidget.SequenceWidget):
+
+    def __init__(self, context, field, schema, request):
+        super(ObjectSequenceWidget, self).__init__(context, field, request)
+        self.schema = schema
+
+
+class ObjectSequenceDisplayWidget(
+    zope.app.form.browser.sequencewidget.SequenceDisplayWidget):
+
+    def __init__(self, context, field, schema, request):
+        super(ObjectSequenceDisplayWidget, self).__init__(
+            context, field, request)
+        self.schema = schema
+
+
+class MultiObjectSequenceWidgetBase(object):
 
     def _toFormValue(self, value):
         result = []
@@ -82,15 +105,15 @@ class ObjectSequenceWidgetBase(object):
         return result
 
 
-class ObjectSequenceWidget(
-    ObjectSequenceWidgetBase,
+class MultiObjectSequenceWidget(
+    MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.SimpleInputWidget):
 
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'objectsequence-edit-widget.pt')
 
     def __init__(self, context, field, schema, request):
-        super(ObjectSequenceWidget, self).__init__(context, request)
+        super(MultiObjectSequenceWidget, self).__init__(context, request)
         self.field = field
         self.schema = schema
 
@@ -123,15 +146,16 @@ class ObjectSequenceWidget(
             zeit.cms.repository.interfaces.IRepository)
 
 
-class ObjectSequenceDisplayWidget(
-    ObjectSequenceWidgetBase,
+class MultiObjectSequenceDisplayWidget(
+    MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.DisplayWidget):
 
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'objectsequence-display-widget.pt')
 
     def __init__(self, context, field, schema, request):
-        super(ObjectSequenceDisplayWidget, self).__init__(context, request)
+        super(MultiObjectSequenceDisplayWidget, self).__init__(
+            context, request)
         self.field = field
         self.schema = schema
 

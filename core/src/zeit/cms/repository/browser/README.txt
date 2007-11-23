@@ -96,3 +96,45 @@ reachable at `get_object_browser` for every folder:
 ...
 </div>
   <div class="tree-view-url">http://localhost/++skin++cms/repository/tree.html</div>
+
+
+To get the initial browsing location the IDefaultBrowsingLocation interface is
+used. Do some setup:
+
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>>
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.browser.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+For any type the default browse location will be the folder itself:
+
+>>> location = zope.component.getMultiAdapter(
+...     (repository, zeit.cms.interfaces.ICMSContent),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+>>> location.uniqueId
+u'http://xml.zeit.de/'
+>>> online = repository['online']
+>>> location = zope.component.getMultiAdapter(
+...     (online, zeit.cms.interfaces.ICMSContent),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+>>> location.uniqueId
+u'http://xml.zeit.de/online'
+
+For a content object it will be the folder it is contained in:
+
+>>> location = zope.component.getMultiAdapter(
+...     (online['2007']['01']['Saarland'], zeit.cms.interfaces.ICMSContent),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+>>> location.uniqueId
+u'http://xml.zeit.de/online/2007/01'
+
+
+Cleanup:
+
+>>> zope.app.component.hooks.setSite(old_site)

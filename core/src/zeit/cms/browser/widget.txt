@@ -1,0 +1,40 @@
+==============
+Object widgets
+==============
+
+The object widgets are used to reference objects.
+
+Create a simple content object:
+
+>>> import zope.interface
+>>> import zeit.cms.interfaces
+>>>
+>>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+
+Create a field and bind it at an instance of `Content`:
+
+>>> import zope.schema
+>>> field = zope.schema.Object(zeit.cms.interfaces.ICMSContent)
+>>> field = field.bind(Content())
+
+Create a widget:
+
+>>> import zope.publisher.browser
+>>> import zeit.cms.browser.widget
+>>> request = zope.publisher.browser.TestRequest()
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, request)
+>>> widget
+<zeit.cms.browser.widget.ObjectReferenceWidget object at 0x...>
+
+The widget needs to look up the default browsing location. Right now we'll get
+an error because we have not registered anything:
+
+>>> widget.default_browsing_location
+Traceback (most recent call last):
+    ...
+ComponentLookupError: 
+  ((<Content object at 0x...>,
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>),
+    <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>, u'')

@@ -219,12 +219,16 @@
 
 
   <!-- popup browser -->
+
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     name="get_object_browser"
     template="objectbrowser.pt"
     permission="zope.View" 
     />
+
+  <adapter factory=".objectbrowser.folder_default_browse_location" />
+  <adapter factory=".objectbrowser.content_default_browse_location" />
 
 </configure>
 

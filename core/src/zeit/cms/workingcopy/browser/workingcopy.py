@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.component
 import zope.viewlet.viewlet
 import zope.traversing
 
@@ -9,7 +10,8 @@ import zc.table.table
 import zc.table.column
 
 import zeit.cms.browser.listing
-
+import zeit.cms.repository.interfaces
+import zeit.cms.workingcopy.interfaces
 
 class LinkColumn(zc.table.column.GetterColumn):
 
@@ -43,3 +45,17 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
             self.request.principal)
 
     contentContext = workingcopy
+
+
+@zope.component.adapter(
+    zeit.cms.workingcopy.interfaces.ILocalContent,
+    zeit.cms.interfaces.ICMSContentType)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def localcontent_default_browsing_location(context, schema):
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    object_in_repository = repository.getContent(context.uniqueId)
+    return zope.component.queryMultiAdapter(
+        (object_in_repository, schema),
+        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
