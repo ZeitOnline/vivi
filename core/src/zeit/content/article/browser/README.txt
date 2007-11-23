@@ -7,7 +7,6 @@ For UI-Tests we need a Testbrowser:
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
->>> browser.handleErrors = False
 
 Metadata Preview
 ================
