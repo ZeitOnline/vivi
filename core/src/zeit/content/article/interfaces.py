@@ -9,6 +9,7 @@ import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+from zeit.cms.i18n import MessageFactory as _
 
 import zeit.content.image.interfaces
 
@@ -76,7 +77,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
             source=zeit.content.article.source.SyndicatedInSource()))
 
     images = zope.schema.Tuple(
-        title=u'Bilder',
+        title=_('Images'),
         required=False,
         default=(),
         value_type=zope.schema.Object(
