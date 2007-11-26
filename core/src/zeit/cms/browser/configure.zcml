@@ -220,6 +220,14 @@
     />
 
   <adapter
+    for="zope.schema.interfaces.IObject
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectReferenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
     factory=".widget.objectWidgetMultiplexer"
     permission="zope.Public"
     />

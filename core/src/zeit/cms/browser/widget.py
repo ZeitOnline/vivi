@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import xml.sax.saxutils
+
 import zope.component
 import zope.interface
 import zope.schema
@@ -13,6 +15,7 @@ import zope.app.pagetemplate.viewpagetemplatefile
 
 import zeit.cms.repository.interfaces
 import zeit.cms.browser.interfaces
+
 
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
@@ -53,6 +56,23 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
             zope.app.form.browser.interfaces.ITerms)
         return terms.getTerm(self.context.schema).token
 
+
+class ObjectReferenceDisplayWidget(
+    zope.app.form.browser.widget.DisplayWidget):
+
+    def __call__(self):
+        if self._renderedValueSet():
+            value = self._data
+        else:
+            value = self.context.default
+        if value == self.context.missing_value:
+            return ""
+        list_repr = zope.component.getMultiAdapter(
+            (value, self.request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+
+        return zope.app.form.browser.widget.renderElement(
+            'a', href=list_repr.url, contents=list_repr.title)
 
 
 @zope.component.adapter(

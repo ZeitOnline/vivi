@@ -5,8 +5,7 @@
     tal:attributes="
     name view/name;
     value view/_getFormValue" />
-  <input type="button" name="browseObjects" value="Lookup"
-    i18n:attributes="value" />
+  <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script tal:content="string:
   new ObjectReferenceWidget(

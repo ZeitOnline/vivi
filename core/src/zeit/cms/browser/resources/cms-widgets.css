@@ -470,3 +470,7 @@
 #lightbox > .tree-view-url {
   display: none;
 }
+
+.object-widget .object-reference {
+    width: 10em;
+}

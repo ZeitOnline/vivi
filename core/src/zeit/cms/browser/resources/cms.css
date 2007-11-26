@@ -224,10 +224,6 @@ form .column-right {
     width: 30%;
 }
 
-form .column-right .field input, 
-form .column-right .field textarea {
-    width: 95%;
-}
 
 form .column-left.image-form {
   width: 40%;
