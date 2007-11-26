@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-09 14:19+0100\n"
+"PO-Revision-Date: 2007-11-26 13:38+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,21 +11,65 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: src/zeit/cms/browser/form.pt:17
-#: src/zeit/cms/browser/main_template.pt:12
-#: src/zeit/cms/browser/main_template.pt:32
-#: src/zeit/cms/browser/main_template.pt:116
-#: src/zeit/cms/browser/main_template.pt:138
-#: src/zeit/cms/browser/main_template.pt:188
-#: src/zeit/cms/browser/main_template.pt:237
-#: src/zeit/cms/browser/sourceedit.pt:16
-#: src/zeit/cms/browser/sourceedit.pt:38
-msgid "${DYNAMIC_CONTENT}"
-msgstr "${DYNAMIC_CONTENT}"
+#: src/zeit/calendar/browser/event.py:58
+msgid "Apply"
+msgstr "Speichern"
 
-#: src/zeit/cms/browser/main_template.pt:187
+#: src/zeit/cms/browser/form.py:131
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: src/zeit/cms/browser/form.py:137
+msgid "View"
+msgstr "Anzeigen"
+
+#: src/zeit/cms/browser/form.py:23
+msgid "Navigation"
+msgstr "Navigation"
+
+#: src/zeit/cms/browser/form.py:27
+msgid "Kopf"
+msgstr "Kopf"
+
+#: src/zeit/cms/browser/form.py:31
+msgid "Optionen"
+msgstr "Optionen"
+
+#: src/zeit/cms/browser/form.py:35
+#, fuzzy
+msgid "Texte"
+msgstr "Titel"
+
+#: src/zeit/cms/browser/form.py:38
+msgid "sonstiges"
+msgstr "sonstiges"
+
+#: src/zeit/cms/browser/locking-error.pt:10
+msgid "The action you were trying to do could not be finished because the resource ${resource-id} was locked."
+msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil ${resource-id} gesperrt ist."
+
+#: src/zeit/cms/browser/locking-error.pt:5
+msgid "An error is occoured"
+msgstr "Ein Fehler ist aufgetreten."
+
+#: src/zeit/cms/browser/main_template.pt:10
+msgid "Error"
+msgstr "Fehler"
+
+#: src/zeit/cms/browser/main_template.pt:207
 msgid "Add…"
 msgstr "Hinzufügen…"
+
+#: src/zeit/cms/browser/object-reference-widget.pt:8
+msgid "Lookup"
+msgstr "Heraussuchen"
+
+#: src/zeit/cms/browser/sourceedit.pt:16
+#: src/zeit/cms/browser/sourceedit.pt:38
+#: src/zeit/xmleditor/browser/form.pt:15
+#: src/zeit/xmleditor/browser/form.pt:36
+msgid "${DYNAMIC_CONTENT}"
+msgstr "${DYNAMIC_CONTENT}"
 
 #. Default: ""
 #: src/zeit/cms/clipboard/browser/entry.py:63
@@ -41,6 +85,7 @@ msgid "By line"
 msgstr "„Von“-Zeile"
 
 #: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/search/interfaces.py:20
 msgid "Title"
 msgstr "Titel"
 
@@ -93,14 +138,17 @@ msgid "Root of ontology"
 msgstr "Wurzel der Ontologie"
 
 #: src/zeit/cms/content/interfaces.py:56
+#: src/zeit/search/interfaces.py:23
 msgid "Year"
 msgstr "Jahr"
 
 #: src/zeit/cms/content/interfaces.py:61
+#: src/zeit/search/interfaces.py:24
 msgid "Volume"
 msgstr "Ausgabe"
 
 #: src/zeit/cms/content/interfaces.py:66
+#: src/zeit/search/interfaces.py:25
 msgid "Page"
 msgstr "Seite"
 
@@ -133,10 +181,12 @@ msgid "Kicker"
 msgstr "Spitzmarke"
 
 #: src/zeit/cms/interfaces.py:37
+#: src/zeit/search/interfaces.py:15
 msgid "Unique Id"
 msgstr "Eindeutige ID"
 
 #: src/zeit/cms/interfaces.py:41
+#: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr "Dateiname"
 
@@ -152,7 +202,113 @@ msgstr "Inhalt einchecken"
 msgid "Manage content"
 msgstr "Inhalt verwalten"
 
-#: src/zeit/cms/repository/browser/navtree.pt:20
-msgid "Navigation is being loaded…"
-msgstr "Navigation wird geladen …"
+#: src/zeit/cms/repository/browser/repository.py:131
+msgid "Add folder"
+msgstr "Ordner hinzufügen"
+
+#: src/zeit/cms/repository/browser/repository.py:133
+msgid "Folder"
+msgstr "Ordner"
+
+#: src/zeit/cms/repository/browser/repository.py:141
+msgid "Edit folder"
+msgstr "Ordner bearbeiten"
+
+#: src/zeit/cms/syndication/browser/form.py:20
+msgid "Add Channel"
+msgstr "Channel hinzufügen"
+
+#: src/zeit/cms/syndication/browser/form.py:36
+msgid "Edit Channel"
+msgstr "Channel bearbeiten"
+
+#: src/zeit/content/gallery/browser/form.py:31
+msgid "Add gallery"
+msgstr "Bildergallerie hinzufügen"
+
+#: src/zeit/content/gallery/browser/form.py:37
+msgid "Edit Gallery"
+msgstr "Bildergallerie bearbeiten"
+
+#: src/zeit/content/gallery/browser/form.py:43
+msgid "Gallery"
+msgstr "Bildergallerie"
+
+#: src/zeit/content/gallery/interfaces.py:18
+msgid "Image folder"
+msgstr "Bilderordner"
+
+#: src/zeit/content/gallery/interfaces.py:19
+msgid "Folder containing images to display in the gallery."
+msgstr "Ordner, der die Bilder enthält, die in der Bildergallerie angezeigt werden sollen."
+
+#: src/zeit/content/image/browser/form.py:27
+msgid "Image data"
+msgstr "Bilddaten"
+
+#: src/zeit/content/image/browser/form.py:30
+msgid "Texts"
+msgstr "Texte"
+
+#: src/zeit/content/image/browser/form.py:36
+msgid "Add image"
+msgstr "Bild hinzufügen"
+
+#: src/zeit/content/image/browser/form.py:61
+msgid "Edit image"
+msgstr "Bild bearbeiten"
+
+#: src/zeit/search/interfaces.py:18
+msgid "URL to view in CMS"
+msgstr ""
+
+#: src/zeit/search/interfaces.py:21
+#, fuzzy
+msgid "Author"
+msgstr "Autoren"
+
+#: src/zeit/workflow/browser/form.py:13
+msgid "Workflow"
+msgstr "Workflow"
+
+#: src/zeit/workflow/browser/form.py:16
+msgid "Status"
+msgstr "Status"
+
+#: src/zeit/workflow/browser/form.py:17
+msgid "Einstellung"
+msgstr "Einstellung"
+
+#: src/zeit/workflow/browser/interfaces.py:16
+msgid "Locked"
+msgstr "Gesperrt"
+
+#: src/zeit/workflow/browser/interfaces.py:19
+#, fuzzy
+msgid "Locker"
+msgstr "Spitzmarke"
+
+#: src/zeit/workflow/browser/interfaces.py:23
+msgid "Locked until"
+msgstr "Gesperrt bis"
+
+#: src/zeit/workflow/browser/lock.py:32
+msgid "Locks"
+msgstr "Sperren"
+
+#: src/zeit/workflow/browser/lock.py:35
+msgid "Locking"
+msgstr "Sperren"
+
+#: src/zeit/workflow/browser/lock.py:57
+msgid "Steal Lock"
+msgstr "Sperre stehlen"
+
+#: src/zeit/workflow/browser/lock.py:62
+msgid "Lock"
+msgstr "Sperren"
+
+#: src/zeit/workflow/browser/lock.py:67
+msgid "Unlock"
+msgstr "Entsperren"
 

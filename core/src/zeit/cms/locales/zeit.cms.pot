@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Nov  9 14:18:47 2007\n"
+"POT-Creation-Date: Mon Nov 26 13:34:12 2007\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -23,20 +23,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/zeit/cms/browser/form.pt:17
-#: src/zeit/cms/browser/main_template.pt:12
-#: src/zeit/cms/browser/main_template.pt:32
-#: src/zeit/cms/browser/main_template.pt:116
-#: src/zeit/cms/browser/main_template.pt:138
-#: src/zeit/cms/browser/main_template.pt:188
-#: src/zeit/cms/browser/main_template.pt:237
-#: src/zeit/cms/browser/sourceedit.pt:16
-#: src/zeit/cms/browser/sourceedit.pt:38
-msgid "${DYNAMIC_CONTENT}"
+#: src/zeit/calendar/browser/event.py:58
+msgid "Apply"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:187
+#: src/zeit/cms/browser/form.py:131
+msgid "Edit"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:137
+msgid "View"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:23
+msgid "Navigation"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:27
+msgid "Kopf"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:31
+msgid "Optionen"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:35
+msgid "Texte"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:38
+msgid "sonstiges"
+msgstr ""
+
+#: src/zeit/cms/browser/locking-error.pt:10
+msgid "The action you were trying to do could not be finished because the resource ${resource-id} was locked."
+msgstr ""
+
+#: src/zeit/cms/browser/locking-error.pt:5
+msgid "An error is occoured"
+msgstr ""
+
+#: src/zeit/cms/browser/main_template.pt:10
+msgid "Error"
+msgstr ""
+
+#: src/zeit/cms/browser/main_template.pt:207
 msgid "Add\342\200\246"
+msgstr ""
+
+#: src/zeit/cms/browser/object-reference-widget.pt:8
+msgid "Lookup"
+msgstr ""
+
+#: src/zeit/cms/browser/sourceedit.pt:16
+#: src/zeit/cms/browser/sourceedit.pt:38
+#: src/zeit/xmleditor/browser/form.pt:15
+#: src/zeit/xmleditor/browser/form.pt:36
+msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/entry.py:63
@@ -53,6 +96,7 @@ msgid "By line"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/search/interfaces.py:20
 msgid "Title"
 msgstr ""
 
@@ -105,14 +149,17 @@ msgid "Root of ontology"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:56
+#: src/zeit/search/interfaces.py:23
 msgid "Year"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:61
+#: src/zeit/search/interfaces.py:24
 msgid "Volume"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:66
+#: src/zeit/search/interfaces.py:25
 msgid "Page"
 msgstr ""
 
@@ -145,10 +192,12 @@ msgid "Kicker"
 msgstr ""
 
 #: src/zeit/cms/interfaces.py:37
+#: src/zeit/search/interfaces.py:15
 msgid "Unique Id"
 msgstr ""
 
 #: src/zeit/cms/interfaces.py:41
+#: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
@@ -164,7 +213,111 @@ msgstr ""
 msgid "Manage content"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/navtree.pt:20
-msgid "Navigation is being loaded\342\200\246"
+#: src/zeit/cms/repository/browser/repository.py:131
+msgid "Add folder"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/repository.py:133
+msgid "Folder"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/repository.py:141
+msgid "Edit folder"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/form.py:20
+msgid "Add Channel"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/form.py:36
+msgid "Edit Channel"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:31
+msgid "Add gallery"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:37
+msgid "Edit Gallery"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:43
+msgid "Gallery"
+msgstr ""
+
+#: src/zeit/content/gallery/interfaces.py:18
+msgid "Image folder"
+msgstr ""
+
+#: src/zeit/content/gallery/interfaces.py:19
+msgid "Folder containing images to display in the gallery."
+msgstr ""
+
+#: src/zeit/content/image/browser/form.py:27
+msgid "Image data"
+msgstr ""
+
+#: src/zeit/content/image/browser/form.py:30
+msgid "Texts"
+msgstr ""
+
+#: src/zeit/content/image/browser/form.py:36
+msgid "Add image"
+msgstr ""
+
+#: src/zeit/content/image/browser/form.py:61
+msgid "Edit image"
+msgstr ""
+
+#: src/zeit/search/interfaces.py:18
+msgid "URL to view in CMS"
+msgstr ""
+
+#: src/zeit/search/interfaces.py:21
+msgid "Author"
+msgstr ""
+
+#: src/zeit/workflow/browser/form.py:13
+msgid "Workflow"
+msgstr ""
+
+#: src/zeit/workflow/browser/form.py:16
+msgid "Status"
+msgstr ""
+
+#: src/zeit/workflow/browser/form.py:17
+msgid "Einstellung"
+msgstr ""
+
+#: src/zeit/workflow/browser/interfaces.py:16
+msgid "Locked"
+msgstr ""
+
+#: src/zeit/workflow/browser/interfaces.py:19
+msgid "Locker"
+msgstr ""
+
+#: src/zeit/workflow/browser/interfaces.py:23
+msgid "Locked until"
+msgstr ""
+
+#: src/zeit/workflow/browser/lock.py:32
+msgid "Locks"
+msgstr ""
+
+#: src/zeit/workflow/browser/lock.py:35
+msgid "Locking"
+msgstr ""
+
+#: src/zeit/workflow/browser/lock.py:57
+msgid "Steal Lock"
+msgstr ""
+
+#: src/zeit/workflow/browser/lock.py:62
+msgid "Lock"
+msgstr ""
+
+#: src/zeit/workflow/browser/lock.py:67
+msgid "Unlock"
 msgstr ""
 
