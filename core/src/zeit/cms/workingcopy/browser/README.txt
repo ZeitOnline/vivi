@@ -91,7 +91,20 @@ For the somalia document we'll get the folder in the repository though:
 >>> location.uniqueId
 u'http://xml.zeit.de/online/2007/01'
 
-XXX what happens when the object doesn't exist in the repository?
+
+When the object does not exist in the repository we're trying to get the
+parent. Let's change the uniquyeId of somalia:
+
+>>> somalia.uniqueId = u'http://xml.zeit.de/online/2009/15'
+
+Getting the location will get us to `online` since that is the nearest existing
+folder:
+
+>>> location = zope.component.getMultiAdapter(
+...     (somalia, zeit.cms.interfaces.ICMSContent),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+>>> location.uniqueId
+u'http://xml.zeit.de/online'
 
 
 Cleanup:

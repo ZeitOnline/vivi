@@ -55,7 +55,18 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
 def localcontent_default_browsing_location(context, schema):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
-    object_in_repository = repository.getContent(context.uniqueId)
+
+    # Get the object in the repository, potentially looking for the parent.
+    object_in_repository = None
+    unique_id = context.uniqueId
+    while object_in_repository is None:
+        try:
+            object_in_repository = repository.getContent(unique_id)
+        except KeyError:
+            unique_id = unique_id.rsplit('/', 1)[0]
+        else:
+            break
+
     return zope.component.queryMultiAdapter(
         (object_in_repository, schema),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
