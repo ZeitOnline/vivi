@@ -7,12 +7,14 @@ import locale
 import logging
 
 import zope.component
+import zope.interface
 import zope.app.security.interfaces
 
 import zc.table.table
 import zc.table.column
 
 import zeit.cms.browser.interfaces
+import zeit.cms.content.sources
 
 
 logger = logging.getLogger('zeit.cms.browser.listing')
@@ -170,6 +172,8 @@ class Listing(object):
 
     title = u"Dateiliste"
     enable_delete = True
+    types_source = zeit.cms.content.sources.CMSContentTypeSource()
+
 
     columns = (
         zc.table.column.SelectionColumn(idgetter=lambda item: item.__name__),
@@ -216,6 +220,8 @@ class Listing(object):
     def content(self):
         result = []
         for obj in self.contentContext.values():
+            if not self.filter_interface.providedBy(obj):
+                continue
             list_repr = zope.component.queryMultiAdapter(
                 (obj, self.request),
                 zeit.cms.browser.interfaces.IListRepresentation)
@@ -234,3 +240,17 @@ class Listing(object):
             columns=self.columns)
         formatter.cssClasses['table'] = 'contentListing'
         return formatter
+
+    @zope.cachedescriptors.property.Lazy
+    def filter_interface(self):
+        result = zope.interface.Interface
+        token = self.request.get('type_filter')
+        if token is not None:
+            terms = zope.component.getMultiAdapter(
+                (self.types_source, self.request),
+                zope.app.form.browser.interfaces.ITerms)
+            try:
+                result = terms.getValue(token)
+            except LookupError:
+                pass
+        return result

@@ -4,11 +4,14 @@
 
 import urllib2
 
+import zope.component
+
 import zc.sourcefactory.basic
 import gocept.lxml.objectify
 import gocept.cache.method
 
 import zeit.cms.config
+import zeit.cms.interfaces
 
 
 class SimpleXMLSource(zc.sourcefactory.basic.BasicSourceFactory):
@@ -33,3 +36,11 @@ class NavigationSource(SimpleXMLSource):
 class SerieSource(SimpleXMLSource):
 
     url = zeit.cms.config.SERIE_URL
+
+
+class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    def getValues(self):
+        return (interface for name, interface in
+                zope.component.getUtilitiesFor(
+                    zeit.cms.interfaces.ICMSContentType))

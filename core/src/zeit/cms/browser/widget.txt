@@ -11,6 +11,7 @@ Create a simple content object:
 >>>
 >>> class Content(object):
 ...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+...     __parent__ = None
 
 Create a field and bind it at an instance of `Content`:
 
@@ -38,3 +39,9 @@ ComponentLookupError:
   ((<Content object at 0x...>,
     <InterfaceClass zeit.cms.interfaces.ICMSContent>),
     <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>, u'')
+
+
+The type filter token is used by the object browser to filter types:
+
+>>> widget.type_filter_token
+'zeit.cms.interfaces.ICMSContent'

@@ -20,6 +20,8 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'object-reference-widget.pt')
 
+    source = zeit.cms.content.sources.CMSContentTypeSource()
+
     def __call__(self):
         return self.template()
 
@@ -43,6 +45,14 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+    @property
+    def type_filter_token(self):
+        terms = zope.component.getMultiAdapter(
+            (self.source, self.request),
+            zope.app.form.browser.interfaces.ITerms)
+        return terms.getTerm(self.context.schema).token
+
 
 
 @zope.component.adapter(

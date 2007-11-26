@@ -10,6 +10,8 @@
 </div>
 <script tal:content="string:
   new ObjectReferenceWidget(
-  '${view/name}', '${view/default_browsing_location/@@absolute_url}');
+  '${view/name}',
+  '${view/default_browsing_location/@@absolute_url}',
+  '${view/type_filter_token}');
   ">
 </script>

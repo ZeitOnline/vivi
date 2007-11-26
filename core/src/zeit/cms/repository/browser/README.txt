@@ -97,6 +97,84 @@ reachable at `get_object_browser` for every folder:
 </div>
   <div class="tree-view-url">http://localhost/++skin++cms/repository/tree.html</div>
 
+The object browser also supports filtering of types. Without filter everything
+is displayed:
+
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              '@@get_object_browser')
+>>> print browser.contents
+<div id="popup-navtree" class="Tree">
+  <ul>
+      <li active="True" class="Root">
+      ...
+</div>
+  <div class="objectbrowser-content">
+<table class="contentListing">
+    ...
+   <tbody>
+   ...
+     <td>
+       online
+     </td>
+     ...
+     <td>
+       2006
+     </td>
+     ...
+     <td>
+       2007
+     </td>
+     ...
+     <td>
+       new-folder
+     </td>
+     ...
+     <td>
+       Politik
+     </td>
+     ...
+     <td>
+       Wirtschaft
+     </td>
+    ...
+
+
+Let's filter for folders:
+
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/@@get_object_browser'
+...     '?type_filter=zeit.cms.repository.interfaces.IFolder')
+>>> print browser.contents
+<div id="popup-navtree" class="Tree">
+  <ul>
+      <li active="True" class="Root">
+      ...
+</div>
+  <div class="objectbrowser-content">
+<table class="contentListing">
+    ...
+   <tbody>
+   ...
+     <td>
+       online
+     </td>
+     ...
+     <td>
+       2006
+     </td>
+     ...
+     <td>
+       2007
+     </td>
+     ...
+     <td>
+       new-folder
+     </td>
+    ...
+
+>>> 'Politik' in browser.contents
+False
 
 To get the initial browsing location the IDefaultBrowsingLocation interface is
 used. Do some setup:

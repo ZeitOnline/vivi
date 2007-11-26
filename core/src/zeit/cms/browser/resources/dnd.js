@@ -61,10 +61,12 @@ var ObjectReferenceWidget = Class.extend({
     // This is also thought to be used multiple times in one formlib field,
     // e.g. for Tuple fields.
 
-    construct: function(element, default_browsing_url) {
-        var othis = this;
+    construct: function(element, default_browsing_url, type_filter) {
         this.element = $(element);
         this.default_browsing_url = default_browsing_url;
+        this.type_filter = type_filter;
+
+        var othis = this;
         new Droppable(this.element, {
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
@@ -106,7 +108,7 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     handleNewUrl: function(url) {
-        this.loadContentFromUrl(url + '/@@get_object_browser');
+        this.loadContentFromUrl(url);
     },
 
     handleObjectSelected: function(unique_id) {
@@ -116,8 +118,7 @@ var ObjectReferenceWidget = Class.extend({
 
     browseObjects: function() {
         this.lightbox = new gocept.Lightbox(this.element);
-        this.loadContentFromUrl(
-            this.default_browsing_url + '/@@get_object_browser');
+        this.loadContentFromUrl(this.default_browsing_url);
     },
 
     selectObject: function(unique_id) {
@@ -127,7 +128,9 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     loadContentFromUrl: function(url) {
-        var d = this.lightbox.load_url(url);
+        var d = this.lightbox.load_url(
+            url + '/@@get_object_browser',
+            {type_filter: this.type_filter});
         d.addCallback(function(result) {
             var url = getFirstElementByTagAndClassName(
                 'div', 'tree-view-url', lightbox.content_box).innerHTML;
