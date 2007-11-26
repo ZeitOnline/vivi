@@ -23,7 +23,7 @@
   
   <interface
     interface=".interfaces.IImage"
-    type="zeit.cms.interfaces.ICMSContentType"
+    type=".interfaces.IImageType"
     />
 
   <!-- Image group -->
