@@ -125,6 +125,16 @@ We get the form back after saving, the data is changed:
 'EU unterstuetzt Trinker-Steuer'
 
 
+Let's add an image:
+
+>>> browser.getControl('Add Images').click()
+>>> browser.getControl(name="form.images.0.").value = (
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
+
 Checking in 
 ===========
 
@@ -134,7 +144,17 @@ We check in the document. We look a the document in the repository then:
 >>> article_url = browser.url
 >>> article_url
 'http://localhost/++skin++cms/repository/.../KFZ-Steuer/@@view.html'
- 
+
+
+Let's make sure the image is linked:
+
+>>> print browser.contents 
+<?xml ...
+<!DOCTYPE ...
+ <div class="widget"><ol class="sequenceWidget" >
+ <li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a></li>
+ </ol></div>
+  ...
 
 Syndicating
 ===========
