@@ -9,6 +9,11 @@ import zope.app.file.interfaces
 
 import zeit.cms.interfaces
 
+
+class IImageType(zeit.cms.interfaces.ICMSContentType):
+    """The interface of image interfaces."""
+
+
 class IImageSchema(zope.app.file.interfaces.IImage):
 
     expires = zope.schema.Datetime(
@@ -17,22 +22,26 @@ class IImageSchema(zope.app.file.interfaces.IImage):
 
     title = zope.schema.TextLine(
         title=u"Bildtitel",
-        default=u'')
+        default=u'',
+        required=False)
 
     year = zope.schema.Int(
         title=u"Jahr",
         min=1900,
-        max=2100)
+        max=2100,
+        required=False)
 
     volume = zope.schema.Int(
         title=u"Ausgabe",
         min=1,
-        max=53)
+        max=53,
+        required=False)
 
     copyrights = zope.schema.TextLine(
         title=u"copyright ©",
         description=u"© nicht eintippen.",
-        default=u"ZEIT online")
+        default=u"ZEIT online",
+        required=False)
 
     alt = zope.schema.TextLine(
         title=u"ALT-Text",
