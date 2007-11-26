@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import urlparse
+
 import zope.cachedescriptors.property
 import zope.component
 import zope.publisher.interfaces
@@ -11,6 +13,7 @@ import zope.app.file.browser.image
 import zeit.cms.content.property
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
+import zeit.cms.repository.interfaces
 import zeit.content.image.interfaces
 
 
@@ -94,3 +97,34 @@ class ImageListRepresentation(
     def searchableText(self):
         # XXX
         return ''
+
+
+
+@zope.component.adapter(
+    zeit.cms.repository.interfaces.IFolder,
+    zeit.content.image.interfaces.IImageType)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def imagefolder_browse_location(context, schema):
+    unique_id = context.uniqueId
+
+    split = list(urlparse.urlsplit(unique_id))
+    path = split[2]
+
+    path = path.replace('/online', '', 1)
+    if not path.startswith('/bilder'):
+        path = '/bilder' + path
+
+    split[2] = path
+    unique_id = urlparse.urlunsplit(split)
+
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    try:
+        image_folder = repository.getContent(unique_id)
+    except KeyError:
+        image_folder = zope.component.queryMultiAdapter(
+            (context, zeit.cms.interfaces.ICMSContent),
+            zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+    return image_folder

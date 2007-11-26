@@ -176,7 +176,6 @@ Lets create an image group:
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
 >>> browser.getControl("File name").value = 'new-image-group'
->>> browser.handleErrors = False
 >>> browser.getControl("Add").click()
 
 What's happening now is undecided, yet. But we haven't got an error. :)

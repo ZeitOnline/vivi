@@ -3,6 +3,8 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <adapter factory=".image.imagefolder_browse_location" />
+
   <resourceLibrary
     name="zeit.content.image.drag-images"
     require="zeit.cms.DragAndDrop">
