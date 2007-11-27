@@ -43,6 +43,10 @@ site-definition %(site_zcml_path)s
   source-ressort %(source-ressort)s
   source-print-ressort %(source-print-ressort)s
   source-keyword %(source-keyword)s
+
+  preview-prefix %(preview-prefix)s
+  live-prefix %(live-prefix)s
+  development-preview-prefix %(development-preview-prefix)s
 </product-config>
 
 <product-config zeit.search>

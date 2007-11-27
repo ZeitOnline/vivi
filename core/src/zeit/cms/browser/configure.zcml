@@ -185,4 +185,33 @@
     layer=".interfaces.ICMSLayer"
     />
 
+  <!-- Preview -->
+
+  <browser:page
+    name="show_preview"
+    class=".preview.Preview"
+    for="zeit.cms.interfaces.ICMSContent"
+    permission="zope.View"
+    layer=".interfaces.ICMSLayer"
+    menu="zeit-context-actions" title="Preview"
+    />
+
+  <browser:page
+    name="show_live"
+    class=".preview.Live"
+    for="zeit.cms.interfaces.ICMSContent"
+    permission="zope.View"
+    layer=".interfaces.ICMSLayer"
+    menu="zeit-context-actions" title="Live"
+    />
+
+  <browser:page
+    name="show_development-preview"
+    class=".preview.DevelopmentPreview"
+    for="zeit.cms.interfaces.ICMSContent"
+    permission="zope.View"
+    layer=".interfaces.ICMSLayer"
+    menu="zeit-context-actions" title="Development"
+    />
+
 </configure>

@@ -287,7 +287,7 @@
 .context-views li.Bilder {
     background-image: url("/@@/zeit.cms/icons/images.png");
 }
-.context-views li.Anzeigen {
+.context-views li.View {
     background-image: url("/@@/zeit.cms/icons/view.png");
 }
 .context-views li.Bearbeiten {
@@ -338,4 +338,16 @@
 }
 .context-actions li.AlsZielmerken {
     background: url("/@@/zeit.cms/icons/default-feed.png") no-repeat center left;
+}
+
+.context-actions li.Live {
+    background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
+}
+
+.context-actions li.Development {
+    background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
+}
+
+.context-actions li.Preview {
+    background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
 }

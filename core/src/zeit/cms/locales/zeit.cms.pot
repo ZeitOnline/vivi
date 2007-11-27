@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Nov 26 13:34:12 2007\n"
+"POT-Creation-Date: Tue Nov 27 14:31:36 2007\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -27,11 +27,49 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+#: src/zeit/cms/browser/configure.zcml:10
+msgid "context sensitive actions"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:15
+msgid "context sensitive views"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:154
+msgid "Zeit CMS User Preferences"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:190
+msgid "Preview"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:199
+msgid "Live"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:20
+msgid "folder specific actions"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:208
+msgid "Development"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:25
+msgid "Global views"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:72
+#: src/zeit/cms/browser/configure.zcml:87
+msgid "Quelltext"
+msgstr ""
+
 #: src/zeit/cms/browser/form.py:131
 msgid "Edit"
 msgstr ""
 
 #: src/zeit/cms/browser/form.py:137
+#: src/zeit/cms/repository/browser/configure.zcml:52
 msgid "View"
 msgstr ""
 
@@ -71,15 +109,19 @@ msgstr ""
 msgid "Add\342\200\246"
 msgstr ""
 
-#: src/zeit/cms/browser/object-reference-widget.pt:8
-msgid "Lookup"
-msgstr ""
-
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:38
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/configure.zcml:15
+msgid "Checkout"
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/configure.zcml:32
+msgid "Checkin"
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/entry.py:63
@@ -213,16 +255,64 @@ msgstr ""
 msgid "Manage content"
 msgstr ""
 
+#: src/zeit/cms/repository/browser/configure.zcml:116
+msgid "Zeigen"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/configure.zcml:161
+#: src/zeit/cms/syndication/browser/configure.zcml:44
+msgid "Anzeigen"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/configure.zcml:17
+msgid "Menu for adding content."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/configure.zcml:17
+msgid "Add ..."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/configure.zcml:74
+#: src/zeit/cms/workingcopy/browser/configure.zcml:39
+#: src/zeit/cms/clipboard/browser/configure.zcml:89
+msgid "L\366schen"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/configure.zcml:98
+msgid "Verstecken"
+msgstr ""
+
 #: src/zeit/cms/repository/browser/repository.py:131
 msgid "Add folder"
 msgstr ""
 
 #: src/zeit/cms/repository/browser/repository.py:133
+#: src/zeit/cms/repository/browser/configure.zcml:134
 msgid "Folder"
 msgstr ""
 
 #: src/zeit/cms/repository/browser/repository.py:141
 msgid "Edit folder"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/configure.zcml:106
+msgid "Syndicate"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/configure.zcml:16
+msgid "Feed"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/configure.zcml:26
+msgid "Metadaten"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/configure.zcml:34
+msgid "Sortieren"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/configure.zcml:82
+msgid "Als Ziel merken"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/form.py:20
@@ -231,6 +321,14 @@ msgstr ""
 
 #: src/zeit/cms/syndication/browser/form.py:36
 msgid "Edit Channel"
+msgstr ""
+
+#: src/zeit/cms/workingcopy/browser/configure.zcml:16
+msgid "Inhalt"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:80
+msgid "Images"
 msgstr ""
 
 #: src/zeit/content/gallery/browser/form.py:31
@@ -265,7 +363,7 @@ msgstr ""
 msgid "Add image"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:61
+#: src/zeit/content/image/browser/form.py:68
 msgid "Edit image"
 msgstr ""
 

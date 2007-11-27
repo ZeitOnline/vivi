@@ -20,9 +20,18 @@ if cms_config is None:
     KEYWORD_URL = 'file://%s' % os.path.join(
         base_path, 'zeit-ontologie-prism.xml')
 
+    PREVIEW_PREFIX = 'http://localhost/preview-prefix'
+    LIVE_PREFIX = 'http://localhost/live-prefix'
+    DEVELOPMENT_PREVIEW_PREFIX = 'http://localhost/development-preview-prefix'
+
 else:
 
     SERIE_URL = cms_config.get('source-serie')
     RESSORT_URL = cms_config.get('source-ressort')
     PRINT_RESSORT_URL = cms_config.get('source-print-ressort')
     KEYWORD_URL = cms_config.get('source-keyword')
+
+    PREVIEW_PREFIX = cms_config.get('preview-prefix')
+    LIVE_PREFIX = cms_config.get('live-prefix')
+    DEVELOPMENT_PREVIEW_PREFIX = cms_config.get('development-preview-prefix')
+
