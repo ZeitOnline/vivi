@@ -23,7 +23,7 @@ For creating a gallery we need a folder containing images:
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/@@view.html'
 
 
-Add some images:
+Add some images to the folder:
 
 >>> import os.path
 >>> def add_image(name):
@@ -52,3 +52,25 @@ Add some images:
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/@@view.html'
 >>> add_image('05.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/@@view.html'
+
+
+Adding gallery
+==============
+
+To add the gallery we go back to 2007/01:
+
+>>> browser.getLink('01').click()
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Gallery']
+>>> browser.open(menu.value[0])
+
+Set the most important values:
+
+>>> browser.getControl('File name').value = 'island'
+>>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Image folder').value = (
+...     'http://xml.zeit.de/online/2007/01/gallery')
+
+#>>> browser.handleErrors = False
+#>>> browser.getControl(name="form.actions.add").click()
+#>>> browser.url

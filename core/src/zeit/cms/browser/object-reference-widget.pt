@@ -4,6 +4,7 @@
   <input class="object-reference" type="text"
     tal:attributes="
     name view/name;
+    id view/name;
     value view/_getFormValue" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>

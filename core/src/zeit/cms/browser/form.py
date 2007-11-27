@@ -83,7 +83,7 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
     def create(self, data):
         if self.factory is None:
             raise ValueError("No factory specified.")
-        new_object = factory()
+        new_object = self.factory()
         self.applyChanges(new_object, data)
         return new_object
 
