@@ -56,7 +56,7 @@
     permission="zope.ManageContent"
     class=".form.AddForm"
     name="zeit.content.gallery.Add"
-    menu="zeit-add-menu" title="Bildergallerie"
+    menu="zeit-add-menu" title="Gallery"
     />
 
 
