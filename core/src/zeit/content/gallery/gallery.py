@@ -31,7 +31,8 @@ GALLERY_TEMPLATE = """\
 
 
 
-class Gallery(persistent.Persistent, zope.app.container.contained.Contained,
+class Gallery(persistent.Persistent,
+              zope.app.container.contained.Contained,
               zeit.cms.content.metadata.CommonMetadata):
     """CenterPage"""
 
