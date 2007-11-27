@@ -162,6 +162,29 @@ Make sure the image is not changed by looking at the image view:
   ...
 
 
+Adding
+======
+
+Let's add an image:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006/')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Image (single)']
+>>> browser.open(menu.value[0])
+
+Load the opernball image data an add w/o setting a file name. This selects the
+filename automatically:
+
+>>> file_control = browser.getControl(name='form.data')
+>>> file_control.filename = 'opernball.jpg'
+>>> file_control.value = file(test_file, 'rb')
+>>> browser.getControl('Add').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.mgr/opernball.jpg/@@edit.html'
+
+
+
+
 Image Groups
 ============
 

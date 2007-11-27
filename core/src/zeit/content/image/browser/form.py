@@ -55,6 +55,13 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
     def create(self, data):
         return zeit.content.image.image.Image(**data)
 
+    def validate(self, action, data):
+        if (not self.request.form.get('form.__name__') and
+            self.request.form.get('form.data')):
+            self.request.form['form.__name__'] = (
+                self.request.form['form.data'].filename)
+        return super(AddForm, self).validate(action, data)
+
 
 class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
 

@@ -106,7 +106,7 @@
     permission="zope.ManageContent"
     class=".form.AddForm"
     name="zeit.content.image.Add"
-    menu="zeit-add-menu" title="Image"
+    menu="zeit-add-menu" title="Image (single)"
     />
 
 
