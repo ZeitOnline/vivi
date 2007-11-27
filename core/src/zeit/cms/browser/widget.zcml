@@ -1,0 +1,54 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+  
+  <adapter
+    for="zope.schema.interfaces.IObject
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.ObjectReferenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zope.schema.interfaces.IObject
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectReferenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".widget.objectWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".widget.objectDisplayWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zeit.cms.interfaces.ICMSContentType
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.ObjectSequenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zeit.cms.interfaces.ICMSContentType
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectSequenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+</configure>
+

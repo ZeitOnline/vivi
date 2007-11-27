@@ -1,0 +1,72 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <interface
+    zcml:condition="have zeit.cms.testing"
+    interface=".interfaces.ICMSTestingSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
+
+  <interface
+    zcml:condition="not-have zeit.cms.testing"
+    interface=".interfaces.ICMSSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
+
+  <browser:page
+    for="*"
+    name="standard_macros"
+    permission="zope.View"
+    class=".standardmacros.StandardMacros"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="*"
+    name="breadcrumbs"
+    permission="zope.View"
+    class=".breadcrumbs.Breadcrumbs"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="*"
+    name="main_template"
+    permission="zope.View"
+    template="main_template.pt"
+    layer=".interfaces.ICMSLayer" />
+
+  <include package="gocept.mochikit" />
+
+  <resourceLibrary
+    name="zeit.cms.DragAndDrop"
+    require="mochikit.DragAndDrop gocept.mochikit.jsclass">
+    <directory source="resources" include="dnd.js" />
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms" require="mochikit">
+    <directory source="resources" include="cms-layout.css 
+      cms-widgets.css
+      cms.css"/>
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.filteringtable">
+    <directory source="resources" include="filteringtable.js" />
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.tree"
+    require="zeit.cms">
+    <directory source="resources" include="tree.js"/>
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.error"
+    require="zeit.cms">
+    <directory source="resources" include="error.css" />
+  </resourceLibrary>
+
+</configure>
+
