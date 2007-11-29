@@ -38,6 +38,12 @@ class Gallery(persistent.Persistent,
 
     zope.interface.implements(zeit.content.gallery.interfaces.IGallery)
 
+    image_folder = zeit.cms.content.property.SingleResourceProperty(
+        '.head.image-folder')
+
+    uniqueId = None
+    __name__ = None
+
     def __init__(self, xml_source=None):
         if xml_source is None:
             xml_source = StringIO.StringIO(GALLERY_TEMPLATE)

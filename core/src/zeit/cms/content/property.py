@@ -178,6 +178,24 @@ class ResourceProperty(MultipleAttributeProperty):
         super(ResourceProperty, self).__set__(instance, values)
 
 
+class SingleResourceProperty(ObjectPathProperty):
+
+    def __get__(self, instance, class_):
+        unique_id = super(SingleResourceProperty, self).__get__(instance,
+                                                                class_)
+        if not unique_id:
+            return None
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        try:
+            return repository.getContent(unique_id)
+        except KeyError:
+            return None
+
+    def __set__(self, instance, value):
+        super(SingleResourceProperty, self).__set__(instance, value.uniqueId)
+
+
 class KeyReferenceTuple(object):
 
     def __init__(self, attribute):

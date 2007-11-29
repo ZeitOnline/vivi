@@ -70,7 +70,11 @@ Set the most important values:
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
 >>> browser.getControl('Image folder').value = (
 ...     'http://xml.zeit.de/online/2007/01/gallery')
+>>> browser.getControl(name="form.actions.add").click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.mgr/island/@@edit.html'
 
-#>>> browser.handleErrors = False
-#>>> browser.getControl(name="form.actions.add").click()
-#>>> browser.url
+
+
+
+
