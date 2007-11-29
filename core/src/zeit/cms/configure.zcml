@@ -49,6 +49,11 @@
   <includeOverrides package="zc.datetimewidget" file="overrides.zcml"/>
   <include package="zc.datetimewidget"/>
 
+  <include package="z3c.template" file="meta.zcml" />
+  <include package="z3c.pagelet" file="meta.zcml" />
+  <include package="z3c.pagelet" />
+  <include package="gocept.pagelet" file="meta.zcml" />
+
   <include package="gocept.lxml" />
   <include package="gocept.form" />
 

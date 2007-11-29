@@ -1,0 +1,7 @@
+<html metal:use-macro="context/@@standard_macros/view">
+  <div metal:fill-slot="body">
+    <tal:body replace="structure provider:pagelet">
+      Content
+    </tal:body>
+  </div>
+</html>

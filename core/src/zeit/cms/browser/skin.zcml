@@ -1,7 +1,8 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:zcml="http://namespaces.zope.org/zcml"
-  xmlns:browser="http://namespaces.zope.org/browser">
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:z3c="http://namespaces.zope.org/z3c">
 
   <interface
     zcml:condition="have zeit.cms.testing"
@@ -39,6 +40,17 @@
     permission="zope.View"
     template="main_template.pt"
     layer=".interfaces.ICMSLayer" />
+
+
+  <!-- pagelet support -->
+
+  <z3c:layout
+    for="*"
+    template="layout-template.pt"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <!-- resource libraries -->
 
   <include package="gocept.mochikit" />
 
