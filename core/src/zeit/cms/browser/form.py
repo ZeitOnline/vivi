@@ -54,6 +54,15 @@ class FormBase(object):
             self._convert_to_fieldgroups()
         super(FormBase, self).setUpWidgets(ignore_request)
 
+    def render(self):
+        if self.status and not self.errors:
+            # rendered w/o error
+            next_url = self.nextURL()
+            if next_url is not None:
+                #self.send_message(self.status)  # XXX
+                return self.request.response.redirect(next_url)
+        return super(FormBase, self).render()
+
     def _convert_to_fieldgroups(self):
         """Convert old widget_group to gocept.form's field_groups.
 
@@ -129,7 +138,26 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
     """Edit form."""
 
     title = _("Edit")
+    redirect_to_parent_after_edit = False
+    redirect_to_view = None
 
+    def nextURL(self):
+        if (not self.redirect_to_parent_after_edit
+            and not self.redirect_to_view):
+            return None
+
+        new_context = self.context
+        if self.redirect_to_parent_after_edit:
+            new_context = new_context.__parent__
+
+        view = ''
+        if self.redirect_to_view:
+            view = '/@@%s' % self.redirect_to_view
+
+        return '%s%s' % (
+            zope.component.getMultiAdapter(
+                (new_context, self.request), name='absolute_url')(),
+            view)
 
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
     """Display form."""
