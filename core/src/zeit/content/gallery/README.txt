@@ -225,8 +225,9 @@ well:
 Container api
 +++++++++++++
 
-Explicitly check the container api:
+Explicitly check the container api methods we have not used above.
 
+__contains__:
 
 >>> '01.jpg' in gallery
 True
@@ -236,6 +237,30 @@ Weired keys don't break the contains:
 >>> '"foo]"' in gallery
 False
 
+`get`:
+
+>>> gallery.get('01.jpg')
+<zeit.content.gallery.gallery.GalleryEntry object at 0x...>
+>>> gallery.get('":F34') is None
+True
+
+`items`:
+>>> list(gallery.items())
+[(u'DSC00109_2.JPG', <zeit.content.gallery.gallery.GalleryEntry object at 0x...>),
+ (u'01.jpg', <zeit.content.gallery.gallery.GalleryEntry object at 0x...>)]
+
+`values`:
+>>> list(gallery.values())
+[<zeit.content.gallery.gallery.GalleryEntry object at 0x...>,
+ <zeit.content.gallery.gallery.GalleryEntry object at 0x...>]
+
+
+`__iter__`:
+
+>>> for name in gallery:
+...     print "Key:", name
+Key: DSC00109_2.JPG
+Key: 01.jpg
 
 
 Cleanup

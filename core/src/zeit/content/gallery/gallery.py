@@ -106,11 +106,15 @@ class Gallery(persistent.Persistent,
         entry.text = unicode(node['text'])
         return zope.location.location.located(entry, self, key)
 
-    def get(key, default=None):
+    def get(self, key, default=None):
         """Get a value for a key
 
         The default is returned if there is no value for the key.
         """
+        try:
+            return self[key]
+        except KeyError:
+            return default
 
     def __contains__(self, key):
         """Tell if a key exists in the mapping."""
@@ -122,17 +126,20 @@ class Gallery(persistent.Persistent,
         return (unicode(name)
                 for name in self._entries_container.xpath('block/@name'))
 
-    def __iter__():
+    def __iter__(self):
         """Return an iterator for the keys of the mapping object.
         """
+        return iter(self.keys())
 
-    def values():
+    def values(self):
         """Return the values of the mapping object.
         """
+        return (self[key] for key in self)
 
-    def items():
+    def items(self):
         """Return the items of the mapping object.
         """
+        return zip(self.keys(), self.values())
 
     def __len__(self):
         return self._entries_container.xpath('count(block)')
