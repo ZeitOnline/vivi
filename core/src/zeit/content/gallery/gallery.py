@@ -196,7 +196,8 @@ def mapPropertyToAttribute(cp, event):
 def galleryentry_factory(context):
     entry = GalleryEntry()
     entry.image = context
-    entry.thumbnail = None  # XXX
+    entry.thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
+        context)
     entry.title = None
     entry.text = u''
     return entry
@@ -216,6 +217,8 @@ def objectified_entry(context):
         node['text'] = context.text
         node['image'] = gocept.lxml.interfaces.IObjectified(
             context.image)
+        node['thumbnail'] = gocept.lxml.interfaces.IObjectified(
+            context.thumbnail)
         return node
 
 

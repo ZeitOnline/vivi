@@ -49,9 +49,14 @@ The gallery is also noted in the xml structure:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None"
+            alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
       </container>
     </column>
@@ -96,12 +101,20 @@ The change is reflected in the xml:
           <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
         <block name="01.jpg">
           <text></text>
           <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
       </container>
     </column>
@@ -144,12 +157,20 @@ xml:
           <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
         <block name="01.jpg">
           <text></text>
           <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
       </container>
     </column>
@@ -174,12 +195,20 @@ When we assign the entry the change will be reflected:
           <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
         <block name="01.jpg">
           <text>Seit zwei Uhr in der Fr&#195;&#188;h ...</text>
           <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
       </container>
     </column>
@@ -208,6 +237,10 @@ well:
           <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
@@ -215,6 +248,10 @@ well:
           <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
+            expires="None" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
         </block>
       </container>
     </column>
