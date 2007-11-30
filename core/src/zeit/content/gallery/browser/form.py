@@ -14,7 +14,7 @@ import zeit.content.gallery.interfaces
 import zeit.content.gallery.gallery
 
 
-class FormBase(object):
+class GalleryFormBase(object):
 
     form_fields = (
         zope.formlib.form.Fields(
@@ -26,18 +26,27 @@ class FormBase(object):
 
     field_groups = zeit.cms.browser.form.metadataFieldGroups
 
-class AddForm(FormBase, zeit.cms.browser.form.AddForm):
+class AddGallery(GalleryFormBase, zeit.cms.browser.form.AddForm):
 
     title = _("Add gallery")
     factory = zeit.content.gallery.gallery.Gallery
 
 
-class EditForm(FormBase, zeit.cms.browser.form.EditForm):
+class EditGallery(GalleryFormBase, zeit.cms.browser.form.EditForm):
 
     title = _("Edit Gallery")
-    form_fields = FormBase.form_fields.omit('__name__')
+    form_fields = GalleryFormBase.form_fields.omit('__name__')
 
 
-class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
+class DisplayGallery(GalleryFormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _("Gallery")
+
+
+class EditEntry(zeit.cms.browser.form.EditForm):
+
+    title = _("Edit gallery entry")
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.gallery.interfaces.IGalleryEntry).select('title', 'text')
+    redirect_to_parent_after_edit = True
+    redirect_to_view = 'overview.html'

@@ -11,10 +11,13 @@
   <class class=".gallery.Gallery">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
-      interface=".interfaces.IGallery"
+      interface=".interfaces.IReadGallery"
       permission="zope.View" />
     <require
-      set_schema=".interfaces.IGallery"
+      set_schema=".interfaces.IReadGallery"
+      permission="zeit.EditContent" />
+    <require
+      interface=".interfaces.IWriteGallery"
       permission="zeit.EditContent" />
   </class>
 
@@ -22,5 +25,19 @@
     interface=".interfaces.IGallery"
     type="zeit.cms.interfaces.ICMSContentType"
     />
+
+
+  <!-- Entry -->
+  <class class=".gallery.GalleryEntry">
+    <require
+      interface=".interfaces.IGalleryEntry"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IGalleryEntry"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 
 </configure>

@@ -24,7 +24,7 @@
   <browser:page
     name="edit.html"
     for="..interfaces.IGallery"
-    class=".form.EditForm"
+    class=".form.EditGallery"
     permission="zeit.EditContent"
     />
 
@@ -40,7 +40,7 @@
   <browser:page
     name="view.html"
     for="..interfaces.IGallery"
-    class=".form.DisplayForm"
+    class=".form.DisplayGallery"
     permission="zope.View"
     />
 
@@ -55,7 +55,7 @@
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.ManageContent"
-    class=".form.AddForm"
+    class=".form.AddGallery"
     name="zeit.content.gallery.Add"
     menu="zeit-add-menu" title="Gallery"
     />
@@ -66,8 +66,18 @@
     template="overview.pt"
     class=".overview.Overview"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     menu="zeit-context-views" title="Images"
+    />
+
+  <!-- Gallery entries -->
+  <browser:page
+    for="..interfaces.IGalleryEntry"
+    name="index.html"
+    class=".form.EditEntry"
+    permission="zeit.EditContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views" title="Edit"
     />
 
 </configure>

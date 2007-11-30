@@ -100,7 +100,7 @@ class Gallery(persistent.Persistent,
         # XXX what happens if the image goes away?
         image = self.image_folder[image_name]
         entry = zeit.content.gallery.interfaces.IGalleryEntry(image)
-        entry.title = node.get('title')
+        entry.title = node.find('title')
         if entry.title is not None:
             entry.title = unicode(entry.title)
         entry.text = unicode(node['text'])

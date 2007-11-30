@@ -259,6 +259,15 @@ well:
 </centerpage>
 
 
+Let's make sure we actually can get the saved data:
+
+>>> entry = gallery['01.jpg']
+>>> entry.title
+u'Der Wecker klingelt'
+>>> entry.text
+u'Seit zwei Uhr in der Fr\xc3\xbch ...'
+
+
 Container api
 +++++++++++++
 

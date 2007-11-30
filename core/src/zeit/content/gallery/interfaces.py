@@ -18,10 +18,16 @@ class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_("Image folder"),
         description=_("Folder containing images to display in the gallery."))
 
+class IReadGallery(
+    IGalleryMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
+    zope.app.container.interfaces.IReadContainer):
+    """Read methods for gallery."""
 
-class IGallery(IGalleryMetadata,
-               zeit.cms.content.interfaces.IXMLContent,
-               zope.app.container.interfaces.IReadContainer):
+class IWriteGallery(zope.app.container.interfaces.IWriteContainer):
+    """Write methods for gallery."""
+
+class IGallery(IReadGallery, IWriteGallery):
     """An image gallery"""
 
 
