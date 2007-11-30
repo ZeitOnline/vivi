@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import xml.sax.saxutils
 import StringIO
 
 import lxml.etree
@@ -14,6 +15,8 @@ import persistent
 
 import zope.component
 import zope.interface
+import zope.lifecycleevent
+import zope.location.location
 
 import zope.app.container.contained
 
@@ -85,11 +88,23 @@ class Gallery(persistent.Persistent,
 
     # container interface
 
-    def __getitem__(key):
+    def __getitem__(self, key):
         """Get a value for a key
 
         A KeyError is raised if there is no value for the key.
         """
+        node = self._get_block_for_key(key)
+        if node is None:
+            raise KeyError(key)
+        image_name = node.get('name')
+        # XXX what happens if the image goes away?
+        image = self.image_folder[image_name]
+        entry = zeit.content.gallery.interfaces.IGalleryEntry(image)
+        entry.title = node.get('title')
+        if entry.title is not None:
+            entry.title = unicode(entry.title)
+        entry.text = unicode(node['text'])
+        return zope.location.location.located(entry, self, key)
 
     def get(key, default=None):
         """Get a value for a key
@@ -99,6 +114,7 @@ class Gallery(persistent.Persistent,
 
     def __contains__(self, key):
         """Tell if a key exists in the mapping."""
+        return self._get_block_for_key(key) is not None
 
     def keys(self):
         """Return the keys of the mapping object.
@@ -124,12 +140,25 @@ class Gallery(persistent.Persistent,
     def __setitem__(self, key, value):
         node = gocept.lxml.interfaces.IObjectified(value)
         node.set('name', key)
-        self._entries_container.append(node)
+
+        old_node = self._get_block_for_key(key)
+        if old_node is None:
+            self._entries_container.append(node)
+        else:
+            old_node.getparent().replace(old_node, node)
+
+        self._p_changed = True
 
     @property
     def _entries_container(self):
         return self.xml['body']['column'][1]['container']
 
+    def _get_block_for_key(self, key):
+        matching_blocks = self._entries_container.xpath(
+            'block[@name=%s]' % xml.sax.saxutils.quoteattr(key))
+        if matching_blocks:
+            assert len(matching_blocks) == 1
+            return matching_blocks[0]
 
 
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGallery)
@@ -181,3 +210,10 @@ def objectified_entry(context):
         node['image'] = gocept.lxml.interfaces.IObjectified(
             context.image)
         return node
+
+
+@zope.component.adapter(
+    zeit.content.gallery.interfaces.IGalleryEntry,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def update_gallery_on_entry_change(entry, event):
+    entry.__parent__[entry.__name__] = entry

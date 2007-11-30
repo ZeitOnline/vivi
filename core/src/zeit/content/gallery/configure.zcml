@@ -4,6 +4,7 @@
   <adapter factory=".gallery.resourceFactory" />
   <adapter factory=".gallery.galleryentry_factory" />
   <adapter factory=".gallery.objectified_entry" />
+  <subscriber handler=".gallery.update_gallery_on_entry_change" />
 
   <subscriber handler=".gallery.mapPropertyToAttribute" />
 

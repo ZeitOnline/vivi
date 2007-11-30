@@ -25,6 +25,15 @@ class IGallery(IGalleryMetadata,
     """An image gallery"""
 
 
+    def reload_image_folder():
+        """Reload the image folder
+
+        Calling this removes entries from the gallery where the referenced
+        object does no longer exist and adds entries for new object.
+
+        """
+
+
 class IGalleryEntry(zope.interface.Interface):
     """One image in the gallery."""
 
