@@ -10,7 +10,11 @@ from zope.testing import doctest
 import zope.app.testing.functional
 
 import zeit.cms.testing
-import zeit.content.gallery.test
+
+
+ImageLayer = zope.app.testing.functional.ZCMLLayer(
+    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+    __name__, 'GalleryLayer', allow_teardown=True)
 
 
 def test_suite():
@@ -19,5 +23,5 @@ def test_suite():
         'README.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
-        layer=zeit.content.gallery.test.ImageLayer))
+        layer=ImageLayer))
     return suite

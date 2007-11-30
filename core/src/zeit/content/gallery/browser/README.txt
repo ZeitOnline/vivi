@@ -75,6 +75,18 @@ Set the most important values:
 'http://localhost/++skin++cms/workingcopy/zope.mgr/island/@@edit.html'
 
 
+Lets go to the image overview page:
 
+>>> browser.getLink('Images').click()
+
+The overview page shows thumbnails of the images in the gallery together with
+the texts:
+
+#>>> print browser.contents
+
+
+Images can be removed from the gallery here.
+
+Images can be re-ordered at the overview.
 
 

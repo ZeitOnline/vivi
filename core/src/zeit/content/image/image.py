@@ -4,8 +4,8 @@
 
 import StringIO
 
-import lxml
-
+import lxml.objectify
+import gocept.lxml.interfaces
 
 import zope.component
 import zope.interface
@@ -79,5 +79,11 @@ class XMLReference(object):
         image.set('expires', unicode(self.context.expires))
         image.set('alt', unicode(self.context.alt))
         image.set('title', unicode(self.context.caption))
-        image.copyright = self.context.copyright
+        image.copyright = self.context.copyrights
         return image
+
+
+@zope.component.adapter(zeit.content.image.interfaces.IImage)
+@zope.interface.implementer(gocept.lxml.interfaces.IObjectified)
+def image_objectified(context):
+    return zeit.xmleditor.interfaces.IXMLReference(context).xml

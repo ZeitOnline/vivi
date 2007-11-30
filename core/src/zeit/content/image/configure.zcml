@@ -3,6 +3,7 @@
   <adapter factory=".image.imageFactory" name="image" />
   <adapter factory=".image.resourceFactory" />
   <adapter factory=".image.XMLReference" />
+  <adapter factory=".image.image_objectified" />
   <adapter factory=".transform.ImageTransform" />
 
   <class class=".image.Image">

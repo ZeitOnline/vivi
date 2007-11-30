@@ -2,6 +2,8 @@
 
   <adapter factory=".gallery.galleryFactory" name="image-gallery" />
   <adapter factory=".gallery.resourceFactory" />
+  <adapter factory=".gallery.galleryentry_factory" />
+  <adapter factory=".gallery.objectified_entry" />
 
   <subscriber handler=".gallery.mapPropertyToAttribute" />
 

@@ -20,5 +20,20 @@ class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
 
 class IGallery(IGalleryMetadata,
-               zeit.cms.content.interfaces.IXMLContent):
+               zeit.cms.content.interfaces.IXMLContent,
+               zope.app.container.interfaces.IReadContainer):
     """An image gallery"""
+
+
+class IGalleryEntry(zope.interface.Interface):
+    """One image in the gallery."""
+
+    image = zope.schema.Object(zeit.content.image.interfaces.IImage)
+    thumbnail = zope.schema.Object(zeit.content.image.interfaces.IImage)
+
+    title = zope.schema.TextLine(
+        title=_('Title'),
+        required=False)
+
+    text = zope.schema.Text(
+        title=_("Text"))
