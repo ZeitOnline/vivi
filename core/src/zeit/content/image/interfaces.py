@@ -67,6 +67,13 @@ class ITransform(zope.interface.Interface):
         returns IImage object.
         """
 
+class IPersistentThumbnail(IImage):
+    """Persistent thumbnail version of an image."""
+
+
+class IThumbnailFolder(zope.interface.Interface):
+    """The folder where to find thumbnails for an image."""
+
 
 class IImageGroup(zope.app.container.interfaces.IContainer,
                   zeit.cms.interfaces.ICMSContent):

@@ -5,6 +5,8 @@
   <adapter factory=".image.XMLReference" />
   <adapter factory=".image.image_objectified" />
   <adapter factory=".transform.ImageTransform" />
+  <adapter factory=".transform.persistent_thumbnail_factory" />
+  <adapter factory=".transform.thumbnail_folder_factory" />
 
   <class class=".image.Image">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />

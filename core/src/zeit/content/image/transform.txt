@@ -1,0 +1,82 @@
+================
+Image transforms
+================
+
+The transforms create thumbnails and may later be extended for rotating images
+or alike.
+
+Setup functional test:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+
+Thumbnails
+==========
+
+An image can be adapted to ITransform which can create thumbnail images:
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.content.image.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> image = repository['2006']['DSC00109_2.JPG']
+>>> transform = zeit.content.image.interfaces.ITransform(image)
+>>> transform
+<zeit.content.image.transform.ImageTransform object at 0x...>
+
+The transform's `thumbnail` method creates thumbnails and returns a new IImage
+object:
+
+>>> thumb = transform.thumbnail(100, 100)
+>>> thumb
+<zeit.content.image.image.Image object at 0x...>
+
+Note that the thumbnail method doesn't exactly sacle to the given width/height
+but uses this as a bounding box:
+
+>>> thumb.getImageSize()
+(100, 75)
+
+
+Persistent Thumbnails
+=====================
+
+It is sometimes required to have persistent thumbnails. An image can therefore
+be adapted to IPersistentThumbnail:
+
+>>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
+...     image)
+
+The persistent thumbnail is an image itself:
+
+>>> persistent_thumbnail
+<zeit.content.image.image.Image object at 0x...>
+
+It always has 50x50 as bounding box so far:
+
+>>> persistent_thumbnail.getImageSize()
+(50, 37)
+
+It is contained in the folder `thumbnails` with the same name as the image:
+
+>>> image.uniqueId
+u'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> persistent_thumbnail.uniqueId
+u'http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG'
+
+
+When adapting again, no new thumbnail is created but the one in the repository
+is used:
+
+>>> zeit.content.image.interfaces.IPersistentThumbnail(
+...     image) == persistent_thumbnail
+True
+
+
+Cleanup
+=======
+
+>>> zope.app.component.hooks.setSite(old_site)
