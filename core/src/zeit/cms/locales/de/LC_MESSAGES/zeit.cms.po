@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-27 14:34+0100\n"
+"PO-Revision-Date: 2007-12-04 18:17+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,15 +23,15 @@ msgstr "context sensitive actions"
 msgid "context sensitive views"
 msgstr "context sensitive views"
 
-#: src/zeit/cms/browser/configure.zcml:154
+#: src/zeit/cms/browser/configure.zcml:153
 msgid "Zeit CMS User Preferences"
 msgstr "Benutzereinstellungen"
 
-#: src/zeit/cms/browser/configure.zcml:190
+#: src/zeit/cms/browser/configure.zcml:189
 msgid "Preview"
 msgstr "Vorschau"
 
-#: src/zeit/cms/browser/configure.zcml:199
+#: src/zeit/cms/browser/configure.zcml:198
 msgid "Live"
 msgstr "Live"
 
@@ -39,7 +39,7 @@ msgstr "Live"
 msgid "folder specific actions"
 msgstr "folder specific actions"
 
-#: src/zeit/cms/browser/configure.zcml:208
+#: src/zeit/cms/browser/configure.zcml:207
 msgid "Development"
 msgstr "R"
 
@@ -52,32 +52,33 @@ msgstr "Global views"
 msgid "Quelltext"
 msgstr "Quelltext"
 
-#: src/zeit/cms/browser/form.py:131
+#: src/zeit/cms/browser/form.py:174
+#: src/zeit/cms/content/browser/configure.zcml:78
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:137
+#: src/zeit/cms/browser/form.py:199
 #: src/zeit/cms/repository/browser/configure.zcml:52
 msgid "View"
 msgstr "Anzeigen"
 
-#: src/zeit/cms/browser/form.py:23
+#: src/zeit/cms/browser/form.py:50
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/zeit/cms/browser/form.py:27
+#: src/zeit/cms/browser/form.py:54
 msgid "Kopf"
 msgstr "Kopf"
 
-#: src/zeit/cms/browser/form.py:31
+#: src/zeit/cms/browser/form.py:58
 msgid "Optionen"
 msgstr "Optionen"
 
-#: src/zeit/cms/browser/form.py:35
+#: src/zeit/cms/browser/form.py:62
 msgid "Texte"
 msgstr "Texte"
 
-#: src/zeit/cms/browser/form.py:38
+#: src/zeit/cms/browser/form.py:65
 msgid "sonstiges"
 msgstr "sonstiges"
 
@@ -96,6 +97,10 @@ msgstr "Fehler"
 #: src/zeit/cms/browser/main_template.pt:207
 msgid "Add…"
 msgstr "Hinzufügen…"
+
+#: src/zeit/cms/browser/main_template.pt:242
+msgid "There are no objects in this folder."
+msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:38
@@ -117,6 +122,20 @@ msgstr "Einchecken"
 msgid "Broken reference to ${uniqueId}"
 msgstr "Invalide Referenz zu ${uniqueId}"
 
+#: src/zeit/cms/content/browser/template.py:17
+#: src/zeit/cms/content/browser/template.py:33
+#: src/zeit/cms/content/browser/configure.zcml:53
+msgid "Templates"
+msgstr "Vorlagen"
+
+#: src/zeit/cms/content/browser/template.py:46
+msgid "Add template"
+msgstr "Vorlage hinzufügen"
+
+#: src/zeit/cms/content/browser/template.py:56
+msgid "Edit template"
+msgstr "Vorlage bearbeiten"
+
 #: src/zeit/cms/content/interfaces.py:100
 msgid "Please take care of capiltalisation."
 msgstr "Bitte beachten Sie die Groß-/Kleinschreibung."
@@ -126,6 +145,8 @@ msgid "By line"
 msgstr "„Von“-Zeile"
 
 #: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/cms/content/interfaces.py:246
+#: src/zeit/content/gallery/interfaces.py:50
 #: src/zeit/search/interfaces.py:20
 msgid "Title"
 msgstr "Titel"
@@ -258,7 +279,7 @@ msgstr "Inhalt hinzufügen"
 
 #: src/zeit/cms/repository/browser/configure.zcml:17
 msgid "Add ..."
-msgstr ""
+msgstr "Hinzufügen …"
 
 #: src/zeit/cms/repository/browser/configure.zcml:74
 #: src/zeit/cms/workingcopy/browser/configure.zcml:39
@@ -315,6 +336,11 @@ msgstr "Channel bearbeiten"
 msgid "Inhalt"
 msgstr ""
 
+#: src/zeit/content/article/browser/form.py:27
+#: src/zeit/cms/content/browser/configure.zcml:70
+msgid "Template"
+msgstr "Vorlage"
+
 #: src/zeit/content/article/interfaces.py:80
 msgid "Images"
 msgstr "Bilder"
@@ -331,6 +357,14 @@ msgstr "Bildergallerie bearbeiten"
 msgid "Gallery"
 msgstr "Bildergallerie"
 
+#: src/zeit/content/gallery/browser/form.py:48
+msgid "Edit gallery entry"
+msgstr "Bildergallerie-Eintrag bearbeiten"
+
+#: src/zeit/content/gallery/browser/overview.pt:10
+msgid "Edit ${image-name}"
+msgstr "${image-name} bearbeiten"
+
 #: src/zeit/content/gallery/interfaces.py:18
 msgid "Image folder"
 msgstr "Bilderordner"
@@ -338,6 +372,10 @@ msgstr "Bilderordner"
 #: src/zeit/content/gallery/interfaces.py:19
 msgid "Folder containing images to display in the gallery."
 msgstr "Ordner, der die Bilder enthält, die in der Bildergallerie angezeigt werden sollen."
+
+#: src/zeit/content/gallery/interfaces.py:54
+msgid "Text"
+msgstr "Text"
 
 #: src/zeit/content/image/browser/form.py:27
 msgid "Image data"
