@@ -10,7 +10,23 @@ import zc.resourcelibrary
 
 import zeit.cms.browser.form
 import zeit.cms.interfaces
+import zeit.cms.content.template
+from zeit.cms.i18n import MessageFactory as _
+
 import zeit.content.article.interfaces
+
+
+class TemplateSource(zeit.cms.content.template.BasicTemplateSource):
+
+    template_type = 'article'
+
+
+class ITemplateChooserSchema(zope.interface.Interface):
+
+    template = zope.schema.Choice(
+        title=_("Template"),
+        source=TemplateSource())
+
 
 
 class ArticleFormBase(object):
@@ -32,7 +48,8 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
             omit_readonly=False).omit('uniqueId') +
         zope.formlib.form.Fields(
             zeit.content.article.interfaces.IArticleMetadata,
-            omit_readonly=False).omit('textLength'))
+            omit_readonly=False).omit('textLength') +
+        zope.formlib.form.Fields(ITemplateChooserSchema))
 
     factory = zeit.content.article.article.Article
 

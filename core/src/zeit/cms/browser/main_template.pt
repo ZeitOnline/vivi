@@ -239,8 +239,9 @@
             Table with contents...
           </table>
 
-        <span tal:condition="not:view/content" class="Info">
-          Keine Objekte in diesem Ordner vorhanden.
+        <span tal:condition="not:view/content" class="Info"
+          i18n:translate="">
+          There are no objects in this folder.
         </span>
       </div>
       <div id="bottomcontent"></div>

@@ -81,4 +81,29 @@
 
   <utility factory=".keyword.KeywordUtility" />
   
+
+  <!-- Templates -->
+  <class class=".template.TemplateManager">
+    <require
+      interface=".interfaces.ITemplateManager"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.app.container.interfaces.IWriteContainer"
+      permission="zope.ManageContent"
+      />
+  </class>
+
+  <class class=".template.Template">
+    <require
+      interface=".interfaces.ITemplate"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITemplate"
+      permission="zope.ManageContent"
+      />
+  </class>
+
+
 </configure>

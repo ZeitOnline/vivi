@@ -1,0 +1,114 @@
+=========
+Templates
+=========
+
+There is a generic system for templates for content types. A central view
+allows adding and editing of templates by an administrator.
+
+Create a testbrowser and open the homepage:
+
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.open('http://localhost/++skin++cms/' )
+>>> browser.handleErrors = False
+
+Open the template managment ui:
+
+>>> browser.getLink('Templates').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Templates </h1>
+    ...
+    There are no template managers registered.
+    ...
+
+
+Let's create and register a template manager now. We do this through the python
+api because there is no UI for that:
+
+>>> import zope.component
+>>> import zeit.cms.content.template
+>>> root = getRootFolder()
+>>> sm = zope.component.getSiteManager(root)
+>>> root['a-template-manager'] = zeit.cms.content.template.TemplateManager()
+>>> sm.registerUtility(
+...     root['a-template-manager'],
+...     zeit.cms.content.interfaces.ITemplateManager,
+...     name='My content templates')
+
+Commit transaction for testbrowser to see our changes:
+
+>>> import transaction
+>>> transaction.commit()
+
+
+When we're opening the management UI now, we'll see our newly created template
+manager:
+
+>>> browser.getLink('Templates').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Templates </h1>
+    ...
+    <a href="...">My content templates</a>
+    ...
+
+
+Let's have a look at those templates:
+
+>>> browser.getLink('My content templates').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Templates </h1>
+    ...
+    There are no objects in this folder.
+    ...
+
+
+
+Let's add a tempalte. Templates are not manager specific. They're just XML
+files:
+
+
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Template']
+>>> url = menu.value[0]
+>>> browser.open(menu.value[0])
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Add template </h1>
+    ...
+
+Give the template a name, set some content and add it:
+
+>>> browser.getControl('Title').value = 'Oink template'
+>>> browser.getControl('Source').value = (
+...     '<article><body><title>Oink</title></body></article>')
+>>> browser.getControl('Add').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Edit template </h1>
+    ...
+
+
+# XXX check what happesn on invalid xml?
+# make sure editing works
+
+An add form needs to take care about actually using the template.
+
+
+
+Clean up:
+
+>>> sm.unregisterUtility(
+...     root['a-template-manager'],
+...     zeit.cms.content.interfaces.ITemplateManager,
+...     name='My content templates')
+True

@@ -45,4 +45,12 @@
     type=".interfaces.ISyndicationLogType"
     />
 
+  <!-- generation -->
+
+  <utility 
+    name="zeit.content.article"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
 </configure>

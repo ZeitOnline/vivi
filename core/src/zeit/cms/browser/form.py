@@ -115,6 +115,7 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
 
     _checked_out = False
     factory = None
+    next_view = None
 
     def applyChanges(self, object, data):
         return apply_changes_with_setattr(
@@ -147,7 +148,9 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         return object.__name__
 
     def nextURL(self):
-        if self._checked_out:
+        if self.next_view:
+            view = self.next_view
+        elif self._checked_out:
             view = 'edit.html'
         else:
             view = 'view.html'

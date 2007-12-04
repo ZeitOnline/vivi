@@ -7,6 +7,7 @@ import urllib2
 import zope.component
 
 import zc.sourcefactory.basic
+import zc.sourcefactory.contextual
 import gocept.lxml.objectify
 import gocept.cache.method
 

@@ -234,3 +234,13 @@ class ILockInfo(zope.app.locking.interfaces.ILockInfo):
     locked_until = zope.schema.Datetime(
         title=u"Locked Until",
         required=False)
+
+
+class ITemplateManager(zope.app.container.interfaces.IReadContainer):
+    """Manages templates for a content type."""
+
+
+class ITemplate(IXMLRepresentation):
+    """A template for xml content types."""
+
+    title = zope.schema.TextLine(title=_('Title'))

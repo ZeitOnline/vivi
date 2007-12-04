@@ -14,11 +14,11 @@ import zeit.cms.repository.repository
 import zeit.cms.workingcopy.workingcopy
 
 
-def installLocalUtility(root, factory, name, interface):
+def installLocalUtility(root, factory, name, interface, utility_name=u''):
     utility = factory()
     root[name] = utility
     site_manager = zope.component.getSiteManager()
-    site_manager.registerUtility(utility, interface)
+    site_manager.registerUtility(utility, interface, name=utility_name)
     return root[name]
 
 
