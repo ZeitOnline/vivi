@@ -77,32 +77,14 @@ class ImageProperty(object):
         return instance.xml.head.findall('image')
 
 
-class Article(persistent.Persistent,
-              zope.app.container.contained.Contained,
-              zeit.cms.content.metadata.CommonMetadata):
+class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
 
     zope.interface.implements(
         zeit.content.article.interfaces.IArticle,
         zeit.wysiwyg.interfaces.IHTMLContent)
 
-    def __init__(self, xml_source=None, __name__=None, properties=None,
-                 **data):
-        apply_defaults = False
-        if xml_source is None:
-            apply_defaults = True
-            self.xml = gocept.lxml.objectify.fromstring(ARTICLE_TEMPLATE)
-        else:
-            self.xml = gocept.lxml.objectify.fromfile(xml_source)
-        self.uniqueId = None
-        self.__name__ = __name__
-        if apply_defaults:
-            zeit.cms.content.util.applySchemaData(
-                self, zeit.content.article.interfaces.IArticleMetadata, data)
-
-    @property
-    def xml_source(self):
-        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True)
+    default_template = ARTICLE_TEMPLATE
 
     textLength = zeit.cms.content.property.AttributeProperty(
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')

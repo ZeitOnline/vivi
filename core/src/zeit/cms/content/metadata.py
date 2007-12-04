@@ -2,9 +2,15 @@
 # See also LICENSE.txt
 # $Id$
 
-import lxml.objectify
+import StringIO
 
+import lxml.etree
+import gocept.lxml.objectify
+
+import persistent
 import zope.component
+
+import zope.app.container.contained
 
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -32,7 +38,11 @@ class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
         return entry.code
 
 
-class CommonMetadata(object):
+class CommonMetadata(persistent.Persistent,
+                     zope.app.container.contained.Contained):
+
+    uniqueId = None
+    __name__ = None
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.content.interfaces.ICommonMetadata,
@@ -40,6 +50,7 @@ class CommonMetadata(object):
         ('serie', 'copyrights', 'year', 'volume', 'ressort', 'page'))
 
     # tuple/set doesn't work with webdav, yet
+    # see bug #3776
     #zeit.cms.content.dav.mapProperty(
     #    zeit.cms.content.interfaces.ICommonMetadata['authors'],
     #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
@@ -68,3 +79,18 @@ class CommonMetadata(object):
         '.indexteaser.title')
     shortTeaserText = zeit.cms.content.property.ObjectPathProperty(
         '.indexteaser.text')
+
+
+    default_template = None  # Define in subclasses
+
+    def __init__(self, xml_source=None):
+        if xml_source is None:
+            if self.default_template is None:
+                raise NotImplementedError(
+                    "default_template needs to be set in subclasses")
+            xml_source = StringIO.StringIO(self.default_template)
+        self.xml = gocept.lxml.objectify.fromfile(xml_source)
+
+    @property
+    def xml_source(self):
+        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True)

@@ -23,6 +23,7 @@ class ArticleFormBase(object):
         zc.resourcelibrary.need('zeit.content.article.teaser')
         return super(ArticleFormBase, self).template
 
+
 class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
 
     form_fields = (
@@ -33,17 +34,7 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
             zeit.content.article.interfaces.IArticleMetadata,
             omit_readonly=False).omit('textLength'))
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request:
-            form = self.request.form
-            if not form:
-                form['form.year'] = str(datetime.datetime.now().year)
-                form['form.volume'] = str(int(  # Strip leading 0
-                    datetime.datetime.now().strftime('%W')))
-        super(AddForm, self).setUpWidgets(ignore_request)
-
-    def create(self, data):
-        return zeit.content.article.article.Article(**data)
+    factory = zeit.content.article.article.Article
 
 
 class EditForm(ArticleFormBase, zeit.cms.browser.form.EditForm):

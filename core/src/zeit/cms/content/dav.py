@@ -36,7 +36,7 @@ class DAVProperty(object):
         properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
         dav_value = properties.get((self.name, self.namespace))
         if dav_value is None:
-            value = self.field.default
+            value = self.field.missing_value
         else:
             field = self.field.bind(instance)
             __traceback_info__ = (instance, field,

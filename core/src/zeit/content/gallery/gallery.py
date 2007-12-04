@@ -3,22 +3,16 @@
 # $Id$
 
 import xml.sax.saxutils
-import StringIO
 
 import lxml.etree
 import lxml.objectify
 import gocept.lxml.interfaces
-import gocept.lxml.objectify
 import rwproperty
-
-import persistent
 
 import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.location.location
-
-import zope.app.container.contained
 
 import zeit.cms.connector
 import zeit.cms.interfaces
@@ -42,9 +36,7 @@ GALLERY_TEMPLATE = u"""\
 
 
 
-class Gallery(persistent.Persistent,
-              zope.app.container.contained.Contained,
-              zeit.cms.content.metadata.CommonMetadata):
+class Gallery(zeit.cms.content.metadata.CommonMetadata):
     """CenterPage"""
 
     zope.interface.implements(zeit.content.gallery.interfaces.IGallery)
@@ -52,13 +44,7 @@ class Gallery(persistent.Persistent,
     _image_folder = zeit.cms.content.property.SingleResourceProperty(
         '.head.image-folder')
 
-    uniqueId = None
-    __name__ = None
-
-    def __init__(self, xml_source=None):
-        if xml_source is None:
-            xml_source = StringIO.StringIO(GALLERY_TEMPLATE)
-        self.xml = gocept.lxml.objectify.fromfile(xml_source)
+    default_template = GALLERY_TEMPLATE
 
     @property
     def xml_source(self):

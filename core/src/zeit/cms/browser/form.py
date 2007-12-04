@@ -18,6 +18,33 @@ from zeit.cms.i18n import MessageFactory as _
 REMAINING_FIELDS = object()
 
 
+def apply_changes_with_setattr(context, form_fields, data, adapters=None):
+    if adapters is None:
+        adapters = {}
+
+    changed = False
+
+    for form_field in form_fields:
+        field = form_field.field
+        # Adapt context, if necessary
+        interface = form_field.interface
+        adapter = adapters.get(interface)
+        if adapter is None:
+            if interface is None:
+                adapter = context
+            else:
+                adapter = interface(context)
+            adapters[interface] = adapter
+
+        name = form_field.__name__
+        newvalue = data.get(name, form_field) # using form_field as marker
+        if (newvalue is not form_field) and (field.get(adapter) != newvalue):
+            changed = True
+            setattr(adapter, name, newvalue)
+
+    return changed
+
+
 metadataFieldGroups = (
     gocept.form.grouped.Fields(
         _("Navigation"),
@@ -88,6 +115,10 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
 
     _checked_out = False
     factory = None
+
+    def applyChanges(self, object, data):
+        return apply_changes_with_setattr(
+            object, self.form_fields, data, self.adapters)
 
     def create(self, data):
         if self.factory is None:

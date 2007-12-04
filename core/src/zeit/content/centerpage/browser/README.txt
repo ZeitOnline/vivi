@@ -62,6 +62,9 @@ Now, fill the form and add the CP:
 >>> browser.getControl(name='form.volume').value = '2'
 >>> browser.getControl(name='form.__name__').value = 'index'
 >>> browser.getControl(name='form.title').value = 'Politik'
+>>> browser.getControl('Ressort').value
+'Online'
+>>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
 
@@ -162,20 +165,15 @@ page:
 >>> print browser.getControl(name='form.xml').value
 <centerpage>
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
-    ...
   </head>
   <body>
-    ...
     <title>Wirtschaft</title>
-    ...
     <column/>
   </body>
-  ...
 </centerpage>
 
 

@@ -172,7 +172,8 @@ Resource Factory
 The resource factory creates Resource objects from articles:
 
 >>> from zeit.content.article.article import resourceFactory
->>> article = Article(authors=('Tom', 'Jerry'))
+>>> article = Article()
+>>> article.authors = ('Tom', 'Jerry')
 >>> resource = resourceFactory(article)
 >>> resource.type
 'article'
@@ -213,8 +214,7 @@ And the image is referenced in the XML structure:
 
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article>
-  <head>
-    ...
+  <head>...
     <image
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
       type="jpeg"

@@ -33,17 +33,7 @@ class AddForm(CPFormBase, zeit.cms.browser.form.AddForm):
             zeit.content.centerpage.interfaces.ICenterPageMetadata,
             omit_readonly=False))
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request:
-            form = self.request.form
-            if not form:
-                form['form.year'] = str(datetime.datetime.now().year)
-                form['form.volume'] = str(int(  # Strip leading 0
-                    datetime.datetime.now().strftime('%W')))
-        super(AddForm, self).setUpWidgets(ignore_request)
-
-    def create(self, data):
-        return zeit.content.centerpage.centerpage.CenterPage(**data)
+    factory = zeit.content.centerpage.centerpage.CenterPage
 
 
 class EditForm(CPFormBase, zeit.cms.browser.form.EditForm):

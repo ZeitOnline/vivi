@@ -26,34 +26,12 @@ CP_TEMPLATE = """\
 </centerpage>"""
 
 
-class CenterPage(persistent.Persistent, zope.app.container.contained.Contained,
-                 zeit.cms.content.metadata.CommonMetadata):
+class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     """CenterPage"""
 
     zope.interface.implements(zeit.content.centerpage.interfaces.ICenterPage)
 
-    keywords = ()
-
-    def __init__(self, xml_source=None, __name__=None,
-                 **data):
-        apply_defaults = False
-        if xml_source is None:
-            apply_defaults = True
-            self.xml = gocept.lxml.objectify.fromstring(CP_TEMPLATE)
-        else:
-            self.xml = gocept.lxml.objectify.fromfile(xml_source)
-        self.uniqueId = None
-        self.__name__ = __name__
-        if apply_defaults:
-            zeit.cms.content.util.applySchemaData(
-                self,
-                zeit.content.centerpage.interfaces.ICenterPageMetadata,
-                data)
-
-    @property
-    def xml_source(self):
-        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True)
-
+    default_template = CP_TEMPLATE
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
