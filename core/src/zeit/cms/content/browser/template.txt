@@ -104,9 +104,32 @@ Give the template a name, set some content and add it:
 An add form needs to take care about actually using the template.
 
 
+Template source
+===============
+
+There is an abstract template source which helps creating real template
+sources.
+
+Get in sync with the browser test:
+
+>>> transaction.abort()
+
+The the site:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+>>> class Source(zeit.cms.content.template.BasicTemplateSource):
+...     template_manager = 'My content templates'
+...
+>>> source = Source()
+>>> list(source)
+[<zeit.cms.content.template.Template object at 0x...>]
 
 Clean up:
 
+>>> zope.app.component.hooks.setSite(old_site)
 >>> sm.unregisterUtility(
 ...     root['a-template-manager'],
 ...     zeit.cms.content.interfaces.ITemplateManager,

@@ -14,17 +14,17 @@ import zeit.cms.content.interfaces
 
 class BasicTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    template_type = None
+    template_manager = None
 
     def __init__(self):
-        if self.template_type is None:
-            raise NotImplementedError("`template_type` needs to be specified")
+        if self.template_manager is None:
+            raise NotImplementedError("`template_manager` needs to be specified")
         super(BasicTemplateSource, self).__init__()
 
-    def getValues(self, context):
+    def getValues(self):
         manager = zope.component.getUtility(
             zeit.cms.content.interfaces.ITemplateManager,
-            name=self.template_type)
+            name=self.template_manager)
         return manager.values()
 
 
