@@ -222,6 +222,10 @@ the feeds automatically:
 >>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
+
+Now the feed has been changed. Verify this by checking out the feed and looking
+at its xml source:
+
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Quelltext').click()
@@ -241,5 +245,7 @@ the feeds automatically:
     </block>
   </container>
 </feed>
+
+Check the feed back in to have nothing laying around:
 
 >>> browser.getLink('Checkin').click()
