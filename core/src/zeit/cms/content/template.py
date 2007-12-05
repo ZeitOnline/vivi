@@ -27,6 +27,9 @@ class BasicTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
             name=self.template_manager)
         return manager.values()
 
+    def getTitle(self, obj):
+        return obj.title
+
 
 class TemplateManager(zope.app.container.btree.BTreeContainer):
 
