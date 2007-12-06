@@ -12,7 +12,7 @@ after the last access, by default 30 days.
 Let's set the cache timeout to 4 second, since we don't want to wait 30 days:
 
 >>> cache.CACHE_TIMEOUT = 4
->>> cache.UPDATE_INTERVAL = 1
+>>> cache.UPDATE_INTERVAL = 0.9
 
 For getting data from the cache, the cache needs the etag from the properties:
 
@@ -45,7 +45,7 @@ We can get the data also via `getData` now:
 Also the access times are noted in the cache:
 
 >>> last_access = cache._last_access_time['some-id']
->>> isinstance(last_access, long)
+>>> isinstance(last_access, (int, long))
 True
 >>> cache._time_to_id[last_access]
 'some-id'
