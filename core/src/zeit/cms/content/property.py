@@ -35,15 +35,15 @@ class ObjectPathProperty(object):
 
     def __set__(self, instance, value):
         if self.path is None:
-            # This is really hairy. We replace the value. This detaches the
+            # We cannot just set the new value because setting detaches the
             # instance.xml from the original tree leaving instance independet
-            # of the xml-tree. This means we need to find the replaced node in 
-            # the xml-tree and re-attach. *gaah*
+            # of the xml-tree. 
             node = instance.xml
-            index = node[:].index(node)
             parent = node.getparent()
-            node[index] = value
-            instance.xml = parent[node.tag][index]
+            new_node = lxml.objectify.E.root(
+                getattr(lxml.objectify.E, node.tag)(value))[node.tag]
+            parent.replace(node, new_node)
+            instance.xml = new_node
         else:
             self.path.setattr(instance.xml, value)
 

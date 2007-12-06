@@ -21,7 +21,7 @@ The tree is rendered  in the sidebar all the time:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
         <a href="...">Repository</a>
@@ -42,7 +42,7 @@ When we visit `online` it is automatically expanded while visiting it:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
  <ul>
     <li active="True" class="Root">
       <a href="...">Repository</a>
@@ -97,7 +97,7 @@ A full page contains the same tree of course:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
         <a href="...">Repository</a>
@@ -132,7 +132,7 @@ The collection is gone now:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
         <a href="...">Repository</a>
@@ -168,7 +168,7 @@ Instead there is the `Zeigen` action:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
         <a href="...">Repository</a>
