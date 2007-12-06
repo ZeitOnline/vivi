@@ -7,7 +7,7 @@ Creating a connector:
   >>> from pprint import pprint
   >>> from zeit.connector.connector import Connector
   >>> from zeit.connector.cache import resourceCacheFactory
-  >>> connector = Connector(roots={"default": "http://zip4clone.zeit.de:9999/cms/work/",
+  >>> connector = Connector(roots={"default": "http://10.100.10.27/cms/work/",
   ...                              "search": u"http://217.13.68.167:9999/"})
   >>> connector
   <zeit.connector.connector.Connector object at 0x...>
@@ -68,75 +68,6 @@ The connector needs the ResourceCache, so we register it:
 ...     (ISite,),
 ...     zeit.connector.interfaces.IResourceCache)
 
-
-Browsing
-========
-
-The browsing interface basically allows listing collections:
-
->>> from pprint import pprint
->>> pprint(list(connector.listCollection((u'http://xml.zeit.de/1998/03'))))
-[(u'plog.txt.19980109.xml', u'http://xml.zeit.de/1998/03/plog.txt.19980109.xml'),
- (u'bulk0398.txt.19980109.xml', u'http://xml.zeit.de/1998/03/bulk0398.txt.19980109.xml'),
- (u'evolution.txt.19980109.xml', u'http://xml.zeit.de/1998/03/evolution.txt.19980109.xml'),
- (u'vor5003.txt.19980109.xml', u'http://xml.zeit.de/1998/03/vor5003.txt.19980109.xml'),
- (u'werkzeug.txt.19980109.xml', u'http://xml.zeit.de/1998/03/werkzeug.txt.19980109.xml'),
- (u'aussteig.txt.19980109.xml', u'http://xml.zeit.de/1998/03/aussteig.txt.19980109.xml'),
- (u'athesen.txt.19980109.xml', u'http://xml.zeit.de/1998/03/athesen.txt.19980109.xml'),
- (u'allianz.txt.19980109.xml', u'http://xml.zeit.de/1998/03/allianz.txt.19980109.xml'),
- (u'wochengr.txt.19980109.xml', u'http://xml.zeit.de/1998/03/wochengr.txt.19980109.xml'),
- (u'jaccuse.txt.19980109.xml', u'http://xml.zeit.de/1998/03/jaccuse.txt.19980109.xml'),
- (u'chabrol.txt.19980109.xml', u'http://xml.zeit.de/1998/03/chabrol.txt.19980109.xml'),
- (u'zm0398.txt.19980109.xml', u'http://xml.zeit.de/1998/03/zm0398.txt.19980109.xml'),
- (u'kosmos.txt.19980109.xml', u'http://xml.zeit.de/1998/03/kosmos.txt.19980109.xml'),
- (u'finis03.txt.19980109.xml', u'http://xml.zeit.de/1998/03/finis03.txt.19980109.xml'),
- (u'kunst.txt.19980109.xml', u'http://xml.zeit.de/1998/03/kunst.txt.19980109.xml'),
- (u'planet0398.txt.19980109.xml', u'http://xml.zeit.de/1998/03/planet0398.txt.19980109.xml'),
- (u'endloes.txt.19980109.xml', u'http://xml.zeit.de/1998/03/endloes.txt.19980109.xml'),
- (u'titel.txt.19980109.xml', u'http://xml.zeit.de/1998/03/titel.txt.19980109.xml'),
- (u'wasserz.txt.19980109.xml', u'http://xml.zeit.de/1998/03/wasserz.txt.19980109.xml'),
- (u'eisangel.txt.19980109.xml', u'http://xml.zeit.de/1998/03/eisangel.txt.19980109.xml'),
- (u'dr03.txt.19980109.xml', u'http://xml.zeit.de/1998/03/dr03.txt.19980109.xml'),
- (u'benjamin.txt.19980109.xml', u'http://xml.zeit.de/1998/03/benjamin.txt.19980109.xml'),
- (u'lohnpol.txt.19980109.xml', u'http://xml.zeit.de/1998/03/lohnpol.txt.19980109.xml'),
- (u'inhalt.txt.19980109.xml', u'http://xml.zeit.de/1998/03/inhalt.txt.19980109.xml'),
- (u'wahl98.txt.19980109.xml', u'http://xml.zeit.de/1998/03/wahl98.txt.19980109.xml'),
- (u'siebeck0398.txt.19980109.xml', u'http://xml.zeit.de/1998/03/siebeck0398.txt.19980109.xml'),
- (u'kinder.txt.19980109.xml', u'http://xml.zeit.de/1998/03/kinder.txt.19980109.xml'),
- (u'wowos.txt.19980109.xml', u'http://xml.zeit.de/1998/03/wowos.txt.19980109.xml'),
- (u'fdp.txt.19980109.xml', u'http://xml.zeit.de/1998/03/fdp.txt.19980109.xml'),
- (u'tvkrit03.txt.19980109.xml', u'http://xml.zeit.de/1998/03/tvkrit03.txt.19980109.xml'),
- (u'horoskop.txt.19980109.xml', u'http://xml.zeit.de/1998/03/horoskop.txt.19980109.xml'),
- (u'thema.txt.19980109.xml', u'http://xml.zeit.de/1998/03/thema.txt.19980109.xml')]
-
-Verify the names for containers are right:
-
->>> pprint(list(connector.listCollection(u'http://xml.zeit.de/musik')))
-[(u'archiv', u'http://xml.zeit.de/musik/archiv/'),
- (u'adventskalender', u'http://xml.zeit.de/musik/adventskalender/'),
- (u'box_weblogs', u'http://xml.zeit.de/musik/box_weblogs'),
- (u'channel_themen', u'http://xml.zeit.de/musik/channel_themen'),
- (u'index_alt', u'http://xml.zeit.de/musik/index_alt'),
- (u'soundfiles', u'http://xml.zeit.de/musik/soundfiles/'),
- (u'channel_jazz', u'http://xml.zeit.de/musik/channel_jazz'),
- (u'gebote-der-musikkritik', u'http://xml.zeit.de/musik/gebote-der-musikkritik/'),
- (u'Themenseiten', u'http://xml.zeit.de/musik/Themenseiten/'),
- (u'channel_branche', u'http://xml.zeit.de/musik/channel_branche'),
- (u'channel_klassik', u'http://xml.zeit.de/musik/channel_klassik'),
- (u'unter-cps', u'http://xml.zeit.de/musik/unter-cps/'),
- (u'channel_buecher', u'http://xml.zeit.de/musik/channel_buecher'),
- (u'channel_gross', u'http://xml.zeit.de/musik/channel_gross'),
- (u'channel_bigas', u'http://xml.zeit.de/musik/channel_bigas'),
- (u'channel_blogs', u'http://xml.zeit.de/musik/channel_blogs'),
- (u'musik_test', u'http://xml.zeit.de/musik/musik_test/'),
- (u'genreuebersichten', u'http://xml.zeit.de/musik/genreuebersichten/'),
- (u'channel_magazin', u'http://xml.zeit.de/musik/channel_magazin'),
- (u'channel_musik', u'http://xml.zeit.de/musik/channel_musik'),
- (u'channel_geschichte', u'http://xml.zeit.de/musik/channel_geschichte'),
- (u'index_alt_05_2007', u'http://xml.zeit.de/musik/index_alt_05_2007'),
- (u'channel_serien', u'http://xml.zeit.de/musik/channel_serien'),
- (u'index', u'http://xml.zeit.de/musik/index'),
- (u'channel_speziell', u'http://xml.zeit.de/musik/channel_speziell')]
 
 Resources
 =========
