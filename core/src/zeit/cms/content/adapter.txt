@@ -16,12 +16,13 @@ teaser::
 
 Create a teaser and get it's xml representation::
 
+    >>> import lxml.etree
     >>> from zeit.cms.content.adapter import TeaserXMLRepresentation
     >>> t = Teaser()
     >>> t.title = u'Qualmfreie Kneipen'
     >>> t.text = u'Die Länder haben sich auf ein umfassendes ...'
     >>> xml_repr = TeaserXMLRepresentation(t)
-    >>> print xml_repr.xml_source
+    >>> print lxml.etree.tostring(xml_repr.xml, pretty_print=True)
     <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
       <title>Qualmfreie Kneipen</title>
       <text>Die L&#228;nder haben sich auf ein umfassendes ...</text>
@@ -36,7 +37,7 @@ an empty string::
     >>> t.title = None
     >>> t.text = None
     >>> xml_repr = TeaserXMLRepresentation(t)
-    >>> print xml_repr.xml_source
+    >>> print lxml.etree.tostring(xml_repr.xml, pretty_print=True)
     <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
       <title/>
       <text/>
@@ -53,7 +54,7 @@ As for the teaser there is a xml representation of the index teaser::
     >>> t.title = u'Judaphobie'
     >>> t.text = u'In Großbritannien und anderen Ländern Europas ...'
     >>> xml_repr = IndexTeaserXMLRepresentation(t)
-    >>> print xml_repr.xml_source
+    >>> print lxml.etree.tostring(xml_repr.xml, pretty_print=True)
     <indexteaser xmlns="http://xml.zeit.de/CMS/Teaser">
         <title>Judaphobie</title>
         <text>In Gro&#223;britannien und anderen L&#228;ndern Europas ...</text>

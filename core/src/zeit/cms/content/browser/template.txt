@@ -136,6 +136,12 @@ The source lists the available templates:
 >>> template.title
 u'Oink template'
 
+Make sure the interface is provided:
+
+>>> import zope.interface.verify
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.content.interfaces.ITemplate, template)
+True
 
 We can get the titles by adapting the source:
 
@@ -148,6 +154,8 @@ We can get the titles by adapting the source:
 >>> term = terms.getTerm(template)
 >>> term.title
 u'Oink template'
+
+
 
 Clean up:
 

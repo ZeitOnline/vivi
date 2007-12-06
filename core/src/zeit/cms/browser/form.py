@@ -26,6 +26,12 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
 
     for form_field in form_fields:
         field = form_field.field
+
+        name = form_field.__name__
+        newvalue = data.get(name, form_field) # using form_field as marker
+        if newvalue is form_field:
+            continue
+
         # Adapt context, if necessary
         interface = form_field.interface
         adapter = adapters.get(interface)
@@ -36,9 +42,7 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
                 adapter = interface(context)
             adapters[interface] = adapter
 
-        name = form_field.__name__
-        newvalue = data.get(name, form_field) # using form_field as marker
-        if (newvalue is not form_field) and (field.get(adapter) != newvalue):
+        if field.get(adapter) != newvalue:
             changed = True
             setattr(adapter, name, newvalue)
 

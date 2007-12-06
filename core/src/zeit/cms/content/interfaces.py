@@ -192,8 +192,10 @@ class IXMLRepresentation(zope.interface.Interface):
 
     xml = zeit.cms.content.field.XMLTree(
         title=_("XML Source"))
-    xml_source = zope.interface.Attribute(
-        "XML source (str, *not* unicode) representing the object.")
+
+
+class IXMLSource(zope.interface.Interface):
+    """str representing the xml of an object."""
 
 
 class IXMLContent(zeit.cms.interfaces.ICMSContent, IXMLRepresentation):

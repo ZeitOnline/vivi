@@ -11,6 +11,7 @@
   <adapter factory=".adapter.TeaserXMLRepresentation" />
   <adapter factory=".adapter.IndexTeaserXMLRepresentation" />
   <adapter factory=".adapter.webDAVPropertiesFactory" trusted="yes" />
+  <adapter factory=".adapter.xml_source" />
 
   <adapter factory=".davtoken.fromBool" />
   <adapter factory=".davtoken.fromNone" />

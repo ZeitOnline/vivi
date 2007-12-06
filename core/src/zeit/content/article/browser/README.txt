@@ -74,6 +74,12 @@ arbitrary url and add an article then:
 We are now looking at the add form. Some fields are filled with suitable
 defaults:
 
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Add article </h1>
+    ...
+
 >>> import datetime
 >>> now = datetime.datetime.now()
 
@@ -100,6 +106,11 @@ edit screen should be displayed:
 
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.mgr/KFZ-Steuer/@@edit.html'
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Edit article </h1>
+    ...
 
 >>> browser.getControl(name='form.year').value
 '2007'
@@ -249,3 +260,111 @@ at its xml source:
 Check the feed back in to have nothing laying around:
 
 >>> browser.getLink('Checkin').click()
+
+
+Templates
+=========
+
+A template can be choosen upon creation of an article. Initially there are no
+templates. Creating articles w/o template works as well since there is a
+standard template.
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Article']
+>>> browser.open(menu.value[0])
+
+The choice allows selecting a "None" value:
+>>> browser.getControl('Template').displayOptions
+['(no value)']
+
+
+Let's create two templates. This works via the template manager:
+
+
+>>> browser.getLink('Templates').click()
+>>> browser.getLink('Article templates').click()
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Template']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('Title').value = 'Zuender'
+>>> browser.getControl('Source').value = (
+...     '<article><head/><body>'
+...     '<a href="http://zuender.zeit.de"><strong>Nach Hause</strong> - '
+...     '/Zuender. Das Netzmagazin</a></body></article>')
+>>> browser.getControl('Add').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Edit template </h1>
+    ...
+
+
+Add another template:
+
+>>> browser.getLink('Article templates').click()
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Template']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('Title').value = 'Extrablatt'
+>>> browser.getControl('Source').value = (
+...     '<article><head/><body/></article>\n'
+...     '<?ZEIT:StyleGroup zeitwissen-extrablatt?>')
+>>> browser.getControl('Add').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Edit template </h1>
+    ...
+
+
+When we're now adding an article we can choose those templates:
+
+>>> browser.getLink('online').click()
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Article']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('Template').displayOptions
+['(no value)', 'Extrablatt', 'Zuender']
+
+Create an article with `Extrablatt` template:
+
+>>> browser.getControl('File name').value = 'new-extrablatt'
+>>> browser.getControl('Title').value = 'Extrablatt 53'
+>>> browser.getControl('Template').displayValue = ['Extrablatt']
+>>> browser.handleErrors = False
+>>> browser.getControl(name='form.actions.add').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <h1> Edit article </h1>
+    ...
+
+
+Let's hae a look at the source:
+
+>>> browser.getLink('Quelltext').click()
+>>> print browser.getControl('Source').value.replace('\r\n', '\n')
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">49</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">true</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">true</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort"> </attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">false</attribute>
+  </head>
+  <body>
+    <title>Extrablatt 53</title>
+  </body>
+</article>
+
+XXX the processing instruction went missing. This is a bug in LXML. We need to
+have a look at this later
+<?ZEIT:StyleGroup zeitwissen-extrablatt?>
+
+
+

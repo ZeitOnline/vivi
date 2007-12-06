@@ -90,7 +90,3 @@ class CommonMetadata(persistent.Persistent,
                     "default_template needs to be set in subclasses")
             xml_source = StringIO.StringIO(self.default_template)
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
-
-    @property
-    def xml_source(self):
-        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True)
