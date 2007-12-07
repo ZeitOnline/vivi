@@ -367,4 +367,27 @@ have a look at this later
 <?ZEIT:StyleGroup zeitwissen-extrablatt?>
 
 
+Javascript validations
+======================
 
+Javascript validations are provided by gocept.form mainly. But make sure
+they're actually here:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Article']
+>>> browser.open(menu.value[0])
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+        <script language="javascript">
+// max-length
+connect(window, "onload", function(event) {new gocept.validation.MaxLength('form.teaserText', 170, "Too long (max 170)")});
+// max-length
+connect(window, "onload", function(event) {new gocept.validation.MaxLength('form.shortTeaserTitle', 20, "Too long (max 20)")});
+// max-length
+connect(window, "onload", function(event) {new gocept.validation.MaxLength('form.shortTeaserText', 50, "Too long (max 50)")});
+</script>
+    ...
+    <h1> Add article </h1>
+    ...

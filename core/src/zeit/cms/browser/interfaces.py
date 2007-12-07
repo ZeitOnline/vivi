@@ -9,6 +9,8 @@ import zope.viewlet.interfaces
 import zope.interface
 import zope.schema
 
+import gocept.form.interfaces
+
 
 class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """Master Layer for CMS skin"""
@@ -21,6 +23,7 @@ class ICMSTestingSkin(ICMSLayer,
 
 
 class ICMSSkin(ICMSLayer,
+               gocept.form.interfaces.IJSValidationLayer,
                zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """CMS skin"""
 

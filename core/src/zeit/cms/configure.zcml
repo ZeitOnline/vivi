@@ -56,6 +56,7 @@
 
   <include package="gocept.lxml" />
   <include package="gocept.form" />
+  <include package="gocept.form" file="jsvalidation.zcml" />
 
   <include package="zeit.connector" />
 

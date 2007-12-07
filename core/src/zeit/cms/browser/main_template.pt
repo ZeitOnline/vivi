@@ -37,6 +37,8 @@
         </title>
         <tal:replace replace="resource_library:zeit.cms" />
         <tal:replace replace="resource_library:zeit.cms.panels" /> 
+        <tal:replace replace="structure provider:gocept.mochikit.javascript" />
+        
       </head>
       <body id="body"
         tal:define="
