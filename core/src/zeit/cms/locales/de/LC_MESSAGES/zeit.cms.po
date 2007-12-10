@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-04 18:17+0100\n"
+"PO-Revision-Date: 2007-12-10 15:28+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -52,33 +52,33 @@ msgstr "Global views"
 msgid "Quelltext"
 msgstr "Quelltext"
 
-#: src/zeit/cms/browser/form.py:174
+#: src/zeit/cms/browser/form.py:178
 #: src/zeit/cms/content/browser/configure.zcml:78
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:199
+#: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/repository/browser/configure.zcml:52
 msgid "View"
 msgstr "Anzeigen"
 
-#: src/zeit/cms/browser/form.py:50
+#: src/zeit/cms/browser/form.py:54
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/zeit/cms/browser/form.py:54
+#: src/zeit/cms/browser/form.py:58
 msgid "Kopf"
 msgstr "Kopf"
 
-#: src/zeit/cms/browser/form.py:58
+#: src/zeit/cms/browser/form.py:62
 msgid "Optionen"
 msgstr "Optionen"
 
-#: src/zeit/cms/browser/form.py:62
+#: src/zeit/cms/browser/form.py:66
 msgid "Texte"
 msgstr "Texte"
 
-#: src/zeit/cms/browser/form.py:65
+#: src/zeit/cms/browser/form.py:69
 msgid "sonstiges"
 msgstr "sonstiges"
 
@@ -94,11 +94,11 @@ msgstr "Ein Fehler ist aufgetreten."
 msgid "Error"
 msgstr "Fehler"
 
-#: src/zeit/cms/browser/main_template.pt:207
+#: src/zeit/cms/browser/main_template.pt:209
 msgid "Add…"
 msgstr "Hinzufügen…"
 
-#: src/zeit/cms/browser/main_template.pt:242
+#: src/zeit/cms/browser/main_template.pt:244
 msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
@@ -145,7 +145,7 @@ msgid "By line"
 msgstr "„Von“-Zeile"
 
 #: src/zeit/cms/content/interfaces.py:108
-#: src/zeit/cms/content/interfaces.py:246
+#: src/zeit/cms/content/interfaces.py:248
 #: src/zeit/content/gallery/interfaces.py:50
 #: src/zeit/search/interfaces.py:20
 msgid "Title"
@@ -175,19 +175,19 @@ msgstr "Kurzteaser-Text"
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: src/zeit/cms/content/interfaces.py:214
+#: src/zeit/cms/content/interfaces.py:216
 msgid "Teaser Title"
 msgstr "Teaser-Titel"
 
-#: src/zeit/cms/content/interfaces.py:216
+#: src/zeit/cms/content/interfaces.py:218
 msgid "Teaser Text"
 msgstr "Teaser-Text"
 
-#: src/zeit/cms/content/interfaces.py:224
+#: src/zeit/cms/content/interfaces.py:226
 msgid "Index Teaser Title"
 msgstr "Kurzteaser-Titel"
 
-#: src/zeit/cms/content/interfaces.py:227
+#: src/zeit/cms/content/interfaces.py:229
 msgid "Index Teaser Text"
 msgstr "Kurzteaser-Text"
 
@@ -310,7 +310,7 @@ msgstr "Syndizieren"
 
 #: src/zeit/cms/syndication/browser/configure.zcml:16
 msgid "Feed"
-msgstr ""
+msgstr "Channel"
 
 #: src/zeit/cms/syndication/browser/configure.zcml:26
 msgid "Metadaten"
@@ -336,10 +336,18 @@ msgstr "Channel bearbeiten"
 msgid "Inhalt"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:27
+#: src/zeit/content/article/browser/form.py:29
 #: src/zeit/cms/content/browser/configure.zcml:70
 msgid "Template"
 msgstr "Vorlage"
+
+#: src/zeit/content/article/browser/form.py:48
+msgid "Add article"
+msgstr "Artikel hinzufügen"
+
+#: src/zeit/content/article/browser/form.py:72
+msgid "Edit article"
+msgstr "Artikel bearbeiten"
 
 #: src/zeit/content/article/interfaces.py:80
 msgid "Images"
@@ -409,7 +417,7 @@ msgstr "Workflow"
 msgid "Status"
 msgstr "Status"
 
-#: src/zeit/workflow/browser/form.py:17
+#: src/zeit/workflow/browser/form.py:19
 msgid "Einstellung"
 msgstr "Einstellung"
 
@@ -444,4 +452,8 @@ msgstr "Sperren"
 #: src/zeit/workflow/browser/lock.py:67
 msgid "Unlock"
 msgstr "Entsperren"
+
+#: src/zeit/workflow/interfaces.py:44
+msgid "Published"
+msgstr "Veröffentlicht"
 

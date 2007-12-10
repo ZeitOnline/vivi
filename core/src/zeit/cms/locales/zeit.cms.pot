@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Dec  4 18:15:46 2007\n"
+"POT-Creation-Date: Mon Dec 10 15:27:08 2007\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -64,33 +64,33 @@ msgstr ""
 msgid "Quelltext"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:174
+#: src/zeit/cms/browser/form.py:178
 #: src/zeit/cms/content/browser/configure.zcml:78
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:199
+#: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/repository/browser/configure.zcml:52
 msgid "View"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:50
+#: src/zeit/cms/browser/form.py:54
 msgid "Navigation"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:54
+#: src/zeit/cms/browser/form.py:58
 msgid "Kopf"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:58
+#: src/zeit/cms/browser/form.py:62
 msgid "Optionen"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:62
+#: src/zeit/cms/browser/form.py:66
 msgid "Texte"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:65
+#: src/zeit/cms/browser/form.py:69
 msgid "sonstiges"
 msgstr ""
 
@@ -106,11 +106,11 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:207
+#: src/zeit/cms/browser/main_template.pt:209
 msgid "Add\342\200\246"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:242
+#: src/zeit/cms/browser/main_template.pt:244
 msgid "There are no objects in this folder."
 msgstr ""
 
@@ -157,7 +157,7 @@ msgid "By line"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:108
-#: src/zeit/cms/content/interfaces.py:246
+#: src/zeit/cms/content/interfaces.py:248
 #: src/zeit/content/gallery/interfaces.py:50
 #: src/zeit/search/interfaces.py:20
 msgid "Title"
@@ -187,19 +187,19 @@ msgstr ""
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:214
+#: src/zeit/cms/content/interfaces.py:216
 msgid "Teaser Title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:216
+#: src/zeit/cms/content/interfaces.py:218
 msgid "Teaser Text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:224
+#: src/zeit/cms/content/interfaces.py:226
 msgid "Index Teaser Title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:227
+#: src/zeit/cms/content/interfaces.py:229
 msgid "Index Teaser Text"
 msgstr ""
 
@@ -348,9 +348,17 @@ msgstr ""
 msgid "Inhalt"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:27
+#: src/zeit/content/article/browser/form.py:29
 #: src/zeit/cms/content/browser/configure.zcml:70
 msgid "Template"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:48
+msgid "Add article"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:72
+msgid "Edit article"
 msgstr ""
 
 #: src/zeit/content/article/interfaces.py:80
@@ -421,7 +429,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:17
+#: src/zeit/workflow/browser/form.py:19
 msgid "Einstellung"
 msgstr ""
 
@@ -455,5 +463,9 @@ msgstr ""
 
 #: src/zeit/workflow/browser/lock.py:67
 msgid "Unlock"
+msgstr ""
+
+#: src/zeit/workflow/interfaces.py:44
+msgid "Published"
 msgstr ""
 
