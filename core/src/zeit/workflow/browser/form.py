@@ -13,8 +13,11 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     title = _("Workflow")
 
     widget_groups = (
-        (_(u"Status"), ('edited', 'corrected', 'refined', 'images_added'), 'column-left'),
-        (_(u"Einstellung"), zeit.cms.browser.form.REMAINING_FIELDS, 'column-right')
+        (_(u"Status"), (
+            'published', 'edited', 'corrected', 'refined', 'images_added'),
+         'column-left'),
+        (_(u"Einstellung"), zeit.cms.browser.form.REMAINING_FIELDS,
+         'column-right')
     )
 
     form_fields = zope.formlib.form.Fields(

@@ -98,8 +98,13 @@ currently be set to any value at will. Let's say our document is edited:
 >>> browser.getControl('Bearbeitet').displayValue
 ['ja']
 
-# Add some more tests...
 
+When we publish a document we set the "published" field:
+
+>>> browser.getControl('Published').selected = True
+>>> browser.getControl('Apply').click()
+>>> browser.getControl('Published').selected
+True
 
 
 .. [1] For UI-Tests we need a Testbrowser:

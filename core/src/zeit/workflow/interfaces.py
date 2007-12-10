@@ -9,6 +9,7 @@ import zope.schema
 import zc.form.field
 
 import zeit.workflow.source
+from zeit.cms.i18n import MessageFactory as _
 
 
 class IWorkflow(zope.interface.Interface):
@@ -38,6 +39,9 @@ class IWorkflow(zope.interface.Interface):
         title=u"Bilder hinzugefügt (Grafik)",
         default=False,
         source=zeit.workflow.source.TriState())
+
+    published = zope.schema.Bool(
+        title=_('Published'))
 
     urgent = zope.schema.Bool(
         title=u"Eilmeldung / Wochenende",

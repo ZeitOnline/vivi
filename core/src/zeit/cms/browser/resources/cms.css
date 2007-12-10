@@ -214,7 +214,7 @@ form .column-left .field {
     padding-right: 5px;
 }
 
-form .column-left .field input, 
+form .column-left .field input[type="text"],
 form .column-left .field textarea {
     width: 95%;
 }
