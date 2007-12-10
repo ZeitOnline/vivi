@@ -175,15 +175,13 @@ class Connector(zope.thread.local):
         url = self._roots[root]
         (scheme, netloc) = urlparse.urlsplit(url)[0:2]
         snetloc = "%s://%s" % (scheme, netloc)
-        if self._conns.get(snetloc, None) is None:
-            try: # grmblmmblpython
-                host, port = netloc.split(':', 1)
-                port = int(port)
-            except ValueError:
-                host, port = netloc, None
-            # FIXME: Argh. DAVConnection should take schema as well!!!
-            self._conns[snetloc] = DAVConnection(host, port)
-        return self._conns[snetloc]
+        try: # grmblmmblpython
+            host, port = netloc.split(':', 1)
+            port = int(port)
+        except ValueError:
+            host, port = netloc, None
+        # FIXME: Argh. DAVConnection should take schema as well!!!
+        return DAVConnection(host, port)
 
     def listCollection(self, id):
         """List the filenames of a collection identified by <id> (see[8]). """
