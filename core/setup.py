@@ -26,6 +26,7 @@ setup(
         'gocept.pagelet',
         'iso8601>=0.1.2',
         'ldappas>0.6',
+        'ldapadapter>=0.7dev-r82228',
         'lxml>1.2',
         'python-cjson',
         'rwproperty>=1.0',
