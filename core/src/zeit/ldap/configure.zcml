@@ -16,6 +16,7 @@
     name="zeit.ldapconnection"
     factory=".authentication.ldapAdapterFactory"
     />
+
   <utility
     provides="zope.app.authentication.interfaces.IAuthenticatorPlugin"
     name="ldap"
