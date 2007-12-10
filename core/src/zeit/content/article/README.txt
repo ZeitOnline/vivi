@@ -147,6 +147,23 @@ There is an adapter which sets the text length automatically:
 </article>
 
 
+It might happen that the user can change the object (i.e. workflow properties)
+but not the textLengh property. Create such an object:
+
+>>> import rwproperty
+>>> import lxml.objectify
+>>> import zope.security.interfaces
+>>> class NoChangeTextLength(object):
+...
+...     xml = lxml.objectify.fromstring('<article><body/></article>')
+...
+...     @rwproperty.setproperty
+...     def textLength(self, value):
+...         raise zope.security.interfaces.Unauthorized("textLength")
+...
+>>> updateTextLengthOnChange(NoChangeTextLength(), object())
+
+
 Article Factory
 ===============
 

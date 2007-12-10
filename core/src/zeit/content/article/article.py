@@ -215,4 +215,8 @@ def mapPropertyToAttribute(article, event):
 def updateTextLengthOnChange(object, event):
     length = zope.security.proxy.removeSecurityProxy(object.xml).body.xpath(
         'string-length()')
-    object.textLength = int(length)
+    try:
+        object.textLength = int(length)
+    except zope.security.interfaces.Unauthorized:
+        # Ignore when we're not allowed to set it.
+        pass
