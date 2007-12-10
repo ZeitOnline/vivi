@@ -16,16 +16,16 @@ def ldapAdapterFactory():
     adapter = ldapadapter.utility.LDAPAdapter(
         host=ldap_config.get('host', 'localhost'),
         port=int(ldap_config.get('port', '389')),
-        bindDN=ldap_config.get('bind-dn'),
-        bindPassword=ldap_config.get('bind-password'))
+        bindDN=unicode(ldap_config.get('bind-dn'), 'utf8'),
+        bindPassword=unicode(ldap_config.get('bind-password'), 'utf8'))
     return adapter
 
 
 def ldapPluginFactory():
     ldap = ldappas.authentication.LDAPAuthentication()
     ldap.adapterName = 'zeit.ldapconnection'
-    ldap.searchBase = ldap_config.get('search-base')
-    ldap.searchScope = ldap_config.get('search-scope')
+    ldap.searchBase = unicode(ldap_config.get('search-base'), 'utf8')
+    ldap.searchScope = unicode(ldap_config.get('search-scope'), 'utf8')
     ldap.loginAttribute = u'uid'
     ldap.principalIdPrefix = u'ldap.'
     ldap.idAttribute = u'uidNumber'
