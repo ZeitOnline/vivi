@@ -37,6 +37,9 @@ class Connector(object):
     zope.interface.implements(zeit.connector.interfaces.IConnector)
 
     def __init__(self):
+        self._reset()
+
+    def _reset(self):
         self._locked = {}
         self._data = {}
         self._paths = {}

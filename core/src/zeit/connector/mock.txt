@@ -279,3 +279,31 @@ There is an internal method mapping Ids to paths on the filesystem:
 ()
 >>> connector._path('http://xml.zeit.de/foo')
 (u'foo',)
+
+
+Resetting the mock
+==================
+
+To allow tests to become isolated after making changes we can reset the mock
+connector.
+
+Currently the mock holds data:
+
+>>> connector._data
+{'http://xml.zeit.de/online/2007/03/foo': '',
+ 'http://xml.zeit.de/online/2007/03': '',
+ 'http://xml.zeit.de/testing/collection': '',
+ 'http://xml.zeit.de/online/2007/02/Seehofer': 'Seehofer schlaegt zurueck',
+ 'http://xml.zeit.de/online/2007/02/DaimlerChrysler':
+  'Zwischen Angst und Schock'}
+
+
+After resetting, the data is gone:
+
+>>> connector._reset()
+>>> connector._data
+{}
+
+
+Please note that this is an a utility function that does not belong to the
+IConnector interface and is only used for isolating tests.
