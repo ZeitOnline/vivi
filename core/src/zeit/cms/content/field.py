@@ -63,5 +63,9 @@ class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
             # Etree very explicitly checks for the type and doesn't like a
             # proxied object
             value = zope.proxy.removeAllProxies(value)
+            if value.getparent() is None:
+                # When we're editing the whole tree we want to serialize the
+                # root tree to get processing instructions.
+                value = value.getroottree()
             return lxml.etree.tounicode(value, pretty_print=True).replace(
                 '\n', '\r\n')

@@ -61,3 +61,24 @@ As for the teaser there is a xml representation of the index teaser::
     </indexteaser>
     >>> xml_repr.xml
     <Element {http://xml.zeit.de/CMS/Teaser}indexteaser at ...>
+
+
+
+XMLSource
+=========
+
+The xml source adapter adapts IXMLRepresentation to IXMLSource. Let's make sure
+processing instructions which are not inside the document tree are preserverd
+Create a dummy object:
+
+>>> class XML(object):
+...     xml = lxml.objectify.fromstring('<a/><?foo?>')
+
+
+Call the adapter factory -- the PI is still there. We also get the XML
+declaration:
+
+>>> import zeit.cms.content.adapter
+>>> print zeit.cms.content.adapter.xml_source(XML())
+<?xml version='1.0' encoding='UTF-8'?>
+<a/><?foo?>

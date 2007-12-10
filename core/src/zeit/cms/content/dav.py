@@ -12,8 +12,6 @@ import zope.component
 import zope.event
 import zope.schema.interfaces
 
-import zc.sourcefactory.interfaces
-
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 

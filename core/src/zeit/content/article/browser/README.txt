@@ -332,7 +332,8 @@ Create an article with `Extrablatt` template:
 >>> browser.getControl('File name').value = 'new-extrablatt'
 >>> browser.getControl('Title').value = 'Extrablatt 53'
 >>> browser.getControl('Template').displayValue = ['Extrablatt']
->>> browser.handleErrors = False
+>>> browser.getControl('Year').value = '2007'
+>>> browser.getControl('Volume').value = '49'
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <?xml ...
@@ -360,11 +361,10 @@ Let's hae a look at the source:
   <body>
     <title>Extrablatt 53</title>
   </body>
-</article>
+</article><?ZEIT:StyleGroup zeitwissen-extrablatt?>
 
 XXX the processing instruction went missing. This is a bug in LXML. We need to
 have a look at this later
-<?ZEIT:StyleGroup zeitwissen-extrablatt?>
 
 
 Javascript validations

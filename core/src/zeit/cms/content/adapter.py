@@ -86,4 +86,4 @@ def xml_source(context):
     # remove proxy so lxml can serialize
     xml = zope.security.proxy.removeSecurityProxy(context.xml)
     return lxml.etree.tostring(
-        xml, encoding='UTF-8', xml_declaration=True)
+        xml.getroottree(), encoding='UTF-8', xml_declaration=True)
