@@ -259,10 +259,6 @@ Again, add the collection:
 ... and get it:
 
 >>> res = connector[other_collection_id]
-
-
-Apparently storing properties for collections does not work :(
-
 >>> res.type
 'image-group'
 
