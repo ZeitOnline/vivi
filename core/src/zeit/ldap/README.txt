@@ -3,7 +3,7 @@ Zeit LDAP
 =========
 
 The `zeit.ldap` package connects the cms to an LDAP or ADS server. A pluggable
-authentication utility is registered and configured using ldap[1]_::
+authentication utility is registered and configured for using ldap[1]_::
 
     >>> import zope.component
     >>> import zope.app.security.interfaces
