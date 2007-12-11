@@ -18,7 +18,7 @@ Setup the connector:
 >>> import zeit.connector.connector
 >>> site_manager = zope.component.getSiteManager()
 >>> connector = zeit.connector.connector.Connector(
-...     'http://zip4clone.zeit.de:9999/cms/work/')
+...     {'default': 'http://zip6.zeit.de/cms/work/'})
 >>> site_manager.registerUtility(connector, zeit.cms.interfaces.IConnector)
 
 Open the start-page:
