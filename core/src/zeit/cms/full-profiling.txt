@@ -5,45 +5,41 @@ Full Profiling
 Here we are using the whole cms including the actual connector. This is to
 profile the whole application pipeline.
 
-Create a test browser::
+Create a test browser:
 
-    >>> from zope.testbrowser.testing import Browser
-    >>> browser = Browser()
-    >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
-Setup the connector::
+Setup the connector:
 
-    >>> import zope.component
-    >>> import zeit.cms.interfaces
-    >>> import zeit.connector.connector
-    >>> site_manager = zope.component.getSiteManager()
-    >>> connector = zeit.connector.connector.Connector(
-    ...     'http://zip4clone.zeit.de:9999/cms/work/')
-    >>> site_manager.registerUtility(connector, zeit.cms.interfaces.IConnector)
+>>> import zope.component
+>>> import zeit.cms.interfaces
+>>> import zeit.connector.connector
+>>> site_manager = zope.component.getSiteManager()
+>>> connector = zeit.connector.connector.Connector(
+...     'http://zip4clone.zeit.de:9999/cms/work/')
+>>> site_manager.registerUtility(connector, zeit.cms.interfaces.IConnector)
 
-  <utility provides="zeit.cms.interfaces.IConnector"
-    factory=".connector.connectorFactory"
-    />
+Open the start-page:
 
-Open the start-page::
+>>> browser.open('http://localhost:8080/++skin++cms/')
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online/')
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online/2007/')
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online/2007/01/')
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online/2006/')
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/bilder/')
 
-    >>> browser.open('http://localhost:8080/++skin++cms/')
-    >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-    ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/')
-    >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-    ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/2007/')
-    >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-    ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/2007/01/')
-    >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-    ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/2006/')
-    >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
-    ...              '@@expandTree?uniqueId=http://xml.zeit.de/bilder/')
-
-    >>> for i in range(30):
-    ...     browser.open('http://localhost:8080/++skin++cms/repository/online/2006/45')
+>>> for i in range(30):
+...     browser.open('http://localhost:8080/++skin++cms/repository/online/2006/45')
 
 
-Clean up after the test::
-    >>> site_manager.unregisterUtility(
-    ...     connector, zeit.cms.interfaces.IConnector)
-    True
+Clean up after the test:
+>>> site_manager.unregisterUtility(
+...     connector, zeit.cms.interfaces.IConnector)
+True
