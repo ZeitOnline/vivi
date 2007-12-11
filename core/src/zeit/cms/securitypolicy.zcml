@@ -14,7 +14,6 @@
     description="All users have this role implicitly" />
   <role id="zope.Manager" title="Site Manager" />
   <role id="zope.Member" title="Site Member" />
-  <role id="zeit.Editor" title="Redakteur" />
 
 
   <!-- Groups and other principals -->
@@ -37,7 +36,6 @@
 
   <!-- Permission grants -->
   <grantAll role="zope.Manager" />
-  <grantAll principal="zope.Authenticated" />
 
   <grant
     principal="zope.Authenticated"
@@ -54,11 +52,6 @@
   <grant
     principal="zope.Authenticated"
     permission="zeit.Checkin"
-    />
-
-  <grant
-    role="zeit.Editor"
-    permission="zope.ManageContent"
     />
 
 </configure>

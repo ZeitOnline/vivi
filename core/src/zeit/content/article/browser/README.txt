@@ -167,6 +167,14 @@ Let's make sure the image is linked:
  </ol></div>
   ...
 
+After checking in we also do not have a Metadata link:
+
+>>> browser.getLink('Metadaten')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+
 Syndicating
 ===========
 
