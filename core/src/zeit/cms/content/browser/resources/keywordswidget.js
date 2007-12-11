@@ -27,6 +27,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         var tree = new Tree(url, 'lightbox');
         tree.query_arguments['selected_keywords'] = serializeJSON(
             selected_keywords)
+        connect(tree, 'state-changed', othis, 'updateLightbox');
         var d = tree.loadTree();
         d.addCallback(function(result) {
             othis.updateLightbox();

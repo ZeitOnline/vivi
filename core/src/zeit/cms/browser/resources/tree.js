@@ -26,6 +26,7 @@ Tree.prototype = {
         d.addCallbacks(
             function(result) {
                 tree.replaceTree(result.responseText);
+                signal(tree, 'state-changed');
                 return result;
             })
     },
