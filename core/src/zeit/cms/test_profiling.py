@@ -18,10 +18,6 @@ ConnectorProfilingLayer = zope.app.testing.functional.ZCMLLayer(
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(doctest.DocFileSuite(
-        'profiling.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'full-profiling.txt',
         layer=ConnectorProfilingLayer))

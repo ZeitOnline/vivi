@@ -9,7 +9,7 @@
 
   <include package="zeit.cms" />
 
-  <adapter factory="zeit.connector.connector.resourceCacheFactory" />
+  <adapter factory="zeit.connector.cache.resourceCacheFactory" />
 
   <include package="zeit.cms" file="securitypolicy.zcml" />
   <include package="zeit.cms.browser" />
