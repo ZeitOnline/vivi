@@ -16,6 +16,15 @@
     for="zeit.content.article.interfaces.IArticle"
     class=".form.EditForm"
     permission="zeit.EditContent"
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    menu="zeit-context-views"
+    title="Edit metadata"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    icon="metadata-edit"
     filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
     />
 
@@ -40,16 +49,6 @@
     name="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
-
-  <browser:menuItem
-    for="zeit.content.article.interfaces.IArticle"
-    menu="zeit-context-views"
-    title="Edit metadata"
-    action="@@edit.html"
-    permission="zeit.EditContent"
-    icon="metadata-edit"
-    />
-
   <adapter factory=".article.ArticleListRepresentation" />
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
