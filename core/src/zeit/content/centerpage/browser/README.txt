@@ -82,6 +82,13 @@ and we're looking at the metadata screen (i.e. edit form):
 'Politik'
 
 
+Make sure there is the edit metadata tab:
+
+>>> browser.getLink('Edit metadata').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.mgr/index/@@edit.html'
+
+
 Editing CPs
 ===========
 
@@ -224,5 +231,11 @@ Checking in
 We check in the document. We look a the document in the repository then:
 
 >>> browser.getLink('Checkin').click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/02/index/@@view.html'
+
+Make sure there is also a link to the view:
+
+>>> browser.getLink('View metadata').click()
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/02/index/@@view.html'

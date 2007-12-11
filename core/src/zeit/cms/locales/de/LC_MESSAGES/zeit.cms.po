@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-10 15:28+0100\n"
+"PO-Revision-Date: 2007-12-11 14:12+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -95,8 +95,8 @@ msgid "Error"
 msgstr "Fehler"
 
 #: src/zeit/cms/browser/main_template.pt:209
-msgid "Add…"
-msgstr "Hinzufügen…"
+msgid "Add..."
+msgstr "Hinzufügen …"
 
 #: src/zeit/cms/browser/main_template.pt:244
 msgid "There are no objects in this folder."
@@ -335,6 +335,18 @@ msgstr "Channel bearbeiten"
 #: src/zeit/cms/workingcopy/browser/configure.zcml:16
 msgid "Inhalt"
 msgstr ""
+
+#: src/zeit/content/article/browser/configure.zcml:28
+msgid "View metadata"
+msgstr "Metadaten"
+
+#: src/zeit/content/article/browser/configure.zcml:43
+msgid "Edit metadata"
+msgstr "Metadaten"
+
+#: src/zeit/content/article/browser/configure.zcml:62
+msgid "Article"
+msgstr "Artikel"
 
 #: src/zeit/content/article/browser/form.py:29
 #: src/zeit/cms/content/browser/configure.zcml:70

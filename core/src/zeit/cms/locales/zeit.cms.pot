@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Dec 10 15:27:08 2007\n"
+"POT-Creation-Date: Tue Dec 11 14:16:38 2007\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -107,7 +107,7 @@ msgid "Error"
 msgstr ""
 
 #: src/zeit/cms/browser/main_template.pt:209
-msgid "Add\342\200\246"
+msgid "Add..."
 msgstr ""
 
 #: src/zeit/cms/browser/main_template.pt:244
@@ -325,6 +325,7 @@ msgid "Feed"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/configure.zcml:26
+#: src/zeit/content/centerpage/browser/configure.zcml:32
 msgid "Metadaten"
 msgstr ""
 
@@ -348,6 +349,18 @@ msgstr ""
 msgid "Inhalt"
 msgstr ""
 
+#: src/zeit/content/article/browser/configure.zcml:28
+msgid "View metadata"
+msgstr ""
+
+#: src/zeit/content/article/browser/configure.zcml:43
+msgid "Edit metadata"
+msgstr ""
+
+#: src/zeit/content/article/browser/configure.zcml:62
+msgid "Article"
+msgstr ""
+
 #: src/zeit/content/article/browser/form.py:29
 #: src/zeit/cms/content/browser/configure.zcml:70
 msgid "Template"
@@ -363,6 +376,14 @@ msgstr ""
 
 #: src/zeit/content/article/interfaces.py:80
 msgid "Images"
+msgstr ""
+
+#: src/zeit/content/centerpage/browser/configure.zcml:56
+msgid "Center-Page"
+msgstr ""
+
+#: src/zeit/content/centerpage/browser/configure.zcml:74
+msgid "Bearbeiten"
 msgstr ""
 
 #: src/zeit/content/gallery/browser/form.py:31

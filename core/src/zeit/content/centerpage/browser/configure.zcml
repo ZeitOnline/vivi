@@ -32,10 +32,11 @@
   <browser:menuItem
     for="..interfaces.ICenterPage"
     menu="zeit-context-views"
-    title="Metadaten"
+    title="Edit metadata"
     action="@@edit.html"
     permission="zeit.EditContent"
     filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
+    icon="metadata-edit"
     />
 
   <browser:page
@@ -43,6 +44,15 @@
     for="..interfaces.ICenterPage"
     class=".form.DisplayForm"
     permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.ICenterPage"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    icon="metadata-view"
     />
 
   <browser:defaultView

@@ -269,34 +269,31 @@
     border-left: 1px dotted #aaa;
 }
 
-.context-views li.Syndicate {
+.context-views li.syndicate {
     background-image: url("/@@/zeit.cms/icons/syndicate.png");
 }
-.context-views li.Quelltext {
+.context-views li.quelltext {
     background-image: url("/@@/zeit.cms/icons/articleSource.png");
 }
-.context-views li.Metadaten {
-    background-image: url("/@@/zeit.cms/icons/metadata.png");
-}
-.context-views li.WYSIWYG {
+.context-views li.wysiwyg {
     background-image: url("/@@/zeit.cms/icons/wysiwyg.png");
 }
-.context-views li.XML {
+.context-views li.xml {
     background-image: url("/@@/zeit.cms/icons/xml.png");
 }
-.context-views li.Bilder {
+.context-views li.bilder {
     background-image: url("/@@/zeit.cms/icons/images.png");
 }
-.context-views li.View {
+.context-views li.metadata-view {
     background-image: url("/@@/zeit.cms/icons/view.png");
 }
-.context-views li.Bearbeiten {
+.context-views li.metadata-edit {
     background-image: url("/@@/zeit.cms/icons/edit.png");
 }
-.context-views li.Workflow {
+.context-views li.workflow {
     background-image: url("/@@/zeit.cms/icons/workflow.png");
 }
-.context-views li.Locks {
+.context-views li.locks {
     background-image: url("/@@/zeit.cms/icons/lock-closed.png");
 }
 

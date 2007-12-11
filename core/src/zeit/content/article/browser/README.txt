@@ -29,7 +29,7 @@ The metadata preview shows the most important data in list views:
 
 Make sure we have a "view" link:
 >>> browser.getLink('View')
-<Link text='View' ...>
+<Link text='View metadata' ...>
 
 
 We have to publish another url to see if articles are listed:
@@ -101,7 +101,7 @@ Now, fill the form and add the article:
 >>> 'There were errors' in browser.contents
 False
 
-After submitting we're looking at the object in our working copy. The Metadata
+After submitting we're looking at the object in our working copy. The metadata
 edit screen should be displayed:
 
 >>> browser.url
@@ -167,9 +167,9 @@ Let's make sure the image is linked:
  </ol></div>
   ...
 
-After checking in we also do not have a Metadata link:
+After checking in we also do not have an edit metadata link:
 
->>> browser.getLink('Metadaten')
+>>> browser.getLink('Edit metadata')
 Traceback (most recent call last):
     ...
 LinkNotFoundError
@@ -237,7 +237,7 @@ Checking in a Syndicated Article
 We change the article's teaser and check it in. We expect to see the change in
 the feeds automatically:
 
->>> browser.getLink('Metadaten').click()
+>>> browser.getLink('Edit metadata').click()
 >>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()

@@ -16,6 +16,7 @@
     for="zeit.content.article.interfaces.IArticle"
     class=".form.EditForm"
     permission="zeit.EditContent"
+    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
     />
 
   <browser:page
@@ -23,7 +24,15 @@
     for="zeit.content.article.interfaces.IArticle"
     class=".form.DisplayForm"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
+    />
+  
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    icon="metadata-view"
     />
 
   <browser:defaultView
@@ -35,9 +44,10 @@
   <browser:menuItem
     for="zeit.content.article.interfaces.IArticle"
     menu="zeit-context-views"
-    title="Metadaten"
+    title="Edit metadata"
     action="@@edit.html"
     permission="zeit.EditContent"
+    icon="metadata-edit"
     />
 
   <adapter factory=".article.ArticleListRepresentation" />
