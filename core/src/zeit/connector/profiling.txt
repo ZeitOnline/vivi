@@ -9,11 +9,13 @@ Setup
 
 Create a connector:
 
-  >>> from pprint import pprint
-  >>> from zeit.connector.connector import Connector, resourceCacheFactory
-  >>> connector = Connector(u"http://zip4clone.zeit.de:9999/cms/work/")
-  >>> connector
-  <zeit.connector.connector.Connector object at 0x...>
+>>> from pprint import pprint
+>>> from zeit.connector.connector import Connector
+>>> from zeit.connector.cache import resourceCacheFactory
+>>> connector = Connector(
+...     {'default': u"http://zip6.zeit.de/cms/work/"})
+>>> connector
+<zeit.connector.connector.Connector object at 0x...>
 
 Set up a site and caching:
 
@@ -37,6 +39,8 @@ Set up a site and caching:
 
 And annotations:
 
+>>> import zope.annotation.attribute
+>>> import zope.annotation.interfaces
 >>> site_manager = zope.app.component.hooks.getSiteManager()
 >>> site_manager.registerAdapter(
 ...     zope.annotation.attribute.AttributeAnnotations,
