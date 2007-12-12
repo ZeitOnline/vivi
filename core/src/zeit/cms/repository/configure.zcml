@@ -2,6 +2,9 @@
 
   <class class=".repository.Repository">
     <require like_class="zope.app.folder.folder.Folder" />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View" />
   </class>
 
   <class class=".repository.Folder">

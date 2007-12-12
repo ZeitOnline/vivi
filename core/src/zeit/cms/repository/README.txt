@@ -191,7 +191,7 @@ There is a list of containers which are shown by default:
 From this list the default hidden_containers are derifed uppon instanciation.
 So everything which is not noted in the `default_shown_containers`:
 
->>> pprint(sorted(obj.uniqueId for obj in preferences.hidden_containers))
+>>> pprint(sorted(preferences._hidden_containers))
 [u'http://xml.zeit.de/2006',
  u'http://xml.zeit.de/online/2005',
  u'http://xml.zeit.de/online/2006',
@@ -199,6 +199,37 @@ So everything which is not noted in the `default_shown_containers`:
  u'http://xml.zeit.de/wirtschaft.feed']
 
 
+Let's see if is_hidden works:
+
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+>>> preferences.is_hidden(repository['online']['2007'])
+False
+
+Let's show a container:
+
+>>> preferences.show_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+False
+
+Double show doesn't harm:
+
+>>> preferences.show_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+False
+
+
+Let's hide it again:
+
+>>> preferences.hide_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+
+Double hide dosn't harm as well:
+
+>>> preferences.hide_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+True
 
 Logout bob again:
 

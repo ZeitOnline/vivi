@@ -44,11 +44,10 @@ class Tree(zeit.cms.browser.tree.Tree):
     key = __module__ + '.Tree'
 
     def listContainer(self, container):
-        hidden = self.preferences.hidden_containers
         for obj in container.values():
             if not zeit.cms.repository.interfaces.ICollection.providedBy(obj):
                 continue
-            if obj in hidden:
+            if self.preferences.is_hidden(obj):
                 continue
             yield obj
 
@@ -103,19 +102,14 @@ class HiddenCollections(object):
         return ''
 
     def add_to_preference(self):
-        if not self.hidden:
-            self.preferences.hidden_containers += (self.context, )
+        self.preferences.hide_container(self.context)
 
     def remove_from_preference(self):
-        if self.hidden:
-            # XXX refactor hidden to a frozenset
-            hidden = list(self.preferences.hidden_containers)
-            hidden.remove(self.context)
-            self.preferences.hidden_containers = tuple(hidden)
+        self.preferences.show_container(self.context)
 
     @property
     def hidden(self):
-        return self.context in self.preferences.hidden_containers
+        return self.preferences.is_hidden(self.context)
 
     @zope.cachedescriptors.property.Lazy
     def preferences(self):

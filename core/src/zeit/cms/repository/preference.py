@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import zc.set
+
 import persistent
 
 import zope.annotation
@@ -10,6 +12,7 @@ import zope.interface
 
 import zope.app.container.contained
 
+import zeit.cms.interfaces
 import zeit.cms.content.property
 import zeit.cms.workingcopy.interfaces
 
@@ -23,9 +26,7 @@ class UserPreferences(persistent.Persistent,
         zeit.cms.repository.interfaces.IUserPreferences)
     zope.component.adapts(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 
-    _hidden_containers = ()
-    hidden_containers = zeit.cms.content.property.KeyReferenceTuple(
-        '_hidden_containers')
+    _hidden_containers = zc.set.Set()
 
     default_shown_containers = (
         'http://xml.zeit.de/online',
@@ -46,6 +47,18 @@ class UserPreferences(persistent.Persistent,
     def __init__(self):
         self._set_default_hidden_containers()
 
+    def hide_container(self, container):
+        self._hidden_containers.add(container.uniqueId)
+
+    def show_container(self, container):
+        try:
+            self._hidden_containers.remove(container.uniqueId)
+        except KeyError:
+            pass
+
+    def is_hidden(self, container):
+        return container.uniqueId in self._hidden_containers
+
     def _set_default_hidden_containers(self):
         hidden = set()
         shown = set()
@@ -60,7 +73,8 @@ class UserPreferences(persistent.Persistent,
             hidden.update(container.__parent__.values())
             shown.add(container)
 
-        self.hidden_containers = tuple(hidden.difference(shown))
+        for container in hidden.difference(shown):
+            self.hide_container(container)
 
 
 preferenceFactory = zope.annotation.factory(UserPreferences)

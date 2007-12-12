@@ -84,8 +84,11 @@ class IRepositoryContent(zope.interface.Interface):
 class IUserPreferences(zope.interface.Interface):
     """User preferences regarding the repository."""
 
-    hidden_containers = zope.schema.Tuple(
-        title=u"Verteckte Ordner",
-        description=u"Ordner, die nicht im Navigationsbaum angezeigt werden.",
-        default=(),
-        value_type=zope.schema.Object(ICollection))
+    def hide_container(container):
+        """Mark the container as hidden."""
+
+    def show_container(container):
+        """Mark the container as shown."""
+
+    def is_hidden(container):
+        """Return if the container is hidden."""
