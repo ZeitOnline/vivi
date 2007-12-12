@@ -1,7 +1,5 @@
-/* zrt-replace: "{SERVER-URL}" tal"request/getApplicationURL" */
-
 function toggle() {
-    var url = "{SERVER-URL}/@@toggle-extended-search"
+    var url = "/@@toggle-extended-search"
     doSimpleXMLHttpRequest(url);
 }
 
