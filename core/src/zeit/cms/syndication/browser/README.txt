@@ -138,7 +138,7 @@ Feeds
 
 Let's create a new feed in the repository:
 
->>> browser.getLink('2006').click()
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Feed']
 >>> browser.open(menu.value[0])

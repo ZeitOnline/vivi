@@ -169,10 +169,35 @@ objet. Login bob:
 >>> preferences
 <zeit.cms.repository.preference.UserPreferences object at 0x...>
 
-Initially there is nothing hidden:
 
->>> preferences.hidden_containers
-()
+There is a list of containers which are shown by default:
+
+>>> pprint(preferences.default_shown_containers)
+('http://xml.zeit.de/online',
+ 'http://xml.zeit.de/online/2007',
+ 'http://xml.zeit.de/2007',
+ 'http://xml.zeit.de/bilder',
+ 'http://xml.zeit.de/bilder/2007',
+ 'http://xml.zeit.de/deutschland',
+ 'http://xml.zeit.de/hp_channels',
+ 'http://xml.zeit.de/international',
+ 'http://xml.zeit.de/kultur',
+ 'http://xml.zeit.de/leben',
+ 'http://xml.zeit.de/themen',
+ 'http://xml.zeit.de/wirtschaft',
+ 'http://xml.zeit.de/wissen')
+
+
+From this list the default hidden_containers are derifed uppon instanciation.
+So everything which is not noted in the `default_shown_containers`:
+
+>>> pprint(sorted(obj.uniqueId for obj in preferences.hidden_containers))
+[u'http://xml.zeit.de/2006',
+ u'http://xml.zeit.de/online/2005',
+ u'http://xml.zeit.de/online/2006',
+ u'http://xml.zeit.de/politik.feed',
+ u'http://xml.zeit.de/wirtschaft.feed']
+
 
 
 Logout bob again:

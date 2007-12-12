@@ -28,7 +28,6 @@ The tree is rendered  in the sidebar all the time:
         ...
         <ul>
           <li...online...
-          <li...2006...
           <li...2007...
         </ul>
       </li>
@@ -50,12 +49,9 @@ When we visit `online` it is automatically expanded while visiting it:
       <ul>
         <li...online...
           <ul>
-            <li...2005...
-            <li...2006...
             <li...2007...
           </ul>
         </li>
-        <li...2006...
         <li...2007...
       </ul>
     </li>
@@ -79,19 +75,17 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
       <ul>
         <li...online...
           <ul>
-            <li...2005...
-            <li...2006...
             <li...2007...
           </ul>
         </li>
-        <li...2006...
         <li...2007...
       </ul>
     </li>
  </ul>
 
 
-A full page contains the same tree of course:
+Since we've explicitly expanded the tree via an ajax request (i.e. by clicking
+on the + icon) the tree stays expanded even when we're not inside online:
 
 >>> browser.open('http://localhost/++skin++cms/repository')
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
@@ -105,12 +99,9 @@ A full page contains the same tree of course:
         <ul>
           <li...online...
             <ul>
-              <li...2005...
-              <li...2006...
               <li...2007...
             </ul>
           </li>
-          <li...2006...
           <li...2007...
         </ul>
       </li>
@@ -121,13 +112,14 @@ A full page contains the same tree of course:
 Hidden Containers
 =================
 
-Users often do not want to see certain containers, so they can hide them. Open
-`online/2005` and hide it:
+Users often do not want to see certain containers, so they can hide them.
+Initially most containers are hidden actually. Let's first show the 2006
+container:
 
->>> browser.getLink('2005').click()
->>> browser.getLink('Verstecken').click()
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.getLink('Zeigen').click()
 
-The collection is gone now:
+The navigation tree contains the 2006 now:
 
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
@@ -140,7 +132,6 @@ The collection is gone now:
         <ul>
           <li...online...
             <ul>
-              <li...2006...
               <li...2007...
             </ul>
           </li>
@@ -151,20 +142,16 @@ The collection is gone now:
    </ul>
 </div>
 
-'<li class="NotRoot" uniqueid="http://xml.zeit.de/2005">' in (
-    browser.contents)
-False
+A shown container cant't be shown twice:
 
-Once a container is hidden the `Verstecken` action is no longer available:
-
->>> browser.getLink('Verstecken')
+>>> browser.getLink('Zeigen')
 Traceback (most recent call last):
     ...
 LinkNotFoundError
 
-Instead there is the `Zeigen` action:
+A shown container can be hidden again though:
 
->>> browser.getLink('Zeigen').click()
+>>> browser.getLink('Verstecken').click()
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
@@ -176,21 +163,18 @@ Instead there is the `Zeigen` action:
         <ul>
           <li...online...
             <ul>
-              <li...2005...
-              <li...2006...
               <li...2007...
             </ul>
           </li>
-          <li...2006...
           <li...2007...
         </ul>
       </li>
    </ul>
 </div>
 
-Now, of course, after showing, the `Zeigen` action is no longer available:
+Now, of course, after showing, the `Verstecken` action is no longer available:
 
->>> browser.getLink('Zeigen')
+>>> browser.getLink('Verstecken')
 Traceback (most recent call last):
     ...
 LinkNotFoundError
