@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-11 14:12+0100\n"
+"PO-Revision-Date: 2007-12-12 10:23+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -59,6 +59,7 @@ msgstr "Bearbeiten"
 
 #: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/repository/browser/configure.zcml:52
+#: src/zeit/cms/repository/browser/configure.zcml:170
 msgid "View"
 msgstr "Anzeigen"
 
@@ -265,13 +266,8 @@ msgid "Manage content"
 msgstr "Inhalt verwalten"
 
 #: src/zeit/cms/repository/browser/configure.zcml:116
-msgid "Zeigen"
-msgstr ""
-
-#: src/zeit/cms/repository/browser/configure.zcml:161
-#: src/zeit/cms/syndication/browser/configure.zcml:44
-msgid "Anzeigen"
-msgstr ""
+msgid "Show"
+msgstr "Zeigen"
 
 #: src/zeit/cms/repository/browser/configure.zcml:17
 msgid "Menu for adding content."
@@ -282,14 +278,12 @@ msgid "Add ..."
 msgstr "Hinzufügen …"
 
 #: src/zeit/cms/repository/browser/configure.zcml:74
-#: src/zeit/cms/workingcopy/browser/configure.zcml:39
-#: src/zeit/cms/clipboard/browser/configure.zcml:89
-msgid "Lschen"
-msgstr ""
+msgid "Delete"
+msgstr "Löschen"
 
 #: src/zeit/cms/repository/browser/configure.zcml:98
-msgid "Verstecken"
-msgstr ""
+msgid "Hide"
+msgstr "Verstecken"
 
 #: src/zeit/cms/repository/browser/repository.py:131
 msgid "Add folder"
@@ -320,6 +314,10 @@ msgstr ""
 msgid "Sortieren"
 msgstr ""
 
+#: src/zeit/cms/syndication/browser/configure.zcml:44
+msgid "Anzeigen"
+msgstr ""
+
 #: src/zeit/cms/syndication/browser/configure.zcml:82
 msgid "Als Ziel merken"
 msgstr ""
@@ -336,12 +334,19 @@ msgstr "Channel bearbeiten"
 msgid "Inhalt"
 msgstr ""
 
-#: src/zeit/content/article/browser/configure.zcml:28
-msgid "View metadata"
+#: src/zeit/cms/workingcopy/browser/configure.zcml:39
+#: src/zeit/cms/clipboard/browser/configure.zcml:89
+msgid "Lschen"
+msgstr ""
+
+#: src/zeit/content/article/browser/configure.zcml:21
+#: src/zeit/content/centerpage/browser/configure.zcml:32
+msgid "Edit metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/configure.zcml:43
-msgid "Edit metadata"
+#: src/zeit/content/article/browser/configure.zcml:38
+#: src/zeit/content/centerpage/browser/configure.zcml:49
+msgid "View metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/article/browser/configure.zcml:62
@@ -364,6 +369,14 @@ msgstr "Artikel bearbeiten"
 #: src/zeit/content/article/interfaces.py:80
 msgid "Images"
 msgstr "Bilder"
+
+#: src/zeit/content/centerpage/browser/configure.zcml:66
+msgid "Center-Page"
+msgstr ""
+
+#: src/zeit/content/centerpage/browser/configure.zcml:84
+msgid "Bearbeiten"
+msgstr ""
 
 #: src/zeit/content/gallery/browser/form.py:31
 msgid "Add gallery"

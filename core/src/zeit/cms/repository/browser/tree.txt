@@ -117,7 +117,7 @@ Initially most containers are hidden actually. Let's first show the 2006
 container:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006')
->>> browser.getLink('Zeigen').click()
+>>> browser.getLink('Show').click()
 
 The navigation tree contains the 2006 now:
 
@@ -144,14 +144,14 @@ The navigation tree contains the 2006 now:
 
 A shown container cant't be shown twice:
 
->>> browser.getLink('Zeigen')
+>>> browser.getLink('Show')
 Traceback (most recent call last):
     ...
 LinkNotFoundError
 
 A shown container can be hidden again though:
 
->>> browser.getLink('Verstecken').click()
+>>> browser.getLink('Hide').click()
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
@@ -172,9 +172,9 @@ A shown container can be hidden again though:
    </ul>
 </div>
 
-Now, of course, after showing, the `Verstecken` action is no longer available:
+Now, of course, after showing, the `Hide` action is no longer available:
 
->>> browser.getLink('Verstecken')
+>>> browser.getLink('Hide')
 Traceback (most recent call last):
     ...
 LinkNotFoundError

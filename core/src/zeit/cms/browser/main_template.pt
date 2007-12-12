@@ -132,9 +132,8 @@
         <tal:repeat 
              repeat="menu_item context/@@view_get_menu/zeit-context-actions">
           <li
-            tal:define="selected_item python:'%s %s' %(menu_item['title'], menu_item['selected']);
-                        class python:''.join(menu_item['title'].split())"
-              tal:attributes="class class">
+            tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
+            tal:attributes="class string:$klass ${menu_item/selected}">
             <a
              tal:attributes="href string:$context_url/${menu_item/action}"
              tal:content="menu_item/title" i18n:translate="">

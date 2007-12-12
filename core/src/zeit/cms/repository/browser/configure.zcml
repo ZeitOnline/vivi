@@ -75,7 +75,7 @@
     for="zeit.cms.repository.interfaces.IFolder"
     action="delete"
     menu="folder-actions"
-    title="Löschen"
+    title="Delete"
     permission="zope.ManageContent"
     />
 
@@ -97,11 +97,12 @@
 
   <browser:menuItem
     menu="zeit-context-actions"
-    title="Verstecken"
+    title="Hide"
     action="@@hide-from-tree.html"
     for="zeit.cms.repository.interfaces.ICollection"
     permission="zope.View"
     filter="not: context/@@hide-from-tree.html/hidden"
+    icon="hide"
     />
 
   <browser:page
@@ -115,11 +116,12 @@
 
   <browser:menuItem
     menu="zeit-context-actions"
-    title="Zeigen"
+    title="Show"
     action="@@show-in-tree.html"
     for="zeit.cms.repository.interfaces.ICollection"
     permission="zope.View"
     filter="context/@@show-in-tree.html/hidden"
+    icon="show"
     />
 
   <browser:icon
@@ -165,7 +167,16 @@
     template="unknown_resource_view.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
-    menu="zeit-context-views" title="Anzeigen"
+    />
+    
+  <browser:menuItem
+    menu="zeit-context-views"
+    title="View"
+    for="zeit.cms.repository.interfaces.IUnknownResource"
+    action="view.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    icon="metadata-view"
     />
 
   <browser:page

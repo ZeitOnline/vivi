@@ -84,13 +84,13 @@ Make sure the menu entries are there:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> print browser.contents
 <?xml ...
-    <li class="Preview">
+    <li class="preview ">
      <a href=".../online/2007/01/Somalia/@@show_preview">Preview</a>
    </li>
-   <li class="Live">
+   <li class="live ">
      <a href=".../online/2007/01/Somalia/@@show_live">Live</a>
    </li>
-   <li class="Development">
+   <li class="development ">
      <a href=".../online/2007/01/Somalia/@@show_development-preview">Development</a>
    </li>
    ...

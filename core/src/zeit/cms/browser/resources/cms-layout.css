@@ -284,8 +284,11 @@
 .context-views li.bilder {
     background-image: url("/@@/zeit.cms/icons/images.png");
 }
-.context-views li.metadata-view {
+.context-views li.view {
     background-image: url("/@@/zeit.cms/icons/view.png");
+}
+.context-views li.metadata-view {
+    background-image: url("/@@/zeit.cms/icons/metadata.png");
 }
 .context-views li.metadata-edit {
     background-image: url("/@@/zeit.cms/icons/edit.png");
@@ -321,30 +324,30 @@
     font-size: 80%;
 }
 
-.context-actions li.Checkout {
+.context-actions li.checkout {
     background: url("/@@/zeit.cms/icons/checkout.png") no-repeat center left;
 }
-.context-actions li.Checkin {
+.context-actions li.checkin {
     background: url("/@@/zeit.cms/icons/checkin.png") no-repeat center left;
 }
-.context-actions li.Verstecken {
+.context-actions li.hide {
     background: url("/@@/zeit.cms/icons/hide.png") no-repeat center left;
 }
-.context-actions li.Zeigen {
+.context-actions li.show {
     background: url("/@@/zeit.cms/icons/show.png") no-repeat center left;
 }
-.context-actions li.AlsZielmerken {
+.context-actions li.als_ziel_merken {
     background: url("/@@/zeit.cms/icons/default-feed.png") no-repeat center left;
 }
 
-.context-actions li.Live {
+.context-actions li.live {
     background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
 }
 
-.context-actions li.Development {
+.context-actions li.development {
     background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
 }
 
-.context-actions li.Preview {
+.context-actions li.preview {
     background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
 }
