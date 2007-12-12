@@ -29,4 +29,3 @@ def evolve(context):
         install(root)
     finally:
         zope.app.component.hooks.setSite(site)
-
