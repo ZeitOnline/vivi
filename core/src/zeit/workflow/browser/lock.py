@@ -9,6 +9,8 @@ import zope.component
 import zope.i18nmessageid
 import zope.formlib.form
 
+import gocept.form.grouped
+
 import zeit.connector.interfaces
 
 import zeit.workflow.browser.interfaces
@@ -27,14 +29,9 @@ def _lockable(form, action):
     return not form.lockable.locked()
 
 
-class Lock(zeit.cms.browser.form.FormBase, zope.formlib.form.Form):
+class Lock(zeit.cms.browser.form.FormBase, gocept.form.grouped.Form):
 
     title = _("Locks")
-
-    widget_groups = (
-        (_(u"Locking"), zeit.cms.browser.form.REMAINING_FIELDS,
-         'column-left'),
-    )
 
     form_fields = zope.formlib.form.Fields(
         zeit.workflow.browser.interfaces.ILockFormSchema)
@@ -73,7 +70,7 @@ class Lock(zeit.cms.browser.form.FormBase, zope.formlib.form.Form):
     def lockable(self):
         return zope.app.locking.interfaces.ILockable(self.context)
 
-    def _get_widgets(self, form_fields, ignore_request):
+    def _get_widgets(self, form_fields, ignore_request=False):
         return zope.formlib.form.setUpDataWidgets(
             form_fields, self.prefix, self.context, self.request,
             data=self.get_data(), for_display=True,
