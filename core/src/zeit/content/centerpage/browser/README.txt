@@ -17,11 +17,9 @@ The metadata preview shows the most important data in list views:
 >>> browser.open('http://localhost/++skin++cms/repository/online'
 ...              '/2007/01/index/metadata_preview')
 >>> print browser.contents
-  <div class="heading">
-      ...
-      <h2>...
+    <div class="context-views">...
 >>> browser.getLink('Checkout')
-<Link text='Checkout' ...>
+<Link text='[IMG] Checkout' ...>
 
 We have to publish another url to see if articles are listed:
 

@@ -20,7 +20,6 @@ The search form is located in the side bar.
     <form id="search-form"
           action="http://localhost/++skin++cms/search.html"
           class="hide-extended">
-      <label for="search.text">Volltextsuche:</label>
       <input type="text" name="search.text" id="search.text" />
     ...
     </form>
@@ -30,11 +29,11 @@ The search form is located in the side bar.
 
 Note that in the test we only can search for "linux", so we do that:
 
->>> browser.getControl('Volltextsuche:').value = 'linux'
+>>> browser.getControl(name="search.text").value = 'linux'
 >>> browser.getControl('Suchen').click()
 >>> print browser.contents
 <?xml ...
-    <h1> Suche </h1>
+    <title> Suche </title>
     ...
 <table class="contentListing">
   <thead>
@@ -56,11 +55,11 @@ Note that in the test we only can search for "linux", so we do that:
 
 Note that after the search the search term is still filled in the search box:
 
->>> browser.getControl('Volltextsuche').value
+>>> browser.getControl(name='search.text', index=0).value
 'linux'
 
 Even when we navigate somewhere else, it's filled in:
 
 >>> browser.getLink('Dateiverwaltung').click()
->>> browser.getControl('Volltextsuche').value
+>>> browser.getControl(name='search.text').value
 'linux'

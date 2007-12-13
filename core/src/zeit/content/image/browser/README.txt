@@ -24,10 +24,6 @@ Now we get the metadata preview:
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@metadata_preview')
 >>> print browser.contents
-    <div class="heading">
-      ...
-      <h2>
-        ...
     <div class="context-views">
       ...
       <div class="image-metadata">
@@ -120,8 +116,6 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@metadata_preview')
 >>> print browser.contents
-    <div class="heading">...
-    <h2>...
     <div class="context-views">...
     <div class="image-metadata">
       <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
@@ -149,9 +143,9 @@ Make sure the image is not changed by looking at the image view:
 >>> browser.getLink('Anzeigen').click()
 >>> print browser.contents
 <?xml ...
-  <h1>
+  <title>
     Opernball in Wien
-  </h1>
+  </title>
   ...
   <tr>
     <td>Dimensionen</td>

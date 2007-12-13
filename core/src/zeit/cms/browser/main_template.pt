@@ -45,6 +45,17 @@
         site_url request/getApplicationURL;
         sidebar_css context/@@sidebar_handlers/css_class">
         <div id="header">
+          <ul id="breadcrumbs">
+            <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
+              <a tal:attributes="title  item/title;
+                href   item/url;"
+                tal:content="item/title">Directory foo</a>
+              <span class="breadcrumb-separator"
+                tal:condition="not:repeat/item/end">
+                →
+              </span> 
+            </li>
+          </ul>
           <ul id="main-navigation">
             <tal:repeat 
               repeat="menu_item context/@@view_get_menu/zeit-global-views">
@@ -88,32 +99,17 @@
 
         
         <div id="content"
+          tal:define="uniqueId context/uniqueId | nothing"
           tal:attributes="class sidebar_css">
-          <div class="heading">
-            <metal:actions define-slot="context-actions">
-              <metal:actions
-                use-macro="context/@@standard_macros/context-actions" />
-            </metal:actions>
-              <ul id="breadcrumbs">
-                <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
-                  <a tal:attributes="title  item/title;
-                    href   item/url;"
-                    tal:content="item/title">Directory foo</a>
-                    →
-                </li>
-              </ul>
-            <h1>
-              <metal:title define-slot="content-title">
-                <tal:title tal:replace="contenttitle">
-                  Dateiliste
-                </tal:title>
-              </metal:title>
-            </h1>
-          </div>
           
           <metal:actions define-slot="context-views">
             <metal:actions
               use-macro="context/@@standard_macros/context-views" />
+          </metal:actions>
+            
+          <metal:actions define-slot="context-actions">
+            <metal:actions
+              use-macro="context/@@standard_macros/context-actions" />
           </metal:actions>
           
           <metal:contentslot define-slot="body">
@@ -135,9 +131,18 @@
             tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
             tal:attributes="class string:$klass ${menu_item/selected}">
             <a
-             tal:attributes="href string:$context_url/${menu_item/action}"
-             tal:content="menu_item/title" i18n:translate="">
+              tal:attributes="href string:$context_url/${menu_item/action};
+              title menu_item/title"
+             i18n:translate=""
+             i18n:attributes="title">
+             <img src=""
+               tal:attributes="src string:/@@/zeit.cms/icons/$klass.png" />
+             <span class="action-title"
+              tal:content="menu_item/title"
+              i18n:translate="">
               Checkout
+            </span>
+
             </a>
           </li>
         </tal:repeat>
@@ -177,14 +182,8 @@
   </metal:macro>
   
   <metal:macro define-macro="metadata-preview">
-    <div class="heading">
-      <metal:actions use-macro="context/@@standard_macros/context-actions" />
-      <h2>
-        Metadaten-Vorschau: 
-        <span tal:replace="context/uniqueId"/>
-      </h2>
-    </div>
     <metal:actions use-macro="context/@@standard_macros/context-views" />
+    <metal:actions use-macro="context/@@standard_macros/context-actions" />
     <div id="metadata_preview">
       <metal:data define-slot="preview"></metal:data>
     </div>
@@ -227,13 +226,14 @@
         </ul>
 
     </div>
-  
-      <div id="topcontent">
         
         <div id="tableFilter">
           Filter: <input type="text" value="" />
         </div>
 
+  
+      <div id="topcontent">
+        
           <table
             tal:condition="view/content"
             tal:replace="structure view/contentTable">

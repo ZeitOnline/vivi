@@ -20,7 +20,7 @@ but no checkin link:
 ...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
 >>> checkout = browser.getLink('Checkout')
 >>> checkout
-<Link text='Checkout' ...>
+<Link text='[IMG] Checkout' ...>
 >>> browser.getLink('Checkin')
 Traceback (most recent call last):
   ...

@@ -85,13 +85,14 @@ Make sure the menu entries are there:
 >>> print browser.contents
 <?xml ...
     <li class="preview ">
-     <a href=".../online/2007/01/Somalia/@@show_preview">Preview</a>
+     <a href=".../online/2007/01/Somalia/@@show_preview" title="Preview">...
    </li>
    <li class="live ">
-     <a href=".../online/2007/01/Somalia/@@show_live">Live</a>
+     <a href=".../online/2007/01/Somalia/@@show_live" title="Live">...
    </li>
    <li class="development ">
-     <a href=".../online/2007/01/Somalia/@@show_development-preview">Development</a>
+     <a href=".../online/2007/01/Somalia/@@show_development-preview"
+        title="Development">...
    </li>
    ...
 

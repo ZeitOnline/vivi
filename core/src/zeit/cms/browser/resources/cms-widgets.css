@@ -2,7 +2,6 @@
 .contentListing {
    border-collapse: collapse;
    width: 100%;
-   margin-top: 5ex;
    cursor: pointer;
 }
 
@@ -54,8 +53,7 @@
  * 
  * */
 .PanelContent {
-   min-height: 6ex;
-   max-height: 50ex;
+   max-height: 20em;
    overflow-y: auto;
    overflow-x: hidden; /* XXX not sure if I'm making it unusable here */
    padding: 0.5em;
@@ -69,40 +67,30 @@
 }
 
 .folded h1 {
-  background: #004455 url("/@@/zeit.cms/layout/unfold.png") no-repeat left center;
-  border-bottom: 1px solid white;
+  background-image: url("/@@/zeit.cms/layout/unfold.png");
 }
 .unfolded h1 {
-  background: #004455 url("/@@/zeit.cms/layout/fold.png") no-repeat left center;
+  background-image: url("/@@/zeit.cms/layout/fold.png");
 }
 
 .folded h1 a {
-  color: white;
   margin-left: 12px;
   padding-left: 0;
 }
 
 .unfolded h1 a {
-  color: white;
   margin-left: 12px;
   padding-left: 0px;
-}
-
-.PanelContent {
-   border-bottom: 1px solid #0088aa;
 }
 
 
 /* Checked out documents panel */
 #WorkingcopyPanel table {
   width: 100%;
+  border: none;
 }
-#WorkingcopyPanel table thead tr th:first-child {
-  width: 20px;
-}
-#WorkingcopyPanel table thead tr th {
-  background-color: transparent;
-  color: #333;
+#WorkingcopyPanel table > thead {
+    display: none;
 }
 
 
@@ -207,7 +195,7 @@
 
 .Tree li[active] > a {
   font-weight: bold;
-  background-color: #ffdd11;
+  background-color: #fefeb2;
 }
 
 .TreeHover > a {
@@ -245,6 +233,7 @@
 
 #tableFilter  {
   position: absolute;
+  top: 3em;
   right: 1em;
 }
 

@@ -4,85 +4,81 @@
  *
  * */
 body {
-  background: white url("/@@/zeit.cms/layout/backgroundpattern.png") repeat top left;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  color: #4c4c4c;
-  font-size: 12px;
-  overflow: hidden;
-  font-family: Lucida Grande, Lucida Sans Unicode, sans-serif;
+    background: #F2F2F2;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    color: #4c4c4c;
+    font-size: 12px;
+    overflow: hidden;
+    font-family: Lucida Grande, Lucida Sans Unicode, sans-serif;
 }
 
 a:visited, 
 a {
-  color: #004455;
-  text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 
 h1 {
-  background-color: #0088aa;
-  color: white;
-  font-size: 100%;
-  font-weight: bold;
-  margin-top: 0;
-  min-height: 1em;
-  padding-left: 1em;
-  padding: 0.4em;
+    font-size: 1em;
+    margin-top: 0;
+    padding-left: 1em;
+    padding: 0.4em;
 }
 
-h1 a {
-  background-color: #004455;
-}
-h1 a:visited {
-  color: white;
-}
 
 h2 {
-  font-size: 9pt;
-  border: 2px solid #0088aa;
-  padding-bottom: 0.1em;
+    font-size: 1em;;
+    padding-bottom: 0.1em;
+    font-weight: normal;
 }
 
 table {
-  border: 1px solid #0088aa;
-  cursor: default;
+    cursor: default;
 }
 
 table thead tr th {
-  background-color: #004455;
-  border-bottom: 1px solid #0088aa;
-  text-align: left;
-  padding: 0.5em;
-  margin: 0;
-  color: white;
+    background-color: #ddd;
+    text-align: left;
+    padding: 0.5em;
+    margin: 0;
+    color: black;
+    font-weight: normal;
 }
 
 table tr td {
-  padding: 0.1em 0.3em;
+    padding: 0.1em 0.3em;
 }
 
 table.form-fields{
-  width: 99%;
+    width: 99%;
 }
 
 label span {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 fieldset,
 pre {
-  margin: 1em;
-  border: 1px solid #0088aa;
+    border: none;
+    background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+}
+
+legend {
+    background-color: #ddd;
+    margin-left: -0.6em;
+    margin-bottom: 1em;
+    padding: 0.5em 1em 0em 1em;
 }
 
 pre {
-  padding: 1em;
-  overflow: auto;
+    padding: 1em;
+    overflow: auto;
 }
 
 /* 
@@ -90,66 +86,73 @@ pre {
  *
  * */
 .selected {
-  background-color: #ffdd00;
+    background-color: #ffdd00;
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 .visible {
-  visibility: visible !important;
+    visibility: visible !important;
 }
 
-.error,
+.error {
+    color: red;
+    font-weight: normal;
+}
+
+.field.required > label > span {
+    background: #fefeb2;
+}
+
 .annotation {
-  color: red;
-  font-weight: normal;
+    display: none;
 }
 
 .hint {
-  color: #aaa;
+    color: #aaa;
 }
 .hint:hover {
-  color: #4c4c4c;
+    color: #4c4c4c;
 }
 
 .VisualClear {
-  clear: both;
+    clear: both;
 }
 
 .feedsorting {
-  width: 100%;
+    width: 100%;
 }
 
 .feedsort-hover td, .feedsort-hover th {
-  border-bottom: 2px solid red !important;
+    border-bottom: 2px solid red !important;
 }
 
 .shadowTop {
-  background: transparent url("/@@/zeit.cms/layout/shadowTop.png") repeat-x 5px 0;
-  border-right: 1px solid #4c4c4c;
-  padding-top: 8px;
-  padding-bottom: 5px;
+    background: transparent url("/@@/zeit.cms/layout/shadowTop.png") repeat-x 5px 0;
+    border-right: 1px solid #4c4c4c;
+    padding-top: 8px;
+    padding-bottom: 5px;
 }
 
 .shadowLeft {
-  background: transparent url("/@@/zeit.cms/layout/shadowLeft.png") no-repeat top left;
-  border-bottom: 1px solid #4c4c4c;
-  padding-left: 5px;
-  padding-top: 8px;
-  padding-bottom: 5px;
+    background: transparent url("/@@/zeit.cms/layout/shadowLeft.png") no-repeat top left;
+    border-bottom: 1px solid #4c4c4c;
+    padding-left: 5px;
+    padding-top: 8px;
+    padding-bottom: 5px;
 }
 
 .floating-field {
-  float: left;
-  margin: 1em;
-  margin-left: 0.5em;
+    float: left;
+    margin: 1em;
+    margin-left: 0.5em;
 }
 
 .corner {
-  background: url("images/text-corner.png") no-repeat top left;
-  z-index: 5;
+    background: url("images/text-corner.png") no-repeat top left;
+    z-index: 5;
 }
 
 
@@ -158,7 +161,7 @@ pre {
  *
  * */
 .field {
-     padding: 0.5em 0;
+    padding: 0.5em 0;
 }
 
 form .medium-float {
@@ -172,12 +175,12 @@ form .medium-float .field {
 }
 
 form .medium-float .field label {
-  height: 3em;
-  display: block;
+    height: 3em;
+    display: block;
 }
 
 form .medium-float .field .hint {
-  display: none;
+    display: none;
 }
 
 form .full-widtht {
@@ -191,7 +194,7 @@ form .full-width-float .field {
 }
 
 form .full-width-float .hint {
-  height: 5ex;
+    height: 5ex;
 }
 
 form .small-and-tall {
@@ -226,25 +229,25 @@ form .column-right {
 
 
 form .column-left.image-form {
-  width: 40%;
+    width: 40%;
 }
 
 form .column-left.image-form input {
-  width: inherit;
+    width: inherit;
 }
 
 form .column-right.image-form {
-  width: 48%;
+    width: 48%;
 }
 
 .image-form #form\.caption {
-  height: 8em;
+    height: 8em;
 }
 
 form #form\.page,
 form #form\.volume,
 form #form\.year {
-  width: 4em;
+    width: 4em;
 }
 
 /* SMALL left column, larger right column */
@@ -269,28 +272,28 @@ form .column-right-small {
 
 input[type="button"],
 input[type="submit"] {
-  color: black;
-  border: 1px solid black;
-  border-bottom: 2px solid #4c4c4c;
-  border-right: 2px solid #4c4c4c;
-  font-size: 8pt;
-  padding: 0.2em;
-  font-family: sans-serif;
+    color: black;
+    border: 1px solid black;
+    border-bottom: 2px solid #4c4c4c;
+    border-right: 2px solid #4c4c4c;
+    font-size: 8pt;
+    padding: 0.2em;
+    font-family: sans-serif;
 }
 
 input[type="button"]:hover,
 input[type="submit"]:hover {
-  background-color: #4c4c4c;
-  color: white;
+    background-color: #4c4c4c;
+    color: white;
 }
 
 input[type="button"]:active,
 input[type="submit"]:active {
-  background-color: #ffdd00;
+    background-color: #ffdd00;
 }
 
 input[type="text"] {
-  padding: 0.2em;
+    padding: 0.2em;
 }
 
 

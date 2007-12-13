@@ -13,6 +13,10 @@
       <div class="calendar-links">
         <metal:macro use-macro="calendar_macros/navigation" />
       </div>
+      <h1 class="calendar-heading"
+        tal:content="view/title">
+        Appointments for ...
+      </h1>
 
       <div class="calendar-table">
         <table id="calendar" class="month">

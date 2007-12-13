@@ -1,36 +1,38 @@
 /* 
  * layout (positioning and such) specific CSS defs */
 #header {
-    background-color: #fdfdfd;
-    border-bottom: 2px solid #4c4c4c;
-    min-height: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 1em;
 }
 
 #sidebar {
     position: absolute;
-    left: 0;
-    width: 23%;
-    top: 5%;
-    background-color: #fdfdfd;
-    border-right: 2px solid #004455;
+    left: 1em;
+    width: 20em;
+    top: 3em;
     bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 #sidebar h1 {
-    padding-left: 0.3em;
+    padding-left: 0.6em;
     margin: 0;
+    background-color: #ddd;
+    background-repeat: no-repeat;
+    background-position: 0.3em center;
+    font-weight: normal;
 }
 
 #sidebar-dragger {
     position: absolute;
-    left: 24%;
-    width: 10px;
+    left: 23%;
+    width: 1%;
     top: 5%;
     bottom: 0;
-    cursor: w-resize;
-    background: white url("/@@/zeit.cms/layout/sidebardragger.png") no-repeat center;
+    cursor: pointer;
+    background: transparent url("/@@/zeit.cms/layout/sidebardragger.png") no-repeat center;
 }
 
 #sidebar.sidebar-folded {
@@ -40,8 +42,7 @@
 #sidebar-dragger.sidebar-folded {
     left: 3px;
     width: 10px;
-    cursor: e-resize;
-    background: white url("/@@/zeit.cms/layout/sidebardragger-open.png") no-repeat center;
+    background: transparent url("/@@/zeit.cms/layout/sidebardragger-open.png") no-repeat center;
 }
 
 #content.sidebar-folded {
@@ -50,21 +51,18 @@
 
 #content {
     position: fixed;
-    left: 25%;
-    top: 5%;
-    right: 0;
+    left: 22em;
+    top: 3em;
+    right: 1em;
     bottom: 0;
     overflow: hidden;
-    background-color: #fdfdfd;
-    border-left: 1px solid #004455;
-    border-top: 1px solid #004455;
     padding-top: 9ex;
     padding-left: 1em;
 }
 
 #topcontent {
     position: absolute;
-    top: 9ex; 
+    top: 5em; 
     right: 0;
     left: 0;
     bottom: 0;
@@ -86,24 +84,7 @@
     bottom: 0;
     overflow: auto;
     display: none;
-}
-
-#bottomcontent h2 {
-    margin-top: 0;
-    background-color: #0088AA;
-    color: white;
-}
-
-#bottomcontent .context-views {
-    top: 3ex;
-}
-
-#bottomcontent .context-actions ul {
-    margin-top: 0.5ex;
-}
-
-#bottomcontent .context-actions li {
-    margin-top: 0.5ex;
+    background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
 }
 
 #folderActionForm {
@@ -118,14 +99,14 @@
 
 #content-actions {
     position: absolute;
-    top: 2em;
-    padding: 0.5em 0;
+    top: 3em;
+    padding: 0;
 }
 
 #metadata_preview {
     position: absolute;
     left: 0;
-    top: 9ex;
+    top: 3em;
     bottom: 0;
     right: 0;
     overflow-y: auto;
@@ -146,12 +127,30 @@
 
 #edit-form {
     position: absolute;
-    top: 9ex;
+    top: 3em;
     right: 0;
     left: 0;
     bottom: 0;
     overflow: auto;
     padding-bottom: 20px;
+}
+
+
+#edit-form > form > div:first-child {
+    position: absolute;
+    bottom: 4em;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: auto;
+}
+
+#edit-form > form > div#actionsView {
+    position: absolute;
+    height: 3em;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 #full-content-area {
@@ -162,7 +161,6 @@
     bottom: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    border: 1px solid #4c4c4c;
 }
 
 #actionsView {
@@ -184,38 +182,31 @@
 }
 
 #breadcrumbs {
-   float: left;
+    position: absolute;
+    left: 22em;
+    right: 0;
+    padding: 0;
+    margin: 0.5em 0 0 0;
+}
+#breadcrumbs li {
    padding: 0;
-   padding-left: 0.7em;
    margin: 0;
-   margin-top: 0.4em;
-}
-#breadcrumbs li a,
-#breadcrumbs li {
-   color: white;
-}
-#breadcrumbs li {
-   padding: 0 0.3em;
 }
 
-#main-navigation,
 .context-views {
     margin: 0em;
     padding-bottom: 0;
-    text-align: right;
 }
 
-#main-navigation li.Desktop {
-    background: url("/@@/zeit.cms/icons/desktop.png") no-repeat center left;
-}
-#main-navigation li.Editor {
-    background: url("/@@/zeit.cms/icons/editor.png") no-repeat center left;
+#main-navigation {
+    margin-top: 0.5em;
+    padding: 0;
 }
 
-#main-navigation li.Kalender {
-    background: url("/@@/zeit.cms/icons/calendar.png") no-repeat center left;
+#main-navigation > li {
+    padding: 0;
+    padding-left: 0.2em;
 }
-
 
 #folder-actions {
     margin: 0em;
@@ -233,121 +224,69 @@
     overflow: hidden;
 }
 
+.context-actions,
 .context-views {
     border-bottom: 1px solid #004455;
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 2em;
-    height: 30px;
+    top: 0;
+    height: 2em;
     overflow: hidden;
 }
 
+.context-actions ul,
 .context-views ul {
     margin-bottom: 0.4em;
-    margin-right: 0.5em;
+    margin-top: 0.4em;
+    padding: 0;
+    height: 1.25em;
 }
 
+.context-actions li,
 .context-views li {
-    padding: 4px 30px;
-    border: 1px solid #aaa;
-    border-right: 1px dotted #aaa;
-    border-left: 0;
-    border-bottom: 0;
-    background-repeat: no-repeat;
-    background-position: 3px center;
+    display: inline;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+
 }
 
-.context-views li.selected,
-.context-views li.selected:first-child {
-    background-color: #ffdd00;
-    border: 1px solid #4c4c4c;
-    border-bottom: 1px solid #ffdd00;
+.context-views {
+    left: 0;
+    width: 50em;
 }
 
-.context-views li:first-child {
-    border-left: 1px dotted #aaa;
+.context-views li.selected > a{
+    background-color: #FEFEB2;
 }
 
-.context-views li.syndicate {
-    background-image: url("/@@/zeit.cms/icons/syndicate.png");
+.context-views li > a {
+    padding: 0.4em 1em;
+    margin: 0;
 }
-.context-views li.quelltext {
-    background-image: url("/@@/zeit.cms/icons/articleSource.png");
-}
-.context-views li.wysiwyg {
-    background-image: url("/@@/zeit.cms/icons/wysiwyg.png");
-}
-.context-views li.xml {
-    background-image: url("/@@/zeit.cms/icons/xml.png");
-}
-.context-views li.bilder {
-    background-image: url("/@@/zeit.cms/icons/images.png");
-}
-.context-views li.view {
-    background-image: url("/@@/zeit.cms/icons/view.png");
-}
-.context-views li.metadata-view {
-    background-image: url("/@@/zeit.cms/icons/metadata.png");
-}
-.context-views li.metadata-edit {
-    background-image: url("/@@/zeit.cms/icons/edit.png");
-}
-.context-views li.workflow {
-    background-image: url("/@@/zeit.cms/icons/workflow.png");
-}
-.context-views li.locks {
-    background-image: url("/@@/zeit.cms/icons/lock-closed.png");
-}
+
 
 /* 
  * context actions 
  *
  * */
 .context-actions {
-    float: right;
-    margin-right: 1em;
+    text-align: right;
+    left: 50em;
+    right: 0;
 }
 
 .context-actions ul {
-    margin-top: 1ex;
+    padding-right: 1em;
 }
 
-.context-actions li {
-    display: inline;
-    padding: 2px 0 2px 20px;
-    margin-left: 1em;
+.context-actions li > a {
+    margin: 0;
+    padding: 0.4em;
+}
+.context-actions li > a > img {
+    border: none;
 }
 
-.context-actions li a {
-    color: white;
-    font-size: 80%;
-}
-
-.context-actions li.checkout {
-    background: url("/@@/zeit.cms/icons/checkout.png") no-repeat center left;
-}
-.context-actions li.checkin {
-    background: url("/@@/zeit.cms/icons/checkin.png") no-repeat center left;
-}
-.context-actions li.hide {
-    background: url("/@@/zeit.cms/icons/hide.png") no-repeat center left;
-}
-.context-actions li.show {
-    background: url("/@@/zeit.cms/icons/show.png") no-repeat center left;
-}
-.context-actions li.als_ziel_merken {
-    background: url("/@@/zeit.cms/icons/default-feed.png") no-repeat center left;
-}
-
-.context-actions li.live {
-    background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
-}
-
-.context-actions li.development {
-    background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
-}
-
-.context-actions li.preview {
-    background: url("/@@/zeit.cms/icons/live.ico") no-repeat center left;
+.action-title {
+    display: none;
 }

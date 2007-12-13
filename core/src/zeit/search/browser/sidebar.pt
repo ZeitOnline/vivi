@@ -20,7 +20,6 @@
       tal:attributes="
       action string:${request/getApplicationURL}/search.html;
       class view/form_class">
-      <label for="search.text">Volltextsuche:</label>
       <input type="text" name="search.text" id="search.text"
         tal:attributes="value last_search/text | nothing" />
 
