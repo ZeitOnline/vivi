@@ -1,5 +1,3 @@
-/* zrt-replace: "{SERVER-URL}" tal"request/getApplicationURL" */
-
 var KeywordsWidget = ObjectSequenceWidgetBase.extend({
 
     initialize: function() {
@@ -23,7 +21,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
             selected_keywords.push(code);
         });
        
-        var url = '{SERVER-URL}/@@keyword-browser.html';
+        var url = '/@@keyword-browser.html';
         var tree = new Tree(url, 'lightbox');
         tree.query_arguments['selected_keywords'] = serializeJSON(
             selected_keywords)
