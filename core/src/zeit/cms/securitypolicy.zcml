@@ -36,7 +36,7 @@
 
   <!-- Permission grants -->
   <grantAll role="zope.Manager" />
-  <grantAll role="zope.Authenticated" />
+  <grantAll principal="zope.Authenticated" />
 
   <grant
     principal="zope.Authenticated"
