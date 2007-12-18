@@ -49,7 +49,9 @@
     name="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
+
   <adapter factory=".article.ArticleListRepresentation" />
+
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
     name="zmi_icon"
@@ -62,9 +64,18 @@
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.ManageContent"
+    class=".form.ChooseTemplate"
+    name="zeit.content.article.ChooseTemplate"
+    menu="zeit-add-menu" title="Article"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.AddForm"
     name="zeit.content.article.Add"
-    menu="zeit-add-menu" title="Article"
+    permission="zope.ManageContent"
     />
   
   <!-- Syndication Log -->

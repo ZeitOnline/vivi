@@ -86,21 +86,150 @@ files:
 
 Give the template a name, set some content and add it:
 
->>> browser.getControl('Title').value = 'Oink template'
+>>> browser.getControl('Title').value = 'some template'
 >>> browser.getControl('Source').value = (
 ...     '<article><body><title>Oink</title></body></article>')
 >>> browser.getControl('Add').click()
+
+Now we're at the property edit form where we have one line of empty input
+fields to create a new property:
+
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <title> Edit webdav properties </title>
+    ...
+  <form action="webdav-properties.html" method="POST">
+    <table class="properties">
+      <thead>
+        <tr>
+          <th>Namespace</th>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="text" name="namespace:list" />
+          </td>
+          <td>
+            <input type="text" name="name:list" />
+          </td>
+          <td>
+            <textarea type="text" name="value:list"></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" name="dav.save" value="Save" />
+  </form>
+  ...
+
+
+Set the default ressort:
+
+>>> browser.getControl(name='namespace:list').value = (
+...     'http://namespaces.zeit.de/CMS/document')
+>>> browser.getControl(name='name:list').value = 'ressort'
+>>> browser.getControl(name='value:list').value = 'Zuender'
+>>> browser.getControl('Save').click()
+
+The new property has been added now, but we have an empty line again:
+
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <title> Edit webdav properties </title>
+    ...
+    <table class="properties">
+      <thead>
+        <tr>
+          <th>Namespace</th>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="hidden" name="namespace:list"
+                   value="http://namespaces.zeit.de/CMS/document" />
+            http://namespaces.zeit.de/CMS/document
+          </td>
+          <td>
+            <input type="hidden" name="name:list"
+                   value="ressort" />
+            ressort
+          </td>
+          <td>
+            <textarea type="text" name="value:list">Zuender</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="text" name="namespace:list" />
+          </td>
+          <td>
+            <input type="text" name="name:list" />
+          </td>
+          <td>
+            <textarea type="text" name="value:list"></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" name="dav.save" value="Save" />
+  </form>
+  ...
+
+
+Let's make sure we can still edit body and text:
+
+>>> browser.getLink('Edit').click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
     <title> Edit template </title>
     ...
 
+>>> browser.getControl('Title').value
+'some template'
+>>> browser.getControl('Title').value = 'Oink template'
+>>> browser.handleErrors = False
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <title> Edit template </title>
+    ...Updated on ...
 
-# XXX check what happesn on invalid xml?
-# make sure editing works
 
-An add form needs to take care about actually using the template.
+Let's have a look at the list of templates:
+
+>>> browser.getLink('a-template-manager').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <title> Templates </title>
+    ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <input class="hiddenType" id="selection_column.c29tZSB0ZW1wbGF0ZQ==..used" name="selection_column.c29tZSB0ZW1wbGF0ZQ==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.c29tZSB0ZW1wbGF0ZQ==." name="selection_column.c29tZSB0ZW1wbGF0ZQ==." type="checkbox" value="on"  />
+    </td>
+    <td>
+      Oink template
+    </td>
+  </tr>
+  </tbody>
+</table>
+...
+
+Make sure there is a delete button:
+
+>>> browser.getControl('Delete')
+<SubmitControl name='delete' type='submit'>
 
 
 Template source

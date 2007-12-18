@@ -83,6 +83,25 @@
     menu="zeit-context-views" title="Edit"
     />
 
+  <gocept:pagelet
+    for="zeit.cms.content.interfaces.ITemplate"
+    name="webdav-properties.html"
+    class=".template.Properties"
+    template="template-properties.pt"
+    permission="zope.ManageContent"
+    menu="zeit-context-views" title="Properties"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.content.interfaces.ITemplateManager"
+    action="delete"
+    menu="folder-actions"
+    title="Delete"
+    permission="zope.ManageContent"
+    />
+
+
+
 
 </configure>
 

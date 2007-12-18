@@ -173,6 +173,7 @@ class Listing(object):
     title = u"Dateiliste"
     enable_delete = True
     types_source = zeit.cms.content.sources.CMSContentTypeSource()
+    css_class = 'contentListing hasMetadata'
 
 
     columns = (
@@ -238,7 +239,7 @@ class Listing(object):
         formatter = zc.table.table.FormFullFormatter(
             self.context, self.request, self.content,
             columns=self.columns)
-        formatter.cssClasses['table'] = 'contentListing'
+        formatter.cssClasses['table'] = self.css_class
         return formatter
 
     @zope.cachedescriptors.property.Lazy

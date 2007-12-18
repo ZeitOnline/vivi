@@ -96,6 +96,8 @@
   </class>
 
   <class class=".template.Template">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
       interface=".interfaces.ITemplate"
       permission="zope.View"
@@ -105,6 +107,25 @@
       permission="zope.ManageContent"
       />
   </class>
+  <adapter factory=".adapter.webDAVPropertiesFactory"
+    for=".interfaces.ITemplate"
+    trusted="yes"
+    />
+
+
+  <!-- lxml security settings -->
+  
+  <class class="lxml.objectify.ObjectifiedElement">
+    <require permission="zope.View"
+      attributes="tag xpath getparent index" />
+    <require permission="zope.ManageContent"
+      attributes="append insert makeelement __setslice__" />
+  </class>
+
+  <class class="lxml.objectify.StringElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
 
 
 </configure>

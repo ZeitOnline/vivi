@@ -6,8 +6,11 @@ import StringIO
 import datetime
 
 import zope.formlib.form
+import zope.publisher.interfaces.browser
+import zope.session.interfaces
 
 import zc.resourcelibrary
+import gocept.form.grouped
 
 import zeit.cms.browser.form
 import zeit.cms.interfaces
@@ -30,6 +33,21 @@ class ITemplateChooserSchema(zope.interface.Interface):
         source=TemplateSource(),
         required=False)
 
+
+class ChooseTemplate(gocept.form.grouped.Form):
+
+    title = _("Choose template")
+    form_fields = zope.formlib.form.FormFields(ITemplateChooserSchema)
+
+    @zope.formlib.form.action(_("Continue"))
+    def handle_choose_template(self, action, data):
+        session = zope.session.interfaces.ISession(self.request)
+        session['zeit.content.article.browser.form']['template'] = data[
+            'template']
+        url = zope.component.getMultiAdapter(
+            (self.context, self.request), name='absolute_url')
+        self.request.response.redirect(
+            '%s/@@zeit.content.article.Add' % url)
 
 
 class ArticleFormBase(object):
@@ -55,6 +73,8 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
             omit_readonly=False).omit('textLength') +
         zope.formlib.form.Fields(ITemplateChooserSchema))
 
+    content_template = None
+
     def create(self, data):
         source = None
         template = data.get('template')
@@ -65,6 +85,37 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
         article = zeit.content.article.article.Article(source)
         self.applyChanges(article, data)
         return article
+
+    def _get_widgets(self, form_fields, ignore_request=False):
+        session = zope.session.interfaces.ISession(self.request)
+        template = session['zeit.content.article.browser.form'].get(
+            'template')
+        widgets = super(AddForm, self)._get_widgets(form_fields, ignore_request)
+
+        if not ignore_request and template:
+            adapters = {}
+            for widget in widgets:
+                field = widget.context
+                name = widget.context.__name__
+                form_field = self.form_fields[name]
+
+                # Adapt context, if necessary
+                interface = form_field.interface
+                if interface == ITemplateChooserSchema:
+                    value = template
+                else:
+                    adapter = adapters.get(interface)
+                    if adapter is None:
+                        if interface is None:
+                            adapter = template
+                        else:
+                            adapter = interface(template)
+                        adapters[interface] = adapter
+                    value = field.get(adapter)
+                if value and value != field.default:
+                    widget.setRenderedValue(value)
+
+        return widgets
 
 
 class EditForm(ArticleFormBase, zeit.cms.browser.form.EditForm):

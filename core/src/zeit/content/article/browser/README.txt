@@ -25,6 +25,7 @@ The metadata preview shows the most important data in list views:
 <Link text='[IMG] Checkout' ...>
 
 Make sure we have a "view" link:
+
 >>> browser.getLink('View')
 <Link text='View metadata' ...>
 
@@ -65,8 +66,18 @@ arbitrary url and add an article then:
 >>> menu.displayValue = ['Article']
 >>> url = menu.value[0]
 >>> url
-'http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.Add'
+'http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.ChooseTemplate'
 >>> browser.open(menu.value[0])
+
+We now need to choose a template. Since we haven't created one there is only
+the (no value) to be choosen. 
+
+>>> browser.getControl('Template').displayOptions
+['(no value)']
+>>> browser.getControl('Template').displayValue
+['(no value)']
+>>> browser.handleErrors = False
+>>> browser.getControl('Continue').click()
 
 We are now looking at the add form. Some fields are filled with suitable
 defaults:
@@ -301,7 +312,7 @@ Let's create two templates. This works via the template manager:
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
-    <title> Edit template </title>
+    <title> Edit webdav properties </title>
     ...
 
 
@@ -319,8 +330,24 @@ Add another template:
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
-    <title> Edit template </title>
+    <title> Edit webdav properties </title>
     ...
+
+Set the default ressort to Extrablatt:
+
+>>> browser.getControl(name='namespace:list').value = (
+...     'http://namespaces.zeit.de/CMS/document')
+>>> browser.getControl(name='name:list').value = 'ressort'
+>>> browser.getControl(name='value:list').value = 'Extrablatt'
+>>> browser.getControl('Save').click()
+
+Add another, totally unrelated property, to make sure those are copied to the
+article:
+
+>>> browser.getControl(name='namespace:list', index=1).value = (
+...     'http://namespaces.zeit.de/my-own-namespace')
+>>> browser.getControl(name='name:list', index=1).value = 'hans'
+>>> browser.getControl(name='value:list', index=1).value = 'wurst'
 
 
 When we're now adding an article we can choose those templates:
@@ -334,9 +361,25 @@ When we're now adding an article we can choose those templates:
 
 Create an article with `Extrablatt` template:
 
+>>> browser.getControl('Template').displayValue = ['Extrablatt']
+>>> browser.getControl('Continue').click()
+
+As we've choosen extrablatt, the ressort is filled with the changed ressort
+now:
+
+>>> browser.getControl('Ressort').value
+'Extrablatt'
+
+The other fields, like copyright, which are prefilled by default are still
+filled:
+
+>>> browser.getControl('Copyright').value
+'ZEIT online'
+
+Now fill in the actual article:
+
 >>> browser.getControl('File name').value = 'new-extrablatt'
 >>> browser.getControl('Title').value = 'Extrablatt 53'
->>> browser.getControl('Template').displayValue = ['Extrablatt']
 >>> browser.getControl('Year').value = '2007'
 >>> browser.getControl('Volume').value = '49'
 >>> browser.getControl(name='form.actions.add').click()
@@ -368,8 +411,7 @@ Let's hae a look at the source:
   </body>
 </article><?ZEIT:StyleGroup zeitwissen-extrablatt?>
 
-XXX the processing instruction went missing. This is a bug in LXML. We need to
-have a look at this later
+
 
 
 Javascript validations
@@ -382,6 +424,7 @@ they're actually here:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Article']
 >>> browser.open(menu.value[0])
+>>> browser.getControl('Continue').click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...

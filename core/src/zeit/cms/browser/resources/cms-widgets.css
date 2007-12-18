@@ -19,13 +19,30 @@
 }
 
 /* don't display the filter column */
-.contentListing > thead > tr > th:last-child,
-.contentListing > tbody > tr > td:last-child {
+.hasMetadata > thead > tr > th:last-child,
+.hasMetadata > tbody > tr > td:last-child {
    display: none;
 }
 
 .zc-table-sortable {
   cursor: pointer;
+}
+
+table.properties td {
+  vertical-align: top;
+}
+
+table.properties input[name="namespace:list"] {
+  width: 25em;
+}
+
+table.properties input[name="name:list"] {
+  width: 10em;
+}
+
+table.properties textarea {
+  width: 20em;
+  height: 5em;
 }
 
 

@@ -24,7 +24,7 @@ The metadata preview shows the most important data in list views:
 We have to publish another url to see if articles are listed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> len(browser.etree.xpath("//table[@class='contentListing']/tbody/tr"))
+>>> len(browser.etree.xpath("//table[contains(@class, 'contentListing')]/tbody/tr"))
 53
 
 Creating Center Pages
