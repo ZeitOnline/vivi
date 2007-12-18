@@ -26,8 +26,6 @@ class UserPreferences(persistent.Persistent,
         zeit.cms.repository.interfaces.IUserPreferences)
     zope.component.adapts(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 
-    _hidden_containers = zc.set.Set()
-
     default_shown_containers = (
         'http://xml.zeit.de/online',
         'http://xml.zeit.de/online/2007',
@@ -45,6 +43,7 @@ class UserPreferences(persistent.Persistent,
     )
 
     def __init__(self):
+        self._hidden_containers = zc.set.Set()
         self._set_default_hidden_containers()
 
     def hide_container(self, container):
