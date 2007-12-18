@@ -49,7 +49,11 @@
             <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
               <a tal:attributes="title  item/title;
                 href   item/url;"
-                tal:content="item/title">Directory foo</a>
+                tal:content="item/title">
+                Directory foo
+              </a>
+              <span tal:condition="item/uniqueId"
+                class="URL" tal:content="item/url" />
               <span class="breadcrumb-separator"
                 tal:condition="not:repeat/item/end">
                 →

@@ -5,6 +5,7 @@
 import zope.traversing.api
 import zope.component
 import zope.cachedescriptors.property
+import zope.location.interfaces
 
 import zeit.cms.repository.interfaces
 
@@ -19,11 +20,16 @@ class Breadcrumbs(object):
         traverse_items += zope.traversing.api.getParents(self.context)
 
         for item in traverse_items:
+            if zope.location.interfaces.ISite.providedBy(item):
+                break
             url = zope.component.getMultiAdapter(
                 (item, self.request), name="absolute_url")()
             title = item.__name__
-            result.append(dict(title=title, url=url))
-            if zeit.cms.repository.interfaces.IRepository.providedBy(item):
-                break
+            uniqueId = getattr(item, 'uniqueId', None)
+            result.append(
+                dict(title=title,
+                     url=url,
+                     uniqueId=uniqueId))
+
         result.reverse()
         return result

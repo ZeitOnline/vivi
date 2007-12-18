@@ -308,3 +308,17 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
     },
 
 });
+
+
+// Connect breadcrumbs
+connect(window, 'onload', function(event) {
+    var lis = $('breadcrumbs').getElementsByTagName('li');
+    forEach(lis, function(li) {
+        if (getFirstElementByTagAndClassName('span', 'URL', li) != undefined) {
+            new Draggable(li, {
+                    starteffect: null,
+                    endeffect: null});
+        }
+    });
+
+});

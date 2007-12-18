@@ -60,10 +60,13 @@
     <directory source="resources" include="dnd.js" />
   </resourceLibrary>
 
-  <resourceLibrary name="zeit.cms" require="mochikit">
+  <resourceLibrary
+    name="zeit.cms"
+    require="mochikit zeit.cms.DragAndDrop">
     <directory source="resources" include="cms-layout.css 
       cms-widgets.css
-      cms.css"/>
+      cms.css
+      "/>
   </resourceLibrary>
 
   <resourceLibrary name="zeit.cms.filteringtable">
