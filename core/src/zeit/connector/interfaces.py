@@ -134,7 +134,8 @@ class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
 
     """
 
-class IWebDAVWriteProperties(zope.interface.common.mapping.IWriteMapping):
+class IWebDAVWriteProperties(
+    zope.interface.common.mapping.IExtendedWriteMapping):
     """Write interface for WebDAVProperties."""
 
 
