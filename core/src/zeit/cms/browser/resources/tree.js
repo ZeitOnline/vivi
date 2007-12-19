@@ -12,6 +12,7 @@ Tree.prototype = {
         if (action == null)
             return;
         
+        event.stop();  // event is handled
         this.changeState(target, action)
     },
 

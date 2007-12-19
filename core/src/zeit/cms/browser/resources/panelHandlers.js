@@ -54,16 +54,9 @@ PanelHandler.prototype = {
                 handler.storeState(panel.id);
             });
             var content_element = getFirstElementByTagAndClassName(
-                'div', 'PanelContent', panel)
-            handler.restoreScrollState(content_element);
-            connect(window, 'onunload', function(event) {
-                handler.rememberScrollState(content_element);
-            });
-            connect(content_element, 'initialload', function(event) {
-                if (event.src() == content_element) {
-                    handler.restoreScrollState(content_element);
-                }
-            });
+                'div', 'PanelContent', panel);
+            var scroll_state = new ScrollStateRestorer(content_element);
+            scroll_state.connectWindowHandlers();
         });
 
     },
@@ -73,23 +66,6 @@ PanelHandler.prototype = {
     },
 
 
-    rememberScrollState: function(content_element) {
-        var position = content_element.scrollTop;
-        var id = content_element.id;
-        if (!id) {
-            return;
-        }
-        setCookie(id, position.toString(), null, '/');
-     },
-
-    restoreScrollState: function(content_element) {
-        var id = content_element.id;
-        if (!id) {
-            return;
-        }
-        var position = getCookie(id);
-        content_element.scrollTop = position;
-    },
 };
 
 
@@ -129,3 +105,42 @@ SidebarDragger.prototype = {
     },
 }
 
+
+var ScrollStateRestorer = Class.extend({
+
+    construct: function(content_element) {
+        this.content_element = $(content_element);
+    },
+
+    connectWindowHandlers: function() {
+        var othis = this;
+        this.restoreScrollState();
+        connect(window, 'onunload', function(event) {
+            othis.rememberScrollState();
+        });
+        connect(this.content_element, 'initialload', function(event) {
+            if (event.src() == othis.content_element) {
+                othis.restoreScrollState();
+            }
+        });
+    },
+
+    rememberScrollState: function(content_element) {
+        var position = this.content_element.scrollTop;
+        var id = this.content_element.id;
+        if (!id) {
+            return;
+        }
+        setCookie(id, position.toString(), null, '/');
+     },
+
+    restoreScrollState: function() {
+        var id = this.content_element.id;
+        if (!id) {
+            return;
+        }
+        var position = getCookie(id);
+        this.content_element.scrollTop = position;
+    },
+
+});

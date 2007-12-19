@@ -108,6 +108,8 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     handleNewUrl: function(url) {
+        var scroll_state = new ScrollStateRestorer('popup-navtree');
+        scroll_state.rememberScrollState();
         this.loadContentFromUrl(url);
     },
 
@@ -131,12 +133,16 @@ var ObjectReferenceWidget = Class.extend({
         var d = this.lightbox.load_url(
             url + '/@@get_object_browser',
             {type_filter: this.type_filter});
+        var othis = this;
         d.addCallback(function(result) {
             var url = getFirstElementByTagAndClassName(
-                'div', 'tree-view-url', lightbox.content_box).innerHTML;
+                'div', 'tree-view-url', othis.lightbox.content_box).innerHTML;
             var navtree = new Tree(url, 'popup-navtree');
+            var scroll_state = new ScrollStateRestorer('popup-navtree');
+            scroll_state.restoreScrollState();
             return result;
         });
+        return d;
     },
 });
 
