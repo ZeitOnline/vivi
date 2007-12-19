@@ -219,7 +219,7 @@ Let's have a look at the list of templates:
       <input class="hiddenType" id="selection_column.c29tZSB0ZW1wbGF0ZQ==..used" name="selection_column.c29tZSB0ZW1wbGF0ZQ==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.c29tZSB0ZW1wbGF0ZQ==." name="selection_column.c29tZSB0ZW1wbGF0ZQ==." type="checkbox" value="on"  />
     </td>
     <td>
-      Oink template
+      <a href=".../some%20template/">Oink template</a>
     </td>
   </tr>
   </tbody>

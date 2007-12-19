@@ -10,6 +10,7 @@ import zc.table.column
 import zc.table.table
 
 import zeit.cms.content.interfaces
+import zeit.cms.browser.column
 import zeit.cms.browser.listing
 import zeit.cms.browser.form
 from zeit.cms.i18n import MessageFactory as _
@@ -40,7 +41,7 @@ class Listing(zeit.cms.browser.listing.Listing):
     columns = (
         zc.table.column.SelectionColumn(
             idgetter=lambda item: item.__name__),
-        zc.table.column.GetterColumn(
+        zeit.cms.browser.column.LinkColumn(
             _('Title'),
             getter=lambda i, f: i.title),
     )

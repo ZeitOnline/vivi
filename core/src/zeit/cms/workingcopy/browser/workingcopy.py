@@ -10,15 +10,9 @@ import zc.table.table
 import zc.table.column
 
 import zeit.cms.browser.listing
+import zeit.cms.browser.column
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
-
-class LinkColumn(zc.table.column.GetterColumn):
-
-  def renderCell(self, item, formatter):
-      url = zope.traversing.browser.absoluteURL(item, item.request)
-      title = super(LinkColumn, self).renderCell(item, formatter)
-      return '<a href="%s/@@edit.html">%s</a>' %(url, title)
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase,
@@ -26,9 +20,10 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
     """view class for navtree"""
     columns = (
         zeit.cms.browser.listing.TypeColumn(u''),
-        LinkColumn(
+        zeit.cms.browser.column.LinkColumn(
             u'Titel',
-            lambda t, c: t.title),
+            lambda t, c: t.title,
+            view='edit.html'),
         )
 
     def render(self):
