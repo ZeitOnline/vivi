@@ -116,7 +116,7 @@ The locks tab shows information about the current lock:
 >>> browser.getLink('Locks').click()
 >>> print browser.contents
 <?xml ...
-        <div>
+        <div class="field-group">
           <fieldset>
             <legend></legend>
             <div>
