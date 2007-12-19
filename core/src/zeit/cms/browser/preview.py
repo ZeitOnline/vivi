@@ -11,8 +11,8 @@ import zeit.cms.interfaces
 
 class PreviewBase(object):
 
-    def __call__(self):
-        unique_id = self.context.uniqueId
+    def redirect_to_preview_of(self, preview_context):
+        unique_id = preview_context.uniqueId
         path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE):]
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
@@ -21,6 +21,9 @@ class PreviewBase(object):
             prefix = prefix + '/'
         url = urlparse.urljoin(prefix, path)
         self.request.response.redirect(url)
+
+    def __call__(self):
+        self.redirect_to_preview_of(self.context)
         return ''
 
 

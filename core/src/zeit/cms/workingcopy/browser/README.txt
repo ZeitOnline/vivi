@@ -111,3 +111,13 @@ Cleanup:
 
 >>> zope.app.component.hooks.setSite(old_site)
 
+
+Preview
+=======
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.mgr/Somalia/@@view.html')
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
+HTTP Error 303: See Other
+http://localhost/preview-prefix/tmp/previews/...
+

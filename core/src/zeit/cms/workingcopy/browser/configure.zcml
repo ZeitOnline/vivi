@@ -53,5 +53,14 @@
   <!-- object browser -->
   <adapter factory=".workingcopy.localcontent_default_browsing_location" />
 
+  <!-- preview -->
+  <browser:page
+    name="show_preview"
+    class=".preview.WorkingcopyPreview"
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-actions" title="Preview"
+    />
 </configure>
 

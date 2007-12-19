@@ -40,7 +40,8 @@ def setup_product_config():
     cms_config['live-prefix'] = 'http://localhost/live-prefix'
     cms_config['development-preview-prefix'] = (
         'http://localhost/development-preview-prefix')
-    cms_config['workingcopy-preview-base'] = u'http://xml.zeit.de/tmp/previews'
+    cms_config['workingcopy-preview-base'] = (
+        u'http://xml.zeit.de/tmp/previews/')
 
 
 def FunctionalDocFileSuite(*paths, **kw):
@@ -64,3 +65,18 @@ def FunctionalDocFileSuite(*paths, **kw):
         *paths, **kw)
     test.layer = layer
     return test
+
+
+def click_wo_redirect(browser, *args, **kwargs):
+    import urllib2
+    browser.mech_browser.set_handle_redirect(False)
+    try:
+        try:
+            browser.getLink(*args, **kwargs).click()
+        except urllib2.HTTPError, e:
+            print str(e)
+            print e.headers.get('location')
+    finally:
+        browser.mech_browser.set_handle_redirect(True)
+
+

@@ -97,25 +97,10 @@ Make sure the menu entries are there:
    ...
 
 
-For testing the redirect we need a little helper:
-
->>> def click_wo_redirect(*args, **kwargs):
-...     import urllib2
-...     browser.mech_browser.set_handle_redirect(False)
-...     try:
-...         try:
-...             browser.getLink(*args, **kwargs).click()
-...         except urllib2.HTTPError, e:
-...             print str(e)
-...             print e.headers.get('location')
-...     finally:
-...         browser.mech_browser.set_handle_redirect(True)
-
-
 Check the preview:
 
->>> browser.handleErrors = False
->>> click_wo_redirect('Preview')
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
 HTTP Error 303: See Other
 http://localhost/preview-prefix/online/2007/01/Somalia
 
@@ -124,7 +109,7 @@ Check the live site:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> click_wo_redirect('Live')
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Live')
 HTTP Error 303: See Other
 http://localhost/live-prefix/online/2007/01/Somalia
 
@@ -133,6 +118,6 @@ Check the development preview:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> click_wo_redirect('Development')
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Development')
 HTTP Error 303: See Other
 http://localhost/development-preview-prefix/online/2007/01/Somalia
