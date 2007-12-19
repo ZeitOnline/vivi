@@ -20,6 +20,8 @@ def test_suite():
         'sources.txt',
         'locking.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
+                     doctest.ELLIPSIS),
+        setUp=zeit.cms.testing.setUp))
+
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite('dav.txt'))
     return suite

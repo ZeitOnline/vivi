@@ -52,6 +52,13 @@
   <adapter factory=".dav.DatetimeProperty"
     provides=".interfaces.IToProperty"
     />
+  
+  <adapter factory=".dav.TupleProperty"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter factory=".dav.TupleProperty"
+    provides=".interfaces.IToProperty"
+    />
 
   <utility 
     provides="zope.app.locking.interfaces.ILockStorage"

@@ -49,17 +49,13 @@ class CommonMetadata(persistent.Persistent,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('serie', 'copyrights', 'year', 'volume', 'ressort', 'page'))
 
-    # tuple/set doesn't work with webdav, yet
-    # see bug #3776
-    #zeit.cms.content.dav.mapProperty(
-    #    zeit.cms.content.interfaces.ICommonMetadata['authors'],
-    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-    #    'author')
+    authors = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['authors'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'author',
+        use_default=True)
 
     keywords = KeywordsProperty()
-
-    authors = zeit.cms.content.property.MultipleAttributeProperty(
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'author')
 
     title = zeit.cms.content.property.ObjectPathProperty(
         '.body.title')

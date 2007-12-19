@@ -5,13 +5,13 @@
 import urllib2
 
 import zope.component
+import zope.app.appsetup.product
 
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import gocept.lxml.objectify
 import gocept.cache.method
 
-import zeit.cms.config
 import zeit.cms.interfaces
 
 
@@ -19,24 +19,26 @@ class SimpleXMLSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     @gocept.cache.method.Memoize(3600)
     def getValues(self):
-        request = urllib2.urlopen(self.url)
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        request = urllib2.urlopen(cms_config[self.config_url])
         xml = gocept.lxml.objectify.fromfile(request)
         return [unicode(serie) for serie in xml.iterchildren()]
 
 
 class PrintRessortSource(SimpleXMLSource):
 
-    url = zeit.cms.config.PRINT_RESSORT_URL
+    config_url = 'source-print-ressort'
 
 
 class NavigationSource(SimpleXMLSource):
 
-    url = zeit.cms.config.RESSORT_URL
+    config_url = 'source-ressort'
 
 
 class SerieSource(SimpleXMLSource):
 
-    url = zeit.cms.config.SERIE_URL
+    config_url = 'source-serie'
 
 
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):

@@ -191,6 +191,42 @@ Converting datetimes takes timezone info into account::
     '2004-01-04T10:32:00+01:00'
 
 
+Tuple of TextLine
++++++++++++++++++
+
+Tuples of TextLine are serialised with a semicolon as separator. 
+    
+>>> field = zope.schema.Tuple(
+...     value_type=zope.schema.TextLine(),
+...     default=())
+>>> from_prop = zeit.cms.content.interfaces.IFromProperty(field)
+>>> from_prop.fromProperty('Peter Buhr;Klaus Kleber')
+(u'Peter Buhr', u'Klaus Kleber')
+
+A single author also gives a tuple:
+
+>>> from_prop.fromProperty('Klaus Kleber')
+(u'Klaus Kleber',)
+
+
+The other way round, items are joined with a semicolon:
+
+>>> to_prop = zeit.cms.content.interfaces.IToProperty(field)
+>>> to_prop.toProperty(('Peter Buhr', 'Klaus Kleber'))
+u'Peter Buhr;Klaus Kleber'
+
+In case there is a semicolon in a value, it will be escaped:
+
+>>> to_prop.toProperty(('Peter Buhr', 'Klaus; Kl;eb;er'))
+u'Peter Buhr;Klaus\\; Kl\\;eb\\;er'
+
+Make sure the DAV value is correctl converted back to a tuple:
+
+>>> from_prop.fromProperty(u'Peter Buhr;Klaus\\; Kl\\;eb\\;er')
+(u'Peter Buhr', u'Klaus; Kl;eb;er')
+
+
+
 LXML Values
 ===========
 

@@ -13,6 +13,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
         'clip.txt',
+        setUp=zeit.cms.testing.setUp,
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(

@@ -4,7 +4,8 @@
 
 import urlparse
 
-import zeit.cms.config
+import zope.app.appsetup.product
+
 import zeit.cms.interfaces
 
 
@@ -13,7 +14,9 @@ class PreviewBase(object):
     def __call__(self):
         unique_id = self.context.uniqueId
         path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE):]
-        prefix = self.prefix
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        prefix = cms_config[self.prefix]
         if not prefix.endswith('/'):
             prefix = prefix + '/'
         url = urlparse.urljoin(prefix, path)
@@ -23,14 +26,14 @@ class PreviewBase(object):
 
 class Preview(PreviewBase):
 
-    prefix = zeit.cms.config.PREVIEW_PREFIX
+    prefix = 'preview-prefix'
 
 
 class Live(PreviewBase):
 
-    prefix = zeit.cms.config.LIVE_PREFIX
+    prefix = 'live-prefix'
 
 
 class DevelopmentPreview(PreviewBase):
 
-    prefix = zeit.cms.config.DEVELOPMENT_PREVIEW_PREFIX
+    prefix = 'development-preview-prefix'

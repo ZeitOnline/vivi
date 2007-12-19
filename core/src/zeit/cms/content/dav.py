@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import re
 import logging
 import sys
 
@@ -22,10 +23,15 @@ logger = logging.getLogger('zeit.cms.content.dav')
 class DAVProperty(object):
     """WebDAV properties."""
 
-    def __init__(self, field, namespace, name):
+    def __init__(self, field, namespace, name, use_default=False):
         self.field = field
         self.namespace = namespace
         self.name = name
+        if use_default:
+            self.missing_value = field.default
+        else:
+            self.missing_value = field.missing_value
+
 
     def __get__(self, instance, class_):
         __traceback_info = (instance, )
@@ -34,7 +40,7 @@ class DAVProperty(object):
         properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
         dav_value = properties.get((self.name, self.namespace))
         if dav_value is None:
-            value = self.field.missing_value
+            value = self.missing_value
         else:
             field = self.field.bind(instance)
             __traceback_info__ = (instance, field,
@@ -145,6 +151,50 @@ class DatetimeProperty(object):
         if value is None:
             return u''
         return value.isoformat()
+
+
+class TupleProperty(object):
+
+    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
+                              zeit.cms.content.interfaces.IToProperty)
+    zope.component.adapts(zope.schema.interfaces.ITuple)
+
+    SPLIT_PATTERN = re.compile(r'(?!\\);')
+
+    def __init__(self, context):
+        self.context = context
+
+    def fromProperty(self, value):
+        from_prop = zeit.cms.content.interfaces.IFromProperty(
+            self.context.value_type)
+        result = []
+        start = 0
+        while value:
+            found = value.find(';', start)
+            if found > 0 and value[found-1] == '\\':
+                start = found + 1
+                continue
+            if found > 0:
+                item = value[:found]
+                value = value[found+1:]
+            else:
+                item = value
+                value = ''
+            item = item.replace('\\;', ';').replace('\\\\', '\\')
+            item = from_prop.fromProperty(item)
+            result.append(item)
+
+        return tuple(result)
+
+
+    def toProperty(self, value):
+        to_prop = zeit.cms.content.interfaces.IToProperty(
+            self.context.value_type)
+        result = []
+        for item in value:
+            item = to_prop.toProperty(item)
+            result.append(item.replace('\\', '\\\\').replace(';', '\\;'))
+        return ';'.join(result)
 
 
 def mapProperties(interface, namespace, names):

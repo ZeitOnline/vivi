@@ -114,6 +114,7 @@ For testing the redirect we need a little helper:
 
 Check the preview:
 
+>>> browser.handleErrors = False
 >>> click_wo_redirect('Preview')
 HTTP Error 303: See Other
 http://localhost/preview-prefix/online/2007/01/Somalia

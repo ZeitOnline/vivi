@@ -8,10 +8,10 @@ import weakref
 import rwproperty
 
 import zope.interface
+import zope.app.appsetup.product
 
 import gocept.lxml.objectify
 
-import zeit.cms.config
 import zeit.cms.content.interfaces
 
 
@@ -40,17 +40,23 @@ class Keyword(object):
 class KeywordUtility(object):
 
     zope.interface.implements(zeit.cms.content.interfaces.IKeywords)
+    _loaded = False
 
-    def __init__(self):
+    @zope.cachedescriptors.property.readproperty
+    def root(self):
         self._load_keywords()
+        return self.root
 
     def __getitem__(self, code):
+        self._load_keywords()
         try:
             return self._keywords_by_code[code]
         except KeyError:
             return Keyword(code, code, in_taxonomy=False)
 
     def _load_keywords(self):
+        if self._loaded:
+            return
 
         def pcv(node_name):
             pcv_ns = 'http://prismstandard.org/namespaces/1.2/pcv/'
@@ -60,7 +66,9 @@ class KeywordUtility(object):
             rdf_ns = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
             return '{%s}%s' % (rdf_ns, node_name)
 
-        request = urllib2.urlopen(zeit.cms.config.KEYWORD_URL)
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        request = urllib2.urlopen(cms_config['source-keyword'])
         prism_tree = gocept.lxml.objectify.fromfile(request)
         keywords = {}
         descriptors = []
@@ -101,3 +109,4 @@ class KeywordUtility(object):
                 keyword.broader = keywords[broader_id]
 
         self.root = root_keyword
+        self._loaded = True

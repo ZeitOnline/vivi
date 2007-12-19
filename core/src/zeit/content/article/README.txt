@@ -95,10 +95,10 @@ When we set an attribute multiple times it's just changed:
 </article>
 
 
-`Authors` is a set. We assign a set of authors and expect multiple
-`attribute`-tags as result:
+`Authors` is a tuple stored in a webdav property. We assign authors we also see
+the authors in the xml:
 
->>> article.authors = set(['Bart Simpson', 'Lisa Simpson'])
+>>> article.authors = ('Bart Simpson', 'Lisa Simpson')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article>
   <body>
@@ -118,9 +118,7 @@ When we set an attribute multiple times it's just changed:
     <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="author">Bart Simpson</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="author">Lisa Simpson</attribute>
+      name="author">Bart Simpson;Lisa Simpson</attribute>
   </head>
 </article>
 
