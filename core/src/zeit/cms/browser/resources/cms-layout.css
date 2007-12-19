@@ -136,7 +136,11 @@
 }
 
 
-#edit-form > form > div:first-child {
+#edit-form > form > div.form-status {
+    display: none;
+}
+
+#edit-form > form > div.field-group {
     position: absolute;
     bottom: 4em;
     left: 0;
