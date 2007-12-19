@@ -27,9 +27,9 @@
 
 #sidebar-dragger {
     position: absolute;
-    left: 23%;
-    width: 1%;
-    top: 5%;
+    left: 21em;
+    width: 1em;
+    top: 3em;
     bottom: 0;
     cursor: pointer;
     background: transparent url("/@@/zeit.cms/layout/sidebardragger.png") no-repeat center;
@@ -40,13 +40,13 @@
 }
 
 #sidebar-dragger.sidebar-folded {
-    left: 3px;
-    width: 10px;
+    left: 0;
+    width: 1em;
     background: transparent url("/@@/zeit.cms/layout/sidebardragger-open.png") no-repeat center;
 }
 
 #content.sidebar-folded {
-    left: 13px;
+    left: 1em;
 }
 
 #content {
