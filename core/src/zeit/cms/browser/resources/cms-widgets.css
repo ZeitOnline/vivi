@@ -212,7 +212,7 @@ table.properties textarea {
 
 .Tree li[active] > a {
   font-weight: bold;
-  background-color: #fefeb2;
+  background-color: #ffdd11;
 }
 
 .TreeHover > a {
