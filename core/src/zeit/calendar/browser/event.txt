@@ -1,0 +1,88 @@
+======
+Events
+======
+
+For the object browser we need a browsing location.
+
+We need some components for the test. Create a mock repository:
+
+>>> class Repository(object):
+...     return_object = False
+...     def getContent(self, unique_id):
+...         print "Getting ", unique_id
+...         return_object = self.return_object
+...         self.return_object = not self.return_object
+...         if return_object:
+...             return object()
+...         else:
+...             raise KeyError(unique_id)
+
+Register the mock repository:
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> repository = Repository()
+>>> gsm.registerUtility(
+...     repository,
+...     zeit.cms.repository.interfaces.IRepository)
+
+
+
+
+Location for adding events
+==========================
+
+The location for adding events depends on the current date. Create a calendar:
+
+>>> import zeit.calendar.calendar
+>>> import zeit.calendar.browser.event
+>>> calendar = zeit.calendar.calendar.Calendar()
+
+The browse location will be /online/<current year>/<current week>.  When the
+location doesn't exist the repository is used instead:
+
+>>> zeit.calendar.browser.event.calendar_browse_location(calendar, object())
+Getting  http://xml.zeit.de/online/...
+<Repository object at ...>
+
+
+The mock repository works in a way that it every second time returns an object.
+So now we get a folder:
+
+>>> zeit.calendar.browser.event.calendar_browse_location(calendar, object())
+Getting  http://xml.zeit.de/online/...
+<object object at ...>
+
+
+Location for events
+===================
+
+For events the location depends on the set date:
+
+>>> import datetime
+>>> import zeit.calendar.event
+>>> event = zeit.calendar.event.Event()
+>>> event.start = datetime.datetime(2006, 2, 3)
+
+The browsing location now will be the repository, because 2006/xx doesn't
+exist:
+
+>>> zeit.calendar.browser.event.event_browse_location(event, object())
+Getting  http://xml.zeit.de/online/2006/05
+<Repository object at ...>
+
+
+The second time we get an object (because of the mock repository)
+
+>>> zeit.calendar.browser.event.event_browse_location(event, object())
+Getting  http://xml.zeit.de/online/2006/05
+<object object at ...>
+
+Clean up
+========
+
+>>> gsm.unregisterUtility(
+...     repository,
+...     zeit.cms.repository.interfaces.IRepository)
+True

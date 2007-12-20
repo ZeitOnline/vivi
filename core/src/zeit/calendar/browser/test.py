@@ -13,7 +13,7 @@ import zeit.calendar.test
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
-        'calendar_view.txt',
+        'calendar_view.txt', 'event.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS)))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(

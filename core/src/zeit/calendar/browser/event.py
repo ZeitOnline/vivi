@@ -2,10 +2,15 @@
 # See also LICENSE.txt
 # $Id$
 
-import zope.formlib.form
+import datetime
 
-import zeit.cms.browser.form
+import zope.formlib.form
 import zope.i18nmessageid
+
+import zeit.cms.interfaces
+import zeit.cms.browser.form
+import zeit.cms.browser.interfaces
+import zeit.cms.repository.interfaces
 
 import zeit.calendar.event
 import zeit.calendar.interfaces
@@ -64,3 +69,37 @@ class EditForm(EventFormBase, zeit.cms.browser.form.EditForm):
 
     def nextURL(self):
         return self.nextURLForEvent(self.context)
+
+
+@zope.component.adapter(
+    zeit.calendar.interfaces.ICalendar,
+    zeit.cms.interfaces.ICMSContentType)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def calendar_browse_location(context, schema):
+    """Deduce location from current date."""
+    return get_location_for(datetime.datetime.now())
+
+
+@zope.component.adapter(
+    zeit.calendar.interfaces.ICalendarEvent,
+    zeit.cms.interfaces.ICMSContentType)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def event_browse_location(context, schema):
+    """Get the location from the event start."""
+    return get_location_for(context.start)
+
+
+def get_location_for(date):
+    year = date.year
+    volume = date.strftime('%W')
+
+    unique_id = u'http://xml.zeit.de/online/%s/%s' % (year, volume)
+
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    try:
+        return repository.getContent(unique_id)
+    except KeyError:
+        return repository

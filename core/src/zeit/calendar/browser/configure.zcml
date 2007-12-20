@@ -42,6 +42,8 @@
     name="calendar-macros"
     />
 
+  <!-- events -->
+
   <browser:page
     for="zeit.calendar.interfaces.ICalendar"
     permission="zeit.EditContent"
@@ -55,6 +57,9 @@
     class=".event.EditForm"
     name="edit.html"
     />
+
+  <adapter factory=".event.calendar_browse_location" />
+  <adapter factory=".event.event_browse_location" />
 
   <adapter factory=".calendar_view.lastViewFactory" trusted="yes" />
 

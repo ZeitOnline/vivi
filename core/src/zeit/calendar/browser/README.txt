@@ -61,6 +61,9 @@ Fill the form with values and submit:
 >>> browser.getControl(name='form.start').value = '2006-05-04'
 >>> browser.getControl(name='form.title').value = 'Bild erstellen'
 >>> browser.getControl(name='form.description').value = '... fuer Artikel'
+>>> browser.getControl('Add Related documents').click()
+>>> browser.getControl(name='form.related.0.').value = (
+...     'http://xml.zeit.de/online')
 >>> browser.getControl(name='form.actions.add').click()
 
 After successful adding, the calendar is displayed for the added month:
@@ -83,6 +86,19 @@ After successful adding, the calendar is displayed for the added month:
     </div>
   </td>
 ... 
+
+
+The event can be edited again:
+
+>>> browser.getLink('Bild erstellen').click()
+>>> browser.getControl(name='form.related.0.').value
+'http://xml.zeit.de/online'
+>>> browser.getControl(name='form.related.0.').value = (
+...     'http://xml.zeit.de/online/2007')
+>>> browser.getControl('Apply').click()
+
+After editing we're also back at the calendar view.
+
 
 
 Navigating
