@@ -137,15 +137,14 @@
             <a
               tal:attributes="href string:$context_url/${menu_item/action};
               title menu_item/title"
-             i18n:translate=""
-             i18n:attributes="title">
-             <img src=""
-               tal:attributes="src string:/@@/zeit.cms/icons/$klass.png" />
-             <span class="action-title"
-              tal:content="menu_item/title"
-              i18n:translate="">
-              Checkout
-            </span>
+              i18n:attributes="title">
+              <img src=""
+                tal:attributes="src string:/@@/zeit.cms/icons/$klass.png" />
+              <span class="action-title"
+                tal:content="menu_item/title"
+                i18n:translate="">
+                Checkout
+              </span>
 
             </a>
           </li>
