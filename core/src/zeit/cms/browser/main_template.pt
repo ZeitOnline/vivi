@@ -74,6 +74,10 @@
               </li>
             </tal:repeat>
           </ul>
+          <div id="user-information"
+            tal:content="request/principal/title | request/principal/id">
+            ldap.ich
+          </div>
         </div>
 
         <div id="sidebar" 
