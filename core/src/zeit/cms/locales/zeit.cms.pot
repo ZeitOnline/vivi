@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Dec 12 10:22:36 2007\n"
+"POT-Creation-Date: Wed Dec 19 19:39:55 2007\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -22,6 +22,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
+
+#: src/zeit/calendar/browser/configure.zcml:13
+msgid "Kalender"
+msgstr ""
 
 #: src/zeit/calendar/browser/event.py:58
 msgid "Apply"
@@ -35,15 +39,11 @@ msgstr ""
 msgid "context sensitive views"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:153
+#: src/zeit/cms/browser/configure.zcml:152
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:189
-msgid "Preview"
-msgstr ""
-
-#: src/zeit/cms/browser/configure.zcml:198
+#: src/zeit/cms/browser/configure.zcml:197
 msgid "Live"
 msgstr ""
 
@@ -51,7 +51,7 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:207
+#: src/zeit/cms/browser/configure.zcml:206
 msgid "Development"
 msgstr ""
 
@@ -61,17 +61,19 @@ msgstr ""
 
 #: src/zeit/cms/browser/configure.zcml:72
 #: src/zeit/cms/browser/configure.zcml:87
-msgid "Quelltext"
+msgid "Source"
 msgstr ""
 
 #: src/zeit/cms/browser/form.py:178
 #: src/zeit/cms/content/browser/configure.zcml:78
+#: src/zeit/wysiwyg/browser/configure.zcml:8
+#: src/zeit/content/gallery/browser/configure.zcml:74
 msgid "Edit"
 msgstr ""
 
 #: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/repository/browser/configure.zcml:52
-#: src/zeit/cms/repository/browser/configure.zcml:170
+#: src/zeit/cms/repository/browser/configure.zcml:172
 msgid "View"
 msgstr ""
 
@@ -107,11 +109,11 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:209
+#: src/zeit/cms/browser/main_template.pt:210
 msgid "Add..."
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:244
+#: src/zeit/cms/browser/main_template.pt:246
 msgid "There are no objects in this folder."
 msgstr ""
 
@@ -135,18 +137,50 @@ msgstr ""
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:17
-#: src/zeit/cms/content/browser/template.py:33
+#: src/zeit/cms/content/browser/configure.zcml:86
+msgid "Properties"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template-properties.pt:10
+msgid "Value"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template-properties.pt:48
+msgid "Save"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template-properties.pt:8
+msgid "Namespace"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template-properties.pt:9
+msgid "Name"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template.py:21
+#: src/zeit/cms/content/browser/template.py:37
 #: src/zeit/cms/content/browser/configure.zcml:53
 msgid "Templates"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:46
+#: src/zeit/cms/content/browser/template.py:45
+#: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/cms/content/interfaces.py:248
+#: src/zeit/content/gallery/interfaces.py:50
+#: src/zeit/search/interfaces.py:20
+msgid "Title"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template.py:62
 msgid "Add template"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:56
+#: src/zeit/cms/content/browser/template.py:72
 msgid "Edit template"
+msgstr ""
+
+#: src/zeit/cms/content/browser/template.py:77
+msgid "Edit webdav properties"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:100
@@ -155,13 +189,6 @@ msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:104
 msgid "By line"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:108
-#: src/zeit/cms/content/interfaces.py:248
-#: src/zeit/content/gallery/interfaces.py:50
-#: src/zeit/search/interfaces.py:20
-msgid "Title"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:111
@@ -266,18 +293,42 @@ msgid "File name"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:10
-msgid "Checkout content"
+msgid "Add ZEIT content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:15
+msgid "Delete ZEIT content"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:20
+msgid "Checkout content"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:25
 msgid "Checkin content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:5
-msgid "Manage content"
+#: src/zeit/cms/permissions.zcml:30
+msgid "Create and modify calendar entries"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/configure.zcml:116
+#: src/zeit/cms/permissions.zcml:35
+msgid "Syndicate content"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:40
+msgid "Publish objects"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:45
+msgid "Manage WebDAV locks"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:5
+msgid "Edit ZEIT content"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/configure.zcml:117
 msgid "Show"
 msgstr ""
 
@@ -290,6 +341,7 @@ msgid "Add ..."
 msgstr ""
 
 #: src/zeit/cms/repository/browser/configure.zcml:74
+#: src/zeit/cms/content/browser/configure.zcml:95
 msgid "Delete"
 msgstr ""
 
@@ -297,16 +349,16 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:131
+#: src/zeit/cms/repository/browser/repository.py:125
 msgid "Add folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:133
-#: src/zeit/cms/repository/browser/configure.zcml:134
+#: src/zeit/cms/repository/browser/repository.py:127
+#: src/zeit/cms/repository/browser/configure.zcml:136
 msgid "Folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:141
+#: src/zeit/cms/repository/browser/repository.py:135
 msgid "Edit folder"
 msgstr ""
 
@@ -319,6 +371,7 @@ msgid "Feed"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/configure.zcml:26
+#: src/zeit/content/gallery/browser/configure.zcml:31
 msgid "Metadaten"
 msgstr ""
 
@@ -327,6 +380,8 @@ msgid "Sortieren"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/configure.zcml:44
+#: src/zeit/content/image/browser/configure.zcml:29
+#: src/zeit/content/image/browser/configure.zcml:134
 msgid "Anzeigen"
 msgstr ""
 
@@ -351,6 +406,11 @@ msgstr ""
 msgid "L\366schen"
 msgstr ""
 
+#: src/zeit/cms/workingcopy/browser/configure.zcml:57
+#: src/zeit/cms/browser/configure.zcml:188
+msgid "Preview"
+msgstr ""
+
 #: src/zeit/content/article/browser/configure.zcml:21
 #: src/zeit/content/centerpage/browser/configure.zcml:32
 msgid "Edit metadata"
@@ -361,24 +421,33 @@ msgstr ""
 msgid "View metadata"
 msgstr ""
 
-#: src/zeit/content/article/browser/configure.zcml:62
+#: src/zeit/content/article/browser/configure.zcml:64
 msgid "Article"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:29
+#: src/zeit/content/article/browser/form.py:123
+msgid "Edit article"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:32
 #: src/zeit/cms/content/browser/configure.zcml:70
 msgid "Template"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:48
+#: src/zeit/content/article/browser/form.py:39
+msgid "Choose template"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:42
+msgid "Continue"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:66
 msgid "Add article"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:72
-msgid "Edit article"
-msgstr ""
-
 #: src/zeit/content/article/interfaces.py:80
+#: src/zeit/content/gallery/browser/configure.zcml:63
 msgid "Images"
 msgstr ""
 
@@ -387,6 +456,7 @@ msgid "Center-Page"
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:84
+#: src/zeit/content/image/browser/configure.zcml:84
 msgid "Bearbeiten"
 msgstr ""
 
@@ -399,6 +469,7 @@ msgid "Edit Gallery"
 msgstr ""
 
 #: src/zeit/content/gallery/browser/form.py:43
+#: src/zeit/content/gallery/browser/configure.zcml:55
 msgid "Gallery"
 msgstr ""
 
@@ -420,6 +491,18 @@ msgstr ""
 
 #: src/zeit/content/gallery/interfaces.py:54
 msgid "Text"
+msgstr ""
+
+#: src/zeit/content/image/browser/configure.zcml:104
+msgid "Image (single)"
+msgstr ""
+
+#: src/zeit/content/image/browser/configure.zcml:115
+msgid "Bilder"
+msgstr ""
+
+#: src/zeit/content/image/browser/configure.zcml:126
+msgid "Image Group"
 msgstr ""
 
 #: src/zeit/content/image/browser/form.py:27
@@ -447,6 +530,7 @@ msgid "Author"
 msgstr ""
 
 #: src/zeit/workflow/browser/form.py:13
+#: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr ""
 
@@ -470,23 +554,20 @@ msgstr ""
 msgid "Locked until"
 msgstr ""
 
-#: src/zeit/workflow/browser/lock.py:32
+#: src/zeit/workflow/browser/lock.py:34
+#: src/zeit/workflow/browser/configure.zcml:16
 msgid "Locks"
 msgstr ""
 
-#: src/zeit/workflow/browser/lock.py:35
-msgid "Locking"
-msgstr ""
-
-#: src/zeit/workflow/browser/lock.py:57
+#: src/zeit/workflow/browser/lock.py:54
 msgid "Steal Lock"
 msgstr ""
 
-#: src/zeit/workflow/browser/lock.py:62
+#: src/zeit/workflow/browser/lock.py:59
 msgid "Lock"
 msgstr ""
 
-#: src/zeit/workflow/browser/lock.py:67
+#: src/zeit/workflow/browser/lock.py:64
 msgid "Unlock"
 msgstr ""
 
