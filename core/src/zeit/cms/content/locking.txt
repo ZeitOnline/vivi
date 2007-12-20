@@ -28,7 +28,9 @@ Mock a connector:
 Create a fake content object:
 
 
+>>> import zeit.cms.interfaces
 >>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
 ...     uniqueId = 'foo'
 
 Lockstorage
@@ -67,6 +69,22 @@ u'zeit.cms.unknown-dav-locker'
 >>> isinstance(info.timeout, float)
 True
 
+Getting a lock for a non-cms object also returns None:
+
+>>> lock_storage.getLock(object()) is None
+True
+
+Setting a lock for a non-cms object raises an error:
+
+>>> lock_storage.setLock(object(), info)
+Traceback (most recent call last):
+    ...
+ValueError: Non CMS objects cannot be locked.
+
+Deleting a lock for a non-cms object does nothing because it cannot be locked
+anyway:
+
+>>> lock_storage.delLock(object())
 
 
 Clean up

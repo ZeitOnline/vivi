@@ -273,3 +273,23 @@ We can of course also move clips into clips:
       </ul>
    </li>
  </ul>
+
+
+
+Clipboard Listing
+=================
+
+When accessing the clipboard we get a normal content listing:
+
+>>> browser.handleErrors = False
+>>> browser.getLink('Clipboard').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html ...
+<table class="contentListing hasMetadata">
+...
+
+Here we can also delete items:
+
+>>> browser.getControl('Delete')
+<SubmitControl name='delete' type='submit'>

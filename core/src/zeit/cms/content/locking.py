@@ -20,6 +20,9 @@ class LockStorage(object):
     zope.interface.implements(zope.app.locking.interfaces.ILockStorage)
 
     def getLock(self, object):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(object):
+            # Non cms objects cannot have locks.
+            return None
         try:
             locked_by, locked_until, my_lock = self.connector.locked(
                 object.uniqueId)
@@ -33,6 +36,9 @@ class LockStorage(object):
         return LockInfo(object, locked_by, locked_until)
 
     def setLock(self, object, lock):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(object):
+            # Non cms objects cannot have locks.
+            raise ValueError("Non CMS objects cannot be locked.")
         if lock.timeout:
             until = datetime.datetime.fromtimestamp(
                 lock.created + lock.timeout, pytz.UTC)
@@ -41,6 +47,9 @@ class LockStorage(object):
         self.connector.lock(object.uniqueId, lock.principal_id, until)
 
     def delLock(self, object):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(object):
+            # Non cms objects cannot have locks.
+            return
         self.connector.unlock(object.uniqueId)
 
     def cleanup(self):

@@ -19,6 +19,7 @@ class ClipListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
                           zope.publisher.interfaces.IPublicationRequest)
 
     author = subtitle = byline = ressort = volume = page = year = None
+    uniqueId = None
     searchableText = u''
 
     @property
