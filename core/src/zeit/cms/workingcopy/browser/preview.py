@@ -10,6 +10,9 @@ import zope.component
 
 import zope.app.appsetup.product
 
+import zeit.connector.interfaces
+
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.browser.preview
 
@@ -27,9 +30,8 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
             'zeit.cms')
         base = cms_config['workingcopy-preview-base']
 
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        content = repository.getCopyOf(self.context.uniqueId)
+        content = zeit.cms.interfaces.ICMSContent(
+            zeit.connector.interfaces.IResource(self.context))
 
         temp_id = sha.new(content.uniqueId)
         temp_id.update(self.request.principal.id)
@@ -38,6 +40,8 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         unique_id = urlparse.urljoin(base, temp_id.hexdigest())
         content.uniqueId = unique_id
 
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
         repository.addContent(content)
         self.redirect_to_preview_of(content)
         return ''
