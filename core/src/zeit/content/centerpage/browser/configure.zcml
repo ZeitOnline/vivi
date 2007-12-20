@@ -65,7 +65,7 @@
   <!-- Add view -->
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zope.ManageContent"
+    permission="zeit.AddContent"
     class=".form.AddForm"
     name="zeit.content.centerpage.Add"
     menu="zeit-add-menu" title="Center-Page"
@@ -94,15 +94,7 @@
     name="edit_structure.html"
     for="zeit.content.centerpage.interfaces.IColumn"
     class=".form.XMLColumnForm"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
-
-  <browser:page
-    name="edit_structure.html"
-    for="zeit.content.centerpage.interfaces.IContainer"
-    class=".form.XMLColumnForm"
-    permission="zope.ManageContent" 
-    />
-
 
 </configure>

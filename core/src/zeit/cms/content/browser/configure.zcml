@@ -46,7 +46,7 @@
     name="template-manager.html"
     class=".template.Manager"
     template="template-manager.pt"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     />
   
   <!-- XXX the permission should be something which allows administration -->
@@ -54,7 +54,7 @@
     for="*"
     menu="zeit-global-views"
     title="Templates"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     action="@@template-manager.html"
     />
   
@@ -63,7 +63,7 @@
     name="index.html"
     class=".template.Listing"
     template="template-listing.pt"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
   
@@ -71,7 +71,7 @@
     for="zeit.cms.content.interfaces.ITemplateManager"
     name="zeit.cms.content.template.add.html"
     class=".template.Add"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     menu="zeit-add-menu" title="Template"
     />
 
@@ -79,7 +79,7 @@
     for="zeit.cms.content.interfaces.ITemplate"
     name="index.html"
     class=".template.Edit"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     menu="zeit-context-views" title="Edit"
     />
 
@@ -88,7 +88,7 @@
     name="webdav-properties.html"
     class=".template.Properties"
     template="template-properties.pt"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     menu="zeit-context-views" title="Properties"
     />
 
@@ -97,11 +97,7 @@
     action="delete"
     menu="folder-actions"
     title="Delete"
-    permission="zope.ManageContent"
+    permission="zope.ManageApplication"
     />
 
-
-
-
 </configure>
-

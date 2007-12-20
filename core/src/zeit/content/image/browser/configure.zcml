@@ -103,9 +103,9 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zope.ManageContent"
-    class=".form.AddForm"
     name="zeit.content.image.Add"
+    permission="zeit.AddContent"
+    class=".form.AddForm"
     menu="zeit-add-menu" title="Image (single)"
     />
 
@@ -125,7 +125,7 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zope.ManageContent"
+    permission="zeit.AddContent"
     class=".imagegroup.AddForm"
     name="zeit.content.image.imagegroup.Add"
     menu="zeit-add-menu" title="Image Group"

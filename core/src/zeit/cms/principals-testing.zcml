@@ -19,4 +19,5 @@
       password="globalmgrpw" />
 
   <grant role="zope.Manager" principal="zope.globalmgr" />
+
 </configure>

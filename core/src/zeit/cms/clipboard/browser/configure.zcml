@@ -101,5 +101,14 @@
     class=".clip.ClipDragPane"
     name="drag-pane.html"
     />
+  
+  <browser:menuItem
+    for="zeit.cms.clipboard.interfaces.IClip"
+    action="delete"
+    menu="folder-actions"
+    title="Delete"
+    permission="zope.ManageContent"
+    />
+
 
 </configure>

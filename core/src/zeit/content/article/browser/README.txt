@@ -206,7 +206,7 @@ xml source:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
->>> browser.getLink('Quelltext').click()
+>>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
@@ -230,7 +230,7 @@ Let's make sure the feed is referenced in the article:
 
 >>> browser.open(article_url)
 >>> browser.getLink('Checkout').click()
->>> browser.getLink('Quelltext').click()
+>>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value
 <article...
   <attribute
@@ -256,7 +256,7 @@ at its xml source:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
->>> browser.getLink('Quelltext').click()
+>>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
@@ -393,7 +393,7 @@ Now fill in the actual article:
 
 Let's hae a look at the source:
 
->>> browser.getLink('Quelltext').click()
+>>> browser.getLink('Source').click()
 >>> print browser.getControl('Source').value.replace('\r\n', '\n')
 <article>
   <head>

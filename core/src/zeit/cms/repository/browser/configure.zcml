@@ -76,7 +76,7 @@
     action="delete"
     menu="folder-actions"
     title="Delete"
-    permission="zope.ManageContent"
+    permission="zeit.DeleteContent"
     />
 
   <browser:page
@@ -135,7 +135,7 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zope.ManageContent"
+    permission="zeit.AddContent"
     class=".repository.FolderAdd"
     name="zeit.cms.repository.Add"
     menu="zeit-add-menu" title="Folder"
@@ -184,7 +184,7 @@
     name="edit.html"
     class=".unknown.Edit"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
 
   <browser:page
@@ -206,7 +206,7 @@
     for="zope.location.interfaces.ISite"
     name="index.html"
     class=".entrypage.EntryPage"
-    permission="zope.ManageContent"
+    permission="zope.View"
     />
 
 

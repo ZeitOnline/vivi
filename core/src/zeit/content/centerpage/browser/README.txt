@@ -166,7 +166,7 @@ Source Editor
 With the source editor you can just edit the plain source  code of a center
 page:
 
->>> browser.getLink('Quelltext').click()
+>>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value
 <centerpage>
   <head>

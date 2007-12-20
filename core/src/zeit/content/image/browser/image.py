@@ -106,6 +106,11 @@ class ImageListRepresentation(
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def imagefolder_browse_location(context, schema):
+    """The image browse location is deduced from the current folder, i.e.
+
+        for /online/2007/32 it is /bilder/2007/32
+
+    """
     unique_id = context.uniqueId
 
     split = list(urlparse.urlsplit(unique_id))

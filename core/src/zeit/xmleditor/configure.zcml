@@ -1,9 +1,9 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
   <class class=".structure.XInclude">
-    <require permission="zope.ManageContent"
+    <require permission="zeit.EditContent"
       interface=".interfaces.IXInclude" />
-    <require permission="zope.ManageContent"
+    <require permission="zeit.EditContent"
       set_schema=".interfaces.IXInclude" />
   </class>
 

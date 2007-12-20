@@ -5,7 +5,7 @@
   <browser:pages
     for="zeit.xmleditor.browser.interfaces.IXMLEditor"
     class=".editor.XMLEditorActions"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     >
     <browser:page
       name="remove"
@@ -56,27 +56,25 @@
     name="edit_structure.html"
     for="zeit.xmleditor.interfaces.IXInclude"
     class=".form.XInclude"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
   <browser:page
     name="edit_structure.html"
     for="zeit.xmleditor.interfaces.IBlock"
     class=".form.Block"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
   <browser:page
     name="edit_structure.html"
     for="zeit.xmleditor.interfaces.IText"
     class=".form.Text"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
   <browser:page
     name="edit_structure.html"
     for="zeit.xmleditor.interfaces.IRaw"
     class=".form.Raw"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
-
-
 
 </configure>

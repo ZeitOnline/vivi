@@ -74,23 +74,22 @@
     name="text_edit.html"
     class=".sourceedit.TextEditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Quelltext" 
+    menu="zeit-context-views" title="Source" 
     />
 
   <browser:page
     for="zeit.cms.content.interfaces.IXMLContent"
     name="xml_source_edit.html"
     class=".sourceedit.XMLEditForm"
-    permission="zope.ManageContent"
+    permission="zeit.EditContent"
     />
 
   <browser:menuItem
     for="zeit.cms.content.interfaces.IXMLContent"
     menu="zeit-context-views"
-    title="Quelltext"
+    title="Source"
     action="@@xml_source_edit.html"
-    permission="zope.ManageContent"
-    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
+    permission="zeit.EditContent"
     />
 
   <browser:page

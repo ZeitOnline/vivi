@@ -19,7 +19,7 @@
       permission="zope.View" />
     <require
       set_schema="zeit.wysiwyg.interfaces.IHTMLContent"
-      permission="zope.ManageContent" />
+      permission="zeit.EditContent" />
   </class>
 
 

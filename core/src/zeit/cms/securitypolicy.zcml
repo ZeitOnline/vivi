@@ -15,6 +15,8 @@
   <role id="zope.Manager" title="Site Manager" />
   <role id="zope.Member" title="Site Member" />
 
+  <role id="zeit.Editor" title="Redakteur" />
+
 
   <!-- Groups and other principals -->
   <unauthenticatedPrincipal
@@ -36,7 +38,6 @@
 
   <!-- Permission grants -->
   <grantAll role="zope.Manager" />
-  <grantAll principal="zope.Authenticated" />
 
   <grant
     principal="zope.Authenticated"
@@ -46,13 +47,38 @@
     principal="zope.Authenticated"
     permission="zope.View"
     />
+
   <grant
-    principal="zope.Authenticated"
+    role="zeit.Editor"
     permission="zeit.Checkout"
     />
   <grant
-    principal="zope.Authenticated"
+    role="zeit.Editor"
     permission="zeit.Checkin"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.AddContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.DeleteContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.calendar.Edit"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.cms.Syndicate"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.workflow.Publish"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.workflow.ManageLocks"
     />
 
 </configure>

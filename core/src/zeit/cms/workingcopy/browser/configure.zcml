@@ -41,7 +41,7 @@
     action="delete"
     menu="folder-actions"
     title="Löschen"
-    permission="zope.ManageContent"
+    permission="zeit.DeleteContent"
     />
 
 

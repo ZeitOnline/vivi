@@ -4,7 +4,17 @@
   
   <permission
     id="zeit.EditContent"
-    title="Manage content"
+    title="Edit ZEIT content"
+    />
+
+  <permission
+    id="zeit.AddContent"
+    title="Add ZEIT content"
+    />
+
+  <permission
+    id="zeit.DeleteContent"
+    title="Delete ZEIT content"
     />
 
   <permission
@@ -15,6 +25,26 @@
   <permission
     id="zeit.Checkin"
     title="Checkin content"
+    />
+
+  <permission
+    id="zeit.calendar.Edit"
+    title="Create and modify calendar entries"
+    />
+  
+  <permission
+    id="zeit.cms.Syndicate"
+    title="Syndicate content"
+    />
+
+  <permission
+    id="zeit.workflow.Publish"
+    title="Publish objects"
+    />
+
+  <permission
+    id="zeit.workflow.ManageLocks"
+    title="Manage WebDAV locks"
     />
 
 </configure>

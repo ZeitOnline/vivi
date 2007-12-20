@@ -15,7 +15,7 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.ICollection"
-    permission="zope.ManageContent"
+    permission="zeit.AddContent"
     class=".form.AddForm"
     name="zeit.cms.syndication.feed.Add"
     menu="zeit-add-menu" title="Feed"
@@ -96,7 +96,7 @@
   <browser:page
     name="syndication_manager"
     for="zeit.cms.interfaces.ICMSContent"
-    permission="zope.ManageContent"
+    permission="zeit.cms.Syndicate"
     allowed_interface=".interfaces.ISyndicationManagerView"
     template="manager.pt"
     class=".manager.Manager"
@@ -108,7 +108,7 @@
     menu="zeit-context-views"
     title="Syndicate"
     action="@@syndication_manager"
-    permission="zope.ManageContent"
+    permission="zeit.cms.Syndicate"
     filter="context/@@syndication_manager/manager/canSyndicate"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />

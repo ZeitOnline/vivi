@@ -42,7 +42,7 @@
     <require interface=".interfaces.IUnknownResource"
       permission="zope.View" />
     <require set_schema=".interfaces.IUnknownResource"
-      permission="zope.ManageContent" />
+      permission="zeit.EditContent" />
   </class>
   
 </configure>

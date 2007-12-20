@@ -63,9 +63,9 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zope.ManageContent"
-    class=".form.ChooseTemplate"
     name="zeit.content.article.ChooseTemplate"
+    permission="zeit.AddContent"
+    class=".form.ChooseTemplate"
     menu="zeit-add-menu" title="Article"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
@@ -75,7 +75,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.AddForm"
     name="zeit.content.article.Add"
-    permission="zope.ManageContent"
+    permission="zeit.AddContent"
     />
   
   <!-- Syndication Log -->

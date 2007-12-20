@@ -27,7 +27,7 @@
   <class class=".manager.SyndicationManager">
     <require
       interface=".interfaces.ISyndicationManager"
-      permission="zope.ManageContent" />
+      permission="zeit.cms.Syndicate" />
   </class>
 
 </configure>

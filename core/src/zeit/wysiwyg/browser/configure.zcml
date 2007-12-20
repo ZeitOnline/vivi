@@ -9,16 +9,8 @@
     name="wysiwyg_edit.html"
     for="..interfaces.IHTMLContent"
     class=".form.EditForm"
-    permission="zope.ManageContent"
-    />
-
-  <browser:menuItem
-    for="..interfaces.IHTMLContent"
-    menu="zeit-context-views"
-    title="WYSIWYG"
-    action="@@wysiwyg_edit.html"
-    permission="zope.ManageContent"
-    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
     />
 
   <resourceLibrary name="zeit.wysiwyg" require="gocept.fckeditor">
