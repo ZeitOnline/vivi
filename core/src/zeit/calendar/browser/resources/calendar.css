@@ -72,7 +72,7 @@
 }
 
 #calendar td.today{
-    background-color: #ddd;
+    background-color: #ffdd00;
 }
 
 #calendar td {
@@ -94,9 +94,6 @@
 }
 #calendar td.day:hover a.add-event {
     visibility: visible;
-}
-#calendar td.day:hover {
-    background-color: #fefeb0;
 }
 
 #calendar .event {
