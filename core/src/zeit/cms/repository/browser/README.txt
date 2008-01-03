@@ -6,7 +6,7 @@ Create a browser first:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 File Listing

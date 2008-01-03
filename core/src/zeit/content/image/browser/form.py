@@ -43,17 +43,7 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
             zeit.content.image.interfaces.IImageSchema,
             omit_readonly=False))
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request:
-            form = self.request.form
-            if not form:
-                form['form.year'] = str(datetime.datetime.now().year)
-                form['form.volume'] = str(int(  # Strip leading 0
-                    datetime.datetime.now().strftime('%W')))
-        super(AddForm, self).setUpWidgets(ignore_request)
-
-    def create(self, data):
-        return zeit.content.image.image.Image(**data)
+    factory = zeit.content.image.image.Image
 
     def validate(self, action, data):
         if (not self.request.form.get('form.__name__') and

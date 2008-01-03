@@ -6,7 +6,7 @@ Create a browser first:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 Listing
 ========
@@ -43,7 +43,7 @@ Image Data
 We get the image itself just by accessing its url:
 
 >>> image = ExtendedTestBrowser()
->>> image.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> image.addHeader('Authorization', 'Basic user:userpw')
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
 >>> image.headers['content-type']
@@ -100,7 +100,7 @@ Verify some values:
 
 Let's verify get the right file data back from the image:
 
->>> image.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> image.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...            'DSC00109_2.JPG')
 >>> test_data.seek(0)
 >>> image.contents == test_data.read()
@@ -172,11 +172,11 @@ filename automatically:
 >>> file_control = browser.getControl(name='form.data')
 >>> file_control.filename = 'opernball.jpg'
 >>> file_control.value = file(test_file, 'rb')
+>>> browser.getControl(name='form.volume').value != '0'
+True
 >>> browser.getControl('Add').click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.mgr/opernball.jpg/@@edit.html'
-
-
+'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
 
 
 Image Groups

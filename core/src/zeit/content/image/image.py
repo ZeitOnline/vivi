@@ -37,19 +37,17 @@ class Image(zope.app.file.image.Image,
         'http://namespaces.zeit.de/CMS/document',
         ('title', 'year', 'volume', 'copyrights'))
 
-    def __init__(self, __name__=None, **data):
-        self.uniqueId = None
-        self.__name__ = __name__
-        zeit.cms.content.util.applySchemaData(
-            self, zeit.content.image.interfaces.IImageSchema, data)
+    uniqueId = None
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def imageFactory(context):
     # TODO: we really should use a blob for the data
-    image = Image(data=context.data,
-                  contentType=context.contentType)
+    image = Image()
+    image.data = context.data
+    if context.contentType:
+        image.contentType = context.contentType
     zeit.cms.interfaces.IWebDAVProperties(image).update(context.properties)
     return image
 
@@ -74,11 +72,17 @@ class XMLReference(object):
 
     @property
     def xml(self):
+
+        def _none_to_empty(value):
+            if value is None:
+                return u''
+            return unicode(value)
+
         image = lxml.objectify.XML('<image/>')
         image.set('src', self.context.uniqueId)
-        image.set('expires', unicode(self.context.expires))
-        image.set('alt', unicode(self.context.alt))
-        image.set('title', unicode(self.context.caption))
+        image.set('expires', _none_to_empty(self.context.expires))
+        image.set('alt', _none_to_empty(self.context.alt))
+        image.set('title', _none_to_empty(self.context.caption))
         image.copyright = self.context.copyrights
         return image
 

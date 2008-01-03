@@ -6,7 +6,7 @@ Create a browser first:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 Checkout

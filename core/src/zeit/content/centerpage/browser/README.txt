@@ -6,7 +6,7 @@ For UI-Tests we need a Testbrowser:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 Metadata Preview
@@ -49,8 +49,10 @@ defaults:
 
 >>> browser.getControl(name='form.year').value == str(now.year)
 True
->>> browser.getControl(name='form.volume').value == str(int(
-...     now.strftime('%W')))
+>>> current_week = str(int(now.strftime('%W')))
+>>> if current_week == '0':
+...     current_week = '1'
+>>> browser.getControl(name='form.volume').value == current_week
 True
 
 
@@ -70,7 +72,7 @@ After submitting the object is automatically checked out to the working copy
 and we're looking at the metadata screen (i.e. edit form):
 
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.mgr/index/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/index/@@edit.html'
 
 >>> browser.getControl(name='form.year').value
 '2007'
@@ -84,7 +86,7 @@ Make sure there is the edit metadata tab:
 
 >>> browser.getLink('Edit metadata').click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.mgr/index/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/index/@@edit.html'
 
 
 Editing CPs
@@ -125,7 +127,7 @@ With another browser, we do the "ajax" requests:
 
 >>> import urllib
 >>> ajax = ExtendedTestBrowser()
->>> ajax.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> ajax.addHeader('Authorization', 'Basic user:userpw')
 >>> ajax.open('%s/addChildView?action=append-child&path=%s' % (
 ...       browser.url, urllib.quote(path)))
 >>> print ajax.contents

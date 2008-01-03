@@ -49,13 +49,15 @@ The gallery is also noted in the xml structure:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None"
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires=""
             alt="" title="">
-            <copyright>ZEIT online</copyright>
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
           </image>
           <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+            expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
           </thumbnail>
         </block>
       </container>
@@ -71,7 +73,10 @@ Let's add an image to the image folder:
 >>> filename = os.path.join(os.path.dirname(__file__),
 ...                         'browser', 'testdata', '01.jpg')
 >>> test_data = file(filename, 'rb').read()
->>> image = zeit.content.image.image.Image(__name__='01.jpg', data=test_data)
+>>> image = zeit.content.image.image.Image()
+>>> image.__name__ = '01.jpg'
+>>> image.data = test_data
+>>> image.copyrights = u'ZEIT online'
 >>> repository['2006']['01.jpg'] = image
 
 The gallery obviously hasn't noted this change:
@@ -98,21 +103,19 @@ The change is reflected in the xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <text></text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="None" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -142,7 +145,7 @@ u''
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
->>> entry.text = u'Seit zwei Uhr in der Früh ...'
+>>> entry.text = u'Seit zwei Uhr in der Früh'
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <centerpage>
   <head>
@@ -154,21 +157,24 @@ xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires=""
+            alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
           </image>
           <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+            expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <text></text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
           <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="None" alt="" title="">
+            expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -192,21 +198,19 @@ When we assign the entry the change will be reflected:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text>Seit zwei Uhr in der Fr&#195;&#188;h ...</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
+          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="None" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -234,22 +238,24 @@ well:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
           </image>
           <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="None" alt="" title="">
-            <copyright>ZEIT online</copyright>
+            expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
-          <text>Seit zwei Uhr in der Fr&#195;&#188;h ...</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="None" alt="" title="">
+          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </image>
           <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="None" alt="" title="">
+            expires="" alt="" title="">
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -265,7 +271,7 @@ Let's make sure we actually can get the saved data:
 >>> entry.title
 u'Der Wecker klingelt'
 >>> entry.text
-u'Seit zwei Uhr in der Fr\xc3\xbch ...'
+u'Seit zwei Uhr in der Fr\xc3\xbch'
 
 
 Container api

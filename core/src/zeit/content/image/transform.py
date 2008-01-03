@@ -46,6 +46,10 @@ def persistent_thumbnail_factory(context):
     if image_name not in thumbnail_container:
         transform = zeit.content.image.interfaces.ITransform(context)
         thumbnail = transform.thumbnail(50, 50)
+
+        zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail).update(
+            zeit.connector.interfaces.IWebDAVReadProperties(context))
+
         thumbnail_container[image_name] = thumbnail
 
     return thumbnail_container[image_name]

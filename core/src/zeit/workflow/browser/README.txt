@@ -169,7 +169,7 @@ When we lock we'll see the relevant information:
           <span>Locker</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">zope.mgr</div>
+        <div class="widget">zope.user</div>
       </div>
       ...
 
@@ -178,5 +178,5 @@ When we lock we'll see the relevant information:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 

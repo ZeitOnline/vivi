@@ -7,7 +7,7 @@ Create a  browser first:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 For creating a gallery we need a folder containing images:
@@ -72,7 +72,7 @@ Set the most important values:
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name="form.actions.add").click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.mgr/island/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/island/@@edit.html'
 
 
 Lets go to the image overview page:
@@ -117,7 +117,7 @@ After saving we're back at the overview:
 <?xml ...
   <tr>
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.mgr/island/01.jpg">
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg">
         <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
         <span>
           Edit

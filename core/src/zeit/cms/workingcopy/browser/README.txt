@@ -7,13 +7,13 @@ Create a test browser first:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 When we access our working copy it is created on the fly if it does not exist
 yet. So let's open our workingcopy. It doesn't contain any documents, yet:
 
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.mgr')
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
 >>> print browser.contents
 <?xml version...
 <!DOCTYPE ...
@@ -38,11 +38,11 @@ Checkout the Somalia Article:
 Checking out redirected us to the document *in* the working copy:
 
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.mgr/Somalia/@@view.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html'
 
 Looking at our working copy also shows the `Somalia` article:
 
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.mgr')
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
 >>> print browser.contents
 <?xml version...
 <!DOCTYPE ...
@@ -66,7 +66,7 @@ We need some setup:
 >>> import zeit.cms.browser.interfaces
 >>> workingcopy_location = zope.component.getUtility(
 ...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
->>> workingcopy = workingcopy_location['zope.mgr']
+>>> workingcopy = workingcopy_location['zope.user']
 
 There is no default location for the working copy itself:
 
@@ -134,7 +134,7 @@ Create `previews` now:
 Open the checked out somalia and change its source:
 
 
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.mgr/Somalia/@@view.html')
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html')
 >>> browser.getLink('Source').click()
 >>> browser.getControl('Document content').value = 'no more!'
 >>> browser.getControl('Apply').click()

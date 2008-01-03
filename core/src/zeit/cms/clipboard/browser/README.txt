@@ -6,7 +6,7 @@ Create a testbrowser:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 Tree
@@ -33,7 +33,7 @@ The clipboard is displayed as a tree. Initially it's empty:
 Open the drag pane of the wirtschaft.feed:
 
 >>> ajax = Browser()
->>> ajax.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> ajax.addHeader('Authorization', 'Basic user:userpw')
 >>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
 >>> print ajax.contents
 <div class="Text">Wirtschaft</div>
@@ -41,7 +41,7 @@ Open the drag pane of the wirtschaft.feed:
 
 We assume, that we drag the pane over the Clipboard:
 
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
 ...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
 >>> print ajax.contents
@@ -51,7 +51,7 @@ We assume, that we drag the pane over the Clipboard:
       <span class="URL">...</span>
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
-          <a href="http://localhost/++skin++cms/workingcopy/zope.mgr/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
+          <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
           <span class="URL">...wirtschaft.feed</span>
         </li>
       </ul>
@@ -62,7 +62,7 @@ We assume, that we drag the pane over the Clipboard:
 Assume we drop the object `Queerdax` on the wirtschaft.feed. `Querdax` will be
 added *before* the feed:
 
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
 ...           'add_to=wirtschaft.feed&'
 ...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
@@ -115,7 +115,7 @@ ajax. Fill out the form and check that the controls are there:
 Actually add a clip using our "ajax" browser. The clip is appended as the last
 element of the root node:
 
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
 ...           'title=New+Clip')
 >>> print ajax.contents
@@ -143,7 +143,7 @@ element of the root node:
 
 Let's add another clip:
   
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
 ...           'title=Second+Clip')
 >>> print ajax.contents
@@ -180,7 +180,7 @@ We can now move things around. This also works via ajax. Move the `Querdax`
 to `New Clip`. The tree node is currently collapsed so we won't see the
 `Querdax` entry after moving:
 
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
 ...           'object_path=Querdax&add_to=New%20Clip')
 >>> print ajax.contents
@@ -208,7 +208,7 @@ to `New Clip`. The tree node is currently collapsed so we won't see the
 
 Expand the `New Clip` node:
 
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/tree.html/'
 ...           '@@expandTree?uniqueId=New%20Clip')
 >>> print ajax.contents
@@ -242,7 +242,7 @@ Expand the `New Clip` node:
 
 We can of course also move clips into clips:
 
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.mgr/'
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
 ...           'object_path=Second%20Clip&add_to=New%20Clip/Querdax')
 >>> print ajax.contents

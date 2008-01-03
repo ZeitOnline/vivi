@@ -7,10 +7,9 @@ allows adding and editing of templates by an administrator.
 
 Create a testbrowser and open the homepage:
 
-
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
 >>> browser.open('http://localhost/++skin++cms/' )
 
 Open the template managment ui:

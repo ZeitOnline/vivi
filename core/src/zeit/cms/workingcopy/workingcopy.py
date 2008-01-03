@@ -50,8 +50,11 @@ class WorkingcopyLocation(zope.app.container.btree.BTreeContainer):
                 zope.app.securitypolicy.interfaces.IPrincipalPermissionManager(
                     result))
             perms.grantPermissionToPrincipal('zeit.EditContent', principal_id)
-            perms.grantPermissionToPrincipal('zope.ManageContent',
-                                             principal_id)
+
+            prm = zope.app.securitypolicy.interfaces.IPrincipalRoleManager(
+                    result)
+            prm.assignRoleToPrincipal('zeit.Owner', principal_id)
+
             try:
                 dc = zope.dublincore.interfaces.IDCDescriptiveProperties(
                     result)

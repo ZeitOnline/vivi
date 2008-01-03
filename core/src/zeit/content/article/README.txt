@@ -235,7 +235,7 @@ And the image is referenced in the XML structure:
       type="jpeg"
       expires="2007-04-01T00:00:00+00:00">
       <bu></bu>
-      <copyright>ZEIT online</copyright>
+      <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
     </image>...
   </head>
   ...

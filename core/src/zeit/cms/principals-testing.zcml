@@ -1,14 +1,12 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
    xmlns:meta="http://namespaces.zope.org/meta"
-   i18n_domain="zope"
-   >
+   i18n_domain="zope">
   
-  <!-- Principal that tests generally run as -->
   <principal
       id="zope.mgr"
       title="Manager"
-      login="mgr"
+      login="zmgr"
       password="mgrpw" />
 
   <!-- Bootstrap principal used to make local grant to the principal above -->
@@ -19,5 +17,12 @@
       password="globalmgrpw" />
 
   <grant role="zope.Manager" principal="zope.globalmgr" />
+
+  <!-- Principal that tests generally run as -->
+  <principal
+      id="zope.user"
+      title="User"
+      login="user"
+      password="userpw" />
 
 </configure>

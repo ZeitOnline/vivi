@@ -221,12 +221,17 @@ class Repository(persistent.Persistent, Folder):
 
 def repositoryFactory():
     repository = Repository()
+    # Deny EditContent to everybody (i.e. also to managers) because this really
+    # really must not be possible.
     perms = zope.app.securitypolicy.interfaces.IPrincipalPermissionManager(
         repository)
     perms.denyPermissionToPrincipal('zeit.EditContent', 'zope.Everybody')
-    roles = zope.app.securitypolicy.interfaces.IPrincipalRoleManager(
+
+    # Grant zope.ManageContent to zeit.Editor so editors can lock/unlock
+    # content.
+    rpm = zope.app.securitypolicy.interfaces.IRolePermissionManager(
         repository)
-    roles.assignRoleToPrincipal('zeit.Editor', 'zope.Authenticated')
+    rpm.grantPermissionToRole('zope.ManageContent', 'zeit.Editor')
     return repository
 
 

@@ -22,7 +22,7 @@ Sidebar Folding
 The sidebar remembers its folding state. This is dependent on the user, so
 let's log in one:
 
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 Initially the sidebar is open (expanded):
 

@@ -6,7 +6,7 @@ For UI-Tests we need a Testbrowser:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 Metadata Preview
 ================
@@ -94,8 +94,10 @@ defaults:
 
 >>> browser.getControl(name='form.year').value == str(now.year)
 True
->>> browser.getControl(name='form.volume').value == str(int(
-...     now.strftime('%W')))
+>>> current_week = str(int(now.strftime('%W')))
+>>> if current_week == '0':
+...     current_week = '1'
+>>> browser.getControl(name='form.volume').value == current_week
 True
 
 
@@ -114,7 +116,7 @@ After submitting we're looking at the object in our working copy. The metadata
 edit screen should be displayed:
 
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.mgr/KFZ-Steuer/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/KFZ-Steuer/@@edit.html'
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
@@ -299,18 +301,21 @@ The choice allows selecting a "None" value:
 Let's create two templates. This works via the template manager:
 
 
->>> browser.getLink('Templates').click()
->>> browser.getLink('Article templates').click()
->>> menu = browser.getControl(name='add_menu')
+>>> admin = Browser()
+>>> admin.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> admin.open('http://localhost:8080/++skin++cms')
+>>> admin.getLink('Templates').click()
+>>> admin.getLink('Article templates').click()
+>>> menu = admin.getControl(name='add_menu')
 >>> menu.displayValue = ['Template']
->>> browser.open(menu.value[0])
->>> browser.getControl('Title').value = 'Zuender'
->>> browser.getControl('Source').value = (
+>>> admin.open(menu.value[0])
+>>> admin.getControl('Title').value = 'Zuender'
+>>> admin.getControl('Source').value = (
 ...     '<article><head/><body>'
 ...     '<a href="http://zuender.zeit.de"><strong>Nach Hause</strong> - '
 ...     '/Zuender. Das Netzmagazin</a></body></article>')
->>> browser.getControl('Add').click()
->>> print browser.contents
+>>> admin.getControl('Add').click()
+>>> print admin.contents
 <?xml ...
 <!DOCTYPE ...
     <title> Edit webdav properties </title>
@@ -319,16 +324,16 @@ Let's create two templates. This works via the template manager:
 
 Add another template:
 
->>> browser.getLink('Article templates').click()
->>> menu = browser.getControl(name='add_menu')
+>>> admin.getLink('Article templates').click()
+>>> menu = admin.getControl(name='add_menu')
 >>> menu.displayValue = ['Template']
->>> browser.open(menu.value[0])
->>> browser.getControl('Title').value = 'Extrablatt'
->>> browser.getControl('Source').value = (
+>>> admin.open(menu.value[0])
+>>> admin.getControl('Title').value = 'Extrablatt'
+>>> admin.getControl('Source').value = (
 ...     '<article><head/><body/></article>\n'
 ...     '<?ZEIT:StyleGroup zeitwissen-extrablatt?>')
->>> browser.getControl('Add').click()
->>> print browser.contents
+>>> admin.getControl('Add').click()
+>>> print admin.contents
 <?xml ...
 <!DOCTYPE ...
     <title> Edit webdav properties </title>
@@ -336,19 +341,19 @@ Add another template:
 
 Set the default ressort to Extrablatt:
 
->>> browser.getControl(name='namespace:list').value = (
+>>> admin.getControl(name='namespace:list').value = (
 ...     'http://namespaces.zeit.de/CMS/document')
->>> browser.getControl(name='name:list').value = 'ressort'
->>> browser.getControl(name='value:list').value = 'Extrablatt'
->>> browser.getControl('Save').click()
+>>> admin.getControl(name='name:list').value = 'ressort'
+>>> admin.getControl(name='value:list').value = 'Extrablatt'
+>>> admin.getControl('Save').click()
 
 Add another, totally unrelated property, to make sure those are copied to the
 article:
 
->>> browser.getControl(name='namespace:list', index=1).value = (
+>>> admin.getControl(name='namespace:list', index=1).value = (
 ...     'http://namespaces.zeit.de/my-own-namespace')
->>> browser.getControl(name='name:list', index=1).value = 'hans'
->>> browser.getControl(name='value:list', index=1).value = 'wurst'
+>>> admin.getControl(name='name:list', index=1).value = 'hans'
+>>> admin.getControl(name='value:list', index=1).value = 'wurst'
 
 
 When we're now adding an article we can choose those templates:

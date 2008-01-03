@@ -195,7 +195,7 @@ Footnotes
     We also need an interaction as we needs to get the principal:
 
     >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.mgr')
+    >>> principal = zope.security.testing.Principal(u'zope.user')
     >>> participation = zope.security.testing.Participation(principal)
     >>> import zope.security.management
     >>> zope.security.management.newInteraction(participation)

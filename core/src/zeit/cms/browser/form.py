@@ -167,8 +167,12 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
             if 'form.actions.add' not in self.request:
                 form = self.request.form
                 form['form.year'] = str(datetime.datetime.now().year)
-                form['form.volume'] = str(int(  # Strip leading 0
+                volume = str(int(  # Strip leading 0
                     datetime.datetime.now().strftime('%W')))
+                if volume == '0':
+                    # I'm not sure that's right.
+                    volume = '1'
+                form['form.volume'] = volume
         super(AddForm, self).setUpWidgets(ignore_request)
 
 

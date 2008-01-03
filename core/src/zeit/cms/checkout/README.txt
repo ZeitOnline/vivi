@@ -14,7 +14,7 @@ We need to set the site since we're a functional test:
 We also need an interaction as checkout manager needs to get the principal:
 
 >>> import zope.security.testing
->>> principal = zope.security.testing.Principal(u'zope.mgr')
+>>> principal = zope.security.testing.Principal(u'zope.user')
 >>> participation = zope.security.testing.Participation(principal)
 >>> import zope.security.management
 >>> zope.security.management.newInteraction(participation)
@@ -76,7 +76,7 @@ When we check out the document, we will find a copy in the working copy:
 []
 >>> manager.checkout()
 Event: <zeit.cms.checkout.interfaces.CheckoutEvent object at 0x...>
-    Principal: zope.mgr 
+    Principal: zope.user
     Content: <zeit.cms...>
 >>> workingcopy = IWorkingcopy(principal)
 >>> list(workingcopy.keys())
@@ -105,11 +105,11 @@ Bob cannot check out:
   >>> manager.canCheckout
   False
 
-Let's log back in as the `zope.mgr`:
+Let's log back in as the `zope.user`:
 
 >>> zope.security.management.endInteraction()
 >>> import zope.security.testing
->>> principal = zope.security.testing.Principal('zope.mgr')
+>>> principal = zope.security.testing.Principal('zope.user')
 >>> participation = zope.security.testing.Participation(principal)
 >>> import zope.security.management
 >>> zope.security.management.newInteraction(participation)
@@ -140,7 +140,7 @@ But now we check in:
 True
 >>> manager.checkin()
 Event: <zeit.cms.checkout.interfaces.CheckinEvent object at 0x...>
-     Principal: zope.mgr
+     Principal: zope.user
      Content: <zeit.cms...>
 
 Now the object is no longer in the working copy:
@@ -177,7 +177,7 @@ the object is no longer locked in the dav:
 False
 >>> checked_out = manager.checkout()
 Event: <zeit.cms.checkout.interfaces.CheckoutEvent object at 0x...>
-    Principal: zope.mgr
+    Principal: zope.user
     Content: <zeit.cms.repository.unknown.UnknownResource object at 0x...>
 >>> lockable.locked()
 True 

@@ -17,7 +17,7 @@ True
 >>> location = WorkingcopyLocation()
 >>> site_manager.registerUtility(location, IWorkingcopyLocation)
 
-We also need an principal permission manager:
+We also need a principal permission manager:
 
 >>> class PPM(object):
 ...
@@ -30,6 +30,20 @@ We also need an principal permission manager:
 >>> site_manager.registerAdapter(
 ...   PPM, (zope.interface.Interface, ),
 ...   zope.app.securitypolicy.interfaces.IPrincipalPermissionManager)
+
+And we need a principal role manager:
+
+>>> class PRM(object):
+...
+...     def __init__(self, context):
+...         self.context = context
+...
+...     def assignRoleToPrincipal(self, role, principal):
+...         print "Assigning role %s to %s" % (role, principal)
+...
+>>> site_manager.registerAdapter(
+...   PRM, (zope.interface.Interface, ),
+...   zope.app.securitypolicy.interfaces.IPrincipalRoleManager)
 
 
 Adapting Principals
@@ -46,7 +60,7 @@ the "Granting ..." messages:
 >>> principal = Principal()
 >>> workingcopy = principalAdapter(principal)
 Granting zeit.EditContent to hans
-Granting zope.ManageContent to hans
+Assigning role zeit.Owner to hans
 >>> workingcopy
 <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 
@@ -81,7 +95,7 @@ workingcopy:
 
 >>> workingcopy = location.getWorkingcopy()
 Granting zeit.EditContent to kurt
-Granting zope.ManageContent to kurt
+Assigning role zeit.Owner to kurt
 >>> workingcopy
 <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> workingcopy.__name__
@@ -117,4 +131,8 @@ True
 >>> site_manager.unregisterAdapter(
 ...   PPM, (zope.interface.Interface, ),
 ...   zope.app.securitypolicy.interfaces.IPrincipalPermissionManager)
+True
+>>> site_manager.unregisterAdapter(
+...   PRM, (zope.interface.Interface, ),
+...   zope.app.securitypolicy.interfaces.IPrincipalRoleManager)
 True

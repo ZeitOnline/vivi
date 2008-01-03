@@ -7,7 +7,7 @@ Create a browser first:
 >>> import lxml.etree
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
 >>> ns_map = {'html': 'http://www.w3.org/1999/xhtml'}
 

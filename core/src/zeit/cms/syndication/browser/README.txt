@@ -6,7 +6,7 @@ Create a browser first:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 Syndication is only possible for repository content. To syndicate a user
 chooses one or more syndication targets. The user can add any feed to "his

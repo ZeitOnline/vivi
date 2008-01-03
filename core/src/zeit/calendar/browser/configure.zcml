@@ -46,14 +46,14 @@
 
   <browser:page
     for="zeit.calendar.interfaces.ICalendar"
-    permission="zeit.EditContent"
+    permission="zeit.calendar.Edit"
     class=".event.AddForm"
     name="zeit.calendar.Event.AddForm"
     />
 
   <browser:page
     for="zeit.calendar.interfaces.ICalendarEvent"
-    permission="zeit.EditContent"
+    permission="zeit.calendar.Edit"
     class=".event.EditForm"
     name="edit.html"
     />

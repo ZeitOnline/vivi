@@ -7,7 +7,7 @@ The calendar is rendered as a table showing one full month at a time.
 Create a browser first:
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser 
 >>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 Calendar
