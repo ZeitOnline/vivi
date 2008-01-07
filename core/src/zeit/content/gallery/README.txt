@@ -70,13 +70,15 @@ Let's add an image to the image folder:
 
 >>> import os.path
 >>> import zeit.content.image.image
+>>> import zeit.content.image.interfaces
 >>> filename = os.path.join(os.path.dirname(__file__),
 ...                         'browser', 'testdata', '01.jpg')
 >>> test_data = file(filename, 'rb').read()
 >>> image = zeit.content.image.image.Image()
 >>> image.__name__ = '01.jpg'
 >>> image.data = test_data
->>> image.copyrights = u'ZEIT online'
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
+>>> metadata.copyrights = u'ZEIT online'
 >>> repository['2006']['01.jpg'] = image
 
 The gallery obviously hasn't noted this change:

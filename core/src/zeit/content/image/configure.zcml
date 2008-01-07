@@ -44,4 +44,9 @@
   <adapter factory=".imagegroup.imageGroupToResource" />
   <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
 
+  <!-- metadata -->
+  <adapter factory=".metadata.ImageMetadata" />
+  <adapter factory=".metadata.metadata_webdav_read_properties" />
+  <adapter factory=".metadata.metadata_webdav_write_properties" />
+
 </configure>

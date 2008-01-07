@@ -66,12 +66,14 @@ class ImageProperty(object):
             image_element = instance.xml.makeelement('image')
             image_element.set('src', image.uniqueId)
             image_element.set('type', image.contentType.split('/')[-1])
-            expires = image.expires
+            image_metadata = zeit.content.image.interfaces.IImageMetadata(
+                image)
+            expires = image_metadata.expires
             if expires:
                 expires = expires.isoformat()
                 image_element.set('expires', expires)
-            image_element.bu = image.caption or ''
-            image_element.copyright = image.copyrights
+            image_element.bu = image_metadata.caption or ''
+            image_element.copyright = image_metadata.copyrights
             instance.xml.head.append(image_element)
 
     def image_elements(self, instance):

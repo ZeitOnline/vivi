@@ -156,6 +156,19 @@ Make sure the image is not changed by looking at the image view:
   ...
 
 
+Dragging
+========
+
+Try the drag pane:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006/'
+...              'DSC00109_2.JPG/@@drag-pane.html')
+>>> print browser.contents
+  <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
+  <div class="Text">Opernball</div>
+  <div class="UniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</div>
+
+
 Adding
 ======
 

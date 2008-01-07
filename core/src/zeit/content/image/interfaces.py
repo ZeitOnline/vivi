@@ -14,7 +14,7 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
 
 
-class IImageSchema(zope.app.file.interfaces.IImage):
+class IImageMetadata(zope.interface.Interface):
 
     expires = zope.schema.Datetime(
         title=u"Löschdatum",
@@ -55,7 +55,7 @@ class IImageSchema(zope.app.file.interfaces.IImage):
 
 
 class IImage(zeit.cms.interfaces.ICMSContent,
-             IImageSchema):
+             zope.app.file.interfaces.IImage):
     """Image."""
 
 

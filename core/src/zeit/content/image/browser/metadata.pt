@@ -10,7 +10,7 @@
       <div>
         <span tal:replace="image/width" />x<span tal:replace="image/height" />
       </div>
-      <div tal:content="context/title">
+      <div tal:content="view/metadata/title">
         Title
       </div>
 

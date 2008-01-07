@@ -16,7 +16,7 @@
         </tr>
         <tr>
           <td>Löschdatum</td>
-          <td tal:content="context/expires">
+          <td tal:content="view/metadata/expires">
             1.1.07
           </td>
         </tr>
@@ -24,8 +24,8 @@
           <td>Ausgabe/Jahr</td>
           <td>
             <span
-              tal:replace="context/volume" />/<span
-              tal:replace="context/year" />
+              tal:replace="view/metadata/volume" />/<span
+              tal:replace="view/metadata/year" />
           </td>
         </tr>
       </table>
@@ -34,13 +34,13 @@
         <img tal:replace="structure context/@@preview/tag" />
       </a>
       
-      <div tal:content="string: ©${context/copyrights}">
+      <div tal:content="string: ©${view/metadata/copyrights}">
         Zeit online
       </div>
-      <div tal:content="string: ALT: ${context/alt}">
+      <div tal:content="string: ALT: ${view/metadata/alt}">
         Alt
       </div>
-      <div tal:content="string: Bildunterschrift: ${context/caption}">
+      <div tal:content="string: Bildunterschrift: ${view/metadata/caption}">
         Caption
       </div>
 

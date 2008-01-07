@@ -27,16 +27,6 @@ class Image(zope.app.file.image.Image,
     """Image contanis exactly one image."""
 
     zope.interface.implements(zeit.content.image.interfaces.IImage)
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.image.interfaces.IImage,
-        'http://namespaces.zeit.de/CMS/image',
-        ('expires', 'alt', 'caption'))
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.image.interfaces.IImage,
-        'http://namespaces.zeit.de/CMS/document',
-        ('title', 'year', 'volume', 'copyrights'))
-
     uniqueId = None
 
 
@@ -78,12 +68,13 @@ class XMLReference(object):
                 return u''
             return unicode(value)
 
+        metadata = zeit.content.image.interfaces.IImageMetadata(self.context)
         image = lxml.objectify.XML('<image/>')
         image.set('src', self.context.uniqueId)
-        image.set('expires', _none_to_empty(self.context.expires))
-        image.set('alt', _none_to_empty(self.context.alt))
-        image.set('title', _none_to_empty(self.context.caption))
-        image.copyright = self.context.copyrights
+        image.set('expires', _none_to_empty(metadata.expires))
+        image.set('alt', _none_to_empty(metadata.alt))
+        image.set('title', _none_to_empty(metadata.caption))
+        image.copyright = metadata.copyrights
         return image
 
 

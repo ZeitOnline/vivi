@@ -14,6 +14,7 @@
   <browser:page
     for="..interfaces.IImage"
     permission="zope.View"
+    class=".image.MetadataPreviewHTML"
     template="metadata.pt" 
     name="metadata_preview"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -29,6 +30,7 @@
   <browser:page
     name="view.html"
     for="..interfaces.IImage"
+    class=".image.ImageView"
     template="image_view.pt"
     permission="zope.View"
     menu="zeit-context-views" title="Anzeigen"
@@ -37,6 +39,7 @@
   <browser:page
     name="drag-pane.html"
     for="..interfaces.IImage"
+    class=".image.ImageView"
     template="image-drag.pt"
     permission="zope.View"
     />

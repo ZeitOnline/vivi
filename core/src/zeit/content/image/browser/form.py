@@ -31,17 +31,16 @@ class ImageFormBase(object):
             css_class='column-right image-form'),
     )
 
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.image.interfaces.IImage) +
+        zope.formlib.form.FormFields(
+            zeit.content.image.interfaces.IImageMetadata))
+
+
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
     title = _("Add image")
-
-    form_fields = (
-        zope.formlib.form.Fields(
-            zeit.cms.interfaces.ICMSContent,
-            omit_readonly=False).omit('uniqueId') +
-        zope.formlib.form.Fields(
-            zeit.content.image.interfaces.IImageSchema,
-            omit_readonly=False))
 
     factory = zeit.content.image.image.Image
 
@@ -56,9 +55,7 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
 
     title = _("Edit image")
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.image.interfaces.IImageSchema,
-        render_context=True, omit_readonly=False)
+    form_fields = ImageFormBase.form_fields.omit('__name__')
 
     @zope.formlib.form.action(_zope("Apply"),
                               condition=zope.formlib.form.haveInputWidgets)

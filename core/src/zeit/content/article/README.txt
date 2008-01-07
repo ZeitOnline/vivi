@@ -217,7 +217,8 @@ Get an image from the repository and attach it:
 >>> image = repository['2006']['DSC00109_2.JPG']
 >>> image
 <zeit.content.image.image.Image object at 0x...>
->>> image.expires = datetime.datetime(2007, 4, 1)
+>>> image_metadata = zeit.content.image.interfaces.IImageMetadata(image)
+>>> image_metadata.expires = datetime.datetime(2007, 4, 1)
 >>> article.images = (image, )
 
 It's now stored on the article:

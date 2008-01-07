@@ -33,9 +33,7 @@ class ICMSContent(zope.interface.Interface):
 
     """
 
-    uniqueId = zope.schema.TextLine(
-        title=_("Unique Id"),
-        readonly=True)
+    uniqueId = zope.interface.Attribute("Unique Id")
 
     __name__ = zope.schema.TextLine(
         title=_("File name"))

@@ -28,6 +28,17 @@ class Image(zope.app.file.browser.image.ImageData):
         return self.context.getImageSize()[1]
 
 
+class ImageView(object):
+
+    @property
+    def title(self):
+        return self.metadata.title
+
+    @zope.cachedescriptors.property.Lazy
+    def metadata(self):
+        return zeit.content.image.interfaces.IImageMetadata(self.context)
+
+
 class Scaled(object):
 
     def __call__(self):
@@ -46,8 +57,7 @@ class Scaled(object):
             image = image.thumbnail(self.width, self.height)
             image.__name__ = self.__name__
         image_view = zope.component.getMultiAdapter(
-            (image, self.request),
-            name='index.html')
+            (image, self.request), name='index.html')
         return image_view
 
     @property
@@ -84,20 +94,30 @@ class ImageListRepresentation(
                           zope.publisher.interfaces.IPublicationRequest)
 
     author = ressort = page = u''
-    zeit.cms.content.property.mapAttributes('volume', 'year')
 
     @property
     def title(self):
-        title = self.context.title
+        title = self.image_metadata.title
         if not title:
             title = self.context.__name__
         return title
+
+    @property
+    def volume(self):
+        return self.image_metadata.volume
+
+    @property
+    def year(self):
+        return self.image_metadata.year
 
     @property
     def searchableText(self):
         # XXX
         return ''
 
+    @zope.cachedescriptors.property.Lazy
+    def image_metadata(self):
+        return zeit.content.image.interfaces.IImageMetadata(self.context)
 
 
 @zope.component.adapter(
@@ -133,3 +153,10 @@ def imagefolder_browse_location(context, schema):
             zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
     return image_folder
+
+
+class MetadataPreviewHTML(object):
+
+    @zope.cachedescriptors.property.Lazy
+    def metadata(self):
+        return zeit.content.image.interfaces.IImageMetadata(self.context)

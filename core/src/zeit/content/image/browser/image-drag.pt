@@ -3,7 +3,7 @@
     tal:replace="structure context/@@thumbnail/tag" />
 
   <div class="Text"
-    tal:content="context/title">
+    tal:content="view/metadata/title">
   </div>
   <div class="UniqueId"
     tal:content="context/uniqueId">
