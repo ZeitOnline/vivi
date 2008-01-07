@@ -35,6 +35,9 @@ class CheckoutManager(object):
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if lockable.locked() and not lockable.ownLock():
             return False
+        if zeit.cms.workingcopy.interfaces.ILocalContent(
+            self.context, None) is None:
+            return False
         return True
 
     def checkout(self, event=True):

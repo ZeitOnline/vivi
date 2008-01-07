@@ -67,6 +67,11 @@ which prevents checkout though:
 >>> manager.canCheckout
 True
 
+Note that we cannot checkout normal collections:
+
+>>> ICheckoutManager(collection).canCheckout
+False
+
 
 When we check out the document, we will find a copy in the working copy:
 

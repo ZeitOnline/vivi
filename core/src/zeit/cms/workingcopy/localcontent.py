@@ -14,6 +14,9 @@ import zeit.cms.workingcopy.interfaces
 def default_local_content_adapter(context):
     # Default adapter to adapt cms content to local content: create a copy and
     # mark as local content
+    if zeit.cms.repository.interfaces.ICollection.providedBy(context):
+        # We cannot checkout containers. Special treat is required for them.
+        return None
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     content = repository.getCopyOf(context.uniqueId)

@@ -75,6 +75,16 @@ fact @@edit.html redirects us:
 'http://localhost/++skin++cms/repository/new-folder/@@view.html'
 
 
+Note that folders also cannot be checked out. This is not a technical
+limitation but a choice since folders do not have any metadata right now, there
+is nothing a user could do when checking out a folder:
+
+>>> browser.getLink('Checkout')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+
 Popup file browser
 ==================
 
