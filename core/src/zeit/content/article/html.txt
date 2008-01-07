@@ -4,89 +4,89 @@ Article HTML Representation
 
 The HTML representation ... 
 
-Create an article firs::
+Create an article firs:
 
-  >>> import StringIO
-  >>> from zeit.content.article.article import Article
-  >>> source = '''\
-  ... <article>
-  ...   <head/>
-  ...   <body>
-  ...     <title>Title</title>
-  ...     <p>A paragraph</p>
-  ...     <p>Another <em>paragraph</em></p>
-  ...     <teaser/>
-  ...   </body>
-  ... </article>'''
-  >>> article = Article(xml_source=StringIO.StringIO(source))
-
-
-Get the HTML representation::
-
-  >>> print article.html
-  <p>A paragraph</p>
-  <p>Another <em>paragraph</em></p>
+>>> import StringIO
+>>> from zeit.content.article.article import Article
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>A paragraph</p>
+...     <p>Another <em>paragraph</em></p>
+...     <teaser/>
+...   </body>
+... </article>'''
+>>> article = Article(xml_source=StringIO.StringIO(source))
 
 
-The original article xml is of course unmodifed so far::
+Get the HTML representation:
 
-  >>> import lxml.etree
-  >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-  <article>
-    <head/>
-    <body>
-      <title>Title</title>
-      <p>A paragraph</p>
-      <p>Another <em>paragraph</em></p>
-      <teaser/>
-    </body>
-  </article>
+>>> print article.html
+<p>A paragraph</p>
+<p>Another <em>paragraph</em></p>
 
 
-Now for something more complex, the intertitle::
+The original article xml is of course unmodifed so far:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <p>A paragraph</p>
+    <p>Another <em>paragraph</em></p>
+    <teaser/>
+  </body>
+</article>
 
 
-  >>> from zeit.content.article.article import Article
-  >>> source = '''\
-  ... <article>
-  ...   <head/>
-  ...   <body>
-  ...     <title>Title</title>
-  ...     <p>A paragraph</p>
-  ...     <intertitle>Paragraphs are nice</intertitle>  
-  ...     <p>Another <em>paragraph</em></p>
-  ...     <teaser/>
-  ...   </body>
-  ... </article>'''
-  >>> article = Article(xml_source=StringIO.StringIO(source))
+Now for something more complex, the intertitle:
 
-In the html `intertitle` becomes an `h3`::
-  >>> print article.html
-  <p>A paragraph</p>
-  <h3>Paragraphs are nice</h3>
-  <p>Another <em>paragraph</em></p>
+
+>>> from zeit.content.article.article import Article
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>A paragraph</p>
+...     <intertitle>Paragraphs are nice</intertitle>  
+...     <p>Another <em>paragraph</em></p>
+...     <teaser/>
+...   </body>
+... </article>'''
+>>> article = Article(xml_source=StringIO.StringIO(source))
+
+In the html `intertitle` becomes an `h3`:
+>>> print article.html
+<p>A paragraph</p>
+<h3>Paragraphs are nice</h3>
+<p>Another <em>paragraph</em></p>
 
 
 Now we change the HTML and see the reflection in the article XML. The `h3` in
-the html becomes an `intertitle` again::
+the html becomes an `intertitle` again:
 
-  >>> article.html = """\
-  ...   <p>A paragraph with more <em>markup</em></p>
-  ...   <h3>Paragraphs are nice</h3>
-  ...   <p>Another <em>paragraph</em></p>
-  ...   <p>Bla bla bla</p>
-  ... """
+>>> article.html = """\
+...   <p>A paragraph with more <em>markup</em></p>
+...   <h3>Paragraphs are nice</h3>
+...   <p>Another <em>paragraph</em></p>
+...   <p>Bla bla bla</p>
+... """
 
-  >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-  <article>
-    <head/>
-    <body>
-      <title>Title</title>
-      <teaser/>
-      <p>A paragraph with more <em>markup</em></p>
-      <intertitle>Paragraphs are nice</intertitle>
-      <p>Another <em>paragraph</em></p>
-      <p>Bla bla bla</p>
-    </body>
-  </article>
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>A paragraph with more <em>markup</em></p>
+    <intertitle>Paragraphs are nice</intertitle>
+    <p>Another <em>paragraph</em></p>
+    <p>Bla bla bla</p>
+  </body>
+</article>
 
