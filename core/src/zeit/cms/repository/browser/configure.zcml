@@ -136,7 +136,7 @@
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zeit.AddContent"
-    class=".repository.FolderAdd"
+    class=".folder.FolderAdd"
     name="zeit.cms.repository.Add"
     menu="zeit-add-menu" title="Folder"
     />
@@ -144,7 +144,7 @@
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.View"
-    class=".repository.FolderEdit"
+    class=".folder.FolderEdit"
     name="edit.html"
     />
 

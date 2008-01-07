@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 # $Id$
 
-import StringIO
-import datetime
 import logging
 
 import persistent
@@ -15,6 +13,8 @@ import zope.interface
 import zope.securitypolicy.interfaces
 
 import zope.app.container.contained
+
+import zeit.connector.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -127,24 +127,11 @@ class Container(zope.app.container.contained.Contained):
             pass
 
 
-class Folder(Container):
-    """The Folder structrues content in the repository."""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
-
-
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def folderFactory(context):
-    folder = Folder()
-    folder.uniqueId = context.id
-    return folder
-
-
-class Repository(persistent.Persistent, Folder):
+class Repository(persistent.Persistent, Container):
     """Access the webdav repository."""
 
     zope.interface.implements(zeit.cms.repository.interfaces.IRepository,
+                              zeit.cms.repository.interfaces.IFolder,
                               zope.annotation.interfaces.IAttributeAnnotatable)
 
     uniqueId = zeit.cms.interfaces.ID_NAMESPACE
@@ -260,18 +247,3 @@ def cmscontentFactory(context):
 
     content.uniqueId = context.id
     return content
-
-
-@zope.interface.implementer(zeit.connector.interfaces.IResource)
-@zope.component.adapter(zeit.cms.repository.interfaces.IFolder)
-def folderToResource(context):
-    try:
-        properties = zeit.connector.interfaces.IWebDAVReadProperties(
-            context)
-    except TypeError:
-        properties = zeit.connector.resource.WebDAVProperties()
-    return zeit.connector.resource.Resource(
-        context.uniqueId, context.__name__, 'collection',
-        data=StringIO.StringIO(),
-        contentType='httpd/unix-directory',
-        properties=properties)

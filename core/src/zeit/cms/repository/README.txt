@@ -26,21 +26,21 @@ The repository contains objects representing collections in the WebDAV server:
 
 >>> c_2007 = repository['online']['2007']
 >>> c_2007
-<zeit.cms.repository.repository.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder object at 0x...>
 >>> c_2007.keys()
 [u'01', u'02']
 >>> from pprint import pprint
 >>> pprint(list(c_2007.values()))
-[<zeit.cms.repository.repository.Folder object at 0x...>,
- <zeit.cms.repository.repository.Folder object at 0x...>]
+[<zeit.cms.repository.folder.Folder object at 0x...>,
+ <zeit.cms.repository.folder.Folder object at 0x...>]
 >>> len(c_2007)
 2
 >>> pprint(list(c_2007.items()))
-[(u'01', <zeit.cms.repository.repository.Folder object at 0x...>),
- (u'02', <zeit.cms.repository.repository.Folder object at 0x...>)]
+[(u'01', <zeit.cms.repository.folder.Folder object at 0x...>),
+ (u'02', <zeit.cms.repository.folder.Folder object at 0x...>)]
 
 >>> repository.get('2006')
-<zeit.cms.repository.repository.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder object at 0x...>
 >>> print repository.get('2005')
 None
 >>> repository.get('2005', 'default')

@@ -7,7 +7,7 @@
       permission="zope.View" />
   </class>
 
-  <class class=".repository.Folder">
+  <class class=".folder.Folder">
     <require like_class="zope.app.folder.folder.Folder" />
     <require
       interface="zeit.cms.interfaces.ICMSContent"
@@ -19,8 +19,8 @@
     type="zeit.cms.interfaces.ICMSContentType"
     />
 
-  <adapter factory=".repository.folderFactory" name="collection" />
-  <adapter factory=".repository.folderToResource" />
+  <adapter factory=".folder.folderFactory" name="collection" />
+  <adapter factory=".folder.folderToResource" />
 
 
   <adapter factory=".repository.cmscontentFactory" />

@@ -116,26 +116,3 @@ class HiddenCollections(object):
         return zeit.cms.repository.interfaces.IUserPreferences(
             zeit.cms.workingcopy.interfaces.IWorkingcopy(
                 self.request.principal))
-
-
-class FolderAdd(zeit.cms.browser.form.AddForm):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.cms.repository.interfaces.IFolder).omit('uniqueId')
-    title = _("Add folder")
-    widget_groups = (
-        (_('Folder'), zeit.cms.browser.form.REMAINING_FIELDS, ''),)
-
-    factory = zeit.cms.repository.repository.Folder
-    checkout = False
-
-
-class FolderEdit(object):
-
-    title = _("Edit folder")
-
-    def __call__(self):
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request), name='absolute_url')()
-        self.request.response.redirect(url)
-        return ''
