@@ -471,7 +471,8 @@ class Connector(zope.thread.local):
         data = resource.data.read() # FIXME [17]: check possibility to pass data as IO object
 
         if iscoll:
-            self._add_collection(id)
+            if not self._check_dav_resource(id):
+                self._add_collection(id)
             davres = self._get_dav_resource(id, ensure='collection')
             # NOTE: here be race condition. Lock-null trick doesn't work,
             #       so we lock _after_ creation

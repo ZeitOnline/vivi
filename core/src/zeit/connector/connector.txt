@@ -277,6 +277,12 @@ Again, add the collection:
 >>> list(connector.listCollection(other_collection_id))
 []
 
+
+Re-adding the collection "overwrites" it, i.e. does nothing:
+
+>>> connector.add(coll)
+
+
 Remove the collections:
 
 >>> del connector[other_collection_id]
@@ -284,7 +290,7 @@ Remove the collections:
 
 
 Search (interface only):
-=========================
+========================
 
 The building blocks are search vars:
 
