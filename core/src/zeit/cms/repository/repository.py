@@ -29,9 +29,7 @@ class Container(zope.app.container.contained.Contained):
 
     zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
-    def __init__(self, uniqueId=None, __name__=None):
-        self.uniqueId = uniqueId
-        self.__name__ = __name__
+    uniqueId = None
 
     # Container interface
 
@@ -139,7 +137,9 @@ class Folder(Container):
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def folderFactory(context):
-    return Folder(context.id)
+    folder = Folder()
+    folder.uniqueId = context.id
+    return folder
 
 
 class Repository(persistent.Persistent, Folder):

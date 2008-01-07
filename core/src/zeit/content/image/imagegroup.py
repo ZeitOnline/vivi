@@ -23,7 +23,9 @@ class ImageGroup(zeit.cms.repository.repository.Container):
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def imageGroupFactory(context):
-    return ImageGroup(context.id)
+    ig = ImageGroup()
+    ig.uniqueId = context.id
+    return ig
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)

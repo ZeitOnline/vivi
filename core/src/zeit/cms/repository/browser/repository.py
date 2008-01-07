@@ -126,8 +126,7 @@ class FolderAdd(zeit.cms.browser.form.AddForm):
     widget_groups = (
         (_('Folder'), zeit.cms.browser.form.REMAINING_FIELDS, ''),)
 
-    def create(self, data):
-        return zeit.cms.repository.repository.Folder(**data)
+    factory = zeit.cms.repository.repository.Folder
 
 
 class FolderEdit(object):
