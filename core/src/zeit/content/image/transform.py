@@ -9,7 +9,7 @@ import Image  # PIL
 import zope.component
 import zope.interface
 
-import zeit.repository.folder
+import zeit.cms.repository.folder
 import zeit.content.image.interfaces
 
 
