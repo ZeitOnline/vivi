@@ -102,8 +102,8 @@ Other users cannot check it out. Login another user called `bob`:
 
 Bob cannot check out:
 
-  >>> manager.canCheckout
-  False
+>>> manager.canCheckout
+False
 
 Let's log back in as the `zope.user`:
 
