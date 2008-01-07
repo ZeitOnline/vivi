@@ -157,6 +157,48 @@ Let's add an image:
 False
 
 
+WYSIWYG-Editor
+++++++++++++++
+
+Open the WYSIWYG-Editor:
+
+>>> browser.getLink('Edit WYSIWYG').click()
+
+Initially the document is empty: 
+
+>>> browser.getControl('Document').value
+''
+
+Change the content and save:
+
+>>> browser.getControl('Document').value = '<p>Foo</p><h3>blub</h3>'
+>>> browser.getControl('Apply').click()
+
+Let's have a look at the source:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('Source').value
+<article>
+    ...
+  <body>
+    <title>EU unterstuetzt Trinker-Steuer</title>
+    <p>Foo</p>
+    <intertitle>blub</intertitle>
+  </body>
+</article>
+    
+
+Try to add some xml characters to the WYSIWYG editor as entities but make sure
+other entities will be replaced (this is to make sure bug #3900 is fixed):
+
+>>> browser.getLink('Edit WYSIWYG').click()
+>>> browser.getControl('Document').value = (
+...     '<p>Foo</p><h3>blub &mdash;</h3><p>&gt;&amp;&lt;</p>')
+>>> browser.getControl('Apply').click()
+>>> browser.getControl('Document').value
+'<p>Foo</p>\r\n<h3>blub \xe2\x80\x94</h3>\r\n<p>&gt;&amp;&lt;</p>'
+
+
 Checking in 
 ===========
 

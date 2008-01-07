@@ -10,7 +10,7 @@
     for="..interfaces.IHTMLContent"
     class=".form.EditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
+    menu="zeit-context-views" title="Edit WYSIWYG"
     />
 
   <resourceLibrary name="zeit.wysiwyg" require="gocept.fckeditor">

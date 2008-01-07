@@ -148,6 +148,9 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     @staticmethod
     def _replace_entities(value):
         for entity_name, codepoint in htmlentitydefs.name2codepoint.items():
+            if entity_name in ('gt', 'lt', 'quot', 'amp', 'apos'):
+                # don't replace XML built-in entities
+                continue
             value = value.replace('&'+entity_name+';', unichr(codepoint))
         return value
 
