@@ -195,10 +195,10 @@ Note: name comes first -- don't ask me why:
 
 The properties and data are stored on the server now. Get the resource again:
 
->>> res = connector["http://xml.zeit.de/testing/conn3"]
->>> res.properties[('colour', 'http://namespaces.zeit.de/test')]
+>>> res_got = connector["http://xml.zeit.de/testing/conn3"]
+>>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
 'bright blue'
->>> res.data.read()
+>>> res_got.data.read()
 'Mary had a little lamb'
 
 We can change properties explicitly using `changeProperties`:
@@ -206,9 +206,19 @@ We can change properties explicitly using `changeProperties`:
 >>> connector.changeProperties(
 ...     'http://xml.zeit.de/testing/conn3',
 ...     {('colour', 'http://namespaces.zeit.de/test'): u'gr\xfcn'})
->>> res = connector["http://xml.zeit.de/testing/conn3"]
->>> res.properties[('colour', 'http://namespaces.zeit.de/test')]
+>>> res_got = connector["http://xml.zeit.de/testing/conn3"]
+>>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
 u'gr\xfcn'
+
+
+Resources can be overwritten by just assigning them again:
+
+>>> res.data = StringIO.StringIO("Mary had two little lambs")
+>>> connector["http://xml.zeit.de/testing/conn3"] = res
+>>> res_got = connector["http://xml.zeit.de/testing/conn3"]
+>>> res_got.data.read()
+'Mary had two little lambs'
+
 
 
 Unlock the resource again:
