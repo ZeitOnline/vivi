@@ -6,6 +6,7 @@ import zope.component
 import zope.dublincore.interfaces
 import zope.interface
 import zope.publisher.interfaces
+import zope.securitypolicy.interfaces
 
 import zope.app.container.btree
 import zope.app.security.interfaces
@@ -47,11 +48,11 @@ class WorkingcopyLocation(zope.app.container.btree.BTreeContainer):
             # User doesn't have a working copy yet, create one
             result = self[principal_id] = Workingcopy()
             perms = (
-                zope.app.securitypolicy.interfaces.IPrincipalPermissionManager(
+                zope.securitypolicy.interfaces.IPrincipalPermissionManager(
                     result))
             perms.grantPermissionToPrincipal('zeit.EditContent', principal_id)
 
-            prm = zope.app.securitypolicy.interfaces.IPrincipalRoleManager(
+            prm = zope.securitypolicy.interfaces.IPrincipalRoleManager(
                     result)
             prm.assignRoleToPrincipal('zeit.Owner', principal_id)
 

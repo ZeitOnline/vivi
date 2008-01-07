@@ -13,6 +13,7 @@ import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.cachedescriptors.method
 import zope.interface
+import zope.securitypolicy.interfaces
 
 import zope.app.container.contained
 
@@ -223,13 +224,13 @@ def repositoryFactory():
     repository = Repository()
     # Deny EditContent to everybody (i.e. also to managers) because this really
     # really must not be possible.
-    perms = zope.app.securitypolicy.interfaces.IPrincipalPermissionManager(
+    perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(
         repository)
     perms.denyPermissionToPrincipal('zeit.EditContent', 'zope.Everybody')
 
     # Grant zope.ManageContent to zeit.Editor so editors can lock/unlock
     # content.
-    rpm = zope.app.securitypolicy.interfaces.IRolePermissionManager(
+    rpm = zope.securitypolicy.interfaces.IRolePermissionManager(
         repository)
     rpm.grantPermissionToRole('zope.ManageContent', 'zeit.Editor')
     return repository

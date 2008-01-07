@@ -27,9 +27,10 @@ We also need a principal permission manager:
 ...     def grantPermissionToPrincipal(self, permission, principal):
 ...         print "Granting %s to %s" % (permission, principal)
 ...
+>>> import zope.securitypolicy.interfaces
 >>> site_manager.registerAdapter(
 ...   PPM, (zope.interface.Interface, ),
-...   zope.app.securitypolicy.interfaces.IPrincipalPermissionManager)
+...   zope.securitypolicy.interfaces.IPrincipalPermissionManager)
 
 And we need a principal role manager:
 
@@ -43,7 +44,7 @@ And we need a principal role manager:
 ...
 >>> site_manager.registerAdapter(
 ...   PRM, (zope.interface.Interface, ),
-...   zope.app.securitypolicy.interfaces.IPrincipalRoleManager)
+...   zope.securitypolicy.interfaces.IPrincipalRoleManager)
 
 
 Adapting Principals
@@ -130,9 +131,9 @@ Cleanup after test:
 True
 >>> site_manager.unregisterAdapter(
 ...   PPM, (zope.interface.Interface, ),
-...   zope.app.securitypolicy.interfaces.IPrincipalPermissionManager)
+...   zope.securitypolicy.interfaces.IPrincipalPermissionManager)
 True
 >>> site_manager.unregisterAdapter(
 ...   PRM, (zope.interface.Interface, ),
-...   zope.app.securitypolicy.interfaces.IPrincipalRoleManager)
+...   zope.securitypolicy.interfaces.IPrincipalRoleManager)
 True
