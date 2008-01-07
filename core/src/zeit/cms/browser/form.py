@@ -117,9 +117,11 @@ class FormBase(object):
 class AddForm(FormBase, gocept.form.grouped.AddForm):
     """Add form."""
 
-    _checked_out = False
     factory = None
     next_view = None
+    checkout = True
+
+    _checked_out = False
 
     def applyChanges(self, object, data):
         return apply_changes_with_setattr(
@@ -139,11 +141,12 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         object = self.context[name]
 
         # Check the document out right away (if possible).
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(
-            self.context[name], None)
-        if manager is not None and manager.canCheckout:
-            object = manager.checkout()
-            self._checked_out = True
+        if self.checkout:
+            manager = zeit.cms.checkout.interfaces.ICheckoutManager(
+                self.context[name], None)
+            if manager is not None and manager.canCheckout:
+                object = manager.checkout()
+                self._checked_out = True
 
         self._created_object = object
         self._finished_add = True

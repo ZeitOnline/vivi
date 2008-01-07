@@ -127,6 +127,7 @@ class FolderAdd(zeit.cms.browser.form.AddForm):
         (_('Folder'), zeit.cms.browser.form.REMAINING_FIELDS, ''),)
 
     factory = zeit.cms.repository.repository.Folder
+    checkout = False
 
 
 class FolderEdit(object):

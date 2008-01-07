@@ -32,9 +32,6 @@ class CheckoutManager(object):
         if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
             self.context):
             return False
-        if zeit.cms.repository.interfaces.ICollection.providedBy(
-            self.context):
-            return False
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if lockable.locked() and not lockable.ownLock():
             return False
