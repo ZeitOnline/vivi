@@ -9,6 +9,7 @@ import Image  # PIL
 import zope.component
 import zope.interface
 
+import zeit.repository.folder
 import zeit.content.image.interfaces
 
 
@@ -61,5 +62,5 @@ def thumbnail_folder_factory(context):
     name = u'thumbnails'
     folder = context.__parent__
     if name not in folder:
-        folder[name] = zeit.cms.repository.repository.Folder()
+        folder[name] = zeit.cms.repository.folder.Folder()
     return folder[name]
