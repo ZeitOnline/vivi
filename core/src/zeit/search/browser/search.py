@@ -6,9 +6,9 @@ import operator
 
 import zope.cachedescriptors.property
 import zope.component
+import zope.session.interfaces
 import zope.viewlet.viewlet
 
-import zope.app.session.interfaces
 import zope.app.publisher.browser.directoryresource
 
 import z3c.zrtresource.zrtresource
@@ -42,7 +42,7 @@ class Viewlet(zope.viewlet.viewlet.ViewletBase):
 
     @property
     def last_search(self):
-        return zope.app.session.interfaces.ISession(self.request)[
+        return zope.session.interfaces.ISession(self.request)[
             'zeit.search'].get('last_search', {})
 
     @property
@@ -122,7 +122,7 @@ class Search(object):
 
     @property
     def last_search_hidden_fields(self):
-        session = zope.app.session.interfaces.ISession(self.request)[
+        session = zope.session.interfaces.ISession(self.request)[
             'zeit.search']
         last_search = session.get('last_search')
         for key, value in last_search.items():
@@ -135,7 +135,7 @@ class Search(object):
 
     @property
     def last_search(self):
-        session = zope.app.session.interfaces.ISession(self.request)[
+        session = zope.session.interfaces.ISession(self.request)[
             'zeit.search']
         return session['last_search']
 
@@ -146,7 +146,7 @@ class Search(object):
         search = dict((key[len(self.prefix):], value)
                       for key, value in data.items()
                       if key.startswith(self.prefix))
-        session = zope.app.session.interfaces.ISession(self.request)[
+        session = zope.session.interfaces.ISession(self.request)[
             'zeit.search']
         session['last_search'] = search
 
