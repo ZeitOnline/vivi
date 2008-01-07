@@ -265,3 +265,151 @@ Set new ressorts:
 frozenset([..., ..., ...])
 >>> sorted(content.ressort)
 ['Spannung', 'Spass', 'Spiel']
+
+
+Referencing Resources
+=====================
+
+To reference other resources there are special properties which store the
+unique id instead of object references.
+
+Create a mock repository:
+
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>>
+>>> repository_objects = {}
+>>> class Repository(object):
+...
+...     def getContent(self, unique_id):
+...         return repository_objects[unique_id]
+...
+...     def add(self, obj):
+...         repository_objects[obj.uniqueId] = obj
+...
+>>> repository = Repository()
+>>>
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+
+
+Referencing a single resource
++++++++++++++++++++++++++++++
+
+
+Create a content class which holds the reference and will also be used to be
+referenced:
+
+>>> class Content(object):
+...     res = zeit.cms.content.property.SingleResource('.res')
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML('<foo/>')
+
+Create our content object:
+
+>>> content = Content()
+
+Create an object which will be referenced:
+
+>>> referenced_obj = Content()
+>>> referenced_obj.uniqueId = u'http://xml.zeit.de/refed'
+
+Add the referenced object to the repository:
+
+>>> repository.add(referenced_obj)
+
+
+Reference the object:
+
+>>> content.res = referenced_obj
+
+Let's have a look how the resource has been referenced:
+
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo>
+  <res>http://xml.zeit.de/refed</res>
+</foo>
+
+
+Of course we also can get the resource back:
+
+>>> content.res
+<Content object at 0x...>
+>>> content.res is referenced_obj
+True
+
+
+When the referenced object is deleted from the repository we will get None
+back:
+
+>>> repository_objects.clear()
+>>> content.res is None
+True
+
+
+ResourceSet
++++++++++++
+
+The ResourceSet references a (frozen)set of resources. Create a content class: 
+
+>>> class Content(object):
+...     res = zeit.cms.content.property.ResourceSet('test', 'ref')
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML('<foo><head/></foo>')
+>>> content = Content()
+
+
+>>> referenced_obj2 = Content()
+>>> referenced_obj2.uniqueId = 'http://xml.zeit.de/refed2'
+
+Add two objects:
+
+>>> repository.add(referenced_obj)
+>>> repository.add(referenced_obj2)
+
+Reference them:
+
+>>> content.res = frozenset([referenced_obj, referenced_obj2])
+
+Let's have a look how the XML has changed:
+
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo>
+  <head>
+    <attribute ns="test" name="ref">http://xml.zeit.de/refed</attribute>
+    <attribute ns="test" name="ref">http://xml.zeit.de/refed2</attribute>
+  </head>
+</foo>
+
+Retrieve the objects:
+
+>>> content.res
+frozenset([<Content object at 0x...>, <Content object at 0x...>])
+
+>>> len(content.res)
+2
+>>> referenced_obj in content.res
+True
+>>> referenced_obj2 in content.res
+True
+
+When we remove one object from the repository, it is no longer in the result
+set:
+
+>>> del repository_objects[referenced_obj.uniqueId]
+>>> len(content.res)
+1
+>>> referenced_obj in content.res
+False
+>>> referenced_obj2 in content.res
+True
+
+
+
+Clean up: 
+
+>>> gsm.unregisterUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+True

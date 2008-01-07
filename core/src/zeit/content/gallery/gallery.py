@@ -41,7 +41,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.gallery.interfaces.IGallery)
 
-    _image_folder = zeit.cms.content.property.SingleResourceProperty(
+    _image_folder = zeit.cms.content.property.SingleResource(
         '.head.image-folder')
 
     default_template = GALLERY_TEMPLATE

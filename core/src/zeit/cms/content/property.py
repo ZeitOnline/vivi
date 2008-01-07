@@ -162,27 +162,30 @@ class MultiPropertyBase(object):
         raise NotImplementedError("Implemented in sub classes.")
 
 
-class ResourceProperty(MultipleAttributeProperty):
+class ResourceSet(MultipleAttributeProperty):
 
     def __get__(self, instance, class_):
-        ids = super(ResourceProperty, self).__get__(instance, class_)
+        ids = super(ResourceSet, self).__get__(instance, class_)
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         objects = []
         for id in ids:
-            objects.append(repository.getContent(id))
+            try:
+                obj = repository.getContent(id)
+            except KeyError:
+                continue
+            objects.append(obj)
         return frozenset(objects)
 
     def __set__(self, instance, values):
         values = [ob.uniqueId for ob in values]
-        super(ResourceProperty, self).__set__(instance, values)
+        super(ResourceSet, self).__set__(instance, values)
 
 
-class SingleResourceProperty(ObjectPathProperty):
+class SingleResource(ObjectPathProperty):
 
     def __get__(self, instance, class_):
-        unique_id = super(SingleResourceProperty, self).__get__(instance,
-                                                                class_)
+        unique_id = super(SingleResource, self).__get__(instance, class_)
         if not unique_id:
             return None
         repository = zope.component.getUtility(
@@ -193,7 +196,7 @@ class SingleResourceProperty(ObjectPathProperty):
             return None
 
     def __set__(self, instance, value):
-        super(SingleResourceProperty, self).__set__(instance, value.uniqueId)
+        super(SingleResource, self).__set__(instance, value.uniqueId)
 
 
 class KeyReferenceTuple(object):
