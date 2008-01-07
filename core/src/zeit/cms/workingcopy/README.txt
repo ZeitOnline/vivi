@@ -109,14 +109,22 @@ u'kurt'
 Identifying Local Content
 =========================
 
-
-Content in the working copy provides the `ILocalContent` interface:
+Only content which provides ILocalContent can be added to the workingcopy:
 
 >>> from zeit.cms.workingcopy.interfaces import ILocalContent
 >>> from zeit.cms.repository.unknown import UnknownResource
 >>> content = UnknownResource(u'oink')
 >>> ILocalContent.providedBy(content)
 False
+>>> workingcopy['mycontent'] = content
+Traceback (most recent call last):
+    ...
+ValueError: Must provide ILocalContent
+
+
+
+>>> zope.interface.directlyProvides(content, ILocalContent)
+
 >>> workingcopy['mycontent'] = content
 >>> ILocalContent.providedBy(content)
 True 

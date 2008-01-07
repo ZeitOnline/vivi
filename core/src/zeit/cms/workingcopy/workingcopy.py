@@ -24,8 +24,8 @@ class Workingcopy(zope.app.container.btree.BTreeContainer):
 
 
     def __setitem__(self, key, item):
-        zope.interface.directlyProvides(
-            item, zeit.cms.workingcopy.interfaces.ILocalContent)
+        if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(item):
+            raise ValueError("Must provide ILocalContent")
         super(Workingcopy, self).__setitem__(key, item)
 
 

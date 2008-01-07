@@ -43,5 +43,10 @@
      />
 
 
+   <!-- Local content adapters -->
+
+   <adapter factory=".localcontent.default_local_content_adapter" />
+   <adapter factory=".localcontent.default_repository_content_adapter" />
+
 </configure>
 

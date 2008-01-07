@@ -33,6 +33,7 @@ repository and checkout a document:
 
 Checkout the Somalia Article:
 
+>>> browser.handleErrors = False
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia/checkout')
 
 Checking out redirected us to the document *in* the working copy:

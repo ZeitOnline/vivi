@@ -45,7 +45,7 @@ class CheckoutManager(object):
         if not lockable.locked():
             lockable.lock(timeout=3600)
 
-        content = self.repository.getCopyOf(self.context.uniqueId)
+        content = zeit.cms.workingcopy.interfaces.ILocalContent(self.context)
         namechooser = zope.app.container.interfaces.INameChooser(
             self.workingcopy)
         name = namechooser.chooseName(content.__name__, content)
@@ -73,13 +73,12 @@ class CheckoutManager(object):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 "Cannot checkin.")
         unique_id = self.context.uniqueId
-        self.repository.addContent(self.context)
+        added = zeit.cms.repository.interfaces.IRepositoryContent(self.context)
         del self.workingcopy[self.context.__name__]
         if event:
             checkin_event = zeit.cms.checkout.interfaces.CheckinEvent(
                 self.context, self.principal)
             zope.event.notify(checkin_event)
-        added = self.repository.getContent(unique_id)
         try:
             lockable = zope.app.locking.interfaces.ILockable(added)
             lockable.unlock()

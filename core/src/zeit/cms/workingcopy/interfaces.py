@@ -25,5 +25,6 @@ class IWorkingcopyLocation(zope.app.container.interfaces.IContainer):
     def getWorkingcopyFor(principal):
         """Get the working copy for `principal`."""
 
+
 class ILocalContent(zope.interface.Interface):
     """Marker interface for locally stored content."""

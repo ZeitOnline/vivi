@@ -10,7 +10,6 @@ import persistent
 import transaction
 
 import zope.annotation.interfaces
-import zope.cachedescriptors.property
 import zope.cachedescriptors.method
 import zope.interface
 import zope.securitypolicy.interfaces
@@ -104,7 +103,7 @@ class Container(zope.app.container.contained.Contained):
     def connector(self):
         return zope.component.getUtility(zeit.cms.interfaces.IConnector)
 
-    @zope.cachedescriptors.property.Lazy
+    @property
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
