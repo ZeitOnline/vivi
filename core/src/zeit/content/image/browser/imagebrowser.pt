@@ -3,21 +3,21 @@
     <tal:replace replace="resource_library:zeit.content.image.drag-images" />
     <div id="edit-form" class="image-list">
       <div class="image"
-        tal:repeat="image view/images">
+        tal:repeat="item view/images">
         <div class="image-data">
           <a href="view.html"
             tal:attributes="
-            href string:${image/@@absolute_url}/@@view.html;
-            title image/title">
-            <img tal:replace="structure image/@@thumbnail/tag" />
+            href string:${item/image/@@absolute_url}/@@view.html;
+            title item/metadata/title">
+            <img tal:replace="structure item/image/@@thumbnail/tag" />
           </a>
           <span class="URL"
-            tal:content="string:${image/@@absolute_url}">
+            tal:content="string:${item/image/@@absolute_url}">
           </span>
         </div>
         <div class="image-metadata">
-          <div tal:content="image/contentType" />
-          <div tal:define="image_view nocall:image/@@index.html">
+          <div tal:content="item/image/contentType" />
+          <div tal:define="image_view nocall:item/image/@@index.html">
             <span tal:replace="image_view/width" />x<span tal:replace="image_view/height" />
           </div>
         </div> 

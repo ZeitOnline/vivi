@@ -9,16 +9,22 @@ import zeit.content.image.interfaces
 import zeit.content.image.imagegroup
 
 
-class AddForm(zeit.cms.browser.form.AddForm):
+class FormBase(object):
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.image.interfaces.IImageGroup).omit('uniqueId')
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.image.interfaces.IImageGroup) +
+        zope.formlib.form.FormFields(
+            zeit.content.image.interfaces.IImageMetadata))
+
+
+
+class AddForm(FormBase, zeit.cms.browser.form.AddForm):
 
     factory = zeit.content.image.imagegroup.ImageGroup
+    checkout = False
 
 
-class EditForm(zeit.cms.browser.form.EditForm):
+class EditForm(FormBase, zeit.cms.browser.form.EditForm):
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.image.interfaces.IImageGroup,
-        render_context=True, omit_readonly=False).omit('uniqueId')
+    form_fields = FormBase.form_fields.omit('__name__')

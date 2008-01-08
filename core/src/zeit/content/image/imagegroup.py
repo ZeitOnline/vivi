@@ -19,12 +19,12 @@ class ImageGroup(zeit.cms.repository.repository.Container):
     zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
 
 
-
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def imageGroupFactory(context):
     ig = ImageGroup()
     ig.uniqueId = context.id
+    zeit.cms.interfaces.IWebDAVProperties(ig).update(context.properties)
     return ig
 
 

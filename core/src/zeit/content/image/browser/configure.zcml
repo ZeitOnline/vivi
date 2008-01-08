@@ -124,6 +124,7 @@
     menu="zeit-context-views" title="Bilder"
     />
 
+
   <!-- Image group -->
 
   <browser:page

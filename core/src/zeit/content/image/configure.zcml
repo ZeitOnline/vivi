@@ -32,6 +32,7 @@
   <!-- Image group -->
 
   <class class=".imagegroup.ImageGroup">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <!-- <require like_class="zeit.cms.repository.repository.Container" /> -->
     <require
       interface=".interfaces.IImageGroup"
@@ -45,7 +46,14 @@
   <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
 
   <!-- metadata -->
+
   <adapter factory=".metadata.ImageMetadata" />
+
+  <adapter
+    factory=".metadata.ImageMetadata" 
+    for=".interfaces.IImageGroup"
+    />
+
   <adapter factory=".metadata.metadata_webdav_read_properties" />
   <adapter factory=".metadata.metadata_webdav_write_properties" />
 

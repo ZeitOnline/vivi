@@ -192,6 +192,53 @@ True
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
 
 
+
+Image browser
+=============
+
+The zeit.content.image package provides an image browser for IFolder:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006/')
+>>> browser.getLink('Bilder').click()
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Images </title>
+    ...
+    <div id="edit-form" class="image-list">
+      <div class="image">
+        <div class="image-data">
+          <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@view.html"
+             title="Opernball">
+            <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
+          </a>
+          <span class="URL">http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG</span>
+        </div>
+        <div class="image-metadata">
+          <div>image/jpeg</div>
+          <div>
+            119x160
+          </div>
+        </div>
+      </div>
+      <div class="image">
+        <div class="image-data">
+          <a href="http://localhost/++skin++cms/repository/2006/opernball.jpg/@@view.html">
+            <img src="http://localhost/++skin++cms/repository/2006/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
+          </a>
+          <span class="URL">http://localhost/++skin++cms/repository/2006/opernball.jpg</span>
+        </div>
+        <div class="image-metadata">
+          <div>image/jpeg</div>
+          <div>
+            119x160
+          </div>
+        </div>
+      </div>
+    </div>
+    ...
+
+
 Image Groups
 ============
 
@@ -205,8 +252,13 @@ Lets create an image group:
 >>> menu.displayValue = ['Image Group']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
->>> browser.getControl("File name").value = 'new-image-group'
+>>> browser.getControl("File name").value = 'new-hampshire'
+>>> browser.getControl('Bildtitel').value = 'New Hampshire'
 >>> browser.getControl("Add").click()
 
-What's happening now is undecided, yet. But we haven't got an error. :)
+Image groups are not checked out by default, because adding new images will be
+done directly in the repository:
+
+>>> browser.url
+'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
 
