@@ -5,6 +5,8 @@
 
 import zope.component
 
+import zeit.cms.interfaces
+
 
 class View(object):
 
@@ -24,3 +26,11 @@ class Edit(object):
         self.request.response.redirect(
             context_url + '/@@view.html')
         return ''
+
+
+class Metadata(object):
+
+    @property
+    def dav_resource_type(self):
+        return zeit.cms.interfaces.IWebDAVReadProperties(self.context).get(
+            ('resourcetype', 'DAV:'))

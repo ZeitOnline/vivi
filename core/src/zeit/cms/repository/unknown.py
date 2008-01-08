@@ -38,12 +38,6 @@ class UnknownResource(zope.app.container.contained.Contained):
         # we don't have a unique id initially:
         self.uniqueId = None
 
-    @property
-    def dav_resource_type(self):
-        return zeit.cms.interfaces.IWebDAVReadProperties(self).get(
-            ('resourcetype', 'DAV:'))
-
-
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)

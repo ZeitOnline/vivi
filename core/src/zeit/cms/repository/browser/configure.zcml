@@ -80,7 +80,7 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.IFolder" name="metadata_preview"
+    for="zeit.cms.repository.interfaces.ICollection" name="metadata_preview"
     template="collection_metadata.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
@@ -190,6 +190,7 @@
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     name="metadata_preview"
+    class=".unknown.Metadata"
     template="metadata_preview.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
