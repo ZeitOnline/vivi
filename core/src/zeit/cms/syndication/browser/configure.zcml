@@ -14,7 +14,7 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.ICollection"
+    for="zeit.cms.repository.interfaces.IFolder"
     permission="zeit.AddContent"
     class=".form.AddForm"
     name="zeit.cms.syndication.feed.Add"
