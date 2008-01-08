@@ -94,6 +94,7 @@
     />
 
   <adapter factory=".image.ImageListRepresentation" />
+
   <browser:icon
     for="zeit.content.image.interfaces.IImage"
     name="zmi_icon"
@@ -127,6 +128,15 @@
 
   <!-- Image group -->
 
+  <adapter factory=".image.ImageListRepresentation"
+    for="..interfaces.IImageGroup
+    zope.publisher.interfaces.IPublicationRequest"
+    />
+  <adapter factory=".image.ImageListRepresentation"
+    for="..interfaces.ILocalImageGroup
+    zope.publisher.interfaces.IPublicationRequest"
+    />
+
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zeit.AddContent"
@@ -137,7 +147,7 @@
 
   <browser:page
     name="view.html"
-    for="..interfaces.IImageGroup"
+    for="..interfaces.IRepositoryImageGroup"
     class=".imagegroup.View"
     template="imagegroup_view.pt"
     permission="zope.View"
@@ -146,19 +156,19 @@
 
   <browser:defaultView
     name="view.html"
-    for="..interfaces.IImageGroup"
+    for="..interfaces.IRepositoryImageGroup"
     />
 
   <browser:page
     name="metadata.html"
-    for="..interfaces.IImageGroup"
+    for="..interfaces.IRepositoryImageGroup"
     class=".imagegroup.DisplayForm"
     permission="zope.View"
     menu="zeit-context-views" title="Metadata"
     />
   
   <browser:page
-    for="..interfaces.IImageGroup"
+    for="..interfaces.IRepositoryImageGroup"
     name="zeit.content.image.Add"
     permission="zeit.AddContent"
     class=".imagegroup.AddImage"
@@ -170,6 +180,14 @@
     for="..interfaces.ILocalImageGroup"
     class=".imagegroup.EditForm"
     permission="zeit.EditContent"
+    />
+  
+  <browser:page
+    name="metadata_preview"
+    for="..interfaces.IImageGroup"
+    class=".imagegroup.Metadata"
+    template="imagegroup_metadata.pt"
+    permission="zope.View"
     />
 
 </configure>

@@ -76,11 +76,20 @@ class IThumbnailFolder(zope.interface.Interface):
     """The folder where to find thumbnails for an image."""
 
 
-class IImageGroup(zope.app.container.interfaces.IContainer,
-                  zeit.cms.interfaces.ICMSContent):
+class IImageGroup(zeit.cms.interfaces.ICMSContent):
     """An image group groups images with the same motif together."""
 
 
-class ILocalImageGroup(zeit.cms.workingcopy.interfaces.ILocalContent,
-                       zeit.cms.interfaces.ICMSContent):
-    """Local version of an image group."""
+class IRepositoryImageGroup(IImageGroup,
+                            zeit.cms.repository.interfaces.ICollection):
+    """An image group in the repository.  It contains images.
+
+    """
+
+
+class ILocalImageGroup(IImageGroup,
+                       zeit.cms.workingcopy.interfaces.ILocalContent):
+    """Local version of an image group.
+    The local version only holds the metadata, therefore it is not a container.
+
+    """

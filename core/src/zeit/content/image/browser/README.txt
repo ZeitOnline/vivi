@@ -261,6 +261,7 @@ Lets create an image group:
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Bildtitel').value = 'New Hampshire'
+>>> browser.handleErrors = False
 >>> browser.getControl("Add").click()
 
 Image groups are not checked out by default, because adding new images will be
@@ -400,8 +401,10 @@ When we want to change the metadata of the image group, we need to check it
 out. Checking out an image goup creates a local object (ILocalContent) which is
 different from the repository version: it is no folder:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Checkout').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/LocalImageGroup/@@edit.html'
+
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
@@ -412,6 +415,17 @@ Set the alt text:
 
 >>> browser.getControl('ALT-Text').value = 'Wahlkampf'
 >>> browser.getControl('Apply').click()
+
+Make sure we have a metadata preview for local image groups:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'LocalImageGroup/@@metadata_preview')
+>>> print browser.contents
+<div class="context-views">
+    ...
+   <div>New Hampshire</div>
+ </div>
 
 Checkin again:
 
@@ -427,3 +441,15 @@ Check the metadata view, to verify we have actually changed the alt text:
 <!DOCTYPE html ...
     <title> Image group metadata </title>
     ...Wahlkampf...
+
+
+Make sure we have a metadata preview for repository image groups:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/2006/'
+...     'new-hampshire/@@metadata_preview')
+>>> print browser.contents
+<div class="context-views">
+    ...
+   <div>New Hampshire</div>
+ </div>

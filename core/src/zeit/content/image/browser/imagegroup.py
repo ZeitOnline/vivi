@@ -92,3 +92,10 @@ class AddImage(zeit.content.image.browser.form.AddForm):
         url = zope.component.getMultiAdapter(
             (self.context, self.request), name='absolute_url')
         return url()
+
+
+class Metadata(object):
+
+    @zope.cachedescriptors.property.Lazy
+    def metadata(self):
+        return zeit.content.image.interfaces.IImageMetadata(self.context)

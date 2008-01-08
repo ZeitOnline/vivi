@@ -33,7 +33,7 @@
 
   <class class=".imagegroup.ImageGroup">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <!-- <require like_class="zeit.cms.repository.repository.Container" /> -->
+    <require like_class="zeit.cms.repository.folder.Folder" />
     <require
       interface=".interfaces.IImageGroup"
       permission="zope.View" />

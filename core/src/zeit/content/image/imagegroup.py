@@ -21,7 +21,8 @@ import zeit.content.image.interfaces
 
 class ImageGroup(zeit.cms.repository.repository.Container):
 
-    zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
+    zope.interface.implements(
+        zeit.content.image.interfaces.IRepositoryImageGroup)
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
