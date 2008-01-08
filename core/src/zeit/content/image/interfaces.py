@@ -8,6 +8,7 @@ import zope.schema
 import zope.app.file.interfaces
 
 import zeit.cms.interfaces
+import zeit.cms.workingcopy.interfaces
 
 
 class IImageType(zeit.cms.interfaces.ICMSContentType):
@@ -78,3 +79,8 @@ class IThumbnailFolder(zope.interface.Interface):
 class IImageGroup(zope.app.container.interfaces.IContainer,
                   zeit.cms.interfaces.ICMSContent):
     """An image group groups images with the same motif together."""
+
+
+class ILocalImageGroup(zeit.cms.workingcopy.interfaces.ILocalContent,
+                       zeit.cms.interfaces.ICMSContent):
+    """Local version of an image group."""

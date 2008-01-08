@@ -35,7 +35,7 @@ class ImageFormBase(object):
         zope.formlib.form.FormFields(
             zeit.content.image.interfaces.IImage) +
         zope.formlib.form.FormFields(
-            zeit.content.image.interfaces.IImageMetadata))
+            zeit.content.image.interfaces.IImageMetadata)).omit('contentType')
 
 
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):

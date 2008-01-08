@@ -45,13 +45,38 @@
   <adapter factory=".imagegroup.imageGroupToResource" />
   <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
 
+
+  <class class=".imagegroup.LocalImageGroup">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ILocalImageGroup"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ILocalImageGroup"
+      permission="zeit.EditContent" />
+  </class>
+  
+  <adapter factory=".imagegroup.local_image_group_factory" />
+  <adapter
+    for=".interfaces.ILocalImageGroup"
+    factory=".imagegroup.imageGroupToResource"
+    />
+
   <!-- metadata -->
 
-  <adapter factory=".metadata.ImageMetadata" />
+  <adapter
+    factory=".metadata.ImageMetadata" 
+    for=".interfaces.IImage"
+    />
 
   <adapter
     factory=".metadata.ImageMetadata" 
     for=".interfaces.IImageGroup"
+    />
+
+  <adapter
+    factory=".metadata.ImageMetadata" 
+    for=".interfaces.ILocalImageGroup"
     />
 
   <adapter factory=".metadata.metadata_webdav_read_properties" />

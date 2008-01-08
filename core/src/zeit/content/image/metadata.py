@@ -13,7 +13,6 @@ import zeit.content.image.interfaces
 class ImageMetadata(object):
 
     zope.interface.implements(zeit.content.image.interfaces.IImageMetadata)
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,

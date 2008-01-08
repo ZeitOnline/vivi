@@ -4,8 +4,13 @@
 
 import StringIO
 
+import persistent
+
 import zope.component
 import zope.interface
+import zope.security.proxy
+
+import zope.app.container.contained
 
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
@@ -41,3 +46,20 @@ def imageGroupToResource(context):
         data=StringIO.StringIO(),
         contentType='httpd/unix-directory',
         properties=properties)
+
+
+class LocalImageGroup(persistent.Persistent,
+                      zope.app.container.contained.Contained):
+
+    zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
+
+
+@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
+@zope.interface.implementer(zeit.content.image.interfaces.ILocalImageGroup)
+def local_image_group_factory(context):
+    lig = LocalImageGroup()
+    lig.uniqueId = context.uniqueId
+    zeit.connector.interfaces.IWebDAVWriteProperties(lig).update(
+        zeit.connector.interfaces.IWebDAVReadProperties(
+            zope.security.proxy.removeSecurityProxy(context)))
+    return lig

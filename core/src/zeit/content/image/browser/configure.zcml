@@ -138,17 +138,38 @@
   <browser:page
     name="view.html"
     for="..interfaces.IImageGroup"
+    class=".imagegroup.View"
     template="imagegroup_view.pt"
     permission="zope.View"
     menu="zeit-context-views" title="Anzeigen"
     />
+
+  <browser:defaultView
+    name="view.html"
+    for="..interfaces.IImageGroup"
+    />
+
+  <browser:page
+    name="metadata.html"
+    for="..interfaces.IImageGroup"
+    class=".imagegroup.DisplayForm"
+    permission="zope.View"
+    menu="zeit-context-views" title="Metadata"
+    />
   
   <browser:page
-    name="edit.html"
     for="..interfaces.IImageGroup"
+    name="zeit.content.image.Add"
+    permission="zeit.AddContent"
+    class=".imagegroup.AddImage"
+    menu="zeit-add-menu" title="Image"
+    />
+ 
+  <browser:page
+    name="edit.html"
+    for="..interfaces.ILocalImageGroup"
     class=".imagegroup.EditForm"
     permission="zeit.EditContent"
     />
-
 
 </configure>

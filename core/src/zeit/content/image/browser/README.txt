@@ -77,7 +77,8 @@ For editing an image, we need to check it out:
 We now see the form and fill out some values:
 
 >>> import os
->>> test_file = os.path.join(os.path.dirname(__file__), 'opernball.jpg')
+>>> test_file = os.path.join(
+...     os.path.dirname(__file__), 'testdata', 'opernball.jpg')
 >>> test_data = file(test_file, 'rb')
 >>> file_control = browser.getControl(name='form.data')
 >>> file_control.filename = 'opernball.jpg'
@@ -252,6 +253,12 @@ Lets create an image group:
 >>> menu.displayValue = ['Image Group']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Add image group </title>
+    ...
+
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Bildtitel').value = 'New Hampshire'
 >>> browser.getControl("Add").click()
@@ -261,4 +268,162 @@ done directly in the repository:
 
 >>> browser.url
 'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Image group </title>
+    ...
 
+
+Create a few images in the group:
+
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Image']
+>>> browser.open(menu.value[0])
+
+Images which are added to the group do not have any metadata on adding:
+
+>>> browser.getControl('Title')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Title'
+
+>>> browser.getControl('Volume')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Volume'
+
+Set the file data:
+
+>>> def set_file_data(name):
+...     test_file = os.path.join(
+...         os.path.dirname(__file__), 'testdata', name)
+...     test_data = file(test_file, 'rb')
+...     file_control = browser.getControl(name='form.data')
+...     file_control.filename = name
+...     file_control.value = test_data
+
+>>> set_file_data('new-hampshire-artikel.jpg')
+>>> browser.getControl('Add').click()
+
+After adding the image we're back at the image group:
+
+>>> browser.url
+'http://localhost/++skin++cms/repository/2006/new-hampshire'
+
+So we can directly add the next image:
+
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Image']
+>>> browser.open(menu.value[0])
+>>> set_file_data('new-hampshire-450x200.jpg')
+>>> browser.getControl('Add').click()
+
+And another one:
+
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Image']
+>>> browser.open(menu.value[0])
+>>> set_file_data('obama-clinton-120x120.jpg')
+>>> browser.getControl('Add').click()
+
+Let's have a look at the index:
+
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Image group </title>
+    ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <input class="hiddenType" id="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==..used" name="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==." name="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==." type="checkbox" value="on"  />
+    </td>
+    <td>
+    </td>
+    <td>
+      new-hampshire-450x200.jpg
+    </td>
+    <td>
+      450x200
+    </td>
+    <td>
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/preview" alt="" height="200" width="450" border="0" />
+    </td>
+    <td>
+      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/new-hampshire-450x200.jpg</span>
+    </td>
+  </tr>
+  <tr class="even">
+    <td>
+      <input class="hiddenType" id="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==..used" name="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==." name="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==." type="checkbox" value="on"  />
+    </td>
+    <td>
+    </td>
+    <td>
+      new-hampshire-artikel.jpg
+    </td>
+    <td>
+      410x244
+    </td>
+    <td>
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/preview" alt="" height="244" width="410" border="0" />
+    </td>
+    <td>
+      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/new-hampshire-artikel.jpg</span>
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>
+      <input class="hiddenType" id="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==..used" name="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==." name="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==." type="checkbox" value="on"  />
+    </td>
+    <td>
+    </td>
+    <td>
+      obama-clinton-120x120.jpg
+    </td>
+    <td>
+      120x120
+    </td>
+    <td>
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/preview" alt="" height="120" width="120" border="0" />
+    </td>
+    <td>
+      <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/obama-clinton-120x120.jpg</span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+...
+
+When we want to change the metadata of the image group, we need to check it
+out. Checking out an image goup creates a local object (ILocalContent) which is
+different from the repository version: it is no folder:
+
+>>> browser.handleErrors = False
+>>> browser.getLink('Checkout').click()
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Edit image group </title>
+    ...
+
+Set the alt text:
+
+>>> browser.getControl('ALT-Text').value = 'Wahlkampf'
+>>> browser.getControl('Apply').click()
+
+Checkin again:
+
+>>> browser.getLink('Checkin').click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
+
+Check the metadata view, to verify we have actually changed the alt text:
+
+>>> browser.getLink('Metadata').click()
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Image group metadata </title>
+    ...Wahlkampf...
