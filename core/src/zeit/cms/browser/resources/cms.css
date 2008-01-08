@@ -169,22 +169,22 @@ pre {
     margin-left: 0.5em
 }
 
-form .medium-float {
+form .widgets-float {
     float: left;
     width: 58%;
 }
-form .medium-float .field {
+form .widgets-float .field {
     float: left;
     margin: 5px;
     max-width: 10em;
 }
 
-form .medium-float .field label {
+form .widgets-float .field label {
     height: 3em;
     display: block;
 }
 
-form .medium-float .field .hint {
+form .widgets-float .field .hint {
     display: none;
 }
 
@@ -202,10 +202,6 @@ form .full-width-float .hint {
     height: 5ex;
 }
 
-form .small-and-tall {
-    float: right;
-    width: 30%;
-}
 
 form .fullWidth {
     right: 0;
@@ -218,8 +214,8 @@ form .column-left {
 }
 
 
-form .column-left .field input[type="text"],
-form .column-left .field textarea {
+form .wide-widgets .field input[type="text"],
+form .wide-widgets .field textarea {
     width: 95%;
 }
 

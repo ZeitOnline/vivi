@@ -53,18 +53,18 @@ metadataFieldGroups = (
     gocept.form.grouped.Fields(
         _("Navigation"),
         ('navigation', 'keywords', 'serie'),
-        css_class='small-and-tall'),
+        css_class='column-right'),
     gocept.form.grouped.Fields(
         _("Kopf"),
         ('year', 'volume', 'page', 'ressort'),
-        css_class='medium-float'),
+        css_class='widgets-float column-left'),
     gocept.form.grouped.Fields(
         _("Optionen"),
         ('dailyNewsletter', 'boxMostRead', 'commentsAllowed', 'banner'),
-        css_class='medium-float'),
+        css_class='widgets-float column-left'),
     gocept.form.grouped.RemainingFields(
         _("Texte"),
-        css_class='column-left'),
+        css_class='wide-widgets column-left'),
     gocept.form.grouped.Fields(
         _("sonstiges"),
         ('authors', 'copyrights', 'pageBreak', 'automaticTeaserSyndication',

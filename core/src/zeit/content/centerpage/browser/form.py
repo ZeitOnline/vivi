@@ -15,12 +15,7 @@ import zeit.content.centerpage.interfaces
 
 class CPFormBase(object):
 
-    widget_groups = (
-        (u"Kopf", ('year', 'volume', 'page', 'ressort'), 'medium-float'),
-        (u"Texte", zeit.cms.browser.form.REMAINING_FIELDS, 'column-left'),
-        (u"sonstiges", ('authors', 'copyrights', 'keywords', 'serie'),
-         'column-right'),
-    )
+    field_groups = zeit.cms.browser.form.metadataFieldGroups
 
 
 class AddForm(CPFormBase, zeit.cms.browser.form.AddForm):

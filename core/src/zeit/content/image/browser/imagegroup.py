@@ -14,9 +14,11 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.content.image.interfaces
 import zeit.content.image.image
 import zeit.content.image.imagegroup
+import zeit.content.image.browser.form
 
 
-class FormBase(object):
+class FormBase(zeit.content.image.browser.form.ImageFormBase):
+    # get image form base for the field groups
 
     form_fields = (
         zope.formlib.form.FormFields(

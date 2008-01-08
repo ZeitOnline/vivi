@@ -28,7 +28,7 @@ class ImageFormBase(object):
             css_class='column-left image-form'),
         gocept.form.grouped.RemainingFields(
             _("Texts"),
-            css_class='column-right image-form'),
+            css_class='column-right image-form wide-widgets'),
     )
 
     form_fields = (
