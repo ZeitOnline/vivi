@@ -141,7 +141,7 @@ False
 
 Make sure the image is not changed by looking at the image view:
 
->>> browser.getLink('Anzeigen').click()
+>>> browser.getLink('View').click()
 >>> print browser.contents
 <?xml ...
   <title>
@@ -200,7 +200,7 @@ Image browser
 The zeit.content.image package provides an image browser for IFolder:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
->>> browser.getLink('Bilder').click()
+>>> browser.getLink('Images').click()
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
@@ -250,7 +250,7 @@ Lets create an image group:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
 >>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Image Group']
+>>> menu.displayValue = ['Image group']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
 >>> print browser.contents
@@ -260,7 +260,7 @@ Lets create an image group:
     ...
 
 >>> browser.getControl("File name").value = 'new-hampshire'
->>> browser.getControl('Bildtitel').value = 'New Hampshire'
+>>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.handleErrors = False
 >>> browser.getControl("Add").click()
 
@@ -413,7 +413,7 @@ different from the repository version: it is no folder:
 
 Set the alt text:
 
->>> browser.getControl('ALT-Text').value = 'Wahlkampf'
+>>> browser.getControl('Alternative text').value = 'Wahlkampf'
 >>> browser.getControl('Apply').click()
 
 Make sure we have a metadata preview for local image groups:

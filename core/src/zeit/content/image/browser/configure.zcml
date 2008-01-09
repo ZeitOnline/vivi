@@ -33,7 +33,7 @@
     class=".image.ImageView"
     template="image_view.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="Anzeigen"
+    menu="zeit-context-views" title="View"
     />
 
   <browser:page
@@ -87,7 +87,7 @@
   <browser:menuItem
     for="zeit.content.image.interfaces.IImage"
     menu="zeit-context-views"
-    title="Bearbeiten"
+    title="Edit"
     action="@@edit.html"
     permission="zeit.EditContent"
     filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
@@ -122,7 +122,7 @@
     class=".imagebrowser.ImageBrowser"
     template="imagebrowser.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="Bilder"
+    menu="zeit-context-views" title="Images"
     />
 
 
@@ -142,7 +142,7 @@
     permission="zeit.AddContent"
     class=".imagegroup.AddForm"
     name="zeit.content.image.imagegroup.Add"
-    menu="zeit-add-menu" title="Image Group"
+    menu="zeit-add-menu" title="Image group"
     />
 
   <browser:page
@@ -151,7 +151,7 @@
     class=".imagegroup.View"
     template="imagegroup_view.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="Anzeigen"
+    menu="zeit-context-views" title="View"
     />
 
   <browser:defaultView

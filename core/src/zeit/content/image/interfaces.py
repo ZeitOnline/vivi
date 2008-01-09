@@ -9,6 +9,7 @@ import zope.app.file.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class IImageType(zeit.cms.interfaces.ICMSContentType):
@@ -18,39 +19,40 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
 class IImageMetadata(zope.interface.Interface):
 
     expires = zope.schema.Datetime(
-        title=u"Löschdatum",
+        title=_("Expires"),
         required=False)
 
     title = zope.schema.TextLine(
-        title=u"Bildtitel",
+        title=_("Image title"),
         default=u'',
         required=False)
 
     year = zope.schema.Int(
-        title=u"Jahr",
+        title=_("Year"),
         min=1900,
         max=2100,
         required=False)
 
     volume = zope.schema.Int(
-        title=u"Ausgabe",
+        title=_("Volume"),
         min=1,
         max=53,
         required=False)
 
     copyrights = zope.schema.TextLine(
-        title=u"copyright ©",
-        description=u"© nicht eintippen.",
+        title=_("Copyright"),
+        description=_("Do not enter (c)."),
         default=u"ZEIT online",
         required=False)
 
     alt = zope.schema.TextLine(
-        title=u"ALT-Text",
+        title=_("Alternative text"),
+        description=_("Enter a textual description of the image"),
         default=u'',
         required=False)
 
     caption = zope.schema.Text(
-        title=u"Bildunterschrift",
+        title=_("Image sub text"),
         default=u'',
         required=False)
 
