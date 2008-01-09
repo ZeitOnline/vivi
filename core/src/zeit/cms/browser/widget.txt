@@ -21,6 +21,8 @@ Create a mock repository:
 ...             return Content()
 ...         if unique_id.startswith('http://exists'):
 ...             return object()
+...         if not unique_id.startswith('http://'):
+...             raise ValueError('Invalid id')
 ...         raise KeyError(unique_id)
 ...
 >>> repository = Repository()
@@ -187,6 +189,20 @@ Returning location for <Content object at 0x...>
   'http://127.0.0.1/repo',
   'zeit.cms.interfaces.ICMSContent');
   </script>
+
+
+
+There are also completely invalid ids:
+
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'invalid'})
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, request)
+>>> widget.getInputValue()
+Traceback (most recent call last):
+    ...
+ConversionError: (<exceptions.ValueError instance at 0x...>, None)
+
 
 
 Clean up:
