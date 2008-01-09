@@ -84,6 +84,21 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
+Folders have a metadata page which shows the folder contents:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/new-folder/'
+...     '@@metadata_preview')
+>>> print browser.contents
+  <div class="context-views">
+  ...
+    <div class="folder-length">
+      0 Entries
+    </div>
+    <ul class="folder-contents">
+    </ul>
+    ...
+    
 
 Popup file browser
 ==================
