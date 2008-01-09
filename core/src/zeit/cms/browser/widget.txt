@@ -4,22 +4,47 @@ Object widgets
 
 The object widgets are used to reference objects.
 
-Create a simple content object:
 
+Create a mock repository:
+
+>>> import zope.component
 >>> import zope.interface
 >>> import zeit.cms.interfaces
+>>> import zeit.cms.repository.interfaces
 >>>
+>>> class Repository(object):
+...     __parent__ = getRootFolder()
+...     __name__ = 'repo'
+...
+...     def getContent(self, unique_id):
+...         if unique_id.startswith('http://content'):
+...             return Content()
+...         if unique_id.startswith('http://exists'):
+...             return object()
+...         raise KeyError(unique_id)
+...
+>>> repository = Repository()
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+
+Create a simple content object:
+
 >>> class Content(object):
 ...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
-...     __parent__ = None
+...     __parent__ = repository
+...     __name__ = u'content'
+...     uniqueId = 'http://content'
+
 
 Create a field and bind it at an instance of `Content`:
 
 >>> import zope.schema
 >>> field = zope.schema.Object(zeit.cms.interfaces.ICMSContent)
+>>> field.__name__ = 'reference'
 >>> field = field.bind(Content())
 
-Create a widget:
+Create an instance of the object reference widget:
 
 >>> import zope.publisher.browser
 >>> import zeit.cms.browser.widget
@@ -29,19 +54,148 @@ Create a widget:
 >>> widget
 <zeit.cms.browser.widget.ObjectReferenceWidget object at 0x...>
 
-The widget needs to look up the default browsing location. Right now we'll get
-an error because we have not registered anything:
+To browse the repository the widget needs to look up the default browsing
+location. Create a mock adapter which returns the repository:
+
+>>> def browsing_location_adapter(context, schema):
+...     print "Returning location for", context
+...     print "   ", schema
+...     return repository
+>>> import zeit.cms.browser.interfaces
+>>> gsm.registerAdapter(
+...     browsing_location_adapter,
+...     (Content, zeit.cms.interfaces.ICMSContentType),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+Get the default browsing location now:
 
 >>> widget.default_browsing_location
-Traceback (most recent call last):
-    ...
-ComponentLookupError: 
-  ((<Content object at 0x...>,
-    <InterfaceClass zeit.cms.interfaces.ICMSContent>),
-    <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>, u'')
-
+Returning location for <Content object at 0x...>
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+<Repository object at 0x...>
 
 The type filter token is used by the object browser to filter types:
 
 >>> widget.type_filter_token
 'zeit.cms.interfaces.ICMSContent'
+
+
+Render the widget:
+
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+<div class="object-widget" id="field.reference">
+  <input class="object-reference" type="text"
+          name="field.reference" value=""
+          id="field.reference" />
+  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+</div>
+<script>
+  new ObjectReferenceWidget(
+  'field.reference',
+  'http://127.0.0.1/repo',
+  'zeit.cms.interfaces.ICMSContent');
+  </script>
+
+
+
+Set the value to an existing, valid value:
+
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'http://content'})
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, request)
+>>> widget.getInputValue()
+<Content object at 0x...>
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+<div class="object-widget" id="field.reference">
+  <input class="object-reference" type="text"
+         name="field.reference" value="http://content"
+         id="field.reference" />
+  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+</div>
+<script>
+  new ObjectReferenceWidget(
+  'field.reference',
+  'http://127.0.0.1/repo',
+  'zeit.cms.interfaces.ICMSContent');
+  </script>
+
+
+
+Set the value to an existing but invalid value, so we get an validation error:
+
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'http://exists/blubs'})
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, request)
+>>> widget.getInputValue()
+Traceback (most recent call last):
+    ...
+WidgetInputError: ('reference', u'', )
+
+
+Note that the invalid value is rendered:
+
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+<div class="object-widget" id="field.reference">
+  <input class="object-reference" type="text"
+         name="field.reference" value="http://exists/blubs"
+         id="field.reference" />
+  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+</div>
+<script>
+  new ObjectReferenceWidget(
+  'field.reference',
+  'http://127.0.0.1/repo',
+  'zeit.cms.interfaces.ICMSContent');
+  </script>
+
+
+
+Test the validation. Set a non existent resource:
+  
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'http://foo'})
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, request)
+>>> widget.getInputValue()
+Traceback (most recent call last):
+    ...
+ConversionError: (<exceptions.KeyError instance at 0x...>, None)
+
+The invalid value is still rendered though:
+
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+<div class="object-widget" id="field.reference">
+  <input class="object-reference" type="text"
+         name="field.reference" value="http://foo"
+         id="field.reference" />
+  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+</div>
+<script>
+  new ObjectReferenceWidget(
+  'field.reference',
+  'http://127.0.0.1/repo',
+  'zeit.cms.interfaces.ICMSContent');
+  </script>
+
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     browsing_location_adapter,
+...     (Content, zeit.cms.interfaces.ICMSContentType),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+True
+>>> gsm.unregisterUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+True

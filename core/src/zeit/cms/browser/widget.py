@@ -31,7 +31,10 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def _toFieldValue(self, input):
         if input == self._missing:
             return self.context.missing_value
-        return self.repository.getContent(input)
+        try:
+            return self.repository.getContent(input)
+        except KeyError, e:
+            raise zope.app.form.interfaces.ConversionError(e)
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:
