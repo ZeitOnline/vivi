@@ -65,9 +65,6 @@ class IUnknownResource(zeit.cms.content.interfaces.ITextContent):
 
     type = zope.interface.Attribute("Raw type info got from connector.")
 
-    dav_resource_type = zope.interface.Attribute(
-        "Resource type the dav propagated (DAV:resorucetype)")
-
 
 class ICollection(zope.app.container.interfaces.IContainer):
     """A collection."""
