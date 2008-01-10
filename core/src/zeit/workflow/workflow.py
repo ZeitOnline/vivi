@@ -83,3 +83,24 @@ class Workflow(object):
 @zope.interface.implementer(zeit.cms.interfaces.IWebDAVProperties)
 def workflowProperties(context):
     return context.properties
+
+
+class FeedMetadataUpdater(object):
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+
+    def update_entry(self, entry, content):
+        workflow = zeit.workflow.interfaces.IWorkflow(content, None)
+        if workflow is None:
+            return
+
+        date = ''
+        if workflow.released_from:
+            date = workflow.released_from.isoformat()
+        entry.set('publication-date', date)
+
+        date = ''
+        if workflow.released_to:
+            date = workflow.released_to.isoformat()
+        entry.set('expires', date)

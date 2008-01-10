@@ -53,3 +53,8 @@ class IWorkflow(zope.interface.Interface):
         title=u"Veröffentlichungszeitraum",
         description=u"Leer für keine Einschränkung",
         required=False)
+
+    released_from = zope.interface.Attribute(
+        "Object is released from this date.")
+    released_to = zope.interface.Attribute(
+        "Object is released to this date.")

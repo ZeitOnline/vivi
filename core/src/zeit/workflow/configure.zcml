@@ -4,6 +4,10 @@
 
   <adapter factory=".workflow.Workflow" />
   <adapter factory=".workflow.workflowProperties" />
+  <utility
+    factory=".workflow.FeedMetadataUpdater"
+    name="workflow"
+    />
 
   <adapter factory=".source.fromNotNeeded" />
 
