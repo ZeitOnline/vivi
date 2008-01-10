@@ -127,3 +127,16 @@ class IMySyndicationTargets(zope.interface.Interface):
         default=(),
         required=False,
         value_type=zope.schema.Object(IFeed))
+
+
+class IFeedMetadataUpdater(zope.interface.Interface):
+    """Update feed entry metadata.
+    """
+
+    def update_entry(entry, obj):
+        """Update entry with data from obj.
+
+        Entry: lxml.objectify'ed element from the feed.
+        obj: the object to be updated.
+
+        """

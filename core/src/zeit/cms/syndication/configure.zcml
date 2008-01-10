@@ -30,4 +30,9 @@
       permission="zeit.cms.Syndicate" />
   </class>
 
+  <utility
+    factory=".feed.CommonMetadataUpdater"
+    name="commonmetadata"
+    />
+
 </configure>

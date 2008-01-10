@@ -121,17 +121,9 @@ class Feed(persistent.Persistent,
 
     def updateMetadata(self, content):
         entry = self.entry_map[content.uniqueId]
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
-        if metadata is None:
-            return
-
-        entry['supertitle'] = metadata.supertitle
-        entry['title'] = metadata.teaserTitle
-        entry['text'] = metadata.teaserText
-        entry['byline'] = metadata.byline
-        entry['short'] = ''
-        entry['short']['title'] = metadata.shortTeaserTitle
-        entry['short']['text'] = metadata.shortTeaserText
+        for name, utility in zope.component.getUtilitiesFor(
+            zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
+            utility.update_entry(entry, content)
 
     # helpers and internal API:
 
@@ -190,3 +182,22 @@ def feedFactory(context):
 resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory('feed')
 resourceFactory = zope.component.adapter(
     zeit.cms.syndication.interfaces.IFeed)(resourceFactory)
+
+
+
+class CommonMetadataUpdater(object):
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+
+    def update_entry(self, entry, content):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+        if metadata is None:
+            return
+        entry['supertitle'] = metadata.supertitle
+        entry['title'] = metadata.teaserTitle
+        entry['text'] = metadata.teaserText
+        entry['byline'] = metadata.byline
+        entry['short'] = ''
+        entry['short']['title'] = metadata.shortTeaserTitle
+        entry['short']['text'] = metadata.shortTeaserText
