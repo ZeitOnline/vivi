@@ -287,14 +287,14 @@ xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
-      <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title/>
-        <text/>
-      </teaser>
-      <indexteaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title/>
-        <text/>
-      </indexteaser>
+      <supertitle xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+      <title xmlns:ns2="http://www.w3.org/2001/XMLSchema-instance" ns2:nil="true"/>
+      <text xmlns:ns3="http://www.w3.org/2001/XMLSchema-instance" ns3:nil="true"/>
+      <byline xmlns:ns4="http://www.w3.org/2001/XMLSchema-instance" ns4:nil="true"/>
+      <short>
+        <title xmlns:ns5="http://www.w3.org/2001/XMLSchema-instance" ns5:nil="true"/>
+        <text xmlns:ns6="http://www.w3.org/2001/XMLSchema-instance" ns6:nil="true"/>
+      </short>
     </block>
   </container>
 </feed>
@@ -337,14 +337,14 @@ at its xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
-      <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title>Trinker zur Kasse</title>
-        <text/>
-      </teaser>
-      <indexteaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title/>
-        <text/>
-      </indexteaser>
+      <supertitle xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+      <title>Trinker zur Kasse</title>
+      <text xmlns:ns6="http://www.w3.org/2001/XMLSchema-instance" ns6:nil="true"/>
+      <byline xmlns:ns9="http://www.w3.org/2001/XMLSchema-instance" ns9:nil="true"/>
+      <short>
+        <title xmlns:ns13="http://www.w3.org/2001/XMLSchema-instance" ns13:nil="true"/>
+        <text xmlns:ns14="http://www.w3.org/2001/XMLSchema-instance" ns14:nil="true"/>
+      </short>
     </block>
   </container>
 </feed>

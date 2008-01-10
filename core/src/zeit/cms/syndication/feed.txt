@@ -231,25 +231,36 @@ in it:
 </feed>
 
 
-When an object is adaptable to ITeaser, the teaser information will be
-included:
+When an object is adaptable to ICommonMetadata the relevant information will be
+included. Setup an article with ICommonMetadata:
+
+>>> art2 = Article('art2')
+>>> art2.supertitle = u'Frankreich'
+>>> art2.teaserTitle = u'Keine Sieger'
+>>> art2.teaserText = u'In Frankreich wird massiv gestreikt. Doch den'
+>>> art2.byline = u'Von Alain-Xavier Wurst'
+>>> art2.shortTeaserTitle = u'Frankreich'
+>>> art2.shortTeaserText = u'Die Streiks werden Sarkozy nicht bezwingen'
+
+Provide the interface:
 
 >>> import zope.interface
->>> from zeit.cms.content.interfaces import ITeaser
->>> art2 = Article('art2')
->>> art2.title = 'Teaser-Title'
->>> art2.text = 'Teaser-Text'
->>> zope.interface.directlyProvides(art2, ITeaser)
+>>> from zeit.cms.content.interfaces import ICommonMetadata
+>>> zope.interface.directlyProvides(art2, ICommonMetadata)
+
+Insert the article to the feed:
+
 >>> feed.insert(0, art2)
 >>> print feed.xml_source
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
   <container>
     <block href="art2">
-      <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title>Teaser-Title</title>
-        <text>Teaser-Text</text>
-      </teaser>
+      <supertitle>Frankreich</supertitle>
+      <title>Keine Sieger</title>
+      <text>In Frankreich wird massiv gestreikt. Doch den</text>
+      <byline>Von Alain-Xavier Wurst</byline>
+      <short><title>Frankreich</title><text>Die Streiks werden Sarkozy nicht bezwingen</text></short>
     </block>
     <block href="art1"/>
   </container>
@@ -260,21 +271,21 @@ included:
 We can change the teaser data and just call updateMetadata to apply the
 changes:
 
->>> art2.title = 'New Title'
->>> art2.text = 'New Text'
+>>> art2.teaserTitle = 'New Title'
+>>> art2.supertitle = 'Fronkroisch'
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
   <container>
     <block href="art2">
-      <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title>New Title</title>
-        <text>New Text</text>
-      </teaser>
+      <supertitle>Fronkroisch</supertitle>
+      <title>New Title</title>
+      <text>In Frankreich wird massiv gestreikt. Doch den</text>
+      <byline>Von Alain-Xavier Wurst</byline>
+      <short><title>Frankreich</title><text>Die Streiks werden Sarkozy nicht bezwingen</text></short>
     </block>
     <block href="art1"/>
   </container>
   <object_limit>50</object_limit>
 </feed>
-

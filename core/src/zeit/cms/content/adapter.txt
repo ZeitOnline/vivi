@@ -2,68 +2,6 @@
 Adatpers
 ========
 
-
-Teaser XML Representation
-=========================
-
-The teaser adapter adaps ITeaser to IXMLRepresentation. Let's create a
-teaser::
-
-    >>> from zeit.cms.content.interfaces import ITeaser
-    >>> class Teaser(object):
-    ...     title = text = u''
-
-
-Create a teaser and get it's xml representation::
-
-    >>> import lxml.etree
-    >>> from zeit.cms.content.adapter import TeaserXMLRepresentation
-    >>> t = Teaser()
-    >>> t.title = u'Qualmfreie Kneipen'
-    >>> t.text = u'Die Länder haben sich auf ein umfassendes ...'
-    >>> xml_repr = TeaserXMLRepresentation(t)
-    >>> print lxml.etree.tostring(xml_repr.xml, pretty_print=True)
-    <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-      <title>Qualmfreie Kneipen</title>
-      <text>Die L&#228;nder haben sich auf ein umfassendes ...</text>
-    </teaser>
-    >>> xml_repr.xml
-    <Element {http://xml.zeit.de/CMS/Teaser}teaser at ...>
-
-
-When the context's teaser title or text is None we'll just get the same as with
-an empty string::
-
-    >>> t.title = None
-    >>> t.text = None
-    >>> xml_repr = TeaserXMLRepresentation(t)
-    >>> print lxml.etree.tostring(xml_repr.xml, pretty_print=True)
-    <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-      <title/>
-      <text/>
-    </teaser>
-
-
-IndexTeaser XML Representation
-==============================
-
-As for the teaser there is a xml representation of the index teaser::
-
-    >>> from zeit.cms.content.adapter import IndexTeaserXMLRepresentation
-    >>> t = Teaser()
-    >>> t.title = u'Judaphobie'
-    >>> t.text = u'In Großbritannien und anderen Ländern Europas ...'
-    >>> xml_repr = IndexTeaserXMLRepresentation(t)
-    >>> print lxml.etree.tostring(xml_repr.xml, pretty_print=True)
-    <indexteaser xmlns="http://xml.zeit.de/CMS/Teaser">
-        <title>Judaphobie</title>
-        <text>In Gro&#223;britannien und anderen L&#228;ndern Europas ...</text>
-    </indexteaser>
-    >>> xml_repr.xml
-    <Element {http://xml.zeit.de/CMS/Teaser}indexteaser at ...>
-
-
-
 XMLSource
 =========
 
@@ -71,6 +9,7 @@ The xml source adapter adapts IXMLRepresentation to IXMLSource. Let's make sure
 processing instructions which are not inside the document tree are preserverd
 Create a dummy object:
 
+>>> import lxml.objectify
 >>> class XML(object):
 ...     xml = lxml.objectify.fromstring('<a/><?foo?>')
 

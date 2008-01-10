@@ -18,41 +18,6 @@ import zeit.connector.interfaces
 import zeit.connector.resource
 
 
-class BaseTeaserXMLRepresentation(object):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
-
-    tag_name = None
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def xml(self):
-        title = self.context.title or u''
-        text = self.context.text or u''
-        xml_str = (u'<%s xmlns="%s"><title>%s</title>'
-                   u'<text>%s</text></%s>') % (
-            self.tag_name,
-            zeit.cms.interfaces.TEASER_NAMESPACE,
-            xml.sax.saxutils.escape(title),
-            xml.sax.saxutils.escape(text),
-            self.tag_name)
-        return lxml.objectify.fromstring(xml_str)
-
-
-class TeaserXMLRepresentation(BaseTeaserXMLRepresentation):
-
-    zope.component.adapts(zeit.cms.content.interfaces.ITeaser)
-    tag_name = 'teaser'
-
-
-class IndexTeaserXMLRepresentation(BaseTeaserXMLRepresentation):
-
-    zope.component.adapts(zeit.cms.content.interfaces.IIndexTeaser)
-    tag_name = 'indexteaser'
-
-
 @zope.annotation.factory
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)

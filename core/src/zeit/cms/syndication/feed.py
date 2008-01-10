@@ -121,18 +121,17 @@ class Feed(persistent.Persistent,
 
     def updateMetadata(self, content):
         entry = self.entry_map[content.uniqueId]
-        metadata_interfaces = [
-            zeit.cms.content.interfaces.ITeaser,
-            zeit.cms.content.interfaces.IIndexTeaser]
-        for interface in metadata_interfaces:
-            metadata = zeit.cms.content.interfaces.IXMLRepresentation(
-                interface(content, None), None)
-            if metadata is not None:
-                try:
-                    del entry[metadata.xml.tag][:]
-                except AttributeError:
-                    pass
-                entry.append(metadata.xml)
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+        if metadata is None:
+            return
+
+        entry['supertitle'] = metadata.supertitle
+        entry['title'] = metadata.teaserTitle
+        entry['text'] = metadata.teaserText
+        entry['byline'] = metadata.byline
+        entry['short'] = ''
+        entry['short']['title'] = metadata.shortTeaserTitle
+        entry['short']['text'] = metadata.shortTeaserText
 
     # helpers and internal API:
 

@@ -3,8 +3,6 @@
   <adapter factory=".article.articleFactory" name="article" />
   <adapter factory=".article.articleFromTemplate" />
   <adapter factory=".article.resourceFactory" />
-  <adapter factory=".article.Teaser" />
-  <adapter factory=".article.IndexTeaser" />
 
   <class class=".article.Article">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />

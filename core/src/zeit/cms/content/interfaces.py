@@ -209,27 +209,6 @@ class IXMLContent(zeit.cms.interfaces.ICMSContent, IXMLRepresentation):
     properties = zope.schema.Object(zeit.cms.interfaces.IWebDAVProperties)
 
 
-class ITeaser(zope.interface.Interface):
-    """A teaser is a brief introduction to an article or other document."""
-
-    title = zope.schema.Text(
-        title=_('Teaser Title'))
-    text = zope.schema.Text(
-        title=_('Teaser Text'),
-        max_length=170)
-
-
-class IIndexTeaser(zope.interface.Interface):
-    """An index teaser is a *very* short in troduction to a document."""
-
-    title = zope.schema.Text(
-        title=_('Index Teaser Title'),
-        max_length=20)
-    text = zope.schema.Text(
-        title=_('Index Teaser Text'),
-        max_length=50)
-
-
 class ILockInfo(zope.app.locking.interfaces.ILockInfo):
     """Extended LockInfo interface."""
 

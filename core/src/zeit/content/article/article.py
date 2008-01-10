@@ -191,40 +191,6 @@ resourceFactory = zope.component.adapter(
     zeit.content.article.interfaces.IArticle)(resourceFactory)
 
 
-class Teaser(object):
-
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
-    zope.interface.implements(zeit.cms.content.interfaces.ITeaser)
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def title(self):
-        return self.context.teaserTitle
-
-    @property
-    def text(self):
-        return self.context.teaserText
-
-
-class IndexTeaser(object):
-
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
-    zope.interface.implements(zeit.cms.content.interfaces.IIndexTeaser)
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def title(self):
-        return self.context.shortTeaserTitle
-
-    @property
-    def text(self):
-        return self.context.shortTeaserText
-
-
 @zope.component.adapter(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
