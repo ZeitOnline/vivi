@@ -11,9 +11,6 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 from zeit.cms.i18n import MessageFactory as _
 
-import zeit.content.image.interfaces
-import zeit.content.image.source
-
 import zeit.content.article.source
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
@@ -76,13 +73,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         default=frozenset(),
         value_type=zope.schema.Choice(
             source=zeit.content.article.source.SyndicatedInSource()))
-
-    images = zope.schema.Tuple(
-        title=_('Images'),
-        required=False,
-        default=(),
-        value_type=zope.schema.Choice(
-            source=zeit.content.image.source.imageSource))
 
     textLength = zope.schema.Int(
         title=u'Anschläge',

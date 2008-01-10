@@ -38,56 +38,6 @@ ARTICLE_TEMPLATE = """\
 </article>"""
 
 
-class ImageProperty(object):
-
-    def __get__(self, instance, class_):
-        if instance is None:
-            return class_
-        images = []
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        for image_element in self.image_elements(instance):
-            unique_id = image_element.get('base-id')
-            if unique_id is None:
-                unique_id = image_element.get('src')
-            try:
-                content = repository.getContent(unique_id)
-            except (ValueError, KeyError):
-                continue
-            images.append(content)
-        return tuple(images)
-
-    def __set__(self, instance, values):
-        for element in self.image_elements(instance):
-            element.getparent().remove(element)
-        if not values:
-            return
-        for image in values:
-            image_element = instance.xml.makeelement('image')
-
-            # XXX this is quite hairy; shouldn't we use adapters?
-            if zeit.content.image.interfaces.IImage.providedBy(image):
-                image_element.set('src', image.uniqueId)
-                image_element.set('type', image.contentType.split('/')[-1])
-            elif zeit.content.image.interfaces.IImageGroup.providedBy(image):
-                image_element.set('base-id', image.uniqueId)
-            else:
-                raise ValueError("%r is not an image." % image)
-
-            image_metadata = zeit.content.image.interfaces.IImageMetadata(
-                image)
-            expires = image_metadata.expires
-            if expires:
-                expires = expires.isoformat()
-                image_element.set('expires', expires)
-            image_element.bu = image_metadata.caption or ''
-            image_element.copyright = image_metadata.copyrights
-            instance.xml.head.append(image_element)
-
-    def image_elements(self, instance):
-        return instance.xml.head.findall('image')
-
-
 class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
 
@@ -116,8 +66,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     automaticTeaserSyndication = zeit.cms.content.property.ResourceSet(
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
     syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
-
-    images = ImageProperty()
 
     navigation = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['navigation'],

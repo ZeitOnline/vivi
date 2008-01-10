@@ -19,6 +19,7 @@ import zeit.cms.content.template
 import zeit.cms.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
+import zeit.content.image.interfaces
 import zeit.content.article.interfaces
 
 
@@ -38,6 +39,14 @@ class ArticleFormBase(object):
 
     field_groups = zeit.cms.browser.form.metadataFieldGroups
 
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.article.interfaces.IArticleMetadata).omit(
+                'textLength') +
+        zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent) +
+        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages))
+
+
     @property
     def template(self):
         # Sneak in the javascript for copying teaser texts
@@ -49,12 +58,7 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
 
     title = _('Add article')
     form_fields = (
-        zope.formlib.form.Fields(
-            zeit.cms.interfaces.ICMSContent,
-            omit_readonly=False).omit('uniqueId') +
-        zope.formlib.form.Fields(
-            zeit.content.article.interfaces.IArticleMetadata,
-            omit_readonly=False).omit('textLength') +
+        ArticleFormBase.form_fields +
         ChooseTemplate.form_fields)
 
     content_template = None
@@ -85,17 +89,8 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
 class EditForm(ArticleFormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit article')
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.article.interfaces.IArticleMetadata,
-        render_context=True, omit_readonly=False).omit('textLength')
 
 
 class DisplayForm(ArticleFormBase, zeit.cms.browser.form.DisplayForm):
 
-    form_fields = (
-        zope.formlib.form.Fields(
-            zeit.content.article.interfaces.IArticleMetadata,
-            render_context=True, omit_readonly=False) +
-        zope.formlib.form.Fields(
-            zeit.content.article.interfaces.IArticle).select(
-                'syndicationLog'))
+    title = _('View article metadata')

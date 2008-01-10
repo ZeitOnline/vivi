@@ -204,7 +204,9 @@ Images can be attached to articles. They are stored in the `images` attribute.
 Initally there are no images attached to an article:
 
 >>> article = Article()
->>> article.images
+>>> import zeit.content.image.interfaces
+>>> images = zeit.content.image.interfaces.IImages(article)
+>>> images.images
 ()
 
 Get an image from the repository and attach it:
@@ -219,11 +221,11 @@ Get an image from the repository and attach it:
 <zeit.content.image.image.Image object at 0x...>
 >>> image_metadata = zeit.content.image.interfaces.IImageMetadata(image)
 >>> image_metadata.expires = datetime.datetime(2007, 4, 1)
->>> article.images = (image, )
+>>> images.images = (image, )
 
 It's now stored on the article:
 
->>> article.images
+>>> images.images
 (<zeit.content.image.image.Image object at 0x...>,)
 
 And the image is referenced in the XML structure:

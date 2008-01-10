@@ -157,6 +157,17 @@ def imagefolder_browse_location(context, source):
     return image_folder
 
 
+@zope.component.adapter(
+    zeit.content.image.imagereference.ImagesAdapter,
+    zeit.content.image.interfaces.IImageSource)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def imageadapter_browse_location(context, source):
+    return zope.component.queryMultiAdapter(
+        (context.context, source),
+        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
 class MetadataPreviewHTML(object):
 
     @zope.cachedescriptors.property.Lazy

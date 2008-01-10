@@ -9,6 +9,7 @@ import zope.app.file.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.cms.content.contentsource
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -99,3 +100,23 @@ class ILocalImageGroup(IImageGroup,
 
 class IImageSource(zeit.cms.content.interfaces.ICMSContentSource):
     """A source for images."""
+
+
+class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    zope.interface.implements(IImageSource)
+    check_interfaces = IImageType
+    name = 'images'
+
+imageSource = ImageSource()
+
+
+class IImages(zope.interface.Interface):
+    """An object which references images."""
+
+    images = zope.schema.Tuple(
+        title=_('Images'),
+        required=False,
+        default=(),
+        value_type=zope.schema.Choice(
+            source=imageSource))

@@ -91,8 +91,14 @@
   <!-- source -->
   <utility
     provides="zeit.cms.content.interfaces.ICMSContentSource"
-    component=".source.imageSource"
+    component=".interfaces.imageSource"
     name="images"
     />
+
+
+  <!-- image references -->
+  <adapter factory=".imagereference.ImagesAdapter" />
+  <adapter factory=".imagereference.images_xml_representation" />
+  <adapter factory=".imagereference.images_from_template" />
 
 </configure>
