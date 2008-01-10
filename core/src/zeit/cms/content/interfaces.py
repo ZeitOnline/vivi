@@ -246,3 +246,10 @@ class ITemplate(IXMLRepresentation):
     """A template for xml content types."""
 
     title = zope.schema.TextLine(title=_('Title'))
+
+
+class ICMSContentSource(zope.schema.interfaces.ISource):
+    """A source for CMS content types."""
+
+    name = zope.interface.Attribute(
+        "Utility name of the source")

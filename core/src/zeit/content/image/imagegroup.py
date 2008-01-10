@@ -60,6 +60,7 @@ class LocalImageGroup(persistent.Persistent,
 def local_image_group_factory(context):
     lig = LocalImageGroup()
     lig.uniqueId = context.uniqueId
+    lig.__name__ = context.__name__
     zeit.connector.interfaces.IWebDAVWriteProperties(lig).update(
         zeit.connector.interfaces.IWebDAVReadProperties(
             zope.security.proxy.removeSecurityProxy(context)))

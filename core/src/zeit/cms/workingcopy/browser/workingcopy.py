@@ -9,8 +9,9 @@ import zope.traversing
 import zc.table.table
 import zc.table.column
 
-import zeit.cms.browser.listing
 import zeit.cms.browser.column
+import zeit.cms.browser.listing
+import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 
@@ -44,7 +45,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
 
 @zope.component.adapter(
     zeit.cms.workingcopy.interfaces.ILocalContent,
-    zeit.cms.interfaces.ICMSContentType)
+    zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def localcontent_default_browsing_location(context, schema):

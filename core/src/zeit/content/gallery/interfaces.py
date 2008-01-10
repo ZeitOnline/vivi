@@ -13,10 +13,11 @@ from zeit.cms.i18n import MessageFactory as _
 class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Cennter page metadata."""
 
-    image_folder = zope.schema.Object(
-        zeit.cms.repository.interfaces.IFolder,
+    image_folder = zope.schema.Choice(
         title=_("Image folder"),
-        description=_("Folder containing images to display in the gallery."))
+        description=_("Folder containing images to display in the gallery."),
+        source=zeit.cms.content.contentsource.folderSource)
+
 
 class IReadGallery(
     IGalleryMetadata,
@@ -24,8 +25,10 @@ class IReadGallery(
     zope.app.container.interfaces.IReadContainer):
     """Read methods for gallery."""
 
+
 class IWriteGallery(zope.app.container.interfaces.IWriteContainer):
     """Write methods for gallery."""
+
 
 class IGallery(IReadGallery, IWriteGallery):
     """An image gallery"""

@@ -6,7 +6,7 @@ import xml.sax.saxutils
 
 import zope.component
 import zope.interface
-import zope.schema
+import zope.schema.interfaces
 
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.widget
@@ -23,7 +23,11 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'object-reference-widget.pt')
 
-    source = zeit.cms.content.sources.CMSContentTypeSource()
+    content_types_source = zeit.cms.content.sources.CMSContentTypeSource()
+
+    def __init__(self, context, source, request):
+        super(ObjectReferenceWidget, self).__init__(context, request)
+        self.source = source
 
     def __call__(self):
         return self.template()
@@ -32,9 +36,15 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         if input == self._missing:
             return self.context.missing_value
         try:
-            return self.repository.getContent(input)
+            content = self.repository.getContent(input)
         except (KeyError, ValueError), e:
             raise zope.app.form.interfaces.ConversionError(e)
+        if content not in self.source:
+            err = zope.schema.interfaces.ValidationError(
+                "Invalid object",  input)
+            raise zope.app.form.interfaces.WidgetInputError(
+                self.context.__name__, self.label, err)
+        return content
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:
@@ -44,7 +54,7 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     @property
     def default_browsing_location(self):
         return zope.component.getMultiAdapter(
-            (self.context.context, self.context.schema),
+            (self.context.context, self.source),
             zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
     @zope.cachedescriptors.property.Lazy
@@ -54,14 +64,15 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
     @property
     def type_filter_token(self):
-        terms = zope.component.getMultiAdapter(
-            (self.source, self.request),
-            zope.app.form.browser.interfaces.ITerms)
-        return terms.getTerm(self.context.schema).token
+        return self.source.name
 
 
 class ObjectReferenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):
+
+    def __init__(self, context, source, request):
+        super(ObjectReferenceDisplayWidget, self).__init__(context, request)
+        self.source = source
 
     def __call__(self):
         if self._renderedValueSet():
@@ -98,23 +109,6 @@ def objectDisplayWidgetMultiplexer(context, field, request):
     return zope.component.getMultiAdapter(
         (context, field, field.schema, request),
         zope.app.form.interfaces.IDisplayWidget)
-
-
-class ObjectSequenceWidget(
-    zope.app.form.browser.sequencewidget.SequenceWidget):
-
-    def __init__(self, context, field, schema, request):
-        super(ObjectSequenceWidget, self).__init__(context, field, request)
-        self.schema = schema
-
-
-class ObjectSequenceDisplayWidget(
-    zope.app.form.browser.sequencewidget.SequenceDisplayWidget):
-
-    def __init__(self, context, field, schema, request):
-        super(ObjectSequenceDisplayWidget, self).__init__(
-            context, field, request)
-        self.schema = schema
 
 
 class MultiObjectSequenceWidgetBase(object):

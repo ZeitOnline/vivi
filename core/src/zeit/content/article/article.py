@@ -64,8 +64,16 @@ class ImageProperty(object):
             return
         for image in values:
             image_element = instance.xml.makeelement('image')
-            image_element.set('src', image.uniqueId)
-            image_element.set('type', image.contentType.split('/')[-1])
+
+            # XXX this is quite hairy; shouldn't we use adapters?
+            if zeit.content.image.interfaces.IImage.providedBy(image):
+                image_element.set('src', image.uniqueId)
+                image_element.set('type', image.contentType.split('/')[-1])
+            elif zeit.content.image.interfaces.IImageGroup.providedBy(image):
+                image_element.set('base-id', image.uniqueId)
+            else:
+                raise ValueError("%r is not an image." % image)
+
             image_metadata = zeit.content.image.interfaces.IImageMetadata(
                 image)
             expires = image_metadata.expires

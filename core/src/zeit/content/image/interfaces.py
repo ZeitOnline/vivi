@@ -7,6 +7,7 @@ import zope.schema
 
 import zope.app.file.interfaces
 
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -95,3 +96,7 @@ class ILocalImageGroup(IImageGroup,
     The local version only holds the metadata, therefore it is not a container.
 
     """
+
+
+class IImageSource(zeit.cms.content.interfaces.ICMSContentSource):
+    """A source for images."""

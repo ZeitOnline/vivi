@@ -157,6 +157,36 @@ Let's add an image:
 False
 
 
+We also want to add an image group. Create one first. To create it we need to
+setup the site:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+Create the group:
+
+>>> import zeit.content.image.test
+>>> group = zeit.content.image.test.create_image_group()
+
+Commit the transaction so our browser sees the change. Also unset the site
+again:
+
+>>> import transaction
+>>> transaction.commit()
+>>> zope.app.component.hooks.setSite(old_site)
+
+
+Now add the site to the article:
+
+>>> browser.getControl('Add Images').click()
+>>> browser.getControl(name="form.images.1.").value = group.uniqueId
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+    ...Updated on...
+
+
 WYSIWYG-Editor
 ++++++++++++++
 
@@ -217,6 +247,7 @@ Let's make sure the image is linked:
 <!DOCTYPE ...
  <div class="widget"><ol class="sequenceWidget" >
  <li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a></li>
+ <li><a href="http://localhost/++skin++cms/repository/image-group">image-group</a></li>
  </ol></div>
   ...
 

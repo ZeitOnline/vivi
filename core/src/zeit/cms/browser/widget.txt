@@ -42,7 +42,9 @@ Create a simple content object:
 Create a field and bind it at an instance of `Content`:
 
 >>> import zope.schema
->>> field = zope.schema.Object(zeit.cms.interfaces.ICMSContent)
+>>> import zeit.cms.content.contentsource
+>>> source = zeit.cms.content.contentsource.CMSContentSource()
+>>> field = zope.schema.Choice(source=source)
 >>> field.__name__ = 'reference'
 >>> field = field.bind(Content())
 
@@ -52,7 +54,7 @@ Create an instance of the object reference widget:
 >>> import zeit.cms.browser.widget
 >>> request = zope.publisher.browser.TestRequest()
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
-...     field, request)
+...     field, source, request)
 >>> widget
 <zeit.cms.browser.widget.ObjectReferenceWidget object at 0x...>
 
@@ -64,9 +66,10 @@ location. Create a mock adapter which returns the repository:
 ...     print "   ", schema
 ...     return repository
 >>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.content.interfaces
 >>> gsm.registerAdapter(
 ...     browsing_location_adapter,
-...     (Content, zeit.cms.interfaces.ICMSContentType),
+...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
 
@@ -74,20 +77,20 @@ Get the default browsing location now:
 
 >>> widget.default_browsing_location
 Returning location for <Content object at 0x...>
-    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <Repository object at 0x...>
 
 The type filter token is used by the object browser to filter types:
 
 >>> widget.type_filter_token
-'zeit.cms.interfaces.ICMSContent'
+'all-types'
 
 
 Render the widget:
 
 >>> print widget()
 Returning location for <Content object at 0x...>
-    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
           name="field.reference" value=""
@@ -98,7 +101,7 @@ Returning location for <Content object at 0x...>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'zeit.cms.interfaces.ICMSContent');
+  'all-types');
   </script>
 
 
@@ -108,12 +111,12 @@ Set the value to an existing, valid value:
 >>> request = zope.publisher.browser.TestRequest(
 ...     form={'field.reference': u'http://content'})
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
-...     field, request)
+...     field, source, request)
 >>> widget.getInputValue()
 <Content object at 0x...>
 >>> print widget()
 Returning location for <Content object at 0x...>
-    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
          name="field.reference" value="http://content"
@@ -124,7 +127,7 @@ Returning location for <Content object at 0x...>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'zeit.cms.interfaces.ICMSContent');
+  'all-types');
   </script>
 
 
@@ -134,18 +137,18 @@ Set the value to an existing but invalid value, so we get an validation error:
 >>> request = zope.publisher.browser.TestRequest(
 ...     form={'field.reference': u'http://exists/blubs'})
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
-...     field, request)
+...     field, source, request)
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
-WidgetInputError: ('reference', u'', )
+WidgetInputError: ('reference', u'', Invalid object http://exists/blubs)
 
 
 Note that the invalid value is rendered:
 
 >>> print widget()
 Returning location for <Content object at 0x...>
-    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
          name="field.reference" value="http://exists/blubs"
@@ -156,7 +159,7 @@ Returning location for <Content object at 0x...>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'zeit.cms.interfaces.ICMSContent');
+  'all-types');
   </script>
 
 
@@ -166,7 +169,7 @@ Test the validation. Set a non existent resource:
 >>> request = zope.publisher.browser.TestRequest(
 ...     form={'field.reference': u'http://foo'})
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
-...     field, request)
+...     field, source, request)
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
@@ -176,7 +179,7 @@ The invalid value is still rendered though:
 
 >>> print widget()
 Returning location for <Content object at 0x...>
-    <InterfaceClass zeit.cms.interfaces.ICMSContent>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
          name="field.reference" value="http://foo"
@@ -187,7 +190,7 @@ Returning location for <Content object at 0x...>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'zeit.cms.interfaces.ICMSContent');
+  'all-types');
   </script>
 
 
@@ -197,7 +200,7 @@ There are also completely invalid ids:
 >>> request = zope.publisher.browser.TestRequest(
 ...     form={'field.reference': u'invalid'})
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
-...     field, request)
+...     field, source, request)
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
@@ -209,7 +212,7 @@ Clean up:
 
 >>> gsm.unregisterAdapter(
 ...     browsing_location_adapter,
-...     (Content, zeit.cms.interfaces.ICMSContentType),
+...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 True
 >>> gsm.unregisterUtility(

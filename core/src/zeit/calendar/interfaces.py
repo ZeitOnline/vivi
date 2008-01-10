@@ -11,6 +11,7 @@ import zope.schema
 import zope.app.container.interfaces
 
 import zeit.cms.interfaces
+import zeit.cms.content.contentsource
 
 
 class ICalendarEvent(zope.interface.Interface):
@@ -33,7 +34,8 @@ class ICalendarEvent(zope.interface.Interface):
         description=u"Documents that are related to this event.",
         default=(),
         required=False,
-        value_type=zope.schema.Object(zeit.cms.interfaces.ICMSContent))
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource))
 
     location = zope.schema.TextLine(
         title=u"Location/Typ",

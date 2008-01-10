@@ -62,6 +62,7 @@ To add the gallery we go back to 2007/01:
 >>> browser.getLink('01').click()
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Gallery']
+>>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 Set the most important values:

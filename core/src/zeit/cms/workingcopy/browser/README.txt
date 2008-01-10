@@ -71,14 +71,17 @@ We need some setup:
 
 There is no default location for the working copy itself:
 
+>>> import zeit.cms.content.interfaces
+>>> source = zope.component.getUtility(
+...     zeit.cms.content.interfaces.ICMSContentSource, name='all-types')
 >>> zope.component.getMultiAdapter(
-...     (workingcopy, zeit.cms.interfaces.ICMSContent),
+...     (workingcopy, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 Traceback (most recent call last):
     ...
 ComponentLookupError:
     ((<zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>,
-      <InterfaceClass zeit.cms.interfaces.ICMSContent>),
+      <zeit.cms.content.contentsource.CMSContentSource object at 0x...>),
      <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>,
      u'')
 
@@ -86,7 +89,7 @@ For the somalia document we'll get the folder in the repository though:
 
 >>> somalia = workingcopy['Somalia']
 >>> location = zope.component.getMultiAdapter(
-...     (somalia, zeit.cms.interfaces.ICMSContent),
+...     (somalia, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 u'http://xml.zeit.de/online/2007/01'
@@ -101,7 +104,7 @@ Getting the location will get us to `online` since that is the nearest existing
 folder:
 
 >>> location = zope.component.getMultiAdapter(
-...     (somalia, zeit.cms.interfaces.ICMSContent),
+...     (somalia, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 u'http://xml.zeit.de/online'

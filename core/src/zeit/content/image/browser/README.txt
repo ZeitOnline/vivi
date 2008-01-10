@@ -403,7 +403,7 @@ different from the repository version: it is no folder:
 
 >>> browser.getLink('Checkout').click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/LocalImageGroup/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/new-hampshire/@@edit.html'
 
 >>> print browser.contents
 <?xml version="1.0"?>
@@ -420,7 +420,7 @@ Make sure we have a metadata preview for local image groups:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
-...     'LocalImageGroup/@@metadata_preview')
+...     'new-hampshire/@@metadata_preview')
 >>> print browser.contents
 <div class="context-views">
     ...

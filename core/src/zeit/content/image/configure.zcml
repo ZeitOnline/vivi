@@ -42,6 +42,11 @@
       permission="zeit.EditContent" />
   </class>
 
+  <interface
+    interface=".interfaces.IImageGroup"
+    type=".interfaces.IImageType"
+    />
+
   <adapter factory=".imagegroup.imageGroupToResource" />
   <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
 
@@ -81,5 +86,13 @@
 
   <adapter factory=".metadata.metadata_webdav_read_properties" />
   <adapter factory=".metadata.metadata_webdav_write_properties" />
+
+
+  <!-- source -->
+  <utility
+    provides="zeit.cms.content.interfaces.ICMSContentSource"
+    component=".source.imageSource"
+    name="images"
+    />
 
 </configure>

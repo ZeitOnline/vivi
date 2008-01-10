@@ -122,8 +122,8 @@ reachable at `get_object_browser` for every folder:
 </div>
   <div class="tree-view-url">http://localhost/++skin++cms/repository/tree.html</div>
 
-The object browser also supports filtering of types. Without filter everything
-is displayed:
+The object browser also supports filtering of types via a content type source
+name. Without filter everything is displayed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              '@@get_object_browser')
@@ -169,7 +169,7 @@ Let's filter for folders:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/@@get_object_browser'
-...     '?type_filter=zeit.cms.repository.interfaces.IFolder')
+...     '?type_filter=folders')
 >>> print browser.contents
 <div id="popup-navtree" class="Tree">
   <ul>
@@ -217,14 +217,17 @@ used. Do some setup:
 
 For any type the default browse location will be the folder itself:
 
+>>> import zeit.cms.content.interfaces
+>>> source = zope.component.getUtility(
+...     zeit.cms.content.interfaces.ICMSContentSource, name='all-types')
 >>> location = zope.component.getMultiAdapter(
-...     (repository, zeit.cms.interfaces.ICMSContent),
+...     (repository, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 u'http://xml.zeit.de/'
 >>> online = repository['online']
 >>> location = zope.component.getMultiAdapter(
-...     (online, zeit.cms.interfaces.ICMSContent),
+...     (online, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 u'http://xml.zeit.de/online'
@@ -232,7 +235,7 @@ u'http://xml.zeit.de/online'
 For a content object it will be the folder it is contained in:
 
 >>> location = zope.component.getMultiAdapter(
-...     (online['2007']['01']['Saarland'], zeit.cms.interfaces.ICMSContent),
+...     (online['2007']['01']['Saarland'], source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 u'http://xml.zeit.de/online/2007/01'

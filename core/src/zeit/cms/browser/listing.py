@@ -174,7 +174,7 @@ class Listing(object):
     enable_delete = True
     types_source = zeit.cms.content.sources.CMSContentTypeSource()
     css_class = 'contentListing hasMetadata'
-
+    filter_interface = None
 
     columns = (
         zc.table.column.SelectionColumn(idgetter=lambda item: item.__name__),
@@ -221,7 +221,7 @@ class Listing(object):
     def content(self):
         result = []
         for obj in self.contentContext.values():
-            if not self.filter_interface.providedBy(obj):
+            if not self.filter_content(obj):
                 continue
             list_repr = zope.component.queryMultiAdapter(
                 (obj, self.request),
@@ -242,16 +242,20 @@ class Listing(object):
         formatter.cssClasses['table'] = self.css_class
         return formatter
 
+    def filter_content(self, obj):
+        if self.filter_interface is not None:
+            return self.filter_interface.providedBy(obj)
+        if self.filter_source is not None:
+            return obj in self.filter_source
+
+        # Default is to show content:
+        return True
+
     @zope.cachedescriptors.property.Lazy
-    def filter_interface(self):
-        result = zope.interface.Interface
-        token = self.request.get('type_filter')
-        if token is not None:
-            terms = zope.component.getMultiAdapter(
-                (self.types_source, self.request),
-                zope.app.form.browser.interfaces.ITerms)
-            try:
-                result = terms.getValue(token)
-            except LookupError:
-                pass
-        return result
+    def filter_source(self):
+        source_name = self.request.get('type_filter')
+        if not source_name:
+            return None
+        return zope.component.getUtility(
+            zeit.cms.content.interfaces.ICMSContentSource,
+            name=source_name)

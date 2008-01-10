@@ -12,6 +12,7 @@ import zeit.cms.content.sources
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.content.image.interfaces
+import zeit.content.image.source
 
 import zeit.content.article.source
 
@@ -80,8 +81,8 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('Images'),
         required=False,
         default=(),
-        value_type=zope.schema.Object(
-            zeit.content.image.interfaces.IImage))
+        value_type=zope.schema.Choice(
+            source=zeit.content.image.source.imageSource))
 
     textLength = zope.schema.Int(
         title=u'Anschläge',

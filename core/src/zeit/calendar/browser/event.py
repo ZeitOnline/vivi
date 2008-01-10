@@ -73,7 +73,7 @@ class EditForm(EventFormBase, zeit.cms.browser.form.EditForm):
 
 @zope.component.adapter(
     zeit.calendar.interfaces.ICalendar,
-    zeit.cms.interfaces.ICMSContentType)
+    zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def calendar_browse_location(context, schema):
@@ -83,7 +83,7 @@ def calendar_browse_location(context, schema):
 
 @zope.component.adapter(
     zeit.calendar.interfaces.ICalendarEvent,
-    zeit.cms.interfaces.ICMSContentType)
+    zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def event_browse_location(context, schema):

@@ -122,10 +122,10 @@ class ImageListRepresentation(
 
 @zope.component.adapter(
     zeit.cms.repository.interfaces.IFolder,
-    zeit.content.image.interfaces.IImageType)
+    zeit.content.image.interfaces.IImageSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-def imagefolder_browse_location(context, schema):
+def imagefolder_browse_location(context, source):
     """The image browse location is deduced from the current folder, i.e.
 
         for /online/2007/32 it is /bilder/2007/32
@@ -148,8 +148,10 @@ def imagefolder_browse_location(context, schema):
     try:
         image_folder = repository.getContent(unique_id)
     except KeyError:
+        all_content_source = zope.component.getUtility(
+            zeit.cms.content.interfaces.ICMSContentSource, name='all-types')
         image_folder = zope.component.queryMultiAdapter(
-            (context, zeit.cms.interfaces.ICMSContent),
+            (context, all_content_source),
             zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
     return image_folder
