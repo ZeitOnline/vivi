@@ -16,26 +16,20 @@ import zeit.content.centerpage.interfaces
 class CPFormBase(object):
 
     field_groups = zeit.cms.browser.form.metadataFieldGroups
+    form_fields = (
+        zope.formlib.form.Fields(zeit.cms.interfaces.ICMSContent) +
+        zope.formlib.form.Fields(
+            zeit.content.centerpage.interfaces.ICenterPageMetadata))
 
 
 class AddForm(CPFormBase, zeit.cms.browser.form.AddForm):
 
-    form_fields = (
-        zope.formlib.form.Fields(
-            zeit.cms.interfaces.ICMSContent,
-            omit_readonly=False).omit('uniqueId') +
-        zope.formlib.form.Fields(
-            zeit.content.centerpage.interfaces.ICenterPageMetadata,
-            omit_readonly=False))
 
     factory = zeit.content.centerpage.centerpage.CenterPage
 
 
 class EditForm(CPFormBase, zeit.cms.browser.form.EditForm):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.centerpage.interfaces.ICenterPageMetadata,
-        render_context=True, omit_readonly=False)
+    """CP edit form."""
 
 
 class DisplayForm(CPFormBase, zeit.cms.browser.form.DisplayForm):
