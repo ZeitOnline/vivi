@@ -1,4 +1,4 @@
-<html metal:use-macro="context/@@standard_macros/view">
+<html metal:use-macro="context/@@standard_macros/view">:w
 
   <div id="source-editor" metal:fill-slot="body">
 
@@ -26,31 +26,30 @@
           </ul>
         </div>
 
-        <div class="outer-form">
-          <table class="form-fields">
-            <tal:block repeat="widget view/widgets">
-              <tr>
-                <td class="field" 
-                  tal:define="hint widget/hint"
-                  tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
+        <div class="field-group">
 
-                  <label tal:attributes="for widget/name">
-                    <span i18n:translate="" tal:content="widget/label">label</span>
-                    <span class="annotation" tal:condition="widget/required">(Pflichtfeld)</span>
-                  </label>  
+          <tal:block
+            replace="structure view/additional_information | nothing" />
+          <tal:block repeat="widget view/widgets">
+            <div class="field" 
+              tal:define="hint widget/hint"
+              tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
 
-                  <div class="hint" tal:content="widget/hint"/>
+              <label tal:attributes="for widget/name">
+                <span i18n:translate="" tal:content="widget/label">label</span>
+                <span class="annotation" tal:condition="widget/required">(Pflichtfeld)</span>
+              </label>  
 
-                  <div tal:condition="widget/error" class="error">
-                    <span tal:replace="structure widget/error">error</span>
-                  </div>
+              <div class="hint" tal:content="widget/hint"/>
 
-                  <div class="widget" tal:content="structure widget">
-                    <input type="text" /></div>
-                </td>
-              </tr>
-            </tal:block>
-          </table>
+              <div tal:condition="widget/error" class="error">
+                <span tal:replace="structure widget/error">error</span>
+              </div>
+
+              <div class="widget" tal:content="structure widget">
+                <input type="text" /></div>
+            </div>
+          </tal:block>
         </div>
 
         <div id="actionsView">
@@ -67,4 +66,3 @@
     </div>
   </div>
 </html>
-

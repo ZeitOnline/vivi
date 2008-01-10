@@ -55,8 +55,26 @@ table tr td {
     padding: 0.1em 0.3em;
 }
 
-table.form-fields{
-    width: 99%;
+
+.wysiwyg-header {
+  background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+  padding: 1em;
+}
+
+.supertitle {
+  display: inline;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.title {
+  display: inline;
+  font-family: Georgia;
+  font-size: 1.5em;
+}
+
+.byline {
+  text-transform: uppercase;
 }
 
 label span {

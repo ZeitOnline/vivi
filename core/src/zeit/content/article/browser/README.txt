@@ -194,6 +194,19 @@ Open the WYSIWYG-Editor:
 
 >>> browser.getLink('Edit WYSIWYG').click()
 
+Some important information is displayed above the editor:
+
+>>> print browser.contents
+<?xml ...
+          <div class="wysiwyg-header">
+  <div class="supertitle"></div>:
+  <div class="title">EU unterstuetzt Trinker-Steuer</div>
+  <div class="byline"></div>
+  <div class="subtitle"></div>
+</div>
+  ...
+
+
 Initially the document is empty: 
 
 >>> browser.getControl('Document').value
