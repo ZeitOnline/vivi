@@ -9,45 +9,29 @@ import zope.formlib.form
 import zope.publisher.interfaces.browser
 import zope.session.interfaces
 
-import zc.resourcelibrary
 import gocept.form.grouped
+import zc.resourcelibrary
 
 import zeit.cms.browser.form
-import zeit.cms.interfaces
-import zeit.cms.content.template
+import zeit.cms.content.browser.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.content.template
+import zeit.cms.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.content.article.interfaces
 
 
-class TemplateSource(zeit.cms.content.template.BasicTemplateSource):
-
-    template_manager = 'Article templates'
-
-
-class ITemplateChooserSchema(zope.interface.Interface):
-
-    template = zope.schema.Choice(
-        title=_("Template"),
-        source=TemplateSource(),
-        required=False)
+ITemplateChooserSchema = (
+    zeit.cms.content.browser.template.TemplateChooserSchema(
+        'Article templates'))
 
 
-class ChooseTemplate(gocept.form.grouped.Form):
+class ChooseTemplate(zeit.cms.content.browser.template.ChooseTemplateForm):
+    """Form for choosing the article template."""
 
-    title = _("Choose template")
+    add_view = 'zeit.content.article.Add'
     form_fields = zope.formlib.form.FormFields(ITemplateChooserSchema)
-
-    @zope.formlib.form.action(_("Continue"))
-    def handle_choose_template(self, action, data):
-        session = zope.session.interfaces.ISession(self.request)
-        session['zeit.content.article.browser.form']['template'] = data[
-            'template']
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request), name='absolute_url')
-        self.request.response.redirect(
-            '%s/@@zeit.content.article.Add' % url)
 
 
 class ArticleFormBase(object):
@@ -71,7 +55,7 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
         zope.formlib.form.Fields(
             zeit.content.article.interfaces.IArticleMetadata,
             omit_readonly=False).omit('textLength') +
-        zope.formlib.form.Fields(ITemplateChooserSchema))
+        ChooseTemplate.form_fields)
 
     content_template = None
 
@@ -87,33 +71,13 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
         return article
 
     def _get_widgets(self, form_fields, ignore_request=False):
-        session = zope.session.interfaces.ISession(self.request)
-        template = session['zeit.content.article.browser.form'].get(
-            'template')
-        widgets = super(AddForm, self)._get_widgets(form_fields, ignore_request)
+        widgets = super(AddForm, self)._get_widgets(
+            form_fields, ignore_request)
 
-        if not ignore_request and template:
-            adapters = {}
-            for widget in widgets:
-                field = widget.context
-                name = widget.context.__name__
-                form_field = self.form_fields[name]
-
-                # Adapt context, if necessary
-                interface = form_field.interface
-                if interface == ITemplateChooserSchema:
-                    value = template
-                else:
-                    adapter = adapters.get(interface)
-                    if adapter is None:
-                        if interface is None:
-                            adapter = template
-                        else:
-                            adapter = interface(template)
-                        adapters[interface] = adapter
-                    value = field.get(adapter)
-                if value and value != field.default:
-                    widget.setRenderedValue(value)
+        zeit.cms.content.browser.interfaces.ITemplateWidgetSetup(
+            self).setup_widgets(
+                widgets, ChooseTemplate.add_view, ITemplateChooserSchema,
+                ignore_request)
 
         return widgets
 

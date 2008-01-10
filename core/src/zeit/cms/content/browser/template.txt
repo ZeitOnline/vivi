@@ -247,16 +247,13 @@ The the site:
 >>> old_site = zope.app.component.hooks.getSite()
 >>> zope.app.component.hooks.setSite(getRootFolder())
 
+Create a source for the templates:
 
-Create a source factory:
-
->>> class Source(zeit.cms.content.template.BasicTemplateSource):
-...     template_manager = 'My content templates'
-...
+>>> source = zeit.cms.content.template.BasicTemplateSource(
+...     'My content templates')
 
 The source lists the available templates:
 
->>> source = Source()
 >>> list(source)
 [<zeit.cms.content.template.Template object at 0x...>]
 >>> template = list(source)[0]

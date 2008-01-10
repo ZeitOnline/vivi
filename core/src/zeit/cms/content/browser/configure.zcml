@@ -100,4 +100,6 @@
     permission="zope.ManageApplication"
     />
 
+  <adapter factory=".template.TemplateWidgetSetup" />
+
 </configure>

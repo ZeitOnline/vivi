@@ -12,14 +12,7 @@ import zc.sourcefactory.basic
 import zeit.cms.content.interfaces
 
 
-class BasicTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    template_manager = None
-
-    def __init__(self):
-        if self.template_manager is None:
-            raise NotImplementedError("`template_manager` needs to be specified")
-        super(BasicTemplateSource, self).__init__()
+class BasicTemplateSourceFactory(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
         manager = zope.component.getUtility(
@@ -29,6 +22,12 @@ class BasicTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getTitle(self, obj):
         return obj.title
+
+
+def BasicTemplateSource(template_manager):
+    source = BasicTemplateSourceFactory()
+    source.factory.template_manager = template_manager
+    return source
 
 
 class TemplateManager(zope.app.container.btree.BTreeContainer):
