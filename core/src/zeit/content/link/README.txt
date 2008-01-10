@@ -1,0 +1,32 @@
+===========
+Link object
+===========
+
+
+The link object basically stores an URL. For syndication etc. it is possible to
+store the common metadata as well.
+
+Instanciate a link and verify the inital xml:
+
+>>> import zeit.content.link.link
+>>> link = zeit.content.link.link.Link()
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(link.xml, pretty_print=True)
+<link>
+  <head/>
+  <body/>
+</link>
+
+Now that was pretty boring. Add a title and an url:
+
+>>> link.title = 'gocept'
+>>> link.url = 'http://gocept.com'
+>>> print lxml.etree.tostring(link.xml, pretty_print=True)
+<link>
+  <head/>
+  <body>
+    <title>gocept</title>
+    <url>http://gocept.com</url>
+  </body>
+</link>

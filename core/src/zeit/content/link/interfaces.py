@@ -7,7 +7,6 @@
 import zope.schema
 
 import zeit.cms.content.interfaces
-import zeit.content.image.interfaces.IImage
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -15,6 +14,3 @@ class ILink(zope.interface.Interface):
     """A type for managing links to non-local content."""
 
     url = zope.schema.URI(title=_(u"Link address"))
-
-    image = zope.schema.Object(
-        zeit.content.image.interfaces.IImage)
