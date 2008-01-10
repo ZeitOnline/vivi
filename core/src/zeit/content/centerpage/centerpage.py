@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import StringIO
+
 import lxml.etree
 import gocept.lxml.objectify
 
@@ -15,7 +17,7 @@ import zope.app.container.contained
 import zeit.cms.connector
 import zeit.cms.interfaces
 import zeit.cms.content.metadata
-import zeit.cms.content.util
+import zeit.cms.content.interfaces
 import zeit.content.centerpage.interfaces
 
 
@@ -55,3 +57,14 @@ def mapPropertyToAttribute(cp, event):
     attribute = zeit.cms.content.property.AttributeProperty(
         event.property_namespace, event.property_name)
     attribute.__set__(cp, event.new_value)
+
+
+@zope.interface.implementer(zeit.content.centerpage.interfaces.ICenterPage)
+@zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
+def centerpageFromTemplate(context):
+    source = StringIO.StringIO(
+        zeit.cms.content.interfaces.IXMLSource(context))
+    cp = CenterPage(xml_source=source)
+    zeit.cms.interfaces.IWebDAVWriteProperties(cp).update(
+        zeit.cms.interfaces.IWebDAVReadProperties(context))
+    return cp

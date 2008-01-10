@@ -68,9 +68,15 @@
     permission="zeit.AddContent"
     class=".form.AddForm"
     name="zeit.content.centerpage.Add"
-    menu="zeit-add-menu" title="Center-Page"
     />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    permission="zeit.AddContent"
+    class=".form.ChooseTemplate"
+    name="zeit.content.centerpage.ChosseTemplate"
+    menu="zeit-add-menu" title="Center-Page"
+    />
 
   <!-- XML Editor -->
 
