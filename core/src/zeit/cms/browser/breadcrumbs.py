@@ -1,6 +1,6 @@
 # Copyright (c) 2007 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id: tree.py 9072 2007-09-24 15:37:05Z zagy $
+# $Id$
 
 import zope.traversing.api
 import zope.component

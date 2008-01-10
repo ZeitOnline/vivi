@@ -1,7 +1,7 @@
 # vim:fileencoding=utf-8 encoding=utf8
 # Copyright (c) 2007 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id: listing.py 9032 2007-09-19 11:40:48Z zagy $
+# $Id$
 
 import zope.component
 
