@@ -6,6 +6,7 @@
 
 import zope.interface
 
+import zeit.cms.content.adapter
 import zeit.cms.content.metadata
 import zeit.cms.content.property
 
@@ -20,3 +21,12 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
     default_template = "<link><head/><body/></link>"
 
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
+
+
+
+linkFactory = zeit.cms.content.adapter.xmlContentFactory(Link)
+
+resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
+    'link')
+resourceFactory = zope.component.adapter(
+    zeit.content.link.interfaces.ILink)(resourceFactory)

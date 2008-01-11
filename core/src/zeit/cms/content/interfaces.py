@@ -112,7 +112,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
 
     teaserTitle = zope.schema.Text(
-        title=_("Teaser titel"),
+        title=_("Teaser title"),
         required=False)
 
     teaserText = zope.schema.Text(

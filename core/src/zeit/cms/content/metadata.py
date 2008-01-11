@@ -41,6 +41,10 @@ class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
 class CommonMetadata(persistent.Persistent,
                      zope.app.container.contained.Contained):
 
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IXMLContent,
+        zeit.cms.content.interfaces.ICommonMetadata)
+
     uniqueId = None
     __name__ = None
 

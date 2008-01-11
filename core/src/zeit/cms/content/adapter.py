@@ -45,6 +45,18 @@ def xmlContentToResourceAdapterFactory(typ):
     return adapter
 
 
+def xmlContentFactory(factory):
+
+    @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+    @zope.component.adapter(zeit.cms.interfaces.IResource)
+    def adapter(context):
+        obj = factory(xml_source=context.data)
+        zeit.cms.interfaces.IWebDAVWriteProperties(obj).update(
+            context.properties)
+        return obj
+
+    return adapter
+
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLSource)
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
 def xml_source(context):
