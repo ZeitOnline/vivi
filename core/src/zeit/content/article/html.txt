@@ -106,3 +106,20 @@ HTML-entities are replaced by the real character, but XML entities are not:
     <p>—&gt;&lt;</p>
   </body>
 </article>
+
+Empty tags will be removed on saving:
+
+>>> article.html = (
+...     '<p>Foo</p><h3/><foo/><p/><p><b>bar</b></p>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <p>
+      <b>bar</b>
+    </p>
+  </body>
+</article>

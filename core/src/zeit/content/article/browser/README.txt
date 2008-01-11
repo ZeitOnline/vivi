@@ -242,6 +242,18 @@ other entities will be replaced (this is to make sure bug #3900 is fixed):
 '<p>Foo</p>\r\n<h3>blub \xe2\x80\x94</h3>\r\n<p>&gt;&amp;&lt;</p>'
 
 
+Empty tags will be removed on saving:
+
+>>> browser.getControl('Document').value = (
+...     '<p>Foo</p><h3/><foo/><p/><p><b>bar</b></p>')
+>>> browser.getControl('Apply').click()
+>>> print browser.getControl('Document').value
+<p>Foo</p>
+<p>
+  <b>bar</b>
+</p>
+
+
 Checking in 
 ===========
 
