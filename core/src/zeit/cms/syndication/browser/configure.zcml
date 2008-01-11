@@ -82,7 +82,7 @@
   <browser:menuItem
     for="zeit.cms.syndication.interfaces.IFeed"
     menu="zeit-context-actions"
-    title="Remember as syndication n/target"
+    title="Remember as syndication target"
     action="@@add-to-my-syndication-targets.html"
     permission="zope.View"
     />
