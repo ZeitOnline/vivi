@@ -425,12 +425,12 @@ Add another template:
     <title> Edit webdav properties </title>
     ...
 
-Set the default ressort to Extrablatt:
+Set the default ressort to Studium:
 
 >>> admin.getControl(name='namespace:list').value = (
 ...     'http://namespaces.zeit.de/CMS/document')
 >>> admin.getControl(name='name:list').value = 'ressort'
->>> admin.getControl(name='value:list').value = 'Extrablatt'
+>>> admin.getControl(name='value:list').value = 'Studium'
 >>> admin.getControl('Save').click()
 
 Add another, totally unrelated property, to make sure those are copied to the
@@ -459,8 +459,8 @@ Create an article with `Extrablatt` template:
 As we've choosen extrablatt, the ressort is filled with the changed ressort
 now:
 
->>> browser.getControl('Ressort').value
-'Extrablatt'
+>>> browser.getControl('Ressort').displayValue
+['Studium']
 
 The other fields, like copyright, which are prefilled by default are still
 filled:
@@ -490,11 +490,11 @@ Let's hae a look at the source:
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">49</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Studium</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">true</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">true</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort"> </attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">false</attribute>
   </head>

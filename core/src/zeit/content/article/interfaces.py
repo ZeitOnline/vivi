@@ -48,10 +48,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=u"Box „Most Read“",
         default=True)
 
-    navigation = zope.schema.Choice(
-        title=u"Navigation",
-        source=zeit.cms.content.sources.NavigationSource())
-
     # references / links to other content
 
     pageBreak = zope.schema.Int(

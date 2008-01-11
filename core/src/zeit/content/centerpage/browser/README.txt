@@ -69,8 +69,7 @@ Now, fill the form and add the CP:
 >>> browser.getControl(name='form.volume').value = '2'
 >>> browser.getControl(name='form.__name__').value = 'index'
 >>> browser.getControl(name='form.title').value = 'Politik'
->>> browser.getControl('Ressort').value
-'Online'
+>>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
@@ -181,7 +180,7 @@ page:
   <head>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>
@@ -196,7 +195,7 @@ Let's change the source of the center page:
 >>> new_cp = '''
 ...  <centerpage>
 ...    <head>
-...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
+...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
 ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
 ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
 ...      <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
@@ -309,6 +308,7 @@ Set the required fields and add the centerpage:
 >>> browser.getControl('File name').value = 'new-home'
 >>> browser.getControl('Year').value = '2007'
 >>> browser.getControl('Volume').value = '28'
+>>> browser.getControl('Ressort').displayValue = ['International']
 >>> browser.getControl(name="form.actions.add").click()
 >>> 'There were errors' in browser.contents
 False
@@ -323,7 +323,7 @@ Have a look at the source:
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">28</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">27</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Online</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>

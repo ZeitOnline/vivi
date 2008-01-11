@@ -67,11 +67,9 @@ class ICommonMetadata(zope.interface.Interface):
         readonly=True,
         required=False)
 
-    ressort = zope.schema.TextLine(
+    ressort = zope.schema.Choice(
         title=_("Ressort"),
-        default=u"Online",
-        readonly=True,
-        required=True)
+        source=zeit.cms.content.sources.NavigationSource())
 
     authors = zope.schema.Tuple(
         title=_("Authors"),

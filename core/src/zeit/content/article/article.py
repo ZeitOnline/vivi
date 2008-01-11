@@ -67,11 +67,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
     syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
 
-    navigation = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['navigation'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'ressort')
-
     @rwproperty.getproperty
     def html(self):
         """return html snippet of article."""
