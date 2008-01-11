@@ -26,6 +26,7 @@ Now we're looking at the add form. Fill in some data:
 >>> browser.getControl('Title').value = 'gocept homepage'
 >>> browser.getControl('Teaser title').value = 'gocept teaser'
 >>> browser.getControl('Link address').value = 'http://gocept.com'
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 
 After adding the link is *not* checked out, because there is nothing more to

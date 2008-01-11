@@ -70,6 +70,7 @@ Now, fill the form and add the CP:
 >>> browser.getControl(name='form.__name__').value = 'index'
 >>> browser.getControl(name='form.title').value = 'Politik'
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
@@ -181,6 +182,7 @@ page:
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>
@@ -309,6 +311,7 @@ Set the required fields and add the centerpage:
 >>> browser.getControl('Year').value = '2007'
 >>> browser.getControl('Volume').value = '28'
 >>> browser.getControl('Ressort').displayValue = ['International']
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name="form.actions.add").click()
 >>> 'There were errors' in browser.contents
 False
@@ -324,6 +327,7 @@ Have a look at the source:
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">28</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">27</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>

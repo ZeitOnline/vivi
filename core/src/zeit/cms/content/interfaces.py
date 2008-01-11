@@ -75,7 +75,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Authors"),
         value_type=zope.schema.TextLine(),
         required=False,
-        default=())
+        default=(u'',))
 
     keywords = zope.schema.Tuple(
         title=_("Keywords"),

@@ -108,6 +108,7 @@ Now, fill the form and add the article:
 >>> browser.getControl(name='form.__name__').value = 'KFZ-Steuer'
 >>> browser.getControl(name='form.title').value = (
 ...     'EU unterstuetzt Stinker-Steuer')
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 >>> 'There were errors' in browser.contents
 False
@@ -145,7 +146,6 @@ We get the form back after saving, the data is changed:
 
 >>> browser.getControl(name='form.title').value
 'EU unterstuetzt Trinker-Steuer'
-
 
 Let's add an image:
 
@@ -474,6 +474,7 @@ Now fill in the actual article:
 >>> browser.getControl('Title').value = 'Extrablatt 53'
 >>> browser.getControl('Year').value = '2007'
 >>> browser.getControl('Volume').value = '49'
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <?xml ...
@@ -491,6 +492,7 @@ Let's hae a look at the source:
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">49</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Studium</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">true</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
