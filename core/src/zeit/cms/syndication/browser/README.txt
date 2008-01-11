@@ -155,7 +155,7 @@ The object is checked out now, and we're looking at the edit form:
 
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/.../zuender/@@edit.html'
->>> browser.getLink('Metadaten').click()
+>>> browser.getLink('Metadata').click()
 >>> browser.getControl(name='form.title').value
 'Zuender'
 
