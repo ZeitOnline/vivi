@@ -48,6 +48,31 @@ Add an image:
 False
 
 
+Have a look at the source:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl(name='form.xml').value
+<link>
+  <head>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <bu></bu>
+      <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+    </image>
+  </head>
+  <body>
+    <url>http://gocept.com</url>
+    <title>gocept homepage</title>
+  </body>
+  <teaser>
+    <title>gocept teaser</title>
+  </teaser>
+</link>
+
+
+Go back to the edit form:
+
+>>> browser.getLink('Edit metadata').click()
+
 Check the link back in:
 
 >>> browser.getLink('Checkin').click()
@@ -127,4 +152,14 @@ The metadata preview contains the teaser title and the url:
       <a href="http://gocept.com">http://gocept.com</a>
     </div>
     ...
+
+
+Open the link's metadata view:
+
+>>> browser.getLink('View metadata').click()
+>>> print browser.contents
+<?xml ...
+    <title> View link metadata </title>
+    ...
+
  
