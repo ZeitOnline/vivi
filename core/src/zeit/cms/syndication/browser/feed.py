@@ -103,6 +103,7 @@ class FeedView(object):
                 (obj, self.request),
                 zeit.cms.browser.interfaces.IListRepresentation)
             if list_repr is None:
+                # XXX: this codepath is not tested
                 logger.warning("Could not adapt %r to IListRepresentation",
                                (obj, ))
             else:
