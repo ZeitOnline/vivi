@@ -135,7 +135,6 @@ edit screen should be displayed:
 Editing Articles
 ================
 
-
 Let's change some data and save the article:
 
 >>> browser.getControl(name='form.title').value = (
@@ -155,6 +154,13 @@ Let's add an image:
 >>> browser.getControl('Apply').click()
 >>> 'There were errors' in browser.contents
 False
+
+It is not possible to change the file name in the edit view:
+
+>>> browser.getControl('File name')
+Traceback (most recent call last):
+    ...
+LookupError: label 'File name'
 
 
 We also want to add an image group. Create one first. To create it we need to
