@@ -3,6 +3,7 @@
 # $Id$
 
 import zope.component
+import zope.interface
 import zope.publisher.interfaces
 
 import zeit.cms.browser.interfaces
@@ -17,11 +18,3 @@ class ArticleListRepresentation(
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
     zope.component.adapts(zeit.content.article.interfaces.IArticle,
                           zope.publisher.interfaces.IPublicationRequest)
-
-    @property
-    def metadata(self):
-        # XXX don't put out html here!
-        url = zope.traversing.browser.absoluteURL(self, self.request)
-        id = self.context.__name__
-        return ('<span class="Metadata">%s/metadata_preview</span><span'
-                ' class="DeleteId">%s</span>' %(url, id))
