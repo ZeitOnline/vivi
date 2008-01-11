@@ -200,6 +200,11 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
                 (new_context, self.request), name='absolute_url')(),
             view)
 
+
+# Change the i18n domain of the label to zeit.cms
+EditForm.actions['actions.apply'].label = _('Apply')
+
+
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
     """Display form."""
 
