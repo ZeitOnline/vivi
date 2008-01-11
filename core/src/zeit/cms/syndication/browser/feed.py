@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import logging
+
 import zope.component
 import zope.cachedescriptors.property
 import zope.publisher.interfaces
@@ -14,6 +16,9 @@ import zeit.cms.browser.listing
 import zeit.cms.workingcopy.interfaces
 
 import zeit.cms.syndication.interfaces
+
+
+logger = logging.getLogger('zeit.cms.syndication.browser.feed')
 
 
 class OrderedSelectionColumn(zc.table.column.SelectionColumn):
