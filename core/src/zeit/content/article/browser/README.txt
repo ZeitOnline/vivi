@@ -292,7 +292,7 @@ When we syndicate the article the feed will be linked in the article. Let's use
 
 >>> url = browser.url
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Als Ziel merken').click()
+>>> browser.getLink('Remember as syndication target').click()
 >>> browser.open(url)
 
 >>> browser.getLink('Syndicate').click()

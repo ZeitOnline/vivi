@@ -28,7 +28,7 @@
     for="zeit.cms.syndication.interfaces.IFeed"
     permission="zeit.EditContent"
     class=".form.EditForm"
-    menu="zeit-context-views" title="Metadaten"
+    menu="zeit-context-views" title="Metadata"
     />
 
   <browser:page
@@ -38,7 +38,7 @@
     template="feed_sorting.pt"
     class=".feed.EditFeedView"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views" title="Sortieren"
+    menu="zeit-context-views" title="Sort"
     />
 
   <browser:page
@@ -47,7 +47,7 @@
     permission="zope.View"
     template="feed_view.pt"
     class=".feed.FeedView"
-    menu="zeit-context-views" title="Anzeigen"
+    menu="zeit-context-views" title="View"
     />
 
   <browser:defaultView
@@ -82,7 +82,7 @@
   <browser:menuItem
     for="zeit.cms.syndication.interfaces.IFeed"
     menu="zeit-context-actions"
-    title="Als Ziel merken"
+    title="Remember as syndication n/target"
     action="@@add-to-my-syndication-targets.html"
     permission="zope.View"
     />

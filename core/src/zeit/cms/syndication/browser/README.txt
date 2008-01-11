@@ -46,7 +46,7 @@ The list is empty, because the user hasn't chosen any targets. Let's do that
 now:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Als Ziel merken').click()
+>>> browser.getLink('Remember as syndication target').click()
 
 Visit the syndication page again:
 

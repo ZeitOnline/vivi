@@ -87,7 +87,7 @@ feed to our syndication list:
 
 >>> bookmark = browser.url
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Als Ziel merken').click()
+>>> browser.getLink('Remember as syndication target').click()
 >>> browser.open(bookmark)
 
 Syndicate to the politik.feed:

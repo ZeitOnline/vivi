@@ -6,6 +6,8 @@ import zope.component.interfaces
 import zope.interface
 import zope.schema
 
+from zeit.cms.i18n import MessageFactory as _
+
 
 FEED_NAMESPACE = u'http://namespaces.zeit.de/CMS/feed'
 
@@ -29,12 +31,10 @@ class ISyndicationManager(zope.interface.Interface):
 class IReadFeed(zope.interface.Interface):
     """Feed read interface."""
 
-    title = zope.schema.TextLine(title=u"Title")
+    title = zope.schema.TextLine(title=_("Title"))
     object_limit = zope.schema.Int(
-        title=u"Anzahl begrenzen",
-        description=(u"Begrenzt die Anzahl der Objekte im Feed auf die "
-                     u"angegebene Anzahl. Beim Syndizieren eines neuen "
-                     u"Objekts wird das letzte aus dem Feed entfernt."),
+        title=_("Limit amount"),
+        description=_("limit-amount-description"),
         default=50,
         min=1,
         required=False)
@@ -123,7 +123,7 @@ class SyndicationError(Exception):
 class IMySyndicationTargets(zope.interface.Interface):
 
     targets = zope.schema.Tuple(
-        title=u"Syndizierungsziele",
+        title=_("Syndication targets"),
         default=(),
         required=False,
         value_type=zope.schema.Object(IFeed))
