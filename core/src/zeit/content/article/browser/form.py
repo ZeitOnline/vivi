@@ -37,7 +37,11 @@ class ChooseTemplate(zeit.cms.content.browser.template.ChooseTemplateForm):
 
 class ArticleFormBase(object):
 
-    field_groups = zeit.cms.browser.form.metadataFieldGroups
+    field_groups = zeit.cms.browser.form.metadataFieldGroups + (
+        gocept.form.grouped.Fields(
+            _("Optionen"),
+            ('dailyNewsletter', 'boxMostRead', 'commentsAllowed', 'banner'),
+            css_class='widgets-float column-left'),)
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -59,7 +63,7 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
     title = _('Add article')
     form_fields = (
         ArticleFormBase.form_fields +
-        ChooseTemplate.form_fields)
+        ChooseTemplate.form_fields).omit('automaticTeaserSyndication')
 
     content_template = None
 

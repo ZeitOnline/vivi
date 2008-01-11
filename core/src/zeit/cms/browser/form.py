@@ -52,23 +52,19 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
 metadataFieldGroups = (
     gocept.form.grouped.Fields(
         _("Navigation"),
-        ('navigation', 'keywords', 'serie'),
+        ('__name__', 'keywords', 'serie'),
         css_class='column-right'),
     gocept.form.grouped.Fields(
         _("Kopf"),
         ('year', 'volume', 'page', 'ressort'),
-        css_class='widgets-float column-left'),
-    gocept.form.grouped.Fields(
-        _("Optionen"),
-        ('dailyNewsletter', 'boxMostRead', 'commentsAllowed', 'banner'),
         css_class='widgets-float column-left'),
     gocept.form.grouped.RemainingFields(
         _("Texte"),
         css_class='wide-widgets column-left'),
     gocept.form.grouped.Fields(
         _("sonstiges"),
-        ('authors', 'copyrights', 'pageBreak', 'automaticTeaserSyndication',
-         'images'),
+        ('authors', 'images', 'copyrights', 'pageBreak',
+         'automaticTeaserSyndication'),
         css_class= 'column-right'),
     )
 
