@@ -241,6 +241,11 @@ After remove the `politik.feed` it is also gone from the listing:
  (u'online', u'http://xml.zeit.de/online'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 
+>>> connector['http://xml.zeit.de/politik.feed']
+Traceback (most recent call last):
+...
+KeyError: ...
+
 
 Collections
 ===========

@@ -84,6 +84,8 @@ class Connector(object):
         return 'unknown'
 
     def __getitem__(self, id):
+        if id in self._deleted:
+            raise KeyError(id)
         properties = self._get_properties(id)
         type = properties.get(('resourcetype', 'DAV:'))
         if type is None:
@@ -97,6 +99,8 @@ class Connector(object):
             id, self._path(id)[-1], type, data, properties)
 
     def __setitem__(self, id, object):
+        if id in self._deleted:
+            self._deleted.remove(id)
         resource = zeit.connector.interfaces.IResource(object)
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
