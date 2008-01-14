@@ -147,7 +147,7 @@ pre {
     width: 100%;
 }
 
-.feedsort-hover td, .feedsort-hover th {
+.tablesort-hover td, .tablesort-hover th {
     border-bottom: 2px solid red !important;
 }
 
