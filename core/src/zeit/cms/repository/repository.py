@@ -125,6 +125,7 @@ class Container(zope.app.container.contained.Contained):
             delattr(self, '_v_local_unique_map')
         except AttributeError:
             pass
+        self.repository._invalidate_content_cache()
 
 
 class Repository(persistent.Persistent, Container):

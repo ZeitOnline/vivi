@@ -136,6 +136,14 @@ True
 >>> 'i_am_new' in repository
 False 
 
+Getting the value of course doesn't work either:
+
+>>> repository['i_am_new']
+Traceback (most recent call last):
+    ...
+KeyError: u'http://xml.zeit.de/i_am_new'
+
+
 When you try to delete a non existend object, a KeyError is raised:
 
 >>> del repository['i-dont-exist']
