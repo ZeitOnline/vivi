@@ -8,7 +8,9 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         var othis = this;
         var oarguments = arguments;
 
-        var lightbox = new gocept.Lightbox(this.element);
+        var lightbox = new gocept.Lightbox(
+            getFirstElementByTagAndClassName('body'));
+        connect(lightbox.content_box, 'onclick', this, 'handleClick');
 
         var selected_keywords = []
         var amount = Number(this.getCountField().value);
