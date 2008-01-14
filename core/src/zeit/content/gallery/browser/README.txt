@@ -107,7 +107,7 @@ Editing a gallery
 
 Each entry can be edited:
 
->>> browser.getLink('Edit 01.jpg').click()
+>>> browser.getLink('01.jpg').click()
 >>> browser.getControl('Title').value = 'The man man'
 >>> browser.getControl('Text').value = 'Der Mann am Stein'
 >>> browser.getControl('Apply').click()
@@ -117,16 +117,12 @@ After saving we're back at the overview:
 >>> print browser.contents
 <?xml ...
   <tr>
-    <td>
+    <td class="image-column">
       <input type="hidden" ...
       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
-    </td>
-    <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg">
-        <span>
-          Edit
-          01.jpg
-        </span>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg"
+        title="Edit">
+        <div class="image-name">01.jpg</div>
       </a>
     </td>
     <td>
