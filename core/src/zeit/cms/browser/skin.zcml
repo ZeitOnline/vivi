@@ -55,20 +55,20 @@
   <include package="gocept.mochikit" />
 
   <resourceLibrary
-    name="zeit.cms.DragAndDrop"
-    require="mochikit.DragAndDrop gocept.mochikit.jsclass
-    gocept.mochikit.lightbox">
-    <directory source="resources" include="dnd.js" />
-  </resourceLibrary>
-
-  <resourceLibrary
     name="zeit.cms"
-    require="mochikit zeit.cms.DragAndDrop">
-    <directory source="resources" include="cms-layout.css 
+    require="mochikit mochikit.DragAndDrop gocept.mochikit.jsclass
+    gocept.mochikit.lightbox">
+    <directory source="resources" include="
+      base.js
+      dnd.js
+      cms-layout.css 
       cms-widgets.css
       cms.css
       "/>
   </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.DragAndDrop" require="zeit.cms" />
+
 
   <resourceLibrary name="zeit.cms.filteringtable">
     <directory source="resources" include="filteringtable.js" />
