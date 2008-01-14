@@ -142,6 +142,16 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
         self._p_changed = True
 
+    def updateOrder(self, order):
+        if set(self.keys()) != set(order):
+            raise ValueError("The order argument must contain the same "
+                             "keys as the container.")
+        ordered = []
+        for id in order:
+            ordered.append(self._get_block_for_key(id))
+        self._entries_container.block = ordered
+        self._p_changed = True
+
     @property
     def _entries_container(self):
         return self.xml['body']['column'][1]['container']

@@ -1,27 +1,38 @@
-<table class="gallery"
-  i18n:domain="zeit.cms">
-  <tr tal:repeat="entry context/values">
-    <td>
-      <a href="#"
-        tal:attributes="href entry/@@absolute_url">
-        <img tal:replace="structure entry/thumbnail/@@index.html/tag" />
-        <span i18n:translate="">
-          Edit
-          <span i18n:name="image-name"
-            tal:replace="entry/image/__name__">01.jpg</span>
-        </span>
-      </a>
-    </td>
-    <td>
-      <div class="title"
-        tal:condition="entry/title"
-        tal:content="entry/title">
-        Title
-      </div>
-      <div class="text"
-        tal:content="entry/text">
-        Text
-      </div>
-    </td>
-  </tr>
-</table>
+<div id="full-content-area">
+  <form action="" method="POST">
+    <tal:block tal:replace="resource_library:zeit.content.gallery" />
+    <table class="gallery"
+      i18n:domain="zeit.cms">
+      <tr tal:repeat="entry context/values">
+        <td>
+          <input type="hidden" name="images:list"
+            tal:attributes="value entry/__name__" />
+          <img tal:replace="structure entry/thumbnail/@@index.html/tag" />
+        </td>
+        <td>
+          <a href="#"
+            tal:attributes="href entry/@@absolute_url">
+            <span i18n:translate="">
+              Edit
+              <span i18n:name="image-name"
+                tal:replace="entry/image/__name__">01.jpg</span>
+            </span>
+          </a>
+        </td>
+        <td>
+          <div class="title"
+            tal:condition="entry/title"
+            tal:content="entry/title">
+            Title
+          </div>
+          <div class="text"
+            tal:content="entry/text">
+            Text
+          </div>
+        </td>
+      </tr>
+    </table>
+    <input type="submit" name="form.actions.save_sorting" value="Save sorting"
+      i18n:attributes="value" />
+  </form>
+</div>

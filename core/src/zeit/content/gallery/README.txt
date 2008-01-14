@@ -276,6 +276,75 @@ u'Der Wecker klingelt'
 u'Seit zwei Uhr in der Fr\xc3\xbch'
 
 
+
+Sorting
++++++++
+
+The images in the gallery have a certain order. Currently it is:
+
+>>> list(gallery.keys())
+[u'DSC00109_2.JPG', u'01.jpg']
+
+Let's change the order:
+
+>>> gallery.updateOrder([u'01.jpg', u'DSC00109_2.JPG'])
+>>> list(gallery.keys())
+[u'01.jpg', u'DSC00109_2.JPG']
+
+This is of course reflected int he XML:
+
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage>
+  <head>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
+  </head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="01.jpg">
+          <title>Der Wecker klingelt</title>
+          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
+            expires="" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
+        </block>
+        <block name="DSC00109_2.JPG">
+          <text></text>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
+          </thumbnail>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
+
+When the list passed does not match exactly the entries of the gallery, a
+ValueError is raised:
+
+>>> gallery.updateOrder([u'01.jpg'])
+Traceback (most recent call last):
+    ...
+ValueError: The order argument must contain the same keys as the container.
+
+Restore the orgiginal order again:
+
+>>> gallery.updateOrder([u'DSC00109_2.JPG', u'01.jpg'])
+>>> list(gallery.keys())
+[u'DSC00109_2.JPG', u'01.jpg']
+
+
 Container api
 +++++++++++++
 
@@ -318,6 +387,6 @@ Key: 01.jpg
 
 
 Cleanup
-=======
++++++++
 
 >>> zope.app.component.hooks.setSite(old_site)

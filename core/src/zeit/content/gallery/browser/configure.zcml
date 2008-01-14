@@ -12,6 +12,12 @@
     provides="zeit.cms.browser.interfaces.IListRepresentation"
     />
 
+  <resourceLibrary
+    name="zeit.content.gallery"
+    require="zeit.cms.DragAndDrop">
+    <directory source="resources" include="sorting.js" />
+  </resourceLibrary>
+    
 
   <browser:page
     for="..interfaces.IGallery"

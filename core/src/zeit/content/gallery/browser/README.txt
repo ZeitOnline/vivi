@@ -79,7 +79,6 @@ Set the most important values:
 
 Lets go to the image overview page:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Images').click()
 
 The overview page shows thumbnails of the images in the gallery together with
@@ -119,8 +118,11 @@ After saving we're back at the overview:
 <?xml ...
   <tr>
     <td>
+      <input type="hidden" ...
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
+    </td>
+    <td>
       <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg">
-        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
         <span>
           Edit
           01.jpg
@@ -134,8 +136,37 @@ After saving we're back at the overview:
   </tr>
   ...
 
-Images can be removed from the gallery here.
 
-Images can be re-ordered at the overview.
+Images can be re-ordered at the overview via javascript drag and drop. This
+basically changes the order of the input fields:
 
+>>> browser.getControl(name='images:list', index=0).value
+'01.jpg'
+>>> browser.getControl(name='images:list', index=1).value
+'02.jpg'
+
+So let's change the sorting:
+
+>>> browser.getControl(name='images:list', index=0).value = '02.jpg'
+>>> browser.getControl(name='images:list', index=1).value = '01.jpg'
+
+>>> browser.getControl('Save sorting').click()
+
+
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <table class="gallery">
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/03.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg" alt="" height="50" width="50" border="0" />
+    ...
+</table>...
 

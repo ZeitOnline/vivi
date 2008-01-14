@@ -4,4 +4,6 @@
 
 class Overview(object):
 
-    pass
+    def update(self):
+        if 'form.actions.save_sorting' in self.request:
+            self.context.updateOrder(self.request.get('images'))

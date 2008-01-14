@@ -29,6 +29,16 @@ class IReadGallery(
 class IWriteGallery(zope.app.container.interfaces.IWriteContainer):
     """Write methods for gallery."""
 
+    def updateOrder(order):
+        """Revise the order of keys, replacing the current ordering.
+
+        order is a list or a tuple containing the set of existing keys in
+        the new order. `order` must contain ``len(keys())`` items and cannot
+        contain duplicate keys.
+
+        Raises ``ValueError`` if order contains an invalid set of keys.
+        """
+
 
 class IGallery(IReadGallery, IWriteGallery):
     """An image gallery"""
