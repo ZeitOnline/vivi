@@ -60,7 +60,7 @@
     for="zeit.cms.workingcopy.interfaces.ILocalContent"
     permission="zope.View"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-actions" title="Preview"
+    menu="zeit-context-actions-external" title="Preview"
     />
 </configure>
 

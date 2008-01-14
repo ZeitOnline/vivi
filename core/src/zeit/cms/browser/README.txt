@@ -78,21 +78,23 @@ for trying out new templates. The preview actions are only shown on repository
 content.
 
 
-Make sure the menu entries are there:
+Make sure the menu entries are there and the targets are _blank:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> print browser.contents
 <?xml ...
     <li class="preview ">
-     <a href=".../online/2007/01/Somalia/@@show_preview" title="Preview">...
+     <a href=".../online/2007/01/Somalia/@@show_preview" target="_blank"
+        title="Preview">...
    </li>
    <li class="live ">
-     <a href=".../online/2007/01/Somalia/@@show_live" title="Live">...
+     <a href=".../online/2007/01/Somalia/@@show_live" target="_blank"
+        title="Live">...
    </li>
    <li class="development ">
      <a href=".../online/2007/01/Somalia/@@show_development-preview"
-        title="Development">...
+        target="_blank" title="Development">...
    </li>
    ...
 

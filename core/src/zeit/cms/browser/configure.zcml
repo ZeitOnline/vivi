@@ -13,6 +13,12 @@
     />
 
   <browser:menu
+    id="zeit-context-actions-external"
+    title="context sensitive actions"
+    class=".menu.ExternalActionsMenu"
+    />
+
+  <browser:menu
     id="zeit-context-views"
     title="context sensitive views"
     />
@@ -191,7 +197,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     permission="zope.View"
     layer=".interfaces.ICMSLayer"
-    menu="zeit-context-actions" title="Preview"
+    menu="zeit-context-actions-external" title="Preview"
     />
 
   <browser:page
@@ -200,7 +206,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     permission="zope.View"
     layer=".interfaces.ICMSLayer"
-    menu="zeit-context-actions" title="Live"
+    menu="zeit-context-actions-external" title="Live"
     />
 
   <browser:page
@@ -209,7 +215,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     permission="zope.View"
     layer=".interfaces.ICMSLayer"
-    menu="zeit-context-actions" title="Development"
+    menu="zeit-context-actions-external" title="Development"
     />
 
 </configure>
