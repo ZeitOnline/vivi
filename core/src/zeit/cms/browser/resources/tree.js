@@ -12,13 +12,16 @@ Tree.prototype = {
         if (action == null)
             return;
         
-        event.stop();  // event is handled
-        this.changeState(target, action)
+        var d = this.changeState(target, action)
+        if (d != null) 
+            event.stop();  // event is handled
     },
 
     changeState: function(node, action) {
         var tree = this;
         var uniqueId = node.getAttribute('uniqueId');
+        if (uniqueId == null)
+            return null;
         var url = this.base_url + '@@' + action + 'Tree' ;
         var query = {'uniqueId': uniqueId,
                      'view_url': window.location.href};
@@ -30,6 +33,7 @@ Tree.prototype = {
                 signal(tree, 'state-changed');
                 return result;
             })
+        return d
     },
 
     loadTree: function() {
