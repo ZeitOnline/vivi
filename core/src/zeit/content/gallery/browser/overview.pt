@@ -1,22 +1,25 @@
-<div id="full-content-area">
+<div id="full-content-area"
+  i18n:domain="zeit.cms">
+
+  <div class="wysiwyg-header">
+    <div class="supertitle" tal:content="view/metadata/supertitle" />:
+    <div class="title" tal:content="view/metadata/title" />
+    <div class="byline" tal:content="view/metadata/byline" />
+    <div class="subtitle" tal:content="view/metadata/subtitle" />
+  </div>
+
   <form action="" method="POST">
     <tal:block tal:replace="resource_library:zeit.content.gallery" />
-    <table class="gallery"
-      i18n:domain="zeit.cms">
+    <table class="gallery">
       <tr tal:repeat="entry context/values">
-        <td>
+        <td class="image-column">
           <input type="hidden" name="images:list"
             tal:attributes="value entry/__name__" />
           <img tal:replace="structure entry/thumbnail/@@index.html/tag" />
-        </td>
-        <td>
           <a href="#"
             tal:attributes="href entry/@@absolute_url">
-            <span i18n:translate="">
-              Edit
-              <span i18n:name="image-name"
-                tal:replace="entry/image/__name__">01.jpg</span>
-            </span>
+            <div class="image-name"
+              tal:content="entry/image/__name__">01.jpg</div>
           </a>
         </td>
         <td>

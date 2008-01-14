@@ -322,3 +322,14 @@ input[type="text"] {
 #form\.subtitle {
     height: 10ex;
 }
+
+
+.gallery {
+  background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+  width: 100%;
+}
+
+.gallery .image-column {
+  text-align: center;
+  width: 10em;
+}

@@ -2,7 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.cachedescriptors.property
 import zope.component
+
+import zeit.cms.content.interfaces
 
 
 class Overview(object):
@@ -10,6 +13,10 @@ class Overview(object):
     def update(self):
         if 'form.actions.save_sorting' in self.request:
             self.context.updateOrder(self.request.get('images'))
+
+    @zope.cachedescriptors.property.Lazy
+    def metadata(self):
+        return zeit.cms.content.interfaces.ICommonMetadata(self.context)
 
 
 class Synchronise(object):
