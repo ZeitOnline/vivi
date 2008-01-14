@@ -75,6 +75,23 @@
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Images"
     />
+  
+  <gocept:pagelet
+    for="..interfaces.IGallery"
+    class=".overview.Synchronise"
+    name="synchronise-with-image-folder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IGallery"
+    action="@@synchronise-with-image-folder"
+    permission="zeit.EditContent"
+    menu="zeit-context-actions"
+    title="Synchronise with image folder"
+    icon='reload'
+    />
+
 
   <!-- Gallery entries -->
   <browser:page

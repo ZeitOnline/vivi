@@ -8,7 +8,7 @@ Functional test setup:
 >>> zope.app.component.hooks.setSite(getRootFolder())
 
 
-A callery behaves like a container, it contains images. When we create a
+A gallery behaves like a container, it contains images. When we create a
 gallery it is empty:
 
 >>> from zeit.content.gallery.gallery import Gallery
@@ -65,6 +65,9 @@ The gallery is also noted in the xml structure:
   </body>
 </centerpage>
 
+
+Adding images to the image folder
++++++++++++++++++++++++++++++++++
 
 Let's add an image to the image folder:
 
@@ -384,6 +387,96 @@ True
 ...     print "Key:", name
 Key: DSC00109_2.JPG
 Key: 01.jpg
+
+
+Removing images from the image folder
++++++++++++++++++++++++++++++++++++++
+
+When an image is removed from the imag folder, the gallery behaves as if it did
+not know anything about the image.
+
+Remove the 01.jpg:
+
+>>> del repository['2006']['01.jpg']
+
+It is now longer in the keys:
+
+>>> list(gallery.keys())
+[u'DSC00109_2.JPG']
+
+>>> gallery['01.jpg']
+Traceback (most recent call last):
+    ...
+KeyError: u'http://xml.zeit.de/2006/01.jpg'
+
+Note that his has *not* changed the xml so far:
+
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage>
+  <head>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
+  </head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="DSC00109_2.JPG">
+          <text></text>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
+          </thumbnail>
+        </block>
+        <block name="01.jpg">
+          <title>Der Wecker klingelt</title>
+          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
+            expires="" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
+
+
+When calling `reload_image_folder` the entry is removed from the xml:
+
+>>> gallery.reload_image_folder()
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage>
+  <head>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
+  </head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="DSC00109_2.JPG">
+          <text></text>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
+            expires="" alt="" title="">
+            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+                ns0:nil="true"/>
+          </thumbnail>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
 
 
 Cleanup

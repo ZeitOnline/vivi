@@ -170,3 +170,66 @@ So let's change the sorting:
     ...
 </table>...
 
+
+Reloading the image folder
+==========================
+
+Sometimes it will be necessary to manually reload the image folder, i.e. when
+images were added. Remove the image 03.jpg from the gallery folder:
+
+>>> bookmark = browser.url
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/gallery')
+>>> browser.getControl(name='selection_column.MDMuanBn.').value = True
+>>> browser.getControl('Delete').click()
+
+Now as the image is removed, go back to the gallery, the 03.jpg is no longer
+listed:
+
+>>> browser.open(bookmark)
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <table class="gallery">
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/02.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/04.jpg" alt="" height="50" width="50" border="0" />
+    ...
+        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/05.jpg" alt="" height="50" width="50" border="0" />
+    ...
+</table>...
+
+>>> '03.jpg' in browser.contents
+False
+
+
+Sadly the xml is not updated, yet:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML Source').value
+<centerpage>
+    ...
+        <block name="03.jpg">
+          <text/>
+          <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" expires="" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </image>
+          <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" expires="" alt="" title="">
+            <copyright>ZEIT online</copyright>
+          </thumbnail>
+        </block>
+        ...
+</centerpage>
+
+
+So synchronise with the image folder:
+
+>>> browser.getLink('Synchronise with image folder').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/@@overview.html'
+>>> browser.getLink('Source').click()
+>>> '03.jpg' in browser.getControl('XML Source').value
+False

@@ -72,6 +72,10 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 if name not in self:
                     self[name] = entry
 
+        for name in self._list_all_keys():
+            if name not in image_folder:
+                del self[name]
+
     # container interface
 
     def __getitem__(self, key):
@@ -83,7 +87,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         if node is None:
             raise KeyError(key)
         image_name = node.get('name')
-        # XXX what happens if the image goes away?
+        # What happens if the image goes away? A key-error is raised.
         image = self.image_folder[image_name]
         entry = zeit.content.gallery.interfaces.IGalleryEntry(image)
         entry.title = node.find('title')
@@ -91,6 +95,13 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
             entry.title = unicode(entry.title)
         entry.text = unicode(node['text'])
         return zope.location.location.located(entry, self, key)
+
+    def __delitem__(self, key):
+        block = self._get_block_for_key(key)
+        if block is None:
+            raise KeyError(key)
+        block.getparent().remove(block)
+        self._p_changed = True
 
     def get(self, key, default=None):
         """Get a value for a key
@@ -109,8 +120,9 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     def keys(self):
         """Return the keys of the mapping object.
         """
-        return (unicode(name)
-                for name in self._entries_container.xpath('block/@name'))
+        image_folder = self._image_folder
+        return (name for name in self._list_all_keys()
+                if name in image_folder)
 
     def __iter__(self):
         """Return an iterator for the keys of the mapping object.
@@ -162,6 +174,10 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         if matching_blocks:
             assert len(matching_blocks) == 1
             return matching_blocks[0]
+
+    def _list_all_keys(self):
+        return (unicode(name)
+                for name in self._entries_container.xpath('block/@name'))
 
 
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGallery)
