@@ -1,9 +1,5 @@
 var KeywordsWidget = ObjectSequenceWidgetBase.extend({
 
-    initialize: function() {
-        arguments.callee.$.initialize.call(this);
-    },
-    
     renderElement: function(index, title) {
         return LI({'class': 'element', 'index': i}, title);
     },
