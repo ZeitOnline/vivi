@@ -29,7 +29,7 @@ Reference the image via XML:
 >>> import zeit.cms.content.interfaces
 >>> ref = zeit.cms.content.interfaces.IXMLReference(group)
 >>> ref
-<zeit.content.image.imagegroup.XMLReference object at 0x2b34af0>
+<zeit.content.image.imagegroup.XMLReference object at 0x...>
 >>> print lxml.etree.tostring(ref.xml, pretty_print=True)
 <image base-id="http://xml.zeit.de/image-group">
   <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
