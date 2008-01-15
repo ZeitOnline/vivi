@@ -81,5 +81,4 @@ class XMLReference(object):
         metadata = zeit.content.image.interfaces.IImageMetadata(self.context)
         image = zeit.cms.content.interfaces.IXMLReference(metadata).xml
         image.set('base-id', self.context.uniqueId)
-        image.set('hurz-id', self.context.uniqueId)
         return image
