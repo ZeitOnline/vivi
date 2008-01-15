@@ -21,9 +21,6 @@ _ = zope.i18nmessageid.MessageFactory('zeit.cms')
 
 # XXX There is too much, too unordered in here, clean this up.
 
-class IXMLTreeWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
-    """A widget for source editing xml trees."""
-
 
 class IKeywordInterface(zope.interface.interfaces.IInterface):
     """The interface of the keyword interface."""

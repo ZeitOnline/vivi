@@ -34,10 +34,10 @@ To initialize the widget we need a bound field:
 
 Now create the widget:
 
->>> import zeit.cms.content.field
->>> widget = zeit.cms.content.field.XMLTreeWidget(field, request)
+>>> import zeit.cms.content.browser.widget
+>>> widget = zeit.cms.content.browser.widget.XMLTreeWidget(field, request)
 >>> widget
-<zeit.cms.content.field.XMLTreeWidget object at 0x...>
+<zeit.cms.content.browser.widget.XMLTreeWidget object at 0x...>
 >>> widget.setRenderedValue(content.xml)
 >>> widget._getFormValue()
 u'<art/><?foo?>'

@@ -10,9 +10,6 @@ import zope.proxy
 import zope.schema
 import zope.schema.interfaces
 
-import zope.app.form.browser.textwidgets
-import zope.app.form.interfaces
-
 
 DEFAULT_MARKER = object()
 
@@ -20,6 +17,7 @@ DEFAULT_MARKER = object()
 class IXMLTree(zope.schema.interfaces.IField):
     """A field containing an lxml.objectified tree."""
     # This is here to avoid circular imports
+
 
 class XMLTree(zope.schema.Field):
 
@@ -46,26 +44,3 @@ class XMLTree(zope.schema.Field):
             setattr(object, self.__name__, value)
         else:
             current_value[:] = [value]
-
-
-class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
-
-    def _toFieldValue(self, input):
-        try:
-            return self.context.fromUnicode(input)
-        except zope.schema.ValidationError, e:
-            raise zope.app.form.interfaces.ConversionError(e)
-
-    def _toFormValue(self, value):
-        if value == self.context.missing_value:
-            return self._missing
-        else:
-            # Etree very explicitly checks for the type and doesn't like a
-            # proxied object
-            value = zope.proxy.removeAllProxies(value)
-            if value.getparent() is None:
-                # When we're editing the whole tree we want to serialize the
-                # root tree to get processing instructions.
-                value = value.getroottree()
-            return lxml.etree.tounicode(value, pretty_print=True).replace(
-                '\n', '\r\n')
