@@ -12,6 +12,7 @@ import zope.security.proxy
 
 import zope.app.container.contained
 
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.connector.resource
@@ -65,3 +66,20 @@ def local_image_group_factory(context):
         zeit.connector.interfaces.IWebDAVReadProperties(
             zope.security.proxy.removeSecurityProxy(context)))
     return lig
+
+
+class XMLReference(object):
+
+    zope.component.adapts(zeit.content.image.interfaces.IImageGroup)
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLReference)
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def xml(self):
+        metadata = zeit.content.image.interfaces.IImageMetadata(self.context)
+        image = zeit.cms.content.interfaces.IXMLReference(metadata).xml
+        image.set('base-id', self.context.uniqueId)
+        image.set('hurz-id', self.context.uniqueId)
+        return image

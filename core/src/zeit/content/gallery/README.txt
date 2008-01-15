@@ -49,15 +49,13 @@ The gallery is also noted in the xml structure:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires=""
-            alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
       </container>
@@ -108,19 +106,23 @@ The change is reflected in the xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <text></text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -162,24 +164,23 @@ xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires=""
-            alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <text></text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -203,19 +204,23 @@ When we assign the entry the change will be reflected:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -243,24 +248,24 @@ well:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
           <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -308,24 +313,24 @@ This is of course reflected int he XML:
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
           <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
       </container>
@@ -422,24 +427,24 @@ Note that his has *not* changed the xml so far:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
           <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg"
-            expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -463,14 +468,13 @@ When calling `reload_image_folder` the entry is removed from the xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG"
-            expires="" alt="" title="">
-            <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
-                ns0:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+            <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
           </thumbnail>
         </block>
       </container>

@@ -6,6 +6,8 @@
 import zope.component
 import zope.interface
 
+import gocept.lxml.interfaces
+
 import zeit.cms.repository.interfaces
 
 import zeit.content.image.interfaces
@@ -20,6 +22,8 @@ class ImagesProperty(object):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         for image_element in self.image_elements(instance):
+            # XXX This is rather strange as the data is produced by adapters
+            # but read out here quite hard coded.
             unique_id = image_element.get('base-id')
             if unique_id is None:
                 unique_id = image_element.get('src')
@@ -35,27 +39,11 @@ class ImagesProperty(object):
             element.getparent().remove(element)
         if not values:
             return
+        head = self.xml(instance)['head']
         for image in values:
-            image_element = self.xml(instance).makeelement('image')
-
-            # XXX this is quite hairy; shouldn't we use adapters?
-            if zeit.content.image.interfaces.IImage.providedBy(image):
-                image_element.set('src', image.uniqueId)
-                image_element.set('type', image.contentType.split('/')[-1])
-            elif zeit.content.image.interfaces.IImageGroup.providedBy(image):
-                image_element.set('base-id', image.uniqueId)
-            else:
-                raise ValueError("%r is not an image." % image)
-
-            image_metadata = zeit.content.image.interfaces.IImageMetadata(
-                image)
-            expires = image_metadata.expires
-            if expires:
-                expires = expires.isoformat()
-                image_element.set('expires', expires)
-            image_element.bu = image_metadata.caption or ''
-            image_element.copyright = image_metadata.copyrights
-            self.xml(instance)['head'].append(image_element)
+            image_element = gocept.lxml.interfaces.IObjectified(image)
+            assert image_element.tag == 'image'  # safty belt.
+            head.append(image_element)
 
     def image_elements(self, instance):
         return self.xml(instance)['head'].findall('image')

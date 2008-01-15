@@ -210,10 +210,12 @@ Sadly the xml is not updated, yet:
     ...
         <block name="03.jpg">
           <text/>
-          <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" expires="" alt="" title="">
+          <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" expires="" alt="" title="">
+          <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpeg">
+            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
             <copyright>ZEIT online</copyright>
           </thumbnail>
         </block>

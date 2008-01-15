@@ -4,7 +4,6 @@
 
 import StringIO
 
-import lxml.objectify
 import gocept.lxml.interfaces
 
 import zope.component
@@ -17,7 +16,7 @@ import zeit.cms.connector
 import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.util
-import zeit.xmleditor.interfaces
+import zeit.cms.content.interfaces
 
 import zeit.content.image.interfaces
 
@@ -55,30 +54,21 @@ def resourceFactory(context):
 class XMLReference(object):
 
     zope.component.adapts(zeit.content.image.interfaces.IImage)
-    zope.interface.implements(zeit.xmleditor.interfaces.IXMLReference)
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLReference)
 
     def __init__(self, context):
         self.context = context
 
     @property
     def xml(self):
-
-        def _none_to_empty(value):
-            if value is None:
-                return u''
-            return unicode(value)
-
         metadata = zeit.content.image.interfaces.IImageMetadata(self.context)
-        image = lxml.objectify.XML('<image/>')
+        image = zeit.cms.content.interfaces.IXMLReference(metadata).xml
         image.set('src', self.context.uniqueId)
-        image.set('expires', _none_to_empty(metadata.expires))
-        image.set('alt', _none_to_empty(metadata.alt))
-        image.set('title', _none_to_empty(metadata.caption))
-        image.copyright = metadata.copyrights
+        image.set('type', self.context.contentType.split('/')[-1])
         return image
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(gocept.lxml.interfaces.IObjectified)
 def image_objectified(context):
-    return zeit.xmleditor.interfaces.IXMLReference(context).xml
+    return zeit.cms.content.interfaces.IXMLReference(context).xml

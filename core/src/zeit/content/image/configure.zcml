@@ -49,6 +49,10 @@
 
   <adapter factory=".imagegroup.imageGroupToResource" />
   <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
+  <adapter factory=".imagegroup.XMLReference" />
+  <adapter 
+    factory=".image.image_objectified"
+    for=".interfaces.IImageGroup" />
 
 
   <class class=".imagegroup.LocalImageGroup">
@@ -86,6 +90,7 @@
 
   <adapter factory=".metadata.metadata_webdav_read_properties" />
   <adapter factory=".metadata.metadata_webdav_write_properties" />
+  <adapter factory=".metadata.MetadataXMLReference" />
 
 
   <!-- source -->

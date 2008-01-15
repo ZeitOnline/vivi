@@ -234,11 +234,11 @@ And the image is referenced in the XML structure:
 <article>
   <head>...
     <image
+      expires="2007-04-01T00:00:00+00:00"
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
-      type="jpeg"
-      expires="2007-04-01T00:00:00+00:00">
-      <bu></bu>
-      <copyright xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+      type="jpeg">
+      <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+      <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
     </image>...
   </head>
   ...

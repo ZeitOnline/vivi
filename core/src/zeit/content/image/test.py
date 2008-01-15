@@ -25,6 +25,7 @@ ImageLayer = zope.app.testing.functional.ZCMLLayer(
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'README.txt',
         'transform.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
