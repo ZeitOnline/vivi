@@ -11,10 +11,12 @@ import gocept.lxml.interfaces
 
 import zope.component
 import zope.event
+import zope.proxy
 import zope.schema.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.connector.interfaces
 
 
 logger = logging.getLogger('zeit.cms.content.dav')
@@ -38,8 +40,11 @@ class DAVProperty(object):
         if instance is None:
             return self
         properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
-        dav_value = properties.get((self.name, self.namespace))
-        if dav_value is None:
+        dav_value = properties.get((self.name, self.namespace),
+                                   zeit.connector.interfaces.DeleteProperty)
+
+        if (zope.proxy.removeAllProxies(dav_value) is
+            zeit.connector.interfaces.DeleteProperty):
             value = self.missing_value
         else:
             field = self.field.bind(instance)
@@ -58,13 +63,19 @@ class DAVProperty(object):
         return value
 
     def __set__(self, instance, value):
+        """Set the value to webdav properties."""
         read_properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
-        write_properties = zeit.cms.interfaces.IWebDAVWriteProperties(instance)
-        field = self.field.bind(instance)
-        dav_value = zeit.cms.content.interfaces.IToProperty(field).toProperty(
-            value)
         old_value = read_properties.get((self.name, self.namespace))
+        if value is None:
+            dav_value = zeit.connector.interfaces.DeleteProperty
+        else:
+            field = self.field.bind(instance)
+            dav_value = zeit.cms.content.interfaces.IToProperty(
+                field).toProperty(value)
+
+        write_properties = zeit.cms.interfaces.IWebDAVWriteProperties(instance)
         write_properties[(self.name, self.namespace)] = dav_value
+
         zope.event.notify(zeit.cms.content.interfaces.DAVPropertyChangedEvent(
             instance, self.namespace, self.name, old_value, dav_value))
 

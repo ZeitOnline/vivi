@@ -24,6 +24,13 @@ A plain text field:
 u'a text'
 >>> from_prop.fromProperty(u'another text')
 u'another text'
+>>> from_prop.fromProperty(u'')
+u''
+
+
+>>> to_prop = zeit.cms.content.interfaces.IToProperty(text_field)
+>>> to_prop.toProperty(u'')
+u''
 
 
 Try this for some fields. Integer goes first:
@@ -43,14 +50,14 @@ ValueError: invalid literal for int(): text
 
 The other way round is handled by the IToProperty interface:
 
->>> to_prop = zeit.cms.content.interfaces.IFromProperty(int_field)
+>>> to_prop = zeit.cms.content.interfaces.IToProperty(int_field)
 >>> to_prop.toProperty(5)
 u'5'
 >>> to_prop.toProperty(1234)
 u'1234'
 
 
-Floats are also supportedt:
+Floats are also supported:
 
 
 >>> float_field = zope.schema.Float()
@@ -293,7 +300,23 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
 {('title', 'myns'): u'Mary had a little lamb.'}
 
 
+When we set the title to None again, the property will be marked as to be
+deleted:
+
+>>> content.title = None
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Old: Mary had a little lamb.
+    New: DeleteProperty
+    NS: myns
+    Name: title
+>>> content.properties
+{('title', 'myns'): DeleteProperty}
+>>> content.title is None
+True
+
+
 Remove the event listener and adapter:
+
 >>> site_manager.unregisterHandler(
 ...     print_change,
 ...     (Content,
