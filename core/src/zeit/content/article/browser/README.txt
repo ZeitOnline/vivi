@@ -326,6 +326,10 @@ xml source:
         <title xmlns:ns5="http://www.w3.org/2001/XMLSchema-instance" ns5:nil="true"/>
         <text xmlns:ns6="http://www.w3.org/2001/XMLSchema-instance" ns6:nil="true"/>
       </short>
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+      </image>
     </block>
   </container>
 </feed>
@@ -376,6 +380,10 @@ at its xml source:
         <title xmlns:ns13="http://www.w3.org/2001/XMLSchema-instance" ns13:nil="true"/>
         <text xmlns:ns14="http://www.w3.org/2001/XMLSchema-instance" ns14:nil="true"/>
       </short>
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+      </image>
     </block>
   </container>
 </feed>

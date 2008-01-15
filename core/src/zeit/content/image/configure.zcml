@@ -105,5 +105,9 @@
   <adapter factory=".imagereference.ImagesAdapter" />
   <adapter factory=".imagereference.images_xml_representation" />
   <adapter factory=".imagereference.images_from_template" />
+  <utility
+    factory=".imagereference.FeedMetadataUpdater"
+    name="zeit.cms.image"
+    />
 
 </configure>

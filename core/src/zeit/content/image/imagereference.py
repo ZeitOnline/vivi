@@ -73,3 +73,21 @@ def images_xml_representation(context):
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 def images_from_template(context):
     return ImagesAdapter(context)
+
+
+class FeedMetadataUpdater(object):
+    """Add the *first* referenced image to the feed entry."""
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+
+    def update_entry(self, entry, content):
+        images = zeit.content.image.interfaces.IImages(content, None)
+        if images is None:
+            return
+        if not images.images:
+            # No image referenced
+            return
+        # only add first image
+        image = images.images[0]
+        entry['image'] = zeit.cms.content.interfaces.IXMLReference(image).xml
