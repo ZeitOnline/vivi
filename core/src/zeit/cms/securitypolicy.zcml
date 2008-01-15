@@ -95,7 +95,7 @@
     />
 
   <!-- lxml security settings -->
-  
+
   <class class="lxml.objectify.ObjectifiedElement">
     <require permission="zope.View"
       attributes="tag xpath getparent index" />
