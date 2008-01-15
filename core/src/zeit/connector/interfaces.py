@@ -7,14 +7,24 @@ import zope.interface.common.mapping
 import zope.schema
 
 
-class DeleteProperty(object):
+class _DeleteProperty(object):
     """Singleton to indicate a property should be deleted."""
+
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = object.__new__(cls)
+        return cls._instance
 
     def __repr__(self):
         return 'DeleteProperty'
 
+    def __reduce__(self):
+        return (_DeleteProperty, ())
 
-DeleteProperty = DeleteProperty()
+
+DeleteProperty = _DeleteProperty()
 
 
 class LockingError(Exception):
