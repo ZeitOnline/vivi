@@ -86,6 +86,7 @@ def workflowProperties(context):
 
 
 class FeedMetadataUpdater(object):
+    """Add the expire/publication time to feed entry."""
 
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
