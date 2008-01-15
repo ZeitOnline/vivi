@@ -83,4 +83,10 @@
     name="folders"
     />
 
+  <!-- related content -->
+  <adapter factory=".related.RelatedContent" />
+  <adapter factory=".related.related_from_template" />
+  <adapter factory=".related.related_xml_representation" />
+  <adapter factory=".related.BasicReference" />
+
 </configure>

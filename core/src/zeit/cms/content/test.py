@@ -23,5 +23,7 @@ def test_suite():
                      doctest.ELLIPSIS),
         setUp=zeit.cms.testing.setUp))
 
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite('dav.txt'))
+    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'dav.txt',
+        'related.txt'))
     return suite

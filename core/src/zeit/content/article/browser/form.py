@@ -48,7 +48,9 @@ class ArticleFormBase(object):
             zeit.content.article.interfaces.IArticleMetadata).omit(
                 'textLength') +
         zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent) +
-        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages))
+        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages) +
+        zope.formlib.form.FormFields(
+            zeit.cms.content.interfaces.IRelatedContent))
 
 
     @property

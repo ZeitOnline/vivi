@@ -53,4 +53,5 @@
     permission="zope.Public"
     />
 
+  <adapter factory=".related.related_content_browse_location" />
 </configure>

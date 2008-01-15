@@ -43,6 +43,10 @@
       permission="zope.View" />
     <require set_schema=".interfaces.IUnknownResource"
       permission="zeit.EditContent" />
+    <require interface="zeit.cms.content.interfaces.ITextContent"
+      permission="zope.View" />
+    <require set_schema="zeit.cms.content.interfaces.ITextContent"
+      permission="zeit.EditContent" />
   </class>
   
 </configure>

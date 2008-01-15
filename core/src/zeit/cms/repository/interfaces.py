@@ -54,7 +54,7 @@ class IRepository(zope.interface.Interface):
         """
 
 
-class IUnknownResource(zeit.cms.content.interfaces.ITextContent):
+class IUnknownResource(zeit.cms.interfaces.ICMSContent):
     """Unknown resource content.
 
     When an object in the repository cannot be identified or there is no way to

@@ -63,7 +63,7 @@ metadataFieldGroups = (
         css_class='wide-widgets column-left'),
     gocept.form.grouped.Fields(
         _("sonstiges"),
-        ('authors', 'images', 'copyrights', 'pageBreak',
+        ('authors', 'related', 'images', 'copyrights', 'pageBreak',
          'automaticTeaserSyndication'),
         css_class= 'column-right'),
     )

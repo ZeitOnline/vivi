@@ -15,6 +15,9 @@ import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 
+import zeit.cms.content.contentsource
+from zeit.cms.content._bootstrapinterfaces import ICMSContentSource
+
 
 _ = zope.i18nmessageid.MessageFactory('zeit.cms')
 
@@ -178,7 +181,7 @@ class DAVPropertyChangedEvent(zope.component.interfaces.ObjectEvent):
         self.new_value = new_value
 
 
-class ITextContent(zeit.cms.interfaces.ICMSContent):
+class ITextContent(zope.interface.Interface):
     """Representing text content XXX"""
 
     data = zope.schema.Text(title=u"Document content")
@@ -236,8 +239,13 @@ class ITemplate(IXMLRepresentation):
     title = zope.schema.TextLine(title=_('Title'))
 
 
-class ICMSContentSource(zope.schema.interfaces.ISource):
-    """A source for CMS content types."""
+class IRelatedContent(zope.interface.Interface):
+    """Relate other content."""
 
-    name = zope.interface.Attribute(
-        "Utility name of the source")
+    related = zope.schema.Tuple(
+        title=_("Related content"),
+        description=_("Objects that are related to this object."),
+        default=(),
+        required=False,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource))

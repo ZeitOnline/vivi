@@ -1,0 +1,130 @@
+===============
+Related content
+===============
+
+
+Content can be related. The default way is relating xml content, so create a
+dummy content:
+
+
+>>> import zope.interface
+>>> import zeit.cms.content.interfaces
+>>> import lxml.objectify
+>>> class Content(object):
+...     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
+...     uniqueId = 'dummy-content'
+...     xml = lxml.objectify.XML('<content><head/></content>')
+...
+>>> content = Content()
+
+
+Also create a mock repository:
+
+>>> repository_content = {}
+>>>
+>>> class Repository(object):
+...
+...     def getContent(self, unique_id):
+...         return repository_content[unique_id]
+...
+...     def add(self, content):
+...         repository_content[content.uniqueId] = content
+...
+>>> repository = Repository()
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+
+Add content to repository:
+
+>>> repository.add(content)
+
+Adapt it to IReference, currenty there are no references:
+
+>>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> related.related
+()
+
+
+Add a related content:
+
+>>> related_content = Content()
+>>> related_content.uniqueId = 'related-content-uid'
+>>> repository.add(related_content)
+>>> related.related = (related_content, )
+
+
+Let's have a look at the source:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<content>
+  <head>
+    <references><reference type="intern" href="related-content-uid"/></references>
+  </head>
+</content>
+
+
+>>> related.related
+(<Content object at 0x...>,)
+>>> related.related[0].uniqueId
+'related-content-uid'
+
+Assigning the same content object again doesn't change the xml:
+
+>>> related.related = (related_content, )
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<content>
+  <head>
+    <references><reference type="intern" href="related-content-uid"/></references>
+  </head>
+</content>
+
+
+Let's add another related content:
+
+>>> related_content2 = Content()
+>>> related_content2.uniqueId = 'related-content-2-uid'
+>>> repository.add(related_content2)
+>>> related.related = (related_content, related_content2)
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<content>
+  <head>
+    <references><reference type="intern" href="related-content-uid"/><reference type="intern" href="related-content-2-uid"/></references>
+  </head>
+</content>
+
+
+Metadata
+========
+
+Now what about the metadata? When the related object is adaptable to
+ICommonMetadata some information is included in the XML:
+
+>>> zope.interface.directlyProvides(
+...     related_content, zeit.cms.content.interfaces.ICommonMetadata)
+>>> related_content.year = 2006
+>>> related_content.volume = 19
+>>> related_content.teaserTitle = 'I relate the title'
+>>> related_content.teaserText = 'Dude.'
+
+Reassign the two objects an verify the xml:
+
+>>> related.related = (related_content, related_content2)
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<content>
+  <head>
+    <references><reference type="intern" href="related-content-uid"
+        year="2006" issue="19"><title>I relate the
+        title</title><description>Dude.</description></reference><reference
+            type="intern" href="related-content-2-uid"/></references>
+  </head>
+</content>
+
+
+Cleanup
+=======
+
+>>> gsm.unregisterUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+True

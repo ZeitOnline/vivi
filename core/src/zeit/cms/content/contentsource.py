@@ -7,12 +7,13 @@ import zope.interface
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.content.interfaces
+import zeit.cms.content._bootstrapinterfaces
 
 
 class CMSContentSource(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.ICMSContentSource)
+    zope.interface.implements(
+        zeit.cms.content._bootstrapinterfaces.ICMSContentSource)
 
     name = 'all-types'
     check_interfaces = zeit.cms.interfaces.ICMSContentType

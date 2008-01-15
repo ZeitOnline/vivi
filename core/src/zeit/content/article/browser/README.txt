@@ -162,6 +162,15 @@ Let's add an image:
 >>> 'There were errors' in browser.contents
 False
 
+Let's relate a content object:
+
+>>> browser.getControl('Add Related content').click()
+>>> browser.getControl(name="form.related.0.").value = (
+...     'http://xml.zeit.de/online/2007/01/thailand-anschlaege')
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
 It is not possible to change the file name in the edit view:
 
 >>> browser.getControl('File name')
