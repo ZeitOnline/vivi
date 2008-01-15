@@ -19,6 +19,8 @@ import zeit.cms.interfaces
 _ = zope.i18nmessageid.MessageFactory('zeit.cms')
 
 
+# XXX There is too much, too unordered in here, clean this up.
+
 class IXMLTreeWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
     """A widget for source editing xml trees."""
 
@@ -190,6 +192,18 @@ class IXMLRepresentation(zope.interface.Interface):
 
     xml = zeit.cms.content.field.XMLTree(
         title=_("XML Source"))
+
+
+class IXMLReference(zope.interface.Interface):
+    """XML representation of an object reference.
+
+    Object references are dependent on the target object. For instance a feed
+    is referenced with <xi:include> while an image is referenced using <img>.
+
+    """
+
+    xml = zeit.cms.content.field.XMLTree(
+        title=u"Reference Structure")
 
 
 class IXMLSource(zope.interface.Interface):

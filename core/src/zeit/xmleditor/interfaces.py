@@ -6,6 +6,7 @@
 import zope.interface
 
 import zeit.cms.content.field
+from zeit.cms.content.interfaces import IXMLReference  # Backward compat.
 
 
 class IEditableStructure(zope.interface.Interface):
@@ -49,18 +50,6 @@ class IRaw(IEditableStructure):
 
     xml = zeit.cms.content.field.XMLTree(
         title=u"Raw")
-
-
-class IXMLReference(zope.interface.Interface):
-    """XML representation of an object reference.
-
-    Object references are dependent on the target object. For instance a feed
-    is referenced with <xi:include> while an image is referenced using <img>.
-
-    """
-
-    xml = zeit.cms.content.field.XMLTree(
-        title=u"Reference Structure")
 
 
 class IContainer(IEditableStructure):
