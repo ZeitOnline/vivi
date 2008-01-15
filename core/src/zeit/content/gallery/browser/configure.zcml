@@ -30,30 +30,34 @@
   <browser:page
     name="edit.html"
     for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.EditGallery"
     permission="zeit.EditContent"
-    />
-
-  <browser:menuItem
-    for="..interfaces.IGallery"
-    menu="zeit-context-views"
-    title="Metadaten"
-    action="@@edit.html"
-    permission="zeit.EditContent"
-    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
+    menu="zeit-context-views" title="Edit metadata"
     />
 
   <browser:page
     name="view.html"
     for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.DisplayGallery"
     permission="zope.View"
     />
 
+  <browser:menuItem
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
   <browser:defaultView
     for="..interfaces.IGallery"
-    name="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
     />
 
 

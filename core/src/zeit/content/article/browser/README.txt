@@ -131,6 +131,13 @@ edit screen should be displayed:
 >>> browser.getControl(name='form.title').value
 'EU unterstuetzt Stinker-Steuer'
 
+Note that the metadata view screen is not available on checked out articles:
+
+>>> browser.getLink('View metadata')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
 
 Editing Articles
 ================
@@ -288,6 +295,12 @@ After checking in we also do not have an edit metadata link:
 Traceback (most recent call last):
     ...
 LinkNotFoundError
+
+But a view tab is there:
+
+>>> browser.getLink('View metadata').click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/.../KFZ-Steuer/@@view.html'
 
 
 Syndicating

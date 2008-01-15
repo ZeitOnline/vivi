@@ -74,10 +74,22 @@ Go back to the edit form:
 
 >>> browser.getLink('Edit metadata').click()
 
+
+There is no read only view:
+
+>>> browser.getLink('View metadata')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+
 Check the link back in:
 
 >>> browser.getLink('Checkin').click()
 
+Now we have the view tab:
+
+>>> browser.getLink('View metadata').click()
 
 Syndicating links
 =================

@@ -25,7 +25,6 @@
     action="@@edit.html"
     permission="zeit.EditContent"
     icon="metadata-edit"
-    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
     />
 
   <browser:page
@@ -42,6 +41,7 @@
     action="@@view.html"
     permission="zope.View"
     icon="metadata-view"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <browser:defaultView

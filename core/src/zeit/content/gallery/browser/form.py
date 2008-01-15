@@ -32,17 +32,18 @@ class AddGallery(GalleryFormBase, zeit.cms.browser.form.AddForm):
 
     title = _("Add gallery")
     factory = zeit.content.gallery.gallery.Gallery
+    next_view = 'overview.html'
 
 
 class EditGallery(GalleryFormBase, zeit.cms.browser.form.EditForm):
 
-    title = _("Edit Gallery")
+    title = _("Edit gallery")
     form_fields = GalleryFormBase.form_fields.omit('__name__')
 
 
 class DisplayGallery(GalleryFormBase, zeit.cms.browser.form.DisplayForm):
 
-    title = _("Gallery")
+    title = _("View gallery metadata")
 
 
 class DisplayImageWidget(zope.app.form.browser.widget.DisplayWidget):

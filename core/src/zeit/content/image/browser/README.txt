@@ -416,6 +416,23 @@ Set the alt text:
 >>> browser.getControl('Alternative text').value = 'Wahlkampf'
 >>> browser.getControl('Apply').click()
 
+
+Note that we don't have the view metdata tab on checked out image groups:
+
+>>> browser.getLink('View metadata').click()
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+But an edit tab:
+
+>>> browser.getLink('Edit metadata').click()
+>>> print browser.contents
+<?xml version="1.0"?>
+<!DOCTYPE html ...
+    <title> Edit image group </title>
+    ...
+
 Make sure we have a metadata preview for local image groups:
 
 >>> browser.open(
@@ -435,7 +452,7 @@ Checkin again:
 
 Check the metadata view, to verify we have actually changed the alt text:
 
->>> browser.getLink('Metadata').click()
+>>> browser.getLink('View metadata').click()
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...

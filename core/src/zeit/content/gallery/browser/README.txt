@@ -62,7 +62,6 @@ To add the gallery we go back to 2007/01:
 >>> browser.getLink('01').click()
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Gallery']
->>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 Set the most important values:
@@ -73,17 +72,12 @@ Set the most important values:
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name="form.actions.add").click()
+
+After adding the gallery we're at the overview page.  The overview page shows
+thumbnails of the images in the gallery together with the texts:
+
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/@@edit.html'
-
-
-Lets go to the image overview page:
-
->>> browser.getLink('Images').click()
-
-The overview page shows thumbnails of the images in the gallery together with
-the texts:
-
+'http://localhost/++skin++cms/workingcopy/zope.user/island/@@overview.html'
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
@@ -101,12 +95,32 @@ the texts:
     ...
 </table>...
 
+We can edit the metadata of the gallery on the edit tab:
+
+>>> browser.getLink('Edit metadata').click()
+>>> browser.getControl('Title').value
+'Auf den Spuren der Elfen'
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html ...
+    <title> Edit gallery </title>
+    ...
+
+There is no read only view of the metadata:
+
+>>> browser.getLink('View metadata')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+
 
 Editing a gallery
 =================
 
-Each entry can be edited:
+Each entry can be edited on the overview page:
 
+>>> browser.getLink('Images').click()
 >>> browser.getLink('01.jpg').click()
 >>> browser.getControl('Title').value = 'The man man'
 >>> browser.getControl('Text').value = 'Der Mann am Stein'
@@ -231,3 +245,20 @@ So synchronise with the image folder:
 >>> browser.getLink('Source').click()
 >>> '03.jpg' in browser.getControl('XML Source').value
 False
+
+
+Checkin
+=======
+
+Check in the gallery:
+
+>>> browser.getLink('Checkin').click()
+
+We now have a view tab:
+
+>>> browser.getLink('View metadata').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html ...
+    <title> View gallery metadata </title>
+    ...

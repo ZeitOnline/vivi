@@ -165,7 +165,7 @@
     for="..interfaces.IRepositoryImageGroup"
     class=".imagegroup.DisplayForm"
     permission="zope.View"
-    menu="zeit-context-views" title="Metadata"
+    menu="zeit-context-views" title="View metadata"
     />
   
   <browser:page
@@ -181,6 +181,7 @@
     for="..interfaces.ILocalImageGroup"
     class=".imagegroup.EditForm"
     permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
     />
   
   <browser:page

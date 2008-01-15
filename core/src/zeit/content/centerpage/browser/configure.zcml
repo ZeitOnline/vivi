@@ -35,7 +35,6 @@
     title="Edit metadata"
     action="@@edit.html"
     permission="zeit.EditContent"
-    filter="python:modules['zeit.cms.workingcopy.interfaces'].ILocalContent.providedBy(context)"
     icon="metadata-edit"
     />
 
@@ -52,6 +51,7 @@
     title="View metadata"
     action="@@view.html"
     permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     icon="metadata-view"
     />
 

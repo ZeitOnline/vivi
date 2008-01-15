@@ -96,6 +96,15 @@ Make sure there is the edit metadata tab:
 'http://localhost/++skin++cms/workingcopy/zope.user/index/@@edit.html'
 
 
+Note that the metadata view screen is not available on checked out center
+pages:
+
+>>> browser.getLink('View metadata')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+
 Editing CPs
 ===========
 
