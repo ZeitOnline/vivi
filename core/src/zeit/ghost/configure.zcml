@@ -1,0 +1,6 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <subscriber handler=".ghost.add_ghost_after_checkin" />
+
+</configure>
+
