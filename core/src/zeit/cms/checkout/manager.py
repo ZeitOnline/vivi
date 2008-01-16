@@ -80,7 +80,7 @@ class CheckoutManager(object):
         del self.workingcopy[self.context.__name__]
         if event:
             checkin_event = zeit.cms.checkout.interfaces.CheckinEvent(
-                self.context, self.principal)
+                added, self.principal)
             zope.event.notify(checkin_event)
         try:
             lockable = zope.app.locking.interfaces.ILockable(added)

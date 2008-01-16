@@ -42,8 +42,9 @@ Checking out
 After checking out a copy of the managed object resides in the user's working
 copy. Get a content object first:
 
->>> from zeit.cms.repository.interfaces import IRepository
->>> repository = zope.component.getUtility(IRepository)
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
 >>> collection = repository['online']['2007']['01']
 >>> content = list(collection.values())[0]
 >>> ICMSContent.providedBy(content)
@@ -142,10 +143,15 @@ But now we check in:
 >>> manager = ICheckinManager(checked_out)
 >>> manager.canCheckin
 True
->>> manager.checkin()
+>>> checked_in = manager.checkin()
 Event: <zeit.cms.checkout.interfaces.CheckinEvent object at 0x...>
      Principal: zope.user
      Content: <zeit.cms...>
+
+`checked_in` is the object in the repository:
+
+>>> zeit.cms.repository.interfaces.IRepositoryContent.providedBy(checked_in)
+True
 
 Now the object is no longer in the working copy:
 
