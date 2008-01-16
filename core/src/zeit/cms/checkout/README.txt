@@ -51,7 +51,6 @@ True
 
 For adapting the content to to ICheckoutManager we also need a principaal:
 
->>> from zope.app.security.interfaces import IAuthentication
 >>> from zeit.cms.checkout.interfaces import (
 ...     ICheckoutManager, ICheckinManager)
 
