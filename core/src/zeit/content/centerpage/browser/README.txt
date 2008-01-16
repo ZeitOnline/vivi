@@ -125,7 +125,7 @@ XML-Editor
 
 Let's open up the XML editor:
 
->>> browser.getLink('Bearbeiten').click()
+>>> browser.getLink('Edit content').click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...

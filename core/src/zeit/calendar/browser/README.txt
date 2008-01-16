@@ -61,7 +61,7 @@ Fill the form with values and submit:
 >>> browser.getControl(name='form.start').value = '2006-05-04'
 >>> browser.getControl(name='form.title').value = 'Bild erstellen'
 >>> browser.getControl(name='form.description').value = '... fuer Artikel'
->>> browser.getControl('Add Related documents').click()
+>>> browser.getControl('Add Related content').click()
 >>> browser.getControl(name='form.related.0.').value = (
 ...     'http://xml.zeit.de/online')
 >>> browser.getControl(name='form.actions.add').click()
