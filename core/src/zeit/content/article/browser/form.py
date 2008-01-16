@@ -14,6 +14,7 @@ import zc.resourcelibrary
 
 import zeit.cms.browser.form
 import zeit.cms.content.browser.interfaces
+import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
 import zeit.cms.interfaces
@@ -37,11 +38,12 @@ class ChooseTemplate(zeit.cms.content.browser.template.ChooseTemplateForm):
 
 class ArticleFormBase(object):
 
-    field_groups = zeit.cms.browser.form.metadataFieldGroups + (
+    field_groups = (
+        zeit.cms.content.browser.form.CommonMetadataFormBase.field_groups + (
         gocept.form.grouped.Fields(
             _("Optionen"),
             ('dailyNewsletter', 'boxMostRead', 'commentsAllowed', 'banner'),
-            css_class='widgets-float column-left'),)
+            css_class='widgets-float column-left'),))
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -53,14 +55,8 @@ class ArticleFormBase(object):
             zeit.cms.content.interfaces.IRelatedContent))
 
 
-    @property
-    def template(self):
-        # Sneak in the javascript for copying teaser texts
-        zc.resourcelibrary.need('zeit.content.article.teaser')
-        return super(ArticleFormBase, self).template
-
-
-class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
+class AddForm(ArticleFormBase,
+              zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     title = _('Add article')
     form_fields = (
@@ -92,11 +88,13 @@ class AddForm(ArticleFormBase, zeit.cms.browser.form.AddForm):
         return widgets
 
 
-class EditForm(ArticleFormBase, zeit.cms.browser.form.EditForm):
+class EditForm(ArticleFormBase,
+               zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _('Edit article')
 
 
-class DisplayForm(ArticleFormBase, zeit.cms.browser.form.DisplayForm):
+class DisplayForm(ArticleFormBase,
+                  zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _('View article metadata')

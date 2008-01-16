@@ -21,6 +21,7 @@ var TeaserCopy = Class.extend({
         }
 
         target.value = $(this.source).value
+        signal(target, 'onchange');
     },
 
     mark_changed: function(event) {

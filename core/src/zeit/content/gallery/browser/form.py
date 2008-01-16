@@ -9,6 +9,7 @@ import zope.formlib.form
 import gocept.form.grouped
 
 import zeit.cms.browser.form
+import zeit.cms.content.browser.form
 import zeit.cms.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
@@ -26,22 +27,24 @@ class GalleryFormBase(object):
             zeit.content.gallery.interfaces.IGalleryMetadata,
             omit_readonly=False))
 
-    field_groups = zeit.cms.browser.form.metadataFieldGroups
 
-class AddGallery(GalleryFormBase, zeit.cms.browser.form.AddForm):
+class AddGallery(GalleryFormBase,
+                 zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     title = _("Add gallery")
     factory = zeit.content.gallery.gallery.Gallery
     next_view = 'overview.html'
 
 
-class EditGallery(GalleryFormBase, zeit.cms.browser.form.EditForm):
+class EditGallery(GalleryFormBase,
+                  zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit gallery")
     form_fields = GalleryFormBase.form_fields.omit('__name__')
 
 
-class DisplayGallery(GalleryFormBase, zeit.cms.browser.form.DisplayForm):
+class DisplayGallery(GalleryFormBase,
+                     zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _("View gallery metadata")
 

@@ -199,7 +199,7 @@ again:
 >>> zope.app.component.hooks.setSite(old_site)
 
 
-Now add the site to the article:
+Now add the image group to the article:
 
 >>> browser.getControl('Add Images').click()
 >>> browser.getControl(name="form.images.1.").value = group.uniqueId
@@ -559,8 +559,8 @@ Let's hae a look at the source:
 Javascript validations
 ======================
 
-Javascript validations are provided by gocept.form mainly. But make sure
-they're actually here:
+The teaser fields are limited in length. They have special widgets which
+prevent entering more than the allowed length. Makre sure the widget is used:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
@@ -571,12 +571,10 @@ they're actually here:
 <?xml ...
 <!DOCTYPE ...
     <title> Add article </title>...
-        <script language="javascript">
-// max-length
-connect(window, "onload", function(event) {new gocept.validation.MaxLength('form.teaserText', 170, "Too long (max 170)")});
-// max-length
-connect(window, "onload", function(event) {new gocept.validation.MaxLength('form.shortTeaserTitle', 20, "Too long (max 20)")});
-// max-length
-connect(window, "onload", function(event) {new gocept.validation.MaxLength('form.shortTeaserText', 50, "Too long (max 50)")});
-</script>
-    ...
+        <div class="widget"><div class="show-input-limit" maxlength="170"></div><textarea cols="60" id="form.teaserText" name="form.teaserText" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.teaserText");</script></div>
+        ...
+        <div class="widget"><div class="show-input-limit" maxlength="20"></div><textarea cols="60" id="form.shortTeaserTitle" name="form.shortTeaserTitle" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.shortTeaserTitle");</script></div>
+        ...
+        <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
+        ... 
+

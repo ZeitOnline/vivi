@@ -13,7 +13,7 @@ import zeit.cms.content.browser.interfaces
 import zeit.xmleditor.browser.form
 
 import zeit.content.centerpage.interfaces
-
+import zeit.cms.content.browser.form
 
 ITemplateChooserSchema = (
     zeit.cms.content.browser.template.TemplateChooserSchema(
@@ -29,14 +29,14 @@ class ChooseTemplate(zeit.cms.content.browser.template.ChooseTemplateForm):
 
 class CPFormBase(object):
 
-    field_groups = zeit.cms.browser.form.metadataFieldGroups
     form_fields = (
         zope.formlib.form.Fields(zeit.cms.interfaces.ICMSContent) +
         zope.formlib.form.Fields(
             zeit.content.centerpage.interfaces.ICenterPageMetadata))
 
 
-class AddForm(CPFormBase, zeit.cms.browser.form.AddForm):
+class AddForm(CPFormBase,
+              zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     form_fields = CPFormBase.form_fields + ChooseTemplate.form_fields
 
@@ -63,15 +63,14 @@ class AddForm(CPFormBase, zeit.cms.browser.form.AddForm):
         return widgets
 
 
-class EditForm(CPFormBase, zeit.cms.browser.form.EditForm):
+class EditForm(CPFormBase,
+               zeit.cms.content.browser.form.CommonMetadataEditForm):
     """CP edit form."""
 
 
-class DisplayForm(CPFormBase, zeit.cms.browser.form.DisplayForm):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.centerpage.interfaces.ICenterPageMetadata,
-        render_context=True, omit_readonly=False)
+class DisplayForm(CPFormBase,
+                  zeit.cms.content.browser.form.CommonMetadataDisplayForm):
+    """CP display form."""
 
 
 class XMLContainerForm(zeit.xmleditor.browser.form.FormBase):

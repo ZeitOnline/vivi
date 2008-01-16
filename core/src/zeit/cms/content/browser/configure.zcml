@@ -54,4 +54,16 @@
     />
 
   <adapter factory=".related.related_content_browse_location" />
+  
+  <!-- Teaser copying -->
+  <resourceLibrary name="zeit.cms.content.teaser"
+    require="gocept.mochikit.jsclass mochikit">
+    <directory source="resources" include="teaser.js" />
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.content.validation"
+    require="gocept.mochikit.jsclass mochikit">
+    <directory source="resources" include="inputlimit.js" />
+  </resourceLibrary>
+
 </configure>

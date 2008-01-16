@@ -91,9 +91,4 @@
     permission="zope.Public"
     />
 
-  <!-- Teaser copying -->
-  <resourceLibrary name="zeit.content.article.teaser"
-    require="gocept.mochikit.jsclass mochikit">
-    <directory source="resources" include="teaser.js" />
-  </resourceLibrary>
 </configure>
