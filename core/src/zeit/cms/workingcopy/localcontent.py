@@ -28,7 +28,7 @@ def default_local_content_adapter(context):
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.repository.interfaces.IRepositoryContent)
 def default_repository_content_adapter(context):
-    # Default aapter to adapt local content to repository content: add to
+    # Default adapter to adapt local content to repository content: add to
     # repository and return
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
