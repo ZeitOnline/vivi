@@ -5,19 +5,22 @@
               workingcopy view/workingcopy;
               workingcopy_url workingcopy/@@absolute_url"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
-                  id panel_id">
+                  id panel_id"
+  i18n:domain="zeit.cms">
 
   <h1>
     <a href="#"
-      tal:attributes="href workingcopy_url">
-      Ausgecheckte Dokumente
+      tal:attributes="href workingcopy_url"
+      i18n:translate="">
+      Edited documents
     </a>
   </h1>
   
   <div class="PanelContent">
     <div id="workingcopycontents">
-      <div tal:condition="not:view/content">
-        Keine ausgecheckten Dokumente
+      <div tal:condition="not:view/content"
+        i18n:translate="">
+        No edited documents.
       </div>
 
       <div tal:condition="view/content" tal:content="structure view/table" />

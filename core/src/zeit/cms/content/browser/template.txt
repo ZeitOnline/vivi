@@ -185,7 +185,7 @@ The new property has been added now, but we have an empty line again:
 
 Let's make sure we can still edit body and text:
 
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
