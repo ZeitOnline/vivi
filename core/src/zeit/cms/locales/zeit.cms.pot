@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jan 11 17:26:18 2008\n"
+"POT-Creation-Date: Wed Jan 16 15:26:59 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -28,76 +28,59 @@ msgid "Kalender"
 msgstr ""
 
 #: src/zeit/calendar/browser/event.py:63
+#: src/zeit/cms/browser/form.py:186
 msgid "Apply"
 msgstr ""
 
 #: src/zeit/cms/browser/configure.zcml:10
+#: src/zeit/cms/browser/configure.zcml:15
 msgid "context sensitive actions"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:15
-msgid "context sensitive views"
-msgstr ""
-
-#: src/zeit/cms/browser/configure.zcml:152
+#: src/zeit/cms/browser/configure.zcml:158
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:197
+#: src/zeit/cms/browser/configure.zcml:203
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:20
-msgid "folder specific actions"
+#: src/zeit/cms/browser/configure.zcml:21
+msgid "context sensitive views"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:206
+#: src/zeit/cms/browser/configure.zcml:212
 msgid "Development"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:25
+#: src/zeit/cms/browser/configure.zcml:26
+msgid "folder specific actions"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:31
 msgid "Global views"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:72
-#: src/zeit/cms/browser/configure.zcml:87
+#: src/zeit/cms/browser/configure.zcml:78
+#: src/zeit/cms/browser/configure.zcml:93
 msgid "Source"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:185
-#: src/zeit/cms/content/browser/configure.zcml:78
+#: src/zeit/cms/browser/form.py:162
+#: src/zeit/cms/content/browser/template.zcml:39
 #: src/zeit/content/image/browser/configure.zcml:88
-#: src/zeit/content/gallery/browser/configure.zcml:74
+#: src/zeit/content/gallery/browser/configure.zcml:101
+#: src/zeit/content/gallery/browser/overview.pt:19
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:210
+#: src/zeit/cms/browser/form.py:192
 #: src/zeit/cms/repository/browser/configure.zcml:52
 #: src/zeit/cms/repository/browser/configure.zcml:173
 #: src/zeit/cms/syndication/browser/configure.zcml:44
 #: src/zeit/content/image/browser/configure.zcml:31
 #: src/zeit/content/image/browser/configure.zcml:149
 msgid "View"
-msgstr ""
-
-#: src/zeit/cms/browser/form.py:54
-msgid "Navigation"
-msgstr ""
-
-#: src/zeit/cms/browser/form.py:58
-msgid "Kopf"
-msgstr ""
-
-#: src/zeit/cms/browser/form.py:62
-msgid "Optionen"
-msgstr ""
-
-#: src/zeit/cms/browser/form.py:66
-msgid "Texte"
-msgstr ""
-
-#: src/zeit/cms/browser/form.py:69
-msgid "sonstiges"
 msgstr ""
 
 #: src/zeit/cms/browser/locking-error.pt:10
@@ -112,11 +95,11 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:214
+#: src/zeit/cms/browser/main_template.pt:217
 msgid "Add..."
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:250
+#: src/zeit/cms/browser/main_template.pt:253
 msgid "There are no objects in this folder."
 msgstr ""
 
@@ -140,8 +123,21 @@ msgstr ""
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
 
-#: src/zeit/cms/content/browser/configure.zcml:86
-msgid "Properties"
+#: src/zeit/cms/content/browser/form.py:33
+msgid "Navigation"
+msgstr ""
+
+#: src/zeit/cms/content/browser/form.py:37
+msgid "Head"
+msgstr ""
+
+#: src/zeit/cms/content/browser/form.py:41
+#: src/zeit/content/image/browser/form.py:30
+msgid "Texts"
+msgstr ""
+
+#: src/zeit/cms/content/browser/form.py:44
+msgid "misc."
 msgstr ""
 
 #: src/zeit/cms/content/browser/template-properties.pt:10
@@ -169,21 +165,21 @@ msgid "Continue"
 msgstr ""
 
 #: src/zeit/cms/content/browser/template.py:129
-#: src/zeit/cms/content/browser/configure.zcml:70
+#: src/zeit/cms/content/browser/template.zcml:31
 msgid "Template"
 msgstr ""
 
 #: src/zeit/cms/content/browser/template.py:24
 #: src/zeit/cms/content/browser/template.py:40
-#: src/zeit/cms/content/browser/configure.zcml:53
+#: src/zeit/cms/content/browser/template.zcml:14
 msgid "Templates"
 msgstr ""
 
 #: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:106
-#: src/zeit/cms/content/interfaces.py:225
+#: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/cms/content/interfaces.py:239
 #: src/zeit/cms/syndication/interfaces.py:34
-#: src/zeit/content/gallery/interfaces.py:53
+#: src/zeit/content/gallery/interfaces.py:63
 #: src/zeit/search/interfaces.py:20
 msgid "Title"
 msgstr ""
@@ -200,91 +196,103 @@ msgstr ""
 msgid "Edit webdav properties"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:102
+#: src/zeit/cms/content/browser/template.zcml:47
+msgid "Properties"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:100
+msgid "Please take care of capiltalisation."
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:104
 msgid "By line"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:109
+#: src/zeit/cms/content/interfaces.py:111
 msgid "Subtitle"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:113
+#: src/zeit/cms/content/interfaces.py:115
 msgid "Teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:117
+#: src/zeit/cms/content/interfaces.py:119
 msgid "Teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:122
+#: src/zeit/cms/content/interfaces.py:124
 msgid "Index teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:127
+#: src/zeit/cms/content/interfaces.py:129
 msgid "Index teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:192
+#: src/zeit/cms/content/interfaces.py:194
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:36
+#: src/zeit/cms/content/interfaces.py:246
+msgid "Related content"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:247
+msgid "Objects that are related to this object."
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:38
 msgid "Keyword is contained in the taxonomy"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:47
+#: src/zeit/cms/content/interfaces.py:49
 msgid "Root of ontology"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:56
+#: src/zeit/cms/content/interfaces.py:58
 #: src/zeit/content/image/interfaces.py:32
 #: src/zeit/search/interfaces.py:23
 msgid "Year"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:61
+#: src/zeit/cms/content/interfaces.py:63
 #: src/zeit/content/image/interfaces.py:38
 #: src/zeit/search/interfaces.py:24
 msgid "Volume"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:66
+#: src/zeit/cms/content/interfaces.py:68
 #: src/zeit/search/interfaces.py:25
 msgid "Page"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:71
+#: src/zeit/cms/content/interfaces.py:73
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:75
+#: src/zeit/cms/content/interfaces.py:77
 msgid "Authors"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:81
+#: src/zeit/cms/content/interfaces.py:83
 msgid "Keywords"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:87
+#: src/zeit/cms/content/interfaces.py:89
 msgid "Serie"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:92
+#: src/zeit/cms/content/interfaces.py:94
 #: src/zeit/content/image/interfaces.py:44
 msgid "Copyright"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:93
+#: src/zeit/cms/content/interfaces.py:95
 #: src/zeit/content/image/interfaces.py:45
 msgid "Do not enter (c)."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:97
+#: src/zeit/cms/content/interfaces.py:99
 msgid "Kicker"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:98
-msgid "Please take care of capiltalisation."
 msgstr ""
 
 #: src/zeit/cms/interfaces.py:39
@@ -347,7 +355,7 @@ msgstr ""
 
 #: src/zeit/cms/repository/browser/configure.zcml:74
 #: src/zeit/cms/clipboard/browser/configure.zcml:105
-#: src/zeit/cms/content/browser/configure.zcml:95
+#: src/zeit/cms/content/browser/template.zcml:56
 msgid "Delete"
 msgstr ""
 
@@ -401,7 +409,6 @@ msgid "Feed"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/configure.zcml:26
-#: src/zeit/content/image/browser/configure.zcml:163
 msgid "Metadata"
 msgstr ""
 
@@ -410,7 +417,7 @@ msgid "Sort"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/configure.zcml:82
-msgid "Remember as syndication n/target"
+msgid "Remember as syndication target"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/form.py:20
@@ -443,18 +450,22 @@ msgid "L\366schen"
 msgstr ""
 
 #: src/zeit/cms/workingcopy/browser/configure.zcml:57
-#: src/zeit/cms/browser/configure.zcml:188
+#: src/zeit/cms/browser/configure.zcml:194
 msgid "Preview"
 msgstr ""
 
 #: src/zeit/content/article/browser/configure.zcml:21
 #: src/zeit/content/centerpage/browser/configure.zcml:32
+#: src/zeit/content/image/browser/configure.zcml:179
+#: src/zeit/content/gallery/browser/configure.zcml:30
 #: src/zeit/content/link/browser/configure.zcml:17
 msgid "Edit metadata"
 msgstr ""
 
-#: src/zeit/content/article/browser/configure.zcml:38
-#: src/zeit/content/centerpage/browser/configure.zcml:49
+#: src/zeit/content/article/browser/configure.zcml:37
+#: src/zeit/content/centerpage/browser/configure.zcml:48
+#: src/zeit/content/image/browser/configure.zcml:163
+#: src/zeit/content/gallery/browser/configure.zcml:47
 #: src/zeit/content/link/browser/configure.zcml:32
 msgid "View metadata"
 msgstr ""
@@ -463,16 +474,20 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:59
+#: src/zeit/content/article/browser/form.py:100
+msgid "View article metadata"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:44
+msgid "Optionen"
+msgstr ""
+
+#: src/zeit/content/article/browser/form.py:61
 msgid "Add article"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:91
+#: src/zeit/content/article/browser/form.py:94
 msgid "Edit article"
-msgstr ""
-
-#: src/zeit/content/article/browser/form.py:96
-msgid "View article metadata"
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:73
@@ -483,29 +498,32 @@ msgstr ""
 msgid "Bearbeiten"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/configure.zcml:31
-msgid "Metadaten"
-msgstr ""
-
-#: src/zeit/content/gallery/browser/form.py:31
-msgid "Add gallery"
-msgstr ""
-
-#: src/zeit/content/gallery/browser/form.py:37
-msgid "Edit Gallery"
-msgstr ""
-
-#: src/zeit/content/gallery/browser/form.py:43
-#: src/zeit/content/gallery/browser/configure.zcml:55
+#: src/zeit/content/gallery/browser/configure.zcml:65
 msgid "Gallery"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/form.py:48
+#: src/zeit/content/gallery/browser/configure.zcml:90
+msgid "Synchronise with image folder"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:34
+msgid "Add gallery"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:42
+msgid "Edit gallery"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:49
+msgid "View gallery metadata"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/form.py:69
 msgid "Edit gallery entry"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:10
-msgid "Edit ${image-name}"
+#: src/zeit/content/gallery/browser/overview.pt:39
+msgid "Save sorting"
 msgstr ""
 
 #: src/zeit/content/gallery/interfaces.py:17
@@ -516,7 +534,7 @@ msgstr ""
 msgid "Folder containing images to display in the gallery."
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:57
+#: src/zeit/content/gallery/interfaces.py:67
 msgid "Text"
 msgstr ""
 
@@ -527,10 +545,6 @@ msgstr ""
 #: src/zeit/content/image/browser/form.py:27
 #: src/zeit/content/image/browser/imagegroup.py:86
 msgid "Image data"
-msgstr ""
-
-#: src/zeit/content/image/browser/form.py:30
-msgid "Texts"
 msgstr ""
 
 #: src/zeit/content/image/browser/form.py:43
@@ -545,7 +559,7 @@ msgstr ""
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:118
 #: src/zeit/content/image/browser/configure.zcml:120
-#: src/zeit/content/gallery/browser/configure.zcml:63
+#: src/zeit/content/gallery/browser/configure.zcml:73
 msgid "Images"
 msgstr ""
 
@@ -603,11 +617,11 @@ msgstr ""
 msgid "Add link"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:34
+#: src/zeit/content/link/browser/form.py:35
 msgid "Edit link"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:39
+#: src/zeit/content/link/browser/form.py:40
 msgid "View link metadata"
 msgstr ""
 
