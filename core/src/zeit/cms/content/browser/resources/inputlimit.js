@@ -1,4 +1,9 @@
+// Copyright (c) 2007 gocept gmbh & co. kg
+// See also LICENSE.txt
+// $Id$
+
 zeit.cms.InputValidation = Class.extend({
+
     construct: function(field_name) {
         this.input = $(field_name);
         this.notify_div = getFirstElementByTagAndClassName(
