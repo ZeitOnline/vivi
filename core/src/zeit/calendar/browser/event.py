@@ -11,12 +11,10 @@ import zeit.cms.interfaces
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 import zeit.calendar.event
 import zeit.calendar.interfaces
-
-
-_ = zope.i18nmessageid.MessageFactory("zope")
 
 
 class EventFormBase(object):
@@ -26,6 +24,8 @@ class EventFormBase(object):
          'column-left-small'),
         (u"Beschreibung", ('related', 'description',), 'column-right-small'),
     )
+    form_fields = zope.formlib.form.Fields(
+        zeit.calendar.interfaces.ICalendarEvent)
 
     def nextURLForEvent(self, event):
         url = zope.component.getMultiAdapter(
@@ -40,8 +40,7 @@ class EventFormBase(object):
 
 class AddForm(EventFormBase, zeit.cms.browser.form.AddForm):
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.calendar.interfaces.ICalendarEvent)
+    title = _('Add event')
 
     def create(self, data):
         return zeit.calendar.event.Event(**data)
@@ -55,9 +54,7 @@ class AddForm(EventFormBase, zeit.cms.browser.form.AddForm):
 
 class EditForm(EventFormBase, zeit.cms.browser.form.EditForm):
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.calendar.interfaces.ICalendarEvent,
-        render_context=True)
+    title = _('Edit event')
 
     @zope.formlib.form.action(
         _("Apply"),

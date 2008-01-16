@@ -90,7 +90,7 @@
   <browser:menuItem
     for="zeit.content.centerpage.interfaces.ICenterPage"
     menu="zeit-context-views"
-    title="Bearbeiten"
+    title="Edit"
     action="@@xml_edit.html"
     permission="zeit.EditContent"
     />

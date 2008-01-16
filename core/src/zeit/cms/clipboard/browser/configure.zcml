@@ -85,15 +85,6 @@
     for="zeit.cms.clipboard.interfaces.IClip"
     name="listing.html" />
 
-
-  <browser:menuItem
-    for="zeit.cms.clipboard.interfaces.IClip"
-    action="delete"
-    menu="folder-actions"
-    title="Löschen"
-    permission="zope.ManageContent"
-    />
-
   <browser:page
     for="zeit.cms.clipboard.interfaces.IClip"
     template="clip-drag.pt"

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jan 16 15:26:59 2008\n"
+"POT-Creation-Date: Wed Jan 16 15:39:10 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,12 +24,71 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/zeit/calendar/browser/configure.zcml:13
-msgid "Kalender"
+msgid "Calendar"
 msgstr ""
 
-#: src/zeit/calendar/browser/event.py:63
+#: src/zeit/calendar/browser/event.py:43
+msgid "Add event"
+msgstr ""
+
+#: src/zeit/calendar/browser/event.py:57
+msgid "Edit event"
+msgstr ""
+
+#: src/zeit/calendar/browser/event.py:60
 #: src/zeit/cms/browser/form.py:186
 msgid "Apply"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:23
+msgid "Start"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:24
+msgid "Date when the event starts."
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:27
+#: src/zeit/cms/content/browser/template.py:48
+#: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/cms/content/interfaces.py:239
+#: src/zeit/cms/syndication/interfaces.py:34
+#: src/zeit/content/gallery/interfaces.py:63
+#: src/zeit/search/interfaces.py:20
+msgid "Title"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:28
+msgid "Title will be shown in overview pages."
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:31
+msgid "Description"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:35
+#: src/zeit/cms/content/interfaces.py:246
+msgid "Related content"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:36
+msgid "Documents that are related to this object."
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:43
+msgid "Location/Type"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:44
+msgid "Where should the article be placed."
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:48
+msgid "Topic?"
+msgstr ""
+
+#: src/zeit/calendar/interfaces.py:49
+msgid "Is the article a topic for the next week?"
 msgstr ""
 
 #: src/zeit/cms/browser/configure.zcml:10
@@ -68,6 +127,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/form.py:162
 #: src/zeit/cms/content/browser/template.zcml:39
+#: src/zeit/content/centerpage/browser/configure.zcml:90
 #: src/zeit/content/image/browser/configure.zcml:88
 #: src/zeit/content/gallery/browser/configure.zcml:101
 #: src/zeit/content/gallery/browser/overview.pt:19
@@ -175,15 +235,6 @@ msgstr ""
 msgid "Templates"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:108
-#: src/zeit/cms/content/interfaces.py:239
-#: src/zeit/cms/syndication/interfaces.py:34
-#: src/zeit/content/gallery/interfaces.py:63
-#: src/zeit/search/interfaces.py:20
-msgid "Title"
-msgstr ""
-
 #: src/zeit/cms/content/browser/template.py:65
 msgid "Add template"
 msgstr ""
@@ -230,10 +281,6 @@ msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:194
 msgid "XML Source"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:246
-msgid "Related content"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:247
@@ -354,7 +401,8 @@ msgid "Add ..."
 msgstr ""
 
 #: src/zeit/cms/repository/browser/configure.zcml:74
-#: src/zeit/cms/clipboard/browser/configure.zcml:105
+#: src/zeit/cms/workingcopy/browser/configure.zcml:39
+#: src/zeit/cms/clipboard/browser/configure.zcml:96
 #: src/zeit/cms/content/browser/template.zcml:56
 msgid "Delete"
 msgstr ""
@@ -441,12 +489,7 @@ msgid "limit-amount-description"
 msgstr ""
 
 #: src/zeit/cms/workingcopy/browser/configure.zcml:16
-msgid "Inhalt"
-msgstr ""
-
-#: src/zeit/cms/workingcopy/browser/configure.zcml:39
-#: src/zeit/cms/clipboard/browser/configure.zcml:89
-msgid "L\366schen"
+msgid "Content"
 msgstr ""
 
 #: src/zeit/cms/workingcopy/browser/configure.zcml:57
@@ -492,10 +535,6 @@ msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:73
 msgid "Center-Page"
-msgstr ""
-
-#: src/zeit/content/centerpage/browser/configure.zcml:90
-msgid "Bearbeiten"
 msgstr ""
 
 #: src/zeit/content/gallery/browser/configure.zcml:65

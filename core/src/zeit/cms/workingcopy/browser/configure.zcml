@@ -20,7 +20,7 @@
     template="content_listing.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
-    title="Inhalt" menu="zeit-context-views"
+    title="Content" menu="zeit-context-views"
     />
 
 
@@ -38,9 +38,9 @@
 
   <browser:menuItem
     for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
-    action="delete"
+    action="@@delete"
     menu="folder-actions"
-    title="Löschen"
+    title="Delete"
     permission="zeit.DeleteContent"
     />
 

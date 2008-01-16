@@ -12,39 +12,41 @@ import zope.app.container.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.content.contentsource
+from zeit.cms.i18n import MessageFactory as _
+
 
 
 class ICalendarEvent(zope.interface.Interface):
     """An event."""
 
     start = zope.schema.Date(
-        title=u"Start",
-        description=u"Date when the event starts.")
+        title=_("Start"),
+        description=_("Date when the event starts."))
 
     title = zope.schema.TextLine(
-        title=u"Title",
-        description=u"Title will be shown in overview pages.")
+        title=_("Title"),
+        description=_("Title will be shown in overview pages."))
 
     description = zope.schema.Text(
-        title=u"Description",
+        title=_("Description"),
         required=False)
 
     related = zope.schema.Tuple(
-        title=u"Related documents",
-        description=u"Documents that are related to this event.",
+        title=_("Related content"),
+        description=_("Documents that are related to this object."),
         default=(),
         required=False,
         value_type=zope.schema.Choice(
             source=zeit.cms.content.contentsource.cmsContentSource))
 
     location = zope.schema.TextLine(
-        title=u"Location/Typ",
-        description=u"Wo soll der Artikel erscheinen?",
+        title=_("Location/Type"),
+        description=_("Where should the article be placed."),
         required=False)
 
     thema = zope.schema.Bool(
-        title=u"Thema?",
-        description=u"Ist der Artikel ggf. ein Thema für die Nächste Woche?")
+        title=_("Topic?"),
+        description=_("Is the article a topic for the next week?"))
 
 
 class ICalendar(zope.app.container.interfaces.IReadContainer):

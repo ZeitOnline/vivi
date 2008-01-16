@@ -13,7 +13,7 @@
   <browser:menuItem
     for="*"
     menu="zeit-global-views"
-    title="Kalender"
+    title="Calendar"
     permission="zope.View"
     action="calendar/@@index.html"
     />
