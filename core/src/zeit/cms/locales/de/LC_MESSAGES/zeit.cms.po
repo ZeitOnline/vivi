@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-11 17:26+0100\n"
+"PO-Revision-Date: 2008-01-16 15:19+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -198,11 +198,11 @@ msgstr "Untertitel"
 
 #: src/zeit/cms/content/interfaces.py:113
 msgid "Teaser title"
-msgstr "Teasertitel"
+msgstr "Teaser-Titel"
 
 #: src/zeit/cms/content/interfaces.py:117
 msgid "Teaser text"
-msgstr "Teasertext"
+msgstr "Teaser-Text"
 
 #: src/zeit/cms/content/interfaces.py:122
 msgid "Index teaser title"
@@ -389,16 +389,16 @@ msgid "Feed"
 msgstr "Channel"
 
 #: src/zeit/cms/syndication/browser/configure.zcml:26
-#: src/zeit/content/gallery/browser/configure.zcml:31
-msgid "Metadaten"
-msgstr ""
+#: src/zeit/content/image/browser/configure.zcml:163
+msgid "Metadata"
+msgstr "Metadaten"
 
 #: src/zeit/cms/syndication/browser/configure.zcml:34
 msgid "Sort"
 msgstr "Sortieren"
 
 #: src/zeit/cms/syndication/browser/configure.zcml:82
-msgid "Remember as syndication target"
+msgid "Remember as syndication n/target"
 msgstr "Als Syndizierungsziel merken"
 
 #: src/zeit/cms/syndication/browser/form.py:20
@@ -471,6 +471,10 @@ msgstr "Center-Page"
 msgid "Bearbeiten"
 msgstr ""
 
+#: src/zeit/content/gallery/browser/configure.zcml:31
+msgid "Metadaten"
+msgstr ""
+
 #: src/zeit/content/gallery/browser/form.py:31
 msgid "Add gallery"
 msgstr "Bildergalerie hinzufügen"
@@ -507,10 +511,6 @@ msgstr "Text"
 #: src/zeit/content/image/browser/configure.zcml:109
 msgid "Image (single)"
 msgstr "Einzelbild"
-
-#: src/zeit/content/image/browser/configure.zcml:163
-msgid "Metadata"
-msgstr "Metadaten"
 
 #: src/zeit/content/image/browser/form.py:27
 #: src/zeit/content/image/browser/imagegroup.py:86
