@@ -21,6 +21,8 @@
   
   <!-- Entry -->
   <class class=".entry.Entry">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
       interface=".interfaces.IObjectReference"
       permission="zope.View" /> 
@@ -54,8 +56,6 @@
         set_schema=".interfaces.IClipSchema"
         />
   </class>
-
-
 
   <adapter factory=".entry.Entry"
     provides="zeit.cms.clipboard.interfaces.IClipboardEntry"
