@@ -279,14 +279,20 @@ We can of course also move clips into clips:
 Clipboard Listing
 =================
 
-When accessing the clipboard we get a normal content listing:
+When accessing the clipboard we get a normal content listing. The feed we have
+in the clipboard also has its icon:
 
 >>> browser.getLink('Clipboard').click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE html ...
 <table class="contentListing hasMetadata">
-...
+    ...
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-syndication-interfaces-IFeed-zmi_icon.png" alt="Feed" width="20" height="20" border="0" />
+    </td>
+    ...
+
 
 Here we can also delete items:
 

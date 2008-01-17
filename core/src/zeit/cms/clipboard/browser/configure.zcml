@@ -4,6 +4,9 @@
   i18n_domain="zeit.cms">
 
   <adapter factory=".entry.entryListRepresentationFactory" />
+  <adapter 
+    factory=".entry.entry_icon"
+    name="zmi_icon"/>
   <adapter factory=".clip.ClipListRepresentation" />
   <adapter factory=".clipboard.ClipboardListRepresentation" />
 

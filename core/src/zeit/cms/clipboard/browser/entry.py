@@ -24,17 +24,24 @@ class Entry(object):
 
 class EntryListRepresentation(object):
 
-    zope.interface.implements(
-        zeit.cms.browser.interfaces.IListRepresentation)
+    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     __name__ = None
+    type = 'reference'
 
-    def __init__(self, context, name):
+    def __init__(self, context, list_repr, name):
         self.context = context
+        self.list_repr = list_repr
         self.__name__ = name
 
     def __getattr__(self, key):
-        return getattr(self.context, key)
+        return getattr(self.list_repr, key)
+
+    @zope.cachedescriptors.property.Lazy
+    def url(self):
+        return zope.component.getMultiAdapter(
+            (self.context, self.request),
+            name='absolute_url')
 
 
 class InvalidReferenceListRepresentation(object):
@@ -51,6 +58,7 @@ class InvalidReferenceListRepresentation(object):
     workflowState = None
     modifiedBy = None
     url = None
+    type = 'unknown'
 
     def __init__(self, request, unique_id):
         self.context = None
@@ -85,7 +93,7 @@ def entryListRepresentationFactory(context, request):
     list_repr = zope.component.getMultiAdapter(
         (references, request),
         zeit.cms.browser.interfaces.IListRepresentation)
-    list_repr = EntryListRepresentation(list_repr, context.__name__)
+    list_repr = EntryListRepresentation(context, list_repr, context.__name__)
     return list_repr
 
 
@@ -96,3 +104,17 @@ class DragPane(object):
         return zope.component.getMultiAdapter(
             (self.context.references, self.request),
             name='drag-pane.html')()
+
+
+@zope.component.adapter(
+    zeit.cms.clipboard.interfaces.IObjectReference,
+    zope.publisher.interfaces.browser.IBrowserRequest)
+@zope.interface.implementer(zope.interface.Interface)
+def entry_icon(context, request):
+    references = context.references
+    if references is None:
+        return None
+    return zope.component.queryMultiAdapter(
+        (references, request), name="zmi_icon")
+
+
