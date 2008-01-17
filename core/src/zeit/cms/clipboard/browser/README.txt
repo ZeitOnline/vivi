@@ -281,7 +281,6 @@ Clipboard Listing
 
 When accessing the clipboard we get a normal content listing:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Clipboard').click()
 >>> print browser.contents
 <?xml ...
