@@ -110,6 +110,9 @@ table.properties textarea {
     display: none;
 }
 
+#WorkingcopyPanel a.reference {
+  color: #888;
+}
 
 /* search panel */
 #search-extended-show {

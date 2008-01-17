@@ -38,6 +38,8 @@ class IListRepresentation(zope.interface.Interface):
     __name__ = zope.interface.Attribute("File name")
     uniqueId = zope.interface.Attribute("Unique ID in repository.")
     url = zope.schema.URI(title=u"URL to the object in the CMs.")
+    context = zope.interface.Attribute("Represended object.")
+    type = zope.interface.Attribute(u"Resource type (if known).")
 
     title = zope.interface.Attribute("Content title")
     author = zope.interface.Attribute("Author")
@@ -46,8 +48,6 @@ class IListRepresentation(zope.interface.Interface):
     page = zope.schema.Int(title=u"Page in paper")
     volume = zope.schema.Int(title=u"Volume")
     year = zope.schema.Int(title=u"Year")
-
-    url = zope.schema.URI(title=u"URL to View")
 
     workflowState = zope.interface.Attribute("Workflow State")
 

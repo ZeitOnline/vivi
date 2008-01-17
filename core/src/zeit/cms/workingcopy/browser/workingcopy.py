@@ -14,6 +14,7 @@ import zeit.cms.browser.listing
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase,
@@ -22,8 +23,10 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
     columns = (
         zeit.cms.browser.listing.TypeColumn(u''),
         zeit.cms.browser.column.LinkColumn(
-            u'Titel',
-            lambda t, c: t.title,
+            title=_('Titel'),
+            getter=lambda i, f: i.context,
+            cell_formatter=lambda v, i, f: i.title,
+            css_class=lambda v, i, f: i.type,
             view='edit.html'),
         )
 

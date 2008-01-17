@@ -45,8 +45,8 @@ class Listing(zeit.cms.browser.listing.Listing):
         zc.table.column.SelectionColumn(
             idgetter=lambda item: item.__name__),
         zeit.cms.browser.column.LinkColumn(
-            _('Title'),
-            getter=lambda i, f: i.title),
+            title=_('Title'),
+            cell_formatter=lambda v, i, f: i.title),
     )
 
     @property
