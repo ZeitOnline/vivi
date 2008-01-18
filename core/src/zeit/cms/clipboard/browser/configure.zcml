@@ -54,6 +54,7 @@
 
   <browser:page
     for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".entry.Entry"
     permission="zope.View"
     name="index.html"
@@ -61,6 +62,15 @@
 
   <browser:page
     for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.Entry"
+    permission="zope.View"
+    name="edit.html"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".entry.DragPane"
     permission="zope.View"
     name="drag-pane.html"

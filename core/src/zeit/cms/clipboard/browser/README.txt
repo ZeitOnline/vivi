@@ -100,6 +100,19 @@ view:
 'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
 
 
+The link Wirtschaft calls the default view of the clipboard entry:
+
+>>> browser.getLink('Wirtschaft').url
+'http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed'
+
+But there is also an @@edit.html for clipboard entries, which also redirects to
+the referenced object:
+
+>>> browser.open('%s/@@edit.html' % browser.getLink('Wirtschaft').url)
+>>> browser.url
+'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
+
+
 Adding Clips
 ============
 
