@@ -33,13 +33,31 @@ repository and checkout a document:
 
 Checkout the Somalia Article:
 
->>> browser.handleErrors = False
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia/checkout')
 
 Checking out redirected us to the document *in* the working copy:
 
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html'
+
+The sidebar lists the document now:
+
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html ...
+  <tbody>
+  <tr>
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/edit.html">Somalia</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+...
+
 
 Looking at our working copy also shows the `Somalia` article:
 

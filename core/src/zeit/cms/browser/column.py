@@ -42,7 +42,7 @@ class LinkColumn(zc.table.column.GetterColumn):
         else:
             if self.view:
                 url = '%s/%s' % (url, self.view)
-            css_class = self.css_class(target, item, formatter)
+            css_class = self.css_class(target, item, formatter) or ''
             if css_class:
                 css_class = 'class="%s" ' % css_class
             result = u'<a %shref="%s">%s</a>' % (css_class, url, content)
