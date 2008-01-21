@@ -45,3 +45,38 @@ We're now at the edit form:
 >>> browser.getControl(name='form.contents.0..combination_00').value
 'Renteninformation'
 
+Let's add another text entry:
+
+>>> browser.getControl('Add Contents').click()
+>>> browser.getControl(name='form.contents.1..combination_00').value = (
+...     'Fehlende Versicherungszeiten')
+>>> browser.getControl(name='form.contents.1..combination_01').value = (
+...     'Pruefen Sie, ob in Ihrer Renteninformation alle ')
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+    <title> Edit infobox </title>
+    ...Updated on...
+
+
+Let's check it in:
+
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<?xml ...
+    <title> View infobox </title>
+    ...
+
+
+Make sure there is a metadata preview:
+
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/01/infobox/@@view.html'
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'infobox/@@metadata_preview')
+>>> print browser.contents
+    <div class="context-views">
+    ...
+    <div class="title">Altersvorsorge</div>
+    </div>

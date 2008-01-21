@@ -39,6 +39,13 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
+  <browser:page
+    for="..interfaces.IInfobox"
+    permission="zope.View"
+    template="metadata.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
 
 </configure>
 
