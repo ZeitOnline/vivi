@@ -6,7 +6,6 @@ import StringIO
 
 import lxml.etree
 import lxml.objectify
-import xml.sax.saxutils
 
 import zope.annotation
 import zope.component
