@@ -2,19 +2,13 @@
 # See also LICENSE.txt
 # $Id$
 
-import StringIO
-
-import lxml.etree
-import gocept.lxml.objectify
-
-import persistent
 import zope.component
-
-import zope.app.container.contained
+import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
+import zeit.cms.content.xmlcontent
 
 
 class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
@@ -38,15 +32,10 @@ class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
         return entry.code
 
 
-class CommonMetadata(persistent.Persistent,
-                     zope.app.container.contained.Contained):
+class CommonMetadata(zeit.cms.content.xmlcontent.XMLContentBase):
 
     zope.interface.implements(
-        zeit.cms.content.interfaces.IXMLContent,
         zeit.cms.content.interfaces.ICommonMetadata)
-
-    uniqueId = None
-    __name__ = None
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.content.interfaces.ICommonMetadata,
@@ -79,14 +68,3 @@ class CommonMetadata(persistent.Persistent,
         '.indexteaser.title')
     shortTeaserText = zeit.cms.content.property.ObjectPathProperty(
         '.indexteaser.text')
-
-
-    default_template = None  # Define in subclasses
-
-    def __init__(self, xml_source=None):
-        if xml_source is None:
-            if self.default_template is None:
-                raise NotImplementedError(
-                    "default_template needs to be set in subclasses")
-            xml_source = StringIO.StringIO(self.default_template)
-        self.xml = gocept.lxml.objectify.fromfile(xml_source)
