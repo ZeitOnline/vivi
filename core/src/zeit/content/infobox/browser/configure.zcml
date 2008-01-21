@@ -1,0 +1,15 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.infobox.Add"
+    permission="zeit.AddContent"
+    class=".form.Add"
+    menu="zeit-add-menu" title="Infobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+</configure>
+
