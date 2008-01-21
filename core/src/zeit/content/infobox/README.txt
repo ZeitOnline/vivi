@@ -65,6 +65,14 @@ Add a contents element:
 </container>
 
 
+Of course we'll get the data back, in unicode:
+
+>>> import pprint
+>>> pprint.pprint(ib.contents)
+((u'Informationen', u'Nutzen Sie die Renteninformation, etc'),
+ (u'Fehlende Versicherungszeiten',
+  u'Pruefen Sie, ob in Ihrer Renteninformation alle'))
+
 
 Cleanup
 =======

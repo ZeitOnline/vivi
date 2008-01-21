@@ -11,5 +11,34 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Display"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+
 </configure>
 

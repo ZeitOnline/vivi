@@ -14,7 +14,7 @@ class IInfobox(zope.interface.Interface):
 
     supertitle = zope.schema.TextLine(title=_('Supertitle'))
 
-    content = zope.schema.Tuple(
+    contents = zope.schema.Tuple(
         title=_('Contents'),
         value_type=zc.form.field.Combination(
             (zope.schema.TextLine(

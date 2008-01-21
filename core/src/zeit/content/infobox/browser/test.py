@@ -11,15 +11,11 @@ import zope.app.testing.functional
 
 import zeit.cms.testing
 
-
-InfoboxLayer = zope.app.testing.functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'InfoboxLayer', allow_teardown=True)
-
+import zeit.content.infobox.test
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=InfoboxLayer))
+        layer=zeit.content.infobox.test.InfoboxLayer))
     return suite
