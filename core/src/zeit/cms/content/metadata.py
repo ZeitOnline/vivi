@@ -8,7 +8,7 @@ import zope.interface
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
-import zeit.cms.content.xmlcontent
+import zeit.cms.content.xml
 
 
 class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
@@ -32,7 +32,7 @@ class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
         return entry.code
 
 
-class CommonMetadata(zeit.cms.content.xmlcontent.XMLContentBase):
+class CommonMetadata(zeit.cms.content.xml.XMLContentBase):
 
     zope.interface.implements(
         zeit.cms.content.interfaces.ICommonMetadata)
