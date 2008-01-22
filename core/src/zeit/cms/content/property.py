@@ -178,7 +178,7 @@ class ResourceSet(MultipleAttributeProperty):
         return frozenset(objects)
 
     def __set__(self, instance, values):
-        values = [ob.uniqueId for ob in values]
+        values = sorted([ob.uniqueId for ob in values])
         super(ResourceSet, self).__set__(instance, values)
 
 

@@ -378,8 +378,8 @@ Let's have a look how the XML has changed:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <foo>
   <head>
-    <attribute ns="test" name="ref">http://xml.zeit.de/refed2</attribute>
     <attribute ns="test" name="ref">http://xml.zeit.de/refed</attribute>
+    <attribute ns="test" name="ref">http://xml.zeit.de/refed2</attribute>
   </head>
 </foo>
 
