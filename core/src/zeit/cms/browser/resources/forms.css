@@ -1,0 +1,220 @@
+/* 
+ * forms 
+ *
+ * */
+.field {
+    padding: 0.5em 0;
+    margin-left: 0.5em
+}
+
+form .widgets-float {
+    float: left;
+    width: 58%;
+}
+form .widgets-float .field {
+    float: left;
+    margin: 5px;
+    max-width: 10em;
+}
+
+form .widgets-float .field label {
+    height: 3em;
+    display: block;
+}
+
+form .widgets-float .field .hint {
+    display: none;
+}
+
+form .full-width {
+    right: 0;
+}
+
+form .full-width-float .field {
+    float: left;
+    margin: 5px;
+    max-width: 15em;
+}
+
+form .full-width-float .hint {
+    height: 5ex;
+}
+
+
+form .fullWidth {
+    right: 0;
+    clear: both;
+}
+
+form .column-left {
+    width: 58%;
+    float: left;
+}
+
+
+form .wide-widgets .field input[type="text"],
+form .wide-widgets .field textarea {
+    width: 95%;
+}
+
+form .column-right {
+    float:  right;
+    width: 30%;
+}
+
+
+form .column-left.image-form {
+    width: 40%;
+}
+
+form .column-left.image-form input {
+    width: inherit;
+}
+
+form .column-right.image-form {
+    width: 48%;
+}
+
+.image-form #form\.caption {
+    height: 8em;
+}
+
+form #form\.page,
+form #form\.volume,
+form #form\.year {
+    width: 4em;
+}
+
+/* SMALL left column, larger right column */
+form .column-left-small {
+    clear: both;
+    width: 30%;
+    float: left;
+}
+
+form .column-left-small .field {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form .column-right-small {
+    float:  right;
+    width: 58%;
+}
+
+
+/* general input field styling */
+
+input[type="button"],
+input[type="submit"] {
+    color: black;
+    border: 1px solid black;
+    border-bottom: 2px solid #4c4c4c;
+    border-right: 2px solid #4c4c4c;
+    font-size: 8pt;
+    padding: 0.2em;
+    font-family: sans-serif;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover {
+    background-color: #4c4c4c;
+    color: white;
+}
+
+input[type="button"]:active,
+input[type="submit"]:active {
+    background-color: #ffdd00;
+}
+
+input[type="text"] {
+    padding: 0.2em;
+}
+
+
+#form\.teaserTitle,
+#form\.teaserText,
+#form\.shortTeaserTitle,
+#form\.shortTeaserText {
+    height: 6ex;
+}
+
+#form\.subtitle {
+    height: 10ex;
+}
+
+
+.gallery {
+  background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+  width: 100%;
+}
+
+.gallery .image-column {
+  text-align: center;
+  width: 10em;
+}
+
+#folderActionForm {
+    bottom: 0;
+}
+
+.BottomForm div.Column {
+    width: 49%;
+    float: left;
+    margin-top: 1em;
+}
+
+#edit-form {
+    position: absolute;
+    top: 3em;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+    padding-bottom: 4em;
+}
+
+
+#edit-form > form > div.form-status {
+    display: none;
+}
+
+#edit-form > form > div.field-group {
+    position: absolute;
+    bottom: 4em;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: auto;
+}
+
+#edit-form > form > div#actionsView {
+    position: absolute;
+    height: 3em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* 
+ * tablefilter 
+ *
+ * */
+
+#tableFilter  {
+  position: absolute;
+  top: 3em;
+  right: 1em;
+}
+
+#tableFilter input {
+  font-family: sans-serif;
+  width: 20em;
+  color: #196692;
+}
+
+#add_menu {
+  border: 1px solid black;
+  font-family: sans-serif;
+}
+
