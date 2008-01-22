@@ -167,7 +167,7 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     browseObjects: function() {
-        this.lightbox = new gocept.Lightbox(this.element);
+        this.lightbox = new gocept.Lightbox($('body'));
         this.loadContentFromUrl(this.default_browsing_url);
     },
 
