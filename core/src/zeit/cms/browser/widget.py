@@ -66,6 +66,16 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def type_filter_token(self):
         return self.source.name
 
+    def show_popup(self):
+        input = self.request.form.get('%spresent' % self.name, None)
+
+        # XXX don't show the object browser dialoge on startup at a
+        # gallery page
+        if not input and self.name.endswith('.'):
+            return 'true'
+
+        return 'false'
+
 
 class ObjectReferenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):

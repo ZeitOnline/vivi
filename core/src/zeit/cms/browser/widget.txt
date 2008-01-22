@@ -95,13 +95,16 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
           name="field.reference" value=""
           id="field.reference" />
+  <input type="hidden" value="1"
+         name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'all-types');
+  'all-types',
+  false);
   </script>
 
 
@@ -121,13 +124,16 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
          name="field.reference" value="http://content"
          id="field.reference" />
+  <input type="hidden" value="1" 
+         name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'all-types');
+  'all-types',
+  false);
   </script>
 
 
@@ -153,13 +159,16 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
          name="field.reference" value="http://exists/blubs"
          id="field.reference" />
+  <input type="hidden" value="1" 
+         name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'all-types');
+  'all-types',
+  false);
   </script>
 
 
@@ -184,13 +193,16 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
          name="field.reference" value="http://foo"
          id="field.reference" />
+  <input type="hidden" value="1" 
+         name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference',
   'http://127.0.0.1/repo',
-  'all-types');
+  'all-types',
+  false);
   </script>
 
 

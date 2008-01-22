@@ -6,12 +6,15 @@
     name view/name;
     id view/name;
     value view/_getFormValue" />
+  <input type="hidden"
+         value="1" tal:attributes="name string:${view/name}present" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script tal:content="string:
   new ObjectReferenceWidget(
   '${view/name}',
   '${view/default_browsing_location/@@absolute_url}',
-  '${view/type_filter_token}');
+  '${view/type_filter_token}', 
+  ${view/show_popup});
   ">
 </script>
