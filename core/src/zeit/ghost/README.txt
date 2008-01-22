@@ -217,6 +217,43 @@ Content: Saarland
 Content: Somalia
 
 
+Note that any invalid ghosts, that are ghosts which reference deleted objects,
+are also removed when checking out any object.
+
+First make some space in the workingcopy to avoid side effects like deleting
+overflowing ghosts:
+
+>>> del workingcopy['Ford-Beerdigung']
+>>> del workingcopy['Somalia']
+
+Now delete Querdax in the repository:
+
+>>> del collection['Querdax']
+
+So far nothing has happend to the Querdax entry:
+
+>>> list_workingcopy()
+6 entries
+Content: 4schanzentournee-abgesang-2
+Content: EU-Beitritt-rumaenien-bulgarien
+Ghost  : Gesundheitsreform-Die
+Content: Guantanamo
+Ghost  : Querdax
+Content: Saarland
+
+
+When we checkout an object now, the invalid ghost Querdax will be removed:
+
+>>> checked_out = ICheckoutManager(collection['Ford-Beerdigung']).checkout()
+>>> list_workingcopy()
+6 entries
+Content: 4schanzentournee-abgesang-2
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: Ford-Beerdigung
+Ghost  : Gesundheitsreform-Die
+Content: Guantanamo
+Content: Saarland
+
 
 Cleanup
 =======
