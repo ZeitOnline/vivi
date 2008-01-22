@@ -68,7 +68,7 @@ Set the most important values:
 
 >>> browser.getControl('File name').value = 'island'
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
->>> browser.getControl('Image folder').value = (
+>>> browser.getControl(name="form.image_folder").value = (
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name="form.actions.add").click()

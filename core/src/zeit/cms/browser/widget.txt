@@ -94,7 +94,7 @@ Returning location for <Content object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
           name="field.reference" value=""
-          id="field.reference" />
+          />
   <input type="hidden" value="1"
          name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
@@ -122,8 +122,7 @@ Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
-         name="field.reference" value="http://content"
-         id="field.reference" />
+         name="field.reference" value="http://content" />
   <input type="hidden" value="1" 
          name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
@@ -157,8 +156,7 @@ Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
-         name="field.reference" value="http://exists/blubs"
-         id="field.reference" />
+         name="field.reference" value="http://exists/blubs" />
   <input type="hidden" value="1" 
          name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
@@ -191,8 +189,7 @@ Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference">
   <input class="object-reference" type="text"
-         name="field.reference" value="http://foo"
-         id="field.reference" />
+         name="field.reference" value="http://foo" />
   <input type="hidden" value="1" 
          name="field.referencepresent" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />

@@ -4,7 +4,6 @@
   <input class="object-reference" type="text"
     tal:attributes="
     name view/name;
-    id view/name;
     value view/_getFormValue" />
   <input type="hidden"
          value="1" tal:attributes="name string:${view/name}present" />
