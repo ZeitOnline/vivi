@@ -97,7 +97,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     supertitle = zope.schema.TextLine(
         title=_("Kicker"),
-        description=_("Please take care of capiltalisation."),
+        description=_("Please take care of capitalisation."),
         required=False)
 
     byline = zope.schema.TextLine(

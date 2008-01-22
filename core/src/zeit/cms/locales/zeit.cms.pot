@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jan 16 16:41:34 2008\n"
+"POT-Creation-Date: Mon Jan 21 16:55:42 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -53,6 +53,7 @@ msgstr ""
 #: src/zeit/cms/content/interfaces.py:108
 #: src/zeit/cms/content/interfaces.py:239
 #: src/zeit/cms/syndication/interfaces.py:34
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/gallery/interfaces.py:63
 #: src/zeit/search/interfaces.py:20
 msgid "Title"
@@ -177,7 +178,7 @@ msgstr ""
 msgid "Checkin"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/entry.py:63
+#: src/zeit/cms/clipboard/browser/entry.py:71
 #. Default: ""
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
@@ -251,7 +252,7 @@ msgid "Properties"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:100
-msgid "Please take care of capiltalisation."
+msgid "Please take care of capitalisation."
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:104
@@ -401,7 +402,7 @@ msgstr ""
 
 #: src/zeit/cms/repository/browser/configure.zcml:74
 #: src/zeit/cms/workingcopy/browser/configure.zcml:39
-#: src/zeit/cms/clipboard/browser/configure.zcml:96
+#: src/zeit/cms/clipboard/browser/configure.zcml:109
 #: src/zeit/cms/content/browser/template.zcml:56
 msgid "Delete"
 msgstr ""

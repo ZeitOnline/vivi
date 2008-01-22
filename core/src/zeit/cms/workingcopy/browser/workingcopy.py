@@ -23,7 +23,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
     columns = (
         zeit.cms.browser.listing.TypeColumn(u''),
         zeit.cms.browser.column.LinkColumn(
-            title=_('Titel'),
+            title=_('Title'),
             getter=lambda i, f: i.context,
             cell_formatter=lambda v, i, f: i.title,
             css_class=lambda v, i, f: i.type,
