@@ -45,6 +45,16 @@ We're now at the edit form:
 >>> browser.getControl(name='form.contents.0..combination_00').value
 'Renteninformation'
 
+Make sure the infobox is listed in the workingcopy panel:
+
+>>> print browser.contents
+<?xml ...
+    <td>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/infobox/edit.html">Altersvorsorge</a>
+    </td>
+    ...
+
+
 Let's add another text entry:
 
 >>> browser.getControl('Add Contents').click()

@@ -4,6 +4,8 @@
 
 import zope.formlib.form
 
+import gocept.form.grouped
+
 import zeit.cms.interfaces
 import zeit.cms.browser.form
 from zeit.cms.i18n import MessageFactory as _
@@ -20,6 +22,15 @@ class FormBase(object):
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent))
 
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _('Texts'),
+            ('supertitle', 'contents',),
+            css_class='column-left wide-widgets'),
+        gocept.form.grouped.RemainingFields(
+            _('Head'),
+            css_class='column-right'))
+
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
 
@@ -30,6 +41,13 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit infobox')
+    form_fields = FormBase.form_fields.omit('__name__')
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _('Texts'),
+            ('supertitle', 'contents',),
+            css_class='full-width wide-widgets'),
+    )
 
 
 class Display(FormBase, zeit.cms.browser.form.DisplayForm):
