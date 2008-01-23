@@ -23,11 +23,11 @@ class ISyndicationLogType(zope.interface.interfaces.IInterface):
 class ISyndicationEventLog(zope.interface.Interface):
 
     syndicatedOn = zope.schema.Datetime(
-        title=u"Syndication Time",
+        title=_("Syndication Time"),
         readonly=True)
 
     syndicatedIn = zope.schema.FrozenSet(
-        title=u"Syndicated in",
+        title=_("Syndicated in"),
         readonly=True,
         default=frozenset(),
         value_type=zope.schema.Object(zeit.cms.syndication.interfaces.IFeed))
@@ -37,46 +37,47 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
     commentsAllowed = zope.schema.Bool(
-        title=u"Kommentare erlaubt",
+        title=_("Comments allowed"),
         default=True)
 
     banner = zope.schema.Bool(
-        title=u"Banner",
+        title=_("Banner"),
         default=True)
 
     boxMostRead = zope.schema.Bool(
-        title=u"Box „Most Read“",
+        title=_("Box Most Read"),
         default=True)
 
     # references / links to other content
 
     pageBreak = zope.schema.Int(
-        title=u"Seitenumbruch",
-        description=u"Absätze pro Seite.",
+        title=_("Pagebreak"),
+        description=_("Paragraphs per page until a pagebreak."),
         min=1,
         default=6)
 
     paragraphs = zope.schema.Int(
-        title=u"Absatzanzahl",
+        title=_("Paragraphsamount"),
+        description=_("Amount of paragraphs in total."),
         readonly=True,
         required=False)
 
     dailyNewsletter = zope.schema.Bool(
-        title=u"Tages-Newsletter",
-        description=(u"Soll der Artikel in den Tages-Newsletter aufgenommen "
-                     u"werden?"),
+        title=_("Daily Newsletter"),
+        description=_(
+            "Should this article be listed in the daily newsletter?"),
         default=False)
 
     automaticTeaserSyndication = zope.schema.FrozenSet(
-        title=u"Automatische Teaser-Syndizierung",
-        description=(u"Beim Checkin werden Teaser in den aktivierten Channels "
-                     u"automatisch aktualisiert."),
+        title=_("Automatic Teasersyndication"),
+        description=_(
+            "Teaser will automatically be updated in the enabled channels."),
         default=frozenset(),
         value_type=zope.schema.Choice(
             source=zeit.content.article.source.SyndicatedInSource()))
 
     textLength = zope.schema.Int(
-        title=u'Anschläge',
+        title=_('Textlength'),
         required=False)
 
 
@@ -84,12 +85,12 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
 
     syndicatedIn = zope.schema.FrozenSet(
-        title=u"Article is syndicated in these feeds.",
+        title=_("Article is syndicated in these feeds."),
         default=frozenset(),
         value_type=zope.schema.Object(zeit.cms.syndication.interfaces.IFeed))
 
 
     syndicationLog = zope.schema.Tuple(
-        title=u"Syndication Log",
+        title=_("Syndication Log"),
         default=(),
         value_type=zope.schema.Object(ISyndicationEventLog))

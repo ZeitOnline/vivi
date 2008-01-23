@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan 21 16:55:42 2008\n"
+"POT-Creation-Date: Wed Jan 23 10:12:57 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -525,7 +525,7 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:100
+#: src/zeit/content/article/browser/form.py:101
 msgid "View article metadata"
 msgstr ""
 
@@ -537,8 +537,72 @@ msgstr ""
 msgid "Add article"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:94
+#: src/zeit/content/article/browser/form.py:95
 msgid "Edit article"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:26
+msgid "Syndication Time"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:30
+msgid "Syndicated in"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:40
+msgid "Comments allowed"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:44
+msgid "Banner"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:48
+msgid "Box Most Read"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:54
+msgid "Pagebreak"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:55
+msgid "Paragraphs per page until a pagebreak."
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:60
+msgid "Paragraphsamount"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:61
+msgid "Amount of paragraphs in total."
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:66
+msgid "Daily Newsletter"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:67
+msgid "Should this article be listed in the daily newsletter?"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:72
+msgid "Automatic Teasersyndication"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:73
+msgid "Teaser will automatically be updated in the enabled channels."
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:80
+msgid "Textlength"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:88
+msgid "Article is syndicated in these feeds."
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:94
+msgid "Syndication Log"
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:73

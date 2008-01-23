@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Jan 21 16:55:42 2008\n"
-"PO-Revision-Date: 2008-01-21 16:57+0100\n"
+"POT-Creation-Date: Wed Jan 23 10:12:57 2008\n"
+"PO-Revision-Date: 2008-01-23 10:44+0100\n"
 "Last-Translator: Roman Joost <rj@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -513,7 +513,7 @@ msgstr "Metadaten"
 msgid "Article"
 msgstr "Artikel"
 
-#: src/zeit/content/article/browser/form.py:100
+#: src/zeit/content/article/browser/form.py:101
 msgid "View article metadata"
 msgstr "Metadaten"
 
@@ -525,9 +525,73 @@ msgstr "Optionen"
 msgid "Add article"
 msgstr "Artikel hinzufügen"
 
-#: src/zeit/content/article/browser/form.py:94
+#: src/zeit/content/article/browser/form.py:95
 msgid "Edit article"
 msgstr "Artikel bearbeiten"
+
+#: src/zeit/content/article/interfaces.py:26
+msgid "Syndication Time"
+msgstr "Syndizierungszeit"
+
+#: src/zeit/content/article/interfaces.py:30
+msgid "Syndicated in"
+msgstr "Syndiziert in"
+
+#: src/zeit/content/article/interfaces.py:40
+msgid "Comments allowed"
+msgstr "Kommentare erlaubt"
+
+#: src/zeit/content/article/interfaces.py:44
+msgid "Banner"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:48
+msgid "Box Most Read"
+msgstr "Box „Meistgelesene Artikel“"
+
+#: src/zeit/content/article/interfaces.py:54
+msgid "Pagebreak"
+msgstr "Seitenumbruch"
+
+#: src/zeit/content/article/interfaces.py:55
+msgid "Paragraphs per page until a pagebreak."
+msgstr "Absätze pro Seite."
+
+#: src/zeit/content/article/interfaces.py:60
+msgid "Paragraphsamount"
+msgstr "Absatzanzahl"
+
+#: src/zeit/content/article/interfaces.py:61
+msgid "Amount of paragraphs in total."
+msgstr "Summe der Absätze pro Seite."
+
+#: src/zeit/content/article/interfaces.py:66
+msgid "Daily Newsletter"
+msgstr "Tages-Newsletter"
+
+#: src/zeit/content/article/interfaces.py:67
+msgid "Should this article be listed in the daily newsletter?"
+msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
+
+#: src/zeit/content/article/interfaces.py:72
+msgid "Automatic Teasersyndication"
+msgstr "Automatische Teaser-Syndizierung"
+
+#: src/zeit/content/article/interfaces.py:73
+msgid "Teaser will automatically be updated in the enabled channels."
+msgstr "Beim Checkin werden Teaser in den aktivierten Channels automatisch aktualisiert."
+
+#: src/zeit/content/article/interfaces.py:80
+msgid "Textlength"
+msgstr "Anschläge"
+
+#: src/zeit/content/article/interfaces.py:88
+msgid "Article is syndicated in these feeds."
+msgstr "Artikel ist in folgenden Feeds syndiziert."
+
+#: src/zeit/content/article/interfaces.py:94
+msgid "Syndication Log"
+msgstr "Syndizierungs-Log"
 
 #: src/zeit/content/centerpage/browser/configure.zcml:73
 msgid "Center-Page"
@@ -743,8 +807,6 @@ msgstr "Dokument"
 #~ msgstr "Titel"
 #~ msgid "Kopf"
 #~ msgstr "Kopf"
-#~ msgid "Texte"
-#~ msgstr "Texte"
 #~ msgid "sonstiges"
 #~ msgstr "sonstiges"
 #~ msgid "Edit ${image-name}"
