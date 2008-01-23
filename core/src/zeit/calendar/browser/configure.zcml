@@ -10,14 +10,14 @@
     name="index.html"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="calendar"
     for="*"
-    menu="zeit-global-views"
-    title="Calendar"
-    permission="zope.View"
-    action="calendar/@@index.html"
+    manager="zeit.cms.browser.interfaces.IGlobalViews"
+    class=".calendar_view.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.ManageApplication"
     />
-
 
   <browser:page
     for="zeit.calendar.interfaces.ICalendar"

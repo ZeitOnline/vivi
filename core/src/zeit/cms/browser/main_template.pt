@@ -60,19 +60,8 @@
               </span> 
             </li>
           </ul>
-          <ul id="main-navigation">
-            <tal:repeat 
-              repeat="menu_item context/@@view_get_menu/zeit-global-views">
-              <li
-                tal:define="selected_item python:'%s %s' %(menu_item['title'], menu_item['selected']);"
-                tal:attributes="class python:menu_item['title'] and selected_item or menu_item['title']">
-                <a
-                  tal:attributes="href string:$site_url/${menu_item/action}"
-                  tal:content="menu_item/title" i18n:translate="">
-                  Checkout
-                </a>
-              </li>
-            </tal:repeat>
+          <ul id="main-navigation"
+              tal:content="structure provider:zeit.cms.GlobalViews">
           </ul>
           <div id="user-information"
             tal:content="request/principal/title | request/principal/id">

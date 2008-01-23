@@ -28,11 +28,12 @@
     title="folder specific actions"
     />
 
-  <browser:menu
-    id="zeit-global-views"
-    title="Global views"
+  <browser:viewletManager
+    name="zeit.cms.GlobalViews"
+    provides=".interfaces.IGlobalViews"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
     />
-
 
   <!-- Skin, Templates and widgets --> 
   <include file="skin.zcml" />

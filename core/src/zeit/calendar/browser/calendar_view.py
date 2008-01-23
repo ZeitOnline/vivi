@@ -18,6 +18,15 @@ import zope.app.container.contained
 
 import zeit.calendar.interfaces
 import zeit.calendar.browser.interfaces
+import zeit.cms.browser.menu
+from zeit.cms.i18n import MessageFactory as _
+
+
+class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
+
+    title = _("Calendar")
+    viewURL = 'calendar'
+    pathitem = 'calendar'
 
 
 class IndexRedirect(object):

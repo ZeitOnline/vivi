@@ -28,6 +28,10 @@ class ICMSSkin(ICMSLayer,
     """CMS skin"""
 
 
+class IGlobalViews(zope.viewlet.interfaces.IViewletManager):
+    """Viewlets for global menu."""
+
+
 class ISidebar(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the sidebar"""
 

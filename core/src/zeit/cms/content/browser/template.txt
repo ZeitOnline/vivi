@@ -9,16 +9,28 @@ Create a testbrowser and open the homepage:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
+>>> browser.handleErrors = False
 >>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
 >>> browser.open('http://localhost/++skin++cms/' )
 
 Open the template managment ui:
 
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <title> Dateiliste </title>
+    ...
+    <ul id="main-navigation"><li class="">
+    <a href="http://localhost/++skin++cms/templates">Templates</a>
+    ...
 >>> browser.getLink('Templates').click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
     <title> Templates </title>
+    ...
+    <ul id="main-navigation"><li class="selected">
+    <a href="http://localhost/++skin++cms/templates">Templates</a>
     ...
     There are no template managers registered.
     ...
@@ -47,7 +59,6 @@ Commit transaction for testbrowser to see our changes:
 When we're opening the management UI now, we'll see our newly created template
 manager:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Templates').click()
 >>> print browser.contents
 <?xml ...

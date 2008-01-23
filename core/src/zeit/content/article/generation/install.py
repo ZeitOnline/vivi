@@ -15,8 +15,10 @@ import zeit.cms.content.template
 def install(root):
     site_manager = zope.component.getSiteManager()
     name = u'Article templates'
+    templates = zope.component.getUtility(
+        zeit.cms.content.interfaces.ITemplateManagerContainer)
     zeit.cms.generation.install.installLocalUtility(
-        root, zeit.cms.content.template.TemplateManager,
+        templates, zeit.cms.content.template.TemplateManager,
         name, zeit.cms.content.interfaces.ITemplateManager,
         utility_name=name)
 

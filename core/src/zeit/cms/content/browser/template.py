@@ -10,6 +10,7 @@ import zope.publisher.interfaces.browser
 import gocept.form.grouped
 import zc.table.column
 import zc.table.table
+import z3c.menu.simple.menu
 
 import zeit.cms.browser.column
 import zeit.cms.browser.form
@@ -32,7 +33,6 @@ class Manager(object):
                 name=name,
                 manager=utility))
         return result
-
 
 
 class Listing(zeit.cms.browser.listing.Listing):
@@ -169,3 +169,10 @@ class TemplateWidgetSetup(object):
                     value = field.get(adapter)
                 if value and value != field.default:
                     widget.setRenderedValue(value)
+
+
+class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
+
+    title = _("Templates")
+    viewURL = 'templates'
+    pathitem = 'templates'

@@ -11,12 +11,13 @@
     permission="zope.ManageApplication"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="templates"
     for="*"
-    menu="zeit-global-views"
-    title="Templates"
+    manager="zeit.cms.browser.interfaces.IGlobalViews"
+    class=".template.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.ManageApplication"
-    action="templates"
     />
 
   <gocept:pagelet
