@@ -82,6 +82,14 @@
     component=".contentsource.folderSource"
     name="folders"
     />
+  <adapter
+    factory=".contentsource.ChoicePropertyWithCMSContentSource"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter
+    factory=".contentsource.ChoicePropertyWithCMSContentSource"
+    provides=".interfaces.IToProperty"
+    />
 
   <!-- related content -->
   <adapter factory=".related.RelatedContent" />

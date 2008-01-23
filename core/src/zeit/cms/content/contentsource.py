@@ -53,3 +53,27 @@ class FolderSource(CMSContentSource):
 
 
 folderSource = FolderSource()
+
+
+class ChoicePropertyWithCMSContentSource(object):
+
+    zope.component.adapts(
+        zope.schema.interfaces.IChoice,
+        zeit.cms.content._bootstrapinterfaces.ICMSContentSource)
+
+    def __init__(self, context, source):
+        self.context = context
+        self.source = source
+
+    def fromProperty(self, value):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        try:
+            content = repository.getContent(value)
+        except KeyError:
+            return
+        if content in self.source:
+            return content
+
+    def toProperty(self, value):
+        return value.uniqueId

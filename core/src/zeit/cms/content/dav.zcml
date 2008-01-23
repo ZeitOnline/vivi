@@ -18,6 +18,13 @@
     provides=".interfaces.IToProperty"
     />
 
+  <adapter factory=".dav.ChoicePropertyWithIterableSource"
+    provides=".interfaces.IFromProperty"
+    />
+  <adapter factory=".dav.ChoicePropertyWithIterableSource"
+    provides=".interfaces.IToProperty"
+    />
+
   <adapter factory=".dav.BoolProperty"
     provides=".interfaces.IFromProperty"
     />
@@ -40,4 +47,3 @@
     />
 
 </configure>
-

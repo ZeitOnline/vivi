@@ -111,7 +111,29 @@ class ChoiceProperty(object):
         self.context = context
 
     def fromProperty(self, value):
-        for possible_value in self.context.vocabulary:
+        return zope.component.getMultiAdapter(
+            (self.context, self.context.vocabulary),
+            zeit.cms.content.interfaces.IFromProperty).fromProperty(value)
+
+    def toProperty(self, value):
+        return zope.component.getMultiAdapter(
+            (self.context, self.context.vocabulary),
+            zeit.cms.content.interfaces.IToProperty).toProperty(value)
+
+
+class ChoicePropertyWithIterableSource(object):
+
+    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
+                              zeit.cms.content.interfaces.IToProperty)
+    zope.component.adapts(zope.schema.interfaces.IChoice,
+                          zope.schema.interfaces.IIterableSource)
+
+    def __init__(self, context, source):
+        self.context = context
+        self.source = source
+
+    def fromProperty(self, value):
+        for possible_value in self.source:
             if zeit.cms.content.interfaces.IDAVToken(possible_value) == value:
                 return possible_value
         # XXX what to do here?

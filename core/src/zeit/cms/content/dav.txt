@@ -126,8 +126,16 @@ When converting a bool to a property, yes/no is always used:
 Choices
 +++++++
 
-Choices tokenize the value before storing it to the dav. There is a standard
-tokenizer for bool. So create a choice which allows True and False:
+How choices are stored in dav depends on the vocabulary or source. If the
+source is iterable we assume that there are not many values, that is that it
+doesn't harm to actually iterate over the source.
+
+Iterable sources
+----------------
+
+For choices wich iterable sources tokenize the value before storing it to the
+dav. There is a standard tokenizer for bool. So create a choice which allows
+True and False:
 
 >>> class BoolSource(list):
 ...     zope.interface.implements(zope.schema.interfaces.IIterableSource)
@@ -167,6 +175,48 @@ TypeError: ('Could not adapt',
             <object object at 0x...>,
             <InterfaceClass zeit.cms.content.interfaces.IDAVToken>)
 
+
+Content sources
+---------------
+
+There is another implementation for ICMSContentSources. It stores the Unique Id
+of the object and gets the object back from the unique id. We use the folder
+source here to show that content is only returned if it is actually in the
+source (setup functional test first):
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+>>> field = zope.schema.Choice(
+...     source=zeit.cms.content.contentsource.FolderSource())
+>>> from_prop = zeit.cms.content.interfaces.IFromProperty(field)
+>>> folder = from_prop.fromProperty(u'http://xml.zeit.de/online')
+>>> folder
+<zeit.cms.repository.folder.Folder object at 0x...>
+>>> folder.uniqueId
+u'http://xml.zeit.de/online'
+
+When a unique id references an object wich doesn't exist, None is returned:
+
+>>> from_prop.fromProperty(u'http://xml.zeit.de/online/gibtsnich') is None
+True
+
+Wehen a unique id references an object which exists but is not contained in the
+source, None is returned, too:
+
+>>> from_prop.fromProperty(
+...     'http://xml.zeit.de/online/2007/01/thailand-anschlaege') is None
+True
+
+Restore old site:
+>>> zope.app.component.hooks.setSite(old_site)
+
+The other way round stores the unique id:
+
+>>> to_prop = zeit.cms.content.interfaces.IToProperty(field)
+>>> to_prop.toProperty(folder)
+u'http://xml.zeit.de/online'
 
 
 Datetime
