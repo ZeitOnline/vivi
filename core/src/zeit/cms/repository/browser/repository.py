@@ -74,8 +74,19 @@ class Tree(zeit.cms.browser.tree.Tree):
     def selected(self, url):
         view_url = self.request.get('view_url')
         if not view_url:
-            view_url = str(self.request.URL)
-        return view_url.startswith(url) or None
+            view_url = self.request.getURL()
+
+        application_url = self.request.getApplicationURL()
+        view_path = view_url[len(application_url):].split('/')
+        path = url[len(application_url):].split('/')
+
+        while view_path[-1].startswith('@@'):
+            view_path.pop()
+
+        if path > view_path:
+            return False
+
+        return view_path[:len(path)] == path
 
     @zope.cachedescriptors.property.Lazy
     def preferences(self):

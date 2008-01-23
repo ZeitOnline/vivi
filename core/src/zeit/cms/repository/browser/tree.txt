@@ -178,3 +178,53 @@ Now, of course, after showing, the `Hide` action is no longer available:
 Traceback (most recent call last):
     ...
 LinkNotFoundError
+
+
+Highlighting
+============
+
+The tree indicates where the user is right now. Create a test request:
+
+>>> class Request(object):
+...     view_url = None
+...     def __init__(self, path, view_path=None):
+...         self.path = path
+...         self.application_url = 'http://127.0.0.1/++skin++cms'
+...         self.URL = self.application_url + path
+...         if view_path:
+...             self.view_url = self.application_url + view_path
+...     def get(self, key):
+...         return self.view_url
+...     def getURL(self):
+...         return self.URL
+...     def getApplicationURL(self):
+...         return self.application_url
+
+
+Create a tree and verify the normal highlighting:
+
+>>> from zeit.cms.repository.browser.repository import Tree
+>>> tree = Tree(object(), Request('/testing/@@view.html'))
+>>> tree.selected('http://127.0.0.1/++skin++cms/foo')
+False
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing')
+True
+>>> tree.selected('http://127.0.0.1/++skin++cms/test')
+False
+
+>>> tree = Tree(object(), Request('/testing/art/@@view.html'))
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing')
+True
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing/art')
+True
+>>> tree.selected('http://127.0.0.1/++skin++cms/test/art')
+False
+
+
+When the tree is reloaded the url of the request cannot be used as indicator.
+Therefore a `view_url` can be passed:
+
+>>> tree = Tree(object(), Request(
+...     '/foo/@@edit.html', view_path='/testing/@@view.html'))
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing')
+True
