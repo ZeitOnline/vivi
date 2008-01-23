@@ -66,12 +66,17 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def type_filter_token(self):
         return self.source.name
 
+    @property
     def show_popup(self):
-        input = self.request.form.get('%spresent' % self.name, None)
+        """True if the popup should be displayed automatically upon page load.
+        """
+        present_marker = self.request.form.get('%s.present' % self.name)
+        has_input = self._getFormValue()
 
-        # XXX don't show the object browser dialoge on startup at a
-        # gallery page
-        if not input and self.name.endswith('.'):
+        # Only show the object browser when there was no previous input, i.e.
+        # when the field was just added. Also only show the object browser
+        # automatically when we are in a sequence widget (endswith .)
+        if not has_input and not present_marker and self.name.endswith('.'):
             return 'true'
 
         return 'false'
