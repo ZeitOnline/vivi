@@ -91,17 +91,17 @@ Render the widget:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference">
-  <input class="object-reference" type="text"
-          name="field.reference" value=""
-          />
+<div class="object-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1"
-         name="field.referencepresent" />
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+          id="field.reference" value=""
+          name="field.reference" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
-  'field.reference',
+  'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
   false);
@@ -120,16 +120,17 @@ Set the value to an existing, valid value:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference">
-  <input class="object-reference" type="text"
-         name="field.reference" value="http://content" />
+<div class="object-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1" 
-         name="field.referencepresent" />
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+         id="field.reference" value="http://content" 
+         name="field.reference" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
-  'field.reference',
+  'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
   false);
@@ -154,16 +155,17 @@ Note that the invalid value is rendered:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference">
-  <input class="object-reference" type="text"
-         name="field.reference" value="http://exists/blubs" />
+<div class="object-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1" 
-         name="field.referencepresent" />
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+         id="field.reference" value="http://exists/blubs"
+         name="field.reference" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
-  'field.reference',
+  'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
   false);
@@ -187,16 +189,17 @@ The invalid value is still rendered though:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference">
+<div class="object-widget" id="field.reference.outerdiv">
+  <input type="hidden" value="1"
+         name="field.reference.present" />
   <input class="object-reference" type="text"
-         name="field.reference" value="http://foo" />
-  <input type="hidden" value="1" 
-         name="field.referencepresent" />
+         id="field.reference" value="http://foo"
+         name="field.reference" />
   <input class="browse-objects" type="button" name="browseObjects" value="…" />
 </div>
 <script>
   new ObjectReferenceWidget(
-  'field.reference',
+  'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
   false);
