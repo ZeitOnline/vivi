@@ -7,6 +7,7 @@ import zope.schema
 
 import zc.form.field
 
+import zeit.cms.content.contentsource
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -23,3 +24,20 @@ class IInfobox(zope.interface.Interface):
                  title=_('Text')),
             )))
 
+
+class InfoboxSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.infobox'
+
+    def verify_interface(self, value):
+        return IInfobox.providedBy(value)
+
+infoboxSource = InfoboxSource()
+
+
+class IInfoboxReference(zope.interface.Interface):
+
+    infobox = zope.schema.Choice(
+        title=_('Infobox'),
+        required=False,
+        source=infoboxSource)

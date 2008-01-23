@@ -26,5 +26,16 @@
   <adapter factory=".infobox.resource_factory" />
   <adapter factory=".infobox.infobox_factory" name="infobox"/>
 
+  <!-- reference -->
+  <utility 
+    component=".interfaces.infoboxSource"
+    name="zeit.content.infobox"
+    />
+  <adapter factory=".reference.InfoboxReference" />
+  <adapter
+    factory=".reference.InfoboxReference"
+    for="zeit.cms.content.interfaces.ITemplate"
+    />
+  <adapter factory=".reference.infobox_reference_to_webdav_properties" />
 
 </configure>

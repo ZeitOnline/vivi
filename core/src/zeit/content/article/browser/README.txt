@@ -32,7 +32,6 @@ Make sure we have a "view" link:
 
 We have to publish another url to see if articles are listed:
 
->>> browser.handleErrors = False
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print browser.contents
 <?xml version...
@@ -171,6 +170,11 @@ Let's relate a content object:
 >>> 'There were errors' in browser.contents
 False
 
+
+Associate an infobox[1]_:
+
+>>> browser.getControl('Infobox').value = 'http://xml.zeit.de/infobox'
+
 It is not possible to change the file name in the edit view:
 
 >>> browser.getControl('File name')
@@ -207,6 +211,13 @@ Now add the image group to the article:
 >>> print browser.contents
 <?xml ...
     ...Updated on...
+
+Verify some values:
+
+>>> browser.getControl('Infobox').value
+'http://xml.zeit.de/infobox'
+>>> browser.getControl(name="form.images.0.").value
+'http://xml.zeit.de/2006/DSC00109_2.JPG'
 
 
 WYSIWYG-Editor
@@ -577,4 +588,34 @@ prevent entering more than the allowed length. Makre sure the widget is used:
         ...
         <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
         ... 
+
+
+
+.. [1] Create an infobox
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Create the infobox
+
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+    >>> import zeit.content.infobox.infobox
+    >>> infobox = zeit.content.infobox.infobox.Infobox()
+    >>> infobox.supertitle = u'Altersvorsorge'
+    >>> infobox.contents = (
+    ...     ('Informationen', 'Nutzen Sie die Renteninformation, etc'),
+    ...     ('Fehlende Versicherungszeiten',
+    ...      'Pruefen Sie, ob in Ihrer Renteninformation alle'))
+    >>> repository['infobox'] = infobox
+
+    Commit the transaction so our browser sees the change. Also unset the site
+    again:
+
+    >>> import transaction
+    >>> transaction.commit()
+    >>> zope.app.component.hooks.setSite(old_site)
+
 

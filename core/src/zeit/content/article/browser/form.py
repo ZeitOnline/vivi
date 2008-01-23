@@ -20,6 +20,7 @@ import zeit.cms.content.template
 import zeit.cms.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
+import zeit.content.infobox.interfaces
 import zeit.content.image.interfaces
 import zeit.content.article.interfaces
 
@@ -52,7 +53,9 @@ class ArticleFormBase(object):
         zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent) +
         zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages) +
         zope.formlib.form.FormFields(
-            zeit.cms.content.interfaces.IRelatedContent))
+            zeit.cms.content.interfaces.IRelatedContent) +
+        zope.formlib.form.FormFields(
+            zeit.content.infobox.interfaces.IInfoboxReference))
 
 
 class AddForm(ArticleFormBase,

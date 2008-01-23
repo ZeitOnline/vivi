@@ -22,6 +22,9 @@
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
+
+  <include package="zeit.content.infobox" />
+  <include package="zeit.content.infobox.browser" />
   
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />

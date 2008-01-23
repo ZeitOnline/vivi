@@ -8,6 +8,7 @@ import zeit.cms.browser.listing
 import zeit.cms.browser.interfaces
 
 import zeit.content.infobox.interfaces
+import zeit.content.infobox.reference
 
 
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
@@ -24,3 +25,14 @@ class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
         return self.context.supertitle
 
     searchableText = title
+
+
+@zope.component.adapter(
+    zeit.content.infobox.reference.InfoboxReference,
+    zeit.content.infobox.interfaces.InfoboxSource)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def infoboxreference_browse_location(context, source):
+    return zope.component.queryMultiAdapter(
+        (context.context, source),
+        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
