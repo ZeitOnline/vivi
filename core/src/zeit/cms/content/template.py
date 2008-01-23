@@ -30,13 +30,22 @@ def BasicTemplateSource(template_manager):
     return source
 
 
+class TemplateManagerContainer(zope.app.container.btree.BTreeContainer):
+    """Container which holds all template managers."""
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.ITemplateManagerContainer)
+
+
 class TemplateManager(zope.app.container.btree.BTreeContainer):
+    """Manages templates for a content type."""
 
     zope.interface.implements(zeit.cms.content.interfaces.ITemplateManager)
 
 
 class Template(zope.app.container.contained.Contained,
                persistent.Persistent):
+    """A template for xml content types."""
 
     zope.interface.implements(zeit.cms.content.interfaces.ITemplate)
 

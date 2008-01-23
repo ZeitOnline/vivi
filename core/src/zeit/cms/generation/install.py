@@ -8,6 +8,8 @@ import zope.app.zopeappgenerations
 
 import zc.notification.interfaces
 
+import zeit.cms.content.interfaces
+import zeit.cms.content.template
 import zeit.cms.notification.utility
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
@@ -30,6 +32,9 @@ def install(root):
     installLocalUtility(
         root, zeit.cms.workingcopy.workingcopy.WorkingcopyLocation,
         'workingcopy', zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+    installLocalUtility(
+        root, zeit.cms.content.template.TemplateManagerContainer,
+        'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
     installLocalUtility(
         site_manager, zeit.cms.notification.utility.notificationUtilityFactory,
         'notification', zc.notification.interfaces.INotificationUtility)

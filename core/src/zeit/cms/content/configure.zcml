@@ -45,6 +45,17 @@
   
 
   <!-- Templates -->
+  <class class=".template.TemplateManagerContainer">
+    <require
+      interface=".interfaces.ITemplateManagerContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.app.container.interfaces.IWriteContainer"
+      permission="zope.ManageApplication"
+      />
+  </class>
+
   <class class=".template.TemplateManager">
     <require
       interface=".interfaces.ITemplateManager"

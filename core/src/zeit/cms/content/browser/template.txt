@@ -31,9 +31,10 @@ api because there is no UI for that:
 >>> import zeit.cms.content.template
 >>> root = getRootFolder()
 >>> sm = zope.component.getSiteManager(root)
->>> root['a-template-manager'] = zeit.cms.content.template.TemplateManager()
+>>> root['templates']['a-template-manager'] = (
+...     zeit.cms.content.template.TemplateManager())
 >>> sm.registerUtility(
-...     root['a-template-manager'],
+...     root['templates']['a-template-manager'],
 ...     zeit.cms.content.interfaces.ITemplateManager,
 ...     name='My content templates')
 
@@ -46,6 +47,7 @@ Commit transaction for testbrowser to see our changes:
 When we're opening the management UI now, we'll see our newly created template
 manager:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Templates').click()
 >>> print browser.contents
 <?xml ...
@@ -285,7 +287,7 @@ Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
 >>> sm.unregisterUtility(
-...     root['a-template-manager'],
+...     root['templates']['a-template-manager'],
 ...     zeit.cms.content.interfaces.ITemplateManager,
 ...     name='My content templates')
 True

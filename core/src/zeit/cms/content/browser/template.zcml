@@ -4,8 +4,8 @@
   xmlns:browser="http://namespaces.zope.org/browser">
 
   <gocept:pagelet
-    for="zope.location.interfaces.ISite"
-    name="template-manager.html"
+    for="zeit.cms.content.interfaces.ITemplateManagerContainer"
+    name="index.html"
     class=".template.Manager"
     template="template-manager.pt"
     permission="zope.ManageApplication"
@@ -16,7 +16,7 @@
     menu="zeit-global-views"
     title="Templates"
     permission="zope.ManageApplication"
-    action="@@template-manager.html"
+    action="templates"
     />
 
   <gocept:pagelet

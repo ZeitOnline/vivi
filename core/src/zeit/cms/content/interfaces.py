@@ -229,6 +229,10 @@ class ILockInfo(zope.app.locking.interfaces.ILockInfo):
         required=False)
 
 
+class ITemplateManagerContainer(zope.app.container.interfaces.IReadContainer):
+    """Container which holds all template managers."""
+
+
 class ITemplateManager(zope.app.container.interfaces.IReadContainer):
     """Manages templates for a content type."""
 

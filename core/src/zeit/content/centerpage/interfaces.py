@@ -7,6 +7,7 @@ import zope.schema
 
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 import zeit.xmleditor.interfaces
 
@@ -23,13 +24,13 @@ class IContainer(zeit.xmleditor.interfaces.IEditableStructure):
     """<column>"""
 
     label = zope.schema.TextLine(
-        title=u"Label",
+        title=_("Label"),
         required=False)
     style = zope.schema.TextLine(
-        title=u"Style",
+        title=_("Style"),
         required=False)
     layout = zope.schema.TextLine(
-        title=u"Layout",
+        title=_("Layout"),
         required=False)
 
 
@@ -37,5 +38,5 @@ class IColumn(zeit.xmleditor.interfaces.IEditableStructure):
     """<column>"""
 
     layout = zope.schema.TextLine(
-        title=u"Layout",
+        title=_("Layout"),
         required=False)
