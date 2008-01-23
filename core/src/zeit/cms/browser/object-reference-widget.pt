@@ -14,7 +14,7 @@
   new ObjectReferenceWidget(
   '${view/name}.outerdiv',
   '${view/default_browsing_location/@@absolute_url}',
-  '${view/type_filter_token}', 
+  '${view/type_filter_token}',
   ${view/show_popup});
   ">
 </script>
