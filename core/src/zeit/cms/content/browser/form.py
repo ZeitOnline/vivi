@@ -43,7 +43,7 @@ class CommonMetadataFormBase(object):
         gocept.form.grouped.Fields(
             _("misc."),
             ('authors', 'related', 'images', 'copyrights', 'pageBreak',
-             'automaticTeaserSyndication'),
+             'paragraphs', 'automaticTeaserSyndication'),
             css_class= 'column-right'),
         )
 
