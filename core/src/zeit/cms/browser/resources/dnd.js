@@ -103,7 +103,8 @@ var ObjectReferenceWidget = Class.extend({
     // This is also thought to be used multiple times in one formlib field,
     // e.g. for Tuple fields.
 
-    construct: function(element, default_browsing_url, type_filter, show_popup) {
+    construct: function(element, default_browsing_url, type_filter,
+                        show_popup) {
         this.element = $(element);
         this.default_browsing_url = default_browsing_url;
         this.type_filter = type_filter;
