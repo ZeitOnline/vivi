@@ -35,6 +35,14 @@
     permission="zope.View"
     />
 
+  <browser:viewlet
+    name="cms"
+    for="*"
+    manager="zeit.cms.browser.interfaces.IGlobalViews"
+    class=".menu.CMSMenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.ManageApplication"
+    />
   <!-- Skin, Templates and widgets --> 
   <include file="skin.zcml" />
   <include file="widget.zcml" />

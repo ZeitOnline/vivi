@@ -6,6 +6,8 @@ import zope.app.publisher.browser.menu
 
 import z3c.menu.simple.menu
 
+from zeit.cms.i18n import MessageFactory as _
+
 
 class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
 
@@ -34,3 +36,20 @@ class GlobalMenuItem(z3c.menu.simple.menu.GlobalMenuItem):
             return True
 
         return False
+
+
+class CMSMenuItem(GlobalMenuItem):
+
+    title = _("CMS")
+    viewURL = "@@index.html"
+
+    @property
+    def selected(self):
+        result = 0
+        for viewlet in self.manager.viewlets:
+            if viewlet.pathitem and not viewlet.selected:
+                result += 1
+            elif viewlet.pathitem and viewlet.selected:
+                result -= 1
+
+        return bool(result)

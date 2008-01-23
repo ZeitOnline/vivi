@@ -20,7 +20,10 @@ Open the template managment ui:
 <!DOCTYPE ...
     <title> Dateiliste </title>
     ...
-    <ul id="main-navigation"><li class="">
+    <ul id="main-navigation"><li class="selected">
+    <a href="http://localhost/++skin++cms/@@index.html">CMS</a>
+    </li>
+    <li class="">
     <a href="http://localhost/++skin++cms/templates">Templates</a>
     ...
 >>> browser.getLink('Templates').click()
