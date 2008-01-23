@@ -56,6 +56,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         min=1,
         default=6)
 
+    paragraphs = zope.schema.Int(
+        title=u"Absatzanzahl",
+        readonly=True,
+        required=False)
+
     dailyNewsletter = zope.schema.Bool(
         title=u"Tages-Newsletter",
         description=(u"Soll der Artikel in den Tages-Newsletter aufgenommen "

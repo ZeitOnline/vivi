@@ -61,7 +61,8 @@ class AddForm(ArticleFormBase,
     title = _('Add article')
     form_fields = (
         ArticleFormBase.form_fields +
-        ChooseTemplate.form_fields).omit('automaticTeaserSyndication')
+        ChooseTemplate.form_fields).omit('automaticTeaserSyndication',
+                                         'paragraphs')
 
     content_template = None
 

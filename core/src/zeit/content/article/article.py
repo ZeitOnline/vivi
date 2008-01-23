@@ -100,6 +100,10 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             if node.tag in ('p', 'intertitle'):
                 yield node
 
+    @property
+    def paragraphs(self):
+        return len(self.xml.body.findall('p'))
+
     @staticmethod
     def _replace_entities(value):
         for entity_name, codepoint in htmlentitydefs.name2codepoint.items():
