@@ -50,5 +50,13 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <browser:icon
+    for="zeit.content.infobox.interfaces.IInfobox"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/infoboxResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
 </configure>
 

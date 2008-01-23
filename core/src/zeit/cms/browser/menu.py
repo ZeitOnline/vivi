@@ -52,4 +52,4 @@ class CMSMenuItem(GlobalMenuItem):
             elif viewlet.pathitem and viewlet.selected:
                 result -= 1
 
-        return bool(result)
+        return result > 0
