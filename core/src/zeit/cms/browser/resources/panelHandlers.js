@@ -76,7 +76,7 @@ PanelHandler.prototype = {
 function SidebarDragger(base_url) {
     this.url = base_url + '/@@sidebar_toggle_folding';
     this.observe_ids = new Array('sidebar', 'sidebar-dragger', 
-        'visualContentWrapper', 'visualContentWrapper', 'breadcrumbs');
+        'visualContentSeparator', 'visualContentWrapper', 'header');
 }
 
 SidebarDragger.prototype = {
@@ -94,13 +94,13 @@ SidebarDragger.prototype = {
 
     setClass: function(css_class) {
         var dragger = this;
-        for (var i=0; )
         forEach(this.observe_ids,
             function(element_id) {
               forEach(dragger.classes, function(cls) {
                   var element = getElement(element_id);
                   removeElementClass(element, cls);
                   });
+        var element = getElement(element_id);
         addElementClass(element, css_class);
         });
     },

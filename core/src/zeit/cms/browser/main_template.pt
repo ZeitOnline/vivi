@@ -47,9 +47,9 @@
         <div id="visualContentSeparator" class="sidebar-expanded"
              tal:attributes="class sidebar_css">
           </div>
-        <div id="header">
-          <ul id="breadcrumbs"
+          <div id="header"
               tal:attributes="class sidebar_css">
+          <ul id="breadcrumbs">
             <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
               <a tal:attributes="title  item/title;
                 href   item/url;"
