@@ -250,12 +250,12 @@ class DAVBase:
     def _request(self, method, url, body=None, extra_hdrs={}):
         "Internal method for sending a request."
         self._recursion_level = getattr(self, '_recursion_level', 0) + 1
-#         holler("### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n#################\n" % \
-#                (method, url, "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]), body))
+##        holler("### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n#################\n" % \
+##               (method, url, "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]), body))
         self.request(method, url, body, extra_hdrs) # that's HTTPxxxAuthCon.request, called via DAVConnection
         resp = self.getresponse()
-#         holler("### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % \
-#                (resp.status, resp.reason, "\n  ".join(["%s: %s" % h for h in resp.getheaders()])))
+##        holler("### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % \
+##               (resp.status, resp.reason, "\n  ".join(["%s: %s" % h for h in resp.getheaders()])))
         if resp.status in (301, 302, 303, 305, 307):
             # redirect silently
             # Location: header *MUST* be there

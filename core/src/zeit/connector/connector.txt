@@ -11,6 +11,7 @@ Creating a connector:
 >>> connector = Connector(roots={
 ...       "default": os.environ['connector-url'],
 ...       "search": os.environ['search-connector-url']})
+
 >>> connector
 <zeit.connector.connector.Connector object at 0x...>
 
@@ -295,24 +296,27 @@ Search (interface only):
 The building blocks are search vars:
 
 >>> from zeit.connector.search import SearchVar
->>> author = SearchVar('author', 'http://namespaces.zeit.de/document/')
->>> volume = SearchVar('volume', 'http://namespaces.zeit.de/document/')
->>> year = SearchVar('year', 'http://namespaces.zeit.de/document/')
->>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/document/')
+>>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
+>>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
+>>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
+>>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
 
 Queries are built of basic terms involving search vars stitched together into
 expressions (note that we get dummy values at the moment):
 
->>> connector.search([author, volume], (year == '2007') & (volume == '07'))
-[[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
- [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
- ...]
+>>> connector.search([author, volume], (year == '2007') & (volume == '07') & (author == 'pm'))
+[[u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07']]
 
->>> connector.search([author, volume], (year > '1997') &
-...     ((volume == '07') | (volume == '08')) & (ressort == 'Leben'))
-[[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
- [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
- ...]
+# >>> connector.search([author, volume], (year == '2007') & (volume == '07'))
+# [[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
+#  [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
+#  ...]
+# 
+# >>> connector.search([author, volume], (year > '1997') &
+# ...     ((volume == '07') | (volume == '08')) & (ressort == 'Leben'))
+# [[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
+#  [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
+#  ...]
 
 
 Getting ghost resources
