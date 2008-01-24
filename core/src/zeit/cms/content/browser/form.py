@@ -28,22 +28,27 @@ class ShowLimitInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
 class CommonMetadataFormBase(object):
 
+    navigation_fields = gocept.form.grouped.Fields(
+        _("Navigation"),
+        ('__name__', 'keywords', 'serie'),
+        css_class='column-right')
+    head_fields = gocept.form.grouped.Fields(
+        _("Head"),
+        ('year', 'volume', 'page', 'ressort'),
+        css_class='widgets-float column-left')
+    text_fields = gocept.form.grouped.Fields(
+        _("Texts"),
+        ('supertitle', 'byline', 'title', 'subtitle',
+         'teaserTitle', 'teaserText',
+         'shortTeaserTitle', 'shortTeaserText'),
+        css_class='wide-widgets column-left')
+
     field_groups = (
-        gocept.form.grouped.Fields(
-            _("Navigation"),
-            ('__name__', 'keywords', 'serie'),
-            css_class='column-right'),
-        gocept.form.grouped.Fields(
-            _("Head"),
-            ('year', 'volume', 'page', 'ressort'),
-            css_class='widgets-float column-left'),
+        navigation_fields,
+        head_fields,
+        text_fields,
         gocept.form.grouped.RemainingFields(
-            _("Texts"),
-            css_class='wide-widgets column-left'),
-        gocept.form.grouped.Fields(
             _("misc."),
-            ('authors', 'related', 'images', 'copyrights', 'pageBreak',
-             'paragraphs', 'automaticTeaserSyndication'),
             css_class= 'column-right'),
         )
 
