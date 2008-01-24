@@ -247,13 +247,12 @@ pre {
 
 #topcontent {
     position: absolute;
-    top: 5em; 
+    top: 3em; 
     right: 0;
     left: 0;
     bottom: 0;
     overflow: auto;
     overflow-x: hidden;
-    padding: 1em;
 }
 
 .topcontent-small {
@@ -284,7 +283,7 @@ pre {
 
 #content-actions {
     position: absolute;
-    top: 3em;
+    top: 0;
     padding: 0;
 }
 
@@ -309,36 +308,6 @@ pre {
   margin-right: 1em;
 }
 
-#edit-form {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    overflow: auto;
-    padding-bottom: 4em;
-}
-
-
-#edit-form > form > div.form-status {
-    display: none;
-}
-
-#edit-form > form > div.field-group {
-    position: absolute;
-    bottom: 4em;
-    left: 0;
-    right: 0;
-    top: 0;
-    overflow: auto;
-}
-
-#edit-form > form > div#actionsView {
-    position: absolute;
-    height: 3em;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
 
 #full-content-area {
     position: absolute;
