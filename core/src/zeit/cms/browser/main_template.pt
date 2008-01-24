@@ -38,14 +38,18 @@
         <tal:replace replace="resource_library:zeit.cms" />
         <tal:replace replace="resource_library:zeit.cms.panels" /> 
         <tal:replace replace="structure provider:gocept.mochikit.javascript" />
-        
+
       </head>
       <body id="body"
         tal:define="
         site_url request/getApplicationURL;
         sidebar_css context/@@sidebar_handlers/css_class">
+        <div id="visualContentSeparator" class="sidebar-expanded"
+             tal:attributes="class sidebar_css">
+          </div>
         <div id="header">
-          <ul id="breadcrumbs">
+          <ul id="breadcrumbs"
+              tal:attributes="class sidebar_css">
             <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
               <a tal:attributes="title  item/title;
                 href   item/url;"
@@ -95,7 +99,7 @@
           </script>
 
         
-        <div id="content"
+        <div id="visualContentWrapper"
           tal:define="uniqueId context/uniqueId | nothing"
           tal:attributes="class sidebar_css">
           
@@ -108,10 +112,12 @@
             <metal:actions
               use-macro="context/@@standard_macros/context-actions" />
           </metal:actions>
-          
-          <metal:contentslot define-slot="body">
-            content
-          </metal:contentslot>
+
+          <div id="content">
+            <metal:contentslot define-slot="body">
+              content
+            </metal:contentslot>
+          </div>
         </div>
       </body>
     </html>

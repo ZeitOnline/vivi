@@ -3,30 +3,30 @@
 // $Id$
 
 function setCookie(name, value, expires, path, domain, secure) {   
-    var val = escape(value);
-    cookie = name + "=" + val +
-	((expires) ? "; expires=" + expires.toGMTString() : "") +
-	((path) ? "; path=" + path : "") +
-	((domain) ? "; domain=" + domain : "") +
-	((secure) ? "; secure" : "");
-    document.cookie = cookie;
+  var val = escape(value);
+  cookie = name + "=" + val +
+    ((expires) ? "; expires=" + expires.toGMTString() : "") +
+    ((path) ? "; path=" + path : "") +
+    ((domain) ? "; domain=" + domain : "") +
+    ((secure) ? "; secure" : "");
+  document.cookie = cookie;
 }
 
 function getCookie(name) {
-    	var dc = document.cookie;
-    	var prefix = name + "=";
-    	var begin = dc.indexOf("; " + prefix);
-    	if (begin == -1) {
-        	begin = dc.indexOf(prefix);
-        	if (begin != 0) return null;
-    	} else {
-        	begin += 2;
-    	}
-    	var end = document.cookie.indexOf(";", begin);
-    	if (end == -1) {
-        	end = dc.length;
-    	}
-    	return unescape(dc.substring(begin + prefix.length, end));
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin == -1) {
+    begin = dc.indexOf(prefix);
+    if (begin != 0) return null;
+  } else {
+    begin += 2;
+  }
+  var end = document.cookie.indexOf(";", begin);
+  if (end == -1) {
+    end = dc.length;
+  }
+  return unescape(dc.substring(begin + prefix.length, end));
 }
 
 function PanelHandler(base_url) {
@@ -75,10 +75,8 @@ PanelHandler.prototype = {
 
 function SidebarDragger(base_url) {
     this.url = base_url + '/@@sidebar_toggle_folding';
-    this.sidebar = getElement('sidebar');
-    this.dragger = getElement('sidebar-dragger')
-    this.content = getElement('content');
-
+    this.observe_ids = new Array('sidebar', 'sidebar-dragger', 
+        'visualContentWrapper', 'visualContentWrapper', 'breadcrumbs');
 }
 
 SidebarDragger.prototype = {
@@ -96,10 +94,13 @@ SidebarDragger.prototype = {
 
     setClass: function(css_class) {
         var dragger = this;
-        forEach([this.sidebar, this.dragger, this.content], function(element) {
-            forEach(dragger.classes, function(cls) {
-                removeElementClass(element, cls);
-                });
+        for (var i=0; )
+        forEach(this.observe_ids,
+            function(element_id) {
+              forEach(dragger.classes, function(cls) {
+                  var element = getElement(element_id);
+                  removeElementClass(element, cls);
+                  });
         addElementClass(element, css_class);
         });
     },
