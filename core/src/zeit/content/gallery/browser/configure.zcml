@@ -107,4 +107,13 @@
     menu="zeit-context-views" title="Edit"
     />
 
+  <browser:icon
+    for="zeit.content.gallery.interfaces.IGallery"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/galleryResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
 </configure>
