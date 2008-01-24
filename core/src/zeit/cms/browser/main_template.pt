@@ -1,6 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  i18n:domain="zeit.cms"
-  >
+  i18n:domain="zeit.cms">
 
   <metal:macro define-macro="error-page"><!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
