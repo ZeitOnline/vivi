@@ -189,13 +189,19 @@ images were added. Remove the image 03.jpg from the gallery folder:
 
 >>> bookmark = browser.url
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/gallery')
->>> browser.getControl(name='selection_column.MDMuanBn.').value = True
->>> browser.getControl('Delete').click()
+...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/@@view.html')
+>>> browser.getLink("Delete").click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    Do you really want to delete: <b>03.jpg</b>
+    ...
+>>> browser.getControl("Yes, delete it.").click()
 
 Now as the image is removed, go back to the gallery, the 03.jpg is no longer
 listed:
 
+>>> browser.handleErrors = False
 >>> browser.open(bookmark)
 >>> print browser.contents
 <?xml ...

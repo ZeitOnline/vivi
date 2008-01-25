@@ -244,11 +244,6 @@ Let's have a look at the list of templates:
 </table>
 ...
 
-Make sure there is a delete button:
-
->>> browser.getControl('Delete')
-<SubmitControl name='delete' type='submit'>
-
 
 Template source
 ===============

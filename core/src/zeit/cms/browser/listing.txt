@@ -51,6 +51,12 @@ True
 >>> checkbox = browser.getControl(
 ...     name="selection_column.TEIwMS1ET1NTYXVmc2Nod3VuZw==.")
 >>> checkbox.value = True
->>> browser.getControl(name='delete').click()
+>>> browser.getLink("Delete").click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    Do you really want to delete: <b>01</b>
+    ...
+>>> browser.getControl("Yes, delete it.").click()
 >>> 'LB01-DOSSaufschwung' in browser.contents
 False

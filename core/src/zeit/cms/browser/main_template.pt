@@ -151,7 +151,7 @@
   <metal:macro define-macro="context-actions">
     <div class="context-actions"
     tal:define="context_url context/@@absolute_url">
-      <ul>
+        <ul>
         <tal:repeat 
              repeat="menu_item python: (
              path('context/@@view_get_menu/zeit-context-actions') + 
@@ -207,6 +207,7 @@
           </li>
         </tal:not_have_items>
       </ul>
+
     </div>
   </metal:macro>
   
@@ -241,18 +242,6 @@
               Article
           </option>
         </select>
-
-        <ul id="folder-actions" 
-            tal:define="menu_items context/@@view_get_menu/folder-actions"
-            tal:condition="menu_items">
-          <li tal:repeat="menu_item menu_items"
-              tal:attributes="class menu_item/title">
-            <input type="submit"
-              tal:attributes="
-                value menu_item/title;
-                name menu_item/action" />
-          </li>
-        </ul>
 
     </div>
         

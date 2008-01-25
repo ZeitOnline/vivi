@@ -1,0 +1,13 @@
+<div class="topcontent"
+  i18n:domain="zeit.cms">
+  <h1 i18n:translate="delete_content_header">Delete content</h1>
+
+  Do you really want to delete: <b tal:content="view/title" />
+
+  <form action="">
+    <input type="submit" value="Cancel" name="cancel" 
+            i18n:attributes="value" />
+    <input type="submit" value="Yes, delete it." name="delete" 
+            i18n:attributes="value"/>
+  </form>
+</div>

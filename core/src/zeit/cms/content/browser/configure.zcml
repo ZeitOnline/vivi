@@ -1,9 +1,20 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
   <include file="template.zcml" />
+
+  <!-- Delete view -->
+  <gocept:pagelet
+    for="zeit.cms.interfaces.ICMSContent"
+    name="deletecontent.html"
+    class=".cmscontent.DeleteContent"
+    template="cmscontent.pt"
+    permission="zeit.DeleteContent"
+    menu="zeit-context-actions" title="Delete"
+    />
 
   <!-- Keyword widget -->
   <browser:page

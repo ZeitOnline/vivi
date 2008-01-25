@@ -306,8 +306,3 @@ in the clipboard also has its icon:
     </td>
     ...
 
-
-Here we can also delete items:
-
->>> browser.getControl('Delete')
-<SubmitControl name='delete' type='submit'>

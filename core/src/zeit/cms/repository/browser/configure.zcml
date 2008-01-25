@@ -71,14 +71,6 @@
     index="zope.View"
     />
 
-  <browser:menuItem
-    for="zeit.cms.repository.interfaces.IFolder"
-    action="delete"
-    menu="folder-actions"
-    title="Delete"
-    permission="zeit.DeleteContent"
-    />
-
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     name="metadata_preview"
