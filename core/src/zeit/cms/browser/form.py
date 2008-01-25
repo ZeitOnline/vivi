@@ -4,12 +4,15 @@
 
 import datetime
 
+import rwproperty
+
 import zope.formlib.form
 import zope.formlib.interfaces
 
 import zope.app.container.interfaces
 
 import gocept.form.grouped
+import z3c.flashmessage.interfaces
 
 import zeit.cms.checkout.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -63,6 +66,7 @@ class FormBase(object):
         super(FormBase, self).setUpWidgets(ignore_request)
 
     def render(self):
+        self._send_message()
         if self.status and not self.errors:
             # rendered w/o error
             next_url = self.nextURL()
@@ -89,6 +93,27 @@ class FormBase(object):
                     title, field_names, css_class)
             field_groups.append(group)
         self.field_groups = field_groups
+
+    def _send_message(self):
+        msg = zope.component.getUtility(
+            z3c.flashmessage.interfaces.IMessageSource,
+            name='session')
+
+        if self.errors:
+            for error in self.errors:
+                message = error.doc()
+                title = getattr(error, 'widget_title', None) # duck typing
+                translated = zope.i18n.translate(
+                    message, context=self.request, default=message)
+                if title:
+                    if isinstance(title, zope.i18n.Message):
+                        title = zope.i18n.translate(title, context=self.request)
+                    message = '%s: %s' % (title, translated)
+                else:
+                    message = translated
+                msg.send(message, type='error')
+        elif self.status:
+            msg.send(self.status)
 
 
 class AddForm(FormBase, gocept.form.grouped.AddForm):

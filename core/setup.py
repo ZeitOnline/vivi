@@ -20,7 +20,7 @@ setup(
         'decorator',
         'gocept.cache',
         'gocept.fckeditor',
-        'gocept.form[formlib]>=0.7.1',
+        'gocept.form[formlib]>=0.7.2',
         'gocept.lxml',
         'gocept.mochikit>=1.3.1',
         'gocept.pagelet',
@@ -31,7 +31,7 @@ setup(
         'python-cjson',
         'rwproperty>=1.0',
         'setuptools',
-        'z3c.etestbrowser',
+        'z3c.flashmessage',
         'z3c.traverser',
         'z3c.zrtresource',
         'z3c.menu',
@@ -57,6 +57,7 @@ setup(
     ],
     extras_require={
         'test': [
+            'z3c.etestbrowser',
         ],
     },
 )

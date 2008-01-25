@@ -41,7 +41,7 @@
     manager="zeit.cms.browser.interfaces.IGlobalViews"
     class=".menu.CMSMenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.ManageApplication"
+    permission="zope.View"
     />
   <!-- Skin, Templates and widgets --> 
   <include file="skin.zcml" />
@@ -159,8 +159,16 @@
   <adapter factory=".tree.treeStateFactory" />
 
 
-
   <adapter factory=".timezone.tzinfo" />
+
+  <!-- Flashmessage via session -->
+  <utility
+     factory="z3c.flashmessage.sources.SessionMessageSource"
+     name="session"
+     />
+  <utility
+     factory="z3c.flashmessage.receiver.GlobalMessageReceiver"
+     />
 
 
   <!-- preferences -->

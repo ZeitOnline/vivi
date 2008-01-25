@@ -16,7 +16,7 @@
     manager="zeit.cms.browser.interfaces.IGlobalViews"
     class=".calendar_view.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.ManageApplication"
+    permission="zope.View"
     />
 
   <browser:page
