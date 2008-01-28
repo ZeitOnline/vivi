@@ -92,19 +92,18 @@ class XapianSearch(object):
 
 class MetadataSearch(object):
 
+    ns = 'http://namespaces.zeit.de/CMS/document'
+    qps = 'http://namespaces.zeit.de/QPS/attributes'
     _search_map = {
-        'author': zeit.connector.search.SearchVar(
-            'author', 'http://namespaces.zeit.de/document/'),
-        'ressort': zeit.connector.search.SearchVar(
-            'ressort', 'http://namespaces.zeit.de/document/'),
-        'volume': zeit.connector.search.SearchVar(
-            'volume', 'http://namespaces.zeit.de/document/'),
-        'year': zeit.connector.search.SearchVar(
-            'year', 'http://namespaces.zeit.de/document/'),
-        'page': zeit.connector.search.SearchVar(
-            'page', 'http://namespaces.zeit.de/document/'),
-        'title': zeit.connector.search.SearchVar(
-            'title', 'http://namespaces.zeit.de/CMS/document'),
+        'author': zeit.connector.search.SearchVar('author', ns),
+        'ressort': zeit.connector.search.SearchVar('ressort', ns),
+        'volume': zeit.connector.search.SearchVar('volume', ns),
+        'year': zeit.connector.search.SearchVar('year', ns),
+        'title': zeit.connector.search.SearchVar('title', ns),
+        'serie': zeit.connector.search.SearchVar('serie', ns),
+
+        'page': zeit.connector.search.SearchVar('page', qps),
+        'print_ressort': zeit.connector.search.SearchVar('ressort', qps),
     }
 
     indexes = set(_search_map.keys())
@@ -123,8 +122,7 @@ class MetadataSearch(object):
             [var('author'), var('title'),
              var('year'), var('volume'), var('page')],
             term)
-        import pdb; pdb.set_trace() 
-        for unique_id, author, title, year, volume, page in search_result:
+        for unique_id, author, volume, year, page, title in search_result:
             result = SearchResult(unique_id)
             result.author = author
             result.title = title
