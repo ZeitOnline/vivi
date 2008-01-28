@@ -61,7 +61,7 @@ class ArticleFormBase(object):
             ('authors', 'copyrights',
              'related', 'infobox', 'images',
              'pageBreak', 'paragraphs',
-             'automaticTeaserSyndication'),
+             'automaticTeaserSyndication', 'template'),
             css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Optionen"),
