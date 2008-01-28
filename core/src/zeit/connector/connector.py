@@ -393,13 +393,13 @@ class Connector(zope.thread.local):
         #       We need it to use a different netloc for different xconns.
         conn = self._conn('search')
 
-        davres = davresource.DAVResult( \
+        davres = davresource.DAVResult(
                 conn.search(self._roots.get('search', self._roots['default']),
                             body=expr._collect()._render()))
 
         return [[self._loc2id(urlparse.urljoin(self._roots['default'], url))] +
-                resp.get_all_properties().values() \
-                    for url, resp in davres.responses.items()]
+                resp.get_all_properties().values()
+                for url, resp in davres.responses.items()]
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)
