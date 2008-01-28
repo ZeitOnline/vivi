@@ -128,6 +128,15 @@ class IConnector(zope.interface.Interface):
 
         """
 
+    def search(attributes, search_expression):
+        """Search for `search_expression`
+
+        returns an iterator of tuples containing the unique id and the values
+        of the requested `attributes`:
+
+            (unique_id, attributes[0], attributes[1], ...)
+
+        """
 
 class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
     """Mapping for WebDAV properties.
