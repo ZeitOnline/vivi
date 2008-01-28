@@ -154,7 +154,13 @@ def connectorFactory():
     if not root:
         raise ZConfig.ConfigurationError(
             "WebDAV server not configured properly.")
-    return Connector({'default': root})
+
+    search_root = cms_config.get('document-store-search')
+
+    return Connector(dict(
+        default=root,
+        search=search_root))
+
 
 class Connector(zope.thread.local):
     """Connect to the CMS backend.
@@ -397,9 +403,14 @@ class Connector(zope.thread.local):
                 conn.search(self._roots.get('search', self._roots['default']),
                             body=expr._collect()._render()))
 
-        return [[self._loc2id(urlparse.urljoin(self._roots['default'], url))] +
-                resp.get_all_properties().values()
-                for url, resp in davres.responses.items()]
+        for url, resp in davres.responses.items():
+            try:
+                id = self._loc2id(urlparse.urljoin(self._roots['default'],
+                                                   url))
+            except ValueError:
+                # Search returns documents which are outside the root, ignore
+                continue
+            yield tuple([id] + resp.get_all_properties().values())
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)
@@ -447,8 +458,7 @@ class Connector(zope.thread.local):
         if loc.startswith(root):
             return self._prefix + loc[len(root):]
         else:
-            return u"######################################"
-            ## raise ValueError("Bad location %r (root is %r)" % (loc, root))
+            raise ValueError("Bad location %r (root is %r)" % (loc, root))
 
     def _internal_add(self, id, resource):
         """The grunt work of __setitem__() and add()
