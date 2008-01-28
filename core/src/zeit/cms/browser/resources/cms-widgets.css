@@ -387,6 +387,13 @@ table.properties textarea {
 }
 
 
+/* For the 0.9.2 release: Hide messages so the notices are not shown. The UI is
+ * not quite finished, yet and we don't want to bother the users. 
+ */
+#messages {
+  display: none;
+}
+
 
 #messages .staticErrorText {
   background-color: #fd1;
