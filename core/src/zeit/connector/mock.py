@@ -136,6 +136,14 @@ class Connector(object):
     def locked(self, id):
         return self._locked.get(id, (None, None, None))
 
+    def search(self, attributes, expression):
+        print  "Searching: ", expression._collect()._render()
+        yield (u'http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None)
+        yield (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None)
+        yield (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None)
+
+    # internal helpers
+
     def _absolute_path(self, path):
         if not path:
             return repository_path

@@ -286,6 +286,34 @@ There is an internal method mapping Ids to paths on the filesystem:
 (u'foo',)
 
 
+
+Search
+======
+
+There is a search interface which we very bluntly mock. Define some search
+variables:
+
+>>> from zeit.connector.search import SearchVar
+>>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
+>>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
+>>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
+>>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
+
+
+Do a search, note that the mock always returns the same but does print out the
+query:
+
+>>> list(connector.search(
+...     [author, volume, ressort],
+...     (year == '2007') & (volume == '07') & (author == 'pm')))
+Searching:  (:and (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007") 
+                  (:eq "http://namespaces.zeit.de/CMS/document" "volume" "07")
+                  (:eq "http://namespaces.zeit.de/CMS/document" "author" "pm"))
+[(u'http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None),
+ (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None),
+ (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None)]
+
+
 Resetting the mock
 ==================
 
