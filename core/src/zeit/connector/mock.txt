@@ -313,6 +313,15 @@ Searching:  (:and (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007")
  (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None),
  (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None)]
 
+When we're searching for more attributes we'll get more None's in the metadata.
+For a real connector there would be real values of course:
+
+>>> list(connector.search([author, volume, ressort, year], (year == '2007')))
+Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007") 
+[(u'http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None, None),
+ (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None, None),
+ (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None, None)]
+
 
 Resetting the mock
 ==================

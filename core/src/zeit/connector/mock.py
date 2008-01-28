@@ -138,9 +138,16 @@ class Connector(object):
 
     def search(self, attributes, expression):
         print  "Searching: ", expression._collect()._render()
-        yield (u'http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None)
-        yield (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None)
-        yield (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None)
+
+        unique_ids = [
+            u'http://xml.zeit.de/online/2007/01/Somalia', 
+            u'http://xml.zeit.de/online/2007/01/Saarland',
+            u'http://xml.zeit.de/2006/52/Stimmts']
+
+        metadata = ('pm', '07') + len(attributes) * (None,)
+        metadata = metadata[:len(attributes)]
+
+        return ((unique_id,) + metadata for unique_id in unique_ids)
 
     # internal helpers
 
