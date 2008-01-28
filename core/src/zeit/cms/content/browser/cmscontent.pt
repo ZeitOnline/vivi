@@ -1,13 +1,24 @@
-<div class="topcontent"
+<div class="topcontent deleteScreen"
   i18n:domain="zeit.cms">
   <h1 i18n:translate="delete_content_header">Delete content</h1>
 
-  Do you really want to delete: <b tal:content="view/title" />
+  <p>
+    <span i18n:translate="delete_content_text">
+      Do you really want to delete: 
+    </span>
+  </p>
+  <p class="DeleteItem">
+    <img class="zmi_icon" tal:replace="structure view/icon" />
+    <span tal:content="view/title" />
+    (<span tal:content="view/uniqueId" />)
+  </p>
 
   <form action="">
-    <input type="submit" value="Cancel" name="cancel" 
-            i18n:attributes="value" />
-    <input type="submit" value="Yes, delete it." name="delete" 
-            i18n:attributes="value"/>
+    <p>
+      <input type="submit" value="Cancel" name="cancel" 
+        i18n:attributes="value" />
+      <input type="submit" value="Yes, delete it." name="delete" 
+        i18n:attributes="value"/>
+    </p>
   </form>
 </div>

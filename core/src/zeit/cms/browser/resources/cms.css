@@ -460,3 +460,28 @@ pre {
 .action-title {
     display: none;
 }
+
+
+/*
+ * delete screen
+ *
+ * */
+.deleteScreen h1 {
+   font-size: 1.5em;
+}
+
+.deleteScreen p {
+   margin-left: 1em;
+}
+
+.deleteScreen form input {
+   margin-right: 1em;
+}
+
+.DeleteItem img {
+   vertical-align: middle;
+}
+
+.DeleteItem {
+   padding: 0.5em;
+}

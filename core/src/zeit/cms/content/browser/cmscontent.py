@@ -29,8 +29,23 @@ class DeleteContent(object):
                                              name='absolute_url')()
         self.request.response.redirect(url)
 
+    @property
     def title(self):
         list_repr = zope.component.queryMultiAdapter(
             (self.context, self.request),
             zeit.cms.browser.interfaces.IListRepresentation)
         return list_repr.title
+
+    @property
+    def icon(self):
+        icon = zope.component.queryMultiAdapter(
+            (self.context, self.request), name="zmi_icon")
+        if icon:
+            return icon()
+
+    @property
+    def uniqueId(self):
+        list_repr = zope.component.queryMultiAdapter(
+            (self.context, self.request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+        return list_repr.uniqueId
