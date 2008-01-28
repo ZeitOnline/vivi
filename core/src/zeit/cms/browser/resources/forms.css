@@ -218,3 +218,34 @@ input[type="text"] {
   font-family: sans-serif;
 }
 
+
+/* Search
+ */
+
+#SearchPanel #search\.text {
+    width: 12em;
+}
+
+#SearchPanel fieldset {
+    margin-top: 0.5em;
+}
+
+#SearchPanel #search\.year {
+    width: 4em;
+}
+
+#SearchPanel #search\.volume {
+    width: 4em;
+}
+
+#SearchPanel #search\.page {
+    width: 2em;
+}
+
+#SearchPanel #search\.print_ressort {
+    width: 8em;
+}
+
+#SearchPanel #search\.navigation {
+    width: 8em;
+}

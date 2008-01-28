@@ -3,14 +3,16 @@
   panel_handlers nocall:context/@@panel_handlers"
   tal:attributes="
   class python:panel_handlers.css_class(panel_id);
-  id panel_id">
+  id panel_id"
+  i18n:domain="zeit.cms">
 
   <tal:replace replace="resource_library:zeit.cms" />
   <tal:replace replace="resource_library:zeit.search" />
 
   <h1>
-    <a href="javascript:void(null)">
-      Suche
+    <a href="javascript:void(null)"
+      i18n:translate="">
+      Search
     </a> 
   </h1>
 
@@ -23,29 +25,33 @@
       <input type="text" name="search.text" id="search.text"
         tal:attributes="value last_search/text | nothing" />
 
-      <input type="submit" name="search" value="Suchen" />
+      <input type="submit" name="search" value="Search" 
+        i18n:attributes="Search" />
 
-      <div id="search-extended-show">
-        Erweitert…
+      <div id="search-extended-show" i18n:translate="">
+        Extended ...
       </div>
 
       <fieldset id="search-extended-form">
         <legend>
-          Eingrenzung 
-          <span id="search-extended-hide">(Verstecken…)</span>
+          <span tal:omit-tag="" i18n:translate="">
+            Extended 
+          </span>
+          <span id="search-extended-hide">(<span tal:omit-tag="" i18n:translate="">Hide ...</span>)</span>
         </legend> 
 
         <div class="widget">
-          <label for="search.year">
-            Jahr
+          <label for="search.year"
+            i18n:translate="">
+            Year
           </label> 
           <input type="text" name="search.year" id="search.year"
             tal:attributes="value last_search/year | nothing" />
         </div> 
 
         <div class="widget">
-          <label for="search.volume">
-            Ausgabe
+          <label for="search.volume" i18n:translate="">
+            Volume
           </label>
           <select name="search.volume:int"
             tal:define="last_volume last_search/volume | nothing">
@@ -61,32 +67,16 @@
         </div>
 
         <div class="widget">
-          <label for="search.page">
-            Seite
+          <label for="search.page" i18n:translate="">
+            Page
           </label> 
           <input type="text" name="search.page" id="search.page"
             tal:attributes="value last_search/page | nothing" />
         </div>
 
         <div class="widget">
-          <label for="search.print_ressort">
-            Print Ressort
-          </label> 
-          <select name="search.print_ressort" name="search.print_ressort"
-            tal:define="last_print_ressort last_search/print_ressort | nothing">
-            <option value=""></option>
-            <option
-              tal:repeat="print_ressort view/print_ressorts"
-              tal:attributes="value print_ressort;
-              selected python:last_print_ressort == print_ressort"
-              tal:content="print_ressort"
-              />
-          </select>
-        </div>
-
-        <div class="widget">
-          <label for="search.navigation">
-            Navigation
+          <label for="search.navigation" i18n:translate="">
+            Ressort
           </label> 
           <select name="search.navigation" id="search.navigation"
             tal:define="last_navigation last_search/navigation | nothing">
@@ -96,6 +86,22 @@
               tal:attributes="value navigation;
               selected python:last_navigation == navigation"
               tal:content="navigation"
+              />
+          </select>
+        </div>
+
+        <div class="widget">
+          <label for="search.print_ressort" i18n:translate="">
+            Print ressort
+          </label> 
+          <select name="search.print_ressort" id="search.print_ressort"
+            tal:define="last_print_ressort last_search/print_ressort | nothing">
+            <option value=""></option>
+            <option
+              tal:repeat="print_ressort view/print_ressorts"
+              tal:attributes="value print_ressort;
+              selected python:last_print_ressort == print_ressort"
+              tal:content="print_ressort"
               />
           </select>
         </div>

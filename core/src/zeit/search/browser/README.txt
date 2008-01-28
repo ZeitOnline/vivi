@@ -15,7 +15,7 @@ The search form is located in the side bar.
 >>> print browser.contents
 <?xml ...
 <div class="panel unfolded" id="SearchPanel">
- <h1>...Suche...</h1>
+ <h1>...Search...</h1>
  <div class="PanelContent Search">
     <form id="search-form"
           action="http://localhost/++skin++cms/search.html"
@@ -30,18 +30,18 @@ The search form is located in the side bar.
 Note that in the test we only can search for "linux", so we do that:
 
 >>> browser.getControl(name="search.text").value = 'linux'
->>> browser.getControl('Suchen').click()
+>>> browser.getControl('Search').click()
 >>> print browser.contents
 <?xml ...
-    <title> Suche </title>
+    <title> Search </title>
     ...
-<table class="contentListing">
+<table class="contentListing hasMetadata">
   <thead>
     <tr>
-      <th>...Autor...</th>
-      <th>...Titel...</th>
-      <th>...Jahr/Vol...</th>
-      <th>...Seite...</th>
+      <th>...Author...</th>
+      <th>...Title...</th>
+      <th>...Year/Vol...</th>
+      <th>...Page...</th>
       <th>...</th>
     </tr>
   </thead>

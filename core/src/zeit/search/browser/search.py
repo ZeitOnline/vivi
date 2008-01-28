@@ -17,6 +17,7 @@ import zc.table.table
 import zeit.cms.browser.listing
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 import zeit.search.interfaces
 
@@ -74,7 +75,7 @@ class MetadataColumn(zc.table.column.GetterColumn):
 
 class Search(object):
 
-    title = 'Suche'
+    title = _('Search')
     prefix = 'search.'
 
     @zope.cachedescriptors.property.Lazy
@@ -87,17 +88,17 @@ class Search(object):
 
         return (
             zeit.cms.browser.listing.GetterColumn(
-                u'Autor',
+                _('Author'),
                 lambda t, c: t.author),
             zeit.cms.browser.listing.GetterColumn(
-                u'Titel',
+                _('Title'),
                 lambda t, c: t.title),
             zeit.cms.browser.listing.GetterColumn(
-                u'Jahr/Vol.',
+                _('Year/Vol.'),
                 lambda t, c: '%s / %s' % (t.year, t.volume),
                 name='year_volume'),
             zeit.cms.browser.listing.GetterColumn(
-                u'Seite',
+                _('Page'),
                 lambda t, c: t.page),
             MetadataColumn(base_url, name='metadata'),
         )
@@ -117,7 +118,7 @@ class Search(object):
         formatter = zc.table.table.FormFullFormatter(
             self.context, self.request, self.content,
             columns=self.columns, prefix='search-table')
-        formatter.cssClasses['table'] = 'contentListing'
+        formatter.cssClasses['table'] = 'contentListing hasMetadata'
         return formatter
 
     @property
