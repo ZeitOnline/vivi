@@ -2,13 +2,6 @@
 Zeit Search
 ===========
 
-Meta search
-===========
-
-The meta search aggregates results from various searches. Right now it just
-unions the result. The plan is to intersect the results and combine meta-data
-from the sources.
-
 Xapian
 ======
 
@@ -73,9 +66,9 @@ The mock connector doesn't have title metadata:
 >>> item.title is None
 True
 >>> item.volume
-'07'
+7
 >>> item.author
-'pm'
+u'pm'
 
 >>> result = metadata(dict(ressort='Deutschland'))
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "ressort" "Deutschland")
@@ -94,3 +87,73 @@ Searching:  (:eq "http://namespaces.zeit.de/QPS/attributes" "page" "27")
 
 >>> result = metadata(dict(serie='davos'))
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
+
+
+Multiple arguments will be anded:
+
+>>> result = metadata(dict(serie='davos', page='39'))
+Searching:  (:and (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
+                  (:eq "http://namespaces.zeit.de/QPS/attributes" "page" "39"))
+
+
+Meta search
+===========
+
+The meta search aggregates results from various searches. It intersects the
+results and combines meta-data from the sources.
+
+>>> meta = zeit.search.search.MetaSearch()
+
+Let's start with two trival cases where no combination is necessary.  When
+asking for the index `text` the XapianSearch will be triggered:
+
+>>> result = meta(dict(text='linux'))
+>>> len(result)
+32
+>>> item = sorted(result, key=lambda x: x.uniqueId)[0]
+>>> item.title
+u'Schwarze M\xe4nner online'
+>>> item.uniqueId
+u'http://xml.zeit.de/2002/41/200241_public_enemy_xml'
+
+
+When asking for the other indexes the MetadataSearch will be triggered:
+
+>>> result = meta(dict(serie='davos'))
+Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
+>>> len(result)
+3
+>>> item = sorted(result, key=lambda x: x.uniqueId)[0]
+>>> item.uniqueId
+u'http://xml.zeit.de/2006/52/Stimmts'
+
+
+When we're asking for indexes from two sources at a time the results are
+combined:
+
+>>> result = meta(dict(text='linux', serie='davos'))
+Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
+>>> len(result)
+1
+
+We had one result only since there is only one common match.
+
+>>> item = sorted(result, key=lambda x: x.uniqueId)[0]
+>>> item.uniqueId
+u'http://xml.zeit.de/2006/52/Stimmts'
+
+The metadata is merged with the connector taking preference where data was
+available:
+
+>>> item.title
+u'Kleines Glossar'
+>>> item.author
+u'pm'
+>>> item.year
+2006
+>>> item.volume
+7
+>>> item.author
+u'pm'
+>>> item.page is None
+True

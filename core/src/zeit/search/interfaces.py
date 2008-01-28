@@ -24,6 +24,9 @@ class ISearchResult(zope.interface.Interface):
     volume = zope.schema.Int(title=_('Volume'))
     page = zope.schema.Int(title=_('Page'))
 
+    weight = zope.schema.Int(title=_(
+        'Realive weight of metadata freshness.'))
+
 
 class ISearchInterface(zope.interface.Interface):
     """Defines a very easy interface for search."""
