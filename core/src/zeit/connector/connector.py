@@ -396,21 +396,20 @@ class Connector(zope.thread.local):
 
         # Do we need a different conn for SEARCH?
         # NOTE: this code may become obsolete.
-        #       We need it to use a different netloc for different xconns.
+        #       We need it now to use a different netloc for different xconns.
         conn = self._conn('search')
 
         davres = davresource.DAVResult(
                 conn.search(self._roots.get('search', self._roots['default']),
                             body=expr._collect()._render()))
-
         for url, resp in davres.responses.items():
             try:
-                id = self._loc2id(urlparse.urljoin(self._roots['default'],
-                                                   url))
+                id = self._loc2id(urlparse.urljoin(self._roots['default'], url))
             except ValueError:
                 # Search returns documents which are outside the root, ignore
                 continue
-            yield tuple([id] + resp.get_all_properties().values())
+            props = resp.get_all_properties()
+            yield tuple([id] + [props[(a.name, a.namespace)] for a in attrlist])
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
         return self.cache.locktokens.get(id)
