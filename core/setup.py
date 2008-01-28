@@ -34,7 +34,7 @@ setup(
         'z3c.flashmessage',
         'z3c.traverser',
         'z3c.zrtresource',
-        'z3c.menu',
+        'z3c.menu.simple>=0.5.1',
         'zc.datetimewidget',
         'zc.form',
         'zc.notification',
