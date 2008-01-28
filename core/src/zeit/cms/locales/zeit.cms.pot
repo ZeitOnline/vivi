@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan 28 14:02:27 2008\n"
+"POT-Creation-Date: Mon Jan 28 14:24:25 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -190,7 +190,11 @@ msgstr ""
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
 
-#: src/zeit/cms/content/browser/cmscontent.pt:10
+#: src/zeit/cms/content/browser/cmscontent.pt:18
+msgid "Cancel"
+msgstr ""
+
+#: src/zeit/cms/content/browser/cmscontent.pt:20
 msgid "Yes, delete it."
 msgstr ""
 
@@ -199,8 +203,9 @@ msgstr ""
 msgid "delete_content_header"
 msgstr ""
 
-#: src/zeit/cms/content/browser/cmscontent.pt:8
-msgid "Cancel"
+#: src/zeit/cms/content/browser/cmscontent.pt:6
+#. Default: "Do you really want to delete:"
+msgid "delete_content_text"
 msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:32
@@ -851,6 +856,10 @@ msgstr ""
 
 #: src/zeit/search/interfaces.py:18
 msgid "URL to view in CMS"
+msgstr ""
+
+#: src/zeit/search/interfaces.py:27
+msgid "Realive weight of metadata freshness."
 msgstr ""
 
 #: src/zeit/workflow/browser/form.py:13

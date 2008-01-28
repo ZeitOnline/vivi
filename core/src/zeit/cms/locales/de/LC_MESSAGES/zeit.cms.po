@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Jan 28 14:02:27 2008\n"
-"PO-Revision-Date: 2008-01-28 14:03+0100\n"
+"POT-Creation-Date: Mon Jan 28 14:24:25 2008\n"
+"PO-Revision-Date: 2008-01-28 16:29+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -178,7 +178,11 @@ msgstr "Einchecken"
 msgid "Broken reference to ${uniqueId}"
 msgstr "Invalide Referenz zu ${uniqueId}"
 
-#: src/zeit/cms/content/browser/cmscontent.pt:10
+#: src/zeit/cms/content/browser/cmscontent.pt:18
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/zeit/cms/content/browser/cmscontent.pt:20
 msgid "Yes, delete it."
 msgstr "Ja, löschen."
 
@@ -187,9 +191,10 @@ msgstr "Ja, löschen."
 msgid "delete_content_header"
 msgstr "Inhalt löschen"
 
-#: src/zeit/cms/content/browser/cmscontent.pt:8
-msgid "Cancel"
-msgstr "Abbrechen"
+#. Default: "Do you really want to delete:"
+#: src/zeit/cms/content/browser/cmscontent.pt:6
+msgid "delete_content_text"
+msgstr "Möchten Sie das Objekt wirklich löschen?"
 
 #: src/zeit/cms/content/browser/form.py:32
 msgid "Navigation"
@@ -840,6 +845,10 @@ msgstr "Eindeutige ID"
 #: src/zeit/search/interfaces.py:18
 msgid "URL to view in CMS"
 msgstr "URL, die im CMS angezeigt werden soll"
+
+#: src/zeit/search/interfaces.py:27
+msgid "Realive weight of metadata freshness."
+msgstr "Realive weight of metadata freshness."
 
 #: src/zeit/workflow/browser/form.py:13
 #: src/zeit/workflow/browser/configure.zcml:8
