@@ -182,8 +182,15 @@ table.properties textarea {
    margin: 0;
 }
 
-.Tree li > a {
-   margin-left: -0.5em;
+.Tree li > p {
+   margin: 0;
+   padding: 0;
+   margin-top: -1.5em;
+   padding-left: 1.5em;
+}
+.Tree li.Root > p {
+   margin: 0;
+   padding: 0;
 }
 
 .Tree li {
@@ -223,11 +230,11 @@ table.properties textarea {
 }
 
 /* clipboard tree */
-#clipboardcontents .Root > a.DeleteLink {
+#clipboardcontents .Root > p a.DeleteLink {
    display: none;
 }
 #clipboardcontents .DeleteLink {
-  margin: 0 2em;
+  margin: 0 0.5em;
   color: #ccc;
 }
 #clipboardcontents .DeleteLink:hover {

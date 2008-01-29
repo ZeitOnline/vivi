@@ -7,6 +7,7 @@
                           class root;
                           action item/action;
                           active item/selected">
+        <p>
         <a href="#" tal:content="item/title|item/__name__"
                     tal:attributes="href item/url">
           2005
@@ -20,6 +21,7 @@
            tal:condition="item/delete_url"
            tal:attributes="href item/delete_url"
            >Remove</a>
+      </p>
         <tal:block
           define="sub_data item/sub_data"
           condition="python:sub_data"

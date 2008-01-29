@@ -24,6 +24,7 @@ The tree is rendered  in the sidebar all the time:
 <div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
+        <p>
         <a href="...">Repository</a>
         ...
         <ul>
@@ -44,6 +45,7 @@ When we visit `online` it is automatically expanded while visiting it:
 <div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
  <ul>
     <li active="True" class="Root">
+      <p>
       <a href="...">Repository</a>
       ...
       <ul>
@@ -70,6 +72,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 >>> print lxml.etree.tostring(browser.etree, pretty_print=True)
 <ul>
     <li active="True" class="Root">
+      <p>
       <a href="...">Repository</a>
       ...
       <ul>
@@ -94,6 +97,7 @@ on the + icon) the tree stays expanded even when we're not inside online:
 <div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
+        <p>
         <a href="...">Repository</a>
         ...
         <ul>
@@ -120,15 +124,19 @@ between online/2007 and 2007:
 <?xml ...
       <li action="expand" class="NotRoot"
           uniqueid="http://xml.zeit.de/online/2007">
+          <p>
         <a href="http://localhost/++skin++cms/repository/online/2007">2007</a>
         <span class="URL">http://localhost/++skin++cms/repository/online/2007</span>
+        </p>
       </li>
   </ul>
       </li>
       <li action="expand" class="NotRoot"
           uniqueid="http://xml.zeit.de/2007">
+          <p>
         <a href="http://localhost/++skin++cms/repository/2007">2007</a>
         <span class="URL">http://localhost/++skin++cms/repository/2007</span>
+        </p>
       </li>
   </ul>
       </li>
@@ -145,6 +153,7 @@ When we are *inside* a hidden container, it is shown nevertheles:
 <div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
+        <p>
         <a href="...">Repository</a>
         ...
         <ul>
@@ -175,6 +184,7 @@ The navigation tree contains the 2006 even when looking at the root:
 <div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
+        <p>
         <a href="...">Repository</a>
         ...
         <ul>
@@ -206,6 +216,7 @@ A shown container can be hidden again though:
 <div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
   <ul>
       <li active="True" class="Root">
+        <p>
         <a href="...">Repository</a>
         ...
         <ul>
