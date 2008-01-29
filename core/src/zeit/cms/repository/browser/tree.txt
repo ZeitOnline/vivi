@@ -113,14 +113,62 @@ Hidden Containers
 =================
 
 Users often do not want to see certain containers, so they can hide them.
-Initially most containers are hidden actually. Let's first show the 2006
-container:
+Initially most containers are hidden actually. If 2006 was shown it would be
+between online/2007 and 2007:
+
+>>> print browser.contents
+<?xml ...
+      <li action="expand" class="NotRoot"
+          uniqueid="http://xml.zeit.de/online/2007">
+        <a href="http://localhost/++skin++cms/repository/online/2007">2007</a>
+        <span class="URL">http://localhost/++skin++cms/repository/online/2007</span>
+      </li>
+  </ul>
+      </li>
+      <li action="expand" class="NotRoot"
+          uniqueid="http://xml.zeit.de/2007">
+        <a href="http://localhost/++skin++cms/repository/2007">2007</a>
+        <span class="URL">http://localhost/++skin++cms/repository/2007</span>
+      </li>
+  </ul>
+      </li>
+  </ul>
+  ...
+
+
+When we are *inside* a hidden container, it is shown nevertheles:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+...                                ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True)
+<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+  <ul>
+      <li active="True" class="Root">
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...online...
+            <ul>
+              <li...2007...
+            </ul>
+          </li>
+          <li...2006...
+          <li...2007...
+        </ul>
+      </li>
+   </ul>
+</div>
+
+
+Let's explicitly "show' the 2006 container now:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006')
 >>> browser.getLink('Show').click()
 
-The navigation tree contains the 2006 now:
+The navigation tree contains the 2006 even when looking at the root:
 
+>>> browser.open('http://localhost/++skin++cms/repository/')
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                                ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)

@@ -47,7 +47,8 @@ class Tree(zeit.cms.browser.tree.Tree):
         for obj in container.values():
             if not zeit.cms.repository.interfaces.ICollection.providedBy(obj):
                 continue
-            if self.preferences.is_hidden(obj):
+            if (self.preferences.is_hidden(obj)
+                and not self.selected(self.getUrl(obj))):
                 continue
             yield obj
 
