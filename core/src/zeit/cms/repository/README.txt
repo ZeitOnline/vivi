@@ -125,6 +125,23 @@ Since it does have an id we can get it back from the repository:
 u"I'm a shiny new object."
 
 
+Renaming objects
+================
+
+Objects can be renamed in a container:
+
+>>> repository.rename('i_am_new', 'i_am_not_so_new_anymore')
+>>> list(repository)
+[u'online', u'2006', u'2007', u'i_am_not_so_new_anymore', u'politik.feed',
+ u'wirtschaft.feed']
+
+Rename it back:
+
+>>> repository.rename('i_am_not_so_new_anymore', 'i_am_new')
+>>> list(repository)
+[u'online', u'2006', u'2007', u'i_am_new', u'politik.feed', u'wirtschaft.feed']
+
+
 Deleting Content Object
 =======================
 
