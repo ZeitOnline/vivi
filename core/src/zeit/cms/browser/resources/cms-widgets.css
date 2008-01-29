@@ -222,6 +222,22 @@ table.properties textarea {
   border-bottom: 2px solid red !important;
 }
 
+/* clipboard tree */
+#clipboardcontents .Root > a.DeleteLink {
+   display: none;
+}
+#clipboardcontents .DeleteLink {
+  margin: 0 2em;
+  color: #ccc;
+}
+#clipboardcontents .DeleteLink:hover {
+  color: #333;
+}
+#clipboardcontents {
+  margin-bottom: 1em;
+}
+
+
 /*
  * Drag-Pane
  *

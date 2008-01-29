@@ -1,6 +1,7 @@
 <configure 
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:z3c="http://namespaces.zope.org/z3c"
   i18n_domain="zeit.cms">
 
   <adapter factory=".entry.entryListRepresentationFactory" />
@@ -105,13 +106,22 @@
     class=".clip.ClipDragPane"
     name="drag-pane.html"
     />
-  
+
   <browser:menuItem
     for="zeit.cms.clipboard.interfaces.IClip"
-    action="delete"
-    menu="folder-actions"
+    action="deletecontent.html"
+    menu="zeit-context-actions"
     title="Delete"
     permission="zope.ManageContent"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    name="deletecontent.html"
+    attribute="delete"
+    class=".entry.DeleteEntry"
+    permission="zope.ManageContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
 

@@ -1,20 +1,21 @@
-function ClipboardDND(base_url, clipboard_id, tree) {
+function Clipboard(base_url, tree_url, clipboard_id) {
     this.base_url = base_url;
     this.contentElement = getElement(clipboard_id);
-    this.tree = tree;
-    connect(tree, 'treeChangeEvent', this, 'handleTreeChange');
+    this.tree = new Tree(tree_url, clipboard_id);
+    connect(this.tree, 'treeChangeEvent', this, 'handleTreeChange');
     this.connectDNDHandlers();
     var dnd = this;
     this.dragging = false;
     MochiKit.Position.includeScrollOffsets = true;
-    
+
     // Adding
     connect('clip-add-folder-link', 'onclick', this, 'showAddBox');
     connect('clip-add-folder-submit', 'onclick', this, 'addClip');
     connect('clip-add-folder-cancel', 'onclick', this, 'hideAddBox');
+    connect('clipboardcontents', 'onclick', this, 'removeClip');
 }
 
-ClipboardDND.prototype = {
+Clipboard.prototype = {
 
     connectDNDHandlers: function() {
         var elements = this.contentElement.getElementsByTagName('li');
@@ -32,14 +33,14 @@ ClipboardDND.prototype = {
                     endeffect: null});
             }
         });
-       
+
         forEach(this.contentElement.getElementsByTagName('a'), function(node) {
-            connect(node, 'onclick', function(event) {
-                if (dnd.dragging == true) {
-                    event.stop();
-                }
+                connect(node, 'onclick', function(event) {
+                    if (dnd.dragging == true) {
+                        event.stop();
+                    }
+                });
             });
-        });
     },
 
     handleDrop: function(dropped_on, element) {
@@ -59,7 +60,7 @@ ClipboardDND.prototype = {
             url = '/@@addContent';
             options['unique_id'] = element.uniqueId;
         }
-        
+
             if (!options) return;
 
             var d = doSimpleXMLHttpRequest(this.base_url + url, options);
@@ -104,5 +105,25 @@ ClipboardDND.prototype = {
             alert
         );
     },
+
+    removeClip: function(event) {
+        var element = event.target();
+        if (element == undefined) return;
+
+        var css_class = element.getAttribute('class');
+        if (css_class == 'DeleteLink') {
+            var url = element.getAttribute('href')
+            var d = doSimpleXMLHttpRequest(url);
+            d.addCallbacks(
+                function(result) {
+                    clipboarddnd.tree.replaceTree(result.responseText);
+                });
+        }
+
+        if (element.nodeName == 'A' && !(css_class == 'DeleteLink')) return;
+
+        event.stop();
+    },
 }
+
 

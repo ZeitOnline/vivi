@@ -188,6 +188,7 @@ Sometimes it will be necessary to manually reload the image folder, i.e. when
 images were added. Remove the image 03.jpg from the gallery folder:
 
 >>> bookmark = browser.url
+>>> browser.handleErrors = False
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/@@view.html')
 >>> browser.getLink("Delete").click()

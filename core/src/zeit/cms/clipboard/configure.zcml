@@ -4,7 +4,6 @@
   <adapter factory=".clipboard.clipboardFactory" trusted="true" />
   <adapter factory=".clipboard.principalAdapter" />
 
-
   <subscriber
     factory=".clipboard.WorkingcopyTraverser"
     for="zeit.cms.workingcopy.interfaces.IWorkingcopy
@@ -60,5 +59,7 @@
   <adapter factory=".entry.Entry"
     provides="zeit.cms.clipboard.interfaces.IClipboardEntry"
     />
+  <adapter factory=".entry.entry_to_clipboard" />
+
 
 </configure>

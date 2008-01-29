@@ -13,13 +13,22 @@ from  zeit.cms.i18n import MessageFactory as _
 import zeit.cms.clipboard.interfaces
 
 
-
 class Entry(object):
 
     def __call__(self):
         url = zope.traversing.browser.absoluteURL(self.context.references,
                                                   self.request)
         self.request.response.redirect(url + '/@@view.html')
+
+
+class DeleteEntry(object):
+
+    def delete(self):
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.context)
+        del clipboard[self.context.__name__]
+        tree = zope.component.getMultiAdapter((clipboard, self.request),
+                                              name="tree.html")
+        return tree()
 
 
 class EntryListRepresentation(object):

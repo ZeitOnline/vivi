@@ -24,6 +24,8 @@ The clipboard is displayed as a tree. Initially it's empty:
       <li class="Root" uniqueid="">
         <a href="...">Clipboard</a>
         <span class="URL">...</span>
+        <a title="Remove Clip from Clipboard"
+           class="DeleteLink"...>Remove</a>
       </li>
     </ul>
   </div>
@@ -49,10 +51,14 @@ We assume, that we drag the pane over the Clipboard:
     <li class="Root" uniqueid="">
       <a href="...">Clipboard</a>
       <span class="URL">...</span>
+      <a title="Remove Clip from Clipboard"
+         class="DeleteLink" ...>Remove</a>
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
           <span class="URL">...wirtschaft.feed</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
       </ul>
    </li>
@@ -71,14 +77,20 @@ added *before* the feed:
       <li class="Root" uniqueid="">
         <a href="...">Clipboard</a>
         <span class="URL">...</span>
+        <a title="Remove Clip from Clipboard"
+           class="DeleteLink" ...>Remove</a>
         <ul>
           <li class="NotRoot" uniqueid="wirtschaft.feed">
             <a href="...wirtschaft.feed">Wirtschaft</a>
             <span class="URL">...wirtschaft.feed</span>
+            <a title="Remove Clip from Clipboard"
+               class="DeleteLink" ...>Remove</a>
           </li>
           <li class="NotRoot" uniqueid="Querdax">
             <a href="...Querdax">Querdax</a>
             <span class="URL">...Querdax</span>
+            <a title="Remove Clip from Clipboard"
+               class="DeleteLink" ...>Remove</a>
           </li>
         </ul>
      </li>
@@ -136,18 +148,26 @@ element of the root node:
     <li class="Root" uniqueid="">
       <a href="...">Clipboard</a>
       <span class="URL">...</span>
+      <a title="Remove Clip from Clipboard"
+         class="DeleteLink" ...>Remove</a>
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <a href="...wirtschaft.feed">Wirtschaft</a>
           <span class="URL">...wirtschaft.feed</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
         <li class="NotRoot" uniqueid="Querdax">
           <a href="...Querdax">Querdax</a>
           <span class="URL">...Querdax</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
         <li action="expand" class="NotRoot" uniqueid="New Clip">
           <a href="...">New Clip</a>
           <span class="URL">...New%20Clip</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
       </ul>
    </li>
@@ -164,26 +184,117 @@ Let's add another clip:
     <li class="Root" uniqueid="">
       <a href="...">Clipboard</a>
       <span class="URL">...</span>
+      <a title="Remove Clip from Clipboard"
+         class="DeleteLink" ...>Remove</a>
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <a href="...wirtschaft.feed">Wirtschaft</a>
           <span class="URL">...wirtschaft.feed</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
         <li class="NotRoot" uniqueid="Querdax">
           <a href="...Querdax">Querdax</a>
           <span class="URL">...Querdax</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
         <li action="expand" class="NotRoot" uniqueid="New Clip">
           <a href="...">New Clip</a>
           <span class="URL">...New%20Clip</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
         <li action="expand" class="NotRoot" uniqueid="Second Clip">
           <a href="...">Second Clip</a>
           <span class="URL">...Second%20Clip</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
         </li>
       </ul>
    </li>
  </ul>
+
+
+Removing Clips
+==============
+
+Each clipboard entry can be removed. We use our "ajax" browser and
+remove the last entry:
+
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      <span class="URL">...</span>
+      <a title="Remove Clip from Clipboard"
+         class="DeleteLink" ...>Remove</a>
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <span class="URL">...wirtschaft.feed</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+        <li class="NotRoot" uniqueid="Querdax">
+          <a href="...Querdax">Querdax</a>
+          <span class="URL">...Querdax</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
+          <span class="URL">...New%20Clip</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+          <a href="...">Second Clip</a>
+          <span class="URL">...Second%20Clip</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+      </ul>
+   </li>
+ </ul>
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/'
+...           'zope.user/zeit.cms.clipboard.clipboard.Clipboard/'
+...           'Second%20Clip/@@deletecontent.html')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <a href="...">Clipboard</a>
+      <span class="URL">...</span>
+      <a title="Remove Clip from Clipboard"
+         class="DeleteLink" ...>Remove</a>
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <span class="URL">...wirtschaft.feed</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+        <li class="NotRoot" uniqueid="Querdax">
+          <a href="...Querdax">Querdax</a>
+          <span class="URL">...Querdax</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="New Clip">
+          <a href="...">New Clip</a>
+          <span class="URL">...New%20Clip</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
+        </li>
+      </ul>
+   </li>
+ </ul>
+
+Add the removed clip again:
+
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
+...           'title=Second+Clip')
 
 
 Moving 
@@ -237,6 +348,8 @@ Expand the `New Clip` node:
         <li action="collapse" class="NotRoot" uniqueid="New Clip">
           <a href="...">New Clip</a>
           <span class="URL">...</span>
+          <a title="Remove Clip from Clipboard"
+             class="DeleteLink" ...>Remove</a>
           <ul>
             <li class="NotRoot" uniqueid="New Clip/Querdax">
               <a href="...Querdax">Querdax</a>

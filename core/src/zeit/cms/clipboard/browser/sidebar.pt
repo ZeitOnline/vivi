@@ -31,10 +31,9 @@
     </form>
     <script language="javascript"
       tal:content="string:
-        var clipboardtree = new Tree('$tree_url', 'clipboardcontents');
-        var clipboarddnd = new ClipboardDND('$clipboard_url',
-                                            'clipboardcontents',
-                                            clipboardtree);
+        var clipboarddnd = new Clipboard('$clipboard_url',
+                                         '$tree_url',
+                                         'clipboardcontents');
         ">
     </script>
 

@@ -93,6 +93,7 @@ class Tree(zope.publisher.browser.BrowserView):
                'subfolders': expandable,
                'isroot': root,
                'url': url,
+               'delete_url': self.getDeleteUrl(obj),
                'selected': selected}
 
     def getTitle(self, obj):
@@ -108,6 +109,10 @@ class Tree(zope.publisher.browser.BrowserView):
         return zope.component.getMultiAdapter(
             (obj, self.request),
             name='absolute_url')()
+
+    def getDeleteUrl(self, obj):
+        """Returns the url to delete this content item."""
+        return ''
 
     def expandable(self, obj):
         """Returns if the obj can be expanded or collapsed.

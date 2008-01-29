@@ -93,6 +93,10 @@ class Tree(zeit.cms.browser.tree.Tree):
     def selected(self, url):
         return None
 
+    def getDeleteUrl(self, obj):
+        url = self.getUrl(obj)
+        return url + '/@@deletecontent.html'
+
 
 class ClipboardListRepresentation(
     zeit.cms.browser.listing.BaseListRepresentation):

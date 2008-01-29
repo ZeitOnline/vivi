@@ -2,18 +2,30 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:z3c="http://namespaces.zope.org/z3c"
   i18n_domain="zeit.cms">
 
   <include file="template.zcml" />
 
   <!-- Delete view -->
-  <gocept:pagelet
+  <z3c:pagelet
     for="zeit.cms.interfaces.ICMSContent"
     name="deletecontent.html"
     class=".cmscontent.DeleteContent"
-    template="cmscontent.pt"
     permission="zeit.DeleteContent"
-    menu="zeit-context-actions" title="Delete"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <z3c:template
+    for=".cmscontent.DeleteContent"
+    template="cmscontent.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    action="deletecontent.html"
+    menu="zeit-context-actions"
+    title="Delete"
+    permission="zeit.DeleteContent"
     />
 
   <!-- Keyword widget -->

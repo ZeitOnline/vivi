@@ -14,6 +14,12 @@
         <span class="URL" tal:content="string:${item/url}">
           http://localhost/somalia
         </span>
+        <a title="Remove Clip from Clipboard"
+           i18n:attributes="title"
+           class="DeleteLink"
+           tal:condition="item/delete_url"
+           tal:attributes="href item/delete_url"
+           >Remove</a>
         <tal:block
           define="sub_data item/sub_data"
           condition="python:sub_data"

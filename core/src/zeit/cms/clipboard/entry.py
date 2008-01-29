@@ -50,6 +50,12 @@ class Entry(zope.app.container.contained.Contained,
         return self._value
 
 
+@zope.component.adapter(zeit.cms.clipboard.interfaces.IClipboardEntry)
+@zope.interface.implementer(zeit.cms.clipboard.interfaces.IClipboard)
+def entry_to_clipboard(context):
+    return zeit.cms.clipboard.interfaces.IClipboard(context.__parent__)
+
+
 class Clip(zope.app.container.ordered.OrderedContainer):
 
     zope.interface.implements(zeit.cms.clipboard.interfaces.IClip)

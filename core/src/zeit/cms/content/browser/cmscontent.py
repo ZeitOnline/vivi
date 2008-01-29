@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id: keyword.py 10103 2008-01-16 12:26:27Z zagy $
 import zope.component
+import zope.cachedescriptors.property
 
 import zeit.cms.browser.interfaces
 
@@ -29,21 +30,21 @@ class DeleteContent(object):
                                              name='absolute_url')()
         self.request.response.redirect(url)
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def title(self):
         list_repr = zope.component.queryMultiAdapter(
             (self.context, self.request),
             zeit.cms.browser.interfaces.IListRepresentation)
         return list_repr.title
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def icon(self):
         icon = zope.component.queryMultiAdapter(
             (self.context, self.request), name="zmi_icon")
         if icon:
             return icon()
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def uniqueId(self):
         list_repr = zope.component.queryMultiAdapter(
             (self.context, self.request),
