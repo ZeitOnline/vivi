@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import logging
 import urllib2
 
 import zope.component
@@ -15,13 +16,18 @@ import gocept.cache.method
 import zeit.cms.interfaces
 
 
+logger = logging.getLogger('zeit.cms.content.sources')
+
+
 class SimpleXMLSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     @gocept.cache.method.Memoize(3600)
     def getValues(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
-        request = urllib2.urlopen(cms_config[self.config_url])
+        url = cms_config[self.config_url]
+        logger.debug('Getting %s' % url)
+        request = urllib2.urlopen(url)
         xml = gocept.lxml.objectify.fromfile(request)
         return [unicode(serie) for serie in xml.iterchildren()]
 
