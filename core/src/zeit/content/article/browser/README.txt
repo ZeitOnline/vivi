@@ -22,7 +22,7 @@ The metadata preview shows the most important data in list views:
       <div class="teaser-title" title="Teaser">...
 
 >>> browser.getLink('Checkout')
-<Link text='[IMG] Checkout' ...>
+<Link text='actionmenuicon[IMG] Checkout' ...>
 
 Make sure we have a "view" link:
 
@@ -582,11 +582,11 @@ prevent entering more than the allowed length. Makre sure the widget is used:
 <?xml ...
 <!DOCTYPE ...
     <title> Add article </title>...
-        <div class="widget"><div class="show-input-limit" maxlength="170"></div><textarea cols="60" id="form.teaserText" name="form.teaserText" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.teaserText");</script></div>
+        <div class="widget"><div class="show-input-limit" maxlength="170"></div><textarea cols="60" id="form.teaserText" name="form.teaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.teaserText");</script></div>
         ...
-        <div class="widget"><div class="show-input-limit" maxlength="20"></div><textarea cols="60" id="form.shortTeaserTitle" name="form.shortTeaserTitle" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.shortTeaserTitle");</script></div>
+        <div class="widget"><div class="show-input-limit" maxlength="20"></div><textarea cols="60" id="form.shortTeaserTitle" name="form.shortTeaserTitle" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserTitle");</script></div>
         ...
-        <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script language="javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
+        <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
         ... 
 
 

@@ -179,7 +179,6 @@ class Listing(object):
     filter_interface = None
 
     columns = (
-        zc.table.column.SelectionColumn(idgetter=lambda item: item.__name__),
         TypeColumn(u'', name='type'),
         LockedColumn(u'', name='locked'),
         GetterColumn(

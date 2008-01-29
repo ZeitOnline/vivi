@@ -18,18 +18,20 @@
       tal:content="structure tree_view">
         Tree
     </div>
-    <form>
-    <input type="button" value="Clip hinzufügen..." id="clip-add-folder-link" />
-    <div id="clip-add-folder-box">
+    <form action="">
+      <p>
+        <input type="button" value="Clip hinzufügen..." id="clip-add-folder-link" />
+      </p>
+      <div id="clip-add-folder-box">
         Clipname: <input id="clip-add-folder-title" type="text" name="title" />
         <br />
         <input type="button" name="add_clip"
           id="clip-add-folder-submit" value="Clip anlegen" /> oder
         <input type="button" name="cancel"
           id="clip-add-folder-cancel" value="Abrechen" />
-    </div>
+      </div>
     </form>
-    <script language="javascript"
+    <script type="text/javascript"
       tal:content="string:
         var clipboarddnd = new Clipboard('$clipboard_url',
                                          '$tree_url',

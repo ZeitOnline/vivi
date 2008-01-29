@@ -19,7 +19,7 @@ The metadata preview shows the most important data in list views:
 >>> print browser.contents
     <div class="context-views">...
 >>> browser.getLink('Checkout')
-<Link text='[IMG] Checkout' ...>
+<Link text='actionmenuicon[IMG] Checkout' ...>
 
 We have to publish another url to see if articles are listed:
 

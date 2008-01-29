@@ -10,7 +10,7 @@
         tal:attributes="href day_url">
         [+]        
       </a>
-      <script language="javascript" tal:content="string:
+      <script type="text/javascript" tal:content="string:
         var $element_id = new CalendarDayDND('$day_url', '$element_id');"
         ></script>
     </div>

@@ -21,7 +21,7 @@
     tal:content="structure tree_view">
     Navigation tree
   </div>
-  <script language="javascript"
+  <script type="text/javascript"
     tal:content="string:
       var navtree = new Tree('$tree_url', 'navtreecontents');">
   </script>

@@ -20,7 +20,7 @@ class ShowLimitInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
         result = [
             '<div class="show-input-limit" maxlength="%s"></div>' % max_length,
         super(ShowLimitInputWidget, self).__call__(),
-            ('<script language="javascript">new zeit.cms.InputValidation('
+            ('<script type="text/javascript">new zeit.cms.InputValidation('
              '"%s");</script>') % self.name]
 
         return ''.join(result)

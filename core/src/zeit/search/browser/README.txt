@@ -20,6 +20,7 @@ The search form is located in the side bar.
     <form id="search-form"
           action="http://localhost/++skin++cms/search.html"
           class="hide-extended">
+      <p>
       <input type="text" name="search.text" id="search.text" />
     ...
     </form>

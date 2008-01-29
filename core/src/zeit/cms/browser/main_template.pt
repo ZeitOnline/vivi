@@ -83,7 +83,7 @@
           tal:attributes="class sidebar_css">
         </div>
 
-        <script tal:content="string:
+        <script type="text/javascript" tal:content="string:
           connect(window, 'onload', function(event) {
             var panel_handler = new PanelHandler('$site_url');
             panel_handler.registerPanelHandlers();

@@ -22,11 +22,13 @@
       tal:attributes="
       action string:${request/getApplicationURL}/search.html;
       class view/form_class">
-      <input type="text" name="search.text" id="search.text"
-        tal:attributes="value last_search/text | nothing" />
+      <p>
+        <input type="text" name="search.text" id="search.text"
+          tal:attributes="value last_search/text | nothing" />
 
-      <input type="submit" name="search" value="Search" 
-        i18n:attributes="Search" />
+        <input type="submit" name="search" value="Search" 
+          i18n:attributes="Search" />
+      </p>
 
       <div id="search-extended-show" i18n:translate="">
         Extended ...

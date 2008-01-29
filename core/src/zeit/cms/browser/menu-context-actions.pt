@@ -9,7 +9,7 @@
       title menu_item/title;
       target menu_item/target | nothing"
       i18n:attributes="title">
-      <img src=""
+      <img src="" alt="actionmenuicon"
         tal:attributes="src string:/@@/zeit.cms/icons/$klass.png" />
       <span class="action-title"
         tal:content="menu_item/title"
