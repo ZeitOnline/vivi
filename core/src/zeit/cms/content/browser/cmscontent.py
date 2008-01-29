@@ -49,3 +49,8 @@ class DeleteContent(object):
             (self.context, self.request),
             zeit.cms.browser.interfaces.IListRepresentation)
         return list_repr.uniqueId
+
+
+class RenameContent(object):
+
+    pass

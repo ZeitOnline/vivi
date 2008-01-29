@@ -2,7 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.viewlet.viewlet
+
 import zope.app.publisher.browser.menu
+import zope.app.publisher.interfaces.browser
 
 import z3c.menu.simple.menu
 
@@ -16,6 +19,18 @@ class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
         for item in result:
             item['target'] = "_blank"
         return result
+
+
+class MenuViewlet(zope.viewlet.viewlet.ViewletBase):
+
+    menu = None
+
+    @property
+    def menu_items(self):
+        menu = zope.component.getUtility(
+            zope.app.publisher.interfaces.browser.IBrowserMenu,
+            name=self.menu)
+        return menu.getMenuItems(self.context, self.request)
 
 
 class GlobalMenuItem(z3c.menu.simple.menu.GlobalMenuItem):

@@ -32,6 +32,10 @@ class IGlobalViews(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for global menu."""
 
 
+class IContextActions(zope.viewlet.interfaces.IViewletManager):
+    """Viewlets for actions menu."""
+
+
 class ISidebar(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the sidebar"""
 

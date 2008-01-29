@@ -152,29 +152,7 @@
     <div class="context-actions"
     tal:define="context_url context/@@absolute_url">
         <ul>
-        <tal:repeat 
-             repeat="menu_item python: (
-             path('context/@@view_get_menu/zeit-context-actions') + 
-             path('context/@@view_get_menu/zeit-context-actions-external'))">
-          <li
-            tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
-            tal:attributes="class string:$klass ${menu_item/selected}">
-            <a
-              tal:attributes="href string:$context_url/${menu_item/action};
-              title menu_item/title;
-              target menu_item/target | nothing"
-              i18n:attributes="title">
-              <img src=""
-                tal:attributes="src string:/@@/zeit.cms/icons/$klass.png" />
-              <span class="action-title"
-                tal:content="menu_item/title"
-                i18n:translate="">
-                Checkout
-              </span>
-
-            </a>
-          </li>
-        </tal:repeat>
+          <tal:replace replace="structure provider:zeit.cms.context-actions" />
       </ul>
     </div>
   </metal:macro>

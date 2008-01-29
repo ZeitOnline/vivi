@@ -7,6 +7,13 @@
 
   <!-- Menus -->
 
+  <browser:viewletManager
+    name="zeit.cms.context-actions"
+    provides=".interfaces.IContextActions"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
   <browser:menu
     id="zeit-context-actions"
     title="context sensitive actions"
@@ -17,6 +24,29 @@
     title="context sensitive actions"
     class=".menu.ExternalActionsMenu"
     />
+
+  <browser:viewlet
+    name="internal"
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager=".interfaces.IContextActions"
+    class=".menu.MenuViewlet"
+    template="menu-context-actions.pt"
+    permission="zope.View"
+    menu="zeit-context-actions"
+    />
+
+  <browser:viewlet
+    name="external"
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager=".interfaces.IContextActions"
+    class=".menu.MenuViewlet"
+    template="menu-context-actions.pt"
+    permission="zope.View"
+    menu="zeit-context-actions-external"
+    />
+
 
   <browser:menu
     id="zeit-context-views"
