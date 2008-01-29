@@ -27,12 +27,20 @@ class _DeleteProperty(object):
 DeleteProperty = _DeleteProperty()
 
 
-class LockingError(Exception):
-    """Raised when trying to lock an already locked resource."""
+class ConnectorError(Exception):
+    """Generic, resource related, error in the connector."""
 
     def __init__(self, id, *args):
         self.uniqueId = id
         self.args = args
+
+
+class LockingError(ConnectorError):
+    """Raised when trying to lock an already locked resource."""
+
+
+class MoveError(ConnectorError):
+    """Raised when moving an object fails."""
 
 
 class LockedByOtherSystemError(LockingError):
@@ -88,10 +96,21 @@ class IConnector(zope.interface.Interface):
 
         """
 
+    def __contains__(id):
+        """Return whether resource `id` exists."""
+
     def add(object):
         """Add the given `object` to the document store.
 
         The object must be adaptable to IResource.
+
+        """
+
+    def move(old_id, new_id):
+        """Move the resource with id `old_id` to `new_id`.
+
+        raises KeyError if ther is no resource `old_id`
+        raises MoveError if there was a problem with moving itself.
 
         """
 

@@ -318,10 +318,44 @@ class Connector(zope.thread.local):
                 id, "Could not delete resource.")
         self._invalidate_cache(id)
 
+    def __contains__(self, id):
+        # Because we cache a lot it will be ok to just grab the object:
+        try:
+            self[id]
+        except KeyError:
+            return False
+        return True
+
     def add(self, object):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(resource.id)
         self._internal_add(id, resource)
+
+    def move(self, old_id, new_id):
+        """Move the resource with id `old_id` to `new_id`."""
+
+        if self._get_cannonical_id(new_id) in self:
+            raise zeit.connector.interfaces.MoveError(
+                old_id,
+                "Could not move %s to %s, because target alread exists." % (
+                    old_id, new_id))
+
+        # Make old_id and new_id canonical. Use the canonical old_id to deduct
+        # the canonical new_id:
+        old_id = self._get_cannonical_id(old_id)
+        if old_id.endswith('/'):
+            if not new_id.endswith('/'):
+                new_id += '/'
+        else:
+            if new_id.endswith('/'):
+                new_id = new_id[:len(new_id)-1]
+
+        old_loc = self._id2loc(old_id)
+        new_loc = self._id2loc(new_id)
+        conn = self._conn('default')
+        conn.move(old_loc, new_loc)
+        self._invalidate_cache(old_id)
+        self._invalidate_cache(new_id)
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)

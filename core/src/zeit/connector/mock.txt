@@ -140,11 +140,15 @@ Let's have a look into the collection `/online/2007/01`. It is empty so far:
 
 >>> list(connector.listCollection('http://xml.zeit.de/online/2007/02'))
 []
+>>> resource.id in connector
+False
 
 
 Add the `resource` to the connector:
 
 >>> connector[resource.id] = resource
+>>> resource.id in connector
+True
 
 We now can get the object back from the connector:
 
@@ -247,6 +251,38 @@ Traceback (most recent call last):
 KeyError: ...
 
 
+Moving content in the repository
+================================
+
+Content could be moved by removind/adding. This donesn't work nicely with
+folders though. So we implement a special method for moving:
+
+>>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
+[(u'2006', u'http://xml.zeit.de/2006'),
+ (u'2007', u'http://xml.zeit.de/2007'),
+ (u'online', u'http://xml.zeit.de/online'),
+ (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+>>> connector.move('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-27')
+>>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
+[(u'2006-27', u'http://xml.zeit.de/2006-27'),
+ (u'2007', u'http://xml.zeit.de/2007'),
+ (u'online', u'http://xml.zeit.de/online'),
+ (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+
+
+Overwriting content by moving is not allowed and raises an error:
+
+>>> connector.move('http://xml.zeit.de/2006-27', 'http://xml.zeit.de/2007')
+Traceback (most recent call last):
+    ...
+MoveError: Could not move http://xml.zeit.de/2006-27 to http://xml.zeit.de/2007, because target alread exists.
+
+
+Let's move 2006-27 back:
+
+>>> connector.move('http://xml.zeit.de/2006-27', 'http://xml.zeit.de/2006')
+
+
 Collections
 ===========
 
@@ -331,13 +367,14 @@ connector.
 
 Currently the mock holds data:
 
->>> connector._data
-{'http://xml.zeit.de/online/2007/03/foo': '',
- 'http://xml.zeit.de/online/2007/03': '',
- 'http://xml.zeit.de/testing/collection': '',
+>>> pprint(connector._data)
+{'http://xml.zeit.de/2006': '',
+ 'http://xml.zeit.de/2006-27': '',
+ 'http://xml.zeit.de/online/2007/02/DaimlerChrysler': 'Zwischen Angst und Schock',
  'http://xml.zeit.de/online/2007/02/Seehofer': 'Seehofer schlaegt zurueck',
- 'http://xml.zeit.de/online/2007/02/DaimlerChrysler':
-  'Zwischen Angst und Schock'}
+ 'http://xml.zeit.de/online/2007/03': '',
+ 'http://xml.zeit.de/online/2007/03/foo': '',
+ 'http://xml.zeit.de/testing/collection': ''}
 
 
 After resetting, the data is gone:

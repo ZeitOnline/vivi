@@ -92,7 +92,7 @@ class Connector(object):
             type = self.getResourceType(id)
             properties[('resourcetype', 'DAV:')] = type
         if type == 'collection':
-            data = None
+            data = StringIO.StringIO()
         else:
             data = self._get_file(id)
         return zeit.connector.resource.Resource(
@@ -115,9 +115,27 @@ class Connector(object):
         resource = self[id]
         self._deleted.add(id)
 
+    def __contains__(self, id):
+        try:
+            resource = self[id]
+        except KeyError:
+            return False
+        return True
+
     def add(self, object):
         resource = zeit.connector.interfaces.IResource(object)
         self[resource.id] = resource
+
+    def move(self, old_id, new_id):
+        if new_id in self:
+            raise zeit.connector.interfaces.MoveError(
+                old_id,
+                "Could not move %s to %s, because target alread exists." % (
+                    old_id, new_id))
+
+        resource = self[old_id]
+        del self[old_id]
+        self[new_id] = resource
 
     def changeProperties(self, id, properties):
         self._set_properties(id, properties)

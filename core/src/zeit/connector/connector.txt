@@ -117,7 +117,11 @@ Don't forget content-type:
 ...                'text',
 ...                StringIO.StringIO('Pop goes the weasel!'),
 ...                contentType = 'text/plain')
+>>> res.id in connector
+False
 >>> connector.add(res)
+>>> res.id in connector
+True
 
 We've set `text` as resource type, so we get `text` back, when getting the
 resource:
@@ -289,6 +293,53 @@ Remove the collections:
 >>> del connector[other_collection_id]
 >>> del connector[collection_id]
 
+Moving
+======
+
+Content could be moved by removind/adding. This donesn't work nicely with
+folders though. So we implement a special method for moving:
+
+Lets create an object which we can move then:
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[]
+>>> res = Resource('http://xml.zeit.de/testing/move-test',
+...                'conn1',
+...                'text',
+...                StringIO.StringIO('Pop goes the weasel!'),
+...                contentType = 'text/plain')
+>>> connector.add(res)
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'move-test', u'http://xml.zeit.de/testing/move-test')]
+
+
+Let's move `move-test` now:
+
+>>> connector.move('http://xml.zeit.de/testing/move-test',
+...                'http://xml.zeit.de/testing/move-test-moved')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'move-test-moved', u'http://xml.zeit.de/testing/move-test-moved')]
+
+We cannot move an object onto another:
+
+>>> res = Resource('http://xml.zeit.de/testing/move-test-2',
+...                'conn1',
+...                'text',
+...                StringIO.StringIO('Pop goes the weasel!'),
+...                contentType = 'text/plain')
+>>> connector.add(res)
+>>> connector.move('http://xml.zeit.de/testing/move-test-2',
+...                'http://xml.zeit.de/testing/move-test-moved')
+Traceback (most recent call last):
+    ...
+MoveError: Could not move http://xml.zeit.de/testing/move-test-2 to
+    http://xml.zeit.de/testing/move-test-moved, because target alread exists.
+
+
+Let's clean up:
+
+>>> del connector['http://xml.zeit.de/testing/move-test-2']
+>>> del connector['http://xml.zeit.de/testing/move-test-moved']
 
 Search (interface only):
 ========================
@@ -304,19 +355,8 @@ The building blocks are search vars:
 Queries are built of basic terms involving search vars stitched together into
 expressions (note that we get dummy values at the moment):
 
->>> [res for res in connector.search([author, volume], (year == '2007') & (volume == '07') & (author == 'pm'))]
-[(u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07')]
-
-# >>> connector.search([author, volume], (year == '2007') & (volume == '07'))
-# [[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
-#  [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
-#  ...]
-# 
-# >>> connector.search([author, volume], (year > '1997') &
-# ...     ((volume == '07') | (volume == '08')) & (ressort == 'Leben'))
-# [[u'http://xml.zeit.de/2007/resource-19', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
-#  [u'http://xml.zeit.de/2007/resource-18', "Yers plain ol' dummy, sincerly", "Yers plain ol' dummy, sincerly"],
-#  ...]
+>>> [res for res in connector.search([author, volume, ressort], (year == '2007') & (volume == '07') & (author == 'pm'))]
+[(u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07', None)]
 
 
 Getting ghost resources

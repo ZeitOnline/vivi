@@ -239,7 +239,7 @@ class DAVPropstat:
 
     #:new:
     #:fixme: do we need the document node here?  It would be
-    # convenient iff we move xpath evaluation to the document object
+    # convenient iff we :ove xpath evaluation to the document object
     # (by calling doc.xpathEval(expr, context_node)
     def _parse_ps( self, doc, context_node ):
         status_nodes = context_node.xpath('D:status', {'D' : 'DAV:'})
