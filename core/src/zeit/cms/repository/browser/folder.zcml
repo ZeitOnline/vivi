@@ -103,7 +103,7 @@
     name="zeit.cms.repository.Add"
     menu="zeit-add-menu" title="Folder"
     />
-  
+
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zope.View"
@@ -112,4 +112,3 @@
     />
 
 </configure>
-

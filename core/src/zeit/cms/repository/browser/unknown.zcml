@@ -22,7 +22,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
-    
+
   <browser:menuItem
     menu="zeit-context-views"
     title="View"
@@ -56,6 +56,4 @@
     template="drag-pane.pt"
     permission="zope.View" />
 
-
 </configure>
-
