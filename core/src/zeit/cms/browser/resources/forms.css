@@ -132,15 +132,18 @@ input[type="text"] {
 }
 
 
-#form\.teaserTitle,
 #form\.teaserText,
-#form\.shortTeaserTitle,
 #form\.shortTeaserText {
-    height: 6ex;
+    height: 10ex;
 }
 
 #form\.subtitle {
-    height: 10ex;
+    height: 12ex;
+}
+
+#form\.teaserTitle,
+#form\.shortTeaserTitle {
+    height: 3ex;
 }
 
 
