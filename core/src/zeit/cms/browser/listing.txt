@@ -43,11 +43,32 @@ the header bar:
 Deleteing Content
 =================
 
-Deleting works by selecting the objects to remove via a checkbox and clicking
-`Löschen`. We delete the article "LB01-DOSSaufschwung" here:
+Deleting works by clicking on the 'Delete' icon in the context-actions
+menu. The user get's a confirmation screen, on where he explicitly
+confirms deleting the content.
 
->>> 'LB01-DOSSaufschwung' in browser.contents
+>>> 'LS-Personalvertretung' in browser.contents
 True
+>>> article_view_url = (
+... 'http://localhost/++skin++cms/repository/2007/01/'
+... 'LS-Personalvertretung/deletecontent.html')
+>>> browser.open(article_view_url)
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    Do you really want to delete: 
+    ...
+    <span>LS-Personalvertretung</span>
+    (<span>http://xml.zeit.de/2007/01/LS-Personalvertretung</span>)
+    ...
+>>> browser.getControl("Yes, delete it.").click()
+>>> 'LS-Personalvertretung' in browser.contents
+False
+
+The user selects an article and clicks on the delete icon. Deletion of
+content is context dependent, so he might accidently delete a folder. If
+this happens, he is beeing warned in the confirmation dialog:
+
 >>> browser.getLink("Delete").click()
 >>> print browser.contents
 <?xml ...
@@ -56,7 +77,9 @@ True
     ...
     <span>01</span>
     (<span>http://xml.zeit.de/2007/01</span>)
+    </p>
+    <h1 class="Warning"> You're about to delete a folder with content!
+    </h1>
     ...
->>> browser.getControl("Yes, delete it.").click()
->>> 'LB01-DOSSaufschwung' in browser.contents
-False
+>>> browser.getControl("Do as I say: Delete.")
+<SubmitControl name='delete' type='submit'>

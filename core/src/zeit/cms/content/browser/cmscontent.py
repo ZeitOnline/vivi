@@ -5,7 +5,7 @@ import zope.component
 import zope.cachedescriptors.property
 
 import zeit.cms.browser.interfaces
-
+import zeit.cms.repository.interfaces
 
 class DeleteContent(object):
 
@@ -45,11 +45,13 @@ class DeleteContent(object):
             return icon()
 
     @zope.cachedescriptors.property.Lazy
-    def uniqueId(self):
-        list_repr = zope.component.queryMultiAdapter(
-            (self.context, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
-        return list_repr.uniqueId
+    def unique_id(self):
+        return self.context.uniqueId
+
+    @zope.cachedescriptors.property.Lazy
+    def is_folder_with_content(self):
+        if zeit.cms.repository.interfaces.ICollection.providedBy(self.context):
+            return len(self.context) > 1
 
 
 class RenameContent(object):

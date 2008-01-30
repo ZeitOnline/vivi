@@ -10,14 +10,21 @@
   <p class="DeleteItem">
     <img class="zmi_icon" tal:replace="structure view/icon" />
     <span tal:content="view/title" />
-    (<span tal:content="view/uniqueId" />)
+    (<span tal:content="view/unique_id" />)
   </p>
+  <h1 class="Warning" tal:condition="view/is_folder_with_content"
+      i18n:translate="delete_content_folder_warning"> You're about to delete a folder with content!
+  </h1>
 
   <form action="">
     <p>
       <input type="submit" value="Cancel" name="cancel" 
         i18n:attributes="value" />
-      <input type="submit" value="Yes, delete it." name="delete" 
+      <input type="submit" value="Yes, delete it." name="delete"
+             tal:condition="not:view/is_folder_with_content"
+        i18n:attributes="value"/>
+      <input type="submit" value="Do as I say: Delete." name="delete"
+             tal:condition="view/is_folder_with_content"
         i18n:attributes="value"/>
     </p>
   </form>
