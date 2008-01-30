@@ -7,7 +7,7 @@
   <CurrentFolder path="" url=""
     tal:attributes="
       path request/CurrentFolder;
-      url context/@@absolute_url"
+      url context/uniqueId | string:http://xml.zeit.de"
     />
   <Folders
     tal:define="folders view/folders"
@@ -29,7 +29,7 @@
       tal:repeat="file files"
       tal:attributes="
         name file/__name__;
-        url file/@@absolute_url"
+        url file/uniqueId"
       />
   </Files>
 
