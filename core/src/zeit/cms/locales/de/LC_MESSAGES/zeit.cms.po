@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Wed Jan 30 12:24:33 2008\n"
-"PO-Revision-Date: 2008-01-30 12:30+0100\n"
+"PO-Revision-Date: 2008-01-30 12:52+0100\n"
 "Last-Translator: Roman Joost <rj@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -612,7 +612,7 @@ msgstr "Absatzanzahl"
 
 #: src/zeit/content/article/interfaces.py:61
 msgid "Amount of paragraphs in total."
-msgstr "Summe der Absätze pro Seite."
+msgstr "Absätze insgesamt:"
 
 #: src/zeit/content/article/interfaces.py:66
 msgid "Daily Newsletter"
