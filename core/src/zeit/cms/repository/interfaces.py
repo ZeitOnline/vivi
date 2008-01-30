@@ -66,8 +66,8 @@ class IUnknownResource(zeit.cms.interfaces.ICMSContent):
     type = zope.interface.Attribute("Raw type info got from connector.")
 
 
-class ICollection(zope.app.container.interfaces.IContainer):
-    """A collection."""
+class IRename(zope.interface.Interface):
+    """Objects which support renaming their content."""
 
     def rename(old_name, new_name):
         """Rename object identified by `old_name` to `new_name.
@@ -76,6 +76,11 @@ class ICollection(zope.app.container.interfaces.IContainer):
         raises ValueError if `new_name` already exists.
 
         """
+
+
+class ICollection(zope.app.container.interfaces.IContainer, IRename):
+    """A collection."""
+
 
 class IFolder(ICollection, zeit.cms.interfaces.ICMSContent):
     """A normal folder in the cms."""

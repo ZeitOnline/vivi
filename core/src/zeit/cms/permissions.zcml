@@ -3,6 +3,11 @@
   i18n_domain="zeit.cms">
   
   <permission
+    id="zeit.RenameContent"
+    title="Manage WebDAV locks"
+    />
+
+  <permission
     id="zeit.EditContent"
     title="Edit ZEIT content"
     />

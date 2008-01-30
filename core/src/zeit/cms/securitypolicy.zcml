@@ -57,6 +57,10 @@
   <!-- Editor grants -->
   <grant
     role="zeit.Editor"
+    permission="zeit.RenameContent"
+    />
+  <grant
+    role="zeit.Editor"
     permission="zeit.Checkout"
     />
   <grant
