@@ -226,7 +226,7 @@ table.properties textarea {
   background-color: #ffdd11;
 }
 
-.TreeHover > a {
+.TreeHover {
   border-bottom: 2px solid red !important;
 }
 

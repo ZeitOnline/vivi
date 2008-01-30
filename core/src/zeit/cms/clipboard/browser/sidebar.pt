@@ -25,7 +25,7 @@
       <div id="clip-add-folder-box">
         Clipname: <input id="clip-add-folder-title" type="text" name="title" />
         <br />
-        <input type="button" name="add_clip"
+        <input type="submit" name="add_clip"
           id="clip-add-folder-submit" value="Clip anlegen" /> oder
         <input type="button" name="cancel"
           id="clip-add-folder-cancel" value="Abrechen" />

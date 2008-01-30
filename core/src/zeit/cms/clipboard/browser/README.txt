@@ -146,7 +146,7 @@ ajax. Fill out the form and check that the controls are there:
 >>> browser.getControl(name='title')
 <Control name='title' type='text'>
 >>> browser.getControl(name='add_clip')
-<Control name='add_clip' type='button'>
+<SubmitControl name='add_clip' type='submit'>
 
 
 Actually add a clip using our "ajax" browser. The clip is appended as the last

@@ -101,9 +101,11 @@ Clipboard.prototype = {
         d.addCallbacks( 
             function(result) {
                 dnd.tree.replaceTree(result.responseText);
+                clipboarddnd.hideAddBox();
             },
             alert
         );
+        event.stop();
     },
 
     removeClip: function(event) {
