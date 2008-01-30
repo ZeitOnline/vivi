@@ -185,8 +185,8 @@ class MetadataSearch(object):
     def get_result(self, term):
         var = self._search_map.get
         search_result = self.connector.search(
-            [var('author'), var('title'),
-             var('year'), var('volume'), var('page')],
+            [var('author'), var('volume'),
+             var('year'), var('page'), var('title')],
             term)
 
         for unique_id, author, volume, year, page, title in search_result:
