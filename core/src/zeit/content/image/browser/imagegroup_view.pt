@@ -2,7 +2,7 @@
   <tal:block metal:fill-slot="body"
     tal:define="context_url context/@@absolute_url">
   
-    <tal:replace replace="resource_library:zeit.cms.repository.drag-content" />
+    <tal:replace replace="resource_library:zeit.cms.repository" />
 
     <metal:content-listing 
       use-macro="context/@@standard_macros/content-listing">

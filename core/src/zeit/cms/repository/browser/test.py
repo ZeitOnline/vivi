@@ -11,7 +11,7 @@ import zeit.cms.testing
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt', 'tree.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
+        'README.txt',
+        'rename.txt',
+        'tree.txt'))
     return suite

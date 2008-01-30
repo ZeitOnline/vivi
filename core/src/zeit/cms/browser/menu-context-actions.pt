@@ -1,6 +1,7 @@
 <tal:repeat
   define="context_url context/@@absolute_url"
-  repeat="menu_item view/menu_items">
+  repeat="menu_item view/menu_items"
+  i18n:domain="zeit.cms">
   <li
     tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
     tal:attributes="class string:$klass ${menu_item/selected}">

@@ -43,6 +43,25 @@
     permission="zope.View"
     />
 
+  <!-- rename -->
+
+  <browser:viewlet
+    name="rename"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    template="menu-entry-rename.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.RenameContent"
+    />
+
+  <browser:page
+    name="rename-box"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.Rename"
+    permission="zeit.RenameContent"
+    />
+
 
   <!-- Selenium Tests -->
 

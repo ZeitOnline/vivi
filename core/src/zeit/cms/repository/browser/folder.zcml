@@ -14,9 +14,9 @@
     allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
 
-  <resourceLibrary name="zeit.cms.repository.drag-content"
-    require="zeit.cms.DragAndDrop">
-    <directory source="resources" include="drag-content.js"/>
+  <resourceLibrary name="zeit.cms.repository"
+    require="zeit.cms.DragAndDrop gocept.mochikit.lightbox">
+    <directory source="resources" include="repository.js"/>
   </resourceLibrary>
 
   <browser:page
