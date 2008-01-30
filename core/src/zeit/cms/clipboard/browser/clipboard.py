@@ -51,6 +51,8 @@ class Tree(zeit.cms.browser.tree.Tree):
         container = self.getAddContext(add_to)
         add_object = self.repository.getContent(unique_id)
         self.context.addContent(container, add_object, add_object.__name__)
+        if self.expandable(container) and not self.expanded(container):
+            self.expandNode(container.__name__)
         return self()
 
     def addContainer(self, title):
