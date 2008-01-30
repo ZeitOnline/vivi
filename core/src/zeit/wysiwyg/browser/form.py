@@ -6,10 +6,11 @@ import zope.formlib.form
 
 import zope.app.pagetemplate.viewpagetemplatefile
 
+import zeit.cms.browser.form
 import zeit.wysiwyg.interfaces
 
 
-class EditForm(zope.formlib.form.EditForm):
+class EditForm(zeit.cms.browser.form.EditForm):
 
     template = zope.formlib.namedtemplate.NamedTemplate('sourceedit_form')
     additional_information = (
