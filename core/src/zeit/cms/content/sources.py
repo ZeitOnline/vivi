@@ -21,10 +21,12 @@ logger = logging.getLogger('zeit.cms.content.sources')
 
 class SimpleXMLSource(zc.sourcefactory.basic.BasicSourceFactory):
 
+    product_configuration = 'zeit.cms'
+
     @gocept.cache.method.Memoize(3600)
     def getValues(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms')
+            self.product_configuration)
         url = cms_config[self.config_url]
         logger.debug('Getting %s' % url)
         request = urllib2.urlopen(url)
