@@ -162,6 +162,15 @@ class MultiPropertyBase(object):
         raise NotImplementedError("Implemented in sub classes.")
 
 
+class SimpleMultiProperty(MultiPropertyBase):
+
+    def _element_factory(self, node, tree):
+        return unicode(node)
+
+    def _node_factory(self, entry, tree):
+        return entry
+
+
 class ResourceSet(MultipleAttributeProperty):
 
     def __get__(self, instance, class_):

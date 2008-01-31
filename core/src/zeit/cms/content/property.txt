@@ -413,3 +413,31 @@ Clean up:
 >>> gsm.unregisterUtility(
 ...     repository, zeit.cms.repository.interfaces.IRepository)
 True
+
+
+
+SimpleMultiProperty
+===================
+
+The `SimpleMultiProperty` is used for lists of simple values.
+
+
+>>> class Content(object):
+...     authors = zeit.cms.content.property.SimpleMultiProperty(
+...         '.authors.author')
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML('<foo><head/></foo>')
+>>> content = Content()
+
+Set authors:
+
+>>> content.authors = ('Hans', 'Klaus', 'Siegfried')
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo>
+  <head/>
+  <authors>
+    <author>Hans</author>
+    <author>Klaus</author>
+    <author>Siegfried</author>
+  </authors>
+</foo>
