@@ -329,6 +329,15 @@ Syndicating
 When we syndicate the article the feed will be linked in the article. Let's use
 `politik.feed` as a syndication target:
 
+>>> browser.getLink('Syndicate').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+    <p>
+    You need to select a feed as a syndication target first, before you
+    can syndicate this article.
+    </p>
+    ...
 >>> url = browser.url
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Remember as syndication target').click()

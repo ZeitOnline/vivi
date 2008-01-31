@@ -28,19 +28,12 @@ targets:
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE html...
-<table>
-  <thead>
-    ...
-    <th>
-      Position
-    </th>
-    ...
-  </thead>
-  <tbody>
-  </tbody>
-</table>
+    <p>
+     You need to select a feed as a syndication target first, before you
+     can syndicate this article.
+    </p>
 ...
-  
+
 
 The list is empty, because the user hasn't chosen any targets. Let's do that
 now:

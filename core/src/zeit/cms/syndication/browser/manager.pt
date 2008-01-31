@@ -1,18 +1,20 @@
 <html metal:use-macro="context/@@standard_macros/page">
+  <meta:body metal:fill-slot="body">
+    <div id="edit-form">
 
-  <metal:head fill-slot="heading">
     <h1 tal:content="string:Syndicate ${view/content/title}">
       Wirtschaft
     </h1>
-  </metal:head>
 
-  <meta:body metal:fill-slot="body">
-    <div id="edit-form">
-      <form method="POST">
-        <table tal:replace="structure view/table" />
-        <input name="syndicate" value="Syndicate" type="submit" />
-      </form>
-    </div>
-  </meta:body>
+    <p tal:condition="not:view/has_content">
+      You need to select a feed as a syndication target first, before you
+      can syndicate this article.
+    </p>
+    <form method="POST" tal:condition="view/has_content">
+      <table tal:replace="structure view/table" />
+      <input name="syndicate" value="Syndicate" type="submit" />
+    </form>
+  </div>
+</meta:body>
 
 </html>

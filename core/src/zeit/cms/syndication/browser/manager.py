@@ -23,6 +23,9 @@ class Manager(object):
             self.manager.syndicate(targets)
         return render()
 
+    def has_content(self):
+        return self.manager.targets
+
     @zope.cachedescriptors.property.Lazy
     def content(self):
         return zope.component.getMultiAdapter(
