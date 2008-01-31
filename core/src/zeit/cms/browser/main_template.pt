@@ -70,6 +70,29 @@
             tal:content="request/principal/title | request/principal/id">
             ldap.ich
           </div>
+        <tal:messages tal:define="messages context/@@standard_macros/messages">
+
+          <div id="messages"
+            tal:attributes="class python: messages and 'haveMessages' or 'noMessages'">
+
+            <div class="staticErrorText">
+              Notices
+            </div>
+
+            <ul tal:condition="messages">
+              <li tal:repeat="message messages"
+                tal:attributes="class message/type"
+                tal:content="message/message">
+              </li>
+            </ul>
+
+            <div class="hideText" tal:condition="messages" i18n:translate="">
+              hide
+            </div>
+          </div>
+
+        </tal:messages>
+
         </div>
 
         <div id="sidebar" 
@@ -119,29 +142,6 @@
           </div>
         </div>
 
-
-        <tal:messages tal:define="messages context/@@standard_macros/messages">
-
-          <div id="messages"
-            tal:attributes="class python: messages and 'haveMessages' or 'noMessages'">
-
-            <div class="staticErrorText">
-              Notices
-            </div>
-
-            <ul tal:condition="messages">
-              <li tal:repeat="message messages"
-                tal:attributes="class message/type"
-                tal:content="message/message">
-              </li>
-            </ul>
-
-            <div class="hideText" tal:condition="messages" i18n:translate="">
-              hide
-            </div>
-          </div>
-
-        </tal:messages>
 
       </body>
     </html>

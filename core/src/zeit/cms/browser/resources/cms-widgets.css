@@ -400,21 +400,20 @@ table.properties textarea {
 
 /* Notifications and messages*/
 #messages {
-  position: absolute;
-  top: 0em;
-  right: 2em;
+  position: relative;
   width: 30em;
   opacity: 0.95;
   padding: 0;
   margin: 0;
   cursor: pointer;
+  float: right;
+  z-index: 1;
 }
 
 #messages .staticErrorText {
   background-color: #fd1;
-  padding: 0.5em 1em 0.5em 1em;
-  position: absolute;
-  right: 0;
+  padding: 0.5em 1em;
+  float: right;
 }
 
 #messages.noMessages .staticErrorText {
