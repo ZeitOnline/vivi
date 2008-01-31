@@ -53,11 +53,11 @@ Float:
 </a>
 
 
-String:
+String. Note that strings are always unicode:
 
 >>> content.b = 'Foo'
 >>> content.b
-'Foo'
+u'Foo'
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a>
     <b>Foo</b>
@@ -81,7 +81,7 @@ create a test-class:
 Initially b is an empty string, since the node exist and is empty:
 
 >>> content.b
-''
+u''
 
 Let's assign some values to b. Integer:
 
@@ -129,7 +129,7 @@ not in the document, yet:
 Access the values:
 
 >>> content.url
-'url'
+u'url'
 >>> content.words
 5
 >>> content.chars
@@ -202,7 +202,7 @@ And instanciate a content class:
 Get the banner:
 
 >>> content.banner
-'yes'
+u'yes'
 
 >>> content.banner = True
 >>> content.banner
@@ -256,7 +256,7 @@ Get the ressort:
 >>> content.ressort
 frozenset([..., ...])
 >>> sorted(content.ressort)
-['Politik', 'Wirtschaft']
+[u'Politik', u'Wirtschaft']
 
 Set new ressorts:
 
@@ -264,7 +264,7 @@ Set new ressorts:
 >>> content.ressort
 frozenset([..., ..., ...])
 >>> sorted(content.ressort)
-['Spannung', 'Spass', 'Spiel']
+[u'Spannung', u'Spass', u'Spiel']
 
 
 Referencing Resources
@@ -441,3 +441,7 @@ Set authors:
     <author>Siegfried</author>
   </authors>
 </foo>
+
+
+>>> content.authors
+(u'Hans', u'Klaus', u'Siegfried')

@@ -29,9 +29,15 @@ class ObjectPathProperty(object):
         node = self.getNode(instance)
         if node is not None:
             try:
-                return node.pyval
+                value = node.pyval
             except AttributeError:
                 return None
+            if isinstance(value, str):
+                # This is save because lxml only uses str for optimisation
+                # reasons and unicode when non us-ascii chars are in the str:
+                value = unicode(value)
+            return value
+
 
     def __set__(self, instance, value):
         if self.path is None:
@@ -72,6 +78,8 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
             # But only if it is a string. This is mostly the case, but if the
             # attribute is missing `value` is none.
             value = self.field.fromUnicode(value)
+        elif isinstance(value, str):
+            value = unicode(value)
         return value
 
     def __set__(self, instance, value):
@@ -95,7 +103,10 @@ class AttributeProperty(object):
     def __get__(self, instance, class_):
         node = instance.xml.find(self.xpath)
         if node is not None:
-            return node.pyval
+            value = node.pyval
+            if isinstance(value, str):
+                value = unicode(value)
+            return value
 
     def __set__(self, instance, value):
         __traceback_info__ = (instance, self.xpath, value)
@@ -121,7 +132,13 @@ class MultipleAttributeProperty(AttributeProperty):
 
     def __get__(self, instance, class_):
         nodes = instance.xml.findall(self.xpath)
-        return frozenset(node.pyval for node in nodes)
+        result = []
+        for node in nodes:
+            value = node.pyval
+            if isinstance(value, str):
+                value = unicode(value)
+            result.append(value)
+        return frozenset(result)
 
     def __set__(self, instance, values):
         self.delAttribute(instance)

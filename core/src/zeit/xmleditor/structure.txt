@@ -30,9 +30,9 @@ the data href and fallback:
 <Element {http://www.w3.org/2001/XInclude}include at ...>
 >>> include = XInclude(include_node)
 >>> include.href
-'/tmp/first'
+u'/tmp/first'
 >>> include.fallback
-'First Fallback Text'
+u'First Fallback Text'
 
 
 Changing values is reflected in the xml:
@@ -90,7 +90,7 @@ There is an EditableStructure for general text content nodes:
 >>> text 
 <zeit.xmleditor.structure.Text object at 0x...>
 >>> text.text
-'von Elvis Presley'
+u'von Elvis Presley'
 
 
 Changing the text works just by assinging a new value to the `text` attribute:
