@@ -7,6 +7,7 @@ import zope.cachedescriptors.property
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.interfaces
 
+
 class DeleteContent(object):
 
     def __call__(self, *args, **kwargs):
