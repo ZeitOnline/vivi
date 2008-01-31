@@ -106,8 +106,9 @@ pre {
     font-weight: normal;
 }
 
-.field.required > label > span {
-    background: #ffdd11;
+.field.required > label > span:after {
+    content: "*";
+    color: red;
 }
 
 .annotation {

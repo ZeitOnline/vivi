@@ -424,8 +424,9 @@ table.properties textarea {
 
 #messages ul {
   padding: 1em 1em 0em 1em;
-  margin: 2em 0 0 0;
-  background-color: #fd1;
+  margin: 2.1em 0 0 0;
+  background-color: #fcfcfc;
+  border: 2px solid #ffdd11;
 }
 
 #messages.hiddenMessages ul {
@@ -433,14 +434,15 @@ table.properties textarea {
 }
 
 #messages li {
-  display: block;
   padding-bottom: 0.5em;
+  color: black;
+  list-style: none;
 }
 
 #messages .hideText {
   background-color: #fd1;
   text-align: right;
-  padding: 0em 1em 1em 0em;
+  padding: 0.5em 1em;
 }
 
 #messages .hideText:before {
