@@ -44,6 +44,11 @@
     type=".interfaces.ISyndicationLogType"
     />
 
+
+  <!-- recensoins -->
+
+  <adapter factory=".recension.BookRecensionContainer" />
+
   <!-- generation -->
 
   <utility 

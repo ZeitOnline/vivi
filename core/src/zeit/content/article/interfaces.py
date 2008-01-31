@@ -5,6 +5,8 @@
 
 import zope.schema
 
+import zc.form.field
+
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.content.interfaces
@@ -94,3 +96,79 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         title=_("Syndication Log"),
         default=(),
         value_type=zope.schema.Object(ISyndicationEventLog))
+
+
+class IBookRecensionContainer(zope.interface.Interface):
+
+    def __getitem__(index):
+        """Get recension with given `inded`."""
+
+    def __iter__():
+        """Iterate over recensions."""
+
+    def __len__():
+        """Return amount of items."""
+
+    def append(item):
+        """Append item to container."""
+
+
+class IBookRecension(zope.interface.Interface):
+    """A recension for a book."""
+
+    authors = zope.schema.Tuple(
+        title=_('Authors'),
+        min_length=1,
+        default=(None, ),
+        value_type=zope.schema.TextLine(
+            title=_('Author')))
+
+    title = zope.schema.TextLine(title=_('Title'))
+    info = zope.schema.TextLine(title=_('Info'))
+    genre = zope.schema.TextLine(title=_('Genre'))
+
+    category = zope.schema.Choice(
+        title=_('ZEIT category'),
+        source=zeit.content.article.source.BookRecessionCategories())
+
+    age_limit = zope.schema.Int(
+        title=_('Agelimit'),
+        required=False)
+
+    original_language = zope.schema.TextLine(
+        title=_('Original langugage'),
+        required=False)
+
+    translator = zope.schema.TextLine(
+        title=_('Translator'),
+        required=False)
+
+    publisher = zope.schema.TextLine(
+        title=_('Publisher'),
+        required=False)
+
+    location = zope.schema.TextLine(
+        title=_('book-location', default=u'Location'),
+        required=False)
+
+    year = zope.schema.Int(
+        title=_('Year'),
+        required=False)
+
+    media_type = zope.schema.TextLine(
+        title=_('Media type'),
+        required=False)
+
+    pages = zope.schema.Int(
+        title=_('Pages'),
+        required=False)
+
+    # XXX want to use decimal but lxml doesn't support it just like that
+    price = zope.schema.Float(
+        title=_('Price (EUR)'),
+        required=False)
+
+    raw_data = zope.schema.Text(
+        title=_('Raw data'),
+        required=False,
+        readonly=True)

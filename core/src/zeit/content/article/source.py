@@ -18,3 +18,9 @@ class SyndicatedInSource(
 
     def getTitle(self, context, value):
         return value.title
+
+
+class BookRecessionCategories(zeit.cms.content.sources.SimpleXMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'source-book-recession-categories'

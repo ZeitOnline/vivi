@@ -45,6 +45,7 @@ def test_suite():
                      doctest.ELLIPSIS)))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'recension.txt',
         layer=ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'syndication.txt',
