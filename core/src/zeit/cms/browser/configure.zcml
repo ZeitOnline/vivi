@@ -59,6 +59,22 @@
     />
 
   <browser:viewletManager
+    name="zeit.cms.RightHeaderItems"
+    provides=".interfaces.IRightHeaderItems"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    name="messages"
+    for="*"
+    manager="zeit.cms.browser.interfaces.IRightHeaderItems"
+    template="rightheaderitems.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:viewletManager
     name="zeit.cms.GlobalViews"
     provides=".interfaces.IGlobalViews"
     layer=".interfaces.ICMSLayer"
