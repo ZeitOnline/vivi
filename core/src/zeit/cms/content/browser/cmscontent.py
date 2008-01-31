@@ -52,8 +52,3 @@ class DeleteContent(object):
     def is_folder_with_content(self):
         if zeit.cms.repository.interfaces.ICollection.providedBy(self.context):
             return len(self.context) > 1
-
-
-class RenameContent(object):
-
-    pass
