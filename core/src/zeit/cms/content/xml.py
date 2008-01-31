@@ -14,14 +14,10 @@ import zope.app.container.contained
 import zeit.cms.content.interfaces
 
 
-class XMLContentBase(persistent.Persistent,
-                     zope.app.container.contained.Contained):
-    """Base class for xml content."""
 
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
+class XMLRepresentationBase(object):
 
-    uniqueId = None
-    __name__ = None
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
 
     default_template = None  # Define in subclasses
 
@@ -32,3 +28,14 @@ class XMLContentBase(persistent.Persistent,
                     "default_template needs to be set in subclasses")
             xml_source = StringIO.StringIO(self.default_template)
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
+
+
+class XMLContentBase(XMLRepresentationBase,
+                     persistent.Persistent,
+                     zope.app.container.contained.Contained):
+    """Base class for xml content."""
+
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
+
+    uniqueId = None
+    __name__ = None
