@@ -12,7 +12,7 @@
   <span class="nextUrl"
     tal:content="string:${context/@@absolute_url}/@@view.html" />
 
-  <form id="rename.form" action="#"
+  <form id="lightbox.form" action="#"
     tal:attributes="action request/URL"
     tal:content="structure view/form">
 

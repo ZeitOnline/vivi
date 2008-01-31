@@ -1,7 +1,7 @@
 <li i18n:domain="zeit.cms">
-  <tal:replace replace="resource_library:zeit.cms.repository" />
+  <tal:replace replace="resource_library:zeit.cms.Lightbox" />
   <a title="Rename"
-    tal:attributes="href string:javascript:zeit.cms.rename_content('${context/@@absolute_url}/@@rename-box')"
+    tal:attributes="href string:javascript:zeit.cms.lightbox_form('${context/@@absolute_url}/@@rename-box')"
     i18n:attributes="title">
     <img src="/@@/zeit.cms/icons/rename.png" />
     <span class="action-title" i18n:translate="">Rename</span>
