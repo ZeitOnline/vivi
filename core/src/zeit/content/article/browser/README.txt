@@ -153,6 +153,15 @@ We get the form back after saving, the data is changed:
 >>> browser.getControl(name='form.title').value
 'EU unterstuetzt Trinker-Steuer'
 
+The article isn't syndicated in any feed for now. The form shouldn't
+have a readonly field for Automatic Teasersyndication:
+
+>>> browser.getControl(name="form.automaticTeaserSyndication:list")
+Traceback (most recent call last):
+    ...
+LookupError: name 'form.automaticTeaserSyndication:list'
+
+
 Let's add an image:
 
 >>> browser.getControl('Add Images').click()
@@ -391,6 +400,14 @@ Let's make sure the feed is referenced in the article:
     name="syndicatedIn">http://xml.zeit.de/politik.feed</attribute>
 ...
 </article>
+
+Check if the Automatic Teasersyndication field shows up, after the
+article is syndicated:
+
+>>> browser.getLink('Edit metadata').click()
+>>> browser.getControl(name="form.automaticTeaserSyndication:list")
+<ListControl name='form.automaticTeaserSyndication:list' type='select'>
+
 
 
 Checking in a Syndicated Article

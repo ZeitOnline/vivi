@@ -108,6 +108,11 @@ class EditForm(ArticleFormBase,
 
     title = _('Edit article')
 
+    def __init__(self, *args, **kwargs):
+        super(EditForm, self).__init__(*args, **kwargs)
+        if not self.context.automaticTeaserSyndication:
+            self.form_fields = self.form_fields.omit('automaticTeaserSyndication');
+
 
 class DisplayForm(ArticleFormBase,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):

@@ -53,7 +53,7 @@ class Workflow(object):
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[1],
         'http://namespaces.zeit.de/CMS/workflow',
-        'released_until')
+        'released_to')
 
     def __init__(self, context):
         self.context = context
@@ -70,13 +70,13 @@ class Workflow(object):
 
     @rwproperty.getproperty
     def release_period(self):
-        return self.released_from, self.released_until
+        return self.released_from, self.released_to
 
     @rwproperty.setproperty
     def release_period(self, value):
         if value is None:
             value = None, None
-        self.released_from, self.released_until = value
+        self.released_from, self.released_to = value
 
 
 @zope.component.adapter(zeit.workflow.interfaces.IWorkflow)
