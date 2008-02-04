@@ -389,12 +389,14 @@ pre {
     overflow: hidden;
 }
 
-.context-actions,
-.context-views {
+.contextViewsAndActions {
     position: absolute;
     top: 0;
+    right: 0;
+    left: 1em;
     height: 2em;
     overflow: hidden;
+    border-bottom: 1px solid black;
 }
 
 .context-actions ul,
@@ -403,6 +405,11 @@ pre {
     margin-top: 0.4em;
     padding: 0;
     height: 1.25em;
+}
+
+.context-actions,
+.context-views {
+  position: absolute
 }
 
 .context-actions li,
@@ -415,7 +422,7 @@ pre {
 }
 
 .context-views {
-    left: 1em;
+    left: 0em;
     margin: 0em;
     padding-bottom: 0;
 }
@@ -435,12 +442,7 @@ pre {
  *
  * */
 .context-actions {
-    text-align: right;
     right: 0;
-}
-
-.context-actions ul {
-    padding-right: 1em;
 }
 
 .context-actions li > a {

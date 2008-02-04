@@ -97,26 +97,19 @@
           </script>
 
         
-        <div id="visualContentWrapper"
-          tal:define="uniqueId context/uniqueId | nothing"
-          tal:attributes="class sidebar_css">
-          
-          <metal:actions define-slot="context-views">
-            <metal:actions
-              use-macro="context/@@standard_macros/context-views" />
-          </metal:actions>
-            
-          <metal:actions define-slot="context-actions">
-            <metal:actions
-              use-macro="context/@@standard_macros/context-actions" />
-          </metal:actions>
+          <div id="visualContentWrapper"
+            tal:define="uniqueId context/uniqueId | nothing"
+            tal:attributes="class sidebar_css">
 
-          <div id="content">
-            <metal:contentslot define-slot="body">
-              content
-            </metal:contentslot>
+            <metal:actions
+              use-macro="context/@@standard_macros/context-views-and-actions" />
+
+            <div id="content">
+              <metal:contentslot define-slot="body">
+                content
+              </metal:contentslot>
+            </div>
           </div>
-        </div>
 
 
       </body>
@@ -124,50 +117,50 @@
   </metal:macro>
   
   
-  <metal:macro define-macro="context-actions">
-    <div class="context-actions"
-    tal:define="context_url context/@@absolute_url">
-        <ul>
-          <tal:replace replace="structure provider:zeit.cms.context-actions" />
-      </ul>
-    </div>
-  </metal:macro>
+  <metal:macro define-macro="context-views-and-actions">
 
-  <metal:macro define-macro="context-views">
-    <div class="context-views"
-      tal:define="context_url context/@@absolute_url;
-      menu_items context/@@view_get_menu/zeit-context-views">
-      <ul>
-        <tal:have_items tal:condition="menu_items">
-          <tal:repeat 
-            repeat="menu_item menu_items">
-            <li
-              tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
-              tal:attributes="class string:${klass} ${menu_item/selected}">
-              <a
-                tal:attributes="href string:$context_url/${menu_item/action}"
-                tal:content="menu_item/title" i18n:translate="">
-                Checkout
+    <div class="contextViewsAndActions">
+      <div class="context-views"
+        tal:define="context_url context/@@absolute_url;
+        menu_items context/@@view_get_menu/zeit-context-views">
+        <ul>
+          <tal:have_items tal:condition="menu_items">
+            <tal:repeat 
+              repeat="menu_item menu_items">
+              <li
+                tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
+                tal:attributes="class string:${klass} ${menu_item/selected}">
+                <a
+                  tal:attributes="href string:$context_url/${menu_item/action}"
+                  tal:content="menu_item/title" i18n:translate="">
+                  Checkout
+                </a>
+              </li>
+            </tal:repeat>
+          </tal:have_items>
+          <tal:not_have_items
+            tal:condition="not:menu_items">
+            <li class="selected Anzeigen">
+              <a tal:attributes="href view/@@absolute_url">
+                Anzeigen
               </a>
             </li>
-          </tal:repeat>
-        </tal:have_items>
-        <tal:not_have_items
-          tal:condition="not:menu_items">
-          <li class="selected Anzeigen">
-            <a tal:attributes="href view/@@absolute_url">
-              Anzeigen
-            </a>
-          </li>
-        </tal:not_have_items>
-      </ul>
+          </tal:not_have_items>
+        </ul>
 
+      </div>
+
+      <div class="context-actions"
+        tal:define="context_url context/@@absolute_url">
+        <ul>
+          <tal:replace replace="structure provider:zeit.cms.context-actions" />
+        </ul>
+      </div>
     </div>
   </metal:macro>
-  
+
   <metal:macro define-macro="metadata-preview">
-    <metal:actions use-macro="context/@@standard_macros/context-views" />
-    <metal:actions use-macro="context/@@standard_macros/context-actions" />
+    <metal:actions use-macro="context/@@standard_macros/context-views-and-actions" />
     <div id="metadata_preview">
       <metal:data define-slot="preview"></metal:data>
     </div>
