@@ -221,7 +221,7 @@ table.properties textarea {
    list-style-image: url("/@@/zeit.cms/layout/plus_lastchild.png");
 }
 
-.Tree li[active] > a {
+.Tree li[active] > p > a {
   font-weight: bold;
   background-color: #ffdd11;
 }
