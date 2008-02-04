@@ -17,6 +17,7 @@ The metadata preview shows the most important data in list views:
 >>> browser.open('http://localhost/++skin++cms/repository/online'
 ...              '/2007/01/index/metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
     <div class="context-views">...
 >>> browser.getLink('Checkout')
 <Link text='actionmenuicon[IMG] Checkout' ...>

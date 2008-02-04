@@ -86,6 +86,7 @@ Make sure there is a metadata preview:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     'infobox/@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
     <div class="context-views">
     ...
     <div class="title">Altersvorsorge</div>

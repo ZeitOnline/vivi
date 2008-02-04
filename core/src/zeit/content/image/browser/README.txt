@@ -24,6 +24,7 @@ Now we get the metadata preview:
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
     <div class="context-views">
       ...
       <div class="image-metadata">
@@ -117,6 +118,7 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
     <div class="context-views">...
     <div class="image-metadata">
       <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
@@ -439,6 +441,7 @@ Make sure we have a metadata preview for local image groups:
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'new-hampshire/@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
 <div class="context-views">
     ...
    <div>New Hampshire</div>
@@ -466,6 +469,7 @@ Make sure we have a metadata preview for repository image groups:
 ...     'http://localhost/++skin++cms/repository/2006/'
 ...     'new-hampshire/@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
 <div class="context-views">
     ...
    <div>New Hampshire</div>

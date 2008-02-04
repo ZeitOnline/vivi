@@ -90,6 +90,7 @@ Folders have a metadata page which shows the folder contents:
 ...     'http://localhost/++skin++cms/repository/new-folder/'
 ...     '@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
   <div class="context-views">
   ...
     <div class="folder-length">

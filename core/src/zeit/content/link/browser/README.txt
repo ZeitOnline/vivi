@@ -162,6 +162,7 @@ The metadata preview contains the teaser title and the url:
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/'
 ...              'gocept.link/@@metadata_preview')
 >>> print browser.contents
+ <div class="contextViewsAndActions">
     <div class="context-views">
     ...
     <div class="teaser-title" title="Teaser">gocept teaser</div>
