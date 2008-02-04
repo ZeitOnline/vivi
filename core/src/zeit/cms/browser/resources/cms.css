@@ -391,7 +391,6 @@ pre {
 
 .context-actions,
 .context-views {
-    border-bottom: 1px solid #004455;
     position: absolute;
     top: 0;
     height: 2em;
@@ -417,7 +416,6 @@ pre {
 
 .context-views {
     left: 1em;
-    width: 50em;
     margin: 0em;
     padding-bottom: 0;
 }
