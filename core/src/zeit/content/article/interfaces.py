@@ -156,7 +156,7 @@ class IBookRecension(zope.interface.Interface):
         required=False)
 
     original_language = zope.schema.TextLine(
-        title=_('Original langugage'),
+        title=_('Original language'),
         required=False)
 
     translator = zope.schema.TextLine(
