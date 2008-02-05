@@ -342,7 +342,6 @@ pre {
 #breadcrumbs {
     position: absolute;
     left: 22em;
-    right: 0;
     padding: 0;
     margin: 0.5em 0 0 0;
 }
@@ -364,14 +363,6 @@ pre {
   padding: 0.5em;
 }
 
-#user-information {
-  float: right;
-  padding: 0;
-  margin: 0.5em 1em 0 1em;
-  color: #ddd;
-}
-
-    
 
 #folder-actions {
     margin: 0em;

@@ -67,8 +67,8 @@
               tal:content="structure provider:zeit.cms.GlobalViews">
             </ul>
 
-          <tal:replace replace="structure
-            provider:zeit.cms.RightHeaderItems" />
+            <div class="GlobalInformation" 
+                 tal:content="structure provider:zeit.cms.GlobalInformation" />
         </div>
 
         <div id="sidebar" 

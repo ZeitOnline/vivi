@@ -28,7 +28,7 @@ class ICMSSkin(ICMSLayer,
     """CMS skin"""
 
 
-class IRightHeaderItems(zope.viewlet.interfaces.IViewletManager):
+class IGlobalInformation(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the right header area."""
 
 

@@ -400,31 +400,36 @@ table.properties textarea {
 
 /* Notifications and messages*/
 #messages {
-  position: relative;
+  position: absolute;
+  top: 2.1em;
+  right: 0;
   width: 30em;
   opacity: 0.95;
   padding: 0;
   margin: 0;
-  cursor: pointer;
-  float: right;
   z-index: 1;
 }
 
-#messages .staticErrorText {
+.haveMessages.staticErrorText {
   background-color: #fd1;
   padding: 0.5em 1em;
   float: right;
+  color: black;
+  cursor: pointer;
 }
 
-#messages.noMessages .staticErrorText {
+.staticErrorText {
   color: #ddd;
   background-color: transparent;
+  cursor: pointer;
+  float: right;
+  padding: 0.5em 1em;
 }
 
 
 #messages ul {
   padding: 1em 1em 0em 1em;
-  margin: 2.1em 0 0 0;
+  margin: 0;
   background-color: #fcfcfc;
   border: 2px solid #ffdd11;
 }
@@ -442,6 +447,7 @@ table.properties textarea {
   background-color: #fd1;
   text-align: right;
   padding: 0.5em 1em;
+  cursor: pointer;
 }
 
 #messages .hideText:before {
@@ -455,6 +461,18 @@ table.properties textarea {
 #messages.hiddenMessages .hideText {
   display: none;
 }
+
+.GlobalInformation  {
+   float: right;
+}
+
+#user-information {
+  padding: 0;
+  margin: 0.5em 1em 0 1em;
+  color: #ddd;
+  float: right;
+}
+
 
 /* rename box */
 #rename-box > * {

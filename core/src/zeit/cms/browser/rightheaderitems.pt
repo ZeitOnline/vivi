@@ -1,17 +1,17 @@
-<div tal:omit-tag="">
-  <div id="user-information"
-    tal:content="request/principal/title | request/principal/id">
-    ldap.ich
-  </div>
+<div tal:omit-tag=""
+ i18n:domain="zeit.cms">
   <tal:messages tal:define="messages context/@@standard_macros/messages">
 
-    <div id="messages"
-      tal:attributes="class python: messages and 'haveMessages' or 'noMessages'">
-
-      <div class="staticErrorText">
+    <div id="messages_toggle"
+         class="staticErrorText" 
+         tal:attributes="class python: messages and 'haveMessages staticErrorText' or 'staticErrorText'"
+         i18n:translate="notices_label">
         Notices
       </div>
 
+
+    <div id="messages"
+      tal:attributes="class python: messages and 'haveMessages' or 'noMessages'">
       <ul tal:condition="messages">
         <li tal:repeat="message messages"
           tal:attributes="class message/type"
@@ -19,7 +19,8 @@
         </li>
       </ul>
 
-      <div class="hideText" tal:condition="messages" i18n:translate="">
+      <div class="hideText" tal:condition="messages" 
+           i18n:translate="">
         hide
       </div>
     </div>

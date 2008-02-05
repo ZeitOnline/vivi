@@ -59,17 +59,27 @@
     />
 
   <browser:viewletManager
-    name="zeit.cms.RightHeaderItems"
-    provides=".interfaces.IRightHeaderItems"
+    name="zeit.cms.GlobalInformation"
+    provides=".interfaces.IGlobalInformation"
+    class=".manager.SortingViewletManager"
     layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />
 
   <browser:viewlet
-    name="messages"
+    name="10_messages"
     for="*"
-    manager="zeit.cms.browser.interfaces.IRightHeaderItems"
+    manager="zeit.cms.browser.interfaces.IGlobalInformation"
     template="rightheaderitems.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    name="20_userinfo"
+    for="*"
+    manager="zeit.cms.browser.interfaces.IGlobalInformation"
+    template="userinfo.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
