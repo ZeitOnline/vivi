@@ -585,6 +585,7 @@ Let's hae a look at the source:
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">true</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">false</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
   </head>
   <body>
     <title>Extrablatt 53</title>
