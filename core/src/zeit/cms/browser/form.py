@@ -136,6 +136,11 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         self.applyChanges(new_object, data)
         return new_object
 
+    @zope.formlib.form.action(_("Add"),
+                              condition=zope.formlib.form.haveInputWidgets)
+    def handle_add(self, action, data):
+        self.createAndAdd(data)
+
     def add(self, object):
         chooser = zope.app.container.interfaces.INameChooser(self.context)
         name = chooser.chooseName(self.suggestName(object), object)
@@ -152,6 +157,13 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
 
         self._created_object = object
         self._finished_add = True
+
+    @zope.formlib.form.action(_("Cancel"), validator=lambda *a: ())
+    def cancel(self, action, data):
+        url = zope.component.getMultiAdapter(
+            (self.context, self.request),
+            name="absolute_url")()
+        self.request.response.redirect(url)
 
     def suggestName(self, object):
         return object.__name__

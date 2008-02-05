@@ -9,6 +9,8 @@ import zeit.cms.browser.form
 import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
 
+import gocept.form.grouped
+
 import zeit.content.article.interfaces
 import zeit.content.article.recension
 
@@ -20,7 +22,21 @@ class Overview(zeit.cms.browser.view.Base):
 
     @zope.cachedescriptors.property.Lazy
     def recensions(self):
-        return list(self.container)
+        for recension in self.container:
+            url = zope.component.getMultiAdapter(
+                (recension, self.request), name='absolute_url')()
+            authors = ' '.join(recension.authors)
+            yield dict(publisher=recension.publisher,
+                       location=recension.location,
+                       year=recension.year,
+                       price=recension.price,
+                       authors=authors,
+                       url=url,
+                       title=recension.title)
+
+    @zope.cachedescriptors.property.Lazy
+    def has_recensions(self):
+        return len(self.container) > 0
 
     @zope.cachedescriptors.property.Lazy
     def container(self):
@@ -48,6 +64,16 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
     title = _('Add book information')
     form_fields = FormBase.form_fields.omit('raw_data')
     factory = zeit.content.article.recension.BookRecension
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _('Book details'),
+            ('authors', 'title', 'info', 'genre',
+             'category', 'translator'),
+            css_class='column-left'),
+        gocept.form.grouped.RemainingFields(
+            _('Publishing details'),
+            ('age-limit', 'translator', 'publisher')),
+        )
 
     def add(self, obj):
         self.context.append(obj)

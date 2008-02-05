@@ -57,7 +57,7 @@ After saving the recentions tab appears:
 
 Let's add one:
 
->>> browser.getLink('Add').click()
+>>> browser.getControl('Add').click()
 >>> browser.getControl('Title').value = 'Der Schwarm'
 >>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
 >>> browser.getControl(name='form.actions.add').click()
@@ -66,7 +66,7 @@ Let's add one:
             <div id="content">
     <div class="recensions">
   <div class="recension">
-    <a href=".../@@edit.html" title="Edit">
+    <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
       Der Schwarm
     </a>
@@ -85,14 +85,19 @@ Let's edit and add some more information:
             <div id="content">
     <div class="recensions">
   <div class="recension">
-    <a href=".../@@edit.html" title="Edit">
+    <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
       Der Schwarm
     </a>
-    <div class="publisher">Kiepenheuer &amp; Witsch</div>
-    <div class="location">Koeln</div>
-    <div class="year">2004</div>
-    <div class="price">24.9</div>
+    <dl>
+      <dt>Publisher</dt>
+      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+      ...
+    <dd class="location">Koeln</dd>
+    ...
+    <dd class="year">2004</dd>
+    ...
+    <dd class="price">24.9</dd>
     ...
 
 Note that the price is not rendered correctly, yet. We would like a decimal or
@@ -124,7 +129,7 @@ Let's have a look at the source code:
 Let's add another recension:
 
 >>> browser.getLink('Recensions').click()
->>> browser.getLink('Add').click()
+>>> browser.getControl('Add').click()
 >>> browser.getControl('Title').value = 'Minima Moraklia'
 >>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
 >>> browser.getControl('Publisher').value = 'Suhrkamp'
@@ -137,24 +142,31 @@ Let's add another recension:
             <div id="content">
     <div class="recensions">
   <div class="recension">
-    <a href=".../@@edit.html" title="Edit">
+    <a href=".../recensions/0/@@edit.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
       Der Schwarm
     </a>
-    <div class="publisher">Kiepenheuer &amp; Witsch</div>
-    <div class="location">Koeln</div>
-    <div class="year">2004</div>
-    <div class="price">24.9</div>
-  </div>
+    ...
+      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+      ...
+      <dd class="location">Koeln</dd>
+      ...
+      <dd class="year">2004</dd>
+      ...
+      <dd class="price">24.9</dd>
+      ...
   <div class="recension">
-    <a href=".../recensions/1/@@edit.html" title="Edit">
+    <a href=".../recensions/1/@@edit.html" title="Edit" class="RecensionTitle">
       Theodor W. Adorno:
       Minima Moraklia
     </a>
-    <div class="publisher">Suhrkamp</div>
-    <div class="location">Zuerich</div>
-    <div class="year">2001</div>
-    <div class="price">13.8</div>
-  </div>
+    ...
+    <dd class="publisher">Suhrkamp</dd>
+    ...
+    <dd class="location">Zuerich</dd>
+    ...
+    <dd class="year">2001</dd>
+    ...
+    <dd class="price">13.8</dd>
   ...
 

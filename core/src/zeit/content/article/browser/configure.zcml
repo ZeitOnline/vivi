@@ -139,5 +139,9 @@
     menu="zeit-context-views" title="Edit"
     />
 
+  <resourceLibrary name="zeit.cms.recension">
+    <directory source="resources" include="recension.css" />
+  </resourceLibrary>
+
 
 </configure>
