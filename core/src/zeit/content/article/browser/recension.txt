@@ -1,0 +1,160 @@
+==========
+Recensions
+==========
+
+We need a testbrowser first:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+Also set the product config:
+
+>>> import os.path
+>>> import zope.app.appsetup.product
+>>> config = zope.app.appsetup.product._configs['zeit.content.article'] = {}
+>>> config['source-book-recession-categories'] = 'file://%s' % (
+...     os.path.join(os.path.dirname(__file__), 'book-categories.xml'))
+
+The recensions UI is not "enabled" by default on articles. The user first has
+to mark the article to use recentions. Open an article in the repository:
+
+>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+...              '/2007/01/Somalia/')
+
+There are no recensions, yet:
+
+>>> browser.getLink('Recensions')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+Check the article out:
+
+>>> browser.getLink('Checkout').click()
+
+There is still no recention tab:
+>>> browser.getLink('Recensions')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+Mark the article now:
+
+>>> browser.getControl('Has recension content').selected = True
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
+
+After saving the recentions tab appears:
+
+>>> browser.getLink('Recensions').click()
+>>> print browser.contents
+<?xml ...
+    There are no book information items, yet.
+    ...
+
+Let's add one:
+
+>>> browser.getLink('Add').click()
+>>> browser.getControl('Title').value = 'Der Schwarm'
+>>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
+>>> browser.getControl(name='form.actions.add').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <a href=".../@@edit.html" title="Edit">
+      Frank Schwanitz:
+      Der Schwarm
+    </a>
+    ...
+
+Let's edit and add some more information:
+
+>>> browser.getLink('Schwanitz').click()
+>>> browser.getControl('Publisher').value = 'Kiepenheuer & Witsch'
+>>> browser.getControl('Location').value = 'Koeln'
+>>> browser.getControl('Year').value = '2004'
+>>> browser.getControl('Price').value = '24.90'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <a href=".../@@edit.html" title="Edit">
+      Frank Schwanitz:
+      Der Schwarm
+    </a>
+    <div class="publisher">Kiepenheuer &amp; Witsch</div>
+    <div class="location">Koeln</div>
+    <div class="year">2004</div>
+    <div class="price">24.9</div>
+    ...
+
+Note that the price is not rendered correctly, yet. We would like a decimal or
+just a TextLine but we need lxml 2.0 for this.
+
+Let's have a look at the source code:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
+<article>...
+  <body ...
+    <entry xmlns="http://namespaces.zeit.de/bibinfo">
+      <auth-info>
+        <author>Frank Schwanitz</author>
+      </auth-info>
+      <title>Der Schwarm</title>
+      <category>Belletristik</category>
+      <edition>
+        <year>2004</year>
+        <publisher>Kiepenheuer & Witsch</publisher>
+        <location>Koeln</location>
+        <price>24.9</price>
+      </edition>
+    </entry>
+  </body>...
+</article>
+
+
+Let's add another recension:
+
+>>> browser.getLink('Recensions').click()
+>>> browser.getLink('Add').click()
+>>> browser.getControl('Title').value = 'Minima Moraklia'
+>>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
+>>> browser.getControl('Publisher').value = 'Suhrkamp'
+>>> browser.getControl('Location').value = 'Zuerich'
+>>> browser.getControl('Year').value = '2001'
+>>> browser.getControl('Price').value = '13.80'
+>>> browser.getControl(name='form.actions.add').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <a href=".../@@edit.html" title="Edit">
+      Frank Schwanitz:
+      Der Schwarm
+    </a>
+    <div class="publisher">Kiepenheuer &amp; Witsch</div>
+    <div class="location">Koeln</div>
+    <div class="year">2004</div>
+    <div class="price">24.9</div>
+  </div>
+  <div class="recension">
+    <a href=".../recensions/1/@@edit.html" title="Edit">
+      Theodor W. Adorno:
+      Minima Moraklia
+    </a>
+    <div class="publisher">Suhrkamp</div>
+    <div class="location">Zuerich</div>
+    <div class="year">2001</div>
+    <div class="price">13.8</div>
+  </div>
+  ...
+

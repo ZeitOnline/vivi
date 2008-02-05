@@ -1,0 +1,49 @@
+<div class="recensions" i18n:domain="zeit.cms">
+  <div class="recension"
+    tal:condition="view/recensions"
+    tal:repeat="recension view/recensions">
+
+    <a href="#" title="Edit"
+      tal:attributes="href string:${recension/@@absolute_url}/@@edit.html"
+      i18n:attributes="title">
+      <span tal:replace="python:', '.join(recension.authors)" />:
+      <span tal:replace="recension/title" />
+    </a>
+
+    <div class="publisher" 
+      tal:condition="recension/publisher"
+      tal:content="recension/publisher">
+      Suhrkamp
+    </div>
+    <div class="location"
+      tal:condition="recension/location"
+      tal:content="recension/location">
+      Zuerich
+    </div>
+    <div class="year"
+      tal:condition="recension/year"
+      tal:content="recension/year">
+      2007
+    </div>
+    <div class="price"
+      tal:condition="recension/price"
+      tal:content="recension/price">
+      29,90
+    </div>
+
+  </div>
+
+  <div tal:condition="not:view/recensions"
+    i18n:translate="recension-no-items">
+    There are no book information items, yet.
+  </div>
+
+  <div class="add">
+    <a href="#"
+      tal:attributes="href string:${view/container/@@absolute_url}/@@add"
+      i18n:translate="">
+      Add ...
+    </a>
+
+  </div>
+</div>

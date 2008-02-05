@@ -45,9 +45,34 @@
     />
 
 
-  <!-- recensoins -->
+  <!-- recensions -->
 
-  <adapter factory=".recension.BookRecensionContainer" />
+  <adapter
+    factory=".recension.BookRecensionContainer" 
+    provides="zeit.content.article.interfaces.IBookRecensionContainer" 
+    />
+
+  <class class=".recension.BookRecensionContainer">
+    <require 
+      interface=".interfaces.IBookRecensionReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface=".interfaces.IBookRecensionWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".recension.BookRecension">
+    <require
+      interface=".interfaces.IBookRecension"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IBookRecension"
+      permission="zeit.EditContent"
+      />
+  </class>
 
   <!-- generation -->
 
@@ -56,5 +81,33 @@
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"
     />
+
+
+    
+  <!-- traversing --> 
+  <adapter 
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.content.article.interfaces.IArticle
+         zeit.cms.browser.interfaces.ICMSLayer"
+    />
+   <subscriber
+     factory=".recension.RecensionContainerTraverser"
+     for="zeit.content.article.interfaces.IArticle
+          zeit.cms.browser.interfaces.ICMSLayer"
+     provides="z3c.traverser.interfaces.ITraverserPlugin"
+     />
+  
+
+  <adapter 
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.content.article.interfaces.IBookRecensionContainer
+         zeit.cms.browser.interfaces.ICMSLayer"
+    />
+   <subscriber
+     factory=".recension.RecensionTraverser"
+     for="zeit.content.article.interfaces.IBookRecensionContainer
+          zeit.cms.browser.interfaces.ICMSLayer"
+     provides="z3c.traverser.interfaces.ITraverserPlugin"
+     />
 
 </configure>

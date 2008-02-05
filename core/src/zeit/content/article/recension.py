@@ -6,52 +6,69 @@ import lxml.objectify
 
 import zope.component
 import zope.interface
+import zope.security.proxy
+import zope.publisher.interfaces
+
+import z3c.traverser.interfaces
 
 import zeit.cms.content.property
 import zeit.cms.content.xml
 import zeit.content.article.interfaces
 
 
+
+
 class BookRecensionContainer(object):
 
     zope.interface.implements(
-        zeit.content.article.interfaces.IBookRecensionContainer)
+        zeit.content.article.interfaces.IBookRecensionContainer,
+        zope.location.interfaces.ILocation)
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     def __init__(self, context):
         self.context = context
         self.__parent__ = context
+        self.__name__ = 'recensions'
+
 
     def __getitem__(self, index):
-        return self._create_recension(self.entries[index])
+        return self._create_recension(index, self.entries[index])
 
     def __iter__(self):
-        for node in self.entries:
-            yield self._create_recension(node)
+        for index, node in enumerate(self.entries):
+            yield self._create_recension(index, node)
 
     def __len__(self):
         return len(self.entries)
 
     def append(self, recension):
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(recension)
-        self.context.xml['body'].append(xml_repr.xml)
+        self.xml['body'].append(xml_repr.xml)
+        zope.security.proxy.removeSecurityProxy(
+            self.context)._p_changed = True
 
     @property
     def entries(self):
         return lxml.objectify.ObjectPath(
-        '.body.{http://namespaces.zeit.de/bibinfo}entry').find(
-            self.context.xml, ())
+            '.body.{http://namespaces.zeit.de/bibinfo}entry').find(
+                self.xml, ())
 
-    def _create_recension(self, node):
+    @property
+    def xml(self):
+        return zope.security.proxy.removeSecurityProxy(self.context.xml)
+
+    def _create_recension(self, index, node):
         recension = BookRecension()
         recension.xml = node
-        return recension
+        return zope.location.location.located(recension, self, unicode(index))
 
 
 class BookRecension(zeit.cms.content.xml.XMLRepresentationBase):
-    """A recension for a book."""
+    """Information about a book in a recension."""
 
-    zope.interface.implements(zeit.content.article.interfaces.IBookRecension)
+    zope.interface.implements(
+        zeit.content.article.interfaces.IBookRecension,
+        zope.location.interfaces.ILocation)
 
     default_template = u'<entry xmlns="http://namespaces.zeit.de/bibinfo"/>'
 
@@ -80,3 +97,48 @@ class BookRecension(zeit.cms.content.xml.XMLRepresentationBase):
         '.edition.price')
 
     raw_data = u'Wird noch nicht eingelesen.'  # XXX
+
+    __parent__ = None
+    __name__ = None
+
+
+class RecensionContainerTraverser(object):
+
+    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        if self.context.has_recensions:
+            recensions = (
+                zeit.content.article.interfaces.IBookRecensionContainer(
+                    self.context))
+            if name == recensions.__name__:
+                return recensions
+        raise zope.publisher.interfaces.NotFound(self.context, name, request)
+
+
+class RecensionTraverser(object):
+
+    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        try:
+            index = int(name)
+        except ValueError:
+            pass
+        else:
+            try:
+                return self.context[index]
+            except IndexError:
+                pass
+
+        raise zope.publisher.interfaces.NotFound(self.context, name, request)
+
+

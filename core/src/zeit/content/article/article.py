@@ -67,6 +67,11 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
     syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.article.interfaces.IArticle,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('has_recensions',))
+
     @rwproperty.getproperty
     def html(self):
         """return html snippet of article."""

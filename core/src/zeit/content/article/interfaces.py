@@ -82,6 +82,10 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('Textlength'),
         required=False)
 
+    has_recensions = zope.schema.Bool(
+        title=_('Has recension content'),
+        default=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
@@ -98,7 +102,8 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         value_type=zope.schema.Object(ISyndicationEventLog))
 
 
-class IBookRecensionContainer(zope.interface.Interface):
+class IBookRecensionReadContainer(zope.interface.Interface):
+    """Read interface for book recensions."""
 
     def __getitem__(index):
         """Get recension with given `inded`."""
@@ -109,8 +114,17 @@ class IBookRecensionContainer(zope.interface.Interface):
     def __len__():
         """Return amount of items."""
 
+
+class IBookRecensionWriteContainer(zope.interface.Interface):
+    """Write interface for book recensions."""
+
     def append(item):
         """Append item to container."""
+
+
+class IBookRecensionContainer(IBookRecensionReadContainer,
+                              IBookRecensionWriteContainer):
+    """Book recensions."""
 
 
 class IBookRecension(zope.interface.Interface):
@@ -124,8 +138,14 @@ class IBookRecension(zope.interface.Interface):
             title=_('Author')))
 
     title = zope.schema.TextLine(title=_('Title'))
-    info = zope.schema.TextLine(title=_('Info'))
-    genre = zope.schema.TextLine(title=_('Genre'))
+
+    info = zope.schema.TextLine(
+        title=_('Info'),
+        required=False)
+
+    genre = zope.schema.TextLine(
+        title=_('Genre'),
+        required=False)
 
     category = zope.schema.Choice(
         title=_('ZEIT category'),
