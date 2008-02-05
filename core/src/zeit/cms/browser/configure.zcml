@@ -70,7 +70,7 @@
     name="10_messages"
     for="*"
     manager="zeit.cms.browser.interfaces.IGlobalInformation"
-    template="rightheaderitems.pt"
+    template="notices.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
