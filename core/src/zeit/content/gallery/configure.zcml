@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".gallery.galleryFactory" name="image-gallery" />
+  <adapter factory=".gallery.galleryFactory" name="gallery" />
   <adapter factory=".gallery.resourceFactory" />
   <adapter factory=".gallery.galleryentry_factory" />
   <adapter factory=".gallery.objectified_entry" />

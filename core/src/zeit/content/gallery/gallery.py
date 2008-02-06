@@ -189,7 +189,7 @@ def galleryFactory(context):
 
 
 resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'image-gallery')
+    'gallery')
 resourceFactory = zope.component.adapter(
     zeit.content.gallery.interfaces.IGallery)(resourceFactory)
 
