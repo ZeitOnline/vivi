@@ -1,0 +1,11 @@
+<tal:typeahead>
+<ul tal:define="searchterm request/searchTerm | nothing;
+    keywords python:view.search(searchterm);">
+  <li tal:repeat="kw keywords">
+    <a href="#"
+      class="FoundKeywordInTaxonomy"
+      tal:attributes="href string:keyword://${kw/code}/${kw/label}"
+      tal:content="kw/label"> Hochwasser </a>
+  </li>
+</ul>
+</tal:typeahead>

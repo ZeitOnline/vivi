@@ -66,6 +66,14 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="keyword-typeahead"
+    class=".keyword.TypeaheadSearch"
+    template="keyword-typeahead.pt"
+    permission="zope.Public"
+    />
+
 
   <!-- XML tree editing widget -->
   <adapter

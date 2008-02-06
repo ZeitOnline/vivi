@@ -1,20 +1,27 @@
-<tal:block>
+<tal:block 
+  i18n:domain="zeit.cms">
 
   <div class="keyword-tree">
-    <h1>Taxonomie</h1>
+    <h1 i18n:translate="">Taxonomy</h1>
     <div class="Tree"
       tal:content="structure view/tree_template">
     </div>
   </div>
 
   <div class="keyword-input">
-    <h1>Freies Schlüsselwort hinzufügen</h1>
+    <h1 i18n:translate="">Add a keyword</h1>
     <input type="text" id="new_keyword_code" name="new_keyword_code" />
     <input type="button" name="add_new_keyword_button" value="Hinzufügen" />
   </div>
 
+  <div class="typeahead-results">
+    <h1 i18n:translate="">Similar keywords:</h1>
+    <div id="keyword-typeahead-results">
+    </div>
+  </div>
+
   <div class="keyword-list">
-    <h1>Schlüsselwörter</h1>
+    <h1 i18n:translate="">Keywords</h1>
     <ul id="lightbox-keyword-list">
       <!-- filled by javascript -->
     </ul>

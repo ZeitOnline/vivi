@@ -51,9 +51,8 @@
 }
 
 #lightbox > .keyword-list {
-
     position: absolute;
-    top: 6em;
+    top: 20em;
     right: 0;
     width: 55%;
     bottom: 0;
@@ -112,4 +111,21 @@
 
 .object-widget .object-reference {
     width: 10em;
+}
+
+.typeahead-results {
+    position: absolute;
+    top: 6em;
+    width: 55%;
+    right: 0;
+    height: 15em;
+    overflow: hidden;
+}
+
+#keyword-typeahead-results ul {
+    padding-left: 0;
+}
+#keyword-typeahead-results ul li {
+    display: inline;
+    padding: 0 1em;
 }

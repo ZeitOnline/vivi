@@ -29,6 +29,14 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
             othis.updateLightbox();
             return result;
         });
+        // typeahead
+        d.addCallback(function(result) {
+            othis.typeahead_container = $('keyword-typeahead-results');
+            var textinput = $('new_keyword_code');
+            connect(textinput, 'onkeyup', othis, 'handleTextinput');
+        })
+
+
     },
 
     updateLightbox: function() {
@@ -63,6 +71,11 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         this.updateLightbox();
     },
 
+    updateTypeaheadResults: function(responseText) {
+        var text = responseText;
+        this.typeahead_container.innerHTML = text;
+    },
+
     delete: function(index) {
         arguments.callee.$.delete.call(this, index);
         this.updateLightbox();
@@ -74,13 +87,35 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
             this.showAddKeyword();
         } else if (target.nodeName == 'A' &&
                    target.getAttribute('href').indexOf('keyword://') == 0) {
-            this.addKeyword(target.getAttribute('href')); 
+            this.addKeyword(target.getAttribute('href'));
         } else if (target.getAttribute('name') == 'add_new_keyword_button') {
             var code = getElement('new_keyword_code').value
             this.addCustomKeyword(code);
+        } else if (target.getAttribute('class') == 'FoundKeywordInTaxonomy') {
+            this.addKeyword(target.getAttribute('href'));
         } else {
             arguments.callee.$.handleClick.call(this, event);
         }
+    },
+
+    handleTextinput: function(event) {
+        var target = event.target();
+        if (target.getAttribute('name') == 'new_keyword_code') {
+            this.typeaheadSearch(target.value);
+        }
+    },
+
+    typeaheadSearch: function(searchterm) {
+        var searchTerm = searchterm; 
+
+        var url = '/@@keyword-typeahead'
+        var query = {'searchTerm': searchTerm};
+        var d = doSimpleXMLHttpRequest(url, query);
+        d.addCallbacks(
+          function(result) {
+              widget.updateTypeaheadResults(result.responseText);
+          })
+
     },
 
 });

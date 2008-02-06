@@ -72,3 +72,13 @@ class KeywordsDisplayWidget(
 
     def _toFormValue(self, value):
         return value
+
+
+class TypeaheadSearch(object):
+
+    def search(self, searchterm=None):
+        if searchterm is None:
+            return
+        keywords = zope.component.getUtility(
+            zeit.cms.content.interfaces.IKeywords)
+        return keywords.find_keywords(searchterm)

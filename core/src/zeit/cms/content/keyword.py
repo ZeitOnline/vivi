@@ -54,6 +54,11 @@ class KeywordUtility(object):
         except KeyError:
             return Keyword(code, code, in_taxonomy=False)
 
+    def find_keywords(self, searchterm):
+        self._load_keywords()
+        return [ self[x] for x in self._keywords_by_code.keys() 
+                    if searchterm in x]
+
     def _load_keywords(self):
         if self._loaded:
             return

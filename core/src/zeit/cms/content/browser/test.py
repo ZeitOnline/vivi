@@ -11,7 +11,8 @@ import zeit.cms.testing
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'template.txt'))
+        'template.txt',
+        'keyword.txt',))
     suite.addTest(doctest.DocFileSuite(
         'xml-widget.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +

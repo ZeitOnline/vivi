@@ -51,6 +51,11 @@ class IKeywords(zope.interface.Interface):
     def __getitem__(code):
         """return IKeyword with given code."""
 
+    def find_keywords(searchterm):
+        """Returns a list of keywords which contain the searchterm
+           string.
+        """
+
 
 class ICommonMetadata(zope.interface.Interface):
 
