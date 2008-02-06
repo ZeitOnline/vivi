@@ -69,7 +69,7 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
             _('Book details'),
             ('authors', 'title', 'info', 'genre',
              'category', 'translator'),
-            css_class='column-left'),
+            css_class='wide-widgets column-left'),
         gocept.form.grouped.RemainingFields(
             _('Publishing details'),
             ('age-limit', 'translator', 'publisher')),
