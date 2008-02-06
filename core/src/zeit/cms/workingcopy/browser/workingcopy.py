@@ -25,7 +25,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
         zeit.cms.browser.column.LinkColumn(
             title=_('Title'),
             getter=lambda i, f: i.context,
-            cell_formatter=lambda v, i, f: i.title,
+            cell_formatter=lambda v, i, f: i.title or i.__name__,
             css_class=lambda v, i, f: i.type,
             view='edit.html'),
         )
