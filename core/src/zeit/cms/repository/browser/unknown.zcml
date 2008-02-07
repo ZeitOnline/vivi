@@ -53,6 +53,7 @@
   <browser:page
     name="drag-pane.html"
     for="zeit.cms.interfaces.ICMSContent"
+    class=".unknown.DragPane"
     template="drag-pane.pt"
     permission="zope.View" />
 

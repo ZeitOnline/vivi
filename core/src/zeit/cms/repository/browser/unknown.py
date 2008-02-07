@@ -34,3 +34,14 @@ class Metadata(object):
     def dav_resource_type(self):
         return zeit.cms.interfaces.IWebDAVReadProperties(self.context).get(
             ('resourcetype', 'DAV:'))
+
+
+class DragPane(object):
+
+    @property
+    def uniqueId(self):
+        return self.context.uniqueId
+
+    @property
+    def name(self):
+        return self.context.__name__

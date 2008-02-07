@@ -1,8 +1,8 @@
 <tal:block>
   <div class="Text"
-    tal:content="context/__name__">
+    tal:content="view/name">
   </div>
   <div class="UniqueId"
-    tal:content="context/uniqueId">
+    tal:content="view/uniqueId">
   </div>
 </tal:block>
