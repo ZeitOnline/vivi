@@ -7,7 +7,7 @@ Creating a connector:
 >>> import os
 >>> from pprint import pprint
 >>> from zeit.connector.connector import Connector
->>> from zeit.connector.cache import resourceCacheFactory
+>>> from zeit.connector.cache import ResourceCache
 >>> connector = Connector(roots={
 ...       "default": os.environ['connector-url'],
 ...       "search": os.environ['search-connector-url']})
@@ -31,44 +31,14 @@ True
 Cache
 =====
 
-Set up a site:
+Setup resource cache:
 
->>> import zope.interface
->>> import zope.app.component.hooks
->>> import zope.annotation.attribute
->>> import zope.annotation.interfaces
->>> from zope.traversing.interfaces import IContainmentRoot
->>> from zope.app.component.interfaces import ISite
->>>
->>> class Site(object):
-...     zope.interface.implements(
-...         ISite, IContainmentRoot,
-...         zope.annotation.interfaces.IAttributeAnnotatable)
-...
-...     def getSiteManager(self):
-...         return zope.component.getGlobalSiteManager()
-...
->>> site = Site()
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(site)
-
-And annotations:
-
->>> site_manager = zope.app.component.hooks.getSiteManager()
->>> site_manager.registerAdapter(
-...     zope.annotation.attribute.AttributeAnnotations,
-...     (zope.annotation.interfaces.IAttributeAnnotatable,),
-...     zope.annotation.interfaces.IAnnotations)
-
-
-The connector needs the ResourceCache, so we register it:
-
+>>> import zope.component
 >>> import zeit.connector.interfaces
->>>
->>> site_manager.registerAdapter(
-...     resourceCacheFactory, 
-...     (ISite,),
-...     zeit.connector.interfaces.IResourceCache)
+>>> cache = ResourceCache()
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     cache, zeit.connector.interfaces.IResourceCache)
 
 
 Resources
@@ -95,7 +65,6 @@ KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
 
 The properties are cached now:
 
->>> cache = zeit.connector.interfaces.IResourceCache(site)
 >>> properties = cache.properties[index_id]
 >>> properties[('getcontenttype', 'DAV:')]
 'text/xml'
@@ -419,14 +388,6 @@ Clean up
 
 Cleanup after ourselves:
 
->>> site_manager.unregisterAdapter(
-...     resourceCacheFactory,
-...     (ISite,),
-...     zeit.connector.interfaces.IResourceCache)
+>>> gsm.unregisterUtility(
+...     cache, zeit.connector.interfaces.IResourceCache)
 True
->>> site_manager.unregisterAdapter(
-...     zope.annotation.attribute.AttributeAnnotations,
-...     (zope.annotation.interfaces.IAttributeAnnotatable,),
-...     zope.annotation.interfaces.IAnnotations)
-True
->>> zope.app.component.hooks.setSite(old_site)

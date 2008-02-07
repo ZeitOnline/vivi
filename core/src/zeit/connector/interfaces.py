@@ -215,8 +215,11 @@ class IResource(zope.interface.Interface):
         title=u"WebDAV properties")
 
 
+
 class IResourceCache(zope.interface.Interface):
-    """A cache for resource data."""
+    """A cache for resource data.
+
+    XXX out of date"""
 
     def getData(unique_id, dav_resource):
         """Return data for given unique_id and dav_resource.

@@ -1,7 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".cache.resourceCacheFactory" />
-  
   <!-- security -->
   <class class=".resource.WebDAVProperties">
     <require
@@ -11,5 +9,12 @@
       interface=".interfaces.IWebDAVWriteProperties"
       permission="zope.ManageContent" />
   </class>
+
+
+  <utility 
+    name="zeit.connector"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
 
 </configure>

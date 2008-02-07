@@ -4,6 +4,7 @@
 
 import time
 
+
 import persistent
 import transaction
 import BTrees.LOBTree
@@ -11,10 +12,7 @@ import BTrees.OLBTree
 import BTrees.OOBTree
 import ZODB.blob
 
-import zope.annotation.factory
-import zope.location.interfaces
-
-import gocept.cache.property
+import zope.interface
 
 import zeit.connector.interfaces
 
@@ -23,12 +21,6 @@ class ResourceCache(persistent.Persistent):
     """Cache for ressource data."""
 
     zope.interface.implements(zeit.connector.interfaces.IResourceCache)
-    zope.component.adapts(zope.location.interfaces.ISite)
-
-    properties = gocept.cache.property.TransactionBoundCache(
-        '_v_properties', dict)
-    child_ids = gocept.cache.property.TransactionBoundCache(
-        '_v_childnames', dict)
 
     CACHE_TIMEOUT = 30 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
@@ -39,6 +31,8 @@ class ResourceCache(persistent.Persistent):
         self._last_access_time = BTrees.OLBTree.OLBTree()
         self._time_to_id = BTrees.LOBTree.LOBTree()
         self.locktokens = BTrees.OOBTree.OOBTree()
+        self.properties = BTrees.OOBTree.OOBTree()
+        self.child_ids = BTrees.OOBTree.OOBTree()
 
     def getData(self, unique_id, properties):
         current_etag = properties[('getetag', 'DAV:')]
@@ -91,6 +85,3 @@ class ResourceCache(persistent.Persistent):
             unique_id = self._time_to_id[access_time]
             del self._last_access_time[unique_id]
             del self._time_to_id[access_time]
-
-
-resourceCacheFactory = zope.annotation.factory(ResourceCache)

@@ -61,11 +61,12 @@
 import StringIO
 import datetime
 import httplib
+import os
 import random
+import re
+import sys
 import time
 import urlparse
-import sys
-import re
 
 import pytz
 import gocept.lxml.objectify
@@ -146,16 +147,21 @@ def _abs2timeout(time):
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
 
 def connectorFactory():
-    cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    if not cms_config:
-        raise ZConfig.ConfigurationError(
-            "zope.conf has no product config for zeit.cms.")
-    root = cms_config.get('document-store')
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.connector')
+    if config:
+        root = config.get('document-store')
+        if not root:
+            raise ZConfig.ConfigurationError(
+                "WebDAV server not configured properly.")
+        search_root = config.get('document-store-search')
+    else:
+        root = os.environ.get('connector-url')
+        search_root = os.environ.get('search-connector-url')
+
     if not root:
         raise ZConfig.ConfigurationError(
-            "WebDAV server not configured properly.")
-
-    search_root = cms_config.get('document-store-search')
+            "zope.conf has no product config for zeit.connector.")
 
     return Connector(dict(
         default=root,
@@ -661,5 +667,5 @@ class Connector(zope.thread.local):
 
     @property
     def cache(self):
-        site = zope.app.component.hooks.getSite()
-        return zeit.connector.interfaces.IResourceCache(site)
+        return zope.component.getUtility(
+            zeit.connector.interfaces.IResourceCache)

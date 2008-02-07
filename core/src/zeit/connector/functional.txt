@@ -1,0 +1,37 @@
+==========================
+Functional connector tests
+==========================
+
+Test the integration with zope 3.
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+Get the connector:
+
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> connector
+<zeit.connector.connector.Connector object at 0x...>
+
+
+>>> connector['http://xml.zeit.de/testing']
+<zeit.connector.resource.CachedResource object at 0x...>
+>>> res = connector['http://xml.zeit.de/index']
+>>> res
+<zeit.connector.resource.CachedResource object at 0x...>
+
+
+This breaks because the functional test DemoStorage doesn't support blobs. Try
+zc.demostorage2 for this.
+
+#>>> res.data
+
+
+
+After tests we clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)

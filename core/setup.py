@@ -15,7 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
-        'ZODB3>3.7',
+        'ZODB3>=3.8b4',
         'gocept.cache>=0.2.2',
         'gocept.lxml',
         'setuptools',
@@ -31,6 +31,7 @@ setup(
         'test': [
             'zope.testing',
             'zope.app.file',
+            'zope.app.zcmlfiles',
         ],
     },
     entry_points=dict(
