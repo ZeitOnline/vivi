@@ -7,12 +7,14 @@ connect(window, 'onload', function(event) {
     // Connect messages hide/show
     var showtoggle = $('messages_toggle')
     var messages = $('messages')
-    if (messages == null) {
+    var hideToggle = getFirstElementByTagAndClassName(
+        'div', 'hideText', messages);
+
+    if (hideToggle == null) {
         // no messages, nothing do to
         return
     }
 
-    var hideToggle = getFirstElementByTagAndClassName('div', 'hideText', messages);
     connect(hideToggle, 'onclick', function(event) {
         toggleElementClass('hiddenMessages', messages);
     });
