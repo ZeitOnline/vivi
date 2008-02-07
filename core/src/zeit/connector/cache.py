@@ -12,7 +12,9 @@ import BTrees.OLBTree
 import BTrees.OOBTree
 import ZODB.blob
 
+import zope.component
 import zope.interface
+import zope.testing.cleanup
 
 import zeit.connector.interfaces
 
@@ -31,8 +33,6 @@ class ResourceCache(persistent.Persistent):
         self._last_access_time = BTrees.OLBTree.OLBTree()
         self._time_to_id = BTrees.LOBTree.LOBTree()
         self.locktokens = BTrees.OOBTree.OOBTree()
-        self.properties = BTrees.OOBTree.OOBTree()
-        self.child_ids = BTrees.OOBTree.OOBTree()
 
     def getData(self, unique_id, properties):
         current_etag = properties[('getetag', 'DAV:')]
@@ -85,3 +85,66 @@ class ResourceCache(persistent.Persistent):
             unique_id = self._time_to_id[access_time]
             del self._last_access_time[unique_id]
             del self._time_to_id[access_time]
+
+
+class VolatileCache(persistent.Persistent):
+
+    zope.interface.implements(zeit.connector.interfaces.IVolatileCache)
+
+    _cache_valid = False
+
+    def __init__(self):
+        self._validate_cache()
+
+    def __getitem__(self, key):
+        self._validate_cache()
+        return self._storage[key]
+
+    def get(self, key, default=None):
+        self._validate_cache()
+        return self._storage.get(key, default)
+
+    def __contains__(self, key):
+        self._validate_cache()
+        return key in self._storage
+
+    def __delitem__(self, key):
+        self._validate_cache()
+        del self._storage[key]
+
+    def __setitem__(self, key, value):
+        self._validate_cache()
+        self._storage[key] = value
+
+    def _validate_cache(self):
+        """Validate cache.
+
+        The cache is invalidated when the server starts. The value
+        `_cache_valid` is stored on the *class*, i.e. *not* in the database.
+        When the server is started the cache is considered stale.
+
+        """
+        if not self._cache_valid:
+            self._storage = BTrees.OOBTree.OOBTree()
+            self.__class__._cache_valid = True
+
+
+class PropertyCache(VolatileCache):
+    """Property cache."""
+
+    _cache_valid = False
+
+
+class ChildNameCache(VolatileCache):
+    """Cache for child names."""
+
+    _cache_valid = False
+
+
+
+def _cleanup():
+    VolatileCache._cache_valid = False
+    PropertyCache._cache_valid = False
+    ChildNameCache._cache_valid = False
+
+zope.testing.cleanup.addCleanUp(_cleanup)

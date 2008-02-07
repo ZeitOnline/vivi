@@ -146,6 +146,7 @@ def _abs2timeout(time):
     # No negative or zero timeouts:
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
 
+
 def connectorFactory():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.connector')
@@ -231,9 +232,9 @@ class Connector(zope.thread.local):
 
     def _get_resource_properties(self, id):
         __traceback_info__ = (id, )
-        cache = self.cache
+        cache = self.property_cache
         try:
-            properties = cache.properties[id]
+            properties = cache[id]
         except KeyError:
             davres = self._get_dav_resource(id)
             if davres._result is None:
@@ -245,7 +246,7 @@ class Connector(zope.thread.local):
 
     def _get_resource_child_ids(self, id):
         try:
-            child_ids = self.cache.child_ids[id]
+            child_ids = self.child_name_cache[id]
         except KeyError:
             davres = self._get_dav_resource(id)
             if davres._result is None:
@@ -256,7 +257,7 @@ class Connector(zope.thread.local):
 
     def _update_property_cache(self, dav_result):
         now = datetime.datetime.now(pytz.UTC)
-        cache = self.cache.properties
+        cache = self.property_cache
         for path, response in dav_result._result.responses.items():
             # response_id will be the canonical id, i.e. collections end with a
             # slash (/)
@@ -270,7 +271,7 @@ class Connector(zope.thread.local):
             return
         id = self._loc2id(urlparse.urljoin(self._roots['default'],
                                            dav_response.path))
-        child_ids = self.cache.child_ids[id] = [
+        child_ids = self.child_name_cache[id] = [
             self._loc2id(urlparse.urljoin(self._roots['default'], path))
             for path in dav_response.get_child_names()]
         return child_ids
@@ -279,7 +280,7 @@ class Connector(zope.thread.local):
         """Return body of resource."""
         __traceback_info__ = (id, )
         properties = self._get_resource_properties(id)
-        cache = self.cache
+        cache = self.body_cache
         try:
             data = cache.getData(id, properties)
         except KeyError:
@@ -452,10 +453,10 @@ class Connector(zope.thread.local):
             yield tuple([id] + [props[(a.name, a.namespace)] for a in attrlist])
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
-        return self.cache.locktokens.get(id)
+        return self.body_cache.locktokens.get(id)  # XXX do not use a "cache"
 
     def _put_my_lockinfo(self, id, token, principal=None, time=None): # FIXME better defaults
-        locktbl = self.cache.locktokens
+        locktbl = self.body_cache.locktokens  # XXX do not use a cache
         if token is None:
             if locktbl.has_key(id):
                 del locktbl[id]
@@ -640,11 +641,12 @@ class Connector(zope.thread.local):
         return davlock
 
     def _invalidate_cache(self, id):
+        # XXX use an event
         parent, last = _id_splitlast(id)
-        for cache, key in ((self.cache.properties, id),
-                           (self.cache.child_ids, id),
-                           (self.cache.properties, parent),
-                           (self.cache.child_ids, parent)):
+        for cache, key in ((self.property_cache, id),
+                           (self.child_name_cache, id),
+                           (self.property_cache, parent),
+                           (self.child_name_cache, parent)):
             try:
                 del cache[key]
             except KeyError:
@@ -656,9 +658,9 @@ class Connector(zope.thread.local):
             return id
         if id.endswith('/'):
             id = id[:-1]
-        if self.cache.properties.get(id + '/') is not None:
+        if self.property_cache.get(id + '/') is not None:
             return id + '/'
-        if self.cache.properties.get(id) is not None:
+        if self.property_cache.get(id) is not None:
             return id
         dav_resource = DAVResource(self._id2loc(id + '/'), conn=self._conn())
         if dav_resource.head().status == 200:
@@ -666,6 +668,16 @@ class Connector(zope.thread.local):
         return id
 
     @property
-    def cache(self):
+    def body_cache(self):
         return zope.component.getUtility(
             zeit.connector.interfaces.IResourceCache)
+
+    @property
+    def property_cache(self):
+        return zope.component.getUtility(
+            zeit.connector.interfaces.IPropertyCache)
+
+    @property
+    def child_name_cache(self):
+        return zope.component.getUtility(
+            zeit.connector.interfaces.IChildNameCache)

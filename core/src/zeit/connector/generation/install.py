@@ -22,7 +22,14 @@ def install(root):
     site_manager = zope.component.getSiteManager()
     installLocalUtility(
         site_manager, zeit.connector.cache.ResourceCache,
-        'connector-cache', zeit.connector.interfaces.IResourceCache)
+        'connector-body-cache', zeit.connector.interfaces.IResourceCache)
+    installLocalUtility(
+        site_manager, zeit.connector.cache.PropertyCache,
+        'connector-property-cache', zeit.connector.interfaces.IPropertyCache)
+    installLocalUtility(
+        site_manager, zeit.connector.cache.ChildNameCache,
+        'connector-child-name-cache',
+        zeit.connector.interfaces.IChildNameCache)
 
 
 def evolve(context):

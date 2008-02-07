@@ -5,8 +5,8 @@ Ressource Caching
 We are caching the bodies of resources. The cache removes objects a given time
 after the last access, by default 30 days.
 
->>> from zeit.connector.cache import ResourceCache
->>> cache = ResourceCache()
+>>> import zeit.connector.cache
+>>> cache = zeit.connector.cache.ResourceCache()
 
 
 Let's set the cache timeout to 4 second, since we don't want to wait 30 days:
@@ -125,3 +125,96 @@ Now it's gone:
 <open file '...', mode 'rb' at 0x...>
 >>> list(cache._last_access_time.keys())
 ['another-id']
+
+
+Volatile cache
+==============
+
+The volatile cache is invalidated when the server starts.  A freshly created
+cache is valid:
+
+>>> cache = zeit.connector.cache.VolatileCache()
+>>> cache._cache_valid
+True
+
+Validate the interface:
+
+>>> import zope.interface.verify
+>>> zope.interface.verify.verifyObject(
+...     zeit.connector.interfaces.IVolatileCache,
+...     cache)
+True
+
+Test the methods:
+
+>>> cache['id'] = {'foo': 'bar'}
+>>> cache['id']
+{'foo': 'bar'}
+>>> cache.get('id')
+{'foo': 'bar'}
+>>> cache.get('foo', "don't have that")
+"don't have that"
+
+>>> del cache['id']
+>>> cache['id']
+Traceback (most recent call last):
+    ...
+KeyError: 'id'
+
+>>> cache.get('id') is None
+True
+
+The "server starts" condition is not actually true. The cache's data will be
+removed on the first access after the server started. Let's manually invalidate
+the cache. Whenever we access a method the cache will be validated:
+
+>>> cache['foo'] = 'bar'
+>>> cache.__class__._cache_valid = False
+>>> cache['foo']
+Traceback (most recent call last):
+    ...
+KeyError: 'foo'
+>>> cache._cache_valid
+True
+
+>>> cache['foo'] = 'bar'
+>>> cache.__class__._cache_valid = False
+>>> cache.get('foo') is None
+True
+>>> cache._cache_valid
+True
+
+
+>>> cache['foo'] = 'bar'
+>>> cache.__class__._cache_valid = False
+>>> del cache['foo']
+Traceback (most recent call last):
+    ...
+KeyError: 'foo'
+>>> cache._cache_valid
+True
+
+>>> cache['foo'] = 'bar'
+>>> cache.__class__._cache_valid = False
+>>> cache['bar'] = 'baz'
+>>> cache._cache_valid
+True
+>>> cache['foo']
+Traceback (most recent call last):
+    ...
+KeyError: 'foo'
+>>> cache['bar']
+'baz'
+
+
+PropertyCache
+=============
+
+The property cache is a subclass of VolatileCache. Make sure they interact
+correctly:
+
+>>> property_cache = zeit.connector.cache.PropertyCache()
+>>> property_cache._cache_valid
+True
+>>> property_cache.get('foo') is None
+True

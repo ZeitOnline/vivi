@@ -31,6 +31,9 @@ zc.demostorage2 for this.
 #>>> res.data
 
 
+>>> list(connector.listCollection('http://xml.zeit.de/testing'))
+[]
+
 
 After tests we clean up:
 

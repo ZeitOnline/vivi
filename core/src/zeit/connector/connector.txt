@@ -35,10 +35,24 @@ Setup resource cache:
 
 >>> import zope.component
 >>> import zeit.connector.interfaces
->>> cache = ResourceCache()
+>>> body_cache = ResourceCache()
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerUtility(
-...     cache, zeit.connector.interfaces.IResourceCache)
+...     body_cache, zeit.connector.interfaces.IResourceCache)
+
+Setup property cache:
+
+>>> property_cache = zeit.connector.cache.PropertyCache()
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     property_cache, zeit.connector.interfaces.IPropertyCache)
+
+Setup child name cache:
+
+>>> child_name_cache = zeit.connector.cache.ChildNameCache()
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     child_name_cache, zeit.connector.interfaces.IChildNameCache)
 
 
 Resources
@@ -65,7 +79,7 @@ KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
 
 The properties are cached now:
 
->>> properties = cache.properties[index_id]
+>>> properties = property_cache[index_id]
 >>> properties[('getcontenttype', 'DAV:')]
 'text/xml'
 
@@ -389,5 +403,11 @@ Clean up
 Cleanup after ourselves:
 
 >>> gsm.unregisterUtility(
-...     cache, zeit.connector.interfaces.IResourceCache)
+...     body_cache, zeit.connector.interfaces.IResourceCache)
+True
+>>> gsm.unregisterUtility(
+...     property_cache, zeit.connector.interfaces.IPropertyCache)
+True
+>>> gsm.unregisterUtility(
+...     child_name_cache, zeit.connector.interfaces.IChildNameCache)
 True

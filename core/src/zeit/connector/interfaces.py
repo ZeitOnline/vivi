@@ -231,3 +231,19 @@ class IResourceCache(zope.interface.Interface):
         changes.
 
         """
+
+class ICache(zope.interface.common.mapping.IReadMapping,
+             zope.interface.common.mapping.IWriteMapping):
+    """Generic cache interface."""
+
+
+class IVolatileCache(ICache):
+    """Cache that invaidates at server startup."""
+
+
+class IPropertyCache(ICache):
+    """A cache for properties."""
+
+
+class IChildNameCache(ICache):
+    """A cache for child names of collections."""
