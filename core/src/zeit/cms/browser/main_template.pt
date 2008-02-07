@@ -98,7 +98,6 @@
 
         
           <div id="visualContentWrapper"
-            tal:define="uniqueId context/uniqueId | nothing"
             tal:attributes="class sidebar_css">
 
             <metal:actions
