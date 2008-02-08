@@ -37,6 +37,7 @@ class Site(object):
 
 
 def setup_infrastructure():
+
     site = Site()
     old_site = zope.app.component.hooks.getSite()
     zope.app.component.hooks.setSite(site)

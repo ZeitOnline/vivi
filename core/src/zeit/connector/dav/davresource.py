@@ -111,7 +111,7 @@ def _find_child ( node, name ):
 #:note:  should we only look for direct children?
 def _find_child ( node, name ):
     """Find all direct children of node with namespace 'DAV:' and name <name>"""
-    res = node.xpath("D:%s" % (name,), {'D' : 'DAV:'})
+    res = node.xpath("D:%s" % (name,), namespaces={'D' : 'DAV:'})
     return res
 
 class DAVError ( Exception ):
@@ -242,18 +242,21 @@ class DAVPropstat:
     # convenient iff we :ove xpath evaluation to the document object
     # (by calling doc.xpathEval(expr, context_node)
     def _parse_ps( self, doc, context_node ):
-        status_nodes = context_node.xpath('D:status', {'D' : 'DAV:'})
+        status_nodes = context_node.xpath(
+            'D:status', namespaces={'D' : 'DAV:'})
         # Huzzah for copy&paste programming :-(
         if status_nodes: # FIXME: What when more than one?
             # may raise exception
             self.status, self.reason = _parse_status_line(status_nodes[0].text)
 
         # description
-        desc = context_node.xpath('D:responsedescription', {'D' : 'DAV:'})
+        desc = context_node.xpath(
+            'D:responsedescription', namespaces={'D' : 'DAV:'})
         if desc:
             self.description = desc[0].text.strip()
         # parse property name/value pairs
-        prop_nodes = context_node.xpath('D:prop/*', {'D' : 'DAV:'})
+        prop_nodes = context_node.xpath(
+            'D:prop/*', namespaces={'D' : 'DAV:'})
         for prop in prop_nodes:
             pkey   = _make_qname_tuple(prop.tag)
             #:fixme: is strip() correct here?
@@ -270,44 +273,36 @@ class DAVPropstat:
         #:fixme: can we use restype = doc.xpathEval(path, ps_node)
         # Why this extra scan? {DAV:}resourcetype should be set during
         # the above iteration
-        restype = context_node.xpath('D:prop/D:resourcetype/*', {'D' : 'DAV:'})
+        restype = context_node.xpath(
+            'D:prop/D:resourcetype/*', namespaces={'D' : 'DAV:'})
         if not restype:
             # resourcetype not filled
             # This is plain and simple wrong!
             pass
         # locking info
         linfo = {}
-        lockinfo_nodes = context_node.xpath('D:prop/D:lockdiscovery/D:activelock', {'D' : 'DAV:'})
+        lockinfo_nodes = context_node.xpath(
+            'D:prop/D:lockdiscovery/D:activelock',
+            namespaces={'D' : 'DAV:'})
         if len(lockinfo_nodes) > 1:
             raise "Malformed PROPSTAT respones: more than one activlock found!"
         if lockinfo_nodes:
-            context = lockinfo_nodes[0]        
-           #:fixme: the following would be prominent calls for find_first_child(...)
+            context = lockinfo_nodes[0]
+           #:fixme: the following would be prominent calls for 
+           # find_first_child(...)
             try:
-                linfo['owner'] = context.xpath('D:owner', {'D' : 'DAV:'})[0].text.strip()
+                linfo['owner'] = context.xpath(
+                    'D:owner', namespaces={'D' : 'DAV:'})[0].text.strip()
             except IndexError:
                 linfo['owner'] = None
                 pass
-            linfo['timeout']   = context.xpath('D:timeout', {'D' : 'DAV:'})[0].text.strip()
-            linfo['locktoken'] = context.xpath('D:locktoken/D:href', {'D' : 'DAV:'})[0].text.strip()
-#         linfo = {}
-#         for n in context_node.findall('{DAV:}prop'):
-#             #print("        ##>> %r" % n)
-#             for m in n.findall('{DAV:}lockdiscovery'):
-#                 #print("          ##>> %r" % m)
-#                 for l in m.findall('{DAV:}activelock'):
-#                     #print("            ##>> %r" % l)
-#                     # NOTE that there could be several locks
-#                     linfo['owner'] = l.find('{DAV:}owner').text.strip()
-#                     linfo['timeout'] = l.find('{DAV:}timeout').text.strip()
-#                     linfo['locktoken'] = l.find('{DAV:}locktoken').find('{DAV:}href').text.strip()
-#                     if linfo: break
-#                 if linfo: break
-#             if linfo: break
+            linfo['timeout']   = context.xpath(
+                'D:timeout', namespaces={'D' : 'DAV:'})[0].text.strip()
+            linfo['locktoken'] = context.xpath(
+                'D:locktoken/D:href', namespaces={'D' : 'DAV:'})[0].text.strip()
         self.locking_info = linfo
-#        OUT.debug('propstats o.k.?')
         return
-    
+
     def has_errors ( self ):
         s = self.status
         if s is not None and s >= 300:
@@ -344,13 +339,9 @@ class DAVResponse:
             self.status, self.reason = _parse_status_line(status_nodes[0].text)
 
         pslist = _find_child(res_node, 'propstat')
-        try:
-            for node in pslist:
-                ps = DAVPropstat(doc, node)
-                self.propstats.append(ps)
-        except Exception, e:
-            #print e
-            pass
+        for node in pslist:
+            ps = DAVPropstat(doc, node)
+            self.propstats.append(ps)
         return
     
     def has_errors ( self ):
@@ -416,11 +407,7 @@ class DAVResult:
 
     def parse_data ( self, data ):
         doc = xml_from_string(data)
-        try:
-            self._parse_response(doc)
-        except Exception, ex:
-            raise Exception, (doc,)
-        return
+        self._parse_response(doc)
 
     def _parse_response ( self, doc ):
         self.responses = {}

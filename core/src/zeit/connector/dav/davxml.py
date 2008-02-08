@@ -176,7 +176,7 @@ class _DavXmlDoc:
 
     #:new:
     def xpathEval ( self, expr):
-        return self.doc.xpath(expr, self.nsmap);
+        return self.doc.xpath(expr, namespaces=self.nsmap);
 
     #:old:
     #:comment: what are the semantics here? Iff fnc returns
