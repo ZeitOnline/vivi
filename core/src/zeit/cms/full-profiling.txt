@@ -10,16 +10,7 @@ Create a test browser:
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
-
-Setup the connector:
-
->>> import zope.component
->>> import zeit.cms.interfaces
->>> import zeit.connector.connector
->>> site_manager = zope.component.getSiteManager()
->>> connector = zeit.connector.connector.Connector(
-...     {'default': 'http://zip6.zeit.de/cms/work/'})
->>> site_manager.registerUtility(connector, zeit.cms.interfaces.IConnector)
+>>> browser.handleErrors = False
 
 Open the start-page:
 
@@ -39,7 +30,3 @@ Open the start-page:
 ...     browser.open('http://localhost:8080/++skin++cms/repository/online/2006/45')
 
 
-Clean up after the test:
->>> site_manager.unregisterUtility(
-...     connector, zeit.cms.interfaces.IConnector)
-True

@@ -16,6 +16,11 @@ ConnectorProfilingLayer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'ConnectorProfilingLayer', allow_teardown=True)
 
 
+def connectorFactory():
+    import zeit.connector.connector
+    return zeit.connector.connector.Connector(
+        dict(default='http://zip6.zeit.de/cms/work/'))
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
