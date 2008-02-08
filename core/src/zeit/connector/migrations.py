@@ -27,31 +27,15 @@ RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
 mylog = open('/tmp/content-migration-log','a')
 
 
-class Site(object):
-    zope.interface.implements(
-        ISite, IContainmentRoot,
-        zope.annotation.interfaces.IAttributeAnnotatable)
-
-    def getSiteManager(self):
-        return zope.component.getGlobalSiteManager()
-
-
 def setup_infrastructure():
-
-    site = Site()
-    old_site = zope.app.component.hooks.getSite()
-    zope.app.component.hooks.setSite(site)
-
-    site_manager = zope.app.component.hooks.getSiteManager()
-    site_manager.registerAdapter(
-        zope.annotation.attribute.AttributeAnnotations,
-        (zope.annotation.interfaces.IAttributeAnnotatable,),
-        zope.annotation.interfaces.IAnnotations)
-
-    site_manager.registerAdapter(
-        zeit.connector.cache.resourceCacheFactory,
-        (ISite,),
+    gsm = zope.component.getGlobalSiteManager()
+    gsm.registerUtility(
+        zeit.connector.cache.ResourceCache(),
         zeit.connector.interfaces.IResourceCache)
+    gsm.registerUtility(zeit.connector.cache.PropertyCache,
+        zeit.connector.interfaces.IPropertyCache)
+    gsm.registerUtility(zeit.connector.cache.ChildNameCache,
+        zeit.connector.interfaces.IChildNameCache)
 
 
 def migrate_content_types(connector_url):
