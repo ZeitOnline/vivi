@@ -54,6 +54,7 @@ setup(
         'zope.app.securitypolicy',
         'zope.app.twisted',
         'zope.sendmail',
+        'zope.xmlpickle',
     ],
     extras_require={
         'test': [

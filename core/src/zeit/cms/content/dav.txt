@@ -227,7 +227,6 @@ datetime.datetime(2007, 5, 25, 13, 24, 59,
 datetime.datetime(2007, 6, 12, 9, 10, tzinfo=<FixedOffset '+00:00'>)
 
 When the date is invalid, None is returned:
-
 >>> print converter.fromProperty('asdf')
 None
 
@@ -241,7 +240,7 @@ Converting datetimes takes timezone info into account:
 
 
 Tuple of TextLine
-+++++++++++++++++
+++++++++++++++++++
 
 Tuples of TextLine are serialised with a semicolon as separator. 
 
@@ -268,18 +267,98 @@ In case there is a semicolon in a value, it will be escaped:
 >>> converter.toProperty(('Peter Buhr', 'Klaus; Kl;eb;er'))
 u'Peter Buhr;Klaus\\; Kl\\;eb\\;er'
 
-Make sure the DAV value is correctl converted back to a tuple:
+Make sure the DAV value is correctly converted back to a tuple:
 
 >>> converter.fromProperty(u'Peter Buhr;Klaus\\; Kl\\;eb\\;er')
 (u'Peter Buhr', u'Klaus; Kl;eb;er')
 
 
+Generic serialiser
+++++++++++++++++++
 
-LXML Values
-===========
+There is a generic tuple serializer which uses zope.xmlpickle for serialising:
 
-More complex values will be processes as lxml objectify nodes. This is not
-impelemnted yet, therefor we haven't got tests.
+>>> field = zope.schema.Tuple(
+...     value_type=zope.schema.Dict())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> value = converter.toProperty(({'foo': u'b\xfcr'}, {'bar': 2}))
+>>> type(value)
+<type 'unicode'>
+>>> print value
+<pickle>
+  <tuple>
+    <dictionary>
+      <item key="foo">
+          <unicode>bür</unicode>
+      </item>
+    </dictionary>
+    <dictionary>
+      <item key="bar">
+          <int>2</int>
+      </item>
+    </dictionary>
+  </tuple>
+</pickle>
+
+The other way round "eats" the generated xml:
+
+>>> converter.fromProperty(u"""
+... <pickle>
+...   <tuple>
+...     <dictionary>
+...       <item key="foo">
+...           <unicode>b\xfcr</unicode>
+...       </item>
+...     </dictionary>
+...     <dictionary>
+...       <item key="holladrio">
+...           <float>2.25</float>
+...       </item>
+...     </dictionary>
+...   </tuple>
+... </pickle>""")
+({'foo': u'b\xfcr'}, {'holladrio': 2.25})
+
+
+As it is generic it basically works for all other fields as well:
+
+>>> field = zope.schema.List(
+...     value_type=zope.schema.Int())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> print converter.toProperty([4, 2, 55, 2])
+<pickle>
+  <list>
+    <int>4</int>
+    <int>2</int>
+    <int>55</int>
+    <int>2</int>
+  </list>
+</pickle>
+
+>>> converter.fromProperty(u"""
+... <pickle>
+...   <list>
+...     <int>4</int>
+...     <int>2</int>
+...     <int>55</int>
+...     <int>200</int>
+...   </list>
+... </pickle>""")
+[4, 2, 55, 200]
+
+
+If the xml pickle is invalid an ValueError is raised:
+
+>>> converter.fromProperty(u'5')
+Traceback (most recent call last):
+    ...
+ValueError: line 1: Start tag expected, '<' not found
+
+>>> converter.fromProperty(u'<int>5</int>')
+Traceback (most recent call last):
+    ...
+ValueError: Invalid pickle.
+
 
 
 DAVProperty

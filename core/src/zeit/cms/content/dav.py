@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import lxml.etree
+
 import re
 import logging
 import sys
@@ -13,6 +15,7 @@ import zope.component
 import zope.event
 import zope.proxy
 import zope.schema.interfaces
+import zope.xmlpickle
 
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
@@ -113,12 +116,14 @@ class ChoiceProperty(object):
     def fromProperty(self, value):
         return zope.component.getMultiAdapter(
             (self.context, self.context.vocabulary),
-            zeit.cms.content.interfaces.IDAVPropertyConverter).fromProperty(value)
+            zeit.cms.content.interfaces.IDAVPropertyConverter).fromProperty(
+                value)
 
     def toProperty(self, value):
         return zope.component.getMultiAdapter(
             (self.context, self.context.vocabulary),
-            zeit.cms.content.interfaces.IDAVPropertyConverter).toProperty(value)
+            zeit.cms.content.interfaces.IDAVPropertyConverter).toProperty(
+                value)
 
 
 class ChoicePropertyWithIterableSource(object):
@@ -186,20 +191,30 @@ class DatetimeProperty(object):
         return value.isoformat()
 
 
-class TupleProperty(object):
+@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
+@zope.component.adapter(zope.schema.interfaces.ITuple)
+def TupleProperty(context):
+    return zope.component.queryMultiAdapter(
+        (context, context.value_type),
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+
+
+class TupleTextLineProperty(object):
 
     zope.interface.implements(
         zeit.cms.content.interfaces.IDAVPropertyConverter)
-    zope.component.adapts(zope.schema.interfaces.ITuple)
+    zope.component.adapts(zope.schema.interfaces.ITuple,
+                          zope.schema.interfaces.ITextLine)
 
     SPLIT_PATTERN = re.compile(r'(?!\\);')
 
-    def __init__(self, context):
+    def __init__(self, context, value_type):
         self.context = context
+        self.value_type = value_type
 
     def fromProperty(self, value):
         from_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
-            self.context.value_type)
+            self.value_type)
         result = []
         start = 0
         while value:
@@ -222,12 +237,60 @@ class TupleProperty(object):
 
     def toProperty(self, value):
         to_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
-            self.context.value_type)
+            self.value_type)
         result = []
         for item in value:
             item = to_prop.toProperty(item)
             result.append(item.replace('\\', '\\\\').replace(';', '\\;'))
         return ';'.join(result)
+
+
+class GenericProperty(object):
+    """Generic tuple property converter.
+
+    Uses zope.xmlpickle to (de-)serialise the data.
+
+    """
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(zope.schema.interfaces.IField)
+
+    def __init__(self, context):
+        self.context = context
+
+    def fromProperty(self, value):
+        try:
+            xml = lxml.etree.fromstring(value)
+        except (lxml.etree.XMLSyntaxError), e:
+            # Caputure generic xml errors reliably.
+            raise ValueError(str(e))
+        if xml.tag != 'pickle':
+            raise ValueError("Invalid pickle.")
+        return zope.xmlpickle.loads(
+            lxml.etree.tostring(xml))
+
+
+    def toProperty(self, value):
+        xml = lxml.etree.fromstring(zope.xmlpickle.dumps(value))
+        return lxml.etree.tounicode(xml)
+
+
+class GenericTupleProperty(GenericProperty):
+    """Generic tuple property converter.
+
+    Uses zope.xmlpickle to (de-)serialise the data.
+
+    """
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(zope.schema.interfaces.ITuple,
+                          zope.interface.Interface)
+
+    def __init__(self, context, value_type):
+        self.context = context
+        self.value_type = value_type
 
 
 def mapProperties(interface, namespace, names):

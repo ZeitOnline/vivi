@@ -8,5 +8,8 @@
   <adapter factory=".dav.BoolProperty" /> 
   <adapter factory=".dav.DatetimeProperty" />
   <adapter factory=".dav.TupleProperty" />
+  <adapter factory=".dav.TupleTextLineProperty" />
+  <adapter factory=".dav.GenericProperty" />
+  <adapter factory=".dav.GenericTupleProperty" />
 
 </configure>
