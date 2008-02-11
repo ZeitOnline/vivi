@@ -3,6 +3,7 @@
     tal:define="context_url context/@@absolute_url">
   
     <tal:replace replace="resource_library:zeit.cms.repository" />
+    <tal:replace replace="resource_library:zeit.cms.Lightbox" />
 
     <metal:content-listing 
       use-macro="context/@@standard_macros/content-listing">
