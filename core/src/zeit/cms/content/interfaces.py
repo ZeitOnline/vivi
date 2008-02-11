@@ -136,8 +136,8 @@ class ICommonMetadata(zope.interface.Interface):
         max_length=50)
 
 
-class IFromProperty(zope.interface.Interface):
-    """Parse a unicode string from a DAV property to a value."""
+class IDAVPropertyConverter(zope.interface.Interface):
+    """Parse a unicode string from a DAV property to a value and vice versa."""
 
     def fromProperty(value):
         """Convert property value to python value.
@@ -150,15 +150,12 @@ class IFromProperty(zope.interface.Interface):
 
         """
 
-
-class IToProperty(zope.interface.Interface):
-    """Serlalize value to DAV property value."""
-
     def toProperty(value):
         """Convert python value to DAV property value.
 
         returns unicode
         """
+
 
 class IDAVToken(zope.interface.Interface):
     """A string representing a token that uniquely identifies a value."""

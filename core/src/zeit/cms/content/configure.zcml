@@ -95,11 +95,7 @@
     />
   <adapter
     factory=".contentsource.ChoicePropertyWithCMSContentSource"
-    provides=".interfaces.IFromProperty"
-    />
-  <adapter
-    factory=".contentsource.ChoicePropertyWithCMSContentSource"
-    provides=".interfaces.IToProperty"
+    provides=".interfaces.IDAVPropertyConverter"
     />
 
   <!-- related content -->

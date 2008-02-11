@@ -51,7 +51,7 @@ class DAVProperty(object):
             __traceback_info__ = (instance, field,
                                   field.__name__, dav_value)
             try:
-                value = zeit.cms.content.interfaces.IFromProperty(
+                value = zeit.cms.content.interfaces.IDAVPropertyConverter(
                     field).fromProperty(dav_value)
             except (ValueError, zope.schema.ValidationError), e:
                 value = self.field.default
@@ -70,7 +70,7 @@ class DAVProperty(object):
             dav_value = zeit.connector.interfaces.DeleteProperty
         else:
             field = self.field.bind(instance)
-            dav_value = zeit.cms.content.interfaces.IToProperty(
+            dav_value = zeit.cms.content.interfaces.IDAVPropertyConverter(
                 field).toProperty(value)
 
         write_properties = zeit.cms.interfaces.IWebDAVWriteProperties(instance)
@@ -82,8 +82,8 @@ class DAVProperty(object):
 
 class UnicodeProperty(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
-                              zeit.cms.content.interfaces.IToProperty)
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IFromUnicode)
 
     def __init__(self, context):
@@ -103,8 +103,8 @@ class UnicodeProperty(object):
 
 class ChoiceProperty(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
-                              zeit.cms.content.interfaces.IToProperty)
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IChoice)
 
     def __init__(self, context):
@@ -113,18 +113,18 @@ class ChoiceProperty(object):
     def fromProperty(self, value):
         return zope.component.getMultiAdapter(
             (self.context, self.context.vocabulary),
-            zeit.cms.content.interfaces.IFromProperty).fromProperty(value)
+            zeit.cms.content.interfaces.IDAVPropertyConverter).fromProperty(value)
 
     def toProperty(self, value):
         return zope.component.getMultiAdapter(
             (self.context, self.context.vocabulary),
-            zeit.cms.content.interfaces.IToProperty).toProperty(value)
+            zeit.cms.content.interfaces.IDAVPropertyConverter).toProperty(value)
 
 
 class ChoicePropertyWithIterableSource(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
-                              zeit.cms.content.interfaces.IToProperty)
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IChoice,
                           zope.schema.interfaces.IIterableSource)
 
@@ -145,8 +145,8 @@ class ChoicePropertyWithIterableSource(object):
 
 class BoolProperty(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
-                              zeit.cms.content.interfaces.IToProperty)
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IBool)
 
     def __init__(self, context):
@@ -165,8 +165,8 @@ class BoolProperty(object):
 
 class DatetimeProperty(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
-                              zeit.cms.content.interfaces.IToProperty)
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IDatetime)
 
     def __init__(self, context):
@@ -188,8 +188,8 @@ class DatetimeProperty(object):
 
 class TupleProperty(object):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IFromProperty,
-                              zeit.cms.content.interfaces.IToProperty)
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.ITuple)
 
     SPLIT_PATTERN = re.compile(r'(?!\\);')
@@ -198,7 +198,7 @@ class TupleProperty(object):
         self.context = context
 
     def fromProperty(self, value):
-        from_prop = zeit.cms.content.interfaces.IFromProperty(
+        from_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
             self.context.value_type)
         result = []
         start = 0
@@ -221,7 +221,7 @@ class TupleProperty(object):
 
 
     def toProperty(self, value):
-        to_prop = zeit.cms.content.interfaces.IToProperty(
+        to_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
             self.context.value_type)
         result = []
         for item in value:
