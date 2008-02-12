@@ -46,14 +46,21 @@ Clipboard.prototype = {
     handleDrop: function(dropped_on, element) {
         this.dragging = true;
         var url;
-        var unique_id;
         var dnd = this;
         var options = {'add_to': dropped_on};
 
         var dragged_element = element.dragged_element;
         if (dragged_element == undefined) return;
 
-        if (dragged_element.nodeName == 'LI') {
+        var panel = null;
+        try {
+            panel = getFirstParentByTagAndClassName(
+                dragged_element, 'div', 'panel');
+        } catch(e) {
+            // bug in mochikit? getFirstParentByTagAndClassName raises
+            // exception when there is no such parent.
+        }
+        if (panel != null && panel.id == 'ClipboardPanel') {
             url = '/@@moveContent';
             options['object_path'] = dragged_element.getAttribute('uniqueid');
         } else {
