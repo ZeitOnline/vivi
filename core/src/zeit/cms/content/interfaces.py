@@ -78,6 +78,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Ressort"),
         source=zeit.cms.content.sources.NavigationSource())
 
+    sub_ressort = zope.schema.TextLine(
+        title=_('Sub ressort'),
+        required=False)
+
     authors = zope.schema.Tuple(
         title=_("Authors"),
         value_type=zope.schema.TextLine(),
@@ -134,6 +138,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Index teaser text"),
         required=False,
         max_length=50)
+
+    vg_wort_id = zope.schema.TextLine(
+        title=_('VG Wort Id'),
+        required=False)
 
 
 class IDAVPropertyConverter(zope.interface.Interface):

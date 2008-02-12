@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
-import gocept.lxml.objectify
+import lxml.objectify
 
 import zope.component
 import zope.interface
@@ -54,7 +54,7 @@ class MetadataXMLReference(object):
 
     @property
     def xml(self):
-        image = gocept.lxml.objectify.XML('<image/>')
+        image = lxml.objectify.XML('<image/>')
 
         def set_if_not_empty(name, value):
             if value:
@@ -73,5 +73,10 @@ class MetadataXMLReference(object):
         set_if_not_empty('title', self.context.caption)
         image['bu'] = self.context.caption
 
-        image.copyright = self.context.copyrights
+        for text, link in self.context.copyrights:
+            node = lxml.objectify.E('copyright', text)
+            if link:
+                node.set('link', link)
+            image.append(node)
+
         return image

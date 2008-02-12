@@ -73,6 +73,7 @@ Editing
 
 For editing an image, we need to check it out:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Checkout').click()
 
 We now see the form and fill out some values:
@@ -190,7 +191,7 @@ filename automatically:
 >>> file_control.value = file(test_file, 'rb')
 >>> browser.getControl(name='form.volume').value != '0'
 True
->>> browser.getControl('Add').click()
+>>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
 
@@ -264,7 +265,7 @@ Lets create an image group:
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.handleErrors = False
->>> browser.getControl("Add").click()
+>>> browser.getControl(name='form.actions.add').click()
 
 Image groups are not checked out by default, because adding new images will be
 done directly in the repository:

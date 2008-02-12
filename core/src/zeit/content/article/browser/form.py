@@ -60,7 +60,7 @@ class ArticleFormBase(object):
             _('misc.'),
             ('authors', 'copyrights',
              'related', 'infobox', 'images',
-             'pageBreak', 'paragraphs',
+             'pageBreak', 'paragraphs', 'vg_wort_id',
              'automaticTeaserSyndication', 'template'),
             css_class='column-right'),
         gocept.form.grouped.Fields(

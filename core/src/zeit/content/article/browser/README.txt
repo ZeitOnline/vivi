@@ -110,6 +110,8 @@ Now, fill the form and add the article:
 ...     'EU unterstuetzt Stinker-Steuer')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
+>>> browser.getControl('Sub ressort').value = 'Koch'
+>>> browser.getControl('VG Wort Id').value = 'ada94da'
 >>> 'There were errors' in browser.contents
 False
 
@@ -380,7 +382,6 @@ xml source:
       </short>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
       </image>
     </block>
   </container>
@@ -442,7 +443,6 @@ at its xml source:
       </short>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
       </image>
     </block>
   </container>

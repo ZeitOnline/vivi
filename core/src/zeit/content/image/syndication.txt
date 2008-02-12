@@ -67,7 +67,6 @@ Update the metadata of the feed. The image is now referenced:
     <block href="dummy-content">
       <image base-id="http://xml.zeit.de/image-group">
         <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
       </image>
     </block>
   </container>
@@ -89,7 +88,6 @@ When more than one image is reference, only the first one will be in the feed:
     <block href="dummy-content">
       <image base-id="http://xml.zeit.de/image-group">
         <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
       </image>
     </block>
   </container>

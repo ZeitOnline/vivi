@@ -57,7 +57,6 @@ Have a look at the source:
   <head>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
       <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-      <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
     </image>
   </head>
   <body>
@@ -132,7 +131,6 @@ Verify the source of the feed (note that the images are still missing, bug
       </short>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-        <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
       </image>
     </block>
   </container>

@@ -40,7 +40,8 @@ class CommonMetadata(zeit.cms.content.xml.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.content.interfaces.ICommonMetadata,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('serie', 'copyrights', 'year', 'volume', 'ressort', 'page'))
+        ('serie', 'copyrights', 'year', 'volume', 'ressort', 'page',
+         'sub_ressort', 'vg_wort_id'))
 
     authors = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['authors'],

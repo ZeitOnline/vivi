@@ -36,7 +36,7 @@ Add some images to the folder:
 ...     file_control = browser.getControl(name='form.data')
 ...     file_control.filename = name
 ...     file_control.value = test_data
-...     browser.getControl('Add').click()
+...     browser.getControl(name='form.actions.add').click()
 ...     browser.getLink('Checkin').click() 
 ...     url = browser.url
 ...     browser.getLink('gallery').click()

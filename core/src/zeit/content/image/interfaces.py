@@ -6,6 +6,8 @@ import zope.schema
 
 import zope.app.file.interfaces
 
+import zc.form.field
+
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -40,11 +42,21 @@ class IImageMetadata(zope.interface.Interface):
         max=53,
         required=False)
 
-    copyrights = zope.schema.TextLine(
-        title=_("Copyright"),
-        description=_("Do not enter (c)."),
-        default=u"ZEIT online",
-        required=False)
+    copyrights = zope.schema.Tuple(
+        title=_("Copyrights"),
+        default=(None,),
+        missing_value=(),
+        required=False,
+        value_type=zc.form.field.Combination(
+            (zope.schema.TextLine(
+                title=_("Copyright"),
+                description=_("Do not enter (c)."),
+                default=u"ZEIT online",
+                required=True),
+            zope.schema.URI(
+                title=_('Link'),
+                description=_('Link to copyright holder'),
+                required=False))))
 
     alt = zope.schema.TextLine(
         title=_("Alternative text"),

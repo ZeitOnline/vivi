@@ -33,7 +33,18 @@ Reference the image via XML:
 >>> print lxml.etree.tostring(ref.xml, pretty_print=True)
 <image base-id="http://xml.zeit.de/image-group">
   <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-  <copyright xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+</image>
+
+Set the copyright:
+
+>>> zeit.content.image.interfaces.IImageMetadata(group).copyrights = (
+...     ('Zeit online', None),
+...     ('Agentur XY', 'http://xyz.de'))
+>>> print lxml.etree.tostring(ref.xml, pretty_print=True)
+<image base-id="http://xml.zeit.de/image-group">
+  <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+  <copyright>Zeit online</copyright>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 
