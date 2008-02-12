@@ -2,6 +2,9 @@
 # See also LICENSE.txt
 # $Id$
 
+import datetime
+
+import pytz
 import rwproperty
 
 import zope.component
@@ -29,7 +32,6 @@ class LiveProperties(dict):
         return zope.component.getUtility(zeit.cms.interfaces.IConnector)
 
 
-
 class Workflow(object):
     """Adapt ICMSContent to IWorkflow using the "live" data from connector.
 
@@ -54,6 +56,11 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[1],
         'http://namespaces.zeit.de/CMS/workflow',
         'released_to')
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.workflow.interfaces.IWorkflow,
+        'http://namespaces.zeit.de/CMS/document',
+        ('date_first_released', 'last_modified_by'))
 
     def __init__(self, context):
         self.context = context
@@ -105,3 +112,28 @@ class FeedMetadataUpdater(object):
         if workflow.released_to:
             date = workflow.released_to.isoformat()
         entry.set('expires', date)
+
+
+@zope.component.adapter(
+    zeit.workflow.interfaces.IWorkflow,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def set_first_release_date(context, event):
+    if ((event.property_name, event.property_namespace) !=
+        ('published', 'http://namespaces.zeit.de/CMS/workflow')):
+        return
+    if context.date_first_released:
+        return
+    context.date_first_released = datetime.datetime.now(pytz.UTC)
+
+
+@zope.component.adapter(
+    zope.interface.Interface,
+    zeit.cms.checkout.interfaces.ICheckinEvent)
+def update_last_modified_by(context, event):
+    # We *can* update the webdav property, but we can *not* change the XML at
+    # this point. Changing a webdav property usually changes the xml, too. I
+    # wonder how this interacts here. 
+    workflow = zeit.workflow.interfaces.IWorkflow(context, None)
+    if workflow is None:
+        return
+    workflow.last_modified_by = event.principal.id

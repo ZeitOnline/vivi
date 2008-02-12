@@ -2,8 +2,8 @@
 Syndication
 ===========
 
-If objects which are adaptable to IWorkflow are syndicated, the publication and
-expiration date will be added to the feed.
+When objects which are adaptable to IWorkflow are syndicated, the publication
+and expiration date will be added to the feed.
 
 Create a dummy content object:
 

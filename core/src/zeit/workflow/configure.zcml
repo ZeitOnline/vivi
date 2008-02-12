@@ -8,8 +8,12 @@
     factory=".workflow.FeedMetadataUpdater"
     name="workflow"
     />
+  <subscriber handler=".workflow.set_first_release_date" />
+  <subscriber handler=".workflow.update_last_modified_by" />
 
   <adapter factory=".source.fromNotNeeded" />
+
+  <adapter factory=".dav.ChoicePropertyWithPrincipalSource" />
 
 </configure>
 

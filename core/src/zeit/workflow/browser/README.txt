@@ -108,6 +108,57 @@ True
 
 
 
+Automatic workflow properties
+=============================
+
+There are some properties which are set automatically on various occasions.
+
+Date first released
++++++++++++++++++++
+
+The "date first released" is the date when the object was first published.
+
+>>> print browser.contents
+<?xml ...
+        <label for="form.last_modified_by">
+          <span>Last modified by</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">Nothing</div>
+        ...
+        <label for="form.date_first_released">
+          <span>Date first released</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget"><span class="dateTime">2008 2 12  07:41:20 </span></div>
+        ...
+
+The published date is already set.
+
+The "last modified by" property is set on checkin. Check the object out and in
+again:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.handleErrors = False
+>>> browser.getLink('Checkin').click()
+>>> browser.getLink('Workflow').click()
+>>> print browser.contents
+<?xml ...
+        <label for="form.last_modified_by">
+          <span>Last modified by</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">User</div>
+        ...
+        <label for="form.date_first_released">
+          <span>Date first released</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget"><span class="dateTime">2008 2 12  07:41:20 </span></div>
+        ...
+
+
+
 Locks
 =====
 

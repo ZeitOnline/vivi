@@ -4,22 +4,25 @@
 
 import zope.formlib.form
 
-import zeit.cms.browser.form
+import gocept.form.grouped
 
-_ = zope.i18nmessageid.MessageFactory('zeit.cms')
+import zeit.cms.browser.form
+from zeit.cms.i18n import MessageFactory as _
+
 
 class WorkflowForm(zeit.cms.browser.form.EditForm):
 
     title = _("Workflow")
 
-    widget_groups = (
-        (_(u"Status"), (
-            'published', 'edited', 'corrected', 'refined', 'images_added'),
-         'column-left'),
-        (_(u"Einstellung"), zeit.cms.browser.form.REMAINING_FIELDS,
-         'column-right')
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Status"),
+            ('last_modified_by', 'published', 'date_first_released',
+             'edited', 'corrected', 'refined', 'images_added'),
+            css_class='column-left'),
+        gocept.form.grouped.RemainingFields(
+            _("Einstellung"), css_class='column-right'),
     )
 
     form_fields = zope.formlib.form.Fields(
-        zeit.workflow.interfaces.IWorkflow,
-        render_context=True, omit_readonly=False)
+        zeit.workflow.interfaces.IWorkflow)

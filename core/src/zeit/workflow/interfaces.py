@@ -6,6 +6,8 @@
 import zope.interface
 import zope.schema
 
+import zope.app.security.vocabulary
+
 import zc.form.field
 
 import zeit.workflow.source
@@ -58,3 +60,14 @@ class IWorkflow(zope.interface.Interface):
         "Object is released from this date.")
     released_to = zope.interface.Attribute(
         "Object is released to this date.")
+
+    last_modified_by = zope.schema.Choice(
+        title=_('Last modified by'),
+        required=False,
+        readonly=True,
+        source=zope.app.security.vocabulary.PrincipalSource())
+
+    date_first_released = zope.schema.Datetime(
+        title=_('Date first released'),
+        required=False,
+        readonly=True)
