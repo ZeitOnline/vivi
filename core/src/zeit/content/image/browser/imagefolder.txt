@@ -30,7 +30,7 @@ Create the bilder structure:
 'http://localhost/++skin++cms/repository/bilder/2007/@@view.html'
 >>> add_folder('01')
 'http://localhost/++skin++cms/repository/bilder/2007/01/@@view.html'
->>> browser.getLink('2007', index=2).click()
+>>> browser.getLink('2007').click()
 >>> add_folder('02')
 'http://localhost/++skin++cms/repository/bilder/2007/02/@@view.html'
 
