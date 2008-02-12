@@ -15,6 +15,7 @@ import zc.table.column
 
 import zeit.cms.browser.interfaces
 import zeit.cms.content.sources
+from zeit.cms.i18n import MessageFactory as _
 
 
 logger = logging.getLogger('zeit.cms.browser.listing')
@@ -169,6 +170,14 @@ class GetterColumn(zc.table.column.GetterColumn):
         return unicode(value)
 
 
+class FilenameColumn(GetterColumn):
+
+    def cell_formatter(self, value, item, formatter):
+        formatted = super(FilenameColumn, self).cell_formatter(
+            value, item, formatter)
+        return u'<span class="filename">%s</span>' % formatted
+
+
 class Listing(object):
     """object listing view"""
 
@@ -181,22 +190,25 @@ class Listing(object):
         TypeColumn(u'', name='type'),
         LockedColumn(u'', name='locked'),
         GetterColumn(
-            u'Autor',
+            _('Author'),
             lambda t, c: t.author),
         GetterColumn(
-            u'Titel',
+            _('Titel'),
             lambda t, c: t.title),
+        FilenameColumn(
+            _('Filename'),
+            lambda t, c: t.__name__),
         GetterColumn(
-            u'Ausgabe',
-            lambda t, c: t.volume),
-        GetterColumn(
-            u'Jahr',
-            lambda t, c: t.year),
-        GetterColumn(
-            u'Ressort',
+            _('Ressort'),
             lambda t, c: t.ressort),
         GetterColumn(
-            u'Seite',
+            _('Year'),
+            lambda t, c: t.year),
+        GetterColumn(
+            _('volme-abbreviated', default=u'Vol.'),
+            lambda t, c: t.volume),
+        GetterColumn(
+            _('Page'),
             lambda t, c: t.page),
         MetadataColumn(u'Metadaten', name='metadata'),
     )

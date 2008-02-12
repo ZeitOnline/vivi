@@ -45,13 +45,16 @@ We have to publish another url to see if articles are listed:
       Ford wird beigesetzt
     </td>
     <td>
-      1
+        <span class="filename">Ford-Beerdigung</span>
+    </td>
+    <td>
+      International
     </td>
     <td>
       2007
     </td>
     <td>
-      International
+      1
     </td>
 ...
 

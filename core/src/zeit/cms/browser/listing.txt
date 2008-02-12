@@ -22,7 +22,7 @@ We expect a normal file listing:
 [<Element table...>]
 >>> columns = browser.etree.xpath("//table/thead/tr/th")
 >>> len(columns)
-9
+10
 
 
 Breadcrums
