@@ -173,7 +173,6 @@ class Listing(object):
     """object listing view"""
 
     title = u"Dateiliste"
-    enable_delete = True
     types_source = zeit.cms.content.sources.CMSContentTypeSource()
     css_class = 'contentListing hasMetadata'
     filter_interface = None
@@ -203,16 +202,7 @@ class Listing(object):
     )
 
     def __call__(self, *args, **kw):
-        if self.enable_delete and self.request.form.get('delete'):
-            self.deleteItems()
         return super(Listing, self).__call__(*args, **kw)
-
-    def deleteItems(self):
-        """removes the items in request from this container"""
-        column = self.columns[0]
-        selected = column.getSelected(self.content, self.request)
-        for content in selected:
-            del self.context[content.__name__]
 
     @zope.cachedescriptors.property.Lazy
     def contentContext(self):

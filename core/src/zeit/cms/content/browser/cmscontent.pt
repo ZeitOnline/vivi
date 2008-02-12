@@ -16,7 +16,8 @@
       i18n:translate="delete_content_folder_warning"> You're about to delete a folder with content!
   </h1>
 
-  <form action="">
+  <form action=""
+        tal:attributes="action view/@@absolute_url">
     <p>
       <input type="submit" value="Cancel" name="cancel" 
         i18n:attributes="value" />

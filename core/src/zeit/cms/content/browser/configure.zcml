@@ -8,23 +8,21 @@
   <include file="template.zcml" />
 
   <!-- Delete view -->
-  <z3c:pagelet
-    for="zeit.cms.interfaces.ICMSContent"
-    name="deletecontent.html"
-    class=".cmscontent.DeleteContent"
+  <browser:viewlet
+    name="delete"
+    template="menu-entry-delete.pt"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.DeleteContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
-  <z3c:template
-    for=".cmscontent.DeleteContent"
+
+  <browser:page
+    name="deletecontent.html"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
     template="cmscontent.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    />
-  <browser:menuItem
-    for="zeit.cms.interfaces.ICMSContent"
-    action="deletecontent.html"
-    menu="zeit-context-actions"
-    title="Delete"
+    class=".cmscontent.DeleteContent"
     permission="zeit.DeleteContent"
     />
 

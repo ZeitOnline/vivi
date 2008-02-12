@@ -54,8 +54,8 @@ True
 ... 'LS-Personalvertretung/deletecontent.html')
 >>> browser.open(article_view_url)
 >>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
+<div class="topcontent deleteScreen">
+  ...
     Do you really want to delete: 
     ...
     <span>LS-Personalvertretung</span>
@@ -65,14 +65,21 @@ True
 >>> 'LS-Personalvertretung' in browser.contents
 False
 
+The "Delete" Link references now a javascript driven Lightbox:
+
+>>> browser.getLink("Delete")
+<Link text='[IMG] Delete' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/2007/01/@@deletecontent.html')">
+
 The user selects an article and clicks on the delete icon. Deletion of
 content is context dependent, so he might accidently delete a folder. If
 this happens, he is beeing warned in the confirmation dialog:
 
->>> browser.getLink("Delete").click()
+>>> folder_view_url = (
+... 'http://localhost/++skin++cms/repository/2007/01/'
+... 'deletecontent.html')
+>>> browser.open(folder_view_url)
 >>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
+<div ...
     Do you really want to delete: 
     ...
     <span>01</span>
