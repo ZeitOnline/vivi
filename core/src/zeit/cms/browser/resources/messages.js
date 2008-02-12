@@ -20,11 +20,12 @@ connect(window, 'onload', function(event) {
     });
     connect(showtoggle, 'onclick', function(event) {
         toggleElementClass('hiddenMessages', messages);
+        if (messagetimer) messagetimer.cancelTimer();
     });
 
-    new TimerWidget("messages_counter", 5,
+    var messagetimer = new TimerWidget("messages_counter", 5,
         function(){
-            toggleElementClass('hiddenMessages', messages);
+            addElementClass(messages, 'hiddenMessages');
         });
 
 });
@@ -43,7 +44,6 @@ var TimerWidget = Class.extend({
     },
 
     startTimer: function() {
-        showElement(this.widget);
         this.element.innerHTML = this.seconds
         this.timer = callLater(1, this.count, this);
     },
@@ -59,8 +59,13 @@ var TimerWidget = Class.extend({
     },
 
     onStop: function() {
-        this.onStopFunction();
         hideElement(this.widget);
-    }
+        this.onStopFunction();
+    },
+
+    cancelTimer: function() {
+        this.timer.cancel();
+        hideElement(this.widget);
+    },
 
 });
