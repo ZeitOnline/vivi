@@ -190,11 +190,9 @@ images were added. Remove the image 03.jpg from the gallery folder:
 >>> bookmark = browser.url
 >>> browser.handleErrors = False
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/@@view.html')
->>> browser.getLink("Delete").click()
+...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/deletecontent.html')
 >>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
+<div ...
     Do you really want to delete: 
       ...
       <span>03.jpg</span>
@@ -205,7 +203,6 @@ images were added. Remove the image 03.jpg from the gallery folder:
 Now as the image is removed, go back to the gallery, the 03.jpg is no longer
 listed:
 
->>> browser.handleErrors = False
 >>> browser.open(bookmark)
 >>> print browser.contents
 <?xml ...
