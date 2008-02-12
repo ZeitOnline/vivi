@@ -19,7 +19,7 @@
         </li>
       </ul>
 
-      <p id="messages_counter">
+      <p id="messages_counter" tal:condition="messages">
         <span i18n:translate="">
           Hides in
         </span>
