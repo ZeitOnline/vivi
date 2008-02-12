@@ -36,7 +36,7 @@ The tree is rendered  in the sidebar all the time:
 </div>
 
 
-When we visit `online` it is automatically expanded while visiting it:
+When we visit `online` it is *not* automatically expanded while visiting it:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online')
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
@@ -50,10 +50,6 @@ When we visit `online` it is automatically expanded while visiting it:
       ...
       <ul>
         <li...online...
-          <ul>
-            <li...2007...
-          </ul>
-        </li>
         <li...2007...
       </ul>
     </li>

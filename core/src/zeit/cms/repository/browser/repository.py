@@ -66,12 +66,6 @@ class Tree(zeit.cms.browser.tree.Tree):
             return None
         return object.uniqueId
 
-    def expanded(self, obj):
-        url = self.getUrl(obj)
-        if self.selected(url):
-            return True
-        return super(Tree, self).expanded(obj)
-
     def selected(self, url):
         view_url = self.request.get('view_url')
         if not view_url:
