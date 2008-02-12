@@ -43,6 +43,7 @@ var TimerWidget = Class.extend({
     },
 
     startTimer: function() {
+        showElement(this.widget);
         this.element.innerHTML = this.seconds
         this.timer = callLater(1, this.count, this);
     },

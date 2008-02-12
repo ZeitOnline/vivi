@@ -462,7 +462,7 @@ table.properties textarea {
   content: "]";
 }
 
-#messages.hiddenMessages #messages_counter,
+#messages_counter,
 #messages.hiddenMessages .hideText {
   display: none;
 }
