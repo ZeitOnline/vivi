@@ -19,8 +19,6 @@
   <form action=""
         tal:attributes="action view/@@absolute_url">
     <p>
-      <input type="submit" value="Cancel" name="cancel" 
-        i18n:attributes="value" />
       <input type="submit" value="Yes, delete it." name="delete"
              tal:condition="not:view/is_folder_with_content"
         i18n:attributes="value"/>
