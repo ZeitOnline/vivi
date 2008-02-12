@@ -62,6 +62,25 @@
     permission="zeit.RenameContent"
     />
 
+  <!-- Delete view -->
+  <browser:viewlet
+    name="delete"
+    template="menu-entry-delete.pt"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.DeleteContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="deletecontent.html"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    template="cmscontent.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".cmscontent.DeleteContent"
+    permission="zeit.DeleteContent"
+    />
+
 
   <!-- Selenium Tests -->
 
