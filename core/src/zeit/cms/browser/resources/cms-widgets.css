@@ -462,8 +462,13 @@ table.properties textarea {
   content: "]";
 }
 
+#messages.hiddenMessages #messages_counter,
 #messages.hiddenMessages .hideText {
   display: none;
+}
+#messages_counter {
+  float: left;
+  margin: 0.5em;
 }
 
 .GlobalInformation  {

@@ -19,6 +19,16 @@
         </li>
       </ul>
 
+      <p id="messages_counter">
+        <span i18n:translate="">
+          Hides in
+        </span>
+        <span class="Counter" tal:condition="messages">
+        </span>
+        <span i18n:translate="">
+          seconds
+        </span>
+      </p>
       <div class="hideText" tal:condition="messages" 
            i18n:translate="">
         hide
