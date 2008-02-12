@@ -30,11 +30,11 @@ class CommonMetadataFormBase(object):
 
     navigation_fields = gocept.form.grouped.Fields(
         _("Navigation"),
-        ('__name__', 'keywords', 'serie', 'sub_ressort'),
+        ('__name__', 'keywords', 'serie'),
         css_class='column-right')
     head_fields = gocept.form.grouped.Fields(
         _("Head"),
-        ('year', 'volume', 'page', 'ressort'),
+        ('year', 'volume', 'page', 'ressort', 'sub_ressort'),
         css_class='widgets-float column-left')
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
