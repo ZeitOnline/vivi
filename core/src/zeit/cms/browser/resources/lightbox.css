@@ -1,27 +1,5 @@
 /* Lightbox */
 
-#lightbox-shade {
-    z-index: 2;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: black;
-    opacity: 0.7;
-}
-
-#lightbox {
-    z-index: 3;
-    background-color: white;
-    border: 1px solid black;
-    position: fixed;
-    top: 10%;
-    left: 10%;
-    right: 10%;
-    bottom: 10%;
-}
-
 #lightbox > .keyword-tree {
     position: absolute;
     top: 0;
