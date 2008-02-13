@@ -331,6 +331,15 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
+There was a bug once where after editing an article there were edit fields on
+the read only form:
+
+>>> browser.getControl('Teaser text')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Teaser text'
+
+
 But a view tab is there:
 
 >>> browser.getLink('View metadata').click()

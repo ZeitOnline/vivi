@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import copy
+
 import zope.app.form.browser.textwidgets
 
 import gocept.form.grouped
@@ -59,9 +61,16 @@ class CommonMetadataFormBase(object):
 
         if not self.for_display:
             # Change the widgets of the teaser fields
-            for field in ('teaserText',
-                          'shortTeaserTitle', 'shortTeaserText'):
-                self.form_fields[field].custom_widget = ShowLimitInputWidget
+            change_field_names = (
+                'teaserText', 'shortTeaserTitle', 'shortTeaserText')
+            form_fields = self.form_fields.omit(*change_field_names)
+            changed_fields = []
+            for field in change_field_names:
+                field = copy.copy(self.form_fields[field])
+                field.custom_widget = ShowLimitInputWidget
+                changed_fields.append(field)
+            self.form_fields = form_fields + zope.formlib.form.FormFields(
+                *changed_fields)
 
     @property
     def template(self):
