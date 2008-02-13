@@ -193,10 +193,10 @@ class Listing(object):
             _('Author'),
             lambda t, c: t.author),
         GetterColumn(
-            _('Titel'),
+            _('Title'),
             lambda t, c: t.title),
         FilenameColumn(
-            _('Filename'),
+            _('File name'),
             lambda t, c: t.__name__),
         GetterColumn(
             _('Ressort'),
