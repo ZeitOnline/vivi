@@ -18,7 +18,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
             var code = oarguments.callee.$.getValueField.call(othis, i).value
             selected_keywords.push(code);
         });
-       
+
         var url = '/@@keyword-browser.html';
         var tree = new Tree(url, 'lightbox');
         tree.query_arguments['selected_keywords'] = serializeJSON(
@@ -31,9 +31,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         });
         // typeahead
         d.addCallback(function(result) {
-            othis.typeahead_container = $('keyword-typeahead-results');
-            var textinput = $('new_keyword_code');
-            connect(textinput, 'onkeyup', othis, 'handleTextinput');
+            othis.connectTypeAhead();
         })
 
 
@@ -56,6 +54,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
                           'index': i,
                           'src': '/@@/zeit.cms/icons/delete.png'})));
         });
+        othis.connectTypeAhead()
     },
 
     addKeyword: function(keyword_url) {
@@ -116,6 +115,12 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
               widget.updateTypeaheadResults(result.responseText);
           })
 
+    },
+
+    connectTypeAhead: function() {
+        this.typeahead_container = $('keyword-typeahead-results');
+        var textinput = $('new_keyword_code');
+        connect(textinput, 'onkeyup', this, 'handleTextinput');
     },
 
 });
