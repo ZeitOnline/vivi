@@ -87,7 +87,7 @@
     permission="zope.View"
     />
 
-  <resourceLibrary name="dragndrop" require="mochikit.DragAndDrop">
+  <resourceLibrary name="zeit.cms.syndication" require="zeit.cms">
     <directory source="resources" include="dragndropHandlers.js"/>
   </resourceLibrary>
 

@@ -1,7 +1,7 @@
 <html metal:use-macro="context/@@standard_macros/page">
   <div metal:fill-slot="body">
     
-    <tal:block replace="resource_library:dragndrop" />
+    <tal:block replace="resource_library:zeit.cms.syndication" />
     <div id="edit-form">
       <form method="POST">
         <table tal:replace="structure view/contentTable" />

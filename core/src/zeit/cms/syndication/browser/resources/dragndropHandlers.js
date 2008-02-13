@@ -1,3 +1,3 @@
 connect(window, "onload", function() {
-    new TableSorter('feedsorting');
+    new zeit.cms.TableSorter('feedsorting');
 });
