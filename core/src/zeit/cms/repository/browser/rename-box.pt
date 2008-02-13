@@ -1,4 +1,5 @@
 <div id="rename-box">
+    <tal:replace replace="resource_library:zeit.cms.Lightbox" />
   <h1 i18n:translate="">
     Rename
     <span tal:replace="context/uniqueId"
