@@ -18,6 +18,7 @@ import zeit.cms.connector
 import zeit.cms.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.util
+import zeit.cms.repository.interfaces
 import zeit.content.gallery.interfaces
 
 
@@ -52,7 +53,12 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     @rwproperty.getproperty
     def image_folder(self):
-        return self._image_folder
+        folder = self._image_folder
+        if folder is None:
+            folder = self._guess_image_folder()
+            if folder is not None:
+                self.image_folder = folder
+        return folder
 
     @rwproperty.setproperty
     def image_folder(self, image_folder):
@@ -175,9 +181,42 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
             assert len(matching_blocks) == 1
             return matching_blocks[0]
 
+        # This might be an old instance.
+        matching_images = self._entries_container.xpath('block/image')
+        for image in matching_images:
+            if not image.get('src').startswith('/cms/work/'):
+                continue
+            if image.get('src').endswith('/' + key):
+                block = image.getparent()
+                block.set('name', key)
+                image.set('src', image.get('src').replace(
+                    '/cms/work/', 'http://xml.zeit.de/'))
+                self._p_changed = True
+                return block
+
     def _list_all_keys(self):
         return (unicode(name)
                 for name in self._entries_container.xpath('block/@name'))
+
+    def _guess_image_folder(self):
+        # Ugh. We haven't got a folder? This could be an old gallery.
+        image_sources = self._entries_container.xpath('block/image/@src')
+        unique_id = None
+        for path in image_sources:
+            if not path.startswith('/cms/work'):
+                continue
+            unique_id = 'http://xml.zeit.de/%s' % path[9:]
+            break
+        if not unique_id:
+            return
+
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        try:
+            image = repository.getContent(unique_id)
+        except KeyError:
+            return
+        return image.__parent__
 
 
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGallery)

@@ -70,15 +70,18 @@ Let's add an image to the image folder:
 >>> import os.path
 >>> import zeit.content.image.image
 >>> import zeit.content.image.interfaces
->>> filename = os.path.join(os.path.dirname(__file__),
+>>> def add_image():
+...     filename = os.path.join(os.path.dirname(__file__),
 ...                         'browser', 'testdata', '01.jpg')
->>> test_data = file(filename, 'rb').read()
->>> image = zeit.content.image.image.Image()
->>> image.__name__ = '01.jpg'
->>> image.data = test_data
->>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
->>> metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
->>> repository['2006']['01.jpg'] = image
+...     test_data = file(filename, 'rb').read()
+...     image = zeit.content.image.image.Image()
+...     image.__name__ = '01.jpg'
+...     image.data = test_data
+...     metadata = zeit.content.image.interfaces.IImageMetadata(image)
+...     metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
+...     repository['2006']['01.jpg'] = image
+...
+>>> add_image()
 
 The gallery obviously hasn't noted this change:
 
@@ -460,6 +463,86 @@ When calling `reload_image_folder` the entry is removed from the xml:
           <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
             <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
           </thumbnail>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
+
+
+Old XML format
+==============
+
+The old xml format is a bit more lazy. Let's add the second image again:
+
+>>> add_image()
+>>> gallery.xml = lxml.objectify.XML(u"""\
+...     <centerpage>
+...       <head>
+...       </head>
+...       <body>
+...         <column layout="left"/>
+...         <column layout="right">
+...           <container>
+...             <block>
+...               <text>
+...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...               </text>
+...               <image expires="2007-04-09" src="/cms/work/2006/DSC00109_2.JPG" 
+...                     width="380" align="left">
+...                 <copyright>© Martin Rose/Getty Images</copyright>
+...                 BILD 
+...               </image>
+...             </block>
+...             <block>
+...               <text>
+...                 ... Mehdi Mahdavikia. Dem iranischen Publikumsliebling gelang in der 60.  Minute der einzige Treffer des Spiels. Der HSV siegte somit mit 1:0 und setzt sich langsam von den Abstiegsrängen ab.&#13;
+...               </text>
+...               <image expires="2007-04-09" src="/cms/work/2006/01.jpg" width="380"
+...                 align="left">
+...                 <copyright>© Martin Rose/Getty Images</copyright> BILD </image>
+...             </block>
+...           </container>
+...         </column>
+...       </body>
+...     </centerpage>""")
+
+
+There are two major differences to the new xml:
+
+1. The image folder is not explicitly noted and needs to be decuced.
+2. The blocks containing the images do not have names.
+
+The image folder is /2006, decuced from /cms/work/2006/DSC00109_2.JPG:
+
+>>> gallery.image_folder.uniqueId
+u'http://xml.zeit.de/2006'
+
+The keys also correct(ed) and the names are set:
+
+>>> list(gallery.keys())
+[u'DSC00109_2.JPG', u'01.jpg'] 
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage>
+  <head>
+      <image-folder>http://xml.zeit.de/2006</image-folder></head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="DSC00109_2.JPG">
+          <text>
+                 Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+              </text>
+          <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright>
+                BILD
+              </image>
+        </block>
+        <block name="01.jpg">
+          <text>
+                ... Mehdi Mahdavikia. Dem iranischen Publikumsliebling gelang in der 60.  Minute der einzige Treffer des Spiels. Der HSV siegte somit mit 1:0 und setzt sich langsam von den Abstiegsr&#195;&#164;ngen ab.&#13;
+              </text>
+          <image expires="2007-04-09" src="http://xml.zeit.de/2006/01.jpg" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright> BILD </image>
         </block>
       </container>
     </column>
