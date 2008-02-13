@@ -118,6 +118,7 @@ class FeedMetadataUpdater(object):
     zeit.workflow.interfaces.IWorkflow,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
 def set_first_release_date(context, event):
+    # XXX refactor to use a IPublishedEvent.
     if ((event.property_name, event.property_namespace) !=
         ('published', 'http://namespaces.zeit.de/CMS/workflow')):
         return
