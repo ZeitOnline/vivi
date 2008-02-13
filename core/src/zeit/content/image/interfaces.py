@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 # $Id$
@@ -44,14 +45,13 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
-        default=(None,),
+        default=(),
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(
             (zope.schema.TextLine(
                 title=_("Copyright"),
-                description=_("Do not enter (c)."),
-                default=u"ZEIT online",
+                default=u"©",
                 required=True),
             zope.schema.URI(
                 title=_('Link'),

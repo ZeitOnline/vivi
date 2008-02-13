@@ -100,7 +100,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
 
     copyrights = zope.schema.TextLine(
-        title=_("Copyright"),
+        title=_("Copyright (c)"),
         description=_("Do not enter (c)."),
         default=u"ZEIT online")
 

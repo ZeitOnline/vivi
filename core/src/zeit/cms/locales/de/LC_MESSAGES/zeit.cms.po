@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Feb 12 13:31:23 2008\n"
-"PO-Revision-Date: 2008-02-13 10:35+0100\n"
+"POT-Creation-Date: Wed Feb 13 10:41:45 2008\n"
+"PO-Revision-Date: 2008-02-13 10:42+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -175,7 +175,7 @@ msgstr "Ressort"
 #: src/zeit/cms/browser/listing.py:205
 #: src/zeit/cms/content/interfaces.py:63
 #: src/zeit/content/article/interfaces.py:175
-#: src/zeit/content/image/interfaces.py:34
+#: src/zeit/content/image/interfaces.py:35
 #: src/zeit/search/interfaces.py:23
 #: src/zeit/content/article/browser/recension-overview.pt:32
 #: src/zeit/search/browser/sidebar.pt:46
@@ -220,7 +220,16 @@ msgstr "Fehler"
 msgid "CMS"
 msgstr "CMS"
 
-#: src/zeit/cms/browser/notices.pt:22
+#: src/zeit/cms/browser/notices.pt:23
+#, fuzzy
+msgid "Hides in"
+msgstr "Verstecken"
+
+#: src/zeit/cms/browser/notices.pt:28
+msgid "seconds"
+msgstr ""
+
+#: src/zeit/cms/browser/notices.pt:32
 msgid "hide"
 msgstr "Verstecken"
 
@@ -246,23 +255,23 @@ msgstr "Einchecken"
 msgid "Broken reference to ${uniqueId}"
 msgstr "Invalide Referenz zu ${uniqueId}"
 
-#: src/zeit/cms/content/browser/form.py:32
+#: src/zeit/cms/content/browser/form.py:34
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/zeit/cms/content/browser/form.py:36
+#: src/zeit/cms/content/browser/form.py:38
 #: src/zeit/content/infobox/browser/form.py:31
 msgid "Head"
 msgstr "Kopf"
 
-#: src/zeit/cms/content/browser/form.py:40
+#: src/zeit/cms/content/browser/form.py:42
 #: src/zeit/content/image/browser/form.py:30
 #: src/zeit/content/infobox/browser/form.py:27
 #: src/zeit/content/infobox/browser/form.py:47
 msgid "Texts"
 msgstr "Texte"
 
-#: src/zeit/cms/content/browser/form.py:51
+#: src/zeit/cms/content/browser/form.py:53
 #: src/zeit/content/article/browser/form.py:60
 msgid "misc."
 msgstr "sonstiges"
@@ -335,12 +344,10 @@ msgid "Properties"
 msgstr "Eigenschaften"
 
 #: src/zeit/cms/content/interfaces.py:103
-#: src/zeit/content/image/interfaces.py:52
-msgid "Copyright"
+msgid "Copyright (c)"
 msgstr "Copyright ©"
 
 #: src/zeit/cms/content/interfaces.py:104
-#: src/zeit/content/image/interfaces.py:53
 msgid "Do not enter (c)."
 msgstr "© nicht eingeben."
 
@@ -397,7 +404,7 @@ msgid "Root of ontology"
 msgstr "Wurzel der Ontologie"
 
 #: src/zeit/cms/content/interfaces.py:68
-#: src/zeit/content/image/interfaces.py:40
+#: src/zeit/content/image/interfaces.py:41
 #: src/zeit/search/interfaces.py:24
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
@@ -941,17 +948,21 @@ msgstr "Ausmaße"
 msgid "Image"
 msgstr "Bild"
 
-#: src/zeit/content/image/interfaces.py:25
+#: src/zeit/content/image/interfaces.py:26
 msgid "Expires"
 msgstr "Löschdatum"
 
-#: src/zeit/content/image/interfaces.py:29
+#: src/zeit/content/image/interfaces.py:30
 msgid "Image title"
 msgstr "Bildtitel"
 
-#: src/zeit/content/image/interfaces.py:46
+#: src/zeit/content/image/interfaces.py:47
 msgid "Copyrights"
 msgstr "Copyrights"
+
+#: src/zeit/content/image/interfaces.py:53
+msgid "Copyright"
+msgstr "Copyright"
 
 #: src/zeit/content/image/interfaces.py:57
 #: src/zeit/content/link/browser/configure.zcml:8

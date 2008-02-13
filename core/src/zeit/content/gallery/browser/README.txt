@@ -30,6 +30,8 @@ Add some images to the folder:
 ...     menu = browser.getControl(name='add_menu')
 ...     menu.displayValue = ['Image (single)']
 ...     browser.open(menu.value[0])
+...     browser.getControl('Add Copyrights').click()
+...     browser.getControl('Copyright').value = 'ZEIT online'
 ...     test_file = os.path.join(os.path.dirname(__file__),
 ...                              'testdata', name)
 ...     test_data = file(test_file, 'rb')
