@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Tue Feb 12 13:31:23 2008\n"
-"PO-Revision-Date: 2008-02-13 09:39+0100\n"
+"PO-Revision-Date: 2008-02-13 10:35+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -851,7 +851,7 @@ msgstr "Layout"
 
 #: src/zeit/content/gallery/browser/configure.zcml:65
 msgid "Gallery"
-msgstr "Bildergallerie"
+msgstr "Metadaten der Bildergalerie ansehen"
 
 #: src/zeit/content/gallery/browser/configure.zcml:90
 msgid "Synchronise with image folder"
@@ -863,11 +863,11 @@ msgstr "Bildergalerie hinzufügen"
 
 #: src/zeit/content/gallery/browser/form.py:42
 msgid "Edit gallery"
-msgstr "Bildergallerie bearbeiten"
+msgstr "Bildergalerie bearbeiten"
 
 #: src/zeit/content/gallery/browser/form.py:49
 msgid "View gallery metadata"
-msgstr "Metadaten der Bildergallerie ansehen"
+msgstr "Metadaten der Bildergalerie ansehen"
 
 #: src/zeit/content/gallery/browser/form.py:69
 msgid "Edit gallery entry"
