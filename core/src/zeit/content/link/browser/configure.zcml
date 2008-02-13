@@ -51,5 +51,14 @@
     permission="zope.View"
     />
 
+  <browser:icon
+    for="zeit.content.link.interfaces.ILink"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/linkResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
 </configure>
 
