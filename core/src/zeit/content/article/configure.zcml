@@ -31,7 +31,6 @@
   <subscriber handler=".syndication.linkToFeed" />
   <subscriber handler=".syndication.updateFeedOnCheckin" />
   
-  <subscriber handler=".article.mapPropertyToAttribute" />
   <subscriber handler=".article.updateTextLengthOnChange" />
   
   <interface

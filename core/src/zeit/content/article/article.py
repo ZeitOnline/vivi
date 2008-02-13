@@ -21,6 +21,7 @@ import zope.app.container.contained
 import zeit.cms.connector
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
+import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.interfaces
@@ -43,7 +44,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(
         zeit.content.article.interfaces.IArticle,
-        zeit.wysiwyg.interfaces.IHTMLContent)
+        zeit.wysiwyg.interfaces.IHTMLContent,
+        zeit.cms.content.interfaces.IDAVPropertiesInXML)
 
     default_template = ARTICLE_TEMPLATE
 
@@ -143,15 +145,6 @@ resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
     'article')
 resourceFactory = zope.component.adapter(
     zeit.content.article.interfaces.IArticle)(resourceFactory)
-
-
-@zope.component.adapter(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def mapPropertyToAttribute(article, event):
-    attribute = zeit.cms.content.property.AttributeProperty(
-        event.property_namespace, event.property_name)
-    attribute.__set__(article, event.new_value)
 
 
 @zope.component.adapter(

@@ -3,8 +3,6 @@
   <adapter factory=".centerpage.centerpageFactory" name="centerpage" />
   <adapter factory=".centerpage.resourceFactory" />
 
-  <subscriber handler=".centerpage.mapPropertyToAttribute" />
-
   <class class=".centerpage.CenterPage">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require

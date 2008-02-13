@@ -31,7 +31,9 @@ CP_TEMPLATE = """\
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     """CenterPage"""
 
-    zope.interface.implements(zeit.content.centerpage.interfaces.ICenterPage)
+    zope.interface.implements(
+        zeit.content.centerpage.interfaces.ICenterPage,
+        zeit.cms.content.interfaces.IDAVPropertiesInXML)
 
     default_template = CP_TEMPLATE
 
@@ -48,15 +50,6 @@ resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
     'centerpage')
 resourceFactory = zope.component.adapter(
     zeit.content.centerpage.interfaces.ICenterPage)(resourceFactory)
-
-
-@zope.component.adapter(
-    zeit.content.centerpage.interfaces.ICenterPage,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def mapPropertyToAttribute(cp, event):
-    attribute = zeit.cms.content.property.AttributeProperty(
-        event.property_namespace, event.property_name)
-    attribute.__set__(cp, event.new_value)
 
 
 @zope.interface.implementer(zeit.content.centerpage.interfaces.ICenterPage)

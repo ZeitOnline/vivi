@@ -1,0 +1,77 @@
+=========
+XML tests
+=========
+
+
+Mapping of DAV properties to xml
+================================
+
+A content which implements IDAVPropertiesInXML will have it's webdav properties
+mapped to xml on change, checkin, checkout.
+
+Create a content class. The content class must provide IDAVPropertiesInXML for
+the event handlers to do something. It also needs to be adaptable to or provide
+directly IXMLRepresentation.
+
+>>> import lxml.objectify
+>>> import lxml.etree
+>>> import zope.interface
+>>> import zeit.cms.content.dav
+>>> import zeit.cms.content.interfaces
+>>> class Content(object):
+...     zope.interface.implements(
+...         zeit.cms.content.interfaces.IXMLRepresentation,
+...         zeit.cms.content.interfaces.IDAVPropertiesInXML)
+...     xml = lxml.objectify.fromstring('<a/>')
+...     title = zeit.cms.content.dav.DAVProperty(
+...         zope.schema.TextLine(), 'myns', 'title')
+...
+...     def __init__(self):
+...         self.properties = {}
+...
+
+We need an adapter for the webdav properties:
+
+>>> import zope.component
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> def contentDavProps(context):
+...     return context.properties
+>>> gsm.registerAdapter(
+...     contentDavProps,
+...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
+
+>>> content = Content()
+
+
+When we set the title, an IDAVPropertyChangedEvent is issued. Thus the xml will
+change and contain the property:
+
+>>> content.title = u'Mary had a little lamb.'
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a>
+  <head>
+    <attribute ns="myns" name="title">Mary had a little lamb.</attribute>
+  </head>
+</a>
+
+
+Setting the value to None, which is the default of the field, will remove the
+property:
+
+>>> content.title = None
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a>
+  <head/>
+</a>
+
+
+
+XXX checkin/checkout handlers
+
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     contentDavProps,
+...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
+True

@@ -25,5 +25,6 @@ def test_suite():
 
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'dav.txt',
-        'related.txt'))
+        'related.txt',
+        'xml.txt'))
     return suite

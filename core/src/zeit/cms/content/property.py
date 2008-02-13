@@ -113,6 +113,9 @@ class AttributeProperty(object):
         self.delAttribute(instance)
         self.addAttribute(instance, value)
 
+    def __delete__(self, instance):
+        self.delAttribute(instance)
+
     def addAttribute(self, instance, value):
         root = instance.xml
         self.path.addattr(root, value)

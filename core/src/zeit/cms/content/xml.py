@@ -12,6 +12,7 @@ import zope.interface
 import zope.app.container.contained
 
 import zeit.cms.content.interfaces
+import zeit.cms.content.property
 
 
 
@@ -39,3 +40,16 @@ class XMLContentBase(XMLRepresentationBase,
 
     uniqueId = None
     __name__ = None
+
+
+@zope.component.adapter(
+    zeit.cms.content.interfaces.IDAVPropertiesInXML,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def map_dav_property_to_xml(context, event):
+    content = zeit.cms.content.interfaces.IXMLRepresentation(context)
+    attribute = zeit.cms.content.property.AttributeProperty(
+        event.property_namespace, event.property_name)
+    if event.new_value is zeit.connector.interfaces.DeleteProperty:
+        attribute.__delete__(context)
+    else:
+        attribute.__set__(content, event.new_value)
