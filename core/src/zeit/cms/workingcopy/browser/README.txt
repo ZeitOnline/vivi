@@ -67,12 +67,68 @@ Looking at our working copy also shows the `Somalia` article:
 <!DOCTYPE ...
 ...Somalia...
 
+There is a delete link to remove object from the workingcopy again:
+
+>>> browser.getLink('Somalia').click()
+>>> browser.getLink('Delete')
+<Link text='[IMG] Delete'
+    url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@deletecontent.html')">
+
+Let's open the delete form:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/Somalia/'
+...     '@@deletecontent.html')
+>>> print browser.contents
+<div class="topcontent deleteScreen">
+  <h1>Delete content</h1>
+  <p>
+    <span>
+      Do you really want to delete the object from the folder
+      "<span class="containerName">zope.user</span>"?
+    </span>
+  </p>
+  <p class="DeleteItem">
+    <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    <span>Somalia</span>
+    (<span>http://xml.zeit.de/online/2007/01/Somalia</span>)
+  </p>
+<BLANKLINE>
+<BLANKLINE>
+  <form action="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/deletecontent.html">
+    <p>
+      <input type="submit" value="Delete" name="delete" />
+    </p>
+  </form>
+</div>
+
+
+Let's delete it:
+
+>>> browser.getControl('Delete').click()
+>>> print browser.contents
+<?xml ...
+      <div id="topcontent">
+        <span class="Info">
+          There are no objects in this folder.
+        </span>
+      </div>
+      ...
+
 
 Object browser
 ==============
 
 When the objectbrowser asks for the default location of a content object in the 
 working copy, the answer is relayed to the object in the repository.
+
+
+Checkout the somalia article again:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
+>>> browser.getLink('Checkout').click()
+
 
 We need some setup:
 

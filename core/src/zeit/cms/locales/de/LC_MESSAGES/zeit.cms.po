@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Feb 13 10:41:45 2008\n"
-"PO-Revision-Date: 2008-02-13 10:42+0100\n"
+"POT-Creation-Date: Wed Feb 13 13:28:01 2008\n"
+"PO-Revision-Date: 2008-02-13 13:28+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -120,7 +120,6 @@ msgid "Add"
 msgstr "Hinzufügen …"
 
 #: src/zeit/cms/browser/form.py:161
-#: src/zeit/cms/repository/browser/delete.pt:22
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -478,27 +477,29 @@ msgid "Add ..."
 msgstr "Hinzufügen …"
 
 #. Default: "You're about to delete a folder with content!"
-#: src/zeit/cms/repository/browser/delete.pt:15
+#: src/zeit/cms/repository/browser/delete.pt:19
 msgid "delete_content_folder_warning"
 msgstr "Achtung! Sie löschen einen Ordner mit Inhalt!"
 
-#: src/zeit/cms/repository/browser/delete.pt:24
+#: src/zeit/cms/repository/browser/delete.pt:27
 msgid "Yes, delete it."
 msgstr "Ja, löschen."
 
-#: src/zeit/cms/repository/browser/delete.pt:27
+#: src/zeit/cms/repository/browser/delete.pt:30
 msgid "Do as I say: Delete."
 msgstr "Tu was ich sage: Löschen."
 
 #. Default: "Delete content"
-#: src/zeit/cms/repository/browser/delete.pt:3
+#: src/zeit/cms/repository/browser/delete.pt:4
 msgid "delete_content_header"
 msgstr "Inhalt löschen"
 
-#. Default: "Do you really want to delete:"
-#: src/zeit/cms/repository/browser/delete.pt:6
+#. Default: ""
+#.  "Do you really want to delete the object from the folder\n"
+#.  "      \"${container-title}\"?"
+#: src/zeit/cms/repository/browser/delete.pt:9
 msgid "delete_content_text"
-msgstr "Möchten Sie das Objekt wirklich löschen?"
+msgstr "Möchten Sie das folgende Objekt aus dem Ordner „${container-title}“ wirklich löschen?"
 
 #: src/zeit/cms/repository/browser/folder.py:17
 msgid "Add folder"
@@ -521,12 +522,12 @@ msgstr "Verstecken"
 msgid "Show"
 msgstr "Zeigen"
 
-#: src/zeit/cms/repository/browser/rename-box.pt:4
+#: src/zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr "${object-unique-id} umbenennen"
 
 #. Default: "Note: Renaming destroys links."
-#: src/zeit/cms/repository/browser/rename-box.pt:7
+#: src/zeit/cms/repository/browser/rename-box.pt:8
 msgid "rename-box-warning"
 msgstr "Achtung: Das Umbenennen von Objekten wird Referenzen/Links auf dieses Objekt ungültig machen. Objekte sollten nur umbenannt werden, wenn sie noch nicht veröffentlicht verlinkt oder anderweitig referenziert sind."
 

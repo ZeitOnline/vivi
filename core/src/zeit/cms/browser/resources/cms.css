@@ -472,3 +472,7 @@ pre {
 .DeleteItem {
    padding: 0.5em;
 }
+
+.deleteScreen .containerName {
+  font-weight: bold;
+}

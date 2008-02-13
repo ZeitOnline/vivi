@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Feb 13 10:41:45 2008\n"
+"POT-Creation-Date: Wed Feb 13 16:23:57 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -132,7 +132,6 @@ msgid "Add"
 msgstr ""
 
 #: src/zeit/cms/browser/form.py:161
-#: src/zeit/cms/repository/browser/delete.pt:22
 msgid "Cancel"
 msgstr ""
 
@@ -488,26 +487,20 @@ msgstr ""
 msgid "Add ..."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:15
+#: src/zeit/cms/repository/browser/delete.pt:19
 #. Default: "You're about to delete a folder with content!"
 msgid "delete_content_folder_warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:24
-msgid "Yes, delete it."
-msgstr ""
-
-#: src/zeit/cms/repository/browser/delete.pt:27
-msgid "Do as I say: Delete."
-msgstr ""
-
-#: src/zeit/cms/repository/browser/delete.pt:3
+#: src/zeit/cms/repository/browser/delete.pt:4
 #. Default: "Delete content"
 msgid "delete_content_header"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:6
-#. Default: "Do you really want to delete:"
+#: src/zeit/cms/repository/browser/delete.pt:9
+#. Default: ""
+#.  "Do you really want to delete the object from the folder\n"
+#.  "      \"${container-title}\"?"
 msgid "delete_content_text"
 msgstr ""
 
@@ -532,11 +525,11 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename-box.pt:4
+#: src/zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename-box.pt:7
+#: src/zeit/cms/repository/browser/rename-box.pt:8
 #. Default: "Note: Renaming destroys links."
 msgid "rename-box-warning"
 msgstr ""
@@ -636,6 +629,7 @@ msgstr ""
 #: src/zeit/cms/workingcopy/browser/configure.zcml:39
 #: src/zeit/cms/clipboard/browser/configure.zcml:110
 #: src/zeit/cms/content/browser/template.zcml:57
+#: src/zeit/cms/repository/browser/delete.pt:27
 #: src/zeit/cms/repository/browser/menu-entry-delete.pt:3
 #: src/zeit/cms/repository/browser/menu-entry-delete.pt:8
 msgid "Delete"

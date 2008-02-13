@@ -66,7 +66,7 @@
   <browser:viewlet
     name="delete"
     template="menu-entry-delete.pt"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.DeleteContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -74,7 +74,7 @@
 
   <browser:page
     name="deletecontent.html"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     template="delete.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".delete.DeleteContent"

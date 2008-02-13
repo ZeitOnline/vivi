@@ -194,12 +194,13 @@ images were added. Remove the image 03.jpg from the gallery folder:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/deletecontent.html')
 >>> print browser.contents
 <div ...
-    Do you really want to delete: 
+      Do you really want to delete the object from the folder
+      "<span class="containerName">gallery</span>"?
       ...
       <span>03.jpg</span>
       (<span>http://xml.zeit.de/online/2007/01/gallery/03.jpg</span>)
     ...
->>> browser.getControl("Yes, delete it.").click()
+>>> browser.getControl("Delete").click()
 
 Now as the image is removed, go back to the gallery, the 03.jpg is no longer
 listed:
