@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Feb  6 08:49:28 2008\n"
+"POT-Creation-Date: Tue Feb 12 13:31:23 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -49,9 +49,10 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
+#: src/zeit/cms/browser/listing.py:196
 #: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:108
-#: src/zeit/cms/content/interfaces.py:243
+#: src/zeit/cms/content/interfaces.py:117
+#: src/zeit/cms/content/interfaces.py:253
 #: src/zeit/cms/syndication/interfaces.py:34
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:140
@@ -71,7 +72,7 @@ msgid "Description"
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:250
+#: src/zeit/cms/content/interfaces.py:260
 msgid "Related content"
 msgstr ""
 
@@ -131,7 +132,7 @@ msgid "Add"
 msgstr ""
 
 #: src/zeit/cms/browser/form.py:161
-#: src/zeit/cms/content/browser/cmscontent.pt:21
+#: src/zeit/cms/repository/browser/delete.pt:22
 msgid "Cancel"
 msgstr ""
 
@@ -163,6 +164,49 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
+#: src/zeit/cms/browser/listing.py:193
+#: src/zeit/content/article/interfaces.py:138
+#: src/zeit/search/browser/search.py:91
+#: src/zeit/search/interfaces.py:21
+msgid "Author"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:199
+#: src/zeit/cms/interfaces.py:39
+#: src/zeit/content/image/browser/imagegroup.py:68
+#: src/zeit/search/interfaces.py:16
+msgid "File name"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:202
+#: src/zeit/cms/content/interfaces.py:78
+#: src/zeit/search/browser/sidebar.pt:80
+msgid "Ressort"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:205
+#: src/zeit/cms/content/interfaces.py:63
+#: src/zeit/content/article/interfaces.py:175
+#: src/zeit/content/image/interfaces.py:34
+#: src/zeit/search/interfaces.py:23
+#: src/zeit/content/article/browser/recension-overview.pt:32
+#: src/zeit/search/browser/sidebar.pt:46
+msgid "Year"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:208
+#. Default: "Vol."
+msgid "volme-abbreviated"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:211
+#: src/zeit/cms/content/interfaces.py:73
+#: src/zeit/search/browser/search.py:101
+#: src/zeit/search/interfaces.py:25
+#: src/zeit/search/browser/sidebar.pt:72
+msgid "Page"
+msgstr ""
+
 #: src/zeit/cms/browser/locking-error.pt:10
 msgid "The action you were trying to do could not be finished because the resource ${resource-id} was locked."
 msgstr ""
@@ -171,7 +215,12 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:208
+#: src/zeit/cms/browser/main_template.pt:183
+#: src/zeit/content/article/browser/recension-overview.pt:66
+msgid "Add..."
+msgstr ""
+
+#: src/zeit/cms/browser/main_template.pt:207
 msgid "There are no objects in this folder."
 msgstr ""
 
@@ -209,29 +258,6 @@ msgstr ""
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
 
-#: src/zeit/cms/content/browser/cmscontent.pt:15
-#. Default: "You're about to delete a folder with content!"
-msgid "delete_content_folder_warning"
-msgstr ""
-
-#: src/zeit/cms/content/browser/cmscontent.pt:23
-msgid "Yes, delete it."
-msgstr ""
-
-#: src/zeit/cms/content/browser/cmscontent.pt:26
-msgid "Do as I say: Delete."
-msgstr ""
-
-#: src/zeit/cms/content/browser/cmscontent.pt:3
-#. Default: "Delete content"
-msgid "delete_content_header"
-msgstr ""
-
-#: src/zeit/cms/content/browser/cmscontent.pt:6
-#. Default: "Do you really want to delete:"
-msgid "delete_content_text"
-msgstr ""
-
 #: src/zeit/cms/content/browser/form.py:32
 msgid "Navigation"
 msgstr ""
@@ -251,6 +277,22 @@ msgstr ""
 #: src/zeit/cms/content/browser/form.py:51
 #: src/zeit/content/article/browser/form.py:60
 msgid "misc."
+msgstr ""
+
+#: src/zeit/cms/content/browser/keyword-tree.pt:12
+msgid "Add a keyword"
+msgstr ""
+
+#: src/zeit/cms/content/browser/keyword-tree.pt:18
+msgid "Similar keywords:"
+msgstr ""
+
+#: src/zeit/cms/content/browser/keyword-tree.pt:5
+msgid "Taxonomy"
+msgstr ""
+
+#: src/zeit/cms/content/browser/keyword-widget.pt:30
+msgid "Edit keywords"
 msgstr ""
 
 #: src/zeit/cms/content/browser/template-properties.pt:10
@@ -304,39 +346,57 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:100
-msgid "Please take care of capitalisation."
+#: src/zeit/cms/content/interfaces.py:103
+#: src/zeit/content/image/interfaces.py:52
+msgid "Copyright"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:104
+#: src/zeit/content/image/interfaces.py:53
+msgid "Do not enter (c)."
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:108
+msgid "Kicker"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:109
+msgid "Please take care of capitalisation."
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:113
 msgid "By line"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:111
+#: src/zeit/cms/content/interfaces.py:120
 msgid "Subtitle"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:115
+#: src/zeit/cms/content/interfaces.py:124
 msgid "Teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:119
+#: src/zeit/cms/content/interfaces.py:128
 msgid "Teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:124
+#: src/zeit/cms/content/interfaces.py:133
 msgid "Index teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:129
+#: src/zeit/cms/content/interfaces.py:138
 msgid "Index teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:194
+#: src/zeit/cms/content/interfaces.py:143
+msgid "VG Wort Id"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:204
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:251
+#: src/zeit/cms/content/interfaces.py:261
 msgid "Objects that are related to this object."
 msgstr ""
 
@@ -348,65 +408,29 @@ msgstr ""
 msgid "Root of ontology"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:58
-#: src/zeit/content/article/interfaces.py:175
-#: src/zeit/content/image/interfaces.py:32
-#: src/zeit/search/interfaces.py:23
-#: src/zeit/content/article/browser/recension-overview.pt:32
-#: src/zeit/search/browser/sidebar.pt:46
-msgid "Year"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:63
-#: src/zeit/content/image/interfaces.py:38
+#: src/zeit/cms/content/interfaces.py:68
+#: src/zeit/content/image/interfaces.py:40
 #: src/zeit/search/interfaces.py:24
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:68
-#: src/zeit/search/browser/search.py:101
-#: src/zeit/search/interfaces.py:25
-#: src/zeit/search/browser/sidebar.pt:72
-msgid "Page"
+#: src/zeit/cms/content/interfaces.py:82
+msgid "Sub ressort"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:73
-#: src/zeit/search/browser/sidebar.pt:80
-msgid "Ressort"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:77
+#: src/zeit/cms/content/interfaces.py:86
 #: src/zeit/content/article/interfaces.py:134
 msgid "Authors"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:83
+#: src/zeit/cms/content/interfaces.py:92
+#: src/zeit/cms/content/browser/keyword-tree.pt:24
 msgid "Keywords"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:89
+#: src/zeit/cms/content/interfaces.py:98
 msgid "Serie"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:94
-#: src/zeit/content/image/interfaces.py:44
-msgid "Copyright"
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:95
-#: src/zeit/content/image/interfaces.py:45
-msgid "Do not enter (c)."
-msgstr ""
-
-#: src/zeit/cms/content/interfaces.py:99
-msgid "Kicker"
-msgstr ""
-
-#: src/zeit/cms/interfaces.py:39
-#: src/zeit/content/image/browser/imagegroup.py:68
-#: src/zeit/search/interfaces.py:16
-msgid "File name"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:10
@@ -456,6 +480,29 @@ msgstr ""
 
 #: src/zeit/cms/repository/browser/configure.zcml:17
 msgid "Add ..."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/delete.pt:15
+#. Default: "You're about to delete a folder with content!"
+msgid "delete_content_folder_warning"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/delete.pt:24
+msgid "Yes, delete it."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/delete.pt:27
+msgid "Do as I say: Delete."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/delete.pt:3
+#. Default: "Delete content"
+msgid "delete_content_header"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/delete.pt:6
+#. Default: "Do you really want to delete:"
+msgid "delete_content_text"
 msgstr ""
 
 #: src/zeit/cms/repository/browser/folder.py:17
@@ -560,6 +607,10 @@ msgstr ""
 msgid "Edit Channel"
 msgstr ""
 
+#: src/zeit/cms/syndication/browser/manager.pt:9
+msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
+msgstr ""
+
 #: src/zeit/cms/syndication/interfaces.py:126
 msgid "Syndication targets"
 msgstr ""
@@ -579,7 +630,8 @@ msgstr ""
 #: src/zeit/cms/workingcopy/browser/configure.zcml:39
 #: src/zeit/cms/clipboard/browser/configure.zcml:110
 #: src/zeit/cms/content/browser/template.zcml:57
-#: src/zeit/cms/content/browser/configure.zcml:23
+#: src/zeit/cms/repository/browser/menu-entry-delete.pt:3
+#: src/zeit/cms/repository/browser/menu-entry-delete.pt:8
 msgid "Delete"
 msgstr ""
 
@@ -649,11 +701,6 @@ msgstr ""
 msgid "recension-no-items"
 msgstr ""
 
-#: src/zeit/content/article/browser/recension-overview.pt:66
-#: src/zeit/cms/browser/main_template.pt:184
-msgid "Add..."
-msgstr ""
-
 #: src/zeit/content/article/browser/recension.py:21
 #: src/zeit/content/article/browser/configure.zcml:106
 msgid "Recensions"
@@ -677,12 +724,6 @@ msgstr ""
 
 #: src/zeit/content/article/interfaces.py:100
 msgid "Syndication Log"
-msgstr ""
-
-#: src/zeit/content/article/interfaces.py:138
-#: src/zeit/search/browser/search.py:91
-#: src/zeit/search/interfaces.py:21
-msgid "Author"
 msgstr ""
 
 #: src/zeit/content/article/interfaces.py:143
@@ -880,7 +921,7 @@ msgid "Edit image"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:118
+#: src/zeit/content/image/interfaces.py:130
 #: src/zeit/content/image/browser/configure.zcml:120
 #: src/zeit/content/gallery/browser/configure.zcml:73
 msgid "Images"
@@ -912,23 +953,36 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:23
+#: src/zeit/content/image/interfaces.py:25
 msgid "Expires"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:27
+#: src/zeit/content/image/interfaces.py:29
 msgid "Image title"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:50
+#: src/zeit/content/image/interfaces.py:46
+msgid "Copyrights"
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:57
+#: src/zeit/content/link/browser/configure.zcml:8
+msgid "Link"
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:58
+msgid "Link to copyright holder"
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:62
 msgid "Alternative text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:51
+#: src/zeit/content/image/interfaces.py:63
 msgid "Enter a textual description of the image"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:56
+#: src/zeit/content/image/interfaces.py:68
 msgid "Image sub text"
 msgstr ""
 
@@ -954,10 +1008,6 @@ msgstr ""
 
 #: src/zeit/content/infobox/interfaces.py:41
 msgid "Infobox"
-msgstr ""
-
-#: src/zeit/content/link/browser/configure.zcml:8
-msgid "Link"
 msgstr ""
 
 #: src/zeit/content/link/browser/form.py:28
@@ -1017,16 +1067,16 @@ msgstr ""
 msgid "Realive weight of metadata freshness."
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:13
+#: src/zeit/workflow/browser/form.py:15
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:16
+#: src/zeit/workflow/browser/form.py:19
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:19
+#: src/zeit/workflow/browser/form.py:24
 msgid "Einstellung"
 msgstr ""
 
@@ -1059,8 +1109,16 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:44
+#: src/zeit/workflow/interfaces.py:46
 msgid "Published"
+msgstr ""
+
+#: src/zeit/workflow/interfaces.py:65
+msgid "Last modified by"
+msgstr ""
+
+#: src/zeit/workflow/interfaces.py:71
+msgid "Date first released"
 msgstr ""
 
 #: src/zeit/wysiwyg/browser/configure.zcml:8
