@@ -22,7 +22,7 @@ setup(
         'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.2',
         'gocept.lxml',
-        'gocept.mochikit>=1.3.1',
+        'gocept.mochikit>=1.3.2',
         'gocept.pagelet',
         'iso8601>=0.1.2',
         'ldappas>0.6',
