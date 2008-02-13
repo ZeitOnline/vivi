@@ -131,21 +131,26 @@ input[type="text"] {
     padding: 0.2em;
 }
 
-
-#form\.teaserText,
+/* Line height: 1.3em * rows */
+#form\.teaserText {
+    height: 6.5em;
+}
 #form\.shortTeaserText {
-    height: 10ex;
+    height: 2.6em;
 }
 
 #form\.subtitle {
-    height: 12ex;
+    height: 6.5em;
 }
 
 #form\.teaserTitle,
 #form\.shortTeaserTitle {
-    height: 3ex;
+    height: 1.3em;
 }
 
+input#form\.copyrights[type=text] {
+    width: 15em;
+}
 
 .gallery {
   background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
