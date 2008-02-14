@@ -22,7 +22,8 @@ Normally the document root is the `xml` attribute.  Create a test class:
 >>> import lxml.etree
 >>> from zeit.cms.content.property import ObjectPathProperty
 >>> class Content(object):
-...     xml = lxml.objectify.fromstring('<a/>')
+...     xml = lxml.objectify.fromstring(
+...         '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
 ...     b = ObjectPathProperty('.b')
 >>> content = Content()   
 
@@ -37,8 +38,8 @@ Let's assign some values to b. Integer:
 >>> content.b
 5
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
-    <b>5</b>
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b lxml:pytype="int">5</b>
 </a>
 
 
@@ -48,10 +49,17 @@ Float:
 >>> content.b
 47.25
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
-    <b>47.25</b>
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b lxml:pytype="float">47.25</b>
 </a>
 
+>>> content.b = 47.0
+>>> content.b
+47.0
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b lxml:pytype="float">47.0</b>
+</a>
 
 String. Note that strings are always unicode:
 
@@ -59,8 +67,8 @@ String. Note that strings are always unicode:
 >>> content.b
 u'Foo'
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
-    <b>Foo</b>
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b lxml:pytype="str">Foo</b>
 </a>
 
 
@@ -92,7 +100,7 @@ Let's assign some values to b. Integer:
 <a>
     <b/>
     <c/>
-    <b>4253890</b>
+    <b xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">4253890</b>
     <b/>
 </a>
 
@@ -329,7 +337,7 @@ Let's have a look how the resource has been referenced:
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <foo>
-  <res>http://xml.zeit.de/refed</res>
+  <res xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str">http://xml.zeit.de/refed</res>
 </foo>
 
 
@@ -357,7 +365,8 @@ The ResourceSet references a (frozen)set of resources. Create a content class:
 >>> class Content(object):
 ...     res = zeit.cms.content.property.ResourceSet('test', 'ref')
 ...     def __init__(self):
-...         self.xml = lxml.objectify.XML('<foo><head/></foo>')
+...         self.xml = lxml.objectify.XML(
+...             '<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"><head/></foo>')
 >>> content = Content()
 
 
@@ -376,10 +385,10 @@ Reference them:
 Let's have a look how the XML has changed:
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<foo>
+<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <attribute ns="test" name="ref">http://xml.zeit.de/refed</attribute>
-    <attribute ns="test" name="ref">http://xml.zeit.de/refed2</attribute>
+    <attribute lxml:pytype="str" ns="test" name="ref">http://xml.zeit.de/refed</attribute>
+    <attribute lxml:pytype="str" ns="test" name="ref">http://xml.zeit.de/refed2</attribute>
   </head>
 </foo>
 
@@ -426,19 +435,20 @@ The `SimpleMultiProperty` is used for lists of simple values.
 ...     authors = zeit.cms.content.property.SimpleMultiProperty(
 ...         '.authors.author')
 ...     def __init__(self):
-...         self.xml = lxml.objectify.XML('<foo><head/></foo>')
+...         self.xml = lxml.objectify.XML(
+...             '<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"><head/></foo>')
 >>> content = Content()
 
 Set authors:
 
 >>> content.authors = ('Hans', 'Klaus', 'Siegfried')
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<foo>
+<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <authors>
-    <author>Hans</author>
-    <author>Klaus</author>
-    <author>Siegfried</author>
+    <author lxml:pytype="str">Hans</author>
+    <author lxml:pytype="str">Klaus</author>
+    <author lxml:pytype="str">Siegfried</author>
   </authors>
 </foo>
 

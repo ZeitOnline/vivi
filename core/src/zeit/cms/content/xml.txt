@@ -50,7 +50,9 @@ change and contain the property:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a>
   <head>
-    <attribute ns="myns" name="title">Mary had a little lamb.</attribute>
+    <attribute
+      xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" 
+      ns="myns" name="title">Mary had a little lamb.</attribute>
   </head>
 </a>
 

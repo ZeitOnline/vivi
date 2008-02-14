@@ -14,7 +14,7 @@ Articles consist of an XMLdocument. Most properties map to XML-Elements:
 >>> from zeit.content.article.article import Article
 >>> article_xml = StringIO.StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
-... <article>
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
 ...    <title>Jahr der Überraschungen</title>
@@ -48,22 +48,21 @@ XML:
 >>> article.textLength = 4711
 >>> import lxml.etree
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
-      <supertitle>Neujahrsansprache</supertitle>
-      <title>Jahr ohne &#220;berraschungen</title>
-      <subtitle>
-      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts
-      wissen
-      </subtitle>
+    <supertitle>Neujahrsansprache</supertitle>
+    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <subtitle>
+     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
+     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+   </subtitle>
   </body>
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">4711</attribute>
   </head>
 </article>
@@ -74,50 +73,47 @@ When we set an attribute multiple times it's just changed:
 >>> article.textLength = 1000
 >>> article.textLength = 2000
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
-      <supertitle>Neujahrsansprache</supertitle>
-      <title>Jahr ohne &#220;berraschungen</title>
-      <subtitle>
-      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts
-      wissen
-      </subtitle>
+    <supertitle>Neujahrsansprache</supertitle>
+    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <subtitle>
+     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
+     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+   </subtitle>
   </body>
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
   </head>
 </article>
-
 
 `Authors` is a tuple stored in a webdav property. We assign authors we also see
 the authors in the xml:
 
 >>> article.authors = ('Bart Simpson', 'Lisa Simpson')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
-      <supertitle>Neujahrsansprache</supertitle>
-      <title>Jahr ohne &#220;berraschungen</title>
-      <subtitle>
-      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts
-      wissen
-      </subtitle>
+    <supertitle>Neujahrsansprache</supertitle>
+    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <subtitle>
+     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
+     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+   </subtitle>
   </body>
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="author">Bart Simpson;Lisa Simpson</attribute>
   </head>
 </article>
@@ -128,10 +124,10 @@ There is an adapter which sets the text length automatically:
 >>> from zeit.content.article.article import updateTextLengthOnChange
 >>> updateTextLengthOnChange(article, object())
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
@@ -139,7 +135,7 @@ There is an adapter which sets the text length automatically:
   </body>
   <head>
     ...
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
         name="text-length">194</attribute>
   </head>
 </article>
@@ -231,13 +227,15 @@ It's now stored on the article:
 And the image is referenced in the XML structure:
 
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <image
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       expires="2007-04-01T00:00:00+00:00"
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
       type="jpeg">
-      <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+      <bu xsi:nil="true"/>
     </image>...
   </head>
   ...

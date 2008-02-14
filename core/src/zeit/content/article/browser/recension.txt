@@ -109,17 +109,17 @@ Let's have a look at the source code:
 >>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
 <article>...
   <body ...
-    <entry xmlns="http://namespaces.zeit.de/bibinfo">
+    <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
       <auth-info>
-        <author>Frank Schwanitz</author>
+        <author py:pytype="str">Frank Schwanitz</author>
       </auth-info>
-      <title>Der Schwarm</title>
-      <category>Belletristik</category>
+      <title py:pytype="str">Der Schwarm</title>
+      <category py:pytype="str">Belletristik</category>
       <edition>
-        <year>2004</year>
-        <publisher>Kiepenheuer & Witsch</publisher>
-        <location>Koeln</location>
-        <price>24.9</price>
+        <year py:pytype="int">2004</year>
+        <publisher py:pytype="str">Kiepenheuer & Witsch</publisher>
+        <location py:pytype="str">Koeln</location>
+        <price py:pytype="float">24.9</price>
       </edition>
     </entry>
   </body>...

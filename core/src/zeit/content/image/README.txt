@@ -31,8 +31,11 @@ Reference the image via XML:
 >>> ref
 <zeit.content.image.imagegroup.XMLReference object at 0x...>
 >>> print lxml.etree.tostring(ref.xml, pretty_print=True)
-<image base-id="http://xml.zeit.de/image-group">
-  <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       base-id="http://xml.zeit.de/image-group">
+  <bu xsi:nil="true"/>
 </image>
 
 Set the copyright:
@@ -41,10 +44,13 @@ Set the copyright:
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
 >>> print lxml.etree.tostring(ref.xml, pretty_print=True)
-<image base-id="http://xml.zeit.de/image-group">
-  <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-  <copyright>Zeit online</copyright>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
+<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       base-id="http://xml.zeit.de/image-group">
+  <bu xsi:nil="true"/>
+  <copyright py:pytype="str">Zeit online</copyright>
+  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 

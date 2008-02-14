@@ -65,7 +65,8 @@ Create some mock content first:
 >>> class Content(object):
 ...     keywords = zeit.cms.content.metadata.KeywordsProperty()
 >>> content = Content()
->>> content.xml = lxml.objectify.fromstring('<a/>')
+>>> content.xml = lxml.objectify.fromstring(
+...     '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
 
 The `KeywordsProperty` requires an `IKeywords` utility, so we register one:
 
@@ -89,10 +90,10 @@ u'irak'
 u'irak'
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <keywordset>
-      <keyword source="manual">irak</keyword>
+      <keyword lxml:pytype="str" source="manual">irak</keyword>
     </keywordset>
   </head>
 </a>
@@ -106,11 +107,11 @@ Add another keyword:
  <zeit.cms.content.keyword.Keyword object at 0x...>)
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <keywordset>
-      <keyword source="manual">irak</keyword>
-      <keyword source="manual">bush</keyword>
+      <keyword lxml:pytype="str" source="manual">irak</keyword>
+      <keyword lxml:pytype="str" source="manual">bush</keyword>
     </keywordset>
   </head>
 </a>

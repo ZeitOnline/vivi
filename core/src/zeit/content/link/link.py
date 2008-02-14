@@ -18,7 +18,9 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.link.interfaces.ILink)
 
-    default_template = "<link><head/><body/></link>"
+    default_template = (
+        '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
+        '<head/><body/></link>')
 
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
 

@@ -269,10 +269,10 @@ Let's have a look at the source:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('Source').value
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
   <body>
-    <title>EU unterstuetzt Trinker-Steuer</title>
+    <title py:pytype="str">EU unterstuetzt Trinker-Steuer</title>
     <p>Foo</p>
     <intertitle>blub</intertitle>
   </body>
@@ -287,7 +287,7 @@ other entities will be replaced (this is to make sure bug #3900 is fixed):
 ...     '<p>Foo</p><h3>blub &mdash;</h3><p>&gt;&amp;&lt;</p>')
 >>> browser.getControl('Apply').click()
 >>> browser.getControl('Document').value
-'<p>Foo</p>\r\n<h3>blub \xe2\x80\x94</h3>\r\n<p>&gt;&amp;&lt;</p>'
+'<p>Foo</p>\r\n\r\n<h3>blub \xe2\x80\x94</h3>\r\n\r\n<p>&gt;&amp;&lt;</p>\r\n'
 
 
 Empty tags will be removed on saving:
@@ -384,17 +384,22 @@ xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
-      <supertitle xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
-      <title xmlns:ns2="http://www.w3.org/2001/XMLSchema-instance" ns2:nil="true"/>
-      <text xmlns:ns3="http://www.w3.org/2001/XMLSchema-instance" ns3:nil="true"/>
-      <byline xmlns:ns4="http://www.w3.org/2001/XMLSchema-instance" ns4:nil="true"/>
+      <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <byline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <short>
-        <title xmlns:ns5="http://www.w3.org/2001/XMLSchema-instance" ns5:nil="true"/>
-        <text xmlns:ns6="http://www.w3.org/2001/XMLSchema-instance" ns6:nil="true"/>
+        <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-      </image>
+      <ns1:image
+        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ns1="http://namespaces.zeit.de/CMS/feed"
+        src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+        <bu xsi:nil="true"/>
+      </ns1:image>
     </block>
   </container>
 </feed>
@@ -409,6 +414,7 @@ Let's make sure the feed is referenced in the article:
 >>> print browser.getControl(name='form.xml').value
 <article...
   <attribute
+    py:pytype="str"
     ns="http://namespaces.zeit.de/CMS/document"
     name="syndicatedIn">http://xml.zeit.de/politik.feed</attribute>
 ...
@@ -445,17 +451,22 @@ at its xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
-      <supertitle xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
-      <title>Trinker zur Kasse</title>
-      <text xmlns:ns6="http://www.w3.org/2001/XMLSchema-instance" ns6:nil="true"/>
-      <byline xmlns:ns9="http://www.w3.org/2001/XMLSchema-instance" ns9:nil="true"/>
+      <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <title xmlns:ns3="http://codespeak.net/lxml/objectify/pytype" ns3:pytype="str">Trinker zur Kasse</title>
+      <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <byline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <short>
-        <title xmlns:ns13="http://www.w3.org/2001/XMLSchema-instance" ns13:nil="true"/>
-        <text xmlns:ns14="http://www.w3.org/2001/XMLSchema-instance" ns14:nil="true"/>
+        <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-      </image>
+      <ns13:image
+        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ns13="http://namespaces.zeit.de/CMS/feed"
+        src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+        <bu xsi:nil="true"/>
+      </ns13:image>
     </block>
   </container>
 </feed>
@@ -514,7 +525,8 @@ Add another template:
 >>> admin.open(menu.value[0])
 >>> admin.getControl('Title').value = 'Extrablatt'
 >>> admin.getControl('Source').value = (
-...     '<article><head/><body/></article>\n'
+...     '<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
+...     '<head/><body/></article>\n'
 ...     '<?ZEIT:StyleGroup zeitwissen-extrablatt?>')
 >>> admin.getControl('Add').click()
 >>> print admin.contents
@@ -581,28 +593,29 @@ Now fill in the actual article:
     ...
 
 
-Let's hae a look at the source:
+Let's have a look at the source:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('Source').value.replace('\r\n', '\n')
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">49</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Studium</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">true</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">true</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">false</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">49</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Studium</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="comments">true</attribute>
+    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
+    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="mostread">true</attribute>
+    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">false</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
   </head>
   <body>
-    <title>Extrablatt 53</title>
+    <title py:pytype="str">Extrablatt 53</title>
   </body>
-</article><?ZEIT:StyleGroup zeitwissen-extrablatt?>
+</article>
+<?ZEIT:StyleGroup zeitwissen-extrablatt?>
 
 
 

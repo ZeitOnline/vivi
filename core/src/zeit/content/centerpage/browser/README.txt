@@ -187,16 +187,16 @@ page:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>
-    <title>Wirtschaft</title>
+    <title py:pytype="str">Wirtschaft</title>
     <column/>
   </body>
 </centerpage>
@@ -239,7 +239,7 @@ Also, when the XML is invalid the validation fails:
 >>> browser.getControl(name='form.actions.apply').click()
 >>> 'There were errors' in browser.contents
 True
->>> 'line 1: Premature end of data in tag a line 1' in browser.contents
+>>> 'Premature end of data in tag a line 1, line 1, column 4' in browser.contents
 True
 
 
@@ -333,12 +333,12 @@ Have a look at the source:
 >>> print browser.getControl('XML Source').value
 <centerpage>
   <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">28</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">27</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">28</attribute>
+    <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="page">27</attribute>
+    <attribute xmlns:ns3="http://codespeak.net/lxml/objectify/pytype" ns3:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute xmlns:ns4="http://codespeak.net/lxml/objectify/pytype" ns4:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
+    <attribute xmlns:ns5="http://codespeak.net/lxml/objectify/pytype" ns5:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>
     <title>Homepage</title>

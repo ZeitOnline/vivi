@@ -36,12 +36,12 @@ Insert content to the feed:
 We have not added any image, so no image is referenced:
 
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
-  <title xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
   <container>
     <block href="dummy-content"/>
   </container>
-  <object_limit>50</object_limit>
+  <object_limit py:pytype="int">50</object_limit>
 </feed>
 
 
@@ -57,20 +57,25 @@ Reference the image group:
 >>> images = zeit.content.image.interfaces.IImages(content)
 >>> images.images = (group, )
 
-Update the metadata of the feed. The image is now referenced:
+Update the metadata of the feed. The image is now referenced (the namespace is
+a bit weired. We'll fix that later:
 
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
-  <title xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
   <container>
     <block href="dummy-content">
-      <image base-id="http://xml.zeit.de/image-group">
-        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-      </image>
+      <ns4:image 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ns4="http://namespaces.zeit.de/CMS/feed"
+        base-id="http://xml.zeit.de/image-group">
+        <bu xsi:nil="true"/>
+      </ns4:image>
     </block>
   </container>
-  <object_limit>50</object_limit>
+  <object_limit py:pytype="int">50</object_limit>
 </feed>
 
 When more than one image is reference, only the first one will be in the feed:
@@ -82,16 +87,20 @@ When more than one image is reference, only the first one will be in the feed:
 >>> images.images = (group, repository['2006']['DSC00109_2.JPG'],)
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
-  <title xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
+<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
   <container>
     <block href="dummy-content">
-      <image base-id="http://xml.zeit.de/image-group">
-        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-      </image>
+      <ns5:image 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ns5="http://namespaces.zeit.de/CMS/feed"
+        base-id="http://xml.zeit.de/image-group">
+        <bu xsi:nil="true"/>
+      </ns5:image>
     </block>
   </container>
-  <object_limit>50</object_limit>
+  <object_limit py:pytype="int">50</object_limit>
 </feed>
 
 Cleanup

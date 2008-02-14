@@ -23,7 +23,14 @@ import zeit.cms.syndication.interfaces
 
 
 FEED_NS = zeit.cms.syndication.interfaces.FEED_NAMESPACE
-FEED_TEMPLATE = u"<feed xmlns='%s'><title/><container/></feed>" % FEED_NS
+FEED_TEMPLATE = u"""\
+<feed
+  xmlns='%s'
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
+  <container/>
+</feed>
+""" % FEED_NS
 
 
 class Feed(persistent.Persistent,
@@ -198,6 +205,7 @@ class CommonMetadataUpdater(object):
         entry['title'] = metadata.teaserTitle
         entry['text'] = metadata.teaserText
         entry['byline'] = metadata.byline
-        entry['short'] = ''
-        entry['short']['title'] = metadata.shortTeaserTitle
-        entry['short']['text'] = metadata.shortTeaserText
+        lxml.objectify.ObjectPath('.short.title').setattr(
+            entry, metadata.shortTeaserTitle)
+        lxml.objectify.ObjectPath('.short.text').setattr(
+            entry, metadata.shortTeaserText)

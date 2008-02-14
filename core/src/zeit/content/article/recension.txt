@@ -28,7 +28,7 @@ A book recension has an xml representation:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(rec.xml, pretty_print=True)
-<entry xmlns="http://namespaces.zeit.de/bibinfo"/>
+<entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>
 
 Set values and verify the xml:
 
@@ -48,25 +48,25 @@ Set values and verify the xml:
 >>> rec.price = 25.25
 
 >>> print lxml.etree.tostring(rec.xml, pretty_print=True)
-<entry xmlns="http://namespaces.zeit.de/bibinfo">
+<entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <auth-info>
-    <author>Klaus</author>
-    <author>Hans</author>
+    <author py:pytype="str">Klaus</author>
+    <author py:pytype="str">Hans</author>
   </auth-info>
-  <title>Fremdschlaefer</title>
-  <genre>Schocker</genre>
-  <info>Info</info>
-  <category>Beletristik</category>
-  <agelimit>4</agelimit>
-  <original_language>English</original_language>
-  <translator>Mr. T</translator>
+  <title py:pytype="str">Fremdschlaefer</title>
+  <genre py:pytype="str">Schocker</genre>
+  <info py:pytype="str">Info</info>
+  <category py:pytype="str">Beletristik</category>
+  <agelimit py:pytype="int">4</agelimit>
+  <original_language py:pytype="str">English</original_language>
+  <translator py:pytype="str">Mr. T</translator>
   <edition>
-    <publisher>gocept</publisher>
-    <location>Halle</location>
-    <year>2002</year>
-    <mediatype>Buch</mediatype>
-    <pages>124</pages>
-    <price>25.25</price>
+    <publisher py:pytype="str">gocept</publisher>
+    <location py:pytype="str">Halle</location>
+    <year py:pytype="int">2002</year>
+    <mediatype py:pytype="str">Buch</mediatype>
+    <pages py:pytype="int">124</pages>
+    <price py:pytype="float">25.25</price>
   </edition>
 </entry>
 
@@ -113,28 +113,28 @@ Let's add the recension we've created above:
 The recension is now already part of the article:
 
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
     <entry xmlns="http://namespaces.zeit.de/bibinfo">
       <auth-info>
-        <author>Klaus</author>
-        <author>Hans</author>
+        <author py:pytype="str">Klaus</author>
+        <author py:pytype="str">Hans</author>
       </auth-info>
-      <title>Fremdschlaefer</title>
-      <genre>Schocker</genre>
-      <info>Info</info>
-      <category>Beletristik</category>
-      <agelimit>4</agelimit>
-      <original_language>English</original_language>
-      <translator>Mr. T</translator>
+      <title py:pytype="str">Fremdschlaefer</title>
+      <genre py:pytype="str">Schocker</genre>
+      <info py:pytype="str">Info</info>
+      <category py:pytype="str">Beletristik</category>
+      <agelimit py:pytype="int">4</agelimit>
+      <original_language py:pytype="str">English</original_language>
+      <translator py:pytype="str">Mr. T</translator>
       <edition>
-        <publisher>gocept</publisher>
-        <location>Halle</location>
-        <year>2002</year>
-        <mediatype>Buch</mediatype>
-        <pages>124</pages>
-        <price>25.25</price>
+        <publisher py:pytype="str">gocept</publisher>
+        <location py:pytype="str">Halle</location>
+        <year py:pytype="int">2002</year>
+        <mediatype py:pytype="str">Buch</mediatype>
+        <pages py:pytype="int">124</pages>
+        <price py:pytype="float">25.25</price>
       </edition>
     </entry>
   </body>
@@ -177,5 +177,3 @@ u'Buch'
 124
 >>> rec.price
 25.25
-
-

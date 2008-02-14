@@ -352,7 +352,7 @@ If the xml pickle is invalid an ValueError is raised:
 >>> converter.fromProperty(u'5')
 Traceback (most recent call last):
     ...
-ValueError: line 1: Start tag expected, '<' not found
+ValueError: Start tag expected, '<' not found, line 1, column 1
 
 >>> converter.fromProperty(u'<int>5</int>')
 Traceback (most recent call last):

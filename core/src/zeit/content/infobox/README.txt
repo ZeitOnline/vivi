@@ -21,14 +21,14 @@ Initially there are now entries:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
-<container layout="artbox" label="info"/>
+<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="info"/>
 
 The title of an infobox is a supertitle:
 
 >>> ib.supertitle = u'Altersvorsorge'
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
-<container layout="artbox" label="info">
-  <supertitle>Altersvorsorge</supertitle>
+<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="info">
+  <supertitle py:pytype="str">Altersvorsorge</supertitle>
 </container>
 
 Add a contents element:
@@ -37,11 +37,11 @@ Add a contents element:
 ...     ('Renteninformation', 'Nutzen Sie die Renteninformation, etc'),)
 >>> ib.supertitle = u'Altersvorsorge'
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
-<container layout="artbox" label="info">
-  <supertitle>Altersvorsorge</supertitle>
+<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="info">
+  <supertitle py:pytype="str">Altersvorsorge</supertitle>
   <block>
-    <title>Renteninformation</title>
-    <text>Nutzen Sie die Renteninformation, etc</text>
+    <title py:pytype="str">Renteninformation</title>
+    <text py:pytype="str">Nutzen Sie die Renteninformation, etc</text>
   </block>
 </container>
 
@@ -52,18 +52,17 @@ Add a contents element:
 ...      'Pruefen Sie, ob in Ihrer Renteninformation alle'))
 >>> ib.supertitle = u'Altersvorsorge'
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
-<container layout="artbox" label="info">
-  <supertitle>Altersvorsorge</supertitle>
+<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="info">
+  <supertitle py:pytype="str">Altersvorsorge</supertitle>
   <block>
-    <title>Informationen</title>
-    <text>Nutzen Sie die Renteninformation, etc</text>
+    <title py:pytype="str">Informationen</title>
+    <text py:pytype="str">Nutzen Sie die Renteninformation, etc</text>
   </block>
   <block>
-    <title>Fehlende Versicherungszeiten</title>
-    <text>Pruefen Sie, ob in Ihrer Renteninformation alle</text>
+    <title py:pytype="str">Fehlende Versicherungszeiten</title>
+    <text py:pytype="str">Pruefen Sie, ob in Ihrer Renteninformation alle</text>
   </block>
 </container>
-
 
 Of course we'll get the data back, in unicode:
 

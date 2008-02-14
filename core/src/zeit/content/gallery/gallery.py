@@ -25,7 +25,7 @@ import zeit.content.gallery.interfaces
 # A gallery used to be a center page, that's why we initialize it with such a
 # template.
 GALLERY_TEMPLATE = u"""\
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
     <body>
         <column layout="left"/>
@@ -167,7 +167,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         ordered = []
         for id in order:
             ordered.append(self._get_block_for_key(id))
-        self._entries_container.block = ordered
+        self._entries_container['block'] = ordered
         self._p_changed = True
 
     @property

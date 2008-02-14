@@ -222,12 +222,13 @@ in it:
 >>> article = Article('art1')
 >>> feed.insert(0, article)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
-  <title>Politik</title>
+<feed xmlns="http://namespaces.zeit.de/CMS/feed"
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title py:pytype="str">Politik</title>
   <container>
     <block href="art1"/>
   </container>
-  <object_limit>50</object_limit>
+  <object_limit py:pytype="int">50</object_limit>
 </feed>
 
 
@@ -252,19 +253,23 @@ Insert the article to the feed:
 
 >>> feed.insert(0, art2)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
-  <title>Politik</title>
+<feed xmlns="http://namespaces.zeit.de/CMS/feed"
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title py:pytype="str">Politik</title>
   <container>
     <block href="art2">
-      <supertitle>Frankreich</supertitle>
-      <title>Keine Sieger</title>
-      <text>In Frankreich wird massiv gestreikt. Doch den</text>
-      <byline>Von Alain-Xavier Wurst</byline>
-      <short><title>Frankreich</title><text>Die Streiks werden Sarkozy nicht bezwingen</text></short>
+      <supertitle py:pytype="str">Frankreich</supertitle>
+      <title py:pytype="str">Keine Sieger</title>
+      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      <short>
+        <title py:pytype="str">Frankreich</title>
+        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
+      </short>
     </block>
     <block href="art1"/>
   </container>
-  <object_limit>50</object_limit>
+  <object_limit py:pytype="int">50</object_limit>
 </feed>
 
 
@@ -275,17 +280,21 @@ changes:
 >>> art2.supertitle = 'Fronkroisch'
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
-  <title>Politik</title>
+<feed xmlns="http://namespaces.zeit.de/CMS/feed"
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title py:pytype="str">Politik</title>
   <container>
     <block href="art2">
-      <supertitle>Fronkroisch</supertitle>
-      <title>New Title</title>
-      <text>In Frankreich wird massiv gestreikt. Doch den</text>
-      <byline>Von Alain-Xavier Wurst</byline>
-      <short><title>Frankreich</title><text>Die Streiks werden Sarkozy nicht bezwingen</text></short>
+      <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <title py:pytype="str">New Title</title>
+      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      <short>
+        <title py:pytype="str">Frankreich</title>
+        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
+      </short>
     </block>
     <block href="art1"/>
   </container>
-  <object_limit>50</object_limit>
+  <object_limit py:pytype="int">50</object_limit>
 </feed>

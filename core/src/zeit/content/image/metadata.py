@@ -54,29 +54,30 @@ class MetadataXMLReference(object):
 
     @property
     def xml(self):
-        image = lxml.objectify.XML('<image/>')
-
+        """XML representation of image.
+        """
+        attributes = {}
         def set_if_not_empty(name, value):
             if value:
-                image.set(name, value)
+                attributes[name] = value
 
-
-        set_if_not_empty('alt', self.context.alt)
+        copyrights = []
+        for text, link in self.context.copyrights:
+            node = lxml.objectify.E.copyright(text)
+            if link:
+                node.set('link', link)
+            copyrights.append(node)
 
         expires = self.context.expires
         if expires:
             expires = expires.isoformat()
-            image.set('expires', expires)
+            attributes['expires'] = expires
 
-        # XXX We have the caption twice. We need <bu>. I don't know what about
-        # title; might be used in the XML editor?. -cz
         set_if_not_empty('title', self.context.caption)
-        image['bu'] = self.context.caption
+        set_if_not_empty('alt', self.context.alt)
 
-        for text, link in self.context.copyrights:
-            node = lxml.objectify.E('copyright', text)
-            if link:
-                node.set('link', link)
-            image.append(node)
-
+        image = lxml.objectify.E.image(
+            lxml.objectify.E.bu(self.context.alt),
+            *copyrights,
+            **attributes)
         return image

@@ -12,8 +12,7 @@ import zeit.cms.content.interfaces
 
 class RelatedObjectsProperty(object):
 
-    path = lxml.objectify.ObjectPath('.head.references')
-    relevant_tag = 'reference'
+    path = lxml.objectify.ObjectPath('.head.references.reference')
 
     def __get__(self, instance, class_):
         if instance is None:
@@ -31,32 +30,19 @@ class RelatedObjectsProperty(object):
         return tuple(related)
 
     def __set__(self, instance, values):
-        for element in self.related_elements(instance):
-            element.getparent().remove(element)
-        if not values:
-            return
-        container = self.get_container(instance, create=True)
+        elements = []
         for related in values:
             related_element = zeit.cms.content.interfaces.IXMLReference(
                 related).xml
-            container.append(related_element)
+            elements.append(related_element)
+        self.path.setattr(self.xml(instance), elements)
 
     def related_elements(self, instance):
-        container = self.get_container(instance)
-        if not container:
-            return []
-        return container.findall(self.relevant_tag)
-
-    def get_container(self, instance, create=False):
-        xml = self.xml(instance)
-        container = None
         try:
-            container = self.path.find(xml)
+            container = self.path.find(self.xml(instance))
         except AttributeError:
-            if create:
-                self.path.setattr(xml, '')
-                container = self.path.find(xml)
-        return container
+            return []
+        return list(container)
 
     def get_unique_id(self, element):
         # XXX This is rather strange as the data is produced by adapters

@@ -229,17 +229,17 @@ Sadly the xml is not updated, yet:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('XML Source').value
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
         <block name="03.jpg">
-          <text/>
-          <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright>ZEIT online</copyright>
+          <text py:pytype="str"/>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright>ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str">ZEIT online</copyright>
           </thumbnail>
         </block>
         ...

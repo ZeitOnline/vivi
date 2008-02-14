@@ -98,5 +98,5 @@ Changing the text works just by assinging a new value to the `text` attribute:
 >>> text.text = 'von The King'
 >>> print lxml.etree.tostring(xml, pretty_print=True)
 <root>
-  <byline>von The King</byline>
+   <byline xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">von The King</byline>
 </root>

@@ -60,7 +60,9 @@ Let's have a look at the source:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <content>
   <head>
-    <references><reference type="intern" href="related-content-uid"/></references>
+    <references>
+      <reference type="intern" href="related-content-uid"/>
+    </references>
   </head>
 </content>
 
@@ -76,7 +78,9 @@ Assigning the same content object again doesn't change the xml:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <content>
   <head>
-    <references><reference type="intern" href="related-content-uid"/></references>
+    <references>
+      <reference type="intern" href="related-content-uid"/>
+    </references>
   </head>
 </content>
 
@@ -90,7 +94,10 @@ Let's add another related content:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <content>
   <head>
-    <references><reference type="intern" href="related-content-uid"/><reference type="intern" href="related-content-2-uid"/></references>
+    <references>
+      <reference type="intern" href="related-content-uid"/>
+      <reference type="intern" href="related-content-2-uid"/>
+    </references>
   </head>
 </content>
 
@@ -114,10 +121,13 @@ Reassign the two objects an verify the xml:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <content>
   <head>
-    <references><reference type="intern" href="related-content-uid"
-        year="2006" issue="19"><title>I relate the
-        title</title><description>Dude.</description></reference><reference
-            type="intern" href="related-content-2-uid"/></references>
+    <references>
+      <reference type="intern" href="related-content-uid" year="2006" issue="19">
+        <title xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str">I relate the title</title>
+        <description xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">Dude.</description>
+      </reference>
+      <reference type="intern" href="related-content-2-uid"/>
+    </references>
   </head>
 </content>
 

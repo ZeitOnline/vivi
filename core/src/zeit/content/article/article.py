@@ -33,7 +33,7 @@ import zeit.content.article.syndication
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
 ARTICLE_TEMPLATE = """\
-<article>
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
     <body/>
 </article>"""
@@ -79,10 +79,12 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         """return html snippet of article."""
         html = []
         for node in self._html_getnodes():
+            # Copy all nodes. This magically removes namespace declarations.
+            node = copy.copy(node)
             if node.tag == 'intertitle':
-                node = copy.copy(node)
                 node.tag = 'h3'
-            html.append(lxml.etree.tounicode(node, pretty_print=True))
+            html.append(lxml.etree.tostring(
+                node, pretty_print=True, encoding=unicode))
         return '\n'.join(html)
 
 
@@ -94,7 +96,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         for node in self._html_getnodes():
             parent = node.getparent()
             parent.remove(node)
-        body = self.xml.body
+        body = self.xml['body']
         for node in html.iterchildren():
             if not node:
                 continue
@@ -113,6 +115,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     @staticmethod
     def _replace_entities(value):
+        # XXX is this efficient enough?
         for entity_name, codepoint in htmlentitydefs.name2codepoint.items():
             if entity_name in ('gt', 'lt', 'quot', 'amp', 'apos'):
                 # don't replace XML built-in entities

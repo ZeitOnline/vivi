@@ -234,7 +234,6 @@ class TupleTextLineProperty(object):
 
         return tuple(result)
 
-
     def toProperty(self, value):
         to_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
             self.value_type)

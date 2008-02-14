@@ -22,7 +22,7 @@ import zeit.content.centerpage.interfaces
 
 
 CP_TEMPLATE = """\
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
     <body/>
 </centerpage>"""

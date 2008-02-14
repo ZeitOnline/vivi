@@ -16,7 +16,9 @@ class Infobox(zeit.cms.content.xml.XMLContentBase):
 
     zope.interface.implements(zeit.content.infobox.interfaces.IInfobox)
 
-    default_template = u'<container layout="artbox" label="info"/>'
+    default_template = (
+        u'<container layout="artbox" label="info" '
+        u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
 
     supertitle = zeit.cms.content.property.ObjectPathProperty('.supertitle')
 
@@ -34,7 +36,7 @@ class Infobox(zeit.cms.content.xml.XMLContentBase):
         for node in xml.findall('block'):
             xml.remove(node)
         for title, text in value:
-            block = lxml.objectify.E('block')
+            block = xml.makeelement('block')
             xml.append(block)
             block['title'] = title
             block['text'] = text

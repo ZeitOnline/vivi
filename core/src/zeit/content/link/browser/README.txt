@@ -53,18 +53,18 @@ Have a look at the source:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value
-<link>
+<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-      <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+    <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <bu xsi:nil="true"/>
     </image>
   </head>
   <body>
-    <url>http://gocept.com</url>
-    <title>gocept homepage</title>
+    <url py:pytype="str">http://gocept.com</url>
+    <title py:pytype="str">gocept homepage</title>
   </body>
   <teaser>
-    <title>gocept teaser</title>
+    <title py:pytype="str">gocept teaser</title>
   </teaser>
 </link>
 
@@ -110,8 +110,7 @@ Syndicate to the politik.feed:
 >>> browser.getControl('Syndicate').click()
 
 
-Verify the source of the feed (note that the images are still missing, bug
-#3956):
+Verify the source of the feed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
@@ -121,17 +120,17 @@ Verify the source of the feed (note that the images are still missing, bug
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/gocept.link">
-      <supertitle xmlns:ns1="http://www.w3.org/2001/XMLSchema-instance" ns1:nil="true"/>
-      <title>gocept teaser</title>
-      <text xmlns:ns2="http://www.w3.org/2001/XMLSchema-instance" ns2:nil="true"/>
-      <byline xmlns:ns3="http://www.w3.org/2001/XMLSchema-instance" ns3:nil="true"/>
+      <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <title xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">gocept teaser</title>
+      <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <byline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <short>
-        <title xmlns:ns4="http://www.w3.org/2001/XMLSchema-instance" ns4:nil="true"/>
-        <text xmlns:ns5="http://www.w3.org/2001/XMLSchema-instance" ns5:nil="true"/>
+        <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-        <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-      </image>
+      <ns2:image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://namespaces.zeit.de/CMS/feed" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+        <bu xsi:nil="true"/>
+      </ns2:image>
     </block>
   </container>
 </feed>

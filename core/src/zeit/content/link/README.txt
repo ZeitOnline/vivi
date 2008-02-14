@@ -13,7 +13,7 @@ Instanciate a link and verify the inital xml:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(link.xml, pretty_print=True)
-<link>
+<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body/>
 </link>
@@ -23,10 +23,10 @@ Now that was pretty boring. Add a title and an url:
 >>> link.title = 'gocept'
 >>> link.url = 'http://gocept.com'
 >>> print lxml.etree.tostring(link.xml, pretty_print=True)
-<link>
+<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
-    <title>gocept</title>
-    <url>http://gocept.com</url>
+    <title py:pytype="str">gocept</title>
+    <url py:pytype="str">http://gocept.com</url>
   </body>
 </link>

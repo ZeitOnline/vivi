@@ -39,21 +39,21 @@ The gallery is also noted in the xml structure:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
       </container>
@@ -97,32 +97,32 @@ We need to call `reload_image_folder`:
 The change is reflected in the xml:
 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -153,32 +153,32 @@ xml:
 
 >>> entry.text = u'Seit zwei Uhr in der Früh'
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -191,32 +191,32 @@ When we assign the entry the change will be reflected:
 
 >>> gallery['01.jpg'] = entry
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -233,33 +233,33 @@ well:
 >>> entry.title = u'Der Wecker klingelt'
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(entry))
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <title>Der Wecker klingelt</title>
-          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <title py:pytype="str">Der Wecker klingelt</title>
+          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -295,33 +295,33 @@ Let's change the order:
 This is of course reflected int he XML:
 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="01.jpg">
-          <title>Der Wecker klingelt</title>
-          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <title py:pytype="str">Der Wecker klingelt</title>
+          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
       </container>
@@ -408,33 +408,33 @@ KeyError: u'http://xml.zeit.de/2006/01.jpg'
 Note that his has *not* changed the xml so far:
 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <title>Der Wecker klingelt</title>
-          <text>Seit zwei Uhr in der Fr&#195;&#188;h</text>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <title py:pytype="str">Der Wecker klingelt</title>
+          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -447,21 +447,21 @@ When calling `reload_image_folder` the entry is removed from the xml:
 
 >>> gallery.reload_image_folder()
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder>http://xml.zeit.de/2006</image-folder>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text></text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <text py:pytype="str"></text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
-            <bu xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:nil="true"/>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
           </thumbnail>
         </block>
       </container>
@@ -525,7 +525,7 @@ The keys also correct(ed) and the names are set:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <centerpage>
   <head>
-      <image-folder>http://xml.zeit.de/2006</image-folder></head>
+      <image-folder xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str">http://xml.zeit.de/2006</image-folder></head>
   <body>
     <column layout="left"/>
     <column layout="right">

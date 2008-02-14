@@ -70,7 +70,10 @@ class BookRecension(zeit.cms.content.xml.XMLRepresentationBase):
         zeit.content.article.interfaces.IBookRecension,
         zope.location.interfaces.ILocation)
 
-    default_template = u'<entry xmlns="http://namespaces.zeit.de/bibinfo"/>'
+    default_template = (
+        u'<entry xmlns="http://namespaces.zeit.de/bibinfo" '
+        u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
+
 
     authors = zeit.cms.content.property.SimpleMultiProperty(
         '.auth-info.author')

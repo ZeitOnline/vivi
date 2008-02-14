@@ -15,8 +15,7 @@ import zeit.content.image.interfaces
 
 class ImagesProperty(zeit.cms.content.related.RelatedObjectsProperty):
 
-    path = lxml.objectify.ObjectPath('.head')
-    relevant_tag = 'image'
+    path = lxml.objectify.ObjectPath('.head.image')
 
     def get_unique_id(self, element):
         unique_id = element.get('base-id')

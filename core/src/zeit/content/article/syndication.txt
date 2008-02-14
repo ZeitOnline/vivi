@@ -102,22 +102,26 @@ is also represented in the XML:
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article...
     <attribute
+      py:pytype="str"
       ns="http://namespaces.zeit.de/CMS/document"
       name="syndicatedIn">feed-id</attribute>
     <attribute
+      py:pytype="str"
       ns="http://namespaces.zeit.de/CMS/document"
       name="syndicatedIn">second-feed</attribute>
     <attribute
+      py:pytype="str"
       ns="http://namespaces.zeit.de/CMS/document"
       name="automaticTeaserSyndication">feed-id</attribute>
     <attribute
+      py:pytype="str"
       ns="http://namespaces.zeit.de/CMS/document"
       name="automaticTeaserSyndication">second-feed</attribute>...
     <syndicationlog>
       <entry>
         <syndicatedOn>2007-10-04 11:43:28.191273+00:00</syndicatedOn>
-        <syndicatedIn>feed-id</syndicatedIn>
-        <syndicatedIn>second-feed</syndicatedIn>
+        <syndicatedIn py:pytype="str">feed-id</syndicatedIn>
+        <syndicatedIn py:pytype="str">second-feed</syndicatedIn>
       </entry>
     </syndicationlog>
   ...  
