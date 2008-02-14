@@ -183,8 +183,7 @@ class IBookRecension(zope.interface.Interface):
         title=_('Pages'),
         required=False)
 
-    # XXX want to use decimal but lxml doesn't support it just like that
-    price = zope.schema.Float(
+    price = zope.schema.TextLine(
         title=_('Price (EUR)'),
         required=False)
 

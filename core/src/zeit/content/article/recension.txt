@@ -45,7 +45,7 @@ Set values and verify the xml:
 >>> rec.year = 2002
 >>> rec.media_type = 'Buch'
 >>> rec.pages = 124
->>> rec.price = 25.25
+>>> rec.price = '25,99'
 
 >>> print lxml.etree.tostring(rec.xml, pretty_print=True)
 <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -66,7 +66,7 @@ Set values and verify the xml:
     <year py:pytype="int">2002</year>
     <mediatype py:pytype="str">Buch</mediatype>
     <pages py:pytype="int">124</pages>
-    <price py:pytype="float">25.25</price>
+    <price py:pytype="str">25,99</price>
   </edition>
 </entry>
 
@@ -134,7 +134,7 @@ The recension is now already part of the article:
         <year py:pytype="int">2002</year>
         <mediatype py:pytype="str">Buch</mediatype>
         <pages py:pytype="int">124</pages>
-        <price py:pytype="float">25.25</price>
+        <price py:pytype="str">25,99</price>
       </edition>
     </entry>
   </body>
@@ -176,4 +176,4 @@ u'Buch'
 >>> rec.pages
 124
 >>> rec.price
-25.25
+u'25,99'
