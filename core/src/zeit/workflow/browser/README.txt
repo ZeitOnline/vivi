@@ -167,6 +167,11 @@ The locks tab shows information about the current lock:
 >>> browser.getLink('Locks').click()
 >>> print browser.contents
 <?xml ...
+        <div id="actionsView">
+          <span class="actionButtons">
+            <input type="submit" id="form.actions.lock" name="form.actions.lock" value="Lock" class="button" />
+          </span>
+        </div>
         <div class="field-group">
           <fieldset>
             <legend></legend>
@@ -194,11 +199,6 @@ The locks tab shows information about the current lock:
       </div>
             </div>
           </fieldset>
-        </div>
-        <div id="actionsView">
-          <span class="actionButtons">
-            <input type="submit" id="form.actions.lock" name="form.actions.lock" value="Lock" class="button" />
-          </span>
         </div>
         ...
 

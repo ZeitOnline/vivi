@@ -3,13 +3,14 @@
 # $Id$
 
 import datetime
-
+import os.path
 import rwproperty
 
 import zope.formlib.form
 import zope.formlib.interfaces
 
 import zope.app.container.interfaces
+import zope.app.pagetemplate.viewpagetemplatefile
 
 import gocept.form.grouped
 import z3c.flashmessage.interfaces
@@ -199,6 +200,9 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
     title = _("Edit")
     redirect_to_parent_after_edit = False
     redirect_to_view = None
+    template = (
+        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+            os.path.join(os.path.dirname(__file__), 'grouped-form.pt')))
 
     def nextURL(self):
         if (not self.redirect_to_parent_after_edit
