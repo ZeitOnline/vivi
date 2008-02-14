@@ -291,4 +291,7 @@
     menu="zeit-context-actions-external" title="Development"
     />
 
+  <adapter
+    factory=".listing.listRepresentation_to_Lockable"
+    />
 </configure>

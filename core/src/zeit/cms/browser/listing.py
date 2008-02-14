@@ -64,7 +64,6 @@ class BaseListRepresentation(object):
         return date.stftime(format)
 
 
-
 class CommonListRepresentation(BaseListRepresentation):
     """Common porperties of list representotions."""
 
@@ -113,6 +112,13 @@ class CommonListRepresentation(BaseListRepresentation):
             self.year))
 
 
+@zope.component.adapter(
+    zeit.cms.browser.interfaces.IListRepresentation)
+@zope.interface.implementer(zope.app.locking.interfaces.ILockable)
+def listRepresentation_to_Lockable(obj):
+    return zope.app.locking.interfaces.ILockable(obj.context)
+
+
 class MetadataColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
@@ -125,7 +131,7 @@ class MetadataColumn(zc.table.column.GetterColumn):
 class LockedColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
-        lockable = zope.app.locking.interfaces.ILockable(item.context, None)
+        lockable = zope.app.locking.interfaces.ILockable(item, None)
         if lockable is None:
             return ''
         locked = lockable.locked()

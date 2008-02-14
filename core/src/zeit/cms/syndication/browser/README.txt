@@ -63,6 +63,8 @@ Visit the syndication page again:
         <input ... />
       </td>
       <td>
+      </td>
+      <td>
         Politik
       </td>
       <td>
@@ -100,6 +102,8 @@ in the feed:
         <input ... />
       </td>
       <td>
+      </td>
+      <td>
         Politik
       </td>
       <td>
@@ -123,6 +127,38 @@ in there:
   <td>
     <a href="...">rauchen-verbessert-die-welt</a>
   </td>
+...
+
+Locking information should also be displayed in the syndication manager:
+
+>>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html')
+>>> browser.getLink("Checkout").click()
+>>> browser.getLink("Remember as syndication target").click()
+>>> browser.open('http://localhost/++skin++cms/repository/online/'
+...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
+>>> browser.getLink('Syndicate').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html...
+<div id="edit-form">
+<h1>Syndicate rauchen-verbessert-die-welt</h1>
+<form method="POST">
+  ...
+    <tr>
+      <td>
+        <input .../>
+      </td>
+      <td>
+        <img src="/@@/zeit.cms/icons/lock-closed-mylock.png" title="Von Ihnen gesperrt" />
+      </td>
+      <td>
+        Wirtschaft
+      </td>
+      <td>
+        <a href="...">...wirtschaft.feed</a>
+      </td>
+      <td>
+      </td>
 ...
 
 
@@ -153,4 +189,5 @@ The object is checked out now, and we're looking at the edit form:
 'Zuender'
 
 XXX test the read only view
+
 

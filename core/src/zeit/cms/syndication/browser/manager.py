@@ -9,6 +9,7 @@ import zope.traversing.browser.absoluteurl
 import zc.table.column
 import zc.table.table
 
+import zeit.cms.browser.listing
 import zeit.cms.browser.interfaces
 import zeit.cms.syndication.interfaces
 
@@ -51,6 +52,7 @@ class Manager(object):
 
         return (
             zc.table.column.SelectionColumn(_id_getter),
+            zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
             zc.table.column.GetterColumn(
                 u'Titel',
                 lambda t, c: t.title),
