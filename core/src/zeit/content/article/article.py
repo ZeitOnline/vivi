@@ -98,8 +98,11 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             parent.remove(node)
         body = self.xml['body']
         for node in html.iterchildren():
-            if not node:
+            if not node.countchildren() and not node.text:
                 continue
+            if node.text and not node.text.strip():
+                continue
+
             if node.tag == 'h3':
                 node.tag = 'intertitle'
             body.append(node)
