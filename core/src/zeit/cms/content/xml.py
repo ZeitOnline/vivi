@@ -15,7 +15,6 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 
 
-
 class XMLRepresentationBase(object):
 
     zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
@@ -50,6 +49,6 @@ def map_dav_property_to_xml(context, event):
     attribute = zeit.cms.content.property.AttributeProperty(
         event.property_namespace, event.property_name)
     if event.new_value is zeit.connector.interfaces.DeleteProperty:
-        attribute.__delete__(context)
+        attribute.__delete__(content)
     else:
         attribute.__set__(content, event.new_value)
