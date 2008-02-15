@@ -30,6 +30,13 @@ directly IXMLRepresentation.
 ...         self.properties = {}
 ...
 
+#Set security:
+#
+#>>> import zope.app.security.protectclass
+#>>> zope.app.security.protectclass.protectName(Content, 'xml', 'zope.Public')
+#>>> zope.app.security.protectclass.protectSetAttribute(
+#...     Content, 'xml', 'zope.Public')
+
 We need an adapter for the webdav properties:
 
 >>> import zope.component
