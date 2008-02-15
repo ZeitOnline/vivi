@@ -12,9 +12,8 @@ We need to set the site since we're a functional test:
 >>> zope.app.component.hooks.setSite(getRootFolder())
 
 
-Repository Contaniers
+Repository Containers
 =====================
-
 
 The repository contains objects representing collections in the WebDAV server:
 
