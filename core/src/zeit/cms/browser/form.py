@@ -56,6 +56,9 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
 class FormBase(object):
 
     widget_groups = ()
+    template = (
+        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+            os.path.join(os.path.dirname(__file__), 'grouped-form.pt')))
 
     def applyChanges(self, object, data):
         return zope.formlib.form.applyChanges(
@@ -200,9 +203,6 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
     title = _("Edit")
     redirect_to_parent_after_edit = False
     redirect_to_view = None
-    template = (
-        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-            os.path.join(os.path.dirname(__file__), 'grouped-form.pt')))
 
     def nextURL(self):
         if (not self.redirect_to_parent_after_edit
