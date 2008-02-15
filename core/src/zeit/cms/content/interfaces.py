@@ -221,14 +221,7 @@ class IXMLSource(zope.interface.Interface):
 
 
 class IXMLContent(zeit.cms.interfaces.ICMSContent, IXMLRepresentation):
-    """Content with an XML representation.
-
-    Usually *all* data should be stored in the XML structure *or* in
-    webdav properties.
-
-    """
-
-    properties = zope.schema.Object(zeit.cms.interfaces.IWebDAVProperties)
+    """Content with an XML representation."""
 
 
 class ILockInfo(zope.app.locking.interfaces.ILockInfo):
