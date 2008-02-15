@@ -241,6 +241,37 @@ And the image is referenced in the XML structure:
   ...
 
 
+Workflow
+========
+
+When an article is published for the first time, the "date first released" is
+set by the workflow engine. We make sure that the date is also copied to the
+xml:
+
+>>> import zeit.workflow.interfaces
+>>> article = repository['online']['2007']['01']['Somalia']
+>>> article
+<zeit.content.article.article.Article object at 0x...>
+>>> workflow = zeit.workflow.interfaces.IWorkflow(article)
+>>> workflow.date_first_released is None
+True
+>>> workflow.published = True
+>>> workflow.date_first_released
+datetime.datetime(...)
+
+We expect the value to be in the xml now as well:
+
+# XXX doesn't work yet
+#>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+#<article>
+#  <head> 
+#    ...
+#    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_first_released">...</attribute>
+#  </head>
+#  ...
+    
+
+
 Cleanup
 =======
 

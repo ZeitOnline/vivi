@@ -379,11 +379,11 @@ xml source:
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Source').click()
->>> print browser.getControl(name='form.xml').value
+>>> print browser.getControl(name='form.xml').value.replace('\r\n', '\n')
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
   <container>
-    <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
+    <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
       <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
@@ -450,7 +450,7 @@ at its xml source:
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
   <container>
-    <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
+    <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
       <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <title xmlns:ns3="http://codespeak.net/lxml/objectify/pytype" ns3:pytype="str">Trinker zur Kasse</title>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
