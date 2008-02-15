@@ -10,6 +10,7 @@
     />
   <subscriber handler=".workflow.set_first_release_date" />
   <subscriber handler=".workflow.update_last_modified_by" />
+  <subscriber handler=".workflow.notify_adapted_property_chance" />
 
   <adapter factory=".source.fromNotNeeded" />
 

@@ -8,10 +8,12 @@ import pytz
 import rwproperty
 
 import zope.component
+import zope.event
 import zope.interface
 
 import zeit.cms.interfaces
 import zeit.cms.content.dav
+import zeit.cms.content.interfaces
 
 import zeit.workflow.interfaces
 
@@ -64,16 +66,12 @@ class Workflow(object):
 
     def __init__(self, context):
         self.context = context
-        self.resource = self.connector[context.uniqueId]
+        resource = self.connector[self.context.uniqueId]
+        self.properties = LiveProperties(resource)
 
     @property
     def connector(self):
         return zope.component.getUtility(zeit.cms.interfaces.IConnector)
-
-    @property
-    def properties(self):
-        # check how write behaves...
-        return LiveProperties(self.resource)
 
     @rwproperty.getproperty
     def release_period(self):
@@ -138,3 +136,15 @@ def update_last_modified_by(context, event):
     if workflow is None:
         return
     workflow.last_modified_by = event.principal.id
+
+
+@zope.component.adapter(
+    zeit.workflow.interfaces.IWorkflow,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def notify_adapted_property_chance(context, event):
+    """Notify the object IWorkflow adapted about a property change."""
+    content = context.context
+    zope.event.notify(
+        zeit.cms.content.interfaces.DAVPropertyChangedEvent(
+            content, event.property_namespace, event.property_name,
+            event.old_value, event.new_value))
