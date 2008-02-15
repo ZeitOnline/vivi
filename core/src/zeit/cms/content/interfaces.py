@@ -266,3 +266,12 @@ class IDAVPropertiesInXML(zope.interface.Interface):
 
     """
 
+
+class IAccessCounter(zope.interface.Interface):
+    """Give information about how many times an object was accessed."""
+
+    hits = zope.schema.Int(
+        title=_('Hits today'),
+        description=(u'How many times was this page viewed today.'),
+        required=False,
+        default=None)

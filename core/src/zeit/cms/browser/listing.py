@@ -184,6 +184,21 @@ class FilenameColumn(GetterColumn):
         return u'<span class="filename">%s</span>' % formatted
 
 
+class HitColumn(GetterColumn):
+
+    def getter(self, item, formatter):
+        access_counter = zeit.cms.content.interfaces.IAccessCounter(
+            item.context, None)
+        if access_counter is None:
+            return None
+        return access_counter.hits
+
+    def cell_formatter(self, value, item, formatter):
+        if value is None:
+            return u''
+        return '<span class="hitCounter">%s</span>' % value
+
+
 class Listing(object):
     """object listing view"""
 
@@ -204,6 +219,7 @@ class Listing(object):
         FilenameColumn(
             _('File name'),
             lambda t, c: t.__name__),
+        HitColumn(_('Hits')),
         GetterColumn(
             _('Ressort'),
             lambda t, c: t.ressort),

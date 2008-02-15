@@ -48,6 +48,8 @@ We have to publish another url to see if articles are listed:
         <span class="filename">Ford-Beerdigung</span>
     </td>
     <td>
+    </td>
+    <td>
       International
     </td>
     <td>
