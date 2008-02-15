@@ -9,6 +9,7 @@
         tal:attributes="action request/URL" method="post"
         class="edit-form" enctype="multipart/form-data"
         id="zc.page.browser_form">
+
         <div id="actionsView">
           <span class="actionButtons"
             tal:condition="view/availableActions">
