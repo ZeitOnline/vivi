@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'zc.recipe.egg>=1.1.0dev-r84019',
         'PIL',
         'ZODB3>3.7',
         'decorator',
