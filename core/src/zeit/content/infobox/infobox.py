@@ -8,11 +8,11 @@ import rwproperty
 import zope.interface
 
 import zeit.cms.content.property
-import zeit.cms.content.xml
+import zeit.cms.content.xmlsupport
 
 import zeit.content.infobox.interfaces
 
-class Infobox(zeit.cms.content.xml.XMLContentBase):
+class Infobox(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(zeit.content.infobox.interfaces.IInfobox)
 

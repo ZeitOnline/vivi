@@ -1,0 +1,19 @@
+======
+Fields
+======
+
+
+XMLSnippet
+==========
+
+>>> import sprout.silvasubset
+
+>>> import zeit.cms.content.field
+>>> snippet = zeit.cms.content.field.XMLSnippet(
+...     subset=sprout.silvasubset.HEADING_SUBSET)
+
+>>> snippet.fromUnicode(u'foo <i>b\xfcrf</i>')
+u'foo <em>b\xfcrf</em>'
+
+>>> snippet.fromUnicode(
+...     u'Gehe zu  <a href="http://zeit.de">zeit <i>online</i></a> und guck')

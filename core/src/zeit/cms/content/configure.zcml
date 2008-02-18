@@ -105,6 +105,6 @@
   <adapter factory=".related.BasicReference" />
 
   <!-- automatic xml updating -->
-  <subscriber handler=".xml.map_dav_property_to_xml" />
+  <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
 
 </configure>

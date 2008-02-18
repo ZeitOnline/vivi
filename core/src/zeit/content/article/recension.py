@@ -12,7 +12,7 @@ import zope.publisher.interfaces
 import z3c.traverser.interfaces
 
 import zeit.cms.content.property
-import zeit.cms.content.xml
+import zeit.cms.content.xmlsupport
 import zeit.content.article.interfaces
 
 
@@ -63,7 +63,7 @@ class BookRecensionContainer(object):
         return zope.location.location.located(recension, self, unicode(index))
 
 
-class BookRecension(zeit.cms.content.xml.XMLRepresentationBase):
+class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase):
     """Information about a book in a recension."""
 
     zope.interface.implements(
