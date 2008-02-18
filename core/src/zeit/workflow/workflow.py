@@ -127,11 +127,8 @@ def set_first_release_date(context, event):
 
 @zope.component.adapter(
     zope.interface.Interface,
-    zeit.cms.checkout.interfaces.ICheckinEvent)
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_last_modified_by(context, event):
-    # We *can* update the webdav property, but we can *not* change the XML at
-    # this point. Changing a webdav property usually changes the xml, too. I
-    # wonder how this interacts here. 
     workflow = zeit.workflow.interfaces.IWorkflow(context, None)
     if workflow is None:
         return
@@ -141,7 +138,7 @@ def update_last_modified_by(context, event):
 @zope.component.adapter(
     zeit.workflow.interfaces.IWorkflow,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def notify_adapted_property_chance(context, event):
+def notify_adapted_property_change(context, event):
     """Notify the object IWorkflow adapted about a property change."""
     content = context.context
     zope.event.notify(

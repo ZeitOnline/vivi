@@ -102,7 +102,7 @@
 
   <class class="lxml.objectify.ObjectifiedElement">
     <require permission="zope.View"
-      attributes="tag xpath getparent index" />
+      attributes="findall getparent index tag xpath" />
     <require permission="zeit.EditContent"
       attributes="append insert makeelement __setslice__" />
   </class>

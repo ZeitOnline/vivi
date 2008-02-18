@@ -80,7 +80,10 @@ When we check out the document, we will find a copy in the working copy:
 >>> list(workingcopy.keys())
 []
 >>> manager.checkout()
-Event: <zeit.cms.checkout.interfaces.CheckoutEvent object at 0x...>
+Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms...>
+Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms...>
 >>> workingcopy = IWorkingcopy(principal)
@@ -144,7 +147,10 @@ But now we check in:
 >>> manager.canCheckin
 True
 >>> checked_in = manager.checkin()
-Event: <zeit.cms.checkout.interfaces.CheckinEvent object at 0x...>
+Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
+     Principal: zope.user
+     Content: <zeit.cms...>
+Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
      Principal: zope.user
      Content: <zeit.cms...>
 
@@ -186,7 +192,10 @@ the object is no longer locked in the dav:
 >>> lockable.locked()
 False
 >>> checked_out = manager.checkout()
-Event: <zeit.cms.checkout.interfaces.CheckoutEvent object at 0x...>
+Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.UnknownResource object at 0x...>
+Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms.repository.unknown.UnknownResource object at 0x...>
 >>> lockable.locked()

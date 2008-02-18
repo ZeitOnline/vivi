@@ -48,11 +48,19 @@ class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
         "The principal checking out the content object")
 
 
-class ICheckoutEvent(ICheckinCheckoutEvent):
+class IBeforeCheckoutEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked out."""
 
 
-class ICheckinEvent(ICheckinCheckoutEvent):
+class IAfterCheckoutEvent(ICheckinCheckoutEvent):
+    """Generated when a content object was checked out."""
+
+
+class IBeforeCheckinEvent(ICheckinCheckoutEvent):
+    """Generated when a content object was checked in."""
+
+
+class IAfterCheckinEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked in."""
 
 
@@ -63,13 +71,25 @@ class EventBase(zope.component.interfaces.ObjectEvent):
         self.principal = principal
 
 
-class CheckoutEvent(EventBase):
-    """Generated when a content object is checked out."""
+class BeforeCheckoutEvent(EventBase):
+    """Generated before a content object is checked out."""
 
-    zope.interface.implements(ICheckoutEvent)
+    zope.interface.implements(IBeforeCheckoutEvent)
 
 
-class CheckinEvent(EventBase):
-    """Generated when a content object is checked in."""
+class AfterCheckoutEvent(EventBase):
+    """Generated after a content object was checked out."""
 
-    zope.interface.implements(ICheckinEvent)
+    zope.interface.implements(IAfterCheckoutEvent)
+
+
+class BeforeCheckinEvent(EventBase):
+    """Generated before a content object is checked in."""
+
+    zope.interface.implements(IBeforeCheckinEvent)
+
+
+class AfterCheckinEvent(EventBase):
+    """Generated after a content object was checked in."""
+
+    zope.interface.implements(IAfterCheckinEvent)

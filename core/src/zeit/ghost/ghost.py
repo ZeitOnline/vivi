@@ -15,7 +15,7 @@ import zeit.cms.workingcopy.interfaces
 
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.ICheckinEvent)
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def add_ghost_after_checkin(context, event):
     """Add a ghost for the checked in object."""
     workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
@@ -30,7 +30,7 @@ def add_ghost_after_checkin(context, event):
 
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.ICheckoutEvent)
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def remove_ghost_after_checkout(context, event):
     """Remove ghost of checked out object, if any."""
     workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
@@ -51,7 +51,7 @@ def remove_ghost_after_checkout(context, event):
 
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.ICheckoutEvent)
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def remove_excessive_ghosts(context, event):
     """Remove ghosts from workingcopy which exceed the target of 7
 

@@ -55,6 +55,7 @@ class SyndicationLogProperty(zeit.cms.content.property.MultiPropertyBase):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
+
 @zope.component.adapter(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.syndication.interfaces.IContentSyndicatedEvent)
@@ -87,7 +88,7 @@ def linkToFeed(object, event):
 
 @zope.component.adapter(
     zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.ICheckinEvent)
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def updateFeedOnCheckin(object, event):
     updateable_feeds = object.automaticTeaserSyndication
     checked_out = []
@@ -107,7 +108,7 @@ def updateFeedOnCheckin(object, event):
 
     # Everything is checked out and updated now. Check back in.
     for feed in checked_out:
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(feed)
         try:
             manager.checkin(event=False)
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
