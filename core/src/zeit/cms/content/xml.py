@@ -8,6 +8,7 @@ import persistent
 import gocept.lxml.objectify
 
 import zope.interface
+import zope.security.proxy
 
 import zope.app.container.contained
 
@@ -45,7 +46,10 @@ class XMLContentBase(XMLRepresentationBase,
     zeit.cms.content.interfaces.IDAVPropertiesInXML,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
 def map_dav_property_to_xml(context, event):
-    content = zeit.cms.content.interfaces.IXMLRepresentation(context)
+    # Remove security proxy: If the user was allowed to change the property
+    # (via setattr) *we* copy that to the xml, regardles of the security.
+    content = zope.security.proxy.removeSecurityProxy(
+        zeit.cms.content.interfaces.IXMLRepresentation(context))
     attribute = zeit.cms.content.property.AttributeProperty(
         event.property_namespace, event.property_name)
     if event.new_value is zeit.connector.interfaces.DeleteProperty:
