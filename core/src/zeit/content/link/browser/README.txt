@@ -61,7 +61,7 @@ Have a look at the source:
   </head>
   <body>
     <url py:pytype="str">http://gocept.com</url>
-    <title py:pytype="str">gocept homepage</title>
+    <title>gocept homepage</title>
   </body>
   <teaser>
     <title py:pytype="str">gocept teaser</title>

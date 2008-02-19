@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import xml.dom.minidom
+
 import lxml.etree
 import lxml.objectify
 
@@ -9,6 +11,9 @@ import zope.interface
 import zope.proxy
 import zope.schema
 import zope.schema.interfaces
+
+import zeit.cms.content.cmssubset
+from zeit.cms.i18n import MessageFactory as _
 
 
 DEFAULT_MARKER = object()
@@ -19,11 +24,17 @@ class IXMLTree(zope.schema.interfaces.IField):
     # This is here to avoid circular imports
 
 
-class XMLTree(zope.schema.Field):
+class IXMLSnippet(zope.schema.interfaces.IField):
+    """A field containing an xml-snippet."""
 
-    zope.interface.implements(
-        IXMLTree,
-        zope.schema.interfaces.IFromUnicode)
+
+class InvalidXML(zope.schema.interfaces.ValidationError):
+    __doc__ = _('Invalid structure.')
+
+
+class _XMLBase(zope.schema.Field):
+
+    zope.interface.implements(zope.schema.interfaces.IFromUnicode)
 
     def fromUnicode(self, str):
         try:
@@ -44,3 +55,38 @@ class XMLTree(zope.schema.Field):
             setattr(object, self.__name__, value)
         else:
             current_value[:] = [value]
+
+
+class XMLTree(_XMLBase):
+
+    zope.interface.implements(IXMLTree)
+
+
+class XMLSnippet(zope.schema.Text):
+
+    zope.interface.implements(IXMLSnippet)
+
+    def __init__(self, subset=None, **kwargs):
+        if subset is None:
+            subset = zeit.cms.content.cmssubset.CMS_SUBSET
+        self.subset = subset
+        super(XMLSnippet, self).__init__(**kwargs)
+
+    def fromUnicode(self, value):
+        if not isinstance(value, unicode):
+            raise TypeError("Expected unicode, got %s" % type(value))
+        value = self._filter(value)
+        return super(XMLSnippet, self).fromUnicode(value)
+
+    def _validate(self, value):
+        super(XMLSnippet, self)._validate(value)
+        if value != self._filter(value):
+            raise InvalidXML()
+
+    def _filter(self, value):
+        if self.subset is not None:
+            # We need a dom where we can append the values.
+            dom = xml.dom.minidom.parseString('<xml/>')
+            value = self.subset.filteredParse(value, dom.firstChild)
+            value = u''.join(node.toxml() for node in value.childNodes)
+        return value

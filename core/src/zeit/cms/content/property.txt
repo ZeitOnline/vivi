@@ -455,3 +455,56 @@ Set authors:
 
 >>> content.authors
 (u'Hans', u'Klaus', u'Siegfried')
+
+
+
+
+
+Structure
++++++++++
+
+Create a content class:
+
+>>> import zeit.cms.content.xmlsupport
+>>> import zeit.cms.content.property
+>>>
+>>> class Content(zeit.cms.content.xmlsupport.XMLRepresentationBase):
+...
+...     default_template = u'<foo xmlns:myns="namespace"/>'
+...     title = zeit.cms.content.property.Structure('.title')
+
+>>> content = Content()
+>>> content.title = u'Foo <em>bar</em> baz'
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:myns="namespace">
+  <title>Foo <em>bar</em> baz</title>
+</foo>
+
+Get the value:
+
+>>> content.title
+u'Foo <em>bar</em> baz'
+
+
+>>> content.title = 'Foo <em>Bar<a href="blaubs">click</a></em>'
+>>> content.title
+u'Foo <em>Bar<a href="blaubs">click</a></em>'
+
+>>> content.title = u'<em>blah</em>'
+>>> content.title
+u'<em>blah</em>'
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:myns="namespace">
+  <title>
+    <em>blah</em>
+  </title>
+</foo>
+
+
+Make sure a single < in the first text node is escaped:
+
+>>> content.title = u'Foo &lt;bar <em>blubs</em>'
+>>> content.title
+u'Foo &lt;bar <em>blubs</em>'

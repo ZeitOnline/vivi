@@ -1,4 +1,8 @@
-======================
+=======
+Widgets
+=======
+
+
 XML source edit widget
 ======================
 
@@ -16,9 +20,11 @@ Create a content object:
 
 
 >>> import lxml.objectify
+>>> import zeit.cms.content.property
 >>> class Content(object):
 ...     zope.interface.implements(IContent)
 ...     xml = lxml.objectify.XML('<art/><?foo?>')
+...     snippet = zeit.cms.content.property.Structure('.title')
 ...
 >>> content = Content()
 
@@ -44,7 +50,7 @@ u'<art/>\r\n<?foo?>\r\n'
 
 
 Editing sub-nodes
-=================
++++++++++++++++++
 
 The widget also supports editing subnodes. That is that the data being edited
 is not a full tree but a node in a tree.
@@ -57,7 +63,8 @@ u'<editme>\r\n    <c/>\r\n</editme>\r\n'
 
 
 Converting back to a tree
-=========================
++++++++++++++++++++++++++
+
 The widget converts the entered data back to a tree:
 
 >>> widget._toFieldValue(u'<editedyou/>')
@@ -70,3 +77,39 @@ When the entered data is not valid xml a `ConversionError` is raised:
 Traceback (most recent call last):
     ...
 ConversionError: (Couldn't find end of Start Tag ed line 1, line 1, column 4, None)
+
+
+
+XML snippets
+============
+
+>>> class IContent(zope.interface.Interface):
+...     snippet = zeit.cms.content.field.XMLSnippet()
+
+To initialize the widget we need a bound field:
+
+>>> field = IContent['snippet'].bind(content)
+
+Now create the widget:
+
+>>> import zeit.cms.content.browser.widget
+>>> widget = zeit.cms.content.browser.widget.XMLSnippetWidget(field, request)
+>>> widget
+<zeit.cms.content.browser.widget.XMLSnippetWidget object at 0x...>
+>>> widget.setRenderedValue(content.snippet)
+>>> widget._getFormValue()
+u''
+
+
+>>> content.snippet = u'Foo <em>bar</em> baz'
+>>> widget.setRenderedValue(content.snippet)
+>>> widget._getFormValue()
+u'Foo <em>bar</em> baz'
+
+>>> widget.setRenderedValue(u'Foo &lt;bla <em>baz</em>')
+>>> widget()
+u'<textarea cols="60" id="field.snippet" name="field.snippet" rows="15" >Foo &amp;lt;bla &lt;em&gt;baz&lt;/em&gt;</textarea>'
+
+>>> invalid_value = u'Fo <!bla <em>baz</em>'
+>>> widget._toFieldValue(invalid_value)
+u'Fo &lt;!bla <em>baz</em>'

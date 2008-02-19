@@ -19,6 +19,7 @@ def test_suite():
         'property.txt',
         'sources.txt',
         'locking.txt',
+        'field.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
         setUp=zeit.cms.testing.setUp))

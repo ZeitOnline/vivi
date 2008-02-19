@@ -3,7 +3,9 @@
 # $Id$
 
 import sys
+import xml.sax.saxutils
 
+import lxml.etree
 import lxml.objectify
 
 import transaction
@@ -61,6 +63,47 @@ class ObjectPathProperty(object):
         except AttributeError:
             return None
         return node
+
+
+class Structure(ObjectPathProperty):
+    """Structure identified by object path."""
+
+    remove_namespaces = lxml.etree.XSLT(lxml.etree.XML(
+        u"""\
+        <xsl:stylesheet version="1.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+            <xsl:template match="*">
+              <!-- remove element prefix (if any) -->
+              <xsl:element name="{local-name()}">
+                <!-- process attributes -->
+                <xsl:for-each select="@*">
+                  <!-- remove attribute prefix (if any) -->
+                  <xsl:attribute name="{local-name()}">
+                    <xsl:value-of select="."/>
+                  </xsl:attribute>
+                </xsl:for-each>
+                <xsl:apply-templates/>
+              </xsl:element>
+          </xsl:template>
+        </xsl:stylesheet>
+    """))
+
+    def __get__(self, instance, class_):
+        node = self.getNode(instance)
+        if node is None:
+            return
+        node = lxml.objectify.fromstring(unicode(self.remove_namespaces(node)))
+        result = [xml.sax.saxutils.escape(unicode(node))]
+        for child in node.iterchildren():
+            lxml.objectify.deannotate(child)
+            result.append(lxml.etree.tostring(child, encoding=unicode))
+        return u''.join(result)
+
+    def __set__(self, instance, value):
+        # Objectify value:
+        xml = lxml.objectify.fromstring(u'<xml>%s</xml>' % value)
+        self.path.setattr(instance.xml, xml)
 
 
 class ObjectPathAttributeProperty(ObjectPathProperty):

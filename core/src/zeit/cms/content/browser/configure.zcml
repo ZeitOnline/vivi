@@ -57,9 +57,17 @@
   <!-- XML tree editing widget -->
   <adapter
     for="zeit.cms.content.field.IXMLTree
-    zope.publisher.interfaces.browser.IBrowserRequest"
+    zeit.cms.browser.interfaces.ICMSLayer"
     provides=".interfaces.IXMLTreeWidget"
     factory=".widget.XMLTreeWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zeit.cms.content.field.IXMLSnippet
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides=".interfaces.IXMLSnippetWidget"
+    factory=".widget.XMLSnippetWidget"
     permission="zope.Public"
     />
 

@@ -26,7 +26,7 @@ Now that was pretty boring. Add a title and an url:
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
-    <title py:pytype="str">gocept</title>
+    <title>gocept</title>
     <url py:pytype="str">http://gocept.com</url>
   </body>
 </link>

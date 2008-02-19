@@ -112,7 +112,7 @@ Now, fill the form and add the article:
 >>> browser.getControl(name='form.volume').value = '2'
 >>> browser.getControl(name='form.__name__').value = 'KFZ-Steuer'
 >>> browser.getControl(name='form.title').value = (
-...     'EU unterstuetzt Stinker-Steuer')
+...     'EU <em>unterstuetzt</em> Stinker-Steuer')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.getControl('Sub ressort').value = 'Koch'
@@ -136,7 +136,7 @@ edit screen should be displayed:
 >>> browser.getControl(name='form.volume').value
 '2'
 >>> browser.getControl(name='form.title').value
-'EU unterstuetzt Stinker-Steuer'
+'EU <em>unterstuetzt</em> Stinker-Steuer'
 
 Note that the metadata view screen is not available on checked out articles:
 
@@ -274,7 +274,7 @@ Let's have a look at the source:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
   <body>
-    <title py:pytype="str">EU unterstuetzt Trinker-Steuer</title>
+    <title>EU unterstuetzt Trinker-Steuer</title>
     <p>Foo</p>
     <intertitle>blub</intertitle>
   </body>
@@ -614,7 +614,7 @@ Let's have a look at the source:
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
   </head>
   <body>
-    <title py:pytype="str">Extrablatt 53</title>
+    <title>Extrablatt 53</title>
   </body>
 </article>
 <?ZEIT:StyleGroup zeitwissen-extrablatt?>

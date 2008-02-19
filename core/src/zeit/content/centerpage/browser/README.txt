@@ -196,7 +196,7 @@ page:
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>
-    <title py:pytype="str">Wirtschaft</title>
+    <title>Wirtschaft</title>
     <column/>
   </body>
 </centerpage>

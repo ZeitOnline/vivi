@@ -14,7 +14,7 @@ def test_suite():
         'template.txt',
         'keyword.txt',))
     suite.addTest(doctest.DocFileSuite(
-        'xml-widget.txt',
+        'widget.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS)))
     return suite

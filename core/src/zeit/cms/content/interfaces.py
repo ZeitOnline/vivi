@@ -113,10 +113,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("By line"),
         required=False)
 
-    title = zope.schema.TextLine(
+    title = zeit.cms.content.field.XMLSnippet(
         title=_("Title"))
 
-    subtitle = zope.schema.Text(
+    subtitle = zeit.cms.content.field.XMLSnippet(
         title=_("Subtitle"),
         required=False)
 

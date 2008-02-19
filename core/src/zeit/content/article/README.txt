@@ -51,7 +51,7 @@ XML:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne &#220;berraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
@@ -76,7 +76,7 @@ When we set an attribute multiple times it's just changed:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne &#220;berraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
@@ -100,7 +100,7 @@ the authors in the xml:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne &#220;berraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
@@ -127,7 +127,7 @@ There is an adapter which sets the text length automatically:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title py:pytype="str">Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne &#220;berraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
      selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen

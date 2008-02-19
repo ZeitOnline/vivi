@@ -29,3 +29,12 @@ class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
                 value = value.getroottree()
             return lxml.etree.tounicode(value, pretty_print=True).replace(
                 '\n', '\r\n')
+
+
+class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
+
+    def _toFieldValue(self, input):
+        as_unicode = super(XMLSnippetWidget, self)._toFieldValue(input)
+        if as_unicode:
+            return self.context.fromUnicode(as_unicode)
+        return as_unicode
