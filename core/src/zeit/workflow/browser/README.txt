@@ -231,3 +231,92 @@ When we lock we'll see the relevant information:
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
+
+
+Publishing checked out resources
+================================
+
+There are a view race conditions regarding webdav properties. We concider the
+workflow properties "live" i.e. they are only supposed to exist on the server.
+When an object is checked out, all properties are copied so they can be stored
+back to the server  on check in. Live properties must survive this.
+
+
+Check out an unpublished object:
+
+>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+...              '/2007/01/Saarland')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Published').selected
+False
+
+Do a publish/unpuslish cycle to set the property to false:
+
+>>> browser.getControl('Published').selected = True
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+>>> browser.getControl('Published').selected = False
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
+Check out:
+
+>>> browser.getLink('Checkout').click()
+>>> checked_out = browser.url
+
+Go back to the repository and publish:
+
+>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+...              '/2007/01/Saarland')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Published').selected = True
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+>>> browser.getControl('Published').selected
+True
+
+Go the the checked out object and check in:
+
+>>> browser.open(checked_out)
+>>> browser.getLink('Checkin').click()
+
+The object is still published:
+
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Published').selected
+True
+
+
+Now try the other way round, unpublish a published document while it is checked
+out:
+
+>>> browser.getControl('Published').selected = True
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+>>> browser.getLink('Checkout').click()
+
+Unpublish now:
+
+>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+...              '/2007/01/Saarland')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Published').selected = False
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
+
+Check back in:
+
+>>> browser.open(checked_out)
+>>> browser.getLink('Checkin').click()
+
+The object is still published:
+
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Published').selected
+False

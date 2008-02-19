@@ -11,6 +11,7 @@ import zope.component
 import zope.event
 import zope.interface
 
+import zeit.connector.interfaces
 import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -145,3 +146,19 @@ def notify_adapted_property_change(context, event):
         zeit.cms.content.interfaces.DAVPropertyChangedEvent(
             content, event.property_namespace, event.property_name,
             event.old_value, event.new_value))
+
+
+@zope.component.adapter(
+    zope.interface.Interface,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def remove_live_properties(context, event):
+    """Remove live properties from content.
+
+    This is to make sure they don't change on checkin.
+
+    """
+    properties = zeit.connector.interfaces.IWebDAVProperties(context)
+    for name, namespace in list(properties):  # make sure it's not an iterator
+        if namespace == 'http://namespaces.zeit.de/CMS/workflow':
+            # XXX use a string constant wor the namespace
+            del properties[(name, namespace)]
