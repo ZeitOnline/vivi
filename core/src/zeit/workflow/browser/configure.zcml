@@ -3,7 +3,7 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <adapter factory=".token.fromNotNeeded" />
+  <adapter factory=".token.fromNotNecessary" />
 
   <browser:page
     name="workflow.html"

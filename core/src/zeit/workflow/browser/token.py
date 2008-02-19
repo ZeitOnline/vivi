@@ -10,7 +10,7 @@ import zc.sourcefactory.interfaces
 import zeit.workflow.source
 
 
-@zope.component.adapter(zeit.workflow.source._NotNeeded)
+@zope.component.adapter(zeit.workflow.source._NotNecessary)
 @zope.interface.implementer(zc.sourcefactory.interfaces.IToken)
-def fromNotNeeded(value):
-    return 'NotNeeded'
+def fromNotNecessary(value):
+    return 'NotNecessary'

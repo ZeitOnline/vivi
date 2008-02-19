@@ -12,7 +12,7 @@
   <subscriber handler=".workflow.update_last_modified_by" />
   <subscriber handler=".workflow.notify_adapted_property_change" />
 
-  <adapter factory=".source.fromNotNeeded" />
+  <adapter factory=".source.fromNotNecessary" />
 
   <adapter factory=".dav.ChoicePropertyWithPrincipalSource" />
 

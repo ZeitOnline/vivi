@@ -9,29 +9,30 @@ import zope.interface
 import zc.sourcefactory.basic
 
 import zeit.cms.content.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
-class _NotNeeded(object):
+class _NotNecessary(object):
 
     def __repr__(self):
-        return 'NotNeeded'
+        return 'NotNecessary'
 
-NotNeeded = _NotNeeded()
+NotNecessary = _NotNecessary()
 
 
-@zope.component.adapter(_NotNeeded)
+@zope.component.adapter(_NotNecessary)
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVToken)
-def fromNotNeeded(value):
-    return 'notneeded'
+def fromNotNecessary(value):
+    return 'notnecessary'
 
 
 class TriState(zc.sourcefactory.basic.BasicSourceFactory):
-    """Source providing yes/no/notneeded."""
+    """Source providing yes/no/notnecessary."""
 
     _values = {
-        True: u'ja',
-        False: u'nein',
-        NotNeeded: u'nicht nötig'}
+        True: _('yes'),
+        False: _('no'),
+        NotNecessary: _('not necessary')}
 
     def getTitle(self, value):
         return self._values[value]

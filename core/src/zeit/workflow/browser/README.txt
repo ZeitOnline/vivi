@@ -18,15 +18,15 @@ Bearbeitet (Redaktion)
 +++++++++++++++++++++++
 
 This state tells if the editors have finished their work. The initlal value is
-"nein":
+"no":
 
 >>> browser.getControl('Bearbeitet').displayValue
-['nein']
+['no']
 
 The available options are as follows:
 
 >>> browser.getControl('Bearbeitet').displayOptions
-['nein', 'ja', 'nicht n\xc3\xb6tig']
+['no', 'yes', 'not necessary']
 
 
 Korrigiert 
@@ -36,9 +36,9 @@ Korrigiert states if the Korrektor is done. The state has the same values as
 **Bearbeitet**:
 
 >>> browser.getControl('Korrigiert').displayValue
-['nein']
+['no']
 >>> browser.getControl('Korrigiert').displayOptions
-['nein', 'ja', 'nicht n\xc3\xb6tig']
+['no', 'yes', 'not necessary']
 
 Veredelt
 ++++++++
@@ -47,9 +47,9 @@ Veredelt states if Links etc. were added to the document. The state has the
 same values as **Bearbeitet**:
 
 >>> browser.getControl('Veredelt').displayValue
-['nein']
+['no']
 >>> browser.getControl('Veredelt').displayOptions
-['nein', 'ja', 'nicht n\xc3\xb6tig']
+['no', 'yes', 'not necessary']
 
 
 Bilder hinzugefügt
@@ -59,9 +59,9 @@ The graphics department adds image. The state has the same values as
 **Bearbeitet**:
 
 >>> browser.getControl('Bilder hinzugefügt').displayValue
-['nein']
+['no']
 >>> browser.getControl('Bilder hinzugefügt').displayOptions
-['nein', 'ja', 'nicht n\xc3\xb6tig']
+['no', 'yes', 'not necessary']
 
 
 Eilmeldung
@@ -93,10 +93,10 @@ Transitions
 There are no explicit transitions defined. Instead every state attribute can
 currently be set to any value at will. Let's say our document is edited:
 
->>> browser.getControl('Bearbeitet').displayValue = ['ja']
+>>> browser.getControl('Bearbeitet').displayValue = ['yes']
 >>> browser.getControl('Apply').click()
 >>> browser.getControl('Bearbeitet').displayValue
-['ja']
+['yes']
 
 
 When we publish a document we set the "published" field:
