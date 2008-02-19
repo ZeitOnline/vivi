@@ -79,5 +79,3 @@ InvalidXML
 A valid structure passes:
 
 >>> snippet.validate(u'foo <em>b\xfcrf</em>')
-
-
