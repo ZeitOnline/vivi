@@ -43,7 +43,7 @@ class UnknownResource(zope.app.container.contained.Contained):
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def unknownResourceFactory(context):
     res = UnknownResource(unicode(context.data.read(), 'latin1'), context.type)
-    zeit.cms.interfaces.IWebDAVWriteProperties(res).update(context.properties)
+    zeit.cms.interfaces.IWebDAVProperties(res).update(context.properties)
     return res
 
 
@@ -52,4 +52,5 @@ def unknownResourceFactory(context):
 def resourceFactory(context):
     return zeit.cms.connector.Resource(
         context.uniqueId, context.__name__, 'unknown',
-        StringIO.StringIO(context.data.encode('latin1')))
+        StringIO.StringIO(context.data.encode('latin1')),
+        properties=zeit.cms.interfaces.IWebDAVProperties(context))

@@ -81,6 +81,93 @@ When we get the same object again, we *really* get the *same* object:
 >>> content is repository['online']['2007']['01']['lebenslagen-01']
 True
 
+
+Unknown Resource
+================
+
+We got an UnknownResource object from the repository, because the system
+doesn't know anything else to do with this content. The resource has webdav
+properties:
+
+>>> import zeit.connector.interfaces
+>>> properties = zeit.connector.interfaces.IWebDAVReadProperties(content)
+>>> properties
+<zeit.connector.resource.WebDAVProperties object at 0x...>
+>>> pprint(dict(properties))
+{('DailyNL', 'http://namespaces.zeit.de/CMS/workflow'): 'no',
+ ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
+ ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
+ ('comments', 'http://namespaces.zeit.de/CMS/document'): '1',
+ ('copyrights', 'http://namespaces.zeit.de/CMS/document'): 'ZEIT online',
+ ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'): '4.1.2007 - 14:16',
+ ('erscheint', 'http://namespaces.zeit.de/CMS/document'): None,
+ ('imagecount', 'http://namespaces.zeit.de/CMS/document'): '0',
+ ('keywords', 'http://namespaces.zeit.de/CMS/document'): 'GEBO; anlageberater; Versicherungen; provision; finanzberater;',
+ ('last-modified-by', 'http://namespaces.zeit.de/CMS/workflow'): 'hegenscheidt',
+ ('mostread', 'http://namespaces.zeit.de/CMS/document'): 'yes',
+ ('new_comments', 'http://namespaces.zeit.de/CMS/document'): '1',
+ ('page', 'http://namespaces.zeit.de/CMS/document'): '-',
+ ('page', 'http://namespaces.zeit.de/QPS/attributes'): '-',
+ ('pagelabel', 'http://namespaces.zeit.de/CMS/document'): 'Online',
+ ('paragraphsperpage', 'http://namespaces.zeit.de/CMS/document'): '4',
+ ('resourcetype', 'DAV:'): 'article',
+ ('ressort', 'http://namespaces.zeit.de/CMS/document'): 'Finanzen',
+ ('ressort', 'http://namespaces.zeit.de/QPS/attributes'): 'Online',
+ ('revision', 'http://namespaces.zeit.de/CMS/document'): '5',
+ ('serie', 'http://namespaces.zeit.de/CMS/document'): '-',
+ ('status', 'http://namespaces.zeit.de/CMS/workflow'): 'OK',
+ ('supertitle', 'http://namespaces.zeit.de/CMS/document'): 'Spitzmarke hierher',
+ ('text-length', 'http://namespaces.zeit.de/CMS/document'): '1036',
+ ('title', 'http://namespaces.zeit.de/CMS/document'): 'Kampf der Provisionsschinderei',
+ ('topic', 'http://namespaces.zeit.de/CMS/document'): 'Wirtschaft',
+ ('type', 'http://namespaces.zeit.de/CMS/document'): 'article',
+ ('volume', 'http://namespaces.zeit.de/CMS/document'): '01',
+ ('volume', 'http://namespaces.zeit.de/QPS/attributes'): '04',
+ ('year', 'http://namespaces.zeit.de/CMS/document'): '2007',
+ ('year', 'http://namespaces.zeit.de/QPS/attributes'): '2006'}
+
+
+When we convert the UnknownResource back to a `Resource` object, the properties
+are still there:
+
+>>> resource = zeit.connector.interfaces.IResource(content)
+>>> resource
+<zeit.connector.resource.Resource object at 0x...>
+>>> resource.properties
+<zeit.connector.resource.WebDAVProperties object at 0x...>
+>>> pprint(dict(resource.properties))
+{('DailyNL', 'http://namespaces.zeit.de/CMS/workflow'): 'no',
+ ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
+ ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
+ ('comments', 'http://namespaces.zeit.de/CMS/document'): '1',
+ ('copyrights', 'http://namespaces.zeit.de/CMS/document'): 'ZEIT online',
+ ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'): '4.1.2007 - 14:16',
+ ('erscheint', 'http://namespaces.zeit.de/CMS/document'): None,
+ ('imagecount', 'http://namespaces.zeit.de/CMS/document'): '0',
+ ('keywords', 'http://namespaces.zeit.de/CMS/document'): 'GEBO; anlageberater; Versicherungen; provision; finanzberater;',
+ ('last-modified-by', 'http://namespaces.zeit.de/CMS/workflow'): 'hegenscheidt',
+ ('mostread', 'http://namespaces.zeit.de/CMS/document'): 'yes',
+ ('new_comments', 'http://namespaces.zeit.de/CMS/document'): '1',
+ ('page', 'http://namespaces.zeit.de/CMS/document'): '-',
+ ('page', 'http://namespaces.zeit.de/QPS/attributes'): '-',
+ ('pagelabel', 'http://namespaces.zeit.de/CMS/document'): 'Online',
+ ('paragraphsperpage', 'http://namespaces.zeit.de/CMS/document'): '4',
+ ('resourcetype', 'DAV:'): 'article',
+ ('ressort', 'http://namespaces.zeit.de/CMS/document'): 'Finanzen',
+ ('ressort', 'http://namespaces.zeit.de/QPS/attributes'): 'Online',
+ ('revision', 'http://namespaces.zeit.de/CMS/document'): '5',
+ ('serie', 'http://namespaces.zeit.de/CMS/document'): '-',
+ ('status', 'http://namespaces.zeit.de/CMS/workflow'): 'OK',
+ ('supertitle', 'http://namespaces.zeit.de/CMS/document'): 'Spitzmarke hierher',
+ ('text-length', 'http://namespaces.zeit.de/CMS/document'): '1036',
+ ('title', 'http://namespaces.zeit.de/CMS/document'): 'Kampf der Provisionsschinderei',
+ ('topic', 'http://namespaces.zeit.de/CMS/document'): 'Wirtschaft',
+ ('type', 'http://namespaces.zeit.de/CMS/document'): 'article',
+ ('volume', 'http://namespaces.zeit.de/CMS/document'): '01',
+ ('volume', 'http://namespaces.zeit.de/QPS/attributes'): '04',
+ ('year', 'http://namespaces.zeit.de/CMS/document'): '2007',
+ ('year', 'http://namespaces.zeit.de/QPS/attributes'): '2006'}
+
 Unique Ids
 ==========
 
@@ -258,6 +345,7 @@ True
 Logout bob again:
 
 >>> zope.security.management.endInteraction()
+
 
 Cleanup
 =======
