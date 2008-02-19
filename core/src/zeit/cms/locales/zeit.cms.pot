@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Feb 13 16:23:57 2008\n"
+"POT-Creation-Date: Tue Feb 19 15:12:33 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -36,7 +36,7 @@ msgid "Edit event"
 msgstr ""
 
 #: src/zeit/calendar/browser/event.py:60
-#: src/zeit/cms/browser/form.py:223
+#: src/zeit/cms/browser/form.py:227
 msgid "Apply"
 msgstr ""
 
@@ -49,10 +49,10 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:196
+#: src/zeit/cms/browser/listing.py:217
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:253
+#: src/zeit/cms/content/interfaces.py:246
 #: src/zeit/cms/syndication/interfaces.py:34
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:140
@@ -72,7 +72,7 @@ msgid "Description"
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:260
+#: src/zeit/cms/content/interfaces.py:253
 msgid "Related content"
 msgstr ""
 
@@ -126,16 +126,16 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:139
+#: src/zeit/cms/browser/form.py:143
 #: src/zeit/content/article/browser/configure.zcml:124
 msgid "Add"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:161
+#: src/zeit/cms/browser/form.py:165
 msgid "Cancel"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:199
+#: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/content/browser/template.zcml:40
 #: src/zeit/content/article/browser/configure.zcml:133
 #: src/zeit/content/image/browser/configure.zcml:88
@@ -146,7 +146,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:229
+#: src/zeit/cms/browser/form.py:233
 #: src/zeit/cms/repository/browser/unknown.zcml:26
 #: src/zeit/cms/repository/browser/folder.zcml:22
 #: src/zeit/cms/syndication/browser/configure.zcml:44
@@ -156,6 +156,7 @@ msgid "View"
 msgstr ""
 
 #: src/zeit/cms/browser/globalmenuitem.pt:3
+#: src/zeit/cms/browser/grouped-form.pt:26
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
 #: src/zeit/xmleditor/browser/form.pt:15
@@ -163,27 +164,31 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:193
+#: src/zeit/cms/browser/listing.py:214
 #: src/zeit/content/article/interfaces.py:138
 #: src/zeit/search/browser/search.py:91
 #: src/zeit/search/interfaces.py:21
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:199
+#: src/zeit/cms/browser/listing.py:220
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:202
+#: src/zeit/cms/browser/listing.py:222
+msgid "Hits"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:224
 #: src/zeit/cms/content/interfaces.py:78
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:205
+#: src/zeit/cms/browser/listing.py:227
 #: src/zeit/cms/content/interfaces.py:63
 #: src/zeit/content/article/interfaces.py:175
 #: src/zeit/content/image/interfaces.py:35
@@ -193,12 +198,12 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:208
+#: src/zeit/cms/browser/listing.py:230
 #. Default: "Vol."
 msgid "volme-abbreviated"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:211
+#: src/zeit/cms/browser/listing.py:233
 #: src/zeit/cms/content/interfaces.py:73
 #: src/zeit/search/browser/search.py:101
 #: src/zeit/search/interfaces.py:25
@@ -298,6 +303,10 @@ msgstr ""
 msgid "Taxonomy"
 msgstr ""
 
+#: src/zeit/cms/content/browser/keyword-typeahead.pt:12
+msgid "No Keywords match your search criteria."
+msgstr ""
+
 #: src/zeit/cms/content/browser/keyword-widget.pt:30
 msgid "Edit keywords"
 msgstr ""
@@ -353,6 +362,10 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
+#: src/zeit/cms/content/field.py:32
+msgid "Invalid structure."
+msgstr ""
+
 #: src/zeit/cms/content/interfaces.py:103
 msgid "Copyright (c)"
 msgstr ""
@@ -401,8 +414,12 @@ msgstr ""
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:261
+#: src/zeit/cms/content/interfaces.py:254
 msgid "Objects that are related to this object."
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:274
+msgid "Hits today"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:38
@@ -768,11 +785,11 @@ msgstr ""
 msgid "Pages"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:188
+#: src/zeit/content/article/interfaces.py:187
 msgid "Price (EUR)"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:192
+#: src/zeit/content/article/interfaces.py:191
 msgid "Raw data"
 msgstr ""
 
@@ -1123,6 +1140,18 @@ msgstr ""
 
 #: src/zeit/workflow/interfaces.py:71
 msgid "Date first released"
+msgstr ""
+
+#: src/zeit/workflow/source.py:33
+msgid "yes"
+msgstr ""
+
+#: src/zeit/workflow/source.py:34
+msgid "no"
+msgstr ""
+
+#: src/zeit/workflow/source.py:35
+msgid "not necessary"
 msgstr ""
 
 #: src/zeit/wysiwyg/browser/configure.zcml:8
