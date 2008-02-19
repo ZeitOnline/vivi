@@ -212,26 +212,33 @@ class Listing(object):
         LockedColumn(u'', name='locked'),
         GetterColumn(
             _('Author'),
-            lambda t, c: t.author),
+            name='author',
+            getter=lambda t, c: t.author),
         GetterColumn(
             _('Title'),
-            lambda t, c: t.title),
+            name='title',
+            getter=lambda t, c: t.title),
         FilenameColumn(
             _('File name'),
-            lambda t, c: t.__name__),
+            name='filename',
+            getter=lambda t, c: t.__name__),
         HitColumn(_('Hits')),
         GetterColumn(
             _('Ressort'),
-            lambda t, c: t.ressort),
+            name='ressort',
+            getter=lambda t, c: t.ressort),
         GetterColumn(
             _('Year'),
-            lambda t, c: t.year),
+            name='year',
+            getter=lambda t, c: t.year),
         GetterColumn(
             _('volme-abbreviated', default=u'Vol.'),
-            lambda t, c: t.volume),
+            name='volume',
+            getter=lambda t, c: t.volume),
         GetterColumn(
             _('Page'),
-            lambda t, c: t.page),
+            name='page',
+            getter=lambda t, c: t.page),
         MetadataColumn(u'Metadaten', name='metadata'),
     )
 
