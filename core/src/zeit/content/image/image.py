@@ -72,3 +72,5 @@ class XMLReference(object):
 @zope.interface.implementer(gocept.lxml.interfaces.IObjectified)
 def image_objectified(context):
     return zeit.cms.content.interfaces.IXMLReference(context).xml
+
+

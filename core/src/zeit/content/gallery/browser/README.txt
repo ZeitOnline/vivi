@@ -271,3 +271,53 @@ We now have a view tab:
 <!DOCTYPE html ...
     <title> View gallery metadata </title>
     ...
+
+
+Broken images in a gallery
+==========================
+
+We add a folder with a broken image:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Folder']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'broken_image_folder'
+>>> browser.getControl('Add').click()
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Image (single)']
+>>> browser.open(menu.value[0])
+>>> browser.url
+'http://localhost/++skin++cms/repository/broken_image_folder/@@zeit.content.image.Add'
+
+>>> import StringIO
+>>> test_data = StringIO.StringIO('392-392938r82r')
+>>> file_control = browser.getControl(name='form.data')
+>>> file_control.filename = 'corrupt.jpg'
+>>> file_control.value = test_data
+>>> browser.getControl(name='form.volume').value != '0'
+True
+>>> browser.getControl(name='form.actions.add').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/corrupt.jpg/@@edit.html'
+
+Now try to add a gallery:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Gallery']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('Title').value = 'New Gallery'
+>>> browser.getControl('File name').value = 'gallery'
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Image folder').value = 'http://xml.zeit.de/broken_image_folder'
+>>> browser.getControl(name="form.actions.add").click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/@@zeit.content.gallery.Add'
+>>> print browser.contents
+<!DOCTYPE html ...
+  <title>Error</title>
+  ...
+  <h1>An error occured</h1>
+  ...
+  <pre>Cannot transform image  ...

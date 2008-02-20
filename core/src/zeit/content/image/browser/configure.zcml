@@ -45,6 +45,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    name="index.html"
+    for="zeit.content.image.transform.ImageProcessingError"
+    template="processingerror.pt"
+    class=".error.ProcessingError"
+    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
 
   <!-- Image data to the browser -->
 
