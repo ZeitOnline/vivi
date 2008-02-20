@@ -170,6 +170,16 @@ TypeError: ('Could not adapt',
             <InterfaceClass zeit.cms.content.interfaces.IDAVToken>)
 
 
+For content objects there is also a token adapter:
+
+>>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+...     uniqueId = u'my-unique-id'
+>>> content = Content()
+>>> zeit.cms.content.interfaces.IDAVToken(content)
+u'my-unique-id'
+
+
 Content sources
 ---------------
 

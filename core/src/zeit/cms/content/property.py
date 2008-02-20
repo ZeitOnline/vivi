@@ -133,65 +133,6 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         self.getNode(instance).set(self.attribute_name, value)
 
 
-class AttributeProperty(object):
-    """Attribute nodes reside in the head."""
-
-    def __init__(self, namespace, name):
-        self.xpath = '//head/attribute[@ns="%s" and @name="%s"]' % (
-                namespace, name)
-        self.path = lxml.objectify.ObjectPath('.head.attribute')
-        self.namespace = namespace
-        self.name = name
-
-    def __get__(self, instance, class_):
-        node = instance.xml.find(self.xpath)
-        if node is not None:
-            value = node.pyval
-            if isinstance(value, str):
-                value = unicode(value)
-            return value
-
-    def __set__(self, instance, value):
-        __traceback_info__ = (instance, self.xpath, value)
-        self.delAttribute(instance)
-        self.addAttribute(instance, value)
-
-    def __delete__(self, instance):
-        self.delAttribute(instance)
-
-    def addAttribute(self, instance, value):
-        root = instance.xml
-        self.path.addattr(root, value)
-        node = self.path.find(root)[-1]
-        node.set('ns', self.namespace)
-        node.set('name', self.name)
-
-    def delAttribute(self, instance):
-        root = instance.xml
-        for node in root.findall(self.xpath):
-            parent = node.getparent()
-            parent.remove(node)
-
-
-class MultipleAttributeProperty(AttributeProperty):
-    """A property with multiple values."""
-
-    def __get__(self, instance, class_):
-        nodes = instance.xml.findall(self.xpath)
-        result = []
-        for node in nodes:
-            value = node.pyval
-            if isinstance(value, str):
-                value = unicode(value)
-            result.append(value)
-        return frozenset(result)
-
-    def __set__(self, instance, values):
-        self.delAttribute(instance)
-        for value in values:
-            self.addAttribute(instance, value)
-
-
 class MultiPropertyBase(object):
 
     def __init__(self, path):
@@ -232,26 +173,6 @@ class SimpleMultiProperty(MultiPropertyBase):
 
     def _node_factory(self, entry, tree):
         return entry
-
-
-class ResourceSet(MultipleAttributeProperty):
-
-    def __get__(self, instance, class_):
-        ids = super(ResourceSet, self).__get__(instance, class_)
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        objects = []
-        for id in ids:
-            try:
-                obj = repository.getContent(id)
-            except KeyError:
-                continue
-            objects.append(obj)
-        return frozenset(objects)
-
-    def __set__(self, instance, values):
-        values = sorted([ob.uniqueId for ob in values])
-        super(ResourceSet, self).__set__(instance, values)
 
 
 class SingleResource(ObjectPathProperty):

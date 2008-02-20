@@ -82,7 +82,6 @@ the (no value) to be choosen.
 ['(no value)']
 >>> browser.getControl('Template').displayValue
 ['(no value)']
->>> browser.handleErrors = False
 >>> browser.getControl('Continue').click()
 
 We are now looking at the add form. Some fields are filled with suitable
@@ -448,7 +447,7 @@ at its xml source:
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Source').click()
->>> print browser.getControl(name='form.xml').value
+>>> print browser.getControl(name='form.xml').value.replace('\r', '')
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
   <container>
@@ -606,11 +605,11 @@ Let's have a look at the source:
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Studium</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
-    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="comments">true</attribute>
-    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="banner">true</attribute>
-    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="mostread">true</attribute>
-    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
-    <attribute py:pytype="bool" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">false</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
   </head>
   <body>

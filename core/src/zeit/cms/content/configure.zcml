@@ -8,6 +8,7 @@
   <adapter factory=".davtoken.fromBool" />
   <adapter factory=".davtoken.fromNone" />
   <adapter factory=".davtoken.fromUnicode" />
+  <adapter factory=".davtoken.fromCMSContent" />
 
   <adapter factory=".token.fromCMSContent" />
 
@@ -105,6 +106,8 @@
   <adapter factory=".related.BasicReference" />
 
   <!-- automatic xml updating -->
+  <adapter factory=".xmlsupport.PropertyToXMLAttribute" />
   <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
+  <subscriber handler=".xmlsupport.map_dav_properties_to_xml_before_checkin" />
 
 </configure>

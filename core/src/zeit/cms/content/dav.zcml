@@ -9,6 +9,9 @@
   <adapter factory=".dav.DatetimeProperty" />
   <adapter factory=".dav.CollectionProperty" />
   <adapter factory=".dav.CollectionTextLineProperty" />
+  <adapter factory=".dav.CollectionTextLineProperty"
+    for="zope.schema.interfaces.ICollection
+    zope.schema.interfaces.IChoice" />
   <adapter factory=".dav.GenericProperty" />
   <adapter factory=".dav.GenericCollectionProperty" />
 

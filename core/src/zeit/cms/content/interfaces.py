@@ -164,6 +164,13 @@ class IDAVPropertyConverter(zope.interface.Interface):
         returns unicode
         """
 
+class IGenericDAVPropertyConverter(IDAVPropertyConverter):
+    """A dav property converter which converts in a generic way.
+
+    This interface is a marker if some code wants to know if a generic
+    converter or a specialised is doing the work.
+
+    """
 
 class IDAVToken(zope.interface.Interface):
     """A string representing a token that uniquely identifies a value."""
@@ -265,6 +272,16 @@ class IDAVPropertiesInXML(zope.interface.Interface):
     xml, too. That is in addition to the Metadata stored as webdav properties.
 
     """
+
+
+class IDAVPropertyXMLSynchroniser(zope.interface.Interface):
+    """Synchronises dav properties to XML."""
+
+    def set(namespace, name):
+        """Set value for the DAV property (name, namespace)."""
+
+    def sync():
+        """Synchronise all properties."""
 
 
 class IAccessCounter(zope.interface.Interface):

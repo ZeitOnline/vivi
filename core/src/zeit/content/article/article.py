@@ -49,30 +49,43 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     default_template = ARTICLE_TEMPLATE
 
-    textLength = zeit.cms.content.property.AttributeProperty(
+    textLength = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['textLength'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')
-
-    commentsAllowed = zeit.cms.content.property.AttributeProperty(
+    commentsAllowed = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['commentsAllowed'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
-    banner = zeit.cms.content.property.AttributeProperty(
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'banner')
-    boxMostRead = zeit.cms.content.property.AttributeProperty(
+    boxMostRead = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['boxMostRead'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'mostread')
-    pageBreak = zeit.cms.content.property.AttributeProperty(
+    pageBreak = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['pageBreak'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'paragraphsperpage')
-    dailyNewsletter = zeit.cms.content.property.AttributeProperty(
+    dailyNewsletter = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['dailyNewsletter'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
+    automaticTeaserSyndication = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['automaticTeaserSyndication'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication',
+        use_default=True)
+    syndicatedIn = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['syndicatedIn'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn',
+        use_default=True)
 
-    syndicatedIn = zeit.cms.content.property.ResourceSet(
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn')
-    automaticTeaserSyndication = zeit.cms.content.property.ResourceSet(
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
+    #banner = zeit.cms.content.property.AttributeProperty(
+    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'banner')
+    #syndicatedIn = zeit.cms.content.property.ResourceSet(
+    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn')
+    #automaticTeaserSyndication = zeit.cms.content.property.ResourceSet(
+    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
     syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions',))
+        ('has_recensions', 'banner'))
+
 
     @rwproperty.getproperty
     def html(self):

@@ -15,8 +15,13 @@ import zeit.connector.interfaces
 import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.cms.checkout.interfaces
+
 
 import zeit.workflow.interfaces
+
+
+WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 
 class LiveProperties(dict):
@@ -47,17 +52,17 @@ class Workflow(object):
 
     zeit.cms.content.dav.mapProperties(
         zeit.workflow.interfaces.IWorkflow,
-        'http://namespaces.zeit.de/CMS/workflow',
+        WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'published',
          'images_added', 'urgent'))
 
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[0],
-        'http://namespaces.zeit.de/CMS/workflow',
+        WORKFLOW_NS,
         'released_from')
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[1],
-        'http://namespaces.zeit.de/CMS/workflow',
+        WORKFLOW_NS,
         'released_to')
 
     zeit.cms.content.dav.mapProperties(
@@ -119,7 +124,7 @@ class FeedMetadataUpdater(object):
 def set_first_release_date(context, event):
     # XXX refactor to use a IPublishedEvent.
     if ((event.property_name, event.property_namespace) !=
-        ('published', 'http://namespaces.zeit.de/CMS/workflow')):
+        ('published', WORKFLOW_NS)):
         return
     if context.date_first_released:
         return
@@ -146,6 +151,25 @@ def notify_adapted_property_change(context, event):
         zeit.cms.content.interfaces.DAVPropertyChangedEvent(
             content, event.property_namespace, event.property_name,
             event.old_value, event.new_value))
+
+
+@zope.component.adapter(
+    zeit.cms.content.interfaces.IDAVPropertiesInXML,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def copy_first_released_property_to_xml(context, event):
+    if ((event.property_name, event.property_namespace) !=
+        ('date_first_released', WORKFLOW_NS)):
+        return
+    manager = zeit.cms.checkout.interfaces.ICheckoutManager(context)
+    if not manager.canCheckout:
+        return
+    checked_out = manager.checkout()
+
+    manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
+    if not manager.canCheckin:
+        del checked_out.__parent__[checked_out.__name__]
+        return
+    manager.checkin()
 
 
 @zope.component.adapter(

@@ -86,7 +86,7 @@ class DAVProperty(object):
 class UnicodeProperty(object):
 
     zope.interface.implements(
-        zeit.cms.content.interfaces.IDAVPropertyConverter)
+        zeit.cms.content.interfaces.IGenericDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IFromUnicode)
 
     def __init__(self, context):
@@ -256,7 +256,7 @@ class GenericProperty(object):
     """
 
     zope.interface.implements(
-        zeit.cms.content.interfaces.IDAVPropertyConverter)
+        zeit.cms.content.interfaces.IGenericDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.IField)
 
     def __init__(self, context):
@@ -286,7 +286,7 @@ class GenericCollectionProperty(GenericProperty):
 
     """
 
-    zope.interface.implements(
+    zope.interface.implementsOnly(
         zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(zope.schema.interfaces.ICollection,
                           zope.interface.Interface)
@@ -294,6 +294,22 @@ class GenericCollectionProperty(GenericProperty):
     def __init__(self, context, value_type):
         self.context = context
         self.value_type = value_type
+        self.content_converter = None
+
+    def fromProperty(self, value):
+        value = super(GenericCollectionProperty, self).fromProperty(value)
+        if self.content_converter is not None:
+            type_ = type(zope.proxy.removeAllProxies(value))
+            value = type_(self.content_converter.fromProperty(item)
+                          for item in value)
+        return value
+
+    def toProperty(self, value):
+        if self.content_converter is not None:
+            type_ = type(zope.proxy.removeAllProxies(value))
+            value = type_(self.content_converter.toProperty(item)
+                          for item in value)
+        return super(GenericCollectionProperty, self).toProperty(value)
 
 
 def mapProperties(interface, namespace, names):

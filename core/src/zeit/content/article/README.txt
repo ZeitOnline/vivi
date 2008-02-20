@@ -58,12 +58,9 @@ XML:
    </subtitle>
   </body>
   <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
-      name="year">2007</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
-      name="volume">1</attribute>
-    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
-      name="text-length">4711</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="text-length">4711</attribute>
   </head>
 </article>
 
@@ -87,7 +84,7 @@ When we set an attribute multiple times it's just changed:
       name="year">2007</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
   </head>
 </article>
@@ -111,7 +108,7 @@ the authors in the xml:
       name="year">2007</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="author">Bart Simpson;Lisa Simpson</attribute>
@@ -135,7 +132,7 @@ There is an adapter which sets the text length automatically:
   </body>
   <head>
     ...
-    <attribute py:pytype="int" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
         name="text-length">194</attribute>
   </head>
 </article>
@@ -261,14 +258,14 @@ datetime.datetime(...)
 
 We expect the value to be in the xml now as well:
 
-# XXX doesn't work yet
-#>>> print lxml.etree.tostring(article.xml, pretty_print=True)
-#<article>
-#  <head> 
-#    ...
-#    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_first_released">...</attribute>
-#  </head>
-#  ...
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article>
+  <head> 
+    ...
+    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
+    ...    
+  </head>
+  ...
     
 
 

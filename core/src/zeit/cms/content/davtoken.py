@@ -7,6 +7,7 @@ import types
 import zope.component
 import zope.interface
 
+import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 
 
@@ -29,3 +30,9 @@ def fromNone(value):
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVToken)
 def fromUnicode(value):
     return value
+
+
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IDAVToken)
+def fromCMSContent(value):
+    return value.uniqueId

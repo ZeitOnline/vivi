@@ -30,12 +30,12 @@ directly IXMLRepresentation.
 ...         self.properties = {}
 ...
 
-#Set security:
-#
-#>>> import zope.app.security.protectclass
-#>>> zope.app.security.protectclass.protectName(Content, 'xml', 'zope.Public')
-#>>> zope.app.security.protectclass.protectSetAttribute(
-#...     Content, 'xml', 'zope.Public')
+Set security:
+
+>>> import zope.app.security.protectclass
+>>> zope.app.security.protectclass.protectName(Content, 'xml', 'zope.Public')
+>>> zope.app.security.protectclass.protectSetAttribute(
+...     Content, 'xml', 'zope.Public')
 
 We need an adapter for the webdav properties:
 
@@ -49,6 +49,9 @@ We need an adapter for the webdav properties:
 
 >>> content = Content()
 
+
+Update on property change
+=========================
 
 When we set the title, an IDAVPropertyChangedEvent is issued. Thus the xml will
 change and contain the property:
@@ -74,8 +77,49 @@ property:
 </a>
 
 
+Checkin handler
+===============
 
-XXX checkin/checkout handlers
+The checkin handler copies all webdav properties to the xml *before* the object
+is checked in. It removes all existing head.attribute nodes before adding the
+properties. Add some attributes to make sure they're removed:
+
+>>> content.xml = lxml.objectify.XML(u"""\
+...     <a>
+...      <head>
+...        <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
+...        <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
+...      </head>
+...    </a>""")
+
+
+Let's add some property under the hood:
+
+>>> import zeit.connector.interfaces
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
+>>> properties[('am-i', 'under-the-hood')] = '4711'
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a>
+  <head>
+    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
+    <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
+  </head>
+</a>
+
+
+When an IBeforeCheckinEvent is sent the xml is updated:
+
+>>> import zope.event
+>>> import zeit.cms.checkout.interfaces
+>>> zope.event.notify(zeit.cms.checkout.interfaces.BeforeCheckinEvent(
+...     content, None))
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a>
+  <head>
+    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="under-the-hood" name="am-i">4711</attribute>
+  </head>
+</a>
+
 
 
 Clean up:

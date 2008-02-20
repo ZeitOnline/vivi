@@ -233,15 +233,6 @@ resourceFactory = zope.component.adapter(
     zeit.content.gallery.interfaces.IGallery)(resourceFactory)
 
 
-@zope.component.adapter(
-    zeit.content.gallery.interfaces.IGallery,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def mapPropertyToAttribute(cp, event):
-    attribute = zeit.cms.content.property.AttributeProperty(
-        event.property_namespace, event.property_name)
-    attribute.__set__(cp, event.new_value)
-
-
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryEntry)
 def galleryentry_factory(context):

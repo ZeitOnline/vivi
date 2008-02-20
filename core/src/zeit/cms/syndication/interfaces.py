@@ -6,6 +6,8 @@ import zope.component.interfaces
 import zope.interface
 import zope.schema
 
+import zeit.cms.content.contentsource
+import zeit.cms.content.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -140,3 +142,19 @@ class IFeedMetadataUpdater(zope.interface.Interface):
         obj: the object to be updated.
 
         """
+
+
+class IFeedSource(zeit.cms.content.interfaces.ICMSContentSource):
+    """A source for feeds."""
+
+
+class FeedSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    zope.interface.implements(IFeedSource)
+    name = 'zeit.cms.syndication.feed'
+
+    def verify_interface(self, value):
+        return IFeed.providedBy(value)
+
+
+feedSource = FeedSource()

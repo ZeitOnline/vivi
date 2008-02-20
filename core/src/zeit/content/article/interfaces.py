@@ -93,7 +93,8 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     syndicatedIn = zope.schema.FrozenSet(
         title=_("Article is syndicated in these feeds."),
         default=frozenset(),
-        value_type=zope.schema.Object(zeit.cms.syndication.interfaces.IFeed))
+        value_type=zope.schema.Choice(
+            source=zeit.cms.syndication.interfaces.feedSource))
 
 
     syndicationLog = zope.schema.Tuple(

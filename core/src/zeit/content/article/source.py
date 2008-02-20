@@ -2,9 +2,12 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.interface
+
 import zc.sourcefactory.contextual
 
 import zeit.content.article.interfaces
+import zeit.cms.content.interfaces
 
 
 class SyndicatedInSource(
