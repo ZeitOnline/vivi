@@ -192,18 +192,18 @@ class DatetimeProperty(object):
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
-@zope.component.adapter(zope.schema.interfaces.ITuple)
-def TupleProperty(context):
+@zope.component.adapter(zope.schema.interfaces.ICollection)
+def CollectionProperty(context):
     return zope.component.queryMultiAdapter(
         (context, context.value_type),
         zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
-class TupleTextLineProperty(object):
+class CollectionTextLineProperty(object):
 
     zope.interface.implements(
         zeit.cms.content.interfaces.IDAVPropertyConverter)
-    zope.component.adapts(zope.schema.interfaces.ITuple,
+    zope.component.adapts(zope.schema.interfaces.ICollection,
                           zope.schema.interfaces.ITextLine)
 
     SPLIT_PATTERN = re.compile(r'(?!\\);')
@@ -211,6 +211,10 @@ class TupleTextLineProperty(object):
     def __init__(self, context, value_type):
         self.context = context
         self.value_type = value_type
+        self._type = context._type
+        if isinstance(self._type, tuple):
+            # XXX this is way hacky
+            self._type = self._type[-1]
 
     def fromProperty(self, value):
         from_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
@@ -232,7 +236,7 @@ class TupleTextLineProperty(object):
             item = from_prop.fromProperty(item)
             result.append(item)
 
-        return tuple(result)
+        return self._type(result)
 
     def toProperty(self, value):
         to_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
@@ -245,7 +249,7 @@ class TupleTextLineProperty(object):
 
 
 class GenericProperty(object):
-    """Generic tuple property converter.
+    """Generic property converter.
 
     Uses zope.xmlpickle to (de-)serialise the data.
 
@@ -275,7 +279,7 @@ class GenericProperty(object):
         return lxml.etree.tounicode(xml)
 
 
-class GenericTupleProperty(GenericProperty):
+class GenericCollectionProperty(GenericProperty):
     """Generic tuple property converter.
 
     Uses zope.xmlpickle to (de-)serialise the data.
@@ -284,7 +288,7 @@ class GenericTupleProperty(GenericProperty):
 
     zope.interface.implements(
         zeit.cms.content.interfaces.IDAVPropertyConverter)
-    zope.component.adapts(zope.schema.interfaces.ITuple,
+    zope.component.adapts(zope.schema.interfaces.ICollection,
                           zope.interface.Interface)
 
     def __init__(self, context, value_type):

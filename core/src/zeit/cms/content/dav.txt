@@ -239,10 +239,10 @@ Converting datetimes takes timezone info into account:
 '2004-01-04T10:32:00+01:00'
 
 
-Tuple of TextLine
-++++++++++++++++++
+Collection of TextLine
+++++++++++++++++++++++
 
-Tuples of TextLine are serialised with a semicolon as separator. 
+Collections of TextLine are serialised with a semicolon as separator. 
 
 >>> field = zope.schema.Tuple(
 ...     value_type=zope.schema.TextLine(),
@@ -271,6 +271,38 @@ Make sure the DAV value is correctly converted back to a tuple:
 
 >>> converter.fromProperty(u'Peter Buhr;Klaus\\; Kl\\;eb\\;er')
 (u'Peter Buhr', u'Klaus; Kl;eb;er')
+
+
+As the collection serialiser is registered for ICollection we can also use
+List, Set and FrozenSet as field:
+
+>>> field = zope.schema.List(
+...     value_type=zope.schema.TextLine(),
+...     default=[])
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('Peter Buhr;Klaus Kleber')
+[u'Peter Buhr', u'Klaus Kleber']
+
+>>> field = zope.schema.Set(
+...     value_type=zope.schema.TextLine(),
+...     default=set())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
+>>> result
+set([..., ...])
+>>> sorted(result)
+[u'Klaus Kleber', u'Peter Buhr']
+
+>>> field = zope.schema.FrozenSet(
+...     value_type=zope.schema.TextLine(),
+...     default=frozenset())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
+>>> result
+frozenset([..., ...])
+>>> sorted(result)
+[u'Klaus Kleber', u'Peter Buhr']
+
 
 
 Generic serialiser
