@@ -1,19 +1,22 @@
 /* Lightbox */
 
+#lightbox-header {
+    z-index: 3;
+}
+
 #lightbox > .keyword-tree {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     width: 40%;
-    margin: 1em;
 }
 
 
 #lightbox > .keyword-tree > .Tree {
     overflow: auto;
     position: absolute;
-    top: 2.1em;
+    top: 1em;
     left: 0;
     bottom: 0;
     right: 0;
@@ -25,7 +28,6 @@
     right: 0;
     width: 55%;
     height: 5em;
-    margin: 1em;
 }
 
 #lightbox > .keyword-list {
@@ -107,3 +109,12 @@
     display: inline;
     padding: 0 1em;
 }
+
+#lightbox h1 {
+  font-size: 1.2em;
+  font-weight: normal;
+  margin-top: -2em;
+  background-color: transparent;
+}
+
+

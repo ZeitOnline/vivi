@@ -488,15 +488,6 @@ table.properties textarea {
   padding: 0.4em;
 }
 
-#rename-box h1 {
-  font-size: 1.2em;
-  font-weight: normal;
-  background-color: #ddd;
-}
-
-
 #rename-box .nextUrl {
   display: none;
 }
-
-
