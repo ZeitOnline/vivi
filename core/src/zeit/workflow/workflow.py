@@ -10,6 +10,7 @@ import rwproperty
 import zope.component
 import zope.event
 import zope.interface
+import zope.location.location
 
 import zeit.connector.interfaces
 import zeit.cms.interfaces
@@ -26,6 +27,8 @@ WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 class LiveProperties(dict):
     """Webdav properties which are updated upon change."""
+
+    zope.interface.implements(zeit.connector.interfaces.IWebDAVProperties)
 
     def __init__(self, resource):
         super(LiveProperties, self).__init__(resource.properties)
@@ -93,7 +96,8 @@ class Workflow(object):
 @zope.component.adapter(zeit.workflow.interfaces.IWorkflow)
 @zope.interface.implementer(zeit.cms.interfaces.IWebDAVProperties)
 def workflowProperties(context):
-    return context.properties
+    # return properties located in the actual content object
+    return zope.location.location.located(context.properties, context.context)
 
 
 class FeedMetadataUpdater(object):
@@ -139,18 +143,6 @@ def update_last_modified_by(context, event):
     if workflow is None:
         return
     workflow.last_modified_by = event.principal.id
-
-
-@zope.component.adapter(
-    zeit.workflow.interfaces.IWorkflow,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def notify_adapted_property_change(context, event):
-    """Notify the object IWorkflow adapted about a property change."""
-    content = context.context
-    zope.event.notify(
-        zeit.cms.content.interfaces.DAVPropertyChangedEvent(
-            content, event.property_namespace, event.property_name,
-            event.old_value, event.new_value))
 
 
 @zope.component.adapter(

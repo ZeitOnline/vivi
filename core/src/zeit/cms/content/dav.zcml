@@ -15,4 +15,6 @@
   <adapter factory=".dav.GenericProperty" />
   <adapter factory=".dav.GenericCollectionProperty" />
 
+  <subscriber handler=".dav.notify_cms_content_property_change" />
+
 </configure>

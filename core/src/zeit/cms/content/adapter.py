@@ -10,6 +10,7 @@ import lxml.objectify
 import zope.annotation
 import zope.component
 import zope.interface
+import zope.location.location
 import zope.security.proxy
 
 import zeit.cms.content.interfaces
@@ -22,6 +23,13 @@ import zeit.connector.resource
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def webDAVPropertiesFactory():
     return zeit.connector.resource.WebDAVProperties()
+
+@zope.component.adapter(zeit.connector.interfaces.IWebDAVProperties)
+@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+def webdavproperties_to_cms_content(context):
+    if not zope.location.interfaces.ILocation.providedBy(context):
+        return
+    return zeit.cms.interfaces.ICMSContent(context.__parent__)
 
 
 def xmlContentToResourceAdapterFactory(typ):

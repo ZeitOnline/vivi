@@ -3,6 +3,7 @@
   <include file="dav.zcml" />
 
   <adapter factory=".adapter.webDAVPropertiesFactory" trusted="yes" />
+  <adapter factory=".adapter.webdavproperties_to_cms_content" />
   <adapter factory=".adapter.xml_source" />
 
   <adapter factory=".davtoken.fromBool" />

@@ -262,8 +262,7 @@ We expect the value to be in the xml now as well:
 <article>
   <head> 
     ...
-    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
-    ...    
+    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
   </head>
   ...
     

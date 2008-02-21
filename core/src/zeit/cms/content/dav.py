@@ -83,6 +83,30 @@ class DAVProperty(object):
             instance, self.namespace, self.name, old_value, dav_value))
 
 
+@zope.component.adapter(
+    zope.interface.Interface,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def notify_cms_content_property_change(context, event):
+    """Notify ICMSContent object about a property change.
+
+    When a content object is adapted to extend functionality it is common to
+    have an adapter to IWebDAVProperties from the adapter. In this case the
+    orgiginal object would not be notified about changes.
+
+    """
+    if zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
+    # Get the CMSContent belonging to the properties
+    properties = zeit.connector.interfaces.IWebDAVProperties(context)
+    content = zeit.cms.interfaces.ICMSContent(properties, None)
+    if content is None:
+        return
+    zope.event.notify(
+        zeit.cms.content.interfaces.DAVPropertyChangedEvent(
+            content, event.property_namespace, event.property_name,
+            event.old_value, event.new_value))
+
+
 class UnicodeProperty(object):
 
     zope.interface.implements(
