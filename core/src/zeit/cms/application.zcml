@@ -40,8 +40,6 @@
   <include package="zc.table" />
   <include package="zc.sourcefactory" />
 
-  <include package="zc.notification" />
-
   <includeOverrides package="zc.datetimewidget" file="overrides.zcml"/>
   <include package="zc.datetimewidget"/>
 
