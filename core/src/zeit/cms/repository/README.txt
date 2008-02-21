@@ -21,7 +21,8 @@ The repository contains objects representing collections in the WebDAV server:
 >>> from zeit.cms.repository.interfaces import IRepository
 >>> repository = zope.component.getUtility(IRepository)
 >>> repository.keys()
-[u'online', u'2006', u'2007', u'politik.feed', u'wirtschaft.feed']
+[u'online', u'2006', u'2007', u'politik.feed', u'testcontent',
+ u'wirtschaft.feed']
 
 >>> c_2007 = repository['online']['2007']
 >>> c_2007
@@ -219,13 +220,14 @@ Objects can be renamed in a container:
 >>> repository.rename('i_am_new', 'i_am_not_so_new_anymore')
 >>> list(repository)
 [u'online', u'2006', u'2007', u'i_am_not_so_new_anymore', u'politik.feed',
- u'wirtschaft.feed']
+ u'testcontent', u'wirtschaft.feed']
 
 Rename it back:
 
 >>> repository.rename('i_am_not_so_new_anymore', 'i_am_new')
 >>> list(repository)
-[u'online', u'2006', u'2007', u'i_am_new', u'politik.feed', u'wirtschaft.feed']
+[u'online', u'2006', u'2007', u'i_am_new', u'politik.feed',
+ u'testcontent', u'wirtschaft.feed']
 
 
 Deleting Content Object
@@ -307,6 +309,7 @@ So everything which is not noted in the `default_shown_containers`:
  u'http://xml.zeit.de/online/2005',
  u'http://xml.zeit.de/online/2006',
  u'http://xml.zeit.de/politik.feed',
+ u'http://xml.zeit.de/testcontent',
  u'http://xml.zeit.de/wirtschaft.feed']
 
 
