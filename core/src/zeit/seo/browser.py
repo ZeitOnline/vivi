@@ -4,6 +4,8 @@
 
 import zope.formlib.form
 
+import gocept.form.grouped
+
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -18,6 +20,15 @@ class SEOBaseForm(object):
         zope.formlib.form.FormFields(
             zeit.cms.content.interfaces.ICommonMetadata).select(
                 'keywords', 'ressort', 'sub_ressort', 'serie'))
+
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('SEO data'),
+            'column-left wide-widgets'),
+        gocept.form.grouped.Fields(
+            _('Standard metadata'),
+            ('keywords', 'ressort', 'sub_ressort', 'serie'),
+            'column-right'))
 
 
 class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
