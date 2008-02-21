@@ -9,6 +9,7 @@
 
   <class class=".testcontenttype.TestContentType">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
     <require
       interface=".interfaces.ITestContentType"
       permission="zope.View"

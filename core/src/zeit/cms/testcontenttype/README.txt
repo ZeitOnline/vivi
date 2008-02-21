@@ -24,7 +24,9 @@ Now that was pretty boring. Add a title and year (from common metadata):
 >>> content.year = 2008
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head/>
+  <head>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2008</attribute>
+  </head>
   <body>
     <title>gocept</title>
   </body>
