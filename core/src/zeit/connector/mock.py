@@ -78,6 +78,8 @@ class Connector(object):
             return 'feed'
         if '<centerpage>' in data:
             return 'centerpage'
+        if '<testtype>' in data:
+            return 'testcontenttype'
         content_type, width, height = zope.app.file.image.getImageInfo(data)
         if content_type:
             return 'image'
