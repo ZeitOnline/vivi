@@ -38,7 +38,6 @@ setup(
         'z3c.zrtresource',
         'zc.datetimewidget',
         'zc.form',
-        'zc.notification',
         'zc.recipe.egg>=1.1.0dev-r84019',
         'zc.resourcelibrary',
         'zc.set',
