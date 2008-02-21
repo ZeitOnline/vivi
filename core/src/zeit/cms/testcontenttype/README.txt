@@ -29,3 +29,25 @@ Now that was pretty boring. Add a title and year (from common metadata):
     <title>gocept</title>
   </body>
 </testtype>
+
+
+Browser tests
+=============
+
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+Make sure we have a default view:
+
+>>> browser.open('http://localhost/++skin++cms/repository/testcontent')
+>>> print browser.contents
+<?xml ...
+    <title> View </title>
+    ... 
+    <div id="edit-form" class="grouped-form">
+    ...
+
+>>> browser.getLink('View metadata').click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/testcontent/@@view.html'

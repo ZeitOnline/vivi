@@ -1,4 +1,6 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
 
   <adapter
     factory=".testcontenttype.test_content_type_factory"
@@ -32,5 +34,32 @@
       permission="zeit.EditContent"
       />
   </class>
+
+  <browser:defaultView
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:view
+    name="view.html"
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    class="zeit.cms.content.browser.form.CommonMetadataDisplayForm"
+    />
+
+  <browser:menuItem
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
+    menu="zeit-context-views"
+    title="View metadata"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+
+    
 
 </configure>
