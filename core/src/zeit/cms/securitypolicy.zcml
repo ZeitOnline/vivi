@@ -3,10 +3,10 @@
   xmlns:meta="http://namespaces.zope.org/meta"
   i18n_domain="zeit.cms">
 
-  <include package="zope.app.securitypolicy" />
+  <include package="zope.securitypolicy" />
 
   <securityPolicy
-    component="zope.app.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <!-- Roles -->
   <role id="zope.Anonymous" title="Everybody"
