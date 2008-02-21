@@ -127,3 +127,108 @@ this happens, he is beeing warned in the confirmation dialog:
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 404: Not Found
+
+
+Hit counter
+===========
+
+When there is an adapter to IAccessCounter the information provided by the
+adapter will be shown in listings. Right now there is no access counter, so
+we just get an empty column:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">4schanzentournee-abgesang</span>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
+    </td>
+  </tr>
+  ...
+
+
+Now create an access counter which alwasy returns 42:
+
+>>> class AccessCounter(object):
+...     hits = 42
+...     def __init__(self, context):
+...         self.context = context
+...
+>>> import zope.component
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.content.interfaces
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
+...     zeit.cms.content.interfaces.IAccessCounter)
+
+
+Now we have 42 accesses:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">4schanzentournee-abgesang</span>
+    </td>
+    <td>
+      <span class="hitCounter">42</span>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
+    </td>
+  </tr>
+  ...
+
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
+...     zeit.cms.content.interfaces.IAccessCounter)
+True
+
