@@ -139,7 +139,6 @@ The "last modified by" property is set on checkin. Check the object out and in
 again:
 
 >>> browser.getLink('Checkout').click()
->>> browser.handleErrors = False
 >>> browser.getLink('Checkin').click()
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
