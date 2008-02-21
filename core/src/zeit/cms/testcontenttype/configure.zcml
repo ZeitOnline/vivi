@@ -59,4 +59,13 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
+  <browser:page
+    name="edit.html"
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.cms.content.browser.form.CommonMetadataEditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
 </configure>

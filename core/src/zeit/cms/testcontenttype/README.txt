@@ -51,3 +51,11 @@ Make sure we have a default view:
 >>> browser.getLink('View metadata').click()
 >>> browser.url
 'http://localhost/++skin++cms/repository/testcontent/@@view.html'
+
+
+After checking out we can edit:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Title').value = 'Testing'
+>>> browser.getControl('Apply').click()
+>>> browser.getLink('Checkin').click()
