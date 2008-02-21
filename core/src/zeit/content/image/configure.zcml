@@ -88,8 +88,7 @@
     for=".interfaces.ILocalImageGroup"
     />
 
-  <adapter factory=".metadata.metadata_webdav_read_properties" />
-  <adapter factory=".metadata.metadata_webdav_write_properties" />
+  <adapter factory=".metadata.metadata_webdav_properties" />
   <adapter factory=".metadata.MetadataXMLReference" />
 
 

@@ -30,17 +30,10 @@ class ImageMetadata(object):
         self.context = context
 
 
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVReadProperties)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 @zope.component.adapter(ImageMetadata)
-def metadata_webdav_read_properties(context):
-    return zeit.connector.interfaces.IWebDAVReadProperties(
-        context.context)
-
-
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVWriteProperties)
-@zope.component.adapter(ImageMetadata)
-def metadata_webdav_write_properties(context):
-    return zeit.connector.interfaces.IWebDAVWriteProperties(
+def metadata_webdav_properties(context):
+    return zeit.connector.interfaces.IWebDAVProperties(
         context.context)
 
 
