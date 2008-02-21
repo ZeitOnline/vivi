@@ -4,6 +4,11 @@
     z-index: 3;
 }
 
+#lightbox > div {
+    position: absolute;
+    top: 0;
+}
+
 #lightbox > .keyword-tree {
     position: absolute;
     top: 0;
@@ -115,6 +120,32 @@
   font-weight: normal;
   margin-top: -2em;
   background-color: transparent;
+  max-width: 30em;
 }
 
 
+
+/*
+ * delete screen
+ *
+ * */
+
+.deleteScreen p {
+   margin-left: 1em;
+}
+
+.deleteScreen form input {
+   margin-right: 1em;
+}
+
+.DeleteItem img {
+   vertical-align: middle;
+}
+
+.DeleteItem {
+   padding: 0.5em;
+}
+
+.deleteScreen .containerName {
+  font-weight: bold;
+}
