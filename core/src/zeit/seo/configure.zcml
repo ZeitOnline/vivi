@@ -1,9 +1,38 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser">
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
 
   <adapter factory=".seo.SEO" />
   <adapter factory=".seo.seo_dav_properties" />
+
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="seo-view.html"
+    permission="zope.View"
+    class=".browser.SEODisplay"
+    />
+  
+  <browser:menuItem
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@seo-view.html"
+    menu="zeit-context-views"
+    title="View SEO"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:page
+    name="seo-edit.html"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".browser.SEOEdit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit SEO"
+    />
 
 </configure>
 

@@ -15,9 +15,39 @@ Browser Tests
 Open the test content and go to the SEO page:
 
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
+>>> browser.getLink('SEO').click()
+>>> print browser.contents
+<?xml ...
+    <title> View SEO data </title>
+    ...
 
-#>>> browser.getLink('SEO').click()
-#>>> print browser.contents
+
+To edit the SEO data we need to check the object out:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getLink('SEO').click()
+
+XXX wouldn't it be nice if we still were at the seo page?
+
+Fill out the form:
+
+>>> browser.getControl('HTML title').value = 'HTML title'
+>>> browser.getControl('HTML description').value = 'HTML description'
+>>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl('Apply').click()
+
+Verify the source:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('Source').value
+<testtype>
+  <head>
+    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
+    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
+    <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
+  </head>
+  <body/>
+</testtype>
 
 
 Python level tests
