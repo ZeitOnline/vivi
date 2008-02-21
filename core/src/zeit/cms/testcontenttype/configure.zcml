@@ -1,0 +1,36 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    factory=".testcontenttype.test_content_type_factory"
+    name="testcontenttype" />
+  <adapter factory=".testcontenttype.resourceFactory" />
+
+  <class class=".testcontenttype.TestContentType">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ITestContentType"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITestContentType"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLContent"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLContent"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>
