@@ -1,9 +1,9 @@
-# vim:fileencoding=utf-8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 # $Id$
 """Implementation of the link content type."""
 
+import zope.component
 import zope.interface
 
 import zeit.cms.content.adapter
