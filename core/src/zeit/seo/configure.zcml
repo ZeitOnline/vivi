@@ -1,0 +1,9 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter factory=".seo.SEO" />
+  <adapter factory=".seo.seo_dav_properties" />
+
+</configure>
+
