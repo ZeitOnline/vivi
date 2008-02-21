@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Feb 19 15:12:33 2008\n"
-"PO-Revision-Date: 2008-02-19 15:16+0100\n"
+"POT-Creation-Date: Thu Feb 21 13:22:22 2008\n"
+"PO-Revision-Date: 2008-02-21 13:23+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,13 +37,13 @@ msgid "Date when the event starts."
 msgstr "Datum/Uhrzeit des Terminbeginns"
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:217
+#: src/zeit/cms/browser/listing.py:218
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:246
-#: src/zeit/cms/syndication/interfaces.py:34
+#: src/zeit/cms/content/interfaces.py:253
+#: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
-#: src/zeit/content/article/interfaces.py:140
+#: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:63
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:94
@@ -60,7 +60,7 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:253
+#: src/zeit/cms/content/interfaces.py:260
 msgid "Related content"
 msgstr "Verlinkte Objekte"
 
@@ -126,7 +126,7 @@ msgstr "Abbrechen"
 #: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/content/browser/template.zcml:40
 #: src/zeit/content/article/browser/configure.zcml:133
-#: src/zeit/content/image/browser/configure.zcml:88
+#: src/zeit/content/image/browser/configure.zcml:97
 #: src/zeit/content/gallery/browser/configure.zcml:101
 #: src/zeit/content/article/browser/recension-overview.pt:7
 #: src/zeit/content/article/browser/recension-overview.pt:48
@@ -139,7 +139,7 @@ msgstr "Bearbeiten"
 #: src/zeit/cms/repository/browser/folder.zcml:22
 #: src/zeit/cms/syndication/browser/configure.zcml:44
 #: src/zeit/content/image/browser/configure.zcml:31
-#: src/zeit/content/image/browser/configure.zcml:157
+#: src/zeit/content/image/browser/configure.zcml:166
 msgid "View"
 msgstr "Anzeigen"
 
@@ -153,32 +153,32 @@ msgid "${DYNAMIC_CONTENT}"
 msgstr "${DYNAMIC_CONTENT}"
 
 #: src/zeit/cms/browser/listing.py:214
-#: src/zeit/content/article/interfaces.py:138
+#: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:91
 #: src/zeit/search/interfaces.py:21
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/cms/browser/listing.py:220
+#: src/zeit/cms/browser/listing.py:222
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr "Dateiname"
 
-#: src/zeit/cms/browser/listing.py:222
+#: src/zeit/cms/browser/listing.py:225
 msgid "Hits"
 msgstr "Treffer"
 
-#: src/zeit/cms/browser/listing.py:224
+#: src/zeit/cms/browser/listing.py:227
 #: src/zeit/cms/content/interfaces.py:78
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr "Ressort"
 
-#: src/zeit/cms/browser/listing.py:227
+#: src/zeit/cms/browser/listing.py:231
 #: src/zeit/cms/content/interfaces.py:63
-#: src/zeit/content/article/interfaces.py:175
+#: src/zeit/content/article/interfaces.py:176
 #: src/zeit/content/image/interfaces.py:35
 #: src/zeit/search/interfaces.py:23
 #: src/zeit/content/article/browser/recension-overview.pt:32
@@ -187,11 +187,11 @@ msgid "Year"
 msgstr "Jahr"
 
 #. Default: "Vol."
-#: src/zeit/cms/browser/listing.py:230
+#: src/zeit/cms/browser/listing.py:235
 msgid "volme-abbreviated"
 msgstr "Ausg."
 
-#: src/zeit/cms/browser/listing.py:233
+#: src/zeit/cms/browser/listing.py:239
 #: src/zeit/cms/content/interfaces.py:73
 #: src/zeit/search/browser/search.py:101
 #: src/zeit/search/interfaces.py:25
@@ -225,9 +225,8 @@ msgid "CMS"
 msgstr "CMS"
 
 #: src/zeit/cms/browser/notices.pt:23
-#, fuzzy
 msgid "Hides in"
-msgstr "Verstecken"
+msgstr ""
 
 #: src/zeit/cms/browser/notices.pt:28
 msgid "seconds"
@@ -399,15 +398,15 @@ msgstr "Kurzteaser-Text"
 msgid "VG Wort Id"
 msgstr "VG Wort Id"
 
-#: src/zeit/cms/content/interfaces.py:204
+#: src/zeit/cms/content/interfaces.py:211
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: src/zeit/cms/content/interfaces.py:254
+#: src/zeit/cms/content/interfaces.py:261
 msgid "Objects that are related to this object."
 msgstr "Objekte die verlinkt werden sollen."
 
-#: src/zeit/cms/content/interfaces.py:274
+#: src/zeit/cms/content/interfaces.py:291
 msgid "Hits today"
 msgstr "Treffer heute"
 
@@ -431,7 +430,7 @@ msgid "Sub ressort"
 msgstr "Unterressort"
 
 #: src/zeit/cms/content/interfaces.py:86
-#: src/zeit/content/article/interfaces.py:134
+#: src/zeit/content/article/interfaces.py:135
 msgid "Authors"
 msgstr "Autoren"
 
@@ -616,15 +615,15 @@ msgstr "Channel bearbeiten"
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
-#: src/zeit/cms/syndication/interfaces.py:126
+#: src/zeit/cms/syndication/interfaces.py:128
 msgid "Syndication targets"
 msgstr "Syndizierungsziele"
 
-#: src/zeit/cms/syndication/interfaces.py:36
+#: src/zeit/cms/syndication/interfaces.py:38
 msgid "Limit amount"
 msgstr "Anzahl begrenzen"
 
-#: src/zeit/cms/syndication/interfaces.py:37
+#: src/zeit/cms/syndication/interfaces.py:39
 msgid "limit-amount-description"
 msgstr "limit-amount-description"
 
@@ -656,7 +655,7 @@ msgstr "Keine bearbeiteten Dokumente."
 
 #: src/zeit/content/article/browser/configure.zcml:22
 #: src/zeit/content/centerpage/browser/configure.zcml:32
-#: src/zeit/content/image/browser/configure.zcml:187
+#: src/zeit/content/image/browser/configure.zcml:196
 #: src/zeit/content/gallery/browser/configure.zcml:30
 #: src/zeit/content/link/browser/configure.zcml:17
 msgid "Edit metadata"
@@ -664,7 +663,7 @@ msgstr "Metadaten"
 
 #: src/zeit/content/article/browser/configure.zcml:38
 #: src/zeit/content/centerpage/browser/configure.zcml:48
-#: src/zeit/content/image/browser/configure.zcml:171
+#: src/zeit/content/image/browser/configure.zcml:180
 #: src/zeit/content/gallery/browser/configure.zcml:47
 #: src/zeit/content/link/browser/configure.zcml:32
 msgid "View metadata"
@@ -728,57 +727,57 @@ msgstr "Verlagsdetails"
 msgid "Edit book information"
 msgstr "Rezensionsinformationen bearbeiten"
 
-#: src/zeit/content/article/interfaces.py:100
+#: src/zeit/content/article/interfaces.py:101
 msgid "Syndication Log"
 msgstr "Syndizierungs-Log"
 
-#: src/zeit/content/article/interfaces.py:143
+#: src/zeit/content/article/interfaces.py:144
 msgid "Info"
 msgstr "Info"
 
-#: src/zeit/content/article/interfaces.py:147
+#: src/zeit/content/article/interfaces.py:148
 msgid "Genre"
 msgstr "Genre"
 
-#: src/zeit/content/article/interfaces.py:151
+#: src/zeit/content/article/interfaces.py:152
 msgid "ZEIT category"
 msgstr "ZEIT-Kategorie"
 
-#: src/zeit/content/article/interfaces.py:155
+#: src/zeit/content/article/interfaces.py:156
 msgid "Agelimit"
 msgstr "Altersbeschrängkung"
 
-#: src/zeit/content/article/interfaces.py:159
+#: src/zeit/content/article/interfaces.py:160
 msgid "Original language"
 msgstr "Originalsprache"
 
-#: src/zeit/content/article/interfaces.py:163
+#: src/zeit/content/article/interfaces.py:164
 msgid "Translator"
 msgstr "Übersetzer"
 
-#: src/zeit/content/article/interfaces.py:167
+#: src/zeit/content/article/interfaces.py:168
 #: src/zeit/content/article/browser/recension-overview.pt:16
 msgid "Publisher"
 msgstr "Verlag"
 
 #. Default: "Location"
-#: src/zeit/content/article/interfaces.py:171
+#: src/zeit/content/article/interfaces.py:172
 msgid "book-location"
 msgstr "Ort"
 
-#: src/zeit/content/article/interfaces.py:179
+#: src/zeit/content/article/interfaces.py:180
 msgid "Media type"
 msgstr "Medientyp"
 
-#: src/zeit/content/article/interfaces.py:183
+#: src/zeit/content/article/interfaces.py:184
 msgid "Pages"
 msgstr "Seiten"
 
-#: src/zeit/content/article/interfaces.py:187
+#: src/zeit/content/article/interfaces.py:188
 msgid "Price (EUR)"
 msgstr "Preis in €"
 
-#: src/zeit/content/article/interfaces.py:191
+#: src/zeit/content/article/interfaces.py:192
 msgid "Raw data"
 msgstr "Roh-Daten"
 
@@ -908,7 +907,7 @@ msgstr "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werd
 msgid "Text"
 msgstr "Text"
 
-#: src/zeit/content/image/browser/configure.zcml:109
+#: src/zeit/content/image/browser/configure.zcml:118
 msgid "Image (single)"
 msgstr "Einzelbild"
 
@@ -928,7 +927,7 @@ msgstr "Bild bearbeiten"
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:130
-#: src/zeit/content/image/browser/configure.zcml:120
+#: src/zeit/content/image/browser/configure.zcml:129
 #: src/zeit/content/gallery/browser/configure.zcml:73
 msgid "Images"
 msgstr "Bilder"
@@ -946,7 +945,7 @@ msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
 #: src/zeit/content/image/browser/imagegroup.py:62
-#: src/zeit/content/image/browser/configure.zcml:149
+#: src/zeit/content/image/browser/configure.zcml:158
 msgid "Image group"
 msgstr "Bildergruppe"
 
@@ -955,9 +954,17 @@ msgid "Dimensions"
 msgstr "Ausmaße"
 
 #: src/zeit/content/image/browser/imagegroup.py:74
-#: src/zeit/content/image/browser/configure.zcml:179
+#: src/zeit/content/image/browser/configure.zcml:188
 msgid "Image"
 msgstr "Bild"
+
+#: src/zeit/content/image/browser/processingerror.pt:5
+msgid "An error occured"
+msgstr "Ein Fehler ist aufgetreten."
+
+#: src/zeit/content/image/browser/processingerror.pt:6
+msgid "The action you were trying to do could not be finished because the resource has no valid content."
+msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die Resource keinen gültigen Inhalt hat."
 
 #: src/zeit/content/image/interfaces.py:26
 msgid "Expires"
@@ -1076,6 +1083,38 @@ msgstr "URL, die im CMS angezeigt werden soll"
 #: src/zeit/search/interfaces.py:27
 msgid "Realive weight of metadata freshness."
 msgstr "Realive weight of metadata freshness."
+
+#: src/zeit/seo/browser.py:26
+msgid "SEO data"
+msgstr "SEO-Daten"
+
+#: src/zeit/seo/browser.py:29
+msgid "Standard metadata"
+msgstr "Standard Metadaten"
+
+#: src/zeit/seo/browser.py:36
+msgid "Edit SEO data"
+msgstr "SEO-Daten bearbeiten"
+
+#: src/zeit/seo/browser.py:41
+msgid "View SEO data"
+msgstr "SEO-Daten"
+
+#: src/zeit/seo/configure.zcml:18
+msgid "View SEO"
+msgstr "SEO"
+
+#: src/zeit/seo/configure.zcml:28
+msgid "Edit SEO"
+msgstr "SEO"
+
+#: src/zeit/seo/interfaces.py:13
+msgid "HTML title"
+msgstr "HTML-Titel"
+
+#: src/zeit/seo/interfaces.py:17
+msgid "HTML description"
+msgstr "HTML-Beschreibung (Description)"
 
 #: src/zeit/workflow/browser/form.py:15
 #: src/zeit/workflow/browser/configure.zcml:8
