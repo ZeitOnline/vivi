@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu Feb 21 13:22:22 2008\n"
-"PO-Revision-Date: 2008-02-26 15:57+0100\n"
+"PO-Revision-Date: 2008-02-26 16:09+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com\\>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1100,6 +1100,14 @@ msgstr "SEO-Daten bearbeiten"
 #: src/zeit/seo/browser.py:41
 msgid "View SEO data"
 msgstr "SEO-Daten"
+
+#: src/zeit/seo/configure.zcml:18
+msgid "View SEO"
+msgstr "SEO"
+
+#: src/zeit/seo/configure.zcml:28
+msgid "Edit SEO"
+msgstr "SEO"
 
 #: src/zeit/seo/interfaces.py:13
 msgid "HTML title"

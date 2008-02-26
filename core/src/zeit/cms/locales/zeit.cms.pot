@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Feb 26 15:56:52 2008\n"
+"POT-Creation-Date: Tue Feb 26 16:08:59 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1111,6 +1111,14 @@ msgstr ""
 
 #: src/zeit/seo/browser.py:41
 msgid "View SEO data"
+msgstr ""
+
+#: src/zeit/seo/configure.zcml:18
+msgid "View SEO"
+msgstr ""
+
+#: src/zeit/seo/configure.zcml:28
+msgid "Edit SEO"
 msgstr ""
 
 #: src/zeit/seo/interfaces.py:13
