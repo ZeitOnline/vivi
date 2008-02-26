@@ -58,22 +58,31 @@ class FormBase(object):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IBookRecension)
 
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _('Book details'),
+            ('title', 'info', 'authors',),
+            css_class='column-left wide-widgets'),
+        gocept.form.grouped.Fields(
+            _('Publisher'),
+            ('publisher', 'location', 'year',),
+            css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _('misc.'),
+            ('genre', 'category', 'pages', 'price',
+             'age_limit', 'media_type',),
+            css_class='column-left'),
+        gocept.form.grouped.Fields(
+            _('Translation'),
+            ('original_language', 'translator'),
+            css_class='column-right'),
+        )
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
 
     title = _('Add book information')
     form_fields = FormBase.form_fields.omit('raw_data')
     factory = zeit.content.article.recension.BookRecension
-    field_groups = (
-        gocept.form.grouped.Fields(
-            _('Book details'),
-            ('authors', 'title', 'info', 'genre',
-             'category', 'translator'),
-            css_class='wide-widgets column-left'),
-        gocept.form.grouped.RemainingFields(
-            _('Publishing details'),
-            ('age-limit', 'translator', 'publisher')),
-        )
 
     def add(self, obj):
         self.context.append(obj)
@@ -89,3 +98,7 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit book information')
     redirect_to_parent_after_edit = True
+    field_groups = FormBase.field_groups + (
+        gocept.form.grouped.RemainingFields(
+            _('Raw data'),
+            css_class='fullWidth'),)

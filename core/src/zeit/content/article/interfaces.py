@@ -140,7 +140,7 @@ class IBookRecension(zope.interface.Interface):
 
     title = zope.schema.TextLine(title=_('Title'))
 
-    info = zope.schema.TextLine(
+    info = zope.schema.Text(
         title=_('Info'),
         required=False)
 

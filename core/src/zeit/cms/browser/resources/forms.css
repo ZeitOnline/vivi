@@ -143,6 +143,7 @@ input[type="text"] {
     height: 1.3em;
 }
 
+#form\.info, 
 #form\.subtitle,
 #form\.html_description {
     height: 6.5em;
