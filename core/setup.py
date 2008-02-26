@@ -44,7 +44,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.connector>=0.9',
+        'zeit.connector>=0.10',
         'zope.app.apidoc',
         'zope.app.catalog',
         'zope.app.component>=3.4.0b3',
