@@ -13,7 +13,7 @@ import zeit.cms.repository.folder
 import zeit.content.image.interfaces
 
 
-class ImageProcessingError(Exception):
+class ImageProcessingError(TypeError):
     """An error raised it's not possible to process the Image."""
 
 
