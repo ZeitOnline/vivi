@@ -1,6 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id: keyword.py 10103 2008-01-16 12:26:27Z zagy $
+# $Id$
 """Delete content."""
 
 import zope.component
