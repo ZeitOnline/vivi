@@ -2,6 +2,7 @@
  * forms 
  *
  * */
+
 .field {
     padding: 0.5em 0;
     margin-left: 0.5em
@@ -14,7 +15,6 @@ form .widgets-float {
 form .widgets-float .field {
     float: left;
     margin: 5px;
-    max-width: 10em;
 }
 
 form .widgets-float .field label {
@@ -59,7 +59,7 @@ form .wide-widgets .field textarea {
 
 form .column-right {
     float:  right;
-    width: 30%;
+    width: 37%;
 }
 
 
@@ -108,19 +108,42 @@ form .column-right-small {
 input[type="button"],
 input[type="submit"] {
     color: black;
-    border: 1px solid black;
-    border-bottom: 2px solid #4c4c4c;
-    border-right: 2px solid #4c4c4c;
-    font-size: 8pt;
-    padding: 0.2em;
-    font-family: sans-serif;
+    border: 1px solid #196692;
+    color: black;
+    vertical-align: middle;
+    background-color: #dee7ec;
+    padding: 1px;
+    cursor: pointer;
 }
 
 input[type="button"]:hover,
 input[type="submit"]:hover {
-    background-color: #4c4c4c;
-    color: white;
+    color: #196692;
 }
+
+
+textarea{
+    font:100% Monaco,"Courier New",Courier,monospace;
+    border:1px solid #196692;
+    color:Black;
+    background:White url(layout/input_background.gif) repeat-x;
+    width:100%;
+}
+
+input{
+    font-family:"Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+    visibility:visible;
+    border:1px solid #196692;
+    color:Black;
+    vertical-align:middle;
+    background:White url(layout/input_background.gif) repeat-x;
+}
+select{border:1px solid #8cacbb;
+    color:Black;
+    background-color:White;
+    vertical-align:top;
+}
+
 
 input[type="button"]:active,
 input[type="submit"]:active {
@@ -159,7 +182,7 @@ input#form\.copyrights[type=text] {
 }
 
 .gallery {
-  background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+  background: transparent url("layout/fadeout.png") repeat-x 0 0;
   width: 100%;
 }
 
