@@ -2,7 +2,6 @@
 // See also LICENSE.txt
 // $Id$
 
-
 connect(window, 'onload', function(event) {
     // Connect messages hide/show
     var showtoggle = $('messages_toggle')
@@ -16,56 +15,20 @@ connect(window, 'onload', function(event) {
     }
 
     connect(hideToggle, 'onclick', function(event) {
-        toggleElementClass('hiddenMessages', messages);
+        addElementClass(messages, 'hiddenMessages');
     });
     connect(showtoggle, 'onclick', function(event) {
         toggleElementClass('hiddenMessages', messages);
-        if (messagetimer) messagetimer.cancelTimer();
     });
 
-    var messagetimer = new TimerWidget("messages_counter", 5,
-        function(){
-            addElementClass(messages, 'hiddenMessages');
-        });
-
-});
-
-
-var TimerWidget = Class.extend({
-
-    construct: function(widget_id, seconds, func_on_stop) {
-        this.widget_id = widget_id;
-        this.widget = $(widget_id);
-        this.element = getFirstElementByTagAndClassName('span', 'Counter');
-        this.seconds = seconds
-        this.timer = null;
-        this.onStopFunction = func_on_stop;
-        this.startTimer();
-    },
-
-    startTimer: function() {
-        this.element.innerHTML = this.seconds
-        this.timer = callLater(1, this.count, this);
-    },
-
-    count: function(othis) {
-        othis.element.innerHTML = othis.seconds
-        othis.seconds--
-        othis.timer.cancel()
-        if (othis.seconds >= 0)
-            othis.timer = callLater(1, othis.count, othis);
-        else
-            othis.onStop();
-    },
-
-    onStop: function() {
-        hideElement(this.widget);
-        this.onStopFunction();
-    },
-
-    cancelTimer: function() {
-        this.timer.cancel();
-        hideElement(this.widget);
-    },
+    callLater(5, function() {
+        fade(messages, {
+            afterFinish: function() {
+                addElementClass(messages, 'hiddenMessages');
+                // remove opacity and display from fade
+                messages.setAttribute('style', '');
+                },
+            });
+    });
 
 });

@@ -469,6 +469,7 @@ table.properties textarea {
 #messages_counter {
   float: left;
   margin: 0.5em;
+  color: #888888;
 }
 
 .GlobalInformation  {

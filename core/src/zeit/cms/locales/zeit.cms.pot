@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Feb 26 14:29:59 2008\n"
+"POT-Creation-Date: Tue Feb 26 15:56:52 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -159,10 +159,8 @@ msgstr ""
 #: src/zeit/cms/browser/grouped-form.pt:26
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
-#: src/zeit/cms/content/browser/combinationwidget.pt:13
-#: src/zeit/cms/content/browser/combinationwidget.pt:20
-#: src/zeit/cms/content/browser/combinationwidget.pt:29
-#: src/zeit/cms/content/browser/combinationwidget.pt:37
+#: src/zeit/cms/content/browser/combinationwidget.pt:14
+#: src/zeit/cms/content/browser/combinationwidget.pt:36
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -240,15 +238,11 @@ msgstr ""
 msgid "CMS"
 msgstr ""
 
-#: src/zeit/cms/browser/notices.pt:23
-msgid "Hides in"
+#: src/zeit/cms/browser/notices.pt:22
+msgid "Hides automatically after 5 seconds."
 msgstr ""
 
-#: src/zeit/cms/browser/notices.pt:28
-msgid "seconds"
-msgstr ""
-
-#: src/zeit/cms/browser/notices.pt:32
+#: src/zeit/cms/browser/notices.pt:25
 msgid "hide"
 msgstr ""
 

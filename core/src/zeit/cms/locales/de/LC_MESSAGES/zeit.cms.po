@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu Feb 21 13:22:22 2008\n"
-"PO-Revision-Date: 2008-02-26 14:34+0100\n"
+"PO-Revision-Date: 2008-02-26 15:57+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com\\>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -147,10 +147,8 @@ msgstr "Anzeigen"
 #: src/zeit/cms/browser/grouped-form.pt:26
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
-#: src/zeit/cms/content/browser/combinationwidget.pt:13
-#: src/zeit/cms/content/browser/combinationwidget.pt:20
-#: src/zeit/cms/content/browser/combinationwidget.pt:29
-#: src/zeit/cms/content/browser/combinationwidget.pt:37
+#: src/zeit/cms/content/browser/combinationwidget.pt:14
+#: src/zeit/cms/content/browser/combinationwidget.pt:36
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -228,15 +226,11 @@ msgstr "Fehler"
 msgid "CMS"
 msgstr "CMS"
 
-#: src/zeit/cms/browser/notices.pt:23
-msgid "Hides in"
-msgstr ""
+#: src/zeit/cms/browser/notices.pt:22
+msgid "Hides automatically after 5 seconds."
+msgstr "Wird nach 5s ausgeblendet."
 
-#: src/zeit/cms/browser/notices.pt:28
-msgid "seconds"
-msgstr ""
-
-#: src/zeit/cms/browser/notices.pt:32
+#: src/zeit/cms/browser/notices.pt:25
 msgid "hide"
 msgstr "Verstecken"
 
