@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu Feb 21 13:22:22 2008\n"
-"PO-Revision-Date: 2008-02-21 13:23+0100\n"
-"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"PO-Revision-Date: 2008-02-26 14:34+0100\n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com\\>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -147,6 +147,10 @@ msgstr "Anzeigen"
 #: src/zeit/cms/browser/grouped-form.pt:26
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
+#: src/zeit/cms/content/browser/combinationwidget.pt:13
+#: src/zeit/cms/content/browser/combinationwidget.pt:20
+#: src/zeit/cms/content/browser/combinationwidget.pt:29
+#: src/zeit/cms/content/browser/combinationwidget.pt:37
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -276,6 +280,7 @@ msgstr "Texte"
 
 #: src/zeit/cms/content/browser/form.py:53
 #: src/zeit/content/article/browser/form.py:60
+#: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
 msgstr "sonstiges"
 
@@ -706,24 +711,35 @@ msgstr "Rezensionsinformationen bearbeiten"
 msgid "recension-no-items"
 msgstr "Es gibt noch keine Einträge mit Buchinformationen"
 
+#: src/zeit/content/article/browser/recension.py:103
+#: src/zeit/content/article/interfaces.py:192
+msgid "Raw data"
+msgstr "Roh-Daten"
+
 #: src/zeit/content/article/browser/recension.py:21
 #: src/zeit/content/article/browser/configure.zcml:106
 msgid "Recensions"
 msgstr "Rezensionsinformationen"
 
-#: src/zeit/content/article/browser/recension.py:64
-msgid "Add book information"
-msgstr "Rezensionsinformationen hinzufügen"
-
-#: src/zeit/content/article/browser/recension.py:69
+#: src/zeit/content/article/browser/recension.py:63
 msgid "Book details"
 msgstr "Buchdetails"
 
-#: src/zeit/content/article/browser/recension.py:74
-msgid "Publishing details"
-msgstr "Verlagsdetails"
+#: src/zeit/content/article/browser/recension.py:67
+#: src/zeit/content/article/interfaces.py:168
+#: src/zeit/content/article/browser/recension-overview.pt:16
+msgid "Publisher"
+msgstr "Verlag"
 
-#: src/zeit/content/article/browser/recension.py:90
+#: src/zeit/content/article/browser/recension.py:76
+msgid "Translation"
+msgstr "Übersetzung"
+
+#: src/zeit/content/article/browser/recension.py:83
+msgid "Add book information"
+msgstr "Rezensionsinformationen hinzufügen"
+
+#: src/zeit/content/article/browser/recension.py:99
 msgid "Edit book information"
 msgstr "Rezensionsinformationen bearbeiten"
 
@@ -745,7 +761,7 @@ msgstr "ZEIT-Kategorie"
 
 #: src/zeit/content/article/interfaces.py:156
 msgid "Agelimit"
-msgstr "Altersbeschrängkung"
+msgstr "Altersbeschränkung"
 
 #: src/zeit/content/article/interfaces.py:160
 msgid "Original language"
@@ -754,11 +770,6 @@ msgstr "Originalsprache"
 #: src/zeit/content/article/interfaces.py:164
 msgid "Translator"
 msgstr "Übersetzer"
-
-#: src/zeit/content/article/interfaces.py:168
-#: src/zeit/content/article/browser/recension-overview.pt:16
-msgid "Publisher"
-msgstr "Verlag"
 
 #. Default: "Location"
 #: src/zeit/content/article/interfaces.py:172
@@ -776,10 +787,6 @@ msgstr "Seiten"
 #: src/zeit/content/article/interfaces.py:188
 msgid "Price (EUR)"
 msgstr "Preis in €"
-
-#: src/zeit/content/article/interfaces.py:192
-msgid "Raw data"
-msgstr "Roh-Daten"
 
 #: src/zeit/content/article/interfaces.py:28
 msgid "Syndication Time"
@@ -1100,14 +1107,6 @@ msgstr "SEO-Daten bearbeiten"
 msgid "View SEO data"
 msgstr "SEO-Daten"
 
-#: src/zeit/seo/configure.zcml:18
-msgid "View SEO"
-msgstr "SEO"
-
-#: src/zeit/seo/configure.zcml:28
-msgid "Edit SEO"
-msgstr "SEO"
-
 #: src/zeit/seo/interfaces.py:13
 msgid "HTML title"
 msgstr "HTML-Titel"
@@ -1189,25 +1188,4 @@ msgstr "Bearbeiten"
 #: src/zeit/wysiwyg/interfaces.py:14
 msgid "Document"
 msgstr "Dokument"
-
-#~ msgid "Yes, delete it."
-#~ msgstr "Ja, löschen."
-#~ msgid "Do as I say: Delete."
-#~ msgstr "Tu was ich sage: Löschen."
-
-#, fuzzy
-#~ msgid "Titel"
-#~ msgstr "Titel"
-
-#, fuzzy
-#~ msgid "Filename"
-#~ msgstr "Dateiname"
-#~ msgid "Global views"
-#~ msgstr "Global views"
-#~ msgid "Kopf"
-#~ msgstr "Kopf"
-#~ msgid "sonstiges"
-#~ msgstr "sonstiges"
-#~ msgid "Edit ${image-name}"
-#~ msgstr "${image-name} bearbeiten"
 

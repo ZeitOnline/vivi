@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Feb 21 13:22:22 2008\n"
+"POT-Creation-Date: Tue Feb 26 14:29:59 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -159,6 +159,10 @@ msgstr ""
 #: src/zeit/cms/browser/grouped-form.pt:26
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
+#: src/zeit/cms/content/browser/combinationwidget.pt:13
+#: src/zeit/cms/content/browser/combinationwidget.pt:20
+#: src/zeit/cms/content/browser/combinationwidget.pt:29
+#: src/zeit/cms/content/browser/combinationwidget.pt:37
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -288,6 +292,7 @@ msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:53
 #: src/zeit/content/article/browser/form.py:60
+#: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
 msgstr ""
 
@@ -718,24 +723,35 @@ msgstr ""
 msgid "recension-no-items"
 msgstr ""
 
+#: src/zeit/content/article/browser/recension.py:103
+#: src/zeit/content/article/interfaces.py:192
+msgid "Raw data"
+msgstr ""
+
 #: src/zeit/content/article/browser/recension.py:21
 #: src/zeit/content/article/browser/configure.zcml:106
 msgid "Recensions"
 msgstr ""
 
-#: src/zeit/content/article/browser/recension.py:64
-msgid "Add book information"
-msgstr ""
-
-#: src/zeit/content/article/browser/recension.py:69
+#: src/zeit/content/article/browser/recension.py:63
 msgid "Book details"
 msgstr ""
 
-#: src/zeit/content/article/browser/recension.py:74
-msgid "Publishing details"
+#: src/zeit/content/article/browser/recension.py:67
+#: src/zeit/content/article/interfaces.py:168
+#: src/zeit/content/article/browser/recension-overview.pt:16
+msgid "Publisher"
 msgstr ""
 
-#: src/zeit/content/article/browser/recension.py:90
+#: src/zeit/content/article/browser/recension.py:76
+msgid "Translation"
+msgstr ""
+
+#: src/zeit/content/article/browser/recension.py:83
+msgid "Add book information"
+msgstr ""
+
+#: src/zeit/content/article/browser/recension.py:99
 msgid "Edit book information"
 msgstr ""
 
@@ -767,11 +783,6 @@ msgstr ""
 msgid "Translator"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:168
-#: src/zeit/content/article/browser/recension-overview.pt:16
-msgid "Publisher"
-msgstr ""
-
 #: src/zeit/content/article/interfaces.py:172
 #. Default: "Location"
 msgid "book-location"
@@ -787,10 +798,6 @@ msgstr ""
 
 #: src/zeit/content/article/interfaces.py:188
 msgid "Price (EUR)"
-msgstr ""
-
-#: src/zeit/content/article/interfaces.py:192
-msgid "Raw data"
 msgstr ""
 
 #: src/zeit/content/article/interfaces.py:28
@@ -1110,14 +1117,6 @@ msgstr ""
 
 #: src/zeit/seo/browser.py:41
 msgid "View SEO data"
-msgstr ""
-
-#: src/zeit/seo/configure.zcml:18
-msgid "View SEO"
-msgstr ""
-
-#: src/zeit/seo/configure.zcml:28
-msgid "Edit SEO"
 msgstr ""
 
 #: src/zeit/seo/interfaces.py:13
