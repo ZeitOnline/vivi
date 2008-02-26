@@ -106,26 +106,6 @@ pre {
     font-weight: normal;
 }
 
-.field.required > label > span:after {
-    content: "*";
-    color: red;
-}
-
-.annotation {
-    display: none;
-}
-
-.hint {
-    color: #aaa;
-}
-.hint:hover {
-    color: #4c4c4c;
-}
-
-.VisualClear {
-    clear: both;
-}
-
 .feedsorting {
     width: 100%;
 }

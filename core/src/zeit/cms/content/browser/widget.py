@@ -4,8 +4,13 @@
 
 import lxml.etree
 
+import zope.formlib.namedtemplate
+
 import zope.app.form.browser.textwidgets
 import zope.app.form.interfaces
+import zope.app.pagetemplate
+
+import zc.form.browser.combinationwidget
 
 
 class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -38,3 +43,16 @@ class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
         if as_unicode:
             return self.context.fromUnicode(as_unicode)
         return as_unicode
+
+
+class CombinationWidget(
+    zc.form.browser.combinationwidget.CombinationWidget):
+    """Subclassed combination widget to change the template.
+
+    NamedTemplate doesn't take the request into account so we cannot register a
+    new template in our skin. This sucks.
+
+    """
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'combinationwidget.pt')

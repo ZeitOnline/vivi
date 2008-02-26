@@ -10,7 +10,7 @@ import zope.formlib.form
 import zope.formlib.interfaces
 
 import zope.app.container.interfaces
-import zope.app.pagetemplate.viewpagetemplatefile
+import zope.app.pagetemplate
 
 import gocept.form.grouped
 import z3c.flashmessage.interfaces
@@ -57,7 +57,7 @@ class FormBase(object):
 
     widget_groups = ()
     template = (
-        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+        zope.app.pagetemplate.ViewPageTemplateFile(
             os.path.join(os.path.dirname(__file__), 'grouped-form.pt')))
 
     def applyChanges(self, object, data):

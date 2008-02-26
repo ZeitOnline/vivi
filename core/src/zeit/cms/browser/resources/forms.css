@@ -3,106 +3,6 @@
  *
  * */
 
-.field {
-    padding: 0.5em 0;
-    margin-left: 0.5em
-}
-
-form .widgets-float {
-    float: left;
-    width: 58%;
-}
-form .widgets-float .field {
-    float: left;
-    margin: 5px;
-}
-
-form .widgets-float .field label {
-    height: 3em;
-    display: block;
-}
-
-form .widgets-float .field .hint {
-    display: none;
-}
-
-form .full-width {
-    right: 0;
-}
-
-form .full-width-float .field {
-    float: left;
-    margin: 5px;
-    max-width: 15em;
-}
-
-form .full-width-float .hint {
-    height: 5ex;
-}
-
-
-form .fullWidth {
-    right: 0;
-    clear: both;
-}
-
-form .column-left {
-    width: 58%;
-    float: left;
-}
-
-
-form .wide-widgets .field input[type="text"],
-form .wide-widgets .field textarea {
-    width: 95%;
-}
-
-form .column-right {
-    float:  right;
-    width: 37%;
-}
-
-
-form .column-left.image-form {
-    width: 40%;
-}
-
-form .column-left.image-form input {
-    width: inherit;
-}
-
-form .column-right.image-form {
-    width: 48%;
-}
-
-.image-form #form\.caption {
-    height: 8em;
-}
-
-form #form\.page,
-form #form\.volume,
-form #form\.year {
-    width: 4em;
-}
-
-/* SMALL left column, larger right column */
-form .column-left-small {
-    clear: both;
-    width: 30%;
-    float: left;
-}
-
-form .column-left-small .field {
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-form .column-right-small {
-    float:  right;
-    width: 58%;
-}
-
-
 /* general input field styling */
 
 input[type="button"],
@@ -153,6 +53,136 @@ input[type="submit"]:active {
 input[type="text"] {
     padding: 0.2em;
 }
+
+/* formlib styling */
+
+.field.required label > span:after {
+    content: "*";
+    color: red;
+}
+
+.annotation {
+    display: none;
+}
+
+.hint {
+    color: #aaa;
+}
+.hint:hover {
+    color: #4c4c4c;
+}
+
+.VisualClear {
+    clear: both;
+}
+
+
+
+/* formlib widget styling */
+
+.sequencewidget > tbody > tr > td {
+    padding: 0.5em 0;
+}
+
+.sequencewidget > tbody > tr:hover {
+    background: #ddd;
+}
+
+.sequencewidget > tbody > tr:hover:last-child {
+    background: transparent;
+}
+
+.sequencewidget {
+    border-collapse: collapse;
+}
+
+/* grouped layout */
+
+.field {
+    padding: 0.5em 0;
+    margin-left: 0.5em
+}
+
+form .widgets-float {
+    float: left;
+    width: 58%;
+}
+form .widgets-float .field {
+    float: left;
+    margin: 5px;
+}
+
+form .widgets-float .field label {
+    height: 3em;
+    display: block;
+}
+
+form .widgets-float .field .hint {
+    display: none;
+}
+
+form .full-width {
+    right: 0;
+}
+
+form .full-width-float .field {
+    float: left;
+    margin: 5px;
+    max-width: 15em;
+}
+
+form .full-width-float .hint {
+    height: 5ex;
+}
+
+
+form .fullWidth {
+    right: 0;
+    clear: both;
+}
+
+form .column-left {
+    width: 58%;
+    float: left;
+}
+
+
+form .wide-widgets .field input[type="text"],
+form .wide-widgets .field .sequencewidget,
+form .wide-widgets .field .combinationFieldWidget,
+form .wide-widgets .field textarea {
+    width: 95%;
+}
+
+form .column-right {
+    float:  right;
+    width: 37%;
+}
+
+
+form #form\.page,
+form #form\.volume,
+form #form\.year {
+    width: 4em;
+}
+
+/* SMALL left column, larger right column */
+form .column-left-small {
+    clear: both;
+    width: 30%;
+    float: left;
+}
+
+form .column-left-small .field {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form .column-right-small {
+    float:  right;
+    width: 58%;
+}
+
 
 /* Line height: 1.3em * rows */
 #form\.teaserText {
@@ -232,6 +262,26 @@ input#form\.copyrights[type=text] {
     left: 0;
     right: 0;
 }
+
+
+/* image form */
+
+form .column-left.image-form {
+    width: 40%;
+}
+
+form .column-left.image-form input {
+    width: inherit;
+}
+
+form .column-right.image-form {
+    width: 48%;
+}
+
+.image-form #form\.caption {
+    height: 8em;
+}
+
 
 /* 
  * tablefilter 

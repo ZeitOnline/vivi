@@ -84,4 +84,13 @@
     <directory source="resources" include="inputlimit.js" />
   </resourceLibrary>
 
+  <!-- Combination widget template -->
+  <view
+    type="zeit.cms.browser.interfaces.ICMSLayer"
+    for="zc.form.interfaces.ICombinationField"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.CombinationWidget"
+    permission="zope.Public"
+    />
+
 </configure>
