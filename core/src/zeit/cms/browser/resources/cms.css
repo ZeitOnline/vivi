@@ -39,7 +39,7 @@ h2 {
 }
 
 .wysiwyg-header {
-  background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+  background: transparent url("layout/fadeout.png") repeat-x 0 0;
   padding: 1em;
 }
 
@@ -65,7 +65,7 @@ label span {
 fieldset,
 pre {
     border: none;
-    background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+    background: transparent url("layout/fadeout.png") repeat-x 0 0;
 }
 
 legend {
@@ -269,7 +269,7 @@ pre {
     bottom: 0;
     overflow: auto;
     display: none;
-    background: transparent url("/@@/zeit.cms/layout/fadeout.png") repeat-x 0 0;
+    background: transparent url("layout/fadeout.png") repeat-x 0 0;
 }
 
 #folderActionForm {
