@@ -16,7 +16,6 @@ import zeit.cms.interfaces
 import zeit.cms.browser.interfaces
 import zeit.connector.search
 
-import zeit.search.config
 import zeit.search.interfaces
 
 
@@ -118,7 +117,7 @@ class XapianSearch(object):
 
     zope.interface.implements(zeit.search.interfaces.ISearchInterface)
 
-    indexes = set(['text'])
+    indexes = frozenset(['text'])
 
     def __call__(self, search_terms):
         if 'text' not in search_terms:
@@ -130,7 +129,8 @@ class XapianSearch(object):
         return set(self.get_result(tree))
 
     def get_tree(self, text):
-        base_url = zeit.search.config.XAPIAN_URL
+        base_url = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.search').get('xapian-url')
         query = dict(q=text, op='AND', ps=100)
         url = '%s?%s' % (base_url, urllib.urlencode(query))
         request = urllib2.urlopen(url)
@@ -154,6 +154,9 @@ class XapianSearch(object):
 
 
 class MetadataSearch(object):
+    """Zeit metadata search via connector."""
+
+    zope.interface.implements(zeit.search.interfaces.ISearchInterface)
 
     ns = 'http://namespaces.zeit.de/CMS/document'
     qps = 'http://namespaces.zeit.de/QPS/attributes'
@@ -169,9 +172,7 @@ class MetadataSearch(object):
         'print_ressort': zeit.connector.search.SearchVar('ressort', qps),
     }
 
-    indexes = set(_search_map.keys())
-
-    zope.interface.implements(zeit.search.interfaces.ISearchInterface)
+    indexes = frozenset(_search_map.keys())
 
     def __call__(self, search_terms):
         term = self.get_search_term(search_terms)
