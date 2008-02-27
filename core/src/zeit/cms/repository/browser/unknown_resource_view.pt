@@ -8,6 +8,12 @@
       bla bla
     </pre>
 
+    Webdav properties:
+
+    <pre tal:content="view/get_properties">
+      {...}
+    </pre>
+
   </tal:block>
 </metal:use-macro>
 
