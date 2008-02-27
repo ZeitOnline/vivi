@@ -20,10 +20,10 @@ cms_layer = zope.app.testing.functional.ZCMLLayer(
 
 
 def setUp(test):
-    setup_product_config()
+    setup_product_config(test.globs.get('product_config', {}))
 
 
-def setup_product_config():
+def setup_product_config(product_config={}):
     cms_config = zope.app.appsetup.product._configs['zeit.cms'] = {}
     base_path = os.path.join(os.path.dirname(__file__), 'content')
 
@@ -43,16 +43,15 @@ def setup_product_config():
     cms_config['workingcopy-preview-base'] = (
         u'http://xml.zeit.de/tmp/previews/')
 
+    zope.app.appsetup.product._configs.update(product_config)
+
 
 def FunctionalDocFileSuite(*paths, **kw):
-    try:
-        layer = kw['layer']
-    except KeyError:
-        layer = cms_layer
-    else:
-        del kw['layer']
+    layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw['setUp'] = setUp
+    kw.setdefault('globs', {})['product_config'] = kw.pop(
+        'product_config', {})
 
     def tearDown(test):
         zope.app.testing.functional.FunctionalTestSetup().tearDown()
@@ -64,6 +63,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     test = zope.app.testing.functional.FunctionalDocFileSuite(
         *paths, **kw)
     test.layer = layer
+
     return test
 
 
