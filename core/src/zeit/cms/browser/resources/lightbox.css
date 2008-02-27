@@ -98,7 +98,7 @@
     width: 10em;
 }
 
-.typeahead-results {
+#lightbox > .typeahead-results {
     position: absolute;
     top: 6em;
     width: 55%;
