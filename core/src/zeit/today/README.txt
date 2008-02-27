@@ -37,7 +37,6 @@ The homepage gets the most hits (for testing we read a local today.xml):
 
 >>> count_util.get_count('http://xml.zeit.de/index')
 7992
->>> import pprint
 
 An article has less:
 >>> count_util.get_count('http://xml.zeit.de/2007/48/W-Aufmacher-48')
@@ -52,3 +51,22 @@ When we ask for an completly wrong `unique_id` we get None, too:
 
 >>> count_util.get_count('asdf') is None
 True
+
+
+Access counter
+==============
+
+There is an adapter from ICMSContent to IAccessCounter. 
+
+>>> import zeit.cms.repository.unknown
+>>> content = zeit.cms.repository.unknown.UnknownResource(u'')
+>>> content.uniqueId = 'http://xml.zeit.de/index'
+
+Adapt content to IAccessCounter:
+
+>>> import zeit.cms.content.interfaces
+>>> counter = zeit.cms.content.interfaces.IAccessCounter(content)
+>>> counter
+<zeit.today.accesscounter.AccessCounter object at 0x...>
+>>> counter.hits
+7992
