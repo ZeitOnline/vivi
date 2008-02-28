@@ -20,4 +20,14 @@
   <include package="zeit.search" />
   <include package="zeit.search.browser" />
 
+  <!-- Register search backends -->
+  <utility
+    factory="zeit.search.search.XapianSearch"
+    name="xapian"
+    />
+  <utility
+    factory="zeit.search.search.MetadataSearch"
+    name="metadata"
+    />
+
 </configure>

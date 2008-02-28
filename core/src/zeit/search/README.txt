@@ -96,6 +96,35 @@ Searching:  (:and (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
                   (:eq "http://namespaces.zeit.de/QPS/attributes" "page" "39"))
 
 
+ZEIT online search
+==================
+
+The search interface on the public website is also integrated:
+
+>>> zeitsearch = zeit.search.search.ZeitSearch()
+
+Make sure the url is combined correctly:
+
+>>> zeitsearch.get_query(dict(text=u'foo'))
+'q=foo&ps=100&out=xml'
+
+We also add year volume and navigation to the query:
+
+>>> zeitsearch.get_query(
+...     dict(text=u'f\xfcoo', year=2007, volume=3, navigation='Wirtschaft'))
+'q=ausgabe%3A3+f%C3%BCoo+rubrikWirtschaft+jahr%3A2007&ps=100&out=xml'
+
+Let's do a full search:
+
+>>> result = list(zeitsearch(dict(text=u'linux')))
+>>> len(result)
+100
+>>> result[0].title
+u'Ein ungleicher Kampf'
+>>> result[0].uniqueId
+u'http://xml.zeit.de/zuender/2005/44/linux'
+
+
 Meta search
 ===========
 
@@ -103,6 +132,17 @@ The meta search aggregates results from various searches. It intersects the
 results and combines meta-data from the sources.
 
 >>> meta = zeit.search.search.MetaSearch()
+
+Register Metadata search and xapian search as search interfaces:
+
+>>> import zope.component
+>>> import zeit.search.interfaces
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     xapian, zeit.search.interfaces.ISearchInterface, name='xapian')
+>>> gsm.registerUtility(
+...     metadata, zeit.search.interfaces.ISearchInterface, name='metadata')
+
 
 Let's start with two trival cases where no combination is necessary.  When
 asking for the index `text` the XapianSearch will be triggered:
@@ -156,4 +196,14 @@ u'pm'
 >>> item.author
 u'pm'
 >>> item.page is None
+True
+
+
+Clean up
+========
+>>> gsm.unregisterUtility(
+...     xapian, zeit.search.interfaces.ISearchInterface, name='xapian')
+True
+>>> gsm.unregisterUtility(
+...     metadata, zeit.search.interfaces.ISearchInterface, name='metadata')
 True

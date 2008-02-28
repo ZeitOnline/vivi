@@ -11,10 +11,15 @@ import zope.app.testing.functional
 
 import zeit.cms.testing
 
+
+test_data_dir = os.path.join(os.path.dirname(__file__), 'testdata')
+
 product_config = {
     'zeit.search': {
-        'xapian-url': 'file://%s' % (
-            os.path.join(os.path.dirname(__file__), 'xapian-test.xml')),
+        'xapian-url': 'file://%s' % os.path.join(
+            test_data_dir, 'xapian-test.xml'),
+        'dwds-url': 'file://%s' % os.path.join(
+            test_data_dir, 'dwds-test.xml')
     }
 }
 
@@ -27,6 +32,5 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        product_config=product_config,
-        layer=zeit.search.test.SearchLayer))
+        product_config=product_config))
     return suite

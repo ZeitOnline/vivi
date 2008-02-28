@@ -88,6 +88,11 @@ class MetaSearch(object):
                 continue
             results.append(search(search_terms))
 
+        if not results:
+            # shortcut for no results, code below relies on having at least one
+            # result. Note that this only happens when *no* search interface is
+            # registered.
+            return frozenset()
 
         # Create dictionaries of the search results for looking up the results
         # by unique id
@@ -190,6 +195,7 @@ class MetadataSearch(object):
              var('year'), var('page'), var('title')],
             term)
 
+        import pdb; pdb.set_trace() 
         for unique_id, author, volume, year, page, title in search_result:
             # Metadata search result is rated higher because it is the freshest
             #  data we've got
@@ -215,3 +221,47 @@ class MetadataSearch(object):
     @property
     def connector(self):
         return zope.component.getUtility(zeit.cms.interfaces.IConnector)
+
+
+class ZeitSearch(XapianSearch):
+    """Zeit fulltext search via public interface."""
+
+    zope.interface.implements(zeit.search.interfaces.ISearchInterface)
+
+    index_prefixes = {
+        'text': '',
+        'year': 'jahr:',
+        'volume': 'ausgabe:',
+        'navigation': 'rubrik',
+    }
+
+    def __call__(self, search_terms):
+        assert 'text' in search_terms
+        base_url = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.search').get('dwds-url')
+        url = '%s?%s' % (base_url, self.get_query(search_terms))
+        logger.info('Searching DWDS %s' % url)
+        request = urllib2.urlopen(url)
+        tree = gocept.lxml.objectify.fromfile(request)
+        return self.get_result(tree)
+
+    def get_query(self, search_terms):
+        index_query = []
+        for key, value in search_terms.items():
+            prefix = self.index_prefixes.get(key)
+            if prefix is None:
+                continue
+            index_query.append(
+                (u'%s%s' % (prefix, value)).encode('utf8'))
+
+        return urllib.urlencode(dict(
+            q=' '.join(index_query),
+            out='xml',
+            ps='100'))
+
+    def get_result(self, tree):
+        url_trash = '/home/ddc/ZEIT_CMS/'
+        for result in super(ZeitSearch, self).get_result(tree):
+            if result.uniqueId.startswith(url_trash):
+                result.uniqueId = result.uniqueId.replace(url_trash, '', 1)
+            yield result
