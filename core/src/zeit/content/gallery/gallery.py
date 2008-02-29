@@ -99,7 +99,9 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.title = node.find('title')
         if entry.title is not None:
             entry.title = unicode(entry.title)
-        entry.text = unicode(node['text'])
+        entry.text = node.find('text')
+        if entry.text is not None:
+            entry.text = unicode(entry.text)
         return zope.location.location.located(entry, self, key)
 
     def __delitem__(self, key):

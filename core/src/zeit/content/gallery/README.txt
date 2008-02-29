@@ -495,9 +495,6 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...               </image>
 ...             </block>
 ...             <block>
-...               <text>
-...                 ... Mehdi Mahdavikia. Dem iranischen Publikumsliebling gelang in der 60.  Minute der einzige Treffer des Spiels. Der HSV siegte somit mit 1:0 und setzt sich langsam von den Abstiegsrängen ab.&#13;
-...               </text>
 ...               <image expires="2007-04-09" src="/cms/work/2006/01.jpg" width="380"
 ...                 align="left">
 ...                 <copyright>© Martin Rose/Getty Images</copyright> BILD </image>
@@ -508,10 +505,11 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...     </centerpage>""")
 
 
-There are two major differences to the new xml:
+There are three major differences to the new xml:
 
 1. The image folder is not explicitly noted and needs to be decuced.
 2. The blocks containing the images do not have names.
+3. The <text> node is optional.
 
 The image folder is /2006, decuced from /cms/work/2006/DSC00109_2.JPG:
 
@@ -539,15 +537,19 @@ The keys also correct(ed) and the names are set:
               </image>
         </block>
         <block name="01.jpg">
-          <text>
-                ... Mehdi Mahdavikia. Dem iranischen Publikumsliebling gelang in der 60.  Minute der einzige Treffer des Spiels. Der HSV siegte somit mit 1:0 und setzt sich langsam von den Abstiegsr&#195;&#164;ngen ab.&#13;
-              </text>
           <image expires="2007-04-09" src="http://xml.zeit.de/2006/01.jpg" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright> BILD </image>
         </block>
       </container>
     </column>
   </body>
 </centerpage>
+
+
+Getting an gallery entry w/o text element used to break (bug #4042) but works
+now:
+
+>>> gallery['01.jpg']
+<zeit.content.gallery.gallery.GalleryEntry object at 0x...>
 
 
 Cleanup
