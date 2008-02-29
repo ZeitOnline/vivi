@@ -195,7 +195,6 @@ class MetadataSearch(object):
              var('year'), var('page'), var('title')],
             term)
 
-        import pdb; pdb.set_trace() 
         for unique_id, author, volume, year, page, title in search_result:
             # Metadata search result is rated higher because it is the freshest
             #  data we've got
