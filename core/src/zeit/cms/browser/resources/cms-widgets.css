@@ -75,7 +75,7 @@ table.properties textarea {
  * 
  * */
 .PanelContent {
-   max-height: 20em;
+   /* max-height: 20em; */
    overflow-y: auto;
    overflow-x: hidden; /* XXX not sure if I'm making it unusable here */
    padding: 0.5em;

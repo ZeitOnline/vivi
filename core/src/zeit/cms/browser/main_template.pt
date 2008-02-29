@@ -84,7 +84,7 @@
 
         <script type="text/javascript" tal:content="string:
           connect(window, 'onload', function(event) {
-            var panel_handler = new PanelHandler('$site_url');
+            var panel_handler = new zeit.cms.PanelHandler('$site_url');
             panel_handler.registerPanelHandlers();
             });
 

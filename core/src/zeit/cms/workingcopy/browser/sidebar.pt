@@ -1,4 +1,4 @@
-<div
+<div xmlns:panel="http://namespaces.gocept.com/panel"
   tal:define="panel_id string:WorkingcopyPanel;
               panel_handlers nocall:context/@@panel_handlers;
               documents view/table;
@@ -6,7 +6,8 @@
               workingcopy_url workingcopy/@@absolute_url"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
                   id panel_id"
-  i18n:domain="zeit.cms">
+  i18n:domain="zeit.cms"
+  panel:flex="1">
 
   <h1>
     <a href="#"

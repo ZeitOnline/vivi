@@ -1,11 +1,12 @@
-<div
+<div xmlns:panel="http://namespaces.gocept.com/panel"
   tal:define="panel_id string:NavtreePanel;
               tree_view nocall:view/repository/@@tree.html;
               tree_url tree_view/@@absolute_url;
               panel_handlers nocall:context/@@panel_handlers"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
                   id panel_id"
-  i18n:domain="zeit.cms">
+  i18n:domain="zeit.cms"
+  panel:flex="2">
 
   
   <tal:replace replace="resource_library:zeit.cms.tree" />
@@ -23,7 +24,11 @@
   </div>
   <script type="text/javascript"
     tal:content="string:
-      var navtree = new Tree('$tree_url', 'navtreecontents');">
+      var navtree = new Tree('$tree_url', 'navtreecontents');
+      connect(navtree, 'state-changed', function(event) {
+        signal('sidebar', 'panel-content-changed');
+      });
+      ">
   </script>
 
 </div>

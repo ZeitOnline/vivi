@@ -21,7 +21,7 @@ The tree is rendered  in the sidebar all the time:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
   <ul>
       <li active="True" class="Root">
         <p>
@@ -42,7 +42,7 @@ When we visit `online` it is *not* automatically expanded while visiting it:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
  <ul>
     <li active="True" class="Root">
       <p>
@@ -90,7 +90,7 @@ on the + icon) the tree stays expanded even when we're not inside online:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
   <ul>
       <li active="True" class="Root">
         <p>
@@ -146,7 +146,7 @@ When we are *inside* a hidden container, it is shown nevertheles:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
   <ul>
       <li active="True" class="Root">
         <p>
@@ -177,7 +177,7 @@ The navigation tree contains the 2006 even when looking at the root:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
   <ul>
       <li active="True" class="Root">
         <p>
@@ -209,7 +209,7 @@ A shown container can be hidden again though:
 >>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" id="navtreecontents"...>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
   <ul>
       <li active="True" class="Root">
         <p>

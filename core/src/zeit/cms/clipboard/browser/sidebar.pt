@@ -1,4 +1,4 @@
-<div
+<div xmlns:panel="http://namespaces.gocept.com/panel"
   tal:define="panel_id string:ClipboardPanel;
               panel_handlers nocall:context/@@panel_handlers;
               clipboard nocall:view/clipboard;
@@ -6,7 +6,8 @@
               tree_view nocall:clipboard/@@tree.html;
               tree_url tree_view/@@absolute_url"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
-                  id panel_id">
+                  id panel_id"
+  panel:flex="1">
 
   <tal:replace replace="resource_library:zeit.cms.tree" />
   <tal:replace replace="resource_library:zeit.cms.clipboard" />

@@ -82,6 +82,7 @@ Clipboard.prototype = {
 
     handleTreeChange: function(event) {
         this.connectDNDHandlers();
+        signal('sidebar', 'panel-content-changed');
     },
 
     // Adding
@@ -89,11 +90,13 @@ Clipboard.prototype = {
     showAddBox: function(event) {
         hideElement('clip-add-folder-link');
         showElement('clip-add-folder-box');
+        signal('sidebar', 'panel-content-changed');
     },
 
     hideAddBox: function(event) {
         hideElement('clip-add-folder-box');
         showElement('clip-add-folder-link');
+        signal('sidebar', 'panel-content-changed');
     },
 
     addClip: function(event) {

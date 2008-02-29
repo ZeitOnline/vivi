@@ -9,10 +9,12 @@ connect(window, 'onload', function(event) {
         toggle();
         removeElementClass(switch_element, 'hide-extended');
         addElementClass(switch_element, 'show-extended');
+        signal('sidebar', 'panel-content-changed');
     });
     connect('search-extended-hide',  'onclick', function() {
         toggle();
         removeElementClass(switch_element, 'show-extended');
         addElementClass(switch_element, 'hide-extended');
+        signal('sidebar', 'panel-content-changed');
     });
 });
