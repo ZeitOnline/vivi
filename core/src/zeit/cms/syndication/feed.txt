@@ -208,6 +208,28 @@ Traceback (most recent call last):
 ValueError: The order argument must contain the same keys as the feed.
 
 
+Hiding and showing on the homepage
+==================================
+
+Sometimes it is necessary to syndicate an object but hide it from the homepage.
+Normally an object is not hidden:
+
+>>> feed.hidden(third)
+False
+
+Hide:
+
+>>> feed.hide(third)
+>>> feed.hidden(third)
+True
+
+
+Show again:
+
+>>> feed.show(third)
+>>> feed.hidden(third)
+False
+
 
 
 XML-Representation

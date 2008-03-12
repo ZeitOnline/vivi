@@ -100,6 +100,18 @@ class Feed(persistent.Persistent,
         entry = self.entry_map[content.uniqueId]
         entry.set('pinned', 'false')
 
+    def hidden(self, content):
+        entry = self.entry_map[content.uniqueId]
+        return entry.get('hp_hide') == 'true'
+
+    def hide(self, content):
+        entry = self.entry_map[content.uniqueId]
+        return entry.set('hp_hide', 'true')
+
+    def show(self, content):
+        entry = self.entry_map[content.uniqueId]
+        return entry.set('hp_hide', 'false')
+
     def updateOrder(self, order):
         entries = self.entry_map
         if set(order) != set(entries.keys()):

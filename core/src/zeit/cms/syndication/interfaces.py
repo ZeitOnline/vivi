@@ -44,6 +44,9 @@ class IReadFeed(zope.interface.Interface):
     def pinned(content):
         """Returns true, if content is pinned"""
 
+    def hidden(content):
+        """Returns true, if the content is hidden on the homepage."""
+
     def __len__():
         """Return amount of objects syndicated."""
 
@@ -78,6 +81,12 @@ class IWriteFeed(zope.interface.Interface):
 
     def unpin(content):
         """Remove pining for `content`. """
+
+    def hide(content):
+        """Hide `content` on homepage."""
+
+    def show(content):
+        """Show `content on homepage."""
 
     def updateOrder(order):
         """Revise the order of keys, replacing the current ordering.
