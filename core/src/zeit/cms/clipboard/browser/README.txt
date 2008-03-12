@@ -228,86 +228,6 @@ Let's add another clip:
  </ul>
 
 
-Removing Clips
-==============
-
-Each clipboard entry can be removed. We use our "ajax" browser and
-remove the last entry:
-
->>> print ajax.contents
-  <ul>
-    <li class="Root" uniqueid="">
-      <p>
-      <a href="...">Clipboard</a>
-      <span class="URL">...</span>
-      ...
-      <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
-          <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="URL">...wirtschaft.feed</span>
-          ...
-        </li>
-        <li class="NotRoot" uniqueid="Querdax">
-          <p>
-          <a href="...Querdax">Querdax</a>
-          <span class="URL">...Querdax</span>
-          ...
-        </li>
-        <li action="expand" class="NotRoot" uniqueid="New Clip">
-          <p>
-          <a href="...">New Clip</a>
-          <span class="URL">...New%20Clip</span>
-          ...
-        </li>
-        <li action="expand" class="NotRoot" uniqueid="Second Clip">
-          <p>
-          <a href="...">Second Clip</a>
-          <span class="URL">...Second%20Clip</span>
-          ...
-        </li>
-      </ul>
-   </li>
- </ul>
->>> ajax.open('http://localhost/++skin++cms/workingcopy/'
-...           'zope.user/zeit.cms.clipboard.clipboard.Clipboard/'
-...           'Second%20Clip/@@deletecontent.html')
->>> print ajax.contents
-  <ul>
-    <li class="Root" uniqueid="">
-      <p>
-      <a href="...">Clipboard</a>
-      <span class="URL">...</span>
-      ...
-      <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
-          <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="URL">...wirtschaft.feed</span>
-          ...
-        </li>
-        <li class="NotRoot" uniqueid="Querdax">
-          <p>
-          <a href="...Querdax">Querdax</a>
-          <span class="URL">...Querdax</span>
-          ...
-        </li>
-        <li action="expand" class="NotRoot" uniqueid="New Clip">
-          <p>
-          <a href="...">New Clip</a>
-          <span class="URL">...New%20Clip</span>
-          ...
-        </li>
-      </ul>
-   </li>
- </ul>
-
-Add the removed clip again:
-
->>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
-...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
-...           'title=Second+Clip')
-
 
 Moving 
 ======
@@ -425,6 +345,45 @@ We can of course also move clips into clips:
    </li>
  </ul>
 
+
+Removing Clips
+==============
+
+Each clipboard entry can be removed.  We use our "ajax" browser and remove
+entry we've moved into New Clip above:
+
+>>> ajax.handleErrors = False
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/'
+...           'zope.user/zeit.cms.clipboard.clipboard.Clipboard/'
+...           'New%20Clip/Querdax/@@deletecontent.html')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <p>
+      <a href="...">Clipboard</a>
+      ...
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <p>
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+          <p>
+          <a href="...">New Clip</a>
+          ...
+          <ul>
+            <li action="expand" class="NotRoot"
+              uniqueid="New Clip/Second Clip">
+              <p>
+              <a href="...">Second Clip</a>
+              ...
+            </li>
+          </ul>  
+        </li>
+      </ul>
+   </li>
+ </ul>
 
 
 Clipboard Listing

@@ -25,7 +25,7 @@ class DeleteEntry(object):
 
     def delete(self):
         clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.context)
-        del clipboard[self.context.__name__]
+        del self.context.__parent__[self.context.__name__]
         tree = zope.component.getMultiAdapter((clipboard, self.request),
                                               name="tree.html")
         return tree()
