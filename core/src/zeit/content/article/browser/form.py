@@ -119,3 +119,19 @@ class DisplayForm(ArticleFormBase,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _('View article metadata')
+
+
+class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
+    """Edit article content using wysiwyg editor."""
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.article.interfaces.IArticleMetadata).select(
+                'supertitle', 'title', 'byline', 'subtitle') +
+        zope.formlib.form.FormFields(
+            zeit.wysiwyg.interfaces.IHTMLContent))
+
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('Content'),
+            css_class='full-width wide-widgets'),)

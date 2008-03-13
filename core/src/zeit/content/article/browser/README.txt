@@ -243,18 +243,13 @@ Open the WYSIWYG-Editor:
 
 >>> browser.getLink('Edit WYSIWYG').click()
 
-Some important information is displayed above the editor:
+Some important fields can be edited here as well:
 
->>> print browser.contents
-<?xml ...
-          <div class="wysiwyg-header">
-  <div class="supertitle"></div>:
-  <div class="title">EU unterstuetzt Trinker-Steuer</div>
-  <div class="byline"></div>
-  <div class="subtitle"></div>
-</div>
-  ...
-
+>>> browser.getControl('Kicker').value = 'Halle'
+>>> browser.getControl('Title').value
+'EU unterstuetzt Trinker-Steuer'
+>>> browser.getControl('By line').value = 'by Dr. Who'
+>>> browser.getControl('Subtitle').value = 'Bla blub blarf'
 
 Initially the document is empty: 
 
@@ -269,11 +264,14 @@ Change the content and save:
 Let's have a look at the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('Source').value
+>>> print browser.getControl('Source').value.replace('\r\n', '\n')
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
   <body>
     <title>EU unterstuetzt Trinker-Steuer</title>
+    <supertitle py:pytype="str">Halle</supertitle>
+    <byline py:pytype="str">by Dr. Who</byline>
+    <subtitle>Bla blub blarf</subtitle>
     <p>Foo</p>
     <intertitle>blub</intertitle>
   </body>
@@ -385,22 +383,22 @@ xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
-      <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <supertitle xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">Halle</supertitle>
       <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <byline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <byline xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str">by Dr. Who</byline>
       <short>
         <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <ns1:image
+      <ns3:image
         xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns1="http://namespaces.zeit.de/CMS/feed"
+        xmlns:ns3="http://namespaces.zeit.de/CMS/feed"
         src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns1:image>
+      </ns3:image>
     </block>
   </container>
 </feed>
@@ -452,22 +450,22 @@ at its xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
-      <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <title xmlns:ns3="http://codespeak.net/lxml/objectify/pytype" ns3:pytype="str">Trinker zur Kasse</title>
+      <supertitle xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">Halle</supertitle>
+      <title xmlns:ns4="http://codespeak.net/lxml/objectify/pytype" ns4:pytype="str">Trinker zur Kasse</title>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <byline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+      <byline xmlns:ns9="http://codespeak.net/lxml/objectify/pytype" ns9:pytype="str">by Dr. Who</byline>
       <short>
         <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <ns13:image
+      <ns15:image
         xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns13="http://namespaces.zeit.de/CMS/feed"
+        xmlns:ns15="http://namespaces.zeit.de/CMS/feed"
         src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns13:image>
+      </ns15:image>
     </block>
   </container>
 </feed>

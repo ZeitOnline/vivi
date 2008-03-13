@@ -51,6 +51,15 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <browser:page
+    name="wysiwyg_edit.html"
+    for="..interfaces.IArticle"
+    class=".form.WYSIWYGEdit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit WYSIWYG"
+    />
+
+
   <adapter factory=".article.ArticleListRepresentation" />
 
   <browser:icon
