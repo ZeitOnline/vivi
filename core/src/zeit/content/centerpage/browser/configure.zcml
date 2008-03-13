@@ -15,14 +15,6 @@
     />
 
   <browser:page
-    for="..interfaces.ICenterPage"
-    permission="zope.View"
-    template="metadata.pt" 
-    name="metadata_preview"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    />
-
-  <browser:page
     name="edit.html"
     for="..interfaces.ICenterPage"
     class=".form.EditForm"

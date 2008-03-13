@@ -5,14 +5,6 @@
   i18n_domain="zeit.cms">
 
   <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    permission="zope.View"
-    template="metadata.pt" 
-    name="metadata_preview"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    />
-
-  <browser:page
     name="edit.html"
     for="zeit.content.article.interfaces.IArticle"
     class=".form.EditForm"

@@ -93,4 +93,15 @@
     permission="zope.Public"
     />
 
+  <!-- Metadata preview for ICommonMetadata -->
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    permission="zope.View"
+    template="common_metadata_preview.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+
 </configure>
