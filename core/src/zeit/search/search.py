@@ -95,7 +95,7 @@ class MetaSearch(object):
             # shortcut for no results, code below relies on having at least one
             # result. Note that this only happens when *no* search interface is
             # registered.
-            return frozenset()
+            return []
 
         # Create dictionaries of the search results for looking up the results
         # by unique id
@@ -190,16 +190,18 @@ class MetadataSearch(object):
         if term is None:
             return set()
         logger.info('Metadata search for: %r' % search_terms)
-        result = self.get_result(term)
+        result = self.get_result(term, search_terms.get('sort'))
         logger.debug('Metadata search done.')
         return set(result)
 
-    def get_result(self, term):
+    def get_result(self, term, sort=None):
         var = self._search_map.get
         search_result = self.connector.search(
             [var('author'), var('volume'),
              var('year'), var('page'), var('title')],
             term)
+
+        results = []
 
         for unique_id, author, volume, year, page, title in search_result:
             # Metadata search result is rated higher because it is the freshest
@@ -210,7 +212,17 @@ class MetadataSearch(object):
             result.year = make_int(year)
             result.volume = make_int(volume)
             result.page = make_int(page)
-            yield result
+            results.append(result)
+
+        relevance = len(results)
+        if sort == 'aktuell':
+            results.sort(key=lambda x: (x.year, x.volume), reverse=True)
+
+        for result in results:
+            result.relevance = relevance
+            relevance -= 1
+
+        return results
 
     def get_search_term(self, search):
         terms = []
