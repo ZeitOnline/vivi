@@ -68,9 +68,15 @@ class MetadataColumn(zc.table.column.GetterColumn):
     def getter(self, item, formatter):
         url = item.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE,
                                     self.base_url)
+        text = ' '.join(
+            unicode(s)
+            for s in [item.title, item.author, item.year, item.volume,
+                      item.page]
+            if s)
+
         return ('<span class="SearchableText">%s</span>'
                 '<span class="URL">%s</span>' % (
-                    'XXX', url))
+                    text, url))
 
 
 class Search(object):

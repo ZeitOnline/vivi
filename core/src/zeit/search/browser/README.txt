@@ -54,9 +54,10 @@ Note that in the test we only can search for "linux", so we do that:
   </thead>
   <tbody>
     <tr class="odd">
-      <td>
         ...
-      </td>
+      <td>
+      <span class="SearchableText">Programmierer aller Länder vereinigt Euch!
+        Von Gunhild Lütge 2003 44</span>...
       ...
 
 

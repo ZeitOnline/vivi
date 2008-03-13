@@ -15,8 +15,6 @@ class ISearchResult(zope.interface.Interface):
     uniqueId = zope.schema.TextLine(title=_("Unique Id"), readonly=True)
     __name__ = zope.schema.TextLine(title=_("File name"))
 
-    url = zope.schema.URI(title=_("URL to view in CMS"))
-
     title = zope.schema.TextLine(title=_('Title'))
     author = zope.schema.TextLine(title=_('Author'))
 
