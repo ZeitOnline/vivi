@@ -18,7 +18,7 @@ The clipboard is displayed as a tree. Initially it's empty:
 >>> print browser.contents
 <?xml version...
 <!DOCTYPE ...
-  <div class="PanelContent">
+  <div class="PanelContent" id="ClipboardPanelContent">
     <div id="clipboardcontents" class="Tree">
     <ul>
       <li class="Root" uniqueid="">
