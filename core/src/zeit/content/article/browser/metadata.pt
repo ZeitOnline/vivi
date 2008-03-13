@@ -26,8 +26,5 @@
       tal:content="context/shortTeaserText">
       Teaser Text
     </div>
-    <div class="syndicated-in">
-      abc
-    </div>
   </metal:data>
 </metal:macro>
