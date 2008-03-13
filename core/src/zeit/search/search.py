@@ -231,7 +231,7 @@ class ZeitSearch(XapianSearch):
         'text': '',
         'year': 'jahr:',
         'volume': 'ausgabe:',
-        'navigation': 'rubrik',
+        'navigation': 'rubrik:',
     }
 
     def __call__(self, search_terms):
@@ -254,7 +254,7 @@ class ZeitSearch(XapianSearch):
                 (u'%s%s' % (prefix, value)).encode('utf8'))
 
         return urllib.urlencode(dict(
-            q=' '.join(index_query),
+            q=' AND '.join(index_query),
             out='xml',
             ps='100'))
 
