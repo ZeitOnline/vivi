@@ -80,7 +80,6 @@ content.
 
 Make sure the menu entries are there and the targets are _blank:
 
->>> browser.handleErrors = False
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> print browser.contents
