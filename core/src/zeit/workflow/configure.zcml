@@ -17,4 +17,18 @@
 
   <adapter factory=".dav.ChoicePropertyWithPrincipalSource" />
 
+  <class class=".workflow.Workflow">
+    <require
+      permission="zope.View" interface=".interfaces.IWorkflowStatus"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IWorkflowStatus"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      interface=".interfaces.IPublish"
+      />
+  </class>
+
 </configure>

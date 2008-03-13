@@ -9,6 +9,8 @@ import gocept.form.grouped
 import zeit.cms.browser.form
 from zeit.cms.i18n import MessageFactory as _
 
+import zeit.workflow.interfaces
+
 
 class WorkflowForm(zeit.cms.browser.form.EditForm):
 
@@ -17,7 +19,8 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'published', 'date_first_released',
+            ('last_modified_by', 'date_last_modified',
+             'published', 'date_first_released',
              'edited', 'corrected', 'refined', 'images_added'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
@@ -26,3 +29,14 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.Fields(
         zeit.workflow.interfaces.IWorkflow)
+
+    @zope.formlib.form.action(_('Save state'))
+    def handle_save_state(self, action, data):
+        self.applyChanges(data)
+
+    @zope.formlib.form.action(_('... and publish'))
+    def handle_publish(self, action, data):
+        self.applyChanges(data)
+        zeit.workflow.interfaces.IPublish(self.context).publish()
+        self.send_message(_('Content is scheduled for publishing.'))
+

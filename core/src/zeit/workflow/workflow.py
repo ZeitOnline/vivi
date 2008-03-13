@@ -72,6 +72,10 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflow,
         'http://namespaces.zeit.de/CMS/document',
         ('date_first_released', 'last_modified_by'))
+    date_last_modified = zeit.cms.content.dav.DAVProperty(
+        zeit.workflow.interfaces.IWorkflow['date_last_modified'],
+        u'DAV:',
+        'getlastmodified')
 
     def __init__(self, context):
         self.context = context
@@ -91,6 +95,15 @@ class Workflow(object):
         if value is None:
             value = None, None
         self.released_from, self.released_to = value
+
+    def publish(self):
+        """Publish object."""
+        zope.event.notify(
+            zeit.workflow.interfaces.BeforePublishEvent(self.context))
+        # TODO create remotetask to actually publish. The remotetask would send
+        # an IPublishedEvent then. For now set publishedj
+        self.published = True
+
 
 
 @zope.component.adapter(zeit.workflow.interfaces.IWorkflow)
@@ -123,16 +136,13 @@ class FeedMetadataUpdater(object):
 
 
 @zope.component.adapter(
-    zeit.workflow.interfaces.IWorkflow,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+    zeit.cms.interfaces.ICMSContent,
+    zeit.workflow.interfaces.IBeforePublishEvent)
 def set_first_release_date(context, event):
-    # XXX refactor to use a IPublishedEvent.
-    if ((event.property_name, event.property_namespace) !=
-        ('published', WORKFLOW_NS)):
+    workflow = zeit.workflow.interfaces.IWorkflow(context)
+    if workflow.date_first_released:
         return
-    if context.date_first_released:
-        return
-    context.date_first_released = datetime.datetime.now(pytz.UTC)
+    workflow.date_first_released = datetime.datetime.now(pytz.UTC)
 
 
 @zope.component.adapter(

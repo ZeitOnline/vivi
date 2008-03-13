@@ -14,7 +14,12 @@ import zeit.workflow.source
 from zeit.cms.i18n import MessageFactory as _
 
 
-class IWorkflow(zope.interface.Interface):
+class IPublish(zope.interface.Interface):
+
+    def publish():
+        """Publish object."""
+
+class IWorkflowStatus(zope.interface.Interface):
     """Zeit Workflow interface.
 
     Currently there is only a *very* simple and static property based workflow
@@ -43,7 +48,8 @@ class IWorkflow(zope.interface.Interface):
         source=zeit.workflow.source.TriState())
 
     published = zope.schema.Bool(
-        title=_('Published'))
+        title=_('Published'),
+        readonly=True)
 
     urgent = zope.schema.Bool(
         title=u"Eilmeldung / Wochenende",
@@ -67,7 +73,37 @@ class IWorkflow(zope.interface.Interface):
         readonly=True,
         source=zope.app.security.vocabulary.PrincipalSource())
 
+    date_last_modified = zope.schema.Datetime(
+        title=_('Date last modified'),
+        required=False,
+        readonly=True)
+
     date_first_released = zope.schema.Datetime(
         title=_('Date first released'),
         required=False,
         readonly=True)
+
+
+class IWorkflow(IPublish, IWorkflowStatus):
+    """Combined interface for workflow."""
+
+
+
+class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
+    """Issued before an object is published."""
+
+
+class IPublishedEvent(zope.component.interfaces.IObjectEvent):
+    """Issued when an object was published."""
+
+
+class BeforePublishEvent(zope.component.interfaces.ObjectEvent):
+    """Issued before an object is published."""
+
+    zope.interface.implements(IBeforePublishEvent)
+
+
+class PublishedEvent(zope.component.interfaces.ObjectEvent):
+    """Issued when an object was published."""
+
+    zope.interface.implements(IPublishedEvent)

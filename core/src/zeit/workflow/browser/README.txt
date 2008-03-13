@@ -94,18 +94,15 @@ There are no explicit transitions defined. Instead every state attribute can
 currently be set to any value at will. Let's say our document is edited:
 
 >>> browser.getControl('Bearbeitet').displayValue = ['yes']
->>> browser.getControl('Apply').click()
+>>> browser.getControl('Save state').click()
 >>> browser.getControl('Bearbeitet').displayValue
 ['yes']
 
 
-When we publish a document we set the "published" field:
+To publish the document, hit the 'publish' button:
 
->>> browser.getControl('Published').selected = True
->>> browser.getControl('Apply').click()
->>> browser.getControl('Published').selected
-True
-
+>>> browser.handleErrors = False
+>>> browser.getControl("publish").click()
 
 
 Automatic workflow properties
@@ -125,6 +122,19 @@ The "date first released" is the date when the object was first published.
         </label>
         <div class="hint"></div>
         <div class="widget">Nothing</div>
+        ...
+      <div class="field   ">
+        <label for="form.date_last_modified">
+          <span>Date last modified</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget"></div>
+        ...
+        <label for="form.published">
+          <span>Published</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">True</div>
         ...
         <label for="form.date_first_released">
           <span>Date first released</span>
@@ -246,19 +256,26 @@ Check out an unpublished object:
 >>> browser.open('http://localhost:8080/++skin++cms/repository/online'
 ...              '/2007/01/Saarland')
 >>> browser.getLink('Workflow').click()
->>> browser.getControl('Published').selected
-False
+>>> print browser.contents
+<?xml ...
+        <label for="form.published">
+          <span>Published</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">False</div>
+    ...
 
-Do a publish/unpuslish cycle to set the property to false:
-
->>> browser.getControl('Published').selected = True
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
->>> browser.getControl('Published').selected = False
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
+# XXX currently disabled because we have no unpublish
+# Do a publish/unpublish cycle to set the property to false:
+#
+#>>> browser.getControl('Published').selected = True
+#>>> browser.getControl('Save state').click()
+#>>> 'There were errors' in browser.contents
+#False
+#>>> browser.getControl('Published').selected = False
+#>>> browser.getControl('Save state').click()
+#>>> 'There were errors' in browser.contents
+#False
 
 Check out:
 
@@ -270,12 +287,17 @@ Go back to the repository and publish:
 >>> browser.open('http://localhost:8080/++skin++cms/repository/online'
 ...              '/2007/01/Saarland')
 >>> browser.getLink('Workflow').click()
->>> browser.getControl('Published').selected = True
->>> browser.getControl('Apply').click()
+>>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False
->>> browser.getControl('Published').selected
-True
+>>> print browser.contents
+<?xml ...
+        <label for="form.published">
+          <span>Published</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">True</div>
+    ...
 
 Go the the checked out object and check in:
 
@@ -285,37 +307,45 @@ Go the the checked out object and check in:
 The object is still published:
 
 >>> browser.getLink('Workflow').click()
->>> browser.getControl('Published').selected
-True
+>>> print browser.contents
+<?xml ...
+        <label for="form.published">
+          <span>Published</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">True</div>
+        ...
 
 
-Now try the other way round, unpublish a published document while it is checked
-out:
 
->>> browser.getControl('Published').selected = True
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
->>> browser.getLink('Checkout').click()
-
-Unpublish now:
-
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Saarland')
->>> browser.getLink('Workflow').click()
->>> browser.getControl('Published').selected = False
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
-
-
-Check back in:
-
->>> browser.open(checked_out)
->>> browser.getLink('Checkin').click()
-
-The object is still published:
-
->>> browser.getLink('Workflow').click()
->>> browser.getControl('Published').selected
-False
+# XXX currently we have no unpublish
+#Now try the other way round, unpublish a published document while it is checked
+#out:
+#
+#>>> browser.getControl('Published').selected = True
+#>>> browser.getControl('Save state').click()
+#>>> 'There were errors' in browser.contents
+#False
+#>>> browser.getLink('Checkout').click()
+#
+#Unpublish now:
+#
+#>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+#...              '/2007/01/Saarland')
+#>>> browser.getLink('Workflow').click()
+#>>> browser.getControl('Published').selected = False
+#>>> browser.getControl('Save state').click()
+#>>> 'There were errors' in browser.contents
+#False
+#
+#
+#Check back in:
+#
+#>>> browser.open(checked_out)
+#>>> browser.getLink('Checkin').click()
+#
+#The object is still published:
+#
+#>>> browser.getLink('Workflow').click()
+#>>> browser.getControl('Published').selected
+#False

@@ -252,7 +252,10 @@ xml:
 >>> workflow = zeit.workflow.interfaces.IWorkflow(article)
 >>> workflow.date_first_released is None
 True
->>> workflow.published = True
+>>> workflow.publish()
+
+# XXX not sure why I need to adapt again
+>>> workflow = zeit.workflow.interfaces.IWorkflow(article)
 >>> workflow.date_first_released
 datetime.datetime(...)
 
