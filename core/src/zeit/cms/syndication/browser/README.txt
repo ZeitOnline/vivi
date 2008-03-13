@@ -188,6 +188,107 @@ The object is checked out now, and we're looking at the edit form:
 >>> browser.getControl(name='form.title').value
 'Zuender'
 
-XXX test the read only view
+Change the title:
 
+>>> browser.getControl('Title').value = 'Feuerzeug'
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
+
+Sorting 
+-------
+
+On the sorting tab the feed elements can be sorted via drag and drop. They can
+also be pinned and hidden from the homepage. Open the politik.feed and check it
+out:
+
+>>> browser.open('/++skin++cms/repository/politik.feed')
+>>> browser.getLink('Checkout').click()
+>>> browser.getLink('Sort').click()
+>>> print browser.contents
+<?xml ...
+<table class="feedsorting">
+  <thead>
+    <tr>
+      <th>
+        Pinned
+      </th>
+      <th>
+        Hidden on HP
+      </th>
+      <th>
+      </th>
+      <th>
+        Author
+      </th>
+      <th>
+        Title
+      </th>
+      <th>
+        Position
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>
+      ...<input type="checkbox" name="pin:list".../>
+    </td>
+    <td>
+      ...<input ...name="hide..." ...type="checkbox".../>
+    </td>
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+      None
+    </td>
+    <td>
+      <a href="http://localhost/++skin++cms/repository/online/2007/01/rauchen-verbessert-die-welt">rauchen-verbessert-die-welt</a>
+    </td>
+    <td>
+      1
+    </td>
+  </tr>
+  </tbody>
+</table>
+...
+
+
+Select the one entry we've syndicated for pinning:
+
+>>> browser.getControl(name='pin:list').value = (
+...     ['aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA=='])
+>>> browser.getControl('Save').click()
+>>> browser.getControl(name='pin:list').value
+['aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==']
+
+Now hide on hp:
+
+>>> hide_ctl = browser.getControl(
+...     name='hide.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
+...          'tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
+>>> hide_ctl.value
+False
+>>> hide_ctl.value = True
+>>> browser.getControl('Save').click()
+>>> hide_ctl = browser.getControl(
+...     name='hide.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
+...          'tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
+>>> hide_ctl.value
+True
+
+
+Let's have a look at the source now:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML').value.replace('\r\n', '\n')
+<feed xmlns="http://namespaces.zeit.de/CMS/feed">
+  <title>Politik</title>
+  <container>
+    <block href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+        pinned="true" hp_hide="true"/>
+  </container>
+</feed>
 

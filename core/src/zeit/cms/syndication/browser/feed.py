@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import cgi
 import logging
 
 import zope.component
@@ -14,11 +15,11 @@ import zc.table.column
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.workingcopy.interfaces
-
 import zeit.cms.syndication.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
-logger = logging.getLogger('zeit.cms.syndication.browser.feed')
+logger = logging.getLogger(__name__)
 
 
 class OrderedSelectionColumn(zc.table.column.SelectionColumn):
@@ -87,9 +88,13 @@ class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
 
 
 class FeedView(object):
+    """Sorts, pins and hides from hp."""
 
     def pinned(self, item):
         return self.context.pinned(item.context)
+
+    def hidden(self, item):
+        return self.context.hidden(item.context)
 
     @zope.cachedescriptors.property.Lazy
     def title(self):
@@ -119,30 +124,38 @@ class FeedView(object):
         formatter.cssClasses['table'] = 'feedsorting'
         return formatter
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def columns(self):
 
         def _id_getter(item):
             return item.context.uniqueId
 
         def _url_formatter(value, item, formatter):
-            return u'<a href="%s">%s</a>' % (item.url, value)
+            return u'<a href="%s">%s</a>' % (item.url, cgi.escape(value))
+
+        def _escape(value, item, formatter):
+            return cgi.escape(unicode(value))
 
         return (
             OrderedSelectionColumn(
-                _id_getter, getter=self.pinned,
-                title=u"Pin"),
+                _id_getter, getter=self.pinned, prefix='pin',
+                title=_("Pinned")),
+            zc.table.column.SelectionColumn(
+                _id_getter, getter=self.hidden, prefix='hide',
+                title=_("Hidden on HP")),
             zeit.cms.browser.listing.TypeColumn(u''),
             zc.table.column.GetterColumn(
-                u'Autor',
-                lambda t, c: t.author),
+                _('Author'),
+                lambda t, c: t.author,
+                cell_formatter=_escape),
             zc.table.column.GetterColumn(
-                u'Titel',
+                _('Title'),
                 lambda t, c: t.title,
                 cell_formatter=_url_formatter),
             zc.table.column.GetterColumn(
                 u'Position',
-                lambda t, c: self.context.getPosition(t.context) or '')
+                lambda t, c: self.context.getPosition(t.context) or '',
+                cell_formatter=_escape)
         )
 
 
@@ -156,17 +169,24 @@ class EditFeedView(FeedView):
 
     def updateFeed(self):
         content = self.content
-        column = self.columns[0]
-        orderd_objects = column.getItems(content, self.request)
+        pin_column = self.columns[0]
+        hide_column = self.columns[1]
+
+        orderd_objects = pin_column.getItems(content, self.request)
         orderd_ids = [obj.context.uniqueId for obj in orderd_objects]
         self.context.updateOrder(orderd_ids)
 
-        selected = set(column.getSelected(content, self.request))
+        selected = set(pin_column.getSelected(content, self.request))
+        hidden = set(hide_column.getSelected(content, self.request))
         for obj in content:
             if obj in selected:
                 self.context.pin(obj.context)
             else:
                 self.context.unpin(obj.context)
+            if obj in hidden:
+                self.context.hide(obj.context)
+            else:
+                self.context.show(obj.context)
 
 
 class AddToMyTargets(object):
