@@ -48,6 +48,8 @@ class SearchResult(object):
     volume = None
     page = None
 
+    relevance = 0
+
     def __init__(self, unique_id, weight=0):
         self.uniqueId = unique_id
         self.__name__ = unique_id.rsplit('/', 1)[1]
@@ -62,6 +64,7 @@ class SearchResult(object):
                 if value is not None:
                     break
             setattr(target, attr_name, value)
+        target.relevance = max(self.relevance, other.relevance)
         return target
 
 
@@ -114,7 +117,7 @@ class MetaSearch(object):
                 reduce(lambda a, b: a.updated_by(b),
                        (result[result_id] for result in result_dicts)))
 
-        return frozenset(search_result)
+        return sorted(search_result, key=lambda x: x.relevance, reverse=True)
 
 
 class XapianSearch(object):
@@ -146,6 +149,7 @@ class XapianSearch(object):
             result = tree.page.result
         except AttributeError:
             return
+        relevance = len(result)
         for node in result:
             unique_id = node.get('url').replace(
                 'http://www.zeit.de/', zeit.cms.interfaces.ID_NAMESPACE)
@@ -155,6 +159,8 @@ class XapianSearch(object):
             result.volume = make_int(node.get('volume'))
             result.title = make_unicode(node.title)
             result.author = make_unicode(node.author)
+            result.relevance = relevance
+            relevance -= 1
             yield result
 
 

@@ -125,6 +125,13 @@ u'Ein ungleicher Kampf'
 u'http://xml.zeit.de/zuender/2005/44/linux'
 
 
+The order of results is stored in the relevance attribute
+
+>>> result[0].relevance
+100
+>>> result[1].relevance
+99
+
 Meta search
 ===========
 
@@ -178,9 +185,11 @@ Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
 
 We had one result only since there is only one common match.
 
->>> item = sorted(result, key=lambda x: x.uniqueId)[0]
+>>> item = result[0]
 >>> item.uniqueId
 u'http://xml.zeit.de/2006/52/Stimmts'
+>>> item.relevance
+28
 
 The metadata is merged with the connector taking preference where data was
 available:
@@ -201,6 +210,7 @@ True
 
 Clean up
 ========
+
 >>> gsm.unregisterUtility(
 ...     xapian, zeit.search.interfaces.ISearchInterface, name='xapian')
 True
