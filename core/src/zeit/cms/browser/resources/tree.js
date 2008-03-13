@@ -50,7 +50,9 @@ Tree.prototype = {
     },
 
     replaceTree: function(content) {
+        signal(this, 'zeit.cms.BeforeTreeChangeEvent');
         this.contentElement.innerHTML = content;
-        signal(this, 'treeChangeEvent');
+        signal(this, 'zeit.cms.TreeChangedEvent');
+        signal(this, 'treeChangeEvent'); // BBB
     },
 }
