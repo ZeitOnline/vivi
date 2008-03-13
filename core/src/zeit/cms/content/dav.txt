@@ -236,9 +236,12 @@ datetime.datetime(2007, 5, 25, 13, 24, 59,
 >>> converter.fromProperty('2007-06-12T09:10:00+00:00')
 datetime.datetime(2007, 6, 12, 9, 10, tzinfo=<FixedOffset '+00:00'>)
 
-When the date is invalid, None is returned:
+When the date is invalid, a ValueError is raised:
+
 >>> print converter.fromProperty('asdf')
-None
+Traceback (most recent call last):
+    ...
+ValueError: asdf
 
 Converting datetimes takes timezone info into account:
 
@@ -247,6 +250,20 @@ Converting datetimes takes timezone info into account:
 >>> converter.toProperty(datetime.datetime(
 ...     2004, 1, 4, 10, 32, tzinfo=pytz.timezone('Europe/Berlin')))
 '2004-01-04T10:32:00+01:00'
+
+
+The "other" format is supported, too (read only):
+
+>>> converter.fromProperty("Thu, 13 Mar 2008 13:48:37 GMT")
+datetime.datetime(2008, 3, 13, 13, 48, 37, tzinfo=<UTC>)
+
+Note that only the "GMT" timezone is supported:
+
+>>> converter.fromProperty("Thu, 13 Mar 2008 13:48:37 CET")
+Traceback (most recent call last):
+    ...
+ValueError: Thu, 13 Mar 2008 13:48:37 CET
+
 
 
 Collection of TextLine

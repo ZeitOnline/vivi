@@ -4,12 +4,15 @@
 
 import lxml.etree
 
-import re
+import datetime
 import logging
+import re
 import sys
+import time
 
 import iso8601
 import gocept.lxml.interfaces
+import pytz
 
 import zope.component
 import zope.event
@@ -22,7 +25,7 @@ import zeit.cms.content.interfaces
 import zeit.connector.interfaces
 
 
-logger = logging.getLogger('zeit.cms.content.dav')
+logger = logging.getLogger(__name__)
 
 
 class DAVProperty(object):
@@ -207,7 +210,16 @@ class DatetimeProperty(object):
         try:
             return iso8601.parse_date(value)
         except iso8601.ParseError:
-            return None
+            pass
+        try:
+            # Uff. Try the "Thu, 13 Mar 2008 13:48:37 GMT" format
+            date = datetime.datetime(*(time.strptime(
+                value, '%a, %d %b %Y %H:%M:%S GMT')[0:6]))
+        except ValueError:
+            pass
+        else:
+            return date.replace(tzinfo=pytz.UTC)
+        raise ValueError(value)
 
     def toProperty(self, value):
         if value is None:
