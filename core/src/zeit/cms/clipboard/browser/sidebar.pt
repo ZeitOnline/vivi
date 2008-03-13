@@ -14,7 +14,7 @@
 
   <h1><a>Clipboard</a></h1>
  
-  <div class="PanelContent">
+  <div class="PanelContent" id="ClipboardPanelContent">
     <div id="clipboardcontents" class="Tree" 
       tal:content="structure tree_view">
         Tree
@@ -34,9 +34,8 @@
     </form>
     <script type="text/javascript"
       tal:content="string:
-        var clipboarddnd = new Clipboard('$clipboard_url',
-                                         '$tree_url',
-                                         'clipboardcontents');
+        var clipboarddnd = new zeit.cms.Clipboard(
+          '$clipboard_url', '$tree_url', 'clipboardcontents');
         ">
     </script>
 
