@@ -8,6 +8,8 @@ import logging
 
 import zope.component
 import zope.interface
+
+import zope.app.locking.interfaces
 import zope.app.security.interfaces
 
 import zc.table.table
