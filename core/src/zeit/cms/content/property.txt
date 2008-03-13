@@ -230,7 +230,7 @@ Let's have a look how the resource has been referenced:
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <foo>
-  <res xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str">http://xml.zeit.de/refed</res>
+  <res xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/refed</res>
 </foo>
 
 

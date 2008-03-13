@@ -123,8 +123,8 @@ Reassign the two objects an verify the xml:
   <head>
     <references>
       <reference type="intern" href="related-content-uid" year="2006" issue="19">
-        <title xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str">I relate the title</title>
-        <description xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">Dude.</description>
+        <title xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">I relate the title</title>
+        <description xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Dude.</description>
       </reference>
       <reference type="intern" href="related-content-2-uid"/>
     </references>

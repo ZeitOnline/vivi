@@ -523,7 +523,7 @@ The keys also correct(ed) and the names are set:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <centerpage>
   <head>
-      <image-folder xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str">http://xml.zeit.de/2006</image-folder></head>
+      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/2006</image-folder></head>
   <body>
     <column layout="left"/>
     <column layout="right">

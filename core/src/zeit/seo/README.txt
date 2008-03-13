@@ -42,9 +42,9 @@ Verify the source:
 >>> print browser.getControl('Source').value
 <testtype>
   <head>
-    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
-    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
-    <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
   </head>
   <body/>
 </testtype>

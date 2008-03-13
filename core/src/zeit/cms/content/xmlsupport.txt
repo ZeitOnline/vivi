@@ -61,7 +61,7 @@ change and contain the property:
 <a>
   <head>
     <attribute
-      xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" 
+      xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" 
       ns="myns" name="title">Mary had a little lamb.</attribute>
   </head>
 </a>
@@ -87,8 +87,8 @@ properties. Add some attributes to make sure they're removed:
 >>> content.xml = lxml.objectify.XML(u"""\
 ...     <a>
 ...      <head>
-...        <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
-...        <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
+...        <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
+...        <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
 ...      </head>
 ...    </a>""")
 
@@ -101,8 +101,8 @@ Let's add some property under the hood:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a>
   <head>
-    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
-    <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
   </head>
 </a>
 
@@ -116,7 +116,7 @@ When an IBeforeCheckinEvent is sent the xml is updated:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a>
   <head>
-    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="under-the-hood" name="am-i">4711</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="under-the-hood" name="am-i">4711</attribute>
   </head>
 </a>
 

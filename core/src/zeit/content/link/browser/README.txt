@@ -115,22 +115,22 @@ Verify the source of the feed:
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Source').click()
->>> print browser.getControl(name='form.xml').value
+>>> print browser.getControl(name='form.xml').value.replace('\r\n', '\n')
 <feed xmlns="http://namespaces.zeit.de/CMS/feed">
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/gocept.link">
       <supertitle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <title xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">gocept teaser</title>
+      <title xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">gocept teaser</title>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <byline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <short>
         <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <ns2:image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://namespaces.zeit.de/CMS/feed" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <ns1:image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://namespaces.zeit.de/CMS/feed" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns2:image>
+      </ns1:image>
     </block>
   </container>
 </feed>

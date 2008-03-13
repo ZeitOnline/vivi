@@ -333,12 +333,12 @@ Have a look at the source:
 >>> print browser.getControl('XML Source').value
 <centerpage>
   <head>
-    <attribute xmlns:ns0="http://codespeak.net/lxml/objectify/pytype" ns0:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">28</attribute>
-    <attribute xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="page">27</attribute>
-    <attribute xmlns:ns3="http://codespeak.net/lxml/objectify/pytype" ns3:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
-    <attribute xmlns:ns4="http://codespeak.net/lxml/objectify/pytype" ns4:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
-    <attribute xmlns:ns5="http://codespeak.net/lxml/objectify/pytype" ns5:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">28</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="page">27</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
   </head>
   <body>
     <title>Homepage</title>

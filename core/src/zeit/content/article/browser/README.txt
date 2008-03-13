@@ -383,22 +383,22 @@ xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
-      <supertitle xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">Halle</supertitle>
+      <supertitle xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Halle</supertitle>
       <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <byline xmlns:ns2="http://codespeak.net/lxml/objectify/pytype" ns2:pytype="str">by Dr. Who</byline>
+      <byline xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">by Dr. Who</byline>
       <short>
         <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <ns3:image
+      <ns1:image
         xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns3="http://namespaces.zeit.de/CMS/feed"
+        xmlns:ns1="http://namespaces.zeit.de/CMS/feed"
         src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns3:image>
+      </ns1:image>
     </block>
   </container>
 </feed>
@@ -450,22 +450,22 @@ at its xml source:
   <title>Politik</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
-      <supertitle xmlns:ns1="http://codespeak.net/lxml/objectify/pytype" ns1:pytype="str">Halle</supertitle>
-      <title xmlns:ns4="http://codespeak.net/lxml/objectify/pytype" ns4:pytype="str">Trinker zur Kasse</title>
+      <supertitle xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Halle</supertitle>
+      <title xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Trinker zur Kasse</title>
       <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <byline xmlns:ns9="http://codespeak.net/lxml/objectify/pytype" ns9:pytype="str">by Dr. Who</byline>
+      <byline xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">by Dr. Who</byline>
       <short>
         <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
       </short>
-      <ns15:image
+      <ns12:image
         xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns15="http://namespaces.zeit.de/CMS/feed"
+        xmlns:ns12="http://namespaces.zeit.de/CMS/feed"
         src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns15:image>
+      </ns12:image>
     </block>
   </container>
 </feed>
