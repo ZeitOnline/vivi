@@ -259,10 +259,13 @@ class ZeitSearch(XapianSearch):
             index_query.append(
                 (u'%s%s' % (prefix, value)).encode('utf8'))
 
+        sort = search_terms.get('sort', 'aktuell')
+
         return urllib.urlencode(dict(
             q=' AND '.join(index_query),
             out='xml',
-            ps='100'))
+            ps='100',
+            sort=sort))
 
     def get_result(self, tree):
         url_trash = '/home/ddc/ZEIT_CMS/'

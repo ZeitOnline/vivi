@@ -124,6 +124,22 @@
           </select>
         </div>
 
+        <div class="widget">
+          <label for="search.sort" i18n:translate="">
+            Sort order
+          </label>
+          <select name="search.sort" id="search.sort"
+            tal:define="last_serie last_search/sort | nothing">
+            <option
+              tal:repeat="serie python:['aktuell', 'relevanz']"
+              tal:attributes="value serie;
+              selected python:last_serie == serie"
+              tal:content="serie"
+              />
+          </select>
+        </div>
+
+
       </fieldset>
     </form>
   </div>

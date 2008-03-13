@@ -106,13 +106,15 @@ The search interface on the public website is also integrated:
 Make sure the url is combined correctly:
 
 >>> zeitsearch.get_query(dict(text=u'foo'))
-'q=foo&ps=100&out=xml'
+'sort=aktuell&ps=100&q=foo&out=xml'
+>>> zeitsearch.get_query(dict(text=u'foo', sort='relevanz'))
+'sort=relevanz&ps=100&q=foo&out=xml'
 
 We also add year volume and navigation to the query:
 
 >>> zeitsearch.get_query(
 ...     dict(text=u'f\xfcoo', year=2007, volume=3, navigation='Wirtschaft'))
-'q=ausgabe%3A3+AND+f%C3%BCoo+AND+rubrik%3AWirtschaft+AND+jahr%3A2007&ps=100&out=xml'
+'sort=aktuell&ps=100&q=ausgabe%3A3+AND+f%C3%BCoo+AND+rubrik%3AWirtschaft+AND+jahr%3A2007&out=xml'
 
 Let's do a full search:
 

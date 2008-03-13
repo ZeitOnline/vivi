@@ -27,11 +27,16 @@ The search form is located in the side bar.
   </div>
     ...
 
+We can change the sorting (but don't):
+
+>>> browser.getControl(name='search.sort').displayOptions
+['aktuell', 'relevanz']
+>>> browser.getControl(name='search.sort').displayValue
+['aktuell']
 
 Note that in the test we only can search for "linux", so we do that:
 
 >>> browser.getControl(name="search.text").value = 'linux'
->>> browser.handleErrors = False
 >>> browser.getControl('Search').click()
 >>> print browser.contents
 <?xml ...
