@@ -1,21 +1,28 @@
-function Clipboard(base_url, tree_url, clipboard_id) {
-    this.base_url = base_url;
-    this.contentElement = getElement(clipboard_id);
-    this.tree = new Tree(tree_url, clipboard_id);
-    connect(this.tree, 'treeChangeEvent', this, 'handleTreeChange');
-    this.connectDNDHandlers();
-    var dnd = this;
-    this.dragging = false;
-    MochiKit.Position.includeScrollOffsets = true;
+// $Id$
 
-    // Adding
-    connect('clip-add-folder-link', 'onclick', this, 'showAddBox');
-    connect('clip-add-folder-submit', 'onclick', this, 'addClip');
-    connect('clip-add-folder-cancel', 'onclick', this, 'hideAddBox');
-    connect('clipboardcontents', 'onclick', this, 'removeClip');
-}
+zeit.cms.Clipboard = Class.extend({
 
-Clipboard.prototype = {
+    construct: function(base_url, tree_url, clipboard_id) {
+        this.base_url = base_url;
+        this.contentElement = getElement(clipboard_id);
+        this.tree = new Tree(tree_url, clipboard_id);
+        connect(
+            this.tree, 'zeit.cms.BeforeTreeChangeEvent',
+            this, 'handleBeforeTreeChange');
+        connect(
+            this.tree, 'zeit.cms.TreeChangedEvent',
+            this, 'handleTreeChanged');
+        this.connectDNDHandlers();
+        var dnd = this;
+        this.dragging = false;
+        MochiKit.Position.includeScrollOffsets = true;
+
+        // Adding
+        connect('clip-add-folder-link', 'onclick', this, 'showAddBox');
+        connect('clip-add-folder-submit', 'onclick', this, 'addClip');
+        connect('clip-add-folder-cancel', 'onclick', this, 'hideAddBox');
+        connect('clipboardcontents', 'onclick', this, 'removeClip');
+    },
 
     connectDNDHandlers: function() {
         var elements = this.contentElement.getElementsByTagName('li');
@@ -80,8 +87,13 @@ Clipboard.prototype = {
         );
     },
 
-    handleTreeChange: function(event) {
+    handleBeforeTreeChange: function(event) {
+        signal('sidebar', 'zeit.cms.RememberScrollStateEvent');
+    },
+
+    handleTreeChanged: function(event) {
         this.connectDNDHandlers();
+        signal('sidebar', 'zeit.cms.RestoreScrollState');
         signal('sidebar', 'panel-content-changed');
     },
 
@@ -105,6 +117,7 @@ Clipboard.prototype = {
         if (!title.match(/\w.+/))
             return
 
+        signal('sidebar', 'zeit.cms.RememberScrollStateEvent');
         var d = doSimpleXMLHttpRequest(
             this.base_url + '/@@addContainer', {
                 'title': title});
@@ -112,6 +125,7 @@ Clipboard.prototype = {
             function(result) {
                 dnd.tree.replaceTree(result.responseText);
                 clipboarddnd.hideAddBox();
+                signal('sidebar', 'zeit.cms.RestoreScrollState');
             },
             alert
         );
@@ -124,11 +138,13 @@ Clipboard.prototype = {
 
         var css_class = element.getAttribute('class');
         if (css_class == 'DeleteLink') {
+            signal('sidebar', 'zeit.cms.RememberScrollStateEvent');
             var url = element.getAttribute('href')
             var d = doSimpleXMLHttpRequest(url);
             d.addCallbacks(
                 function(result) {
                     clipboarddnd.tree.replaceTree(result.responseText);
+                    signal('sidebar', 'zeit.cms.RestoreScrollState');
                 });
         }
 
@@ -136,6 +152,4 @@ Clipboard.prototype = {
 
         event.stop();
     },
-}
-
-
+});
