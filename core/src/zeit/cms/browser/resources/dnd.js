@@ -110,6 +110,7 @@ var ObjectReferenceWidget = Class.extend({
         this.type_filter = type_filter;
         this.input = getFirstElementByTagAndClassName(
             'input', 'object-reference', this.element);
+        this.input.object_reference_widget = this;
 
         var othis = this;
         new Droppable(this.element, {
@@ -121,8 +122,14 @@ var ObjectReferenceWidget = Class.extend({
         connect(element, 'onclick', this, 'handleClick');
 
         // this saves a click and shows the object browser initially
-        if (show_popup)
-            this.browseObjects();
+        if (show_popup) {
+            // Defer popup loading until page is completed to allow others to
+            // set a unique id. 
+            connect(window, 'onload', function() {
+                if (!othis.input.value) 
+                    othis.browseObjects();
+            });
+        }
     },
 
     handleDrop: function(element) {
@@ -177,6 +184,10 @@ var ObjectReferenceWidget = Class.extend({
         this.input.value = unique_id;
     },
 
+    getObject: function() {
+        return this.input.value;
+    },
+
     loadContentFromUrl: function(url) {
         var d = this.lightbox.load_url(
             url + '/@@get_object_browser',
@@ -193,6 +204,53 @@ var ObjectReferenceWidget = Class.extend({
         return d;
     },
 });
+
+
+zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
+
+    construct: function(widget_id) {
+        this.widget_id = widget_id;
+        this.element = $(widget_id);
+        this.form = getFirstParentByTagAndClassName(this.element, 'form');
+        var othis = this;
+        new Droppable(this.element, {
+            hoverclass: 'drop-widget-hover',
+            ondrop: function(element, last_active_element, event) {
+                    othis.handleDrop(element);
+            },
+        });
+        this.setObject();
+    },
+
+    handleDrop: function(element) {
+        // On drop we create a new field
+        setCookie(this.widget_id, element.uniqueId);
+        var add_button = this.form[this.widget_id + '.add'];
+        add_button.click();
+    },
+
+    setObject: function() {
+        var unique_id =  getCookie(this.widget_id);
+        if (!unique_id) {
+            return
+        }
+        var count = new Number(this.form[this.widget_id + '.count'].value);
+        if (count <= 0) {
+            return
+        }
+        var field_nr = count - 1;
+
+        var input = this.form[this.widget_id + '.' + field_nr + '.'];
+        var widget = input.object_reference_widget;
+        if (widget.getObject()) {
+            return
+        }
+        widget.selectObject(unique_id);
+        setCookie(this.widget_id, '');
+    },
+
+});
+
 
 
 var ObjectSequenceWidgetBase = Class.extend({

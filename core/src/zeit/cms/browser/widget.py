@@ -82,6 +82,23 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return 'false'
 
 
+
+class ObjectReferenceSequenceWidget(
+    zope.app.form.browser.sequencewidget.SequenceWidget):
+    """A specialised sequence widget which allows dropping objects."""
+
+    def __call__(self):
+        quoted_name = xml.sax.saxutils.quoteattr(self.name)
+        result = ['<div id=%s>%s</div>' % (
+            quoted_name,
+            super(ObjectReferenceSequenceWidget, self).__call__())]
+        result.append('<script language="javascript">')
+        result.append('new zeit.cms.ObjectReferenceSequenceWidget(%s);' %
+                      quoted_name)
+        result.append('</script>')
+        return ''.join(result)
+
+
 class ObjectReferenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):
 

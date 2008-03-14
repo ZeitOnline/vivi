@@ -36,7 +36,7 @@
     zeit.cms.content.interfaces.ICMSContentSource
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
-    factory="zope.app.form.browser.sequencewidget.SequenceWidget"
+    factory=".widget.ObjectReferenceSequenceWidget"
     permission="zope.Public"
     />
 

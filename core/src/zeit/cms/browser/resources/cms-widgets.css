@@ -371,7 +371,7 @@ table.properties textarea {
   opacity: 1;
 }
 .drop-widget-hover {
-  background: #ccc url("/@@/zeit.cms/icons/drop-widget-hover.png") no-repeat 1em center;
+  background: #ccc url("/@@/zeit.cms/icons/drop-widget-hover.png") no-repeat right center;
 }
 .drop-widget-hover .new {
   visibility: hidden;
