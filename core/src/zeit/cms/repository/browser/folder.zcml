@@ -14,11 +14,6 @@
     allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
 
-  <resourceLibrary name="zeit.cms.repository"
-    require="zeit.cms.DragAndDrop gocept.mochikit.lightbox">
-    <directory source="resources" include="repository.js"/>
-  </resourceLibrary>
-
   <browser:page
     name="view.html"
     for="zeit.cms.repository.interfaces.IFolder"
