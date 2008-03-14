@@ -88,7 +88,9 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
                    target.getAttribute('href').indexOf('keyword://') == 0) {
             this.addKeyword(target.getAttribute('href'));
         } else if (target.getAttribute('name') == 'add_new_keyword_button') {
-            var code = getElement('new_keyword_code').value
+            var new_keyword_code = $('new_keyword_code')
+            var code = new_keyword_code.value
+            new_keyword_code.value = ''
             this.addCustomKeyword(code);
         } else if (target.getAttribute('class') == 'FoundKeywordInTaxonomy') {
             this.addKeyword(target.getAttribute('href'));
