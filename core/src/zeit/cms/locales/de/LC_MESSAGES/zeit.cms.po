@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Mon Mar 17 10:46:17 2008\n"
-"PO-Revision-Date: 2008-03-17 11:02+0100\n"
+"PO-Revision-Date: 2008-03-17 11:54+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -890,7 +890,7 @@ msgstr "Layout"
 
 #: src/zeit/content/gallery/browser/configure.zcml:65
 msgid "Gallery"
-msgstr "Metadaten der Bildergalerie ansehen"
+msgstr "Bildergalerie"
 
 #: src/zeit/content/gallery/browser/configure.zcml:90
 msgid "Synchronise with image folder"
