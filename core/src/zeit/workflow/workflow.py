@@ -17,7 +17,7 @@ import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
-
+import zeit.cms.workflow.interfaces
 
 import zeit.workflow.interfaces
 
@@ -99,7 +99,7 @@ class Workflow(object):
     def publish(self):
         """Publish object."""
         zope.event.notify(
-            zeit.workflow.interfaces.BeforePublishEvent(self.context))
+            zeit.cms.workflow.interfaces.BeforePublishEvent(self.context))
         # TODO create remotetask to actually publish. The remotetask would send
         # an IPublishedEvent then. For now set publishedj
         self.published = True
@@ -137,7 +137,7 @@ class FeedMetadataUpdater(object):
 
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
-    zeit.workflow.interfaces.IBeforePublishEvent)
+    zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def set_first_release_date(context, event):
     workflow = zeit.workflow.interfaces.IWorkflow(context)
     if workflow.date_first_released:

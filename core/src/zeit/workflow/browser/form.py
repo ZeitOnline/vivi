@@ -37,6 +37,6 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     @zope.formlib.form.action(_('... and publish'))
     def handle_publish(self, action, data):
         self.applyChanges(data)
-        zeit.workflow.interfaces.IPublish(self.context).publish()
+        zeit.cms.workflow.interfaces.IPublish(self.context).publish()
         self.send_message(_('Content is scheduled for publishing.'))
 

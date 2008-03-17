@@ -1,0 +1,64 @@
+# Copyright (c) 2007-2008 gocept gmbh & co. kg
+# See also LICENSE.txt
+# $Id$
+"""Workflow interfaces."""
+
+import zope.interface
+import zope.schema
+
+import zope.app.security.vocabulary
+
+import zeit.workflow.source
+from zeit.cms.i18n import MessageFactory as _
+
+
+class IPublishInfo(zope.interface.Interface):
+    """Information about published objects."""
+
+    published = zope.schema.Bool(
+        title=_('Published'),
+        readonly=True)
+
+    date_last_modified = zope.schema.Datetime(
+        title=_('Date last modified'),
+        required=False,
+        readonly=True)
+
+    last_modified_by = zope.schema.Choice(
+        title=_('Last modified by'),
+        required=False,
+        readonly=True,
+        source=zope.app.security.vocabulary.PrincipalSource())
+
+
+    date_first_released = zope.schema.Datetime(
+        title=_('Date first released'),
+        required=False,
+        readonly=True)
+
+
+class IPublish(zope.interface.Interface):
+    """Interface for publishing objects."""
+
+    def publish():
+        """Publish object."""
+
+
+class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
+    """Issued before an object is published."""
+
+
+class IPublishedEvent(zope.component.interfaces.IObjectEvent):
+    """Issued when an object was published."""
+
+
+class BeforePublishEvent(zope.component.interfaces.ObjectEvent):
+    """Issued before an object is published."""
+
+    zope.interface.implements(IBeforePublishEvent)
+
+
+class PublishedEvent(zope.component.interfaces.ObjectEvent):
+    """Issued when an object was published."""
+
+    zope.interface.implements(IPublishedEvent)

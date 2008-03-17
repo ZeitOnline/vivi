@@ -10,16 +10,12 @@ import zope.app.security.vocabulary
 
 import zc.form.field
 
+import zeit.cms.workflow.interfaces
 import zeit.workflow.source
 from zeit.cms.i18n import MessageFactory as _
 
 
-class IPublish(zope.interface.Interface):
-
-    def publish():
-        """Publish object."""
-
-class IWorkflowStatus(zope.interface.Interface):
+class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
     """Zeit Workflow interface.
 
     Currently there is only a *very* simple and static property based workflow
@@ -84,26 +80,5 @@ class IWorkflowStatus(zope.interface.Interface):
         readonly=True)
 
 
-class IWorkflow(IPublish, IWorkflowStatus):
+class IWorkflow(zeit.cms.workflow.interfaces.IPublish, IWorkflowStatus):
     """Combined interface for workflow."""
-
-
-
-class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
-    """Issued before an object is published."""
-
-
-class IPublishedEvent(zope.component.interfaces.IObjectEvent):
-    """Issued when an object was published."""
-
-
-class BeforePublishEvent(zope.component.interfaces.ObjectEvent):
-    """Issued before an object is published."""
-
-    zope.interface.implements(IBeforePublishEvent)
-
-
-class PublishedEvent(zope.component.interfaces.ObjectEvent):
-    """Issued when an object was published."""
-
-    zope.interface.implements(IPublishedEvent)

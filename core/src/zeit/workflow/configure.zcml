@@ -27,7 +27,7 @@
       />
     <require
       permission="zeit.workflow.Publish"
-      interface=".interfaces.IPublish"
+      interface="zeit.cms.workflow.interfaces.IPublish"
       />
   </class>
 
