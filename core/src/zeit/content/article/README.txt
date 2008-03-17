@@ -243,7 +243,18 @@ Workflow
 
 When an article is published for the first time, the "date first released" is
 set by the workflow engine. We make sure that the date is also copied to the
-xml:
+xml.
+
+Create a new interaction first:
+
+>>> import zope.security.testing
+>>> principal = zope.security.testing.Principal('kurt')
+>>> request = zope.publisher.browser.TestRequest()
+>>> request.setPrincipal(principal)
+>>> import zope.security.management
+>>> zope.security.management.newInteraction(request)
+
+Now publish:
 
 >>> import zeit.workflow.interfaces
 >>> article = repository['online']['2007']['01']['Somalia']
@@ -268,8 +279,11 @@ We expect the value to be in the xml now as well:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
   </head>
   ...
-    
 
+
+Logout:
+
+>>> zope.security.management.endInteraction()
 
 Cleanup
 =======

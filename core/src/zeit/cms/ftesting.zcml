@@ -20,4 +20,6 @@
   <include package="zope.app.securitypolicy.tests" file="functional.zcml" />
   <include file="principals-testing.zcml" />
 
+  <adapter factory="zeit.cms.workflow.mock.MockPublish" />
+
 </configure>

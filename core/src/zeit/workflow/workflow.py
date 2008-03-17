@@ -12,12 +12,15 @@ import zope.event
 import zope.interface
 import zope.location.location
 
+import z3c.flashmessage.interfaces
+
 import zeit.connector.interfaces
 import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 import zeit.workflow.interfaces
 
@@ -103,6 +106,11 @@ class Workflow(object):
         # TODO create remotetask to actually publish. The remotetask would send
         # an IPublishedEvent then. For now set publishedj
         self.published = True
+        source = zope.component.getUtility(
+            z3c.flashmessage.interfaces.IMessageSource, name='session')
+        source.send(_('${id} has been scheduled for publishing.',
+                      mapping=dict(id=self.context.uniqueId)))
+
 
 
 

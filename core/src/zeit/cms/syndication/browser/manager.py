@@ -10,23 +10,32 @@ import zc.table.column
 import zc.table.table
 
 import zeit.cms.browser.listing
+import zeit.cms.browser.view
 import zeit.cms.browser.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.cms.workflow.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
-class Manager(object):
+class Manager(zeit.cms.browser.view.Base):
 
     def __call__(self):
         render = super(Manager, self).__call__
         if self.request.form:
             targets = self.columns[0].getSelected(self.manager.targets,
                                                   self.request)
-            self.manager.syndicate(targets)
+            if 'syndicate' in self.request.form:
+                self.manager.syndicate(targets)
+            if 'publish' in self.request.form:
+                self.publish(targets)
         return render()
 
     def has_content(self):
         return self.manager.targets
+
+    def publish(self, targets):
+        for target in targets:
+            zeit.cms.workflow.interfaces.IPublish(target).publish()
 
     @zope.cachedescriptors.property.Lazy
     def content(self):

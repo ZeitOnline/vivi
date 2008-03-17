@@ -151,7 +151,7 @@ Locking information is also be displayed in the syndication manager:
 <?xml ...
 <!DOCTYPE html...
 <div id="edit-form">
-<h1>Syndicate rauchen-verbessert-die-welt</h1>
+<h1> Syndicate "rauchen-verbessert-die-welt" </h1>
 <form method="POST">
   ...
     <tr>
@@ -202,6 +202,20 @@ The preview goes to the index now:
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview', index=1)
 HTTP Error 303: See Other
 http://localhost/preview-prefix/index
+
+
+Publishing
+----------
+
+In the syndication tab it is very handy to publish the feeds right away.
+Publish the politik channel:
+
+>>> browser.open(bookmark)
+>>> politik_checkbox = browser.getControl(
+...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
+>>> politik_checkbox.value = True
+>>> browser.getControl('Publish').click()
+Publishing: http://xml.zeit.de/politik.feed
 
 
 Feeds
