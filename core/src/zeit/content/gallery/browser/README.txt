@@ -321,3 +321,30 @@ Now try to add a gallery:
   <h1>An error occured</h1>
   ...
   <pre>Cannot transform image  ...
+
+
+
+Browsing location
+=================
+
+The browsing location for an image gallery is
+/bilder/jahr/ausgab/bildergallerien.  We verify that in python so we need some
+setup:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>>
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.content.contentsource
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> def get_location(obj):
+...     return zope.component.getMultiAdapter(
+...         (obj, zeit.cms.content.contentsource.folderSource)
+...         zeit.cms.browser.interfaces.IDefaultBrowsingLocation).uniqueId
+
+>>> gallery = repository['online']['2007']['01']['island']
+>>> get_location(gallery)
