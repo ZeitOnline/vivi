@@ -8,6 +8,7 @@
   </class>
 
   <class class=".folder.Folder">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class="zope.app.folder.folder.Folder" />
     <require
       interface=".interfaces.IRename"

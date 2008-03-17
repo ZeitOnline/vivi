@@ -128,7 +128,7 @@ The "date first released" is the date when the object was first published.
           <span>Date last modified</span>
         </label>
         <div class="hint"></div>
-        <div class="widget"></div>
+        <div class="widget"><span class="dateTime">2008 3 7  12:47:16 </span></div>
         ...
         <label for="form.published">
           <span>Published</span>

@@ -48,15 +48,12 @@ We have to publish another url to see if articles are listed:
         <span class="filename">Ford-Beerdigung</span>
     </td>
     <td>
+      2008 3 7  12:47:16
+    </td>
+    <td>
     </td>
     <td>
       International
-    </td>
-    <td>
-      2007
-    </td>
-    <td>
-      1
     </td>
 ...
 

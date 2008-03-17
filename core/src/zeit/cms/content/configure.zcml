@@ -111,4 +111,8 @@
   <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
   <subscriber handler=".xmlsupport.map_dav_properties_to_xml_before_checkin" />
 
+  <!-- dublin core -->
+  <adapter factory=".dublincore.DCTimes" />
+  <adapter factory=".dublincore.webdav_properties" />
+
 </configure>

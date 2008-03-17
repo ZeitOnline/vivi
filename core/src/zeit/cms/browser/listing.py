@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 # $Id$
 
-import locale
 import logging
 
 import zope.component
@@ -49,21 +48,21 @@ class BaseListRepresentation(object):
             (self.context, self.request),
             name='absolute_url')
 
-    def modifiedOn(self, format=None):
-        return self._dc_date_helper('modified', format)
+    @property
+    def modifiedOn(self):
+        return self._dc_date_helper('modified')
 
-    def createdOn(self, format=None):
-        return self._dc_date_helper('created', format)
+    @property
+    def createdOn(self):
+        return self._dc_date_helper('created')
 
-    def _dc_date_helper(self, attribute, format):
-        if format is None:
-            format = locale.D_T_FMT
+    def _dc_date_helper(self, attribute):
         try:
-            date = zope.dublincore.interfaces.IDCTimes(
-                self.context).modified
+            times = zope.dublincore.interfaces.IDCTimes(
+                self.context)
         except TypeError:
             return None
-        return date.stftime(format)
+        return getattr(times, attribute)
 
 
 class CommonListRepresentation(BaseListRepresentation):
@@ -201,6 +200,16 @@ class HitColumn(GetterColumn):
         return '<span class="hitCounter">%s</span>' % value
 
 
+class DatetimeColumn(GetterColumn):
+
+    def cell_formatter(self, value, item, formatter):
+        if not value:
+            return u''
+        date_formatter = formatter.request.locale.dates.getFormatter(
+            'dateTime', 'medium')
+        return date_formatter.format(value)
+
+
 class Listing(object):
     """object listing view"""
 
@@ -224,19 +233,15 @@ class Listing(object):
             _('File name'),
             name='filename',
             getter=lambda t, c: t.__name__),
+        DatetimeColumn(
+            _('Modified'),
+            name='modified',
+            getter=lambda t, c: t.modifiedOn),
         HitColumn(_('Hits')),
         GetterColumn(
             _('Ressort'),
             name='ressort',
             getter=lambda t, c: t.ressort),
-        GetterColumn(
-            _('Year'),
-            name='year',
-            getter=lambda t, c: t.year),
-        GetterColumn(
-            _('volme-abbreviated', default=u'Vol.'),
-            name='volume',
-            getter=lambda t, c: t.volume),
         GetterColumn(
             _('Page'),
             name='page',

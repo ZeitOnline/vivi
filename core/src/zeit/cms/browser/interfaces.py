@@ -65,21 +65,11 @@ class IListRepresentation(zope.interface.Interface):
 
     modifiedBy = zope.interface.Attribute("Datetime of last modification")
 
-    def modifiedOn(format=None):
-        """Date of last modification.
+    modifiedOn = zope.interface.Attribute(
+        "datetime of last modification.")
 
-        format: strftime format string,
-        if format=None the formatstring is computed by using the server LOCALE
-
-        """
-
-    def createdOn(format=None):
-        """Returns creation date as string.
-
-        format: strftime format string,
-        if format=None the formatstring is computed by using the server LOCALE
-
-        """
+    createdOn = zope.interface.Attribute(
+        "datetime of creation date.")
 
 
 class IImageRepresentation(zope.interface.Interface):
