@@ -5,12 +5,13 @@
 import cgi
 import logging
 
-import zope.component
 import zope.cachedescriptors.property
+import zope.component
+import zope.interface
 import zope.publisher.interfaces
 
-import zc.table.table
 import zc.table.column
+import zc.table.table
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
@@ -208,3 +209,9 @@ class AddToMyTargets(object):
         return zeit.cms.syndication.interfaces.IMySyndicationTargets(
             zeit.cms.workingcopy.interfaces.IWorkingcopy(
                 self.request.principal))
+
+
+@zope.component.adapter(zeit.cms.syndication.interfaces.IFeed)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewObject)
+def feed_preview(context):
+    return context.__parent__.get('index')

@@ -138,3 +138,15 @@ class IDefaultBrowsingLocation(zope.interface.Interface):
     folder.
 
     """
+
+
+class IPreviewObject(zope.interface.Interface):
+    """Adapter to find an object to preview an asset.
+
+    When an asset (like a channel) needs to be previewed it often cannot be
+    shown directly but another object which uses the asset needs to be shown.
+
+    Assets can register an adapter factor to IPreviewObject which must yield a
+    previewable object.
+
+    """

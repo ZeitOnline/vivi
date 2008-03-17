@@ -7,6 +7,7 @@ import urlparse
 import zope.app.appsetup.product
 
 import zeit.cms.interfaces
+import zeit.cms.browser.interfaces
 
 
 class PreviewBase(object):
@@ -23,7 +24,9 @@ class PreviewBase(object):
         self.request.response.redirect(url)
 
     def __call__(self):
-        self.redirect_to_preview_of(self.context)
+        preview_object = zeit.cms.browser.interfaces.IPreviewObject(
+            self.context, self.context)
+        self.redirect_to_preview_of(preview_object)
         return ''
 
 

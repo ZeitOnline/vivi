@@ -12,6 +12,7 @@ import zc.table.table
 import zeit.cms.browser.listing
 import zeit.cms.browser.interfaces
 import zeit.cms.syndication.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class Manager(object):
@@ -65,5 +66,11 @@ class Manager(object):
             zc.table.column.GetterColumn(
                 u'Position',
                 lambda t, c: t.getPosition(self.context) or ''),
+            zeit.cms.browser.column.LinkColumn(
+                hide_header=True,
+                sortable=False,
+                view='@@show_preview',
+                target='_blank',
+                cell_formatter=lambda i, v, f: _('Preview')),
         )
 

@@ -4,6 +4,8 @@
   i18n_domain="zeit.cms">
 
   <adapter factory=".feed.FeedListRepresentation" />    
+  <adapter factory=".feed.feed_preview" />    
+
   <browser:icon
     for="zeit.cms.syndication.interfaces.IFeed"
     name="zmi_icon"

@@ -72,6 +72,9 @@ Visit the syndication page again:
       </td>
       <td>
       </td>
+      <td>
+        <a ...target="_blank"...>Preview</a>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -112,6 +115,9 @@ in the feed:
       <td>
         1
       </td>
+      <td>
+        <a ...>Preview</a>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -129,7 +135,11 @@ in there:
   </td>
 ...
 
-Locking information should also be displayed in the syndication manager:
+
+Locking indicator
+-----------------
+
+Locking information is also be displayed in the syndication manager:
 
 >>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html')
 >>> browser.getLink("Checkout").click()
@@ -159,7 +169,39 @@ Locking information should also be displayed in the syndication manager:
       </td>
       <td>
       </td>
+      <td>
+        <a ...>Preview</a>
+      </td>
 ...
+
+Preview
+-------
+
+There is also a preview link, to be able to preview the feed:
+
+>>> bookmark = browser.url
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview', index=1)
+HTTP Error 303: See Other
+http://localhost/preview-prefix/politik.feed
+
+Note that if there is an `index` object in the container the preview url is
+*not* the url of the feed itself, but the `index` of the container of the feed.
+Create an index:
+
+>>> browser.open('http://localhost/++skin++cms')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Folder']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'index'
+>>> browser.getControl('Add').click()
+
+The preview goes to the index now:
+
+>>> browser.open(bookmark)
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview', index=1)
+HTTP Error 303: See Other
+http://localhost/preview-prefix/index
 
 
 Feeds

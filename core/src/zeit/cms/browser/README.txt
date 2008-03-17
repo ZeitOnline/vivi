@@ -123,3 +123,34 @@ Check the development preview:
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Development')
 HTTP Error 303: See Other
 http://localhost/development-preview-prefix/online/2007/01/Somalia
+
+When an adapter to IPreviewObject is registered the preview url may change.
+Register an adapter for IUnknownResource redirecting to the container:
+
+>>> import zope.component
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.repository.interfaces
+>>> def preview(context):
+...     return context.__parent__
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     preview,
+...     (zeit.cms.repository.interfaces.IUnknownResource, ),
+...     zeit.cms.browser.interfaces.IPreviewObject)
+
+The preview is on the container now:
+
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Development')
+HTTP Error 303: See Other
+http://localhost/development-preview-prefix/online/2007/01
+
+
+Clean up:
+>>> gsm.unregisterAdapter(
+...     preview,
+...     (zeit.cms.repository.interfaces.IUnknownResource, ),
+...     zeit.cms.browser.interfaces.IPreviewObject)
+True
