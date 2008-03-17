@@ -30,7 +30,6 @@ class IPublishInfo(zope.interface.Interface):
         readonly=True,
         source=zope.app.security.vocabulary.PrincipalSource())
 
-
     date_first_released = zope.schema.Datetime(
         title=_('Date first released'),
         required=False,
