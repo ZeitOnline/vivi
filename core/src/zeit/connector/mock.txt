@@ -33,6 +33,7 @@ The browsing interface basically allows listing collections:
  (u'2007', u'http://xml.zeit.de/2007'),
  (u'online', u'http://xml.zeit.de/online'),
  (u'politik.feed', u'http://xml.zeit.de/politik.feed'),
+ (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 
 >>> entry = list(connector.listCollection(
@@ -152,11 +153,14 @@ True
 
 We now can get the object back from the connector:
 
+>>> from pprint import pprint
 >>> resource_2 = connector[resource.id]
 >>> print resource_2.data.read()
 Seehofer schlaegt zurueck
->>> sorted(resource_2.properties.items())
-[(('foo', 'foo-ns'), 'bar'), (('resourcetype', 'DAV:'), 'article')]
+>>> pprint(dict(resource_2.properties))
+{('foo', 'foo-ns'): 'bar',
+ ('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
+ ('resourcetype', 'DAV:'): 'article'}
 
 
 Also the collection contains the resource now:
@@ -178,7 +182,6 @@ resource and add id using the `add` method:
 ...     StringIO.StringIO('Zwischen Angst und Schock'))
 >>> connector.add(resource)
 
->>> from pprint import pprint
 >>> pprint(list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/02')))
 [(u'DaimlerChrysler', u'http://xml.zeit.de/online/2007/02/DaimlerChrysler'),
@@ -234,6 +237,7 @@ first:
  (u'2007', u'http://xml.zeit.de/2007'),
  (u'online', u'http://xml.zeit.de/online'),
  (u'politik.feed', u'http://xml.zeit.de/politik.feed'),
+ (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 
 After remove the `politik.feed` it is also gone from the listing:
@@ -243,6 +247,7 @@ After remove the `politik.feed` it is also gone from the listing:
 [(u'2006', u'http://xml.zeit.de/2006'),
  (u'2007', u'http://xml.zeit.de/2007'),
  (u'online', u'http://xml.zeit.de/online'),
+ (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 
 >>> connector['http://xml.zeit.de/politik.feed']
@@ -261,12 +266,14 @@ folders though. So we implement a special method for moving:
 [(u'2006', u'http://xml.zeit.de/2006'),
  (u'2007', u'http://xml.zeit.de/2007'),
  (u'online', u'http://xml.zeit.de/online'),
+ (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 >>> connector.move('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-27')
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
 [(u'2006-27', u'http://xml.zeit.de/2006-27'),
  (u'2007', u'http://xml.zeit.de/2007'),
  (u'online', u'http://xml.zeit.de/online'),
+ (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 
 

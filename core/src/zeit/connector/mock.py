@@ -216,6 +216,8 @@ class Connector(object):
             for node in nodes:
                 properties[node.get('name'), node.get('ns')] = (
                     node.text)
+        properties[('getlastmodified', 'DAV:')] = (
+            u'Fri, 07 Mar 2008 12:47:16 GMT')
         self._properties[id] = properties
         return properties
 
