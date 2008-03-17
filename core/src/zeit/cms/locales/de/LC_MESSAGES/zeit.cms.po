@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Feb 21 13:22:22 2008\n"
-"PO-Revision-Date: 2008-02-26 16:09+0100\n"
-"Last-Translator: Christian Zagrodnick <cz@gocept.com\\>\n"
+"POT-Creation-Date: Mon Mar 17 10:46:17 2008\n"
+"PO-Revision-Date: 2008-03-17 11:02+0100\n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgid "Edit event"
 msgstr "Termin bearbeiten"
 
 #: src/zeit/calendar/browser/event.py:60
-#: src/zeit/cms/browser/form.py:227
+#: src/zeit/cms/browser/form.py:251
 msgid "Apply"
 msgstr "Speichern"
 
@@ -37,17 +37,18 @@ msgid "Date when the event starts."
 msgstr "Datum/Uhrzeit des Terminbeginns"
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:218
+#: src/zeit/cms/browser/listing.py:220
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
 #: src/zeit/cms/content/interfaces.py:253
+#: src/zeit/cms/syndication/browser/feed.py:152
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:63
 #: src/zeit/content/infobox/interfaces.py:22
-#: src/zeit/search/browser/search.py:94
-#: src/zeit/search/interfaces.py:20
+#: src/zeit/search/browser/search.py:100
+#: src/zeit/search/interfaces.py:18
 msgid "Title"
 msgstr "Titel"
 
@@ -114,18 +115,18 @@ msgstr "context sensitive views"
 msgid "folder specific actions"
 msgstr "folder specific actions"
 
-#: src/zeit/cms/browser/form.py:143
-#: src/zeit/content/article/browser/configure.zcml:124
+#: src/zeit/cms/browser/form.py:146
+#: src/zeit/content/article/browser/configure.zcml:125
 msgid "Add"
 msgstr "Hinzufügen …"
 
-#: src/zeit/cms/browser/form.py:165
+#: src/zeit/cms/browser/form.py:168
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/zeit/cms/browser/form.py:203
+#: src/zeit/cms/browser/form.py:206
 #: src/zeit/cms/content/browser/template.zcml:40
-#: src/zeit/content/article/browser/configure.zcml:133
+#: src/zeit/content/article/browser/configure.zcml:134
 #: src/zeit/content/image/browser/configure.zcml:97
 #: src/zeit/content/gallery/browser/configure.zcml:101
 #: src/zeit/content/article/browser/recension-overview.pt:7
@@ -134,9 +135,13 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:233
+#: src/zeit/cms/browser/form.py:248
+msgid "No changes"
+msgstr "Keine Änderungen"
+
+#: src/zeit/cms/browser/form.py:259
 #: src/zeit/cms/repository/browser/unknown.zcml:26
-#: src/zeit/cms/repository/browser/folder.zcml:22
+#: src/zeit/cms/repository/browser/folder.zcml:17
 #: src/zeit/cms/syndication/browser/configure.zcml:44
 #: src/zeit/content/image/browser/configure.zcml:31
 #: src/zeit/content/image/browser/configure.zcml:166
@@ -154,49 +159,50 @@ msgstr "Anzeigen"
 msgid "${DYNAMIC_CONTENT}"
 msgstr "${DYNAMIC_CONTENT}"
 
-#: src/zeit/cms/browser/listing.py:214
+#: src/zeit/cms/browser/listing.py:216
+#: src/zeit/cms/syndication/browser/feed.py:148
 #: src/zeit/content/article/interfaces.py:139
-#: src/zeit/search/browser/search.py:91
-#: src/zeit/search/interfaces.py:21
+#: src/zeit/search/browser/search.py:97
+#: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/cms/browser/listing.py:222
+#: src/zeit/cms/browser/listing.py:224
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr "Dateiname"
 
-#: src/zeit/cms/browser/listing.py:225
+#: src/zeit/cms/browser/listing.py:227
 msgid "Hits"
 msgstr "Treffer"
 
-#: src/zeit/cms/browser/listing.py:227
+#: src/zeit/cms/browser/listing.py:229
 #: src/zeit/cms/content/interfaces.py:78
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr "Ressort"
 
-#: src/zeit/cms/browser/listing.py:231
+#: src/zeit/cms/browser/listing.py:233
 #: src/zeit/cms/content/interfaces.py:63
 #: src/zeit/content/article/interfaces.py:176
 #: src/zeit/content/image/interfaces.py:35
-#: src/zeit/search/interfaces.py:23
+#: src/zeit/search/interfaces.py:21
 #: src/zeit/content/article/browser/recension-overview.pt:32
 #: src/zeit/search/browser/sidebar.pt:46
 msgid "Year"
 msgstr "Jahr"
 
 #. Default: "Vol."
-#: src/zeit/cms/browser/listing.py:235
+#: src/zeit/cms/browser/listing.py:237
 msgid "volme-abbreviated"
 msgstr "Ausg."
 
-#: src/zeit/cms/browser/listing.py:239
+#: src/zeit/cms/browser/listing.py:241
 #: src/zeit/cms/content/interfaces.py:73
-#: src/zeit/search/browser/search.py:101
-#: src/zeit/search/interfaces.py:25
+#: src/zeit/search/browser/search.py:107
+#: src/zeit/search/interfaces.py:23
 #: src/zeit/search/browser/sidebar.pt:72
 msgid "Page"
 msgstr "Seite"
@@ -303,6 +309,7 @@ msgid "Value"
 msgstr "Wert"
 
 #: src/zeit/cms/content/browser/template-properties.pt:48
+#: src/zeit/cms/syndication/browser/feed_sorting.pt:8
 msgid "Save"
 msgstr "Speichern"
 
@@ -419,7 +426,7 @@ msgstr "Wurzel der Ontologie"
 
 #: src/zeit/cms/content/interfaces.py:68
 #: src/zeit/content/image/interfaces.py:41
-#: src/zeit/search/interfaces.py:24
+#: src/zeit/search/interfaces.py:22
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
 msgstr "Ausgabe"
@@ -513,7 +520,7 @@ msgid "Add folder"
 msgstr "Ordner hinzufügen"
 
 #: src/zeit/cms/repository/browser/folder.py:19
-#: src/zeit/cms/repository/browser/folder.zcml:99
+#: src/zeit/cms/repository/browser/folder.zcml:94
 msgid "Folder"
 msgstr "Ordner"
 
@@ -521,11 +528,11 @@ msgstr "Ordner"
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
-#: src/zeit/cms/repository/browser/folder.zcml:61
+#: src/zeit/cms/repository/browser/folder.zcml:56
 msgid "Hide"
 msgstr "Verstecken"
 
-#: src/zeit/cms/repository/browser/folder.zcml:80
+#: src/zeit/cms/repository/browser/folder.zcml:75
 msgid "Show"
 msgstr "Zeigen"
 
@@ -602,6 +609,14 @@ msgstr "Sortieren"
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
+#: src/zeit/cms/syndication/browser/feed.py:142
+msgid "Pinned"
+msgstr "Fest"
+
+#: src/zeit/cms/syndication/browser/feed.py:145
+msgid "Hidden on HP"
+msgstr "Versteckt auf HP"
+
 #: src/zeit/cms/syndication/browser/form.py:20
 msgid "Add Channel"
 msgstr "Channel hinzufügen"
@@ -614,7 +629,7 @@ msgstr "Channel bearbeiten"
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
-#: src/zeit/cms/syndication/interfaces.py:128
+#: src/zeit/cms/syndication/interfaces.py:137
 msgid "Syndication targets"
 msgstr "Syndizierungsziele"
 
@@ -625,10 +640,6 @@ msgstr "Anzahl begrenzen"
 #: src/zeit/cms/syndication/interfaces.py:39
 msgid "limit-amount-description"
 msgstr "limit-amount-description"
-
-#: src/zeit/cms/workingcopy/browser/configure.zcml:16
-msgid "Content"
-msgstr "Inhalt"
 
 #: src/zeit/cms/workingcopy/browser/configure.zcml:39
 #: src/zeit/cms/clipboard/browser/configure.zcml:110
@@ -644,31 +655,36 @@ msgstr "Löschen"
 msgid "Preview"
 msgstr "Vorschau"
 
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:12
+#: src/zeit/cms/workingcopy/browser/sidebar.pt:13
 msgid "Edited documents"
 msgstr "Bearbeitete Dokumente"
 
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:21
+#: src/zeit/cms/workingcopy/browser/sidebar.pt:22
 msgid "No edited documents."
 msgstr "Keine bearbeiteten Dokumente."
 
-#: src/zeit/content/article/browser/configure.zcml:22
-#: src/zeit/content/centerpage/browser/configure.zcml:32
+#: src/zeit/content/article/browser/configure.zcml:14
+#: src/zeit/content/centerpage/browser/configure.zcml:24
 #: src/zeit/content/image/browser/configure.zcml:196
 #: src/zeit/content/gallery/browser/configure.zcml:30
 #: src/zeit/content/link/browser/configure.zcml:17
 msgid "Edit metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/configure.zcml:38
-#: src/zeit/content/centerpage/browser/configure.zcml:48
+#: src/zeit/content/article/browser/configure.zcml:30
+#: src/zeit/content/centerpage/browser/configure.zcml:40
 #: src/zeit/content/image/browser/configure.zcml:180
 #: src/zeit/content/gallery/browser/configure.zcml:47
 #: src/zeit/content/link/browser/configure.zcml:32
 msgid "View metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/configure.zcml:65
+#: src/zeit/content/article/browser/configure.zcml:46
+#: src/zeit/wysiwyg/browser/configure.zcml:8
+msgid "Edit WYSIWYG"
+msgstr "Bearbeiten"
+
+#: src/zeit/content/article/browser/configure.zcml:66
 msgid "Article"
 msgstr "Artikel"
 
@@ -679,6 +695,11 @@ msgstr "Artikel bearbeiten"
 #: src/zeit/content/article/browser/form.py:121
 msgid "View article metadata"
 msgstr "Metadaten"
+
+#: src/zeit/content/article/browser/form.py:136
+#: src/zeit/cms/workingcopy/browser/configure.zcml:16
+msgid "Content"
+msgstr "Inhalt"
 
 #: src/zeit/content/article/browser/form.py:67
 msgid "Optionen"
@@ -711,7 +732,7 @@ msgid "Raw data"
 msgstr "Roh-Daten"
 
 #: src/zeit/content/article/browser/recension.py:21
-#: src/zeit/content/article/browser/configure.zcml:106
+#: src/zeit/content/article/browser/configure.zcml:107
 msgid "Recensions"
 msgstr "Rezensionsinformationen"
 
@@ -846,11 +867,11 @@ msgstr "Hat Rezensionsinformationen"
 msgid "Article is syndicated in these feeds."
 msgstr "Artikel ist in folgenden Feeds syndiziert."
 
-#: src/zeit/content/centerpage/browser/configure.zcml:73
+#: src/zeit/content/centerpage/browser/configure.zcml:65
 msgid "Center-Page"
 msgstr "Center-Page"
 
-#: src/zeit/content/centerpage/browser/configure.zcml:90
+#: src/zeit/content/centerpage/browser/configure.zcml:82
 msgid "Edit content"
 msgstr "Bearbeiten"
 
@@ -1048,14 +1069,18 @@ msgstr "Link-Adresse (URL)"
 msgid "Zeit CMS Search Preferences"
 msgstr "Benutzereinstellungen zur Suche"
 
-#: src/zeit/search/browser/search.py:78
+#: src/zeit/search/browser/search.py:103
+msgid "Year/Vol."
+msgstr "Jahr/Ausg."
+
+#: src/zeit/search/browser/search.py:84
 #: src/zeit/search/browser/sidebar.pt:13
 msgid "Search"
 msgstr "Suche"
 
-#: src/zeit/search/browser/search.py:97
-msgid "Year/Vol."
-msgstr "Jahr/Ausg."
+#: src/zeit/search/browser/sidebar.pt:128
+msgid "Sort order"
+msgstr "Sortierung"
 
 #: src/zeit/search/browser/sidebar.pt:33
 msgid "Extended ..."
@@ -1077,13 +1102,13 @@ msgstr "Ressort (Druck)"
 msgid "Unique Id"
 msgstr "Eindeutige ID"
 
-#: src/zeit/search/interfaces.py:18
-msgid "URL to view in CMS"
-msgstr "URL, die im CMS angezeigt werden soll"
-
-#: src/zeit/search/interfaces.py:27
+#: src/zeit/search/interfaces.py:25
 msgid "Realive weight of metadata freshness."
 msgstr "Realive weight of metadata freshness."
+
+#: src/zeit/search/interfaces.py:29
+msgid "Relevance of result"
+msgstr "Relevanz des Ergebnisses"
 
 #: src/zeit/seo/browser.py:26
 msgid "SEO data"
@@ -1117,18 +1142,30 @@ msgstr "HTML-Titel"
 msgid "HTML description"
 msgstr "HTML-Beschreibung (Description)"
 
-#: src/zeit/workflow/browser/form.py:15
+#: src/zeit/workflow/browser/form.py:17
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr "Workflow"
 
-#: src/zeit/workflow/browser/form.py:19
+#: src/zeit/workflow/browser/form.py:21
 msgid "Status"
 msgstr "Status"
 
-#: src/zeit/workflow/browser/form.py:24
+#: src/zeit/workflow/browser/form.py:27
 msgid "Einstellung"
 msgstr "Einstellung"
+
+#: src/zeit/workflow/browser/form.py:33
+msgid "Save state"
+msgstr "Status speichern"
+
+#: src/zeit/workflow/browser/form.py:37
+msgid "... and publish"
+msgstr "… und veröffentlichen"
+
+#: src/zeit/workflow/browser/form.py:41
+msgid "Content is scheduled for publishing."
+msgstr "Inhalt ist zum Veröffentlichen vorgemerkt."
 
 #: src/zeit/workflow/browser/interfaces.py:16
 msgid "Locked"
@@ -1159,15 +1196,19 @@ msgstr "Sperren"
 msgid "Unlock"
 msgstr "Entsperren"
 
-#: src/zeit/workflow/interfaces.py:46
+#: src/zeit/workflow/interfaces.py:51
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: src/zeit/workflow/interfaces.py:65
+#: src/zeit/workflow/interfaces.py:71
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
 
-#: src/zeit/workflow/interfaces.py:71
+#: src/zeit/workflow/interfaces.py:77
+msgid "Date last modified"
+msgstr "Zuletzt geändert am"
+
+#: src/zeit/workflow/interfaces.py:82
 msgid "Date first released"
 msgstr "Datum der ersten Veröffentlichung"
 
@@ -1183,11 +1224,10 @@ msgstr "nein"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: src/zeit/wysiwyg/browser/configure.zcml:8
-msgid "Edit WYSIWYG"
-msgstr "Bearbeiten"
-
 #: src/zeit/wysiwyg/interfaces.py:14
 msgid "Document"
 msgstr "Dokument"
+
+#~ msgid "URL to view in CMS"
+#~ msgstr "URL, die im CMS angezeigt werden soll"
 
