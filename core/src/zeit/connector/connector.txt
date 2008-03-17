@@ -342,20 +342,6 @@ expressions (note that we get dummy values at the moment):
 [(u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07', None)]
 
 
-Getting ghost resources
-=======================
-
-I'm not sure what this is but listCollection lists a `channel_D` in
-`hp_channels` which used to have None as data. This test makes sure we're
-retting a file-like object:
-
->>> 'channel_D' in (name for (name, id) in connector.listCollection(
-...                 'http://xml.zeit.de/hp_channels'))
-True
->>> channel_d = connector['http://xml.zeit.de/hp_channels/channel_D']
->>> channel_d.data is None
-False
-
 
 Locked resources w/o locking user
 =================================
