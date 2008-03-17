@@ -5,9 +5,23 @@
 import zope.schema
 
 import zeit.cms.interfaces
+import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 
 from zeit.cms.i18n import MessageFactory as _
+
+
+class IGalleryFolderSource(zeit.cms.content.interfaces.ICMSContentSource):
+    """A source for gallery folders."""
+
+
+class GalleryFolderSource(zeit.cms.content.contentsource.FolderSource):
+
+    zope.interface.implementsOnly(IGalleryFolderSource)
+    name = u'gallery-folders'
+
+
+galleryFolderSource = GalleryFolderSource()
 
 
 class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
@@ -16,7 +30,7 @@ class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     image_folder = zope.schema.Choice(
         title=_("Image folder"),
         description=_("Folder containing images to display in the gallery."),
-        source=zeit.cms.content.contentsource.folderSource)
+        source=galleryFolderSource)
 
 
 class IReadGallery(

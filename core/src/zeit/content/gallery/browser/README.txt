@@ -12,13 +12,15 @@ Create a  browser first:
 
 For creating a gallery we need a folder containing images:
 
-
+>>> def add_folder(name):
+...     menu = browser.getControl(name='add_menu')
+...     menu.displayValue = ['Folder']
+...     browser.open(menu.value[0])
+...     browser.getControl('File name').value = name
+...     browser.getControl('Add').click()
+...
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Folder']
->>> browser.open(menu.value[0])
->>> browser.getControl('File name').value = 'gallery'
->>> browser.getControl('Add').click()
+>>> add_folder('gallery')
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/@@view.html'
 
@@ -328,7 +330,7 @@ Browsing location
 =================
 
 The browsing location for an image gallery is
-/bilder/jahr/ausgab/bildergallerien.  We verify that in python so we need some
+/bilder/jahr/ausgab/bildergalerien.  We verify that in python so we need some
 setup:
 
 >>> import zope.app.component.hooks
@@ -338,13 +340,41 @@ setup:
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.browser.interfaces
->>> import zeit.cms.content.contentsource
+>>> import zeit.content.gallery.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> def get_location(obj):
 ...     return zope.component.getMultiAdapter(
-...         (obj, zeit.cms.content.contentsource.folderSource)
+...         (obj, zeit.content.gallery.interfaces.galleryFolderSource),
 ...         zeit.cms.browser.interfaces.IDefaultBrowsingLocation).uniqueId
 
+For the island gallery we currently have its container as location, because the
+image folder doesn't exist:
+
 >>> gallery = repository['online']['2007']['01']['island']
+>>> gallery
+<zeit.content.gallery.gallery.Gallery object at 0x...>
 >>> get_location(gallery)
+u'http://xml.zeit.de/online/2007/01'
+
+Create the image folder:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> add_folder('bilder')
+>>> add_folder('2007')
+>>> add_folder('01')
+>>> add_folder('bildergalerien')
+
+We get the right location now:
+
+>>> get_location(gallery)
+u'http://xml.zeit.de/bilder/2007/01/bildergalerien'
+
+For add forms we need to make sure we'll get the right location on the folder:
+
+>>> get_location(gallery.__parent__)
+u'http://xml.zeit.de/bilder/2007/01/bildergalerien'
+
+Clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)

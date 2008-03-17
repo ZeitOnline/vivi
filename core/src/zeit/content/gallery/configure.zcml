@@ -6,6 +6,11 @@
   <adapter factory=".gallery.objectified_entry" />
   <subscriber handler=".gallery.update_gallery_on_entry_change" />
 
+  <utility
+    component=".interfaces.galleryFolderSource"
+    name="gallery-folders"
+    />
+
   <class class=".gallery.Gallery">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
