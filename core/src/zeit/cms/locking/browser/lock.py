@@ -24,7 +24,7 @@ def _lockable(form, action):
     return not form.lockable.locked()
 
 
-class Lock(zeit.cms.browser.form.FormBase, gocept.form.grouped.Form):
+class Lock(zeit.cms.browser.lightbox.Form):
 
     title = _("Locks")
 
@@ -65,8 +65,29 @@ class Lock(zeit.cms.browser.form.FormBase, gocept.form.grouped.Form):
     def lockable(self):
         return zope.app.locking.interfaces.ILockable(self.context)
 
-    def _get_widgets(self, form_fields, ignore_request=False):
-        return zope.formlib.form.setUpDataWidgets(
-            form_fields, self.prefix, self.context, self.request,
+    def setUpWidgets(self, ignore_request=False):
+        self.widgets = zope.formlib.form.setUpDataWidgets(
+            self.form_fields, self.prefix, self.context, self.request,
             data=self.get_data(), for_display=True,
             ignore_request=ignore_request)
+
+
+class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+
+    locked_icon = 'lock-closed.png'
+    not_locked_icon = 'lock-open.png'
+    own_lock_icon = 'lock-closed-mylock.png'
+
+    @property
+    def icon(self):
+        if self.lockable.ownLock():
+            icon = self.own_lock_icon
+        elif self.lockable.locked():
+            icon = self.locked_icon
+        else:
+            icon = self.not_locked_icon
+        return '/@@/zeit.cms/icons/%s' % icon
+
+    @zope.cachedescriptors.property.Lazy
+    def lockable(self):
+        return zope.app.locking.interfaces.ILockable(self.context)

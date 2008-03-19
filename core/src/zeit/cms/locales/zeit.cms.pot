@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar 17 14:19:47 2008\n"
+"POT-Creation-Date: Wed Mar 19 16:11:10 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -49,10 +49,10 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:220
+#: src/zeit/cms/browser/listing.py:229
 #: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:253
+#: src/zeit/cms/content/interfaces.py:115
+#: src/zeit/cms/content/interfaces.py:243
 #: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
@@ -73,7 +73,7 @@ msgid "Description"
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:260
+#: src/zeit/cms/content/interfaces.py:250
 msgid "Related content"
 msgstr ""
 
@@ -107,15 +107,15 @@ msgstr ""
 msgid "context sensitive actions"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:231
+#: src/zeit/cms/browser/configure.zcml:232
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:276
+#: src/zeit/cms/browser/configure.zcml:277
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:285
+#: src/zeit/cms/browser/configure.zcml:286
 msgid "Development"
 msgstr ""
 
@@ -162,6 +162,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/globalmenuitem.pt:3
 #: src/zeit/cms/browser/grouped-form.pt:26
+#: src/zeit/cms/browser/lightbox.pt:3
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
 #: src/zeit/cms/content/browser/combinationwidget.pt:14
@@ -171,7 +172,11 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:216
+#: src/zeit/cms/browser/lightbox.py:18
+msgid "Form"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:225
 #: src/zeit/cms/syndication/browser/feed.py:149
 #: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:97
@@ -179,40 +184,29 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:224
+#: src/zeit/cms/browser/listing.py:233
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:227
+#: src/zeit/cms/browser/listing.py:237
+msgid "Modified"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:240
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:229
-#: src/zeit/cms/content/interfaces.py:78
+#: src/zeit/cms/browser/listing.py:242
+#: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:233
-#: src/zeit/cms/content/interfaces.py:63
-#: src/zeit/content/article/interfaces.py:176
-#: src/zeit/content/image/interfaces.py:35
-#: src/zeit/search/interfaces.py:21
-#: src/zeit/content/article/browser/recension-overview.pt:32
-#: src/zeit/search/browser/sidebar.pt:46
-msgid "Year"
-msgstr ""
-
-#: src/zeit/cms/browser/listing.py:237
-#. Default: "Vol."
-msgid "volme-abbreviated"
-msgstr ""
-
-#: src/zeit/cms/browser/listing.py:241
-#: src/zeit/cms/content/interfaces.py:73
+#: src/zeit/cms/browser/listing.py:246
+#: src/zeit/cms/content/interfaces.py:71
 #: src/zeit/search/browser/search.py:107
 #: src/zeit/search/interfaces.py:23
 #: src/zeit/search/browser/sidebar.pt:72
@@ -240,7 +234,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/menu.py:58
+#: src/zeit/cms/browser/menu.py:69
 msgid "CMS"
 msgstr ""
 
@@ -372,93 +366,130 @@ msgstr ""
 msgid "Invalid structure."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:103
+#: src/zeit/cms/content/interfaces.py:101
 msgid "Copyright (c)"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:104
+#: src/zeit/cms/content/interfaces.py:102
 msgid "Do not enter (c)."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/cms/content/interfaces.py:106
 msgid "Kicker"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:109
+#: src/zeit/cms/content/interfaces.py:107
 msgid "Please take care of capitalisation."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:113
+#: src/zeit/cms/content/interfaces.py:111
 msgid "By line"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:120
+#: src/zeit/cms/content/interfaces.py:118
 msgid "Subtitle"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:124
+#: src/zeit/cms/content/interfaces.py:122
 msgid "Teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:128
+#: src/zeit/cms/content/interfaces.py:126
 msgid "Teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:133
+#: src/zeit/cms/content/interfaces.py:131
 msgid "Index teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:138
+#: src/zeit/cms/content/interfaces.py:136
 msgid "Index teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:143
+#: src/zeit/cms/content/interfaces.py:141
 msgid "VG Wort Id"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:211
+#: src/zeit/cms/content/interfaces.py:209
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:261
+#: src/zeit/cms/content/interfaces.py:251
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:291
+#: src/zeit/cms/content/interfaces.py:281
 msgid "Hits today"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:38
+#: src/zeit/cms/content/interfaces.py:36
 msgid "Keyword is contained in the taxonomy"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:49
+#: src/zeit/cms/content/interfaces.py:47
 msgid "Root of ontology"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:68
+#: src/zeit/cms/content/interfaces.py:61
+#: src/zeit/content/article/interfaces.py:176
+#: src/zeit/content/image/interfaces.py:35
+#: src/zeit/search/interfaces.py:21
+#: src/zeit/content/article/browser/recension-overview.pt:32
+#: src/zeit/search/browser/sidebar.pt:46
+msgid "Year"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:66
 #: src/zeit/content/image/interfaces.py:41
 #: src/zeit/search/interfaces.py:22
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:82
+#: src/zeit/cms/content/interfaces.py:80
 msgid "Sub ressort"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:86
+#: src/zeit/cms/content/interfaces.py:84
 #: src/zeit/content/article/interfaces.py:135
 msgid "Authors"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:92
+#: src/zeit/cms/content/interfaces.py:90
 #: src/zeit/cms/content/browser/keyword-tree.pt:24
 msgid "Keywords"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:98
+#: src/zeit/cms/content/interfaces.py:96
 msgid "Serie"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/interfaces.py:16
+msgid "Locked"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/interfaces.py:20
+msgid "Locker"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/interfaces.py:25
+msgid "Locked until"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:29
+msgid "Locks"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:49
+msgid "Steal Lock"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:54
+msgid "Lock"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:59
+msgid "Unlock"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:10
@@ -557,22 +588,20 @@ msgstr ""
 msgid "rename-box-warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:28
+#: src/zeit/cms/repository/browser/rename.py:29
 #. Default: ""
 msgid "\"${name}\" already exists."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:35
+#: src/zeit/cms/repository/browser/rename.py:36
 msgid "New file name"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:52
-#: src/zeit/cms/repository/browser/menu-entry-rename.pt:3
-#: src/zeit/cms/repository/browser/menu-entry-rename.pt:7
+#: src/zeit/cms/repository/browser/rename.py:53
 msgid "Rename"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:62
+#: src/zeit/cms/repository/browser/rename.py:63
 #. Default: ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
@@ -652,7 +681,7 @@ msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:83
 #: src/zeit/cms/workingcopy/browser/configure.zcml:57
-#: src/zeit/cms/browser/configure.zcml:267
+#: src/zeit/cms/browser/configure.zcml:268
 msgid "Preview"
 msgstr ""
 
@@ -692,8 +721,6 @@ msgstr ""
 #: src/zeit/cms/clipboard/browser/configure.zcml:110
 #: src/zeit/cms/content/browser/template.zcml:57
 #: src/zeit/cms/repository/browser/delete.pt:27
-#: src/zeit/cms/repository/browser/menu-entry-delete.pt:3
-#: src/zeit/cms/repository/browser/menu-entry-delete.pt:8
 msgid "Delete"
 msgstr ""
 
@@ -1203,35 +1230,6 @@ msgstr ""
 
 #: src/zeit/workflow/browser/form.py:37
 msgid "... and publish"
-msgstr ""
-
-#: src/zeit/workflow/browser/interfaces.py:16
-msgid "Locked"
-msgstr ""
-
-#: src/zeit/workflow/browser/interfaces.py:19
-msgid "Locker"
-msgstr ""
-
-#: src/zeit/workflow/browser/interfaces.py:23
-msgid "Locked until"
-msgstr ""
-
-#: src/zeit/workflow/browser/lock.py:34
-#: src/zeit/workflow/browser/configure.zcml:16
-msgid "Locks"
-msgstr ""
-
-#: src/zeit/workflow/browser/lock.py:54
-msgid "Steal Lock"
-msgstr ""
-
-#: src/zeit/workflow/browser/lock.py:59
-msgid "Lock"
-msgstr ""
-
-#: src/zeit/workflow/browser/lock.py:64
-msgid "Unlock"
 msgstr ""
 
 #: src/zeit/workflow/source.py:33
