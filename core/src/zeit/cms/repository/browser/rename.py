@@ -10,6 +10,7 @@ import zope.schema
 
 import z3c.flashmessage.interfaces
 
+import zeit.cms.browser.lightbox
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -36,7 +37,7 @@ class IRenameSchema(zope.interface.Interface):
         constraint=valid_name)
 
 
-class Rename(zope.formlib.form.SubPageForm):
+class Rename(zeit.cms.browser.lightbox.Form):
 
     form_fields = zope.formlib.form.FormFields(IRenameSchema)
 
@@ -62,15 +63,3 @@ class Rename(zope.formlib.form.SubPageForm):
         self.send_message(_('Renamed "${old_name}" to "${new_name}"',
                             mapping=dict(old_name=old_name,
                                          new_name=new_name)))
-
-    @property
-    def form(self):
-        return super(Rename, self).template
-
-    def send_message(self, message):
-        msg = zope.component.getUtility(
-            z3c.flashmessage.interfaces.IMessageSource,
-            name='session')
-        msg.send(message)
-
-
