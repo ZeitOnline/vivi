@@ -4,6 +4,7 @@
 
 import zope.viewlet.viewlet
 
+import zope.app.pagetemplate
 import zope.app.publisher.browser.menu
 import zope.app.publisher.interfaces.browser
 
@@ -21,7 +22,15 @@ class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
         return result
 
 
-class MenuViewlet(zope.viewlet.viewlet.ViewletBase):
+class MenuItem(zope.viewlet.viewlet.ViewletBase):
+
+    sort = 0
+
+    def __cmp__(self, other):
+        return cmp(float(self.sort), float(other.sort))
+
+
+class MenuViewlet(MenuItem):
 
     menu = None
 
@@ -34,8 +43,9 @@ class MenuViewlet(zope.viewlet.viewlet.ViewletBase):
 
 
 class GlobalMenuItem(z3c.menu.simple.menu.GlobalMenuItem):
+    """A menu item in the global menu."""
 
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
         'globalmenuitem.pt')
 
     activeCSS = 'selected'
@@ -54,6 +64,7 @@ class GlobalMenuItem(z3c.menu.simple.menu.GlobalMenuItem):
 
 
 class CMSMenuItem(GlobalMenuItem):
+    """The CMS menu item which is active when no other item is active."""
 
     title = _("CMS")
     viewURL = "@@index.html"
@@ -68,3 +79,9 @@ class CMSMenuItem(GlobalMenuItem):
                 result -= 1
 
         return result > 0
+
+
+class LightboxActionMenuItem(MenuItem, z3c.menu.simple.menu.SimpleMenuItem):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'action-menu-item-with-lightbox.pt')

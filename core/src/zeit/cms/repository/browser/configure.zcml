@@ -46,12 +46,15 @@
   <!-- rename -->
 
   <browser:viewlet
-    name="rename"
+    name="Rename"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
-    manager="zeit.cms.browser.interfaces.IContextActions"
-    template="menu-entry-rename.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.cms.browser.menu.LightboxActionMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.RenameContent"
+    icon="/@@/zeit.cms/icons/rename.png"
+    lightbox="@@rename-box"
+    sort="100"
     />
 
   <browser:page
@@ -64,12 +67,15 @@
 
   <!-- Delete view -->
   <browser:viewlet
-    name="delete"
-    template="menu-entry-delete.pt"
+    name="Delete"
     for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.cms.browser.menu.LightboxActionMenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.DeleteContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@deletecontent.html"
+    sort="100"
     />
 
   <browser:page
