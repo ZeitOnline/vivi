@@ -196,6 +196,7 @@
   <include package="zeit.cms.syndication.browser" />
   <include package="zeit.cms.clipboard.browser" />
   <include package="zeit.cms.content.browser" />
+  <include package="zeit.cms.locking.browser" />
 
 
 

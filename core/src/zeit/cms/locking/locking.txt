@@ -38,8 +38,8 @@ Lockstorage
 
 The lockstorage object is the mediator between Zope and the connector.
 
->>> import zeit.cms.content.locking
->>> lock_storage = zeit.cms.content.locking.LockStorage()
+>>> import zeit.cms.locking.locking
+>>> lock_storage = zeit.cms.locking.locking.LockStorage()
 
 Its `getLock` method return an Lockinfo object when the resource is locked,
 None when it's not:

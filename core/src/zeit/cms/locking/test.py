@@ -14,17 +14,8 @@ import zeit.cms.testing
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
-        'adapter.txt',
-        'keyword.txt',
-        'property.txt',
-        'sources.txt',
-        'field.txt',
+        'locking.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
         setUp=zeit.cms.testing.setUp))
-
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'dav.txt',
-        'related.txt',
-        'xmlsupport.txt'))
     return suite

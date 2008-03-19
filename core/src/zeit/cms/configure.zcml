@@ -24,6 +24,7 @@
   <include package=".workingcopy" />
   <include package=".syndication" />
   <include package=".clipboard" />
+  <include package=".locking" />
 
 
   <!-- configuration -->

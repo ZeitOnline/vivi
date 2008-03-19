@@ -2,21 +2,16 @@
 # See also LICENSE.txt
 # $Id$
 
-import datetime
-
 import zope.cachedescriptors.property
-import zope.component
-import zope.i18nmessageid
 import zope.formlib.form
 
 import gocept.form.grouped
 
 import zeit.connector.interfaces
 
-import zeit.workflow.browser.interfaces
-
-
-_ = zope.i18nmessageid.MessageFactory('zeit.cms')
+import zeit.cms.locking.interfaces
+import zeit.cms.locking.browser.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 def _stealable(form, action):
@@ -34,7 +29,7 @@ class Lock(zeit.cms.browser.form.FormBase, gocept.form.grouped.Form):
     title = _("Locks")
 
     form_fields = zope.formlib.form.Fields(
-        zeit.workflow.browser.interfaces.ILockFormSchema)
+        zeit.cms.locking.browser.interfaces.ILockFormSchema)
 
     def get_data(self):
         lockable = self.lockable
@@ -42,7 +37,7 @@ class Lock(zeit.cms.browser.form.FormBase, gocept.form.grouped.Form):
         locked_until = None
         created = None
 
-        if zeit.cms.content.interfaces.ILockInfo.providedBy(lockinfo):
+        if zeit.cms.locking.interfaces.ILockInfo.providedBy(lockinfo):
             locked_until = lockinfo.locked_until
 
         return dict(

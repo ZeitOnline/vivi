@@ -12,7 +12,7 @@ import persistent.mapping
 import zope.app.locking.interfaces
 
 import zeit.connector.interfaces
-import zeit.cms.content.interfaces
+import zeit.cms.locking.interfaces
 
 
 class LockStorage(object):
@@ -62,7 +62,7 @@ class LockStorage(object):
 
 class LockInfo(persistent.mapping.PersistentMapping):
 
-    zope.interface.implements(zeit.cms.content.interfaces.ILockInfo)
+    zope.interface.implements(zeit.cms.locking.interfaces.ILockInfo)
 
     locked_until = None
 

@@ -3,14 +3,12 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <adapter factory=".token.fromNotNecessary" />
-
   <browser:page
-    name="workflow.html"
+    name="locks.html"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
-    class=".form.WorkflowForm"
-    permission="zeit.workflow.Publish"
-    menu="zeit-context-views" title="Workflow"
+    class=".lock.Lock"
+    permission="zeit.workflow.ManageLocks"
+    menu="zeit-context-views" title="Locks"
     />
 
 </configure>
