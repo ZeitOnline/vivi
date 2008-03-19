@@ -1,9 +1,0 @@
-<metal:use-macro use-macro="context/@@standard_macros/page">
-
-  <tal:block metal:fill-slot="body">
-    <div id="edit-form">
-      <tal:block replace="view/lockable/locked" />
-      <tal:block replace="view/lockable/locker" />
-    </div>
-  </tal:block>
-</metal:use-macro>
