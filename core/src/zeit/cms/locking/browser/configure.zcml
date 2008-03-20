@@ -12,7 +12,7 @@
 
   <browser:viewlet
     name="Locks"
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".lock.MenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
