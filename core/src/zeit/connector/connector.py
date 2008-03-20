@@ -441,7 +441,7 @@ class Connector(zope.thread.local):
         conn = self._conn('search')
 
         davres = davresource.DAVResult(
-                conn.search(self._roots.get('search', self._roots['default']),
+               conn.search(self._roots.get('search', self._roots['default']),
                             body=expr._collect()._render()))
         for url, resp in davres.responses.items():
             try:

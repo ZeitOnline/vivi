@@ -5,5 +5,8 @@
     factory=".connector.connectorFactory"
     />
 
+  <subscriber handler=".cache.invalidate_property_cache" />
+  <subscriber handler=".cache.invalidate_child_name_cache" />
+
 </configure>
 

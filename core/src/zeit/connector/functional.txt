@@ -35,6 +35,54 @@ zc.demostorage2 for this.
 []
 
 
+Invalidation events
+===================
+
+When an `IResourceInvalidatedEvent` is issued the caches remove their
+information about the event's resource. Let's fill the property-cache:
+
+>>> property_cache = zope.component.getUtility(
+...     zeit.connector.interfaces.IPropertyCache)
+>>> property_cache['resource-id'] = {'foo': 'bar'}
+>>> property_cache['another-id'] = {'bar': 'baz'}
+>>> property_cache['yet-another-id'] = {'nu': 'jazz'}
+
+Let's also fill the childname cache:
+
+>>> child_name_cache = zope.component.getUtility(
+...     zeit.connector.interfaces.IChildNameCache)
+>>> child_name_cache['resource-id'] = ['abc']
+>>> child_name_cache['another-id'] = ['def']
+>>> child_name_cache['yet-another-id'] = ['ghi']
+
+
+Invalidate `another-id` via an event:
+
+>>> import zope.event
+>>> zope.event.notify(
+...     zeit.connector.interfaces.ResourceInvaliatedEvent('another-id'))
+
+The data is gone now:
+
+>>> import pprint
+>>> pprint.pprint(list(sorted(property_cache._storage.keys())))
+[u'http://xml.zeit.de/index',
+ u'http://xml.zeit.de/testing/',
+ 'resource-id',
+ 'yet-another-id']
+>>> pprint.pprint(list(sorted(child_name_cache._storage.keys())))
+[u'http://xml.zeit.de/testing/',
+ 'resource-id',
+ 'yet-another-id']
+
+Nothing special happens when the caches do not know anything about the resource
+anyway:
+
+>>> zope.event.notify(
+...     zeit.connector.interfaces.ResourceInvaliatedEvent('another-id'))
+
+
+
 After tests we clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)

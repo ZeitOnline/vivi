@@ -131,13 +131,35 @@ class VolatileCache(persistent.Persistent):
 class PropertyCache(VolatileCache):
     """Property cache."""
 
+    zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
     _cache_valid = False
+
+
+@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+def invalidate_property_cache(event):
+    cache = zope.component.getUtility(
+        zeit.connector.interfaces.IPropertyCache)
+    try:
+        del cache[event.id]
+    except KeyError:
+        pass
 
 
 class ChildNameCache(VolatileCache):
     """Cache for child names."""
 
+    zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
     _cache_valid = False
+
+
+@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+def invalidate_child_name_cache(event):
+    cache = zope.component.getUtility(
+        zeit.connector.interfaces.IChildNameCache)
+    try:
+        del cache[event.id]
+    except KeyError:
+        pass
 
 
 

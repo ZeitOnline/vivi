@@ -270,3 +270,17 @@ class ILockInfoStorage(zope.interface.Interface):
         """Remove lockinfo for id.
 
         It is not an error to remove no existing lockinfos."""
+
+
+class IResourceInvalidatedEvent(zope.interface.Interface):
+    """A resource has been invalidated."""
+
+    id = zope.interface.Attribute("Unique id of resource")
+
+
+class ResourceInvaliatedEvent(object):
+
+    zope.interface.implements(IResourceInvalidatedEvent)
+
+    def __init__(self, id):
+        self.id = id
