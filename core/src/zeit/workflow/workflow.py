@@ -75,10 +75,6 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflow,
         'http://namespaces.zeit.de/CMS/document',
         ('date_first_released', 'last_modified_by'))
-    date_last_modified = zeit.cms.content.dav.DAVProperty(
-        zeit.workflow.interfaces.IWorkflow['date_last_modified'],
-        u'DAV:',
-        'getlastmodified')
 
     def __init__(self, context):
         self.context = context
@@ -98,6 +94,10 @@ class Workflow(object):
         if value is None:
             value = None, None
         self.released_from, self.released_to = value
+
+    @property
+    def date_last_modified(self):
+        return zope.dublincore.interfaces.IDCTimes(self.context).modified
 
     def publish(self):
         """Publish object."""
