@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar 19 16:11:10 2008\n"
+"POT-Creation-Date: Thu Mar 20 12:01:53 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -53,7 +53,7 @@ msgstr ""
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:243
-#: src/zeit/cms/syndication/browser/feed.py:153
+#: src/zeit/cms/syndication/browser/feed.py:154
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:141
@@ -177,7 +177,7 @@ msgid "Form"
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:225
-#: src/zeit/cms/syndication/browser/feed.py:149
+#: src/zeit/cms/syndication/browser/feed.py:150
 #: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:97
 #: src/zeit/search/interfaces.py:19
@@ -261,6 +261,16 @@ msgstr ""
 
 #: src/zeit/cms/checkout/browser/configure.zcml:32
 msgid "Checkin"
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/manager.py:17
+#. Default: ""
+msgid "\"${name}\" has been checked out."
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/manager.py:35
+#. Default: ""
+msgid "\"${name}\" has been checked in."
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/entry.py:80
@@ -481,15 +491,30 @@ msgid "Locks"
 msgstr ""
 
 #: src/zeit/cms/locking/browser/lock.py:49
-msgid "Steal Lock"
+msgid "Steal lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:54
+#: src/zeit/cms/locking/browser/lock.py:56
+#. Default: ""
+msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:61
 msgid "Lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:59
+#: src/zeit/cms/locking/browser/lock.py:66
+#. Default: ""
+msgid "\"${name}\" has been locked."
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:69
 msgid "Unlock"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:74
+#. Default: ""
+msgid "\"${name}\" has been unlocked."
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:10
@@ -606,6 +631,16 @@ msgstr ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
 
+#: src/zeit/cms/repository/browser/repository.py:100
+#. Default: ""
+msgid "\"${name}\" is now hidden from the navigation tree."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/repository.py:107
+#. Default: ""
+msgid "\"${name}\" is now shown in the navigation tree."
+msgstr ""
+
 #: src/zeit/cms/securitypolicy.zcml:12
 msgid "Everybody"
 msgstr ""
@@ -651,12 +686,17 @@ msgstr ""
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:143
+#: src/zeit/cms/syndication/browser/feed.py:144
 msgid "Pinned"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:146
+#: src/zeit/cms/syndication/browser/feed.py:147
 msgid "Hidden on HP"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/feed.py:199
+#. Default: ""
+msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/form.py:20
@@ -679,7 +719,12 @@ msgstr ""
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:83
+#: src/zeit/cms/syndication/browser/manager.py:39
+#. Default: ""
+msgid "\"${name}\" has been syndicated to ${targets}"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/manager.py:91
 #: src/zeit/cms/workingcopy/browser/configure.zcml:57
 #: src/zeit/cms/browser/configure.zcml:268
 msgid "Preview"

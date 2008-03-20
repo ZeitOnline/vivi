@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Mar 19 16:11:10 2008\n"
-"PO-Revision-Date: 2008-03-19 16:17+0100\n"
+"POT-Creation-Date: Thu Mar 20 12:01:53 2008\n"
+"PO-Revision-Date: 2008-03-20 12:09+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:243
-#: src/zeit/cms/syndication/browser/feed.py:153
+#: src/zeit/cms/syndication/browser/feed.py:154
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:141
@@ -165,7 +165,7 @@ msgid "Form"
 msgstr "Formular"
 
 #: src/zeit/cms/browser/listing.py:225
-#: src/zeit/cms/syndication/browser/feed.py:149
+#: src/zeit/cms/syndication/browser/feed.py:150
 #: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:97
 #: src/zeit/search/interfaces.py:19
@@ -250,6 +250,16 @@ msgstr "Auschecken"
 #: src/zeit/cms/checkout/browser/configure.zcml:32
 msgid "Checkin"
 msgstr "Einchecken"
+
+#. Default: ""
+#: src/zeit/cms/checkout/browser/manager.py:17
+msgid "\"${name}\" has been checked out."
+msgstr "»${id}« wurde ausgecheckt."
+
+#. Default: ""
+#: src/zeit/cms/checkout/browser/manager.py:35
+msgid "\"${name}\" has been checked in."
+msgstr "»${id}« wurde eingecheckt."
 
 #. Default: ""
 #: src/zeit/cms/clipboard/browser/entry.py:80
@@ -469,16 +479,31 @@ msgid "Locks"
 msgstr "Sperren"
 
 #: src/zeit/cms/locking/browser/lock.py:49
-msgid "Steal Lock"
+msgid "Steal lock"
 msgstr "Sperre stehlen"
 
-#: src/zeit/cms/locking/browser/lock.py:54
+#. Default: ""
+#: src/zeit/cms/locking/browser/lock.py:56
+msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
+msgstr "Sperre auf  »${name}« von «${old_locker}» gestohlen."
+
+#: src/zeit/cms/locking/browser/lock.py:61
 msgid "Lock"
 msgstr "Sperren"
 
-#: src/zeit/cms/locking/browser/lock.py:59
+#. Default: ""
+#: src/zeit/cms/locking/browser/lock.py:66
+msgid "\"${name}\" has been locked."
+msgstr "»${name}« wurde gesperrt."
+
+#: src/zeit/cms/locking/browser/lock.py:69
 msgid "Unlock"
 msgstr "Sperre aufheben"
+
+#. Default: ""
+#: src/zeit/cms/locking/browser/lock.py:74
+msgid "\"${name}\" has been unlocked."
+msgstr "Die Sperre auf »${name}« wurde entfernt."
 
 #: src/zeit/cms/permissions.zcml:10
 msgid "Edit ZEIT content"
@@ -544,7 +569,7 @@ msgstr "Inhalt löschen"
 #.  "      \"${container-title}\"?"
 #: src/zeit/cms/repository/browser/delete.pt:9
 msgid "delete_content_text"
-msgstr "Möchten Sie das folgende Objekt aus dem Ordner „${container-title}“ wirklich löschen?"
+msgstr "Möchten Sie das folgende Objekt aus dem Ordner »${container-title}« wirklich löschen?"
 
 #: src/zeit/cms/repository/browser/folder.py:17
 msgid "Add folder"
@@ -594,6 +619,16 @@ msgstr "Umbenennen"
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
 
+#. Default: ""
+#: src/zeit/cms/repository/browser/repository.py:100
+msgid "\"${name}\" is now hidden from the navigation tree."
+msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
+
+#. Default: ""
+#: src/zeit/cms/repository/browser/repository.py:107
+msgid "\"${name}\" is now shown in the navigation tree."
+msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
+
 #: src/zeit/cms/securitypolicy.zcml:12
 msgid "Everybody"
 msgstr "Jeder"
@@ -639,13 +674,18 @@ msgstr "Sortieren"
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: src/zeit/cms/syndication/browser/feed.py:143
+#: src/zeit/cms/syndication/browser/feed.py:144
 msgid "Pinned"
 msgstr "Fest"
 
-#: src/zeit/cms/syndication/browser/feed.py:146
+#: src/zeit/cms/syndication/browser/feed.py:147
 msgid "Hidden on HP"
 msgstr "Versteckt auf HP"
+
+#. Default: ""
+#: src/zeit/cms/syndication/browser/feed.py:199
+msgid "\"${name}\" has been added to your syndication targets."
+msgstr "»${name} wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #: src/zeit/cms/syndication/browser/form.py:20
 msgid "Add Channel"
@@ -661,13 +701,18 @@ msgstr "Veröffentlichen"
 
 #: src/zeit/cms/syndication/browser/manager.pt:5
 msgid "Syndicate \"${content-title}\""
-msgstr "„${content-title“ syndizieren"
+msgstr "»${content-title}« syndizieren"
 
 #: src/zeit/cms/syndication/browser/manager.pt:8
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
-#: src/zeit/cms/syndication/browser/manager.py:83
+#. Default: ""
+#: src/zeit/cms/syndication/browser/manager.py:39
+msgid "\"${name}\" has been syndicated to ${targets}"
+msgstr "»${name} wurde nach ${targets} syndiziert."
+
+#: src/zeit/cms/syndication/browser/manager.py:91
 #: src/zeit/cms/workingcopy/browser/configure.zcml:57
 #: src/zeit/cms/browser/configure.zcml:268
 msgid "Preview"
@@ -1235,7 +1280,7 @@ msgstr "nicht nötig"
 #. Default: ""
 #: src/zeit/workflow/workflow.py:111
 msgid "${id} has been scheduled for publishing."
-msgstr "„${id}“ wurde zum Veröffentlichen vorgemerkt."
+msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
 
 #: src/zeit/wysiwyg/interfaces.py:14
 msgid "Document"
