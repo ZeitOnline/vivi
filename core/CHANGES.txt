@@ -1,0 +1,11 @@
+CHANGES
+=======
+
+0.9.5 (unreleased)
+------------------
+
+- Besser sichtbar gemacht ob ein Objekt gesperrt ist (bug #4025)
+- Sortierung in Listen: Jahres/Ausgaben-Ordner zuerst, Groß-/Kleinschreibung
+  ignorieren (bug #3926)
+- Bei Aktionen Nachricht an den User senden (bug #4022)
+- "Sperre stehlen" gibt dem stehlenden jetzt den Lock.
