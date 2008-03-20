@@ -29,11 +29,15 @@ LinkNotFoundError
 
 Check the document out by clicking on the link:
 
+>>> browser.handleErrors = False
 >>> checkout.click()
 >>> print browser.contents
 <?xml version...
 <!DOCTYPE ...
+    <li class="message">"rauchen-verbessert-die-welt" has been checked out.</li>
+    ...
   Unbekannte Resource...
+
 
 
 Checkin
@@ -49,3 +53,8 @@ LinkNotFoundError
 >>> browser.getLink('Checkin').click()
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/rauchen-verbessert-die-welt/@@view.html'
+>>> print browser.contents
+<?xml version...
+<!DOCTYPE ...
+    <li class="message">"rauchen-verbessert-die-welt" has been checked in.</li>
+    ...

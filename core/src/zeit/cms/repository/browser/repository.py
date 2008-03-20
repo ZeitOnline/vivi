@@ -9,6 +9,7 @@ import zope.viewlet.viewlet
 
 import zeit.cms.browser.form
 import zeit.cms.browser.tree
+import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
 
@@ -91,22 +92,24 @@ class Tree(zeit.cms.browser.tree.Tree):
                 self.request.principal))
 
 
-class HiddenCollections(object):
+class HiddenCollections(zeit.cms.browser.view.Base):
 
     def hide_collection(self):
         self.add_to_preference()
+        self.send_message(
+            _('"${name}" is now hidden from the navigation tree.',
+              mapping=dict(name=self.context.__name__)))
         return self.redirect()
 
     def show_collection(self):
         self.remove_from_preference()
+        self.send_message(
+            _('"${name}" is now shown in the navigation tree.',
+              mapping=dict(name=self.context.__name__)))
         return self.redirect()
 
     def redirect(self):
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request),
-            name='absolute_url')()
-        self.request.response.redirect(url)
-        return ''
+        self.request.response.redirect(self.url(self.context))
 
     def add_to_preference(self):
         self.preferences.hide_container(self.context)

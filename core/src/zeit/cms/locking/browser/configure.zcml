@@ -11,7 +11,7 @@
     />
 
   <browser:viewlet
-    name="Locks"
+    name="Manage lock"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".lock.MenuItem"

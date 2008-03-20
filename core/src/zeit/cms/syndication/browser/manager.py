@@ -18,20 +18,28 @@ from zeit.cms.i18n import MessageFactory as _
 
 
 class Manager(zeit.cms.browser.view.Base):
+    """Syndication manager UI."""
 
-    def __call__(self):
-        render = super(Manager, self).__call__
+    def update(self):
         if self.request.form:
             targets = self.columns[0].getSelected(self.manager.targets,
                                                   self.request)
             if 'syndicate' in self.request.form:
-                self.manager.syndicate(targets)
+                self.syndicate(targets)
             if 'publish' in self.request.form:
                 self.publish(targets)
-        return render()
+        super(Manager, self).update()
 
     def has_content(self):
         return self.manager.targets
+
+    def syndicate(self, targets):
+        self.manager.syndicate(targets)
+        target_names = ', '.join(target.__name__ for target in targets)
+        self.send_message(_('"${name}" has been syndicated to ${targets}',
+                            mapping=dict(
+                                name=self.context.__name__,
+                                targets=target_names)))
 
     def publish(self, targets):
         for target in targets:

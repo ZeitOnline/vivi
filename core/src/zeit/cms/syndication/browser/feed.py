@@ -15,6 +15,7 @@ import zc.table.table
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
+import zeit.cms.browser.view
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.syndication.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -190,14 +191,14 @@ class EditFeedView(FeedView):
                 self.context.show(obj.context)
 
 
-class AddToMyTargets(object):
+class AddToMyTargets(zeit.cms.browser.view.Base):
 
     def __call__(self):
         self.add_to_targets()
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request),
-            name='absolute_url')()
-        self.request.response.redirect(url)
+        self.send_message(
+            _('"${name}" has been added to your syndication targets.',
+              mapping=dict(name=self.context.__name__)))
+        self.request.response.redirect(self.url(self.context))
         return ''
 
     def add_to_targets(self):

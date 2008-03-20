@@ -40,6 +40,11 @@ now:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Remember as syndication target').click()
+>>> print browser.contents
+<?xml ...
+    <li class="message">"politik.feed" has been added to your syndication
+    targets.</li>
+    ...
 
 Visit the syndication page again:
 
@@ -91,6 +96,8 @@ in the feed:
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE html...
+    <li class="message">"rauchen-verbessert-die-welt" has been syndicated to
+    politik.feed</li>...
 <table>
   <thead>
     ...
