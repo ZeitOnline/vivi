@@ -9,8 +9,9 @@ import zope.interface
 import zeit.connector.interfaces
 import zeit.connector.resource
 
-import zeit.cms.repository.repository
+import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.repository.repository
 
 
 class Folder(zeit.cms.repository.repository.Container):
@@ -42,3 +43,19 @@ def folderToResource(context):
         data=StringIO.StringIO(),
         contentType='httpd/unix-directory',
         properties=properties)
+
+
+@zope.interface.implementer(zeit.cms.content.interfaces.IContentSortKey)
+@zope.component.adapter(zeit.cms.repository.interfaces.IFolder)
+def folder_sort_key(context):
+    weight = -5  # folders first
+
+    if context.__name__ == 'online':
+        # online first
+        weight = -6
+    try:
+        key = -int(context.__name__)
+    except ValueError:
+        key = context.__name__.lower()
+
+    return (weight, key)

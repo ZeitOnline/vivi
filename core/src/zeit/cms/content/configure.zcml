@@ -5,6 +5,8 @@
   <adapter factory=".adapter.webDAVPropertiesFactory" trusted="yes" />
   <adapter factory=".adapter.webdavproperties_to_cms_content" />
   <adapter factory=".adapter.xml_source" />
+  <adapter factory=".adapter.content_sort_key" />
+
 
   <adapter factory=".davtoken.fromBool" />
   <adapter factory=".davtoken.fromNone" />

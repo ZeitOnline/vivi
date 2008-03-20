@@ -13,9 +13,13 @@ import zope.interface
 import zope.location.location
 import zope.security.proxy
 
-import zeit.cms.content.interfaces
+import zope.app.container.interfaces
+
 import zeit.connector.interfaces
 import zeit.connector.resource
+
+import zeit.cms.interfaces
+import zeit.cms.content.interfaces
 
 
 @zope.annotation.factory
@@ -71,3 +75,11 @@ def xml_source(context):
     xml = zope.security.proxy.removeSecurityProxy(context.xml)
     return lxml.etree.tostring(
         xml.getroottree(), encoding='UTF-8', xml_declaration=True)
+
+
+@zope.interface.implementer(zeit.cms.content.interfaces.IContentSortKey)
+@zope.component.adapter(zope.app.container.interfaces.IContained)
+def content_sort_key(context):
+    weight = 0
+    key = context.__name__.lower()
+    return (weight, key)

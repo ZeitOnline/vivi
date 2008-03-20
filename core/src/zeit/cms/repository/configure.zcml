@@ -26,6 +26,7 @@
 
   <adapter factory=".folder.folderFactory" name="collection" />
   <adapter factory=".folder.folderToResource" />
+  <adapter factory=".folder.folder_sort_key" />
 
   <adapter factory=".repository.cmscontentFactory" />
 

@@ -282,3 +282,11 @@ class IAccessCounter(zope.interface.Interface):
         description=(u'How many times was this page viewed today.'),
         required=False,
         default=None)
+
+
+class IContentSortKey(zope.interface.Interface):
+    """Content objects can be adapted to this interface to get a sort key.
+
+    The sort key usually is a tuple of (weight, lowercased-name)
+
+    """

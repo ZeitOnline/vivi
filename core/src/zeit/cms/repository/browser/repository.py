@@ -44,7 +44,8 @@ class Tree(zeit.cms.browser.tree.Tree):
     key = __module__ + '.Tree'
 
     def listContainer(self, container):
-        for obj in container.values():
+        for obj in sorted(container.values(),
+                          key=zeit.cms.content.interfaces.IContentSortKey):
             if not zeit.cms.repository.interfaces.ICollection.providedBy(obj):
                 continue
             if (self.preferences.is_hidden(obj)
