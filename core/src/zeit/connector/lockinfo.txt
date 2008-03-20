@@ -1,6 +1,0 @@
-========
-Lockinfo
-========
-
-The lockinfo utility stores lockinfos for the connector.
-

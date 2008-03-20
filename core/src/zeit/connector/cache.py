@@ -32,7 +32,6 @@ class ResourceCache(persistent.Persistent):
         self._data = BTrees.OOBTree.OOBTree()
         self._last_access_time = BTrees.OLBTree.OLBTree()
         self._time_to_id = BTrees.LOBTree.LOBTree()
-        self.locktokens = BTrees.OOBTree.OOBTree()
 
     def getData(self, unique_id, properties):
         current_etag = properties[('getetag', 'DAV:')]
@@ -141,6 +140,8 @@ class ChildNameCache(VolatileCache):
     _cache_valid = False
 
 
+
+# Test integration
 
 def _cleanup():
     VolatileCache._cache_valid = False

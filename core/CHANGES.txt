@@ -1,0 +1,7 @@
+CHANGES
+=======
+
+0.12 (unrelased)
+----------------
+
+- Moved locktoken storage to a separate utility, out of a cache.

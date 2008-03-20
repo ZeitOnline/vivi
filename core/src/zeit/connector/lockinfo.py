@@ -2,40 +2,29 @@
 # See also LICENSE.txt
 # $Id$
 
-import persisent
+import persistent
 import BTrees.OOBTree
 
+import zope.interface
+
+import zeit.connector.interfaces
 
 
-class ILockTokenStorage(zope.interface.Interface):
-    """Storage for locktokens."""
+class LockInfo(persistent.Persistent):
 
-    def get(id):
-        """Return lockinfo for given id.
-
-        returns (token, principal, time)
-
-        """
-
-    def set(id, lockinfo):
-        """Add lockinfo to storage.
-
-        lockinfo: triple of (token, principal, time)
-
-        """
-
-    def del(id):
-        """Remove lockinfo for id.
-
-        It is not an error to remove no existing lockinfos."""
-
-
-
-class LockInfo(persistent.Persisent):
+    zope.interface.implements(zeit.connector.interfaces.ILockInfoStorage)
 
     def __init__(self):
         self._storage = BTrees.OOBTree.OOBTree()
 
-    def get(id)
+    def get(self, id):
+        return self._storage.get(id)
 
+    def set(self, id, lockinfo):
+        self._storage[id] = lockinfo
 
+    def remove(self, id):
+        try:
+            del self._storage[id]
+        except KeyError:
+            pass

@@ -55,6 +55,13 @@ Setup child name cache:
 ...     child_name_cache, zeit.connector.interfaces.IChildNameCache)
 
 
+Setup lockinfo utility:
+
+>>> import zeit.connector.lockinfo
+>>> lockinfo = zeit.connector.lockinfo.LockInfo()
+>>> gsm.registerUtility(
+...     lockinfo, zeit.connector.interfaces.ILockInfoStorage)
+
 Resources
 =========
 
@@ -129,11 +136,22 @@ Resources may be locked:
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
 (u'http://xml.zeit.de/users/frodo', datetime.datetime(..., tzinfo=...), True)
 
+The whole lock-information is stored in the lockinfo utility:
+
+>>> lockinfo.get('http://xml.zeit.de/testing/conn1')
+('opaquelocktoken:...',
+ 'http://xml.zeit.de/users/frodo',
+ datetime.datetime(..., tzinfo=<UTC>))
+
+
 To unlock it, you would have to supply the locktoken. The library takes
 care of that, though:
+
 >>> connector.unlock('http://xml.zeit.de/testing/conn1')
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
 (None, None, False)
+>>> lockinfo.get('http://xml.zeit.de/testing/conn1') is None
+True
 
 To specify an infinte lock, timeout can be None:
 
@@ -369,6 +387,7 @@ The connector tells us it is locked now:
 (None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
  False)
 
+
 Deleting the resource now will yield a `LockingError`:
 
 >>> del connector[id]
@@ -396,4 +415,7 @@ True
 True
 >>> gsm.unregisterUtility(
 ...     child_name_cache, zeit.connector.interfaces.IChildNameCache)
+True
+>>> gsm.unregisterUtility(
+...     lockinfo, zeit.connector.interfaces.ILockInfoStorage)
 True

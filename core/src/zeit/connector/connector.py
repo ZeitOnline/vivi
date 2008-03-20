@@ -453,15 +453,14 @@ class Connector(zope.thread.local):
             yield tuple([id] + [props[(a.name, a.namespace)] for a in attrlist])
 
     def _get_my_lockinfo(self, id): # => (token, principal, time)
-        return self.body_cache.locktokens.get(id)  # XXX do not use a "cache"
+        return self.locktokens.get(id)
 
-    def _put_my_lockinfo(self, id, token, principal=None, time=None): # FIXME better defaults
-        locktbl = self.body_cache.locktokens  # XXX do not use a cache
+    def _put_my_lockinfo(self, id, token, principal=None, time=None):
+        # FIXME better defaults
         if token is None:
-            if locktbl.has_key(id):
-                del locktbl[id]
+            self.locktokens.remove(id)
         else:
-            locktbl[id] = (token, principal, time)
+            self.locktokens.set(id, (token, principal, time))
 
     def _get_my_locktoken(self, id):
         try:
@@ -681,3 +680,8 @@ class Connector(zope.thread.local):
     def child_name_cache(self):
         return zope.component.getUtility(
             zeit.connector.interfaces.IChildNameCache)
+
+    @property
+    def locktokens(self):
+        return zope.component.getUtility(
+            zeit.connector.interfaces.ILockInfoStorage)

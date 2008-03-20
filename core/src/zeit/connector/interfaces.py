@@ -247,3 +247,26 @@ class IPropertyCache(ICache):
 
 class IChildNameCache(ICache):
     """A cache for child names of collections."""
+
+
+class ILockInfoStorage(zope.interface.Interface):
+    """Storage for locktokens."""
+
+    def get(id):
+        """Return lockinfo for given id.
+
+        returns (token, principal, time)
+
+        """
+
+    def set(id, lockinfo):
+        """Add lockinfo to storage.
+
+        lockinfo: triple of (token, principal, time)
+
+        """
+
+    def remove(id):
+        """Remove lockinfo for id.
+
+        It is not an error to remove no existing lockinfos."""

@@ -7,6 +7,7 @@ import zope.app.component
 import zope.app.zopeappgenerations
 
 import zeit.connector.cache
+import zeit.connector.lockinfo
 import zeit.connector.interfaces
 
 
@@ -30,6 +31,10 @@ def install(root):
         site_manager, zeit.connector.cache.ChildNameCache,
         'connector-child-name-cache',
         zeit.connector.interfaces.IChildNameCache)
+    installLocalUtility(
+        site_manager, zeit.connector.lockinfo.LockInfo,
+        'connector-lockinfo',
+        zeit.connector.interfaces.ILockInfoStorage)
 
 
 def evolve(context):
