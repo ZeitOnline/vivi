@@ -1,0 +1,37 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zope.app.zcmlfiles" />
+  <include package="zope.securitypolicy" />
+  <include package="zope.securitypolicy" file="meta.zcml" />
+  <include package="zope.app.authentication" />
+
+  <securityPolicy
+    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+
+
+  <!-- Bootstrap principal used to make local grant to the principal above -->
+  <principal
+      id="zope.globalmgr"
+      title="Manager"
+      login="globalmgr"
+      password="globalmgrpw" />
+
+    <grantAll principal="zope.globalmgr" />
+
+  <principal
+    id="zope.invalidate"
+    title="Invalidator"
+    login="invalidate"
+    password="invalidatepw" />
+
+  <grant
+    principal="zope.invalidate"
+    permission="zeit.invalidate.InvalidateResources" 
+    />
+
+
+  <include package="zeit.invalidate" />
+
+</configure>
+

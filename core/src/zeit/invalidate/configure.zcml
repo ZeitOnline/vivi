@@ -1,0 +1,18 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
+  i18n_domain="zeit.invalidate">
+
+  <permission
+    id="zeit.invalidate.InvalidateResources"
+    title="Invalidate Resources"
+    />
+
+  <xmlrpc:view
+    for="zope.location.interfaces.ISite"
+    class=".invalidate.Invalidate"
+    permission="zeit.invalidate.InvalidateResources"
+    methods="invalidate"
+    />
+
+</configure>
