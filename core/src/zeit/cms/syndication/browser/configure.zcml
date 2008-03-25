@@ -92,7 +92,7 @@
     icon="/@@/zeit.cms/icons/default-feed.png"
     title="Remember as syndication target"
     action="@@add-to-my-syndication-targets.html"
-    sort="100"
+    sort="90"
     />
 
   <resourceLibrary name="zeit.cms.syndication" require="zeit.cms">
