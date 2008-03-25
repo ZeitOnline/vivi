@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.5 (unreleased)
+0.9.5 (2008-03-25)
 ------------------
 
 - Besser sichtbar gemacht ob ein Objekt gesperrt ist (bug #4025)
