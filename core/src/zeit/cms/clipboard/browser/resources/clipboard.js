@@ -21,6 +21,8 @@ zeit.cms.Clipboard = Class.extend({
         connect('clip-add-folder-link', 'onclick', this, 'showAddBox');
         connect('clip-add-folder-submit', 'onclick', this, 'addClip');
         connect('clip-add-folder-cancel', 'onclick', this, 'hideAddBox');
+
+        // Removing
         connect('clipboardcontents', 'onclick', this, 'removeClip');
     },
 
@@ -135,11 +137,16 @@ zeit.cms.Clipboard = Class.extend({
     removeClip: function(event) {
         var element = event.target();
         if (element == undefined) return;
+        try {
+            var anchor = getFirstParentByTagAndClassName(element, 'a');
+        } catch(e) {
+            return
+        }
 
-        var css_class = element.getAttribute('class');
-        if (css_class == 'DeleteLink') {
+        if (hasElementClass(anchor, 'deleteLink')) {
+            event.stop();
             signal('sidebar', 'zeit.cms.RememberScrollStateEvent');
-            var url = element.getAttribute('href')
+            var url = anchor.getAttribute('href')
             var d = doSimpleXMLHttpRequest(url);
             d.addCallbacks(
                 function(result) {
@@ -147,9 +154,5 @@ zeit.cms.Clipboard = Class.extend({
                     signal('sidebar', 'zeit.cms.RestoreScrollState');
                 });
         }
-
-        if (element.nodeName == 'A' && !(css_class == 'DeleteLink')) return;
-
-        event.stop();
     },
 });

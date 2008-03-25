@@ -83,7 +83,7 @@ False
 
 The "Delete" Link references now a javascript driven Lightbox:
 
->>> browser.getLink("Delete")
+>>> browser.getLink("Delete", index=1)
 <Link text='[IMG] Delete'
     url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/2007/01/@@deletecontent.html')">
 

@@ -17,6 +17,7 @@
       interface=".interfaces.IClipboard"
       permission="zope.ManageContent" /> 
   </class>
+  <adapter factory=".clipboard.ClipboardNameChooser" />
   
   <!-- Entry -->
   <class class=".entry.Entry">

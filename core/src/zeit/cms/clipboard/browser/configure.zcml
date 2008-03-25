@@ -2,6 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:z3c="http://namespaces.zope.org/z3c"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
   <adapter factory=".entry.entryListRepresentationFactory" />
@@ -107,22 +108,55 @@
     name="drag-pane.html"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="Delete"
     for="zeit.cms.clipboard.interfaces.IClip"
-    action="deletecontent.html"
-    menu="zeit-context-actions"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.DeleteClipMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zope.ManageContent"
+    icon="/@@/zeit.cms/icons/delete.png"
     title="Delete"
+    action="@@delete-clip"
+    sort="100"
+    />
+
+  <browser:page
+    name="delete-clip"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.DeleteClip"
     permission="zope.ManageContent"
     />
 
   <browser:page
+    name="ajax-delete-entry"
     for="zeit.cms.clipboard.interfaces.IClipboardEntry"
-    name="deletecontent.html"
-    attribute="delete"
-    class=".entry.DeleteEntry"
-    permission="zope.ManageContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.AjaxDeleteEntry"
+    attribute="delete"
+    permission="zope.ManageContent"
     />
 
+  <browser:page
+    name="rename-clip-lightbox"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.Rename"
+    permission="zope.ManageContent"
+    />
+
+  <browser:viewlet
+    name="Rename"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.RenameClipMenuitem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zope.ManageContent"
+    icon="/@@/zeit.cms/icons/rename.png"
+    title="Rename"
+    lightbox="@@rename-clip-lightbox"
+    sort="99"
+    />
 
 </configure>

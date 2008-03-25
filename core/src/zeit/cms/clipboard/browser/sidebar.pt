@@ -12,7 +12,12 @@
   <tal:replace replace="resource_library:zeit.cms.tree" />
   <tal:replace replace="resource_library:zeit.cms.clipboard" />
 
-  <h1><a>Clipboard</a></h1>
+  <h1>
+    <a href="clipboard"
+      tal:attributes="href clipboard_url">
+      Clipboard
+    </a>
+  </h1>
  
   <div class="PanelContent" id="ClipboardPanelContent">
     <div id="clipboardcontents" class="Tree" 
@@ -21,7 +26,8 @@
     </div>
     <form action="">
       <p>
-        <input type="button" value="Clip hinzufügen..." id="clip-add-folder-link" />
+        <input type="button" value="Clip hinzufügen..." name="add-clip"
+          id="clip-add-folder-link" />
       </p>
       <div id="clip-add-folder-box">
         Clipname: <input id="clip-add-folder-title" type="text" name="title" />

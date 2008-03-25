@@ -159,7 +159,7 @@ table.properties textarea {
 
 
 /* 
- * Styles for xmltree (repository panel)
+ * Styles for xmltree (repository and clipbaord panel)
  * 
  * */
 .Tree ul {
@@ -215,19 +215,24 @@ table.properties textarea {
   border-bottom: 2px solid red !important;
 }
 
-/* clipboard tree */
-#clipboardcontents .Root > p a.DeleteLink {
+/* Hide the root node from repository and clipboard. Also move those trees a
+   bit more to the left */
+#clipboardcontents .Root > p,
+#navtreecontents .Root > p {
    display: none;
 }
-#clipboardcontents .DeleteLink {
-  margin: 0 0.5em;
-  color: #ccc;
+
+#clipboardcontents > ul,
+#navtreecontents > ul {
+    margin-left: -2em;
 }
-#clipboardcontents .DeleteLink:hover {
-  color: #333;
-}
+
 #clipboardcontents {
   margin-bottom: 1em;
+}
+
+#clipboardcontents .context-action img {
+  vertical-align: top;
 }
 
 
@@ -468,8 +473,4 @@ table.properties textarea {
 /* rename box */
 #rename-box > * {
   padding: 0.4em;
-}
-
-#rename-box .nextUrl {
-  display: none;
 }

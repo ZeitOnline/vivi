@@ -44,11 +44,8 @@ class Rename(zeit.cms.browser.lightbox.Form):
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'rename-box.pt')
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request:
-            if 'form.actions.rename' not in self.request:
-                self.request.form['form.new_name'] = self.context.__name__
-        super(Rename, self).setUpWidgets(ignore_request)
+    def get_data(self):
+        return dict(new_name=self.context.__name__)
 
     @zope.formlib.form.action(_('Rename'))
     def rename(self, action, data):

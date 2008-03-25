@@ -1,5 +1,5 @@
-CHANGES
-=======
+zeit.cms changes
+================
 
 0.9.5 (unreleased)
 ------------------
@@ -9,3 +9,12 @@ CHANGES
   ignorieren (bug #3926)
 - Bei Aktionen Nachricht an den User senden (bug #4022)
 - "Sperre stehlen" gibt dem stehlenden jetzt den Lock.
+- Fixed clipboard entry delete from action menu.
+- Made context action icons lighter with hover effect.
+- Using (x) delete icon instead of "Remove" in clipboard (bug #4045)
+- Allowed-renaming of clips (bug #4063)
+- Fixed a bug which prevented adding clips containing / or starting with @ or +
+- Hide root nodes in repository and clipboard because those are redundant
+  (panel header already shows this information). Also moved the trees to the
+  left to save some space. As a side effect one now has to add a clip before
+  adding anything to the clipboard.

@@ -21,7 +21,7 @@ class Entry(object):
         self.request.response.redirect(url + '/@@view.html')
 
 
-class DeleteEntry(object):
+class AjaxDeleteEntry(object):
 
     def delete(self):
         clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.context)

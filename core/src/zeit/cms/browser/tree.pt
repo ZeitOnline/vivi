@@ -15,12 +15,13 @@
         <span class="URL" tal:content="string:${item/url}">
           http://localhost/somalia
         </span>
-        <a title="Remove Clip from Clipboard"
-           i18n:attributes="title"
-           class="DeleteLink"
-           tal:condition="item/delete_url"
-           tal:attributes="href item/delete_url"
-           >Remove</a>
+        <a title="Remove" class="deleteLink context-action"
+          tal:condition="item/delete_url"
+          tal:attributes="href item/delete_url"
+          i18n:attributes="title">
+          <img src="/@@/zeit.cms/icons/delete.png" alt="Delete" />
+          <span class="action-title">Remove</span>
+        </a>
       </p>
         <tal:block
           define="sub_data item/sub_data"

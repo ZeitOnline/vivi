@@ -9,6 +9,10 @@
     top: 0;
 }
 
+#lightbox .nextUrl {
+  display: none;
+}
+
 #lightbox > .keyword-tree {
     position: absolute;
     top: 0;

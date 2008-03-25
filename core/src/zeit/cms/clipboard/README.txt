@@ -106,6 +106,28 @@ Clips are folders in the clipboard. A clip is alwasy appended at the root:
 [u'Vita', u'myfeed', u'Verfolgt-2', u'Verfolgt', u'Traum-Umberto-Eco',
  u'Politik', u'Wirtschaft']
 
+Also clips with strange titles can be added:
+
+>>> clipboard.addClip('/bin/bash')
+>>> clipboard.addClip('@property@')
+>>> clipboard.addClip('++etc++site')
+>>> list(clipboard.keys())
+[u'Vita', u'myfeed', u'Verfolgt-2', u'Verfolgt', u'Traum-Umberto-Eco',
+ u'Politik', u'Wirtschaft', 'binbash', 'property@', 'etc++site']
+
+
+Removing clips
+==============
+
+Clips can be removed by just deleting them from the container:
+
+>>> del clipboard['binbash']
+>>> del clipboard['property@']
+>>> del clipboard['etc++site']
+>>> list(clipboard.keys())
+[u'Vita', u'myfeed', u'Verfolgt-2', u'Verfolgt', u'Traum-Umberto-Eco',
+ u'Politik', u'Wirtschaft']
+
 
 Moving Content Around
 =====================

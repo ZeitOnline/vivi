@@ -97,7 +97,7 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     def getDeleteUrl(self, obj):
         url = self.getUrl(obj)
-        return url + '/@@deletecontent.html'
+        return url + '/@@ajax-delete-entry'
 
 
 class ClipboardListRepresentation(

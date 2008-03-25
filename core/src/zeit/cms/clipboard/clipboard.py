@@ -11,6 +11,7 @@ import zope.security.interfaces
 import zope.traversing.api
 
 import zope.app.container.interfaces
+import zope.app.container.contained
 import zope.app.container.ordered
 
 import z3c.traverser.interfaces
@@ -110,3 +111,17 @@ class WorkingcopyTraverser(object):
         if clipboard is not None and clipboard.__name__ == name:
             return clipboard
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
+
+
+class ClipboardNameChooser(zope.app.container.contained.NameChooser):
+    """A namechooser removing invalid characters."""
+
+    zope.component.adapts(zeit.cms.clipboard.interfaces.IClipboard)
+
+    def chooseName(self, name, object):
+        name = name.replace('/', '')
+        while name.startswith('+'):
+            name = name.replace('+', '', 1)
+        while name.startswith('@'):
+            name = name.replace('@', '', 1)
+        return super(ClipboardNameChooser, self).chooseName(name, object)

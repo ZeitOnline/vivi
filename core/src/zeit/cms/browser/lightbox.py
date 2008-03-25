@@ -16,9 +16,20 @@ class Form(zeit.cms.browser.view.Base,
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('lightbox.pt')
     title = _('Form')
+    display_only = False
 
     def nextURL(self):
         return self.url(self.context, '@@view.html')
+
+    def get_data(self):
+        """Returnds dictionary of data."""
+        raise NotImplementedError("Implemented in subclasses.")
+
+    def setUpWidgets(self, ignore_request=False):
+        self.widgets = zope.formlib.form.setUpDataWidgets(
+            self.form_fields, self.prefix, self.context, self.request,
+            data=self.get_data(), for_display=self.display_only,
+            ignore_request=ignore_request)
 
     @property
     def form(self):

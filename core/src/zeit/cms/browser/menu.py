@@ -22,15 +22,21 @@ class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
         return result
 
 
-class MenuItem(zope.viewlet.viewlet.ViewletBase):
+class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 
     sort = 0
-
     def __cmp__(self, other):
         return cmp(float(self.sort), float(other.sort))
 
 
-class MenuViewlet(MenuItem):
+class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
+    """A simple action menu item with icon."""
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'action-menu-item.pt')
+
+
+class MenuViewlet(MenuItemBase):
 
     menu = None
 
@@ -81,7 +87,8 @@ class CMSMenuItem(GlobalMenuItem):
         return result > 0
 
 
-class LightboxActionMenuItem(MenuItem, z3c.menu.simple.menu.SimpleMenuItem):
+class LightboxActionMenuItem(ActionMenuItem):
+    """A menu item rendering a lighbox."""
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'action-menu-item-with-lightbox.pt')

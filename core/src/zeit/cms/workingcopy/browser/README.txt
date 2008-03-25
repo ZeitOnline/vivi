@@ -70,7 +70,7 @@ Looking at our working copy also shows the `Somalia` article:
 There is a delete link to remove object from the workingcopy again:
 
 >>> browser.getLink('Somalia').click()
->>> browser.getLink('Delete')
+>>> browser.getLink('Delete', index=1)
 <Link text='[IMG] Delete'
     url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@deletecontent.html')">
 

@@ -425,8 +425,23 @@ pre {
     margin: 0;
     padding: 0.4em;
 }
-.context-actions li > a > img {
-    border: none;
+.context-actions img,
+.context-action img {
+  border: none;
+}
+
+.context-actions img {
+  opacity: 0.5;
+}
+
+.context-action img {
+  opacity: 0.2;
+}
+
+
+.context-actions img:hover,
+.context-action img:hover {
+  opacity: 1;
 }
 
 .action-title {

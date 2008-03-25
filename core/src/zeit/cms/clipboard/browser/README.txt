@@ -4,8 +4,8 @@ Clipboard
 
 Create a testbrowser:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
@@ -25,8 +25,10 @@ The clipboard is displayed as a tree. Initially it's empty:
         <p>
           <a href="...">Clipboard</a>
           <span class="URL">...</span>
-          <a title="Remove Clip from Clipboard"
-             class="DeleteLink"...>Remove</a>
+          <a title="Remove" class="deleteLink context-action"...>
+             <img ... alt="Delete" />
+             <span class="action-title">Remove</span>
+          </a>
         </p>
       </li>
     </ul>
@@ -36,7 +38,7 @@ The clipboard is displayed as a tree. Initially it's empty:
 
 Open the drag pane of the wirtschaft.feed:
 
->>> ajax = Browser()
+>>> ajax = ExtendedTestBrowser()
 >>> ajax.addHeader('Authorization', 'Basic user:userpw')
 >>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
 >>> print ajax.contents
@@ -54,16 +56,20 @@ We assume, that we drag the pane over the Clipboard:
     <p>
       <a href="...">Clipboard</a>
       <span class="URL">...</span>
-      <a title="Remove Clip from Clipboard"
-         class="DeleteLink" ...>Remove</a>
+      <a title="Remove" class="deleteLink context-action"...>
+         <img ... alt="Delete" />
+         <span class="action-title">Remove</span>
+      </a>
       </p>
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <p>
             <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
             <span class="URL">...wirtschaft.feed</span>
-            <a title="Remove Clip from Clipboard"
-               class="DeleteLink" ...>Remove</a>
+            <a title="Remove" class="deleteLink context-action"...>
+               <img ... alt="Delete" />
+               <span class="action-title">Remove</span>
+            </a>
           </p>
         </li>
       </ul>
@@ -84,24 +90,21 @@ added *before* the feed:
         <p>
           <a href="...">Clipboard</a>
           <span class="URL">...</span>
-          <a title="Remove Clip from Clipboard"
-             class="DeleteLink" ...>Remove</a>
+          <a title="Remove" ...
         </p>
         <ul>
           <li class="NotRoot" uniqueid="wirtschaft.feed">
             <p>
               <a href="...wirtschaft.feed">Wirtschaft</a>
               <span class="URL">...wirtschaft.feed</span>
-              <a title="Remove Clip from Clipboard"
-                class="DeleteLink" ...>Remove</a>
+              <a title="Remove" ...
             </p>
           </li>
           <li class="NotRoot" uniqueid="Querdax">
             <p>
               <a href="...Querdax">Querdax</a>
               <span class="URL">...Querdax</span>
-              <a title="Remove Clip from Clipboard"
-                class="DeleteLink" ...>Remove</a>
+              <a title="Remove" ...
             </p>
           </li>
         </ul>
@@ -350,12 +353,14 @@ Removing Clips
 ==============
 
 Each clipboard entry can be removed.  We use our "ajax" browser and remove
-entry we've moved into New Clip above:
+the Querdax entry we've moved into New Clip above:
 
->>> ajax.handleErrors = False
->>> ajax.open('http://localhost/++skin++cms/workingcopy/'
-...           'zope.user/zeit.cms.clipboard.clipboard.Clipboard/'
-...           'New%20Clip/Querdax/@@deletecontent.html')
+>>> link = ajax.getLink('Remove', index=3)
+>>> link
+<Link text='Delete[IMG] Remove'
+   url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/Querdax/@@ajax-delete-entry'>
+
+>>> link.click()
 >>> print ajax.contents
   <ul>
     <li class="Root" uniqueid="">
@@ -392,6 +397,7 @@ Clipboard Listing
 When accessing the clipboard we get a normal content listing. The feed we have
 in the clipboard also has its icon:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Clipboard').click()
 >>> print browser.contents
 <?xml ...
@@ -402,4 +408,122 @@ in the clipboard also has its icon:
       <img src="http://localhost/++skin++cms/@@/zeit-cms-syndication-interfaces-IFeed-zmi_icon.png" alt="Feed" width="20" height="20" border="0" />
     </td>
     ...
+
+
+Renaming clips
+++++++++++++++
+
+Clips can be renamed using the rename lightbox:
+
+>>> browser.open(browser.url + '/New%20Clip')
+>>> browser.getLink('Rename')
+<Link text='[IMG] Rename'
+  url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@rename-clip-lightbox')">
+>>> ajax.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/'
+...     '@@rename-clip-lightbox')
+>>> print ajax.contents
+<div>
+  <h1>Rename</h1>
+  ...
+
+When the form loads the current name is filled in:
+
+>>> ajax.getControl('New clip name').value
+'New Clip'
+
+Rename "New Clip" to "Wirtschaft clip":
+
+>>> ajax.getControl('New clip name').value = 'Wirtschaft clip'
+>>> ajax.getControl('Rename').click() 
+>>> 'There were errors' in ajax.contents
+False
+
+Reload the whole page and verify the title change:
+
+>>> ajax.open(
+...     '/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/New%20Clip')
+>>> print ajax.contents
+<?xml ...
+<!DOCTYPE ...
+  <li class="message">"New Clip" was renamed to "Wirtschaft clip".</li>
+  ...
+  <ul>
+    <li class="Root" uniqueid="">
+      <p>
+      <a href="...">Clipboard</a>
+      ...
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <p>
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+          <p>
+          <a href="...">Wirtschaft clip</a>
+          ...
+          <ul>
+            <li action="expand" class="NotRoot"
+              uniqueid="New Clip/Second Clip">
+              <p>
+              <a href="...">Second Clip</a>
+              ...
+            </li>
+          </ul>  
+        </li>
+      </ul>
+   </li>
+ </ul>
+ ...
+
+On the clipboard itself there is no rename action:
+
+>>> browser.getLink('Clipboard').click()
+>>> 'Rename' in [
+...     node.get('title') for node in 
+...     browser.etree.xpath('//*[@class="context-actions"]//a')]
+False
+
+Deleting clips
+++++++++++++++
+
+On the clipboard itself there is now "Delete" link:
+
+>>> browser.getLink('Clipboard').click()
+>>> 'Delete' in [
+...     node.get('title') for node in 
+...     browser.etree.xpath('//*[@class="context-actions"]//a')]
+False
+
+Open "New clip", we have a delete link there:
+
+>>> browser.open(browser.url + '/New%20Clip')
+>>> link = browser.getLink('Delete', index=4)
+>>> link
+<Link text='[IMG] Delete' 
+    url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@delete-clip'>
+>>> link.click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE ...
+  <li class="message">"Wirtschaft clip" was removed from the clipboard.</li>
+  ...
+  <ul>
+    <li class="Root" uniqueid="">
+      <p>
+      <a href="...">Clipboard</a>
+      ...
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <p>
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+      </ul>
+   </li>
+ </ul>
+ ...
 
