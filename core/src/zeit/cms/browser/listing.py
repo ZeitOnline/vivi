@@ -162,7 +162,6 @@ class TypeColumn(zc.table.column.GetterColumn):
         icon = zope.component.queryMultiAdapter(
             (item.context, formatter.request),
             name='zmi_icon')
-        import pdb; pdb.set_trace() 
         if icon is None:
             return ''
         return icon()
