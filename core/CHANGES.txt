@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-0.12 (unrelased)
-----------------
+0.12 (2008-03-25)
+-----------------
 
 - Moved locktoken storage to a separate utility, out of a cache.
 - Added events to notify caches about invalidated resources.
