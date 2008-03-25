@@ -16,6 +16,7 @@ import zc.table.table
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
+import zeit.cms.browser.menu
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.syndication.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -216,3 +217,7 @@ class AddToMyTargets(zeit.cms.browser.view.Base):
 @zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewObject)
 def feed_preview(context):
     return context.__parent__.get('index')
+
+
+class RememberSyndicationTargetMenuItem(zeit.cms.browser.menu.ActionMenuItem):
+    """Remember as syndication target menu item"""

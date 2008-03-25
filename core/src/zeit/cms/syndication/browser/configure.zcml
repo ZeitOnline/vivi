@@ -82,12 +82,17 @@
     class=".feed.AddToMyTargets"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="remember-as-syndication-target"
     for="zeit.cms.syndication.interfaces.IFeed"
-    menu="zeit-context-actions"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".feed.RememberSyndicationTargetMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zope.ManageContent"
+    icon="/@@/zeit.cms/icons/default-feed.png"
     title="Remember as syndication target"
     action="@@add-to-my-syndication-targets.html"
-    permission="zope.View"
+    sort="100"
     />
 
   <resourceLibrary name="zeit.cms.syndication" require="zeit.cms">
