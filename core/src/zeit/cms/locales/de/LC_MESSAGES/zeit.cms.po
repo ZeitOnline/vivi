@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Mon Mar 24 13:36:21 2008\n"
-"PO-Revision-Date: 2008-03-24 13:37+0100\n"
+"PO-Revision-Date: 2008-03-26 08:38+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -254,12 +254,12 @@ msgstr "Einchecken"
 #. Default: ""
 #: src/zeit/cms/checkout/browser/manager.py:17
 msgid "\"${name}\" has been checked out."
-msgstr "»${id}« wurde ausgecheckt."
+msgstr "»${name}« wurde ausgecheckt."
 
 #. Default: ""
 #: src/zeit/cms/checkout/browser/manager.py:35
 msgid "\"${name}\" has been checked in."
-msgstr "»${id}« wurde eingecheckt."
+msgstr "»${name}« wurde eingecheckt."
 
 #. Default: ""
 #: src/zeit/cms/clipboard/browser/clip.py:100
