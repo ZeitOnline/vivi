@@ -5,6 +5,8 @@ zeit.cms changes
 ------------------
 
 - DefaultView fuer Infobox hinzugefügt.
+- Assets eines Artikels werden jetzt in eigenem Formular bearbeitet.
+
 
 0.9.5 (2008-03-25)
 ------------------

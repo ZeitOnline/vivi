@@ -164,6 +164,15 @@ Traceback (most recent call last):
     ...
 LookupError: name 'form.automaticTeaserSyndication:list'
 
+Relating images and other content is done on the "asset" page. There is no
+read-only view to the assets:
+
+>>> browser.getLink('Assets').click()
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+>>> browser.getLink('Edit assets').click()
 
 Let's add an image:
 
@@ -311,6 +320,7 @@ We check in the document. We look a the document in the repository then:
 
 Let's make sure the image is linked:
 
+>>> browser.getLink('Assets').click()
 >>> print browser.contents 
 <?xml ...
 <!DOCTYPE ...

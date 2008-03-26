@@ -7,12 +7,14 @@
   <browser:page
     name="edit.html"
     for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.EditForm"
     permission="zeit.EditContent"
     />
 
   <browser:menuItem
     for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views"
     title="Edit metadata"
     action="@@edit.html"
@@ -23,12 +25,14 @@
   <browser:page
     name="view.html"
     for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.DisplayForm"
     permission="zope.View"
     />
   
   <browser:menuItem
     for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views"
     title="View metadata"
     action="@@view.html"
@@ -39,28 +43,55 @@
 
   <browser:defaultView
     for="zeit.content.article.interfaces.IArticle"
-    name="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
     />
 
   <browser:page
     name="wysiwyg_edit.html"
     for="..interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.WYSIWYGEdit"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit WYSIWYG"
     />
 
+  <browser:page
+    name="asset_edit.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AssetEdit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit assets"
+    />
+
+  <browser:page
+    name="asset_view.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AssetView"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="asset_view.html"
+    permission="zope.View"
+    menu="zeit-context-views"
+    title="Assets"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
 
   <adapter factory=".article.ArticleListRepresentation" />
 
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zmi_icon"
     width="20"
     height="20"
     file="resources/articleResource.png"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
   <browser:page

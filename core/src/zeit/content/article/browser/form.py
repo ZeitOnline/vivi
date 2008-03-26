@@ -45,12 +45,7 @@ class ArticleFormBase(object):
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticleMetadata).omit(
                 'textLength') +
-        zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent) +
-        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages) +
-        zope.formlib.form.FormFields(
-            zeit.cms.content.interfaces.IRelatedContent) +
-        zope.formlib.form.FormFields(
-            zeit.content.infobox.interfaces.IInfoboxReference))
+        zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent))
 
     field_groups = (
         base.navigation_fields,
@@ -135,3 +130,30 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.RemainingFields(
             _('Content'),
             css_class='full-width wide-widgets'),)
+
+
+class AssetBase(object):
+    """Asset form field definitions."""
+
+    form_fields = (
+        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages) +
+        zope.formlib.form.FormFields(
+            zeit.cms.content.interfaces.IRelatedContent) +
+        zope.formlib.form.FormFields(
+            zeit.content.infobox.interfaces.IInfoboxReference))
+
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('Assets and related'),
+            'wide-widgets full-width'),
+    )
+
+
+class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
+    """Form to edit assets."""
+
+    title = _('Edit assets')
+
+class AssetView(AssetBase, zeit.cms.browser.form.DisplayForm):
+
+    title = _('Assets')
