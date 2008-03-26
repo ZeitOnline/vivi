@@ -42,6 +42,12 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
+  <browser:defaultView
+    for="zeit.content.infobox.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
   <browser:page
     for="..interfaces.IInfobox"
     permission="zope.View"

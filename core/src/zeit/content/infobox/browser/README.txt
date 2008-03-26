@@ -91,3 +91,12 @@ Make sure there is a metadata preview:
     ...
     <div class="title">Altersvorsorge</div>
     </div>
+
+Make sure an infobox has a default view:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/infobox')
+>>> print browser.contents
+<?xml ...
+    <title> View infobox </title>
+    ...
