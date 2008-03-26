@@ -192,25 +192,8 @@ Cleanup:
 Preview
 =======
 
-The preview expects the preview container to exist, so create it. `tmp` first:
-
->>> browser.open('http://localhost/++skin++cms/')
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Folder']
->>> browser.open(menu.value[0])
->>> browser.getControl("File name").value = 'tmp'
->>> browser.getControl("Add").click()
-
-Create `previews` now:
-
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Folder']
->>> browser.open(menu.value[0])
->>> browser.getControl("File name").value = 'previews'
->>> browser.getControl("Add").click()
 
 Open the checked out somalia and change its source:
-
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html')
 >>> browser.getLink('Source').click()
@@ -234,3 +217,9 @@ Retrieve the copied object:
 >>> print browser.contents
 <?xml ...
     <pre>no more...
+
+Check the preview again to make sure the created folders are used:
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html')
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
+HTTP Error 303: See Other
+http://localhost/preview-prefix/tmp/previews/...

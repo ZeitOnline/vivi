@@ -6,6 +6,8 @@ zeit.cms changes
 
 - DefaultView fuer Infobox hinzugefügt.
 - Assets eines Artikels werden jetzt in eigenem Formular bearbeitet.
+- Automatisches Anlegen des Ordners mit den Workingcopy-Vorschau-Daten (bug
+  #4056)
 
 
 0.9.5 (2008-03-25)
