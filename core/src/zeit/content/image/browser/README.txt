@@ -184,13 +184,16 @@ Let's add an image:
 >>> browser.open(menu.value[0])
 
 Load the opernball image data an add w/o setting a file name. This selects the
-filename automatically:
+filename automatically. The expiry date is set to 7 days in the future
+automatically:
 
 >>> file_control = browser.getControl(name='form.data')
 >>> file_control.filename = 'opernball.jpg'
 >>> file_control.value = file(test_file, 'rb')
 >>> browser.getControl(name='form.volume').value != '0'
 True
+>>> browser.getControl('Expires').value
+'<Datetime-7-Days-In-Future>'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'

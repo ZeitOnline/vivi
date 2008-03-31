@@ -8,6 +8,7 @@ zeit.cms changes
 - Assets eines Artikels werden jetzt in eigenem Formular bearbeitet.
 - Automatisches Anlegen des Ordners mit den Workingcopy-Vorschau-Daten (bug
   #4056)
+- Standardlöschdatum eines Bildes "in 7 Tagen" (bug #4019)
 
 
 0.9.5 (2008-03-25)
