@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Mon Mar 24 13:36:21 2008\n"
-"PO-Revision-Date: 2008-03-26 08:38+0100\n"
+"PO-Revision-Date: 2008-04-02 17:59+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -701,7 +701,7 @@ msgstr "Versteckt auf HP"
 #. Default: ""
 #: src/zeit/cms/syndication/browser/feed.py:199
 msgid "\"${name}\" has been added to your syndication targets."
-msgstr "»${name} wurde zu Ihren Syndizierungszielen hinzugefügt."
+msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #: src/zeit/cms/syndication/browser/form.py:20
 msgid "Add Channel"
