@@ -26,3 +26,4 @@ class Invalidate(zope.app.publisher.xmlrpc.XMLRPCView):
                                             resource_id))
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(resource_id))
+        return True
