@@ -158,7 +158,7 @@ Converting to a property results in the token:
 'no'
 
 It is not checked if the value actually is valid for the field as this is not
-the resposonsibility of the dav integration. So we'd get any available token
+the resposonsibility of the converter. So we'd get any available token
 back.  For some arbitrary object we get a TypeError since we could not get a
 token:
 
@@ -168,6 +168,35 @@ Traceback (most recent call last):
 TypeError: ('Could not adapt',
             <object object at 0x...>,
             <InterfaceClass zeit.cms.content.interfaces.IDAVToken>)
+
+
+The `DAVProperty` takes care of invalid values and logs them. Prepare the
+logger:
+
+>>> import StringIO
+>>> import logging
+>>> log = StringIO.StringIO()
+>>> logging.root.addHandler(logging.StreamHandler(log))
+
+Create a dav property and set an invalid value for the choice.
+
+>>> import zeit.connector.interfaces
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> dav_prop = zeit.cms.content.dav.DAVProperty(
+...     field, 'my-ns', 'myname')
+>>> testcontent = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> testcontent.uniqueId = u'http://xml.zeit.de/foo'
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(testcontent)
+>>> properties[('myname', 'my-ns')] = u'f\xfcblas'
+
+When we try to get the data we'll get the default value (None):
+
+>>> dav_prop.__get__(testcontent, object) is None
+True
+>>> print log.getvalue()
+Could not parse DAV property value u'f\xfcblas' for TestContentType.myname
+at http://xml.zeit.de/foo
+[ValueError: (u'f\xfcblas',)]. Using default None instead.
 
 
 For content objects there is also a token adapter:
@@ -220,6 +249,14 @@ The other way round stores the unique id:
 
 >>> converter.toProperty(folder)
 u'http://xml.zeit.de/online'
+
+
+Error cases
+-----------
+
+There was a bug...
+
+choice = 
 
 
 Datetime

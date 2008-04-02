@@ -61,10 +61,12 @@ class DAVProperty(object):
                     field).fromProperty(dav_value)
             except (ValueError, zope.schema.ValidationError), e:
                 value = self.field.default
-                logger.warning("Could not parse DAV property value %r for "
-                               "%s.%s [%s: %s]. Using default %r instead" % (
-                                   dav_value, instance.__class__.__name__,
-                                   self.name, e.__class__.__name__, e, value))
+                logger.warning(
+                    "Could not parse DAV property value %r for "
+                    "%s.%s at %s [%s: %r]. Using default %r instead." % (
+                        dav_value, instance.__class__.__name__, self.name,
+                        instance.uniqueId, e.__class__.__name__,
+                        e.args, value))
 
         return value
 

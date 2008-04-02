@@ -11,6 +11,8 @@ zeit.cms changes
 - Standardlöschdatum eines Bildes "in 7 Tagen" (bug #4019)
 - Das Unterressort ist jetzt auch eine Drop-Down. Es ist abhängig von der
   Auswahl des Ressorts (bug #4036).
+- Wenn ein Artikel ein Ressort mit Umlaut hatte, welches nicht in der
+  ressort.xml enthalten war ab es einen Systemfehler beim logging.
 
 
 0.9.5 (2008-03-25)
