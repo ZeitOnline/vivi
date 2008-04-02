@@ -9,7 +9,6 @@ Create a testbrowser and open the homepage:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.handleErrors = False
 >>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
 >>> browser.open('http://localhost/++skin++cms/' )
 
