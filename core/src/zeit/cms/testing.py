@@ -29,10 +29,10 @@ def setup_product_config(product_config={}):
 
     cms_config['source-serie'] = 'file://%s' % os.path.join(
         base_path, 'serie.xml')
-    cms_config['source-ressort'] = 'file://%s' % os.path.join(
-        base_path, 'ressort.xml')
+    cms_config['source-navigation'] = 'file://%s' % os.path.join(
+        base_path, 'navigation.xml')
     cms_config['source-print-ressort'] = 'file://%s' % os.path.join(
-        base_path, 'ressort.xml')
+        base_path, 'print-ressort.xml')
     cms_config['source-keyword'] = 'file://%s' % os.path.join(
         base_path, 'zeit-ontologie-prism.xml')
 

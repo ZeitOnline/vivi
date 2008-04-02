@@ -2,15 +2,22 @@
 # See also LICENSE.txt
 # $Id$
 
+import cjson
 import lxml.etree
 
+import zope.component
+import zope.interface
 import zope.formlib.namedtemplate
 
+import zope.app.form.browser.interfaces
 import zope.app.form.browser.textwidgets
 import zope.app.form.interfaces
 import zope.app.pagetemplate
 
 import zc.form.browser.combinationwidget
+
+import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 
 
 class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -56,3 +63,32 @@ class CombinationWidget(
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'combinationwidget.pt')
+
+
+class SubNavigationUpdater(object):
+
+    navigation_source = zeit.cms.content.sources.NavigationSource()
+    subnavigation_source = zeit.cms.content.sources.SubNavigationSource()
+
+    def __init__(self, context, request):
+        super(SubNavigationUpdater, self).__init__(context, request)
+        self.master_terms = zope.component.getMultiAdapter(
+            (self.navigation_source, request),
+            zope.app.form.browser.interfaces.ITerms)
+
+    def __call__(self, master_token):
+        master_value = self.master_terms.getValue(master_token)
+
+        class Fake(object):
+            zope.interface.implements(
+                zeit.cms.content.interfaces.ICommonMetadata)
+            ressort = master_value
+
+        source = self.subnavigation_source(Fake())
+        terms = zope.component.getMultiAdapter(
+            (source, self.request), zope.app.form.browser.interfaces.ITerms)
+        result = []
+        for value in source:
+            term = terms.getTerm(value)
+            result.append((term.title, term.token))
+        return cjson.encode(result)

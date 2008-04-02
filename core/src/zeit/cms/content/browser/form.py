@@ -78,6 +78,7 @@ class CommonMetadataFormBase(object):
     def template(self):
         # Sneak in the javascript for copying teaser texts
         zc.resourcelibrary.need('zeit.cms.content.teaser')
+        zc.resourcelibrary.need('zeit.cms.content.dropdown')
         return super(CommonMetadataFormBase, self).template
 
 

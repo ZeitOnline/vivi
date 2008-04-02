@@ -12,7 +12,8 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'template.txt',
-        'keyword.txt',))
+        'keyword.txt',
+        'widget-subnav.txt'))
     suite.addTest(doctest.DocFileSuite(
         'widget.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +

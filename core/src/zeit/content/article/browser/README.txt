@@ -111,7 +111,7 @@ Now, fill the form and add the article:
 ...     'EU <em>unterstuetzt</em> Stinker-Steuer')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
->>> browser.getControl('Sub ressort').value = 'Koch'
+>>> browser.getControl('Sub ressort').displayValue = ['Integration']
 >>> browser.getControl('VG Wort Id').value = 'ada94da'
 >>> 'There were errors' in browser.contents
 False

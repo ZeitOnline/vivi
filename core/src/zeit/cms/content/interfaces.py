@@ -76,8 +76,9 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Ressort"),
         source=zeit.cms.content.sources.NavigationSource())
 
-    sub_ressort = zope.schema.TextLine(
+    sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
+        source=zeit.cms.content.sources.SubNavigationSource(),
         required=False)
 
     authors = zope.schema.Tuple(

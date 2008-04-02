@@ -71,6 +71,14 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="subnavigationupdater.json"
+    class=".widget.SubNavigationUpdater"
+    permission="zope.View"
+    />
+
   <adapter factory=".related.related_content_browse_location" />
   
   <!-- Teaser copying -->
@@ -82,6 +90,11 @@
   <resourceLibrary name="zeit.cms.content.validation"
     require="gocept.mochikit.jsclass mochikit">
     <directory source="resources" include="inputlimit.js" />
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.content.dropdown"
+    require="zeit.cms">
+    <directory source="resources" include="dropdown.js" />
   </resourceLibrary>
 
   <!-- Combination widget template -->

@@ -9,6 +9,8 @@ zeit.cms changes
 - Automatisches Anlegen des Ordners mit den Workingcopy-Vorschau-Daten (bug
   #4056)
 - Standardlöschdatum eines Bildes "in 7 Tagen" (bug #4019)
+- Das Unterressort ist jetzt auch eine Drop-Down. Es ist abhängig von der
+  Auswahl des Ressorts (bug #4036).
 
 
 0.9.5 (2008-03-25)

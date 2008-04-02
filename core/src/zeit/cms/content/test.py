@@ -17,7 +17,6 @@ def test_suite():
         'adapter.txt',
         'keyword.txt',
         'property.txt',
-        'sources.txt',
         'field.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
@@ -26,5 +25,6 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'dav.txt',
         'related.txt',
+        'sources.txt',
         'xmlsupport.txt'))
     return suite

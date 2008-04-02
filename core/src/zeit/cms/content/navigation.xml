@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<ressorts>
+    <ressort name="Deutschland">
+        <title>Deutschland</title>
+        <subnavigation name="Integration">
+            <title>Integration</title>
+        </subnavigation>
+        <subnavigation name="Datenschutz">
+            <title>Datenschutz</title>
+        </subnavigation>
+        <subnavigation name="Joschka Fisher">
+            <title>Joschka Fisher</title>
+        </subnavigation>
+    </ressort>
+
+    <ressort name="International">
+        <title>International</title>
+        <subnavigation name="US-Wahl">
+            <title>US-Wahl</title>
+        </subnavigation>
+        <subnavigation name="Nahost">
+            <title>Nahost</title>
+        </subnavigation>
+
+    </ressort>
+    <ressort name="Wirtschaft"><title>Wirtschaft</title></ressort>
+    <ressort name="Finanzen"><title>Finanzen</title></ressort>
+
+    <ressort name="Wissen"><title>Wissen</title></ressort>
+    <ressort name="Gesundheit"><title>Gesundheit</title></ressort>
+    <ressort name="Computer"><title>Computer</title></ressort>
+
+    <ressort name="Bildung &amp; Beruf">
+        <title>Bildung &amp; Beruf</title>
+    </ressort>
+    <ressort name="Studium"><title>Studium</title></ressort>
+    <ressort name="Campus"><title>Campus</title></ressort>
+    <ressort name="Zeit für die Schule"><title>Zeit für die Schule</title></ressort>
+
+    <ressort name="Kultur"><title>Kultur</title></ressort>
+    <ressort name="Feuilleton"><title>Feuilleton</title></ressort>
+    <ressort name="Musik"><title>Musik</title></ressort>
+    <ressort name="Literatur"><title>Literatur</title></ressort>
+
+
+    <ressort name="Leben"><title>Leben</title></ressort>
+    <ressort name="ZUENDER"><title>ZUENDER</title></ressort>
+    <ressort name="Reisen"><title>Reisen</title></ressort>
+    <ressort name="Reise"><title>Reise</title></ressort>
+    <ressort name="Sport"><title>Sport</title></ressort>
+    <ressort name="Spiele"><title>Spiele</title></ressort>
+    <ressort name="Weblogs"><title>Weblogs</title></ressort>
+    <ressort name="Auto"><title>Auto</title></ressort>
+    <ressort name="Kunst"><title>Kunst</title></ressort>
+    <ressort name="Multimedia"><title>Multimedia</title></ressort>
+    <ressort name="Video"><title>Video</title></ressort>
+    <ressort name="------"><title>------</title></ressort>
+
+    <ressort name="ZEIT-Verlag"><title>ZEIT-Verlag</title></ressort>
+    <ressort name="Akademie"><title>Akademie</title></ressort>
+    <ressort name="Altersvorsorge"><title>Altersvorsorge</title></ressort>
+    <ressort name="ranking"><title>ranking</title></ressort>
+    <ressort name="Hanser"><title>Hanser</title></ressort>
+    <ressort name="visitfinland"><title>visitfinland</title></ressort>
+    <ressort name="chile-heute"><title>chile-heute</title></ressort>
+    <ressort name="baufritz"><title>baufritz</title></ressort>
+    <ressort name="missionzukunft"><title>missionzukunft</title></ressort>
+    <ressort name="campus-knigge"><title>campus-knigge</title></ressort>
+    <ressort name="e-balance"><title>e-balance</title></ressort>
+    <ressort name="bundeskunsthalle"><title>bundeskunsthalle</title></ressort>
+    <ressort name="angebote"><title>angebote</title></ressort>
+
+
+</ressorts>

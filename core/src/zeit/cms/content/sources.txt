@@ -1,9 +1,8 @@
-=======
 Sources
 =======
 
 Serie
-=====
++++++
 
 The serie source returns the possible "serie" values:
 
@@ -85,58 +84,71 @@ The serie source returns the possible "serie" values:
  u'logo-tvhs']
 
 
-Print ressorts:
+Print ressorts
+++++++++++++++
 
 >>> pr = zeit.cms.content.sources.PrintRessortSource()
 >>> pprint(list(pr))
-[u' ',
- u'Deutschland',
- u'International',
+[u'Politik',
+ u'Dossier',
  u'Wirtschaft',
- u'Finanzen',
  u'Wissen',
- u'Gesundheit',
- u'Computer',
- u'Bildung & Beruf',
- u'Studium',
- u'Campus',
- u'Zeit f\xfcr die Schule',
- u'Kultur',
  u'Feuilleton',
- u'Musik',
  u'Literatur',
  u'Leben',
- u'ZUENDER',
  u'Reisen',
+ u'Chancen',
+ u'Zeitl\xe4ufte',
+ u'Zeitlaeufte',
+ u'-= === =-',
+ u'Amt',
+ u'Audio',
+ u'Bildung & Beruf',
+ u'Blogs',
+ u'Chancenbeilage',
+ u'Computer',
+ u'Deutschland',
+ u'Europa',
+ u'Feuilletonbeilage',
+ u'Fotogalerie',
+ u'Fussball',
+ u'Gesundheit',
+ u'Heimat',
+ u'Hochschule',
+ u'Homepage',
+ u'Inderzeit',
+ u'International',
+ u'Jobs',
+ u'Kultur',
+ u'Leserbriefe',
+ u'Literatur',
+ u'Literaturbeilage',
+ u'Media',
+ u'Mensch & Geschichte',
+ u'Musik',
+ u'Online',
+ u'Reden',
  u'Reise',
+ u'Reisebeilage',
+ u'Sonstiges',
  u'Sport',
- u'Spiele',
- u'Weblogs',
- u'Auto',
- u'Kunst',
- u'Multimedia',
- u'Video',
- u'------',
- u'ZEIT-Verlag',
- u'Akademie',
- u'Altersvorsorge',
- u'ranking',
- u'Hanser',
- u'visitfinland',
- u'chile-heute',
- u'baufritz',
- u'missionzukunft',
- u'campus-knigge',
- u'e-balance',
- u'bundeskunsthalle',
- u'angebote']
+ u'Technik & Weltraum',
+ u'Unbekannt',
+ u'Verlagsaktion',
+ u'ZEITReisen',
+ u'-= ZEIT-Wissen =-',
+ u'Leben',
+ u'Technik',
+ u'Gesundheit',
+ u'Wissenschaft']
 
-Navigation:
+
+Navigation
+++++++++++
 
 >>> navi = zeit.cms.content.sources.NavigationSource()
 >>> pprint(list(navi))
-[u' ',
- u'Deutschland',
+[u'Deutschland',
  u'International',
  u'Wirtschaft',
  u'Finanzen',
@@ -176,4 +188,36 @@ Navigation:
  u'e-balance',
  u'bundeskunsthalle',
  u'angebote']
+
+
+SubNavigation
++++++++++++++
+
+The sub navigation is dependent on the navigation.
+
+There are different contexts: a content object, a container (add form) and an
+ajax something.
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> sub_ressort = zeit.cms.content.sources.SubNavigationSource()
+>>> bound = sub_ressort(content)
+
+Currently the content has *no* navigation/ressort element selected. This means
+that we get *all* sub navigation elements
+
+>>> pprint(list(bound))
+[u'Integration',
+ u'Datenschutz',
+ u'Joschka Fisher',
+ u'US-Wahl',
+ u'Nahost']
+
+Select 'Deutschland':
+
+>>> content.ressort = u'Deutschland'
+>>> pprint(list(bound))
+[u'Integration',
+ u'Datenschutz',
+ u'Joschka Fisher']
 
