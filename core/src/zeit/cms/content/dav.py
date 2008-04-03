@@ -350,18 +350,18 @@ class GenericCollectionProperty(GenericProperty):
         return super(GenericCollectionProperty, self).toProperty(value)
 
 
-def mapProperties(interface, namespace, names):
+def mapProperties(interface, namespace, names, use_default=False):
     vars = sys._getframe(1).f_locals
     for name in names:
         field = interface[name]
-        mapProperty(field, namespace, name, vars)
+        mapProperty(field, namespace, name, vars, use_default=use_default)
 
 
-def mapProperty(field, namespace, name=None, vars=None):
+def mapProperty(field, namespace, name=None, vars=None, use_default=False):
     if vars is None:
         vars = sys._getframe(1).f_locals
 
     if name is None:
         name = field.__name__
 
-    vars[name] = DAVProperty(field, namespace, name)
+    vars[name] = DAVProperty(field, namespace, name, use_default=use_default)
