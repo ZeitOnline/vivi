@@ -46,6 +46,7 @@
   <include package="z3c.template" file="meta.zcml" />
   <include package="z3c.pagelet" file="meta.zcml" />
   <include package="z3c.pagelet" />
+  <include package="z3c.conditionalviews" />
   <include package="gocept.pagelet" file="meta.zcml" />
 
   <include package="gocept.lxml" />

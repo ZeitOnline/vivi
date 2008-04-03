@@ -4,6 +4,12 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:z3c="http://namespaces.zope.org/z3c">
 
+  <utility
+      component="z3c.conditionalviews.ConditionalHTTPRequest"
+      provides="zope.app.publication.interfaces.IHTTPRequestFactory"
+      />
+
+
   <interface
     zcml:condition="have zeit.cms.testing"
     interface=".interfaces.ICMSTestingSkin"
