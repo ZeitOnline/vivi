@@ -263,6 +263,7 @@ Now publish:
 >>> workflow = zeit.workflow.interfaces.IWorkflow(article)
 >>> workflow.date_first_released is None
 True
+>>> workflow.urgent = True
 >>> workflow.publish()
 
 # XXX not sure why I need to adapt again

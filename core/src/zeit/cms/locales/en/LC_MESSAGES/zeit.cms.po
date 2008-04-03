@@ -1,31 +1,18 @@
-##############################################################################
-#
-# Copyright (c) 2003-2004 Zope Corporation and Contributors.
-# All Rights Reserved.
-#
-# This software is subject to the provisions of the Zope Public License,
-# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
-# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
-# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
-#
-##############################################################################
 msgid ""
 msgstr ""
-"Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Apr  3 13:24:34 2008\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"Project-Id-Version: zeit.cms\n"
+"POT-Creation-Date: Thu Apr  3 13:20:36 2008\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: zope/app/locales/extract.py\n"
+"X-Poedit-Language: English\n"
 
 #: src/zeit/calendar/browser/calendar_view.py:27
 msgid "Calendar"
-msgstr ""
+msgstr "Calendar"
 
 #: src/zeit/calendar/browser/event.py:43
 msgid "Add event"
@@ -246,8 +233,8 @@ msgstr ""
 msgid "hide"
 msgstr ""
 
-#: src/zeit/cms/browser/notices.pt:5
 #. Default: "Notices"
+#: src/zeit/cms/browser/notices.pt:5
 msgid "notices_label"
 msgstr ""
 
@@ -263,23 +250,23 @@ msgstr ""
 msgid "Checkin"
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:17
 #. Default: ""
+#: src/zeit/cms/checkout/browser/manager.py:17
 msgid "\"${name}\" has been checked out."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:35
 #. Default: ""
+#: src/zeit/cms/checkout/browser/manager.py:35
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/clip.py:100
 #. Default: ""
+#: src/zeit/cms/clipboard/browser/clip.py:100
 msgid "\"${old_name}\" was renamed to \"${new_name}\"."
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/clip.py:52
 #. Default: ""
+#: src/zeit/cms/clipboard/browser/clip.py:52
 msgid "\"${name}\" was removed from the clipboard."
 msgstr ""
 
@@ -293,8 +280,8 @@ msgstr ""
 msgid "Rename"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/entry.py:80
 #. Default: ""
+#: src/zeit/cms/clipboard/browser/entry.py:80
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
 
@@ -514,8 +501,8 @@ msgstr ""
 msgid "Steal lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:56
 #. Default: ""
+#: src/zeit/cms/locking/browser/lock.py:56
 msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
 msgstr ""
 
@@ -523,8 +510,8 @@ msgstr ""
 msgid "Lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:66
 #. Default: ""
+#: src/zeit/cms/locking/browser/lock.py:66
 msgid "\"${name}\" has been locked."
 msgstr ""
 
@@ -532,8 +519,8 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:74
 #. Default: ""
+#: src/zeit/cms/locking/browser/lock.py:74
 msgid "\"${name}\" has been unlocked."
 msgstr ""
 
@@ -586,20 +573,20 @@ msgstr ""
 msgid "Add ..."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:19
 #. Default: "You're about to delete a folder with content!"
+#: src/zeit/cms/repository/browser/delete.pt:19
 msgid "delete_content_folder_warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:4
 #. Default: "Delete content"
+#: src/zeit/cms/repository/browser/delete.pt:4
 msgid "delete_content_header"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:9
 #. Default: ""
 #.  "Do you really want to delete the object from the folder\n"
 #.  "      \"${container-title}\"?"
+#: src/zeit/cms/repository/browser/delete.pt:9
 msgid "delete_content_text"
 msgstr ""
 
@@ -628,13 +615,13 @@ msgstr ""
 msgid "Rename ${object-unique-id}"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename-box.pt:8
 #. Default: "Note: Renaming destroys links."
+#: src/zeit/cms/repository/browser/rename-box.pt:8
 msgid "rename-box-warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:29
 #. Default: ""
+#: src/zeit/cms/repository/browser/rename.py:29
 msgid "\"${name}\" already exists."
 msgstr ""
 
@@ -642,18 +629,18 @@ msgstr ""
 msgid "New file name"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:60
 #. Default: ""
+#: src/zeit/cms/repository/browser/rename.py:60
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:100
 #. Default: ""
+#: src/zeit/cms/repository/browser/repository.py:100
 msgid "\"${name}\" is now hidden from the navigation tree."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:107
 #. Default: ""
+#: src/zeit/cms/repository/browser/repository.py:107
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
 
@@ -706,8 +693,8 @@ msgstr ""
 msgid "Hidden on HP"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:200
 #. Default: ""
+#: src/zeit/cms/syndication/browser/feed.py:200
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
@@ -737,21 +724,22 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:39
 #. Default: ""
+#: src/zeit/cms/syndication/browser/manager.py:39
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
+#. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:52
 #: src/zeit/workflow/browser/form.py:43
-#. Default: ""
 msgid "scheduled-for-publishing"
-msgstr ""
+msgstr "${id} has been scheduled for publishing."
 
-#: src/zeit/cms/syndication/browser/manager.py:55
 #. Default: ""
-msgid "Could not publish \"${name}\"."
-msgstr ""
+#: src/zeit/cms/syndication/browser/manager.py:55
+#: src/zeit/workflow/browser/form.py:46
+msgid "publish-preconditions-not-met"
+msgstr "Could not publish \"${name}\" because the publishing pre-conditions are not met. Check the states and/or the urgent-flag. Your state changes were saved."
 
 #: src/zeit/cms/syndication/interfaces.py:137
 msgid "Syndication targets"
@@ -872,8 +860,8 @@ msgstr ""
 msgid "Edit Recension"
 msgstr ""
 
-#: src/zeit/content/article/browser/recension-overview.pt:58
 #. Default: "There are no book information items, yet."
+#: src/zeit/content/article/browser/recension-overview.pt:58
 msgid "recension-no-items"
 msgstr ""
 
@@ -937,8 +925,8 @@ msgstr ""
 msgid "Translator"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:172
 #. Default: "Location"
+#: src/zeit/content/article/interfaces.py:172
 msgid "book-location"
 msgstr ""
 
@@ -1315,30 +1303,25 @@ msgstr ""
 msgid "... and publish"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:46
-#. Default: ""
-msgid "publish-preconditions-not-met"
-msgstr ""
-
 #: src/zeit/workflow/interfaces.py:31
 msgid "status-edited"
-msgstr ""
+msgstr "Edited"
 
 #: src/zeit/workflow/interfaces.py:36
 msgid "status-corrected"
-msgstr ""
+msgstr "Corrected"
 
 #: src/zeit/workflow/interfaces.py:41
 msgid "status-refined"
-msgstr ""
+msgstr "Refined"
 
 #: src/zeit/workflow/interfaces.py:46
 msgid "status-images-added"
-msgstr ""
+msgstr "Images added"
 
 #: src/zeit/workflow/interfaces.py:51
 msgid "Urgent"
-msgstr ""
+msgstr "Urgent"
 
 #: src/zeit/workflow/interfaces.py:52
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."

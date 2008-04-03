@@ -43,7 +43,18 @@ class Manager(zeit.cms.browser.view.Base):
 
     def publish(self, targets):
         for target in targets:
-            zeit.cms.workflow.interfaces.IPublish(target).publish()
+            publish = zeit.cms.workflow.interfaces.IPublish(target)
+            mapping = dict(
+                id=target.uniqueId,
+                name=target.__name__)
+            if publish.can_publish():
+                publish.publish()
+                self.send_message(_('scheduled-for-publishing',
+                                    mapping=mapping))
+            else:
+                self.send_message(_('Could not publish "${name}".',
+                                    mapping=mapping),
+                                  type='error')
 
     @zope.cachedescriptors.property.Lazy
     def content(self):

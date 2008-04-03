@@ -15,17 +15,17 @@ States
 The states are explained below.
 
 Bearbeitet (Redaktion)
-+++++++++++++++++++++++
+++++++++++++++++++++++
 
 This state tells if the editors have finished their work. The initlal value is
 "no":
 
->>> browser.getControl('Bearbeitet').displayValue
+>>> browser.getControl('Edited').displayValue
 ['no']
 
 The available options are as follows:
 
->>> browser.getControl('Bearbeitet').displayOptions
+>>> browser.getControl('Edited').displayOptions
 ['no', 'yes', 'not necessary']
 
 
@@ -35,9 +35,9 @@ Korrigiert
 Korrigiert states if the Korrektor is done. The state has the same values as
 **Bearbeitet**:
 
->>> browser.getControl('Korrigiert').displayValue
+>>> browser.getControl('Corrected').displayValue
 ['no']
->>> browser.getControl('Korrigiert').displayOptions
+>>> browser.getControl('Corrected').displayOptions
 ['no', 'yes', 'not necessary']
 
 Veredelt
@@ -46,9 +46,9 @@ Veredelt
 Veredelt states if Links etc. were added to the document. The state has the
 same values as **Bearbeitet**:
 
->>> browser.getControl('Veredelt').displayValue
+>>> browser.getControl('Refined').displayValue
 ['no']
->>> browser.getControl('Veredelt').displayOptions
+>>> browser.getControl('Refined').displayOptions
 ['no', 'yes', 'not necessary']
 
 
@@ -58,9 +58,9 @@ Bilder hinzugefügt
 The graphics department adds image. The state has the same values as
 **Bearbeitet**:
 
->>> browser.getControl('Bilder hinzugefügt').displayValue
+>>> browser.getControl('Images added').displayValue
 ['no']
->>> browser.getControl('Bilder hinzugefügt').displayOptions
+>>> browser.getControl('Images added').displayOptions
 ['no', 'yes', 'not necessary']
 
 
@@ -70,7 +70,7 @@ Eilmeldung
 Checking the Eilmeldung box makes the dockument public even though it was not
 corrected etc:
 
->>> browser.getControl('Eilmeldung').selected
+>>> browser.getControl('Urgent').selected
 False
 
 
@@ -81,9 +81,9 @@ Veröffentlichungszeitraum
 An object is only visible to public during the timespan given. Leaving the
 fields empty means no restriction. This is also the default:
 
->>> browser.getControl('Von').value
+>>> browser.getControl('From').value
 ''
->>> browser.getControl('Bis').value
+>>> browser.getControl('To').value
 ''
 
 
@@ -93,16 +93,35 @@ Transitions
 There are no explicit transitions defined. Instead every state attribute can
 currently be set to any value at will. Let's say our document is edited:
 
->>> browser.getControl('Bearbeitet').displayValue = ['yes']
+>>> browser.getControl('Edited').displayValue = ['yes']
 >>> browser.getControl('Save state').click()
->>> browser.getControl('Bearbeitet').displayValue
+>>> browser.getControl('Edited').displayValue
 ['yes']
 
 
 To publish the document, hit the 'publish' button:
 
->>> browser.handleErrors = False
 >>> browser.getControl("publish").click()
+
+This failed because only `edited` was set to 'yes':
+
+>>> print browser.contents
+<?xml ...
+        <li class="error">Could not publish "Somalia" because the publishing 
+        pre-conditions are not met. Check the states and/or the urgent-flag.
+        Your state changes were saved.</li>
+    ...
+
+Use the urgent flag to override:
+
+>>> browser.getControl('Urgent').selected = True
+>>> browser.getControl("publish").click()
+>>> print browser.contents
+<?xml ...
+        <li class="message">http://xml.zeit.de/online/2007/01/Somalia has been scheduled for publishing.</li>
+        <li class="message">Updated on 2008 4 3  12:02:00 </li>
+        ...
+
 
 
 Automatic workflow properties
@@ -221,6 +240,7 @@ Go back to the repository and publish:
 >>> browser.open('http://localhost:8080/++skin++cms/repository/online'
 ...              '/2007/01/Saarland')
 >>> browser.getLink('Workflow').click()
+>>> browser.getControl('Urgent').selected = True
 >>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False

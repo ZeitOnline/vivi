@@ -37,4 +37,15 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     @zope.formlib.form.action(_('... and publish'))
     def handle_publish(self, action, data):
         self.applyChanges(data)
-        zeit.cms.workflow.interfaces.IPublish(self.context).publish()
+        publish = zeit.cms.workflow.interfaces.IPublish(self.context)
+        mapping = dict(
+            name=self.context.__name__,
+            id=self.context.uniqueId)
+        if publish.can_publish():
+            publish.publish()
+            self.send_message(_('scheduled-for-publishing',
+                                mapping=mapping))
+        else:
+            self.send_message(_('publish-preconditions-not-met',
+                                mapping=mapping),
+                              type='error')

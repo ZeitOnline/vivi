@@ -12,12 +12,18 @@ import zeit.workflow.source
 from zeit.cms.i18n import MessageFactory as _
 
 
+class PublishingError(Exception):
+    """Raised when object publishing fails."""
+
+
+
 class IPublishInfo(zope.interface.Interface):
     """Information about published objects."""
 
     published = zope.schema.Bool(
         title=_('Published'),
-        readonly=True)
+        readonly=True,
+        default=False)
 
     date_last_modified = zope.schema.Datetime(
         title=_('Date last modified'),
@@ -37,10 +43,24 @@ class IPublishInfo(zope.interface.Interface):
 
 
 class IPublish(zope.interface.Interface):
-    """Interface for publishing objects."""
+    """Interface for publishing/unpublishing objects."""
+
+    def can_publish():
+        """Return whether the object can be published right now.
+
+        returns True if the object can be published, False otherwise.
+
+        """
 
     def publish():
-        """Publish object."""
+        """Publish object.
+
+        raises XXX if the object cannot be published.
+
+        """
+
+    def unpublish():
+        """Unpublish object."""
 
 
 class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):

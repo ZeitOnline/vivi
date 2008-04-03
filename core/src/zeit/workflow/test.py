@@ -20,6 +20,9 @@ WorkflowLayer = zope.app.testing.functional.ZCMLLayer(
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'README.txt',
         'syndication.txt',
-        layer=WorkflowLayer))
+        layer=WorkflowLayer,
+        optionflags=(doctest.INTERPRET_FOOTNOTES|doctest.ELLIPSIS|
+                     doctest.REPORT_NDIFF|doctest.NORMALIZE_WHITESPACE)))
     return suite

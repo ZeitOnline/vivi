@@ -25,6 +25,15 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.workflow.interfaces
 
 
+if 'all' not in globals():
+    # Python 2.4 doesn't have all :(
+    def all(iterable):
+        for element in iterable:
+            if not element:
+                return False
+        return True
+
+
 WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 
@@ -60,7 +69,8 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflow,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'published',
-         'images_added', 'urgent'))
+         'images_added', 'urgent'),
+        use_default=True)
 
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[0],
@@ -99,19 +109,27 @@ class Workflow(object):
     def date_last_modified(self):
         return zope.dublincore.interfaces.IDCTimes(self.context).modified
 
+    def can_publish(self):
+        if self.urgent:
+            return True
+        if all([self.edited, self.corrected, self.refined, self.images_added]):
+            return True
+        return False
+
     def publish(self):
         """Publish object."""
+        if not self.can_publish():
+            raise zeit.cms.workflow.interfaces.PublishingError(
+                "Publish pre-conditions not satisifed.")
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context))
         # TODO create remotetask to actually publish. The remotetask would send
-        # an IPublishedEvent then. For now set publishedj
+        # an IPublishedEvent then. For now set published
         self.published = True
-        source = zope.component.getUtility(
-            z3c.flashmessage.interfaces.IMessageSource, name='session')
-        source.send(_('${id} has been scheduled for publishing.',
-                      mapping=dict(id=self.context.uniqueId)))
 
-
+    def unpublish(self):
+        """Unpublish object."""
+        raise NotImplementedError
 
 
 @zope.component.adapter(zeit.workflow.interfaces.IWorkflow)

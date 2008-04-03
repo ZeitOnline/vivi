@@ -4,6 +4,10 @@ zeit.cms changes
 0.9.7 (unreleased)
 ------------------
 
+- Die Bedingungen für die Veröffentlichung werden explizit geprüft: Ein Objekt
+  kann nur veröffentlicht werden, wenn es "eilig" ist oder die Status auf ja /
+  nicht nötig stehen (bug #4068).
+
 0.9.6 (2008-04-03)
 ------------------
 

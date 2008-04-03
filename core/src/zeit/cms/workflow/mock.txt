@@ -1,0 +1,45 @@
+Mock publisher
+==============
+
+The mock is used for testing.
+
+>>> import zope.interface.verify
+>>> import zeit.cms.workflow.interfaces
+>>> import zeit.cms.workflow.mock
+
+Let's try this on a testcontent:
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content.uniqueId = 'http://xml.zeit.de/testcontent'
+>>> workflow = zeit.cms.workflow.mock.MockPublish(content)
+
+Verify the interface:
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.workflow.interfaces.IPublish, workflow)
+True
+
+
+We can set explicitly if we can publish:
+
+>>> workflow.can_publish()
+False
+>>> workflow.set_can_publish(True)
+>>> workflow.can_publish()
+True
+
+`publish()` raises an exception if can_publish returns False:
+
+>>> workflow.set_can_publish(False)
+>>> workflow.publish()
+Traceback (most recent call last):
+    ...
+PublishingError: Cannot publish.
+
+
+It spits out a message otherwise:
+
+>>> workflow.set_can_publish(True)
+>>> workflow.publish()
+Publishing: http://xml.zeit.de/testcontent

@@ -15,6 +15,10 @@ import zeit.workflow.source
 from zeit.cms.i18n import MessageFactory as _
 
 
+# The not necessary singleton of a TriState
+NotNecessary = zeit.workflow.source.NotNecessary
+
+
 class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
     """Zeit Workflow interface.
 
@@ -24,38 +28,36 @@ class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
     """
 
     edited = zope.schema.Choice(
-        title=u"Bearbeitet (Redaktion)",
+        title=_('status-edited'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     corrected = zope.schema.Choice(
-        title=u"Korrigiert",
+        title=_('status-corrected'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     refined = zope.schema.Choice(
-        title=u"Veredelt",
+        title=_('status-refined'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     images_added = zope.schema.Choice(
-        title=u"Bilder hinzugefügt (Grafik)",
+        title=_('status-images-added'),
         default=False,
         source=zeit.workflow.source.TriState())
 
-    published = zope.schema.Bool(
-        title=_('Published'),
-        readonly=True)
-
     urgent = zope.schema.Bool(
-        title=u"Eilmeldung / Wochenende",
+        title=_('Urgent'),
+        description=_('Select for newsflashs or on a weekend to publish '
+                      'without setting corrected/refined/etc.'),
         default=False)
 
     release_period = zc.form.field.Combination(
-        (zope.schema.Datetime(title=u"Von", required=False),
-         zope.schema.Datetime(title=u"Bis", required=False)),
-        title=u"Veröffentlichungszeitraum",
-        description=u"Leer für keine Einschränkung",
+        (zope.schema.Datetime(title=_("From"), required=False),
+         zope.schema.Datetime(title=_("To"), required=False)),
+        title=_('Publication period'),
+        description=_('Leave empty for no constraint.'),
         required=False)
 
     released_from = zope.interface.Attribute(
