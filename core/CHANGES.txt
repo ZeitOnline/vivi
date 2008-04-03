@@ -7,6 +7,8 @@ zeit.cms changes
 - Die Bedingungen für die Veröffentlichung werden explizit geprüft: Ein Objekt
   kann nur veröffentlicht werden, wenn es "eilig" ist oder die Status auf ja /
   nicht nötig stehen (bug #4068).
+- Objekte können zurückgezogen werden (aus der Veröffentlichung, bug #4081)
+
 
 0.9.6 (2008-04-03)
 ------------------

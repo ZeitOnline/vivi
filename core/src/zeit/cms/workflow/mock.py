@@ -33,7 +33,7 @@ class MockPublish(object):
                 "Cannot publish.")
         print "Publishing: %s" % self.context.uniqueId
 
-    def unpublish(self):
+    def retract(self):
         raise NotImplementedError
 
 

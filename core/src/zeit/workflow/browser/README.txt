@@ -94,7 +94,7 @@ There are no explicit transitions defined. Instead every state attribute can
 currently be set to any value at will. Let's say our document is edited:
 
 >>> browser.getControl('Edited').displayValue = ['yes']
->>> browser.getControl('Save state').click()
+>>> browser.getControl('Save state only').click()
 >>> browser.getControl('Edited').displayValue
 ['yes']
 
@@ -218,17 +218,27 @@ Check out an unpublished object:
         <div class="widget">False</div>
     ...
 
-# XXX currently disabled because we have no unpublish
-# Do a publish/unpublish cycle to set the property to false:
-#
-#>>> browser.getControl('Published').selected = True
-#>>> browser.getControl('Save state').click()
-#>>> 'There were errors' in browser.contents
-#False
-#>>> browser.getControl('Published').selected = False
-#>>> browser.getControl('Save state').click()
-#>>> 'There were errors' in browser.contents
-#False
+Note that the object is not published. Thus we have no "retract":
+
+>>> browser.getControl('retract')
+Traceback (most recent call last):
+    ...
+LookupError: label 'retract'
+
+
+Do a publish/retract cycle to set the property to false:
+
+>>> browser.getControl('Urgent').selected = True
+>>> browser.getControl('publish').click()
+>>> print browser.contents
+<?xml ...
+        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
+        ...
+>>> browser.getControl('retract').click()
+>>> print browser.contents
+<?xml ...
+        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
+        ...
 
 Check out:
 
@@ -272,34 +282,46 @@ The object is still published:
 
 
 
-# XXX currently we have no unpublish
-#Now try the other way round, unpublish a published document while it is checked
-#out:
-#
-#>>> browser.getControl('Published').selected = True
-#>>> browser.getControl('Save state').click()
-#>>> 'There were errors' in browser.contents
-#False
-#>>> browser.getLink('Checkout').click()
-#
-#Unpublish now:
-#
-#>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-#...              '/2007/01/Saarland')
-#>>> browser.getLink('Workflow').click()
-#>>> browser.getControl('Published').selected = False
-#>>> browser.getControl('Save state').click()
-#>>> 'There were errors' in browser.contents
-#False
-#
-#
-#Check back in:
-#
-#>>> browser.open(checked_out)
-#>>> browser.getLink('Checkin').click()
-#
-#The object is still published:
-#
-#>>> browser.getLink('Workflow').click()
-#>>> browser.getControl('Published').selected
-#False
+Now try the other way round, unpublish a published document while it is checked
+out:
+
+>>> browser.getControl('publish').click()
+>>> print browser.contents
+<?xml ...
+        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
+        ...
+>>> browser.getLink('Checkout').click()
+
+Unpublish now:
+
+>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+...              '/2007/01/Saarland')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('retract').click()
+>>> print browser.contents
+<?xml ...
+        <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
+        ...
+        <label for="form.published">
+          <span>Published</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">False</div>
+        ...
+
+Check back in:
+
+>>> browser.open(checked_out)
+>>> browser.getLink('Checkin').click()
+
+The object is still unpublished:
+
+>>> browser.getLink('Workflow').click()
+>>> print browser.contents
+<?xml ...
+        <label for="form.published">
+          <span>Published</span>
+        </label>
+        <div class="hint"></div>
+        <div class="widget">False</div>
+        ...

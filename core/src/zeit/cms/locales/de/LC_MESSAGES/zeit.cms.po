@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Apr  3 13:24:34 2008\n"
-"PO-Revision-Date: 2008-04-03 14:14+0100\n"
+"POT-Creation-Date: Thu Apr  3 14:33:15 2008\n"
+"PO-Revision-Date: 2008-04-03 14:38+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -732,7 +732,7 @@ msgstr "»${name} wurde nach ${targets} syndiziert."
 
 #. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:43
+#: src/zeit/workflow/browser/form.py:46
 msgid "scheduled-for-publishing"
 msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
 
@@ -1296,17 +1296,26 @@ msgid "Einstellung"
 msgstr "Einstellung"
 
 #: src/zeit/workflow/browser/form.py:33
-msgid "Save state"
-msgstr "Status speichern"
+msgid "Save state only"
+msgstr "Nur Status speichern"
 
 #: src/zeit/workflow/browser/form.py:37
-msgid "... and publish"
-msgstr "… und veröffentlichen"
+msgid "Save state and publish"
+msgstr "Status speichern und veröffentlichen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:46
+#: src/zeit/workflow/browser/form.py:49
 msgid "publish-preconditions-not-met"
 msgstr "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das »Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
+
+#: src/zeit/workflow/browser/form.py:53
+msgid "Save state and retract"
+msgstr "Status speichern und zurückziehen"
+
+#. Default: ""
+#: src/zeit/workflow/browser/form.py:60
+msgid "scheduled-for-retracting"
+msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 
 #: src/zeit/workflow/interfaces.py:31
 msgid "status-edited"

@@ -127,9 +127,10 @@ class Workflow(object):
         # an IPublishedEvent then. For now set published
         self.published = True
 
-    def unpublish(self):
-        """Unpublish object."""
-        raise NotImplementedError
+    def retract(self):
+        """Retract object."""
+        # TODO create remotetask to actually retract the object.
+        self.published = False
 
 
 @zope.component.adapter(zeit.workflow.interfaces.IWorkflow)

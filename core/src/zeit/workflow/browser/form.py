@@ -12,6 +12,10 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.workflow.interfaces
 
 
+def is_published(form, action):
+    return form.publish.published
+
+
 class WorkflowForm(zeit.cms.browser.form.EditForm):
 
     title = _("Workflow")
@@ -30,22 +34,36 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     form_fields = zope.formlib.form.Fields(
         zeit.workflow.interfaces.IWorkflow)
 
-    @zope.formlib.form.action(_('Save state'))
+    @zope.formlib.form.action(_('Save state only'))
     def handle_save_state(self, action, data):
         self.applyChanges(data)
 
-    @zope.formlib.form.action(_('... and publish'))
+    @zope.formlib.form.action(_('Save state and publish'))
     def handle_publish(self, action, data):
         self.applyChanges(data)
-        publish = zeit.cms.workflow.interfaces.IPublish(self.context)
         mapping = dict(
             name=self.context.__name__,
             id=self.context.uniqueId)
-        if publish.can_publish():
-            publish.publish()
+        if self.publish.can_publish():
+            self.publish.publish()
             self.send_message(_('scheduled-for-publishing',
                                 mapping=mapping))
         else:
             self.send_message(_('publish-preconditions-not-met',
                                 mapping=mapping),
                               type='error')
+
+    @zope.formlib.form.action(_('Save state and retract'),
+                              condition=is_published)
+    def handle_retract(self, action, data):
+        self.applyChanges(data)
+        mapping = dict(
+            name=self.context.__name__,
+            id=self.context.uniqueId)
+        self.publish.retract()
+        self.send_message(_('scheduled-for-retracting',
+                            mapping=mapping))
+
+    @property
+    def publish(self):
+        return zeit.cms.workflow.interfaces.IPublish(self.context)

@@ -94,8 +94,8 @@ False
 True
 
 
-Publising
-=========
+Publishing
+==========
 
 If `can_publish` returns False calling the `publish()` method raises an
 exception:
@@ -122,6 +122,25 @@ Let's publish the object[3]_:
 
 >>> workflow.published
 True
+
+One can publish more than once to put up a new version:
+
+>>> workflow.publish()
+>>> workflow.published
+True
+
+
+Retract
+=======
+
+After retracting an object it is no longer publically visible. Note that
+retract is unconditinally possible:
+
+>>> workflow.urgent = False
+>>> workflow.retract()
+>>> workflow.published
+False
+
 
 That was the workflow[2]_.
 

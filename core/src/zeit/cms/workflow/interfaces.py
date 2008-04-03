@@ -55,12 +55,12 @@ class IPublish(zope.interface.Interface):
     def publish():
         """Publish object.
 
-        raises XXX if the object cannot be published.
+        raises PublishingError if the object cannot be published.
 
         """
 
-    def unpublish():
-        """Unpublish object."""
+    def retract():
+        """Retract an object."""
 
 
 class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
