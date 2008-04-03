@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Apr  3 14:33:15 2008\n"
+"POT-Creation-Date: Thu Apr  3 18:08:34 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -49,7 +49,7 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:229
+#: src/zeit/cms/browser/listing.py:231
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
 #: src/zeit/cms/content/interfaces.py:244
@@ -59,7 +59,7 @@ msgstr ""
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:77
 #: src/zeit/content/infobox/interfaces.py:22
-#: src/zeit/search/browser/search.py:100
+#: src/zeit/search/browser/search.py:102
 #: src/zeit/search/interfaces.py:18
 msgid "Title"
 msgstr ""
@@ -176,38 +176,42 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:225
+#: src/zeit/cms/browser/listing.py:220
+msgid "There are no objects in this folder."
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:227
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/content/article/interfaces.py:139
-#: src/zeit/search/browser/search.py:97
+#: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:233
+#: src/zeit/cms/browser/listing.py:235
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:237
+#: src/zeit/cms/browser/listing.py:239
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:240
+#: src/zeit/cms/browser/listing.py:242
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:242
+#: src/zeit/cms/browser/listing.py:244
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:246
+#: src/zeit/cms/browser/listing.py:248
 #: src/zeit/cms/content/interfaces.py:71
-#: src/zeit/search/browser/search.py:107
+#: src/zeit/search/browser/search.py:109
 #: src/zeit/search/interfaces.py:23
 #: src/zeit/search/browser/sidebar.pt:72
 msgid "Page"
@@ -221,13 +225,9 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:183
+#: src/zeit/cms/browser/main_template.pt:185
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
-msgstr ""
-
-#: src/zeit/cms/browser/main_template.pt:207
-msgid "There are no objects in this folder."
 msgstr ""
 
 #: src/zeit/cms/browser/main_template.pt:9
@@ -743,7 +743,7 @@ msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:46
+#: src/zeit/workflow/browser/form.py:49
 #. Default: ""
 msgid "scheduled-for-publishing"
 msgstr ""
@@ -1217,20 +1217,39 @@ msgstr ""
 msgid "Link address"
 msgstr ""
 
-#: src/zeit/search/browser/configure.zcml:38
+#: src/zeit/search/browser/configure.zcml:39
 msgid "Zeit CMS Search Preferences"
 msgstr ""
 
-#: src/zeit/search/browser/search.py:103
+#: src/zeit/search/browser/search.py:105
 msgid "Year/Vol."
 msgstr ""
 
-#: src/zeit/search/browser/search.py:84
+#: src/zeit/search/browser/search.py:28
+#: src/zeit/workflow/interfaces.py:36
+msgid "status-corrected"
+msgstr ""
+
+#: src/zeit/search/browser/search.py:30
+#: src/zeit/workflow/interfaces.py:46
+msgid "status-images-added"
+msgstr ""
+
+#: src/zeit/search/browser/search.py:85
 #: src/zeit/search/browser/sidebar.pt:13
 msgid "Search"
 msgstr ""
 
+#: src/zeit/search/browser/search.py:87
+msgid "The search had no results."
+msgstr ""
+
 #: src/zeit/search/browser/sidebar.pt:128
+#. Default: "Status"
+msgid "workflow-state"
+msgstr ""
+
+#: src/zeit/search/browser/sidebar.pt:144
 msgid "Sort order"
 msgstr ""
 
@@ -1294,37 +1313,37 @@ msgstr ""
 msgid "HTML description"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:17
+#: src/zeit/workflow/browser/form.py:21
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:21
+#: src/zeit/workflow/browser/form.py:25
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:27
+#: src/zeit/workflow/browser/form.py:31
 msgid "Einstellung"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:33
+#: src/zeit/workflow/browser/form.py:37
 msgid "Save state only"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:37
+#: src/zeit/workflow/browser/form.py:41
 msgid "Save state and publish"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:49
+#: src/zeit/workflow/browser/form.py:52
 #. Default: ""
 msgid "publish-preconditions-not-met"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:53
+#: src/zeit/workflow/browser/form.py:56
 msgid "Save state and retract"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:60
+#: src/zeit/workflow/browser/form.py:64
 #. Default: ""
 msgid "scheduled-for-retracting"
 msgstr ""
@@ -1333,16 +1352,8 @@ msgstr ""
 msgid "status-edited"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:36
-msgid "status-corrected"
-msgstr ""
-
 #: src/zeit/workflow/interfaces.py:41
 msgid "status-refined"
-msgstr ""
-
-#: src/zeit/workflow/interfaces.py:46
-msgid "status-images-added"
 msgstr ""
 
 #: src/zeit/workflow/interfaces.py:51

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Apr  3 14:33:15 2008\n"
-"PO-Revision-Date: 2008-04-03 14:38+0100\n"
+"POT-Creation-Date: Thu Apr  3 18:08:34 2008\n"
+"PO-Revision-Date: 2008-04-03 18:09+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgid "Date when the event starts."
 msgstr "Datum/Uhrzeit des Terminbeginns"
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:229
+#: src/zeit/cms/browser/listing.py:231
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
 #: src/zeit/cms/content/interfaces.py:244
@@ -47,7 +47,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:77
 #: src/zeit/content/infobox/interfaces.py:22
-#: src/zeit/search/browser/search.py:100
+#: src/zeit/search/browser/search.py:102
 #: src/zeit/search/interfaces.py:18
 msgid "Title"
 msgstr "Titel"
@@ -164,38 +164,42 @@ msgstr "${DYNAMIC_CONTENT}"
 msgid "Form"
 msgstr "Formular"
 
-#: src/zeit/cms/browser/listing.py:225
+#: src/zeit/cms/browser/listing.py:220
+msgid "There are no objects in this folder."
+msgstr "Es gibt keine Objekte in diesem Ordner."
+
+#: src/zeit/cms/browser/listing.py:227
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/content/article/interfaces.py:139
-#: src/zeit/search/browser/search.py:97
+#: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/cms/browser/listing.py:233
+#: src/zeit/cms/browser/listing.py:235
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr "Dateiname"
 
-#: src/zeit/cms/browser/listing.py:237
+#: src/zeit/cms/browser/listing.py:239
 msgid "Modified"
 msgstr "Verändert"
 
-#: src/zeit/cms/browser/listing.py:240
+#: src/zeit/cms/browser/listing.py:242
 msgid "Hits"
 msgstr "Treffer"
 
-#: src/zeit/cms/browser/listing.py:242
+#: src/zeit/cms/browser/listing.py:244
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr "Ressort"
 
-#: src/zeit/cms/browser/listing.py:246
+#: src/zeit/cms/browser/listing.py:248
 #: src/zeit/cms/content/interfaces.py:71
-#: src/zeit/search/browser/search.py:107
+#: src/zeit/search/browser/search.py:109
 #: src/zeit/search/interfaces.py:23
 #: src/zeit/search/browser/sidebar.pt:72
 msgid "Page"
@@ -209,14 +213,10 @@ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, wei
 msgid "An error is occoured"
 msgstr "Ein Fehler ist aufgetreten."
 
-#: src/zeit/cms/browser/main_template.pt:183
+#: src/zeit/cms/browser/main_template.pt:185
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr "Hinzufügen …"
-
-#: src/zeit/cms/browser/main_template.pt:207
-msgid "There are no objects in this folder."
-msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: src/zeit/cms/browser/main_template.pt:9
 msgid "Error"
@@ -732,7 +732,7 @@ msgstr "»${name} wurde nach ${targets} syndiziert."
 
 #. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:46
+#: src/zeit/workflow/browser/form.py:49
 msgid "scheduled-for-publishing"
 msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
 
@@ -1205,20 +1205,39 @@ msgstr "Metadaten"
 msgid "Link address"
 msgstr "Link-Adresse (URL)"
 
-#: src/zeit/search/browser/configure.zcml:38
+#: src/zeit/search/browser/configure.zcml:39
 msgid "Zeit CMS Search Preferences"
 msgstr "Benutzereinstellungen zur Suche"
 
-#: src/zeit/search/browser/search.py:103
+#: src/zeit/search/browser/search.py:105
 msgid "Year/Vol."
 msgstr "Jahr/Ausg."
 
-#: src/zeit/search/browser/search.py:84
+#: src/zeit/search/browser/search.py:28
+#: src/zeit/workflow/interfaces.py:36
+msgid "status-corrected"
+msgstr "Korrigiert"
+
+#: src/zeit/search/browser/search.py:30
+#: src/zeit/workflow/interfaces.py:46
+msgid "status-images-added"
+msgstr "Bilder hinzugefügt (Grafik)"
+
+#: src/zeit/search/browser/search.py:85
 #: src/zeit/search/browser/sidebar.pt:13
 msgid "Search"
 msgstr "Suche"
 
+#: src/zeit/search/browser/search.py:87
+msgid "The search had no results."
+msgstr "Die Suche lieferte keine Ergebnisse."
+
+#. Default: "Status"
 #: src/zeit/search/browser/sidebar.pt:128
+msgid "workflow-state"
+msgstr "Status"
+
+#: src/zeit/search/browser/sidebar.pt:144
 msgid "Sort order"
 msgstr "Sortierung"
 
@@ -1282,38 +1301,38 @@ msgstr "HTML-Titel"
 msgid "HTML description"
 msgstr "HTML-Beschreibung (Description)"
 
-#: src/zeit/workflow/browser/form.py:17
+#: src/zeit/workflow/browser/form.py:21
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr "Workflow"
 
-#: src/zeit/workflow/browser/form.py:21
+#: src/zeit/workflow/browser/form.py:25
 msgid "Status"
 msgstr "Status"
 
-#: src/zeit/workflow/browser/form.py:27
+#: src/zeit/workflow/browser/form.py:31
 msgid "Einstellung"
 msgstr "Einstellung"
 
-#: src/zeit/workflow/browser/form.py:33
+#: src/zeit/workflow/browser/form.py:37
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
-#: src/zeit/workflow/browser/form.py:37
+#: src/zeit/workflow/browser/form.py:41
 msgid "Save state and publish"
 msgstr "Status speichern und veröffentlichen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:49
+#: src/zeit/workflow/browser/form.py:52
 msgid "publish-preconditions-not-met"
 msgstr "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das »Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
 
-#: src/zeit/workflow/browser/form.py:53
+#: src/zeit/workflow/browser/form.py:56
 msgid "Save state and retract"
 msgstr "Status speichern und zurückziehen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:60
+#: src/zeit/workflow/browser/form.py:64
 msgid "scheduled-for-retracting"
 msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 
@@ -1321,17 +1340,9 @@ msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 msgid "status-edited"
 msgstr "Bearbeitet (Redaktion)"
 
-#: src/zeit/workflow/interfaces.py:36
-msgid "status-corrected"
-msgstr "Korrigiert"
-
 #: src/zeit/workflow/interfaces.py:41
 msgid "status-refined"
 msgstr "Veredelt"
-
-#: src/zeit/workflow/interfaces.py:46
-msgid "status-images-added"
-msgstr "Bilder hinzugefügt (Grafik)"
 
 #: src/zeit/workflow/interfaces.py:51
 msgid "Urgent"
