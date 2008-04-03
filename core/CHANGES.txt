@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.6 (unreleased)
+0.9.6 (2008-04-03)
 ------------------
 
 - DefaultView fuer Infobox hinzugefügt.
