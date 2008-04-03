@@ -69,8 +69,7 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflow,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'published',
-         'images_added', 'urgent'),
-        use_default=True)
+         'images_added', 'urgent')),
 
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[0],

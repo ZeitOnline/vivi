@@ -25,16 +25,12 @@ There are a few simple states. Those states can have three values: yes, no and
 not necessary. A document can only be published if all states have a yes or not
 nocessary value.
 
-The states are as follows:
+The states are as follows (initially None)
 
 >>> workflow.edited
-False
 >>> workflow.corrected
-False
 >>> workflow.refined
-False
 >>> workflow.images_added
-False
 
 
 Currently the object cannot be published:
@@ -111,8 +107,8 @@ PublishingError: Publish pre-conditions not satisifed.
 
 If an object is publish is indicated by the `published` attribute.
 
->>> workflow.published
-False
+>>> workflow.published is None
+True
 
 
 Let's publish the object[3]_:
