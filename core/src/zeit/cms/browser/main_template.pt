@@ -139,8 +139,10 @@
           </tal:have_items>
           <tal:not_have_items
             tal:condition="not:menu_items">
-            <li class="selected Anzeigen">
-              <a tal:attributes="href view/@@absolute_url">
+            <li class="selected">
+              <a tal:attributes="href view/@@absolute_url"
+                tal:content="view/title"
+                i18n:translate="">
                 Anzeigen
               </a>
             </li>
@@ -204,8 +206,10 @@
             Table with contents...
           </table>
 
-        <span tal:condition="not:view/content" class="Info"
-          i18n:translate="">
+          <span class="Info"
+            tal:condition="not:view/content"
+            tal:content="view/no_content_message"
+            i18n:translate="">
           There are no objects in this folder.
         </span>
       </div>

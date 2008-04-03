@@ -211,12 +211,14 @@ class DatetimeColumn(GetterColumn):
 
 
 class Listing(object):
-    """object listing view"""
+    """Object listing view"""
 
     title = u"Dateiliste"
     types_source = zeit.cms.content.sources.CMSContentTypeSource()
     css_class = 'contentListing hasMetadata'
     filter_interface = None
+    no_content_message = _('There are no objects in this folder.')
+
 
     columns = (
         TypeColumn(u'', name='type'),

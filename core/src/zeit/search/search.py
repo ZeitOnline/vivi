@@ -171,6 +171,8 @@ class MetadataSearch(object):
 
     ns = 'http://namespaces.zeit.de/CMS/document'
     qps = 'http://namespaces.zeit.de/QPS/attributes'
+    wf = 'http://namespaces.zeit.de/CMS/workflow'
+
     _search_map = {
         'author': zeit.connector.search.SearchVar('author', ns),
         'ressort': zeit.connector.search.SearchVar('ressort', ns),
@@ -181,6 +183,10 @@ class MetadataSearch(object):
 
         'page': zeit.connector.search.SearchVar('page', qps),
         'print_ressort': zeit.connector.search.SearchVar('ressort', qps),
+
+        'edited': zeit.connector.search.SearchVar('edited', wf),
+        'corrected': zeit.connector.search.SearchVar('corrected', wf),
+        'images_added': zeit.connector.search.SearchVar('images_added', wf),
     }
 
     indexes = frozenset(_search_map.keys())
@@ -227,10 +233,18 @@ class MetadataSearch(object):
     def get_search_term(self, search):
         terms = []
         for field, var in self._search_map.items():
-            value = search.get(field)
-            if not value:
+            value_list = search.get(field)
+            if not value_list:
                 continue
-            terms.append(var == unicode(value))
+            if not isinstance(value_list, (tuple, list)):
+                value_list = [value_list]
+
+            # Combine several elements with or
+            term = reduce(
+                operator.or_,
+                [var == unicode(value) for value in value_list])
+
+            terms.append(term)
         if not terms:
             return None
         return reduce(operator.and_, terms)

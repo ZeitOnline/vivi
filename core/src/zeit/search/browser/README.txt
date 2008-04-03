@@ -34,6 +34,12 @@ We can change the sorting (but don't):
 >>> browser.getControl(name='search.sort').displayValue
 ['aktuell']
 
+We can filter for the workflow status:
+
+>>> browser.getControl('Status').displayOptions
+[None, 'Corrected', 'Images added']
+
+
 Note that in the test we only can search for "linux", so we do that:
 
 >>> browser.getControl(name="search.text").value = 'linux'

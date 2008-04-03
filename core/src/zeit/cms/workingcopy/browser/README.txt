@@ -109,9 +109,7 @@ Let's delete it:
 >>> print browser.contents
 <?xml ...
       <div id="topcontent">
-        <span class="Info">
-          There are no objects in this folder.
-        </span>
+        <span class="Info">There are no objects in this folder.</span>
       </div>
       ...
 

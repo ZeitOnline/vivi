@@ -125,16 +125,32 @@
         </div>
 
         <div class="widget">
+          <label for="search.state" i18n:translate="workflow-state">
+            Status
+          </label>
+          <select name="search.state" id="search.state"
+            tal:define="last last_search/state | nothing">
+            <option value=""></option>
+            <option
+              tal:repeat="state view/states"
+              tal:attributes="value state/index;
+              selected python:last == state['index']"
+              tal:content="state/title"
+              i18n:translate="" />
+          </select>
+        </div>
+
+        <div class="widget">
           <label for="search.sort" i18n:translate="">
             Sort order
           </label>
           <select name="search.sort" id="search.sort"
-            tal:define="last_serie last_search/sort | nothing">
+            tal:define="last last_search/sort | nothing">
             <option
-              tal:repeat="serie python:['aktuell', 'relevanz']"
-              tal:attributes="value serie;
-              selected python:last_serie == serie"
-              tal:content="serie"
+              tal:repeat="sort python:['aktuell', 'relevanz']"
+              tal:attributes="value sort;
+              selected python:last == sort"
+              tal:content="sort"
               />
           </select>
         </div>

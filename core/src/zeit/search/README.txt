@@ -79,7 +79,7 @@ Searching:  (:eq "http://namespaces.zeit.de/QPS/attributes" "ressort" "Leben")
 >>> result = metadata(dict(volume='03'))
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "volume" "03")
 
->>> result = metadata(dict(year='2007'))
+>>> result = metadata(dict(year=2007))
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007")
 
 >>> result = metadata(dict(page='27'))
@@ -89,11 +89,16 @@ Searching:  (:eq "http://namespaces.zeit.de/QPS/attributes" "page" "27")
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
 
 
-Multiple arguments will be anded:
+Multiple arguments will be and'ed:
 
 >>> result = metadata(dict(serie='davos', page='39'))
 Searching:  (:and (:eq "http://namespaces.zeit.de/CMS/document" "serie" "davos")
                   (:eq "http://namespaces.zeit.de/QPS/attributes" "page" "39"))
+
+If one argument is a list, those will be or'ed:
+
+>>> result = metadata(dict(year=('2007', '2008')))
+ Searching:  (:or (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007") (:eq "http://namespaces.zeit.de/CMS/document" "year" "2008"))
 
 
 ZEIT online search

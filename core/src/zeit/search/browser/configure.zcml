@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
   <include package="zope.app.session" />
@@ -27,7 +28,7 @@
     permission="zope.View"
     />
 
-  <browser:page
+  <gocept:pagelet
     name="search.html"
     for="zope.location.interfaces.ISite"
     template="search.pt"
@@ -36,11 +37,11 @@
     />
 
   <preferenceGroup
-      id="search_preferences"
-      title="Zeit CMS Search Preferences"
-      schema=".interfaces.ISearchPreferences"
-      category="true"
-      />
+    id="search_preferences"
+    title="Zeit CMS Search Preferences"
+    schema=".interfaces.ISearchPreferences"
+    category="true"
+    />
 
 </configure>
 

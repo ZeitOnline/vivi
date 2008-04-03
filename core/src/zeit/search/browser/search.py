@@ -23,6 +23,13 @@ import zeit.search.interfaces
 
 class Viewlet(zope.viewlet.viewlet.ViewletBase):
 
+    states = (
+        dict(index='corrected',
+             title=_('status-corrected')),
+        dict(index='images_added',
+             title=_('status-images-added')),
+    )
+
     @zope.cachedescriptors.property.Lazy
     def print_ressorts(self):
         return zeit.cms.content.sources.PrintRessortSource()
@@ -77,6 +84,7 @@ class Search(object):
 
     title = _('Search')
     prefix = 'search.'
+    no_content_message = _('The search had no results.')
 
     @zope.cachedescriptors.property.Lazy
     def columns(self):
@@ -104,13 +112,30 @@ class Search(object):
         )
 
 
-    def __call__(self):
+    def update(self):
         self.save_search_terms()
-        return self.index()
 
     @zope.cachedescriptors.property.Lazy
     def content(self):
-        return self.search(self.last_search)
+        return self.search(self.munge(self.last_search))
+
+    def munge(self, search_args):
+        search_args = search_args.copy()
+        if 'state' in search_args:
+            # TODO this needs testing!
+            search_state = search_args.pop('state')
+            pre_cond = []
+            # XXX This is very handcrafted and ugly
+            preconditions = {
+                'corrected': ('edited',),
+                'images_added': ('edited', )
+            }
+
+            for state in preconditions.get(search_state, []):
+                search_args[state] = ('yes', 'notnecessary')
+            search_args[search_state] = 'no'
+
+        return search_args
 
     @zope.cachedescriptors.property.Lazy
     def contentTable(self):
