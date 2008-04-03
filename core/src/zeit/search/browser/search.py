@@ -11,7 +11,6 @@ import zope.viewlet.viewlet
 
 import zope.app.publisher.browser.directoryresource
 
-import z3c.zrtresource.zrtresource
 import zc.table.table
 
 import zeit.cms.browser.listing
@@ -20,11 +19,6 @@ import zeit.cms.repository.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.search.interfaces
-
-
-(zope.app.publisher.browser.directoryresource.
- DirectoryResource.resource_factories['.js']) = (
-     z3c.zrtresource.zrtresource.ZRTFileResourceFactory)
 
 
 class Viewlet(zope.viewlet.viewlet.ViewletBase):

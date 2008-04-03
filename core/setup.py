@@ -35,7 +35,6 @@ setup(
         'z3c.flashmessage',
         'z3c.menu.simple>=0.5.1',
         'z3c.traverser',
-        'z3c.zrtresource',
         'zc.datetimewidget',
         'zc.form',
         'zc.recipe.egg>=1.1.0dev-r84019',
