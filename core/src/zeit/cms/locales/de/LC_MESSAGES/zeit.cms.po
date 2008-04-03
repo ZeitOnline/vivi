@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu Apr  3 13:24:34 2008\n"
-"PO-Revision-Date: 2008-04-03 13:27+0100\n"
+"PO-Revision-Date: 2008-04-03 14:14+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -828,12 +828,12 @@ msgstr "Inhalt"
 
 #: src/zeit/content/article/browser/form.py:147
 msgid "Assets and related"
-msgstr "Assets and related"
+msgstr "Assets und Related"
 
 #: src/zeit/content/article/browser/form.py:155
 #: src/zeit/content/article/browser/configure.zcml:59
 msgid "Edit assets"
-msgstr "Edit assets"
+msgstr "Assets bearbeiten"
 
 #: src/zeit/content/article/browser/form.py:159
 #: src/zeit/content/article/browser/configure.zcml:76
