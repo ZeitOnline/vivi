@@ -44,6 +44,10 @@ resource is locked. Create a view which raises the relevant exception:
 
 
 >>> browser.open('http://localhost/++skin++cms/error.html')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+
 >>> print browser.contents
  <!DOCTYPE html ...
      <div class="error">
