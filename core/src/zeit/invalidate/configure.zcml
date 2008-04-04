@@ -12,7 +12,7 @@
     for="zope.location.interfaces.ISite"
     class=".invalidate.Invalidate"
     permission="zeit.invalidate.InvalidateResources"
-    methods="invalidate"
+    methods="invalidate invalidate_many"
     />
 
 </configure>

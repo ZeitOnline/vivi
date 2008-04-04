@@ -1,8 +1,11 @@
 CHANGES
 =======
 
-0.3 (unreleased)
+0.3 (2008-04-04)
 ----------------
+
+- Added @@invalidate_many to be able to invalidate may resources in one xml-rpc
+  call.
 
 0.2 (2008-04-02)
 ----------------
