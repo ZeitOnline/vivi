@@ -34,14 +34,28 @@
         <img tal:replace="structure context/@@preview/tag" />
       </a>
       
-      <div tal:content="string: ©${view/metadata/copyrights}">
+      <div
+        tal:repeat="copyright view/metadata/copyrights"
+        tal:content="string: ©$copyright">
         Zeit online
       </div>
-      <div tal:content="string: ALT: ${view/metadata/alt}">
-        Alt
+      <div i18n:translate="">
+        Image title: <span tal:replace="view/metadata/caption" i18n:name="caption" />
       </div>
-      <div tal:content="string: Bildunterschrift: ${view/metadata/caption}">
-        Caption
+      <div i18n:translate="">
+        ALT: <span tal:replace="view/metadata/alt" i18n:name="alt" />
+      </div>
+      <div i18n:translate="">
+        Image sub text: <span tal:replace="view/metadata/caption" i18n:name="caption" />
+      </div>
+      <div i18n:translate="">
+        Links to:
+        <a
+          tal:attributes="href view/metadata/links_to"
+          tal:content="view/metadata/links_to"
+          i18n:name="link">
+          http://...
+        </a>
       </div>
 
     </div>

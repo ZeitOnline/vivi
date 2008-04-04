@@ -54,6 +54,21 @@ Set the copyright:
 </image>
 
 
+Set the link:
+
+>>> zeit.content.image.interfaces.IImageMetadata(group).links_to = (
+...     'http://www.asdf.com')
+>>> print lxml.etree.tostring(ref.xml, pretty_print=True)
+<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       href="http://www.asdf.com"
+       base-id="http://xml.zeit.de/image-group">
+  <bu xsi:nil="true"/>
+  <copyright py:pytype="str">Zeit online</copyright>
+  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+</image>
+
 Cleanup
 =======
 

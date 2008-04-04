@@ -69,6 +69,11 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
+    links_to = zope.schema.URI(
+        title=_('Links to'),
+        description=_('Enter a URL this image should link to.'),
+        required=False)
+
 
 class IImage(zeit.cms.interfaces.ICMSContent,
              zope.app.file.interfaces.IImage):

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Apr  3 18:08:34 2008\n"
-"PO-Revision-Date: 2008-04-03 18:09+0100\n"
+"POT-Creation-Date: Fri Apr  4 12:52:45 2008\n"
+"PO-Revision-Date: 2008-04-04 12:55+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -99,11 +99,11 @@ msgstr "context sensitive actions"
 msgid "Zeit CMS User Preferences"
 msgstr "Benutzereinstellungen"
 
-#: src/zeit/cms/browser/configure.zcml:277
+#: src/zeit/cms/browser/configure.zcml:286
 msgid "Live"
 msgstr "Live"
 
-#: src/zeit/cms/browser/configure.zcml:286
+#: src/zeit/cms/browser/configure.zcml:295
 msgid "Development"
 msgstr "Relaunch"
 
@@ -238,6 +238,10 @@ msgstr "Verstecken"
 #: src/zeit/cms/browser/notices.pt:5
 msgid "notices_label"
 msgstr "Meldungen"
+
+#: src/zeit/cms/browser/system-error.pt:8
+msgid "The action you were trying to do could not be finished."
+msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
 
 #: src/zeit/cms/browser/tree.pt:18
 msgid "Remove"
@@ -379,6 +383,11 @@ msgstr "WebDAV-Properties bearbeiten"
 #: src/zeit/cms/content/browser/template.zcml:48
 msgid "Properties"
 msgstr "Eigenschaften"
+
+#: src/zeit/cms/content/browser/template.zcml:57
+#: src/zeit/cms/repository/browser/delete.pt:27
+msgid "Delete"
+msgstr "Löschen"
 
 #: src/zeit/cms/content/field.py:32
 msgid "Invalid structure."
@@ -720,8 +729,8 @@ msgid "You need to select a feed as a syndication target first, before you can s
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
 #: src/zeit/cms/syndication/browser/manager.py:102
-#: src/zeit/cms/workingcopy/browser/configure.zcml:57
-#: src/zeit/cms/browser/configure.zcml:268
+#: src/zeit/cms/workingcopy/browser/configure.zcml:48
+#: src/zeit/cms/browser/configure.zcml:277
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -771,12 +780,6 @@ msgstr "Zuletzt geändert von"
 #: src/zeit/workflow/interfaces.py:80
 msgid "Date first released"
 msgstr "Datum der ersten Veröffentlichung"
-
-#: src/zeit/cms/workingcopy/browser/configure.zcml:39
-#: src/zeit/cms/content/browser/template.zcml:57
-#: src/zeit/cms/repository/browser/delete.pt:27
-msgid "Delete"
-msgstr "Löschen"
 
 #: src/zeit/cms/workingcopy/browser/sidebar.pt:13
 msgid "Edited documents"
@@ -1086,8 +1089,24 @@ msgstr "Bild hinzufügen"
 msgid "Edit image"
 msgstr "Bild bearbeiten"
 
+#: src/zeit/content/image/browser/image_view.pt:43
+msgid "Image title: ${caption}"
+msgstr "Bildtitel ${caption}"
+
+#: src/zeit/content/image/browser/image_view.pt:46
+msgid "ALT: ${alt}"
+msgstr "ALT: ${alt}"
+
+#: src/zeit/content/image/browser/image_view.pt:49
+msgid "Image sub text: ${caption}"
+msgstr "Bildunterschrift: ${caption}"
+
+#: src/zeit/content/image/browser/image_view.pt:53
+msgid "Links to: ${link}"
+msgstr "Verlinkt nach: ${link}"
+
 #: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:130
+#: src/zeit/content/image/interfaces.py:135
 #: src/zeit/content/image/browser/configure.zcml:129
 #: src/zeit/content/gallery/browser/configure.zcml:75
 msgid "Images"
@@ -1163,6 +1182,14 @@ msgstr "Geben Sie eine Beschreibung des Bildes ein."
 #: src/zeit/content/image/interfaces.py:68
 msgid "Image sub text"
 msgstr "Bildunterschrift"
+
+#: src/zeit/content/image/interfaces.py:73
+msgid "Links to"
+msgstr "Verlinkt nach"
+
+#: src/zeit/content/image/interfaces.py:74
+msgid "Enter a URL this image should link to."
+msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
 #: src/zeit/content/infobox/browser/form.py:38
 msgid "Add infobox"

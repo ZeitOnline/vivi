@@ -20,7 +20,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/image',
-        ('expires', 'alt', 'caption'))
+        ('expires', 'alt', 'caption', 'links_to'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
@@ -68,6 +68,7 @@ class MetadataXMLReference(object):
 
         set_if_not_empty('title', self.context.caption)
         set_if_not_empty('alt', self.context.alt)
+        set_if_not_empty('href', self.context.links_to)
 
         image = lxml.objectify.E.image(
             lxml.objectify.E.bu(self.context.alt),

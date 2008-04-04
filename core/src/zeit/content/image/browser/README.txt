@@ -90,9 +90,10 @@ We now see the form and fill out some values:
 >>> browser.getControl(name='form.volume').value = '9'
 >>> browser.getControl(name='form.alt').value = 'Zwei Taenzer'
 >>> browser.getControl(name='form.caption').value = 'Tanz beim Opernball'
+>>> browser.getControl('Links to').value = 'http://www.zeit.de'
 >>> browser.getControl('Apply').click()
->>> 'There where errors' not in browser.contents
-True
+>>> 'There where errors' in browser.contents
+False
 
 Verify some values:
 
@@ -129,7 +130,7 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
         119x160
       </div>
       <div>Opernball</div>
-    ...
+      ...
 
 
 When editing an image and not uploading a new image the old image is kept:
@@ -158,6 +159,21 @@ Make sure the image is not changed by looking at the image view:
     </td>
   </tr>
   ...
+      <div>
+        Image title: Tanz beim Opernball
+      </div>
+      <div>
+        ALT: Zwei Taenzer
+      </div>
+      <div>
+        Image sub text: Tanz beim Opernball
+      </div>
+      <div>
+        Links to:
+        <a href="http://www.zeit.de">http://www.zeit.de</a>
+      </div>
+      ...
+  
 
 
 Dragging
