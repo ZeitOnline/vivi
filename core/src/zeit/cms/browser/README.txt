@@ -15,14 +15,31 @@ Traceback (most recent call last):
   ...
 HTTPError: HTTP Error 401: Unauthorized
 
+With credentials we don't get an error:
+
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++cms/')
+
+Not Found
+=========
+
+Make sure we have a decent 404 page:
+
+>>> browser.open('http://localhost/++skin++cms/doesnotexist')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 404: Not Found
+
+>>> print browser.contents
+<?xml ...
+    <title> Zeit CMS </title>
+    ...
+
 
 Sidebar Folding
 ===============
 
-The sidebar remembers its folding state. This is dependent on the user, so
-let's log in one:
-
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+The sidebar remembers its folding state. This is dependent on the user.
 
 Initially the sidebar is open (expanded):
 

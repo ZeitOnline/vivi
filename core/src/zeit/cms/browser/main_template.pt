@@ -141,7 +141,7 @@
             tal:condition="not:menu_items">
             <li class="selected">
               <a tal:attributes="href view/@@absolute_url"
-                tal:content="view/title"
+                tal:content="contenttitle"
                 i18n:translate="">
                 Anzeigen
               </a>
