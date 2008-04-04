@@ -87,7 +87,13 @@ zeit.cms.LightboxForm = Class.extend({
                 othis.content_box.innerHTML = 'Loading ...';
                 window.location = next_url_node.textContent;
             },
-            alert);
+            function(error) {
+                logError(error.req.status, error.req.statusText);
+                var parser = new DOMParser()
+                var doc = parser.parseFromString(
+                    error.req.responseText, "text/xml");
+                document.firstChild.nextSibling.innerHTML = doc.firstChild.nextSibling.innerHTML;
+            });
     },
 
 });

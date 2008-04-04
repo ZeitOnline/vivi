@@ -256,11 +256,20 @@
 
   <browser:page
     for="zeit.connector.interfaces.LockingError"
+    layer=".interfaces.ICMSLayer"
     name="index.html"
-    class=".error.LockingErrorView"
+    class=".error.ErrorView"
     template="locking-error.pt"
     permission="zope.Public"
+    />
+
+  <browser:page
+    for="zope.interface.common.interfaces.IException"
     layer=".interfaces.ICMSLayer"
+    name="index.html"
+    class=".error.ErrorView"
+    template="system-error.pt"
+    permission="zope.Public"
     />
 
   <!-- Preview -->
