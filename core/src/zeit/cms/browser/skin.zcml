@@ -71,16 +71,15 @@
       forms.css
       tables.css
       lightbox.css
+      lightbox.js
       cms-widgets.css
       cms.css
       "/>
   </resourceLibrary>
 
+  <!-- remove those ... -->
   <resourceLibrary name="zeit.cms.DragAndDrop" require="zeit.cms" />
-
-  <resourceLibrary name="zeit.cms.Lightbox" require="zeit.cms">
-    <directory source="resources" include="lightbox.js" />
-  </resourceLibrary>
+  <resourceLibrary name="zeit.cms.Lightbox" require="zeit.cms" />
 
   <resourceLibrary name="zeit.cms.filteringtable">
     <directory source="resources" include="filteringtable.js" />
