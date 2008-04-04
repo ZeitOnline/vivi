@@ -543,6 +543,8 @@ class Connector(zope.thread.local):
         # Set the resource type from resource.type.
         properties = dict(resource.properties)
         properties[RESOURCE_TYPE_PROPERTY] = resource.type
+        __traceback_info__ = (
+            dict(properties), zeit.connector.interfaces.DeleteProperty)
         davres.change_properties(
             properties,
             delmark=zeit.connector.interfaces.DeleteProperty,

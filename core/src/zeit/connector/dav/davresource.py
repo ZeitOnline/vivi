@@ -929,6 +929,7 @@ class DAVResource:
 
         Returns a DAVResult instance as result.
         """
+        __traceback_info__ = (body, )
         if not self.is_connected():
             self.connect()
         hdrs = {}
