@@ -8,9 +8,20 @@
   <browser:page
     name="workflow.html"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.WorkflowForm"
     permission="zeit.workflow.Publish"
     menu="zeit-context-views" title="Workflow"
+    />
+
+  <browser:viewlet
+    name="workflow"
+    manager="zeit.cms.browser.interfaces.IMetadataPreview"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".metadata.WorkflowPreview"
+    template="workflow-preview.pt"
+    permission="zope.View"
     />
 
 </configure>

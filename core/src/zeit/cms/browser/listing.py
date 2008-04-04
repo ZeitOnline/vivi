@@ -167,6 +167,33 @@ class TypeColumn(zc.table.column.GetterColumn):
         return icon()
 
 
+class PublishedColumn(zc.table.column.GetterColumn):
+
+    def getter(self, item, formatter):
+        return zeit.cms.workflow.interfaces.IPublishInfo(
+            item.context, None)
+
+    def cell_formatter(self, publish_info, item, formatter):
+        if publish_info is None:
+            return u''
+        if publish_info.published:
+            if (not publish_info.date_last_modified
+                or not publish_info.date_last_published
+                or (publish_info.date_last_published >
+                     publish_info.date_last_modified)):
+                img = 'published'
+                title = _('Published')
+            else:
+                img = 'published-with-changes'
+                title = _('Published but has changes')
+        else:
+            img = 'not-published'
+            title = _('Not published')
+
+        return '<img src="/@@/zeit.cms/icons/%s.png" title="%s" />' % (
+            img, title)
+
+
 class GetterColumn(zc.table.column.GetterColumn):
 
     zope.interface.implements(zc.table.interfaces.ISortableColumn)
@@ -219,10 +246,10 @@ class Listing(object):
     filter_interface = None
     no_content_message = _('There are no objects in this folder.')
 
-
     columns = (
         TypeColumn(u'', name='type'),
         LockedColumn(u'', name='locked'),
+        PublishedColumn(u'', name='published'),
         GetterColumn(
             _('Author'),
             name='author',

@@ -26,7 +26,7 @@ import zeit.workflow.interfaces
 
 
 if 'all' not in globals():
-    # Python 2.4 doesn't have all :(
+    # Python 2.4 doesn't have `all` :(
     def all(iterable):
         for element in iterable:
             if not element:
@@ -69,7 +69,7 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflow,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'published',
-         'images_added', 'urgent')),
+         'images_added', 'urgent', 'date_last_published')),
 
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflow['release_period'].fields[0],
@@ -125,6 +125,7 @@ class Workflow(object):
         # TODO create remotetask to actually publish. The remotetask would send
         # an IPublishedEvent then. For now set published
         self.published = True
+        self.date_last_published = datetime.datetime.now(pytz.UTC)
 
     def retract(self):
         """Retract object."""

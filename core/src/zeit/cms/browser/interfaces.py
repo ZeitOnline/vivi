@@ -44,6 +44,10 @@ class ISidebar(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the sidebar"""
 
 
+class IMetadataPreview(zope.viewlet.interfaces.IViewletManager):
+    """Viewlets for the metadata preview."""
+
+
 class IListRepresentation(zope.interface.Interface):
     """List representation of content objects"""
 

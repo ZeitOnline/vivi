@@ -21,5 +21,6 @@
   <include file="principals-testing.zcml" />
 
   <adapter factory="zeit.cms.workflow.mock.MockPublish" />
+  <adapter factory="zeit.cms.workflow.mock.MockPublishInfo" />
 
 </configure>

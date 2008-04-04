@@ -24,7 +24,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.Fields(
             _("Status"),
             ('last_modified_by', 'date_last_modified',
-             'published', 'date_first_released',
+             'published', 'date_last_published', 'date_first_released',
              'edited', 'corrected', 'refined', 'images_added'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(

@@ -22,7 +22,7 @@ We expect a normal file listing:
 [<Element table...>]
 >>> columns = browser.etree.xpath("//table/thead/tr/th")
 >>> len(columns)
-10
+11
 
 
 Breadcrums
@@ -147,6 +147,9 @@ we just get an empty column:
     <td>
     </td>
     <td>
+      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+    </td>
+    <td>
     </td>
     <td>
       4schanzentournee-abgesang
@@ -199,6 +202,9 @@ Now we have 42 accesses:
     <td>
     </td>
     <td>
+      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+    </td>
+    <td>
     </td>
     <td>
       4schanzentournee-abgesang
@@ -221,6 +227,151 @@ Now we have 42 accesses:
     </td>
   </tr>
   ...
+
+
+Workflow indicator
+==================
+
+The workflow indicator has three states:
+
+1. Unpublished -- we saw that above
+2. Published
+3. Published but with modifications
+
+Published
+---------
+
+Let's indicate a published object:
+
+>>> import zeit.cms.workflow.mock
+>>> uid = 'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
+>>> zeit.cms.workflow.mock._published[uid] = True
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    ...
+
+
+When we have local modifications the we get the third indicator. Let's try some
+"None"-cases before:
+
+>>> import datetime
+>>> import pytz
+>>> zeit.cms.workflow.mock._modification_times[uid] = datetime.datetime(
+...     2007, 12, 6, 12, 00, tzinfo=pytz.UTC)
+
+We don't know when the object was published. Assume it's fresh:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    ...
+
+
+With a publication date *after* the modifcation date it is also fresh:
+
+>>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(
+...     2007, 12, 6, 13, 00, tzinfo=pytz.UTC)
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    ...
+
+
+With a publication time *before* the modifaction time it is not fresh:
+
+>>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(
+...     2007, 12, 6, 11, 00, tzinfo=pytz.UTC)
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/published-with-changes.png" title="Published but has changes" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    ...
+
+
+When the modification date is not known we also assume it is fresh:
+
+>>> zeit.cms.workflow.mock._modification_times[uid] = None
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    ...
+
+
 
 
 Clean up:

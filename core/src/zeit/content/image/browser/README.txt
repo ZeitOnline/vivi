@@ -465,7 +465,7 @@ Make sure we have a metadata preview for local image groups:
 <div class="context-views">
     ...
    <div>New Hampshire</div>
- </div>
+    ...
 
 Checkin again:
 
@@ -493,4 +493,4 @@ Make sure we have a metadata preview for repository image groups:
 <div class="context-views">
     ...
    <div>New Hampshire</div>
- </div>
+    ...

@@ -15,6 +15,11 @@ zeit.cms changes
   #4033).
 - Bilder haben jetzt eine URL (bug #4047).
 - Bug in Clickcounter-Cache behoben: today.xml wird jetzt auch gecacht.
+- Indikator im Dateilisting zeigt den Veröffentlichungszustand: nicht
+  veröffentlicht (rot), veröffentlicht (grün) oder veröffentlicht mit
+  Änderungen im CMS (gelb/orange). (bug #3954)
+- Metadaten-Vorschau zeigt sämtliche Workflow-Attribute auf der rechten Seite
+  (bug #3954).
 
 
 0.9.6 (2008-04-03)

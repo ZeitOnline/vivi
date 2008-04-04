@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Apr  4 13:05:49 2008\n"
+"POT-Creation-Date: Fri Apr  4 16:40:17 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -49,7 +49,7 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:231
+#: src/zeit/cms/browser/listing.py:258
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
 #: src/zeit/cms/content/interfaces.py:244
@@ -97,8 +97,8 @@ msgstr ""
 msgid "Is the article a topic for the next week?"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:143
-#: src/zeit/cms/browser/configure.zcml:158
+#: src/zeit/cms/browser/configure.zcml:151
+#: src/zeit/cms/browser/configure.zcml:166
 msgid "Source"
 msgstr ""
 
@@ -107,15 +107,15 @@ msgstr ""
 msgid "context sensitive actions"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:232
+#: src/zeit/cms/browser/configure.zcml:240
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:286
+#: src/zeit/cms/browser/configure.zcml:294
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:295
+#: src/zeit/cms/browser/configure.zcml:303
 msgid "Development"
 msgstr ""
 
@@ -167,6 +167,7 @@ msgstr ""
 #: src/zeit/cms/browser/sourceedit.pt:39
 #: src/zeit/cms/content/browser/combinationwidget.pt:14
 #: src/zeit/cms/content/browser/combinationwidget.pt:36
+#: src/zeit/workflow/browser/workflow-preview.pt:5
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -176,11 +177,24 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:220
+#: src/zeit/cms/browser/listing.py:185
+#: src/zeit/cms/workflow/interfaces.py:24
+msgid "Published"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:188
+msgid "Published but has changes"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:191
+msgid "Not published"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:247
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:227
+#: src/zeit/cms/browser/listing.py:254
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:99
@@ -188,28 +202,28 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:235
+#: src/zeit/cms/browser/listing.py:262
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:239
+#: src/zeit/cms/browser/listing.py:266
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:242
+#: src/zeit/cms/browser/listing.py:269
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:244
+#: src/zeit/cms/browser/listing.py:271
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:248
+#: src/zeit/cms/browser/listing.py:275
 #: src/zeit/cms/content/interfaces.py:71
 #: src/zeit/search/browser/search.py:109
 #: src/zeit/search/interfaces.py:23
@@ -225,7 +239,7 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:185
+#: src/zeit/cms/browser/main_template.pt:189
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr ""
@@ -742,7 +756,7 @@ msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:102
 #: src/zeit/cms/workingcopy/browser/configure.zcml:48
-#: src/zeit/cms/browser/configure.zcml:277
+#: src/zeit/cms/browser/configure.zcml:285
 msgid "Preview"
 msgstr ""
 
@@ -774,21 +788,21 @@ msgstr ""
 msgid "limit-amount-description"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:24
-msgid "Published"
+#: src/zeit/cms/workflow/interfaces.py:29
+msgid "Date last published"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:29
+#: src/zeit/cms/workflow/interfaces.py:35
 #: src/zeit/workflow/interfaces.py:75
 msgid "Date last modified"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:34
+#: src/zeit/cms/workflow/interfaces.py:40
 #: src/zeit/workflow/interfaces.py:69
 msgid "Last modified by"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:40
+#: src/zeit/cms/workflow/interfaces.py:46
 #: src/zeit/workflow/interfaces.py:80
 msgid "Date first released"
 msgstr ""

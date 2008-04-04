@@ -99,6 +99,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
+
+  <browser:viewletManager
+    name="zeit.cms.MetadataPreview"
+    provides=".interfaces.IMetadataPreview"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
   <!-- Skin, Templates and widgets --> 
   <include file="skin.zcml" />
   <include file="widget.zcml" />

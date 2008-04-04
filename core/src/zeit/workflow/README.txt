@@ -105,9 +105,12 @@ Traceback (most recent call last):
 PublishingError: Publish pre-conditions not satisifed.
 
 
-If an object is publish is indicated by the `published` attribute.
+If an object is publish is indicated by the `published` attribute. Also the
+date_last_published is set:
 
 >>> workflow.published is None
+True
+>>> workflow.date_last_published is None
 True
 
 
@@ -115,9 +118,11 @@ Let's publish the object[3]_:
 
 >>> workflow.urgent = True
 >>> workflow.publish()
-
 >>> workflow.published
 True
+>>> workflow.date_last_published
+datetime.datetime(...)
+
 
 One can publish more than once to put up a new version:
 

@@ -165,6 +165,10 @@
     <div id="metadata_preview">
       <metal:data define-slot="preview"></metal:data>
     </div>
+    <div id="metadata-additions">
+      <tal:additional
+        tal:content="structure provider:zeit.cms.MetadataPreview" />
+    </div>
   </metal:macro>
 
   <metal:macro define-macro="content-listing">

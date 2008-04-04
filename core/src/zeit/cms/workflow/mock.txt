@@ -43,3 +43,12 @@ It spits out a message otherwise:
 >>> workflow.set_can_publish(True)
 >>> workflow.publish()
 Publishing: http://xml.zeit.de/testcontent
+
+
+Mock publish info
+=================
+
+>>> info = zeit.cms.workflow.mock.MockPublishInfo(content)
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.workflow.interfaces.IPublishInfo, info)
+True

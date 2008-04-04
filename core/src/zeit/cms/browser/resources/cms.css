@@ -277,7 +277,7 @@ pre {
     position: absolute;
     left: 0;
     bottom: 0;
-    right: 0;
+    right: 25em;
     top: 3em;
     overflow-y: auto;
 }
@@ -293,6 +293,15 @@ pre {
   overflow: hidden;
   font-family: monospace;
   margin-right: 1em;
+}
+
+#metadata-additions {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 3em;
+  bottom: 0;
+  overflow-y: auto;
 }
 
 

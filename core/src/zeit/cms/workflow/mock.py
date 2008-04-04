@@ -41,3 +41,36 @@ class MockPublish(object):
 
     def set_can_publish(self, can):
         _can_publish[self.context.uniqueId] = can
+
+
+
+_published = {}
+zope.testing.cleanup.addCleanUp(_published.clear)
+_publish_times = {}
+zope.testing.cleanup.addCleanUp(_publish_times.clear)
+_modification_times = {}
+zope.testing.cleanup.addCleanUp(_modification_times.clear)
+
+
+class MockPublishInfo(object):
+
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
+
+    date_first_released = None
+    last_modified_by = u'testuser'
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def published(self):
+        return _published.get(self.context.uniqueId, False)
+
+    @property
+    def date_last_published(self):
+        return _publish_times.get(self.context.uniqueId)
+
+    @property
+    def date_last_modified(self):
+        return _modification_times.get(self.context.uniqueId)

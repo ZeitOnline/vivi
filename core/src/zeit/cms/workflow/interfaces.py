@@ -25,6 +25,12 @@ class IPublishInfo(zope.interface.Interface):
         readonly=True,
         default=False)
 
+    date_last_published = zope.schema.Datetime(
+        title=_('Date last published'),
+        required=False,
+        default=None,
+        readonly=True)
+
     date_last_modified = zope.schema.Datetime(
         title=_('Date last modified'),
         required=False,
