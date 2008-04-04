@@ -153,7 +153,7 @@ Make sure the image is not changed by looking at the image view:
   </title>
   ...
   <tr>
-    <td>Dimensionen</td>
+    <td>Dimensions</td>
     <td>
       119x160
     </td>
