@@ -5,12 +5,14 @@
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema
+import zope.security.checker
 
 
 class _DeleteProperty(object):
     """Singleton to indicate a property should be deleted."""
 
-    _instance = None
+    __slots__ = ()
+    _instance = None  # class variable
 
     def __new__(cls):
         if cls._instance is None:
@@ -25,6 +27,10 @@ class _DeleteProperty(object):
 
 
 DeleteProperty = _DeleteProperty()
+
+# Make DeleteProperty a rock
+zope.security.checker.BasicTypes[_DeleteProperty] = (
+    zope.security.checker.NoProxy)
 
 
 class ConnectorError(Exception):

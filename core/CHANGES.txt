@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+0.13 (unreleased)
+-----------------
+
+- Made DeleteProperty a rock in the zope.security.
+
 0.12 (2008-03-25)
 -----------------
 
