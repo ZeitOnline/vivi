@@ -36,15 +36,6 @@
     index="zope.View"
     />
 
-  <browser:menuItem
-    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
-    action="@@delete"
-    menu="folder-actions"
-    title="Delete"
-    permission="zeit.DeleteContent"
-    />
-
-
   <browser:containerViews
     for="zeit.cms.workingcopy.interfaces.IWorkingcopyLocation"
     contents="zope.ManageContent"
