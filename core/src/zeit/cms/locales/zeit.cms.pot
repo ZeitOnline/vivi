@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Apr  4 12:52:45 2008\n"
+"POT-Creation-Date: Fri Apr  4 13:05:49 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1101,6 +1101,10 @@ msgstr ""
 msgid "Edit image"
 msgstr ""
 
+#: src/zeit/content/image/browser/image_view.pt:24
+msgid "Volume/Year"
+msgstr ""
+
 #: src/zeit/content/image/browser/image_view.pt:43
 msgid "Image title: ${caption}"
 msgstr ""
@@ -1115,6 +1119,10 @@ msgstr ""
 
 #: src/zeit/content/image/browser/image_view.pt:53
 msgid "Links to: ${link}"
+msgstr ""
+
+#: src/zeit/content/image/browser/image_view.pt:8
+msgid "Type"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
@@ -1142,6 +1150,7 @@ msgid "Image group"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagegroup.py:71
+#: src/zeit/content/image/browser/image_view.pt:12
 msgid "Dimensions"
 msgstr ""
 
@@ -1159,6 +1168,7 @@ msgid "The action you were trying to do could not be finished because the resour
 msgstr ""
 
 #: src/zeit/content/image/interfaces.py:26
+#: src/zeit/content/image/browser/image_view.pt:18
 msgid "Expires"
 msgstr ""
 

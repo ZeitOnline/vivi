@@ -5,23 +5,23 @@
     <div id="edit-form">
       <table class="image-view-metadata">
         <tr>
-          <td>Typ</td>
+          <td i18n:translate="">Type</td>
           <td tal:content="context/contentType">image/jpeg</td>
         </tr>
         <tr>
-          <td>Dimensionen</td>
+          <td i18n:translate="">Dimensions</td>
           <td>
             <span tal:replace="image/width" />x<span tal:replace="image/height" />
           </td>
         </tr>
         <tr>
-          <td>Löschdatum</td>
+          <td i18n:translate="">Expires</td>
           <td tal:content="view/metadata/expires">
             1.1.07
           </td>
         </tr>
         <tr>
-          <td>Ausgabe/Jahr</td>
+          <td i18n:translate="">Volume/Year</td>
           <td>
             <span
               tal:replace="view/metadata/volume" />/<span

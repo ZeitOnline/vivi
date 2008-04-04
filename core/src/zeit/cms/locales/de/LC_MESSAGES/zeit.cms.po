@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri Apr  4 12:52:45 2008\n"
-"PO-Revision-Date: 2008-04-04 12:55+0100\n"
+"POT-Creation-Date: Fri Apr  4 13:05:49 2008\n"
+"PO-Revision-Date: 2008-04-04 13:06+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1089,6 +1089,10 @@ msgstr "Bild hinzufügen"
 msgid "Edit image"
 msgstr "Bild bearbeiten"
 
+#: src/zeit/content/image/browser/image_view.pt:24
+msgid "Volume/Year"
+msgstr "Ausgabe/Jahr"
+
 #: src/zeit/content/image/browser/image_view.pt:43
 msgid "Image title: ${caption}"
 msgstr "Bildtitel ${caption}"
@@ -1104,6 +1108,10 @@ msgstr "Bildunterschrift: ${caption}"
 #: src/zeit/content/image/browser/image_view.pt:53
 msgid "Links to: ${link}"
 msgstr "Verlinkt nach: ${link}"
+
+#: src/zeit/content/image/browser/image_view.pt:8
+msgid "Type"
+msgstr "Typ"
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:135
@@ -1130,6 +1138,7 @@ msgid "Image group"
 msgstr "Bildergruppe"
 
 #: src/zeit/content/image/browser/imagegroup.py:71
+#: src/zeit/content/image/browser/image_view.pt:12
 msgid "Dimensions"
 msgstr "Ausmaße"
 
@@ -1147,6 +1156,7 @@ msgid "The action you were trying to do could not be finished because the resour
 msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die Resource keinen gültigen Inhalt hat."
 
 #: src/zeit/content/image/interfaces.py:26
+#: src/zeit/content/image/browser/image_view.pt:18
 msgid "Expires"
 msgstr "Löschdatum"
 
