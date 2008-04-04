@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import logging
 import urllib2
 import urlparse
 import threading
@@ -12,6 +13,9 @@ import gocept.lxml.objectify
 import zope.interface
 
 import zeit.today.interfaces
+
+
+logger = logging.getLogger(__name__)
 
 
 class CountStorage(object):
@@ -34,7 +38,7 @@ class CountStorage(object):
     def _refresh(self):
         now = time.time()
         if (self.last_refresh
-            and self.last_refresh + self.REFRESH_INTERVAL < now):
+            and self.last_refresh + self.REFRESH_INTERVAL > now):
             return
 
         locked = self.update_lock.acquire(False)
@@ -48,6 +52,7 @@ class CountStorage(object):
             config = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.today')
             url = config['today-xml-url']
+            logger.info("Updating click counter from %s" % url)
             request = urllib2.urlopen(url)
             xml = gocept.lxml.objectify.fromfile(request)
             self.id_to_count = dict(
