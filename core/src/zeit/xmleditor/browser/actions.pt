@@ -6,7 +6,6 @@
       src string:/@@/zeit.xmleditor/${action/image};
       title action/title;
       action action/action;
-      class action/action;
       drop-action action/drop-action | nothing" />
     <span class="tag-name">
   &lt;<span 

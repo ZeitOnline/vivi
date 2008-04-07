@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Related konnte nicht mehr in der Lightbox ausgewählt werden
   (ScrollStateRestorer not defined).
+- Bug beim Referenzieren von Objekten behoben, z.B. ging ein Image als Related
+  nicht, unbekannte Resourcen konnten nicht verlinkt werden (Systemfehler).
 
 0.9.7 (2008-04-07)
 ------------------

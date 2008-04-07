@@ -51,26 +51,14 @@ def resourceFactory(context):
         properties=zeit.cms.interfaces.IWebDAVProperties(context))
 
 
-class XMLReference(object):
-
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLReference)
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def xml(self):
-        metadata = zeit.content.image.interfaces.IImageMetadata(self.context)
-        image = zeit.cms.content.interfaces.IXMLReference(metadata).xml
-        image.set('src', self.context.uniqueId)
-        image.set('type', self.context.contentType.split('/')[-1])
-        return image
-
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
-@zope.interface.implementer(gocept.lxml.interfaces.IObjectified)
-def image_objectified(context):
-    return zeit.cms.content.interfaces.IXMLReference(context).xml
-
-
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+def XMLReference(context):
+    metadata = zeit.content.image.interfaces.IImageMetadata(context)
+    image = zope.component.getAdapter(
+        metadata,
+        zeit.cms.content.interfaces.IXMLReference, name='image')
+    image.set('src', context.uniqueId)
+    image.set('type', context.contentType.split('/')[-1])
+    return image

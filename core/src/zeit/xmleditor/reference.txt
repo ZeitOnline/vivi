@@ -15,17 +15,13 @@ Create a feed and adapt it to the reference:
 >>> from zeit.xmleditor.reference import FeedXMLReference
 >>> feed = Feed()
 >>> feed.uniqueId = 'feed-unique-id'
->>> ref = FeedXMLReference(feed)
->>> ref
-<zeit.xmleditor.reference.FeedXMLReference object at 0x...>
-
-The `xml` attribute contains an objectified node: 
->>> ref.xml
+>>> xml = FeedXMLReference(feed)
+>>> xml
 <Element {http://www.w3.org/2001/XInclude}include at ...>
 
 The whole structure also has a fallback:
 >>> import lxml.etree
->>> print lxml.etree.tostring(ref.xml, pretty_print=True)
+>>> print lxml.etree.tostring(xml, pretty_print=True)
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
     href="feed-unique-id">
   <xi:fallback>Der Feed ist im Moment leider nicht erreichbar.</xi:fallback>

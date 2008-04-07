@@ -37,41 +37,34 @@ def metadata_webdav_properties(context):
         context.context)
 
 
-class MetadataXMLReference(object):
+@zope.component.adapter(zeit.content.image.interfaces.IImageMetadata)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+def MetadataXMLReference(context):
+    """XML representation of image."""
 
-    zope.component.adapts(zeit.content.image.interfaces.IImageMetadata)
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLReference)
+    attributes = {}
+    def set_if_not_empty(name, value):
+        if value:
+            attributes[name] = value
 
-    def __init__(self, context):
-        self.context = context
+    copyrights = []
+    for text, link in context.copyrights:
+        node = lxml.objectify.E.copyright(text)
+        if link:
+            node.set('link', link)
+        copyrights.append(node)
 
-    @property
-    def xml(self):
-        """XML representation of image.
-        """
-        attributes = {}
-        def set_if_not_empty(name, value):
-            if value:
-                attributes[name] = value
+    expires = context.expires
+    if expires:
+        expires = expires.isoformat()
+        attributes['expires'] = expires
 
-        copyrights = []
-        for text, link in self.context.copyrights:
-            node = lxml.objectify.E.copyright(text)
-            if link:
-                node.set('link', link)
-            copyrights.append(node)
+    set_if_not_empty('title', context.caption)
+    set_if_not_empty('alt', context.alt)
+    set_if_not_empty('href', context.links_to)
 
-        expires = self.context.expires
-        if expires:
-            expires = expires.isoformat()
-            attributes['expires'] = expires
-
-        set_if_not_empty('title', self.context.caption)
-        set_if_not_empty('alt', self.context.alt)
-        set_if_not_empty('href', self.context.links_to)
-
-        image = lxml.objectify.E.image(
-            lxml.objectify.E.bu(self.context.alt),
-            *copyrights,
-            **attributes)
-        return image
+    image = lxml.objectify.E.image(
+        lxml.objectify.E.bu(context.alt),
+        *copyrights,
+        **attributes)
+    return image

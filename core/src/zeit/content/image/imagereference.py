@@ -16,6 +16,7 @@ import zeit.content.image.interfaces
 class ImagesProperty(zeit.cms.content.related.RelatedObjectsProperty):
 
     path = lxml.objectify.ObjectPath('.head.image')
+    xml_reference_name = 'image'
 
     def get_unique_id(self, element):
         unique_id = element.get('base-id')
@@ -62,4 +63,6 @@ class FeedMetadataUpdater(object):
             return
         # only add first image
         image = images.images[0]
-        entry['image'] = zeit.cms.content.interfaces.IXMLReference(image).xml
+        entry['image'] = zope.component.getAdapter(
+            image,
+            zeit.cms.content.interfaces.IXMLReference, name='image')

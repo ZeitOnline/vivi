@@ -211,8 +211,14 @@ class XMLEditorActions(object):
     def dropAppendChild(self, action, unique_id):
         insert_into = self.getAddChildNode(action)
         content = self.repository.getContent(unique_id)
-        reference = zeit.xmleditor.interfaces.IXMLReference(content)
-        self._insert_new_node(action, reference.xml)
+        reference = zope.component.queryAdapter(
+            content,
+            zeit.xmleditor.interfaces.IXMLReference,
+            name='body')
+        if reference is None:
+            raise zope.exceptions.interfaces.UserError(
+                "Don't know how to add %s here." % unique_id)
+        self._insert_new_node(action, reference)
         return self.context.xml_source
 
     @property

@@ -3,7 +3,7 @@
   <adapter factory=".gallery.galleryFactory" name="gallery" />
   <adapter factory=".gallery.resourceFactory" />
   <adapter factory=".gallery.galleryentry_factory" />
-  <adapter factory=".gallery.objectified_entry" />
+  <adapter factory=".gallery.EntryXMLRepresentation" />
   <subscriber handler=".gallery.update_gallery_on_entry_change" />
 
   <utility

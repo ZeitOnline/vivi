@@ -52,7 +52,6 @@ We will mostly want to reference image groups, so create one first:
 
 Reference the image group:
 
-
 >>> import zeit.content.image.interfaces
 >>> images = zeit.content.image.interfaces.IImages(content)
 >>> images.images = (group, )

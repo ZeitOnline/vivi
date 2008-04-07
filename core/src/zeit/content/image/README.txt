@@ -26,11 +26,12 @@ Create an image group first:
 Reference the image via XML:
 
 >>> import lxml.etree
+>>> import zope.component
 >>> import zeit.cms.content.interfaces
->>> ref = zeit.cms.content.interfaces.IXMLReference(group)
->>> ref
-<zeit.content.image.imagegroup.XMLReference object at 0x...>
->>> print lxml.etree.tostring(ref.xml, pretty_print=True)
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True)
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -43,7 +44,10 @@ Set the copyright:
 >>> zeit.content.image.interfaces.IImageMetadata(group).copyrights = (
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
->>> print lxml.etree.tostring(ref.xml, pretty_print=True)
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True)
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -58,7 +62,10 @@ Set the link:
 
 >>> zeit.content.image.interfaces.IImageMetadata(group).links_to = (
 ...     'http://www.asdf.com')
->>> print lxml.etree.tostring(ref.xml, pretty_print=True)
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True)
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

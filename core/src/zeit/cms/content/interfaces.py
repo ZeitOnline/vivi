@@ -216,10 +216,8 @@ class IXMLReference(zope.interface.Interface):
     Object references are dependent on the target object. For instance a feed
     is referenced with <xi:include> while an image is referenced using <img>.
 
+    Adapting to IXMLReference yields an lxml.objectify tree
     """
-
-    xml = zeit.cms.content.field.XMLTree(
-        title=u"Reference Structure")
 
 
 class IXMLSource(zope.interface.Interface):

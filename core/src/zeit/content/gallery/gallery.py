@@ -151,7 +151,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return self._entries_container.xpath('count(block)')
 
     def __setitem__(self, key, value):
-        node = gocept.lxml.interfaces.IObjectified(value)
+        node = zeit.cms.content.interfaces.IXMLRepresentation(value).xml
         node.set('name', key)
 
         old_node = self._get_block_for_key(key)
@@ -252,17 +252,26 @@ class GalleryEntry(object):
     zope.interface.implements(zeit.content.gallery.interfaces.IGalleryEntry)
 
 
-@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@zope.interface.implementer(gocept.lxml.interfaces.IObjectified)
-def objectified_entry(context):
+class EntryXMLRepresentation(object):
+
+    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def xml(self):
         node = lxml.objectify.XML('<block/>')
-        if context.title:
-            node['title'] = context.title
-        node['text'] = context.text
-        node['image'] = gocept.lxml.interfaces.IObjectified(
-            context.image)
-        node['thumbnail'] = gocept.lxml.interfaces.IObjectified(
-            context.thumbnail)
+        if self.context.title:
+            node['title'] = self.context.title
+        node['text'] = self.context.text
+        node['image'] = zope.component.getAdapter(
+            self.context.image, zeit.cms.content.interfaces.IXMLReference,
+            name='image')
+        node['thumbnail']  = zope.component.getAdapter(
+            self.context.thumbnail, zeit.cms.content.interfaces.IXMLReference,
+            name='image')
         return node
 
 

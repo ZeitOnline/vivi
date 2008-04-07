@@ -15,5 +15,5 @@
  
 
   <!-- reference adapters for zeit.cms types -->
-  <adapter factory=".reference.FeedXMLReference" />
+  <adapter factory=".reference.FeedXMLReference" name="body" />
 </configure>

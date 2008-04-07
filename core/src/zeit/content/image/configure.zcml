@@ -2,8 +2,7 @@
 
   <adapter factory=".image.imageFactory" name="image" />
   <adapter factory=".image.resourceFactory" />
-  <adapter factory=".image.XMLReference" />
-  <adapter factory=".image.image_objectified" />
+  <adapter factory=".image.XMLReference" name="image" />
   <adapter factory=".transform.ImageTransform" />
   <adapter factory=".transform.persistent_thumbnail_factory" />
   <adapter factory=".transform.thumbnail_folder_factory" />
@@ -49,11 +48,7 @@
 
   <adapter factory=".imagegroup.imageGroupToResource" />
   <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
-  <adapter factory=".imagegroup.XMLReference" />
-  <adapter 
-    factory=".image.image_objectified"
-    for=".interfaces.IImageGroup" />
-
+  <adapter factory=".imagegroup.XMLReference" name="image" />
 
   <class class=".imagegroup.LocalImageGroup">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
@@ -89,7 +84,7 @@
     />
 
   <adapter factory=".metadata.metadata_webdav_properties" />
-  <adapter factory=".metadata.MetadataXMLReference" />
+  <adapter factory=".metadata.MetadataXMLReference" name="image" />
 
 
   <!-- source -->

@@ -68,17 +68,12 @@ def local_image_group_factory(context):
     return lig
 
 
-class XMLReference(object):
-
-    zope.component.adapts(zeit.content.image.interfaces.IImageGroup)
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLReference)
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def xml(self):
-        metadata = zeit.content.image.interfaces.IImageMetadata(self.context)
-        image = zeit.cms.content.interfaces.IXMLReference(metadata).xml
-        image.set('base-id', self.context.uniqueId)
-        return image
+@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+def XMLReference(context):
+    metadata = zeit.content.image.interfaces.IImageMetadata(context)
+    image = zope.component.getAdapter(
+        metadata,
+        zeit.cms.content.interfaces.IXMLReference, name='image')
+    image.set('base-id', context.uniqueId)
+    return image

@@ -13,6 +13,7 @@ import zeit.cms.content.interfaces
 class RelatedObjectsProperty(object):
 
     path = lxml.objectify.ObjectPath('.head.references.reference')
+    xml_reference_name = 'related'
 
     def __get__(self, instance, class_):
         if instance is None:
@@ -32,8 +33,10 @@ class RelatedObjectsProperty(object):
     def __set__(self, instance, values):
         elements = []
         for related in values:
-            related_element = zeit.cms.content.interfaces.IXMLReference(
-                related).xml
+            related_element = zope.component.getAdapter(
+                related,
+                zeit.cms.content.interfaces.IXMLReference,
+                name=self.xml_reference_name)
             elements.append(related_element)
         self.path.setattr(self.xml(instance), elements)
 
@@ -77,26 +80,18 @@ def related_xml_representation(context):
     return context.context
 
 
-class BasicReference(object):
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+def BasicReference(context):
+    reference = lxml.objectify.XML('<reference/>')
+    reference.set('type', 'intern')
+    reference.set('href', context.uniqueId)
 
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLReference)
-    zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
+    metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
+    if metadata is not None:
+        reference.set('year', unicode(metadata.year))
+        reference.set('issue', unicode(metadata.volume))
+        reference['title'] = metadata.teaserTitle
+        reference['description'] = metadata.teaserText
 
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def xml(self):
-        reference = lxml.objectify.XML('<reference/>')
-        reference.set('type', 'intern')
-        reference.set('href', self.context.uniqueId)
-
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(self.context,
-                                                               None)
-        if metadata is not None:
-            reference.set('year', unicode(metadata.year))
-            reference.set('issue', unicode(metadata.volume))
-            reference['title'] = metadata.teaserTitle
-            reference['description'] = metadata.teaserText
-
-        return reference
+    return reference

@@ -18,16 +18,9 @@ REFERENCE_TEMPLATE = u'''\
 </xi:include>'''
 
 
-class FeedXMLReference(object):
-
-    zope.component.adapts(zeit.cms.syndication.interfaces.IFeed)
-    zope.interface.implements(zeit.xmleditor.interfaces.IXMLReference)
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def xml(self):
-        xml = lxml.objectify.fromstring(REFERENCE_TEMPLATE)
-        xml.set('href', self.context.uniqueId)
-        return xml
+@zope.component.adapter(zeit.cms.syndication.interfaces.IFeed)
+@zope.interface.implementer(zeit.xmleditor.interfaces.IXMLReference)
+def FeedXMLReference(context):
+    xml = lxml.objectify.fromstring(REFERENCE_TEMPLATE)
+    xml.set('href', context.uniqueId)
+    return xml
