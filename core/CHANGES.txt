@@ -4,6 +4,9 @@ zeit.cms changes
 0.9.8 (unrelesed)
 -----------------
 
+- Related konnte nicht mehr in der Lightbox ausgewählt werden
+  (ScrollStateRestorer not defined).
+
 0.9.7 (2008-04-07)
 ------------------
 
