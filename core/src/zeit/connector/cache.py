@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import logging
 import time
-
 
 import persistent
 import transaction
@@ -17,6 +17,9 @@ import zope.interface
 import zope.testing.cleanup
 
 import zeit.connector.interfaces
+
+
+logger = logging.getLogger(__name__)
 
 
 class ResourceCache(persistent.Persistent):
@@ -48,6 +51,8 @@ class ResourceCache(persistent.Persistent):
             # When we have no etag, we must not store the data as we have no
             # means of invalidation then.
             return
+        logger.debug('Storing body of %s with etag %s' % (
+            unique_id, current_etag))
         blob = ZODB.blob.Blob()
         blob_file = blob.open('w')
         buffer_size = 102400
@@ -70,6 +75,7 @@ class ResourceCache(persistent.Persistent):
         new_access = long(time.time() * 10e6)
         # only update if necessary
         if last_access + self.UPDATE_INTERVAL * 10e6 < new_access:
+            logger.debug('Updating access time for %s' % unique_id)
             self._last_access_time[unique_id] = new_access
 
             if last_access:
