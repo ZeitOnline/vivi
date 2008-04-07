@@ -7,6 +7,12 @@
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <title i18n:translate="">Error</title>
+        <link rel="icon"
+          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+          type="image/x-icon" />
+        <link rel="shortcut icon"
+          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+          type="image/x-icon" />
         <tal:replace replace="resource_library:zeit.cms.error" />
       </head>
       <body>
@@ -34,6 +40,12 @@
             Zeit CMS 
           </metal:title>
         </title>
+        <link rel="icon"
+          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+          type="image/x-icon" />
+        <link rel="shortcut icon"
+          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+          type="image/x-icon" />
         <tal:replace replace="resource_library:zeit.cms" />
         <tal:replace replace="resource_library:zeit.cms.panels" /> 
         <tal:replace replace="structure provider:gocept.mochikit.javascript" />
