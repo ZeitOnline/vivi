@@ -10,13 +10,15 @@ FCKConfig.ToolbarSets["Zeit"] = [
 
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/office2003/' ;
 
+FCKConfig.FirefoxSpellChecker = true ;
+
 FCKConfig.FontFormats   = 'p;h3';
 
 FCKConfig.LinkBrowserURL = (
     FCKConfig.BasePath +
     'filemanager/browser/default/browser.html?' +
     'Connector=/@@zeit-fckeditor-link-browser.html');
-
+FCKConfig.ImageBrowserURL = FCKConfig.LinkBrowserURL
 
 FCKConfig.LinkUpload = false;
 FCKConfig.ImageUpload = false;

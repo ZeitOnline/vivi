@@ -12,6 +12,8 @@ zeit.cms changes
 - Besseres cachen der Datenquellen (in zeit.cms.content.sources).
 - WYSIWYG-Editor: Auswählen von Objekten aus dem Clipboard repariert (bug
   #4097).
+- Fließtext kann jetzt Bilder beinhalten. Diese sind vom Server per FCKEditor
+  Filebrowser auswählbar (bug #4090)
 
 
 0.9.7 (2008-04-07)

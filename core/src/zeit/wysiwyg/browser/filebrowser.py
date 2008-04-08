@@ -13,11 +13,14 @@ import zeit.cms.browser.interfaces
 
 
 class FileBrowser(gocept.fckeditor.connector.FCKEditorBrowser):
+    """Connect FCKEditor file browser to cms."""
 
     @zope.cachedescriptors.property.Lazy
     def fake_root(self):
-        return dict((obj.__name__, obj) for obj in (
-            self.repository, self.clipboard))
+        objects = [self.repository, self.clipboard]
+        if 'bilder' in self.repository:
+            objects.append(self.repository['bilder'])
+        return dict((obj.__name__, obj) for obj in objects)
 
     @zope.cachedescriptors.property.Lazy
     def current_folder(self):
