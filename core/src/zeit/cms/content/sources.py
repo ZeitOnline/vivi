@@ -25,17 +25,21 @@ class SimpleXMLSourceBase(object):
 
     product_configuration = 'zeit.cms'
 
-    @gocept.cache.method.Memoize(3600)
+    @gocept.cache.method.Memoize(60)
     def _get_tree(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             self.product_configuration)
         url = cms_config[self.config_url]
+        return self._get_tree_from_url(url)
+
+    @gocept.cache.method.Memoize(3600, ignore_self=True)
+    def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
         request = urllib2.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
 
-    @gocept.cache.method.Memoize(3600)
+    @gocept.cache.method.Memoize(60)
     def getValues(self):
         xml = self._get_tree()
         return [unicode(serie).strip() for serie in xml.iterchildren()]
@@ -68,7 +72,8 @@ class NavigationSource(SimpleXMLSource):
     @gocept.cache.method.Memoize(3600)
     def getValues(self):
         tree = self._get_tree()
-        return [unicode(ressort.get('name')) for ressort in tree.iterchildren()]
+        return [unicode(ressort.get('name'))
+                for ressort in tree.iterchildren()]
 
     @gocept.cache.method.Memoize(3600)
     def getTitle(self, value):
