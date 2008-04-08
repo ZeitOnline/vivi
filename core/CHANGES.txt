@@ -10,6 +10,8 @@ zeit.cms changes
   nicht, unbekannte Resourcen konnten nicht verlinkt werden (Systemfehler).
 - Titel der Workflow-Status-Suchfelder korrigiert (bug #4088).
 - Besseres cachen der Datenquellen (in zeit.cms.content.sources).
+- WYSIWYG-Editor: Auswählen von Objekten aus dem Clipboard repariert (bug
+  #4097).
 
 
 0.9.7 (2008-04-07)
