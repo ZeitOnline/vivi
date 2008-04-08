@@ -6,6 +6,7 @@
 
   <class class=".article.Article">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.wysiwyg.interfaces.IHTMLConvertable" />
     <require
       interface=".interfaces.IArticle"
       permission="zope.View" />

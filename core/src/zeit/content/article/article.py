@@ -2,15 +2,9 @@
 # See also LICENSE.txt
 # $Id$
 
-import copy
-import htmlentitydefs
 import StringIO
 
-import lxml.etree
-import gocept.lxml.objectify
-
 import persistent
-import rwproperty
 
 import zope.component
 import zope.interface
@@ -44,7 +38,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(
         zeit.content.article.interfaces.IArticle,
-        zeit.wysiwyg.interfaces.IHTMLContent,
         zeit.cms.content.interfaces.IDAVPropertiesInXML)
 
     default_template = ARTICLE_TEMPLATE
@@ -80,58 +73,9 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'banner'))
 
-
-    @rwproperty.getproperty
-    def html(self):
-        """return html snippet of article."""
-        html = []
-        for node in self._html_getnodes():
-            # Copy all nodes. This magically removes namespace declarations.
-            node = copy.copy(node)
-            if node.tag == 'intertitle':
-                node.tag = 'h3'
-            html.append(lxml.etree.tostring(
-                node, pretty_print=True, encoding=unicode))
-        return '\n'.join(html)
-
-
-    @rwproperty.setproperty
-    def html(self, value):
-        """set article html."""
-        value = '<div>' + self._replace_entities(value) + '</div>'
-        html = gocept.lxml.objectify.fromstring(value)
-        for node in self._html_getnodes():
-            parent = node.getparent()
-            parent.remove(node)
-        body = self.xml['body']
-        for node in html.iterchildren():
-            if not node.countchildren() and not node.text:
-                continue
-            if node.text and not node.text.strip():
-                continue
-
-            if node.tag == 'h3':
-                node.tag = 'intertitle'
-            body.append(node)
-
-    def _html_getnodes(self):
-        for node in self.xml.body.iterchildren():
-            if node.tag in ('p', 'intertitle'):
-                yield node
-
     @property
     def paragraphs(self):
         return len(self.xml.body.findall('p'))
-
-    @staticmethod
-    def _replace_entities(value):
-        # XXX is this efficient enough?
-        for entity_name, codepoint in htmlentitydefs.name2codepoint.items():
-            if entity_name in ('gt', 'lt', 'quot', 'amp', 'apos'):
-                # don't replace XML built-in entities
-                continue
-            value = value.replace('&'+entity_name+';', unichr(codepoint))
-        return value
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)

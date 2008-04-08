@@ -102,13 +102,31 @@
 
   <class class="lxml.objectify.ObjectifiedElement">
     <require permission="zope.View"
-      attributes="findall getparent index tag xpath" />
+      attributes="
+      __getitem__
+      findall
+      getparent
+      index
+      iterchildren
+      tag
+      xpath
+      "/>
     <require permission="zeit.EditContent"
-      attributes="append insert makeelement __setslice__" />
+      attributes="
+      __setslice__
+      append
+      insert
+      makeelement
+      " />
   </class>
 
   <class class="lxml.objectify.StringElement">
     <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+  
+  <class class="lxml.etree.ElementChildIterator">
+    <require permission="zope.View"
+      attributes="__iter__ next" />
   </class>
 
 
