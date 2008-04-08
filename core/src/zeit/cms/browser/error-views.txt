@@ -50,12 +50,10 @@ HTTPError: HTTP Error 500: Internal Server Error
 
 >>> print browser.contents
  <!DOCTYPE html ...
-     <div class="error">
-       The action you were trying to do could not be finished because the
+     <div class="error">The action you were trying to do could not be finished because the
        resource
-       <span class="unique-id">http://id</span> was locked.
-     </div>
-     <pre>locked</pre>
+       <span class="unique-id">http://id</span> was locked.</div>
+      <pre>locked</pre>
      ...
 
 
