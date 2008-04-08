@@ -61,6 +61,7 @@
 import StringIO
 import datetime
 import httplib
+import logging
 import os
 import random
 import re
@@ -94,6 +95,8 @@ import zeit.connector.interfaces
 import zeit.connector.search
 import zeit.connector.resource
 
+
+logger = logging.getLogger(__name__)
 
 # The property holding the "resource type".
 RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
@@ -236,6 +239,7 @@ class Connector(zope.thread.local):
         try:
             properties = cache[id]
         except KeyError:
+            logger.debug("Getting properties from dav: %s" % id)
             davres = self._get_dav_resource(id)
             if davres._result is None:
                 davres.update()
@@ -284,6 +288,7 @@ class Connector(zope.thread.local):
         try:
             data = cache.getData(id, properties)
         except KeyError:
+            logger.debug("Getting body from dav: %s" % id)
             data = self._get_dav_resource(id).get()
             data = cache.setData(id, properties, data)
         if data is None:
