@@ -37,7 +37,7 @@ We can change the sorting (but don't):
 We can filter for the workflow status:
 
 >>> browser.getControl('Status').displayOptions
-[None, 'Corrected', 'Images added']
+[None, 'Needs correction', 'Needs images']
 
 
 Note that in the test we only can search for "linux", so we do that:

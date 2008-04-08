@@ -25,9 +25,9 @@ class Viewlet(zope.viewlet.viewlet.ViewletBase):
 
     states = (
         dict(index='corrected',
-             title=_('status-corrected')),
+             title=_('search-status-not-corrected')),
         dict(index='images_added',
-             title=_('status-images-added')),
+             title=_('search-status-no-images-added')),
     )
 
     @zope.cachedescriptors.property.Lazy

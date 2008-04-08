@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri Apr  4 16:40:17 2008\n"
-"PO-Revision-Date: 2008-04-04 17:14+0100\n"
+"POT-Creation-Date: Tue Apr  8 08:24:57 2008\n"
+"PO-Revision-Date: 2008-04-08 08:27+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/browser/listing.py:258
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
-#: src/zeit/cms/content/interfaces.py:244
+#: src/zeit/cms/content/interfaces.py:242
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
@@ -61,7 +61,7 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:251
+#: src/zeit/cms/content/interfaces.py:249
 msgid "Related content"
 msgstr "Verlinkte Objekte"
 
@@ -155,7 +155,6 @@ msgstr "Anzeigen"
 #: src/zeit/cms/browser/sourceedit.pt:39
 #: src/zeit/cms/content/browser/combinationwidget.pt:14
 #: src/zeit/cms/content/browser/combinationwidget.pt:36
-#: src/zeit/workflow/browser/workflow-preview.pt:5
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -227,7 +226,7 @@ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, wei
 msgid "An error is occoured"
 msgstr "Ein Fehler ist aufgetreten."
 
-#: src/zeit/cms/browser/main_template.pt:189
+#: src/zeit/cms/browser/main_template.pt:201
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr "Hinzufügen …"
@@ -455,11 +454,11 @@ msgstr "VG Wort Id"
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: src/zeit/cms/content/interfaces.py:252
+#: src/zeit/cms/content/interfaces.py:250
 msgid "Objects that are related to this object."
 msgstr "Objekte die verlinkt werden sollen."
 
-#: src/zeit/cms/content/interfaces.py:282
+#: src/zeit/cms/content/interfaces.py:280
 msgid "Hits today"
 msgstr "Treffer heute"
 
@@ -1265,14 +1264,12 @@ msgid "Year/Vol."
 msgstr "Jahr/Ausg."
 
 #: src/zeit/search/browser/search.py:28
-#: src/zeit/workflow/interfaces.py:36
-msgid "status-corrected"
-msgstr "Korrigiert"
+msgid "search-status-not-corrected"
+msgstr "Muss korrigiert werden"
 
 #: src/zeit/search/browser/search.py:30
-#: src/zeit/workflow/interfaces.py:46
-msgid "status-images-added"
-msgstr "Bilder hinzugefügt (Grafik)"
+msgid "search-status-no-images-added"
+msgstr "Braucht Bilder"
 
 #: src/zeit/search/browser/search.py:85
 #: src/zeit/search/browser/sidebar.pt:13
@@ -1362,8 +1359,8 @@ msgid "Status"
 msgstr "Status"
 
 #: src/zeit/workflow/browser/form.py:31
-msgid "Einstellung"
-msgstr "Einstellung"
+msgid "Settings"
+msgstr "Einstellungen"
 
 #: src/zeit/workflow/browser/form.py:37
 msgid "Save state only"
@@ -1391,9 +1388,17 @@ msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 msgid "status-edited"
 msgstr "Bearbeitet (Redaktion)"
 
+#: src/zeit/workflow/interfaces.py:36
+msgid "status-corrected"
+msgstr "Korrigiert"
+
 #: src/zeit/workflow/interfaces.py:41
 msgid "status-refined"
 msgstr "Veredelt"
+
+#: src/zeit/workflow/interfaces.py:46
+msgid "status-images-added"
+msgstr "Bilder hinzugefügt (Grafik)"
 
 #: src/zeit/workflow/interfaces.py:51
 msgid "Urgent"
@@ -1435,6 +1440,8 @@ msgstr "nicht nötig"
 msgid "Document"
 msgstr "Dokument"
 
+#~ msgid "Einstellung"
+#~ msgstr "Einstellung"
 #~ msgid "Remember as syndication target"
 #~ msgstr "Als Syndizierungsziel merken"
 #~ msgid "Remove Clip from Clipboard"

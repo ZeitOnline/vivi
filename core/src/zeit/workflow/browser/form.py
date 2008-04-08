@@ -28,7 +28,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
              'edited', 'corrected', 'refined', 'images_added'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
-            _("Einstellung"), css_class='column-right'),
+            _("Settings"), css_class='column-right'),
     )
 
     form_fields = zope.formlib.form.Fields(

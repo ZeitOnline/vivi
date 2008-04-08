@@ -8,6 +8,7 @@ zeit.cms changes
   (ScrollStateRestorer not defined).
 - Bug beim Referenzieren von Objekten behoben, z.B. ging ein Image als Related
   nicht, unbekannte Resourcen konnten nicht verlinkt werden (Systemfehler).
+- Titel der Workflow-Status-Suchfelder korrigiert (bug #4088).
 
 0.9.7 (2008-04-07)
 ------------------

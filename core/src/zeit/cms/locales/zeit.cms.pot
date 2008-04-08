@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Apr  4 16:40:17 2008\n"
+"POT-Creation-Date: Tue Apr  8 08:24:57 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 #: src/zeit/cms/browser/listing.py:258
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
-#: src/zeit/cms/content/interfaces.py:244
+#: src/zeit/cms/content/interfaces.py:242
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
@@ -73,7 +73,7 @@ msgid "Description"
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:251
+#: src/zeit/cms/content/interfaces.py:249
 msgid "Related content"
 msgstr ""
 
@@ -167,7 +167,6 @@ msgstr ""
 #: src/zeit/cms/browser/sourceedit.pt:39
 #: src/zeit/cms/content/browser/combinationwidget.pt:14
 #: src/zeit/cms/content/browser/combinationwidget.pt:36
-#: src/zeit/workflow/browser/workflow-preview.pt:5
 #: src/zeit/xmleditor/browser/form.pt:15
 #: src/zeit/xmleditor/browser/form.pt:36
 msgid "${DYNAMIC_CONTENT}"
@@ -239,7 +238,7 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:189
+#: src/zeit/cms/browser/main_template.pt:201
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr ""
@@ -467,11 +466,11 @@ msgstr ""
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:252
+#: src/zeit/cms/content/interfaces.py:250
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:282
+#: src/zeit/cms/content/interfaces.py:280
 msgid "Hits today"
 msgstr ""
 
@@ -1277,13 +1276,11 @@ msgid "Year/Vol."
 msgstr ""
 
 #: src/zeit/search/browser/search.py:28
-#: src/zeit/workflow/interfaces.py:36
-msgid "status-corrected"
+msgid "search-status-not-corrected"
 msgstr ""
 
 #: src/zeit/search/browser/search.py:30
-#: src/zeit/workflow/interfaces.py:46
-msgid "status-images-added"
+msgid "search-status-no-images-added"
 msgstr ""
 
 #: src/zeit/search/browser/search.py:85
@@ -1374,7 +1371,7 @@ msgid "Status"
 msgstr ""
 
 #: src/zeit/workflow/browser/form.py:31
-msgid "Einstellung"
+msgid "Settings"
 msgstr ""
 
 #: src/zeit/workflow/browser/form.py:37
@@ -1403,8 +1400,16 @@ msgstr ""
 msgid "status-edited"
 msgstr ""
 
+#: src/zeit/workflow/interfaces.py:36
+msgid "status-corrected"
+msgstr ""
+
 #: src/zeit/workflow/interfaces.py:41
 msgid "status-refined"
+msgstr ""
+
+#: src/zeit/workflow/interfaces.py:46
+msgid "status-images-added"
 msgstr ""
 
 #: src/zeit/workflow/interfaces.py:51
