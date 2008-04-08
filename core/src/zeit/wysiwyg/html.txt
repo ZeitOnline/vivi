@@ -311,6 +311,24 @@ Make sure this works also when the url starts with the repository url:
   </body>
 </article>
 
+When a non-image resource is referenced a simpele <image> tag is generated,
+too:
+
+>>> converter.html = '''\
+...     <p>Fuer menschliche
+...     <img src="http://127.0.0.1/repository/politik.feed"/></p>
+...     <p>Selbst wenn </p>'''
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>Fuer menschliche
+    <image src="http://127.0.0.1/repository/politik.feed"/></p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+
 
 Clean up:
 

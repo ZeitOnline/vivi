@@ -111,7 +111,7 @@ class HTML(object):
                     # Not known to the cms.
                     pass
                 else:
-                    new_node = zope.component.getAdapter(
+                    new_node = zope.component.queryAdapter(
                         image, zeit.cms.content.interfaces.IXMLReference,
                         name='image')
             if new_node is None:
