@@ -73,12 +73,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn',
         use_default=True)
 
-    #banner = zeit.cms.content.property.AttributeProperty(
-    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'banner')
-    #syndicatedIn = zeit.cms.content.property.ResourceSet(
-    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn')
-    #automaticTeaserSyndication = zeit.cms.content.property.ResourceSet(
-    #    zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication')
     syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
 
     zeit.cms.content.dav.mapProperties(
