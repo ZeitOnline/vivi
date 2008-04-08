@@ -20,6 +20,8 @@ import zeit.cms.content.template
 import zeit.cms.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
+import zeit.wysiwyg.interfaces
+
 import zeit.content.infobox.interfaces
 import zeit.content.image.interfaces
 import zeit.content.article.interfaces
