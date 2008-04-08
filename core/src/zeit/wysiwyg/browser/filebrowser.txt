@@ -1,0 +1,137 @@
+FCK filebrowser connector
+=========================
+
+The filebrowser connector connects the fck editor to the CMS.
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+The connector has a strange, well php-like, interface, so we have to pass all
+the information as arguments instead of having views on objects :/
+
+>>> base_url = 'http://localhost/@@zeit-fckeditor-link-browser.html?%s'
+
+
+List the folders and files in /
+
+>>> import urllib
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/" url="http://xml.zeit.de"/>
+  <Folders>
+    <Folder name="repository" title="repository"/>
+    <Folder name="zeit.cms.clipboard.clipboard.Clipboard"
+            title="Clipboard"/>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+Descent to the repository:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/repository/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/repository/"
+                 url="http://xml.zeit.de"/>
+  <Folders>
+    <Folder name="online" title="online"/>
+    <Folder name="2006" title="2006"/>
+    <Folder name="2007" title="2007"/>
+  </Folders>
+  <Files>
+    <File size="0" url="http://xml.zeit.de/politik.feed"
+          name="politik.feed (Politik)"/>
+    <File size="0" url="http://xml.zeit.de/testcontent"
+          name="testcontent (testcontent)"/>
+    <File size="0" url="http://xml.zeit.de/wirtschaft.feed"
+          name="wirtschaft.feed (Wirtschaft)"/>
+  </Files>
+</Connector>
+
+
+Let's descent from the root into the clipboard:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
+                 url="http://xml.zeit.de"/>
+  <Folders>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+The clipboard is empty. This is not very interesting. Create a clip and put
+something in there:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
+...     'title=New+Clip')
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
+...     'add_to=New+Clip&unique_id=http://xml.zeit.de/wirtschaft.feed')
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
+...     'add_to=New+Clip&unique_id=http://xml.zeit.de/politik.feed')
+
+
+Let's have a look how the clipboard looks now:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
+                 url="http://xml.zeit.de"/>
+  <Folders>
+    <Folder name="New Clip" title="New Clip"/>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+
+Our clip is listed! Decent:
+
+>>> browser.handleErrors = False
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/New Clip'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/New Clip"
+                 url="http://xml.zeit.de"/>
+  <Folders>
+  </Folders>
+  <Files>
+    <File size="0" url="http://xml.zeit.de/politik.feed"
+          name="politik.feed (Politik)"/>
+    <File size="0" url="http://xml.zeit.de/wirtschaft.feed"
+          name="wirtschaft.feed (Wirtschaft)"/>
+  </Files>
+</Connector>
+

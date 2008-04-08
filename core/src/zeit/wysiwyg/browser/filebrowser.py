@@ -29,7 +29,8 @@ class FileBrowser(gocept.fckeditor.connector.FCKEditorBrowser):
 
         if not remaining_path:
             return root
-        return zope.traversing.interfaces.ITraverser(root).traverse(path)
+        return zope.traversing.interfaces.ITraverser(root).traverse(
+            remaining_path)
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
@@ -41,11 +42,32 @@ class FileBrowser(gocept.fckeditor.connector.FCKEditorBrowser):
         return zeit.cms.clipboard.interfaces.IClipboard(self.request.principal)
 
     def _list_folders(self):
-        for obj in super(FileBrowser, self)._list_folders():
-            title = name = obj.__name__
-            list_repr = zope.component.queryMultiAdapter(
-                (obj, self.request),
-                zeit.cms.browser.interfaces.IListRepresentation)
-            if list_repr is not None:
+        return self.dictify(super(FileBrowser, self)._list_folders())
+
+    def _list_files(self):
+        return self.dictify(super(FileBrowser, self)._list_files())
+
+    def dictify(self, objects):
+        for obj in objects:
+            name = obj.__name__
+            list_repr = self.get_list_repr(obj)
+            if list_repr is None:
+                title = name
+                uniqueId = None
+                id_and_title = name
+            else:
                 title = list_repr.title
-            yield dict(id=name, title=title)
+                unique_id = list_repr.uniqueId
+                id_and_title = u'%s (%s)' % (name, title)
+
+            yield dict(
+                id=name,
+                title=title,
+                uniqueId=unique_id,
+                id_and_title = id_and_title)
+
+    def get_list_repr(self, obj):
+        return zope.component.queryMultiAdapter(
+            (obj, self.request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+

@@ -28,7 +28,7 @@
     <File size="0"
       tal:repeat="file files"
       tal:attributes="
-        name file/__name__;
+        name file/id_and_title;
         url file/uniqueId"
       />
   </Files>

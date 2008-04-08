@@ -110,6 +110,7 @@ class ClipboardListRepresentation(
     author = subtitle = byline = ressort = volume = page = year = None
 
     title = 'Clipboard'
+    uniqueId = None
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):
