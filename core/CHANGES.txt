@@ -4,6 +4,9 @@ CHANGES
 0.14 (unreleased)
 -----------------
 
+- `zeit.connector.connector.Connector` doesn't use the component architecture
+  now. This makes it easier to use in console scripts.
+
 0.13 (2008-04-07)
 -----------------
 

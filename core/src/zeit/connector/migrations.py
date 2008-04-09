@@ -11,39 +11,16 @@ import re
 
 from pprint import pprint
 
-
-import zope.interface
-import zope.app.component.hooks
-import zope.annotation.attribute
-import zope.annotation.interfaces
-from zope.traversing.interfaces import IContainmentRoot
-from zope.app.component.interfaces import ISite
-
-import zeit.connector.cache
 import zeit.connector.connector
-import zeit.connector.interfaces
 
 RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
 mylog = open('/tmp/content-migration-log','a')
-
-
-def setup_infrastructure():
-    gsm = zope.component.getGlobalSiteManager()
-    gsm.registerUtility(
-        zeit.connector.cache.ResourceCache(),
-        zeit.connector.interfaces.IResourceCache)
-    gsm.registerUtility(zeit.connector.cache.PropertyCache,
-        zeit.connector.interfaces.IPropertyCache)
-    gsm.registerUtility(zeit.connector.cache.ChildNameCache,
-        zeit.connector.interfaces.IChildNameCache)
 
 
 def migrate_content_types(connector_url):
 
 
     start_id = u"http://xml.zeit.de/"
-
-    setup_infrastructure()
 
     connector = zeit.connector.connector.Connector(
         {'default': connector_url})

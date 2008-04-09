@@ -15,7 +15,7 @@ Get the connector:
 >>> connector = zope.component.getUtility(
 ...     zeit.connector.interfaces.IConnector)
 >>> connector
-<zeit.connector.connector.Connector object at 0x...>
+<zeit.connector.connector.ZopeConnector object at 0x...>
 
 
 >>> connector['http://xml.zeit.de/testing']

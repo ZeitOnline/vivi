@@ -78,6 +78,7 @@ import ZConfig
 import persistent
 import transaction
 
+import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.thread
@@ -91,9 +92,11 @@ from zeit.connector.dav.davconnection import DAVConnection
 from zeit.connector.dav.davresource import (
     DAVResource, DAVCollection, DAVFile, DAVError, DAVLockedError, DAVLockFailedError)
 
+import zeit.connector.cache
 import zeit.connector.interfaces
-import zeit.connector.search
+import zeit.connector.lockinfo
 import zeit.connector.resource
+import zeit.connector.search
 
 
 logger = logging.getLogger(__name__)
@@ -148,28 +151,6 @@ def _abs2timeout(time):
         return None
     # No negative or zero timeouts:
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
-
-
-def connectorFactory():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector')
-    if config:
-        root = config.get('document-store')
-        if not root:
-            raise ZConfig.ConfigurationError(
-                "WebDAV server not configured properly.")
-        search_root = config.get('document-store-search')
-    else:
-        root = os.environ.get('connector-url')
-        search_root = os.environ.get('search-connector-url')
-
-    if not root:
-        raise ZConfig.ConfigurationError(
-            "zope.conf has no product config for zeit.connector.")
-
-    return Connector(dict(
-        default=root,
-        search=search_root))
 
 
 class Connector(zope.thread.local):
@@ -647,7 +628,7 @@ class Connector(zope.thread.local):
         return davlock
 
     def _invalidate_cache(self, id):
-        # XXX use an event
+        # TODO: In the ZopeConnector we might use an event for invalidation.
         parent, last = _id_splitlast(id)
         for cache, key in ((self.property_cache, id),
                            (self.child_name_cache, id),
@@ -673,6 +654,25 @@ class Connector(zope.thread.local):
             return id + '/'
         return id
 
+    @zope.cachedescriptors.property.Lazy
+    def body_cache(self):
+        return zeit.connector.cache.ResourceCache()
+
+    @zope.cachedescriptors.property.Lazy
+    def property_cache(self):
+        return {}
+
+    @zope.cachedescriptors.property.Lazy
+    def child_name_cache(self):
+        return {}
+
+    @zope.cachedescriptors.property.Lazy
+    def locktokens(self):
+        return zeit.connector.lockinfo.LockInfo()
+
+
+class ZopeConnector(Connector):
+
     @property
     def body_cache(self):
         return zope.component.getUtility(
@@ -692,3 +692,26 @@ class Connector(zope.thread.local):
     def locktokens(self):
         return zope.component.getUtility(
             zeit.connector.interfaces.ILockInfoStorage)
+
+
+def connectorFactory():
+    """Factory for creating the connector with data from zope.conf."""
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.connector')
+    if config:
+        root = config.get('document-store')
+        if not root:
+            raise ZConfig.ConfigurationError(
+                "WebDAV server not configured properly.")
+        search_root = config.get('document-store-search')
+    else:
+        root = os.environ.get('connector-url')
+        search_root = os.environ.get('search-connector-url')
+
+    if not root:
+        raise ZConfig.ConfigurationError(
+            "zope.conf has no product config for zeit.connector.")
+
+    return ZopeConnector(dict(
+        default=root,
+        search=search_root))

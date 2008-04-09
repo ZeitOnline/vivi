@@ -28,39 +28,6 @@ True
 True
 
 
-Cache
-=====
-
-Setup resource cache:
-
->>> import zope.component
->>> import zeit.connector.interfaces
->>> body_cache = ResourceCache()
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(
-...     body_cache, zeit.connector.interfaces.IResourceCache)
-
-Setup property cache:
-
->>> property_cache = zeit.connector.cache.PropertyCache()
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(
-...     property_cache, zeit.connector.interfaces.IPropertyCache)
-
-Setup child name cache:
-
->>> child_name_cache = zeit.connector.cache.ChildNameCache()
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(
-...     child_name_cache, zeit.connector.interfaces.IChildNameCache)
-
-
-Setup lockinfo utility:
-
->>> import zeit.connector.lockinfo
->>> lockinfo = zeit.connector.lockinfo.LockInfo()
->>> gsm.registerUtility(
-...     lockinfo, zeit.connector.interfaces.ILockInfoStorage)
 
 Resources
 =========
@@ -86,7 +53,7 @@ KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
 
 The properties are cached now:
 
->>> properties = property_cache[index_id]
+>>> properties = connector.property_cache[index_id]
 >>> properties[('getcontenttype', 'DAV:')]
 'text/xml'
 
@@ -138,6 +105,7 @@ Resources may be locked:
 
 The whole lock-information is stored in the lockinfo utility:
 
+>>> lockinfo = connector.locktokens
 >>> lockinfo.get('http://xml.zeit.de/testing/conn1')
 ('opaquelocktoken:...',
  'http://xml.zeit.de/users/frodo',
@@ -243,6 +211,7 @@ Collections
 Creating collections works like creating any other resource. Create a resource
 object first:
 
+>>> import zeit.connector.resource
 >>> collection_id = 'http://xml.zeit.de/testing/my-collection/'
 >>> coll = zeit.connector.resource.Resource(
 ...     collection_id, 'my-collection', 'collection', StringIO.StringIO(''))
@@ -400,22 +369,3 @@ Unlock the resource and remove id:
 
 >>> connector._conn().do_unlock(dav_url, token)
 >>> del connector[id]
-
-
-Clean up
-========
-
-Cleanup after ourselves:
-
->>> gsm.unregisterUtility(
-...     body_cache, zeit.connector.interfaces.IResourceCache)
-True
->>> gsm.unregisterUtility(
-...     property_cache, zeit.connector.interfaces.IPropertyCache)
-True
->>> gsm.unregisterUtility(
-...     child_name_cache, zeit.connector.interfaces.IChildNameCache)
-True
->>> gsm.unregisterUtility(
-...     lockinfo, zeit.connector.interfaces.ILockInfoStorage)
-True
