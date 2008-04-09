@@ -249,6 +249,7 @@ WYSIWYG-Editor
 
 Open the WYSIWYG-Editor:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Edit WYSIWYG').click()
 
 Some important fields can be edited here as well:
@@ -261,12 +262,12 @@ Some important fields can be edited here as well:
 
 Initially the document is empty: 
 
->>> browser.getControl('Document').value
+>>> browser.getControl('Text').value
 ''
 
 Change the content and save:
 
->>> browser.getControl('Document').value = '<p>Foo</p><h3>blub</h3>'
+>>> browser.getControl('Text').value = '<p>Foo</p><h3>blub</h3>'
 >>> browser.getControl('Apply').click()
 
 Let's have a look at the source:
@@ -290,19 +291,19 @@ Try to add some xml characters to the WYSIWYG editor as entities but make sure
 other entities will be replaced (this is to make sure bug #3900 is fixed):
 
 >>> browser.getLink('Edit WYSIWYG').click()
->>> browser.getControl('Document').value = (
+>>> browser.getControl('Text').value = (
 ...     '<p>Foo</p><h3>blub &mdash;</h3><p>&gt;&amp;&lt;</p>')
 >>> browser.getControl('Apply').click()
->>> browser.getControl('Document').value
+>>> browser.getControl('Text').value
 '<p>Foo</p>\r\n\r\n<h3>blub \xe2\x80\x94</h3>\r\n\r\n<p>&gt;&amp;&lt;</p>\r\n'
 
 
 Empty tags will be removed on saving:
 
->>> browser.getControl('Document').value = (
+>>> browser.getControl('Text').value = (
 ...     '<p>Foo</p><h3/><foo/><p/><p><b>bar</b></p>')
 >>> browser.getControl('Apply').click()
->>> print browser.getControl('Document').value
+>>> print browser.getControl('Text').value
 <p>Foo</p>
 <p>
   <b>bar</b>

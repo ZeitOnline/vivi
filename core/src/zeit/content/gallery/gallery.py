@@ -19,6 +19,8 @@ import zeit.cms.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.util
 import zeit.cms.repository.interfaces
+import zeit.wysiwyg.html
+
 import zeit.content.gallery.interfaces
 
 
@@ -100,8 +102,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         if entry.title is not None:
             entry.title = unicode(entry.title)
         entry.text = node.find('text')
-        if entry.text is not None:
-            entry.text = unicode(entry.text)
+        if entry.text is None:
+            entry.text = lxml.objectify.E.text()
         return zope.location.location.located(entry, self, key)
 
     def __delitem__(self, key):
@@ -243,7 +245,7 @@ def galleryentry_factory(context):
     entry.thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
         context)
     entry.title = None
-    entry.text = u''
+    entry.text = None
     return entry
 
 
@@ -265,7 +267,11 @@ class EntryXMLRepresentation(object):
         node = lxml.objectify.XML('<block/>')
         if self.context.title:
             node['title'] = self.context.title
-        node['text'] = self.context.text
+
+        # Remove security proxy from lxml tree before inserting in the a
+        # different tree
+        node['text'] = zope.security.proxy.removeSecurityProxy(
+            self.context.text)
         node['image'] = zope.component.getAdapter(
             self.context.image, zeit.cms.content.interfaces.IXMLReference,
             name='image')
@@ -273,6 +279,22 @@ class EntryXMLRepresentation(object):
             self.context.thumbnail, zeit.cms.content.interfaces.IXMLReference,
             name='image')
         return node
+
+
+class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
+
+    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
+
+    def get_tree(self):
+        return self.context.text
+
+
+class EntryHTMLConverter(zeit.wysiwyg.html.HTMLConverter):
+
+    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
+
+    def _html_getnodes(self, tree):
+        return tree.iterchildren()
 
 
 @zope.component.adapter(

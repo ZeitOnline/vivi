@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-0.9.8 (unrelesed)
------------------
+0.9.8 (2008-04-09)
+------------------
 
 - Related konnte nicht mehr in der Lightbox ausgewählt werden
   (ScrollStateRestorer not defined).
@@ -14,6 +14,8 @@ zeit.cms changes
   #4097).
 - Fließtext kann jetzt Bilder beinhalten. Diese sind vom Server per FCKEditor
   Filebrowser auswählbar (bug #4090)
+- Text in der Gallery ist jetzt auch per WYSIWYG-Editor bearbeitbar (bug
+  #4091).
 
 
 0.9.7 (2008-04-07)

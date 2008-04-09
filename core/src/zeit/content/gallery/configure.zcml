@@ -29,7 +29,6 @@
     type="zeit.cms.interfaces.ICMSContentType"
     />
 
-
   <!-- Entry -->
   <class class=".gallery.GalleryEntry">
     <require
@@ -42,5 +41,7 @@
       />
   </class>
 
+  <adapter factory=".gallery.EntryHTMLContent" />
+  <adapter factory=".gallery.EntryHTMLConverter" />
 
 </configure>

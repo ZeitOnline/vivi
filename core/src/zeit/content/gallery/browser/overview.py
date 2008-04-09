@@ -6,6 +6,7 @@ import zope.cachedescriptors.property
 import zope.component
 
 import zeit.cms.content.interfaces
+import zeit.wysiwyg.interfaces
 
 
 class Overview(object):
@@ -13,6 +14,10 @@ class Overview(object):
     def update(self):
         if 'form.actions.save_sorting' in self.request:
             self.context.updateOrder(self.request.get('images'))
+
+    def get_text(self, entry):
+        return zeit.wysiwyg.interfaces.IHTMLConverter(entry).to_html(
+            entry.text)
 
     @zope.cachedescriptors.property.Lazy
     def metadata(self):

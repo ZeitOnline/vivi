@@ -7,6 +7,7 @@ import zope.schema
 import zeit.cms.interfaces
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.field
 
 from zeit.cms.i18n import MessageFactory as _
 
@@ -77,5 +78,5 @@ class IGalleryEntry(zope.interface.Interface):
         title=_('Title'),
         required=False)
 
-    text = zope.schema.Text(
+    text = zeit.cms.content.field.XMLTree(
         title=_("Text"))

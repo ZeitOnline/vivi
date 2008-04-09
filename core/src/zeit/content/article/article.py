@@ -19,6 +19,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.interfaces
+import zeit.wysiwyg.html
 import zeit.wysiwyg.interfaces
 
 import zeit.content.article.interfaces
@@ -115,3 +116,12 @@ def updateTextLengthOnChange(object, event):
     except zope.security.interfaces.Unauthorized:
         # Ignore when we're not allowed to set it.
         pass
+
+
+class ArticleHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
+    """HTML content of an article."""
+
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+
+    def get_tree(self):
+        return self.context.xml['body']

@@ -127,7 +127,7 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('Images').click()
 >>> browser.getLink('01.jpg').click()
 >>> browser.getControl('Title').value = 'The man man'
->>> browser.getControl('Text').value = 'Der Mann am Stein'
+>>> browser.getControl('Text').value = '<strong>Der Mann am Stein</strong>'
 >>> browser.getControl('Apply').click()
 
 After saving we're back at the overview:
@@ -145,7 +145,7 @@ After saving we're back at the overview:
     </td>
     <td>
       <div class="title">The man man</div>
-      <div class="text">Der Mann am Stein</div>
+      <div class="text"><strong>Der Mann am Stein</strong> </div>
     </td>
   </tr>
   ...
@@ -230,11 +230,11 @@ False
 Sadly the xml is not updated, yet:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML Source').value
+>>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
 <centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
         <block name="03.jpg">
-          <text py:pytype="str"/>
+        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expires="..." src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str">ZEIT online</copyright>

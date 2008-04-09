@@ -48,7 +48,7 @@ The gallery is also noted in the xml structure:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -106,7 +106,7 @@ The change is reflected in the xml:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -115,7 +115,7 @@ The change is reflected in the xml:
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
@@ -146,12 +146,13 @@ We have not set any title or text for the entry, so they're empty:
 >>> entry.title is None
 True
 >>> entry.text
-u''
+None
 
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
->>> entry.text = u'Seit zwei Uhr in der Früh'
+>>> entry.text = lxml.objectify.E.text(
+...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
@@ -162,7 +163,7 @@ xml:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -171,7 +172,7 @@ xml:
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
@@ -200,7 +201,7 @@ When we assign the entry the change will be reflected:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -209,7 +210,9 @@ When we assign the entry the change will be reflected:
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+          </text>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
@@ -242,7 +245,7 @@ well:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -252,7 +255,9 @@ well:
         </block>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+          </text>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
@@ -274,6 +279,8 @@ Let's make sure we actually can get the saved data:
 >>> entry.title
 u'Der Wecker klingelt'
 >>> entry.text
+<Element text at ...>
+>>> entry.text['p']
 u'Seit zwei Uhr in der Fr\xc3\xbch'
 
 
@@ -305,7 +312,9 @@ This is of course reflected int he XML:
       <container>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+          </text>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
@@ -316,7 +325,7 @@ This is of course reflected int he XML:
           </thumbnail>
         </block>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -417,7 +426,7 @@ Note that his has *not* changed the xml so far:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>
@@ -427,7 +436,9 @@ Note that his has *not* changed the xml so far:
         </block>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</text>
+          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+          </text>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
@@ -456,7 +467,7 @@ When calling `reload_image_folder` the entry is removed from the xml:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text py:pytype="str"></text>
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
             <bu xsi:nil="true"/>
           </image>

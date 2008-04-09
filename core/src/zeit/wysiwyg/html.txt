@@ -40,13 +40,13 @@ Manually adapt to HTML:
 
 >>> import zope.publisher.browser
 >>> import zeit.wysiwyg.html
->>> converter = zeit.wysiwyg.html.HTML(article)
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> converter
-<zeit.wysiwyg.html.HTML object at 0x...>
+<zeit.wysiwyg.html.HTMLConverter object at 0x...>
 
 Get the HTML representation:
 
->>> print converter.html
+>>> print converter.to_html(article.xml['body'])
 <p>A paragraph</p>
 <p>Another <em>paragraph</em></p>
 
@@ -81,10 +81,10 @@ Now for something more complex, the intertitle:
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
 ...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTML(article)
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 
 In the html `intertitle` becomes an `h3`:
->>> print converter.html
+>>> print converter.to_html(article.xml['body'])
 <p>A paragraph</p>
 <h3>Paragraphs are nice</h3>
 <p>Another <em>paragraph</em></p>
@@ -93,12 +93,12 @@ In the html `intertitle` becomes an `h3`:
 Now we change the HTML and see the reflection in the article XML. The `h3` in
 the html becomes an `intertitle` again:
 
->>> converter.html = """\
+>>> converter.from_html(article.xml['body'], """\
 ...   <p>A paragraph with more <em>markup</em></p>
 ...   <h3>Paragraphs are nice</h3>
 ...   <p>Another <em>paragraph</em></p>
 ...   <p>Bla bla bla</p>
-... """
+... """)
 
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article>
@@ -116,7 +116,7 @@ the html becomes an `intertitle` again:
 
 HTML-entities are replaced by the real character, but XML entities are not:
 
->>> converter.html = ("""
+>>> converter.from_html(article.xml['body'], """\
 ...   <p>&mdash;&gt;&lt;</p>
 ... """)
 
@@ -133,7 +133,7 @@ HTML-entities are replaced by the real character, but XML entities are not:
 Empty p-tags and tags containing nothing but whitespace will be removed on
 saving. br's inside a <p> are kept:
 
->>> converter.html = (
+>>> converter.from_html(article.xml['body'],
 ...     '<p>Foo</p><h3/><foo/><p/><p> </p><p><b>bar<br/></b></p>')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
 <article>
@@ -171,12 +171,12 @@ Articles can have inline images. This looks as follows:
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
 ...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTML(article)
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 
 So the image is included in a paragraph. When creating html we'll get an <img>
 tag:
 
->>> print converter.html
+>>> print converter.to_html(article.xml['body'])
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche
  <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
@@ -186,11 +186,11 @@ tag:
 Setting an img in html creates an image tag. This copies the data from the
 image:
 
->>> converter.html = '''\
+>>> converter.from_html(article.xml['body'], '''\
 ... <p>Fuer menschliche
 ...  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
 ... <p>Aus winzigen embryonalen ...</p>
-... <p>Selbst wenn </p>'''
+... <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article ...>
   <head/>
@@ -221,8 +221,8 @@ We are greedy against old paths in the XML:
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
 ...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTML(article)
->>> print converter.html
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche
  <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
 <p>Selbst wenn </p>
@@ -245,8 +245,8 @@ If the image does not longer exists, we render an img-tag with the unique id:
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
 ...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTML(article)
->>> print converter.html
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche
  <img ... src="http://xml.zeit.de/bilder/asdf.jpg"/></p>
 <p>Selbst wenn </p>
@@ -269,8 +269,8 @@ When the url doesn't belong to the CMS it is put out directly, as well:
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
 ...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTML(article)
->>> print converter.html
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche
  <img ... src="http://images.gocept.com/bilder/asdf.jpg"/></p>
 <p>Selbst wenn </p>
@@ -280,10 +280,10 @@ When setting an image with an url outsite of the cms or otherwise unknown to
 the cms, a simple <image src="..."> element is created:
 
 
->>> converter.html = '''\
+>>> converter.from_html(article.xml['body'], '''\
 ...     <p>Fuer menschliche
 ...     <img src="http://images.gocept.com/bilder/asdf.jpg"/></p>
-...     <p>Selbst wenn </p>'''
+...     <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
@@ -297,10 +297,10 @@ the cms, a simple <image src="..."> element is created:
 Make sure this works also when the url starts with the repository url:
 
 
->>> converter.html = '''\
+>>> converter.from_html(article.xml['body'], '''\
 ...     <p>Fuer menschliche
 ...     <img src="http://127.0.0.1/repository/bilder/asdf.jpg"/></p>
-...     <p>Selbst wenn </p>'''
+...     <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
@@ -314,10 +314,10 @@ Make sure this works also when the url starts with the repository url:
 When a non-image resource is referenced a simpele <image> tag is generated,
 too:
 
->>> converter.html = '''\
+>>> converter.from_html(article.xml['body'], '''\
 ...     <p>Fuer menschliche
 ...     <img src="http://127.0.0.1/repository/politik.feed"/></p>
-...     <p>Selbst wenn </p>'''
+...     <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>

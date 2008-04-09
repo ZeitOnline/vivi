@@ -12,9 +12,14 @@ from zeit.cms.i18n import MessageFactory as _
 class IHTMLContent(zope.interface.Interface):
     """HTML content."""
 
-    html = zc.form.field.HTMLSnippet(title=_("Document"))
+    html = zc.form.field.HTMLSnippet(title=_("Text"))
 
 
-class IHTMLConvertable(zope.interface.Interface):
-    """Marker interface to indicate a convertable body."""
+class IHTMLConverter(zope.interface.Interface):
+    """A html converter converts xml to/from html."""
 
+    def to_html(tree):
+        """Convert `tree` to html."""
+
+    def from_html(tree, value):
+        """Convert `value` to xml replacing data in `tree`."""

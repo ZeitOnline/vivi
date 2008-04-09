@@ -11,6 +11,7 @@ import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
+import zeit.wysiwyg.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.content.gallery.interfaces
@@ -67,8 +68,12 @@ class DisplayImageWidget(zope.app.form.browser.widget.DisplayWidget):
 class EditEntry(zeit.cms.browser.form.EditForm):
 
     title = _("Edit gallery entry")
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.gallery.interfaces.IGalleryEntry).omit('thumbnail')
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.gallery.interfaces.IGalleryEntry).omit(
+            'thumbnail', 'text') +
+        zope.formlib.form.FormFields(
+            zeit.wysiwyg.interfaces.IHTMLContent))
     form_fields['image'].custom_widget = DisplayImageWidget
 
     redirect_to_parent_after_edit = True

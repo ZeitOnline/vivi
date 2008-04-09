@@ -23,4 +23,7 @@
   <include package="zeit.content.gallery" />
   <include package="zeit.content.gallery.browser" />
 
+  <include package="zeit.wysiwyg" />
+  <include package="zeit.wysiwyg.browser" />
+
 </configure>

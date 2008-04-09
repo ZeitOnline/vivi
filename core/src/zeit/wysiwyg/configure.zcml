@@ -1,13 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".html.HTML" trusted="yes" locate="yes"/>
-  <class class=".html.HTML">
-    <require
-      interface=".interfaces.IHTMLContent"
-      permission="zope.View" />
-    <require
-      set_schema=".interfaces.IHTMLContent"
-      permission="zeit.EditContent" />
-  </class>
+  <adapter factory=".html.HTMLConverter" />
 
 </configure>

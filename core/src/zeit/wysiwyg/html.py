@@ -5,9 +5,9 @@
 import copy
 import htmlentitydefs
 
+import gocept.lxml.objectify
 import lxml.etree
 import lxml.objectify
-import gocept.lxml.objectify
 import rwproperty
 
 import zope.cachedescriptors.property
@@ -15,28 +15,36 @@ import zope.component
 import zope.interface
 import zope.publisher.interfaces.browser
 import zope.security.management
+import zope.security.proxy
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.wysiwyg.interfaces
 
 
-class HTML(object):
+class HTMLConverter(object):
+    """General XML to HTML converter.
 
-    zope.component.adapts(zeit.wysiwyg.interfaces.IHTMLConvertable)
-    zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLContent)
+    This html converter doesn't operate on `context` and is registered for all
+    objects. If a content object requires a more specialised adapter it can be
+    registered easily.
+
+    """
+
+    zope.component.adapts(zope.interface.Interface)
+    zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLConverter)
 
     def __init__(self, context):
         self.context = context
         self.request = (
             zope.security.management.getInteraction().participations[0])
 
-    @rwproperty.getproperty
-    def html(self):
+    def to_html(self, tree):
         """return html snippet of article."""
+        tree = zope.security.proxy.removeSecurityProxy(tree)
         # XXX spaghetti warning
         html = []
-        for node in self._html_getnodes():
+        for node in self._html_getnodes(tree):
             # Copy all nodes. This magically removes namespace declarations.
             node = copy.copy(node)
             if node.tag == 'intertitle':
@@ -49,15 +57,14 @@ class HTML(object):
         return '\n'.join(html)
 
 
-    @rwproperty.setproperty
-    def html(self, value):
+    def from_html(self, tree, value):
         """set article html."""
+        tree = zope.security.proxy.removeSecurityProxy(tree)
         value = '<div>' + self._replace_entities(value) + '</div>'
         html = gocept.lxml.objectify.fromstring(value)
-        for node in self._html_getnodes():
+        for node in self._html_getnodes(tree):
             parent = node.getparent()
             parent.remove(node)
-        body = self.context.xml['body']
         for node in html.iterchildren():
             if not node.countchildren() and not node.text:
                 continue
@@ -69,10 +76,11 @@ class HTML(object):
             img_nodes = node.xpath('img')
             if img_nodes:
                 self._replace_img_nodes_by_image(img_nodes)
-            body.append(node)
+            tree.append(node)
+        zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
-    def _html_getnodes(self):
-        for node in self.context.xml['body'].iterchildren():
+    def _html_getnodes(self, tree):
+        for node in tree.iterchildren():
             if node.tag in ('p', 'intertitle'):
                 yield node
 
@@ -136,3 +144,28 @@ class HTML(object):
     def url(self, obj):
         return zope.component.getMultiAdapter(
             (obj, self.request), name='absolute_url')()
+
+
+
+class HTMLContentBase(object):
+    """Base class for html content."""
+
+    zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLContent)
+
+    def __init__(self, context):
+        self.context = context
+
+    @rwproperty.getproperty
+    def html(self):
+        return self.convert.to_html(self.get_tree())
+
+    @rwproperty.setproperty
+    def html(self, value):
+        return self.convert.from_html(self.get_tree(), value)
+
+    @property
+    def convert(self):
+        return zeit.wysiwyg.interfaces.IHTMLConverter(self.context)
+
+    def get_tree(self):
+        raise NotImplementedError("Implemented in subclass.")

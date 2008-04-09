@@ -30,7 +30,7 @@
             Title
           </div>
           <div class="text"
-            tal:content="entry/text">
+            tal:content="structure python:view.get_text(entry)">
             Text
           </div>
         </td>
