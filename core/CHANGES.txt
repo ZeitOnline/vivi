@@ -4,6 +4,9 @@ zeit.cms changes
 0.9.9 (unreleased)
 ------------------
 
+- Veraltete Einträge im Funktions-/Methodencache werden jetzt alle 100 Requests
+  entfernt.
+
 0.9.8 (2008-04-09)
 ------------------
 

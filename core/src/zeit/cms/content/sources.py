@@ -69,13 +69,13 @@ class NavigationSource(SimpleXMLSource):
 
     config_url = 'source-navigation'
 
-    @gocept.cache.method.Memoize(3600)
+    @gocept.cache.method.Memoize(60)
     def getValues(self):
         tree = self._get_tree()
         return [unicode(ressort.get('name'))
                 for ressort in tree.iterchildren()]
 
-    @gocept.cache.method.Memoize(3600)
+    @gocept.cache.method.Memoize(60)
     def getTitle(self, value):
         __traceback_info__ = (value, )
         tree = self._get_tree()
@@ -101,6 +101,7 @@ class SubNavigationSource(SimpleContextualXMLSource):
         return [unicode(sub.get('name'))
                 for sub in sub_navs]
 
+    @gocept.cache.method.Memoize(60)
     def getTitle(self, context, value):
         tree = self._get_tree()
         nodes = tree.xpath('//subnavigation[@name = "%s"]' % value)
@@ -132,3 +133,21 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
         return (interface for name, interface in
                 zope.component.getUtilitiesFor(
                     zeit.cms.interfaces.ICMSContentType))
+
+
+_collect_counter = 0
+@zope.component.adapter(zope.app.publication.interfaces.IBeforeTraverseEvent)
+def collect_caches(event):
+    """Collect method cache every 100 requests.
+
+    Don't collect on every request because collect is O(n**2) in regard to the
+    number of cached methods/functions and the amount of cached values.
+
+    """
+    global _collect_counter
+    _collect_counter += 1
+    if _collect_counter >= 100:
+        logger.debug("Collecting caches.")
+        # collect every 100 requests
+        gocept.cache.method.collect()
+        _collect_counter = 0

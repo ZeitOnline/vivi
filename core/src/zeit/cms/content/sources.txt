@@ -221,3 +221,45 @@ Select 'Deutschland':
  u'Datenschutz',
  u'Joschka Fisher']
 
+
+
+Cache collector
++++++++++++++++
+
+The cache collector collects every 100 calls. Register a log handler:
+
+>>> import logging
+>>> import StringIO
+>>> log = StringIO.StringIO()
+>>> log_handler = logging.StreamHandler(log)
+>>> logging.root.addHandler(log_handler)
+>>> old_log_level = logging.root.level
+>>> logging.root.setLevel(logging.DEBUG)
+
+Reset the collect counter to 0:
+
+>>> zeit.cms.content.sources._collect_counter = 0
+
+Call once, the log stays empty:
+
+>>> zeit.cms.content.sources.collect_caches(object())
+>>> log.getvalue()
+''
+
+The counter is increased by 1:
+
+>>> zeit.cms.content.sources._collect_counter
+1
+
+Call the collect another 99 times:
+
+>>> for i in range(99):
+...     zeit.cms.content.sources.collect_caches(object())
+
+
+The counter is back at 0 and collect was done once:
+
+>>> zeit.cms.content.sources._collect_counter
+0
+>>> print log.getvalue()
+Collecting caches.
