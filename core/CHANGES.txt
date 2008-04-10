@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Veraltete Einträge im Funktions-/Methodencache werden jetzt alle 100 Requests
   entfernt.
+- Im Channel werden die Treffer/Hits (today.xml) des jeweiligen Dokuments
+  angezeigt (bug #4093).
 
 0.9.8 (2008-04-09)
 ------------------

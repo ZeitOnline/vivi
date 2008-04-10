@@ -302,6 +302,9 @@ out:
       <th>
         Position
       </th>
+      <th>
+        Hits
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -323,6 +326,8 @@ out:
     </td>
     <td>
       1
+    </td>
+    <td>
     </td>
   </tr>
   </tbody>

@@ -158,7 +158,8 @@ class FeedView(object):
             zc.table.column.GetterColumn(
                 u'Position',
                 lambda t, c: self.context.getPosition(t.context) or '',
-                cell_formatter=_escape)
+                cell_formatter=_escape),
+            zeit.cms.browser.listing.HitColumn(_('Hits')),
         )
 
 
