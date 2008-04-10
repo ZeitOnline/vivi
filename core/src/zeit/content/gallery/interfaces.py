@@ -8,8 +8,9 @@ import zeit.cms.interfaces
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.field
-
 from zeit.cms.i18n import MessageFactory as _
+
+import zeit.content.gallery.source
 
 
 class IGalleryFolderSource(zeit.cms.content.interfaces.ICMSContentSource):
@@ -80,3 +81,8 @@ class IGalleryEntry(zope.interface.Interface):
 
     text = zeit.cms.content.field.XMLTree(
         title=_("Text"))
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        required=False,
+        source=zeit.content.gallery.source.LayoutSource())

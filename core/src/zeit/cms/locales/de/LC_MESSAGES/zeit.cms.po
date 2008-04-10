@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Apr  8 08:24:57 2008\n"
-"PO-Revision-Date: 2008-04-08 08:27+0100\n"
+"POT-Creation-Date: Thu Apr 10 11:52:36 2008\n"
+"PO-Revision-Date: 2008-04-10 12:08+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:141
-#: src/zeit/content/gallery/interfaces.py:77
+#: src/zeit/content/gallery/interfaces.py:79
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
 #: src/zeit/search/interfaces.py:18
@@ -201,6 +201,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: src/zeit/cms/browser/listing.py:269
+#: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr "Treffer"
 
@@ -320,7 +321,7 @@ msgid "Texts"
 msgstr "Texte"
 
 #: src/zeit/cms/content/browser/form.py:53
-#: src/zeit/content/article/browser/form.py:55
+#: src/zeit/content/article/browser/form.py:57
 #: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
 msgstr "sonstiges"
@@ -717,7 +718,7 @@ msgid "Hidden on HP"
 msgstr "Versteckt auf HP"
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:200
+#: src/zeit/cms/syndication/browser/feed.py:201
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
@@ -829,38 +830,38 @@ msgstr "Bearbeiten"
 msgid "Article"
 msgstr "Artikel"
 
-#: src/zeit/content/article/browser/form.py:105
+#: src/zeit/content/article/browser/form.py:107
 msgid "Edit article"
 msgstr "Artikel bearbeiten"
 
-#: src/zeit/content/article/browser/form.py:116
+#: src/zeit/content/article/browser/form.py:118
 msgid "View article metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/form.py:131
+#: src/zeit/content/article/browser/form.py:133
 #: src/zeit/cms/workingcopy/browser/configure.zcml:16
 msgid "Content"
 msgstr "Inhalt"
 
-#: src/zeit/content/article/browser/form.py:147
+#: src/zeit/content/article/browser/form.py:149
 msgid "Assets and related"
 msgstr "Assets und Related"
 
-#: src/zeit/content/article/browser/form.py:155
+#: src/zeit/content/article/browser/form.py:157
 #: src/zeit/content/article/browser/configure.zcml:59
 msgid "Edit assets"
 msgstr "Assets bearbeiten"
 
-#: src/zeit/content/article/browser/form.py:159
+#: src/zeit/content/article/browser/form.py:161
 #: src/zeit/content/article/browser/configure.zcml:76
 msgid "Assets"
 msgstr "Assets"
 
-#: src/zeit/content/article/browser/form.py:62
+#: src/zeit/content/article/browser/form.py:64
 msgid "Optionen"
 msgstr "Optionen"
 
-#: src/zeit/content/article/browser/form.py:71
+#: src/zeit/content/article/browser/form.py:73
 msgid "Add article"
 msgstr "Artikel hinzufügen"
 
@@ -1040,6 +1041,7 @@ msgstr "Stil"
 
 #: src/zeit/content/centerpage/interfaces.py:33
 #: src/zeit/content/centerpage/interfaces.py:41
+#: src/zeit/content/gallery/interfaces.py:86
 msgid "Layout"
 msgstr "Layout"
 
@@ -1051,19 +1053,19 @@ msgstr "Bildergalerie"
 msgid "Synchronise with image folder"
 msgstr "Mit Bilderordner synchronisieren"
 
-#: src/zeit/content/gallery/browser/form.py:34
+#: src/zeit/content/gallery/browser/form.py:35
 msgid "Add gallery"
 msgstr "Bildergalerie hinzufügen"
 
-#: src/zeit/content/gallery/browser/form.py:42
+#: src/zeit/content/gallery/browser/form.py:43
 msgid "Edit gallery"
 msgstr "Bildergalerie bearbeiten"
 
-#: src/zeit/content/gallery/browser/form.py:49
+#: src/zeit/content/gallery/browser/form.py:50
 msgid "View gallery metadata"
 msgstr "Metadaten der Bildergalerie ansehen"
 
-#: src/zeit/content/gallery/browser/form.py:69
+#: src/zeit/content/gallery/browser/form.py:70
 msgid "Edit gallery entry"
 msgstr "Bildergalerie-Eintrag bearbeiten"
 
@@ -1071,18 +1073,23 @@ msgstr "Bildergalerie-Eintrag bearbeiten"
 msgid "Save sorting"
 msgstr "Sortierung speichern"
 
-#: src/zeit/content/gallery/interfaces.py:31
+#: src/zeit/content/gallery/interfaces.py:33
 msgid "Image folder"
 msgstr "Bilderordner"
 
-#: src/zeit/content/gallery/interfaces.py:32
+#: src/zeit/content/gallery/interfaces.py:34
 msgid "Folder containing images to display in the gallery."
 msgstr "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werden sollen."
 
-#: src/zeit/content/gallery/interfaces.py:81
+#: src/zeit/content/gallery/interfaces.py:83
 #: src/zeit/content/infobox/interfaces.py:24
+#: src/zeit/wysiwyg/interfaces.py:15
 msgid "Text"
 msgstr "Text"
+
+#: src/zeit/content/gallery/source.py:12
+msgid "Image only"
+msgstr "Nur Bild"
 
 #: src/zeit/content/image/browser/configure.zcml:118
 msgid "Image (single)"
@@ -1436,10 +1443,8 @@ msgstr "nein"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: src/zeit/wysiwyg/interfaces.py:14
-msgid "Document"
-msgstr "Dokument"
-
+#~ msgid "Document"
+#~ msgstr "Dokument"
 #~ msgid "Einstellung"
 #~ msgstr "Einstellung"
 #~ msgid "Remember as syndication target"

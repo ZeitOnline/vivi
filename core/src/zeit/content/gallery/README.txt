@@ -284,6 +284,107 @@ u'Der Wecker klingelt'
 u'Seit zwei Uhr in der Fr\xc3\xbch'
 
 
+Entry layout
+++++++++++++
+
+Each entry can have a different layout. This is defined by a source. Currently
+the only valid value besides None is 'image-only':
+
+>>> import zeit.content.gallery.interfaces
+>>> field = zeit.content.gallery.interfaces.IGalleryEntry['layout']
+>>> list(field.vocabulary)
+[u'image-only']
+
+Let's set a layout on 01.jpg:
+
+>>> entry = gallery['01.jpg']
+>>> entry.layout is None
+True
+>>> entry.layout = u'image-only'
+>>> gallery['01.jpg'] = entry
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+  </head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="DSC00109_2.JPG">
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
+          </image>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
+          </thumbnail>
+        </block>
+        <block layout="image-only" name="01.jpg">
+          <title py:pytype="str">Der Wecker klingelt</title>
+          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+          </text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          </image>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          </thumbnail>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
+
+
+When we set the layout to None again, the layout attribute is removed:
+
+>>> entry = gallery['01.jpg']
+>>> entry.layout
+u'image-only'
+>>> entry.layout = None
+>>> gallery['01.jpg'] = entry
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+  </head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="DSC00109_2.JPG">
+          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
+          </image>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="jpeg">
+            <bu xsi:nil="true"/>
+          </thumbnail>
+        </block>
+        <block name="01.jpg">
+          <title py:pytype="str">Der Wecker klingelt</title>
+          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+          </text>
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          </image>
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpeg">
+            <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          </thumbnail>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
+
+
 
 Sorting
 +++++++

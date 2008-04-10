@@ -8,6 +8,7 @@ zeit.cms changes
   entfernt.
 - Im Channel werden die Treffer/Hits (today.xml) des jeweiligen Dokuments
   angezeigt (bug #4093).
+- Bildergalerie: Layout kann pro Bild eingestellt werden (bug #4048).
 
 0.9.8 (2008-04-09)
 ------------------

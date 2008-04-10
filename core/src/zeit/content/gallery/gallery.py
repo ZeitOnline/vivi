@@ -104,6 +104,9 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.text = node.find('text')
         if entry.text is None:
             entry.text = lxml.objectify.E.text()
+        entry.layout = node.get('layout')
+        if entry.layout is not None:
+            entry.layout = unicode(entry.layout)
         return zope.location.location.located(entry, self, key)
 
     def __delitem__(self, key):
@@ -246,6 +249,7 @@ def galleryentry_factory(context):
         context)
     entry.title = None
     entry.text = None
+    entry.layout = None
     return entry
 
 
@@ -273,11 +277,13 @@ class EntryXMLRepresentation(object):
         node['text'] = zope.security.proxy.removeSecurityProxy(
             self.context.text)
         node['image'] = zope.component.getAdapter(
-            self.context.image, zeit.cms.content.interfaces.IXMLReference,
-            name='image')
+            self.context.image,
+            zeit.cms.content.interfaces.IXMLReference, name='image')
         node['thumbnail']  = zope.component.getAdapter(
-            self.context.thumbnail, zeit.cms.content.interfaces.IXMLReference,
-            name='image')
+            self.context.thumbnail,
+            zeit.cms.content.interfaces.IXMLReference, name='image')
+        if self.context.layout:
+            node.set('layout', self.context.layout)
         return node
 
 

@@ -80,6 +80,8 @@ class EditEntry(zeit.cms.browser.form.EditForm):
     redirect_to_view = 'overview.html'
 
     field_groups = (
-        gocept.form.grouped.RemainingFields(
-            title=u'', css_class='full-width wide-widgets'),
+        gocept.form.grouped.Fields(
+            title=u'',
+            fields=('image', 'layout', 'title', 'html'),
+            css_class='full-width wide-widgets'),
     )

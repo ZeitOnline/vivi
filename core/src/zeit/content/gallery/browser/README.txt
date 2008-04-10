@@ -128,6 +128,9 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('01.jpg').click()
 >>> browser.getControl('Title').value = 'The man man'
 >>> browser.getControl('Text').value = '<strong>Der Mann am Stein</strong>'
+>>> browser.getControl('Layout').displayOptions
+['(no value)', 'Image only']
+>>> browser.getControl('Layout').displayValue = ['Image only']
 >>> browser.getControl('Apply').click()
 
 After saving we're back at the overview:
