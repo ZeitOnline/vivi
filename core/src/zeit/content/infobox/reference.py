@@ -5,8 +5,10 @@
 import zope.component
 import zope.interface
 
-import zeit.cms.interfaces
 import zeit.cms.content.dav
+import zeit.cms.interfaces
+import zeit.connector.interfaces
+import zeit.content.infobox.interfaces
 
 
 class InfoboxReference(object):
