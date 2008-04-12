@@ -6,6 +6,13 @@ The test content type is only available in tests. Its purpose is to allow
 testing of other components which would have to define their own type
 otherwise.
 
+Setup ftest:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+
 Instanciate and verify the inital xml:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
@@ -32,6 +39,17 @@ Now that was pretty boring. Add a title and year (from common metadata):
   </body>
 </testtype>
 
+Make sure we can adapt to webdav properties:
+
+>>> import zeit.connector.interfaces
+>>> zeit.connector.interfaces.IWebDAVProperties(content)
+<zeit.connector.resource.WebDAVProperties object at 0x...>
+
+
+
+Clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)
 
 Browser tests
 =============
