@@ -86,3 +86,21 @@ class IGalleryEntry(zope.interface.Interface):
         title=_('Layout'),
         required=False,
         source=zeit.content.gallery.source.LayoutSource())
+
+
+class GallerySource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.gallery'
+
+    def verify_interface(self, value):
+        return IGallery.providedBy(value)
+
+gallerySource = GallerySource()
+
+
+class IGalleryReference(zope.interface.Interface):
+
+    gallery = zope.schema.Choice(
+        title=_('Image gallery'),
+        required=False,
+        source=gallerySource)

@@ -1,0 +1,40 @@
+Gallery references
+==================
+
+Functional test setup:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+A gallery can be referenced within every ICMSContent. Create a gallery:
+
+
+>>> from zeit.content.gallery.gallery import Gallery
+>>> gallery = Gallery()
+>>> gallery.uniqueId = u'gallery-id'
+
+Create a testcontent:
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+
+Adapting `content` to IGalleryReference enables us to reference gallery:
+
+>>> import zeit.content.gallery.interfaces
+>>> gref = zeit.content.gallery.interfaces.IGalleryReference(content)
+>>> gref
+<zeit.content.gallery.reference.GalleryReference object at 0x...>
+
+Assign the gallery:
+
+>>> gref.gallery = gallery
+
+
+The gallery is now noted in the webdav properties of `content`:
+
+>>> import zeit.connector.interfaces
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
+>>> import pprint
+>>> pprint.pprint(dict(properties))
+{('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id'}

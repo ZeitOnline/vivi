@@ -26,4 +26,6 @@
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 
+  <include package="zeit.cms.testcontenttype" />
+
 </configure>

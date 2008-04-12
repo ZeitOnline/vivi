@@ -44,4 +44,8 @@
   <adapter factory=".gallery.EntryHTMLContent" />
   <adapter factory=".gallery.EntryHTMLConverter" />
 
+  <!-- References -->
+  <adapter factory=".reference.GalleryReference" />
+  <adapter factory=".reference.gallery_reference_to_webdav_properties" />
+
 </configure>
