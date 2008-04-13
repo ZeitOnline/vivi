@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu Apr 10 11:52:36 2008\n"
-"PO-Revision-Date: 2008-04-10 12:08+0100\n"
+"PO-Revision-Date: 2008-04-13 13:33+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1393,7 +1393,7 @@ msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 
 #: src/zeit/workflow/interfaces.py:31
 msgid "status-edited"
-msgstr "Bearbeitet (Redaktion)"
+msgstr "Redigiert"
 
 #: src/zeit/workflow/interfaces.py:36
 msgid "status-corrected"

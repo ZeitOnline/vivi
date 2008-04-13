@@ -10,6 +10,7 @@ zeit.cms changes
   angezeigt (bug #4093).
 - Bildergalerie: Layout kann pro Bild eingestellt werden (bug #4048).
 - Bildergallerie bei Artikel referenzieren (bug #4052).
+- Workflowstatus "Bearbeitet" heißt jetzt "redigiert" (bug #4089).
 
 
 0.9.8 (2008-04-09)
