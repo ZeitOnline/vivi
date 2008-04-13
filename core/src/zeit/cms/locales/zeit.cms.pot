@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Apr 10 11:52:36 2008\n"
+"POT-Creation-Date: Sun Apr 13 13:32:53 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:141
-#: src/zeit/content/gallery/interfaces.py:79
+#: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
 #: src/zeit/search/interfaces.py:18
@@ -855,16 +855,16 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:149
+#: src/zeit/content/article/browser/form.py:151
 msgid "Assets and related"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:157
+#: src/zeit/content/article/browser/form.py:159
 #: src/zeit/content/article/browser/configure.zcml:59
 msgid "Edit assets"
 msgstr ""
 
-#: src/zeit/content/article/browser/form.py:161
+#: src/zeit/content/article/browser/form.py:163
 #: src/zeit/content/article/browser/configure.zcml:76
 msgid "Assets"
 msgstr ""
@@ -1053,7 +1053,7 @@ msgstr ""
 
 #: src/zeit/content/centerpage/interfaces.py:33
 #: src/zeit/content/centerpage/interfaces.py:41
-#: src/zeit/content/gallery/interfaces.py:86
+#: src/zeit/content/gallery/interfaces.py:87
 msgid "Layout"
 msgstr ""
 
@@ -1085,15 +1085,19 @@ msgstr ""
 msgid "Save sorting"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:33
-msgid "Image folder"
+#: src/zeit/content/gallery/interfaces.py:105
+msgid "Image gallery"
 msgstr ""
 
 #: src/zeit/content/gallery/interfaces.py:34
+msgid "Image folder"
+msgstr ""
+
+#: src/zeit/content/gallery/interfaces.py:35
 msgid "Folder containing images to display in the gallery."
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:83
+#: src/zeit/content/gallery/interfaces.py:84
 #: src/zeit/content/infobox/interfaces.py:24
 #: src/zeit/wysiwyg/interfaces.py:15
 msgid "Text"

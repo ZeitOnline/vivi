@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Apr 10 11:52:36 2008\n"
-"PO-Revision-Date: 2008-04-13 13:33+0100\n"
+"POT-Creation-Date: Sun Apr 13 13:32:53 2008\n"
+"PO-Revision-Date: 2008-04-13 13:34+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/syndication/interfaces.py:36
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:26
 #: src/zeit/content/article/interfaces.py:141
-#: src/zeit/content/gallery/interfaces.py:79
+#: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
 #: src/zeit/search/interfaces.py:18
@@ -843,16 +843,16 @@ msgstr "Metadaten"
 msgid "Content"
 msgstr "Inhalt"
 
-#: src/zeit/content/article/browser/form.py:149
+#: src/zeit/content/article/browser/form.py:151
 msgid "Assets and related"
 msgstr "Assets und Related"
 
-#: src/zeit/content/article/browser/form.py:157
+#: src/zeit/content/article/browser/form.py:159
 #: src/zeit/content/article/browser/configure.zcml:59
 msgid "Edit assets"
 msgstr "Assets bearbeiten"
 
-#: src/zeit/content/article/browser/form.py:161
+#: src/zeit/content/article/browser/form.py:163
 #: src/zeit/content/article/browser/configure.zcml:76
 msgid "Assets"
 msgstr "Assets"
@@ -1041,7 +1041,7 @@ msgstr "Stil"
 
 #: src/zeit/content/centerpage/interfaces.py:33
 #: src/zeit/content/centerpage/interfaces.py:41
-#: src/zeit/content/gallery/interfaces.py:86
+#: src/zeit/content/gallery/interfaces.py:87
 msgid "Layout"
 msgstr "Layout"
 
@@ -1073,15 +1073,19 @@ msgstr "Bildergalerie-Eintrag bearbeiten"
 msgid "Save sorting"
 msgstr "Sortierung speichern"
 
-#: src/zeit/content/gallery/interfaces.py:33
+#: src/zeit/content/gallery/interfaces.py:105
+msgid "Image gallery"
+msgstr "Bildergalerie"
+
+#: src/zeit/content/gallery/interfaces.py:34
 msgid "Image folder"
 msgstr "Bilderordner"
 
-#: src/zeit/content/gallery/interfaces.py:34
+#: src/zeit/content/gallery/interfaces.py:35
 msgid "Folder containing images to display in the gallery."
 msgstr "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werden sollen."
 
-#: src/zeit/content/gallery/interfaces.py:83
+#: src/zeit/content/gallery/interfaces.py:84
 #: src/zeit/content/infobox/interfaces.py:24
 #: src/zeit/wysiwyg/interfaces.py:15
 msgid "Text"
