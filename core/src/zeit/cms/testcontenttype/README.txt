@@ -17,6 +17,11 @@ Instanciate and verify the inital xml:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content.__parent__ = repository
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
@@ -45,7 +50,13 @@ Make sure we can adapt to webdav properties:
 >>> zeit.connector.interfaces.IWebDAVProperties(content)
 <zeit.connector.resource.WebDAVProperties object at 0x...>
 
+Make sure we can get a browse location:
 
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.content.contentsource
+>>> loc = zope.component.getMultiAdapter(
+...     (content, zeit.cms.content.contentsource.cmsContentSource),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
 Clean up:
 

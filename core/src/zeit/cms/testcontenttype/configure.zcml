@@ -36,6 +36,11 @@
       />
   </class>
 
+  <interface
+    interface=".interfaces.ITestContentType"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
   <browser:defaultView
     for=".interfaces.ITestContentType"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
