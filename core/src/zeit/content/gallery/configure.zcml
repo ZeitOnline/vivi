@@ -47,5 +47,10 @@
   <!-- References -->
   <adapter factory=".reference.GalleryReference" />
   <adapter factory=".reference.gallery_reference_to_webdav_properties" />
+  <adapter factory=".reference.gallery_reference_browse_location" />
+  <utility
+    component=".interfaces.gallerySource"
+    name="zeit.content.gallery"
+    />
 
 </configure>

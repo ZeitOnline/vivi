@@ -158,6 +158,14 @@ We get the form back after saving, the data is changed:
 >>> browser.getControl(name='form.title').value
 'EU unterstuetzt Trinker-Steuer'
 
+It is not possible to change the file name in the edit view:
+
+>>> browser.getControl('File name')
+Traceback (most recent call last):
+    ...
+LookupError: label 'File name'
+
+
 The article isn't syndicated in any feed for now. The form shouldn't
 have a readonly field for Automatic Teasersyndication:
 
@@ -174,6 +182,7 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Edit assets').click()
 
 Let's add an image:
@@ -199,38 +208,18 @@ Associate an infobox[1]_:
 
 >>> browser.getControl('Infobox').value = 'http://xml.zeit.de/infobox'
 
-It is not possible to change the file name in the edit view:
 
->>> browser.getControl('File name')
-Traceback (most recent call last):
-    ...
-LookupError: label 'File name'
-
-
-We also want to add an image group. Create one first. To create it we need to
-setup the site:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
-
-Create the group:
-
->>> import zeit.content.image.test
->>> group = zeit.content.image.test.create_image_group()
-
-Commit the transaction so our browser sees the change. Also unset the site
-again:
-
->>> import transaction
->>> transaction.commit()
->>> zope.app.component.hooks.setSite(old_site)
-
-
-Now add the image group to the article:
+We also want to add an image group[2]_.
 
 >>> browser.getControl('Add Images').click()
 >>> browser.getControl(name="form.images.1.").value = group.uniqueId
+
+Also associate a gallery[3]_:
+
+>>> browser.getControl('Image gallery').value = gallery.uniqueId
+
+Apply changes:
+
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <?xml ...
@@ -680,4 +669,36 @@ prevent entering more than the allowed length. Makre sure the widget is used:
     >>> transaction.commit()
     >>> zope.app.component.hooks.setSite(old_site)
 
+.. [2] Create an image group. To create it we need to setup the site:
 
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Create the group:
+
+    >>> import zeit.content.image.test
+    >>> group = zeit.content.image.test.create_image_group()
+
+    Commit the transaction so our browser sees the change. Also unset the site
+    again:
+
+    >>> import transaction
+    >>> transaction.commit()
+    >>> zope.app.component.hooks.setSite(old_site)
+
+.. [3] Create an image gallery.
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Create and add:
+
+    >>> import zeit.content.gallery.gallery
+    >>> gallery = zeit.content.gallery.gallery.Gallery()
+    >>> repository['gallery'] = gallery
+
+    >>> import transaction
+    >>> transaction.commit()
+    >>> zope.app.component.hooks.setSite(old_site)

@@ -18,13 +18,13 @@ import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
 import zeit.cms.interfaces
+import zeit.wysiwyg.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
-import zeit.wysiwyg.interfaces
-
-import zeit.content.infobox.interfaces
-import zeit.content.image.interfaces
 import zeit.content.article.interfaces
+import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
+import zeit.content.infobox.interfaces
 
 
 ITemplateChooserSchema = (
@@ -142,7 +142,9 @@ class AssetBase(object):
         zope.formlib.form.FormFields(
             zeit.cms.content.interfaces.IRelatedContent) +
         zope.formlib.form.FormFields(
-            zeit.content.infobox.interfaces.IInfoboxReference))
+            zeit.content.infobox.interfaces.IInfoboxReference) +
+        zope.formlib.form.FormFields(
+            zeit.content.gallery.interfaces.IGalleryReference))
 
     field_groups = (
         gocept.form.grouped.RemainingFields(

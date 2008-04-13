@@ -5,8 +5,9 @@
 import zope.component
 import zope.interface
 
-import zeit.cms.interfaces
+import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zeit.content.gallery.interfaces
 
 
@@ -28,3 +29,17 @@ class GalleryReference(object):
 @zope.component.adapter(GalleryReference)
 def gallery_reference_to_webdav_properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context)
+
+
+
+@zope.component.adapter(
+    zeit.content.gallery.interfaces.IGalleryReference,
+    zeit.content.gallery.interfaces.GallerySource)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def gallery_reference_browse_location(context, source):
+    """Gallery browse location."""
+    return zope.component.queryMultiAdapter(
+        (context.context, source),
+        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+

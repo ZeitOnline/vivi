@@ -10,6 +10,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.field
 from zeit.cms.i18n import MessageFactory as _
 
+import zeit.content.image.interfaces
 import zeit.content.gallery.source
 
 

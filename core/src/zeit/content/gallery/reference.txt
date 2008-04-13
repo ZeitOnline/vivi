@@ -13,11 +13,16 @@ A gallery can be referenced within every ICMSContent. Create a gallery:
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
 >>> gallery.uniqueId = u'gallery-id'
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> gallery.__parent__ = repository
 
 Create a testcontent:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content.__parent__ = repository['online']
 
 Adapting `content` to IGalleryReference enables us to reference gallery:
 
@@ -38,3 +43,30 @@ The gallery is now noted in the webdav properties of `content`:
 >>> import pprint
 >>> pprint.pprint(dict(properties))
 {('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id'}
+
+
+The browse location of a gallery reference depends on the adapted object and
+yields the container the object is in:
+
+>>> import zope.component
+>>> import zeit.cms.browser.interfaces
+>>> loc = zope.component.getMultiAdapter(
+...     (gref,
+...      zeit.content.gallery.interfaces.IGalleryReference['gallery'].source),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+>>> loc
+<zeit.cms.repository.folder.Folder object at 0x...>
+>>> loc.uniqueId
+u'http://xml.zeit.de/online'
+
+
+The gallery source is a utility:
+
+>>> name = zeit.content.gallery.interfaces.IGalleryReference[
+...     'gallery'].source.name
+>>> name
+'zeit.content.gallery'
+>>> zope.component.getUtility( 
+...     zeit.cms.content.interfaces.ICMSContentSource, name)
+<zeit.content.gallery.interfaces.GallerySource object at 0x...>
+
