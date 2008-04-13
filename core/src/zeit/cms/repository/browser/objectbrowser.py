@@ -15,7 +15,7 @@ import zeit.cms.browser.interfaces
     zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-def folder_default_browse_location(context, schema):
+def folder_default_browse_location(context, source):
     return context
 
 
@@ -24,7 +24,7 @@ def folder_default_browse_location(context, schema):
     zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-def content_default_browse_location(context, schema):
+def content_default_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.__parent__, schema),
+        (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
