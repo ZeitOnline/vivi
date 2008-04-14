@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.9 (unreleased)
+0.9.9 (2008-04-14)
 ------------------
 
 - Veraltete Einträge im Funktions-/Methodencache werden jetzt alle 100 Requests
