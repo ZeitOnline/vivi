@@ -97,7 +97,9 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
           id="field.reference" value=""
           name="field.reference" />
-  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
 </div>
 <script>
   new ObjectReferenceWidget(
@@ -126,7 +128,9 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
          id="field.reference" value="http://content" 
          name="field.reference" />
-  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
 </div>
 <script>
   new ObjectReferenceWidget(
@@ -161,7 +165,9 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
          id="field.reference" value="http://exists/blubs"
          name="field.reference" />
-  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
 </div>
 <script>
   new ObjectReferenceWidget(
@@ -195,7 +201,9 @@ Returning location for <Content object at 0x...>
   <input class="object-reference" type="text"
          id="field.reference" value="http://foo"
          name="field.reference" />
-  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
 </div>
 <script>
   new ObjectReferenceWidget(
