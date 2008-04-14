@@ -245,3 +245,15 @@ u'http://xml.zeit.de/online/2007/01'
 Cleanup:
 
 >>> zope.app.component.hooks.setSite(old_site)
+
+
+Viewing objects by unique_id
+============================
+
+There is a helper which redirects to the view of an object when you put in
+the unique id:
+
+>>> browser.open('http://localhost/++skin++cms/@@redirect_to?unique_id='
+...              'http://xml.zeit.de/online/2007/01/Somalia')
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'

@@ -20,6 +20,9 @@ from zeit.cms.i18n import MessageFactory as _
 class Sidebar(zope.viewlet.viewlet.ViewletBase,
               zeit.cms.browser.listing.Listing):
     """view class for navtree"""
+
+    css_class = 'hasMetadata'
+
     columns = (
         zeit.cms.browser.listing.TypeColumn(u''),
         zeit.cms.browser.column.LinkColumn(
@@ -28,6 +31,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
             cell_formatter=lambda v, i, f: i.title or i.__name__,
             css_class=lambda v, i, f: i.type,
             view='edit.html'),
+        zeit.cms.browser.listing.MetadataColumn(searchable_text=False),
         )
 
     def render(self):
@@ -35,8 +39,10 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
 
     @property
     def table(self):
-        return zc.table.table.Formatter(
+        formatter = zc.table.table.Formatter(
             self.context, self.request, self.content, columns=self.columns)
+        formatter.cssClasses['table'] = self.css_class
+        return formatter
 
     @property
     def workingcopy(self):
@@ -44,6 +50,10 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
             self.request.principal)
 
     contentContext = workingcopy
+
+    @property
+    def content(self):
+        return reversed(super(Sidebar, self).content)
 
 
 @zope.component.adapter(

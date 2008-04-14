@@ -122,6 +122,7 @@ form .widgets-float .field .hint {
 }
 
 form .full-width {
+    clear: both;
     right: 0;
 }
 
@@ -152,6 +153,10 @@ form .wide-widgets .field .sequencewidget,
 form .wide-widgets .field .combinationFieldWidget,
 form .wide-widgets .field textarea {
     width: 95%;
+}
+
+form .wide-widgets .field .object-widget > .object-reference {
+    width: 90%;
 }
 
 form .column-right {

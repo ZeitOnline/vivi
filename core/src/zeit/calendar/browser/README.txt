@@ -99,7 +99,21 @@ The event can be edited again:
 
 After editing we're also back at the calendar view.
 
+>>> bookmark = browser.url
 
+Drag and drop support
++++++++++++++++++++++
+
+The calendar has DnD support: Documents can be dropped on it which yields the
+add form which an already assigned document. Construct the url manually here:
+
+>>> url = ("http://localhost/++skin++cms/calendar/"
+...        "@@zeit.calendar.Event.AddForm?form.start=2006-05-04"
+...        "&form.related.count=1"
+...        "&form.related.0.=http://xml.zeit.de/politik.feed")
+>>> browser.open(url)
+>>> browser.getControl(name="form.related.0.").value
+'http://xml.zeit.de/politik.feed'
 
 Navigating
 ==========
@@ -108,6 +122,7 @@ There are 5 navigation links in the calendar. We have added an event for
 2006-05-04, so we are looking at the page for May 2006. After clicking the "one
 year back" link, we're at 2005/05:
 
+>>> browser.open(bookmark)
 >>> print browser.etree.xpath('//div[@id="content"]//h1')[0].text
 Termine...5/2006...
 >>> browser.getLink("«").click()

@@ -122,11 +122,20 @@ def listRepresentation_to_Lockable(obj):
 
 class MetadataColumn(zc.table.column.GetterColumn):
 
+    def __init__(self, title=u'', searchable_text=True, **kwargs):
+        super(MetadataColumn, self).__init__(title=title, **kwargs)
+        self.searchable_text = searchable_text
+
     def getter(self, item, formatter):
-        return ('<span class="SearchableText">%s</span>'
-                '<span class="URL">%s</span>'
-                '<span class="uniqueId">%s</span>' % (
-                    item.searchableText, item.url, item.uniqueId))
+        result = []
+        if self.searchable_text:
+            result.append('<span class="SearchableText">%s</span>' %
+                          item.searchableText)
+        result.append(
+            '<span class="URL">%s</span>'
+            '<span class="uniqueId">%s</span>' % (
+                item.url, item.uniqueId))
+        return ''.join(result)
 
 
 class LockedColumn(zc.table.column.GetterColumn):

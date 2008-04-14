@@ -8,7 +8,12 @@
     id view/name;
     name view/name;
     value view/_getFormValue" />
-  <input class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Choose object" class="browse-objects" type="button" 
+    name="browseObjects" value="…" 
+    i18n:attributes="title" />
+  <input title="Show object" class="show-referenced-object" type="button" 
+    name="showReferencedObject" value="→" 
+    i18n:attributes="title" />
 </div>
 <script tal:content="string:
   new ObjectReferenceWidget(

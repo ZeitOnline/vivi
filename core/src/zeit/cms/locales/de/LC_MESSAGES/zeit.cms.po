@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Sun Apr 13 13:32:53 2008\n"
-"PO-Revision-Date: 2008-04-13 13:34+0100\n"
+"POT-Creation-Date: Mon Apr 14 08:38:58 2008\n"
+"PO-Revision-Date: 2008-04-14 08:39+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,15 +15,28 @@ msgstr ""
 msgid "Calendar"
 msgstr "Kalender"
 
-#: src/zeit/calendar/browser/event.py:43
+#: src/zeit/calendar/browser/event.py:25
+msgid "Event"
+msgstr "Termin"
+
+#: src/zeit/calendar/browser/event.py:29
+#: src/zeit/calendar/interfaces.py:31
+msgid "Description"
+msgstr "Beschreibung"
+
+#: src/zeit/calendar/browser/event.py:33
+msgid "Related"
+msgstr "Relatd"
+
+#: src/zeit/calendar/browser/event.py:53
 msgid "Add event"
 msgstr "Termin hinzufügen"
 
-#: src/zeit/calendar/browser/event.py:57
+#: src/zeit/calendar/browser/event.py:67
 msgid "Edit event"
 msgstr "Termin bearbeiten"
 
-#: src/zeit/calendar/browser/event.py:60
+#: src/zeit/calendar/browser/event.py:70
 #: src/zeit/cms/browser/form.py:251
 msgid "Apply"
 msgstr "Speichern"
@@ -37,13 +50,13 @@ msgid "Date when the event starts."
 msgstr "Datum/Uhrzeit des Terminbeginns"
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:258
+#: src/zeit/cms/browser/listing.py:267
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
 #: src/zeit/cms/content/interfaces.py:242
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:36
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:26
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:29
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
@@ -55,10 +68,6 @@ msgstr "Titel"
 #: src/zeit/calendar/interfaces.py:28
 msgid "Title will be shown in overview pages."
 msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
-
-#: src/zeit/calendar/interfaces.py:31
-msgid "Description"
-msgstr "Beschreibung"
 
 #: src/zeit/calendar/interfaces.py:35
 #: src/zeit/cms/content/interfaces.py:249
@@ -164,24 +173,24 @@ msgstr "${DYNAMIC_CONTENT}"
 msgid "Form"
 msgstr "Formular"
 
-#: src/zeit/cms/browser/listing.py:185
+#: src/zeit/cms/browser/listing.py:194
 #: src/zeit/cms/workflow/interfaces.py:24
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: src/zeit/cms/browser/listing.py:188
+#: src/zeit/cms/browser/listing.py:197
 msgid "Published but has changes"
 msgstr "Veröffentlicht, hat aber Änderungen"
 
-#: src/zeit/cms/browser/listing.py:191
+#: src/zeit/cms/browser/listing.py:200
 msgid "Not published"
 msgstr "Nicht veröffentlicht"
 
-#: src/zeit/cms/browser/listing.py:247
+#: src/zeit/cms/browser/listing.py:256
 msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
-#: src/zeit/cms/browser/listing.py:254
+#: src/zeit/cms/browser/listing.py:263
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:99
@@ -189,29 +198,29 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/cms/browser/listing.py:262
+#: src/zeit/cms/browser/listing.py:271
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr "Dateiname"
 
-#: src/zeit/cms/browser/listing.py:266
+#: src/zeit/cms/browser/listing.py:275
 msgid "Modified"
 msgstr "Verändert"
 
-#: src/zeit/cms/browser/listing.py:269
+#: src/zeit/cms/browser/listing.py:278
 #: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr "Treffer"
 
-#: src/zeit/cms/browser/listing.py:271
+#: src/zeit/cms/browser/listing.py:280
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr "Ressort"
 
-#: src/zeit/cms/browser/listing.py:275
+#: src/zeit/cms/browser/listing.py:284
 #: src/zeit/cms/content/interfaces.py:71
 #: src/zeit/search/browser/search.py:109
 #: src/zeit/search/interfaces.py:23
@@ -252,6 +261,10 @@ msgstr "Verstecken"
 #: src/zeit/cms/browser/notices.pt:5
 msgid "notices_label"
 msgstr "Meldungen"
+
+#: src/zeit/cms/browser/object-reference-widget.pt:11
+msgid "Choose object"
+msgstr "Objekt auswählen"
 
 #: src/zeit/cms/browser/system-error.pt:8
 msgid "The action you were trying to do could not be finished."
@@ -743,7 +756,7 @@ msgid "You need to select a feed as a syndication target first, before you can s
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
 #: src/zeit/cms/syndication/browser/manager.py:102
-#: src/zeit/cms/workingcopy/browser/configure.zcml:48
+#: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:285
 msgid "Preview"
 msgstr "Vorschau"
@@ -799,7 +812,7 @@ msgstr "Zuerst veröffentlicht am"
 msgid "Edited documents"
 msgstr "Bearbeitete Dokumente"
 
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:22
+#: src/zeit/cms/workingcopy/browser/sidebar.pt:24
 msgid "No edited documents."
 msgstr "Keine bearbeiteten Dokumente."
 
@@ -839,7 +852,7 @@ msgid "View article metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/article/browser/form.py:133
-#: src/zeit/cms/workingcopy/browser/configure.zcml:16
+#: src/zeit/cms/workingcopy/browser/configure.zcml:22
 msgid "Content"
 msgstr "Inhalt"
 

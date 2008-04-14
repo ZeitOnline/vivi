@@ -3,6 +3,12 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <resourceLibrary
+    name="zeit.cms.workingcopy"
+    require="zeit.cms">
+    <directory source="resources" include="workingcopy.js" />
+  </resourceLibrary>
+
   <browser:viewlet
     name="20_workingcopy"
     for="*"
@@ -53,5 +59,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-actions-external" title="Preview"
     />
+
 </configure>
 

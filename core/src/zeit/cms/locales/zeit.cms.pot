@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Apr 13 13:32:53 2008\n"
+"POT-Creation-Date: Mon Apr 14 08:38:58 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -27,15 +27,28 @@ msgstr ""
 msgid "Calendar"
 msgstr ""
 
-#: src/zeit/calendar/browser/event.py:43
+#: src/zeit/calendar/browser/event.py:25
+msgid "Event"
+msgstr ""
+
+#: src/zeit/calendar/browser/event.py:29
+#: src/zeit/calendar/interfaces.py:31
+msgid "Description"
+msgstr ""
+
+#: src/zeit/calendar/browser/event.py:33
+msgid "Related"
+msgstr ""
+
+#: src/zeit/calendar/browser/event.py:53
 msgid "Add event"
 msgstr ""
 
-#: src/zeit/calendar/browser/event.py:57
+#: src/zeit/calendar/browser/event.py:67
 msgid "Edit event"
 msgstr ""
 
-#: src/zeit/calendar/browser/event.py:60
+#: src/zeit/calendar/browser/event.py:70
 #: src/zeit/cms/browser/form.py:251
 msgid "Apply"
 msgstr ""
@@ -49,13 +62,13 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:258
+#: src/zeit/cms/browser/listing.py:267
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
 #: src/zeit/cms/content/interfaces.py:242
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:36
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:26
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:29
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
@@ -66,10 +79,6 @@ msgstr ""
 
 #: src/zeit/calendar/interfaces.py:28
 msgid "Title will be shown in overview pages."
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:31
-msgid "Description"
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
@@ -176,24 +185,24 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:185
+#: src/zeit/cms/browser/listing.py:194
 #: src/zeit/cms/workflow/interfaces.py:24
 msgid "Published"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:188
+#: src/zeit/cms/browser/listing.py:197
 msgid "Published but has changes"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:191
+#: src/zeit/cms/browser/listing.py:200
 msgid "Not published"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:247
+#: src/zeit/cms/browser/listing.py:256
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:254
+#: src/zeit/cms/browser/listing.py:263
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/content/article/interfaces.py:139
 #: src/zeit/search/browser/search.py:99
@@ -201,29 +210,29 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:262
+#: src/zeit/cms/browser/listing.py:271
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:266
+#: src/zeit/cms/browser/listing.py:275
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:269
+#: src/zeit/cms/browser/listing.py:278
 #: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:271
+#: src/zeit/cms/browser/listing.py:280
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:275
+#: src/zeit/cms/browser/listing.py:284
 #: src/zeit/cms/content/interfaces.py:71
 #: src/zeit/search/browser/search.py:109
 #: src/zeit/search/interfaces.py:23
@@ -263,6 +272,10 @@ msgstr ""
 #: src/zeit/cms/browser/notices.pt:5
 #. Default: "Notices"
 msgid "notices_label"
+msgstr ""
+
+#: src/zeit/cms/browser/object-reference-widget.pt:11
+msgid "Choose object"
 msgstr ""
 
 #: src/zeit/cms/browser/system-error.pt:8
@@ -755,7 +768,7 @@ msgid "You need to select a feed as a syndication target first, before you can s
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:102
-#: src/zeit/cms/workingcopy/browser/configure.zcml:48
+#: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:285
 msgid "Preview"
 msgstr ""
@@ -811,7 +824,7 @@ msgstr ""
 msgid "Edited documents"
 msgstr ""
 
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:22
+#: src/zeit/cms/workingcopy/browser/sidebar.pt:24
 msgid "No edited documents."
 msgstr ""
 
@@ -851,7 +864,7 @@ msgid "View article metadata"
 msgstr ""
 
 #: src/zeit/content/article/browser/form.py:133
-#: src/zeit/cms/workingcopy/browser/configure.zcml:16
+#: src/zeit/cms/workingcopy/browser/configure.zcml:22
 msgid "Content"
 msgstr ""
 

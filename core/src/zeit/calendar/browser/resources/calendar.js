@@ -14,19 +14,9 @@ var CalendarDayDND = Class.extend({
     },
 
     handleDrop: function(element) {
-        var title_element = getFirstElementByTagAndClassName(
-            null, 'Text', element)
-
-        if (title_element == undefined) {
-            var title = element.uniqueId;
-        } else {
-            var title = scrapeText(title_element)
-        }
-
-        var keys = ['form.related.0', 
-                    'form.related.title.0', 
+        var keys = ['form.related.0.', 
                     'form.related.count'];
-        var values = [element.uniqueId, title, 1];
+        var values = [element.uniqueId,  1];
 
         var qs = queryString(keys, values);
 

@@ -16,6 +16,8 @@
       Edited documents
     </a>
   </h1>
+
+  <tal:block replace="resource_library:zeit.cms.workingcopy" />
   
   <div class="PanelContent" id="WorkingcopyPanelContent">
     <div id="workingcopycontents">

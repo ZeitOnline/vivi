@@ -11,7 +11,14 @@ zeit.cms changes
 - Bildergalerie: Layout kann pro Bild eingestellt werden (bug #4048).
 - Bildergallerie bei Artikel referenzieren (bug #4052).
 - Workflowstatus "Bearbeitet" heißt jetzt "redigiert" (bug #4089).
-
+- Draggen von Dokumenten in den Kalender funktioniert wieder (bug #4096).
+- Kalender-Eintrag: Formular übersichtlicher
+- Draggen von Elementen aus "Bearbeitete Dokumente" (bug #4095).
+- Bearbeite Dokumente: Das zuletzt ausgecheckte Dokument steht jetzt oben (bug
+  #4054).
+- Verlinkte Objekte: 3-Punkte-Symbol mit Mouse over versehen (bug #4057).
+- Verlinkte Objekte: Zusätzlicher Knopf (Pfeil nach rechts) um zum verlinkten
+  Objekt zu gelangen (bug #4082).
 
 0.9.8 (2008-04-09)
 ------------------

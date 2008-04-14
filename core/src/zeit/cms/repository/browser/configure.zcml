@@ -111,6 +111,7 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="get_object_browser"
     template="objectbrowser.pt"
     permission="zope.View" 
@@ -118,5 +119,14 @@
 
   <adapter factory=".objectbrowser.folder_default_browse_location" />
   <adapter factory=".objectbrowser.content_default_browse_location" />
+
+  <!-- unique id redirector -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="redirect_to"
+    class=".repository.RedirectToObjectWithUniqueId"
+    permission="zope.View"
+    />
 
 </configure>

@@ -33,6 +33,9 @@
         tal:define="contenttitle options/title|view/title|context/title|default"
         >
       <head>
+        <script type="text/javascript" tal:content="string:
+          var application_url = '${request/getApplicationURL}';
+        "/>
         <title>
           <metal:title metal:define-slot="title"
             tal:content="contenttitle"

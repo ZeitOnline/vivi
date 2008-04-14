@@ -53,6 +53,9 @@ The sidebar lists the document now:
     <td>
       <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/edit.html">Somalia</a>
     </td>
+    <td>
+      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/Somalia</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
+    </td>
   </tr>
   </tbody>
 </table>
@@ -112,6 +115,49 @@ Let's delete it:
         <span class="Info">There are no objects in this folder.</span>
       </div>
       ...
+
+Sorting
+=======
+
+The sidebar is sorted in a way that the document which was checked out last is
+the first. Checkout two documents:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
+>>> browser.getLink('Checkout').click()
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/studiVZ')
+>>> browser.getLink('Checkout').click()
+
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html ...
+  <tbody>
+  <tr>
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/studiVZ/edit.html">studiVZ</a>
+    </td>
+    <td>
+      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/studiVZ</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/studiVZ</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/edit.html">Somalia</a>
+    </td>
+    <td>
+      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/Somalia</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+...
 
 
 Object browser
@@ -210,7 +256,7 @@ Retrieve the copied object:
 >>> browser.open('http://localhost/++skin++cms/repository/tmp/previews/')
 >>> url = browser.etree.xpath(
 ...     '//table[contains(@class, "contentListing")]'
-...     '//span[@class="URL"]')[0].text
+...     '//span[@class="URL"]')[-1].text
 >>> browser.open(url)
 >>> print browser.contents
 <?xml ...

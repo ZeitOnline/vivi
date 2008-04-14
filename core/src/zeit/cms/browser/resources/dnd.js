@@ -111,6 +111,7 @@ var ObjectReferenceWidget = Class.extend({
         this.input = getFirstElementByTagAndClassName(
             'input', 'object-reference', this.element);
         this.input.object_reference_widget = this;
+        this.changed = false;
 
         var othis = this;
         new Droppable(this.element, {
@@ -120,6 +121,9 @@ var ObjectReferenceWidget = Class.extend({
             },
         });
         connect(element, 'onclick', this, 'handleClick');
+        connect(this.input, 'onchange', function(event) {
+            othis.changed = true;
+        });
 
         // this saves a click and shows the object browser initially
         if (show_popup) {
@@ -180,7 +184,24 @@ var ObjectReferenceWidget = Class.extend({
         this.loadContentFromUrl(this.default_browsing_url);
     },
 
+    showReferencedObject: function() {
+        var unique_id = this.getObject();
+        if (!unique_id) {
+            return
+        }
+        // XXX i18n
+        var msg = 'Your changes have not been saved, yet. Continue?';
+        if (this.changed && !confirm(msg)) {
+            return
+        }
+        var qs = MochiKit.Base.queryString({
+            'unique_id': unique_id});
+        var url = application_url + '/redirect_to?' + qs
+        window.location = url;
+    },
+
     selectObject: function(unique_id) {
+        this.changed = true;
         this.input.value = unique_id;
     },
 

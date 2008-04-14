@@ -5,7 +5,8 @@
 import datetime
 
 import zope.formlib.form
-import zope.i18nmessageid
+
+import gocept.form.grouped
 
 import zeit.cms.interfaces
 import zeit.cms.browser.form
@@ -19,11 +20,20 @@ import zeit.calendar.interfaces
 
 class EventFormBase(object):
 
-    widget_groups = (
-        (u"Ereignis", zeit.cms.browser.form.REMAINING_FIELDS,
-         'column-left-small'),
-        (u"Beschreibung", ('related', 'description',), 'column-right-small'),
-    )
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Event"),
+            ('start', 'location', 'thema'),
+            css_class='column-left-small'),
+        gocept.form.grouped.Fields(
+            _('Description'),
+            ('title', 'description'),
+            css_class='column-right-small'),
+        gocept.form.grouped.Fields(
+            _('Related'),
+            ('related', ),
+            css_class="full-width wide-widgets"))
+
     form_fields = zope.formlib.form.Fields(
         zeit.calendar.interfaces.ICalendarEvent)
 

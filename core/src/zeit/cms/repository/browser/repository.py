@@ -126,3 +126,18 @@ class HiddenCollections(zeit.cms.browser.view.Base):
         return zeit.cms.repository.interfaces.IUserPreferences(
             zeit.cms.workingcopy.interfaces.IWorkingcopy(
                 self.request.principal))
+
+
+class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
+
+    def __call__(self, unique_id):
+        # TODO: create a meaningful error message when the object doesn't
+        # exist.
+        obj = self.repository.getContent(unique_id)
+        self.redirect(self.url(obj, '@@view.html'))
+        return u''
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
