@@ -72,6 +72,12 @@ zeit.cms.TableSorter = Class.extend({
             new Droppable(row, {
                 ondrop: function (element) {
                     var tbody = element.parentNode;
+                    if (tbody.nodeName != 'TBODY') {
+                        // TODO: i18n
+                        alert('The table can only be sorted. ' +
+                              'Adding is not possible.')
+                        return;
+                    }
                     var before = null;
                     if (row.cells[0].nodeName == 'TH') {
                         before = tbody.firstChild;
