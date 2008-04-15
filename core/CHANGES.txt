@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Droppen von Objekten in einen Channel führt nicht mehr zum JS-Fehler (sondern
   zu einer richtigen Fehlermeldung), bug #4094.
+- Horizontales scrollen in der Dateiliste erlaubt, wenn die Tabelle zu breit
+  wird.
 
 
 0.9.9 (2008-04-14)

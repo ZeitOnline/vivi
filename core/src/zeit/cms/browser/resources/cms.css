@@ -238,7 +238,6 @@ pre {
     left: 0;
     bottom: 0;
     overflow: auto;
-    overflow-x: hidden;
 }
 
 .topcontent-small {
