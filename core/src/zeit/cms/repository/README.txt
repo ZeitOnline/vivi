@@ -259,6 +259,52 @@ Traceback (most recent call last):
 KeyError: "The resource u'http://xml.zeit.de/i-dont-exist' does not exist."
 
 
+Getting content by unique_id
+============================
+
+The `getContent` method of IRepository returns the contained content object
+from the unique id:
+
+>>> content = repository.getContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> content
+<zeit.cms.repository.unknown.UnknownResource object at 0x...>
+>>> content.__parent__
+<zeit.cms.repository.folder.Folder object at 0x...>
+>>> content.__parent__.__name__
+u'01'
+
+
+A TypeError is raised if anything but a string is passed:
+
+>>> repository.getContent(None)
+Traceback (most recent call last):
+    ...
+TypeError: unique_id: string expected, got <type 'NoneType'>
+
+>>> repository.getContent(123)
+Traceback (most recent call last):
+    ...
+TypeError: unique_id: string expected, got <type 'int'>
+
+
+A ValueError is raised if the unique_id doesn't start with the configured
+prefix of http://xml.zeit.de:
+
+>>> repository.getContent('foo')
+Traceback (most recent call last):
+    ...
+ValueError: The id 'foo' is invalid.
+
+
+A KeyError is raised if the unique_id does not reference to an existing object:
+
+>>> repository.getContent('http://xml.zeit.de/online/foo')
+Traceback (most recent call last):
+    ...
+KeyError: 'http://xml.zeit.de/online/foo'
+
+
 User Preferences
 ================
 

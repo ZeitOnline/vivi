@@ -28,9 +28,10 @@ class IRepository(zope.interface.Interface):
         During one request every call to this function with the same unique_id
         will return the *same* content object.
 
-        raises KeyError if unique_id is not referencing a valid object.
+        raises TypeError if unique_id is not a basestring.
         raises ValueError if the unique_id is invalid (i.e. does not start with
             the correct prefix).
+        raises KeyError if unique_id is not referencing a valid object.
 
         """
 

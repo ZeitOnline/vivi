@@ -166,6 +166,9 @@ class Repository(persistent.Persistent, Container):
         return keys
 
     def getContent(self, unique_id):
+        if not isinstance(unique_id, basestring):
+            raise TypeError("unique_id: string expected, got %s" %
+                            type(unique_id))
         if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
             raise ValueError("The id %r is invalid." % unique_id)
         path = unique_id.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
