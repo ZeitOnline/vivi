@@ -10,6 +10,9 @@ zeit.cms changes
   wird.
 - Channel haben jetzt <channel> als Root-Tag (bug #4109).
 - Relateds werden jetzt bei der Syndizierung mit eingefügt (bug #4106).
+- Asset-Bearbeiten/Anzeigen-Seite produzierte einen Systemfehler, wenn es
+  artbox_info als Property gab, diese aber leer war oder einen ungültigen Wert
+  hatte (bug #4124).
 
 
 0.9.9 (2008-04-14)

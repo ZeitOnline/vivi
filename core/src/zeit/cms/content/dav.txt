@@ -235,12 +235,26 @@ When a unique id references an object wich doesn't exist, None is returned:
 >>> converter.fromProperty(u'http://xml.zeit.de/online/gibtsnich') is None
 True
 
-Wehen a unique id references an object which exists but is not contained in the
+When a unique id references an object which exists but is not contained in the
 source, None is returned, too:
 
 >>> converter.fromProperty(
 ...     'http://xml.zeit.de/online/2007/01/thailand-anschlaege') is None
 True
+
+Bug #4124: When the property exists, but is empty or None, the source raised
+some AttributeError. Make sure this doesn't happen any more:
+
+>>> converter.fromProperty(None) is None
+True
+>>> converter.fromProperty('') is None
+True
+
+Make also sure that invalid ids don't cause an error:
+
+>>> converter.fromProperty('bla bla') is None
+True
+
 
 Restore old site:
 >>> zope.app.component.hooks.setSite(old_site)

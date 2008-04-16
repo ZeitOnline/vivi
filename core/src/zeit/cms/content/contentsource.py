@@ -11,6 +11,7 @@ import zeit.cms.content._bootstrapinterfaces
 
 
 class CMSContentSource(object):
+    """A source for all cms content."""
 
     zope.interface.implements(
         zeit.cms.content._bootstrapinterfaces.INamedCMSContentSource)
@@ -45,6 +46,7 @@ cmsContentSource = CMSContentSource()
 
 
 class FolderSource(CMSContentSource):
+    """A source containing folders."""
 
     name = 'folders'
 
@@ -66,11 +68,13 @@ class ChoicePropertyWithCMSContentSource(object):
         self.source = source
 
     def fromProperty(self, value):
+        if not value:
+            return None
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         try:
             content = repository.getContent(value)
-        except KeyError:
+        except (KeyError, ValueError):
             return
         if content in self.source:
             return content
