@@ -198,6 +198,11 @@ class CommonMetadataUpdater(object):
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
+    short_title_path = lxml.objectify.ObjectPath('.short.title')
+    short_text_path = lxml.objectify.ObjectPath('.short.text')
+    homepage_title_path = lxml.objectify.ObjectPath('.homepage.title')
+    homepage_text_path = lxml.objectify.ObjectPath('.homepage.text')
+
     def update_entry(self, entry, content):
         metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
         if metadata is None:
@@ -206,10 +211,11 @@ class CommonMetadataUpdater(object):
         entry['title'] = metadata.teaserTitle
         entry['text'] = metadata.teaserText
         entry['byline'] = metadata.byline
-        lxml.objectify.ObjectPath('.short.title').setattr(
-            entry, metadata.shortTeaserTitle)
-        lxml.objectify.ObjectPath('.short.text').setattr(
-            entry, metadata.shortTeaserText)
+        self.short_title_path.setattr(entry, metadata.shortTeaserTitle)
+        self.short_text_path.setattr(entry, metadata.shortTeaserText)
+        self.homepage_title_path.setattr(entry, metadata.hpTeaserTitle)
+        self.homepage_text_path.setattr(entry, metadata.hpTeaserText)
+
 
 
 class RelatedMetadataUpdater(object):

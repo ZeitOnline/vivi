@@ -205,7 +205,8 @@ form .column-right-small {
 #form\.teaserText {
     height: 6.5em;
 }
-#form\.shortTeaserText {
+#form\.shortTeaserText,
+#form\.hpTeaserText {
     height: 2.6em;
 }
 
@@ -220,7 +221,8 @@ form .column-right-small {
 }
 
 #form\.teaserTitle,
-#form\.shortTeaserTitle {
+#form\.shortTeaserTitle,
+#form\.hpTeaserTitle {
     height: 1.3em;
 }
 

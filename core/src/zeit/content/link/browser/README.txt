@@ -128,6 +128,10 @@ Verify the source of the feed:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
       </image>

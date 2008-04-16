@@ -42,7 +42,8 @@ class CommonMetadataFormBase(object):
         _("Texts"),
         ('supertitle', 'byline', 'title', 'subtitle',
          'teaserTitle', 'teaserText',
-         'shortTeaserTitle', 'shortTeaserText'),
+         'shortTeaserTitle', 'shortTeaserText',
+         'hpTeaserTitle', 'hpTeaserText'),
         css_class='wide-widgets column-left')
 
     field_groups = (

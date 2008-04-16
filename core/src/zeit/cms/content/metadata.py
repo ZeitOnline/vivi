@@ -69,3 +69,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.indexteaser.title')
     shortTeaserText = zeit.cms.content.property.ObjectPathProperty(
         '.indexteaser.text')
+
+    hpTeaserTitle = zeit.cms.content.property.ObjectPathProperty(
+        '.homepageteaser.title')
+    hpTeaserText = zeit.cms.content.property.ObjectPathProperty(
+        '.homepageteaser.text')

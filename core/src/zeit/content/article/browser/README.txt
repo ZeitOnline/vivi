@@ -390,10 +390,22 @@ xml source:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
           <title py:pytype="str">Bomben in Bangkok</title>
           <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+          <short>
+            <title py:pytype="str">Thailand</title>
+            <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
+          </short>
+          <homepage>
+            <title xsi:nil="true"/>
+            <text xsi:nil="true"/>
+          </homepage>
         </reference>
       </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
@@ -459,10 +471,22 @@ at its xml source:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
           <title py:pytype="str">Bomben in Bangkok</title>
           <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+          <short>
+            <title py:pytype="str">Thailand</title>
+            <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
+          </short>
+          <homepage>
+            <title xsi:nil="true"/>
+            <text xsi:nil="true"/>
+          </homepage>
         </reference>
       </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
@@ -472,6 +496,14 @@ at its xml source:
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
           <title py:pytype="str">Bomben in Bangkok</title>
           <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+          <short>
+            <title py:pytype="str">Thailand</title>
+            <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
+          </short>
+          <homepage>
+            <title xsi:nil="true"/>
+            <text xsi:nil="true"/>
+          </homepage>
         </reference>
       </references>
     </block>

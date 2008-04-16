@@ -115,4 +115,11 @@ def BasicReference(context):
         reference['title'] = metadata.teaserTitle
         reference['description'] = metadata.teaserText
 
+        reference.append(lxml.objectify.E.short(
+            lxml.objectify.E.title(metadata.shortTeaserTitle),
+            lxml.objectify.E.text(metadata.shortTeaserText)))
+        reference.append(lxml.objectify.E.homepage(
+            lxml.objectify.E.title(metadata.hpTeaserTitle),
+            lxml.objectify.E.text(metadata.hpTeaserText)))
+
     return reference

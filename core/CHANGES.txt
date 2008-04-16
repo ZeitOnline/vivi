@@ -14,6 +14,8 @@ zeit.cms changes
   artbox_info als Property gab, diese aber leer war oder einen ungültigen Wert
   hatte (bug #4124)
 - Formlayout bei geringer Breite nicht mehr zerpflückt (bug #4118).
+- Homepage-Teaser hinzugefügt (bug #4122).
+- Related werden jetzt mit Kurzteaser und HP-Teaser eingebettet.
 
 0.9.9 (2008-04-14)
 ------------------

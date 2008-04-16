@@ -128,6 +128,11 @@ ICommonMetadata some information is included in the XML:
 >>> related_content.volume = 19
 >>> related_content.teaserTitle = 'I relate the title'
 >>> related_content.teaserText = 'Dude.'
+>>> related_content.shortTeaserTitle = None
+>>> related_content.shortTeaserText = None
+>>> related_content.hpTeaserTitle = None
+>>> related_content.hpTeaserText = None
+
 
 Reassign the two objects an verify the xml:
 
@@ -139,6 +144,14 @@ Reassign the two objects an verify the xml:
       <reference type="intern" href="related-content-uid" year="2006" issue="19">
         <title py:pytype="str">I relate the title</title>
         <description py:pytype="str">Dude.</description>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
       </reference>
       <reference type="intern" href="related-content-2-uid"/>
     </references>
