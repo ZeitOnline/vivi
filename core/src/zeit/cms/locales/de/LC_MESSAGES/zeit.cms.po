@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Mon Apr 14 08:38:58 2008\n"
-"PO-Revision-Date: 2008-04-14 08:39+0100\n"
+"PO-Revision-Date: 2008-04-14 19:38+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Beschreibung"
 
 #: src/zeit/calendar/browser/event.py:33
 msgid "Related"
-msgstr "Relatd"
+msgstr "Related"
 
 #: src/zeit/calendar/browser/event.py:53
 msgid "Add event"
