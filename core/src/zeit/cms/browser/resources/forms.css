@@ -38,7 +38,8 @@ input{
     vertical-align:middle;
     background:White url(layout/input_background.gif) repeat-x;
 }
-select{border:1px solid #8cacbb;
+select {
+    border:1px solid #8cacbb;
     color:Black;
     background-color:White;
     vertical-align:top;
@@ -54,7 +55,22 @@ input[type="text"] {
     padding: 0.2em;
 }
 
+
 /* formlib styling */
+
+fieldset {
+    padding-top: 1.5em;
+    margin: 0;
+}
+
+legend {
+    font-weight: bold;
+    background-color: transparent;
+    margin-bottom: -3em;
+    margin-left: -0.6em;
+    padding: 0em 0em 1em 1em;
+}
+
 
 .field.required label > span:after {
     content: "*";
@@ -103,10 +119,6 @@ input[type="text"] {
     margin-left: 0.5em
 }
 
-form .widgets-float {
-    float: left;
-    width: 58%;
-}
 form .widgets-float .field {
     float: left;
     margin: 5px;
@@ -161,7 +173,7 @@ form .wide-widgets .field .object-widget > .object-reference {
 
 form .column-right {
     float:  right;
-    width: 37%;
+    width: 35%;
 }
 
 

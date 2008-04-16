@@ -12,8 +12,8 @@ zeit.cms changes
 - Relateds werden jetzt bei der Syndizierung mit eingefügt (bug #4106).
 - Asset-Bearbeiten/Anzeigen-Seite produzierte einen Systemfehler, wenn es
   artbox_info als Property gab, diese aber leer war oder einen ungültigen Wert
-  hatte (bug #4124).
-
+  hatte (bug #4124)
+- Formlayout bei geringer Breite nicht mehr zerpflückt (bug #4118).
 
 0.9.9 (2008-04-14)
 ------------------
