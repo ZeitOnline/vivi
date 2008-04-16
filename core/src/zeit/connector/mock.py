@@ -74,8 +74,8 @@ class Connector(object):
         if '<article>' in data:
             # Ok, this is hardcore. But it's not production code, is it.
             return 'article'
-        if '<feed xmlns="http://namespaces.zeit.de/CMS/feed">' in data:
-            return 'feed'
+        if '<channel>' in data:
+            return 'channel'
         if '<centerpage>' in data:
             return 'centerpage'
         if '<testtype>' in data:

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
+<channel>
   <title>Wirtschaft</title>
   <container>
     <block href="http://xml.zeit.de/online/2007/01/Querdax">
@@ -21,4 +21,4 @@
       </teaser>
     </block>
   </container>
-</feed>
+</channel>
