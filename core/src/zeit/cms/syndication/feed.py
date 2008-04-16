@@ -17,50 +17,39 @@ import zeit.cms.connector
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.util
+import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 
 
-FEED_NS = zeit.cms.syndication.interfaces.FEED_NAMESPACE
-FEED_TEMPLATE = u"""\
-<feed
-  xmlns='%s'
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title/>
-  <container/>
-</feed>
-""" % FEED_NS
+class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
+    zope.interface.implements(zeit.cms.syndication.interfaces.IFeed)
 
-class Feed(persistent.Persistent,
-           zope.app.container.contained.Contained):
-
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeed,
-        zeit.cms.content.interfaces.IXMLContent)
-
-    title = zeit.cms.content.property.ObjectPathProperty('feed.title')
+    title = zeit.cms.content.property.ObjectPathProperty('.title')
     object_limit = zeit.cms.content.property.ObjectPathProperty(
-        'feed.object_limit')
+        '.object_limit')
 
-    def __init__(self, xml_source=None, __name__=None, **data):
-        apply_defaults = False
-        if xml_source is None:
-            apply_defaults = True
-            self.xml = gocept.lxml.objectify.fromstring(FEED_TEMPLATE)
-        else:
-            self.xml = gocept.lxml.objectify.fromfile(xml_source)
-        self.uniqueId = None
-        self.__name__ = __name__
-        if apply_defaults:
-            zeit.cms.content.util.applySchemaData(
-                self, zeit.cms.syndication.interfaces.IFeed, data,
-                omit=('xml',))
+    default_template = u"""\
+        <channel
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+          <title/>
+          <container/>
+        </channel>
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(Feed, self).__init__(*args, **kwargs)
+        if not self.object_limit:
+            self.object_limit = 50
 
     @property
     def xml_source(self):
-        """See IXMLContent."""
+        """return source of feed."""
+        # BBB deprecated
         return lxml.etree.tostring(self.xml, pretty_print=True)
 
     def keys(self):
@@ -73,9 +62,8 @@ class Feed(persistent.Persistent,
         if unique_id is None:
             raise ValueError('Cannot add objects without uniqueId.')
         pin_map = self.pin_map()
-        entry = self.xml.makeelement('{%s}block' % FEED_NS)
+        entry = lxml.objectify.E.block(href=unique_id)
         self.entries.insert(position, entry)
-        entry.set('href', unique_id)
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
             self._remove_by_id(last)
@@ -147,7 +135,7 @@ class Feed(persistent.Persistent,
     # helpers and internal API:
 
     def iterentries(self):
-        return self.entries.iterchildren(tag='{%s}block' % FEED_NS)
+        return self.entries.iterchildren(tag='block')
 
     @property
     def entry_map(self):
@@ -198,13 +186,14 @@ def feedFactory(context):
     return feed
 
 
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory('feed')
+resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
+    'channel')
 resourceFactory = zope.component.adapter(
     zeit.cms.syndication.interfaces.IFeed)(resourceFactory)
 
 
-
 class CommonMetadataUpdater(object):
+    """Put information for ICommonMetadata into the channel."""
 
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
@@ -221,3 +210,19 @@ class CommonMetadataUpdater(object):
             entry, metadata.shortTeaserTitle)
         lxml.objectify.ObjectPath('.short.text').setattr(
             entry, metadata.shortTeaserText)
+
+
+class RelatedMetadataUpdater(object):
+    """Put information from IRelated into the channel."""
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+
+    def update_entry(self, entry, content):
+        related = zeit.cms.content.interfaces.IRelatedContent(content, None)
+        if related is None:
+            return
+        if not related.related:
+            return
+        xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
+        entry.append(xml_repr.xml)

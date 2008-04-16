@@ -85,9 +85,10 @@
     />
 
   <!-- related content -->
-  <adapter factory=".related.RelatedContent" />
+  <adapter
+    factory=".related.RelatedContent"
+    provides=".interfaces.IRelatedContent" />
   <adapter factory=".related.related_from_template" />
-  <adapter factory=".related.related_xml_representation" />
   <adapter factory=".related.BasicReference" name="related" />
 
   <!-- automatic xml updating -->

@@ -3,6 +3,7 @@
 # $Id$
 
 import lxml.objectify
+import rwproperty
 
 import zope.component
 import zope.interface
@@ -13,33 +14,27 @@ import zeit.cms.content.related
 import zeit.content.image.interfaces
 
 
-class ImagesProperty(zeit.cms.content.related.RelatedObjectsProperty):
-
-    path = lxml.objectify.ObjectPath('.head.image')
-    xml_reference_name = 'image'
-
-    def get_unique_id(self, element):
-        unique_id = element.get('base-id')
-        if unique_id is None:
-            unique_id = element.get('src')
-        return unique_id
-
-
-class ImagesAdapter(object):
+class ImagesAdapter(zeit.cms.content.related.RelatedBase):
 
     zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
     zope.interface.implements(zeit.content.image.interfaces.IImages)
 
-    images = ImagesProperty()
+    path = lxml.objectify.ObjectPath('.head.image')
+    xml_reference_name = 'image'
 
-    def __init__(self, context):
-        self.context = context
+    @rwproperty.getproperty
+    def images(self):
+        return self._get_related()
 
+    @rwproperty.setproperty
+    def images(self, value):
+        self._set_related(value)
 
-@zope.component.adapter(ImagesAdapter)
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
-def images_xml_representation(context):
-    return context.context
+    def _get_unique_id(self, element):
+        unique_id = element.get('base-id')
+        if unique_id is None:
+            unique_id = element.get('src')
+        return unique_id
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.ITemplate)

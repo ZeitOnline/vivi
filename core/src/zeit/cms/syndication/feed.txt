@@ -10,6 +10,14 @@ Feeds contain an ordered list of documents:
 <zeit.cms.syndication.feed.Feed object at 0x...>
 
 
+Setup functional test:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+
+
 Addding and Removing
 =====================
 
@@ -119,11 +127,11 @@ Feeds are cms content. So we also need to create them from resources:
 >>> resource = Resource(
 ...    '/wirtschaft', 'wirtschaft', 'feed', 
 ...     StringIO.StringIO('''\
-...     <feed xmlns="http://namespaces.zeit.de/CMS/feed">
+...     <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ...       <container>
 ...         <block href="/2006/siemens" />
 ...       </container>
-...     </feed>'''))
+...     </channel>'''))
 >>> feed = feedFactory(resource)
 >>> feed 
 <zeit.cms.syndication.feed.Feed object at 0x...>
@@ -244,14 +252,14 @@ in it:
 >>> article = Article('art1')
 >>> feed.insert(0, article)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed"
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
     <block href="art1"/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
 
 
 When an object is adaptable to ICommonMetadata the relevant information will be
@@ -264,6 +272,8 @@ included. Setup an article with ICommonMetadata:
 >>> art2.byline = u'Von Alain-Xavier Wurst'
 >>> art2.shortTeaserTitle = u'Frankreich'
 >>> art2.shortTeaserText = u'Die Streiks werden Sarkozy nicht bezwingen'
+>>> art2.year = 2007
+>>> art2.volume = 4
 
 Provide the interface:
 
@@ -275,7 +285,7 @@ Insert the article to the feed:
 
 >>> feed.insert(0, art2)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed"
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
@@ -292,7 +302,7 @@ Insert the article to the feed:
     <block href="art1"/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
 
 
 We can change the teaser data and just call updateMetadata to apply the
@@ -302,7 +312,7 @@ changes:
 >>> art2.supertitle = 'Fronkroisch'
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed"
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
@@ -319,4 +329,55 @@ changes:
     <block href="art1"/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
+
+When an object has related content, this information is part of the metadata,
+too:
+
+>>> import zeit.cms.content.interfaces
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content.uniqueId = 'tct'
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> related.related = (repository['online']['2007']['01']['Somalia'],
+...                    repository['online']['2007']['01']['eta-zapatero'])
+>>> feed.insert(0, content)
+>>> print feed.xml_source
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title py:pytype="str">Politik</title>
+  <container>
+    <block href="tct">
+      <supertitle xsi:nil="true"/>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <references>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero"/>
+      </references>
+    </block>
+    <block href="art2">
+      <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <title py:pytype="str">New Title</title>
+      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      <short>
+        <title py:pytype="str">Frankreich</title>
+        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
+      </short>
+    </block>
+    <block href="art1"/>
+  </container>
+  <object_limit py:pytype="int">50</object_limit>
+</channel>
+
+
+
+>>> zope.app.component.hooks.setSite(old_site)

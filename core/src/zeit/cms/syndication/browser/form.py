@@ -18,6 +18,7 @@ class FeedFormBase(object):
 class AddForm(FeedFormBase, zeit.cms.browser.form.AddForm):
 
     title = _("Add Channel")
+    factory = zeit.cms.syndication.feed.Feed
 
     form_fields = (
         zope.formlib.form.Fields(
@@ -25,10 +26,6 @@ class AddForm(FeedFormBase, zeit.cms.browser.form.AddForm):
             omit_readonly=False).omit('uniqueId') +
         zope.formlib.form.Fields(
             zeit.cms.syndication.interfaces.IFeed))
-
-
-    def create(self, data):
-        return zeit.cms.syndication.feed.Feed(**data)
 
 
 class EditForm(FeedFormBase, zeit.cms.browser.form.EditForm):

@@ -11,9 +11,6 @@ import zeit.cms.content.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
-FEED_NAMESPACE = u'http://namespaces.zeit.de/CMS/feed'
-
-
 class ISyndicationManager(zope.interface.Interface):
     """Manages syndication of a content object."""
 

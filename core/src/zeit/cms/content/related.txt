@@ -8,12 +8,14 @@ dummy content:
 
 
 >>> import zope.interface
+>>> import zope.interface.verify
 >>> import zeit.cms.content.interfaces
 >>> import lxml.objectify
 >>> class Content(object):
 ...     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
 ...     uniqueId = 'dummy-content'
-...     xml = lxml.objectify.XML('<content><head/></content>')
+...     xml = lxml.objectify.E.content(
+...         lxml.objectify.E.head())
 ...
 >>> content = Content()
 
@@ -42,6 +44,12 @@ Add content to repository:
 Adapt it to IReference, currenty there are no references:
 
 >>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.content.interfaces.IRelatedContent, related)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.content.interfaces.IXMLRepresentation, related)
+True
 >>> related.related
 ()
 
@@ -58,7 +66,7 @@ Let's have a look at the source:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content>
+<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head>
     <references>
       <reference type="intern" href="related-content-uid"/>
@@ -66,6 +74,12 @@ Let's have a look at the source:
   </head>
 </content>
 
+Also check the source of related:
+
+>>> print lxml.etree.tostring(related.xml, pretty_print=True)
+<references xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <reference type="intern" href="related-content-uid"/>
+</references>
 
 >>> related.related
 (<Content object at 0x...>,)
@@ -76,7 +90,7 @@ Assigning the same content object again doesn't change the xml:
 
 >>> related.related = (related_content, )
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content>
+<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head>
     <references>
       <reference type="intern" href="related-content-uid"/>
@@ -92,7 +106,7 @@ Let's add another related content:
 >>> repository.add(related_content2)
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content>
+<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head>
     <references>
       <reference type="intern" href="related-content-uid"/>
@@ -119,12 +133,12 @@ Reassign the two objects an verify the xml:
 
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content>
+<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head>
     <references>
       <reference type="intern" href="related-content-uid" year="2006" issue="19">
-        <title xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">I relate the title</title>
-        <description xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Dude.</description>
+        <title py:pytype="str">I relate the title</title>
+        <description py:pytype="str">Dude.</description>
       </reference>
       <reference type="intern" href="related-content-2-uid"/>
     </references>

@@ -248,9 +248,10 @@ Let's create a new feed in the repository:
 
 We are looking at the add form now. Fill in the title and add the feed:
 
->>> browser.getControl(name='form.title').value = 'Zuender'
->>> browser.getControl(name='form.__name__').value = 'zuender'
->>> browser.getControl(name='form.object_limit').value = '20'
+>>> browser.getControl('Title').value = 'Zuender'
+>>> browser.getControl('File name').value = 'zuender'
+>>> browser.getControl('Limit amount').value = '20'
+>>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
 
@@ -363,11 +364,15 @@ Let's have a look at the source now:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('XML').value.replace('\r\n', '\n')
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
+<channel> 
   <title>Politik</title>
   <container>
-    <block href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
-        pinned="true" hp_hide="true"/>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           pinned="true"
+           hp_hide="true"/>
   </container>
-</feed>
-
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>

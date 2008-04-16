@@ -36,13 +36,13 @@ Insert content to the feed:
 We have not added any image, so no image is referenced:
 
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
   <container>
     <block href="dummy-content"/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
 
 
 We will mostly want to reference image groups, so create one first:
@@ -61,21 +61,17 @@ a bit weired. We'll fix that later:
 
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
   <container>
     <block href="dummy-content">
-      <ns4:image 
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns4="http://namespaces.zeit.de/CMS/feed"
-        base-id="http://xml.zeit.de/image-group">
+      <image base-id="http://xml.zeit.de/image-group">
         <bu xsi:nil="true"/>
-      </ns4:image>
+      </image>
     </block>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
 
 When more than one image is reference, only the first one will be in the feed:
 
@@ -86,21 +82,17 @@ When more than one image is reference, only the first one will be in the feed:
 >>> images.images = (group, repository['2006']['DSC00109_2.JPG'],)
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
   <container>
     <block href="dummy-content">
-      <ns5:image 
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns5="http://namespaces.zeit.de/CMS/feed"
-        base-id="http://xml.zeit.de/image-group">
+      <image base-id="http://xml.zeit.de/image-group">
         <bu xsi:nil="true"/>
-      </ns5:image>
+      </image>
     </block>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
 
 Cleanup
 =======

@@ -96,8 +96,10 @@
 
 
   <!-- image references -->
-  <adapter factory=".imagereference.ImagesAdapter" />
-  <adapter factory=".imagereference.images_xml_representation" />
+  <adapter
+    factory=".imagereference.ImagesAdapter"
+    provides=".interfaces.IImages"
+    />
   <adapter factory=".imagereference.images_from_template" />
   <utility
     factory=".imagereference.FeedMetadataUpdater"

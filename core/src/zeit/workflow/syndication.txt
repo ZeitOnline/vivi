@@ -34,13 +34,13 @@ There is no expiration/publication date in the feed, because we have not set
 any:
 
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
   <container>
     <block href="content1" publication-date="" expires=""/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>
 
 
 When we set the expiration and/or publication date the change will be
@@ -53,10 +53,10 @@ reflected:
 >>> content.released_to = datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC)
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
-<feed xmlns="http://namespaces.zeit.de/CMS/feed" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
   <container>
     <block href="content1" publication-date="2008-01-05T16:00:00+00:00" expires="2008-01-06T00:00:00+00:00"/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
-</feed>
+</channel>

@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
   
-  <adapter factory=".feed.feedFactory" name="feed" />
+  <adapter factory=".feed.feedFactory" name="channel" />
   <adapter factory=".feed.resourceFactory" />
   <adapter factory=".manager.SyndicationManager" />
   <adapter factory=".mytargets.targetFactory" trusted="yes" />
@@ -33,6 +33,10 @@
   <utility
     factory=".feed.CommonMetadataUpdater"
     name="commonmetadata"
+    />
+  <utility
+    factory=".feed.RelatedMetadataUpdater"
+    name="related"
     />
 
 </configure>

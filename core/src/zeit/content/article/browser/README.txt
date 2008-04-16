@@ -378,29 +378,31 @@ xml source:
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value.replace('\r\n', '\n')
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
+<channel>
   <title>Politik</title>
   <container>
-    <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
-      <supertitle xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Halle</supertitle>
-      <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <byline xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">by Dr. Who</byline>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
+      <supertitle py:pytype="str">Halle</supertitle>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+      <byline py:pytype="str">by Dr. Who</byline>
       <short>
-        <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
       </short>
-      <ns1:image
-        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns1="http://namespaces.zeit.de/CMS/feed"
-        src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <references>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+          <title py:pytype="str">Bomben in Bangkok</title>
+          <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+        </reference>
+      </references>
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns1:image>
+      </image>
     </block>
   </container>
-</feed>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
 >>> browser.getLink('Checkin').click()
 
 
@@ -445,29 +447,37 @@ at its xml source:
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Source').click()
 >>> print browser.getControl(name='form.xml').value.replace('\r', '')
-<feed xmlns="http://namespaces.zeit.de/CMS/feed">
+<channel>
   <title>Politik</title>
   <container>
-    <block href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
-      <supertitle xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Halle</supertitle>
-      <title xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">Trinker zur Kasse</title>
-      <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-      <byline xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">by Dr. Who</byline>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" publication-date="" expires="">
+      <supertitle py:pytype="str">Halle</supertitle>
+      <title py:pytype="str">Trinker zur Kasse</title>
+      <text xsi:nil="true"/>
+      <byline py:pytype="str">by Dr. Who</byline>
       <short>
-        <title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
       </short>
-      <ns12:image
-        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ns12="http://namespaces.zeit.de/CMS/feed"
-        src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <references>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+          <title py:pytype="str">Bomben in Bangkok</title>
+          <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+        </reference>
+      </references>
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
         <bu xsi:nil="true"/>
-      </ns12:image>
+      </image>
+      <references>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+          <title py:pytype="str">Bomben in Bangkok</title>
+          <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+        </reference>
+      </references>
     </block>
   </container>
-</feed>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
 
 Check the feed back in to have nothing laying around:
 
