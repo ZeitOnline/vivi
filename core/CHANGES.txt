@@ -6,6 +6,7 @@ CHANGES
 
 - `zeit.connector.connector.Connector` doesn't use the component architecture
   now. This makes it easier to use in console scripts.
+- <feed> is now <channel>
 
 0.13 (2008-04-07)
 -----------------
