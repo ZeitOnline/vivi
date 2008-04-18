@@ -194,17 +194,21 @@ class IDAVPropertyChangedEvent(zope.component.interfaces.IObjectEvent):
     property_namespace = zope.interface.Attribute("Webdav property namespace.")
     property_name = zope.interface.Attribute("Webdav property name.")
 
+    field = zope.interface.Attribute(
+        "zope.schema field the property was changed for.")
+
 
 class DAVPropertyChangedEvent(zope.component.interfaces.ObjectEvent):
     zope.interface.implements(IDAVPropertyChangedEvent)
 
     def __init__(self, object, property_namespace, property_name,
-                 old_value, new_value):
+                 old_value, new_value, field):
         self.object = object
         self.property_namespace = property_namespace
         self.property_name = property_name
         self.old_value = old_value
         self.new_value = new_value
+        self.field = field
 
 
 class ITextContent(zope.interface.Interface):

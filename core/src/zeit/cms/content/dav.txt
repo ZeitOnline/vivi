@@ -481,6 +481,7 @@ Let's create a little content class:
 >>> import zeit.cms.interfaces
 >>> from zeit.cms.content.dav import DAVProperty
 >>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
 ...     properties = {}
 ...     title = DAVProperty(zope.schema.TextLine(), 'myns', 'title')
 ...
@@ -500,14 +501,16 @@ subscriber:
 >>>
 >>> def print_change(object, event):
 ...     print "Event:", event
+...     print "    Object:", object
 ...     print "    Old:", event.old_value
 ...     print "    New:", event.new_value
 ...     print "    NS:", event.property_namespace
 ...     print "    Name:", event.property_name
+...     print "    Field:", event.field
 ...
 >>> site_manager.registerHandler(
 ...     print_change,
-...     (Content,
+...     (zope.interface.Interface,
 ...      zeit.cms.content.interfaces.IDAVPropertyChangedEvent))
 
 As the properties dictionary is empty, we'll get the title's default value from
@@ -525,7 +528,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     New: Mary had a little lamb.
     NS: myns
     Name: title
-
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> content.properties
 {('title', 'myns'): u'Mary had a little lamb.'}
 
@@ -539,20 +542,68 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     New: DeleteProperty
     NS: myns
     Name: title
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> content.properties
 {('title', 'myns'): DeleteProperty}
 >>> content.title is None
 True
 
 
+When a content object is adapted to extend functionality it is common to have
+an adapter to IWebDAVProperties from the adapter. In this case the orgiginal
+object would not be notified about changes. Make sure the object is really
+notified. This is done by getting the object which actually defined the webdav
+properties, by adapting the properties to ICMSContent. Create a dummy object:
+
+>>> class Foo(object):
+...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed')
+
+Create an adapter from Foo to ICMSContent:
+
+>>> def foo_properties_to_cms(context):
+...     return content
+>>> site_manager.registerAdapter(
+...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
+
+We also need to make Foo adaptable to IWebDAVProperties:
+
+>>> def foo_props(context):
+...     return content.properties
+>>> site_manager.registerAdapter(
+...     foo_props,
+...     (Foo, ), zeit.cms.interfaces.IWebDAVProperties)
+
+Instanciate a `foo` and change the property. This yields two events:
+
+>>> foo = Foo()
+>>> foo.changed = 'now'
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Object: <Content object at 0x...>
+    Old: None
+    New: now
+    NS: myns
+    Name: changed
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Object: <Foo object at 0x...>
+    Old: None
+    New: now
+    NS: myns
+    Name: changed
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
+
 Remove the event listener and adapter:
 
 >>> site_manager.unregisterHandler(
 ...     print_change,
-...     (Content,
+...     (zope.interface.Interface,
 ...      zeit.cms.content.interfaces.IDAVPropertyChangedEvent))
 True
 >>> site_manager.unregisterAdapter(
 ...     contentDavProps,
-... (Content, ), zeit.cms.interfaces.IWebDAVProperties)
+...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
 True
+>>> site_manager.unregisterAdapter(
+...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
+True
+

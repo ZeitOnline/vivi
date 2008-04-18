@@ -85,7 +85,8 @@ class DAVProperty(object):
         write_properties[(self.name, self.namespace)] = dav_value
 
         zope.event.notify(zeit.cms.content.interfaces.DAVPropertyChangedEvent(
-            instance, self.namespace, self.name, old_value, dav_value))
+            instance, self.namespace, self.name, old_value, dav_value,
+            self.field))
 
 
 @zope.component.adapter(
@@ -109,7 +110,8 @@ def notify_cms_content_property_change(context, event):
     zope.event.notify(
         zeit.cms.content.interfaces.DAVPropertyChangedEvent(
             content, event.property_namespace, event.property_name,
-            event.old_value, event.new_value))
+            event.old_value, event.new_value,
+            event.field))
 
 
 class UnicodeProperty(object):
