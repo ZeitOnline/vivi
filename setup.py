@@ -15,6 +15,8 @@ setup(
     namespace_packages = ['zeit'],
     install_requires=[
         'setuptools',
+        'ZODB3',
+        'zope.app.keyreference',
     ],
     extras_require={
         'test': [

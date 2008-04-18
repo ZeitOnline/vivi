@@ -4,37 +4,36 @@
 
 import zope.interface
 
-from zeit.cms.i18n import MessageFactory as _
-
 
 class IObjectLog(zope.interface.Interface):
     """Utility which logs object changes."""
 
-    def log(object, field, old_value, new_value):
-        pass
+    def log(object, message_id, mapping):
+        """Log message for object."""
 
     def get_log(object):
-        """Return log entries for `object`."""
+        """Return log entries for `object`.
 
-
+        Oldest first.
+        """
 
 class ILogEntry(zope.interface.Interface):
     """One entry in the log."""
 
     principal = zope.schema.Choice(
-        title=_('Principal')
+        title=u'Principal',
         required=False,
         readonly=True,
         source=zope.app.security.vocabulary.PrincipalSource())
 
-    object = zope.schema.Object(
-        zope.interface.Interface,
-        title=_("Affected object."))
+    message = zope.configuration.fields.MessageID(
+        title=u'Log message',
+        readonly=True)
 
-    #title
-    #name
-    #old_value
-    #new_value
+    mapping = zope.schema.Dict(
+        title=u'Mapping to replace variables in message',
+        readonly=True,
+        required=False)
 
-
-
+    def get_object():
+        """return the affected object."""
