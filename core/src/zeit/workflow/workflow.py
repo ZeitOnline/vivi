@@ -212,6 +212,5 @@ def remove_live_properties(context, event):
     """
     properties = zeit.connector.interfaces.IWebDAVProperties(context)
     for name, namespace in list(properties):  # make sure it's not an iterator
-        if namespace == 'http://namespaces.zeit.de/CMS/workflow':
-            # XXX use a string constant wor the namespace
+        if namespace == WORKFLOW_NS:
             del properties[(name, namespace)]
