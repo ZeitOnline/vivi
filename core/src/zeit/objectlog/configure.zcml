@@ -1,5 +1,12 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
+  <utility 
+    name="zeit.objectlog"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+
 </configure>
 
