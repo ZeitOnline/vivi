@@ -290,6 +290,11 @@ Let's move `move-test` now:
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 [(u'move-test-moved', u'http://xml.zeit.de/testing/move-test-moved')]
 
+Verify the content type:
+
+>>> connector['http://xml.zeit.de/testing/move-test-moved'].type
+'text'
+
 We cannot move an object onto another:
 
 >>> res = Resource('http://xml.zeit.de/testing/move-test-2',

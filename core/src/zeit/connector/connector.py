@@ -325,13 +325,16 @@ class Connector(zope.thread.local):
         self._internal_add(id, resource)
 
     def move(self, old_id, new_id):
-        """Move the resource with id `old_id` to `new_id`."""
-
+        """Move the resource with id `old_id` to `new_id`.
+        """
+        logger.debug('move: %s to %s' % (old_id, new_id))
         if self._get_cannonical_id(new_id) in self:
             raise zeit.connector.interfaces.MoveError(
                 old_id,
                 "Could not move %s to %s, because target alread exists." % (
                     old_id, new_id))
+
+        old_resource = self[old_id]
 
         # Make old_id and new_id canonical. Use the canonical old_id to deduct
         # the canonical new_id:
@@ -346,9 +349,26 @@ class Connector(zope.thread.local):
         old_loc = self._id2loc(old_id)
         new_loc = self._id2loc(new_id)
         conn = self._conn('default')
-        conn.move(old_loc, new_loc)
+        conn.copy(old_loc, new_loc)
         self._invalidate_cache(old_id)
-        self._invalidate_cache(new_id)
+        timeout = 20
+        for i in range(timeout):
+            self._invalidate_cache(new_id)
+            resource = self[new_id]
+            if RESOURCE_TYPE_PROPERTY in resource.properties:
+                conn.delete(old_loc)
+                break
+            logger.warning('move: waiting for properties after moving %s to %s'
+                           % (old_id, new_od))
+            time.sleep(1)
+        else:
+            conn.delete(new_log)
+            raise zeit.connector.interfaces.MoveError(
+                old_id,
+                "Could not move %s to %s, because the properties where not "
+                "copied within %s seconds (bug in dav?)" % (
+                    old_id, new_id, timeout))
+
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)
@@ -420,6 +440,8 @@ class Connector(zope.thread.local):
         # Collect "result" vars as bindings "into" expression:
         for at in attrlist:
             expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
+
+        logger.debug('Searching for %s' % (expr._render(),))
 
         # Do we need a different conn for SEARCH?
         # NOTE: this code may become obsolete.
