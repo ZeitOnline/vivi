@@ -16,6 +16,7 @@ zeit.cms changes
 - Formlayout bei geringer Breite nicht mehr zerpflückt (bug #4118).
 - Homepage-Teaser hinzugefügt (bug #4122).
 - Related werden jetzt mit Kurzteaser und HP-Teaser eingebettet.
+- Factored out zeit.ldap into its own package.
 
 0.9.9 (2008-04-14)
 ------------------
