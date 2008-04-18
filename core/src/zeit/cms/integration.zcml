@@ -7,8 +7,6 @@
   <include package="zeit.cms.browser" />
   <include package="zeit.cms" file="securitypolicy.zcml" />
 
-  <include package="zeit.ldap" />
-
   <include package="zeit.workflow" />
   <include package="zeit.workflow.browser" />
 
