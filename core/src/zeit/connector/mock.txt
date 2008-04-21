@@ -268,6 +268,13 @@ folders though. So we implement a special method for moving:
  (u'online', u'http://xml.zeit.de/online'),
  (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+>>> import zeit.connector.test
+>>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006')
+http://xml.zeit.de/2006
+http://xml.zeit.de/2006/49 collection
+http://xml.zeit.de/2006/52 collection
+http://xml.zeit.de/2006/DSC00109_2.JPG image
+
 >>> connector.move('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-27')
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
 [(u'2006-27', u'http://xml.zeit.de/2006-27'),
@@ -275,6 +282,11 @@ folders though. So we implement a special method for moving:
  (u'online', u'http://xml.zeit.de/online'),
  (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+>>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006-27')
+http://xml.zeit.de/2006-27
+http://xml.zeit.de/2006-27/49 collection
+http://xml.zeit.de/2006-27/52 collection
+http://xml.zeit.de/2006-27/DSC00109_2.JPG image
 
 
 Overwriting content by moving is not allowed and raises an error:
@@ -288,7 +300,33 @@ MoveError: Could not move http://xml.zeit.de/2006-27 to http://xml.zeit.de/2007,
 Let's move 2006-27 back:
 
 >>> connector.move('http://xml.zeit.de/2006-27', 'http://xml.zeit.de/2006')
+>>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006')
+http://xml.zeit.de/2006
+http://xml.zeit.de/2006/49 collection
+http://xml.zeit.de/2006/52 collection
+http://xml.zeit.de/2006/DSC00109_2.JPG image
 
+
+
+Copying
+=======
+
+>>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006')
+http://xml.zeit.de/2006
+http://xml.zeit.de/2006/49 collection
+http://xml.zeit.de/2006/52 collection
+http://xml.zeit.de/2006/DSC00109_2.JPG image
+
+>>> connector.copy('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-copy')
+>>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006-copy')
+http://xml.zeit.de/2006-copy
+http://xml.zeit.de/2006-copy/49 collection
+http://xml.zeit.de/2006-copy/52 collection
+http://xml.zeit.de/2006-copy/DSC00109_2.JPG image
+
+Clean this up again:
+
+>>> del connector['http://xml.zeit.de/2006-copy']
 
 Collections
 ===========
@@ -376,12 +414,13 @@ Currently the mock holds data:
 
 >>> pprint(connector._data)
 {'http://xml.zeit.de/2006': '',
- 'http://xml.zeit.de/2006-27': '',
+ u'http://xml.zeit.de/2006/49': '',
+ u'http://xml.zeit.de/2006/49/Vorspann-S_47': '<?xml...',
+ ...
  'http://xml.zeit.de/online/2007/02/DaimlerChrysler': 'Zwischen Angst und Schock',
  'http://xml.zeit.de/online/2007/02/Seehofer': 'Seehofer schlaegt zurueck',
  'http://xml.zeit.de/online/2007/03': '',
- 'http://xml.zeit.de/online/2007/03/foo': '',
- 'http://xml.zeit.de/testing/collection': ''}
+ 'http://xml.zeit.de/online/2007/03/foo': ''}
 
 
 After resetting, the data is gone:

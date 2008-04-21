@@ -115,7 +115,10 @@ class Connector(object):
 
     def __delitem__(self, id):
         resource = self[id]
+        for name, uid in self.listCollection(id):
+            del self[uid]
         self._deleted.add(id)
+        self._data.pop(id, None)
 
     def __contains__(self, id):
         try:
@@ -128,6 +131,14 @@ class Connector(object):
         resource = zeit.connector.interfaces.IResource(object)
         self[resource.id] = resource
 
+    def copy(self, old_id, new_id):
+        self[new_id] = self[old_id]
+        if not new_id.endswith('/'):
+            new_id = new_id + '/'
+        for name, uid in self.listCollection(old_id):
+            self.copy(uid, urlparse.urljoin(new_id, name))
+
+
     def move(self, old_id, new_id):
         if new_id in self:
             raise zeit.connector.interfaces.MoveError(
@@ -135,9 +146,8 @@ class Connector(object):
                 "Could not move %s to %s, because target alread exists." % (
                     old_id, new_id))
 
-        resource = self[old_id]
+        self.copy(old_id, new_id)
         del self[old_id]
-        self[new_id] = resource
 
     def changeProperties(self, id, properties):
         self._set_properties(id, properties)
@@ -195,7 +205,8 @@ class Connector(object):
             raise KeyError("The resource %r does not exist." % id)
 
     def _make_id(self, path):
-        return urlparse.urljoin(ID_NAMESPACE, '/'.join(path))
+        return urlparse.urljoin(ID_NAMESPACE, '/'.join(
+            element for element in path if element))
 
     def _get_properties(self, id):
         properties = self._properties.get(id)

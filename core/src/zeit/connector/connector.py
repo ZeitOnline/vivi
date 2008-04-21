@@ -326,6 +326,16 @@ class Connector(zope.thread.local):
 
     def copy(self, old_id, new_id):
         """Copy the resource old_id to new_id."""
+        source = self[old_id]  # Makes sure source exists.
+
+        old_path = urlparse.urlsplit(old_id)[2].split('/')
+        new_path = urlparse.urlsplit(new_id)[2].split('/')
+        if (len(old_path) <= len(new_path)
+            and old_path == new_path[:len(old_path)]):
+                raise zeit.connector.interfaces.CopyError(
+                    old_id,
+                    'Could not copy %s to a decendant of itself.' % old_id)
+
         logger.debug('copy: %s to %s' % (old_id, new_id))
         if self._get_cannonical_id(new_id) in self:
             raise zeit.connector.interfaces.CopyError(
@@ -345,7 +355,16 @@ class Connector(zope.thread.local):
                 new_id = new_id[:len(new_id)-1]
 
         conn = self._conn('default')
-        conn.copy(old_loc, new_loc)
+
+        if old_id.endswith('/'):
+            # We cannot copy folders directly
+            self._add_collection(new_id)
+            self.changeProperties(new_id, source.properties)
+            for name, child_id in self.listCollection(old_id):
+                self.copy(child_id, urlparse.urljoin(new_id, name))
+        else:
+            conn.copy(old_loc, new_loc)
+        self._invalidate_cache(new_loc)
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`.

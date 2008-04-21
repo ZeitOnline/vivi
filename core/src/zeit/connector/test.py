@@ -35,3 +35,13 @@ def test_suite():
     functional.layer = real_connector_layer
     suite.addTest(functional)
     return suite
+
+
+def print_tree(connector, base, level=0):
+    """Helper to print a tree."""
+    if level == 0:
+        print base
+    for name, uid in sorted(connector.listCollection(base)):
+        print uid, connector[uid].type
+        if uid.endswith('/'):
+            print_tree(connector, uid, level+1)

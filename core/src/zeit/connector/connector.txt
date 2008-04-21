@@ -307,12 +307,59 @@ Copying an non existing object raises a KeyError:
 
 >>> connector.copy('http://xml.zeit.de/testing/foo',
 ...                'http://xml.zeit.de/testing/bar')
+Traceback (most recent call last):
+    ...
+KeyError: "The resource 'http://xml.zeit.de/testing/foo' does not exist."
 
 Clean up:
 
 >>> del connector[u'http://xml.zeit.de/testing/copy-target']
 >>> del connector[u'http://xml.zeit.de/testing/copy-test']
 
+Now make sure we can copy folders[#create-folder-structure]_:
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'testroot', u'http://xml.zeit.de/testing/testroot/')]
+>>> connector.copy('http://xml.zeit.de/testing/testroot',
+...                'http://xml.zeit.de/testing/copiedtree')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'copiedtree', u'http://xml.zeit.de/testing/copiedtree/'),
+ (u'testroot', u'http://xml.zeit.de/testing/testroot/')]
+
+
+Verify the whole copied tree:
+
+>>> zeit.connector.test.print_tree(
+...     connector, 'http://xml.zeit.de/testing/copiedtree')
+http://xml.zeit.de/testing/copiedtree
+http://xml.zeit.de/testing/copiedtree/a/ folder
+http://xml.zeit.de/testing/copiedtree/a/a/ folder
+http://xml.zeit.de/testing/copiedtree/a/b/ folder
+http://xml.zeit.de/testing/copiedtree/a/b/c/ folder
+http://xml.zeit.de/testing/copiedtree/a/b/c/foo text
+http://xml.zeit.de/testing/copiedtree/a/f text
+http://xml.zeit.de/testing/copiedtree/b/ folder
+http://xml.zeit.de/testing/copiedtree/b/a/ folder
+http://xml.zeit.de/testing/copiedtree/b/b/ folder
+http://xml.zeit.de/testing/copiedtree/b/b/foo text
+http://xml.zeit.de/testing/copiedtree/f text
+http://xml.zeit.de/testing/copiedtree/g text
+http://xml.zeit.de/testing/copiedtree/h text
+
+Make sure copying an folder into a decendent of itself raises an error:
+
+>>> connector.copy('http://xml.zeit.de/testing/testroot',
+...                'http://xml.zeit.de/testing/testroot/a/b/c')
+Traceback (most recent call last):
+    ...
+CopyError: Could not copy http://xml.zeit.de/testing/testroot to a decendant
+    of itself.
+
+Clean up:
+
+>>> del connector['http://xml.zeit.de/testing/copiedtree']
+>>> del connector['http://xml.zeit.de/testing/testroot']
+    
 
 Moving
 ======
@@ -366,6 +413,39 @@ Let's clean up:
 
 >>> del connector['http://xml.zeit.de/testing/move-test-2']
 >>> del connector['http://xml.zeit.de/testing/move-test-moved']
+
+
+Make sure we can also move collections[#create-folder-structure]_:
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'testroot', u'http://xml.zeit.de/testing/testroot/')]
+>>> connector.move('http://xml.zeit.de/testing/testroot',
+...                'http://xml.zeit.de/testing/movedtree')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'movedtree', u'http://xml.zeit.de/testing/movedtree/')]
+
+Verify the whole structure:
+
+>>> zeit.connector.test.print_tree(
+...     connector, 'http://xml.zeit.de/testing/movedtree')
+http://xml.zeit.de/testing/movedtree
+http://xml.zeit.de/testing/movedtree/a/ folder
+http://xml.zeit.de/testing/movedtree/a/a/ folder
+http://xml.zeit.de/testing/movedtree/a/b/ folder
+http://xml.zeit.de/testing/movedtree/a/b/c/ folder
+http://xml.zeit.de/testing/movedtree/a/b/c/foo text
+http://xml.zeit.de/testing/movedtree/a/f text
+http://xml.zeit.de/testing/movedtree/b/ folder
+http://xml.zeit.de/testing/movedtree/b/a/ folder
+http://xml.zeit.de/testing/movedtree/b/b/ folder
+http://xml.zeit.de/testing/movedtree/b/b/foo text
+http://xml.zeit.de/testing/movedtree/f text
+http://xml.zeit.de/testing/movedtree/g text
+http://xml.zeit.de/testing/movedtree/h text
+
+Clean up:
+
+>>> del connector[u'http://xml.zeit.de/testing/movedtree']
 
 Search (interface only):
 ========================
@@ -425,3 +505,60 @@ Unlock the resource and remove id:
 
 >>> connector._conn().do_unlock(dav_url, token)
 >>> del connector[id]
+
+
+.. [#create-folder-structure] Create a folder structure for copy/move
+
+    Create helpers for creating folders/files:
+
+    >>> def add_folder(id):
+    ...     id = u'http://xml.zeit.de/testing/' + id
+    ...     res = Resource(
+    ...         id, None, 'folder', StringIO.StringIO(''),
+    ...         contentType = 'httpd/unix-directory')
+    ...     connector.add(res)
+    >>> def add_file(id):
+    ...     id = u'http://xml.zeit.de/testing/' + id
+    ...     res = Resource(
+    ...         id, None, 'text', StringIO.StringIO('Pop.'),
+    ...         contentType = 'text/plain')
+    ...     connector.add(res)
+    
+    Create folders:
+
+    >>> add_folder('testroot')
+    >>> add_folder('testroot/a')
+    >>> add_folder('testroot/a/a')
+    >>> add_folder('testroot/a/b')
+    >>> add_folder('testroot/a/b/c')
+    >>> add_folder('testroot/b')
+    >>> add_folder('testroot/b/a')
+    >>> add_folder('testroot/b/b')
+    
+    Create files:
+
+    >>> add_file('testroot/f')
+    >>> add_file('testroot/g')
+    >>> add_file('testroot/h')
+    >>> add_file('testroot/a/f')
+    >>> add_file('testroot/a/b/c/foo')
+    >>> add_file('testroot/b/b/foo')
+
+    >>> import zeit.connector.test
+    >>> zeit.connector.test.print_tree(
+    ...     connector, 'http://xml.zeit.de/testing/testroot')
+    http://xml.zeit.de/testing/testroot
+    http://xml.zeit.de/testing/testroot/a/ folder
+    http://xml.zeit.de/testing/testroot/a/a/ folder
+    http://xml.zeit.de/testing/testroot/a/b/ folder
+    http://xml.zeit.de/testing/testroot/a/b/c/ folder
+    http://xml.zeit.de/testing/testroot/a/b/c/foo text
+    http://xml.zeit.de/testing/testroot/a/f text
+    http://xml.zeit.de/testing/testroot/b/ folder
+    http://xml.zeit.de/testing/testroot/b/a/ folder
+    http://xml.zeit.de/testing/testroot/b/b/ folder
+    http://xml.zeit.de/testing/testroot/b/b/foo text
+    http://xml.zeit.de/testing/testroot/f text
+    http://xml.zeit.de/testing/testroot/g text
+    http://xml.zeit.de/testing/testroot/h text
+    

@@ -8,6 +8,8 @@ CHANGES
   now. This makes it easier to use in console scripts.
 - <feed> is now <channel> (mock connector).
 - connector's move method uses copy+delete now
+- Added copy method to IConnector which allows copying files and directories.
+- Enabled move to move directories.
 
 0.13 (2008-04-07)
 -----------------
