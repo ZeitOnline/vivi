@@ -45,6 +45,10 @@ class LockingError(ConnectorError):
     """Raised when trying to lock an already locked resource."""
 
 
+class CopyError(ConnectorError):
+    """Raised when copying an object fails."""
+
+
 class MoveError(ConnectorError):
     """Raised when moving an object fails."""
 
@@ -109,6 +113,14 @@ class IConnector(zope.interface.Interface):
         """Add the given `object` to the document store.
 
         The object must be adaptable to IResource.
+
+        """
+
+    def copy(old_id, new_id):
+        """Copy the resource old_id to new_id.
+
+        raises KeyError if ther is no resource `old_id`
+        raises CopyError if there was a problem with copying itself.
 
         """
 

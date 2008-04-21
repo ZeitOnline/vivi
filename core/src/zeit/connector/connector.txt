@@ -263,6 +263,57 @@ Remove the collections:
 >>> del connector[other_collection_id]
 >>> del connector[collection_id]
 
+
+Copying
+=======
+
+Content can be copied. This works for single files as well as directories.
+Unfortunatly the dav server doesn't support copying collections, so we have to
+implement this in the connector.
+
+
+Try a single file first. Create it:
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[]
+>>> res = Resource('http://xml.zeit.de/testing/copy-test',
+...                'conn1',
+...                'text',
+...                StringIO.StringIO('Pop goes the weasel!'),
+...                contentType = 'text/plain')
+>>> connector.add(res)
+
+Now copy:
+
+>>> connector.copy('http://xml.zeit.de/testing/copy-test',
+...                'http://xml.zeit.de/testing/copy-target')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'copy-target', u'http://xml.zeit.de/testing/copy-target'),
+ (u'copy-test', u'http://xml.zeit.de/testing/copy-test')]
+>>> connector[u'http://xml.zeit.de/testing/copy-target'].type
+'text'
+
+
+Note that copying an object onto another doesn't work:
+
+>>> connector.copy('http://xml.zeit.de/testing/copy-test',
+...                'http://xml.zeit.de/testing/copy-target')
+Traceback (most recent call last):
+    ...
+CopyError: Could not copy http://xml.zeit.de/testing/copy-test to
+    http://xml.zeit.de/testing/copy-target, because target alread exists.
+
+Copying an non existing object raises a KeyError:
+
+>>> connector.copy('http://xml.zeit.de/testing/foo',
+...                'http://xml.zeit.de/testing/bar')
+
+Clean up:
+
+>>> del connector[u'http://xml.zeit.de/testing/copy-target']
+>>> del connector[u'http://xml.zeit.de/testing/copy-test']
+
+
 Moving
 ======
 
