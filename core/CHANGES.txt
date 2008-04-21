@@ -17,6 +17,7 @@ zeit.cms changes
 - Homepage-Teaser hinzugefügt (bug #4122).
 - Related werden jetzt mit Kurzteaser und HP-Teaser eingebettet.
 - Factored out zeit.ldap into its own package.
+- Im Workflowtab werden Statusänderungen jetzt als Log angezeigt (bug #4121).
 
 0.9.9 (2008-04-14)
 ------------------

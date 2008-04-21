@@ -6,7 +6,7 @@ XXX language mix
 
 Der Workflow ist statusorientiert. Ein Dokument hat allerdings mehrere den
 Workflow betreffende Status. Aus Nutzersicht ergeben sich quasi parallele
-Aktivitäten[1]_.
+Aktivitäten[#functionaltest]_.
 
 >>> somalia = repository['online']['2007']['01']['Somalia']
 >>> workflow = zeit.cms.workflow.interfaces.IPublish(somalia)
@@ -38,7 +38,8 @@ Currently the object cannot be published:
 >>> workflow.can_publish()
 False
 
-Let's now switch one state after the other and see if we can publish:
+Let's now switch one state after the other and see if we can
+publish[#needsinteraction]_:
 
 >>> workflow.edited = True
 >>> workflow.can_publish()
@@ -114,7 +115,7 @@ True
 True
 
 
-Let's publish the object[3]_:
+Let's publish the object:
 
 >>> workflow.urgent = True
 >>> workflow.publish()
@@ -143,9 +144,50 @@ retract is unconditinally possible:
 False
 
 
-That was the workflow[2]_.
+We did quite some stuff now. Verify the object log:
 
-.. [1] We need to set the site since we're a functional test:
+>>> import zeit.objectlog.interfaces
+>>> log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+>>> result = list(log.get_log(somalia))
+>>> import zope.i18n
+>>> for e in result:
+...     print e.get_object().uniqueId
+...     print '    ', zope.i18n.translate(e.message)
+http://xml.zeit.de/online/2007/01/Somalia
+     Edited: yes
+http://xml.zeit.de/online/2007/01/Somalia
+     Corrected: yes
+http://xml.zeit.de/online/2007/01/Somalia
+     Refined: yes
+http://xml.zeit.de/online/2007/01/Somalia
+     Images added: yes
+http://xml.zeit.de/online/2007/01/Somalia
+     Edited: notnecessary
+http://xml.zeit.de/online/2007/01/Somalia
+     Corrected: notnecessary
+http://xml.zeit.de/online/2007/01/Somalia
+     Refined: notnecessary
+http://xml.zeit.de/online/2007/01/Somalia
+     Images added: notnecessary
+http://xml.zeit.de/online/2007/01/Somalia
+     Edited: no
+http://xml.zeit.de/online/2007/01/Somalia
+     Urgent: yes
+http://xml.zeit.de/online/2007/01/Somalia
+     Urgent: no
+http://xml.zeit.de/online/2007/01/Somalia
+     Urgent: yes
+http://xml.zeit.de/online/2007/01/Somalia
+     Urgent: no
+
+Note, that we'd need recurive translations to handle the "status-xxx"
+correctly. There is an open issue regarding this:
+https://bugs.launchpad.net/zope3/+bug/210177
+
+
+That was the workflow[#cleanup]_.
+
+.. [#functionaltest] We need to set the site since we're a functional test:
 
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
@@ -160,13 +202,13 @@ That was the workflow[2]_.
     ...     zeit.cms.repository.interfaces.IRepository)
 
 
-.. [2] Clean up
+.. [#cleanup] Clean up
 
     >>> zope.security.management.endInteraction()
     >>> zope.app.component.hooks.setSite(old_site)
 
 
-.. [3] For publising we need an interacion, i.e. a request
+.. [#needsinteraction] For publising we need an interacion, i.e. a request
 
     >>> import zope.publisher.browser
     >>> request = zope.publisher.browser.TestRequest()

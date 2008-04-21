@@ -325,3 +325,23 @@ The object is still unpublished:
         <div class="hint"></div>
         <div class="widget">False</div>
         ...
+
+
+Log
+---
+
+The workflow logs various changes in an objectlog. Verify this:
+
+>>> print browser.contents
+<?xml...
+        <div class="widget">${time} [${principal}]: ${message}<br />
+${time} [${principal}]: ${message}<br />
+${time} [${principal}]: ${message}<br />
+${time} [${principal}]: ${message}<br />
+${time} [${principal}]: ${message}</div>
+...
+
+
+Due to a bug in zeit.objectlog *or* zope.i18n the messages are not substituted
+(bug #4128).
+

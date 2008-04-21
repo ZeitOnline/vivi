@@ -12,6 +12,7 @@
   <subscriber handler=".workflow.update_last_modified_by" />
   <subscriber handler=".workflow.remove_live_properties" />
   <subscriber handler=".workflow.copy_first_released_property_to_xml" />
+  <subscriber handler=".workflow.log_workflow_changes" />
 
   <adapter factory=".source.fromNotNecessary" />
 

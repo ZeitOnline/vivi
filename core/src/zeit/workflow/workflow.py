@@ -6,6 +6,7 @@ import datetime
 
 import pytz
 import rwproperty
+import transaction
 
 import zope.component
 import zope.event
@@ -15,6 +16,8 @@ import zope.location.location
 import z3c.flashmessage.interfaces
 
 import zeit.connector.interfaces
+import zeit.objectlog.interfaces
+
 import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -214,3 +217,25 @@ def remove_live_properties(context, event):
     for name, namespace in list(properties):  # make sure it's not an iterator
         if namespace == WORKFLOW_NS:
             del properties[(name, namespace)]
+
+
+@zope.component.adapter(
+    Workflow,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def log_workflow_changes(workflow, event):
+    if event.field.__name__ not in ('edited', 'corrected', 'refined',
+                                    'images_added', 'urgent'):
+        # Only act on certain fields.
+        return
+
+    content = workflow.context
+    message = _('${name}: ${new_value}',
+                mapping=dict(name=event.field.title,
+                             old_value=event.old_value,
+                             new_value=event.new_value))
+
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    log.log(content, message)
+    # Create savepoint to assing oid to log-entries. Required for displaying in
+    # the same transaction.
+    transaction.savepoint(optimistic=True)

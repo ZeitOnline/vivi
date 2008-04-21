@@ -6,10 +6,11 @@ import zope.formlib.form
 
 import gocept.form.grouped
 
-import zeit.cms.browser.form
-from zeit.cms.i18n import MessageFactory as _
+import zeit.objectlog.interfaces
 
+import zeit.cms.browser.form
 import zeit.workflow.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 def is_published(form, action):
@@ -29,10 +30,14 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Log"), fields=('logs', ),
+            css_class='full-width')
     )
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.workflow.interfaces.IWorkflow)
+    form_fields = (
+        zope.formlib.form.FormFields(zeit.workflow.interfaces.IWorkflow) +
+        zope.formlib.form.FormFields(zeit.objectlog.interfaces.ILog))
 
     @zope.formlib.form.action(_('Save state only'))
     def handle_save_state(self, action, data):

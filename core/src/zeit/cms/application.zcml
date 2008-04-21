@@ -53,6 +53,7 @@
   <include package="gocept.form" />
 
   <include package="zeit.connector" />
+  <include package="zeit.objectlog" />
 
 </configure>
 
