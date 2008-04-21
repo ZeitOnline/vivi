@@ -1,0 +1,23 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: zeit.objectlog\n"
+"POT-Creation-Date: Mon Apr 21 08:45:45 2008\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"Language-Team: gocept translations <mail@gocept.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: src/zeit/objectlog/interfaces.py:58
+msgid "Log"
+msgstr "Log"
+
+#. Default: ""
+#: src/zeit/objectlog/source.py:33
+msgid "${time} [${principal}]: ${message}"
+msgstr "${time} [${principal}]: ${message}"
+
