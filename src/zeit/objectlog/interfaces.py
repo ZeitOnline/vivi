@@ -4,11 +4,14 @@
 
 import zope.interface
 
+import zeit.objectlog.source
+from zeit.objectlog.i18n import MessageFactory as _
+
 
 class IObjectLog(zope.interface.Interface):
     """Utility which logs object changes."""
 
-    def log(object, message_id, mapping):
+    def log(object, message, mapping):
         """Log message for object."""
 
     def get_log(object):
@@ -31,9 +34,28 @@ class ILogEntry(zope.interface.Interface):
         readonly=True)
 
     mapping = zope.schema.Dict(
-        title=u'Mapping to replace variables in message',
+        title=u'Arbitrary data to stroge along the log.',
         readonly=True,
         required=False)
 
     def get_object():
         """return the affected object."""
+
+
+class ILog(zope.interface.Interface):
+    """Logging interface for one object."""
+
+    def log(message, mapping):
+        """Log message for context."""
+
+    def get_log():
+        """Return log entries for context.
+
+        Oldest first.
+        """
+
+    logs = zope.schema.Tuple(
+        title=_('Log'),
+        value_type=zope.schema.Choice(
+            source=zeit.objectlog.source.LogEntrySource()),
+        readonly=True)

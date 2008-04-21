@@ -101,6 +101,67 @@ When we log to another object, the log is obviously seperated:
 'change'
 
 
+Adapting objects to log
+-----------------------
+
+There is also an ILog interface which represents the log of one single object:
+
+>>> content_log = zeit.objectlog.interfaces.ILog(content)
+>>> content_log
+<zeit.objectlog.objectlog.Log object at 0x...>
+>>> zope.interface.verify.verifyObject(
+...     zeit.objectlog.interfaces.ILog, content_log)
+True
+
+We get the same log messages here as when asking the utility directly:
+
+>>> [entry.message for entry in content_log.get_log()]
+['Foo', 'bar', 'baz']
+
+We can also create new entries:
+
+>>> content_log.log('bling', dict())
+>>> [entry.message for entry in content_log.get_log()]
+['Foo', 'bar', 'baz', 'bling']
+>>> list(content_log.get_log())[-1].mapping
+{}
+
+The log adapter also has an attribute `logs` which is a property of
+get_log:
+
+>>> len(content_log.logs)
+4
+>>> content_log.logs
+(<zeit.objectlog.objectlog.LogEntry object at 0x...>, ...)
+
+Note that the `logs` propert is reversed:
+
+>>> content_log.logs[0].message
+'bling'
+
+
+The `logs` property is contrainted with a source:
+
+>>> field = zeit.objectlog.interfaces.ILog['logs']
+>>> field = field.bind(content_log)
+>>> source = field.value_type.source
+>>> len(list(source))
+4
+>>> list(source)
+[<zeit.objectlog.objectlog.LogEntry object at 0x...>, ...]
+
+Verify the titles:
+
+>>> import zope.app.form.browser.interfaces
+>>> terms = zope.component.getMultiAdapter(
+...     (source, request),
+...     zope.app.form.browser.interfaces.ITerms)
+>>> term = terms.getTerm(list(source)[1])
+>>> zope.i18n.translate(term.title)
+u'2008 4 19  10:12:17  [Hans Wurst]: bar'
+
+
+
 
 Tear down / Clean up:
 
@@ -120,5 +181,5 @@ Tear down / Clean up:
     >>> import zope.security.testing
     >>> import zope.publisher.browser
     >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(zope.security.testing.Principal(u'hans'))
+    >>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
     >>> zope.security.management.newInteraction(request)

@@ -3,6 +3,7 @@
 # $Id$
 
 import datetime
+import logging
 import time
 
 import BTrees
@@ -15,6 +16,10 @@ import zope.security.management
 import zope.app.keyreference.interfaces
 
 import zeit.objectlog.interfaces
+from zeit.objectlog.i18n import MessageFactory as _
+
+
+logger = logging.getLogger(__name__)
 
 
 class ObjectLog(persistent.Persistent):
@@ -35,6 +40,7 @@ class ObjectLog(persistent.Persistent):
             yield self._time_line[time_key]
 
     def log(self, object, message, mapping=None):
+        logger.debug("Logging: %s %s %s" % (object, message, mapping))
         obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
 
         log_entry = LogEntry(object, message, mapping)
@@ -70,3 +76,24 @@ class LogEntry(persistent.Persistent):
 
     def get_object(self):
         return self.object_reference()
+
+
+class Log(object):
+
+    zope.component.adapts(zope.interface.Interface)
+    zope.interface.implements(zeit.objectlog.interfaces.ILog)
+
+    def __init__(self, context):
+        self.context = context
+
+    def log(self, message, mapping):
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        log.log(self.context, message, mapping)
+
+    def get_log(self):
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        return log.get_log(self.context)
+
+    @property
+    def logs(self):
+        return tuple(reversed(tuple(self.get_log())))

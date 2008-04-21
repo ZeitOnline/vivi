@@ -14,9 +14,15 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
-        'setuptools',
         'ZODB3',
+        'pytz',
+        'setuptools',
+        'zc.sourcefactory',
         'zope.app.keyreference',
+        'zope.component',
+        'zope.i18n>3.4.0',
+        'zope.interface',
+        'zope.security',
     ],
     extras_require={
         'test': [

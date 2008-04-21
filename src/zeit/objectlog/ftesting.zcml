@@ -7,8 +7,15 @@
   <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
 
   <include package="zope.app.keyreference" />
+  <include package="zc.sourcefactory" />
 
   <include package="zeit.objectlog" />
+
+  <principal
+      id="test.hans"
+      title="Hans Wurst"
+      login="hans"
+      password="hanspw" />
 
 </configure>
 
