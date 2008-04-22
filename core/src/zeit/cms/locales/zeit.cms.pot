@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Apr 14 08:38:58 2008\n"
+"POT-Creation-Date: Mon Apr 21 10:52:29 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -65,9 +65,9 @@ msgstr ""
 #: src/zeit/cms/browser/listing.py:267
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
-#: src/zeit/cms/content/interfaces.py:242
+#: src/zeit/cms/content/interfaces.py:256
 #: src/zeit/cms/syndication/browser/feed.py:155
-#: src/zeit/cms/syndication/interfaces.py:36
+#: src/zeit/cms/syndication/interfaces.py:33
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:29
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:80
@@ -82,7 +82,7 @@ msgid "Title will be shown in overview pages."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:249
+#: src/zeit/cms/content/interfaces.py:263
 msgid "Related content"
 msgstr ""
 
@@ -248,7 +248,7 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:201
+#: src/zeit/cms/browser/main_template.pt:204
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr ""
@@ -276,6 +276,10 @@ msgstr ""
 
 #: src/zeit/cms/browser/object-reference-widget.pt:11
 msgid "Choose object"
+msgstr ""
+
+#: src/zeit/cms/browser/object-reference-widget.pt:14
+msgid "Show object"
 msgstr ""
 
 #: src/zeit/cms/browser/system-error.pt:8
@@ -345,7 +349,7 @@ msgstr ""
 msgid "Texts"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:53
+#: src/zeit/cms/content/browser/form.py:54
 #: src/zeit/content/article/browser/form.py:57
 #: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
@@ -473,18 +477,26 @@ msgid "Index teaser text"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:142
+msgid "Homepage teaser title"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:147
+msgid "Homepage teaser text"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:152
 msgid "VG Wort Id"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:210
+#: src/zeit/cms/content/interfaces.py:224
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:250
+#: src/zeit/cms/content/interfaces.py:264
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:280
+#: src/zeit/cms/content/interfaces.py:294
 msgid "Hits today"
 msgstr ""
 
@@ -751,7 +763,7 @@ msgstr ""
 msgid "Add Channel"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/form.py:36
+#: src/zeit/cms/syndication/browser/form.py:33
 msgid "Edit Channel"
 msgstr ""
 
@@ -779,7 +791,7 @@ msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:49
+#: src/zeit/workflow/browser/form.py:54
 #. Default: ""
 msgid "scheduled-for-publishing"
 msgstr ""
@@ -789,15 +801,15 @@ msgstr ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:137
+#: src/zeit/cms/syndication/interfaces.py:134
 msgid "Syndication targets"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:38
+#: src/zeit/cms/syndication/interfaces.py:35
 msgid "Limit amount"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:39
+#: src/zeit/cms/syndication/interfaces.py:36
 msgid "limit-amount-description"
 msgstr ""
 
@@ -1385,37 +1397,41 @@ msgstr ""
 msgid "HTML description"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:21
+#: src/zeit/workflow/browser/form.py:22
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:25
+#: src/zeit/workflow/browser/form.py:26
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:31
+#: src/zeit/workflow/browser/form.py:32
 msgid "Settings"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:37
+#: src/zeit/workflow/browser/form.py:34
+msgid "Log"
+msgstr ""
+
+#: src/zeit/workflow/browser/form.py:42
 msgid "Save state only"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:41
+#: src/zeit/workflow/browser/form.py:46
 msgid "Save state and publish"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:52
+#: src/zeit/workflow/browser/form.py:57
 #. Default: ""
 msgid "publish-preconditions-not-met"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:56
+#: src/zeit/workflow/browser/form.py:61
 msgid "Save state and retract"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:64
+#: src/zeit/workflow/browser/form.py:69
 #. Default: ""
 msgid "scheduled-for-retracting"
 msgstr ""
@@ -1470,5 +1486,10 @@ msgstr ""
 
 #: src/zeit/workflow/source.py:35
 msgid "not necessary"
+msgstr ""
+
+#: src/zeit/workflow/workflow.py:232
+#. Default: ""
+msgid "${name}: ${new_value}"
 msgstr ""
 

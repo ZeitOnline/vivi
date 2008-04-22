@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Apr 14 08:38:58 2008\n"
-"PO-Revision-Date: 2008-04-14 19:38+0100\n"
+"POT-Creation-Date: Mon Apr 21 10:52:29 2008\n"
+"PO-Revision-Date: 2008-04-22 08:16+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -53,9 +53,9 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/browser/listing.py:267
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:116
-#: src/zeit/cms/content/interfaces.py:242
+#: src/zeit/cms/content/interfaces.py:256
 #: src/zeit/cms/syndication/browser/feed.py:155
-#: src/zeit/cms/syndication/interfaces.py:36
+#: src/zeit/cms/syndication/interfaces.py:33
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:29
 #: src/zeit/content/article/interfaces.py:141
 #: src/zeit/content/gallery/interfaces.py:80
@@ -70,7 +70,7 @@ msgid "Title will be shown in overview pages."
 msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:249
+#: src/zeit/cms/content/interfaces.py:263
 msgid "Related content"
 msgstr "Verlinkte Objekte"
 
@@ -236,7 +236,7 @@ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, wei
 msgid "An error is occoured"
 msgstr "Ein Fehler ist aufgetreten."
 
-#: src/zeit/cms/browser/main_template.pt:201
+#: src/zeit/cms/browser/main_template.pt:204
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr "Hinzufügen …"
@@ -265,6 +265,10 @@ msgstr "Meldungen"
 #: src/zeit/cms/browser/object-reference-widget.pt:11
 msgid "Choose object"
 msgstr "Objekt auswählen"
+
+#: src/zeit/cms/browser/object-reference-widget.pt:14
+msgid "Show object"
+msgstr "Objekt anzeigen"
 
 #: src/zeit/cms/browser/system-error.pt:8
 msgid "The action you were trying to do could not be finished."
@@ -333,7 +337,7 @@ msgstr "Kopf"
 msgid "Texts"
 msgstr "Texte"
 
-#: src/zeit/cms/content/browser/form.py:53
+#: src/zeit/cms/content/browser/form.py:54
 #: src/zeit/content/article/browser/form.py:57
 #: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
@@ -461,18 +465,26 @@ msgid "Index teaser text"
 msgstr "Kurzteaser-Text"
 
 #: src/zeit/cms/content/interfaces.py:142
+msgid "Homepage teaser title"
+msgstr "Homepagetaser-Titel"
+
+#: src/zeit/cms/content/interfaces.py:147
+msgid "Homepage teaser text"
+msgstr "Homepageteaser-Text"
+
+#: src/zeit/cms/content/interfaces.py:152
 msgid "VG Wort Id"
 msgstr "VG Wort Id"
 
-#: src/zeit/cms/content/interfaces.py:210
+#: src/zeit/cms/content/interfaces.py:224
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: src/zeit/cms/content/interfaces.py:250
+#: src/zeit/cms/content/interfaces.py:264
 msgid "Objects that are related to this object."
 msgstr "Objekte die verlinkt werden sollen."
 
-#: src/zeit/cms/content/interfaces.py:280
+#: src/zeit/cms/content/interfaces.py:294
 msgid "Hits today"
 msgstr "Treffer heute"
 
@@ -739,7 +751,7 @@ msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 msgid "Add Channel"
 msgstr "Channel hinzufügen"
 
-#: src/zeit/cms/syndication/browser/form.py:36
+#: src/zeit/cms/syndication/browser/form.py:33
 msgid "Edit Channel"
 msgstr "Channel bearbeiten"
 
@@ -768,7 +780,7 @@ msgstr "»${name} wurde nach ${targets} syndiziert."
 
 #. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:49
+#: src/zeit/workflow/browser/form.py:54
 msgid "scheduled-for-publishing"
 msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
 
@@ -777,15 +789,15 @@ msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
 msgid "Could not publish \"${name}\"."
 msgstr "»${name}« konnte nicht veröffentlicht werden."
 
-#: src/zeit/cms/syndication/interfaces.py:137
+#: src/zeit/cms/syndication/interfaces.py:134
 msgid "Syndication targets"
 msgstr "Syndizierungsziele"
 
-#: src/zeit/cms/syndication/interfaces.py:38
+#: src/zeit/cms/syndication/interfaces.py:35
 msgid "Limit amount"
 msgstr "Anzahl begrenzen"
 
-#: src/zeit/cms/syndication/interfaces.py:39
+#: src/zeit/cms/syndication/interfaces.py:36
 msgid "limit-amount-description"
 msgstr "limit-amount-description"
 
@@ -1373,38 +1385,42 @@ msgstr "HTML-Titel"
 msgid "HTML description"
 msgstr "HTML-Beschreibung (Description)"
 
-#: src/zeit/workflow/browser/form.py:21
+#: src/zeit/workflow/browser/form.py:22
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr "Workflow"
 
-#: src/zeit/workflow/browser/form.py:25
+#: src/zeit/workflow/browser/form.py:26
 msgid "Status"
 msgstr "Status"
 
-#: src/zeit/workflow/browser/form.py:31
+#: src/zeit/workflow/browser/form.py:32
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/zeit/workflow/browser/form.py:37
+#: src/zeit/workflow/browser/form.py:34
+msgid "Log"
+msgstr "Log"
+
+#: src/zeit/workflow/browser/form.py:42
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
-#: src/zeit/workflow/browser/form.py:41
+#: src/zeit/workflow/browser/form.py:46
 msgid "Save state and publish"
 msgstr "Status speichern und veröffentlichen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:52
+#: src/zeit/workflow/browser/form.py:57
 msgid "publish-preconditions-not-met"
 msgstr "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das »Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
 
-#: src/zeit/workflow/browser/form.py:56
+#: src/zeit/workflow/browser/form.py:61
 msgid "Save state and retract"
 msgstr "Status speichern und zurückziehen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:64
+#: src/zeit/workflow/browser/form.py:69
 msgid "scheduled-for-retracting"
 msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 
@@ -1459,6 +1475,11 @@ msgstr "nein"
 #: src/zeit/workflow/source.py:35
 msgid "not necessary"
 msgstr "nicht nötig"
+
+#. Default: ""
+#: src/zeit/workflow/workflow.py:232
+msgid "${name}: ${new_value}"
+msgstr "${name}: ${new_value}"
 
 #~ msgid "Document"
 #~ msgstr "Dokument"
