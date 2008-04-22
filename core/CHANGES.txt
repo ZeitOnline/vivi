@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.10 (unreleased)
+0.9.10 (2008-04-22)
 -------------------
 
 - Droppen von Objekten in einen Channel führt nicht mehr zum JS-Fehler (sondern
