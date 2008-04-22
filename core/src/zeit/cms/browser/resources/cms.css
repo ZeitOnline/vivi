@@ -90,7 +90,7 @@ pre {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .visible {
@@ -375,12 +375,11 @@ pre {
     right: 0;
     left: 1em;
     height: 2em;
-    overflow: hidden;
     border-bottom: 1px solid black;
 }
 
-.context-actions ul,
-.context-views ul {
+.context-actions > ul,
+.context-views > ul {
     margin-bottom: 0.4em;
     margin-top: 0.4em;
     padding: 0;
@@ -392,8 +391,8 @@ pre {
   position: absolute
 }
 
-.context-actions li,
-.context-views li {
+.context-actions > ul > li,
+.context-views > ul > li {
     display: inline;
     background-color: transparent;
     padding: 0;
@@ -434,7 +433,7 @@ pre {
   border: none;
 }
 
-.context-actions img {
+.context-actions a {
   opacity: 0.5;
 }
 
@@ -443,11 +442,41 @@ pre {
 }
 
 
-.context-actions img:hover,
+.context-actions a:hover,
 .context-action img:hover {
   opacity: 1;
 }
 
 .action-title {
     display: none;
+}
+
+
+/* secondary context actions */
+
+.secondary-context-actions {
+    display: block;
+    opacity: 1;
+    position: absolute;
+    z-index: 1;
+    background-color: #FFDD11;
+    border: 1px solid black;
+    border-top: none;
+    top: 2em;
+    padding: 0.4em;
+    right: 1.5em;
+}
+
+.secondary-context-actions > li {
+    display: block;
+    margin: 0.5em 0;
+
+}
+
+.secondary-context-actions > li > a > * {
+    vertical-align: middle;
+}
+
+.secondary-context-actions .action-title {
+    display: inline;
 }

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Apr 21 10:52:29 2008\n"
+"POT-Creation-Date: Tue Apr 22 12:48:13 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -106,8 +106,8 @@ msgstr ""
 msgid "Is the article a topic for the next week?"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:151
-#: src/zeit/cms/browser/configure.zcml:166
+#: src/zeit/cms/browser/configure.zcml:169
+#: src/zeit/cms/browser/configure.zcml:184
 msgid "Source"
 msgstr ""
 
@@ -116,15 +116,15 @@ msgstr ""
 msgid "context sensitive actions"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:240
+#: src/zeit/cms/browser/configure.zcml:258
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:294
+#: src/zeit/cms/browser/configure.zcml:312
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:303
+#: src/zeit/cms/browser/configure.zcml:321
 msgid "Development"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/menu.py:75
+#: src/zeit/cms/browser/menu.py:77
 msgid "CMS"
 msgstr ""
 
@@ -280,6 +280,10 @@ msgstr ""
 
 #: src/zeit/cms/browser/object-reference-widget.pt:14
 msgid "Show object"
+msgstr ""
+
+#: src/zeit/cms/browser/secondary_context_actions.pt:4
+msgid "Additional actions"
 msgstr ""
 
 #: src/zeit/cms/browser/system-error.pt:8
@@ -324,6 +328,7 @@ msgstr ""
 
 #: src/zeit/cms/clipboard/browser/clip.py:85
 #: src/zeit/cms/clipboard/browser/clip.py:94
+#: src/zeit/cms/repository/browser/menu.py:12
 #: src/zeit/cms/repository/browser/rename.py:50
 msgid "Rename"
 msgstr ""
@@ -425,11 +430,6 @@ msgstr ""
 
 #: src/zeit/cms/content/browser/template.zcml:48
 msgid "Properties"
-msgstr ""
-
-#: src/zeit/cms/content/browser/template.zcml:57
-#: src/zeit/cms/repository/browser/delete.pt:27
-msgid "Delete"
 msgstr ""
 
 #: src/zeit/cms/content/field.py:32
@@ -585,6 +585,10 @@ msgstr ""
 msgid "\"${name}\" has been unlocked."
 msgstr ""
 
+#: src/zeit/cms/locking/browser/lock.py:93
+msgid "Manage lock"
+msgstr ""
+
 #: src/zeit/cms/permissions.zcml:10
 msgid "Edit ZEIT content"
 msgstr ""
@@ -670,6 +674,12 @@ msgstr ""
 
 #: src/zeit/cms/repository/browser/folder.zcml:75
 msgid "Show"
+msgstr ""
+
+#: src/zeit/cms/repository/browser/menu.py:18
+#: src/zeit/cms/content/browser/template.zcml:57
+#: src/zeit/cms/repository/browser/delete.pt:27
+msgid "Delete"
 msgstr ""
 
 #: src/zeit/cms/repository/browser/rename-box.pt:5
@@ -781,7 +791,7 @@ msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:102
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:285
+#: src/zeit/cms/browser/configure.zcml:303
 msgid "Preview"
 msgstr ""
 

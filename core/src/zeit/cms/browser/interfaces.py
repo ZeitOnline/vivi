@@ -40,6 +40,10 @@ class IContextActions(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for actions menu."""
 
 
+class ISecondaryContextActions(zope.viewlet.interfaces.IViewletManager):
+    """Viewlets for less important actions (two clicks away.)"""
+
+
 class ISidebar(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the sidebar"""
 

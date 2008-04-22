@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Apr 21 10:52:29 2008\n"
-"PO-Revision-Date: 2008-04-22 08:16+0100\n"
+"POT-Creation-Date: Tue Apr 22 12:48:13 2008\n"
+"PO-Revision-Date: 2008-04-22 12:49+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -94,8 +94,8 @@ msgstr "Thema?"
 msgid "Is the article a topic for the next week?"
 msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
 
-#: src/zeit/cms/browser/configure.zcml:151
-#: src/zeit/cms/browser/configure.zcml:166
+#: src/zeit/cms/browser/configure.zcml:169
+#: src/zeit/cms/browser/configure.zcml:184
 msgid "Source"
 msgstr "Quelltext"
 
@@ -104,15 +104,15 @@ msgstr "Quelltext"
 msgid "context sensitive actions"
 msgstr "context sensitive actions"
 
-#: src/zeit/cms/browser/configure.zcml:240
+#: src/zeit/cms/browser/configure.zcml:258
 msgid "Zeit CMS User Preferences"
 msgstr "Benutzereinstellungen"
 
-#: src/zeit/cms/browser/configure.zcml:294
+#: src/zeit/cms/browser/configure.zcml:312
 msgid "Live"
 msgstr "Live"
 
-#: src/zeit/cms/browser/configure.zcml:303
+#: src/zeit/cms/browser/configure.zcml:321
 msgid "Development"
 msgstr "Relaunch"
 
@@ -245,7 +245,7 @@ msgstr "Hinzufügen …"
 msgid "Error"
 msgstr "Fehler"
 
-#: src/zeit/cms/browser/menu.py:75
+#: src/zeit/cms/browser/menu.py:77
 msgid "CMS"
 msgstr "CMS"
 
@@ -269,6 +269,10 @@ msgstr "Objekt auswählen"
 #: src/zeit/cms/browser/object-reference-widget.pt:14
 msgid "Show object"
 msgstr "Objekt anzeigen"
+
+#: src/zeit/cms/browser/secondary_context_actions.pt:4
+msgid "Additional actions"
+msgstr "Weitere Aktionen"
 
 #: src/zeit/cms/browser/system-error.pt:8
 msgid "The action you were trying to do could not be finished."
@@ -312,6 +316,7 @@ msgstr "Neuer Name des Clips"
 
 #: src/zeit/cms/clipboard/browser/clip.py:85
 #: src/zeit/cms/clipboard/browser/clip.py:94
+#: src/zeit/cms/repository/browser/menu.py:12
 #: src/zeit/cms/repository/browser/rename.py:50
 msgid "Rename"
 msgstr "Umbenennen"
@@ -414,11 +419,6 @@ msgstr "WebDAV-Properties bearbeiten"
 #: src/zeit/cms/content/browser/template.zcml:48
 msgid "Properties"
 msgstr "Eigenschaften"
-
-#: src/zeit/cms/content/browser/template.zcml:57
-#: src/zeit/cms/repository/browser/delete.pt:27
-msgid "Delete"
-msgstr "Löschen"
 
 #: src/zeit/cms/content/field.py:32
 msgid "Invalid structure."
@@ -573,6 +573,10 @@ msgstr "Sperre aufheben"
 msgid "\"${name}\" has been unlocked."
 msgstr "Die Sperre auf »${name}« wurde entfernt."
 
+#: src/zeit/cms/locking/browser/lock.py:93
+msgid "Manage lock"
+msgstr "Sperre verwalten"
+
 #: src/zeit/cms/permissions.zcml:10
 msgid "Edit ZEIT content"
 msgstr "ZEIT-Inhalte bearbeiten"
@@ -659,6 +663,12 @@ msgstr "Verstecken"
 #: src/zeit/cms/repository/browser/folder.zcml:75
 msgid "Show"
 msgstr "Zeigen"
+
+#: src/zeit/cms/repository/browser/menu.py:18
+#: src/zeit/cms/content/browser/template.zcml:57
+#: src/zeit/cms/repository/browser/delete.pt:27
+msgid "Delete"
+msgstr "Löschen"
 
 #: src/zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
@@ -769,7 +779,7 @@ msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel 
 
 #: src/zeit/cms/syndication/browser/manager.py:102
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:285
+#: src/zeit/cms/browser/configure.zcml:303
 msgid "Preview"
 msgstr "Vorschau"
 

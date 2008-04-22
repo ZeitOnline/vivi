@@ -107,6 +107,24 @@
     permission="zope.View"
     />
 
+  <browser:viewletManager
+    name="zeit.cms.secondary-context-actions"
+    provides=".interfaces.ISecondaryContextActions"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    name="zeit.cms.SecondaryActionsMenuItem"
+    for="*"
+    manager=".interfaces.IContextActions"
+    class=".menu.SecondaryActions"
+    template="secondary_context_actions.pt"
+    permission="zope.View"
+    />
+
+
+
   <!-- Skin, Templates and widgets --> 
   <include file="skin.zcml" />
   <include file="widget.zcml" />

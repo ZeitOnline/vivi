@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import random
+
 import zope.viewlet.viewlet
 
 import zope.app.pagetemplate
@@ -92,3 +94,12 @@ class LightboxActionMenuItem(ActionMenuItem):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'action-menu-item-with-lightbox.pt')
+
+
+class SecondaryActions(MenuItemBase):
+
+    sort = 1000
+
+    @zope.cachedescriptors.property.Lazy
+    def menu_id(self):
+        return 'ActionsMenu%s' % str(random.random())[2:]

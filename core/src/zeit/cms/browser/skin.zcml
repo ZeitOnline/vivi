@@ -67,6 +67,7 @@
     <directory source="resources" include="
       base.js
       dnd.js
+      menu.js
       messages.js
       forms.css
       tables.css

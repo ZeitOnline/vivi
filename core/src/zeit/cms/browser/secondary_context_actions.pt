@@ -1,0 +1,14 @@
+<li i18n:domain="zeit.cms"
+  tal:define="actions provider:zeit.cms.secondary-context-actions"
+  tal:condition="actions">
+  <a title="Additional actions" 
+    tal:attributes="href string:javascript:zeit.cms.menu.toggle('${view/menu_id}')"
+    i18n:attributes="title">
+    <!-- XXX replace by image -->
+    <span style="vertical-align: top">↓</span>
+  </a>
+  <ul class="secondary-context-actions hidden"
+    tal:attributes="id view/menu_id"
+    tal:content="structure actions">
+  </ul>
+</li>

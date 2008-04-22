@@ -90,6 +90,7 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     locked_icon = 'lock-closed.png'
     not_locked_icon = 'lock-open.png'
     own_lock_icon = 'lock-closed-mylock.png'
+    title = _('Manage lock')
 
     @property
     def icon(self):

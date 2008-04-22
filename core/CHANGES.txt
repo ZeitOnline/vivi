@@ -4,6 +4,9 @@ zeit.cms changes
 0.9.11 (unreleased)
 -------------------
 
+- Selten gebrauchte Aktionen in ein DropDown verschoben (derzeit umbenennen und
+  löschen).
+- Einige Menu-Titel wurden nicht übersetzt (bug #4115)
 
 0.9.10 (2008-04-22)
 -------------------
