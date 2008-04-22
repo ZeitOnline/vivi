@@ -7,6 +7,7 @@ zeit.cms changes
 - Selten gebrauchte Aktionen in ein DropDown verschoben (derzeit umbenennen und
   löschen).
 - Einige Menu-Titel wurden nicht übersetzt (bug #4115)
+- Unterstützung für alte Channels mit body/container (bug #4109).
 
 0.9.10 (2008-04-22)
 -------------------
