@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.14 (unreleased)
+0.14 (2008-04-22)
 -----------------
 
 - `zeit.connector.connector.Connector` doesn't use the component architecture
