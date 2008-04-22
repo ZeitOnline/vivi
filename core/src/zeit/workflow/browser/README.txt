@@ -334,14 +334,9 @@ The workflow logs various changes in an objectlog. Verify this:
 
 >>> print browser.contents
 <?xml...
-        <div class="widget">${time} [${principal}]: ${message}<br />
-${time} [${principal}]: ${message}<br />
-${time} [${principal}]: ${message}<br />
-${time} [${principal}]: ${message}<br />
-${time} [${principal}]: ${message}</div>
+        <div class="widget"><FORMATTED DATE>  [User]: Urgent: yes<br />
+<FORMATTED DATE>  [User]: Images added: no<br />
+<FORMATTED DATE>  [User]: Refined: no<br />
+<FORMATTED DATE>  [User]: Corrected: no<br />
+<FORMATTED DATE>  [User]: Edited: no</div>
 ...
-
-
-Due to a bug in zeit.objectlog *or* zope.i18n the messages are not substituted
-(bug #4128).
-
