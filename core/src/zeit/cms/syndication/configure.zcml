@@ -39,4 +39,9 @@
     name="related"
     />
 
+  <!-- old channel support -->
+
+  <adapter factory=".oldchannel.bodyContainerFactory" name="channel_cp" />
+  <adapter factory=".oldchannel.bodyContainerResourceFactory" />
+
 </configure>

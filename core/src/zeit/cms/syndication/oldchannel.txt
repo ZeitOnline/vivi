@@ -1,0 +1,161 @@
+Old channel format
+==================
+
+
+There are two old formats we have to support. Luckily they are not very
+differnt, the only difference is where the entries are stored in the document.
+
+body/container format
+---------------------
+
+The body container format has the structure of a center page. Construct a
+Resource which we inject directly to the connector and then load from the
+repository[#functionaltest]_
+
+>>> import os.path
+>>> xml = file(os.path.join(os.path.dirname(__file__), 'testdata',
+...            'bodycontainer.xml'))
+>>> import zeit.connector.resource
+>>> resource = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/bodycont',
+...     'bodcont',
+...     'channel_cp',
+...     xml)
+
+>>> connector.add(resource)
+
+Let's get it from the repository:
+
+>>> channel = repository.getContent(resource.id)
+>>> channel
+<zeit.cms.syndication.oldchannel.BodyContainer object at 0x...>
+>>> len(channel)
+33
+>>> import pprint
+>>> pprint.pprint(list(channel.keys()))
+['http://xml.zeit.de/online/2007/01/Somalia',
+ 'http://xml.zeit.de/online/2007/01/Querdax',
+ 'cms:/cms/work/online/2008/17/lebensmittel-dickmacher',
+ 'http://www.zeit.de/news/artikel/2008/04/22/2517661.xml',
+ 'cms:/cms/work/online/2008/17/bank-of-england-finanzspritze',
+ 'cms:/cms/work/online/2008/17/lebensmittel-dickmacher-interview',
+ 'cms:/cms/work/2008/17/Argument-Kartellamt-und-Fussball',
+ 'cms:/cms/work/online/2008/17/boers-o-meter-oel-euro-aktien',
+ 'cms:/cms/work/online/2008/17/poststreik-montag',
+ 'cms:/cms/work/2008/17/Immoblienkrise-USA',
+ 'cms:/cms/work/2008/17/P-Zapf',
+ 'cms:/cms/work/online/2008/17/pierer-siemens-skandal',
+ 'cms:/cms/work/online/2008/17/meldung-citigroup',
+ 'cms:/cms/work/online/2008/16/bg-reisanbau',
+ 'cms:/cms/work/2008/17/Atomlobby',
+ 'cms:/cms/work/online/2008/17/siemens-klage-vorstand',
+ 'cms:/cms/work/online/2008/17/nahrungskrise-china-klima-gentechnik',
+ 'cms:/cms/work/online/2008/17/fruehjahrsgutachten',
+ 'cms:/cms/work/2008/17/F-Steuern',
+ 'http://www.zeit.de/video/player?videoID=2008041759e678',
+ 'cms:/cms/work/2008/17/Welthunger',
+ 'http://blog.zeit.de/herdentrieb/',
+ 'cms:/cms/work/online/2008/17/oel-preis-brasilien-querdax',
+ 'cms:/cms/work/online/2008/16/bg-hungerproteste',
+ 'cms:/cms/work/online/2008/16/meldung-chemie',
+ 'http://www.zeit.de/news/artikel/2008/04/16/2514163.xml',
+ 'cms:/cms/work/online/2008/16/nahrung-hunger-braun',
+ 'cms:/cms/work/online/2008/16/scholz-lafontaine-rente',
+ 'cms:/cms/work/online/2008/16/interview-diouf',
+ "javascript:void(openme('http://www.zeit.de/themen/wirtschaft/nahrungskrise/map-hungerproteste',870,530,'middle','map_popup_01'));",
+ 'cms:/cms/work/online/2008/16/finanztest-ruerup-rente',
+ 'cms:/cms/work/online/2008/16/bg-lebensmittel-2',
+ 'cms:/cms/work/2008/16/Christine-Licci']
+
+
+Note that there are a lot of invalid ids. We'll filter those out when listing
+the actual data[#loghandler]_:
+
+>>> contents = list(channel)
+>>> len(contents)
+2
+>>> contents
+[<zeit.cms.repository.unknown.UnknownResource object at 0x...>,
+ <zeit.cms.repository.unknown.UnknownResource object at 0x...>]
+
+Verify the log:
+
+>>> print log.getvalue()
+Found invalid reference to cms:/cms/work/online/2008/17/lebensmittel-dickmacher in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to http://www.zeit.de/news/artikel/2008/04/22/2517661.xml in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/bank-of-england-finanzspritze in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/lebensmittel-dickmacher-interview in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/17/Argument-Kartellamt-und-Fussball in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/boers-o-meter-oel-euro-aktien in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/poststreik-montag in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/17/Immoblienkrise-USA in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/17/P-Zapf in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/pierer-siemens-skandal in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/meldung-citigroup in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/bg-reisanbau in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/17/Atomlobby in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/siemens-klage-vorstand in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/nahrungskrise-china-klima-gentechnik in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/fruehjahrsgutachten in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/17/F-Steuern in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to http://www.zeit.de/video/player?videoID=2008041759e678 in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/17/Welthunger in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to http://blog.zeit.de/herdentrieb/ in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/17/oel-preis-brasilien-querdax in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/bg-hungerproteste in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/meldung-chemie in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to http://www.zeit.de/news/artikel/2008/04/16/2514163.xml in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/nahrung-hunger-braun in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/scholz-lafontaine-rente in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/interview-diouf in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to javascript:void(openme('http://www.zeit.de/themen/wirtschaft/nahrungskrise/map-hungerproteste',870,530,'middle','map_popup_01')); in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/finanztest-ruerup-rente in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/online/2008/16/bg-lebensmittel-2 in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to cms:/cms/work/2008/16/Christine-Licci in channel http://xml.zeit.de/bodycont. Ignoring.
+
+
+Insert a new object into the channel:
+
+>>> channel.insert(0, repository['online']['2007']['01']['eta-zapatero'])
+>>> import lxml.etree
+>>> print lxml.etree.tostring(channel.xml, pretty_print=True)
+ <centerpage>
+   <head>
+   ...
+  <body>
+    <container id="channel_wirtschaft" label="" layout="channel" textad="cortal_consors" priority="2">
+      <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/eta-zapatero"/>
+      <block layout="" priority="" href="http://xml.zeit.de/online/2007/01/Somalia" hide-hp="on">
+        <supertitle>China</supertitle>
+        ...
+   
+
+Clean up:
+
+>>> logging.root.setLevel(old_log_level)
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functionaltest] Do ftest setup:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> import zeit.connector.interfaces
+    >>> import zeit.cms.repository.interfaces
+    >>> connector = zope.component.getUtility(
+    ...     zeit.connector.interfaces.IConnector)
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+
+
+.. [#loghandler] Register a log handler
+
+    >>> import logging
+    >>> import StringIO
+    >>> log = StringIO.StringIO()
+    >>> log_handler = logging.StreamHandler(log)
+    >>> logging.root.addHandler(log_handler)
+    >>> old_log_level = logging.root.level
+    >>> logging.root.setLevel(logging.INFO)

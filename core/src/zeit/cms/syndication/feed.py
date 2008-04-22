@@ -2,10 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
-import lxml.etree
+import logging
 
 import gocept.lxml.objectify
-
+import lxml.etree
 import persistent
 
 import zope.component
@@ -21,6 +21,9 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
+
+
+logger = logging.getLogger(__name__)
 
 
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -118,7 +121,13 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         for unique_id in self.keys():
-            yield repository.getContent(unique_id)
+            try:
+                yield repository.getContent(unique_id)
+            except (KeyError, ValueError), e:
+                logger.warning("Found invalid reference to %s in "
+                               "channel %s. Ignoring." % (
+                                   unique_id, self.uniqueId))
+
 
     def getPosition(self, content):
         content_id = content.uniqueId
