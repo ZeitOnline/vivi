@@ -8,6 +8,8 @@ zeit.cms changes
   löschen).
 - Einige Menu-Titel wurden nicht übersetzt (bug #4115)
 - Unterstützung für alte Channels mit body/container (bug #4109).
+- Favicon im CMS jetzt mit rosa Hintergrund zur besseren Unterscheidung (bug
+  #4127).
 
 0.9.10 (2008-04-22)
 -------------------

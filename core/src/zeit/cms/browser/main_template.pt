@@ -4,14 +4,13 @@
   <metal:macro define-macro="error-page"><!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      tal:define="favicon context/++resource++zeit.cms/icons/favicon.png">
       <head>
         <title i18n:translate="">Error</title>
-        <link rel="icon"
-          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+        <link rel="icon" tal:attributes="href favicon"
           type="image/x-icon" />
-        <link rel="shortcut icon"
-          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+        <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
         <tal:replace replace="resource_library:zeit.cms.error" />
       </head>
@@ -30,7 +29,8 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
     <html xmlns="http://www.w3.org/1999/xhtml"
-        tal:define="contenttitle options/title|view/title|context/title|default"
+        tal:define="contenttitle options/title|view/title|context/title|default;
+                    favicon context/++resource++zeit.cms/icons/favicon.png">
         >
       <head>
         <script type="text/javascript" tal:content="string:
@@ -43,11 +43,9 @@
             Zeit CMS 
           </metal:title>
         </title>
-        <link rel="icon"
-          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+        <link rel="icon" tal:attributes="href favicon"
           type="image/x-icon" />
-        <link rel="shortcut icon"
-          href="http://images.zeit.de/bilder/site07/elemente/favicons/favicon.ico"
+        <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
         <tal:replace replace="resource_library:zeit.cms" />
         <tal:replace replace="resource_library:zeit.cms.panels" /> 
