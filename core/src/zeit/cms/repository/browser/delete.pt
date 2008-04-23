@@ -16,10 +16,10 @@
     (<span tal:content="view/unique_id" />)
 
   </p>
-  <h1 class="Warning" tal:condition="view/is_folder_with_content"
+  <p class="warning" tal:condition="view/is_folder_with_content"
       i18n:translate="delete_content_folder_warning">
       You're about to delete a folder with content!
-  </h1>
+  </p>
 
   <form action=""
     tal:attributes="action view/@@absolute_url">

@@ -97,6 +97,11 @@ pre {
     visibility: visible !important;
 }
 
+.warning { /* textmarker effect */
+    background-color: #ffdd00;
+    font-weight: normal;
+}
+
 .error {
     color: red;
     font-weight: normal;
