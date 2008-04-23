@@ -139,6 +139,15 @@
     />
 
   <browser:page
+    name="ajax.get_unique_id"
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.Entry"
+    attribute="get_unique_id"
+    permission="zope.View"
+    />
+
+  <browser:page
     name="rename-clip-lightbox"
     for="zeit.cms.clipboard.interfaces.IClip"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -158,5 +167,37 @@
     lightbox="@@rename-clip-lightbox"
     sort="99"
     />
+
+
+  <!-- copy paste move -->
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="insert_from_clipboard.lightbox"
+    class=".copypastemove.InsertLightbox"
+    template="insert_from_clipboard.pt"
+    permission="zeit.CopyContent"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="copy"
+    class=".copypastemove.Insert"
+    permission="zeit.CopyContent"
+    />
+
+  <browser:viewlet
+    name="Insert"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".copypastemove.InsertMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.CopyContent"
+    sort="110"
+    lightbox="@@insert_from_clipboard.lightbox"
+    />
+  
 
 </configure>

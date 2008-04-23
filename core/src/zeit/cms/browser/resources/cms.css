@@ -427,12 +427,15 @@ pre {
  * */
 .context-actions {
     right: 0;
+    white-space: nowrap;
 }
 
 .context-actions li > a {
     margin: 0;
     padding: 0.4em;
+    white-space: nowrap;
 }
+
 .context-actions img,
 .context-action img {
   border: none;
@@ -480,6 +483,7 @@ pre {
 
 .secondary-context-actions > li > a > * {
     vertical-align: middle;
+    padding-right: 0.5em;
 }
 
 .secondary-context-actions .action-title {

@@ -140,6 +140,16 @@ the referenced object:
 'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
 
 
+We can also get the unique id from an entry:
+
+>>> ajax.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed'
+...     '/@@ajax.get_unique_id')
+>>> print ajax.contents
+http://xml.zeit.de/wirtschaft.feed
+
+
 Adding Clips
 ============
 
@@ -526,4 +536,59 @@ Open "New clip", we have a delete link there:
    </li>
  </ul>
  ...
+
+
+Copying from clipboard
+++++++++++++++++++++++
+
+Content can be copied from the clipbard. Go to a folder in the repository:
+
+>>> browser.open('http://localhost/++skin++cms/')
+>>> browser.getLink('online').click()
+>>> browser.getLink('Copy from clipboard')
+<Link text='[IMG] Copy from clipboard' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/@@insert_from_clipboard.lightbox')">
+
+Let's open the lightbox. It shows the clipboard tree:
+
+>>> browser.handleErrors = False
+>>> ajax.open('http://localhost/++skin++cms/repository/online'
+...           '/@@insert_from_clipboard.lightbox')
+>>> print ajax.contents
+  <h1>
+    Copy content into
+    http://xml.zeit.de/online
+  </h1>
+  <div id="LightboxClipboard" class="Tree">
+  <ul>
+      <li class="Root" uniqueid="">
+        <p>
+        <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard">Clipboard</a>
+   ...
+  <script type="text/javascript">
+    zeit.cms._lightbox_clipboard = new zeit.cms.Clipboard(
+      'http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard', 'http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/tree.html', 'LightboxClipboard');
+    zeit.cms._lightbox_clipboard_copy = new zeit.cms.CopyFromClipboard(
+      zeit.cms._lightbox_clipboard, 'http://localhost/++skin++cms/repository/online/@@copy');
+    </script>...
+
+In the javascript the copy-url is passed to javascript:
+
+>>> copy_url = 'http://localhost/++skin++cms/repository/online/@@copy'
+
+When the user chooses an element from his clipboard the copy url is called with
+the unique id of the chosen element. Let's copy
+
+>>> unique_id = 'http://xml.zeit.de/online/2007/01'
+
+to online:
+
+
+>>> browser.open('%s?unique_id=%s' % (copy_url, unique_id))
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/01'
+>>> print browser.contents
+<?xml ...
+        <li class="message">http://xml.zeit.de/online/2007/01 was copied to
+        http://xml.zeit.de/online/01.</li>
+        ...
 

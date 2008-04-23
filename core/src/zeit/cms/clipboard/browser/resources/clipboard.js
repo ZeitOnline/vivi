@@ -6,24 +6,26 @@ zeit.cms.Clipboard = Class.extend({
         this.base_url = base_url;
         this.contentElement = getElement(clipboard_id);
         this.tree = new Tree(tree_url, clipboard_id);
+        this.dragging = false;
+
         connect(
             this.tree, 'zeit.cms.BeforeTreeChangeEvent',
             this, 'handleBeforeTreeChange');
         connect(
             this.tree, 'zeit.cms.TreeChangedEvent',
             this, 'handleTreeChanged');
-        this.connectDNDHandlers();
-        var dnd = this;
-        this.dragging = false;
+
         MochiKit.Position.includeScrollOffsets = true;
 
+        // Removing
+        connect(clipboard_id, 'onclick', this, 'removeClip');
+    },
+
+    enableAdding: function() {
         // Adding
         connect('clip-add-folder-link', 'onclick', this, 'showAddBox');
         connect('clip-add-folder-submit', 'onclick', this, 'addClip');
         connect('clip-add-folder-cancel', 'onclick', this, 'hideAddBox');
-
-        // Removing
-        connect('clipboardcontents', 'onclick', this, 'removeClip');
     },
 
     connectDNDHandlers: function() {
@@ -33,7 +35,8 @@ zeit.cms.Clipboard = Class.extend({
             new Droppable(node, {
                 hoverclass: 'TreeHover',
                 ondrop: function(element, last_active_element, event) {
-                        dnd.handleDrop(node.getAttribute('uniqueid'), element);
+                        dnd.handleDrop(node.getAttribute('uniqueid'),
+                        element);
                     },
             });
             if (node.getAttribute('uniqueid')) {
@@ -43,13 +46,12 @@ zeit.cms.Clipboard = Class.extend({
             }
         });
 
-        forEach(this.contentElement.getElementsByTagName('a'), function(node) {
-                connect(node, 'onclick', function(event) {
-                    if (dnd.dragging == true) {
-                        event.stop();
-                    }
-                });
-            });
+        // Disable click event while dragging.
+        connect(this.contentElement, 'onclick', function(event) {
+            if (event.target().nodeName == 'A' && dnd.dragging == true) {
+                event.stop();
+            }
+        });
     },
 
     handleDrop: function(dropped_on, element) {
@@ -126,7 +128,7 @@ zeit.cms.Clipboard = Class.extend({
         d.addCallbacks( 
             function(result) {
                 dnd.tree.replaceTree(result.responseText);
-                clipboarddnd.hideAddBox();
+                dnd.hideAddBox();
                 signal('sidebar', 'zeit.cms.RestoreScrollState');
             },
             alert
@@ -136,6 +138,7 @@ zeit.cms.Clipboard = Class.extend({
 
     removeClip: function(event) {
         var element = event.target();
+        var dnd = this;
         if (element == undefined) return;
         try {
             var anchor = getFirstParentByTagAndClassName(element, 'a');
@@ -150,9 +153,51 @@ zeit.cms.Clipboard = Class.extend({
             var d = doSimpleXMLHttpRequest(url);
             d.addCallbacks(
                 function(result) {
-                    clipboarddnd.tree.replaceTree(result.responseText);
+                    dnd.tree.replaceTree(result.responseText);
                     signal('sidebar', 'zeit.cms.RestoreScrollState');
                 });
         }
+    },
+});
+
+
+zeit.cms.CopyFromClipboard = Class.extend({
+
+    construct: function(clipboard, copy_url) {
+        this.clipboard = clipboard;
+        this.copy_url = copy_url;
+
+        connect(this.clipboard.contentElement, 'onclick',
+                this, 'handleClick');
+    },
+
+    handleClick: function(event) {
+        var othis = this;
+        if (event.target().nodeName == 'A') {
+            event.stop();
+            var url = event.target().href;
+            var d = this.getUniqueId(url);
+            d.addCallbacks(
+                function(result) {
+                    var unique_id = result.responseText;
+                    othis.copy(unique_id);
+                },
+                function(error) {
+                    log(error);
+                    alert(error);
+                });
+        }
+    },
+
+    getUniqueId: function(base_url) {
+        var url = base_url + '/@@ajax.get_unique_id';
+        var d = doSimpleXMLHttpRequest(url);
+        return d
+    },
+
+    copy: function(unique_id) {
+        var query = 'unique_id=' + encodeURIComponent(unique_id);
+        var url = this.copy_url + '?' + query
+        window.location = url;
     },
 });

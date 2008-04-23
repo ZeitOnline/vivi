@@ -153,3 +153,23 @@
 .deleteScreen .containerName {
   font-weight: bold;
 }
+
+
+/* Clipboard insert */
+
+#LightboxClipboard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30em;
+    bottom: 0;
+    overflow: auto;
+}
+
+#LightboxClipboardExplain {
+    position: absolute;
+    top: 0;
+    left: 30em;
+    right: 0;
+    bottom: 0;
+}

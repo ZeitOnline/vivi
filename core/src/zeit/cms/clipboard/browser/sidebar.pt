@@ -42,9 +42,10 @@
       tal:content="string:
         var clipboarddnd = new zeit.cms.Clipboard(
           '$clipboard_url', '$tree_url', 'clipboardcontents');
+        clipboarddnd.connectDNDHandlers();
+        clipboarddnd.enableAdding();
         ">
     </script>
-
 
   </div> 
 </div>

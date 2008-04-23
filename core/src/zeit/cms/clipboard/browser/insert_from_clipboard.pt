@@ -1,0 +1,34 @@
+<tal:lightbox
+  tal:define="
+    clipboard nocall:view/clipboard;
+    clipboard_url clipboard/@@absolute_url;
+    tree_view nocall:clipboard/@@tree.html;
+    tree_url tree_view/@@absolute_url;
+    context_url context/@@absolute_url"
+  i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">
+    Copy content into
+    <span tal:replace="view/uniqueId" i18n:name="paste-into-id" />
+  </h1>
+
+  <div id="LightboxClipboard" class="Tree" tal:content="structure tree_view">
+    Tree
+  </div>
+
+  <div id="LightboxClipboardExplain"
+    i18n:translate="clipboard-paste-explain">
+    Choose an entry from your clipboard which you would like to copy to 
+    <span tal:replace="view/uniqueId" i18n:name="paste-into-id" />.
+  </div>
+
+  <script type="text/javascript"
+    tal:content="string:
+    zeit.cms._lightbox_clipboard = new zeit.cms.Clipboard(
+      '$clipboard_url', '$tree_url', 'LightboxClipboard');
+    zeit.cms._lightbox_clipboard_copy = new zeit.cms.CopyFromClipboard(
+      zeit.cms._lightbox_clipboard, '${context_url}/@@copy');
+    ">
+  </script>
+
+</tal:lightbox>

@@ -20,6 +20,9 @@ class Entry(object):
                                                   self.request)
         self.request.response.redirect(url + '/@@view.html')
 
+    def get_unique_id(self):
+        return self.context.references.uniqueId
+
 
 class AjaxDeleteEntry(object):
 

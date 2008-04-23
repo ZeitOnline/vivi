@@ -26,10 +26,20 @@ zeit.cms.LightboxForm = Class.extend({
                         button.type = 'button';
                     });
                 othis.form = $('lightbox.form');
-                connect(othis.form, 'onsubmit', function(event) {
-                    // prevent accidential submit
-                    event.stop()
-                });
+                if (othis.form != null) {
+                    connect(othis.form, 'onsubmit', function(event) {
+                        // prevent accidential submit
+                        event.stop()
+                    });
+                }
+                
+                // check for javascript
+                forEach(
+                    getElementsByTagAndClassName('SCRIPT', null,
+                                                 othis.content_box),
+                    function(script) {
+                        eval(script.text);
+                    });
                 return result;
             });
 

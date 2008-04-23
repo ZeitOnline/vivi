@@ -4,7 +4,12 @@
   
   <permission
     id="zeit.RenameContent"
-    title="Manage WebDAV locks"
+    title="Rename content"
+    />
+  
+  <permission
+    id="zeit.CopyContent"
+    title="Copy content"
     />
 
   <permission

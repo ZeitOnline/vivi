@@ -61,6 +61,10 @@
     />
   <grant
     role="zeit.Editor"
+    permission="zeit.CopyContent"
+    />
+  <grant
+    role="zeit.Editor"
     permission="zeit.Checkout"
     />
   <grant

@@ -109,6 +109,15 @@ class Container(zope.app.container.contained.Contained):
         self.connector.move(old_id, new_id)
         self._invalidate_cache()
 
+    def copy(self, obj_to_copy, new_name):
+        if new_name in self:
+            raise ValueError(
+                "Cannot copy %s to %s/%s, because target exists." % (
+                    obj_to_copy, self.uniqueId, new_name))
+        new_id = self._get_id_for_name(new_name)
+        self.connector.copy(obj_to_copy.uniqueId, new_id)
+        self._invalidate_cache()
+
     # Internal helper methods and properties:
 
     @property

@@ -109,9 +109,9 @@ this happens, he is beeing warned in the confirmation dialog:
     <span>01</span>
     (<span>http://xml.zeit.de/2007/01</span>)
   </p>
-  <h1 class="Warning">
+  <p class="warning">
       You're about to delete a folder with content!
-  </h1>
+  </p>
   <form action="http://localhost/++skin++cms/repository/2007/01/deletecontent.html">
     <p>
       <input type="submit" value="Delete" name="delete" />
