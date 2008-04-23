@@ -1,4 +1,4 @@
-<div id="rename-box">
+<div id="rename-box" i18n:domain="zeit.cms">
     <tal:replace replace="resource_library:zeit.cms.Lightbox" />
   <h1 i18n:translate="">
     Rename
