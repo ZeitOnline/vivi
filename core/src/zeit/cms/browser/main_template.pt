@@ -31,7 +31,6 @@
     <html xmlns="http://www.w3.org/1999/xhtml"
         tal:define="contenttitle options/title|view/title|context/title|default;
                     favicon context/++resource++zeit.cms/icons/favicon.png">
-        >
       <head>
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
