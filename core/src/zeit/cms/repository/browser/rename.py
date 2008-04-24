@@ -4,6 +4,7 @@
 
 import inspect
 
+import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
 import zope.schema
@@ -53,10 +54,11 @@ class Rename(zeit.cms.browser.lightbox.Form):
         new_name = data['new_name']
 
         container = self.context.__parent__
-        container.rename(old_name, new_name)
+        renamer = zope.copypastemove.interfaces.IContainerItemRenamer(
+            container)
+        renamer.renameItem(old_name, new_name)
 
         self.context = container[new_name]
-
         self.send_message(_('Renamed "${old_name}" to "${new_name}"',
                             mapping=dict(old_name=old_name,
                                          new_name=new_name)))

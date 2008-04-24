@@ -26,8 +26,7 @@ logger = logging.getLogger('zeit.cms.repository')
 class Container(zope.app.container.contained.Contained):
     """The container represents webdav collections."""
 
-    zope.interface.implements(zeit.cms.repository.interfaces.ICollection,
-        zeit.cms.repository.interfaces.IRename)
+    zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
     uniqueId = None
 
@@ -99,18 +98,6 @@ class Container(zope.app.container.contained.Contained):
         '''See interface `IWriteContainer`'''
         id = self._get_id_for_name(name)
         del self.connector[id]
-        self._invalidate_cache()
-
-    def rename(self, old_name, new_name):
-        if old_name not in self:
-            raise KeyError(old_name)
-        if new_name in self:
-            raise ValueError(
-                "Cannot rename %s to %s, because target exists." % (
-                    old_name, new_name))
-        old_id = self._get_id_for_name(old_name)
-        new_id = self._get_id_for_name(new_name)
-        self.connector.move(old_id, new_id)
         self._invalidate_cache()
 
     # Internal helper methods and properties:

@@ -11,10 +11,6 @@
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class="zope.app.folder.folder.Folder" />
     <require
-      interface=".interfaces.IRename"
-      permission="zeit.RenameContent"
-      />
-    <require
       interface="zeit.cms.interfaces.ICMSContent"
       permission="zope.View" />
   </class>

@@ -217,16 +217,18 @@ u"I'm a shiny new object."
 Renaming objects
 ================
 
-Objects can be renamed in a container:
+Objects can be renamed in a container using IContainerItemRenamer:
 
->>> repository.rename('i_am_new', 'i_am_not_so_new_anymore')
+>>> import zope.copypastemove.interfaces
+>>> renamer = zope.copypastemove.interfaces.IContainerItemRenamer(repository)
+>>> renamer.renameItem('i_am_new', 'i_am_not_so_new_anymore')
 >>> list(repository)
 [u'online', u'2006', u'2007', u'i_am_not_so_new_anymore', u'politik.feed',
  u'testcontent', u'wirtschaft.feed']
 
 Rename it back:
 
->>> repository.rename('i_am_not_so_new_anymore', 'i_am_new')
+>>> renamer.renameItem('i_am_not_so_new_anymore', 'i_am_new')
 >>> list(repository)
 [u'online', u'2006', u'2007', u'i_am_new', u'politik.feed',
  u'testcontent', u'wirtschaft.feed']
@@ -270,7 +272,6 @@ to copy:
 Get the copier:
 
 >>> import zope.interface.verify
->>> import zope.copypastemove.interfaces
 >>> copier = zope.copypastemove.interfaces.IObjectCopier(to_copy)
 >>> zope.interface.verify.verifyObject(
 ...     zope.copypastemove.interfaces.IObjectCopier, copier)
