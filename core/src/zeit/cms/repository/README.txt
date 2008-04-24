@@ -259,6 +259,50 @@ Traceback (most recent call last):
 KeyError: "The resource u'http://xml.zeit.de/i-dont-exist' does not exist."
 
 
+Copying objects
+===============
+
+It is possible to copy objects using the IObjectCopier interface. Get an object
+to copy:
+
+>>> to_copy = repository['online']['2007']['01']
+
+Get the copier:
+
+>>> import zope.interface.verify
+>>> import zope.copypastemove.interfaces
+>>> copier = zope.copypastemove.interfaces.IObjectCopier(to_copy)
+>>> zope.interface.verify.verifyObject(
+...     zope.copypastemove.interfaces.IObjectCopier, copier)
+True
+>>> copier.copyable()
+True
+>>> copier.copyableTo(repository)
+True
+>>> copier.copyableTo(repository, name=u'foo')
+True
+
+Let's copy. `copyTo` returns the new name:
+
+>>> copier.copyTo(repository['online'])
+u'01'
+
+When copying againer, we'll get another name:
+
+>>> copier.copyTo(repository['online'])
+u'01-2'
+
+>>> repository['online'].keys()
+[u'01', u'01-2', u'2005', u'2006', u'2007']
+>>> len(repository['online']['01'].keys())
+53
+
+Let's clean that up again:
+
+>>> del repository['online']['01']
+>>> del repository['online']['01-2']
+
+
 Getting content by unique_id
 ============================
 

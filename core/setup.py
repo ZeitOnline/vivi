@@ -54,6 +54,7 @@ setup(
         'zope.app.securitypolicy',
         'zope.app.twisted',
         'zope.i18n>3.4.0',
+        'zope.copypastemove',
         'zope.location>=3.4.0b2',
         'zope.sendmail',
         'zope.xmlpickle',

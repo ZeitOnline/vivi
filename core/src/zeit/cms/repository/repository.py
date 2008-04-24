@@ -26,7 +26,8 @@ logger = logging.getLogger('zeit.cms.repository')
 class Container(zope.app.container.contained.Contained):
     """The container represents webdav collections."""
 
-    zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
+    zope.interface.implements(zeit.cms.repository.interfaces.ICollection,
+        zeit.cms.repository.interfaces.IRename)
 
     uniqueId = None
 
@@ -78,16 +79,19 @@ class Container(zope.app.container.contained.Contained):
 
     def __setitem__(self, name, object):
         '''See interface `IWriteContainer`'''
-        unique_id = object.uniqueId
         new_id = self._get_id_for_name(name)
-        if unique_id is None:
+        if object.uniqueId is None:
             object.uniqueId = new_id
-        elif new_id != unique_id:
-            raise ValueError(
-                'Cannot add object %r as %r' % (unique_id, new_id))
+
+        if new_id == object.uniqueId:
+            # Update resource.
+            self.repository.addContent(object)
+        else:
+            logger.info("Copying %s to %s" % (object.uniqueId, new_id))
+            self.connector.copy(object.uniqueId, new_id)
+
         object, event = zope.app.container.contained.containedEvent(
             object, self, name)
-        self.repository.addContent(object)
         self._invalidate_cache()
         zope.event.notify(event)
 
@@ -107,15 +111,6 @@ class Container(zope.app.container.contained.Contained):
         old_id = self._get_id_for_name(old_name)
         new_id = self._get_id_for_name(new_name)
         self.connector.move(old_id, new_id)
-        self._invalidate_cache()
-
-    def copy(self, obj_to_copy, new_name):
-        if new_name in self:
-            raise ValueError(
-                "Cannot copy %s to %s/%s, because target exists." % (
-                    obj_to_copy, self.uniqueId, new_name))
-        new_id = self._get_id_for_name(new_name)
-        self.connector.copy(obj_to_copy.uniqueId, new_id)
         self._invalidate_cache()
 
     # Internal helper methods and properties:
@@ -142,6 +137,7 @@ class Container(zope.app.container.contained.Contained):
         return dict(self.connector.listCollection(self.uniqueId))
 
     def _invalidate_cache(self):
+        logger.debug('Invalidating %s' % self.uniqueId)
         try:
             delattr(self, '_v_local_unique_map')
         except AttributeError:

@@ -78,15 +78,8 @@ class IRename(zope.interface.Interface):
 
         """
 
-class ICopy(zope.interface.Interface):
-    """Object which support copying content."""
 
-    def copy(obj_to_copy, new_name):
-        """Copy `obj_to_copy` and insert into self wich new_name."""
-
-
-# XXX we should declare IRename and ICopy on the class.
-class ICollection(zope.app.container.interfaces.IContainer, IRename, ICopy):
+class ICollection(zope.app.container.interfaces.IContainer):
     """A collection."""
 
 
