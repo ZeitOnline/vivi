@@ -13,6 +13,9 @@ zeit.cms.LightboxForm = Class.extend({
         this.lightbox = new gocept.Lightbox($('body'));
         this.content_box = this.lightbox.content_box;
         connect(this.content_box, 'onclick', this, 'handle_click');
+        connect(window, 'zeit.cms.LightboxReload', function(event) {
+            othis.loading();
+        });
 
         var d = this.lightbox.load_url(url);
         d.addCallback(
@@ -76,7 +79,7 @@ zeit.cms.LightboxForm = Class.extend({
         var submit_to = this.form.getAttribute('action');
 
         // clear box with loading message
-        this.content_box.innerHTML = 'Loading ...'
+        this.loading();
 
         var d = doXHR(submit_to, {
             'method': 'POST',
@@ -94,7 +97,6 @@ zeit.cms.LightboxForm = Class.extend({
                     'span', 'nextUrl', othis.content_box);
                 if (next_url_node == null)
                     return
-                othis.content_box.innerHTML = 'Loading ...';
                 window.location = next_url_node.textContent;
             },
             function(error) {
@@ -104,6 +106,13 @@ zeit.cms.LightboxForm = Class.extend({
                     error.req.responseText, "text/xml");
                 document.firstChild.nextSibling.innerHTML = doc.firstChild.nextSibling.innerHTML;
             });
+    },
+
+    loading: function(message) {
+        if (typeof message == 'undefined') {
+            message = 'Loading ...';
+        }
+        this.content_box.innerHTML = 'Loading ...';
     },
 
 });

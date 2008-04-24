@@ -27,7 +27,7 @@
     zeit.cms._lightbox_clipboard = new zeit.cms.Clipboard(
       '$clipboard_url', '$tree_url', 'LightboxClipboard');
     zeit.cms._lightbox_clipboard_copy = new zeit.cms.CopyFromClipboard(
-      zeit.cms._lightbox_clipboard, '${context_url}/@@copy');
+      zeit.cms._lightbox_clipboard, '${context_url}/@@copy', this);
     ">
   </script>
 

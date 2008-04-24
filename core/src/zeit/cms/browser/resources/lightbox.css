@@ -168,6 +168,7 @@
 
 #LightboxClipboardExplain {
     position: absolute;
+    padding: 1em;
     top: 0;
     left: 30em;
     right: 0;

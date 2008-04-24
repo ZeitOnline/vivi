@@ -163,7 +163,7 @@ zeit.cms.Clipboard = Class.extend({
 
 zeit.cms.CopyFromClipboard = Class.extend({
 
-    construct: function(clipboard, copy_url) {
+    construct: function(clipboard, copy_url, form) {
         this.clipboard = clipboard;
         this.copy_url = copy_url;
 
@@ -184,7 +184,6 @@ zeit.cms.CopyFromClipboard = Class.extend({
                 },
                 function(error) {
                     log(error);
-                    alert(error);
                 });
         }
     },
@@ -198,6 +197,7 @@ zeit.cms.CopyFromClipboard = Class.extend({
     copy: function(unique_id) {
         var query = 'unique_id=' + encodeURIComponent(unique_id);
         var url = this.copy_url + '?' + query
+        signal(window, 'zeit.cms.LightboxReload');
         window.location = url;
     },
 });

@@ -10,6 +10,8 @@ zeit.cms changes
 - Unterstützung für alte Channels mit body/container (bug #4109).
 - Favicon im CMS jetzt mit rosa Hintergrund zur besseren Unterscheidung (bug
   #4127).
+- Objekte können jetzt kopiert werden: Aktion auf Ordnern bei der man das zu
+  kopierende Objekt aus dem Clipboard wählt.
 
 0.9.10 (2008-04-22)
 -------------------

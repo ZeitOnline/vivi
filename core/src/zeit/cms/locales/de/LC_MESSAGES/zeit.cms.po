@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Apr 22 12:48:13 2008\n"
-"PO-Revision-Date: 2008-04-22 12:49+0100\n"
+"POT-Creation-Date: Thu Apr 24 09:58:15 2008\n"
+"PO-Revision-Date: 2008-04-24 10:04+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -236,14 +236,14 @@ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, wei
 msgid "An error is occoured"
 msgstr "Ein Fehler ist aufgetreten."
 
-#: src/zeit/cms/browser/main_template.pt:204
+#: src/zeit/cms/browser/main_template.pt:10
+msgid "Error"
+msgstr "Fehler"
+
+#: src/zeit/cms/browser/main_template.pt:201
 #: src/zeit/content/article/browser/recension-overview.pt:66
 msgid "Add..."
 msgstr "Hinzufügen …"
-
-#: src/zeit/cms/browser/main_template.pt:9
-msgid "Error"
-msgstr "Fehler"
 
 #: src/zeit/cms/browser/menu.py:77
 msgid "CMS"
@@ -317,14 +317,34 @@ msgstr "Neuer Name des Clips"
 #: src/zeit/cms/clipboard/browser/clip.py:85
 #: src/zeit/cms/clipboard/browser/clip.py:94
 #: src/zeit/cms/repository/browser/menu.py:12
-#: src/zeit/cms/repository/browser/rename.py:50
+#: src/zeit/cms/repository/browser/rename.py:51
 msgid "Rename"
 msgstr "Umbenennen"
 
+#: src/zeit/cms/clipboard/browser/copypastemove.py:18
+msgid "Copy from clipboard"
+msgstr "Aus Clipboard kopieren"
+
 #. Default: ""
-#: src/zeit/cms/clipboard/browser/entry.py:80
+#: src/zeit/cms/clipboard/browser/copypastemove.py:43
+msgid "${source} was copied to ${target}."
+msgstr "»${source}« wurde nach »${target}« kopiert."
+
+#. Default: ""
+#: src/zeit/cms/clipboard/browser/entry.py:83
 msgid "Broken reference to ${uniqueId}"
 msgstr "Invalide Referenz zu ${uniqueId}"
+
+#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:12
+msgid "Copy content into ${paste-into-id}"
+msgstr "Objekte nach »${paste-into-id}« kopieren"
+
+#. Default: ""
+#.  "Choose an entry from your clipboard which you would like to copy to \n"
+#.  "    ${paste-into-id}."
+#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:22
+msgid "clipboard-paste-explain"
+msgstr "Wählen Sie den Eintrag aus Ihrer Zwischenablage den Sie nach »${paste-into-id}« kopieren möchten."
 
 #: src/zeit/cms/content/browser/form.py:34
 msgid "Navigation"
@@ -578,39 +598,46 @@ msgid "Manage lock"
 msgstr "Sperre verwalten"
 
 #: src/zeit/cms/permissions.zcml:10
+msgid "Copy content"
+msgstr "Inhalt kopieren"
+
+#: src/zeit/cms/permissions.zcml:15
 msgid "Edit ZEIT content"
 msgstr "ZEIT-Inhalte bearbeiten"
 
-#: src/zeit/cms/permissions.zcml:15
+#: src/zeit/cms/permissions.zcml:20
 msgid "Add ZEIT content"
 msgstr "ZEIT-Inhalte hinzufügen"
 
-#: src/zeit/cms/permissions.zcml:20
+#: src/zeit/cms/permissions.zcml:25
 msgid "Delete ZEIT content"
 msgstr "ZEIT-Inhalte löschen"
 
-#: src/zeit/cms/permissions.zcml:25
+#: src/zeit/cms/permissions.zcml:30
 msgid "Checkout content"
 msgstr "Inhalt auschecken"
 
-#: src/zeit/cms/permissions.zcml:30
+#: src/zeit/cms/permissions.zcml:35
 msgid "Checkin content"
 msgstr "Inhalt einchecken"
 
-#: src/zeit/cms/permissions.zcml:35
+#: src/zeit/cms/permissions.zcml:40
 msgid "Create and modify calendar entries"
 msgstr "Kalendereinträge erstellen und bearbeiten"
 
-#: src/zeit/cms/permissions.zcml:40
+#: src/zeit/cms/permissions.zcml:45
 msgid "Syndicate content"
 msgstr "Syndizieren"
 
-#: src/zeit/cms/permissions.zcml:45
+#: src/zeit/cms/permissions.zcml:5
+msgid "Rename content"
+msgstr "Inhalt umbenennen"
+
+#: src/zeit/cms/permissions.zcml:50
 msgid "Publish objects"
 msgstr "Veröffentlichen"
 
-#: src/zeit/cms/permissions.zcml:5
-#: src/zeit/cms/permissions.zcml:50
+#: src/zeit/cms/permissions.zcml:55
 msgid "Manage WebDAV locks"
 msgstr "WebDAV-Locks verwalten"
 
@@ -680,16 +707,16 @@ msgid "rename-box-warning"
 msgstr "Achtung: Das Umbenennen von Objekten wird Referenzen/Links auf dieses Objekt ungültig machen. Objekte sollten nur umbenannt werden, wenn sie noch nicht veröffentlicht verlinkt oder anderweitig referenziert sind."
 
 #. Default: ""
-#: src/zeit/cms/repository/browser/rename.py:29
+#: src/zeit/cms/repository/browser/rename.py:30
 msgid "\"${name}\" already exists."
 msgstr "\"${name}\" ist bereits vorhanden."
 
-#: src/zeit/cms/repository/browser/rename.py:36
+#: src/zeit/cms/repository/browser/rename.py:37
 msgid "New file name"
 msgstr "Neuer Dateiname"
 
 #. Default: ""
-#: src/zeit/cms/repository/browser/rename.py:60
+#: src/zeit/cms/repository/browser/rename.py:62
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
 
@@ -786,7 +813,7 @@ msgstr "Vorschau"
 #. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:39
 msgid "\"${name}\" has been syndicated to ${targets}"
-msgstr "»${name} wurde nach ${targets} syndiziert."
+msgstr "»${name}« wurde nach »${targets}« syndiziert."
 
 #. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:52
@@ -1497,8 +1524,6 @@ msgstr "${name}: ${new_value}"
 #~ msgstr "Einstellung"
 #~ msgid "Remember as syndication target"
 #~ msgstr "Als Syndizierungsziel merken"
-#~ msgid "Remove Clip from Clipboard"
-#~ msgstr "Clip aus Clipboard entfernen"
 #~ msgid "volme-abbreviated"
 #~ msgstr "Ausg."
 #~ msgid "URL to view in CMS"

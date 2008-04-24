@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Apr 22 12:48:13 2008\n"
+"POT-Creation-Date: Thu Apr 24 09:58:15 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -248,13 +248,13 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:204
-#: src/zeit/content/article/browser/recension-overview.pt:66
-msgid "Add..."
+#: src/zeit/cms/browser/main_template.pt:10
+msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:9
-msgid "Error"
+#: src/zeit/cms/browser/main_template.pt:201
+#: src/zeit/content/article/browser/recension-overview.pt:66
+msgid "Add..."
 msgstr ""
 
 #: src/zeit/cms/browser/menu.py:77
@@ -329,13 +329,33 @@ msgstr ""
 #: src/zeit/cms/clipboard/browser/clip.py:85
 #: src/zeit/cms/clipboard/browser/clip.py:94
 #: src/zeit/cms/repository/browser/menu.py:12
-#: src/zeit/cms/repository/browser/rename.py:50
+#: src/zeit/cms/repository/browser/rename.py:51
 msgid "Rename"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/entry.py:80
+#: src/zeit/cms/clipboard/browser/copypastemove.py:18
+msgid "Copy from clipboard"
+msgstr ""
+
+#: src/zeit/cms/clipboard/browser/copypastemove.py:43
+#. Default: ""
+msgid "${source} was copied to ${target}."
+msgstr ""
+
+#: src/zeit/cms/clipboard/browser/entry.py:83
 #. Default: ""
 msgid "Broken reference to ${uniqueId}"
+msgstr ""
+
+#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:12
+msgid "Copy content into ${paste-into-id}"
+msgstr ""
+
+#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:22
+#. Default: ""
+#.  "Choose an entry from your clipboard which you would like to copy to \n"
+#.  "    ${paste-into-id}."
+msgid "clipboard-paste-explain"
 msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:34
@@ -590,39 +610,46 @@ msgid "Manage lock"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:10
-msgid "Edit ZEIT content"
+msgid "Copy content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:15
-msgid "Add ZEIT content"
+msgid "Edit ZEIT content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:20
-msgid "Delete ZEIT content"
+msgid "Add ZEIT content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:25
-msgid "Checkout content"
+msgid "Delete ZEIT content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:30
-msgid "Checkin content"
+msgid "Checkout content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:35
-msgid "Create and modify calendar entries"
+msgid "Checkin content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:40
-msgid "Syndicate content"
+msgid "Create and modify calendar entries"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:45
-msgid "Publish objects"
+msgid "Syndicate content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:5
+msgid "Rename content"
+msgstr ""
+
 #: src/zeit/cms/permissions.zcml:50
+msgid "Publish objects"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:55
 msgid "Manage WebDAV locks"
 msgstr ""
 
@@ -691,16 +718,16 @@ msgstr ""
 msgid "rename-box-warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:29
+#: src/zeit/cms/repository/browser/rename.py:30
 #. Default: ""
 msgid "\"${name}\" already exists."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:36
+#: src/zeit/cms/repository/browser/rename.py:37
 msgid "New file name"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:60
+#: src/zeit/cms/repository/browser/rename.py:62
 #. Default: ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
