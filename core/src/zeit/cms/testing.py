@@ -43,6 +43,9 @@ def setup_product_config(product_config={}):
     cms_config['workingcopy-preview-base'] = (
         u'http://xml.zeit.de/tmp/previews/')
 
+    cms_config['suggest-keyword-email-address'] = 'none@testing'
+    cms_config['suggest-keyword-real-name'] = 'Dr. No'
+
     zope.app.appsetup.product._configs.update(product_config)
 
 

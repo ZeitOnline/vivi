@@ -33,8 +33,19 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         d.addCallback(function(result) {
             othis.connectTypeAhead();
         })
+    },
 
-
+    add: function(code, label) {
+        var found = false;
+        this.iterFields(function(value_field, title_field) {
+            if (value_field.value == code) {
+                found = true;
+                throw StopIteration; 
+            }
+        });
+        if (!found) {
+            arguments.callee.$.add.call(this, code, label);
+        }
     },
 
     updateLightbox: function() {
@@ -61,12 +72,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         var code_label = keyword_url.substr(10).split('/');
         var code = code_label[0];
         var label = code_label[1];
-        arguments.callee.$.add.call(this, code, label);
-        this.updateLightbox();
-    },
-
-    addCustomKeyword: function(keyword_code) {
-        arguments.callee.$.add.call(this, keyword_code, keyword_code); 
+        this.add(code, label);
         this.updateLightbox();
     },
 
@@ -87,11 +93,6 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         } else if (target.nodeName == 'A' &&
                    target.getAttribute('href').indexOf('keyword://') == 0) {
             this.addKeyword(target.getAttribute('href'));
-        } else if (target.getAttribute('name') == 'add_new_keyword_button') {
-            var new_keyword_code = $('new_keyword_code')
-            var code = new_keyword_code.value
-            new_keyword_code.value = ''
-            this.addCustomKeyword(code);
         } else if (target.getAttribute('class') == 'FoundKeywordInTaxonomy') {
             this.addKeyword(target.getAttribute('href'));
         } else {

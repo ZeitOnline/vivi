@@ -36,12 +36,12 @@
     top: 0;
     right: 0;
     width: 55%;
-    height: 5em;
+    height: 4em;
 }
 
 #lightbox > .keyword-list {
     position: absolute;
-    top: 20em;
+    top: 17em;
     right: 0;
     width: 55%;
     bottom: 0;
@@ -104,7 +104,7 @@
 
 #lightbox > .typeahead-results {
     position: absolute;
-    top: 6em;
+    top: 4em;
     width: 55%;
     right: 0;
     height: 15em;
@@ -127,6 +127,10 @@
   max-width: 30em;
 }
 
+#lightbox .suggest-keyword {
+    width: 15em;
+    float: right;
+}
 
 
 /*

@@ -148,7 +148,7 @@ class MultiPropertyBase(object):
             element_set = []
         for node in element_set:
             result.append(self._element_factory(node, tree))
-        return tuple(result)
+        return tuple(elem for elem in result if elem is not None)
 
     def __set__(self, instance, value):
         # Remove nodes.

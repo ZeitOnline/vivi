@@ -7,29 +7,9 @@ import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.cms.content.keyword
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-
-
-class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
-
-    def __init__(self):
-        super(KeywordsProperty, self).__init__('.head.keywordset.keyword')
-
-    def __set__(self, instance, value):
-        super(KeywordsProperty, self).__set__(instance, value)
-        tree = instance.xml
-        for keyword in self.path.find(tree, []):
-            keyword.set('source', 'manual')
-
-    def _element_factory(self, node, tree):
-        taxonomy = zope.component.getUtility(
-            zeit.cms.content.interfaces.IKeywords)
-        rdf_id = unicode(node)
-        return taxonomy[rdf_id]
-
-    def _node_factory(self, entry, tree):
-        return entry.code
 
 
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -49,7 +29,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'author',
         use_default=True)
 
-    keywords = KeywordsProperty()
+    keywords = zeit.cms.content.keyword.KeywordsProperty()
 
     title = zeit.cms.content.property.Structure(
         '.body.title')

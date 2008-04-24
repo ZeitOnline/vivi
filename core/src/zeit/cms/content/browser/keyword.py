@@ -49,6 +49,16 @@ class Tree(zeit.cms.browser.tree.Tree):
     def expandable(self, obj):
         return bool(obj.narrower)
 
+    def suggest_email(self):
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        return cms_config['suggest-keyword-email-address']
+
+    def suggest_name(self):
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        return cms_config['suggest-keyword-real-name']
+
 
 class KeywordsWidget(zeit.cms.browser.widget.MultiObjectSequenceWidget):
 
@@ -58,7 +68,7 @@ class KeywordsWidget(zeit.cms.browser.widget.MultiObjectSequenceWidget):
     def _toFieldValue(self, value):
         keywords = zope.component.getUtility(
             zeit.cms.content.interfaces.IKeywords)
-        return tuple(keywords[code] for code in value)
+        return tuple(keywords[code] for code in value if code in keywords)
 
     def _toFormValue(self, value):
         return value
@@ -81,4 +91,5 @@ class TypeaheadSearch(object):
             return
         keywords = zope.component.getUtility(
             zeit.cms.content.interfaces.IKeywords)
-        return keywords.find_keywords(searchterm)
+        return sorted(keywords.find_keywords(searchterm),
+                      key=lambda x: x.label)

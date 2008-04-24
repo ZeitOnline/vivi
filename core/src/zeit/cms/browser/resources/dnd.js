@@ -374,16 +374,8 @@ var ObjectSequenceWidgetBase = Class.extend({
         removeElement(this.getValueField(index));
         removeElement(this.getTitleField(index));
 
-        var count_field = this.getCountField();
-        var amount = Number(count_field.value)
         var new_index = 0;
-        forEach(range(amount), function(iteration_index) {
-            var value_field = othis.getValueField(iteration_index)
-            var title_field = othis.getTitleField(iteration_index)
-            if (value_field == null) {
-                return;
-            }
-           
+        this.iterFields(function(value_field, title_field) {
             value_field_name = othis.getValueFieldName(new_index);
             value_field.setAttribute('name', value_field_name);
             value_field.setAttribute('id', value_field_name);
@@ -396,6 +388,20 @@ var ObjectSequenceWidgetBase = Class.extend({
         });
         this.decreaseCount()
         this.initialize();
+    },
+
+    iterFields: function(callable) {
+        var othis = this;
+        var count_field = this.getCountField();
+        var amount = Number(count_field.value)
+        forEach(range(amount), function(iteration_index) {
+            var value_field = othis.getValueField(iteration_index);
+            var title_field = othis.getTitleField(iteration_index);
+            if (value_field === null) {
+                return;
+            }
+            callable(value_field, title_field);
+        });
     },
 
     handleClick: function(event) {

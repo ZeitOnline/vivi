@@ -8,6 +8,7 @@ import zope.component
 import zope.interface
 import zope.schema.interfaces
 
+import zope.app.form.interfaces
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.widget
 import zope.app.form.browser.itemswidgets
@@ -182,8 +183,27 @@ class MultiObjectSequenceWidget(
     def hasInput(self):
         return self.name + '.count' in self.request.form
 
-    def _getFormInput(self):
-        count = int(self.request.get(self.name + '.count'))
+    def _getFormValue(self):
+        """Returns a value suitable for use in an HTML form.
+
+        Detects the status of the widget and selects either the input value
+        that came from the request, the value from the _data attribute or the
+        default value.
+        """
+        try:
+            input_value = self._getCurrentValueHelper()
+        except zope.app.form.interfaces.InputErrors:
+            form_value = self._toFormValue(
+                self._toFieldValue(self._getFormInput(self._missing)))
+        else:
+            form_value = self._toFormValue(input_value)
+        return form_value
+
+    def _getFormInput(self, default=None):
+        count_str = self.request.get(self.name + '.count')
+        if count_str is None:
+            return default
+        count = int(count_str)
         result = []
         for idx in range(count):
             result.append(self.request.get('%s.%s' % (self.name, idx)))

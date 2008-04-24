@@ -91,6 +91,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Keywords"),
         required=False,
         default=(),
+        unique=True,
         value_type=zope.schema.Object(IKeyword))
 
     serie = zope.schema.Choice(

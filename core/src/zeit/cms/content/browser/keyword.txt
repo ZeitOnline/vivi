@@ -37,20 +37,21 @@ types in new Keywords, a search is performed to avoid the user creates new
 Keywords which are already in the Taxonomy. Let's perform a typeahead search
 with the ajax browser:
 
->>> ajax.open('http://localhost/@@keyword-typeahead?searchTerm=was')
+>>> ajax.open('http://localhost/@@keyword-typeahead?searchTerm=Was')
 >>> print ajax.contents
 <ul>
  <li>
+   <a ...>Abwasser</a>
+   ...
+   <a ...>Trinkwasser</a>
+   ...
+   <a ...>Wasser</a>
+   ...
+   <a href="keyword://wassersport/Wassersport" ...>Wassersport</a>
+   ...
    <a ...>Wasserstoff</a>
    ...
    <a ...>Wasserstraße</a>
    ...
-   <a ...>Abwasser</a>
-   ...
-   <a ...>Wasser</a>
-   ...
-   <a ...>Trinkwasser</a>
-   ...
-   <a href="keyword://wassersport/Wassersport" ...>Wassersport</a>
   </li>
 </ul>

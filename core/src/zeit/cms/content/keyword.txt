@@ -39,18 +39,13 @@ True
 >>> politik.inTaxonomy
 True
 
-When we ask the utility for a keyword which is not in the PRISM file we'll get
-a keyword where `inTaxonomy` is False:
+When we ask the utility for a keyword which is not in the PRISM file a KeyError
+is raised:
 
->>> foo = keywords['foo']
->>> foo
-<zeit.cms.content.keyword.Keyword object at 0x...>
->>> foo.code
-u'foo'
->>> foo.label
-u'foo'
->>> foo.inTaxonomy
-False
+>>> keywords['foo']
+Traceback (most recent call last):
+    ...
+KeyError: 'foo'
 
 
 Keywords Property
@@ -61,9 +56,8 @@ Create some mock content first:
 
 >>> import lxml.objectify
 >>> import lxml.etree
->>> import zeit.cms.content.metadata
 >>> class Content(object):
-...     keywords = zeit.cms.content.metadata.KeywordsProperty()
+...     keywords = zeit.cms.content.keyword.KeywordsProperty()
 >>> content = Content()
 >>> content.xml = lxml.objectify.fromstring(
 ...     '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
@@ -81,19 +75,19 @@ Initially the keywords is empty:
 
 Set a keyword:
 
->>> content.keywords = (keywords['irak'], )
+>>> content.keywords = (keywords['STAA'], )
 >>> content.keywords
 (<zeit.cms.content.keyword.Keyword object at 0x...>,)
 >>> content.keywords[0].code
-u'irak'
+u'STAA'
 >>> content.keywords[0].label
-u'irak'
+u'Staat'
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <keywordset>
-      <keyword lxml:pytype="str" source="manual">irak</keyword>
+      <keyword lxml:pytype="str" source="manual">STAA</keyword>
     </keywordset>
   </head>
 </a>
@@ -101,7 +95,7 @@ u'irak'
 
 Add another keyword:
 
->>> content.keywords = (keywords['irak'], keywords['bush'])
+>>> content.keywords = (keywords['STAA'], keywords['INNE'])
 >>> content.keywords
 (<zeit.cms.content.keyword.Keyword object at 0x...>,
  <zeit.cms.content.keyword.Keyword object at 0x...>)
@@ -110,11 +104,25 @@ Add another keyword:
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <keywordset>
-      <keyword lxml:pytype="str" source="manual">irak</keyword>
-      <keyword lxml:pytype="str" source="manual">bush</keyword>
+      <keyword lxml:pytype="str" source="manual">STAA</keyword>
+      <keyword lxml:pytype="str" source="manual">INNE</keyword>
     </keywordset>
   </head>
 </a>
+
+
+Make sure invalid keywords are ignored:
+
+>>> content.xml = lxml.objectify.fromstring('''\
+...  <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+...   <head>
+...     <keywordset>
+...       <keyword lxml:pytype="str" source="manual">foobar</keyword>
+...     </keywordset>
+...   </head>
+... </a>''')
+>>> content.keywords
+()
 
 
 Clean up and unregister the utility:

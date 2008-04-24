@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import logging
 import urllib2
 import weakref
 
@@ -13,6 +14,10 @@ import zope.app.appsetup.product
 import gocept.lxml.objectify
 
 import zeit.cms.content.interfaces
+import zeit.cms.content.property
+
+
+logger = logging.getLogger(__name__)
 
 
 class Keyword(object):
@@ -47,17 +52,19 @@ class KeywordUtility(object):
         self._load_keywords()
         return self.root
 
+    def __contains__(self, code):
+        self._load_keywords()
+        return code in self._keywords_by_code
+
     def __getitem__(self, code):
         self._load_keywords()
-        try:
-            return self._keywords_by_code[code]
-        except KeyError:
-            return Keyword(code, code, in_taxonomy=False)
+        return self._keywords_by_code[code]
 
     def find_keywords(self, searchterm):
         self._load_keywords()
-        return [ self[x] for x in self._keywords_by_code.keys() 
-                    if searchterm in x]
+        return (
+            self[x] for x in self._keywords_by_code.keys()
+            if searchterm.lower() in x.lower())
 
     def _load_keywords(self):
         if self._loaded:
@@ -73,7 +80,9 @@ class KeywordUtility(object):
 
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
-        request = urllib2.urlopen(cms_config['source-keyword'])
+        url = cms_config['source-keyword']
+        logger.info('Loading keywords from %s' % url)
+        request = urllib2.urlopen(url)
         prism_tree = gocept.lxml.objectify.fromfile(request)
         keywords = {}
         descriptors = []
@@ -115,3 +124,27 @@ class KeywordUtility(object):
 
         self.root = root_keyword
         self._loaded = True
+
+
+class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
+
+    def __init__(self):
+        super(KeywordsProperty, self).__init__('.head.keywordset.keyword')
+
+    def __set__(self, instance, value):
+        super(KeywordsProperty, self).__set__(instance, value)
+        tree = instance.xml
+        for keyword in self.path.find(tree, []):
+            keyword.set('source', 'manual')
+
+    def _element_factory(self, node, tree):
+        taxonomy = zope.component.getUtility(
+            zeit.cms.content.interfaces.IKeywords)
+        rdf_id = unicode(node)
+        if rdf_id in taxonomy:
+            return taxonomy[rdf_id]
+        logger.warning("Ignored keyword %s, not in taxonomy." % rdf_id)
+        return None
+
+    def _node_factory(self, entry, tree):
+        return entry.code
