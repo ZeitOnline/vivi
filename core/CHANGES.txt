@@ -12,6 +12,7 @@ zeit.cms changes
   #4127).
 - Objekte können jetzt kopiert werden: Aktion auf Ordnern bei der man das zu
   kopierende Objekt aus dem Clipboard wählt (bug #4130).
+- Breadcrubs sind wieder draggable.
 
 0.9.10 (2008-04-22)
 -------------------

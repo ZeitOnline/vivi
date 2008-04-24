@@ -67,7 +67,7 @@
                 tal:content="item/title">
                 Directory foo
               </a>
-              <span tal:condition="python:getattr(item, 'uniqueId', None)"
+              <span tal:condition="item/uniqueId"
                 class="URL" tal:content="item/url" />
               <span class="breadcrumb-separator"
                 tal:condition="not:repeat/item/end">
