@@ -364,7 +364,7 @@ class Connector(zope.thread.local):
                 self.copy(child_id, urlparse.urljoin(new_id, name))
         else:
             conn.copy(old_loc, new_loc)
-        self._invalidate_cache(new_loc)
+        self._invalidate_cache(new_id)
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`.
@@ -661,6 +661,8 @@ class Connector(zope.thread.local):
     def _invalidate_cache(self, id):
         # TODO: In the ZopeConnector we might use an event for invalidation.
         parent, last = _id_splitlast(id)
+        logger.debug("Invalidating %s" % id)
+        logger.debug("Invalidating %s" % parent)
         for cache, key in ((self.property_cache, id),
                            (self.child_name_cache, id),
                            (self.property_cache, parent),
@@ -668,7 +670,7 @@ class Connector(zope.thread.local):
             try:
                 del cache[key]
             except KeyError:
-                pass
+                logger.debug("%s not in %s" % (key, cache))
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""

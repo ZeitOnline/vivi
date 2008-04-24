@@ -4,6 +4,8 @@ CHANGES
 0.15 (unreleased)
 -----------------
 
+- Fixed a bug in copy code which was not invalidating the caches correctly.
+
 0.14 (2008-04-22)
 -----------------
 
