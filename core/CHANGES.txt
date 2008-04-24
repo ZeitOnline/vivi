@@ -15,6 +15,7 @@ zeit.cms changes
 - Breadcrumbs sind wieder draggable.
 - Keine freie Eingabe von Keywords mehr (bug #4120).
 - Doppelte Eingabe von Keywords nicht mehr möglich (bug #4119).
+- Liste der Keywords bei Typeahead ist jetzt sortiert.
 
 0.9.10 (2008-04-22)
 -------------------
