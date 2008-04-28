@@ -9,9 +9,11 @@ zeit.cms.FilteringTable = Class.extend({
     construct: function() {
         this.contentElement = getFirstElementByTagAndClassName(
             'table', 'contentListing');
-        if (this.contentElement == undefined)
+        if (typeof this.contentElement == 'undefined') {
             return;
+        }
         var tablefilter = getElement('tableFilter');
+        this.metadata_deferred = null;
 
         connect(this.contentElement, "onclick", this, 'onDataSelect');
         connect(this.contentElement, "onclick", this, 'enableDrag');
@@ -68,8 +70,8 @@ zeit.cms.FilteringTable = Class.extend({
 
         var metadata_url = base_url + '/@@metadata_preview';
 
-        var d = wait(0.1);
-        d.addCallback(this.loadMetadataHTML(metadata_url));
+        var d = MochiKit.Async.wait(0.25);
+        d.addCallback(this.loadMetadataHTML, metadata_url);
         this.metadata_deferred = d;
          
         var old_selected = this.contentElement.old_selected;
@@ -115,10 +117,12 @@ zeit.cms.FilteringTable = Class.extend({
     },
 
     cancelMetadataLoad: function() {
-        if (this.metadata_deferred == undefined)
+        if (this.metadata_deferred === null) {
             return;
+        }
+        logger.debug("Cancelling metadata load...");
         this.metadata_deferred.cancel();
-        this.metadata_deferred = undefined;
+        this.metadata_deferred = null;
     },
 
     enableDrag: function(event) {
