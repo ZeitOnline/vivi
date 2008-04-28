@@ -49,6 +49,8 @@
   <include package="z3c.conditionalviews" />
   <include package="gocept.pagelet" file="meta.zcml" />
 
+  <include package="lovely.remotetask" />
+
   <include package="gocept.lxml" />
   <include package="gocept.form" />
 

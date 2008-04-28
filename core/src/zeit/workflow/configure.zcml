@@ -35,5 +35,6 @@
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
+  <utility factory=".publish.PublishTask" name="zeit.workflow.publish" />
 
 </configure>

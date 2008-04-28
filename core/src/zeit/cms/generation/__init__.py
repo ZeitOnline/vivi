@@ -2,10 +2,24 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.app.component
+import zope.app.component.hooks
 import zope.app.generations
+import zope.app.zopeappgenerations
 
-minimum_generation = 0
-generation = 0
+
+minimum_generation = 1
+generation = 1
 
 manager = zope.app.generations.generations.SchemaManager(
     minimum_generation, generation, "zeit.cms.generation")
+
+
+def do_evolve(context, evolver):
+    site = zope.app.component.hooks.getSite()
+    try:
+        root = zope.app.zopeappgenerations.getRootFolder(context)
+        zope.app.component.hooks.setSite(root)
+        evolver(root)
+    finally:
+        zope.app.component.hooks.setSite(site)

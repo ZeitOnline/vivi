@@ -32,7 +32,4 @@
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 
-  <!-- I don't like this depdendency here but it makes testing much easier -->
-  <include package="zeit.workflow" />
-
 </configure>

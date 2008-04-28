@@ -237,55 +237,6 @@ And the image is referenced in the XML structure:
   </head>
   ...
 
-
-Workflow
-========
-
-When an article is published for the first time, the "date first released" is
-set by the workflow engine. We make sure that the date is also copied to the
-xml.
-
-Create a new interaction first:
-
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal('kurt')
->>> request = zope.publisher.browser.TestRequest()
->>> request.setPrincipal(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(request)
-
-Now publish:
-
->>> import zeit.workflow.interfaces
->>> article = repository['online']['2007']['01']['Somalia']
->>> article
-<zeit.content.article.article.Article object at 0x...>
->>> workflow = zeit.workflow.interfaces.IWorkflowStatus(article)
->>> workflow.date_first_released is None
-True
->>> workflow.urgent = True
->>> import zeit.cms.workflow.interfaces
->>> publish = zeit.cms.workflow.interfaces.IPublish(article)
->>> publish.publish()
-
->>> workflow.date_first_released
-datetime.datetime(...)
-
-We expect the value to be in the xml now as well:
-
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article>
-  <head> 
-    ...
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
-  </head>
-  ...
-
-
-Logout:
-
->>> zope.security.management.endInteraction()
-
 Cleanup
 =======
 

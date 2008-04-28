@@ -118,6 +118,7 @@ Let's publish the object:
 
 >>> workflow.urgent = True
 >>> publish.publish()
+>>> tasks.process()
 >>> workflow.published
 True
 >>> workflow.date_last_published
@@ -127,6 +128,7 @@ datetime.datetime(...)
 One can publish more than once to put up a new version:
 
 >>> publish.publish()
+>>> tasks.process()
 >>> workflow.published
 True
 
@@ -177,11 +179,55 @@ http://xml.zeit.de/online/2007/01/Somalia
 http://xml.zeit.de/online/2007/01/Somalia
      Urgent: yes
 http://xml.zeit.de/online/2007/01/Somalia
+     Publication scheduled
+http://xml.zeit.de/online/2007/01/Somalia
+     Published
+http://xml.zeit.de/online/2007/01/Somalia
+     Publication scheduled
+http://xml.zeit.de/online/2007/01/Somalia
+     Published
+http://xml.zeit.de/online/2007/01/Somalia
      Urgent: no
+http://xml.zeit.de/online/2007/01/Somalia
+     Retracted
+     
 
-Note, that we'd need recurive translations to handle the "status-xxx"
-correctly. There is an open issue regarding this:
-https://bugs.launchpad.net/zope3/+bug/210177
+
+
+Date first released
+-------------------
+
+
+When an object is published for the first time, the "date first released" is
+set by the workflow engine. We make sure that the date is also copied to the
+xml.
+
+>>> import zeit.workflow.interfaces
+>>> article = repository['testcontent']
+>>> article
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+>>> workflow = zeit.workflow.interfaces.IWorkflowStatus(article)
+>>> workflow.date_first_released is None
+True
+>>> workflow.urgent = True
+>>> import zeit.cms.workflow.interfaces
+>>> publish = zeit.cms.workflow.interfaces.IPublish(article)
+>>> publish.publish()
+>>> tasks.process()
+>>> workflow.date_first_released
+datetime.datetime(...)
+
+We expect the value to be in the xml now as well:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<testtype>
+  <head> 
+    ...
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
+  </head>
+  ...
+
 
 
 That was the workflow[#cleanup]_.
@@ -199,6 +245,10 @@ That was the workflow[#cleanup]_.
     >>> import zeit.cms.workflow.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
+
+    >>> import lovely.remotetask.interfaces
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')
 
 
 .. [#cleanup] Clean up

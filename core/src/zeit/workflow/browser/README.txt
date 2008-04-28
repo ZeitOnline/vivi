@@ -3,7 +3,7 @@ Zeit Workflow
 =============
 
 The workflow is state oriented. There are several states which all can be set
-using the workflow tab[1]_:
+using the workflow tab[#browser]_[#tasks]_:
 
 >>> browser.open('http://localhost:8080/++skin++cms/repository/online'
 ...              '/2007/01/Somalia')
@@ -121,6 +121,9 @@ Use the urgent flag to override:
         <li class="message">http://xml.zeit.de/online/2007/01/Somalia has been scheduled for publishing.</li>
         <li class="message">Updated on 2008 4 3  12:02:00 </li>
         ...
+        <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
+        ...
+        
 
 
 
@@ -133,7 +136,13 @@ Date first released
 +++++++++++++++++++
 
 The "date first released" is the date when the object was first published.
+Since publishing is done asynchronously we have to trigger processing:
 
+>>> run_tasks()
+
+Reload the workflow page.
+
+>>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
         <label for="form.last_modified_by">
@@ -187,14 +196,6 @@ again:
 
 
 
-.. [1] For UI-Tests we need a Testbrowser:
-
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
-
-
-
 Publishing checked out resources
 ================================
 
@@ -234,6 +235,9 @@ Do a publish/retract cycle to set the property to false:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
+
+>>> run_tasks()
+>>> browser.getLink('Workflow').click()
 >>> browser.getControl('retract').click()
 >>> print browser.contents
 <?xml ...
@@ -254,6 +258,8 @@ Go back to the repository and publish:
 >>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False
+>>> run_tasks()
+>>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
         <label for="form.published">
@@ -290,6 +296,7 @@ out:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
+>>> run_tasks()
 >>> browser.getLink('Checkout').click()
 
 Unpublish now:
@@ -334,9 +341,44 @@ The workflow logs various changes in an objectlog. Verify this:
 
 >>> print browser.contents
 <?xml...
-        <div class="widget"><FORMATTED DATE>  [User]: Urgent: yes<br />
+        <div class="widget"><FORMATTED DATE>  [User]: Retracted<br />...
+<FORMATTED DATE>  [User]: Urgent: yes<br />
 <FORMATTED DATE>  [User]: Images added: no<br />
 <FORMATTED DATE>  [User]: Refined: no<br />
 <FORMATTED DATE>  [User]: Corrected: no<br />
 <FORMATTED DATE>  [User]: Edited: no</div>
 ...
+
+
+Clean up
+--------
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#browser] For UI-Tests we need a Testbrowser:
+
+    >>> from zope.testbrowser.testing import Browser
+    >>> browser = Browser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+
+.. [#tasks] Start processing of remote tasks
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import transaction
+
+    >>> import zope.publisher.browser
+    >>> import zope.security.management
+    >>> import lovely.remotetask.interfaces
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')
+    >>> def run_tasks():
+    ...     request = zope.publisher.browser.TestRequest()
+    ...     zope.security.management.newInteraction(request)
+    ...     transaction.abort()
+    ...     tasks.process()
+    ...     zope.security.management.endInteraction()
+    

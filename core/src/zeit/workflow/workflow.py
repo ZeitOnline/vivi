@@ -228,6 +228,3 @@ def log_workflow_changes(workflow, event):
 
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)
-    # Create savepoint to assing oid to log-entries. Required for displaying in
-    # the same transaction.
-    transaction.savepoint(optimistic=True)

@@ -21,4 +21,6 @@
   <include package="zeit.workflow" />
   <include package="zeit.workflow.browser" />
 
+  <include package="zeit.cms.testcontenttype" />
+
 </configure>

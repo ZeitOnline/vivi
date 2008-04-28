@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Apr 28 12:01:09 2008\n"
-"PO-Revision-Date: 2008-04-28 12:01+0100\n"
+"POT-Creation-Date: Mon Apr 28 16:32:05 2008\n"
+"PO-Revision-Date: 2008-04-28 16:33+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -175,6 +175,7 @@ msgstr "Formular"
 
 #: src/zeit/cms/browser/listing.py:194
 #: src/zeit/cms/workflow/interfaces.py:24
+#: src/zeit/workflow/publish.py:79
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -805,7 +806,7 @@ msgstr "»${content-title}« syndizieren"
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
-#: src/zeit/cms/syndication/browser/manager.py:102
+#: src/zeit/cms/syndication/browser/manager.py:103
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:303
 msgid "Preview"
@@ -817,13 +818,13 @@ msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr "»${name}« wurde nach »${targets}« syndiziert."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:54
+#: src/zeit/cms/syndication/browser/manager.py:53
+#: src/zeit/workflow/browser/form.py:55
 msgid "scheduled-for-publishing"
 msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:55
+#: src/zeit/cms/syndication/browser/manager.py:56
 msgid "Could not publish \"${name}\"."
 msgstr "»${name}« konnte nicht veröffentlicht werden."
 
@@ -1428,42 +1429,42 @@ msgstr "HTML-Titel"
 msgid "HTML description"
 msgstr "HTML-Beschreibung (Description)"
 
-#: src/zeit/workflow/browser/form.py:22
+#: src/zeit/workflow/browser/form.py:23
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr "Workflow"
 
-#: src/zeit/workflow/browser/form.py:26
+#: src/zeit/workflow/browser/form.py:27
 msgid "Status"
 msgstr "Status"
 
-#: src/zeit/workflow/browser/form.py:32
+#: src/zeit/workflow/browser/form.py:33
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/zeit/workflow/browser/form.py:34
+#: src/zeit/workflow/browser/form.py:35
 msgid "Log"
 msgstr "Log"
 
-#: src/zeit/workflow/browser/form.py:42
+#: src/zeit/workflow/browser/form.py:43
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
-#: src/zeit/workflow/browser/form.py:46
+#: src/zeit/workflow/browser/form.py:47
 msgid "Save state and publish"
 msgstr "Status speichern und veröffentlichen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:57
+#: src/zeit/workflow/browser/form.py:58
 msgid "publish-preconditions-not-met"
 msgstr "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das »Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
 
-#: src/zeit/workflow/browser/form.py:61
+#: src/zeit/workflow/browser/form.py:62
 msgid "Save state and retract"
 msgstr "Status speichern und zurückziehen"
 
 #. Default: ""
-#: src/zeit/workflow/browser/form.py:69
+#: src/zeit/workflow/browser/form.py:70
 msgid "scheduled-for-retracting"
 msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
 
@@ -1507,6 +1508,14 @@ msgstr "Veröffentlichungszeitraum"
 msgid "Leave empty for no constraint."
 msgstr "Leer für keine Einschränkung."
 
+#: src/zeit/workflow/publish.py:39
+msgid "Publication scheduled"
+msgstr "Veröffentlichung vorgemerkt"
+
+#: src/zeit/workflow/publish.py:47
+msgid "Retracted"
+msgstr "Zurückgezogen"
+
 #: src/zeit/workflow/source.py:33
 msgid "yes"
 msgstr "ja"
@@ -1520,7 +1529,7 @@ msgid "not necessary"
 msgstr "nicht nötig"
 
 #. Default: ""
-#: src/zeit/workflow/workflow.py:232
+#: src/zeit/workflow/workflow.py:224
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 

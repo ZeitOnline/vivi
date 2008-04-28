@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Apr 28 12:01:09 2008\n"
+"POT-Creation-Date: Mon Apr 28 16:32:05 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -187,6 +187,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/listing.py:194
 #: src/zeit/cms/workflow/interfaces.py:24
+#: src/zeit/workflow/publish.py:79
 msgid "Published"
 msgstr ""
 
@@ -817,7 +818,7 @@ msgstr ""
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:102
+#: src/zeit/cms/syndication/browser/manager.py:103
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:303
 msgid "Preview"
@@ -828,13 +829,13 @@ msgstr ""
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:52
-#: src/zeit/workflow/browser/form.py:54
+#: src/zeit/cms/syndication/browser/manager.py:53
+#: src/zeit/workflow/browser/form.py:55
 #. Default: ""
 msgid "scheduled-for-publishing"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:55
+#: src/zeit/cms/syndication/browser/manager.py:56
 #. Default: ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
@@ -1440,41 +1441,41 @@ msgstr ""
 msgid "HTML description"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:22
+#: src/zeit/workflow/browser/form.py:23
 #: src/zeit/workflow/browser/configure.zcml:8
 msgid "Workflow"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:26
+#: src/zeit/workflow/browser/form.py:27
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:32
+#: src/zeit/workflow/browser/form.py:33
 msgid "Settings"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:34
+#: src/zeit/workflow/browser/form.py:35
 msgid "Log"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:42
+#: src/zeit/workflow/browser/form.py:43
 msgid "Save state only"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:46
+#: src/zeit/workflow/browser/form.py:47
 msgid "Save state and publish"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:57
+#: src/zeit/workflow/browser/form.py:58
 #. Default: ""
 msgid "publish-preconditions-not-met"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:61
+#: src/zeit/workflow/browser/form.py:62
 msgid "Save state and retract"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:69
+#: src/zeit/workflow/browser/form.py:70
 #. Default: ""
 msgid "scheduled-for-retracting"
 msgstr ""
@@ -1519,6 +1520,14 @@ msgstr ""
 msgid "Leave empty for no constraint."
 msgstr ""
 
+#: src/zeit/workflow/publish.py:39
+msgid "Publication scheduled"
+msgstr ""
+
+#: src/zeit/workflow/publish.py:47
+msgid "Retracted"
+msgstr ""
+
 #: src/zeit/workflow/source.py:33
 msgid "yes"
 msgstr ""
@@ -1531,7 +1540,7 @@ msgstr ""
 msgid "not necessary"
 msgstr ""
 
-#: src/zeit/workflow/workflow.py:232
+#: src/zeit/workflow/workflow.py:224
 #. Default: ""
 msgid "${name}: ${new_value}"
 msgstr ""
