@@ -462,7 +462,8 @@ Queries are built of basic terms involving search vars stitched together into
 expressions (note that we get dummy values at the moment):
 
 >>> [res for res in connector.search([author, volume, ressort], (year == '2007') & (volume == '07') & (author == 'pm'))]
-[(u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07', None)]
+[(u'http://xml.zeit.de/2007/07/inderzeit', 'pm', '07', 'Inhaltsverzeichnis'),
+ (u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07', None)]
 
 
 
