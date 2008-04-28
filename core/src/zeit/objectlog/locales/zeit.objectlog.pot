@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Apr 21 08:45:45 2008\n"
+"POT-Creation-Date: Mon Apr 28 15:47:18 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -27,7 +27,11 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/zeit/objectlog/source.py:33
+#: src/zeit/objectlog/source.py:28
+msgid "System"
+msgstr ""
+
+#: src/zeit/objectlog/source.py:39
 #. Default: ""
 msgid "${time} [${principal}]: ${message}"
 msgstr ""
