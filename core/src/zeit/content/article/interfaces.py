@@ -86,6 +86,10 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('Has recension content'),
         default=False)
 
+    artbox_thema = zope.schema.Bool(
+        title=_('First related as box'),
+        default=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""

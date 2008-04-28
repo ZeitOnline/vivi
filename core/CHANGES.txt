@@ -4,6 +4,7 @@ zeit.cms changes
 0.10 (unreleased)
 -----------------
 
+- "Erstes Related als Box" (bug #4053).
 
 0.9.11 (2008-04-28)
 -------------------

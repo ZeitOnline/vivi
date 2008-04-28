@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Apr 24 09:58:15 2008\n"
+"POT-Creation-Date: Mon Apr 28 12:01:09 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -64,12 +64,12 @@ msgstr ""
 #: src/zeit/calendar/interfaces.py:27
 #: src/zeit/cms/browser/listing.py:267
 #: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:116
-#: src/zeit/cms/content/interfaces.py:256
+#: src/zeit/cms/content/interfaces.py:117
+#: src/zeit/cms/content/interfaces.py:257
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:33
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:29
-#: src/zeit/content/article/interfaces.py:141
+#: src/zeit/content/article/interfaces.py:145
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
@@ -82,7 +82,7 @@ msgid "Title will be shown in overview pages."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:263
+#: src/zeit/cms/content/interfaces.py:264
 msgid "Related content"
 msgstr ""
 
@@ -204,7 +204,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/listing.py:263
 #: src/zeit/cms/syndication/browser/feed.py:151
-#: src/zeit/content/article/interfaces.py:139
+#: src/zeit/content/article/interfaces.py:143
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
@@ -380,11 +380,11 @@ msgstr ""
 msgid "misc."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:12
-msgid "Add a keyword"
+#: src/zeit/cms/content/browser/keyword-tree.pt:16
+msgid "If you would like to suggest a keyword, send an e-mail to ${recipient}."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:18
+#: src/zeit/cms/content/browser/keyword-tree.pt:30
 msgid "Similar keywords:"
 msgstr ""
 
@@ -456,67 +456,67 @@ msgstr ""
 msgid "Invalid structure."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:102
+#: src/zeit/cms/content/interfaces.py:103
 msgid "Copyright (c)"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:103
+#: src/zeit/cms/content/interfaces.py:104
 msgid "Do not enter (c)."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:107
+#: src/zeit/cms/content/interfaces.py:108
 msgid "Kicker"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:108
+#: src/zeit/cms/content/interfaces.py:109
 msgid "Please take care of capitalisation."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:112
+#: src/zeit/cms/content/interfaces.py:113
 msgid "By line"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:119
+#: src/zeit/cms/content/interfaces.py:120
 msgid "Subtitle"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:123
+#: src/zeit/cms/content/interfaces.py:124
 msgid "Teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:127
+#: src/zeit/cms/content/interfaces.py:128
 msgid "Teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:132
+#: src/zeit/cms/content/interfaces.py:133
 msgid "Index teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:137
+#: src/zeit/cms/content/interfaces.py:138
 msgid "Index teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:142
+#: src/zeit/cms/content/interfaces.py:143
 msgid "Homepage teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:147
+#: src/zeit/cms/content/interfaces.py:148
 msgid "Homepage teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:152
+#: src/zeit/cms/content/interfaces.py:153
 msgid "VG Wort Id"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:224
+#: src/zeit/cms/content/interfaces.py:225
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:264
+#: src/zeit/cms/content/interfaces.py:265
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:294
+#: src/zeit/cms/content/interfaces.py:295
 msgid "Hits today"
 msgstr ""
 
@@ -529,7 +529,7 @@ msgid "Root of ontology"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:61
-#: src/zeit/content/article/interfaces.py:176
+#: src/zeit/content/article/interfaces.py:180
 #: src/zeit/content/image/interfaces.py:35
 #: src/zeit/search/interfaces.py:21
 #: src/zeit/content/article/browser/recension-overview.pt:32
@@ -549,16 +549,17 @@ msgid "Sub ressort"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:85
-#: src/zeit/content/article/interfaces.py:135
+#: src/zeit/content/article/interfaces.py:139
 msgid "Authors"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:91
-#: src/zeit/cms/content/browser/keyword-tree.pt:24
+#: src/zeit/cms/content/browser/keyword-tree.pt:12
+#: src/zeit/cms/content/browser/keyword-tree.pt:36
 msgid "Keywords"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:97
+#: src/zeit/cms/content/interfaces.py:98
 msgid "Serie"
 msgstr ""
 
@@ -957,7 +958,7 @@ msgid "recension-no-items"
 msgstr ""
 
 #: src/zeit/content/article/browser/recension.py:103
-#: src/zeit/content/article/interfaces.py:192
+#: src/zeit/content/article/interfaces.py:196
 msgid "Raw data"
 msgstr ""
 
@@ -971,7 +972,7 @@ msgid "Book details"
 msgstr ""
 
 #: src/zeit/content/article/browser/recension.py:67
-#: src/zeit/content/article/interfaces.py:168
+#: src/zeit/content/article/interfaces.py:172
 #: src/zeit/content/article/browser/recension-overview.pt:16
 msgid "Publisher"
 msgstr ""
@@ -988,48 +989,48 @@ msgstr ""
 msgid "Edit book information"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:101
+#: src/zeit/content/article/interfaces.py:105
 msgid "Syndication Log"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:144
+#: src/zeit/content/article/interfaces.py:148
 msgid "Info"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:148
+#: src/zeit/content/article/interfaces.py:152
 msgid "Genre"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:152
+#: src/zeit/content/article/interfaces.py:156
 msgid "ZEIT category"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:156
+#: src/zeit/content/article/interfaces.py:160
 msgid "Agelimit"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:160
+#: src/zeit/content/article/interfaces.py:164
 msgid "Original language"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:164
+#: src/zeit/content/article/interfaces.py:168
 msgid "Translator"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:172
+#: src/zeit/content/article/interfaces.py:176
 #. Default: "Location"
 msgid "book-location"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:180
+#: src/zeit/content/article/interfaces.py:184
 msgid "Media type"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:184
+#: src/zeit/content/article/interfaces.py:188
 msgid "Pages"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:188
+#: src/zeit/content/article/interfaces.py:192
 msgid "Price (EUR)"
 msgstr ""
 
@@ -1093,7 +1094,11 @@ msgstr ""
 msgid "Has recension content"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:94
+#: src/zeit/content/article/interfaces.py:90
+msgid "First related as box"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:98
 msgid "Article is syndicated in these feeds."
 msgstr ""
 
@@ -1357,6 +1362,7 @@ msgid "search-status-no-images-added"
 msgstr ""
 
 #: src/zeit/search/browser/search.py:85
+#: src/zeit/cms/content/browser/keyword-tree.pt:24
 #: src/zeit/search/browser/sidebar.pt:13
 msgid "Search"
 msgstr ""
