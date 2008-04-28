@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.11 (unreleased)
+0.9.11 (2008-04-28)
 -------------------
 
 - Selten gebrauchte Aktionen in ein DropDown verschoben (derzeit umbenennen und
