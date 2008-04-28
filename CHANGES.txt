@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-0.2 (unreleased)
+0.2 (2008-04-28)
 ----------------
 
 - Allow logging wich interaction but without principal. Required for logging in
