@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.15 (unreleased)
+0.15 (2008-04-28)
 -----------------
 
 - Fixed a bug in copy code which was not invalidating the caches correctly.
