@@ -12,7 +12,7 @@ import zeit.workflow.interfaces
 class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
 
     fields = zope.formlib.form.FormFields(
-        zeit.workflow.interfaces.IWorkflow)
+        zeit.workflow.interfaces.IWorkflowStatus)
 
 
     widgets = None
@@ -20,7 +20,7 @@ class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
     def update(self):
         if self.workflow is not None:
             self.widgets = zope.formlib.form.setUpEditWidgets(
-                self.fields, 'foo', self.workflow, self.request,
+                self.fields, 'workflow', self.workflow, self.request,
                 for_display=True)
 
     def render(self):
@@ -30,4 +30,4 @@ class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
 
     @zope.cachedescriptors.property.Lazy
     def workflow(self):
-        return zeit.workflow.interfaces.IWorkflow(self.context, None)
+        return zeit.workflow.interfaces.IWorkflowStatus(self.context, None)

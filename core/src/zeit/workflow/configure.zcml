@@ -32,4 +32,8 @@
       />
   </class>
 
+
+  <!-- Publish -->
+  <adapter factory=".publish.Publish" />
+
 </configure>

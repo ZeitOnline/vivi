@@ -24,24 +24,15 @@ class MockPublish(object):
     def __init__(self, context):
         self.context = context
 
-    def can_publish(self):
-        return _can_publish.get(self.context.uniqueId, False)
-
     def publish(self):
-        if not self.can_publish():
+        if not zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context).can_publish():
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Cannot publish.")
         print "Publishing: %s" % self.context.uniqueId
 
     def retract(self):
         raise NotImplementedError
-
-
-    # Test support
-
-    def set_can_publish(self, can):
-        _can_publish[self.context.uniqueId] = can
-
 
 
 _published = {}
@@ -74,3 +65,11 @@ class MockPublishInfo(object):
     @property
     def date_last_modified(self):
         return _modification_times.get(self.context.uniqueId)
+
+    def can_publish(self):
+        return _can_publish.get(self.context.uniqueId, False)
+
+    # Test support
+
+    def set_can_publish(self, can):
+        _can_publish[self.context.uniqueId] = can

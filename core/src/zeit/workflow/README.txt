@@ -9,14 +9,13 @@ Workflow betreffende Status. Aus Nutzersicht ergeben sich quasi parallele
 Aktivitäten[#functionaltest]_.
 
 >>> somalia = repository['online']['2007']['01']['Somalia']
->>> workflow = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> workflow = zeit.workflow.interfaces.IWorkflowStatus(somalia)
 >>> import zeit.workflow.interfaces
->>> zeit.workflow.interfaces.IWorkflow.providedBy(workflow)
-True
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
-...     zeit.workflow.interfaces.IWorkflow, workflow)
+...     zeit.workflow.interfaces.IWorkflowStatus, workflow)
 True
+>>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
 
 Activities / States
 ===================
@@ -100,7 +99,7 @@ exception:
 >>> workflow.urgent = False
 >>> workflow.can_publish()
 False
->>> workflow.publish()
+>>> publish.publish()
 Traceback (most recent call last):
     ...
 PublishingError: Publish pre-conditions not satisifed.
@@ -118,7 +117,7 @@ True
 Let's publish the object:
 
 >>> workflow.urgent = True
->>> workflow.publish()
+>>> publish.publish()
 >>> workflow.published
 True
 >>> workflow.date_last_published
@@ -127,7 +126,7 @@ datetime.datetime(...)
 
 One can publish more than once to put up a new version:
 
->>> workflow.publish()
+>>> publish.publish()
 >>> workflow.published
 True
 
@@ -139,7 +138,7 @@ After retracting an object it is no longer publically visible. Note that
 retract is unconditinally possible:
 
 >>> workflow.urgent = False
->>> workflow.retract()
+>>> publish.retract()
 >>> workflow.published
 False
 

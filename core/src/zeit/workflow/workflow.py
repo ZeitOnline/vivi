@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import UserDict
 import datetime
 
 import pytz
@@ -40,18 +41,26 @@ if 'all' not in globals():
 WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 
-class LiveProperties(dict):
+class LiveProperties(UserDict.DictMixin):
     """Webdav properties which are updated upon change."""
 
     zope.interface.implements(zeit.connector.interfaces.IWebDAVProperties)
 
     def __init__(self, resource):
-        super(LiveProperties, self).__init__(resource.properties)
         self.resource_id = resource.id
 
+    def __getitem__(self, key):
+        return self.resource.properties[key]
+
+    def keys(self):
+        return self.resource.properties.keys()
+
     def __setitem__(self, key, value):
-        super(LiveProperties, self).__setitem__(key, value)
         self.connector.changeProperties(self.resource_id, {key: value})
+
+    @property
+    def resource(self):
+        return self.connector[self.resource_id]
 
     @property
     def connector(self):
@@ -65,26 +74,26 @@ class Workflow(object):
     actually can do the transition.
     """
 
-    zope.interface.implements(zeit.workflow.interfaces.IWorkflow)
+    zope.interface.implements(zeit.workflow.interfaces.IWorkflowStatus)
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     zeit.cms.content.dav.mapProperties(
-        zeit.workflow.interfaces.IWorkflow,
+        zeit.workflow.interfaces.IWorkflowStatus,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'published',
          'images_added', 'urgent', 'date_last_published')),
 
     zeit.cms.content.dav.mapProperty(
-        zeit.workflow.interfaces.IWorkflow['release_period'].fields[0],
+        zeit.workflow.interfaces.IWorkflowStatus['release_period'].fields[0],
         WORKFLOW_NS,
         'released_from')
     zeit.cms.content.dav.mapProperty(
-        zeit.workflow.interfaces.IWorkflow['release_period'].fields[1],
+        zeit.workflow.interfaces.IWorkflowStatus['release_period'].fields[1],
         WORKFLOW_NS,
         'released_to')
 
     zeit.cms.content.dav.mapProperties(
-        zeit.workflow.interfaces.IWorkflow,
+        zeit.workflow.interfaces.IWorkflowStatus,
         'http://namespaces.zeit.de/CMS/document',
         ('date_first_released', 'last_modified_by'))
 
@@ -118,25 +127,8 @@ class Workflow(object):
             return True
         return False
 
-    def publish(self):
-        """Publish object."""
-        if not self.can_publish():
-            raise zeit.cms.workflow.interfaces.PublishingError(
-                "Publish pre-conditions not satisifed.")
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforePublishEvent(self.context))
-        # TODO create remotetask to actually publish. The remotetask would send
-        # an IPublishedEvent then. For now set published
-        self.published = True
-        self.date_last_published = datetime.datetime.now(pytz.UTC)
 
-    def retract(self):
-        """Retract object."""
-        # TODO create remotetask to actually retract the object.
-        self.published = False
-
-
-@zope.component.adapter(zeit.workflow.interfaces.IWorkflow)
+@zope.component.adapter(zeit.workflow.interfaces.IWorkflowStatus)
 @zope.interface.implementer(zeit.cms.interfaces.IWebDAVProperties)
 def workflowProperties(context):
     # return properties located in the actual content object
@@ -150,7 +142,7 @@ class FeedMetadataUpdater(object):
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
     def update_entry(self, entry, content):
-        workflow = zeit.workflow.interfaces.IWorkflow(content, None)
+        workflow = zeit.workflow.interfaces.IWorkflowStatus(content, None)
         if workflow is None:
             return
 
@@ -169,7 +161,7 @@ class FeedMetadataUpdater(object):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def set_first_release_date(context, event):
-    workflow = zeit.workflow.interfaces.IWorkflow(context)
+    workflow = zeit.workflow.interfaces.IWorkflowStatus(context)
     if workflow.date_first_released:
         return
     workflow.date_first_released = datetime.datetime.now(pytz.UTC)
@@ -179,7 +171,7 @@ def set_first_release_date(context, event):
     zope.interface.Interface,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_last_modified_by(context, event):
-    workflow = zeit.workflow.interfaces.IWorkflow(context, None)
+    workflow = zeit.workflow.interfaces.IWorkflowStatus(context, None)
     if workflow is None:
         return
     workflow.last_modified_by = event.principal.id

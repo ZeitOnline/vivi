@@ -9,12 +9,13 @@ import gocept.form.grouped
 import zeit.objectlog.interfaces
 
 import zeit.cms.browser.form
+import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
 def is_published(form, action):
-    return form.publish.published
+    return form.info.published
 
 
 class WorkflowForm(zeit.cms.browser.form.EditForm):
@@ -36,8 +37,8 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     )
 
     form_fields = (
-        zope.formlib.form.FormFields(zeit.workflow.interfaces.IWorkflow) +
-        zope.formlib.form.FormFields(zeit.objectlog.interfaces.ILog))
+        zope.formlib.form.FormFields(zeit.workflow.interfaces.IWorkflowStatus)
+        + zope.formlib.form.FormFields(zeit.objectlog.interfaces.ILog))
 
     @zope.formlib.form.action(_('Save state only'))
     def handle_save_state(self, action, data):
@@ -49,7 +50,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
         mapping = dict(
             name=self.context.__name__,
             id=self.context.uniqueId)
-        if self.publish.can_publish():
+        if self.info.can_publish():
             self.publish.publish()
             self.send_message(_('scheduled-for-publishing',
                                 mapping=mapping))
@@ -72,3 +73,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     @property
     def publish(self):
         return zeit.cms.workflow.interfaces.IPublish(self.context)
+
+    @property
+    def info(self):
+        return zeit.workflow.interfaces.IWorkflowStatus(self.context)

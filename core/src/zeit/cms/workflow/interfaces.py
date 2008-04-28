@@ -47,16 +47,16 @@ class IPublishInfo(zope.interface.Interface):
         required=False,
         readonly=True)
 
-
-class IPublish(zope.interface.Interface):
-    """Interface for publishing/unpublishing objects."""
-
     def can_publish():
         """Return whether the object can be published right now.
 
         returns True if the object can be published, False otherwise.
 
         """
+
+
+class IPublish(zope.interface.Interface):
+    """Interface for publishing/unpublishing objects."""
 
     def publish():
         """Publish object.

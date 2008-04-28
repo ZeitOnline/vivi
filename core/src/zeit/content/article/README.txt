@@ -260,14 +260,14 @@ Now publish:
 >>> article = repository['online']['2007']['01']['Somalia']
 >>> article
 <zeit.content.article.article.Article object at 0x...>
->>> workflow = zeit.workflow.interfaces.IWorkflow(article)
+>>> workflow = zeit.workflow.interfaces.IWorkflowStatus(article)
 >>> workflow.date_first_released is None
 True
 >>> workflow.urgent = True
->>> workflow.publish()
+>>> import zeit.cms.workflow.interfaces
+>>> publish = zeit.cms.workflow.interfaces.IPublish(article)
+>>> publish.publish()
 
-# XXX not sure why I need to adapt again
->>> workflow = zeit.workflow.interfaces.IWorkflow(article)
 >>> workflow.date_first_released
 datetime.datetime(...)
 

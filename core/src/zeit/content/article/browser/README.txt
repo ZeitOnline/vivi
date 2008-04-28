@@ -182,7 +182,6 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
->>> browser.handleErrors = False
 >>> browser.getLink('Edit assets').click()
 
 Let's add an image:
@@ -238,7 +237,6 @@ WYSIWYG-Editor
 
 Open the WYSIWYG-Editor:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Edit WYSIWYG').click()
 
 Some important fields can be edited here as well:

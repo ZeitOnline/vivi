@@ -43,11 +43,12 @@ class Manager(zeit.cms.browser.view.Base):
 
     def publish(self, targets):
         for target in targets:
-            publish = zeit.cms.workflow.interfaces.IPublish(target)
             mapping = dict(
                 id=target.uniqueId,
                 name=target.__name__)
-            if publish.can_publish():
+            info = zeit.cms.workflow.interfaces.IPublishInfo(target)
+            if info.can_publish():
+                publish = zeit.cms.workflow.interfaces.IPublish(target)
                 publish.publish()
                 self.send_message(_('scheduled-for-publishing',
                                     mapping=mapping))

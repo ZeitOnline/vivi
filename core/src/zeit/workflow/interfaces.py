@@ -80,7 +80,3 @@ class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
         title=_('Date first released'),
         required=False,
         readonly=True)
-
-
-class IWorkflow(zeit.cms.workflow.interfaces.IPublish, IWorkflowStatus):
-    """Combined interface for workflow."""

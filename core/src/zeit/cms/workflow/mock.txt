@@ -7,31 +7,46 @@ The mock is used for testing.
 >>> import zeit.cms.workflow.interfaces
 >>> import zeit.cms.workflow.mock
 
+Register adapters
+
+>>> import zope.component
+>>> import zeit.cms.workflow.mock
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     zeit.cms.workflow.mock.MockPublish)
+>>> gsm.registerAdapter(
+...     zeit.cms.workflow.mock.MockPublishInfo)
+
 Let's try this on a testcontent:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
 >>> content.uniqueId = 'http://xml.zeit.de/testcontent'
->>> workflow = zeit.cms.workflow.mock.MockPublish(content)
+>>> workflow = zeit.cms.workflow.interfaces.IPublish(content)
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(content)
 
-Verify the interface:
+
+Verify the interfaces:
 
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.workflow.interfaces.IPublish, workflow)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.workflow.interfaces.IPublishInfo, info)
 True
 
 
 We can set explicitly if we can publish:
 
->>> workflow.can_publish()
+>>> info.can_publish()
 False
->>> workflow.set_can_publish(True)
->>> workflow.can_publish()
+>>> info.set_can_publish(True)
+>>> info.can_publish()
 True
 
 `publish()` raises an exception if can_publish returns False:
 
->>> workflow.set_can_publish(False)
+>>> info.set_can_publish(False)
 >>> workflow.publish()
 Traceback (most recent call last):
     ...
@@ -40,15 +55,15 @@ PublishingError: Cannot publish.
 
 It spits out a message otherwise:
 
->>> workflow.set_can_publish(True)
+>>> info.set_can_publish(True)
 >>> workflow.publish()
 Publishing: http://xml.zeit.de/testcontent
 
+Clean up:
 
-Mock publish info
-=================
-
->>> info = zeit.cms.workflow.mock.MockPublishInfo(content)
->>> zope.interface.verify.verifyObject(
-...     zeit.cms.workflow.interfaces.IPublishInfo, info)
+>>> gsm.unregisterAdapter(
+...     zeit.cms.workflow.mock.MockPublish)
+True
+>>> gsm.unregisterAdapter(
+...     zeit.cms.workflow.mock.MockPublishInfo)
 True
