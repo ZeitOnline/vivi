@@ -4,6 +4,11 @@ zeit.objectlog changes
 0.2 (unreleased)
 ----------------
 
+- Allow logging wich interaction but without principal. Required for logging in
+  lovely.remotetask.
+- Creating savepoint after creating a log entry, otherwise there are some
+  problems with using the logentry in the same transaction.
+
 0.1 (2008-04-21)
 ----------------
 

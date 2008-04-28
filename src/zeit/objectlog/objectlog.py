@@ -9,6 +9,7 @@ import time
 import BTrees
 import persistent
 import pytz
+import transaction
 
 import zope.interface
 import zope.security.management
@@ -54,6 +55,9 @@ class ObjectLog(persistent.Persistent):
             self._object_log[obj_key] = BTrees.family64.II.TreeSet()
 
         self._object_log[obj_key].insert(time_key)
+        # Create savepoint to assing oid to log-entries. Required for
+        # displaying in the same transaction.
+        transaction.savepoint(optimistic=True)
 
 
 
@@ -69,7 +73,7 @@ class LogEntry(persistent.Persistent):
         self.mapping = mapping
         participations = (zope.security.management.getInteraction()
                           .participations)
-        if participations:
+        if participations and participations[0].principal:
             self.principal = participations[0].principal.id
         else:
             self.principal = None

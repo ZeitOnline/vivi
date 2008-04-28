@@ -24,9 +24,12 @@ class LogEntrySource(
         # `getTitle` :( 
 
         source = zeit.objectlog.interfaces.ILogEntry['principal'].source
-        principal_terms = zope.component.getMultiAdapter(
-            (source, request), zope.app.form.browser.interfaces.ITerms)
-        principal = principal_terms.getTerm(value.principal).title
+        if value.principal is None:
+            principal = _('System')
+        else:
+            principal_terms = zope.component.getMultiAdapter(
+                (source, request), zope.app.form.browser.interfaces.ITerms)
+            principal = principal_terms.getTerm(value.principal).title
 
         formatter = request.locale.dates.getFormatter('dateTime', 'medium')
         time = formatter.format(value.time)

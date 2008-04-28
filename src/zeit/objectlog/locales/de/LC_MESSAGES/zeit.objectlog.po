@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.objectlog\n"
-"POT-Creation-Date: Mon Apr 21 08:45:45 2008\n"
+"POT-Creation-Date: Mon Apr 28 15:47:18 2008\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: gocept translations <mail@gocept.com>\n"
@@ -16,8 +16,12 @@ msgstr ""
 msgid "Log"
 msgstr "Log"
 
+#: src/zeit/objectlog/source.py:28
+msgid "System"
+msgstr "System"
+
 #. Default: ""
-#: src/zeit/objectlog/source.py:33
+#: src/zeit/objectlog/source.py:39
 msgid "${time} [${principal}]: ${message}"
 msgstr "${time} [${principal}]: ${message}"
 

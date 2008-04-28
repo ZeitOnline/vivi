@@ -31,7 +31,7 @@ Instanciate and add to the database:
 >>> import transaction
 >>> transaction.commit()
 
-Log something for `content`[#needs-interaction]_:
+Log something for `content` [#needs-interaction]_:
 
 >>> log.log(content, 'Foo')
 
@@ -51,7 +51,8 @@ A log entry provides the ILogEntry interface:
 True
 >>> log_entry.get_object() is content
 True
->>> log_entry.principal = u'hans'
+>>> log_entry.principal is None
+True
 >>> log_entry.time
 datetime.datetime(..., tzinfo=<UTC>)
 >>> log_entry.message
@@ -60,7 +61,8 @@ datetime.datetime(..., tzinfo=<UTC>)
 True
 
 
-When we log another text, we'll get two results:
+When we log another text, we'll get two results. Also, when a principal is
+logged in[#login]_ he is logged:
 
 >>> log.log(content, "bar")
 >>> result = list(log.get_log(content))
@@ -73,6 +75,8 @@ The order is oldest first:
 'Foo'
 >>> result[1].message
 'bar'
+>>> result[1].principal
+u'test.hans'
 
 
 It is possible to pass a mapping to the log which can be used for translating
@@ -156,6 +160,9 @@ Verify the titles:
 >>> terms = zope.component.getMultiAdapter(
 ...     (source, request),
 ...     zope.app.form.browser.interfaces.ITerms)
+>>> term = terms.getTerm(list(source)[0])
+>>> zope.i18n.translate(term.title)
+u'2008 4 19  10:12:17  [System]: Foo'
 >>> term = terms.getTerm(list(source)[1])
 >>> zope.i18n.translate(term.title)
 u'2008 4 19  10:12:17  [Hans Wurst]: bar'
@@ -181,5 +188,8 @@ Tear down / Clean up:
     >>> import zope.security.testing
     >>> import zope.publisher.browser
     >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
     >>> zope.security.management.newInteraction(request)
+
+.. [#login]
+
+    >>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
