@@ -39,8 +39,6 @@ _published = {}
 zope.testing.cleanup.addCleanUp(_published.clear)
 _publish_times = {}
 zope.testing.cleanup.addCleanUp(_publish_times.clear)
-_modification_times = {}
-zope.testing.cleanup.addCleanUp(_modification_times.clear)
 
 
 class MockPublishInfo(object):
@@ -61,10 +59,6 @@ class MockPublishInfo(object):
     @property
     def date_last_published(self):
         return _publish_times.get(self.context.uniqueId)
-
-    @property
-    def date_last_modified(self):
-        return _modification_times.get(self.context.uniqueId)
 
     def can_publish(self):
         return _can_publish.get(self.context.uniqueId, False)

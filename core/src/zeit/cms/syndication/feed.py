@@ -190,9 +190,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def feedFactory(context):
-    feed = Feed(context.data)
-    zeit.cms.interfaces.IWebDAVWriteProperties(feed).update(context.properties)
-    return feed
+    return Feed(context.data)
 
 
 resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(

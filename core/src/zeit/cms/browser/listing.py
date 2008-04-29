@@ -185,11 +185,12 @@ class PublishedColumn(zc.table.column.GetterColumn):
     def cell_formatter(self, publish_info, item, formatter):
         if publish_info is None:
             return u''
+        times = zope.dublincore.interfaces.IDCTimes(item.context)
         if publish_info.published:
-            if (not publish_info.date_last_modified
+            if (not times.modified
                 or not publish_info.date_last_published
                 or (publish_info.date_last_published >
-                     publish_info.date_last_modified)):
+                     times.modified)):
                 img = 'published'
                 title = _('Published')
             else:

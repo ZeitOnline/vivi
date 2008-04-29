@@ -20,6 +20,7 @@ import zeit.connector.resource
 
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.repository.interfaces
 
 
 @zope.annotation.factory
@@ -33,7 +34,7 @@ def webDAVPropertiesFactory():
 def webdavproperties_to_cms_content(context):
     if not zope.location.interfaces.ILocation.providedBy(context):
         return
-    return zeit.cms.interfaces.ICMSContent(context.__parent__)
+    return zeit.cms.interfaces.ICMSContent(context.__parent__, None)
 
 
 def xmlContentToResourceAdapterFactory(typ):
@@ -61,10 +62,7 @@ def xmlContentFactory(factory):
     @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
     @zope.component.adapter(zeit.cms.interfaces.IResource)
     def adapter(context):
-        obj = factory(xml_source=context.data)
-        zeit.cms.interfaces.IWebDAVWriteProperties(obj).update(
-            context.properties)
-        return obj
+        return factory(xml_source=context.data)
 
     return adapter
 

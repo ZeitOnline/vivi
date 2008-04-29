@@ -25,8 +25,6 @@ class Folder(zeit.cms.repository.repository.Container):
 def folderFactory(context):
     folder = Folder()
     folder.uniqueId = context.id
-    zeit.cms.interfaces.IWebDAVWriteProperties(folder).update(
-        context.properties)
     return folder
 
 

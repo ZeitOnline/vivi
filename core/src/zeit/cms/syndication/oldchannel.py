@@ -22,10 +22,7 @@ class BodyContainer(zeit.cms.syndication.feed.Feed):
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def bodyContainerFactory(context):
-    feed = BodyContainer(context.data)
-    zeit.connector.interfaces.IWebDAVWriteProperties(feed).update(
-        context.properties)
-    return feed
+    return BodyContainer(context.data)
 
 
 bodyContainerResourceFactory = (

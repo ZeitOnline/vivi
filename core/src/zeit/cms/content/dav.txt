@@ -265,12 +265,35 @@ The other way round stores the unique id:
 u'http://xml.zeit.de/online'
 
 
-Error cases
------------
+Principal source
+----------------
 
-There was a bug...
+The principal source is not iterable (for reason), but the principal id is a
+good and stable token, as well as the actual value:
 
-choice = 
+>>> import zope.app.security.vocabulary
+>>> field = zope.schema.Choice(
+...     source=zope.app.security.vocabulary.PrincipalSource())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty(u'zope.user')
+u'zope.user'
+
+When the user is not in the source, a ValueError is raised:
+>>> converter.fromProperty(u'foo.bar')
+Traceback (most recent call last):
+    ...
+ValueError: foo.bar
+
+
+Converting to a property also just yields the principal id:
+
+>>> converter.toProperty(u'zope.user')
+u'zope.user'
+
+Here we don't check for valid users:
+
+>>> converter.toProperty(u'foo.bar')
+u'foo.bar'
 
 
 Datetime
@@ -607,3 +630,19 @@ True
 ...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
 True
 
+
+Live property support
++++++++++++++++++++++
+
+The DAVProperty has some support for marking properties as live properties:
+
+>>> import zeit.cms.content.interfaces
+>>> lp_manager = zope.component.getUtility(
+...     zeit.cms.content.interfaces.ILivePropertyManager)
+>>> lp_manager.is_live_property('changed', 'myns')
+False
+>>> class Foo(object):
+...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed',
+...                           live=True)
+>>> lp_manager.is_live_property('changed', 'myns')
+True

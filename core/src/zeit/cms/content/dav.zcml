@@ -5,6 +5,7 @@
   <adapter factory=".dav.UnicodeProperty" />
   <adapter factory=".dav.ChoiceProperty" /> 
   <adapter factory=".dav.ChoicePropertyWithIterableSource" />
+  <adapter factory=".dav.ChoicePropertyWithPrincipalSource" />
   <adapter factory=".dav.BoolProperty" /> 
   <adapter factory=".dav.DatetimeProperty" />
   <adapter factory=".dav.CollectionProperty" />
@@ -16,5 +17,12 @@
   <adapter factory=".dav.GenericCollectionProperty" />
 
   <subscriber handler=".dav.notify_cms_content_property_change" />
+
+  <adapter factory=".davtoken.fromBool" />
+  <adapter factory=".davtoken.fromNone" />
+  <adapter factory=".davtoken.fromUnicode" />
+  <adapter factory=".davtoken.fromCMSContent" />
+
+  <adapter factory=".token.fromCMSContent" />
 
 </configure>

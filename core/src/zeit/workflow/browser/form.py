@@ -38,7 +38,9 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
 
     form_fields = (
         zope.formlib.form.FormFields(zeit.workflow.interfaces.IWorkflowStatus)
-        + zope.formlib.form.FormFields(zeit.objectlog.interfaces.ILog))
+        + zope.formlib.form.FormFields(zeit.objectlog.interfaces.ILog)
+        + zope.formlib.form.FormFields(
+            zeit.cms.workflow.interfaces.IModified))
 
     @zope.formlib.form.action(_('Save state only'))
     def handle_save_state(self, action, data):

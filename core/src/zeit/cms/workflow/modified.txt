@@ -1,0 +1,63 @@
+Modified
+========
+
+When an object is checked in the person who modified the object last is
+noted[#functionaltest]_. 
+
+Currently there was no one who modified:
+
+>>> content = repository['testcontent']
+>>> zeit.cms.workflow.interfaces.IModified(content).last_modified_by is None
+True
+
+Checkout and checkin again:
+
+>>> import zeit.cms.checkout.interfaces
+>>> manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+>>> checked_out = manager.checkout()
+>>> manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
+>>> manager.checkin()
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+
+The last modifier is zope.user now:
+
+
+>>> content = repository['testcontent']
+>>> zeit.cms.workflow.interfaces.IModified(content).last_modified_by
+u'zope.user'
+
+
+The access time from IDCTimes can be accessed through IModified:
+>>> zeit.cms.workflow.interfaces.IModified(content).date_last_modified
+datetime.datetime(..., tzinfo=<UTC>)
+
+
+Clean up:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#functionaltest] We need to set the site since we're a functional test:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Create an interaction:
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
+
+    Do some imports and get the repository
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> import zeit.cms.workflow.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)

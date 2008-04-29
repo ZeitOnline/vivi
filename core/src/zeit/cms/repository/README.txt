@@ -93,7 +93,7 @@ properties:
 >>> import zeit.connector.interfaces
 >>> properties = zeit.connector.interfaces.IWebDAVReadProperties(content)
 >>> properties
-<zeit.connector.resource.WebDAVProperties object at 0x...>
+<zeit.cms.content.liveproperty.LiveProperties object at 0x...>
 >>> pprint(dict(properties))
 {('DailyNL', 'http://namespaces.zeit.de/CMS/workflow'): 'no',
  ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',

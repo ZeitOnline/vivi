@@ -16,6 +16,19 @@ class PublishingError(Exception):
     """Raised when object publishing fails."""
 
 
+class IModified(zope.interface.Interface):
+
+    last_modified_by = zope.schema.Choice(
+        title=_('Last modified by'),
+        required=False,
+        readonly=True,
+        source=zope.app.security.vocabulary.PrincipalSource())
+
+    date_last_modified = zope.schema.Datetime(
+        title=_('Date last modified'),
+        required=False,
+        readonly=True)
+
 
 class IPublishInfo(zope.interface.Interface):
     """Information about published objects."""
@@ -30,17 +43,6 @@ class IPublishInfo(zope.interface.Interface):
         required=False,
         default=None,
         readonly=True)
-
-    date_last_modified = zope.schema.Datetime(
-        title=_('Date last modified'),
-        required=False,
-        readonly=True)
-
-    last_modified_by = zope.schema.Choice(
-        title=_('Last modified by'),
-        required=False,
-        readonly=True,
-        source=zope.app.security.vocabulary.PrincipalSource())
 
     date_first_released = zope.schema.Datetime(
         title=_('Date first released'),

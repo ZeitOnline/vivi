@@ -20,9 +20,11 @@ import zope.proxy
 import zope.schema.interfaces
 import zope.xmlpickle
 
+import zeit.connector.interfaces
+
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
-import zeit.connector.interfaces
+import zeit.cms.content.liveproperty
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +33,7 @@ logger = logging.getLogger(__name__)
 class DAVProperty(object):
     """WebDAV properties."""
 
-    def __init__(self, field, namespace, name, use_default=False):
+    def __init__(self, field, namespace, name, use_default=False, live=False):
         self.field = field
         self.namespace = namespace
         self.name = name
@@ -39,7 +41,11 @@ class DAVProperty(object):
             self.missing_value = field.default
         else:
             self.missing_value = field.missing_value
-
+        if live:
+            # We cannot use a getUtility here, because this happens on improt
+            # time. We haven't got CA then.
+            (zeit.cms.content.liveproperty.LiveProperties
+             .register_live_property(name, namespace))
 
     def __get__(self, instance, class_):
         __traceback_info = (instance, )
@@ -177,6 +183,26 @@ class ChoicePropertyWithIterableSource(object):
 
     def toProperty(self, value):
         return zeit.cms.content.interfaces.IDAVToken(value)
+
+
+class ChoicePropertyWithPrincipalSource(object):
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(zope.schema.interfaces.IChoice,
+                          zope.app.security.interfaces.IPrincipalSource)
+
+    def __init__(self, context, source):
+        self.context = context
+        self.source = source
+
+    def fromProperty(self, value):
+        if value in self.source:
+            return unicode(value)
+        raise ValueError(value)
+
+    def toProperty(self, value):
+        return unicode(value)
 
 
 class BoolProperty(object):
@@ -352,18 +378,21 @@ class GenericCollectionProperty(GenericProperty):
         return super(GenericCollectionProperty, self).toProperty(value)
 
 
-def mapProperties(interface, namespace, names, use_default=False):
+def mapProperties(interface, namespace, names, use_default=False, live=False):
     vars = sys._getframe(1).f_locals
     for name in names:
         field = interface[name]
-        mapProperty(field, namespace, name, vars, use_default=use_default)
+        mapProperty(field, namespace, name, vars, use_default=use_default,
+                    live=live)
 
 
-def mapProperty(field, namespace, name=None, vars=None, use_default=False):
+def mapProperty(field, namespace, name=None, vars=None, use_default=False,
+                live=False):
     if vars is None:
         vars = sys._getframe(1).f_locals
 
     if name is None:
         name = field.__name__
 
-    vars[name] = DAVProperty(field, namespace, name, use_default=use_default)
+    vars[name] = DAVProperty(field, namespace, name, use_default=use_default,
+                             live=live)

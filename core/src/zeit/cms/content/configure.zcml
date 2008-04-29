@@ -7,13 +7,25 @@
   <adapter factory=".adapter.xml_source" />
   <adapter factory=".adapter.content_sort_key" />
 
+  <!-- Live properties -->
+  <adapter factory=".liveproperty.LiveProperties"/>
+  <class class=".liveproperty.LiveProperties">
+    <require
+      interface="zeit.connector.interfaces.IWebDAVReadProperties"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <utility
+    component=".liveproperty.LiveProperties"
+    provides=".interfaces.ILivePropertyManager"
+    />
+  <subscriber handler=".liveproperty.remove_live_properties" />
+  <adapter factory=".liveproperty.live_to_cmscontent" />
 
-  <adapter factory=".davtoken.fromBool" />
-  <adapter factory=".davtoken.fromNone" />
-  <adapter factory=".davtoken.fromUnicode" />
-  <adapter factory=".davtoken.fromCMSContent" />
-
-  <adapter factory=".token.fromCMSContent" />
 
   <adapter factory=".keyreference.CMSContentKeyReference" />
 

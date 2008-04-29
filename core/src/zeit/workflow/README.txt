@@ -220,14 +220,19 @@ datetime.datetime(...)
 We expect the value to be in the xml now as well:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
-  <head> 
-    ...
+  <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="DAV:" name="getlastmodified">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">hans</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="DAV:" name="resourcetype">testcontenttype</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
   </head>
-  ...
-
+  <body/>
+</testtype>
 
 
 That was the workflow[#cleanup]_.

@@ -272,8 +272,10 @@ When we have local modifications the we get the third indicator. Let's try some
 
 >>> import datetime
 >>> import pytz
->>> zeit.cms.workflow.mock._modification_times[uid] = datetime.datetime(
-...     2007, 12, 6, 12, 00, tzinfo=pytz.UTC)
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> connector._properties[uid][('getlastmodified', 'DAV:')] = (
+...     datetime.datetime(2007, 12, 6, 12, 00, tzinfo=pytz.UTC).isoformat())
 
 We don't know when the object was published. Assume it's fresh:
 
@@ -348,9 +350,11 @@ With a publication time *before* the modifaction time it is not fresh:
     ...
 
 
-When the modification date is not known we also assume it is fresh:
+When the modification date is not known we also assume it is fresh. Note that
+this case is rather constructed because in reality all objects have a
+modification time.
 
->>> zeit.cms.workflow.mock._modification_times[uid] = None
+>>> connector._properties[uid][('getlastmodified', 'DAV:')] = None
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print browser.contents
 <?xml ...

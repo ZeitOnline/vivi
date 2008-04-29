@@ -31,7 +31,6 @@ class ImageGroup(zeit.cms.repository.repository.Container):
 def imageGroupFactory(context):
     ig = ImageGroup()
     ig.uniqueId = context.id
-    zeit.cms.interfaces.IWebDAVProperties(ig).update(context.properties)
     return ig
 
 

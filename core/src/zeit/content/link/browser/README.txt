@@ -21,7 +21,6 @@ Create a link object:
 
 Now we're looking at the add form. Fill in some data:
 
->>> browser.handleErrors = False
 >>> browser.getControl('File name').value = 'gocept.link'
 >>> browser.getControl('Title').value = 'gocept homepage'
 >>> browser.getControl('Teaser title').value = 'gocept teaser'

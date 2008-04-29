@@ -202,19 +202,24 @@ Initally there are no images attached to an article:
 >>> images.images
 ()
 
-Get an image from the repository and attach it:
+Get an image from the repository and attach it[#needsinteraction]_:
 
 >>> import datetime
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.checkout.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> image = repository['2006']['DSC00109_2.JPG']
 >>> image
 <zeit.content.image.image.Image object at 0x...>
->>> image_metadata = zeit.content.image.interfaces.IImageMetadata(image)
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     image).checkout()
+>>> image_metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
 >>> image_metadata.expires = datetime.datetime(2007, 4, 1)
->>> images.images = (image, )
+>>> checked_in = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
+>>> images.images = (checked_in, )
 
 It's now stored on the article:
 
@@ -242,4 +247,16 @@ Cleanup
 
 After tests we clean up:
 
+>>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#needsinteraction]
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'hans')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)

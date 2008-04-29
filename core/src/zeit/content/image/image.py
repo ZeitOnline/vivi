@@ -37,7 +37,6 @@ def imageFactory(context):
     image.data = context.data
     if context.contentType:
         image.contentType = context.contentType
-    zeit.cms.interfaces.IWebDAVProperties(image).update(context.properties)
     return image
 
 

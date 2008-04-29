@@ -41,32 +41,6 @@ if 'all' not in globals():
 WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 
-class LiveProperties(UserDict.DictMixin):
-    """Webdav properties which are updated upon change."""
-
-    zope.interface.implements(zeit.connector.interfaces.IWebDAVProperties)
-
-    def __init__(self, resource):
-        self.resource_id = resource.id
-
-    def __getitem__(self, key):
-        return self.resource.properties[key]
-
-    def keys(self):
-        return self.resource.properties.keys()
-
-    def __setitem__(self, key, value):
-        self.connector.changeProperties(self.resource_id, {key: value})
-
-    @property
-    def resource(self):
-        return self.connector[self.resource_id]
-
-    @property
-    def connector(self):
-        return zope.component.getUtility(zeit.cms.interfaces.IConnector)
-
-
 class Workflow(object):
     """Adapt ICMSContent to IWorkflow using the "live" data from connector.
 
@@ -81,26 +55,23 @@ class Workflow(object):
         zeit.workflow.interfaces.IWorkflowStatus,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'published',
-         'images_added', 'urgent', 'date_last_published')),
+         'images_added', 'urgent', 'date_last_published'),
+        live=True)
 
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflowStatus['release_period'].fields[0],
-        WORKFLOW_NS,
-        'released_from')
+        WORKFLOW_NS, 'released_from', live=True)
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.IWorkflowStatus['release_period'].fields[1],
-        WORKFLOW_NS,
-        'released_to')
+        WORKFLOW_NS, 'released_to', live=True)
 
     zeit.cms.content.dav.mapProperties(
         zeit.workflow.interfaces.IWorkflowStatus,
-        'http://namespaces.zeit.de/CMS/document',
-        ('date_first_released', 'last_modified_by'))
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('date_first_released',),
+        live=True)
 
     def __init__(self, context):
         self.context = context
-        resource = self.connector[self.context.uniqueId]
-        self.properties = LiveProperties(resource)
 
     @property
     def connector(self):
@@ -116,10 +87,6 @@ class Workflow(object):
             value = None, None
         self.released_from, self.released_to = value
 
-    @property
-    def date_last_modified(self):
-        return zope.dublincore.interfaces.IDCTimes(self.context).modified
-
     def can_publish(self):
         if self.urgent:
             return True
@@ -128,11 +95,10 @@ class Workflow(object):
         return False
 
 
-@zope.component.adapter(zeit.workflow.interfaces.IWorkflowStatus)
-@zope.interface.implementer(zeit.cms.interfaces.IWebDAVProperties)
+@zope.component.adapter(Workflow)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def workflowProperties(context):
-    # return properties located in the actual content object
-    return zope.location.location.located(context.properties, context.context)
+    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
 
 class FeedMetadataUpdater(object):
@@ -168,47 +134,31 @@ def set_first_release_date(context, event):
 
 
 @zope.component.adapter(
-    zope.interface.Interface,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def update_last_modified_by(context, event):
-    workflow = zeit.workflow.interfaces.IWorkflowStatus(context, None)
-    if workflow is None:
-        return
-    workflow.last_modified_by = event.principal.id
-
-
-@zope.component.adapter(
     zeit.cms.content.interfaces.IDAVPropertiesInXML,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def copy_first_released_property_to_xml(context, event):
-    if ((event.property_name, event.property_namespace) !=
-        ('date_first_released', WORKFLOW_NS)):
+def copy_properties_to_xml(context, event):
+    """There are some special properties which need to be in the xml.
+    """
+    # We act, when a property is changed *directly* on an IRepositoryContent.
+    if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
+        context):
         return
+    #if ((event.property_name, event.property_namespace) !=
+    #    ('date_first_released', WORKFLOW_NS)):
+    #    return
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(context)
     if not manager.canCheckout:
         return
     checked_out = manager.checkout()
+
+    # Nothing special happens here because checkout/checkin will copy the
+    # properties.
 
     manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
     if not manager.canCheckin:
         del checked_out.__parent__[checked_out.__name__]
         return
     manager.checkin()
-
-
-@zope.component.adapter(
-    zope.interface.Interface,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def remove_live_properties(context, event):
-    """Remove live properties from content.
-
-    This is to make sure they don't change on checkin.
-
-    """
-    properties = zeit.connector.interfaces.IWebDAVProperties(context)
-    for name, namespace in list(properties):  # make sure it's not an iterator
-        if namespace == WORKFLOW_NS:
-            del properties[(name, namespace)]
 
 
 @zope.component.adapter(

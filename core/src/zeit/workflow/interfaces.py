@@ -65,17 +65,6 @@ class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
     released_to = zope.interface.Attribute(
         "Object is released to this date.")
 
-    last_modified_by = zope.schema.Choice(
-        title=_('Last modified by'),
-        required=False,
-        readonly=True,
-        source=zope.app.security.vocabulary.PrincipalSource())
-
-    date_last_modified = zope.schema.Datetime(
-        title=_('Date last modified'),
-        required=False,
-        readonly=True)
-
     date_first_released = zope.schema.Datetime(
         title=_('Date first released'),
         required=False,

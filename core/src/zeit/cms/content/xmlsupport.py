@@ -64,7 +64,19 @@ class PropertyToXMLAttribute(object):
 
     def __init__(self, context):
         self.context = context
-        self.properties = zeit.connector.interfaces.IWebDAVProperties(context)
+        self.properties = dict(
+            zeit.connector.interfaces.IWebDAVProperties(context))
+
+        # Now get the current live-properties
+        repository = zope.component.queryUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        if repository and context.uniqueId:
+            repository_content = repository.getContent(context.uniqueId)
+            live_properties = zeit.connector.interfaces.IWebDAVProperties(
+                repository_content)
+            self.properties.update(dict(
+                (key, live_properties[key]) for key in live_properties if
+                live_properties.is_live_property(key[0], key[1])))
 
     def set(self, namespace, name, value=_default_marker):
         self.delAttribute(namespace, name)

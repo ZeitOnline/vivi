@@ -304,3 +304,13 @@ class IContentSortKey(zope.interface.Interface):
     The sort key usually is a tuple of (weight, lowercased-name)
 
     """
+
+
+class ILivePropertyManager(zope.interface.Interface):
+    """Manages live properties."""
+
+    def register_live_property(name, namespace):
+        """Register property as live property."""
+
+    def is_live_property(name, namespace):
+        """Return (bool) whether the property is a live property."""
