@@ -19,7 +19,9 @@ product_config = {
         'xapian-url': 'file://%s' % os.path.join(
             test_data_dir, 'xapian-test.xml'),
         'dwds-url': 'file://%s' % os.path.join(
-            test_data_dir, 'dwds-test.xml')
+            test_data_dir, 'dwds-test.xml'),
+        'lucene-url': 'file://%s' % os.path.join(
+            test_data_dir, 'lucene-test.xml'),
     }
 }
 
@@ -32,5 +34,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'lucene.txt',
         product_config=product_config))
     return suite

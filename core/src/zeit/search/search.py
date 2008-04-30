@@ -181,7 +181,7 @@ class MetadataSearch(object):
         'title': zeit.connector.search.SearchVar('title', ns),
         'serie': zeit.connector.search.SearchVar('serie', ns),
 
-        'page': zeit.connector.search.SearchVar('page', qps),
+        'page': zeit.connector.search.SearchVar('page', ns),
         'print_ressort': zeit.connector.search.SearchVar('ressort', qps),
 
         'edited': zeit.connector.search.SearchVar('edited', wf),
