@@ -128,11 +128,21 @@ Insert a new object into the channel:
       <block layout="" priority="" href="http://xml.zeit.de/online/2007/01/Somalia" hide-hp="on">
         <supertitle>China</supertitle>
         ...
-   
+  
+
+
+Make sure a can access to old channels generally is possible[#needsinteraction]_:
+
+>>> import zope.security
+>>> zope.security.canAccess(channel, 'uniqueId')
+True
+
+
 
 Clean up:
 
 >>> logging.root.setLevel(old_log_level)
+>>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
 .. [#functionaltest] Do ftest setup:
@@ -159,3 +169,13 @@ Clean up:
     >>> logging.root.addHandler(log_handler)
     >>> old_log_level = logging.root.level
     >>> logging.root.setLevel(logging.INFO)
+
+.. [#needsinteraction]
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.globalmgr')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)

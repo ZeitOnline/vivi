@@ -43,5 +43,9 @@
 
   <adapter factory=".oldchannel.bodyContainerFactory" name="channel_cp" />
   <adapter factory=".oldchannel.bodyContainerResourceFactory" />
+  <class class=".oldchannel.BodyContainer">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require like_class=".feed.Feed" />
+  </class>
 
 </configure>
