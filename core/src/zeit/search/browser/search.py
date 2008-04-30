@@ -103,7 +103,8 @@ class Search(object):
                 lambda t, c: t.title),
             zeit.cms.browser.listing.GetterColumn(
                 _('Year/Vol.'),
-                lambda t, c: '%s / %s' % (t.year, t.volume),
+                getter=lambda t, c: (t.year, t.volume),
+                cell_formatter= lambda v, t, c: '%s / %s' % (t.year, t.volume),
                 name='year_volume'),
             zeit.cms.browser.listing.GetterColumn(
                 _('Page'),

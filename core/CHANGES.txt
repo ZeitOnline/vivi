@@ -6,6 +6,7 @@ zeit.cms changes
 
 - "Erstes Related als Box" (bug #4053).
 - status=OK bei veröffentlichten Dokumenten (bug #4125).
+- Sortierung der Suche (Jahr/Ausgabe) korrigiert (bug #4113).
 
 0.9.11 (2008-04-28)
 -------------------

@@ -11,16 +11,16 @@ The Lucene search generates an http query:
 
 >>> lucene.get_query_args(dict(
 ...     text='Merkel Stoiber'))
-'q=Merkel+Stoiber&sort=%22aktuell%22&fields=author%3Atitle&res=100'
+'q=Merkel+Stoiber&sort=date&fields=author%3Atitle&res=100'
 >>> lucene.get_query_args(dict(
 ...     text='Merkel Stoiber',
 ...     year=2005))
-'q=Merkel+Stoiber+jahr%3A%222005%22&sort=%22aktuell%22&fields=author%3Atitle&res=100'
+'q=Merkel+Stoiber+jahr%3A%222005%22&sort=date&fields=author%3Atitle&res=100'
 >>> lucene.get_query_args(dict(
 ...     text='Merkel Stoiber',
 ...     year=2005,
 ...     ressort="Dummy Ressort"))
-'q=Merkel+Stoiber+ressort%3A%22Dummy+Ressort%22+jahr%3A%222005%22&sort=%22aktuell%22&fields=author%3Atitle&res=100'
+'q=Merkel+Stoiber+ressort%3A%22Dummy+Ressort%22+jahr%3A%222005%22&sort=date&fields=author%3Atitle&res=100'
 
 
 Now verify the actual search:
