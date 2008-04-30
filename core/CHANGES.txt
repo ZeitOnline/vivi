@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-0.10 (unreleased)
------------------
+0.9.12 (2008-04-30)
+-------------------
 
 - "Erstes Related als Box" (bug #4053).
 - status=OK bei veröffentlichten Dokumenten (bug #4125).
