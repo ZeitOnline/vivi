@@ -32,5 +32,12 @@
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
   <utility factory=".publish.PublishTask" name="zeit.workflow.publish" />
+  <utility factory=".publish.RetractTask" name="zeit.workflow.retract" />
+
+  <!-- Old status -->
+  <adapter factory=".oldstatus.OldStatus" />
+  <adapter factory=".oldstatus.properties" />
+  <subscriber handler=".oldstatus.set_status" />
+  <subscriber handler=".oldstatus.remove_status" />
 
 </configure>

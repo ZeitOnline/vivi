@@ -9,6 +9,9 @@ import pytz
 import zope.component
 import zope.event
 import zope.interface
+import zope.security.management
+
+import zope.app.security.interfaces
 
 import lovely.remotetask.interfaces
 
@@ -19,6 +22,29 @@ from zeit.cms.i18n import MessageFactory as _
 
 
 logger = logging.getLogger(__name__)
+
+
+def login(principal):
+    interaction = zope.security.management.getInteraction()
+    participation = interaction.participations[0]
+    auth = zope.component.getUtility(
+        zope.app.security.interfaces.IAuthentication)
+    participation.setPrincipal(auth.getPrincipal(principal))
+
+
+class TaskDescription(object):
+    """Data to be passed to publish/retract tasks."""
+
+    def __init__(self, uniqueId):
+        self.uniqueId = uniqueId
+        self.principal = self.get_principal().id
+
+    @staticmethod
+    def get_principal():
+        interaction = zope.security.management.getInteraction()
+        for p in interaction.participations:
+            return p.principal
+
 
 
 class Publish(object):
@@ -37,14 +63,14 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         self.log(self.context, _('Publication scheduled'))
-        self.tasks.add(u'zeit.workflow.publish', self.context.uniqueId)
+        self.tasks.add(u'zeit.workflow.publish',
+                       TaskDescription(self.context.uniqueId))
 
     def retract(self):
         """Retract object."""
-        # TODO create remotetask to actually retract the object.
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        info.published = False
-        self.log(self.context, _('Retracted'))
+        self.log(self.context, _('Retracting scheduled.'))
+        self.tasks.add(u'zeit.workflow.retract',
+                       TaskDescription(self.context.uniqueId))
 
     @property
     def tasks(self):
@@ -56,30 +82,67 @@ class Publish(object):
         log.log(obj, msg)
 
 
+
 class PublishTask(object):
     """Publish object."""
 
     zope.interface.implements(lovely.remotetask.interfaces.ITask)
 
-    inputSchema = zope.schema.URI(
-        title=u"Unique ID")
+    #inputSchema = zope.schema.Object()  # XXX
 
     def __call__(self, service, jobid, input):
         logger.info('Publishing %s' % input)
-        obj = self.repository.getContent(input)
+        login(input.principal)
+        obj = self.repository.getContent(input.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         if not info.can_publish():
             return
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(obj))
+
         info.published = True
         info.date_last_published = datetime.datetime.now(pytz.UTC)
+
+        # XXX actually publish
 
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(obj, _('Published'))
 
         zope.event.notify(
             zeit.cms.workflow.interfaces.PublishedEvent(obj))
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+
+class RetractTask(object):
+    """Retract an object."""
+
+    zope.interface.implements(lovely.remotetask.interfaces.ITask)
+
+    #inputSchema = zope.schema.Object()  # XXX
+
+    def __call__(self, service, jobid, input):
+        logger.info('Retracting %s' % input)
+        login(input.principal)
+        obj = self.repository.getContent(input.uniqueId)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        if not info.published:
+            logger.warning(
+                "Tried to retract an object which is not published.")
+            return
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.BeforeRetractEvent(obj))
+
+        # XXX retract
+
+        info.published = False
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        log.log(obj, _('Retracted'))
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.RetractedEvent(obj))
 
     @property
     def repository(self):

@@ -18,6 +18,8 @@ from zeit.cms.i18n import MessageFactory as _
 # The not necessary singleton of a TriState
 NotNecessary = zeit.workflow.source.NotNecessary
 
+WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
+
 
 class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
     """Zeit Workflow interface.
@@ -65,7 +67,14 @@ class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
     released_to = zope.interface.Attribute(
         "Object is released to this date.")
 
-    date_first_released = zope.schema.Datetime(
-        title=_('Date first released'),
-        required=False,
-        readonly=True)
+
+class IOldCMSStatus(zope.interface.Interface):
+    """Support old status flag.
+
+    The old status flag is either "OK" or not presesnt.
+
+    """
+
+    status = zope.schema.TextLine(
+        title=u"Status like old CMS (OK, or not present)",
+        required=False)

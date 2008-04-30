@@ -141,6 +141,7 @@ retract is unconditinally possible:
 
 >>> workflow.urgent = False
 >>> publish.retract()
+>>> tasks.process()
 >>> workflow.published
 False
 
@@ -189,6 +190,8 @@ http://xml.zeit.de/online/2007/01/Somalia
 http://xml.zeit.de/online/2007/01/Somalia
      Urgent: no
 http://xml.zeit.de/online/2007/01/Somalia
+     Retracting scheduled.
+http://xml.zeit.de/online/2007/01/Somalia
      Retracted
      
 
@@ -217,7 +220,7 @@ True
 >>> workflow.date_first_released
 datetime.datetime(...)
 
-We expect the value to be in the xml now as well:
+We expect the value to be in the xml now as well (amongst others):
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
@@ -226,8 +229,28 @@ We expect the value to be in the xml now as well:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">...</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="DAV:" name="getlastmodified">...</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">hans</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="DAV:" name="resourcetype">testcontenttype</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
+  </head>
+  <body/>
+</testtype>
+
+
+When we de-publish the object, the status-flag is removed again:
+
+>>> publish.retract()
+>>> tasks.process()
+>>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+<testtype>
+  <head>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="DAV:" name="getlastmodified">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="published">no</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="DAV:" name="resourcetype">testcontenttype</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
   </head>
@@ -267,7 +290,7 @@ That was the workflow[#cleanup]_.
     >>> import zope.publisher.browser
     >>> request = zope.publisher.browser.TestRequest()
     >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'hans')
+    >>> principal = zope.security.testing.Principal(u'zope.user')
     >>> request.setPrincipal(principal)
     >>> import zope.security.management
     >>> zope.security.management.newInteraction(request)

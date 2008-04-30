@@ -5,6 +5,7 @@ zeit.cms changes
 -----------------
 
 - "Erstes Related als Box" (bug #4053).
+- status=OK bei veröffentlichten Dokumenten (bug #4125).
 
 0.9.11 (2008-04-28)
 -------------------

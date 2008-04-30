@@ -5,8 +5,7 @@ Zeit Workflow
 The workflow is state oriented. There are several states which all can be set
 using the workflow tab[#browser]_[#tasks]_:
 
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Somalia')
+>>> browser.open('http://localhost:8080/++skin++cms/repository/testcontent')
 >>> browser.getLink('Workflow').click()
 
 States
@@ -107,7 +106,7 @@ This failed because only `edited` was set to 'yes':
 
 >>> print browser.contents
 <?xml ...
-        <li class="error">Could not publish "Somalia" because the publishing 
+        <li class="error">Could not publish "testcontent" because the publishing 
         pre-conditions are not met. Check the states and/or the urgent-flag.
         Your state changes were saved.</li>
     ...
@@ -118,7 +117,7 @@ Use the urgent flag to override:
 >>> browser.getControl("publish").click()
 >>> print browser.contents
 <?xml ...
-        <li class="message">http://xml.zeit.de/online/2007/01/Somalia has been scheduled for publishing.</li>
+        <li class="message">http://xml.zeit.de/testcontent has been scheduled for publishing.</li>
         <li class="message">Updated on 2008 4 3  12:02:00 </li>
         ...
         <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
@@ -149,7 +148,7 @@ Reload the workflow page.
           <span>Last modified by</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">Nothing</div>
+        <div class="widget">User</div>
         ...
       <div class="field   ">
         <label for="form.date_last_modified">
@@ -309,6 +308,10 @@ Unpublish now:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
+>>> run_tasks()
+>>> browser.getLink('Workflow').click()
+>>> print browser.contents
+<?xml ...
         <label for="form.published">
           <span>Published</span>
         </label>
@@ -373,10 +376,11 @@ Clean up
     >>> import zope.publisher.browser
     >>> import zope.security.management
     >>> import lovely.remotetask.interfaces
+    >>> import lovely.remotetask.processor
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
     >>> def run_tasks():
-    ...     request = zope.publisher.browser.TestRequest()
+    ...     request = lovely.remotetask.processor.ProcessorRequest()
     ...     zope.security.management.newInteraction(request)
     ...     transaction.abort()
     ...     tasks.process()

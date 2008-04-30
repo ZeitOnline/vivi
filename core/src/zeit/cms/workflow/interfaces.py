@@ -63,12 +63,19 @@ class IPublish(zope.interface.Interface):
     def publish():
         """Publish object.
 
+        Before the object is published a BeforePublishEvent is issued.
+        After the object has been published a PublishedEvent is issued.
         raises PublishingError if the object cannot be published.
 
         """
 
     def retract():
-        """Retract an object."""
+        """Retract an object.
+
+        Before the object is published a BeforeRetractEvent is issued.
+        After the object has been published a RetractedEvent is issued.
+
+        """
 
 
 class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
@@ -77,6 +84,14 @@ class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
 
 class IPublishedEvent(zope.component.interfaces.IObjectEvent):
     """Issued when an object was published."""
+
+
+class IBeforeRetractEvent(zope.component.interfaces.IObjectEvent):
+    """Issued before an object is retracted."""
+
+
+class IRetractedEvent(zope.component.interfaces.IObjectEvent):
+    """Issued after an object has been retracted."""
 
 
 class BeforePublishEvent(zope.component.interfaces.ObjectEvent):
@@ -89,3 +104,16 @@ class PublishedEvent(zope.component.interfaces.ObjectEvent):
     """Issued when an object was published."""
 
     zope.interface.implements(IPublishedEvent)
+
+
+class BeforeRetractEvent(zope.component.interfaces.ObjectEvent):
+    """Issued before an object is published."""
+
+    zope.interface.implements(IBeforeRetractEvent)
+
+
+class RetractedEvent(zope.component.interfaces.ObjectEvent):
+    """Issued after an object has been retracted."""
+
+    zope.interface.implements(IRetractedEvent)
+

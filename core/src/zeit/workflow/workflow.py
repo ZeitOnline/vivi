@@ -38,7 +38,7 @@ if 'all' not in globals():
         return True
 
 
-WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
+WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 
 
 class Workflow(object):
@@ -72,10 +72,6 @@ class Workflow(object):
 
     def __init__(self, context):
         self.context = context
-
-    @property
-    def connector(self):
-        return zope.component.getUtility(zeit.cms.interfaces.IConnector)
 
     @rwproperty.getproperty
     def release_period(self):
