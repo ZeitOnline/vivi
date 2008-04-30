@@ -79,7 +79,11 @@ class IPublish(zope.interface.Interface):
 
 
 class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
-    """Issued before an object is published."""
+    """Issued before an object is published.
+
+    Subscribers may veto publication by rasing an exception.
+
+    """
 
 
 class IPublishedEvent(zope.component.interfaces.IObjectEvent):

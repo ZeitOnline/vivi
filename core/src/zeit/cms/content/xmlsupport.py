@@ -120,6 +120,7 @@ def map_dav_property_to_xml(context, event):
     """
     # Remove security proxy: If the user was allowed to change the property
     # (via setattr) *we* copy that to the xml, regardles of the security.
+    # XXX shouldn't we check for ILocalContent?
     content = zope.security.proxy.removeSecurityProxy(
         zeit.cms.content.interfaces.IXMLRepresentation(context))
     sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)

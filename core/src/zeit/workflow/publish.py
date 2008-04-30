@@ -24,14 +24,6 @@ from zeit.cms.i18n import MessageFactory as _
 logger = logging.getLogger(__name__)
 
 
-def login(principal):
-    interaction = zope.security.management.getInteraction()
-    participation = interaction.participations[0]
-    auth = zope.component.getUtility(
-        zope.app.security.interfaces.IAuthentication)
-    participation.setPrincipal(auth.getPrincipal(principal))
-
-
 class TaskDescription(object):
     """Data to be passed to publish/retract tasks."""
 
@@ -68,7 +60,7 @@ class Publish(object):
 
     def retract(self):
         """Retract object."""
-        self.log(self.context, _('Retracting scheduled.'))
+        self.log(self.context, _('Retracting scheduled'))
         self.tasks.add(u'zeit.workflow.retract',
                        TaskDescription(self.context.uniqueId))
 
@@ -83,66 +75,108 @@ class Publish(object):
 
 
 
-class PublishTask(object):
-    """Publish object."""
+class PublishRetractTask(object):
 
     zope.interface.implements(lovely.remotetask.interfaces.ITask)
-
     #inputSchema = zope.schema.Object()  # XXX
 
     def __call__(self, service, jobid, input):
-        logger.info('Publishing %s' % input)
-        login(input.principal)
+        uniqueId = input.uniqueId
+        principal = input.principal
+        self.login(principal)
+
         obj = self.repository.getContent(input.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
-        if not info.can_publish():
+
+        self.run(obj, info)
+
+    def cycle(self, obj):
+        """checkout/checkin obj to sync data as necessary.
+
+        The basic idea is that there are some event handlers which sync
+        properties to xml on checkout/checkin.
+
+        """
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
+        if not manager.canCheckout:
+            logger.error("Could not checkout %s" % obj.uniqueId)
             return
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforePublishEvent(obj))
+        checked_out = manager.checkout()
 
-        info.published = True
-        info.date_last_published = datetime.datetime.now(pytz.UTC)
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
+        if not manager.canCheckin:
+            logger.error("Could not checkin %s" % obj.uniqeId)
+            del checked_out.__parent__[checked_out.__name__]
+            return
+        return manager.checkin()
 
-        # XXX actually publish
+    @staticmethod
+    def login(principal):
+        interaction = zope.security.management.getInteraction()
+        participation = interaction.participations[0]
+        auth = zope.component.getUtility(
+            zope.app.security.interfaces.IAuthentication)
+        participation.setPrincipal(auth.getPrincipal(principal))
 
-        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        log.log(obj, _('Published'))
-
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.PublishedEvent(obj))
+    @property
+    def log(self):
+        return zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
 
     @property
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
+class PublishTask(PublishRetractTask):
+    """Publish object."""
 
-class RetractTask(object):
+    def run(self, obj, info):
+        logger.info('Publishing %s' % obj.uniqueId)
+
+        if not info.can_publish():
+            logger.error("Could not publish %s" % obj.uniqueId)
+            self.log.log(
+                obj, _("Could not publish because conditions not satisifed."))
+            return
+
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.BeforePublishEvent(obj))
+
+        info.published = True
+        now = datetime.datetime.now(pytz.UTC)
+        info.date_last_published = now
+        if not info.date_first_released:
+            info.date_first_released = now
+
+        new_obj = self.cycle(obj)
+        if new_obj is not None:
+            obj = new_obj
+
+        # XXX actually publish
+        self.log.log(obj, _('Published'))
+        zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj))
+
+
+class RetractTask(PublishRetractTask):
     """Retract an object."""
 
-    zope.interface.implements(lovely.remotetask.interfaces.ITask)
-
-    #inputSchema = zope.schema.Object()  # XXX
-
-    def __call__(self, service, jobid, input):
-        logger.info('Retracting %s' % input)
-        login(input.principal)
-        obj = self.repository.getContent(input.uniqueId)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+    def run(self, obj, info):
+        logger.info('Retracting %s' % obj.uniqueId)
         if not info.published:
             logger.warning(
-                "Tried to retract an object which is not published.")
-            return
+                "Retracting object %s which is not published." % obj.uniqueId)
+
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(obj))
 
         # XXX retract
 
         info.published = False
-        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        log.log(obj, _('Retracted'))
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.RetractedEvent(obj))
+        self.log.log(obj, _('Retracted'))
+        new_obj = self.cycle(obj)
+        if new_obj is not None:
+            obj = new_obj
+        zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj))
 
     @property
     def repository(self):

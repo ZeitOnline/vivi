@@ -8,8 +8,6 @@
     factory=".workflow.FeedMetadataUpdater"
     name="workflow"
     />
-  <subscriber handler=".workflow.set_first_release_date" />
-  <subscriber handler=".workflow.copy_properties_to_xml" />
   <subscriber handler=".workflow.log_workflow_changes" />
 
   <adapter factory=".source.fromNotNecessary" />

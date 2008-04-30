@@ -120,44 +120,6 @@ class FeedMetadataUpdater(object):
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.workflow.interfaces.IBeforePublishEvent)
-def set_first_release_date(context, event):
-    workflow = zeit.workflow.interfaces.IWorkflowStatus(context)
-    if workflow.date_first_released:
-        return
-    workflow.date_first_released = datetime.datetime.now(pytz.UTC)
-
-
-@zope.component.adapter(
-    zeit.cms.content.interfaces.IDAVPropertiesInXML,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def copy_properties_to_xml(context, event):
-    """There are some special properties which need to be in the xml.
-    """
-    # We act, when a property is changed *directly* on an IRepositoryContent.
-    if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-        context):
-        return
-    #if ((event.property_name, event.property_namespace) !=
-    #    ('date_first_released', WORKFLOW_NS)):
-    #    return
-    manager = zeit.cms.checkout.interfaces.ICheckoutManager(context)
-    if not manager.canCheckout:
-        return
-    checked_out = manager.checkout()
-
-    # Nothing special happens here because checkout/checkin will copy the
-    # properties.
-
-    manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
-    if not manager.canCheckin:
-        del checked_out.__parent__[checked_out.__name__]
-        return
-    manager.checkin()
-
-
-@zope.component.adapter(
     Workflow,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
 def log_workflow_changes(workflow, event):

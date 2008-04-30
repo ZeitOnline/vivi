@@ -190,7 +190,7 @@ http://xml.zeit.de/online/2007/01/Somalia
 http://xml.zeit.de/online/2007/01/Somalia
      Urgent: no
 http://xml.zeit.de/online/2007/01/Somalia
-     Retracting scheduled.
+     Retracting scheduled
 http://xml.zeit.de/online/2007/01/Somalia
      Retracted
      
