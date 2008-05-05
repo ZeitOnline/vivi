@@ -4,6 +4,9 @@ zeit.cms changes
 0.9.13 (unreleased)
 -------------------
 
+- Properties mit dem Namespace "DAV:" werden jetzt nicht mehr in XML-Dokumente
+  kopiert (bug #4126).
+
 0.9.12 (2008-04-30)
 -------------------
 

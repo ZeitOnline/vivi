@@ -93,11 +93,13 @@ properties. Add some attributes to make sure they're removed:
 ...    </a>""")
 
 
-Let's add some property under the hood:
+Let's add some properties under the hood. Note thad properties in the DAV:
+namespace are *not* mapped:
 
 >>> import zeit.connector.interfaces
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
 >>> properties[('am-i', 'under-the-hood')] = '4711'
+>>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a>
   <head>

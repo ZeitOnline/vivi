@@ -96,6 +96,9 @@ class PropertyToXMLAttribute(object):
             self.addAttribute(namespace, name, value)
 
     def addAttribute(self, namespace, name, value):
+        if namespace == 'DAV:':
+            # We don't sync DAV: properties.
+            return
         root = self.context.xml
         self.path.addattr(root, value)
         node = self.path.find(root)[-1]
