@@ -110,7 +110,8 @@ class CommonListRepresentation(BaseListRepresentation):
             self.ressort,
             self.volume,
             self.page,
-            self.year))
+            self.year,
+            self.__name__))
 
 
 @zope.component.adapter(
