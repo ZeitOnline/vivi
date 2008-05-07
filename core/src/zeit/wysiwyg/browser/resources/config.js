@@ -4,7 +4,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         '/',
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
-        ['OrderedList','UnorderedList', 'Table', 'Image'],
+        ['OrderedList','UnorderedList', 'Table', 'Image', 'TextField'],
         ['Link','Unlink','Anchor'],
 ];
 

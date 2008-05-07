@@ -47,11 +47,22 @@ class HTMLConverter(object):
         for node in self._html_getnodes(tree):
             # Copy all nodes. This magically removes namespace declarations.
             node = copy.copy(node)
-            if node.tag == 'intertitle':
-                node.tag = 'h3'
+
             image_nodes = node.xpath('image')
             if image_nodes:
                 self._replace_image_nodes_by_img(image_nodes)
+
+            if node.tag == 'intertitle':
+                node.tag = 'h3'
+            elif node.tag == 'article_extra':
+                new_node = lxml.objectify.XML('<p><input/></p>')
+                new_node['input'].attrib.update(dict(
+                        type='text',
+                        name='',
+                        value='%s:%s' % (node.get('id'), node.get('videoID')),
+                        size='60'))
+                node = new_node
+
             html.append(lxml.etree.tostring(
                 node, pretty_print=True, encoding=unicode))
         return '\n'.join(html)
@@ -76,12 +87,16 @@ class HTMLConverter(object):
             img_nodes = node.xpath('img')
             if img_nodes:
                 self._replace_img_nodes_by_image(img_nodes)
+
+            if node.tag == 'p' and node.find('input') is not None:
+                node = self._article_extra(node)
+
             tree.append(node)
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
     def _html_getnodes(self, tree):
         for node in tree.iterchildren():
-            if node.tag in ('p', 'intertitle'):
+            if node.tag in ('p', 'intertitle', 'article_extra'):
                 yield node
 
     def _replace_image_nodes_by_img(self, image_nodes):
@@ -125,6 +140,21 @@ class HTMLConverter(object):
             if new_node is None:
                 new_node = lxml.objectify.E.image(src=url)
             parent.replace(image_node, new_node)
+
+    def _article_extra(self, node):
+        input_node = node['input']
+        value = input_node.get('value')
+        if ':' in value:
+            id, video_id = value.split(':', 1)
+        else:
+            id=None
+            video_id = value
+
+        node = lxml.objectify.E.article_extra(videoID=video_id)
+        if id is not None:
+            node.set('id', id)
+        return node
+
 
     @staticmethod
     def _replace_entities(value):
