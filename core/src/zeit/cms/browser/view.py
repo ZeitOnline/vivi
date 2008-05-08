@@ -5,8 +5,6 @@
 
 """
 
-import urllib
-
 import zope.component
 
 import z3c.flashmessage.interfaces
