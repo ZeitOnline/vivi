@@ -26,6 +26,9 @@
   <include package="zeit.content.infobox" />
   <include package="zeit.content.infobox.browser" />
 
+  <include package="zeit.content.portraitbox" />
+  <include package="zeit.content.portraitbox.browser" />
+
   <include package="zeit.content.gallery" />
   <include package="zeit.content.gallery.browser" />
   

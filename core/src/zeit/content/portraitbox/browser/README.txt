@@ -81,3 +81,61 @@ Make sure an box has a default view:
 <?xml ...
     <title> View portraitbox </title>
     ...
+
+
+
+Browsing location
+=================
+
+For the portraitbox the default browsing location is `/personen` if the folder
+exists. Currently it doesn't exist[#location-setup]_:
+
+>>> obj = repository['online']['2007']['01']
+>>> get_location(obj)
+u'http://xml.zeit.de/online/2007/01'
+
+Create the personen folder:
+
+>>> import zeit.cms.repository.folder
+>>> repository['personen'] = zeit.cms.repository.folder.Folder()
+
+The location is the `/personen` folder now:
+
+>>> get_location(obj)
+u'http://xml.zeit.de/personen'
+
+For other objects than folders we of course also get the personen folder:
+
+>>> get_location(obj['Somalia'])
+u'http://xml.zeit.de/personen'
+
+>>> ref = zeit.content.portraitbox.interfaces.IPortraitboxReference(
+...     repository['testcontent'])
+>>> get_location(ref)
+u'http://xml.zeit.de/personen'
+
+
+Clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#location-setup] Functional test setup
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+
+    >>> import zeit.cms.content.interfaces
+    >>> source = zope.component.getUtility(
+    ...     zeit.cms.content.interfaces.ICMSContentSource,
+    ...     name='zeit.content.portraitbox')
+    >>> def get_location(obj):
+    ...     return zope.component.getMultiAdapter(
+    ...         (obj, source),
+    ...         zeit.cms.browser.interfaces.IDefaultBrowsingLocation).uniqueId

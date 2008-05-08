@@ -217,6 +217,10 @@ Also associate a gallery[3]_:
 
 >>> browser.getControl('Image gallery').value = gallery.uniqueId
 
+Also associate a portraitbox[#portraitbox]_:
+
+>>> browser.getControl('Portraitbox').value = 'http://xml.zeit.de/pb'
+
 Apply changes:
 
 >>> browser.getControl('Apply').click()
@@ -743,3 +747,24 @@ prevent entering more than the allowed length. Makre sure the widget is used:
     >>> import transaction
     >>> transaction.commit()
     >>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#portraitbox] Create a portraitbox
+    
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Create and add:
+
+    >>> import zeit.content.portraitbox.portraitbox
+    >>> pb = zeit.content.portraitbox.portraitbox.Portraitbox()
+    >>> pb.name = 'Harry Hirsch'
+    >>> pb.text = 'hirsch'
+    >>> repository['pb'] = pb
+
+    >>> import transaction
+    >>> transaction.commit()
+    >>> zope.app.component.hooks.setSite(old_site)
+
+

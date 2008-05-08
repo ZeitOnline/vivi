@@ -25,6 +25,7 @@ import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
+import zeit.content.portraitbox.interfaces
 
 
 ITemplateChooserSchema = (
@@ -137,14 +138,13 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
 class AssetBase(object):
     """Asset form field definitions."""
 
-    form_fields = (
-        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages) +
-        zope.formlib.form.FormFields(
-            zeit.cms.content.interfaces.IRelatedContent) +
-        zope.formlib.form.FormFields(
-            zeit.content.infobox.interfaces.IInfoboxReference) +
-        zope.formlib.form.FormFields(
-            zeit.content.gallery.interfaces.IGalleryReference))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.image.interfaces.IImages,
+        zeit.cms.content.interfaces.IRelatedContent,
+        zeit.content.infobox.interfaces.IInfoboxReference,
+        zeit.content.portraitbox.interfaces.IPortraitboxReference,
+        zeit.content.gallery.interfaces.IGalleryReference,
+    )
 
     field_groups = (
         gocept.form.grouped.RemainingFields(

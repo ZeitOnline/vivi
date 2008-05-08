@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.component
 import zope.publisher.interfaces.browser
 
+import zeit.cms.repository.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.interfaces
 
@@ -28,12 +30,36 @@ class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
 
 
 @zope.component.adapter(
-    zeit.content.portraitbox.reference.PortraitboxReference,
+    zeit.cms.interfaces.ICMSContent,
     zeit.content.portraitbox.interfaces.PortraitboxSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-def portraitboxreference_browse_location(context, source):
-    # /personen!
+def content_browse_location(context, source):
+    return zope.component.queryMultiAdapter(
+        (context.__parent__, source),
+        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+@zope.component.adapter(
+    zeit.content.portraitbox.interfaces.IPortraitboxReference,
+    zeit.content.portraitbox.interfaces.PortraitboxSource)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def reference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.context, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+@zope.component.adapter(
+    zeit.cms.repository.interfaces.IFolder,
+    zeit.content.portraitbox.interfaces.PortraitboxSource)
+@zope.interface.implementer(
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+def folder_browse_location(context, source):
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    personen = repository.get('personen')
+    if personen is not None:
+        return personen
+    return context
