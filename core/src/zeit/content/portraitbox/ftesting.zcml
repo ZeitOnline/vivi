@@ -17,9 +17,13 @@
 
   <include package="zeit.cms" file="principals-testing.zcml" />
 
-  <include package="zeit.content.portraitbox" />
-
   <include package="zeit.content.image" />
+  <include package="zeit.content.image.browser" />
   <include package="zeit.cms.testcontenttype" />
+  <include package="zeit.wysiwyg" />
+  <include package="zeit.wysiwyg.browser" />
+
+  <include package="zeit.content.portraitbox" />
+  <include package="zeit.content.portraitbox.browser" />
 
 </configure>

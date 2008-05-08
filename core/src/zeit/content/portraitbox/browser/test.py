@@ -11,11 +11,11 @@ import zope.app.testing.functional
 
 import zeit.cms.testing
 
-import zeit.content.infobox.test
+import zeit.content.portraitbox.test
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.content.infobox.test.InfoboxLayer))
+        layer=zeit.content.portraitbox.test.PortraitboxLayer))
     return suite

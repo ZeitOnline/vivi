@@ -3,21 +3,21 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <adapter factory=".infobox.ListRepresentation" />
-  <adapter factory=".infobox.infoboxreference_browse_location" />
+  <adapter factory=".portraitbox.ListRepresentation" />
+  <adapter factory=".portraitbox.portraitboxreference_browse_location" />
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    name="zeit.content.infobox.Add"
+    name="zeit.content.portraitbox.Add"
     permission="zeit.AddContent"
     class=".form.Add"
-    menu="zeit-add-menu" title="Infobox"
+    menu="zeit-add-menu" title="Portraitbox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
   <browser:page
     name="edit.html"
-    for="..interfaces.IInfobox"
+    for="..interfaces.IPortraitbox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.Edit"
     permission="zeit.EditContent"
@@ -27,14 +27,14 @@
 
   <browser:page
     name="view.html"
-    for="..interfaces.IInfobox"
+    for="..interfaces.IPortraitbox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.Display"
     permission="zope.View"
     />
 
   <browser:menuItem
-    for="..interfaces.IInfobox"
+    for="..interfaces.IPortraitbox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views"
     title="View metadata"
@@ -44,13 +44,13 @@
     />
 
   <browser:defaultView
-    for="zeit.content.infobox.interfaces.IInfobox"
+    for="zeit.content.portraitbox.interfaces.IPortraitbox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
 
   <browser:page
-    for="..interfaces.IInfobox"
+    for="..interfaces.IPortraitbox"
     permission="zope.View"
     template="metadata.pt" 
     name="metadata_preview"
@@ -58,11 +58,11 @@
     />
 
   <browser:icon
-    for="zeit.content.infobox.interfaces.IInfobox"
+    for="zeit.content.portraitbox.interfaces.IPortraitbox"
     name="zmi_icon"
     width="20"
     height="20"
-    file="resources/infoboxResource.png"
+    file="resources/portraitbox.png"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 </configure>

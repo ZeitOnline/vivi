@@ -9,6 +9,7 @@ import zope.interface
 
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
+import zeit.wysiwyg.html
 
 import zeit.content.portraitbox.interfaces
 
@@ -36,3 +37,16 @@ resource_factory = zope.component.adapter(
 
 # Adapt resource to CMSContent
 portraitbox_factory = zeit.cms.content.adapter.xmlContentFactory(Portraitbox)
+
+
+
+class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
+    """HTML content of an article."""
+
+    zope.component.adapts(zeit.content.portraitbox.interfaces.IPortraitbox)
+
+    def get_tree(self):
+        text = self.context.xml.find('text')
+        if text is None:
+            text = self.context.xml['text'] = lxml.objectify.E.text()
+        return text

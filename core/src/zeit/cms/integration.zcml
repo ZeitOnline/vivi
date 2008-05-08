@@ -40,6 +40,9 @@
   <include package="zeit.content.infobox" />
   <include package="zeit.content.infobox.browser" />
 
+  <include package="zeit.content.portraitbox" />
+  <include package="zeit.content.portraitbox.browser" />
+
   <include package="zeit.ghost" />
   <include package="zeit.seo" />
   <include package="zeit.today" />

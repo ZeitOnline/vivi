@@ -108,6 +108,7 @@
     <require permission="zope.View"
       attributes="
       __getitem__
+      find
       findall
       getparent
       index

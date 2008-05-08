@@ -9,6 +9,8 @@ zeit.cms changes
 - Filter in Dateiliste reagiert jetzt auf Dateinamen (bug #4132).
 - Videos können jetzt im WYSIWYG-Editor bearbeitet und eingefügt werden (bug
   #4149).
+- Neuer Contenttype: Portraitboxen (bug #3852).
+  
 
 
 0.9.12 (2008-04-30)

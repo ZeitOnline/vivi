@@ -1,6 +1,5 @@
-=======
-Infobox
-=======
+Portraitbox UI
+==============
 
 Create a testbrowser first:
 
@@ -9,94 +8,76 @@ Create a testbrowser first:
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
-
-Lets create an infobox:
+Lets create a portraitbox:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Infobox']
+>>> menu.displayValue = ['Portraitbox']
 >>> browser.open(menu.value[0])
 
 We are now at the add form. Set the filename:
 
->>> browser.getControl('File name').value = 'infobox'
+>>> browser.getControl('File name').value = 'Wurst-Hans'
 
-The infobox has a super title:
+The infobox has a name and html content:
 
->>> browser.getControl('Supertitle').value = 'Altersvorsorge'
+>>> browser.getControl('First and last name').value = 'Hans Wurst'
+>>> browser.getControl('Text').value = '<strong>HW</strong> is in da house'
 
-Adding the content text works by clicking the `add contents` button:
+Reference an image:
 
->>> browser.getControl('Add Contents').click()
->>> browser.getControl(name='form.contents.0..combination_00').value = (
-...     'Renteninformation')
->>> browser.getControl(name='form.contents.0..combination_01').value = (
-...    'Nutzen Sie die Renteninformation, um Ihre Versorgungslücke im ')
+>>> browser.getControl('Image').value = (
+...     'http://xml.zeit.de/2006/DSC00109_2.jpg')
 
-Finnaly add the infobox:
+Finnaly add the portraitbox:
 
->>> browser.getControl(name='form.actions.add').click()
+>>> browser.getControl('Add').click()
 
 
 We're now at the edit form:
 
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/infobox/@@edit.html'
->>> browser.getControl(name='form.contents.0..combination_00').value
-'Renteninformation'
+'http://localhost/++skin++cms/workingcopy/zope.user/Wurst-Hans/@@edit.html'
 
-Make sure the infobox is listed in the workingcopy panel:
+Make sure the box is listed in the workingcopy panel:
 
 >>> print browser.contents
 <?xml ...
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/infobox/edit.html">Altersvorsorge</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Wurst-Hans/edit.html">Hans Wurst</a>
     </td>
     ...
 
 
-Let's add another text entry:
-
->>> browser.getControl('Add Contents').click()
->>> browser.getControl(name='form.contents.1..combination_00').value = (
-...     'Fehlende Versicherungszeiten')
->>> browser.getControl(name='form.contents.1..combination_01').value = (
-...     'Pruefen Sie, ob in Ihrer Renteninformation alle ')
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<?xml ...
-    <title> Edit infobox </title>
-    ...Updated on...
-
-
 Let's check it in:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
 <?xml ...
-    <title> View infobox </title>
+    <title> View portraitbox </title>
     ...
 
 
 Make sure there is a metadata preview:
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/infobox/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans/@@view.html'
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
-...     'infobox/@@metadata_preview')
+...     'Wurst-Hans/@@metadata_preview')
 >>> print browser.contents
  <div class="contextViewsAndActions">
     <div class="context-views">
     ...
-    <div class="title">Altersvorsorge</div>
+    <div class="title">Hans Wurst</div>
     ...
 
-Make sure an infobox has a default view:
+Make sure an box has a default view:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/infobox')
+...     'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans')
 >>> print browser.contents
 <?xml ...
-    <title> View infobox </title>
+    <title> View portraitbox </title>
     ...

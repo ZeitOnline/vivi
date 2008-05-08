@@ -25,6 +25,7 @@
 
   <adapter factory=".portraitbox.resource_factory" />
   <adapter factory=".portraitbox.portraitbox_factory" name="portraitbox"/>
+  <adapter factory=".portraitbox.PortraitboxHTMLContent" />
 
   <!-- reference -->
   <utility 
