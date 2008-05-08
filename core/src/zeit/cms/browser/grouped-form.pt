@@ -38,13 +38,16 @@
 
         <div class="field-group"
           tal:define="groups view/field_groups">
-          <fieldset tal:repeat="group groups"
-            tal:attributes="class group/css_class">
-            <legend tal:content="group/title">Kopf</legend>
-            <div tal:define="widgets group/widgets">
-              <metal:macro use-macro="context/@@grouped_form_macros/render_form_widget" />
-            </div>
-          </fieldset>
+          <tal:group tal:repeat="group groups">
+            <fieldset
+              tal:condition="group/widgets"
+              tal:attributes="class group/css_class">
+              <legend tal:content="group/title">Kopf</legend>
+              <div tal:define="widgets group/widgets">
+                <metal:macro use-macro="context/@@grouped_form_macros/render_form_widget" />
+              </div>
+            </fieldset>
+          </tal:group>
         </div>
         
 
