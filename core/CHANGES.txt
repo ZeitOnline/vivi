@@ -10,6 +10,7 @@ zeit.cms changes
 - Videos können jetzt im WYSIWYG-Editor bearbeitet und eingefügt werden (bug
   #4149).
 - Neuer Contenttype: Portraitboxen (bug #3852).
+- Portraitbox in Artikel verlinken (bug #4051).
   
 
 
