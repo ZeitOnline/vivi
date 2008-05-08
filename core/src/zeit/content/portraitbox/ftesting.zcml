@@ -17,7 +17,9 @@
 
   <include package="zeit.cms" file="principals-testing.zcml" />
 
-  <include package="zeit.content.infobox" />
-  <include package="zeit.content.infobox.browser" />
+  <include package="zeit.content.portraitbox" />
+
+  <include package="zeit.content.image" />
+  <include package="zeit.cms.testcontenttype" />
 
 </configure>

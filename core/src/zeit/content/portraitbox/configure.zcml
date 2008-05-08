@@ -1,14 +1,14 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <class class=".infobox.Infobox">
+  <class class=".portraitbox.Portraitbox">
     <implements
       interface="zope.annotation.interfaces.IAttributeAnnotatable" />
 
     <require
-      interface=".interfaces.IInfobox"
+      interface=".interfaces.IPortraitbox"
       permission="zope.View" />
     <require
-      set_schema=".interfaces.IInfobox"
+      set_schema=".interfaces.IPortraitbox"
       permission="zeit.EditContent" />
     <require
       interface="zeit.cms.content.interfaces.IXMLContent"
@@ -19,23 +19,23 @@
   </class>
 
   <interface
-    interface=".interfaces.IInfobox"
+    interface=".interfaces.IPortraitbox"
     type="zeit.cms.interfaces.ICMSContentType"
     />
 
-  <adapter factory=".infobox.resource_factory" />
-  <adapter factory=".infobox.infobox_factory" name="infobox"/>
+  <adapter factory=".portraitbox.resource_factory" />
+  <adapter factory=".portraitbox.portraitbox_factory" name="portraitbox"/>
 
   <!-- reference -->
   <utility 
-    component=".interfaces.infoboxSource"
-    name="zeit.content.infobox"
+    component=".interfaces.portraitboxSource"
+    name="zeit.content.portraitbox"
     />
-  <adapter factory=".reference.InfoboxReference" />
+  <adapter factory=".reference.PortraitboxReference" />
   <adapter
-    factory=".reference.InfoboxReference"
+    factory=".reference.PortraitboxReference"
     for="zeit.cms.content.interfaces.ITemplate"
     />
-  <adapter factory=".reference.infobox_reference_to_webdav_properties" />
+  <adapter factory=".reference.portraitbox_reference_to_webdav_properties" />
 
 </configure>

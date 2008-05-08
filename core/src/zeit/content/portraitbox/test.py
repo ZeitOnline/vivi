@@ -12,14 +12,16 @@ import zope.app.testing.functional
 import zeit.cms.testing
 
 
-InfoboxLayer = zope.app.testing.functional.ZCMLLayer(
+PortraitboxLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'InfoboxLayer', allow_teardown=True)
+    __name__, 'PortraitboxLayer', allow_teardown=True)
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=InfoboxLayer))
+        optionflags=(doctest.INTERPRET_FOOTNOTES + doctest.NORMALIZE_WHITESPACE
+                    + doctest.ELLIPSIS + doctest.REPORT_NDIFF),
+        layer=PortraitboxLayer))
     return suite
