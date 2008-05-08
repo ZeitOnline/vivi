@@ -17,7 +17,7 @@ tuple of tuples *yikes*.
 >>> import zeit.content.infobox.infobox
 >>> ib = zeit.content.infobox.infobox.Infobox()
 
-Initially there are now entries:
+Initially there are no entries:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
