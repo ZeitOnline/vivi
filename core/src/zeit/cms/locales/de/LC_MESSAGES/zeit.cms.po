@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Apr 30 09:31:45 2008\n"
-"PO-Revision-Date: 2008-04-30 09:59+0100\n"
+"POT-Creation-Date: Thu May  8 16:49:36 2008\n"
+"PO-Revision-Date: 2008-05-08 18:04+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgid "Date when the event starts."
 msgstr "Datum/Uhrzeit des Terminbeginns"
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:268
+#: src/zeit/cms/browser/listing.py:269
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
 #: src/zeit/cms/content/interfaces.py:257
@@ -173,25 +173,25 @@ msgstr "${DYNAMIC_CONTENT}"
 msgid "Form"
 msgstr "Formular"
 
-#: src/zeit/cms/browser/listing.py:195
+#: src/zeit/cms/browser/listing.py:196
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:117
+#: src/zeit/workflow/publish.py:156
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: src/zeit/cms/browser/listing.py:198
+#: src/zeit/cms/browser/listing.py:199
 msgid "Published but has changes"
 msgstr "Veröffentlicht, hat aber Änderungen"
 
-#: src/zeit/cms/browser/listing.py:201
+#: src/zeit/cms/browser/listing.py:202
 msgid "Not published"
 msgstr "Nicht veröffentlicht"
 
-#: src/zeit/cms/browser/listing.py:257
+#: src/zeit/cms/browser/listing.py:258
 msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
-#: src/zeit/cms/browser/listing.py:264
+#: src/zeit/cms/browser/listing.py:265
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/content/article/interfaces.py:143
 #: src/zeit/search/browser/search.py:99
@@ -199,31 +199,31 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/cms/browser/listing.py:272
+#: src/zeit/cms/browser/listing.py:273
 #: src/zeit/cms/interfaces.py:39
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr "Dateiname"
 
-#: src/zeit/cms/browser/listing.py:276
+#: src/zeit/cms/browser/listing.py:277
 msgid "Modified"
 msgstr "Verändert"
 
-#: src/zeit/cms/browser/listing.py:279
+#: src/zeit/cms/browser/listing.py:280
 #: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr "Treffer"
 
-#: src/zeit/cms/browser/listing.py:281
+#: src/zeit/cms/browser/listing.py:282
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr "Ressort"
 
-#: src/zeit/cms/browser/listing.py:285
+#: src/zeit/cms/browser/listing.py:286
 #: src/zeit/cms/content/interfaces.py:71
-#: src/zeit/search/browser/search.py:109
+#: src/zeit/search/browser/search.py:110
 #: src/zeit/search/interfaces.py:23
 #: src/zeit/search/browser/sidebar.pt:72
 msgid "Page"
@@ -353,6 +353,7 @@ msgstr "Navigation"
 
 #: src/zeit/cms/content/browser/form.py:38
 #: src/zeit/content/infobox/browser/form.py:31
+#: src/zeit/content/portraitbox/browser/form.py:28
 msgid "Head"
 msgstr "Kopf"
 
@@ -364,7 +365,7 @@ msgid "Texts"
 msgstr "Texte"
 
 #: src/zeit/cms/content/browser/form.py:54
-#: src/zeit/content/article/browser/form.py:57
+#: src/zeit/content/article/browser/form.py:58
 #: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
 msgstr "sonstiges"
@@ -870,6 +871,7 @@ msgstr "Keine bearbeiteten Dokumente."
 #: src/zeit/content/gallery/browser/configure.zcml:32
 #: src/zeit/content/link/browser/configure.zcml:17
 #: src/zeit/content/infobox/browser/configure.zcml:18
+#: src/zeit/content/portraitbox/browser/configure.zcml:18
 msgid "Edit metadata"
 msgstr "Metadaten"
 
@@ -879,6 +881,7 @@ msgstr "Metadaten"
 #: src/zeit/content/gallery/browser/configure.zcml:49
 #: src/zeit/content/link/browser/configure.zcml:32
 #: src/zeit/content/infobox/browser/configure.zcml:36
+#: src/zeit/content/portraitbox/browser/configure.zcml:36
 msgid "View metadata"
 msgstr "Metadaten"
 
@@ -891,15 +894,15 @@ msgstr "Bearbeiten"
 msgid "Article"
 msgstr "Artikel"
 
-#: src/zeit/content/article/browser/form.py:107
+#: src/zeit/content/article/browser/form.py:108
 msgid "Edit article"
 msgstr "Artikel bearbeiten"
 
-#: src/zeit/content/article/browser/form.py:118
+#: src/zeit/content/article/browser/form.py:119
 msgid "View article metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/form.py:133
+#: src/zeit/content/article/browser/form.py:134
 #: src/zeit/cms/workingcopy/browser/configure.zcml:22
 msgid "Content"
 msgstr "Inhalt"
@@ -918,11 +921,11 @@ msgstr "Assets bearbeiten"
 msgid "Assets"
 msgstr "Assets"
 
-#: src/zeit/content/article/browser/form.py:64
+#: src/zeit/content/article/browser/form.py:65
 msgid "Optionen"
 msgstr "Optionen"
 
-#: src/zeit/content/article/browser/form.py:73
+#: src/zeit/content/article/browser/form.py:74
 msgid "Add article"
 msgstr "Artikel hinzufügen"
 
@@ -1152,6 +1155,7 @@ msgstr "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werd
 
 #: src/zeit/content/gallery/interfaces.py:84
 #: src/zeit/content/infobox/interfaces.py:24
+#: src/zeit/content/portraitbox/interfaces.py:21
 #: src/zeit/wysiwyg/interfaces.py:15
 msgid "Text"
 msgstr "Text"
@@ -1232,6 +1236,7 @@ msgid "Dimensions"
 msgstr "Ausmaße"
 
 #: src/zeit/content/image/browser/imagegroup.py:74
+#: src/zeit/content/portraitbox/interfaces.py:24
 #: src/zeit/content/image/browser/configure.zcml:188
 msgid "Image"
 msgstr "Bild"
@@ -1330,6 +1335,31 @@ msgstr "Metadaten"
 #: src/zeit/content/link/interfaces.py:16
 msgid "Link address"
 msgstr "Link-Adresse (URL)"
+
+#: src/zeit/content/portraitbox/browser/form.py:31
+msgid "Portrait"
+msgstr "Portrait"
+
+#: src/zeit/content/portraitbox/browser/form.py:40
+msgid "Add portraitbox"
+msgstr "Portraitbox hinzufügen"
+
+#: src/zeit/content/portraitbox/browser/form.py:45
+msgid "Edit portraitbox"
+msgstr "Portraitbox bearbeiten"
+
+#: src/zeit/content/portraitbox/browser/form.py:51
+msgid "View portraitbox"
+msgstr "Portraitbox anzeigen"
+
+#: src/zeit/content/portraitbox/interfaces.py:18
+msgid "First and last name"
+msgstr "Vor- und Nachname"
+
+#: src/zeit/content/portraitbox/interfaces.py:42
+#: src/zeit/content/portraitbox/browser/configure.zcml:9
+msgid "Portraitbox"
+msgstr "Portraitbox"
 
 #: src/zeit/search/browser/configure.zcml:39
 msgid "Zeit CMS Search Preferences"
@@ -1505,19 +1535,19 @@ msgstr "Veröffentlichungszeitraum"
 msgid "Leave empty for no constraint."
 msgstr "Leer für keine Einschränkung."
 
-#: src/zeit/workflow/publish.py:104
+#: src/zeit/workflow/publish.py:139
 msgid "Could not publish because conditions not satisifed."
 msgstr "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
 
-#: src/zeit/workflow/publish.py:151
+#: src/zeit/workflow/publish.py:175
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
-#: src/zeit/workflow/publish.py:65
+#: src/zeit/workflow/publish.py:57
 msgid "Publication scheduled"
 msgstr "Veröffentlichung vorgemerkt"
 
-#: src/zeit/workflow/publish.py:71
+#: src/zeit/workflow/publish.py:63
 msgid "Retracting scheduled"
 msgstr "Zurückziehen vorgemerkt"
 
@@ -1534,7 +1564,7 @@ msgid "not necessary"
 msgstr "nicht nötig"
 
 #. Default: ""
-#: src/zeit/workflow/workflow.py:160
+#: src/zeit/workflow/workflow.py:132
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 
