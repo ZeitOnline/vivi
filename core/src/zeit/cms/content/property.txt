@@ -250,11 +250,72 @@ back:
 True
 
 
+Some types support a special xml structure, like relateds. Register an adapter
+which provides IXMLReference for our content object:
+
+
+>>> class Content(object):
+...     res = zeit.cms.content.property.SingleResource(
+...         '.ref', xml_reference_name='related',
+...         attributes=('foo', 'href', ))
+...
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML(
+...             '<foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />')
+...
+>>> import zeit.cms.content.interfaces
+>>> @zope.component.adapter(Content)
+... @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+... def xmlref(context):
+...     return lxml.objectify.E.related(type="intern", href=context.uniqueId)
+>>> gsm.registerAdapter(xmlref, name='related')
+
+>>> content = Content()
+>>> referenced_obj = Content()
+>>> referenced_obj.uniqueId = u'http://xml.zeit.de/related'
+>>> repository.add(referenced_obj)
+>>> content.res = referenced_obj
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ref href="http://xml.zeit.de/related" type="intern"/>
+</foo>
+
+Get the resource back:
+
+>>> content.res
+<Content object at 0x...>
+>>> content.res == referenced_obj
+True
+
+
+Make sure we cannot instanciate invalid combinations:
+
+>>> zeit.cms.content.property.SingleResource(
+...     '.ref', xml_reference_name='related')
+Traceback (most recent call last):
+    ...
+ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
+
+>>> zeit.cms.content.property.SingleResource(
+...     '.ref', attributes=('blub',))
+Traceback (most recent call last):
+    ...
+ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
+
+>>> zeit.cms.content.property.SingleResource(
+...     '.ref', xml_reference_name='foo', attributes='blub')
+Traceback (most recent call last):
+    ...
+ValueError: `attributes` must be tuple, got <type 'str'>
+
+
 
 Clean up: 
 
 >>> gsm.unregisterUtility(
 ...     repository, zeit.cms.repository.interfaces.IRepository)
+True
+>>> gsm.unregisterAdapter(xmlref, name='related')
 True
 
 

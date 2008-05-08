@@ -15,6 +15,7 @@ import zope.component
 import zope.app.keyreference.interfaces
 
 import zeit.cms.repository.interfaces
+import zeit.cms.content.interfaces
 
 
 class ObjectPathProperty(object):
@@ -177,8 +178,27 @@ class SimpleMultiProperty(MultiPropertyBase):
 
 class SingleResource(ObjectPathProperty):
 
+    def __init__(self, path, xml_reference_name=None, attributes=None):
+        super(SingleResource, self).__init__(path)
+        if (xml_reference_name is None) ^ (attributes is None):
+            raise ValueError(
+                "Either both `xml_reference_name` and `attributes` or neither"
+                " must be given.")
+        if attributes is not None and not isinstance(attributes, tuple):
+            raise ValueError("`attributes` must be tuple, got %s" %
+                             type(attributes))
+        self.xml_reference_name = xml_reference_name
+        self.attributes = attributes
+
     def __get__(self, instance, class_):
-        unique_id = super(SingleResource, self).__get__(instance, class_)
+        if self.attributes:
+            node = self.getNode(instance)
+            for attr in self.attributes:
+                unique_id = node.get(attr)
+                if unique_id:
+                    break
+        else:
+            unique_id = super(SingleResource, self).__get__(instance, class_)
         if not unique_id:
             return None
         repository = zope.component.getUtility(
@@ -189,7 +209,14 @@ class SingleResource(ObjectPathProperty):
             return None
 
     def __set__(self, instance, value):
-        super(SingleResource, self).__set__(instance, value.uniqueId)
+        if self.xml_reference_name:
+            node = zope.component.getAdapter(
+                value,
+                zeit.cms.content.interfaces.IXMLReference,
+                name=self.xml_reference_name)
+        else:
+            node = value.uniqueId
+        super(SingleResource, self).__set__(instance, node)
 
 
 class KeyReferenceTuple(object):
