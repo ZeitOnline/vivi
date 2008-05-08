@@ -253,7 +253,6 @@ True
 Some types support a special xml structure, like relateds. Register an adapter
 which provides IXMLReference for our content object:
 
-
 >>> class Content(object):
 ...     res = zeit.cms.content.property.SingleResource(
 ...         '.ref', xml_reference_name='related',
@@ -270,10 +269,18 @@ which provides IXMLReference for our content object:
 ...     return lxml.objectify.E.related(type="intern", href=context.uniqueId)
 >>> gsm.registerAdapter(xmlref, name='related')
 
+Create a content object and an object which can be referenced:
+
 >>> content = Content()
 >>> referenced_obj = Content()
 >>> referenced_obj.uniqueId = u'http://xml.zeit.de/related'
 >>> repository.add(referenced_obj)
+
+Currently no object is referenced:
+
+>>> content.res is None
+True
+
 >>> content.res = referenced_obj
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

@@ -191,8 +191,8 @@ class SingleResource(ObjectPathProperty):
         self.attributes = attributes
 
     def __get__(self, instance, class_):
-        if self.attributes:
-            node = self.getNode(instance)
+        node = self.getNode(instance)
+        if self.attributes and node is not None:
             for attr in self.attributes:
                 unique_id = node.get(attr)
                 if unique_id:
