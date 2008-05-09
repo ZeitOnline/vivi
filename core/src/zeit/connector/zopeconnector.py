@@ -28,7 +28,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
         try:
             connection = getattr(self.connections, root)
         except AttributeError:
-            logging.info('New connection')
+            logging.debug('New connection')
             connection = super(ZopeConnector, self)._conn(root)
             setattr(self.connections, root, connection)
         return connection
