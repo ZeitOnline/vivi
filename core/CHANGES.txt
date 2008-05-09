@@ -5,6 +5,8 @@ CHANGES
 -----------------
 
 - Moved ZopeConnector to sperate module.
+- Keep HTTP connection open for better performance. Connections will be closed
+  at the end of the transaction (ZopeConnector).
 
 0.15 (2008-04-28)
 -----------------

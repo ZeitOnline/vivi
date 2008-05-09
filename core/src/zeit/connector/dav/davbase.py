@@ -48,7 +48,7 @@ class HTTPBasicAuthCon:
         self._resp = None
         self._authon = False
         self._con = self.connect_class(host, port, strict)
-##         self._con.debuglevel = 999
+##        self._con.debuglevel = 999
         self._realms = {}
         self._user = ''
         self._passwd = ''
@@ -105,6 +105,7 @@ class HTTPBasicAuthCon:
         ulist = list(urlparse.urlparse(uri))
         if ulist[1]:
             headers['Host'] = ulist[1]
+        headers['Connection'] = 'keep-alive'
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))
