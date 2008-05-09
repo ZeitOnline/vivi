@@ -5,9 +5,11 @@
 import os
 import unittest
 
+import zope.file.testing
+from zope.testing import doctest
+
 import zope.app.testing.functional
 import zope.app.appsetup.product
-from zope.testing import doctest
 
 import zeit.connector.cache
 
@@ -30,7 +32,7 @@ def test_suite():
         tearDown=tearDown,
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
-    functional = zope.app.testing.functional.FunctionalDocFileSuite(
+    functional = zope.file.testing.FunctionalBlobDocFileSuite(
         'functional.txt')
     functional.layer = real_connector_layer
     suite.addTest(functional)

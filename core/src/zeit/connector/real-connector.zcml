@@ -2,7 +2,7 @@
 
   <utility 
     provides="zeit.connector.interfaces.IConnector"
-    factory=".connector.connectorFactory"
+    factory=".zopeconnector.connectorFactory"
     />
 
   <subscriber handler=".cache.invalidate_property_cache" />

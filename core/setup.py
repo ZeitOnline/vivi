@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.connector',
-    version='0.15dev',
+    version='0.16dev',
     author='Tomas Zerolo, Christian Zagrodnick',
     author_email='tomas@tuxteam.de, cz@gocept.com',
     url='http://trac.gocept.com/zeit',
@@ -30,6 +30,7 @@ setup(
     extras_require={
         'test': [
             'zope.testing',
+            'zope.file',
             'zope.app.file',
             'zope.app.zcmlfiles',
         ],

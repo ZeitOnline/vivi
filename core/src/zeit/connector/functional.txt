@@ -15,7 +15,7 @@ Get the connector:
 >>> connector = zope.component.getUtility(
 ...     zeit.connector.interfaces.IConnector)
 >>> connector
-<zeit.connector.connector.ZopeConnector object at 0x...>
+<zeit.connector.zopeconnector.ZopeConnector object at 0x...>
 
 
 >>> connector['http://xml.zeit.de/testing']
@@ -23,12 +23,8 @@ Get the connector:
 >>> res = connector['http://xml.zeit.de/index']
 >>> res
 <zeit.connector.resource.CachedResource object at 0x...>
-
-
-This breaks because the functional test DemoStorage doesn't support blobs. Try
-zc.demostorage2 for this.
-
-#>>> res.data
+>>> res.data
+<open file '...', mode 'rb' at 0x...>
 
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing'))

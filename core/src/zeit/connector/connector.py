@@ -72,20 +72,8 @@ import urlparse
 import pytz
 import gocept.lxml.objectify
 
-import ZODB.blob
-import BTrees.OOBTree
-import ZConfig
-import persistent
-import transaction
-
 import zope.cachedescriptors.property
-import zope.component
 import zope.interface
-import zope.thread
-
-import zope.app.appsetup.product
-import zope.app.component.interfaces
-import zope.app.component.hooks
 
 from zeit.connector.dav import (davresource, davconnection)
 from zeit.connector.dav.davconnection import DAVConnection
@@ -153,7 +141,7 @@ def _abs2timeout(time):
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
 
 
-class Connector(zope.thread.local):
+class Connector(object):
     """Connect to the CMS backend.
        WebDAV implementation based on pydavclient
     """
@@ -702,49 +690,3 @@ class Connector(zope.thread.local):
     @zope.cachedescriptors.property.Lazy
     def locktokens(self):
         return zeit.connector.lockinfo.LockInfo()
-
-
-class ZopeConnector(Connector):
-
-    @property
-    def body_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IResourceCache)
-
-    @property
-    def property_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IPropertyCache)
-
-    @property
-    def child_name_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IChildNameCache)
-
-    @property
-    def locktokens(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.ILockInfoStorage)
-
-
-def connectorFactory():
-    """Factory for creating the connector with data from zope.conf."""
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector')
-    if config:
-        root = config.get('document-store')
-        if not root:
-            raise ZConfig.ConfigurationError(
-                "WebDAV server not configured properly.")
-        search_root = config.get('document-store-search')
-    else:
-        root = os.environ.get('connector-url')
-        search_root = os.environ.get('search-connector-url')
-
-    if not root:
-        raise ZConfig.ConfigurationError(
-            "zope.conf has no product config for zeit.connector.")
-
-    return ZopeConnector(dict(
-        default=root,
-        search=search_root))
