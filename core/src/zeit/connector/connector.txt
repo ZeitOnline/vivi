@@ -165,6 +165,8 @@ Note: name comes first -- don't ask me why:
 >>> res.data = StringIO.StringIO("Mary had a little lamb")
 >>> res.properties[('colour', 'http://namespaces.zeit.de/test')] = (
 ...     'bright blue')
+>>> res.properties[('colour', 'http://namespaces.zeit.de/test2')] = (
+...     'light sea green')
 >>> connector["http://xml.zeit.de/testing/conn3"] = res
 
 The properties and data are stored on the server now. Get the resource again:
@@ -172,6 +174,8 @@ The properties and data are stored on the server now. Get the resource again:
 >>> res_got = connector["http://xml.zeit.de/testing/conn3"]
 >>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
 'bright blue'
+>>> res_got.properties[('colour', 'http://namespaces.zeit.de/test2')]
+'light sea green'
 >>> res_got.data.read()
 'Mary had a little lamb'
 
