@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.16 (unreleased)
+0.16 (2008-05-13)
 -----------------
 
 - Moved ZopeConnector to sperate module.
