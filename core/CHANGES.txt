@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.13 (unreleased)
+0.9.13 (2008-05-13)
 -------------------
 
 - Properties mit dem Namespace "DAV:" werden jetzt nicht mehr in XML-Dokumente
