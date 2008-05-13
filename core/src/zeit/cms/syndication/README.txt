@@ -22,79 +22,79 @@ The user can choose which targets he is interested in. This is done via the
 logged in.  We also get an object from he repository[2]_ for later user. It
 will be available as `content`.
 
-To get his syndication targets we need his workingcopy::
+To get his syndication targets we need his workingcopy:
 
-    >>> from zeit.cms.workingcopy.interfaces import IWorkingcopyLocation
-    >>> bobs_workingcopy = zope.component.getUtility(
-    ...     IWorkingcopyLocation).getWorkingcopy()
+>>> from zeit.cms.workingcopy.interfaces import IWorkingcopyLocation
+>>> bobs_workingcopy = zope.component.getUtility(
+...     IWorkingcopyLocation).getWorkingcopy()
 
-The workingcopy can be adapted to `IMySyndicationTargets`::
-    
-    >>> from zeit.cms.syndication.interfaces import IMySyndicationTargets
-    >>> bobs_syndication_targets = IMySyndicationTargets(bobs_workingcopy)
-    >>> bobs_syndication_targets
-    <zeit.cms.syndication.mytargets.MySyndicationTargets object at 0x...>
+The workingcopy can be adapted to `IMySyndicationTargets`:
+
+>>> from zeit.cms.syndication.interfaces import IMySyndicationTargets
+>>> bobs_syndication_targets = IMySyndicationTargets(bobs_workingcopy)
+>>> bobs_syndication_targets
+<zeit.cms.syndication.mytargets.MySyndicationTargets object at 0x...>
 
 The syndication target object has an attribute `targets`, which initially is
-empty::
+empty:
 
-    >>> bobs_syndication_targets.targets
-    ()
+>>> bobs_syndication_targets.targets
+()
 
-We have two feeds in the demo system, get them::
+We have two feeds in the demo system, get them:
 
-    >>> politik = repository['politik.feed']
-    >>> wirtschaft = repository['wirtschaft.feed']
+>>> politik = repository['politik.feed']
+>>> wirtschaft = repository['wirtschaft.feed']
 
-Add the politik feed to the targets::
+Add the politik feed to the targets:
 
-    >>> bobs_syndication_targets.targets = (politik, )
-    >>> bobs_syndication_targets.targets
-    (<zeit.cms.syndication.feed.Feed object at 0x...>,)
+>>> bobs_syndication_targets.targets = (politik, )
+>>> bobs_syndication_targets.targets
+(<zeit.cms.syndication.feed.Feed object at 0x...>,)
 
 
 Syndication Manager
 ===================
 
 A syndication manager is an adapter to a content object.  Now get the
-syndication manager::
+syndication manager:
 
-    >>> from zeit.cms.syndication.interfaces import ISyndicationManager
-    >>> manager = ISyndicationManager(content)
-    >>> manager
-    <zeit.cms.syndication.manager.SyndicationManager object at 0x...>
+>>> from zeit.cms.syndication.interfaces import ISyndicationManager
+>>> manager = ISyndicationManager(content)
+>>> manager
+<zeit.cms.syndication.manager.SyndicationManager object at 0x...>
 
-Syndication of the object is possible::
+Syndication of the object is possible:
 
-    >>> manager.canSyndicate
-    True
+>>> manager.canSyndicate
+True
 
 The available syndication targets are listed in the `targets` attribute. We
-have added politk.feed to bob's targets above, so we have one target here::
+have added politk.feed to bob's targets above, so we have one target here:
 
-    >>> targets = manager.targets
-    >>> targets
-    [<zeit.cms.syndication.feed.Feed object at 0x...>]
-    >>> len(targets)
-    1
+>>> targets = manager.targets
+>>> targets
+[<zeit.cms.syndication.feed.Feed object at 0x...>]
+>>> len(targets)
+1
 
 
-Take the first target. It is empty so far::
-    
-    >>> target = targets[0]
-    >>> list(target)
-    []
+Take the first target. It is empty so far:
 
-When we syndicate to that target the `content` object is listed::
+>>> target = targets[0]
+>>> list(target)
+[]
 
-    >>> manager.syndicate([target])
-    Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent object at 0x...>
-         Target: http://xml.zeit.de/politik.feed
-         Content: http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
-    >>> list(target)
-    [<zeit.cms.repository.unknown.UnknownResource object at 0x...>]
-    >>> list(target)[0].uniqueId == content.uniqueId
-    True
+When we syndicate to that target the `content` object is listed:
+
+>>> manager.syndicate([target])
+Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent object at 0x...>
+     Target: http://xml.zeit.de/politik.feed
+     Content: http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+>>> list(target)
+[<zeit.cms.repository.unknown.UnknownResource object at 0x...>]
+>>> list(target)[0].uniqueId == content.uniqueId
+True
 
 
 
@@ -124,20 +124,20 @@ Questions Regarding Implementation
 Cleanup
 =======
 
-After the test we restore the old site::
+After the test we restore the old site:
 
-    >>> zope.security.management.endInteraction()
-    >>> site_manager.unregisterHandler(
-    ...     eventHandler,
-    ...     (ICMSContent, IContentSyndicatedEvent))
-    True
-    >>> zope.app.component.hooks.setSite(old_site)
+>>> zope.security.management.endInteraction()
+>>> site_manager.unregisterHandler(
+...     eventHandler,
+...     (ICMSContent, IContentSyndicatedEvent))
+True
+>>> zope.app.component.hooks.setSite(old_site)
 
 
 Footnotes
 =========
 
-.. [1] Initialization::
+.. [1] Initialization:
 
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
@@ -157,7 +157,7 @@ Footnotes
     ...     eventHandler,
     ...     (ICMSContent, IContentSyndicatedEvent))
 
-    Log in a bob::
+    Log in bob:
 
     >>> import zope.security.testing
     >>> principal = zope.security.testing.Principal(u'bob')
@@ -166,7 +166,7 @@ Footnotes
     >>> zope.security.management.newInteraction(participation)
 
 
-.. [2] Get content from the repository::
+.. [2] Get content from the repository:
 
     >>> from zeit.cms.interfaces import ICMSContent
     >>> from zeit.cms.repository.interfaces import IRepository
