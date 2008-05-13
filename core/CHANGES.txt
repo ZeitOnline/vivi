@@ -11,7 +11,10 @@ zeit.cms changes
   #4149).
 - Neuer Contenttype: Portraitboxen (bug #3852).
 - Portraitbox in Artikel verlinken (bug #4051).
-  
+- Behandlung von Clipboard-Einträgen auf gelöschte Objekte verbessert.
+- Sortierung nach Änderungsdatum ging nicht immer (bug #4150).
+- Wenn ein Verzeichnis XML-Resourcen enthält, die kein valides XML enthalten
+  werden sie jetzt als unbekannte Resource interpretiert (bug #4151).  
 
 
 0.9.12 (2008-04-30)

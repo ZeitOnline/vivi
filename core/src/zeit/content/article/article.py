@@ -13,6 +13,7 @@ import zope.security.proxy
 import zope.app.container.contained
 
 import zeit.cms.connector
+import zeit.cms.content.adapter
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.content.interfaces
@@ -79,13 +80,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         return len(self.xml.body.findall('p'))
 
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def articleFactory(context):
-    article = Article(xml_source=context.data)
-    zeit.cms.interfaces.IWebDAVWriteProperties(article).update(
-        context.properties)
-    return article
+articleFactory = zeit.cms.content.adapter.xmlContentFactory(Article)
 
 
 @zope.interface.implementer(zeit.content.article.interfaces.IArticle)

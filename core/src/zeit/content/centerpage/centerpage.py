@@ -16,6 +16,7 @@ import zope.app.container.contained
 
 import zeit.cms.connector
 import zeit.cms.interfaces
+import zeit.cms.content.adapter
 import zeit.cms.content.metadata
 import zeit.cms.content.interfaces
 import zeit.content.centerpage.interfaces
@@ -38,12 +39,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     default_template = CP_TEMPLATE
 
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def centerpageFactory(context):
-    cp = CenterPage(xml_source=context.data)
-    zeit.cms.interfaces.IWebDAVProperties(cp).update(context.properties)
-    return cp
+centerpageFactory = zeit.cms.content.adapter.xmlContentFactory(CenterPage)
 
 
 resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(

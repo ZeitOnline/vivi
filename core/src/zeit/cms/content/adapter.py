@@ -3,6 +3,7 @@
 # $Id$
 
 import StringIO
+import logging
 
 import lxml.etree
 import lxml.objectify
@@ -21,6 +22,9 @@ import zeit.connector.resource
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
+
+
+logger = logging.getLogger(__name__)
 
 
 @zope.annotation.factory
@@ -62,7 +66,12 @@ def xmlContentFactory(factory):
     @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
     @zope.component.adapter(zeit.cms.interfaces.IResource)
     def adapter(context):
-        return factory(xml_source=context.data)
+        try:
+            return factory(xml_source=context.data)
+        except lxml.etree.XMLSyntaxError, e:
+            logger.warning("Could not parse XML of %s: %s (%s)" % (
+                context.id, e.__class__.__name__, e))
+            return None
 
     return adapter
 

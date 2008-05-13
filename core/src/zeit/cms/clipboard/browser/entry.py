@@ -72,6 +72,8 @@ class InvalidReferenceListRepresentation(object):
     url = None
     type = 'unknown'
 
+    modifiedOn = createdOn = None
+
     def __init__(self, request, unique_id):
         self.context = None
         self.request = request
@@ -83,12 +85,6 @@ class InvalidReferenceListRepresentation(object):
         title = _("Broken reference to ${uniqueId}",
                   mapping=dict(uniqueId=self.uniqueId))
         return zope.i18n.translate(title, context=self.request)
-
-    def modifiedOn(format=None):
-        return None
-
-    def createdOn(format=None):
-        return None
 
 
 @zope.component.adapter(

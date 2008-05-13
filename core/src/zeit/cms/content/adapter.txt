@@ -21,3 +21,68 @@ declaration:
 >>> print zeit.cms.content.adapter.xml_source(XML())
 <?xml version='1.0' encoding='UTF-8'?>
 <a/><?foo?>
+
+
+XML content factory
+===================
+
+The xml content factory adapter is a generic adapter to produce content from
+resources. 
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> factory = zeit.cms.content.adapter.xmlContentFactory(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType)
+>>> factory
+<function adapter at 0x...>
+
+Create a resource to create a TestContentType:
+
+>>> import StringIO
+>>> import zeit.connector.resource
+>>> resource = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/foo', 'foo',
+...     'testtype',
+...     StringIO.StringIO('<foo/>'))
+
+Call the factory to create the content:
+
+>>> content = factory(resource)
+>>> content
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml)
+<foo/>
+
+
+When the resource contains invalid XML, the factory returns None. This allows
+the rest of the system to try another resource type, like unknown. We may
+extend this later to a broken resource. 
+
+Register a log hander so we can verify the logging: 
+
+>>> import logging
+>>> log = StringIO.StringIO()
+>>> log_handler = logging.StreamHandler(log)
+>>> logging.root.addHandler(log_handler)
+>>> old_log_level = logging.root.level
+>>> logging.root.setLevel(logging.INFO)
+
+Create the resource and call the factory:
+
+>>> resource = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/foo', 'foo',
+...     'testtype',
+...     StringIO.StringIO('<invalid'))
+>>> factory(resource) is None
+True
+
+>>> print log.getvalue()
+Could not parse XML of http://xml.zeit.de/foo:
+    XMLSyntaxError (Couldn't find end of Start Tag invalid line 1, line 1, column 9)
+
+
+
+Clean up:
+
+>>> logging.root.removeHandler(log_handler)
+>>> logging.root.setLevel(old_log_level)

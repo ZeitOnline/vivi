@@ -16,6 +16,7 @@ import zope.location.location
 
 import zeit.cms.connector
 import zeit.cms.interfaces
+import zeit.cms.content.adapter
 import zeit.cms.content.metadata
 import zeit.cms.content.util
 import zeit.cms.repository.interfaces
@@ -226,12 +227,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return image.__parent__
 
 
-@zope.interface.implementer(zeit.content.gallery.interfaces.IGallery)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def galleryFactory(context):
-    obj = Gallery(xml_source=context.data)
-    zeit.cms.interfaces.IWebDAVProperties(obj).update(context.properties)
-    return obj
+galleryFactory = zeit.cms.content.adapter.xmlContentFactory(Gallery)
 
 
 resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(

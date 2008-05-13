@@ -14,6 +14,7 @@ import zope.interface
 import zope.app.container.contained
 
 import zeit.cms.connector
+import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.util
@@ -187,10 +188,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             raise ValueError("'%s' not in feed." % unique_id)
 
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def feedFactory(context):
-    return Feed(context.data)
+feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)
 
 
 resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(

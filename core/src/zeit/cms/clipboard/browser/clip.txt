@@ -6,11 +6,17 @@ Clipbaord
 Clip List Representation
 ========================
 
-Verify the interface::
+Verify the interface:
 
-    >>> import zope.interface.verify
-    >>> from zeit.cms.browser.interfaces import IListRepresentation
-    >>> from zeit.cms.clipboard.browser.clip import ClipListRepresentation
-    >>> zope.interface.verify.verifyClass(
-    ...     IListRepresentation, ClipListRepresentation)
-    True
+>>> import zope.interface.verify
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.clipboard.browser.clip
+>>> zope.interface.verify.verifyClass(
+...     zeit.cms.browser.interfaces.IListRepresentation,
+...     zeit.cms.clipboard.browser.clip.ClipListRepresentation)
+True
+>>> import zeit.cms.clipboard.browser.entry
+>>> zope.interface.verify.verifyClass(
+...     zeit.cms.browser.interfaces.IListRepresentation,
+...     zeit.cms.clipboard.browser.entry.InvalidReferenceListRepresentation)
+True

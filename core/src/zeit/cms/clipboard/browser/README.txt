@@ -407,7 +407,6 @@ Clipboard Listing
 When accessing the clipboard we get a normal content listing. The feed we have
 in the clipboard also has its icon:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Clipboard').click()
 >>> print browser.contents
 <?xml ...
@@ -415,9 +414,41 @@ in the clipboard also has its icon:
 <table class="contentListing hasMetadata">
     ...
     <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-syndication-interfaces-IFeed-zmi_icon.png" alt="Feed" width="20" height="20" border="0" />
+      Wirtschaft
     </td>
+    <td>
+      <span class="filename">wirtschaft.feed</span>
     ...
+
+
+The listing can be sorted. There was once a bug when sorting by modified, so
+verify this is working:
+
+>>> browser.handleErrors = False
+>>> browser.open(browser.url + '?sort_on%3Atokens=modified')
+
+When a referenced object is deleted, the clip will become an "invalid
+reference". Delete "wirtschaft.feed"[#setup-site]_:
+
+>>> del repository['wirtschaft.feed']
+>>> transaction.commit()
+>>> zope.app.component.hooks.setSite(old_site)
+
+Let's have a look at the sidebar:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> print browser.contents
+<?xml ...
+    <div id="clipboardcontents" class="Tree">
+  <ul>
+      <li class="Root" uniqueid="">
+        ...
+  <ul>
+      <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <p>
+        <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Broken
+            reference to http://xml.zeit.de/wirtschaft.feed</a>
+        ...
 
 
 Renaming clips
@@ -425,6 +456,7 @@ Renaming clips
 
 Clips can be renamed using the rename lightbox:
 
+>>> browser.getLink('Clipboard').click()
 >>> browser.open(browser.url + '/New%20Clip')
 >>> browser.getLink('Rename')
 <Link text='[IMG] Rename'
@@ -468,7 +500,7 @@ Reload the whole page and verify the title change:
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...wirtschaft.feed">Broken reference ...</a>
           ...
         </li>
         <li action="collapse" class="NotRoot" uniqueid="New Clip">
@@ -529,7 +561,7 @@ Open "New clip", we have a delete link there:
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...wirtschaft.feed">Broken reference ...</a>
           ...
         </li>
       </ul>
@@ -592,3 +624,15 @@ to online:
         http://xml.zeit.de/online/01.</li>
         ...
 
+
+.. [#setup-site]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> from zeit.cms.repository.interfaces import IRepository
+    >>> repository = zope.component.getUtility(IRepository)
+
+    >>> import transaction

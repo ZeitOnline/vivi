@@ -1,8 +1,8 @@
-# vim:fileencoding=utf-8 encoding=utf8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 # $Id$
 
+import datetime
 import logging
 
 import zope.component
@@ -118,7 +118,7 @@ class CommonListRepresentation(BaseListRepresentation):
     zeit.cms.browser.interfaces.IListRepresentation)
 @zope.interface.implementer(zope.app.locking.interfaces.ILockable)
 def listRepresentation_to_Lockable(obj):
-    return zope.app.locking.interfaces.ILockable(obj.context)
+    return zope.app.locking.interfaces.ILockable(obj.context, None)
 
 
 class MetadataColumn(zc.table.column.GetterColumn):
@@ -246,6 +246,12 @@ class DatetimeColumn(GetterColumn):
         date_formatter = formatter.request.locale.dates.getFormatter(
             'dateTime', 'medium')
         return date_formatter.format(value)
+
+    def getSortKey(self, item, formatter):
+        value = self.getter(item, formatter)
+        if isinstance(value, datetime.datetime):
+            value = value.timetuple()
+        return value
 
 
 class Listing(object):

@@ -19,10 +19,8 @@ class BodyContainer(zeit.cms.syndication.feed.Feed):
         return self.xml.body.container
 
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def bodyContainerFactory(context):
-    return BodyContainer(context.data)
+bodyContainerFactory = zeit.cms.content.adapter.xmlContentFactory(
+    BodyContainer)
 
 
 bodyContainerResourceFactory = (
