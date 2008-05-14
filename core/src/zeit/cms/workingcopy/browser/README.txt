@@ -166,14 +166,6 @@ Object browser
 When the objectbrowser asks for the default location of a content object in the 
 working copy, the answer is relayed to the object in the repository.
 
-
-Checkout the somalia article again:
-
->>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
->>> browser.getLink('Checkout').click()
-
-
 We need some setup:
 
 >>> import zope.app.component.hooks

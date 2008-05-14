@@ -118,13 +118,13 @@ Create a little helper function to easily see what is a ghost and what not:
 
 >>> list_workingcopy()
 7 entries
-Content: 4schanzentournee-abgesang-2
-Content: Arbeitsmarktzahlen
-Content: EU-Beitritt-rumaenien-bulgarien
-Content: Flugsicherheit
-Content: Ford-Beerdigung
-Content: Gesundheitsreform-Die
 Content: Guantanamo
+Content: Gesundheitsreform-Die
+Content: Ford-Beerdigung
+Content: Flugsicherheit
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: Arbeitsmarktzahlen
+Content: 4schanzentournee-abgesang-2
 
 
 Checkin Flugsicherheit and Arbeitsmarktzahlen:
@@ -133,13 +133,13 @@ Checkin Flugsicherheit and Arbeitsmarktzahlen:
 >>> checked_in = ICheckinManager(workingcopy['Arbeitsmarktzahlen']).checkin()
 >>> list_workingcopy()
 7 entries
-Content: 4schanzentournee-abgesang-2
 Ghost  : Arbeitsmarktzahlen
-Content: EU-Beitritt-rumaenien-bulgarien
 Ghost  : Flugsicherheit
-Content: Ford-Beerdigung
-Content: Gesundheitsreform-Die
 Content: Guantanamo
+Content: Gesundheitsreform-Die
+Content: Ford-Beerdigung
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
 
 
 We have  exactly 7 objects in the workingcopy which is our target size. When we
@@ -149,26 +149,27 @@ in our case:
 >>> checked_out = ICheckoutManager(collection['Querdax']).checkout()
 >>> list_workingcopy()
 7 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
-Ghost  : Flugsicherheit
-Content: Ford-Beerdigung
-Content: Gesundheitsreform-Die
-Content: Guantanamo
 Content: Querdax
+Ghost  : Arbeitsmarktzahlen
+Content: Guantanamo
+Content: Gesundheitsreform-Die
+Content: Ford-Beerdigung
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
 
 When we checkout yet another object, the last remaining ghost will be removed:
 
 >>> checked_out = ICheckoutManager(collection['Saarland']).checkout()
 >>> list_workingcopy()
 7 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
-Content: Ford-Beerdigung
-Content: Gesundheitsreform-Die
-Content: Guantanamo
-Content: Querdax
 Content: Saarland
+Content: Querdax
+Content: Guantanamo
+Content: Gesundheitsreform-Die
+Content: Ford-Beerdigung
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
+
 
 After checking out another object, we'll have 8 objects int he workingcopy as
 there is no ghost to remove:
@@ -176,14 +177,14 @@ there is no ghost to remove:
 >>> checked_out = ICheckoutManager(collection['Somalia']).checkout()
 >>> list_workingcopy()
 8 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
-Content: Ford-Beerdigung
-Content: Gesundheitsreform-Die
-Content: Guantanamo
-Content: Querdax
-Content: Saarland
 Content: Somalia
+Content: Saarland
+Content: Querdax
+Content: Guantanamo
+Content: Gesundheitsreform-Die
+Content: Ford-Beerdigung
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
 
 When we check in a content now, we'll have a ghost despite the target size of
 7:
@@ -192,14 +193,14 @@ When we check in a content now, we'll have a ghost despite the target size of
 ...     ).checkin()
 >>> list_workingcopy()
 8 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
-Content: Ford-Beerdigung
 Ghost  : Gesundheitsreform-Die
-Content: Guantanamo
-Content: Querdax
-Content: Saarland
 Content: Somalia
+Content: Saarland
+Content: Querdax
+Content: Guantanamo
+Content: Ford-Beerdigung
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
 
 Checking in another object, still does not remove any ghost:
 
@@ -207,15 +208,14 @@ Checking in another object, still does not remove any ghost:
 ...     ).checkin()
 >>> list_workingcopy()
 8 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
-Content: Ford-Beerdigung
-Ghost  : Gesundheitsreform-Die
-Content: Guantanamo
 Ghost  : Querdax
-Content: Saarland
+Ghost  : Gesundheitsreform-Die
 Content: Somalia
-
+Content: Saarland
+Content: Guantanamo
+Content: Ford-Beerdigung
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
 
 Note that any invalid ghosts, that are ghosts which reference deleted objects,
 are also removed when checking out any object.
@@ -234,12 +234,13 @@ So far nothing has happend to the Querdax entry:
 
 >>> list_workingcopy()
 6 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
-Ghost  : Gesundheitsreform-Die
-Content: Guantanamo
 Ghost  : Querdax
+Ghost  : Gesundheitsreform-Die
 Content: Saarland
+Content: Guantanamo
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
+
 
 
 When we checkout an object now, the invalid ghost Querdax will be removed:
@@ -247,12 +248,12 @@ When we checkout an object now, the invalid ghost Querdax will be removed:
 >>> checked_out = ICheckoutManager(collection['Ford-Beerdigung']).checkout()
 >>> list_workingcopy()
 6 entries
-Content: 4schanzentournee-abgesang-2
-Content: EU-Beitritt-rumaenien-bulgarien
 Content: Ford-Beerdigung
 Ghost  : Gesundheitsreform-Die
-Content: Guantanamo
 Content: Saarland
+Content: Guantanamo
+Content: EU-Beitritt-rumaenien-bulgarien
+Content: 4schanzentournee-abgesang-2
 
 
 Cleanup

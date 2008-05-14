@@ -94,12 +94,7 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
 
 
 After checking out the resource is locked in the WebDAV. This means other users
-cannot check it out. We can:
-
->>> manager.canCheckout
-True 
-
-Other users cannot check it out. Login another user called `bob`:
+cannot check it out. Login another user called `bob`:
 
 >>> zope.security.management.endInteraction()
 >>> import zope.security.testing
@@ -110,10 +105,11 @@ Other users cannot check it out. Login another user called `bob`:
 
 Bob cannot check out:
 
+>>> manager = ICheckoutManager(content)
 >>> manager.canCheckout
 False
 
-Let's log back in as the `zope.user`:
+Let's log back in as the `zope.user`.
 
 >>> zope.security.management.endInteraction()
 >>> import zope.security.testing
@@ -121,6 +117,12 @@ Let's log back in as the `zope.user`:
 >>> participation = zope.security.testing.Participation(principal)
 >>> import zope.security.management
 >>> zope.security.management.newInteraction(participation)
+
+We also cannot check it out because checking out is only possible once:
+
+>>> manager = ICheckoutManager(content)
+>>> manager.canCheckout
+False
 
 
 Checking in

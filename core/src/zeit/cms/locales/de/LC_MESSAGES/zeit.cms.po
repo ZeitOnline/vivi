@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu May  8 16:49:36 2008\n"
-"PO-Revision-Date: 2008-05-08 18:04+0100\n"
+"PO-Revision-Date: 2008-05-13 18:07+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -372,11 +372,11 @@ msgstr "sonstiges"
 
 #: src/zeit/cms/content/browser/keyword-tree.pt:16
 msgid "If you would like to suggest a keyword, send an e-mail to ${recipient}."
-msgstr "Wenn Sie ein Keyword vorschlagen möchten, senden Sie eine E-Mail an ${recipient}."
+msgstr "Wenn Sie ein Schlagwort vorschlagen möchten, senden Sie eine E-Mail an ${recipient}."
 
 #: src/zeit/cms/content/browser/keyword-tree.pt:30
 msgid "Similar keywords:"
-msgstr "Ähnliche Schlüsselwörter:"
+msgstr "Ähnliche Schlagworte:"
 
 #: src/zeit/cms/content/browser/keyword-tree.pt:5
 msgid "Taxonomy"
@@ -388,7 +388,7 @@ msgstr "Es gibt keine Schlagworte, die den Kriterien entsprechen."
 
 #: src/zeit/cms/content/browser/keyword-widget.pt:30
 msgid "Edit keywords"
-msgstr "Schlüsselwörter bearbeiten"
+msgstr "Schlagworte bearbeiten"
 
 #: src/zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
@@ -488,7 +488,7 @@ msgstr "Kurzteaser-Text"
 
 #: src/zeit/cms/content/interfaces.py:143
 msgid "Homepage teaser title"
-msgstr "Homepagetaser-Titel"
+msgstr "Homepageteaser-Titel"
 
 #: src/zeit/cms/content/interfaces.py:148
 msgid "Homepage teaser text"
@@ -547,7 +547,7 @@ msgstr "Autoren"
 #: src/zeit/cms/content/browser/keyword-tree.pt:12
 #: src/zeit/cms/content/browser/keyword-tree.pt:36
 msgid "Keywords"
-msgstr "Schlüsselwörter"
+msgstr "Schlagworte"
 
 #: src/zeit/cms/content/interfaces.py:98
 msgid "Serie"
@@ -822,7 +822,7 @@ msgstr "»${name}« wurde nach »${targets}« syndiziert."
 #: src/zeit/cms/syndication/browser/manager.py:53
 #: src/zeit/workflow/browser/form.py:57
 msgid "scheduled-for-publishing"
-msgstr "»${id}« wurde zum Veröffentlichen vorgemerkt."
+msgstr "»${id}« wird veröffentlicht."
 
 #. Default: ""
 #: src/zeit/cms/syndication/browser/manager.py:56
@@ -1493,7 +1493,7 @@ msgstr "Status speichern und zurückziehen"
 #. Default: ""
 #: src/zeit/workflow/browser/form.py:72
 msgid "scheduled-for-retracting"
-msgstr "»${id}« wurde zum Zurückziehen vorgemerkt."
+msgstr "»${id}« wird zurückgezogen."
 
 #: src/zeit/workflow/interfaces.py:33
 msgid "status-edited"
@@ -1545,11 +1545,11 @@ msgstr "Zurückgezogen"
 
 #: src/zeit/workflow/publish.py:57
 msgid "Publication scheduled"
-msgstr "Veröffentlichung vorgemerkt"
+msgstr "Wird veröffentlicht"
 
 #: src/zeit/workflow/publish.py:63
 msgid "Retracting scheduled"
-msgstr "Zurückziehen vorgemerkt"
+msgstr "Wird zurückgezogen"
 
 #: src/zeit/workflow/source.py:33
 msgid "yes"

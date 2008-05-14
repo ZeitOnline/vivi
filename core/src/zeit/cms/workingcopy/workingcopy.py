@@ -21,12 +21,36 @@ class Workingcopy(zope.app.container.btree.BTreeContainer):
     """The working copy is the area of the CMS where users edit content."""
 
     zope.interface.implements(zeit.cms.workingcopy.interfaces.IWorkingcopy)
+    _order = ()
 
+    def __iter__(self):
+        for key in reversed(self._order):
+            yield key
+        for key in super(Workingcopy, self).__iter__():
+            if key in self._order:
+                continue
+            yield key
+
+    def values(self):
+        for key in self:
+            yield self[key]
 
     def __setitem__(self, key, item):
         if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(item):
             raise ValueError("Must provide ILocalContent")
         super(Workingcopy, self).__setitem__(key, item)
+        self._order += (key, )
+
+
+    def __delitem__(self, key):
+        super(Workingcopy, self).__delitem__(key)
+        order = list(self._order)
+        try:
+            order.remove(key)
+        except ValueError:
+            pass
+        else:
+            self._order = tuple(order)
 
 
 class WorkingcopyLocation(zope.app.container.btree.BTreeContainer):

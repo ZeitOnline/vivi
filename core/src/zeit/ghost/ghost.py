@@ -78,8 +78,4 @@ def remove_oldest_ghost(workingcopy):
         if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(content)]
     if not ghosts:
         return
-
-    ghosts.sort(cmp=lambda x, y: cmp(
-        zope.dublincore.interfaces.IDCTimes(x).created,
-        zope.dublincore.interfaces.IDCTimes(y).created))
-    del workingcopy[ghosts[0].__name__]
+    del workingcopy[ghosts[-1].__name__]

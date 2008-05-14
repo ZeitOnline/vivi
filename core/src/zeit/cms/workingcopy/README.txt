@@ -116,18 +116,55 @@ Only content which provides ILocalContent can be added to the workingcopy:
 >>> content = UnknownResource(u'oink')
 >>> ILocalContent.providedBy(content)
 False
->>> workingcopy['mycontent'] = content
+>>> workingcopy[u'mycontent'] = content
 Traceback (most recent call last):
     ...
 ValueError: Must provide ILocalContent
 
-
+After marking as ILocalContent it can be added:
 
 >>> zope.interface.directlyProvides(content, ILocalContent)
-
->>> workingcopy['mycontent'] = content
+>>> workingcopy[u'mycontent'] = content
 >>> ILocalContent.providedBy(content)
 True 
+
+Sorting
+=======
+
+When things are added to the workingcopy they are returned in reverse order.
+Currently there is only one object in the database:
+
+>>> list(workingcopy)
+[u'mycontent']
+
+Let's add another content:
+
+>>> content = UnknownResource(u'oink')
+>>> zope.interface.directlyProvides(content, ILocalContent)
+>>> workingcopy[u'other-content'] = content
+>>> list(workingcopy)
+[u'other-content', u'mycontent']
+>>> [v.__name__ for v in workingcopy.values()]
+[u'other-content', u'mycontent']
+
+Add another content:
+
+>>> content = UnknownResource(u'oink')
+>>> zope.interface.directlyProvides(content, ILocalContent)
+>>> workingcopy[u'just-another-content'] = content
+>>> list(workingcopy)
+[u'just-another-content', u'other-content', u'mycontent']
+>>> [v.__name__ for v in workingcopy.values()]
+[u'just-another-content', u'other-content', u'mycontent']
+
+
+Remove `other-content`:
+
+>>> del workingcopy[u'other-content']
+>>> list(workingcopy)
+[u'just-another-content', u'mycontent']
+>>> [v.__name__ for v in workingcopy.values()]
+[u'just-another-content', u'mycontent']
 
 
 Cleanup

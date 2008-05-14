@@ -28,7 +28,8 @@ class LuceneSearch(object):
         'author': 'autor',
         'volume': 'ausgabe',
         'year': 'jahr',
-        'ressort': 'ressort',
+        'ressort': 'print-ressort',
+        'navigation': 'ressort',
         # 'page': 
         # 'serie': 
         # edited
@@ -50,7 +51,9 @@ class LuceneSearch(object):
         text = terms.pop('text', None)
         sort = terms.pop('sort', 'date')
 
-        query = [text]
+        query = []
+        if text:
+            query.append(text)
 
         for key, value in sorted(terms.items()):
             index = self.index_map.get(key)

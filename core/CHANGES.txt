@@ -1,8 +1,13 @@
 zeit.cms changes
 ================
 
-1.0 (unreleased)
-----------------
+0.9.14 (unreleased)
+-------------------
+
+- Ein Objekt kann nur noch einmal ausgecheckt werden.
+- Sortierung des Panels "Ausgecheckte Dokumente" korrigiert: das zuletzt
+  ausgecheckte ist oben.
+
 
 0.9.13 (2008-05-13)
 -------------------

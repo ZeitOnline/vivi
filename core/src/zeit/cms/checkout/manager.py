@@ -38,6 +38,10 @@ class CheckoutManager(object):
         if zeit.cms.workingcopy.interfaces.ILocalContent(
             self.context, None) is None:
             return False
+        for obj in self.workingcopy.values():
+            if (zeit.cms.interfaces.ICMSContent.providedBy(obj)
+                and obj.uniqueId == self.context.uniqueId):
+                return False
         return True
 
     def checkout(self, event=True):
