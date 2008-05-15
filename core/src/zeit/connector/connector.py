@@ -377,7 +377,6 @@ class Connector(object):
             locktoken=locktoken)
         self._invalidate_cache(id)
 
-
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         url = self._id2loc(self._get_cannonical_id(id))
@@ -597,15 +596,12 @@ class Connector(object):
         # FIXME here, we tacitly assume that URIs ending with '/' MUST
         # be collections. This ain't strictly right
         wantcoll = (ensure == 'collection' or url.endswith('/'))
-        try:
-            if wantcoll:
-                res = DAVCollection(url, conn = self._conn()) # FIXME auto_request?
-            elif ensure == 'file':
-                res = DAVFile(url, conn = self._conn()) # FIXME auto_request?
-            else: # Tis one to disappear when [14] fixed
-                res = DAVResource(url, conn = self._conn()) # FIXME auto_request?
-        except:
-            raise # FIXME: anything goes here :-/
+        if wantcoll:
+            res = DAVCollection(url, conn = self._conn()) # FIXME auto_request?
+        elif ensure == 'file':
+            res = DAVFile(url, conn = self._conn()) # FIXME auto_request?
+        else: # Tis one to disappear when [14] fixed
+            res = DAVResource(url, conn = self._conn()) # FIXME auto_request?
         return res
 
     def _get_dav_lock(self, id):
