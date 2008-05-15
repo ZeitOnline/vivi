@@ -29,6 +29,7 @@ def test_suite():
         'connector.txt',
         'mock.txt',
         'cache.txt',
+        'locking.txt',
         tearDown=tearDown,
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))

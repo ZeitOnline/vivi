@@ -1,0 +1,50 @@
+Loging tests
+============
+
+
+>>> import os
+>>> import StringIO
+>>> import zeit.connector.connector
+>>> import zeit.connector.resource
+>>> connector = zeit.connector.connector.Connector(roots={
+...       "default": os.environ['connector-url']})
+
+>>> id = 'http://xml.zeit.de/testing/lt1'
+>>> res = zeit.connector.resource.Resource(
+...     id, 'lt1', 'text',
+...     StringIO.StringIO('Pop goes the weasel!'),
+...     contentType='text/plain')
+>>> connector.add(res)
+>>> connector.lock(res.id, 'frodo', until=None)
+'opaquelocktoken:...'
+
+>>> connector.lock(res.id, 'gandalf', until=None)
+Traceback (most recent call last):
+    ...
+LockingError: http://xml.zeit.de/testing/lt1 is already locked.
+
+>>> connector.unlock(res.id)
+
+>>> del connector[res.id]
+
+
+Edge case 1: We think a resource is locked but it isnt:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge1'
+>>> token = connector.lock(res.id, 'saruman', until=None)
+>>> url = connector._id2loc(res.id)
+>>> connector._conn().do_unlock(url, token)
+>>> connector.add(res)
+>>> connector.unlock(res.id)
+>>> del connector[res.id]
+
+Edge case 1.1: With existing resource:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge1.1'
+>>> connector.add(res)
+>>> token = connector.lock(res.id, 'saruman', until=None)
+>>> url = connector._id2loc(res.id)
+>>> connector._conn().do_unlock(url, token)
+>>> connector.add(res)
+>>> connector.unlock(res.id)
+>>> del connector[res.id]

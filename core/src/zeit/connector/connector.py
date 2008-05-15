@@ -410,15 +410,20 @@ class Connector(object):
 
     def locked(self, id):
         id = self._get_cannonical_id(id)
-        davlock = self._get_dav_lock(id)
+        try:
+            davlock = self._get_dav_lock(id)
+        except KeyError:
+            # The resource does not exist on the server. This means it *cannot*
+            # be locked. 
+            davlock = {}
+
         mylock = self._get_my_lockinfo(id)
 
         if mylock and mylock[0] != davlock.get('locktoken'): # Uh, oh
-            #raise("Aaaah! Pirates!")
+            # We know something about a locktoken, but it is no longer valid.
+            # Forget about it.
             self._put_my_lockinfo(id, None)
             mylock = None
-            # Our lock was stolen. Are we supposed to scream? 
-            # No we are not.
 
         owner = davlock.get('owner', None)
         timeout = davlock.get('timeout', None)
@@ -467,20 +472,15 @@ class Connector(object):
             self.locktokens.set(id, (token, principal, time))
 
     def _get_my_locktoken(self, id):
-        try:
-            locker, until, myself = self.locked(id)
-        except KeyError:
-            locktoken = None
-        else:
-            if locker and not myself:
-                raise zeit.connector.interfaces.LockedByOtherSystemError(
-                    id, locker, until)
-        lock_info = self._get_my_lockinfo(id)
-        if lock_info:
-            token = lock_info[0]
-        else:
-            token = None
-        return token
+        locker, until, myself = self.locked(id)
+
+        if (locker or until) and not myself:
+            raise zeit.connector.interfaces.LockedByOtherSystemError(
+                id, locker, until)
+        my_lock_info = self._get_my_lockinfo(id)
+        if my_lock_info:
+            return my_lock_info[0]
+        return None
 
     def _id2loc(self, id):
         """Transform an id to a location, e.g.
@@ -513,8 +513,10 @@ class Connector(object):
         if iscoll and not id.endswith('/'):
             id = id + '/'
 
-        # No meaningful lock-null resources for collections :-(
         if autolock and not iscoll:
+            # It is not necessary (and not possible) to lock collections when
+            # they don't exist because MKCOL does *not* overwrite anything. So
+            # only lock for files
             locktoken = self.lock(id, "AUTOLOCK",
                                   datetime.datetime.now(pytz.UTC) +
                                   datetime.timedelta(seconds=20))
@@ -538,7 +540,7 @@ class Connector(object):
                 (parent, name) = _id_splitlast(id)
                 parent = self._get_dav_resource(parent, ensure='collection')
                 davres = parent.create_file(name, data, resource.contentType,
-                                            locktoken = locktoken)
+                                            locktoken=locktoken)
             else:
                 davres = self._get_dav_resource(id, ensure='file')
                 davres.upload(data, resource.contentType,
