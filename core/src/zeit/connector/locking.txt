@@ -1,6 +1,8 @@
-Loging tests
-============
+Locking tests
+=============
 
+Simple case
++++++++++++
 
 >>> import os
 >>> import StringIO
@@ -24,11 +26,13 @@ Traceback (most recent call last):
 LockingError: http://xml.zeit.de/testing/lt1 is already locked.
 
 >>> connector.unlock(res.id)
-
 >>> del connector[res.id]
 
 
-Edge case 1: We think a resource is locked but it isnt:
+Edge case 1: We think a resource is locked but it isn't
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+We unlock the resource under the hood and of course expect that we can add it:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge1'
 >>> token = connector.lock(res.id, 'saruman', until=None)
@@ -47,4 +51,66 @@ Edge case 1.1: With existing resource:
 >>> connector._conn().do_unlock(url, token)
 >>> connector.add(res)
 >>> connector.unlock(res.id)
+>>> del connector[res.id]
+
+
+Edge case 2: We think a resource is not locked, but it is
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Lock the resoruce under the hood; we get a useful error:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge2'
+>>> url = connector._id2loc(res.id)
+>>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
+>>> connector.add(res)
+Traceback (most recent call last):
+    ...
+LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
+>>> connector.unlock(res.id, token)
+
+Edge case 2.2: With existing resource:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge2.2'
+>>> connector.add(res)
+>>> url = connector._id2loc(res.id)
+>>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
+>>> connector.add(res)
+Traceback (most recent call last):
+    ...
+LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
+>>> connector.unlock(res.id, token)
+>>> del connector[res.id]
+
+Edge case 3: Locked resource w/o locking user
++++++++++++++++++++++++++++++++++++++++++++++
+
+When a resource is locked for instance with cadaver the connector was telling
+the resource would not be locked. Verify the bug is fixed. We need the internal
+API to create an anonymous lock. Create a resource first:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge3'
+>>> connector.add(res)
+
+Now lock:
+
+>>> dav_url = connector._id2loc(connector._get_cannonical_id(res.id))
+>>> token = connector._conn().do_lock(dav_url)
+
+The connector tells us it is locked now:
+
+>>> connector.locked(res.id)
+(None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+ False)
+
+
+Deleting the resource now will yield a `LockedByOtherSystemError`:
+
+>>> del connector[res.id]
+Traceback (most recent call last):
+    ...
+LockedByOtherSystemError: (None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>))
+
+Unlock the resource and remove it:
+
+>>> connector._conn().do_unlock(dav_url, token)
 >>> del connector[res.id]

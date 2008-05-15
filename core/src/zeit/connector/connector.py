@@ -267,6 +267,7 @@ class Connector(object):
         return data
 
     def __getitem__(self, id):
+        """Return the resource identified by `id`."""
         __traceback_info__ = (id, )
         id = self._get_cannonical_id(id)
         try:
@@ -282,21 +283,23 @@ class Connector(object):
             content_type=content_type)
 
     def __setitem__(self, id, object):
+        """Add the given `object` to the document store under the given name.
+        """
         id = self._get_cannonical_id(id)
         resource = zeit.connector.interfaces.IResource(object)
-        resource.id = id # override
+        resource.id = id  # override
         self._internal_add(id, resource)
 
     def __delitem__(self, id):
-        # FIXME lotsa error checking here...
+        """Remove the resource from the repository."""
         id = self._get_cannonical_id(id)
         parent, name = _id_splitlast(id)
-        try:
-            self._get_dav_resource(parent).delete(
-                name, self._get_my_locktoken(id))
-        except davresource.DAVLockedError:
-            raise zeit.connector.interfaces.LockingError(
-                id, "Could not delete resource.")
+
+        # Invalidate the cache to make sure we have the real lock information
+        self._invalidate_cache(id)
+        token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
+
+        self._get_dav_resource(parent).delete(name, token)
         self._invalidate_cache(id)
 
     def __contains__(self, id):
