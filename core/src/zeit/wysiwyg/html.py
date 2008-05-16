@@ -123,8 +123,9 @@ class HTMLConverter(object):
                 else:
                     url = self.url(image)
 
-            image_node.getparent().replace(
-                image_node, lxml.objectify.E.img(src=url))
+            new_node = lxml.objectify.E.img(src=url)
+            image_node.getparent().replace(image_node, new_node)
+            new_node.tail = image_node.tail
 
     def _replace_img_nodes_by_image(self, image_nodes):
         """Replace HTML <img/> by XML <image/>."""
@@ -148,6 +149,7 @@ class HTMLConverter(object):
             if new_node is None:
                 new_node = lxml.objectify.E.image(src=url)
             parent.replace(image_node, new_node)
+            new_node.tail = image_node.tail
 
     def _article_extra(self, node):
         input_node = node['input']

@@ -253,7 +253,7 @@ Articles can have inline images. This looks as follows:
 ...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
 ...         align="right">
 ...         <bu>Der erste Schritt zum Klon</bu>
-...         <copyright>jemand</copyright> BILD </image></p>
+...         <copyright>jemand</copyright> BILD </image> Zellen ist das toll.</p>
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
@@ -267,7 +267,8 @@ tag:
 >>> print converter.to_html(article.xml['body'])
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche
- <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
+ <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+  Zellen ist das toll.</p>
 <p>Selbst wenn </p>
 
 
@@ -276,7 +277,8 @@ image:
 
 >>> converter.from_html(article.xml['body'], '''\
 ... <p>Fuer menschliche
-...  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
+...  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+...   Zellen ist das toll.</p>
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -285,7 +287,8 @@ image:
   <body>
     <title>Title</title>
     <p>Fuer menschliche
- <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg"><bu xsi:nil="true"/></image></p>
+ <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg"><bu xsi:nil="true"/></image>
+  Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
   </body>
