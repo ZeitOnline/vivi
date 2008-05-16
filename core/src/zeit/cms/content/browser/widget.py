@@ -91,4 +91,4 @@ class SubNavigationUpdater(object):
         for value in source:
             term = terms.getTerm(value)
             result.append((term.title, term.token))
-        return cjson.encode(result)
+        return cjson.encode(sorted(result))

@@ -7,6 +7,9 @@ zeit.cms changes
 - Ein Objekt kann nur noch einmal ausgecheckt werden.
 - Sortierung des Panels "Ausgecheckte Dokumente" korrigiert: das zuletzt
   ausgecheckte ist oben.
+- Diverse Typos, Wording
+- Sub-Navigation: Ermöglicht, dass es mehrere Subnavigations mit dem selben
+  Namen gibt.
 
 
 0.9.13 (2008-05-13)

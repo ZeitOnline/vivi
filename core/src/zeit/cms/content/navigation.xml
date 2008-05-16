@@ -11,6 +11,9 @@
         <subnavigation name="Joschka Fisher">
             <title>Joschka Fisher</title>
         </subnavigation>
+        <subnavigation name="Meinung">
+            <title>Meinung</title>
+        </subnavigation>
     </ressort>
 
     <ressort name="International">
@@ -21,7 +24,9 @@
         <subnavigation name="Nahost">
             <title>Nahost</title>
         </subnavigation>
-
+        <subnavigation name="Meinung">
+            <title>Meinung</title>
+        </subnavigation>
     </ressort>
     <ressort name="Wirtschaft"><title>Wirtschaft</title></ressort>
     <ressort name="Finanzen"><title>Finanzen</title></ressort>

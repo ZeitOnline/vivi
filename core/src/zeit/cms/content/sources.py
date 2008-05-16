@@ -98,23 +98,30 @@ class SubNavigationSource(SimpleContextualXMLSource):
         sub_navs = reduce(
             operator.add, [ressort_node.findall('subnavigation')
              for ressort_node in ressort_nodes])
-        return [unicode(sub.get('name'))
-                for sub in sub_navs]
+        return set([unicode(sub.get('name'))
+                    for sub in sub_navs])
 
     @gocept.cache.method.Memoize(60)
     def getTitle(self, context, value):
         tree = self._get_tree()
-        nodes = tree.xpath('//subnavigation[@name = "%s"]' % value)
-        assert len(nodes) == 1
+        ressort = self._get_ressort(context)
+        if ressort is None:
+            nodes = tree.xpath(
+                '//subnavigation[@name = %s]' % (
+                    xml.sax.saxutils.quoteattr(value)))
+            assert len(nodes) >= 1
+        else:
+            nodes = tree.xpath(
+                '/ressorts/ressort[@name = %s]/subnavigation[@name = %s]' % (
+                    xml.sax.saxutils.quoteattr(ressort),
+                    xml.sax.saxutils.quoteattr(value)))
+            assert len(nodes) == 1
         return unicode(nodes[0]['title'])
 
     def _get_ressort_nodes(self, context):
         tree = self._get_tree()
         all_ressorts = tree.ressort
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
-        if metadata is None:
-            return all_ressorts
-        ressort = metadata.ressort
+        ressort = self._get_ressort(context)
         if not ressort:
             return all_ressorts
 
@@ -125,6 +132,12 @@ class SubNavigationSource(SimpleContextualXMLSource):
             return None
         assert len(nodes) == 1
         return nodes
+
+    def _get_ressort(self, context):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
+        if metadata is None:
+            return None
+        return metadata.ressort
 
 
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
