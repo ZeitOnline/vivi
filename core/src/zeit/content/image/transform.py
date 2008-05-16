@@ -13,10 +13,6 @@ import zeit.cms.repository.folder
 import zeit.content.image.interfaces
 
 
-class ImageProcessingError(TypeError):
-    """An error raised it's not possible to process the Image."""
-
-
 class ImageTransform(object):
 
     zope.interface.implements(zeit.content.image.interfaces.ITransform)
@@ -28,8 +24,8 @@ class ImageTransform(object):
             self.image = Image.open(cStringIO.StringIO(context.data))
             self.image.load()
         except IOError:
-            raise ImageProcessingError("Cannot transform image %s (%s)" % (
-                context, context.contentType))
+            raise zeit.content.image.interfaces.ImageProcessingError(
+                "Cannot transform image %s" % context.__name__)
 
     def thumbnail(self, width, height):
         self.image.thumbnail((width, height), Image.ANTIALIAS)

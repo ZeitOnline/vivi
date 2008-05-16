@@ -47,10 +47,10 @@
 
   <browser:page
     name="index.html"
-    for="zeit.content.image.transform.ImageProcessingError"
+    for="zeit.content.image.interfaces.ImageProcessingError"
     template="processingerror.pt"
     class=".error.ProcessingError"
-    permission="zope.View"
+    permission="zope.Public"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 

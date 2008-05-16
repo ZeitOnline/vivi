@@ -20,4 +20,8 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
+  <!-- needed for testing transformation -->
+  <include package="zeit.content.gallery" />
+  <include package="zeit.content.gallery.browser" />
+
 </configure>

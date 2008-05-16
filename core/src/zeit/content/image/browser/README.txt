@@ -73,7 +73,6 @@ Editing
 
 For editing an image, we need to check it out:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Checkout').click()
 
 We now see the form and fill out some values:
@@ -283,7 +282,6 @@ Lets create an image group:
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
->>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
 Image groups are not checked out by default, because adding new images will be
@@ -494,3 +492,57 @@ Make sure we have a metadata preview for repository image groups:
     ...
    <div>New Hampshire</div>
     ...
+
+
+Broken images
+=============
+
+We add a folder with a broken image:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Folder']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'broken_image_folder'
+>>> browser.getControl('Add').click()
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Image (single)']
+>>> browser.open(menu.value[0])
+>>> browser.url
+'http://localhost/++skin++cms/repository/broken_image_folder/@@zeit.content.image.Add'
+
+>>> import StringIO
+>>> test_data = StringIO.StringIO('392-392938r82r')
+>>> file_control = browser.getControl(name='form.data')
+>>> file_control.filename = 'corrupt.jpg'
+>>> file_control.value = test_data
+>>> browser.getControl(name='form.volume').value != '0'
+True
+>>> browser.getControl(name='form.actions.add').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/corrupt.jpg/@@edit.html'
+
+Now try to add a gallery:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Gallery']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('Title').value = 'New Gallery'
+>>> browser.getControl('File name').value = 'gallery'
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Image folder').value = 'http://xml.zeit.de/broken_image_folder'
+>>> browser.getControl(name="form.actions.add").click()
+Traceback (most recent call last):
+...
+HTTPError: HTTP Error 500: Internal Server Error
+
+>>> browser.url
+'http://localhost/++skin++cms/repository/@@zeit.content.gallery.Add'
+>>> print browser.contents
+<!DOCTYPE html ...
+  <title>Error</title>
+  ...
+  <h1>An error occured</h1>
+  ...
+  <pre>Cannot transform image  ...

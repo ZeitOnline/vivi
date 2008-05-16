@@ -16,6 +16,10 @@ import zeit.cms.content.contentsource
 from zeit.cms.i18n import MessageFactory as _
 
 
+class ImageProcessingError(TypeError):
+    """An error raised it's not possible to process the Image."""
+
+
 class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
 

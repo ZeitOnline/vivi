@@ -76,6 +76,7 @@ Set the link:
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
+
 Cleanup
 =======
 
