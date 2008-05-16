@@ -376,3 +376,50 @@ Let's have a look at the source now:
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
+
+
+Removing feeds from the syndication targets list
+------------------------------------------------
+
+The 'Politik' Feed is currently a syndication target:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/'
+...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
+>>> link = browser.getLink('Syndicate').click()
+>>> print browser.contents
+<?xml ...
+<!DOCTYPE html...
+</tr>
+</thead>
+<tbody>
+  <tr>
+    <td>
+      <input ...  />
+    </td>
+    <td>
+      <img ...lock-closed-mylock.png" ... />
+    </td>
+    <td>
+      Politik
+    </td>
+    <td>
+      <a href="...">...politik.feed</a>
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      <a ...target="_blank"...>Preview</a>
+    </td>
+</tr>
+...
+
+
+We remove it now from the syndication targets:
+
+>>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
+>>> browser.getLink('Remove from my syndication targets').click()
+>>> print browser.contents
+<?xml ...
+    <li class="message">"politik.feed" has been removed from your syndication targets.</li>
+...

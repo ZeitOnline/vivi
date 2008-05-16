@@ -79,7 +79,16 @@
     name="add-to-my-syndication-targets.html"
     for="zeit.cms.syndication.interfaces.IFeed"
     permission="zope.View"
-    class=".feed.AddToMyTargets"
+    class=".feed.MyTargets"
+    attribute="add_to_targets"
+    />
+
+  <browser:page
+    name="remove-from-my-syndication-targets.html"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    permission="zope.View"
+    class=".feed.MyTargets"
+    attribute="remove_from_my_targets"
     />
 
   <browser:viewlet
@@ -91,6 +100,20 @@
     permission="zope.ManageContent"
     icon="/@@/zeit.cms/icons/default-feed.png"
     action="@@add-to-my-syndication-targets.html"
+    filter="not: context/@@remove-from-my-syndication-targets.html/in_targets"
+    sort="90"
+    />
+
+  <browser:viewlet
+    name="remove-from-my-syndication-targets"
+    for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".feed.RemoveFromMySyndicationTargetsMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zope.ManageContent"
+    icon="/@@/zeit.cms/icons/default-feed.png"
+    action="@@remove-from-my-syndication-targets.html"
+    filter="context/@@remove-from-my-syndication-targets.html/in_targets"
     sort="90"
     />
 
