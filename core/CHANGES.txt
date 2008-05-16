@@ -10,6 +10,8 @@ zeit.cms changes
 - Diverse Typos, Wording
 - Sub-Navigation: Ermöglicht, dass es mehrere Subnavigations mit dem selben
   Namen gibt.
+- Bilder/Links sind im WYSIWYG-Editor jetzt interne CMS-Links, damit z.B.
+  Bilder inline sofort angezeigt werden können (bug #4163).
 
 
 0.9.13 (2008-05-13)

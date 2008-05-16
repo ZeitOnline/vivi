@@ -23,7 +23,7 @@ List the folders and files in /
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
-  <CurrentFolder path="/" url="http://xml.zeit.de"/>
+  <CurrentFolder path="/" url="http://localhost"/>
   <Folders>
     <Folder name="repository" title="repository"/>
     <Folder name="zeit.cms.clipboard.clipboard.Clipboard"
@@ -43,18 +43,18 @@ Descent to the repository:
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
   <CurrentFolder path="/repository/"
-                 url="http://xml.zeit.de"/>
+                 url="http://localhost"/>
   <Folders>
     <Folder name="online" title="online"/>
     <Folder name="2006" title="2006"/>
     <Folder name="2007" title="2007"/>
   </Folders>
   <Files>
-    <File size="0" url="http://xml.zeit.de/politik.feed"
+    <File size="0" url="http://localhost/repository/politik.feed"
           name="politik.feed (Politik)"/>
-    <File size="0" url="http://xml.zeit.de/testcontent"
+    <File size="0" url="http://localhost/repository/testcontent"
           name="testcontent (testcontent)"/>
-    <File size="0" url="http://xml.zeit.de/wirtschaft.feed"
+    <File size="0" url="http://localhost/repository/wirtschaft.feed"
           name="wirtschaft.feed (Wirtschaft)"/>
   </Files>
 </Connector>
@@ -70,7 +70,7 @@ Let's descent from the root into the clipboard:
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
-                 url="http://xml.zeit.de"/>
+                 url="http://localhost"/>
   <Folders>
   </Folders>
   <Files>
@@ -104,7 +104,7 @@ Let's have a look how the clipboard looks now:
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
-                 url="http://xml.zeit.de"/>
+                 url="http://localhost"/>
   <Folders>
     <Folder name="New Clip" title="New Clip"/>
   </Folders>
@@ -123,13 +123,13 @@ Our clip is listed! Decent:
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/New Clip"
-                 url="http://xml.zeit.de"/>
+                 url="http://localhost"/>
   <Folders>
   </Folders>
   <Files>
-    <File size="0" url="http://xml.zeit.de/politik.feed"
+    <File size="0" url="http://localhost/repository/politik.feed"
           name="politik.feed (Politik)"/>
-    <File size="0" url="http://xml.zeit.de/wirtschaft.feed"
+    <File size="0" url="http://localhost/repository/wirtschaft.feed"
           name="wirtschaft.feed (Wirtschaft)"/>
   </Files>
 </Connector>
@@ -155,7 +155,7 @@ The root listing contains it now:
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
-  <CurrentFolder path="/" url="http://xml.zeit.de"/>
+  <CurrentFolder path="/" url="http://localhost"/>
   <Folders>
     <Folder name="bilder" title="bilder"/>
     <Folder name="repository" title="repository"/>
@@ -175,7 +175,7 @@ List it:
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector resourceType="File" command="GetFoldersAndFiles">
-  <CurrentFolder path="/bilder/" url="http://xml.zeit.de"/>
+  <CurrentFolder path="/bilder/" url="http://localhost"/>
   <Folders>
   </Folders>
   <Files>

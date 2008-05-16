@@ -17,7 +17,8 @@ FCKConfig.FontFormats   = 'p;h3';
 FCKConfig.LinkBrowserURL = (
     FCKConfig.BasePath +
     'filemanager/browser/default/browser.html?' +
-    'Connector=/@@zeit-fckeditor-link-browser.html');
+    'Connector='
+    + FCKConfig.BasePath + '../../../@@zeit-fckeditor-link-browser.html');
 FCKConfig.ImageBrowserURL = FCKConfig.LinkBrowserURL
 
 FCKConfig.LinkUpload = false;

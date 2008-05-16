@@ -149,6 +149,94 @@ saving. br's inside a <p> are kept:
 </article>
 
 
+Mapping of cms urls to unique id and vice versa
+-----------------------------------------------
+
+The converter has a helper method to convert urls which point to the cms to a
+unique id:
+
+>>> converter._url_to_id('http://127.0.0.1/repository/wirtschaft.feed')
+u'http://xml.zeit.de/wirtschaft.feed'
+>>> converter._url_to_id('http://127.0.0.1/repository/online/2007/01/Somalia')
+u'http://xml.zeit.de/online/2007/01/Somalia'
+
+When the url doesn't point to an existing object in the repository, the url is
+returned:
+
+>>> converter._url_to_id('http://127.0.0.1/repository/online/2020/hamwanich')
+'http://127.0.0.1/repository/online/2020/hamwanich'
+>>> converter._url_to_id('http://127.0.0.1/flubber')
+'http://127.0.0.1/flubber'
+
+The url is also just returned if it is completely unrelated:
+>>> converter._url_to_id('http://gocept.com')
+'http://gocept.com'
+
+
+The method `_id_to_url` handles the other way round:
+
+>>> converter._id_to_url('http://xml.zeit.de/wirtschaft.feed')
+'http://127.0.0.1/repository/wirtschaft.feed'
+>>> converter._id_to_url('http://xml.zeit.de/online/2007/01/Somalia')
+'http://127.0.0.1/repository/online/2007/01/Somalia'
+
+When the id doesn't point to an existing object in the repository, the id is
+returned:
+
+>>> converter._id_to_url('http://xml.zeit.de/online/2020/hamwanich')
+'http://xml.zeit.de/online/2020/hamwanich'
+>>> converter._id_to_url('http://xml.zeit.de/flubber')
+'http://xml.zeit.de/flubber'
+
+The url is also just returned if it is completely unrelated:
+
+>>> converter._id_to_url('http://gocept.com')
+'http://gocept.com'
+
+
+We map all <a href=..."> according to the schema above:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>Aus winzigen embryonalen ...</p>
+...     <p>Fuer <a href="http://xml.zeit.de/online/2007/01/Somalia">
+...         menschliche</a></p>
+...     <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>Aus winzigen embryonalen ...</p>
+<p>Fuer <a href="http://127.0.0.1/repository/online/2007/01/Somalia">
+        menschliche</a></p>
+<p>Selbst wenn </p>
+
+The other way round:
+
+>>> converter.from_html(article.xml['body'], """\
+...     <p>Aus winzigen embryonalen ...</p>
+...     <p>Fuer <a
+...         href="http://127.0.0.1/repository/online/2007/01/eta-zapatero">
+...     menschliche</a></p>
+...     <p>Selbst wenn </p>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article ...>
+  <head/>
+  <body>
+    <title>Title</title>
+    <p>Aus winzigen embryonalen ...</p>
+    <p>Fuer <a href="http://xml.zeit.de/online/2007/01/eta-zapatero">
+    menschliche</a></p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+
 Images
 ------
 

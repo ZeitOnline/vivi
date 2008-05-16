@@ -16,6 +16,7 @@ import zope.interface
 import zope.publisher.interfaces.browser
 import zope.security.management
 import zope.security.proxy
+import zope.traversing.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -52,6 +53,10 @@ class HTMLConverter(object):
             if image_nodes:
                 self._replace_image_nodes_by_img(image_nodes)
 
+            anchors = node.xpath('a')
+            if anchors:
+                self._replace_ids_by_urls(anchors)
+
             if node.tag == 'intertitle':
                 node.tag = 'h3'
             elif node.tag == 'article_extra':
@@ -87,6 +92,9 @@ class HTMLConverter(object):
             img_nodes = node.xpath('img')
             if img_nodes:
                 self._replace_img_nodes_by_image(img_nodes)
+            anchors = node.xpath('a')
+            if anchors:
+                self._replace_urls_by_ids(anchors)
 
             if node.tag == 'p' and node.find('input') is not None:
                 node = self._article_extra(node)
@@ -155,6 +163,19 @@ class HTMLConverter(object):
             node.set('id', id)
         return node
 
+    def _replace_ids_by_urls(self, anchors):
+        for anchor in anchors:
+            id = anchor.get('href')
+            if not id:
+                continue
+            anchor.set('href', self._id_to_url(id))
+
+    def _replace_urls_by_ids(self, anchors):
+        for anchor in anchors:
+            url = anchor.get('href')
+            if not url:
+                continue
+            anchor.set('href', self._url_to_id(url))
 
     @staticmethod
     def _replace_entities(value):
@@ -165,6 +186,25 @@ class HTMLConverter(object):
                 continue
             value = value.replace('&'+entity_name+';', unichr(codepoint))
         return value
+
+    def _url_to_id(self, url):
+        """Produce unique id from url if possible."""
+        repository_url = self.url(self.repository)
+        if not url.startswith(repository_url):
+            return url
+        path = url[len(repository_url)+1:]
+        obj = zope.traversing.interfaces.ITraverser(self.repository).traverse(
+            path, None)
+        if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
+            return url
+        return obj.uniqueId
+
+    def _id_to_url(self, id):
+        try:
+            obj = self.repository.getContent(id)
+        except (KeyError, ValueError):
+            return id
+        return self.url(obj)
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):

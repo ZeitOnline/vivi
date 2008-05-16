@@ -4,15 +4,18 @@
 
 import zope.cachedescriptors.property
 import zope.component
+import zope.traversing.interfaces
 
 import gocept.fckeditor.connector
 
-import zeit.cms.repository.interfaces
-import zeit.cms.clipboard.interfaces
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.clipboard.interfaces
+import zeit.cms.repository.interfaces
 
 
-class FileBrowser(gocept.fckeditor.connector.FCKEditorBrowser):
+class FileBrowser(zeit.cms.browser.view.Base,
+                  gocept.fckeditor.connector.FCKEditorBrowser):
     """Connect FCKEditor file browser to cms."""
 
     @zope.cachedescriptors.property.Lazy
@@ -52,15 +55,17 @@ class FileBrowser(gocept.fckeditor.connector.FCKEditorBrowser):
 
     def dictify(self, objects):
         for obj in objects:
+            if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj):
+                obj = obj.references
             name = obj.__name__
             list_repr = self.get_list_repr(obj)
             if list_repr is None:
                 title = name
-                uniqueId = None
+                unique_id = self.url(obj)
                 id_and_title = name
             else:
                 title = list_repr.title
-                unique_id = list_repr.uniqueId
+                unique_id = list_repr.url()
                 id_and_title = u'%s (%s)' % (name, title)
 
             yield dict(
