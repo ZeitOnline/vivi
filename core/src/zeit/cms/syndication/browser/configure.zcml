@@ -90,7 +90,6 @@
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zope.ManageContent"
     icon="/@@/zeit.cms/icons/default-feed.png"
-    title="Remember as syndication target"
     action="@@add-to-my-syndication-targets.html"
     sort="90"
     />

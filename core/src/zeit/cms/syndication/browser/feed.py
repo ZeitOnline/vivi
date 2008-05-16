@@ -222,3 +222,5 @@ def feed_preview(context):
 
 class RememberSyndicationTargetMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     """Remember as syndication target menu item"""
+
+    title = _('Remember as syndication target')
