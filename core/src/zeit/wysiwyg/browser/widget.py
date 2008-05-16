@@ -19,10 +19,14 @@ TEMPLATE = '''\
 class FckEditorWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
     def __call__(self, *args, **kw):
+        wysiwyg_resource = zope.component.getAdapter(
+            self.request, name='zeit.wysiwyg')
+        fck_resource = zope.component.getAdapter(
+            self.request, name='gocept.fckeditor')
         data = {
             'field_name': self.name,
-            'config-path': '/@@/zeit.wysiwyg',
-            'editor-path': '/@@/gocept.fckeditor',
+            'config-path': wysiwyg_resource(),
+            'editor-path': fck_resource(),
             'html': zope.app.form.browser.textwidgets.escape(
                 self._getFormValue()).replace('"', '&quot;')}
         return TEMPLATE % data
