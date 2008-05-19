@@ -1,8 +1,12 @@
 CHANGES
 =======
 
-0.17 (unreleased)
+0.17 (2008-05-19)
 -----------------
+
+- Better lock handling: always look for definete information on the server
+  before locking/unlocking or doing anything with a lock. 
+- Removed the live searching tests.
 
 0.16 (2008-05-13)
 -----------------
