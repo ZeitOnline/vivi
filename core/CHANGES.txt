@@ -4,6 +4,10 @@ CHANGES
 0.18 (unreleased)
 -----------------
 
+- Fixed a bug in the cache sweeping which did not remove the actual data.
+- Diversified cache keys by reversing unique_id. Objects which are close in the
+  tree should now be in differend BTree buckets.
+
 0.17 (2008-05-19)
 -----------------
 

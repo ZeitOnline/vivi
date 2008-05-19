@@ -61,13 +61,16 @@ Invalidate `another-id` via an event:
 The data is gone now:
 
 >>> import pprint
->>> pprint.pprint(list(sorted(property_cache._storage.keys())))
-[u'http://xml.zeit.de/index',
- u'http://xml.zeit.de/testing/',
+>>> from zeit.connector.cache import get_storage_key
+>>> pprint.pprint(sorted(
+...     get_storage_key(k) for k in property_cache._storage.keys()))
+['http://xml.zeit.de/index',
+ 'http://xml.zeit.de/testing/',
  'resource-id',
  'yet-another-id']
->>> pprint.pprint(list(sorted(child_name_cache._storage.keys())))
-[u'http://xml.zeit.de/testing/',
+>>> pprint.pprint(
+...     sorted(get_storage_key(k) for k in child_name_cache._storage.keys()))
+['http://xml.zeit.de/testing/',
  'resource-id',
  'yet-another-id']
 
