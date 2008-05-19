@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.18 (unreleased)
+0.18 (2008-05-19)
 -----------------
 
 - Fixed a bug in the cache sweeping which did not remove the actual data.
