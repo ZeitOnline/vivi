@@ -111,7 +111,7 @@
     class=".feed.RemoveFromMySyndicationTargetsMenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zope.ManageContent"
-    icon="/@@/zeit.cms/icons/default-feed.png"
+    icon="/@@/zeit.cms/icons/deselect-default-feed.png"
     action="@@remove-from-my-syndication-targets.html"
     filter="context/@@remove-from-my-syndication-targets.html/in_targets"
     sort="90"
