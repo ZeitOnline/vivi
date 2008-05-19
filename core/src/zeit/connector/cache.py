@@ -7,9 +7,7 @@ import time
 
 import persistent
 import transaction
-import BTrees.LOBTree
-import BTrees.OLBTree
-import BTrees.OOBTree
+import BTrees
 import ZODB.blob
 
 import zope.component
@@ -31,10 +29,10 @@ class ResourceCache(persistent.Persistent):
     UPDATE_INTERVAL = 24 * 3600
 
     def __init__(self):
-        self._etags = BTrees.OOBTree.OOBTree()
-        self._data = BTrees.OOBTree.OOBTree()
-        self._last_access_time = BTrees.OLBTree.OLBTree()
-        self._time_to_id = BTrees.LOBTree.LOBTree()
+        self._etags = BTrees.family64.OO.BTree()
+        self._data = BTrees.family64.OO.BTree()
+        self._last_access_time = BTrees.family64.OI.BTree()
+        self._time_to_id = BTrees.family64.IO.BTree()
 
     def getData(self, unique_id, properties):
         current_etag = properties[('getetag', 'DAV:')]
@@ -130,7 +128,7 @@ class VolatileCache(persistent.Persistent):
 
         """
         if not self._cache_valid:
-            self._storage = BTrees.OOBTree.OOBTree()
+            self._storage = BTrees.family32.OO.BTree()
             self.__class__._cache_valid = True
 
 
