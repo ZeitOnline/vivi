@@ -27,7 +27,7 @@
           tal:attributes="value last_search/text | nothing" />
 
         <input type="submit" name="search" value="Search" 
-          i18n:attributes="Search" />
+          i18n:attributes="value" />
       </p>
 
       <div id="search-extended-show" i18n:translate="">
