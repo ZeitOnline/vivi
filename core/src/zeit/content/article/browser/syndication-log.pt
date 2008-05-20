@@ -1,8 +1,0 @@
-<div class="syndication-log">
-  <ul>
-    <li tal:repeat="item view/get_values">
-      <span tal:replace="item/syndicatedOn" />
-      <!-- XXX syndicated in is missing still. -->
-    </li>
-  </ul>
-</div>

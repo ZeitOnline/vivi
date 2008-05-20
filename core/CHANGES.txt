@@ -17,6 +17,7 @@ zeit.cms changes
 - WYSIWYG-Editor: Paste from Word erzeugt zuverlässiger Absätze
 - Im Preview von ausgecheckten Dokumenten kann man jetzt "reload" drücken (und
   das Preview wird auch aktualisiert, Bug #4173)
+- Artikel ist jetzt in einem eigenen Package: zeit.content.article
 
 
 0.9.13 (2008-05-13)

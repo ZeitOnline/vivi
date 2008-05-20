@@ -10,9 +10,6 @@
   <include package="zeit.workflow" />
   <include package="zeit.workflow.browser" />
 
-  <include package="zeit.content.article" />
-  <include package="zeit.content.article.browser" />
-  
   <include package="zeit.content.centerpage" />
   <include package="zeit.content.centerpage.browser" />
 

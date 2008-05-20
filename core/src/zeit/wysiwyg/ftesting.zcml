@@ -17,9 +17,6 @@
 
   <include package="zeit.cms" file="principals-testing.zcml" />
 
-  <include package="zeit.content.article" />
-  <include package="zeit.content.article.browser" />
-
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
