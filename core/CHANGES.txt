@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.14 (unreleased)
+0.9.14 (2008-05-20)
 -------------------
 
 - Ein Objekt kann nur noch einmal ausgecheckt werden.
