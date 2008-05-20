@@ -31,19 +31,20 @@ class LuceneSearch(object):
         'ressort': 'print-ressort',
         'navigation': 'ressort',
         # 'page': 
-        # 'serie': 
-        # edited
-        # correced
+        'serie': 'serie',
+        'edited': 'edited',
+        'correced': 'corrected',
+        'refined': 'refined',
         # images_added
     }
 
     indexes = frozenset(index_map.keys())
 
     def __call__(self, search_terms):
-        logger.info("Lucene search for %s" % search_terms)
         query = self.get_query_args(search_terms)
+        logger.info("Lucene search for %s" % query)
         tree = self.get_tree(query)
-        logger.debug("Lucene search done for %s" % search_terms)
+        logger.debug("Lucene search done for %s" % query)
         return set(self.get_result(tree))
 
     def get_query_args(self, search_terms):
