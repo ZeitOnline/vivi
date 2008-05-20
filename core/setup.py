@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='zeit.cms',
+    name='zeit.content.article',
     version='0.9.14dev',
     author='gocept',
     author_email='mail@gocept.com',
@@ -15,11 +15,6 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
-        'PIL',
-        'ZODB3>3.7',
-        'decorator',
-        'gocept.cache',
-        'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.2',
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.3.2',
@@ -36,14 +31,15 @@ setup(
         'z3c.menu.simple>=0.5.1',
         'z3c.traverser',
         'zc.datetimewidget',
-        'zc.relation',
         'zc.form',
         'zc.recipe.egg>=1.1.0dev-r84019',
+        'zc.relation',
         'zc.resourcelibrary',
         'zc.set',
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
+        'zeit.cms>=0.9.14dev',
         'zeit.connector>=0.14',
         'zeit.objectlog>=0.2',
         'zope.app.apidoc',
@@ -54,11 +50,9 @@ setup(
         'zope.app.preference',
         'zope.app.securitypolicy',
         'zope.app.twisted',
-        'zope.i18n>3.4.0',
         'zope.copypastemove',
+        'zope.i18n>3.4.0',
         'zope.location>=3.4.0b2',
-        'zope.sendmail',
-        'zope.xmlpickle',
     ],
     extras_require={
         'test': [

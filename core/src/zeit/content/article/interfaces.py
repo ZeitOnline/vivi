@@ -11,7 +11,7 @@ import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
-from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.i18n import MessageFactory as _
 
 import zeit.content.article.source
 

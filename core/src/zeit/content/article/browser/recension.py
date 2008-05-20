@@ -7,7 +7,7 @@ import zope.formlib.form
 
 import zeit.cms.browser.form
 import zeit.cms.browser.view
-from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.i18n import MessageFactory as _
 
 import gocept.form.grouped
 

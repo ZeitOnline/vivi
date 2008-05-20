@@ -1,4 +1,4 @@
-<div class="recensions" i18n:domain="zeit.cms">
+<div class="recensions" i18n:domain="zeit.content.article">
   <tal:replace replace="resource_library:zeit.cms.recension" />
   <div class="recension"
     tal:condition="view/recensions"
