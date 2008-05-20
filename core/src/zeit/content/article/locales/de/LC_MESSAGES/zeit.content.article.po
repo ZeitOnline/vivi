@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu May  8 16:49:36 2008\n"
-"PO-Revision-Date: 2008-05-13 18:07+0100\n"
+"POT-Creation-Date: Tue May 20 15:52:19 2008\n"
+"PO-Revision-Date: 2008-05-20 15:59+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,882 +11,25 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: src/zeit/calendar/browser/calendar_view.py:27
-msgid "Calendar"
-msgstr "Kalender"
+#: src/zeit/content/article/browser/configure.zcml:15
+msgid "Edit metadata"
+msgstr "Metadaten"
 
-#: src/zeit/calendar/browser/event.py:25
-msgid "Event"
-msgstr "Termin"
-
-#: src/zeit/calendar/browser/event.py:29
-#: src/zeit/calendar/interfaces.py:31
-msgid "Description"
-msgstr "Beschreibung"
-
-#: src/zeit/calendar/browser/event.py:33
-msgid "Related"
-msgstr "Related"
-
-#: src/zeit/calendar/browser/event.py:53
-msgid "Add event"
-msgstr "Termin hinzufügen"
-
-#: src/zeit/calendar/browser/event.py:67
-msgid "Edit event"
-msgstr "Termin bearbeiten"
-
-#: src/zeit/calendar/browser/event.py:70
-#: src/zeit/cms/browser/form.py:251
-msgid "Apply"
-msgstr "Speichern"
-
-#: src/zeit/calendar/interfaces.py:23
-msgid "Start"
-msgstr "Beginn"
-
-#: src/zeit/calendar/interfaces.py:24
-msgid "Date when the event starts."
-msgstr "Datum/Uhrzeit des Terminbeginns"
-
-#: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:269
-#: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:257
-#: src/zeit/cms/syndication/browser/feed.py:155
-#: src/zeit/cms/syndication/interfaces.py:33
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:29
-#: src/zeit/content/article/interfaces.py:145
-#: src/zeit/content/gallery/interfaces.py:80
-#: src/zeit/content/infobox/interfaces.py:22
-#: src/zeit/search/browser/search.py:102
-#: src/zeit/search/interfaces.py:18
-msgid "Title"
-msgstr "Titel"
-
-#: src/zeit/calendar/interfaces.py:28
-msgid "Title will be shown in overview pages."
-msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
-
-#: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:264
-msgid "Related content"
-msgstr "Verlinkte Objekte"
-
-#: src/zeit/calendar/interfaces.py:36
-msgid "Documents that are related to this object."
-msgstr "Dokumente, die verlinkt werden sollen."
-
-#: src/zeit/calendar/interfaces.py:43
-msgid "Location/Type"
-msgstr "Location/Typ"
-
-#: src/zeit/calendar/interfaces.py:44
-msgid "Where should the article be placed."
-msgstr "Wo soll der Artikel erscheinen?"
-
-#: src/zeit/calendar/interfaces.py:48
-msgid "Topic?"
-msgstr "Thema?"
-
-#: src/zeit/calendar/interfaces.py:49
-msgid "Is the article a topic for the next week?"
-msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
-
-#: src/zeit/cms/browser/configure.zcml:169
-#: src/zeit/cms/browser/configure.zcml:184
-msgid "Source"
-msgstr "Quelltext"
-
-#: src/zeit/cms/browser/configure.zcml:17
-#: src/zeit/cms/browser/configure.zcml:22
-msgid "context sensitive actions"
-msgstr "context sensitive actions"
-
-#: src/zeit/cms/browser/configure.zcml:258
-msgid "Zeit CMS User Preferences"
-msgstr "Benutzereinstellungen"
-
-#: src/zeit/cms/browser/configure.zcml:312
-msgid "Live"
-msgstr "Live"
-
-#: src/zeit/cms/browser/configure.zcml:321
-msgid "Development"
-msgstr "Relaunch"
-
-#: src/zeit/cms/browser/configure.zcml:51
-msgid "context sensitive views"
-msgstr "context sensitive views"
-
-#: src/zeit/cms/browser/configure.zcml:56
-msgid "folder specific actions"
-msgstr "folder specific actions"
-
-#: src/zeit/cms/browser/form.py:146
 #: src/zeit/content/article/browser/configure.zcml:156
 msgid "Add"
 msgstr "Hinzufügen …"
 
-#: src/zeit/cms/browser/form.py:168
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: src/zeit/cms/browser/form.py:206
-#: src/zeit/cms/content/browser/template.zcml:40
 #: src/zeit/content/article/browser/configure.zcml:165
-#: src/zeit/content/image/browser/configure.zcml:97
-#: src/zeit/content/gallery/browser/configure.zcml:103
 #: src/zeit/content/article/browser/recension-overview.pt:7
 #: src/zeit/content/article/browser/recension-overview.pt:48
-#: src/zeit/content/gallery/browser/overview.pt:19
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:248
-msgid "No changes"
-msgstr "Keine Änderungen"
-
-#: src/zeit/cms/browser/form.py:259
-#: src/zeit/cms/repository/browser/unknown.zcml:26
-#: src/zeit/cms/repository/browser/folder.zcml:17
-#: src/zeit/cms/syndication/browser/configure.zcml:47
-#: src/zeit/content/image/browser/configure.zcml:31
-#: src/zeit/content/image/browser/configure.zcml:166
-msgid "View"
-msgstr "Anzeigen"
-
-#: src/zeit/cms/browser/globalmenuitem.pt:3
-#: src/zeit/cms/browser/grouped-form.pt:26
-#: src/zeit/cms/browser/lightbox.pt:3
-#: src/zeit/cms/browser/sourceedit.pt:16
-#: src/zeit/cms/browser/sourceedit.pt:39
-#: src/zeit/cms/content/browser/combinationwidget.pt:14
-#: src/zeit/cms/content/browser/combinationwidget.pt:36
-#: src/zeit/xmleditor/browser/form.pt:15
-#: src/zeit/xmleditor/browser/form.pt:36
-msgid "${DYNAMIC_CONTENT}"
-msgstr "${DYNAMIC_CONTENT}"
-
-#: src/zeit/cms/browser/lightbox.py:18
-msgid "Form"
-msgstr "Formular"
-
-#: src/zeit/cms/browser/listing.py:196
-#: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:156
-msgid "Published"
-msgstr "Veröffentlicht"
-
-#: src/zeit/cms/browser/listing.py:199
-msgid "Published but has changes"
-msgstr "Veröffentlicht, hat aber Änderungen"
-
-#: src/zeit/cms/browser/listing.py:202
-msgid "Not published"
-msgstr "Nicht veröffentlicht"
-
-#: src/zeit/cms/browser/listing.py:258
-msgid "There are no objects in this folder."
-msgstr "Es gibt keine Objekte in diesem Ordner."
-
-#: src/zeit/cms/browser/listing.py:265
-#: src/zeit/cms/syndication/browser/feed.py:151
-#: src/zeit/content/article/interfaces.py:143
-#: src/zeit/search/browser/search.py:99
-#: src/zeit/search/interfaces.py:19
-msgid "Author"
-msgstr "Autoren"
-
-#: src/zeit/cms/browser/listing.py:273
-#: src/zeit/cms/interfaces.py:39
-#: src/zeit/content/image/browser/imagegroup.py:68
-#: src/zeit/search/interfaces.py:16
-msgid "File name"
-msgstr "Dateiname"
-
-#: src/zeit/cms/browser/listing.py:277
-msgid "Modified"
-msgstr "Verändert"
-
-#: src/zeit/cms/browser/listing.py:280
-#: src/zeit/cms/syndication/browser/feed.py:162
-msgid "Hits"
-msgstr "Treffer"
-
-#: src/zeit/cms/browser/listing.py:282
-#: src/zeit/cms/content/interfaces.py:76
-#: src/zeit/search/browser/sidebar.pt:80
-msgid "Ressort"
-msgstr "Ressort"
-
-#: src/zeit/cms/browser/listing.py:286
-#: src/zeit/cms/content/interfaces.py:71
-#: src/zeit/search/browser/search.py:110
-#: src/zeit/search/interfaces.py:23
-#: src/zeit/search/browser/sidebar.pt:72
-msgid "Page"
-msgstr "Seite"
-
-#: src/zeit/cms/browser/locking-error.pt:10
-msgid "The action you were trying to do could not be finished because the resource ${resource-id} was locked."
-msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil ${resource-id} gesperrt ist."
-
-#: src/zeit/cms/browser/locking-error.pt:5
-msgid "An error is occoured"
-msgstr "Ein Fehler ist aufgetreten."
-
-#: src/zeit/cms/browser/main_template.pt:10
-msgid "Error"
-msgstr "Fehler"
-
-#: src/zeit/cms/browser/main_template.pt:201
-#: src/zeit/content/article/browser/recension-overview.pt:66
-msgid "Add..."
-msgstr "Hinzufügen …"
-
-#: src/zeit/cms/browser/menu.py:77
-msgid "CMS"
-msgstr "CMS"
-
-#: src/zeit/cms/browser/notices.pt:22
-msgid "Hides automatically after 5 seconds."
-msgstr "Wird nach 5s ausgeblendet."
-
-#: src/zeit/cms/browser/notices.pt:25
-msgid "hide"
-msgstr "Verstecken"
-
-#. Default: "Notices"
-#: src/zeit/cms/browser/notices.pt:5
-msgid "notices_label"
-msgstr "Meldungen"
-
-#: src/zeit/cms/browser/object-reference-widget.pt:11
-msgid "Choose object"
-msgstr "Objekt auswählen"
-
-#: src/zeit/cms/browser/object-reference-widget.pt:14
-msgid "Show object"
-msgstr "Objekt anzeigen"
-
-#: src/zeit/cms/browser/secondary_context_actions.pt:4
-msgid "Additional actions"
-msgstr "Weitere Aktionen"
-
-#: src/zeit/cms/browser/system-error.pt:8
-msgid "The action you were trying to do could not be finished."
-msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
-
-#: src/zeit/cms/browser/tree.pt:18
-msgid "Remove"
-msgstr "Entfernen"
-
-#: src/zeit/cms/checkout/browser/configure.zcml:15
-msgid "Checkout"
-msgstr "Auschecken"
-
-#: src/zeit/cms/checkout/browser/configure.zcml:32
-msgid "Checkin"
-msgstr "Einchecken"
-
-#. Default: ""
-#: src/zeit/cms/checkout/browser/manager.py:17
-msgid "\"${name}\" has been checked out."
-msgstr "»${name}« wurde ausgecheckt."
-
-#. Default: ""
-#: src/zeit/cms/checkout/browser/manager.py:35
-msgid "\"${name}\" has been checked in."
-msgstr "»${name}« wurde eingecheckt."
-
-#. Default: ""
-#: src/zeit/cms/clipboard/browser/clip.py:100
-msgid "\"${old_name}\" was renamed to \"${new_name}\"."
-msgstr "»${old_name}« wurde nach »${new_name}« umbenannt."
-
-#. Default: ""
-#: src/zeit/cms/clipboard/browser/clip.py:52
-msgid "\"${name}\" was removed from the clipboard."
-msgstr "»${name}« wurde aus dem Clipboard entfernt."
-
-#: src/zeit/cms/clipboard/browser/clip.py:80
-msgid "New clip name"
-msgstr "Neuer Name des Clips"
-
-#: src/zeit/cms/clipboard/browser/clip.py:85
-#: src/zeit/cms/clipboard/browser/clip.py:94
-#: src/zeit/cms/repository/browser/menu.py:12
-#: src/zeit/cms/repository/browser/rename.py:51
-msgid "Rename"
-msgstr "Umbenennen"
-
-#: src/zeit/cms/clipboard/browser/copypastemove.py:18
-msgid "Copy from clipboard"
-msgstr "Aus Clipboard kopieren"
-
-#. Default: ""
-#: src/zeit/cms/clipboard/browser/copypastemove.py:43
-msgid "${source} was copied to ${target}."
-msgstr "»${source}« wurde nach »${target}« kopiert."
-
-#. Default: ""
-#: src/zeit/cms/clipboard/browser/entry.py:83
-msgid "Broken reference to ${uniqueId}"
-msgstr "Invalide Referenz zu ${uniqueId}"
-
-#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:12
-msgid "Copy content into ${paste-into-id}"
-msgstr "Objekte nach »${paste-into-id}« kopieren"
-
-#. Default: ""
-#.  "Choose an entry from your clipboard which you would like to copy to \n"
-#.  "    ${paste-into-id}."
-#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:22
-msgid "clipboard-paste-explain"
-msgstr "Wählen Sie den Eintrag aus Ihrer Zwischenablage den Sie nach »${paste-into-id}« kopieren möchten."
-
-#: src/zeit/cms/content/browser/form.py:34
-msgid "Navigation"
-msgstr "Navigation"
-
-#: src/zeit/cms/content/browser/form.py:38
-#: src/zeit/content/infobox/browser/form.py:31
-#: src/zeit/content/portraitbox/browser/form.py:28
-msgid "Head"
-msgstr "Kopf"
-
-#: src/zeit/cms/content/browser/form.py:42
-#: src/zeit/content/image/browser/form.py:30
-#: src/zeit/content/infobox/browser/form.py:27
-#: src/zeit/content/infobox/browser/form.py:47
-msgid "Texts"
-msgstr "Texte"
-
-#: src/zeit/cms/content/browser/form.py:54
-#: src/zeit/content/article/browser/form.py:58
-#: src/zeit/content/article/browser/recension.py:71
-msgid "misc."
-msgstr "sonstiges"
-
-#: src/zeit/cms/content/browser/keyword-tree.pt:16
-msgid "If you would like to suggest a keyword, send an e-mail to ${recipient}."
-msgstr "Wenn Sie ein Schlagwort vorschlagen möchten, senden Sie eine E-Mail an ${recipient}."
-
-#: src/zeit/cms/content/browser/keyword-tree.pt:30
-msgid "Similar keywords:"
-msgstr "Ähnliche Schlagworte:"
-
-#: src/zeit/cms/content/browser/keyword-tree.pt:5
-msgid "Taxonomy"
-msgstr "Taxonomie"
-
-#: src/zeit/cms/content/browser/keyword-typeahead.pt:12
-msgid "No Keywords match your search criteria."
-msgstr "Es gibt keine Schlagworte, die den Kriterien entsprechen."
-
-#: src/zeit/cms/content/browser/keyword-widget.pt:30
-msgid "Edit keywords"
-msgstr "Schlagworte bearbeiten"
-
-#: src/zeit/cms/content/browser/template-properties.pt:10
-msgid "Value"
-msgstr "Wert"
-
-#: src/zeit/cms/content/browser/template-properties.pt:48
-#: src/zeit/cms/syndication/browser/feed_sorting.pt:8
-msgid "Save"
-msgstr "Speichern"
-
-#: src/zeit/cms/content/browser/template-properties.pt:8
-msgid "Namespace"
-msgstr "Namespace"
-
-#: src/zeit/cms/content/browser/template-properties.pt:9
-msgid "Name"
-msgstr "Name"
-
-#: src/zeit/cms/content/browser/template.py:110
-msgid "Choose template"
-msgstr "Vorlage auswählen"
-
-#: src/zeit/cms/content/browser/template.py:113
-msgid "Continue"
-msgstr "Weiter …"
-
-#: src/zeit/cms/content/browser/template.py:129
-#: src/zeit/cms/content/browser/template.zcml:32
-msgid "Template"
-msgstr "Vorlage"
-
-#: src/zeit/cms/content/browser/template.py:25
-#: src/zeit/cms/content/browser/template.py:40
-#: src/zeit/cms/content/browser/template.py:176
-msgid "Templates"
-msgstr "Vorlagen"
-
-#: src/zeit/cms/content/browser/template.py:65
-msgid "Add template"
-msgstr "Vorlage hinzufügen"
-
-#: src/zeit/cms/content/browser/template.py:75
-msgid "Edit template"
-msgstr "Vorlage bearbeiten"
-
-#: src/zeit/cms/content/browser/template.py:80
-msgid "Edit webdav properties"
-msgstr "WebDAV-Properties bearbeiten"
-
-#: src/zeit/cms/content/browser/template.zcml:48
-msgid "Properties"
-msgstr "Eigenschaften"
-
-#: src/zeit/cms/content/field.py:32
-msgid "Invalid structure."
-msgstr "Ungültige Struktur"
-
-#: src/zeit/cms/content/interfaces.py:103
-msgid "Copyright (c)"
-msgstr "Copyright ©"
-
-#: src/zeit/cms/content/interfaces.py:104
-msgid "Do not enter (c)."
-msgstr "© nicht eingeben."
-
-#: src/zeit/cms/content/interfaces.py:108
-msgid "Kicker"
-msgstr "Spitzmarke"
-
-#: src/zeit/cms/content/interfaces.py:109
-msgid "Please take care of capitalisation."
-msgstr "Bitte auf Groß- und Kleinschreibung achten."
-
-#: src/zeit/cms/content/interfaces.py:113
-msgid "By line"
-msgstr "„Von“-Zeile"
-
-#: src/zeit/cms/content/interfaces.py:120
-msgid "Subtitle"
-msgstr "Untertitel"
-
-#: src/zeit/cms/content/interfaces.py:124
-msgid "Teaser title"
-msgstr "Teaser-Titel"
-
-#: src/zeit/cms/content/interfaces.py:128
-msgid "Teaser text"
-msgstr "Teaser-Text"
-
-#: src/zeit/cms/content/interfaces.py:133
-msgid "Index teaser title"
-msgstr "Kurzteaser-Titel"
-
-#: src/zeit/cms/content/interfaces.py:138
-msgid "Index teaser text"
-msgstr "Kurzteaser-Text"
-
-#: src/zeit/cms/content/interfaces.py:143
-msgid "Homepage teaser title"
-msgstr "Homepageteaser-Titel"
-
-#: src/zeit/cms/content/interfaces.py:148
-msgid "Homepage teaser text"
-msgstr "Homepageteaser-Text"
-
-#: src/zeit/cms/content/interfaces.py:153
-msgid "VG Wort Id"
-msgstr "VG Wort Id"
-
-#: src/zeit/cms/content/interfaces.py:225
-msgid "XML Source"
-msgstr "XML-Quelltext"
-
-#: src/zeit/cms/content/interfaces.py:265
-msgid "Objects that are related to this object."
-msgstr "Objekte die verlinkt werden sollen."
-
-#: src/zeit/cms/content/interfaces.py:295
-msgid "Hits today"
-msgstr "Treffer heute"
-
-#: src/zeit/cms/content/interfaces.py:36
-msgid "Keyword is contained in the taxonomy"
-msgstr "Schlagword aus der Taxonomie."
-
-#: src/zeit/cms/content/interfaces.py:47
-msgid "Root of ontology"
-msgstr "Wurzel der Ontologie"
-
-#: src/zeit/cms/content/interfaces.py:61
-#: src/zeit/content/article/interfaces.py:180
-#: src/zeit/content/image/interfaces.py:35
-#: src/zeit/search/interfaces.py:21
-#: src/zeit/content/article/browser/recension-overview.pt:32
-#: src/zeit/search/browser/sidebar.pt:46
-msgid "Year"
-msgstr "Jahr"
-
-#: src/zeit/cms/content/interfaces.py:66
-#: src/zeit/content/image/interfaces.py:41
-#: src/zeit/search/interfaces.py:22
-#: src/zeit/search/browser/sidebar.pt:55
-msgid "Volume"
-msgstr "Ausgabe"
-
-#: src/zeit/cms/content/interfaces.py:80
-msgid "Sub ressort"
-msgstr "Unterressort"
-
-#: src/zeit/cms/content/interfaces.py:85
-#: src/zeit/content/article/interfaces.py:139
-msgid "Authors"
-msgstr "Autoren"
-
-#: src/zeit/cms/content/interfaces.py:91
-#: src/zeit/cms/content/browser/keyword-tree.pt:12
-#: src/zeit/cms/content/browser/keyword-tree.pt:36
-msgid "Keywords"
-msgstr "Schlagworte"
-
-#: src/zeit/cms/content/interfaces.py:98
-msgid "Serie"
-msgstr "Serie"
-
-#: src/zeit/cms/locking/browser/interfaces.py:16
-msgid "Locked"
-msgstr "Gesperrt"
-
-#: src/zeit/cms/locking/browser/interfaces.py:20
-msgid "Locker"
-msgstr "Gesperrt von"
-
-#: src/zeit/cms/locking/browser/interfaces.py:25
-msgid "Locked until"
-msgstr "Gesperrt bis"
-
-#: src/zeit/cms/locking/browser/lock.py:29
-msgid "Locks"
-msgstr "Sperren"
-
-#: src/zeit/cms/locking/browser/lock.py:49
-msgid "Steal lock"
-msgstr "Sperre stehlen"
-
-#. Default: ""
-#: src/zeit/cms/locking/browser/lock.py:56
-msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
-msgstr "Sperre auf  »${name}« von «${old_locker}» gestohlen."
-
-#: src/zeit/cms/locking/browser/lock.py:61
-msgid "Lock"
-msgstr "Sperren"
-
-#. Default: ""
-#: src/zeit/cms/locking/browser/lock.py:66
-msgid "\"${name}\" has been locked."
-msgstr "»${name}« wurde gesperrt."
-
-#: src/zeit/cms/locking/browser/lock.py:69
-msgid "Unlock"
-msgstr "Sperre aufheben"
-
-#. Default: ""
-#: src/zeit/cms/locking/browser/lock.py:74
-msgid "\"${name}\" has been unlocked."
-msgstr "Die Sperre auf »${name}« wurde entfernt."
-
-#: src/zeit/cms/locking/browser/lock.py:93
-msgid "Manage lock"
-msgstr "Sperre verwalten"
-
-#: src/zeit/cms/permissions.zcml:10
-msgid "Copy content"
-msgstr "Inhalt kopieren"
-
-#: src/zeit/cms/permissions.zcml:15
-msgid "Edit ZEIT content"
-msgstr "ZEIT-Inhalte bearbeiten"
-
-#: src/zeit/cms/permissions.zcml:20
-msgid "Add ZEIT content"
-msgstr "ZEIT-Inhalte hinzufügen"
-
-#: src/zeit/cms/permissions.zcml:25
-msgid "Delete ZEIT content"
-msgstr "ZEIT-Inhalte löschen"
-
-#: src/zeit/cms/permissions.zcml:30
-msgid "Checkout content"
-msgstr "Inhalt auschecken"
-
-#: src/zeit/cms/permissions.zcml:35
-msgid "Checkin content"
-msgstr "Inhalt einchecken"
-
-#: src/zeit/cms/permissions.zcml:40
-msgid "Create and modify calendar entries"
-msgstr "Kalendereinträge erstellen und bearbeiten"
-
-#: src/zeit/cms/permissions.zcml:45
-msgid "Syndicate content"
-msgstr "Syndizieren"
-
-#: src/zeit/cms/permissions.zcml:5
-msgid "Rename content"
-msgstr "Inhalt umbenennen"
-
-#: src/zeit/cms/permissions.zcml:50
-msgid "Publish objects"
-msgstr "Veröffentlichen"
-
-#: src/zeit/cms/permissions.zcml:55
-msgid "Manage WebDAV locks"
-msgstr "WebDAV-Locks verwalten"
-
-#: src/zeit/cms/repository/browser/collection_metadata.pt:4
-msgid "${amount} Entries"
-msgstr "${amount} Einträge"
-
-#: src/zeit/cms/repository/browser/configure.zcml:17
-msgid "Add ..."
-msgstr "Hinzufügen …"
-
-#: src/zeit/cms/repository/browser/configure.zcml:17
-msgid "Menu for adding content."
-msgstr "Inhalt hinzufügen"
-
-#. Default: "You're about to delete a folder with content!"
-#: src/zeit/cms/repository/browser/delete.pt:19
-msgid "delete_content_folder_warning"
-msgstr "Achtung! Sie löschen einen Ordner mit Inhalt!"
-
-#. Default: "Delete content"
-#: src/zeit/cms/repository/browser/delete.pt:4
-msgid "delete_content_header"
-msgstr "Inhalt löschen"
-
-#. Default: ""
-#.  "Do you really want to delete the object from the folder\n"
-#.  "      \"${container-title}\"?"
-#: src/zeit/cms/repository/browser/delete.pt:9
-msgid "delete_content_text"
-msgstr "Möchten Sie das folgende Objekt aus dem Ordner »${container-title}« wirklich löschen?"
-
-#: src/zeit/cms/repository/browser/folder.py:17
-msgid "Add folder"
-msgstr "Ordner hinzufügen"
-
-#: src/zeit/cms/repository/browser/folder.py:19
-#: src/zeit/cms/repository/browser/folder.zcml:94
-msgid "Folder"
-msgstr "Ordner"
-
-#: src/zeit/cms/repository/browser/folder.py:27
-msgid "Edit folder"
-msgstr "Ordner bearbeiten"
-
-#: src/zeit/cms/repository/browser/folder.zcml:56
-msgid "Hide"
-msgstr "Verstecken"
-
-#: src/zeit/cms/repository/browser/folder.zcml:75
-msgid "Show"
-msgstr "Zeigen"
-
-#: src/zeit/cms/repository/browser/menu.py:18
-#: src/zeit/cms/content/browser/template.zcml:57
-#: src/zeit/cms/repository/browser/delete.pt:27
-msgid "Delete"
-msgstr "Löschen"
-
-#: src/zeit/cms/repository/browser/rename-box.pt:5
-msgid "Rename ${object-unique-id}"
-msgstr "${object-unique-id} umbenennen"
-
-#. Default: "Note: Renaming destroys links."
-#: src/zeit/cms/repository/browser/rename-box.pt:8
-msgid "rename-box-warning"
-msgstr "Achtung: Das Umbenennen von Objekten wird Referenzen/Links auf dieses Objekt ungültig machen. Objekte sollten nur umbenannt werden, wenn sie noch nicht veröffentlicht verlinkt oder anderweitig referenziert sind."
-
-#. Default: ""
-#: src/zeit/cms/repository/browser/rename.py:30
-msgid "\"${name}\" already exists."
-msgstr "\"${name}\" ist bereits vorhanden."
-
-#: src/zeit/cms/repository/browser/rename.py:37
-msgid "New file name"
-msgstr "Neuer Dateiname"
-
-#. Default: ""
-#: src/zeit/cms/repository/browser/rename.py:62
-msgid "Renamed \"${old_name}\" to \"${new_name}\""
-msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
-
-#. Default: ""
-#: src/zeit/cms/repository/browser/repository.py:100
-msgid "\"${name}\" is now hidden from the navigation tree."
-msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
-
-#. Default: ""
-#: src/zeit/cms/repository/browser/repository.py:107
-msgid "\"${name}\" is now shown in the navigation tree."
-msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
-
-#: src/zeit/cms/securitypolicy.zcml:12
-msgid "All users have this role implicitly"
-msgstr "All users have this role implicitly"
-
-#: src/zeit/cms/securitypolicy.zcml:12
-msgid "Everybody"
-msgstr "Jeder"
-
-#: src/zeit/cms/securitypolicy.zcml:14
-msgid "Site Manager"
-msgstr "Site Manager"
-
-#: src/zeit/cms/securitypolicy.zcml:15
-msgid "Site Member"
-msgstr "Site Member"
-
-#: src/zeit/cms/securitypolicy.zcml:17
-msgid "Editor"
-msgstr "Editor"
-
-#: src/zeit/cms/securitypolicy.zcml:18
-msgid "Owner"
-msgstr "Eigentümer"
-
-#: src/zeit/cms/syndication/browser/configure.zcml:114
-#: src/zeit/cms/syndication/browser/manager.pt:16
-msgid "Syndicate"
-msgstr "Syndizieren"
-
-#: src/zeit/cms/syndication/browser/configure.zcml:19
-msgid "Feed"
-msgstr "Channel"
-
-#: src/zeit/cms/syndication/browser/configure.zcml:29
-msgid "Metadata"
-msgstr "Metadaten"
-
-#: src/zeit/cms/syndication/browser/configure.zcml:37
-msgid "Sort"
-msgstr "Sortieren"
-
-#: src/zeit/cms/syndication/browser/feed.py:145
-msgid "Pinned"
-msgstr "Fest"
-
-#: src/zeit/cms/syndication/browser/feed.py:148
-msgid "Hidden on HP"
-msgstr "Versteckt auf HP"
-
-#. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:201
-msgid "\"${name}\" has been added to your syndication targets."
-msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
-
-#: src/zeit/cms/syndication/browser/form.py:20
-msgid "Add Channel"
-msgstr "Channel hinzufügen"
-
-#: src/zeit/cms/syndication/browser/form.py:33
-msgid "Edit Channel"
-msgstr "Channel bearbeiten"
-
-#: src/zeit/cms/syndication/browser/manager.pt:18
-msgid "Publish"
-msgstr "Veröffentlichen"
-
-#: src/zeit/cms/syndication/browser/manager.pt:5
-msgid "Syndicate \"${content-title}\""
-msgstr "»${content-title}« syndizieren"
-
-#: src/zeit/cms/syndication/browser/manager.pt:8
-msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
-msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
-
-#: src/zeit/cms/syndication/browser/manager.py:103
-#: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:303
-msgid "Preview"
-msgstr "Vorschau"
-
-#. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:39
-msgid "\"${name}\" has been syndicated to ${targets}"
-msgstr "»${name}« wurde nach »${targets}« syndiziert."
-
-#. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:53
-#: src/zeit/workflow/browser/form.py:57
-msgid "scheduled-for-publishing"
-msgstr "»${id}« wird veröffentlicht."
-
-#. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:56
-msgid "Could not publish \"${name}\"."
-msgstr "»${name}« konnte nicht veröffentlicht werden."
-
-#: src/zeit/cms/syndication/interfaces.py:134
-msgid "Syndication targets"
-msgstr "Syndizierungsziele"
-
-#: src/zeit/cms/syndication/interfaces.py:35
-msgid "Limit amount"
-msgstr "Anzahl begrenzen"
-
-#: src/zeit/cms/syndication/interfaces.py:36
-msgid "limit-amount-description"
-msgstr "limit-amount-description"
-
-#: src/zeit/cms/workflow/interfaces.py:22
-msgid "Last modified by"
-msgstr "Zuletzt geändert von"
-
-#: src/zeit/cms/workflow/interfaces.py:28
-msgid "Date last modified"
-msgstr "Zuletzt geändert am"
-
-#: src/zeit/cms/workflow/interfaces.py:42
-msgid "Date last published"
-msgstr "Zuletzt veröffentlicht am"
-
-#: src/zeit/cms/workflow/interfaces.py:48
-msgid "Date first released"
-msgstr "Zuerst veröffentlicht am"
-
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:13
-msgid "Edited documents"
-msgstr "Bearbeitete Dokumente"
-
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:24
-msgid "No edited documents."
-msgstr "Keine bearbeiteten Dokumente."
-
-#: src/zeit/content/article/browser/configure.zcml:15
-#: src/zeit/content/centerpage/browser/configure.zcml:24
-#: src/zeit/content/image/browser/configure.zcml:196
-#: src/zeit/content/gallery/browser/configure.zcml:32
-#: src/zeit/content/link/browser/configure.zcml:17
-#: src/zeit/content/infobox/browser/configure.zcml:18
-#: src/zeit/content/portraitbox/browser/configure.zcml:18
-msgid "Edit metadata"
-msgstr "Metadaten"
-
 #: src/zeit/content/article/browser/configure.zcml:33
-#: src/zeit/content/centerpage/browser/configure.zcml:40
-#: src/zeit/content/image/browser/configure.zcml:180
-#: src/zeit/content/gallery/browser/configure.zcml:49
-#: src/zeit/content/link/browser/configure.zcml:32
-#: src/zeit/content/infobox/browser/configure.zcml:36
-#: src/zeit/content/portraitbox/browser/configure.zcml:36
 msgid "View metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/article/browser/configure.zcml:50
-#: src/zeit/wysiwyg/browser/configure.zcml:8
 msgid "Edit WYSIWYG"
 msgstr "Bearbeiten"
 
@@ -903,7 +46,6 @@ msgid "View article metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/article/browser/form.py:134
-#: src/zeit/cms/workingcopy/browser/configure.zcml:22
 msgid "Content"
 msgstr "Inhalt"
 
@@ -920,6 +62,11 @@ msgstr "Assets bearbeiten"
 #: src/zeit/content/article/browser/configure.zcml:76
 msgid "Assets"
 msgstr "Assets"
+
+#: src/zeit/content/article/browser/form.py:58
+#: src/zeit/content/article/browser/recension.py:71
+msgid "misc."
+msgstr "sonstiges"
 
 #: src/zeit/content/article/browser/form.py:65
 msgid "Optionen"
@@ -945,6 +92,10 @@ msgstr "Rezensionsinformationen bearbeiten"
 #: src/zeit/content/article/browser/recension-overview.pt:58
 msgid "recension-no-items"
 msgstr "Es gibt noch keine Einträge mit Buchinformationen"
+
+#: src/zeit/content/article/browser/recension-overview.pt:66
+msgid "Add..."
+msgstr "Hinzufügen …"
 
 #: src/zeit/content/article/browser/recension.py:103
 #: src/zeit/content/article/interfaces.py:196
@@ -982,6 +133,18 @@ msgstr "Rezensionsinformationen bearbeiten"
 msgid "Syndication Log"
 msgstr "Syndizierungs-Log"
 
+#: src/zeit/content/article/interfaces.py:139
+msgid "Authors"
+msgstr "Autoren"
+
+#: src/zeit/content/article/interfaces.py:143
+msgid "Author"
+msgstr "Autoren"
+
+#: src/zeit/content/article/interfaces.py:145
+msgid "Title"
+msgstr "Titel"
+
 #: src/zeit/content/article/interfaces.py:148
 msgid "Info"
 msgstr "Info"
@@ -1010,6 +173,11 @@ msgstr "Übersetzer"
 #: src/zeit/content/article/interfaces.py:176
 msgid "book-location"
 msgstr "Ort"
+
+#: src/zeit/content/article/interfaces.py:180
+#: src/zeit/content/article/browser/recension-overview.pt:32
+msgid "Year"
+msgstr "Jahr"
 
 #: src/zeit/content/article/interfaces.py:184
 msgid "Media type"
@@ -1091,483 +259,618 @@ msgstr "Erstes Related als Box"
 msgid "Article is syndicated in these feeds."
 msgstr "Artikel ist in folgenden Feeds syndiziert."
 
-#: src/zeit/content/centerpage/browser/configure.zcml:65
-msgid "Center-Page"
-msgstr "Center-Page"
-
-#: src/zeit/content/centerpage/browser/configure.zcml:82
-msgid "Edit content"
-msgstr "Bearbeiten"
-
-#: src/zeit/content/centerpage/interfaces.py:27
-msgid "Label"
-msgstr "Label"
-
-#: src/zeit/content/centerpage/interfaces.py:30
-msgid "Style"
-msgstr "Stil"
-
-#: src/zeit/content/centerpage/interfaces.py:33
-#: src/zeit/content/centerpage/interfaces.py:41
-#: src/zeit/content/gallery/interfaces.py:87
-msgid "Layout"
-msgstr "Layout"
-
-#: src/zeit/content/gallery/browser/configure.zcml:67
-msgid "Gallery"
-msgstr "Bildergalerie"
-
-#: src/zeit/content/gallery/browser/configure.zcml:92
-msgid "Synchronise with image folder"
-msgstr "Mit Bilderordner synchronisieren"
-
-#: src/zeit/content/gallery/browser/form.py:35
-msgid "Add gallery"
-msgstr "Bildergalerie hinzufügen"
-
-#: src/zeit/content/gallery/browser/form.py:43
-msgid "Edit gallery"
-msgstr "Bildergalerie bearbeiten"
-
-#: src/zeit/content/gallery/browser/form.py:50
-msgid "View gallery metadata"
-msgstr "Metadaten der Bildergalerie ansehen"
-
-#: src/zeit/content/gallery/browser/form.py:70
-msgid "Edit gallery entry"
-msgstr "Bildergalerie-Eintrag bearbeiten"
-
-#: src/zeit/content/gallery/browser/overview.pt:39
-msgid "Save sorting"
-msgstr "Sortierung speichern"
-
-#: src/zeit/content/gallery/interfaces.py:105
-msgid "Image gallery"
-msgstr "Bildergalerie"
-
-#: src/zeit/content/gallery/interfaces.py:34
-msgid "Image folder"
-msgstr "Bilderordner"
-
-#: src/zeit/content/gallery/interfaces.py:35
-msgid "Folder containing images to display in the gallery."
-msgstr "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werden sollen."
-
-#: src/zeit/content/gallery/interfaces.py:84
-#: src/zeit/content/infobox/interfaces.py:24
-#: src/zeit/content/portraitbox/interfaces.py:21
-#: src/zeit/wysiwyg/interfaces.py:15
-msgid "Text"
-msgstr "Text"
-
-#: src/zeit/content/gallery/source.py:12
-msgid "Image only"
-msgstr "Nur Bild"
-
-#: src/zeit/content/image/browser/configure.zcml:118
-msgid "Image (single)"
-msgstr "Einzelbild"
-
-#: src/zeit/content/image/browser/form.py:27
-#: src/zeit/content/image/browser/imagegroup.py:86
-msgid "Image data"
-msgstr "Bilddaten"
-
-#: src/zeit/content/image/browser/form.py:43
-#: src/zeit/content/image/browser/imagegroup.py:81
-msgid "Add image"
-msgstr "Bild hinzufügen"
-
-#: src/zeit/content/image/browser/form.py:65
-msgid "Edit image"
-msgstr "Bild bearbeiten"
-
-#: src/zeit/content/image/browser/image_view.pt:24
-msgid "Volume/Year"
-msgstr "Ausgabe/Jahr"
-
-#: src/zeit/content/image/browser/image_view.pt:43
-msgid "Image title: ${caption}"
-msgstr "Bildtitel ${caption}"
-
-#: src/zeit/content/image/browser/image_view.pt:46
-msgid "ALT: ${alt}"
-msgstr "ALT: ${alt}"
-
-#: src/zeit/content/image/browser/image_view.pt:49
-msgid "Image sub text: ${caption}"
-msgstr "Bildunterschrift: ${caption}"
-
-#: src/zeit/content/image/browser/image_view.pt:53
-msgid "Links to: ${link}"
-msgstr "Verlinkt nach: ${link}"
-
-#: src/zeit/content/image/browser/image_view.pt:8
-msgid "Type"
-msgstr "Typ"
-
-#: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:135
-#: src/zeit/content/image/browser/configure.zcml:129
-#: src/zeit/content/gallery/browser/configure.zcml:75
-msgid "Images"
-msgstr "Bilder"
-
-#: src/zeit/content/image/browser/imagegroup.py:33
-msgid "Add image group"
-msgstr "Bildergruppe hinzufügen"
-
-#: src/zeit/content/image/browser/imagegroup.py:40
-msgid "Edit image group"
-msgstr "Bildergruppe bearbeiten"
-
-#: src/zeit/content/image/browser/imagegroup.py:46
-msgid "Image group metadata"
-msgstr "Metadaten der Bildergruppe"
-
-#: src/zeit/content/image/browser/imagegroup.py:62
-#: src/zeit/content/image/browser/configure.zcml:158
-msgid "Image group"
-msgstr "Bildergruppe"
-
-#: src/zeit/content/image/browser/imagegroup.py:71
-#: src/zeit/content/image/browser/image_view.pt:12
-msgid "Dimensions"
-msgstr "Ausmaße"
-
-#: src/zeit/content/image/browser/imagegroup.py:74
-#: src/zeit/content/portraitbox/interfaces.py:24
-#: src/zeit/content/image/browser/configure.zcml:188
-msgid "Image"
-msgstr "Bild"
-
-#: src/zeit/content/image/browser/processingerror.pt:5
-msgid "An error occured"
-msgstr "Ein Fehler ist aufgetreten."
-
-#: src/zeit/content/image/browser/processingerror.pt:6
-msgid "The action you were trying to do could not be finished because the resource has no valid content."
-msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die Resource keinen gültigen Inhalt hat."
-
-#: src/zeit/content/image/interfaces.py:26
-#: src/zeit/content/image/browser/image_view.pt:18
-msgid "Expires"
-msgstr "Löschdatum"
-
-#: src/zeit/content/image/interfaces.py:30
-msgid "Image title"
-msgstr "Bildtitel"
-
-#: src/zeit/content/image/interfaces.py:47
-msgid "Copyrights"
-msgstr "Copyrights"
-
-#: src/zeit/content/image/interfaces.py:53
-msgid "Copyright"
-msgstr "Copyright"
-
-#: src/zeit/content/image/interfaces.py:57
-#: src/zeit/content/link/browser/configure.zcml:8
-msgid "Link"
-msgstr "Link"
-
-#: src/zeit/content/image/interfaces.py:58
-msgid "Link to copyright holder"
-msgstr "Link zum Copyright-Inhaber"
-
-#: src/zeit/content/image/interfaces.py:62
-msgid "Alternative text"
-msgstr "ALT-Text"
-
-#: src/zeit/content/image/interfaces.py:63
-msgid "Enter a textual description of the image"
-msgstr "Geben Sie eine Beschreibung des Bildes ein."
-
-#: src/zeit/content/image/interfaces.py:68
-msgid "Image sub text"
-msgstr "Bildunterschrift"
-
-#: src/zeit/content/image/interfaces.py:73
-msgid "Links to"
-msgstr "Verlinkt nach"
-
-#: src/zeit/content/image/interfaces.py:74
-msgid "Enter a URL this image should link to."
-msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
-
-#: src/zeit/content/infobox/browser/form.py:38
-msgid "Add infobox"
-msgstr "Infobox hinzufügen"
-
-#: src/zeit/content/infobox/browser/form.py:43
-msgid "Edit infobox"
-msgstr "Infobox bearbeiten"
-
-#: src/zeit/content/infobox/browser/form.py:55
-msgid "View infobox"
-msgstr "Infobox anzeigen"
-
-#: src/zeit/content/infobox/interfaces.py:16
-msgid "Supertitle"
-msgstr "Spitzmarke"
-
-#: src/zeit/content/infobox/interfaces.py:19
-msgid "Contents"
-msgstr "Inhalt"
-
-#: src/zeit/content/infobox/interfaces.py:41
-#: src/zeit/content/infobox/browser/configure.zcml:9
-msgid "Infobox"
-msgstr "Infobox"
-
-#: src/zeit/content/link/browser/form.py:28
-msgid "Add link"
-msgstr "Link hinzufügen"
-
-#: src/zeit/content/link/browser/form.py:35
-msgid "Edit link"
-msgstr "Link bearbeiten"
-
-#: src/zeit/content/link/browser/form.py:40
-msgid "View link metadata"
-msgstr "Metadaten"
-
-#: src/zeit/content/link/interfaces.py:16
-msgid "Link address"
-msgstr "Link-Adresse (URL)"
-
-#: src/zeit/content/portraitbox/browser/form.py:31
-msgid "Portrait"
-msgstr "Portrait"
-
-#: src/zeit/content/portraitbox/browser/form.py:40
-msgid "Add portraitbox"
-msgstr "Portraitbox hinzufügen"
-
-#: src/zeit/content/portraitbox/browser/form.py:45
-msgid "Edit portraitbox"
-msgstr "Portraitbox bearbeiten"
-
-#: src/zeit/content/portraitbox/browser/form.py:51
-msgid "View portraitbox"
-msgstr "Portraitbox anzeigen"
-
-#: src/zeit/content/portraitbox/interfaces.py:18
-msgid "First and last name"
-msgstr "Vor- und Nachname"
-
-#: src/zeit/content/portraitbox/interfaces.py:42
-#: src/zeit/content/portraitbox/browser/configure.zcml:9
-msgid "Portraitbox"
-msgstr "Portraitbox"
-
-#: src/zeit/search/browser/configure.zcml:39
-msgid "Zeit CMS Search Preferences"
-msgstr "Benutzereinstellungen zur Suche"
-
-#: src/zeit/search/browser/search.py:105
-msgid "Year/Vol."
-msgstr "Jahr/Ausg."
-
-#: src/zeit/search/browser/search.py:28
-msgid "search-status-not-corrected"
-msgstr "Muss korrigiert werden"
-
-#: src/zeit/search/browser/search.py:30
-msgid "search-status-no-images-added"
-msgstr "Braucht Bilder"
-
-#: src/zeit/search/browser/search.py:85
-#: src/zeit/cms/content/browser/keyword-tree.pt:24
-#: src/zeit/search/browser/sidebar.pt:13
-msgid "Search"
-msgstr "Suche"
-
-#: src/zeit/search/browser/search.py:87
-msgid "The search had no results."
-msgstr "Die Suche lieferte keine Ergebnisse."
-
-#. Default: "Status"
-#: src/zeit/search/browser/sidebar.pt:128
-msgid "workflow-state"
-msgstr "Status"
-
-#: src/zeit/search/browser/sidebar.pt:144
-msgid "Sort order"
-msgstr "Sortierung"
-
-#: src/zeit/search/browser/sidebar.pt:33
-msgid "Extended ..."
-msgstr "Erweitert …"
-
-#: src/zeit/search/browser/sidebar.pt:39
-msgid "Extended"
-msgstr "Erweitert"
-
-#: src/zeit/search/browser/sidebar.pt:42
-msgid "Hide ..."
-msgstr "Verstecken …"
-
-#: src/zeit/search/browser/sidebar.pt:96
-msgid "Print ressort"
-msgstr "Ressort (Druck)"
-
-#: src/zeit/search/interfaces.py:15
-msgid "Unique Id"
-msgstr "Eindeutige ID"
-
-#: src/zeit/search/interfaces.py:25
-msgid "Realive weight of metadata freshness."
-msgstr "Realive weight of metadata freshness."
-
-#: src/zeit/search/interfaces.py:29
-msgid "Relevance of result"
-msgstr "Relevanz des Ergebnisses"
-
-#: src/zeit/seo/browser.py:26
-msgid "SEO data"
-msgstr "SEO-Daten"
-
-#: src/zeit/seo/browser.py:29
-msgid "Standard metadata"
-msgstr "Standard Metadaten"
-
-#: src/zeit/seo/browser.py:36
-msgid "Edit SEO data"
-msgstr "SEO-Daten bearbeiten"
-
-#: src/zeit/seo/browser.py:41
-msgid "View SEO data"
-msgstr "SEO-Daten"
-
-#: src/zeit/seo/configure.zcml:18
-msgid "View SEO"
-msgstr "SEO"
-
-#: src/zeit/seo/configure.zcml:28
-msgid "Edit SEO"
-msgstr "SEO"
-
-#: src/zeit/seo/interfaces.py:13
-msgid "HTML title"
-msgstr "HTML-Titel"
-
-#: src/zeit/seo/interfaces.py:17
-msgid "HTML description"
-msgstr "HTML-Beschreibung (Description)"
-
-#: src/zeit/workflow/browser/form.py:23
-#: src/zeit/workflow/browser/configure.zcml:8
-msgid "Workflow"
-msgstr "Workflow"
-
-#: src/zeit/workflow/browser/form.py:27
-msgid "Status"
-msgstr "Status"
-
-#: src/zeit/workflow/browser/form.py:33
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: src/zeit/workflow/browser/form.py:35
-msgid "Log"
-msgstr "Log"
-
-#: src/zeit/workflow/browser/form.py:45
-msgid "Save state only"
-msgstr "Nur Status speichern"
-
-#: src/zeit/workflow/browser/form.py:49
-msgid "Save state and publish"
-msgstr "Status speichern und veröffentlichen"
-
-#. Default: ""
-#: src/zeit/workflow/browser/form.py:60
-msgid "publish-preconditions-not-met"
-msgstr "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das »Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
-
-#: src/zeit/workflow/browser/form.py:64
-msgid "Save state and retract"
-msgstr "Status speichern und zurückziehen"
-
-#. Default: ""
-#: src/zeit/workflow/browser/form.py:72
-msgid "scheduled-for-retracting"
-msgstr "»${id}« wird zurückgezogen."
-
-#: src/zeit/workflow/interfaces.py:33
-msgid "status-edited"
-msgstr "Redigiert"
-
-#: src/zeit/workflow/interfaces.py:38
-msgid "status-corrected"
-msgstr "Korrigiert"
-
-#: src/zeit/workflow/interfaces.py:43
-msgid "status-refined"
-msgstr "Veredelt"
-
-#: src/zeit/workflow/interfaces.py:48
-msgid "status-images-added"
-msgstr "Bilder hinzugefügt (Grafik)"
-
-#: src/zeit/workflow/interfaces.py:53
-msgid "Urgent"
-msgstr "Eilig"
-
-#: src/zeit/workflow/interfaces.py:54
-msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
-msgstr "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können ohne die anderen Status setzen zu müssen."
-
-#: src/zeit/workflow/interfaces.py:59
-msgid "From"
-msgstr "Von"
-
-#: src/zeit/workflow/interfaces.py:60
-msgid "To"
-msgstr "Bis"
-
-#: src/zeit/workflow/interfaces.py:61
-msgid "Publication period"
-msgstr "Veröffentlichungszeitraum"
-
-#: src/zeit/workflow/interfaces.py:62
-msgid "Leave empty for no constraint."
-msgstr "Leer für keine Einschränkung."
-
-#: src/zeit/workflow/publish.py:139
-msgid "Could not publish because conditions not satisifed."
-msgstr "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
-
-#: src/zeit/workflow/publish.py:175
-msgid "Retracted"
-msgstr "Zurückgezogen"
-
-#: src/zeit/workflow/publish.py:57
-msgid "Publication scheduled"
-msgstr "Wird veröffentlicht"
-
-#: src/zeit/workflow/publish.py:63
-msgid "Retracting scheduled"
-msgstr "Wird zurückgezogen"
-
-#: src/zeit/workflow/source.py:33
-msgid "yes"
-msgstr "ja"
-
-#: src/zeit/workflow/source.py:34
-msgid "no"
-msgstr "nein"
-
-#: src/zeit/workflow/source.py:35
-msgid "not necessary"
-msgstr "nicht nötig"
-
-#. Default: ""
-#: src/zeit/workflow/workflow.py:132
-msgid "${name}: ${new_value}"
-msgstr "${name}: ${new_value}"
-
+#~ msgid "Calendar"
+#~ msgstr "Kalender"
+#~ msgid "Event"
+#~ msgstr "Termin"
+#~ msgid "Description"
+#~ msgstr "Beschreibung"
+#~ msgid "Related"
+#~ msgstr "Related"
+#~ msgid "Add event"
+#~ msgstr "Termin hinzufügen"
+#~ msgid "Edit event"
+#~ msgstr "Termin bearbeiten"
+#~ msgid "Apply"
+#~ msgstr "Speichern"
+#~ msgid "Start"
+#~ msgstr "Beginn"
+#~ msgid "Date when the event starts."
+#~ msgstr "Datum/Uhrzeit des Terminbeginns"
+#~ msgid "Title will be shown in overview pages."
+#~ msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
+#~ msgid "Related content"
+#~ msgstr "Verlinkte Objekte"
+#~ msgid "Documents that are related to this object."
+#~ msgstr "Dokumente, die verlinkt werden sollen."
+#~ msgid "Location/Type"
+#~ msgstr "Location/Typ"
+#~ msgid "Where should the article be placed."
+#~ msgstr "Wo soll der Artikel erscheinen?"
+#~ msgid "Topic?"
+#~ msgstr "Thema?"
+#~ msgid "Is the article a topic for the next week?"
+#~ msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
+#~ msgid "Source"
+#~ msgstr "Quelltext"
+#~ msgid "context sensitive actions"
+#~ msgstr "context sensitive actions"
+#~ msgid "Zeit CMS User Preferences"
+#~ msgstr "Benutzereinstellungen"
+#~ msgid "Live"
+#~ msgstr "Live"
+#~ msgid "Development"
+#~ msgstr "Relaunch"
+#~ msgid "context sensitive views"
+#~ msgstr "context sensitive views"
+#~ msgid "folder specific actions"
+#~ msgstr "folder specific actions"
+#~ msgid "Cancel"
+#~ msgstr "Abbrechen"
+#~ msgid "No changes"
+#~ msgstr "Keine Änderungen"
+#~ msgid "View"
+#~ msgstr "Anzeigen"
+#~ msgid "${DYNAMIC_CONTENT}"
+#~ msgstr "${DYNAMIC_CONTENT}"
+#~ msgid "Form"
+#~ msgstr "Formular"
+#~ msgid "Published"
+#~ msgstr "Veröffentlicht"
+#~ msgid "Published but has changes"
+#~ msgstr "Veröffentlicht, hat aber Änderungen"
+#~ msgid "Not published"
+#~ msgstr "Nicht veröffentlicht"
+#~ msgid "There are no objects in this folder."
+#~ msgstr "Es gibt keine Objekte in diesem Ordner."
+#~ msgid "File name"
+#~ msgstr "Dateiname"
+#~ msgid "Modified"
+#~ msgstr "Verändert"
+#~ msgid "Hits"
+#~ msgstr "Treffer"
+#~ msgid "Ressort"
+#~ msgstr "Ressort"
+#~ msgid "Page"
+#~ msgstr "Seite"
+#~ msgid ""
+#~ "The action you were trying to do could not be finished because the "
+#~ "resource ${resource-id} was locked."
+#~ msgstr ""
+#~ "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil "
+#~ "${resource-id} gesperrt ist."
+#~ msgid "An error is occoured"
+#~ msgstr "Ein Fehler ist aufgetreten."
+#~ msgid "Error"
+#~ msgstr "Fehler"
+#~ msgid "CMS"
+#~ msgstr "CMS"
+#~ msgid "Hides automatically after 5 seconds."
+#~ msgstr "Wird nach 5s ausgeblendet."
+#~ msgid "hide"
+#~ msgstr "Verstecken"
+#~ msgid "notices_label"
+#~ msgstr "Meldungen"
+#~ msgid "Choose object"
+#~ msgstr "Objekt auswählen"
+#~ msgid "Show object"
+#~ msgstr "Objekt anzeigen"
+#~ msgid "Additional actions"
+#~ msgstr "Weitere Aktionen"
+#~ msgid "The action you were trying to do could not be finished."
+#~ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
+#~ msgid "Remove"
+#~ msgstr "Entfernen"
+#~ msgid "Checkout"
+#~ msgstr "Auschecken"
+#~ msgid "Checkin"
+#~ msgstr "Einchecken"
+#~ msgid "\"${name}\" has been checked out."
+#~ msgstr "»${name}« wurde ausgecheckt."
+#~ msgid "\"${name}\" has been checked in."
+#~ msgstr "»${name}« wurde eingecheckt."
+#~ msgid "\"${old_name}\" was renamed to \"${new_name}\"."
+#~ msgstr "»${old_name}« wurde nach »${new_name}« umbenannt."
+#~ msgid "\"${name}\" was removed from the clipboard."
+#~ msgstr "»${name}« wurde aus dem Clipboard entfernt."
+#~ msgid "New clip name"
+#~ msgstr "Neuer Name des Clips"
+#~ msgid "Rename"
+#~ msgstr "Umbenennen"
+#~ msgid "Copy from clipboard"
+#~ msgstr "Aus Clipboard kopieren"
+#~ msgid "${source} was copied to ${target}."
+#~ msgstr "»${source}« wurde nach »${target}« kopiert."
+#~ msgid "Broken reference to ${uniqueId}"
+#~ msgstr "Invalide Referenz zu ${uniqueId}"
+#~ msgid "Copy content into ${paste-into-id}"
+#~ msgstr "Objekte nach »${paste-into-id}« kopieren"
+#~ msgid "clipboard-paste-explain"
+#~ msgstr ""
+#~ "Wählen Sie den Eintrag aus Ihrer Zwischenablage den Sie nach »${paste-"
+#~ "into-id}« kopieren möchten."
+#~ msgid "Navigation"
+#~ msgstr "Navigation"
+#~ msgid "Head"
+#~ msgstr "Kopf"
+#~ msgid "Texts"
+#~ msgstr "Texte"
+#~ msgid ""
+#~ "If you would like to suggest a keyword, send an e-mail to ${recipient}."
+#~ msgstr ""
+#~ "Wenn Sie ein Schlagwort vorschlagen möchten, senden Sie eine E-Mail an "
+#~ "${recipient}."
+#~ msgid "Similar keywords:"
+#~ msgstr "Ähnliche Schlagworte:"
+#~ msgid "Taxonomy"
+#~ msgstr "Taxonomie"
+#~ msgid "No Keywords match your search criteria."
+#~ msgstr "Es gibt keine Schlagworte, die den Kriterien entsprechen."
+#~ msgid "Edit keywords"
+#~ msgstr "Schlagworte bearbeiten"
+#~ msgid "Value"
+#~ msgstr "Wert"
+#~ msgid "Save"
+#~ msgstr "Speichern"
+#~ msgid "Namespace"
+#~ msgstr "Namespace"
+#~ msgid "Name"
+#~ msgstr "Name"
+#~ msgid "Choose template"
+#~ msgstr "Vorlage auswählen"
+#~ msgid "Continue"
+#~ msgstr "Weiter …"
+#~ msgid "Template"
+#~ msgstr "Vorlage"
+#~ msgid "Templates"
+#~ msgstr "Vorlagen"
+#~ msgid "Add template"
+#~ msgstr "Vorlage hinzufügen"
+#~ msgid "Edit template"
+#~ msgstr "Vorlage bearbeiten"
+#~ msgid "Edit webdav properties"
+#~ msgstr "WebDAV-Properties bearbeiten"
+#~ msgid "Properties"
+#~ msgstr "Eigenschaften"
+#~ msgid "Invalid structure."
+#~ msgstr "Ungültige Struktur"
+#~ msgid "Copyright (c)"
+#~ msgstr "Copyright ©"
+#~ msgid "Do not enter (c)."
+#~ msgstr "© nicht eingeben."
+#~ msgid "Kicker"
+#~ msgstr "Spitzmarke"
+#~ msgid "Please take care of capitalisation."
+#~ msgstr "Bitte auf Groß- und Kleinschreibung achten."
+#~ msgid "By line"
+#~ msgstr "„Von“-Zeile"
+#~ msgid "Subtitle"
+#~ msgstr "Untertitel"
+#~ msgid "Teaser title"
+#~ msgstr "Teaser-Titel"
+#~ msgid "Teaser text"
+#~ msgstr "Teaser-Text"
+#~ msgid "Index teaser title"
+#~ msgstr "Kurzteaser-Titel"
+#~ msgid "Index teaser text"
+#~ msgstr "Kurzteaser-Text"
+#~ msgid "Homepage teaser title"
+#~ msgstr "Homepageteaser-Titel"
+#~ msgid "Homepage teaser text"
+#~ msgstr "Homepageteaser-Text"
+#~ msgid "VG Wort Id"
+#~ msgstr "VG Wort Id"
+#~ msgid "XML Source"
+#~ msgstr "XML-Quelltext"
+#~ msgid "Objects that are related to this object."
+#~ msgstr "Objekte die verlinkt werden sollen."
+#~ msgid "Hits today"
+#~ msgstr "Treffer heute"
+#~ msgid "Keyword is contained in the taxonomy"
+#~ msgstr "Schlagword aus der Taxonomie."
+#~ msgid "Root of ontology"
+#~ msgstr "Wurzel der Ontologie"
+#~ msgid "Volume"
+#~ msgstr "Ausgabe"
+#~ msgid "Sub ressort"
+#~ msgstr "Unterressort"
+#~ msgid "Keywords"
+#~ msgstr "Schlagworte"
+#~ msgid "Serie"
+#~ msgstr "Serie"
+#~ msgid "Locked"
+#~ msgstr "Gesperrt"
+#~ msgid "Locker"
+#~ msgstr "Gesperrt von"
+#~ msgid "Locked until"
+#~ msgstr "Gesperrt bis"
+#~ msgid "Locks"
+#~ msgstr "Sperren"
+#~ msgid "Steal lock"
+#~ msgstr "Sperre stehlen"
+#~ msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
+#~ msgstr "Sperre auf  »${name}« von «${old_locker}» gestohlen."
+#~ msgid "Lock"
+#~ msgstr "Sperren"
+#~ msgid "\"${name}\" has been locked."
+#~ msgstr "»${name}« wurde gesperrt."
+#~ msgid "Unlock"
+#~ msgstr "Sperre aufheben"
+#~ msgid "\"${name}\" has been unlocked."
+#~ msgstr "Die Sperre auf »${name}« wurde entfernt."
+#~ msgid "Manage lock"
+#~ msgstr "Sperre verwalten"
+#~ msgid "Copy content"
+#~ msgstr "Inhalt kopieren"
+#~ msgid "Edit ZEIT content"
+#~ msgstr "ZEIT-Inhalte bearbeiten"
+#~ msgid "Add ZEIT content"
+#~ msgstr "ZEIT-Inhalte hinzufügen"
+#~ msgid "Delete ZEIT content"
+#~ msgstr "ZEIT-Inhalte löschen"
+#~ msgid "Checkout content"
+#~ msgstr "Inhalt auschecken"
+#~ msgid "Checkin content"
+#~ msgstr "Inhalt einchecken"
+#~ msgid "Create and modify calendar entries"
+#~ msgstr "Kalendereinträge erstellen und bearbeiten"
+#~ msgid "Syndicate content"
+#~ msgstr "Syndizieren"
+#~ msgid "Rename content"
+#~ msgstr "Inhalt umbenennen"
+#~ msgid "Publish objects"
+#~ msgstr "Veröffentlichen"
+#~ msgid "Manage WebDAV locks"
+#~ msgstr "WebDAV-Locks verwalten"
+#~ msgid "${amount} Entries"
+#~ msgstr "${amount} Einträge"
+#~ msgid "Add ..."
+#~ msgstr "Hinzufügen …"
+#~ msgid "Menu for adding content."
+#~ msgstr "Inhalt hinzufügen"
+#~ msgid "delete_content_folder_warning"
+#~ msgstr "Achtung! Sie löschen einen Ordner mit Inhalt!"
+#~ msgid "delete_content_header"
+#~ msgstr "Inhalt löschen"
+#~ msgid "delete_content_text"
+#~ msgstr ""
+#~ "Möchten Sie das folgende Objekt aus dem Ordner »${container-title}« "
+#~ "wirklich löschen?"
+#~ msgid "Add folder"
+#~ msgstr "Ordner hinzufügen"
+#~ msgid "Folder"
+#~ msgstr "Ordner"
+#~ msgid "Edit folder"
+#~ msgstr "Ordner bearbeiten"
+#~ msgid "Hide"
+#~ msgstr "Verstecken"
+#~ msgid "Show"
+#~ msgstr "Zeigen"
+#~ msgid "Delete"
+#~ msgstr "Löschen"
+#~ msgid "Rename ${object-unique-id}"
+#~ msgstr "${object-unique-id} umbenennen"
+#~ msgid "rename-box-warning"
+#~ msgstr ""
+#~ "Achtung: Das Umbenennen von Objekten wird Referenzen/Links auf dieses "
+#~ "Objekt ungültig machen. Objekte sollten nur umbenannt werden, wenn sie "
+#~ "noch nicht veröffentlicht verlinkt oder anderweitig referenziert sind."
+#~ msgid "\"${name}\" already exists."
+#~ msgstr "\"${name}\" ist bereits vorhanden."
+#~ msgid "New file name"
+#~ msgstr "Neuer Dateiname"
+#~ msgid "Renamed \"${old_name}\" to \"${new_name}\""
+#~ msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
+#~ msgid "\"${name}\" is now hidden from the navigation tree."
+#~ msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
+#~ msgid "\"${name}\" is now shown in the navigation tree."
+#~ msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
+#~ msgid "All users have this role implicitly"
+#~ msgstr "All users have this role implicitly"
+#~ msgid "Everybody"
+#~ msgstr "Jeder"
+#~ msgid "Site Manager"
+#~ msgstr "Site Manager"
+#~ msgid "Site Member"
+#~ msgstr "Site Member"
+#~ msgid "Editor"
+#~ msgstr "Editor"
+#~ msgid "Owner"
+#~ msgstr "Eigentümer"
+#~ msgid "Syndicate"
+#~ msgstr "Syndizieren"
+#~ msgid "Feed"
+#~ msgstr "Channel"
+#~ msgid "Metadata"
+#~ msgstr "Metadaten"
+#~ msgid "Sort"
+#~ msgstr "Sortieren"
+#~ msgid "Pinned"
+#~ msgstr "Fest"
+#~ msgid "Hidden on HP"
+#~ msgstr "Versteckt auf HP"
+#~ msgid "\"${name}\" has been added to your syndication targets."
+#~ msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
+#~ msgid "Add Channel"
+#~ msgstr "Channel hinzufügen"
+#~ msgid "Edit Channel"
+#~ msgstr "Channel bearbeiten"
+#~ msgid "Publish"
+#~ msgstr "Veröffentlichen"
+#~ msgid "Syndicate \"${content-title}\""
+#~ msgstr "»${content-title}« syndizieren"
+#~ msgid ""
+#~ "You need to select a feed as a syndication target first, before you can "
+#~ "syndicate this article."
+#~ msgstr ""
+#~ "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als "
+#~ "Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
+#~ msgid "Preview"
+#~ msgstr "Vorschau"
+#~ msgid "\"${name}\" has been syndicated to ${targets}"
+#~ msgstr "»${name}« wurde nach »${targets}« syndiziert."
+#~ msgid "scheduled-for-publishing"
+#~ msgstr "»${id}« wird veröffentlicht."
+#~ msgid "Could not publish \"${name}\"."
+#~ msgstr "»${name}« konnte nicht veröffentlicht werden."
+#~ msgid "Syndication targets"
+#~ msgstr "Syndizierungsziele"
+#~ msgid "Limit amount"
+#~ msgstr "Anzahl begrenzen"
+#~ msgid "limit-amount-description"
+#~ msgstr "limit-amount-description"
+#~ msgid "Last modified by"
+#~ msgstr "Zuletzt geändert von"
+#~ msgid "Date last modified"
+#~ msgstr "Zuletzt geändert am"
+#~ msgid "Date last published"
+#~ msgstr "Zuletzt veröffentlicht am"
+#~ msgid "Date first released"
+#~ msgstr "Zuerst veröffentlicht am"
+#~ msgid "Edited documents"
+#~ msgstr "Bearbeitete Dokumente"
+#~ msgid "No edited documents."
+#~ msgstr "Keine bearbeiteten Dokumente."
+#~ msgid "Center-Page"
+#~ msgstr "Center-Page"
+#~ msgid "Edit content"
+#~ msgstr "Bearbeiten"
+#~ msgid "Label"
+#~ msgstr "Label"
+#~ msgid "Style"
+#~ msgstr "Stil"
+#~ msgid "Layout"
+#~ msgstr "Layout"
+#~ msgid "Gallery"
+#~ msgstr "Bildergalerie"
+#~ msgid "Synchronise with image folder"
+#~ msgstr "Mit Bilderordner synchronisieren"
+#~ msgid "Add gallery"
+#~ msgstr "Bildergalerie hinzufügen"
+#~ msgid "Edit gallery"
+#~ msgstr "Bildergalerie bearbeiten"
+#~ msgid "View gallery metadata"
+#~ msgstr "Metadaten der Bildergalerie ansehen"
+#~ msgid "Edit gallery entry"
+#~ msgstr "Bildergalerie-Eintrag bearbeiten"
+#~ msgid "Save sorting"
+#~ msgstr "Sortierung speichern"
+#~ msgid "Image gallery"
+#~ msgstr "Bildergalerie"
+#~ msgid "Image folder"
+#~ msgstr "Bilderordner"
+#~ msgid "Folder containing images to display in the gallery."
+#~ msgstr ""
+#~ "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werden "
+#~ "sollen."
+#~ msgid "Text"
+#~ msgstr "Text"
+#~ msgid "Image only"
+#~ msgstr "Nur Bild"
+#~ msgid "Image (single)"
+#~ msgstr "Einzelbild"
+#~ msgid "Image data"
+#~ msgstr "Bilddaten"
+#~ msgid "Add image"
+#~ msgstr "Bild hinzufügen"
+#~ msgid "Edit image"
+#~ msgstr "Bild bearbeiten"
+#~ msgid "Volume/Year"
+#~ msgstr "Ausgabe/Jahr"
+#~ msgid "Image title: ${caption}"
+#~ msgstr "Bildtitel ${caption}"
+#~ msgid "ALT: ${alt}"
+#~ msgstr "ALT: ${alt}"
+#~ msgid "Image sub text: ${caption}"
+#~ msgstr "Bildunterschrift: ${caption}"
+#~ msgid "Links to: ${link}"
+#~ msgstr "Verlinkt nach: ${link}"
+#~ msgid "Type"
+#~ msgstr "Typ"
+#~ msgid "Images"
+#~ msgstr "Bilder"
+#~ msgid "Add image group"
+#~ msgstr "Bildergruppe hinzufügen"
+#~ msgid "Edit image group"
+#~ msgstr "Bildergruppe bearbeiten"
+#~ msgid "Image group metadata"
+#~ msgstr "Metadaten der Bildergruppe"
+#~ msgid "Image group"
+#~ msgstr "Bildergruppe"
+#~ msgid "Dimensions"
+#~ msgstr "Ausmaße"
+#~ msgid "Image"
+#~ msgstr "Bild"
+#~ msgid "An error occured"
+#~ msgstr "Ein Fehler ist aufgetreten."
+#~ msgid ""
+#~ "The action you were trying to do could not be finished because the "
+#~ "resource has no valid content."
+#~ msgstr ""
+#~ "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil "
+#~ "die Resource keinen gültigen Inhalt hat."
+#~ msgid "Expires"
+#~ msgstr "Löschdatum"
+#~ msgid "Image title"
+#~ msgstr "Bildtitel"
+#~ msgid "Copyrights"
+#~ msgstr "Copyrights"
+#~ msgid "Copyright"
+#~ msgstr "Copyright"
+#~ msgid "Link"
+#~ msgstr "Link"
+#~ msgid "Link to copyright holder"
+#~ msgstr "Link zum Copyright-Inhaber"
+#~ msgid "Alternative text"
+#~ msgstr "ALT-Text"
+#~ msgid "Enter a textual description of the image"
+#~ msgstr "Geben Sie eine Beschreibung des Bildes ein."
+#~ msgid "Image sub text"
+#~ msgstr "Bildunterschrift"
+#~ msgid "Links to"
+#~ msgstr "Verlinkt nach"
+#~ msgid "Enter a URL this image should link to."
+#~ msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
+#~ msgid "Add infobox"
+#~ msgstr "Infobox hinzufügen"
+#~ msgid "Edit infobox"
+#~ msgstr "Infobox bearbeiten"
+#~ msgid "View infobox"
+#~ msgstr "Infobox anzeigen"
+#~ msgid "Supertitle"
+#~ msgstr "Spitzmarke"
+#~ msgid "Contents"
+#~ msgstr "Inhalt"
+#~ msgid "Infobox"
+#~ msgstr "Infobox"
+#~ msgid "Add link"
+#~ msgstr "Link hinzufügen"
+#~ msgid "Edit link"
+#~ msgstr "Link bearbeiten"
+#~ msgid "View link metadata"
+#~ msgstr "Metadaten"
+#~ msgid "Link address"
+#~ msgstr "Link-Adresse (URL)"
+#~ msgid "Portrait"
+#~ msgstr "Portrait"
+#~ msgid "Add portraitbox"
+#~ msgstr "Portraitbox hinzufügen"
+#~ msgid "Edit portraitbox"
+#~ msgstr "Portraitbox bearbeiten"
+#~ msgid "View portraitbox"
+#~ msgstr "Portraitbox anzeigen"
+#~ msgid "First and last name"
+#~ msgstr "Vor- und Nachname"
+#~ msgid "Portraitbox"
+#~ msgstr "Portraitbox"
+#~ msgid "Zeit CMS Search Preferences"
+#~ msgstr "Benutzereinstellungen zur Suche"
+#~ msgid "Year/Vol."
+#~ msgstr "Jahr/Ausg."
+#~ msgid "search-status-not-corrected"
+#~ msgstr "Muss korrigiert werden"
+#~ msgid "search-status-no-images-added"
+#~ msgstr "Braucht Bilder"
+#~ msgid "Search"
+#~ msgstr "Suche"
+#~ msgid "The search had no results."
+#~ msgstr "Die Suche lieferte keine Ergebnisse."
+#~ msgid "workflow-state"
+#~ msgstr "Status"
+#~ msgid "Sort order"
+#~ msgstr "Sortierung"
+#~ msgid "Extended ..."
+#~ msgstr "Erweitert …"
+#~ msgid "Extended"
+#~ msgstr "Erweitert"
+#~ msgid "Hide ..."
+#~ msgstr "Verstecken …"
+#~ msgid "Print ressort"
+#~ msgstr "Ressort (Druck)"
+#~ msgid "Unique Id"
+#~ msgstr "Eindeutige ID"
+#~ msgid "Realive weight of metadata freshness."
+#~ msgstr "Realive weight of metadata freshness."
+#~ msgid "Relevance of result"
+#~ msgstr "Relevanz des Ergebnisses"
+#~ msgid "SEO data"
+#~ msgstr "SEO-Daten"
+#~ msgid "Standard metadata"
+#~ msgstr "Standard Metadaten"
+#~ msgid "Edit SEO data"
+#~ msgstr "SEO-Daten bearbeiten"
+#~ msgid "View SEO data"
+#~ msgstr "SEO-Daten"
+#~ msgid "View SEO"
+#~ msgstr "SEO"
+#~ msgid "Edit SEO"
+#~ msgstr "SEO"
+#~ msgid "HTML title"
+#~ msgstr "HTML-Titel"
+#~ msgid "HTML description"
+#~ msgstr "HTML-Beschreibung (Description)"
+#~ msgid "Workflow"
+#~ msgstr "Workflow"
+#~ msgid "Status"
+#~ msgstr "Status"
+#~ msgid "Settings"
+#~ msgstr "Einstellungen"
+#~ msgid "Log"
+#~ msgstr "Log"
+#~ msgid "Save state only"
+#~ msgstr "Nur Status speichern"
+#~ msgid "Save state and publish"
+#~ msgstr "Status speichern und veröffentlichen"
+#~ msgid "publish-preconditions-not-met"
+#~ msgstr ""
+#~ "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
+#~ "Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das "
+#~ "»Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
+#~ msgid "Save state and retract"
+#~ msgstr "Status speichern und zurückziehen"
+#~ msgid "scheduled-for-retracting"
+#~ msgstr "»${id}« wird zurückgezogen."
+#~ msgid "status-edited"
+#~ msgstr "Redigiert"
+#~ msgid "status-corrected"
+#~ msgstr "Korrigiert"
+#~ msgid "status-refined"
+#~ msgstr "Veredelt"
+#~ msgid "status-images-added"
+#~ msgstr "Bilder hinzugefügt (Grafik)"
+#~ msgid "Urgent"
+#~ msgstr "Eilig"
+#~ msgid ""
+#~ "Select for newsflashs or on a weekend to publish without setting "
+#~ "corrected/refined/etc."
+#~ msgstr ""
+#~ "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu "
+#~ "können ohne die anderen Status setzen zu müssen."
+#~ msgid "From"
+#~ msgstr "Von"
+#~ msgid "To"
+#~ msgstr "Bis"
+#~ msgid "Publication period"
+#~ msgstr "Veröffentlichungszeitraum"
+#~ msgid "Leave empty for no constraint."
+#~ msgstr "Leer für keine Einschränkung."
+#~ msgid "Could not publish because conditions not satisifed."
+#~ msgstr ""
+#~ "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
+#~ msgid "Retracted"
+#~ msgstr "Zurückgezogen"
+#~ msgid "Publication scheduled"
+#~ msgstr "Wird veröffentlicht"
+#~ msgid "Retracting scheduled"
+#~ msgstr "Wird zurückgezogen"
+#~ msgid "yes"
+#~ msgstr "ja"
+#~ msgid "no"
+#~ msgstr "nein"
+#~ msgid "not necessary"
+#~ msgstr "nicht nötig"
+#~ msgid "${name}: ${new_value}"
+#~ msgstr "${name}: ${new_value}"
 #~ msgid "Add a keyword"
 #~ msgstr "Schlüsselwort hinzufügen"
 #~ msgid "Document"
