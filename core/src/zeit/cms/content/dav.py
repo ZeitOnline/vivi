@@ -67,12 +67,15 @@ class DAVProperty(object):
                     field).fromProperty(dav_value)
             except (ValueError, zope.schema.ValidationError), e:
                 value = self.field.default
+                if zeit.cms.interfaces.ICMSContent.providedBy(instance):
+                    unique_id = instance.uniqueId
+                else:
+                    unique_id = repr(instance)
                 logger.warning(
                     "Could not parse DAV property value %r for "
                     "%s.%s at %s [%s: %r]. Using default %r instead." % (
                         dav_value, instance.__class__.__name__, self.name,
-                        instance.uniqueId, e.__class__.__name__,
-                        e.args, value))
+                        unique_id, e.__class__.__name__, e.args, value))
 
         return value
 
