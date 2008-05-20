@@ -2,10 +2,11 @@
 # See also LICENSE.txt
 # $Id$
 
-import random
 import urlparse
+import urllib2
 import sha
 
+import zope.cachedescriptors.property
 import zope.component
 
 import zope.app.appsetup.product
@@ -21,14 +22,19 @@ import zeit.cms.browser.preview
 class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
     """Preview for workingcopy versions of content objects.
 
-    Uploads the workingcopy version of an object to the repository, redirects
-    the browser and schedules a removal job?
+    Uploads the workingcopy version of an object to the repository, retrieves
+    the html and returns it.
+
     """
 
     def __call__(self):
-        # NOTE: the base-path is expected to exist
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        preview_obj = self.get_preview_object()
+        url = self.get_preview_url_for(preview_obj)
+        preview_request = urllib2.urlopen(url)
+        del preview_obj.__parent__[preview_obj.__name__]
+        return preview_request.read()
+
+    def get_preview_object(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
         base = cms_config['workingcopy-preview-base']
@@ -36,7 +42,7 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         # Make sure the base folder exists
         parsed_base = urlparse.urlparse(base)
         base_path = parsed_base[2]
-        target_folder = repository
+        target_folder = self.repository
         for next_name in base_path.split('/'):
             if not next_name:
                 # Ignore empty parts (i.e. start end end)
@@ -51,11 +57,17 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         unique_id = content.uniqueId
         content.uniqueId = None
 
+        temp_id = self.get_temp_id(unique_id)
+        target_folder[temp_id] = content
+        return content
+
+    def get_temp_id(self, unique_id):
         temp_id = sha.new(unique_id)
         temp_id.update(self.request.principal.id)
-        temp_id.update(str(random.random()))
         temp_id = temp_id.hexdigest()
+        return temp_id
 
-        target_folder[temp_id] = content
-        self.redirect_to_preview_of(content)
-        return ''
+    @zope.cachedescriptors.property.Lazy
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)

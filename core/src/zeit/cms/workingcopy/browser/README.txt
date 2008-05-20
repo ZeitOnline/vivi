@@ -228,34 +228,67 @@ Cleanup:
 Preview
 =======
 
-
 Open the checked out somalia and change its source:
 
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html')
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'Somalia/@@view.html')
 >>> browser.getLink('Source').click()
 >>> browser.getControl('Document content').value = 'no more!'
 >>> browser.getControl('Apply').click()
 
-When we look at the preview now, we will be redirected:
+When we look at the preview now[#prepare-preview]_:
 
->>> import zeit.cms.testing
->>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
-HTTP Error 303: See Other
-http://localhost/preview-prefix/tmp/previews/...
+>>> browser.handleErrors = False
+>>> browser.getLink('Preview').click()
+>>> print browser.contents
+The quick brown fox jumps over the lazy dog.
 
-Retrieve the copied object:
+The preview object will have been be removed though:
 
->>> browser.open('http://localhost/++skin++cms/repository/tmp/previews/')
->>> url = browser.etree.xpath(
-...     '//table[contains(@class, "contentListing")]'
-...     '//span[@class="URL"]')[-1].text
->>> browser.open(url)
+>>> browser.open('http://localhost/++skin++cms/repository/previews/')
 >>> print browser.contents
 <?xml ...
-    <pre>no more...
+    ...There are no objects in this folder...
 
-Check the preview again to make sure the created folders are used:
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html')
->>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
-HTTP Error 303: See Other
-http://localhost/preview-prefix/tmp/previews/...
+
+Check the preview again to make sure the created folders are used and the
+preview doesn't break when the folders already exist:
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'Somalia/@@view.html')
+>>> browser.getLink('Preview').click()
+>>> print browser.contents
+The quick brown fox jumps over the lazy dog.
+
+
+Clean up:
+
+>>> import shutil
+>>> shutil.rmtree(tempdir)
+
+
+.. [#prepare-preview] We change the preview path to some temp directory and put
+    a file there. This will at leas give us some result to verify. 
+
+    >>> import os
+    >>> import os.path
+    >>> import tempfile
+    >>> tempdir = tempfile.mkdtemp()
+    >>> preview_dir = os.path.join(tempdir, 'previews')
+    >>> os.mkdir(preview_dir)
+
+    Create a preview file:
+
+    >>> import sha
+    >>> hash = sha.new('http://xml.zeit.de/online/2007/01/Somalia')
+    >>> hash.update('zope.user')
+    >>> name = hash.hexdigest()
+    >>> file(os.path.join(preview_dir, name), 'w').write(
+    ...     'The quick brown fox jumps over the lazy dog.')
+
+    >>> import zope.app.appsetup.product
+    >>> cms_config = zope.app.appsetup.product._configs['zeit.cms']
+
+    >>> cms_config['preview-prefix'] = u'file://%s' % tempdir
+    >>> cms_config['workingcopy-preview-base'] = (
+    ...     u'http://xml.zeit.de/previews/')

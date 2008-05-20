@@ -8,11 +8,13 @@ import zope.app.appsetup.product
 
 import zeit.cms.interfaces
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
 
 
-class PreviewBase(object):
+class PreviewBase(zeit.cms.browser.view.Base):
+    """Base class for preview."""
 
-    def redirect_to_preview_of(self, preview_context):
+    def get_preview_url_for(self, preview_context):
         unique_id = preview_context.uniqueId
         path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE):]
         cms_config = zope.app.appsetup.product.getProductConfiguration(
@@ -20,13 +22,12 @@ class PreviewBase(object):
         prefix = cms_config[self.prefix]
         if not prefix.endswith('/'):
             prefix = prefix + '/'
-        url = urlparse.urljoin(prefix, path)
-        self.request.response.redirect(url)
+        return urlparse.urljoin(prefix, path)
 
     def __call__(self):
         preview_object = zeit.cms.browser.interfaces.IPreviewObject(
             self.context, self.context)
-        self.redirect_to_preview_of(preview_object)
+        self.redirect(self.get_preview_url_for(preview_object))
         return ''
 
 

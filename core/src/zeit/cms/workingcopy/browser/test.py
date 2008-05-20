@@ -13,5 +13,5 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
+                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
     return suite
