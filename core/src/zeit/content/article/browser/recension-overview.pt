@@ -1,0 +1,72 @@
+<div class="recensions" i18n:domain="zeit.cms">
+  <tal:replace replace="resource_library:zeit.cms.recension" />
+  <div class="recension"
+    tal:condition="view/recensions"
+    tal:repeat="recension view/recensions">
+
+    <a href="#" title="Edit" class="RecensionTitle"
+      tal:attributes="href string:${recension/url}/@@edit.html"
+      i18n:attributes="title">
+      <span tal:replace="recension/authors" />:
+      <span tal:replace="recension/title" />
+    </a>
+
+    <dl>
+      <tal:con condition="recension/publisher">
+        <dt i18n:translate="">Publisher</dt>
+        <dd class="publisher" 
+          tal:content="recension/publisher">
+          Suhrkamp
+        </dd>
+      </tal:con>
+
+      <tal:con condition="recension/location">
+        <dt i18n:translate="">Location</dt>
+        <dd class="location"
+          tal:content="recension/location">
+          Zuerich
+        </dd>
+      </tal:con>
+
+      <tal:con condition="recension/year">
+        <dt i18n:translate="">Year</dt>
+        <dd class="year"
+          tal:content="recension/year">
+          2007
+        </dd>
+      </tal:con>
+
+      <tal:con condition="recension/price">
+        <dt i18n:translate="">Price</dt>
+        <dd class="price"
+          tal:condition="recension/price"
+          tal:content="recension/price">
+          29,90
+        </dd>
+      </tal:con>
+    </dl>
+    <a href="#" title="Edit"
+      tal:attributes="href string:${recension/url}/@@edit.html"
+      i18n:attributes="title"
+      i18n:translate="">
+      Edit Recension
+    </a>
+
+
+  </div>
+
+  <p tal:condition="not:view/has_recensions"
+    i18n:translate="recension-no-items">
+    There are no book information items, yet.
+  </p>
+
+  <form action=""
+    tal:attributes="action string:${view/container/@@absolute_url}/@@add"
+    class="add">
+    <input type="submit"
+      class="button"
+      i18n:attributes="value"
+      value="Add..."/>
+
+  </form>
+</div>

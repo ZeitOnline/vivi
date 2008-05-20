@@ -1,0 +1,191 @@
+Syndication Events
+==================
+
+
+When an article is syndicated the article stores a reference to the feed. This
+is done via an event handler. Mock an event first and create a dummy feed:
+
+>>> import zope.component
+>>> import zope.interface
+>>> import zeit.cms.syndication.interfaces
+>>> from zeit.cms.interfaces import ICMSContent
+>>> from zeit.content.article.article import Article
+>>> class Feed(object):
+...     zope.interface.implements(
+...         zeit.cms.syndication.interfaces.IFeed, ICMSContent)
+...     def __init__(self, uid):
+...         self.uniqueId = uid
+...
+...     def updateMetadata(self, content):
+...         print "Feed updating metadata:", content
+
+ Initialize two feeds:
+
+>>> feed_1 = Feed('feed-id')
+>>> feed_2 = Feed('second-feed')
+
+... and create an event:
+
+>>> class Event(object):
+...     targets = set([feed_1, feed_2])
+>>> event = Event()
+
+We also need a mock repository:
+
+>>> class Repository(object):
+...     def getContent(self, id):
+...         print "Repository returns:", id
+...         return {'feed-id': feed_1, 'second-feed': feed_2}[id]
+...
+...     def addContent(self, object):
+...         print "Repository add:", object
+>>> repository = Repository()
+>>> from zeit.cms.repository.interfaces import IRepository
+>>> site_manager = zope.component.getSiteManager()
+>>> site_manager.registerUtility(repository, IRepository)
+
+
+Also mock a Checkin/Checkout manager:
+
+>>> class CoCiManager(object):
+...     def __init__(self, context):
+...         self.context = context
+...     def checkout(self, event=True):
+...         print "Checkout:", self.context
+...         return self.context
+...     def checkin(self, event=True):
+...         print "Checkin:", self.context
+...         return self.context
+>>> from zeit.cms.checkout.interfaces import (
+...     ICheckoutManager, ICheckinManager)
+>>> site_manager.registerAdapter(
+...     CoCiManager, (ICMSContent,), ICheckinManager)
+>>> site_manager.registerAdapter(
+...     CoCiManager, (ICMSContent,), ICheckoutManager)
+
+Initially an article is not linked and not automatically updated:
+
+>>> article = Article()
+>>> article.syndicatedIn
+frozenset([])
+>>> article.automaticTeaserSyndication
+frozenset([])
+
+We link the feed to the article now by calling the `linkToFeed` function with
+the event we created above:
+
+>>> from zeit.content.article.syndication import linkToFeed
+>>> linkToFeed(article, event)
+Checkout:  <zeit.content.article.article.Article object at 0x...>
+Checkin: <zeit.content.article.article.Article object at 0x...>
+>>> article.syndicatedIn
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
+
+Note that each object was retrieved twice because the DAV integration
+gets the object from the repository and then validates it against the source
+which retrieves the object again to make sure it is in the repository. In the
+next case the data is retieved even more often, because there are two sources
+involved:
+
+>>> article.automaticTeaserSyndication
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
+>>> log = article.syndicationLog
+Repository returns: feed-id
+Repository returns: second-feed
+>>> log
+(<zeit.content.article.syndication.SyndicationEventLog object at 0x...>,)
+>>> log[0].syndicatedOn
+datetime.datetime(..., tzinfo=...)
+>>> log[0].syndicatedIn
+frozenset([<Feed object at 0x...>, <Feed object at 0x...>])
+
+
+Of course `syndicatedIn`, `automaticTeaserSyndication` and the `syndicationLog`
+is also represented in the XML:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...
+    <attribute
+      py:pytype="str"
+      ns="http://namespaces.zeit.de/CMS/document"
+      name="syndicatedIn">feed-id;second-feed</attribute>
+    <attribute
+      py:pytype="str"
+      ns="http://namespaces.zeit.de/CMS/document"
+      name="automaticTeaserSyndication">feed-id;second-feed</attribute>
+    <syndicationlog>
+      <entry>
+        <syndicatedOn>2007-10-04 11:43:28.191273+00:00</syndicatedOn>
+        <syndicatedIn py:pytype="str">feed-id</syndicatedIn>
+        <syndicatedIn py:pytype="str">second-feed</syndicatedIn>
+      </entry>
+    </syndicationlog>
+  ...  
+</article>
+
+
+Checkin and Syndication
+=======================
+
+When an article is syndicated it will update all the feeds noted in
+`automaticTeaserSyndication`. When we remove `second-feed` only the `feed-id`
+feed is updated:
+
+>>> article.automaticTeaserSyndication -= frozenset([feed_2])
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+>>> article.automaticTeaserSyndication
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+frozenset([<Feed object at 0x...>])
+
+Now run the checkin action:
+
+>>> from zeit.content.article.syndication import updateFeedOnCheckin
+>>> event = object()  # dummy event
+>>> updateFeedOnCheckin(article, event)
+Repository returns: feed-id
+Repository returns: feed-id
+Repository returns: second-feed
+Repository returns: second-feed
+Checkout:  <Feed object at 0x...>
+Feed updating metadata: <zeit.content.article.article.Article
+  object at 0x...>
+Checkin:  <Feed object at 0x...>
+
+
+
+Cleanup
+=======
+
+After tets we clean up:
+
+>>> site_manager.unregisterUtility(repository, IRepository)
+True
+>>> site_manager.unregisterAdapter(
+...     CoCiManager, (ICMSContent,), ICheckinManager)
+True
+>>> site_manager.unregisterAdapter(
+...     CoCiManager, (ICMSContent,), ICheckoutManager)
+True

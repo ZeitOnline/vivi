@@ -1,0 +1,172 @@
+==========
+Recensions
+==========
+
+We need a testbrowser first:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+Also set the product config:
+
+>>> import os.path
+>>> import zope.app.appsetup.product
+>>> config = zope.app.appsetup.product._configs['zeit.content.article'] = {}
+>>> config['source-book-recession-categories'] = 'file://%s' % (
+...     os.path.join(os.path.dirname(__file__), 'book-categories.xml'))
+
+The recensions UI is not "enabled" by default on articles. The user first has
+to mark the article to use recentions. Open an article in the repository:
+
+>>> browser.open('http://localhost:8080/++skin++cms/repository/online'
+...              '/2007/01/Somalia/')
+
+There are no recensions, yet:
+
+>>> browser.getLink('Recensions')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+Check the article out:
+
+>>> browser.getLink('Checkout').click()
+
+There is still no recention tab:
+>>> browser.getLink('Recensions')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+Mark the article now:
+
+>>> browser.getControl('Has recension content').selected = True
+>>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
+
+
+After saving the recentions tab appears:
+
+>>> browser.getLink('Recensions').click()
+>>> print browser.contents
+<?xml ...
+    There are no book information items, yet.
+    ...
+
+Let's add one:
+
+>>> browser.getControl('Add').click()
+>>> browser.getControl('Title').value = 'Der Schwarm'
+>>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
+>>> browser.getControl(name='form.actions.add').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
+      Frank Schwanitz:
+      Der Schwarm
+    </a>
+    ...
+
+Let's edit and add some more information:
+
+>>> browser.getLink('Schwanitz').click()
+>>> browser.getControl('Publisher').value = 'Kiepenheuer & Witsch'
+>>> browser.getControl('Location').value = 'Koeln'
+>>> browser.getControl('Year').value = '2004'
+>>> browser.getControl('Price').value = '24.90'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
+      Frank Schwanitz:
+      Der Schwarm
+    </a>
+    <dl>
+      <dt>Publisher</dt>
+      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+      ...
+    <dd class="location">Koeln</dd>
+    ...
+    <dd class="year">2004</dd>
+    ...
+    <dd class="price">24.90</dd>
+    ...
+
+Note that the price is not rendered correctly, yet. We would like a decimal or
+just a TextLine but we need lxml 2.0 for this.
+
+Let's have a look at the source code:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
+<article>...
+  <body ...
+    <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+      <auth-info>
+        <author py:pytype="str">Frank Schwanitz</author>
+      </auth-info>
+      <title py:pytype="str">Der Schwarm</title>
+      <category py:pytype="str">Belletristik</category>
+      <edition>
+        <year py:pytype="int">2004</year>
+        <publisher py:pytype="str">Kiepenheuer & Witsch</publisher>
+        <location py:pytype="str">Koeln</location>
+        <price py:pytype="str">24.90</price>
+      </edition>
+    </entry>
+  </body>...
+</article>
+
+
+Let's add another recension:
+
+>>> browser.getLink('Recensions').click()
+>>> browser.getControl('Add').click()
+>>> browser.getControl('Title').value = 'Minima Moraklia'
+>>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
+>>> browser.getControl('Publisher').value = 'Suhrkamp'
+>>> browser.getControl('Location').value = 'Zuerich'
+>>> browser.getControl('Year').value = '2001'
+>>> browser.getControl('Price').value = '13.80'
+>>> browser.getControl(name='form.actions.add').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <a href=".../recensions/0/@@edit.html" title="Edit" class="RecensionTitle">
+      Frank Schwanitz:
+      Der Schwarm
+    </a>
+    ...
+      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+      ...
+      <dd class="location">Koeln</dd>
+      ...
+      <dd class="year">2004</dd>
+      ...
+      <dd class="price">24.90</dd>
+      ...
+  <div class="recension">
+    <a href=".../recensions/1/@@edit.html" title="Edit" class="RecensionTitle">
+      Theodor W. Adorno:
+      Minima Moraklia
+    </a>
+    ...
+    <dd class="publisher">Suhrkamp</dd>
+    ...
+    <dd class="location">Zuerich</dd>
+    ...
+    <dd class="year">2001</dd>
+    ...
+    <dd class="price">13.80</dd>
+  ...
+

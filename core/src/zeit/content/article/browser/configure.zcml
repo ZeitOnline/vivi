@@ -1,0 +1,179 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    name="edit.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Edit metadata"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    icon="metadata-edit"
+    />
+
+  <browser:page
+    name="view.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DisplayForm"
+    permission="zope.View"
+    />
+  
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    icon="metadata-view"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    name="wysiwyg_edit.html"
+    for="..interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.WYSIWYGEdit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit WYSIWYG"
+    />
+
+  <browser:page
+    name="asset_edit.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AssetEdit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit assets"
+    />
+
+  <browser:page
+    name="asset_view.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AssetView"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="asset_view.html"
+    permission="zope.View"
+    menu="zeit-context-views"
+    title="Assets"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <adapter factory=".article.ArticleListRepresentation" />
+
+  <browser:icon
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/articleResource.png"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.article.ChooseTemplate"
+    permission="zeit.AddContent"
+    class=".form.ChooseTemplate"
+    menu="zeit-add-menu" title="Article"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AddForm"
+    name="zeit.content.article.Add"
+    permission="zeit.AddContent"
+    />
+  
+  <!-- Syndication Log -->
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zope.schema.interfaces.IObject
+    zeit.content.article.interfaces.ISyndicationLogType
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.SyndicationLogDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- Recensions -->
+
+  <gocept:pagelet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="recensions.html"
+    class=".recension.Overview"
+    template="recension-overview.pt"
+    permission="zope.View" 
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@recensions.html"
+    menu="zeit-context-views"
+    title="Recensions"
+    filter="context/has_recensions"
+    permission="zope.View" 
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IBookRecensionContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.RecensionIndex"
+    name="index.html"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IBookRecensionContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.Add"
+    name="add"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Add"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IBookRecension"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.Edit"
+    name="edit.html"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+
+  <resourceLibrary name="zeit.cms.recension">
+    <directory source="resources" include="recension.css" />
+  </resourceLibrary>
+
+
+</configure>

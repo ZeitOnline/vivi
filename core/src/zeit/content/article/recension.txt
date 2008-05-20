@@ -1,0 +1,179 @@
+===============
+Book recensions
+===============
+
+We need to set the site since we're a functional test:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+BookRecension object
+====================
+
+
+Create a recension:
+
+>>> import zope.interface.verify
+>>> import zeit.content.article.article
+>>> import zeit.content.article.interfaces
+>>> rec = zeit.content.article.recension.BookRecension()
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.article.interfaces.IBookRecension, rec)
+True
+>>> rec
+<zeit.content.article.recension.BookRecension object at 0x...>
+
+A book recension has an xml representation:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(rec.xml, pretty_print=True)
+<entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>
+
+Set values and verify the xml:
+
+>>> rec.authors = (u'Klaus', 'Hans')
+>>> rec.title = u'Fremdschlaefer'
+>>> rec.genre = u'Schocker'
+>>> rec.info = u'Info'
+>>> rec.category = u'Beletristik'
+>>> rec.age_limit = 4
+>>> rec.original_language = 'English'
+>>> rec.translator = 'Mr. T'
+>>> rec.publisher = 'gocept'
+>>> rec.location = 'Halle'
+>>> rec.year = 2002
+>>> rec.media_type = 'Buch'
+>>> rec.pages = 124
+>>> rec.price = '25,99'
+
+>>> print lxml.etree.tostring(rec.xml, pretty_print=True)
+<entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <auth-info>
+    <author py:pytype="str">Klaus</author>
+    <author py:pytype="str">Hans</author>
+  </auth-info>
+  <title py:pytype="str">Fremdschlaefer</title>
+  <genre py:pytype="str">Schocker</genre>
+  <info py:pytype="str">Info</info>
+  <category py:pytype="str">Beletristik</category>
+  <agelimit py:pytype="int">4</agelimit>
+  <original_language py:pytype="str">English</original_language>
+  <translator py:pytype="str">Mr. T</translator>
+  <edition>
+    <publisher py:pytype="str">gocept</publisher>
+    <location py:pytype="str">Halle</location>
+    <year py:pytype="int">2002</year>
+    <mediatype py:pytype="str">Buch</mediatype>
+    <pages py:pytype="int">124</pages>
+    <price py:pytype="str">25,99</price>
+  </edition>
+</entry>
+
+
+
+Recention container
+===================
+
+An article can have multiple recensions. To get to an recensions the article is
+adapted to IBookRecensions.
+
+Create an article:
+
+>>> article = zeit.content.article.article.Article()
+
+Get the recensions:
+
+>>> recensions = zeit.content.article.interfaces.IBookRecensionContainer(
+...     article)
+>>> recensions
+<zeit.content.article.recension.BookRecensionContainer object at 0x...>
+
+Verify the interface:
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.article.interfaces.IBookRecensionContainer, recensions)
+True
+
+Initially there are no recensions:
+
+>>> list(recensions)
+[]
+
+
+Let's add the recension we've created above:
+
+>>> recensions.append(rec)
+
+>>> len(recensions)
+1
+>>> list(recensions)
+[<zeit.content.article.recension.BookRecension object at 0x...>]
+
+The recension is now already part of the article:
+
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head/>
+  <body>
+    <entry xmlns="http://namespaces.zeit.de/bibinfo">
+      <auth-info>
+        <author py:pytype="str">Klaus</author>
+        <author py:pytype="str">Hans</author>
+      </auth-info>
+      <title py:pytype="str">Fremdschlaefer</title>
+      <genre py:pytype="str">Schocker</genre>
+      <info py:pytype="str">Info</info>
+      <category py:pytype="str">Beletristik</category>
+      <agelimit py:pytype="int">4</agelimit>
+      <original_language py:pytype="str">English</original_language>
+      <translator py:pytype="str">Mr. T</translator>
+      <edition>
+        <publisher py:pytype="str">gocept</publisher>
+        <location py:pytype="str">Halle</location>
+        <year py:pytype="int">2002</year>
+        <mediatype py:pytype="str">Buch</mediatype>
+        <pages py:pytype="int">124</pages>
+        <price py:pytype="str">25,99</price>
+      </edition>
+    </entry>
+  </body>
+</article>
+
+
+Let's retrive the recension we've created from the container:
+
+>>> rec = recensions[0]
+>>> rec
+<zeit.content.article.recension.BookRecension object at 0x...>
+
+Verify the data:
+
+>>> rec.authors
+(u'Klaus', u'Hans')
+>>> rec.title
+u'Fremdschlaefer'
+>>> rec.genre
+u'Schocker'
+>>> rec.info
+u'Info'
+>>> rec.category
+u'Beletristik'
+>>> rec.age_limit
+4
+>>> rec.original_language
+u'English'
+>>> rec.translator
+u'Mr. T'
+>>> rec.publisher
+u'gocept'
+>>> rec.location
+u'Halle'
+>>> rec.year
+2002
+>>> rec.media_type
+u'Buch'
+>>> rec.pages
+124
+>>> rec.price
+u'25,99'
