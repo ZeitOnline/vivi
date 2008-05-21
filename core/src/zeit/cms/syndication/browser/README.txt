@@ -181,6 +181,20 @@ Locking information is also be displayed in the syndication manager:
       </td>
 ...
 
+
+When we try to syndicate to that feed we'll get an error message:
+
+>>> wirtschaft_checkbox = browser.getControl(
+...  name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3dpcnRzY2hhZnQuZmVlZA==.')
+>>> wirtschaft_checkbox.value = True
+>>> browser.getControl('Syndicate').click()
+>>> print browser.contents
+<?xml ...
+        <li class="error">Could not syndicate because
+            "http://xml.zeit.de/wirtschaft.feed" could not be locked or
+            checked out.</li>
+    ...
+
 Preview
 -------
 

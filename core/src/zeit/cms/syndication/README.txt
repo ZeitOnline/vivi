@@ -81,7 +81,7 @@ have added politk.feed to bob's targets above, so we have one target here:
 
 Take the first target. It is empty so far:
 
->>> target = targets[0]
+>>> target = repository['politik.feed']
 >>> list(target)
 []
 
@@ -91,11 +91,21 @@ When we syndicate to that target the `content` object is listed:
 Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent object at 0x...>
      Target: http://xml.zeit.de/politik.feed
      Content: http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+>>> target = repository['politik.feed']
 >>> list(target)
 [<zeit.cms.repository.unknown.UnknownResource object at 0x...>]
 >>> list(target)[0].uniqueId == content.uniqueId
 True
 
+Syndicating is not possible when the feed is locked by somebody else.
+
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> connector.lock(u'http://xml.zeit.de/politik.feed', 'test.frodo', None)
+>>> manager.syndicate([target])
+Traceback (most recent call last):
+    ...
+SyndicationError: http://xml.zeit.de/politik.feed
 
 
 Ordering of Content in a Feed

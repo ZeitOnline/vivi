@@ -34,12 +34,20 @@ class Manager(zeit.cms.browser.view.Base):
         return self.manager.targets
 
     def syndicate(self, targets):
-        self.manager.syndicate(targets)
-        target_names = ', '.join(target.__name__ for target in targets)
-        self.send_message(_('"${name}" has been syndicated to ${targets}',
-                            mapping=dict(
-                                name=self.context.__name__,
-                                targets=target_names)))
+        try:
+            self.manager.syndicate(targets)
+        except zeit.cms.syndication.interfaces.SyndicationError, e:
+            self.send_message(
+                _('Could not syndicate because "${name}" could not be '
+                  'locked or checked out.',
+                  mapping=dict(name=e.args[0])),
+                type="error")
+        else:
+            target_names = ', '.join(target.__name__ for target in targets)
+            self.send_message(_('"${name}" has been syndicated to ${targets}',
+                                mapping=dict(
+                                    name=self.context.__name__,
+                                    targets=target_names)))
 
     def publish(self, targets):
         for target in targets:
@@ -63,7 +71,7 @@ class Manager(zeit.cms.browser.view.Base):
             (self.context, self.request),
             zeit.cms.browser.interfaces.IListRepresentation)
 
-    @zope.cachedescriptors.property.Lazy
+    @property
     def manager(self):
         return zeit.cms.syndication.interfaces.ISyndicationManager(
             self.context)

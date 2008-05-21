@@ -4,6 +4,8 @@ zeit.cms changes
 0.9.15 (unreleased)
 -------------------
 
+- Channels werden beim Syndizieren gesperrt.
+
 0.9.14 (2008-05-20)
 -------------------
 

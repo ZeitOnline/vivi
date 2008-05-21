@@ -11,9 +11,11 @@ import zope.app.locking.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.workingcopy.interfaces
 
 import zeit.cms.syndication.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class SyndicationManager(object):
@@ -43,18 +45,33 @@ class SyndicationManager(object):
         return True
 
     def syndicate(self, targets):
-        # XXX We really should lock/checkout the feeds!
+        targets = list(targets)
         for target in targets:
             if target.uniqueId not in self._target_mapping:
                 raise ValueError("Cannot syndicate to %s" % target.uniqueId)
+
+        checked_out = []
+        for target in targets:
+            manager = zeit.cms.checkout.interfaces.ICheckoutManager(target)
+            try:
+                checked_out.append(manager.checkout())
+            except zeit.cms.checkout.interfaces.CheckinCheckoutError:
+                for co in checked_out:
+                    del co.__parent__[co.__name__]
+                raise zeit.cms.syndication.interfaces.SyndicationError(
+                    target.uniqueId)
+
+        # Everything is checked out now. Syndicate.
+        for target in checked_out:
             target.insert(0, self.context)
+
+        for target in checked_out:
+            manager = zeit.cms.checkout.interfaces.ICheckinManager(target)
+            manager.checkin()
 
         event = zeit.cms.syndication.interfaces.ContentSyndicatedEvent(
             self.context, targets)
         zope.event.notify(event)
-
-        for target in targets:
-            self.repository.addContent(target)
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
