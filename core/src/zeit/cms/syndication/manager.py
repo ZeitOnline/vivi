@@ -43,6 +43,7 @@ class SyndicationManager(object):
         return True
 
     def syndicate(self, targets):
+        # XXX We really should lock/checkout the feeds!
         for target in targets:
             if target.uniqueId not in self._target_mapping:
                 raise ValueError("Cannot syndicate to %s" % target.uniqueId)
@@ -61,6 +62,10 @@ class SyndicationManager(object):
             zeit.cms.repository.interfaces.IRepository)
 
     @zope.cachedescriptors.property.Lazy
+    def lockable(self):
+        return zope.app.locking.interfaces.ILockable(self.context)
+
+    @zope.cachedescriptors.property.Lazy
     def _target_mapping(self):
         location = zope.component.getUtility(
             zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
@@ -71,7 +76,3 @@ class SyndicationManager(object):
         for target in targets:
             result[target.uniqueId] = target
         return result
-
-    @zope.cachedescriptors.property.Lazy
-    def lockable(self):
-        return zope.app.locking.interfaces.ILockable(self.context)
