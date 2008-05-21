@@ -29,10 +29,21 @@ class MockPublish(object):
             self.context).can_publish():
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Cannot publish.")
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.BeforePublishEvent(self.context))
         print "Publishing: %s" % self.context.uniqueId
+        _published[self.context.uniqueId] = True
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.PublishedEvent(self.context))
 
     def retract(self):
-        raise NotImplementedError
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context))
+        print "Retracting: %s" % self.context.uniqueId
+        _published[self.context.uniqueId] = False
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.RetractedEvent(self.context))
+
 
 
 _published = {}

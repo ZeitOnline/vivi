@@ -17,6 +17,21 @@ Register adapters
 >>> gsm.registerAdapter(
 ...     zeit.cms.workflow.mock.MockPublishInfo)
 
+
+Register event handlers to make sure the proper events are sent out:
+
+>>> def event(event):
+...     print event
+...     print "   ", event.object.uniqueId
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IBeforePublishEvent,))
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IPublishedEvent,))
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IBeforeRetractEvent,))
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+
 Let's try this on a testcontent:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
@@ -57,7 +72,33 @@ It spits out a message otherwise:
 
 >>> info.set_can_publish(True)
 >>> workflow.publish()
+<zeit.cms.workflow.interfaces.BeforePublishEvent object at 0x...>
+    http://xml.zeit.de/testcontent
 Publishing: http://xml.zeit.de/testcontent
+<zeit.cms.workflow.interfaces.PublishedEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+
+
+The object is published now:
+
+>>> info.published
+True
+
+
+Retract:
+
+>>> workflow.retract()
+<zeit.cms.workflow.interfaces.BeforeRetractEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+Retracting: http://xml.zeit.de/testcontent
+<zeit.cms.workflow.interfaces.RetractedEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+
+
+The object is no longer published:
+
+>>> info.published
+False
 
 Clean up:
 
