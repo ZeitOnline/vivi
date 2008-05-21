@@ -7,7 +7,6 @@ Create a testbrowser first:
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
-
 Lets create a portraitbox:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
@@ -27,7 +26,7 @@ The infobox has a name and html content:
 Reference an image:
 
 >>> browser.getControl('Image').value = (
-...     'http://xml.zeit.de/2006/DSC00109_2.jpg')
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
 
 Finnaly add the portraitbox:
 
