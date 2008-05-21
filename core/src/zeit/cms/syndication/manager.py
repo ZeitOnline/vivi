@@ -38,7 +38,7 @@ class SyndicationManager(object):
             # Only syndicated checked in content.
             return False
         if self.lockable.locked():
-            # Do not syndcate locked content.
+            # Do not syndicate locked content.
             return False
         return True
 
