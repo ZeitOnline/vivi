@@ -21,7 +21,7 @@ class DAVConnection(davbase.DAVConnection):
         """Query the server for locking information.
 
         The information is returned in a dict, like so
-        {'owner': <owner>, 'timeout': <timeout>, 'locktoken': <locktoken>} 
+        {'owner': <owner>, 'timeout': <timeout>, 'locktoken': <locktoken>}
         (empty when no lock is on the resource).
         """
         return self._query_lockprop(url).get_locking_info().copy()
