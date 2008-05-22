@@ -7,6 +7,10 @@ zeit.cms changes
 - Channels werden beim Syndizieren gesperrt.
 - zeit.relation ist jetzt zeit.cms.relation.
 - Teilweise wurde ein <head><relateds> implizit ereugt, bug #4183.
+- Jedes Objekt weiß jetzt wohin es Syndiziert wurde (via zeit.cms.relation, bug
+  #4178).
+- Beim zurückziehen im Workflow wird ein Objekt aus den Channeln in denen es
+  enthalten ist entfernt (bug #4177).
 
 0.9.14 (2008-05-20)
 -------------------
