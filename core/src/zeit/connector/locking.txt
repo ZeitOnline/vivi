@@ -35,7 +35,9 @@ Edge case 1: We think a resource is locked but it isn't
 We unlock the resource under the hood and of course expect that we can add it:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge1'
+>>> parent = 'http://xml.zeit.de/testing'
 >>> token = connector.lock(res.id, 'saruman', until=None)
+>>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
 >>> connector._conn().do_unlock(url, token)
 >>> connector.add(res)
@@ -47,6 +49,7 @@ Edge case 1.1: With existing resource:
 >>> res.id = 'http://xml.zeit.de/testing/edge1.1'
 >>> connector.add(res)
 >>> token = connector.lock(res.id, 'saruman', until=None)
+>>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
 >>> connector._conn().do_unlock(url, token)
 >>> connector.add(res)
@@ -72,6 +75,7 @@ Edge case 2.2: With existing resource:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge2.2'
 >>> connector.add(res)
+>>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
 >>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
 >>> connector.add(res)
@@ -90,18 +94,12 @@ API to create an anonymous lock. Create a resource first:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge3'
 >>> connector.add(res)
+>>> ignore = connector[res.id]  # fill cache again
 
 Now lock:
 
 >>> dav_url = connector._id2loc(connector._get_cannonical_id(res.id))
 >>> token = connector._conn().do_lock(dav_url)
-
-The connector tells us it is locked now:
-
->>> connector.locked(res.id)
-(None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
- False)
-
 
 Deleting the resource now will yield a `LockedByOtherSystemError`:
 
@@ -120,7 +118,10 @@ Edge case 4: We think the resource is locked but it is by somebody else
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 >>> res.id = 'http://xml.zeit.de/testing/edge4'
+>>> connector.add(res)
+>>> ignore = connector[res.id]  # fill cache again
 >>> token = connector.lock(res.id, 'saruman', until=None)
+>>> r2 = connector[res.id]
 >>> url = connector._id2loc(res.id)
 >>> connector._conn().do_unlock(url, token)
 >>> new_token = connector._conn().do_lock(

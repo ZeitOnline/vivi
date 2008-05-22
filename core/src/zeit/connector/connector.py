@@ -510,6 +510,7 @@ class Connector(object):
     def _internal_add(self, id, resource):
         """The grunt work of __setitem__() and add()
         """
+        self._invalidate_cache(id)
         locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
         autolock = (locktoken is None)
         iscoll = (resource.type == 'collection'
