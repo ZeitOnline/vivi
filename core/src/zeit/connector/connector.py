@@ -478,6 +478,7 @@ class Connector(object):
         locker, until, myself = self.locked(id)
 
         if (locker or until) and not myself:
+            __traceback_info__ = (id, locker, until)
             raise zeit.connector.interfaces.LockedByOtherSystemError(
                 id, locker, until)
         my_lock_info = self._get_my_lockinfo(id)
