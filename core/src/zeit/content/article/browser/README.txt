@@ -419,28 +419,13 @@ xml source:
 </channel>
 >>> browser.getLink('Checkin').click()
 
-
-Let's make sure the feed is referenced in the article:
+We could now select do not automatically update the metadata:
 
 >>> browser.open(article_url)
 >>> browser.getLink('Checkout').click()
->>> browser.getLink('Source').click()
->>> print browser.getControl(name='form.xml').value
-<article...
-  <attribute
-    py:pytype="str"
-    ns="http://namespaces.zeit.de/CMS/document"
-    name="syndicatedIn">http://xml.zeit.de/politik.feed</attribute>
-...
-</article>
-
-Check if the Automatic Teasersyndication field shows up, after the
-article is syndicated:
-
 >>> browser.getLink('Edit metadata').click()
->>> browser.getControl(name="form.automaticTeaserSyndication:list")
-<ListControl name='form.automaticTeaserSyndication:list' type='select'>
-
+>>> browser.getControl('No automatic metadata update').displayOptions
+['Politik']
 
 
 Checking in a Syndicated Article
@@ -449,7 +434,6 @@ Checking in a Syndicated Article
 We change the article's teaser and check it in. We expect to see the change in
 the feeds automatically:
 
->>> browser.getLink('Edit metadata').click()
 >>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()

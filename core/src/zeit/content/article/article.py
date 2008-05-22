@@ -24,7 +24,6 @@ import zeit.wysiwyg.html
 import zeit.wysiwyg.interfaces
 
 import zeit.content.article.interfaces
-import zeit.content.article.syndication
 
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
@@ -59,16 +58,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['dailyNewsletter'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
-    automaticTeaserSyndication = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['automaticTeaserSyndication'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'automaticTeaserSyndication',
-        use_default=True)
-    syndicatedIn = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['syndicatedIn'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'syndicatedIn',
-        use_default=True)
-
-    syndicationLog = zeit.content.article.syndication.SyndicationLogProperty()
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,

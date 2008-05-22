@@ -44,11 +44,10 @@ base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 class ArticleFormBase(object):
 
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.IArticleMetadata).omit(
-                'textLength') +
-        zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.interfaces.IArticleMetadata,
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
+        zeit.cms.interfaces.ICMSContent).omit('textLength')
 
     field_groups = (
         base.navigation_fields,
@@ -74,7 +73,7 @@ class AddForm(ArticleFormBase,
     title = _('Add article')
     form_fields = (
         ArticleFormBase.form_fields +
-        ChooseTemplate.form_fields).omit('automaticTeaserSyndication',
+        ChooseTemplate.form_fields).omit('automaticMetadataUpdateDisabled',
                                          'paragraphs')
 
     content_template = None
@@ -106,11 +105,6 @@ class EditForm(ArticleFormBase,
                zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _('Edit article')
-
-    def __init__(self, *args, **kwargs):
-        super(EditForm, self).__init__(*args, **kwargs)
-        if not self.context.automaticTeaserSyndication:
-            self.form_fields = self.form_fields.omit('automaticTeaserSyndication');
 
 
 class DisplayForm(ArticleFormBase,

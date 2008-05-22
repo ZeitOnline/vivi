@@ -18,23 +18,6 @@ import zeit.content.article.source
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 
 
-class ISyndicationLogType(zope.interface.interfaces.IInterface):
-    """Type for syndication logs."""
-
-
-class ISyndicationEventLog(zope.interface.Interface):
-
-    syndicatedOn = zope.schema.Datetime(
-        title=_("Syndication Time"),
-        readonly=True)
-
-    syndicatedIn = zope.schema.FrozenSet(
-        title=_("Syndicated in"),
-        readonly=True,
-        default=frozenset(),
-        value_type=zope.schema.Object(zeit.cms.syndication.interfaces.IFeed))
-
-
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
@@ -70,14 +53,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
             "Should this article be listed in the daily newsletter?"),
         default=False)
 
-    automaticTeaserSyndication = zope.schema.FrozenSet(
-        title=_("Automatic Teasersyndication"),
-        description=_(
-            "Teaser will automatically be updated in the enabled channels."),
-        default=frozenset(),
-        value_type=zope.schema.Choice(
-            source=zeit.content.article.source.SyndicatedInSource()))
-
     textLength = zope.schema.Int(
         title=_('Textlength'),
         required=False)
@@ -93,18 +68,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
-
-    syndicatedIn = zope.schema.FrozenSet(
-        title=_("Article is syndicated in these feeds."),
-        default=frozenset(),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.syndication.interfaces.feedSource))
-
-
-    syndicationLog = zope.schema.Tuple(
-        title=_("Syndication Log"),
-        default=(),
-        value_type=zope.schema.Object(ISyndicationEventLog))
 
 
 class IBookRecensionReadContainer(zope.interface.Interface):

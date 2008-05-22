@@ -23,6 +23,12 @@
     <require
       set_schema="zeit.wysiwyg.interfaces.IHTMLContent"
       permission="zeit.EditContent" />
+    <require
+      interface="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
+      permission="zeit.EditContent" />
   </class>
 
   <adapter factory=".article.ArticleHTMLContent"/>
@@ -36,26 +42,11 @@
   </class>
 
 
-  <class class=".syndication.SyndicationEventLog">
-    <require
-      interface=".interfaces.ISyndicationEventLog"
-      permission="zope.View" />
-  </class>
-
-
-  <subscriber handler=".syndication.linkToFeed" />
-  <subscriber handler=".syndication.updateFeedOnCheckin" />
-  
   <subscriber handler=".article.updateTextLengthOnChange" />
   
   <interface
     interface=".interfaces.IArticle"
     type="zeit.cms.interfaces.ICMSContentType"
-    />
-
-  <interface
-    interface=".interfaces.ISyndicationEventLog"
-    type=".interfaces.ISyndicationLogType"
     />
 
 
