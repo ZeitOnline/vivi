@@ -114,3 +114,21 @@ Unlock the resource and remove it:
 
 >>> connector._conn().do_unlock(dav_url, token)
 >>> del connector[res.id]
+
+
+Edge case 4: We think the resource is locked but it is by somebody else
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+>>> res.id = 'http://xml.zeit.de/testing/edge4'
+>>> token = connector.lock(res.id, 'saruman', until=None)
+>>> url = connector._id2loc(res.id)
+>>> connector._conn().do_unlock(url, token)
+>>> new_token = connector._conn().do_lock(
+...     url, owner='gimli', depth=0, timeout=20)
+>>> connector.add(res)
+Traceback (most recent call last):
+    ...
+LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
+>>> connector.unlock(res.id)
+>>> connector.add(res)
+>>> del connector[res.id]
