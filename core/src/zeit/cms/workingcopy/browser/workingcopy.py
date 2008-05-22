@@ -51,10 +51,6 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
 
     contentContext = workingcopy
 
-    @property
-    def content(self):
-        return reversed(super(Sidebar, self).content)
-
 
 @zope.component.adapter(
     zeit.cms.workingcopy.interfaces.ILocalContent,
