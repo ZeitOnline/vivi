@@ -50,7 +50,14 @@ class CheckoutManager(object):
                 "Cannot checkout.")
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if not lockable.locked():
-            lockable.lock(timeout=3600)
+            try:
+                lockable.lock(timeout=3600)
+            except zeit.connector.interfaces.LockingError, e:
+                # This is to catch a race condition when the object is locked
+                # by another process/thread between the lock check above and
+                # here.
+                raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                    *e.args)
 
         if event:
             zope.event.notify(
