@@ -8,8 +8,10 @@ import lovely.remotetask
 import lovely.remotetask.interfaces
 
 import zeit.cms.content.interfaces
+import zeit.cms.content.related
 import zeit.cms.content.template
 import zeit.cms.generation
+import zeit.cms.relation.relation
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.workingcopy.workingcopy
@@ -30,6 +32,16 @@ def installTaskService():
         lovely.remotetask.interfaces.ITaskService, utility_name='general')
 
 
+def installRelations():
+    site_manager = zope.component.getSiteManager()
+    relations = installLocalUtility(
+        site_manager,
+        zeit.cms.relation.relation.Relations,
+        'relations',
+        zeit.cms.relation.interfaces.IRelations)
+    relations.add_index(zeit.cms.content.related.related, multiple=True)
+
+
 def install(root):
     site_manager = zope.component.getSiteManager()
     installLocalUtility(
@@ -42,6 +54,7 @@ def install(root):
         root, zeit.cms.content.template.TemplateManagerContainer,
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
     installTaskService()
+    installRelations()
 
 
 def evolve(context):

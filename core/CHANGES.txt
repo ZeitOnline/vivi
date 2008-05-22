@@ -5,6 +5,8 @@ zeit.cms changes
 -------------------
 
 - Channels werden beim Syndizieren gesperrt.
+- zeit.relation ist jetzt zeit.cms.relation.
+- Teilweise wurde ein <head><relateds> implizit ereugt, bug #4183.
 
 0.9.14 (2008-05-20)
 -------------------

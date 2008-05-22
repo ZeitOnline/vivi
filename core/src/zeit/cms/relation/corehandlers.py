@@ -11,6 +11,7 @@ import zope.component
 import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.relation.interfaces
 
 
 logger = logging.getLogger(__name__)
@@ -20,7 +21,8 @@ logger = logging.getLogger(__name__)
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_index_on_checkin(context, event):
-    relations = zope.component.getUtility(zeit.relation.interfaces.IRelations)
+    relations = zope.component.getUtility(
+        zeit.cms.relation.interfaces.IRelations)
     relations.index(context)
 
 
@@ -29,7 +31,8 @@ def update_index_on_checkin(context, event):
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_relating(context, event):
     """Update metadata in object which relates another."""
-    relations = zope.component.getUtility(zeit.relation.interfaces.IRelations)
+    relations = zope.component.getUtility(
+        zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context, 'related')
     for related_object in relating_objects:
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(

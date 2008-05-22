@@ -1,11 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <utility 
-    name="zeit.relation"
-    provides="zope.app.generations.interfaces.ISchemaManager"
-    component=".generation.manager"
-    />
-
   <subscriber handler=".corehandlers.update_index_on_checkin" />
   <subscriber handler=".corehandlers.update_relating" />
 

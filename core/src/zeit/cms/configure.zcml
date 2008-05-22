@@ -26,6 +26,7 @@
   <include package=".clipboard" />
   <include package=".locking" />
   <include package=".workflow" />
+  <include package=".relation" />
 
 
   <!-- configuration -->

@@ -5,19 +5,18 @@
 import persistent
 import BTrees
 
-
 import zope.interface
 
 import zc.relation.catalog
 import zc.relation.interfaces
 
-import zeit.relation.interfaces
+import zeit.cms.relation.interfaces
 
 
 class Relations(persistent.Persistent):
     """Handles relations between content."""
 
-    zope.interface.implements(zeit.relation.interfaces.IRelations)
+    zope.interface.implements(zeit.cms.relation.interfaces.IRelations)
 
     def __init__(self):
         super(Relations, self).__init__()

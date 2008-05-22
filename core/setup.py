@@ -40,6 +40,7 @@ setup(
         'zc.form',
         'zc.recipe.egg>=1.1.0dev-r84019',
         'zc.resourcelibrary',
+        'zc.relation',
         'zc.set',
         'zc.sourcefactory',
         'zc.table',

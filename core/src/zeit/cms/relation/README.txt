@@ -14,11 +14,11 @@ Low level support
 The `IRelations`-Utility handles all the magic of resolving
 references[#functionaltest]_:
 
->>> import zeit.relation.interfaces
+>>> import zeit.cms.relation.interfaces
 >>> relations = zope.component.getUtility(
-...     zeit.relation.interfaces.IRelations)
+...     zeit.cms.relation.interfaces.IRelations)
 >>> relations
-<zeit.relation.relation.Relations object at 0x...>
+<zeit.cms.relation.relation.Relations object at 0x...>
 
 [#interface]_ 
 
@@ -238,7 +238,7 @@ And check in:
 
     >>> import zope.interface.verify
     >>> zope.interface.verify.verifyObject(
-    ...     zeit.relation.interfaces.IRelations, relations)
+    ...     zeit.cms.relation.interfaces.IRelations, relations)
     True
 
 

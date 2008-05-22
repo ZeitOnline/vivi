@@ -68,8 +68,10 @@ class RelatedBase(object):
         return element.get('href')
 
     def _get_related_nodes(self):
-        self._assure_tree()
-        return self.path.find(self._get_xml())
+        try:
+            return self.path.find(self._get_xml())
+        except AttributeError:
+            return []
 
     def _assure_tree(self):
         try:
@@ -123,3 +125,11 @@ def BasicReference(context):
             lxml.objectify.E.text(metadata.hpTeaserText)))
 
     return reference
+
+
+def related(content, catalog):
+    """Index support for relation catalog."""
+    related = zeit.cms.content.interfaces.IRelatedContent(content, None)
+    if related is None:
+        return None
+    return related.related
