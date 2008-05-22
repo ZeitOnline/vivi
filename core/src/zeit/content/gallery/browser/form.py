@@ -20,13 +20,10 @@ import zeit.content.gallery.gallery
 
 class GalleryFormBase(object):
 
-    form_fields = (
-        zope.formlib.form.Fields(
-            zeit.cms.interfaces.ICMSContent,
-            omit_readonly=False).omit('uniqueId') +
-        zope.formlib.form.Fields(
-            zeit.content.gallery.interfaces.IGalleryMetadata,
-            omit_readonly=False))
+    form_fields =zope.formlib.form.FormFields(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
+        zeit.content.gallery.interfaces.IGalleryMetadata)
 
 
 class AddGallery(GalleryFormBase,
@@ -35,13 +32,14 @@ class AddGallery(GalleryFormBase,
     title = _("Add gallery")
     factory = zeit.content.gallery.gallery.Gallery
     next_view = 'overview.html'
+    form_fields = GalleryFormBase.form_fields.omit(
+        'automaticMetadataUpdateDisabled')
 
 
 class EditGallery(GalleryFormBase,
                   zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit gallery")
-    form_fields = GalleryFormBase.form_fields.omit('__name__')
 
 
 class DisplayGallery(GalleryFormBase,

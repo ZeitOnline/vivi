@@ -15,12 +15,12 @@ import zeit.cms.content.browser.form
 
 class Base(object):
 
-    form_fields = (
-        zope.formlib.form.FormFields(zeit.content.link.interfaces.ILink) +
-        zope.formlib.form.FormFields(
-            zeit.cms.content.interfaces.ICommonMetadata) +
-        zope.formlib.form.FormFields(zeit.cms.interfaces.ICMSContent) +
-        zope.formlib.form.FormFields(zeit.content.image.interfaces.IImages))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.link.interfaces.ILink,
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
+        zeit.cms.interfaces.ICMSContent,
+        zeit.content.image.interfaces.IImages)
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
@@ -28,6 +28,8 @@ class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
     title = _('Add link')
     factory = zeit.content.link.link.Link
     checkout = False
+    form_fields = Base.form_fields.omit(
+        'automaticMetadataUpdateDisabled')
 
 
 class Edit(Base, zeit.cms.content.browser.form.CommonMetadataEditForm):

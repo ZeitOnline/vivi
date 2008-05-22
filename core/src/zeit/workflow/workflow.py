@@ -23,6 +23,7 @@ import zeit.cms.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
+import zeit.cms.relation.interfaces
 import zeit.cms.workflow.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
@@ -136,3 +137,24 @@ def log_workflow_changes(workflow, event):
 
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)
+
+
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.workflow.interfaces.IRetractedEvent)
+def remove_from_channels_after_retract(context, event):
+    """Removes objects from channels when they're retracted."""
+    relations = zope.component.getUtility(
+        zeit.cms.relation.interfaces.IRelations)
+    syndicated_in = relations.get_relations(context, 'syndicated_in')
+    for feed in syndicated_in:
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
+        try:
+            checked_out = manager.checkout()
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
+            log.error("Could not remove %s from %s because channel locked." %(
+                context.uniqueId, feed.uniqueId))
+            continue
+        checked_out.remove(context)
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
+        manager.checkin()

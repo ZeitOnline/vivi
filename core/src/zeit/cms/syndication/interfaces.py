@@ -2,12 +2,16 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.component
 import zope.component.interfaces
 import zope.interface
 import zope.schema
 
+import zc.sourcefactory.contextual
+
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.relation.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -164,3 +168,28 @@ class FeedSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 feedSource = FeedSource()
+
+
+class SyndicatedInSource(
+    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    """A source returning the feeds an article is syndicated in."""
+
+    def getValues(self, context):
+        relations = zope.component.getUtility(
+            zeit.cms.relation.interfaces.IRelations)
+        return relations.get_relations(context, 'syndicated_in')
+
+    def getTitle(self, context, value):
+        return value.title
+
+
+class IAutomaticMetadataUpdate(zope.interface.Interface):
+    """Access to information about automatic metadata update."""
+
+    automaticMetadataUpdateDisabled = zope.schema.FrozenSet(
+        title=_("No automatic metadata update"),
+        description=_("When this object is checked in, its metata will "
+                      "not automatically updated in the selected channels."),
+        default=frozenset(),
+        value_type=zope.schema.Choice(source=SyndicatedInSource()))
+

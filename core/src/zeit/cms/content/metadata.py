@@ -10,12 +10,14 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.keyword
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
+import zeit.cms.syndication.interfaces
 
 
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(
-        zeit.cms.content.interfaces.ICommonMetadata)
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.content.interfaces.ICommonMetadata,
@@ -54,3 +56,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.homepageteaser.title')
     hpTeaserText = zeit.cms.content.property.ObjectPathProperty(
         '.homepageteaser.text')
+
+    automaticMetadataUpdateDisabled = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate[
+            'automaticMetadataUpdateDisabled'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'automaticMetadataUpdateDisabled',
+        use_default=True)

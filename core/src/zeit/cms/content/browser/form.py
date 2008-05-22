@@ -55,7 +55,8 @@ class CommonMetadataFormBase(object):
             css_class= 'column-right'),
         )
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata)
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate)
 
     for_display = False
 

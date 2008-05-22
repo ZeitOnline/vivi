@@ -72,7 +72,6 @@ Now, fill the form and add the CP:
 >>> browser.getControl(name='form.title').value = 'Politik'
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
 

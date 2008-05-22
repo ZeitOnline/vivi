@@ -14,6 +14,7 @@ import zeit.cms.generation
 import zeit.cms.relation.relation
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
+import zeit.cms.syndication.feed
 import zeit.cms.workingcopy.workingcopy
 
 
@@ -40,6 +41,7 @@ def installRelations():
         'relations',
         zeit.cms.relation.interfaces.IRelations)
     relations.add_index(zeit.cms.content.related.related, multiple=True)
+    relations.add_index(zeit.cms.syndication.feed.syndicated_in, multiple=True)
 
 
 def install(root):

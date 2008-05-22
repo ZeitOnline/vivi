@@ -10,6 +10,7 @@ import zope.formlib.form
 import zeit.cms.browser.form
 import zeit.cms.interfaces
 import zeit.cms.content.browser.interfaces
+import zeit.cms.syndication.interfaces
 import zeit.xmleditor.browser.form
 
 import zeit.content.centerpage.interfaces
@@ -29,16 +30,17 @@ class ChooseTemplate(zeit.cms.content.browser.template.ChooseTemplateForm):
 
 class CPFormBase(object):
 
-    form_fields = (
-        zope.formlib.form.Fields(zeit.cms.interfaces.ICMSContent) +
-        zope.formlib.form.Fields(
-            zeit.content.centerpage.interfaces.ICenterPageMetadata))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
+        zeit.content.centerpage.interfaces.ICenterPageMetadata)
 
 
 class AddForm(CPFormBase,
               zeit.cms.content.browser.form.CommonMetadataAddForm):
 
-    form_fields = CPFormBase.form_fields + ChooseTemplate.form_fields
+    form_fields = (CPFormBase.form_fields + ChooseTemplate.form_fields).omit(
+        'automaticMetadataUpdateDisabled')
 
     def create(self, data):
         source = None

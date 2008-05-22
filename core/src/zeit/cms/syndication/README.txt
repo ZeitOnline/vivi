@@ -90,10 +90,10 @@ When we syndicate to that target the `content` object is listed:
 >>> manager.syndicate([target])
 Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent object at 0x...>
      Target: http://xml.zeit.de/politik.feed
-     Content: http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+     Content: http://xml.zeit.de/testcontent
 >>> target = repository['politik.feed']
 >>> list(target)
-[<zeit.cms.repository.unknown.UnknownResource object at 0x...>]
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
 >>> list(target)[0].uniqueId == content.uniqueId
 True
 
@@ -106,6 +106,124 @@ Syndicating is not possible when the feed is locked by somebody else.
 Traceback (most recent call last):
     ...
 SyndicationError: http://xml.zeit.de/politik.feed
+
+Unlock again:
+
+>>> connector.unlock(u'http://xml.zeit.de/politik.feed')
+
+
+After syndication the relation utility knows where a content is syndicated in:
+
+>>> import zeit.cms.relation.interfaces
+>>> relations = zope.component.getUtility(
+...     zeit.cms.relation.interfaces.IRelations)
+>>> syndicated_in = list(
+...     relations.get_relations(content, 'syndicated_in'))
+>>> len(syndicated_in)
+1
+
+Automatic update of metadata
+============================
+
+When an object is checked in its metadata is copied to the feeds it is
+syndicated in automatically.
+
+Check the source of the feed first:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(repository['politik.feed'].xml,
+...     pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent">
+      <supertitle xsi:nil="true"/>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+
+Checkout content, change a teaser and check back in:
+
+>>> import zeit.cms.checkout.interfaces
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> checked_out.teaserTitle = u'nice Teaser Title'
+>>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+
+Verify the channel source again:
+
+>>> print lxml.etree.tostring(repository['politik.feed'].xml,
+...     pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent">
+      <supertitle xsi:nil="true"/>
+      <title py:pytype="str">nice Teaser Title</title>
+      <text xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+
+Forbid the automatic update:
+
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> checked_out.teaserTitle = u'Bite my shiny metal ass.'
+>>> checked_out.automaticMetadataUpdateDisabled = frozenset([
+...     repository['politik.feed']])
+>>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+
+The feed has not changed this time:
+
+>>> print lxml.etree.tostring(repository['politik.feed'].xml,
+...     pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent">
+      <supertitle xsi:nil="true"/>
+      <title py:pytype="str">nice Teaser Title</title>
+      <text xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
 
 
 Ordering of Content in a Feed
@@ -181,7 +299,6 @@ Footnotes
     >>> from zeit.cms.interfaces import ICMSContent
     >>> from zeit.cms.repository.interfaces import IRepository
     >>> repository = zope.component.getUtility(IRepository)
-    >>> collection = repository['online']['2007']['01']
-    >>> content = list(collection.values())[0]
+    >>> content = repository['testcontent']
     >>> ICMSContent.providedBy(content)
     True

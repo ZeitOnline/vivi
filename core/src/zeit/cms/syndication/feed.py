@@ -237,3 +237,11 @@ class RelatedMetadataUpdater(object):
             return
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
         entry.append(xml_repr.xml)
+
+
+def syndicated_in(content, catalog):
+    """Index for relations."""
+    feed = zeit.cms.syndication.interfaces.IFeed(content, None)
+    if not feed:
+        return None
+    return list(feed)

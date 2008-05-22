@@ -26,6 +26,7 @@
       />
   </class>
 
+  <subscriber handler=".workflow.remove_from_channels_after_retract" />
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />

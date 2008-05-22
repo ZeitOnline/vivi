@@ -48,4 +48,8 @@
     <require like_class=".feed.Feed" />
   </class>
 
+
+  <!-- metadata update -->
+  <subscriber handler=".metadata.updateFeedOnCheckin" />
+
 </configure>

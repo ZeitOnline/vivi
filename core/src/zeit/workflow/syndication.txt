@@ -60,3 +60,76 @@ reflected:
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
+
+
+
+Removing of objects from channels on retract
+++++++++++++++++++++++++++++++++++++++++++++
+
+When a syndicated object is retracted it is also removed from the channels.
+
+Add feeds to the target list[#functionaltest]_[#needs-interaction]_:
+
+>>> import zeit.cms.syndication.interfaces
+>>> import zeit.cms.workingcopy.interfaces
+>>> location = zope.component.getUtility(
+...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+>>> workingcopy = location.getWorkingcopy()
+>>> targets = zeit.cms.syndication.interfaces.IMySyndicationTargets(
+...     workingcopy)
+>>> targets.targets += (repository['politik.feed'], 
+...                     repository['wirtschaft.feed'])
+
+
+Get a test content and syndicate it:
+
+>>> len(repository['politik.feed'])
+0
+>>> content = repository['testcontent']
+>>> manager = zeit.cms.syndication.interfaces.ISyndicationManager(content)
+>>> manager.syndicate([repository['politik.feed']])
+>>> len(repository['politik.feed'])
+1
+
+Publish/retract the content. This removes it from the feed:
+
+>>> import zeit.cms.workflow.interfaces
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['testcontent'])
+>>> info.urgent = True
+>>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
+>>> publish.publish()
+>>> tasks.process()
+>>> publish.retract()
+>>> tasks.process()
+>>> len(repository['politik.feed'])
+0
+
+
+>>> zope.app.component.hooks.setSite(old_site)
+>>> zope.security.management.endInteraction()
+
+
+.. [#functionaltest] Setup functional test and get some common utilities
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+    >>> import lovely.remotetask.interfaces
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')
+
+
+.. [#needs-interaction] 
+
+    >>> import zope.security.management
+    >>> import zope.security.testing
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> request.setPrincipal(zope.security.testing.Principal(u'zope.user'))
+    >>> zope.security.management.newInteraction(request)
