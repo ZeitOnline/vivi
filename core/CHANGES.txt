@@ -5,6 +5,7 @@ CHANGES
 -----------------
 
 - Fixed better lock handling from 0.17
+- Only invalidating parent of a resource when parent actually has changed.
 
 0.18 (2008-05-19)
 -----------------
