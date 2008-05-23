@@ -16,6 +16,8 @@ zeit.cms changes
   die Konsequenzen.
 - Nachrichten werden nur noch im Fehlerfall 5s angezeigt, sonst 0.5.
 - Metadaten eines Bildes beim Referenzieren korrekt eingebunden (bug #4189).
+- Wenn eine Bildergruppe eingebettet wird hat das <image>-Tag jetzt das
+  Attribute "type", welches die Extension der Bilder angibt (bug #4188).
 
 0.9.14 (2008-05-20)
 -------------------

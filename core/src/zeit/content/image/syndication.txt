@@ -64,7 +64,7 @@ Update the metadata of the feed. The image is now referenced:
   <title/>
   <container>
     <block href="dummy-content">
-      <image base-id="http://xml.zeit.de/image-group">
+      <image base-id="http://xml.zeit.de/image-group" type="jpg">
         <bu xsi:nil="true"/>
       </image>
     </block>
@@ -85,7 +85,7 @@ When more than one image is reference, only the first one will be in the feed:
   <title/>
   <container>
     <block href="dummy-content">
-      <image base-id="http://xml.zeit.de/image-group">
+      <image base-id="http://xml.zeit.de/image-group" type="jpg">
         <bu xsi:nil="true"/>
       </image>
     </block>

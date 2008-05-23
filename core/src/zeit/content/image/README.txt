@@ -27,8 +27,6 @@ Create an image group first:
 >>> import zeit.cms.checkout.interfaces
 >>> import zeit.content.image.test
 >>> group = zeit.content.image.test.create_image_group()
->>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
-
 
 Reference the image via XML:
 
@@ -42,15 +40,17 @@ Reference the image via XML:
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       base-id="http://xml.zeit.de/image-group">
+       base-id="http://xml.zeit.de/image-group" type="jpg">
   <bu xsi:nil="true"/>
 </image>
 
 Set the copyright:
 
+>>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> zeit.content.image.interfaces.IImageMetadata(group).copyrights = (
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
+>>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
@@ -58,7 +58,7 @@ Set the copyright:
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       base-id="http://xml.zeit.de/image-group">
+       base-id="http://xml.zeit.de/image-group" type="jpg">
   <bu xsi:nil="true"/>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -67,8 +67,10 @@ Set the copyright:
 
 Set the link:
 
+>>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> zeit.content.image.interfaces.IImageMetadata(group).links_to = (
 ...     'http://www.asdf.com')
+>>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
@@ -77,7 +79,7 @@ Set the link:
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        href="http://www.asdf.com"
-       base-id="http://xml.zeit.de/image-group">
+       base-id="http://xml.zeit.de/image-group" type="jpg">
   <bu xsi:nil="true"/>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
