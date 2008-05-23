@@ -10,6 +10,11 @@ Setup functional test:
 >>> import zope.app.component.hooks
 >>> old_site = zope.app.component.hooks.getSite()
 >>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.security.testing
+>>> principal = zope.security.testing.Principal(u'zope.user')
+>>> participation = zope.security.testing.Participation(principal)
+>>> import zope.security.management
+>>> zope.security.management.newInteraction(participation)
 
 Image group
 ===========
@@ -19,8 +24,10 @@ XML reference
 
 Create an image group first:
 
+>>> import zeit.cms.checkout.interfaces
 >>> import zeit.content.image.test
 >>> group = zeit.content.image.test.create_image_group()
+>>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 
 
 Reference the image via XML:
@@ -81,3 +88,4 @@ Cleanup
 =======
 
 >>> zope.app.component.hooks.setSite(old_site)
+>>> zope.security.management.endInteraction()

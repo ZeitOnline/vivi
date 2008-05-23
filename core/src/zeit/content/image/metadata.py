@@ -59,12 +59,12 @@ def MetadataXMLReference(context):
         expires = expires.isoformat()
         attributes['expires'] = expires
 
-    set_if_not_empty('title', context.caption)
+    set_if_not_empty('title', context.title)
     set_if_not_empty('alt', context.alt)
     set_if_not_empty('href', context.links_to)
 
     image = lxml.objectify.E.image(
-        lxml.objectify.E.bu(context.alt),
+        lxml.objectify.E.bu(context.caption),
         *copyrights,
         **attributes)
     return image

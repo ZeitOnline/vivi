@@ -38,7 +38,8 @@ def create_image_group():
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     group = zeit.content.image.imagegroup.ImageGroup()
-    group = repository['image-group'] = group
+    repository['image-group'] = group
+    group = repository['image-group']
     for filename in ('new-hampshire-450x200.jpg',
                      'new-hampshire-artikel.jpg',
                      'obama-clinton-120x120.jpg'):

@@ -56,8 +56,7 @@ Reference the image group:
 >>> images = zeit.content.image.interfaces.IImages(content)
 >>> images.images = (group, )
 
-Update the metadata of the feed. The image is now referenced (the namespace is
-a bit weired. We'll fix that later:
+Update the metadata of the feed. The image is now referenced:
 
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
