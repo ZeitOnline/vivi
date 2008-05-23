@@ -426,7 +426,7 @@ pre {
  *
  * */
 .context-actions {
-    right: 0;
+    right: 0.5em;
     white-space: nowrap;
 }
 
