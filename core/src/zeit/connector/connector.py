@@ -300,7 +300,7 @@ class Connector(object):
         token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
 
         self._get_dav_resource(parent).delete(name, token)
-        self._invalidate_cache(id)
+        self._invalidate_cache(id, parent=True)
 
     def __contains__(self, id):
         # Because we cache a lot it will be ok to just grab the object:
@@ -355,7 +355,7 @@ class Connector(object):
                 self.copy(child_id, urlparse.urljoin(new_id, name))
         else:
             conn.copy(old_loc, new_loc)
-        self._invalidate_cache(new_id)
+        self._invalidate_cache(new_id, parent=True)
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`.
@@ -402,6 +402,7 @@ class Connector(object):
         return token
 
     def unlock(self, id, locktoken=None):
+        self._invalidate_cache(id)
         url = self._id2loc(self._get_cannonical_id(id))
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
         if locktoken:
@@ -524,7 +525,7 @@ class Connector(object):
             # only lock for files
             locktoken = self.lock(id, "AUTOLOCK",
                                   datetime.datetime.now(pytz.UTC) +
-                                  datetime.timedelta(seconds=20))
+                                  datetime.timedelta(seconds=60))
 
         if hasattr(resource.data, 'seek'):
             resource.data.seek(0)
@@ -539,7 +540,7 @@ class Connector(object):
             if autolock:
                 locktoken = self.lock(id, "AUTOLOCK",
                                       datetime.datetime.now(pytz.UTC) +
-                                      datetime.timedelta(seconds=20))
+                                      datetime.timedelta(seconds=60))
         else: # We are a file resource:
             if(self._check_dav_resource(id) is None):
                 (parent, name) = _id_splitlast(id)
@@ -563,7 +564,7 @@ class Connector(object):
 
         if autolock and locktoken: # This was _our_ lock. Cleanup:
             self.unlock(id, locktoken=locktoken)
-        self._invalidate_cache(resource.id)
+        self._invalidate_cache(resource.id, parent=True)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.
@@ -649,19 +650,20 @@ class Connector(object):
             davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
         return davlock
 
-    def _invalidate_cache(self, id):
-        # TODO: In the ZopeConnector we might use an event for invalidation.
-        parent, last = _id_splitlast(id)
-        logger.debug("Invalidating %s" % id)
-        logger.debug("Invalidating %s" % parent)
-        for cache, key in ((self.property_cache, id),
-                           (self.child_name_cache, id),
-                           (self.property_cache, parent),
-                           (self.child_name_cache, parent)):
-            try:
-                del cache[key]
-            except KeyError:
-                logger.debug("%s not in %s" % (key, cache))
+    def _invalidate_cache(self, id, parent=False):
+        """invalidate cache."""
+        invalidate = [id]
+        if parent:
+            parent, last = _id_splitlast(id)
+            invalidate.append(parent)
+
+        for id in invalidate:
+            logger.debug("Invalidating %s" % id)
+            for cache in (self.property_cache, self.child_name_cache):
+                try:
+                    del cache[id]
+                except KeyError:
+                    logger.debug("%s not in %s" % (id, cache))
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""

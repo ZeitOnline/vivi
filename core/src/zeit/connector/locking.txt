@@ -56,6 +56,17 @@ Edge case 1.1: With existing resource:
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
 
+Edge case 1.2: Unlocking:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge1.2'
+>>> connector.add(res)
+>>> token = connector.lock(res.id, 'saruman', until=None)
+>>> ignore = connector[res.id]  # fill cache again
+>>> url = connector._id2loc(res.id)
+>>> connector._conn().do_unlock(url, token)
+>>> connector.unlock(res.id)
+>>> del connector[res.id]
+
 
 Edge case 2: We think a resource is not locked, but it is
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -71,9 +82,9 @@ Traceback (most recent call last):
 LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
 
-Edge case 2.2: With existing resource:
+Edge case 2.1: With existing resource:
 
->>> res.id = 'http://xml.zeit.de/testing/edge2.2'
+>>> res.id = 'http://xml.zeit.de/testing/edge2.1'
 >>> connector.add(res)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
@@ -84,6 +95,21 @@ Traceback (most recent call last):
 LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
 >>> del connector[res.id]
+
+Edge case 2.2: Locking
+
+>>> res.id = 'http://xml.zeit.de/testing/edge2.2'
+>>> connector.add(res)
+>>> ignore = connector[res.id]  # fill cache again
+>>> url = connector._id2loc(res.id)
+>>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
+>>> connector.lock(res.id, 'saruman', until=None)
+Traceback (most recent call last):
+    ...
+LockingError: http://xml.zeit.de/testing/edge2.2 is already locked.
+>>> connector.unlock(res.id, token)
+>>> del connector[res.id]
+
 
 Edge case 3: Locked resource w/o locking user
 +++++++++++++++++++++++++++++++++++++++++++++
