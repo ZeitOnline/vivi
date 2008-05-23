@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.19 (unreleased)
+0.19 (2008-05-23)
 -----------------
 
 - Fixed better lock handling from 0.17
