@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import logging
+
 import zope.component
 import zope.viewlet.viewlet
 import zope.traversing
@@ -15,6 +17,9 @@ import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 from zeit.cms.i18n import MessageFactory as _
+
+
+logger = logging.getLogger(__name__)
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase,
