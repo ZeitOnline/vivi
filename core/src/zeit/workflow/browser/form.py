@@ -4,6 +4,7 @@
 
 import zope.formlib.form
 
+import gocept.form.action
 import gocept.form.grouped
 
 import zeit.objectlog.interfaces
@@ -61,8 +62,12 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
                                 mapping=mapping),
                               type='error')
 
-    @zope.formlib.form.action(_('Save state and retract'),
-                              condition=is_published)
+    @gocept.form.action.confirm(
+        _('Save state and retract'),
+        confirm_message=_('Really retract? This will remove the object from '
+                          'all channels it is syndicated in and make it '
+                          'unavailable to the public!'),
+        condition=is_published)
     def handle_retract(self, action, data):
         self.applyChanges(data)
         mapping = dict(

@@ -12,6 +12,8 @@ zeit.cms changes
 - Beim zurückziehen im Workflow wird ein Objekt aus den Channeln in denen es
   enthalten ist entfernt (bug #4177).
 - Bildergalerie speichert ihre DAV-Properties jetzt auch im XML.
+- Zurückziehen von Objekten muss nochmals bestätigt werden, incl. Warnung über
+  die Konsequenzen.
 
 0.9.14 (2008-05-20)
 -------------------

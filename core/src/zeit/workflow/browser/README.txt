@@ -237,6 +237,23 @@ Do a publish/retract cycle to set the property to false:
 
 >>> run_tasks()
 >>> browser.getLink('Workflow').click()
+
+The retract action is protected by javascript (which doesn't matter here):
+
+>>> print browser.contents
+<?xml ...
+            <input type="submit" id="form.actions.5361766520737461746520616e642072657472616374" name="form.actions.5361766520737461746520616e642072657472616374" value="Save state and retract" class="button" />
+        <script type="text/javascript">
+            function confirm_Zm9ybS5hY3Rpb25zLjUzNjE3NjY1MjA3Mzc0NjE3NDY1MjA2MTZlNjQyMDcyNjU3NDcyNjE2Mz(){
+                var confirmed = confirm("Really retract? This will remove the object from all channels it is syndicated in and make it unavailable to the public!");
+                if (confirmed)
+                    return true;
+                return false;
+            }
+            document.getElementById("form.actions.5361766520737461746520616e642072657472616374").onclick = confirm_Zm9ybS5hY3Rpb25zLjUzNjE3NjY1MjA3Mzc0NjE3NDY1MjA2MTZlNjQyMDcyNjU3NDcyNjE2Mz;
+        </script>
+        ...
+
 >>> browser.getControl('retract').click()
 >>> print browser.contents
 <?xml ...
