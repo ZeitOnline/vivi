@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri May 23 13:14:14 2008\n"
+"POT-Creation-Date: Fri May 23 14:16:15 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -68,7 +68,7 @@ msgstr ""
 #: src/zeit/cms/content/interfaces.py:257
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:37
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:29
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
@@ -256,7 +256,7 @@ msgid "CMS"
 msgstr ""
 
 #: src/zeit/cms/browser/notices.pt:22
-msgid "Hides automatically after 5 seconds."
+msgid "Hides automatically"
 msgstr ""
 
 #: src/zeit/cms/browser/notices.pt:25
@@ -847,15 +847,15 @@ msgstr ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:141
+#: src/zeit/cms/syndication/interfaces.py:145
 msgid "Syndication targets"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:193
+#: src/zeit/cms/syndication/interfaces.py:197
 msgid "No automatic metadata update"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:194
+#: src/zeit/cms/syndication/interfaces.py:198
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr ""
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri May 23 13:14:14 2008\n"
-"PO-Revision-Date: 2008-05-23 13:17+0100\n"
+"POT-Creation-Date: Fri May 23 14:16:15 2008\n"
+"PO-Revision-Date: 2008-05-23 14:16+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/content/interfaces.py:257
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:37
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:29
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
@@ -244,8 +244,8 @@ msgid "CMS"
 msgstr "CMS"
 
 #: src/zeit/cms/browser/notices.pt:22
-msgid "Hides automatically after 5 seconds."
-msgstr "Wird nach 5s ausgeblendet."
+msgid "Hides automatically"
+msgstr "Wird automatisch ausgeblendet…"
 
 #: src/zeit/cms/browser/notices.pt:25
 msgid "hide"
@@ -835,15 +835,15 @@ msgstr "»${id}« wird veröffentlicht."
 msgid "Could not publish \"${name}\"."
 msgstr "»${name}« konnte nicht veröffentlicht werden."
 
-#: src/zeit/cms/syndication/interfaces.py:141
+#: src/zeit/cms/syndication/interfaces.py:145
 msgid "Syndication targets"
 msgstr "Syndizierungsziele"
 
-#: src/zeit/cms/syndication/interfaces.py:193
+#: src/zeit/cms/syndication/interfaces.py:197
 msgid "No automatic metadata update"
 msgstr "Keine automatische Aktualisierung der Metadaten"
 
-#: src/zeit/cms/syndication/interfaces.py:194
+#: src/zeit/cms/syndication/interfaces.py:198
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels nicht automatisch aktualisiert."
 

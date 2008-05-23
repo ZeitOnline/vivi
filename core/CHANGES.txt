@@ -14,6 +14,7 @@ zeit.cms changes
 - Bildergalerie speichert ihre DAV-Properties jetzt auch im XML.
 - Zurückziehen von Objekten muss nochmals bestätigt werden, incl. Warnung über
   die Konsequenzen.
+- Nachrichten werden nur noch im Fehlerfall 5s angezeigt, sonst 0.5.
 
 0.9.14 (2008-05-20)
 -------------------
