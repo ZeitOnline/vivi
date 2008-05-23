@@ -226,6 +226,29 @@ The feed has not changed this time:
 </channel>
 
 
+The metadata update doesn't fail when the content is removed from the feed
+under the hood.
+
+>>> politik = repository['politik.feed']
+>>> politik.remove(repository['testcontent'])
+>>> repository.addContent(politik)
+>>> len(repository['politik.feed'])
+0
+
+We need to re-enable the automatic update during checkout:
+
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> checked_out.automaticMetadataUpdateDisabled = frozenset([])
+>>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+
+Even after checkout there is nothing in the feed:
+
+>>> len(repository['politik.feed'])
+0
+
+
 Ordering of Content in a Feed
 =============================
 

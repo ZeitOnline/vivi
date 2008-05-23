@@ -49,7 +49,12 @@ def updateFeedOnCheckin(context, event):
         checked_out.append(co_feed)
 
     for feed in checked_out:
-        feed.updateMetadata(context)
+        try:
+            feed.updateMetadata(context)
+        except KeyError:
+            # Hum. The context wasn't in the feed actually. Well, after the
+            # checkin the index will be upated.
+            pass
 
     # Everything is checked out and updated now. Check back in.
     for feed in checked_out:

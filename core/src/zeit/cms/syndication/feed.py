@@ -129,6 +129,10 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
                                "channel %s. Ignoring." % (
                                    unique_id, self.uniqueId))
 
+    def __contains__(self, obj):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
+            return False
+        return obj.uniqueId in self.entry_map
 
     def getPosition(self, content):
         content_id = content.uniqueId

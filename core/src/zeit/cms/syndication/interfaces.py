@@ -59,6 +59,9 @@ class IReadFeed(zope.interface.Interface):
 
         """
 
+    def __contains__(content):
+        """Return if content is syndicated in this channel."""
+
     def getPosition(content):
         """Returns the position of `content` in the feed.
 
@@ -75,7 +78,11 @@ class IWriteFeed(zope.interface.Interface):
         """Add `content` to self at position `index`."""
 
     def remove(content):
-        """Remove `content` from feed."""
+        """Remove `content` from feed.
+
+        raises ValueError if `content` not in feed.
+
+        """
 
     def pin(content):
         """Pin `content` to current position."""
@@ -99,7 +106,7 @@ class IWriteFeed(zope.interface.Interface):
         Raises ``ValueError`` if order contains an invalid set of keys.
         """
 
-    def updateMetadata(self, content):
+    def updateMetadata(content):
         """Update the metadata of a contained object.
 
         Raises KeyError if the content is not syndicated in this feed.

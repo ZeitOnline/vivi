@@ -8,6 +8,11 @@ Feeds contain an ordered list of documents:
 >>> feed = Feed()
 >>> feed
 <zeit.cms.syndication.feed.Feed object at 0x...>
+>>> import zope.interface.verify
+>>> import zeit.cms.syndication.interfaces
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.syndication.interfaces.IFeed, feed)
+True
 
 
 Setup functional test:
@@ -62,6 +67,14 @@ an objects Unique Id:
 >>> feed.remove(Article('art2'))
 >>> list(feed.keys())
 ['art3', 'art1']
+
+We can query the feed if an object is in it:
+
+>>> article in feed
+True
+>>> Article('foobar') in feed
+False
+
 
 
 Size Limit
