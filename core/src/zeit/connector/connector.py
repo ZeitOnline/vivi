@@ -531,9 +531,12 @@ class Connector(object):
             resource.data.seek(0)
         data = resource.data.read() # FIXME [17]: check possibility to pass data as IO object
 
+        invalidate_parent = False
+
         if iscoll:
             if not self._check_dav_resource(id):
                 self._add_collection(id)
+                invalidate_parent = True
             davres = self._get_dav_resource(id, ensure='collection')
             # NOTE: here be race condition. Lock-null trick doesn't work,
             #       so we lock _after_ creation
@@ -547,6 +550,7 @@ class Connector(object):
                 parent = self._get_dav_resource(parent, ensure='collection')
                 davres = parent.create_file(name, data, resource.contentType,
                                             locktoken=locktoken)
+                invalidate_parent = True
             else:
                 davres = self._get_dav_resource(id, ensure='file')
                 davres.upload(data, resource.contentType,
