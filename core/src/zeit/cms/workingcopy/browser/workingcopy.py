@@ -49,7 +49,19 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
         return zeit.cms.workingcopy.interfaces.IWorkingcopy(
             self.request.principal)
 
-    contentContext = workingcopy
+    @property
+    def content(self):
+        result = []
+        for obj in self.workingcopy.values():
+            list_repr = zope.component.queryMultiAdapter(
+                (obj, self.request),
+                zeit.cms.browser.interfaces.IListRepresentation)
+            if list_repr is None:
+                logger.warning("Could not adapt %r to IListRepresentation",
+                               (obj, ))
+            else:
+                result.append(list_repr)
+        return result
 
 
 @zope.component.adapter(
