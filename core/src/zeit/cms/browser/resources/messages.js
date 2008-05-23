@@ -6,22 +6,19 @@ connect(window, 'onload', function(event) {
     // Connect messages hide/show
     var showtoggle = $('messages_toggle')
     var messages = $('messages')
-    var hideToggle = getFirstElementByTagAndClassName(
-        'div', 'hideText', messages);
 
-    if (hideToggle == null) {
+    if (messages == null) {
         // no messages, nothing do to
         return
     }
 
-    connect(hideToggle, 'onclick', function(event) {
-        addElementClass(messages, 'hiddenMessages');
-    });
-    connect(showtoggle, 'onclick', function(event) {
-        toggleElementClass('hiddenMessages', messages);
-    });
+    var errors = getElementsByTagAndClassName('li', 'error', messages)
+    var timeout = 0.5;
+    if (errors.length > 0) {
+        timeout = 5;
+    }
 
-    callLater(5, function() {
+    var d = callLater(timeout, function() {
         fade(messages, {
             afterFinish: function() {
                 addElementClass(messages, 'hiddenMessages');
@@ -29,6 +26,15 @@ connect(window, 'onload', function(event) {
                 messages.setAttribute('style', '');
                 },
             });
+    });
+
+    connect(messages, 'onclick', function(event) {
+        d.cancel();
+        addElementClass(messages, 'hiddenMessages');
+    });
+    connect(showtoggle, 'onclick', function(event) {
+        d.cancel();
+        toggleElementClass('hiddenMessages', messages);
     });
 
 });

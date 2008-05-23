@@ -20,7 +20,7 @@
       </ul>
 
       <p id="messages_counter" tal:condition="messages" i18n:translate="">
-          Hides automatically after 5 seconds.
+          Hides automatically 
       </p>
       <div class="hideText" tal:condition="messages" 
            i18n:translate="">
