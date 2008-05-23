@@ -5,7 +5,6 @@
 import zope.interface
 
 import zeit.cms.interfaces
-import zeit.cms.content.interfaces
 
 
 class IRepository(zope.interface.Interface):
