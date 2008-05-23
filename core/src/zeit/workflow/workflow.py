@@ -4,6 +4,7 @@
 
 import UserDict
 import datetime
+import logging
 
 import pytz
 import rwproperty
@@ -40,6 +41,7 @@ if 'all' not in globals():
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
+logger = logging.getLogger(__name__)
 
 
 class Workflow(object):
@@ -152,8 +154,9 @@ def remove_from_channels_after_retract(context, event):
         try:
             checked_out = manager.checkout()
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
-            log.error("Could not remove %s from %s because channel locked." %(
-                context.uniqueId, feed.uniqueId))
+            logger.error(
+                "Could not remove %s from %s because channel locked." % (
+                    context.uniqueId, feed.uniqueId))
             continue
         checked_out.remove(context)
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
