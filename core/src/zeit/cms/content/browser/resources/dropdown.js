@@ -31,7 +31,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
 
 connect(window, 'onload', function(event) {
     var path = window.location.pathname.split('/').slice(0, -1) 
-    path.push('subnavigationupdater.json')
+    path.push('@@subnavigationupdater.json')
     path = path.join('/')
     new zeit.cms.MasterSlaveDropDown(
         'form.ressort', 'form.sub_ressort', path)
