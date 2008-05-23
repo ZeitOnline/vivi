@@ -106,6 +106,45 @@ Publish/retract the content. This removes it from the feed:
 0
 
 
+The event handler doesn't break when the feed has the content removed under the
+hood. Add testcontent to the feed again:
+
+>>> len(repository['politik.feed'])
+0
+>>> content = repository['testcontent']
+>>> manager = zeit.cms.syndication.interfaces.ISyndicationManager(content)
+>>> manager.syndicate([repository['politik.feed']])
+>>> len(repository['politik.feed'])
+1
+
+Publish:
+
+>>> import zeit.cms.workflow.interfaces
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['testcontent'])
+>>> info.urgent = True
+>>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
+>>> publish.publish()
+>>> tasks.process()
+
+
+Modify politik feed but avoid the checkout/checkin cycle:
+
+>>> politik = repository['politik.feed']
+>>> politik.remove(content)
+>>> repository.addContent(politik)
+>>> len(repository['politik.feed'])
+0
+
+Now retract:
+
+>>> publish.retract()
+>>> tasks.process()
+>>> len(repository['politik.feed'])
+0
+
+Clean up:
+
 >>> zope.app.component.hooks.setSite(old_site)
 >>> zope.security.management.endInteraction()
 

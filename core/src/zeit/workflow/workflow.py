@@ -158,6 +158,10 @@ def remove_from_channels_after_retract(context, event):
                 "Could not remove %s from %s because channel locked." % (
                     context.uniqueId, feed.uniqueId))
             continue
-        checked_out.remove(context)
+        try:
+            checked_out.remove(context)
+        except ValueError:
+            # Was not in the feed, i.e. the index wasn't up to date. Ignore.
+            pass
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         manager.checkin()
