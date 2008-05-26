@@ -127,7 +127,8 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('Images').click()
 >>> browser.getLink('01.jpg').click()
 >>> browser.getControl('Title').value = 'The man man'
->>> browser.getControl('Text').value = '<strong>Der Mann am Stein</strong>'
+>>> browser.getControl('Text').value = (
+...     '<p><strong>Der Mann am Stein</strong></p>')
 >>> browser.getControl('Layout').displayOptions
 ['(no value)', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
@@ -148,7 +149,7 @@ After saving we're back at the overview:
     </td>
     <td>
       <div class="title">The man man</div>
-      <div class="text"><strong>Der Mann am Stein</strong> </div>
+      <div class="text"><p> <strong>Der Mann am Stein</strong> </p> </div>
     </td>
   </tr>
   ...
