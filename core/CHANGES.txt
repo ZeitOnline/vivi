@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+1.0 (2008-05-26)
+----------------
+
+- Removed special "syndicated in" which is done via relations now.
+- Removed special syndication log, which will be done via zeit.objectlog.
+
 0.9.14 (2008-05-20)
 -------------------
 
