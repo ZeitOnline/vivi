@@ -18,6 +18,8 @@ zeit.cms changes
 - Metadaten eines Bildes beim Referenzieren korrekt eingebunden (bug #4189).
 - Wenn eine Bildergruppe eingebettet wird hat das <image>-Tag jetzt das
   Attribute "type", welches die Extension der Bilder angibt (bug #4188).
+- Wenn der WYSIWYG-Editor <div>s oder andere falsche Tags produziert, wird ein
+  <p> daraus (bug #4171).
 
 0.9.14 (2008-05-20)
 -------------------

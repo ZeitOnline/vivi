@@ -89,6 +89,9 @@ class HTMLConverter(object):
 
             if node.tag == 'h3':
                 node.tag = 'intertitle'
+            elif node.tag != 'p':
+                node.tag = 'p'
+
             img_nodes = node.xpath('img')
             if img_nodes:
                 self._replace_img_nodes_by_image(img_nodes)

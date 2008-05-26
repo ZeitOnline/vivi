@@ -148,6 +148,24 @@ saving. br's inside a <p> are kept:
   </body>
 </article>
 
+Also all "root"-tags we don't know are converted to <p>. The "remove empty p"
+rule is applied after that:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><div>blah</div><div/><foo>bluba</foo>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <p>blah</p>
+    <p>bluba</p>
+  </body>
+</article>
+
+
 
 Mapping of cms urls to unique id and vice versa
 -----------------------------------------------
