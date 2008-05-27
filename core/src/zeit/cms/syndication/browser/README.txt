@@ -301,6 +301,9 @@ out:
   <thead>
     <tr>
       <th>
+        Remove
+      </th>
+      <th>
         Pinned
       </th>
       <th>
@@ -324,6 +327,9 @@ out:
   </thead>
   <tbody>
   <tr>
+    <td>
+      ...<input ...name="remove..." ...type="checkbox".../>
+    </td>
     <td>
       ...<input type="checkbox" name="pin:list".../>
     </td>
@@ -388,6 +394,26 @@ Let's have a look at the source now:
            pinned="true"
            hp_hide="true"/>
   </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+
+Removing items from channels
+----------------------------
+
+Items can be removed at the sort page:
+
+>>> browser.getLink('Sort').click()
+>>> browser.getControl(name='remove.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==.').value = True
+>>> browser.getControl('Save').click()
+
+Let's have a look at the source now:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML').value.replace('\r\n', '\n')
+<channel> 
+  <title>Politik</title>
+  <container/>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
 

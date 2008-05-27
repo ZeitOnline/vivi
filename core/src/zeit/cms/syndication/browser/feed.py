@@ -140,6 +140,9 @@ class FeedView(object):
             return cgi.escape(unicode(value))
 
         return (
+            zc.table.column.SelectionColumn(
+                _id_getter, getter=lambda x: False, prefix='remove',
+                title=_('Remove')),
             OrderedSelectionColumn(
                 _id_getter, getter=self.pinned, prefix='pin',
                 title=_("Pinned")),
@@ -173,16 +176,21 @@ class EditFeedView(FeedView):
 
     def updateFeed(self):
         content = self.content
-        pin_column = self.columns[0]
-        hide_column = self.columns[1]
+        delete_column = self.columns[0]
+        pin_column = self.columns[1]
+        hide_column = self.columns[2]
 
         orderd_objects = pin_column.getItems(content, self.request)
         orderd_ids = [obj.context.uniqueId for obj in orderd_objects]
         self.context.updateOrder(orderd_ids)
 
+        to_remove = set(delete_column.getSelected(content, self.request))
         selected = set(pin_column.getSelected(content, self.request))
         hidden = set(hide_column.getSelected(content, self.request))
         for obj in content:
+            if obj in to_remove:
+                self.context.remove(obj.context)
+                continue
             if obj in selected:
                 self.context.pin(obj.context)
             else:

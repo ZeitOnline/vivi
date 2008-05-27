@@ -8,6 +8,7 @@ zeit.cms changes
   mehr zum Systemfehler sondern gibt "Einschrankung nicht erfüllt" aus (bug
   #4166).
 - Zweite Biga-Referenz im Artikel
+- Aus einem Channel können Objekte jetzt gelöscht werden (bug #4179).
 
 0.9.15 (2008-05-26)
 -------------------
