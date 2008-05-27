@@ -168,6 +168,14 @@ u'2008 4 19  10:12:17  [System]: Foo'
 u'2008 4 19  10:12:17  [Hans Wurst]: bar'
 
 
+Make sure the log-terms do not break when the principal is deleted:
+
+>>> request.setPrincipal(zope.security.testing.Principal(u'not.there'))
+>>> content_log.log('not-there-log')
+>>> term = terms.getTerm(list(source)[-1]) 
+>>> zope.i18n.translate(term.title)
+u'2008 5 27  11:14:46  [not.there]: not-there-log'
+
 
 
 Tear down / Clean up:

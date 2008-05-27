@@ -11,7 +11,7 @@ from zeit.objectlog.i18n import MessageFactory as _
 class IObjectLog(zope.interface.Interface):
     """Utility which logs object changes."""
 
-    def log(object, message, mapping):
+    def log(object, message, mapping=None):
         """Log message for object."""
 
     def get_log(object):
@@ -45,7 +45,7 @@ class ILogEntry(zope.interface.Interface):
 class ILog(zope.interface.Interface):
     """Logging interface for one object."""
 
-    def log(message, mapping):
+    def log(message, mapping=None):
         """Log message for context."""
 
     def get_log():
