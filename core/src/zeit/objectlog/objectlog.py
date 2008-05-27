@@ -90,7 +90,7 @@ class Log(object):
     def __init__(self, context):
         self.context = context
 
-    def log(self, message, mapping):
+    def log(self, message, mapping=None):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(self.context, message, mapping)
 
