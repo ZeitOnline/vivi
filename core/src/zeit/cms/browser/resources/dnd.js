@@ -152,6 +152,7 @@ var ObjectReferenceWidget = Class.extend({
         var argument;
         if (target.nodeName == 'INPUT' && target.type == 'button') {
             var action = target.getAttribute('name');
+            argument = event;
         } else if (target.nodeName == 'A') {
             action = "handleNewUrl";
             argument = target.href;
@@ -184,13 +185,14 @@ var ObjectReferenceWidget = Class.extend({
         this.selectObject(unique_id);
     },
 
-    browseObjects: function() {
+    browseObjects: function(event) {
         this.lightbox = new gocept.Lightbox($('body'));
         connect(this.lightbox.content_box, 'onclick', this, 'handleClick');
         this.loadContentFromUrl(this.default_browsing_url);
     },
 
-    showReferencedObject: function() {
+    showReferencedObject: function(event) {
+        var new_window = event.modifier().any;
         var unique_id = this.getObject();
         if (!unique_id) {
             return
@@ -203,7 +205,11 @@ var ObjectReferenceWidget = Class.extend({
         var qs = MochiKit.Base.queryString({
             'unique_id': unique_id});
         var url = application_url + '/redirect_to?' + qs
-        window.location = url;
+        if (new_window) {
+            window.open(url);
+        } else {
+            window.location = url;
+        }
     },
 
     selectObject: function(unique_id) {
