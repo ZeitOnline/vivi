@@ -4,6 +4,10 @@ zeit.cms changes
 0.9.16 (unreleased)
 -------------------
 
+- Anlegen von Objekten mit Umlauten oder anderen wirren Zeichen führt nicht
+  mehr zum Systemfehler sondern gibt "Einschrankung nicht erfüllt" aus (bug
+  #4166).
+
 0.9.15 (2008-05-26)
 -------------------
 

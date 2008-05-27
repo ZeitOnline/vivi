@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import re
+
 import zope.i18nmessageid
 import zope.interface
 import zope.schema
@@ -28,6 +30,13 @@ class ICMSContentType(zope.interface.interfaces.IInterface):
     """Interface for content types."""
 
 
+valid_name_regex = re.compile(r'^[A-Za-z0-9\.\,\-_*()~]+$').match
+def valid_name(value):
+    if valid_name_regex(value):
+        return True
+    return False
+
+
 class ICMSContent(zope.interface.Interface):
     """Interface for all CMS content being loaded from the repository.
 
@@ -37,4 +46,5 @@ class ICMSContent(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(
         title=_("File name"),
-        readonly=True)
+        readonly=True,
+        constraint=valid_name)
