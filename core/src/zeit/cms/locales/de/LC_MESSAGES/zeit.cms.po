@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue May 27 14:34:51 2008\n"
-"PO-Revision-Date: 2008-05-27 14:35+0100\n"
+"POT-Creation-Date: Tue May 27 15:34:57 2008\n"
+"PO-Revision-Date: 2008-05-27 15:38+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr "Datum/Uhrzeit des Terminbeginns"
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
 #: src/zeit/cms/content/interfaces.py:257
-#: src/zeit/cms/syndication/browser/feed.py:155
+#: src/zeit/cms/syndication/browser/feed.py:158
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
@@ -187,7 +187,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: src/zeit/cms/browser/listing.py:271
-#: src/zeit/cms/syndication/browser/feed.py:151
+#: src/zeit/cms/syndication/browser/feed.py:154
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
@@ -205,7 +205,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: src/zeit/cms/browser/listing.py:286
-#: src/zeit/cms/syndication/browser/feed.py:162
+#: src/zeit/cms/syndication/browser/feed.py:165
 msgid "Hits"
 msgstr "Treffer"
 
@@ -272,9 +272,13 @@ msgstr "Weitere Aktionen"
 msgid "The action you were trying to do could not be finished."
 msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
 
-#: src/zeit/cms/browser/tree.pt:18
-msgid "Remove"
-msgstr "Entfernen"
+#: src/zeit/cms/browser/widget.py:45
+msgid "The given id is invalid."
+msgstr "Die angegebene Id ist nicht gültig."
+
+#: src/zeit/cms/browser/widget.py:48
+msgid "The object could not be found."
+msgstr "Das Objekt konnte nicht gefunden werden."
 
 #: src/zeit/cms/checkout/browser/configure.zcml:15
 msgid "Checkout"
@@ -763,28 +767,33 @@ msgid "Sort"
 msgstr "Sortieren"
 
 #: src/zeit/cms/syndication/browser/feed.py:145
+#: src/zeit/cms/browser/tree.pt:18
+msgid "Remove"
+msgstr "Entfernen"
+
+#: src/zeit/cms/syndication/browser/feed.py:148
 msgid "Pinned"
 msgstr "Fest"
 
-#: src/zeit/cms/syndication/browser/feed.py:148
+#: src/zeit/cms/syndication/browser/feed.py:151
 msgid "Hidden on HP"
 msgstr "Versteckt auf HP"
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:202
+#: src/zeit/cms/syndication/browser/feed.py:210
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:213
+#: src/zeit/cms/syndication/browser/feed.py:221
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr "»${name}« wurde aus Ihren Syndizierungszielen entfernt."
 
-#: src/zeit/cms/syndication/browser/feed.py:240
+#: src/zeit/cms/syndication/browser/feed.py:248
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: src/zeit/cms/syndication/browser/feed.py:255
+#: src/zeit/cms/syndication/browser/feed.py:263
 msgid "Remove from my syndication targets"
 msgstr "Aus Syndizierungszielen entfernen"
 

@@ -9,6 +9,8 @@ zeit.cms changes
   #4166).
 - Zweite Biga-Referenz im Artikel
 - Aus einem Channel können Objekte jetzt gelöscht werden (bug #4179).
+- Wird ein falsches Objekt bei den Assets referenziert gibt es jetzt eine
+  sinnvolle Fehlermeldung anstatt "Raised if Validaiont fails" (bug #4174).
 
 0.9.15 (2008-05-26)
 -------------------

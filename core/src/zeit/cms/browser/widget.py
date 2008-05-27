@@ -6,6 +6,7 @@ import xml.sax.saxutils
 
 import zope.component
 import zope.interface
+import zope.schema
 import zope.schema.interfaces
 
 import zope.app.form.interfaces
@@ -16,6 +17,7 @@ import zope.app.pagetemplate.viewpagetemplatefile
 
 import zeit.cms.repository.interfaces
 import zeit.cms.browser.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
@@ -38,13 +40,20 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
             return self.context.missing_value
         try:
             content = self.repository.getContent(input)
-        except (KeyError, ValueError), e:
-            raise zope.app.form.interfaces.ConversionError(e)
-        if content not in self.source:
-            err = zope.schema.interfaces.ValidationError(
-                "Invalid object",  input)
-            raise zope.app.form.interfaces.WidgetInputError(
-                self.context.__name__, self.label, err)
+        except ValueError, e:
+            raise zope.app.form.interfaces.ConversionError(
+                _("The given id is invalid."))
+        except KeyError, e:
+            raise zope.app.form.interfaces.ConversionError(
+                _("The object could not be found."))
+
+        try:
+            self.context.validate(content)
+        except zope.schema.ValidationError, e:
+            self._error = zope.app.form.interfaces.WidgetInputError(
+                self.context.__name__, self.label, e)
+            raise self._error
+
         return content
 
     def _toFormValue(self, value):

@@ -151,7 +151,7 @@ Set the value to an existing but invalid value, so we get an validation error:
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
-WidgetInputError: ('reference', u'', Invalid object http://exists/blubs)
+WidgetInputError: ('reference', u'', <object object at 0x...>)
 
 
 Note that the invalid value is rendered:
@@ -188,7 +188,7 @@ Test the validation. Set a non existent resource:
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
-ConversionError: (<exceptions.KeyError instance at 0x...>, None)
+ConversionError: (u'The object could not be found.', None)
 
 The invalid value is still rendered though:
 
@@ -224,7 +224,7 @@ There are also completely invalid ids:
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
-ConversionError: (<exceptions.ValueError instance at 0x...>, None)
+ConversionError: (u'The given id is invalid.', None)
 
 
 
