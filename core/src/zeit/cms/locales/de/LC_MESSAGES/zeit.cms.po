@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri May 23 14:16:15 2008\n"
-"PO-Revision-Date: 2008-05-23 14:16+0100\n"
+"POT-Creation-Date: Tue May 27 14:34:51 2008\n"
+"PO-Revision-Date: 2008-05-27 14:35+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -194,7 +194,7 @@ msgid "Author"
 msgstr "Autoren"
 
 #: src/zeit/cms/browser/listing.py:279
-#: src/zeit/cms/interfaces.py:39
+#: src/zeit/cms/interfaces.py:48
 #: src/zeit/content/image/browser/imagegroup.py:68
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
@@ -952,8 +952,12 @@ msgid "Save sorting"
 msgstr "Sortierung speichern"
 
 #: src/zeit/content/gallery/interfaces.py:105
-msgid "Image gallery"
-msgstr "Bildergalerie"
+msgid "Image gallery as box"
+msgstr "Bildergalerie als Box"
+
+#: src/zeit/content/gallery/interfaces.py:110
+msgid "Embedded image gallery"
+msgstr "Eingebettete Bildergalerie"
 
 #: src/zeit/content/gallery/interfaces.py:34
 msgid "Image folder"
