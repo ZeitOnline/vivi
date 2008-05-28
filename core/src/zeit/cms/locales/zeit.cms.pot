@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue May 27 15:34:57 2008\n"
+"POT-Creation-Date: Wed May 28 11:06:18 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -147,7 +147,7 @@ msgstr ""
 #: src/zeit/cms/content/browser/template.zcml:40
 #: src/zeit/content/image/browser/configure.zcml:97
 #: src/zeit/content/gallery/browser/configure.zcml:103
-#: src/zeit/content/gallery/browser/overview.pt:19
+#: src/zeit/content/gallery/browser/overview.pt:23
 msgid "Edit"
 msgstr ""
 
@@ -968,7 +968,11 @@ msgstr ""
 msgid "Edit gallery entry"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:39
+#: src/zeit/content/gallery/browser/overview.pt:18
+msgid "Show image"
+msgstr ""
+
+#: src/zeit/content/gallery/browser/overview.pt:43
 msgid "Save sorting"
 msgstr ""
 

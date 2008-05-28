@@ -13,6 +13,7 @@ zeit.cms changes
   sinnvolle Fehlermeldung anstatt "Raised if Validaiont fails" (bug #4174).
 - Objekte Referenzieren: Wenn der Pfeil -> mit aktivem Shift, Ctrl oder Meta
   gedrückt wird geht ein neues Tab/Fenster auf (bug #4175).
+- Auf der Biga gibt es jetzt einen Link zum Bild (bug #4180).
 
 0.9.15 (2008-05-26)
 -------------------

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue May 27 15:34:57 2008\n"
-"PO-Revision-Date: 2008-05-27 15:38+0100\n"
+"POT-Creation-Date: Wed May 28 11:06:18 2008\n"
+"PO-Revision-Date: 2008-05-28 11:07+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr "Abbrechen"
 #: src/zeit/cms/content/browser/template.zcml:40
 #: src/zeit/content/image/browser/configure.zcml:97
 #: src/zeit/content/gallery/browser/configure.zcml:103
-#: src/zeit/content/gallery/browser/overview.pt:19
+#: src/zeit/content/gallery/browser/overview.pt:23
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -956,7 +956,11 @@ msgstr "Metadaten der Bildergalerie ansehen"
 msgid "Edit gallery entry"
 msgstr "Bildergalerie-Eintrag bearbeiten"
 
-#: src/zeit/content/gallery/browser/overview.pt:39
+#: src/zeit/content/gallery/browser/overview.pt:18
+msgid "Show image"
+msgstr "Bild zeigen"
+
+#: src/zeit/content/gallery/browser/overview.pt:43
 msgid "Save sorting"
 msgstr "Sortierung speichern"
 
