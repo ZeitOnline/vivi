@@ -148,7 +148,7 @@ Make sure the image is not changed by looking at the image view:
 >>> print browser.contents
 <?xml ...
   <title>
-    Opernball in Wien
+    Opernball in Wien – View image
   </title>
   ...
   <tr>
@@ -225,7 +225,7 @@ The zeit.content.image package provides an image browser for IFolder:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Images </title>
+    <title> 2006 – Images </title>
     ...
     <div id="edit-form" class="image-list">
       <div class="image">
@@ -277,7 +277,7 @@ Lets create an image group:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Add image group </title>
+    <title> 2006 – Add image group </title>
     ...
 
 >>> browser.getControl("File name").value = 'new-hampshire'
@@ -292,7 +292,7 @@ done directly in the repository:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Image group </title>
+    <title> New Hampshire – Image group </title>
     ...
 
 
@@ -353,7 +353,7 @@ Let's have a look at the index:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Image group </title>
+    <title> New Hampshire – Image group </title>
     ...
   <tbody>
   <tr class="odd">
@@ -428,7 +428,7 @@ different from the repository version: it is no folder:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Edit image group </title>
+    <title> New Hampshire – Edit image group </title>
     ...
 
 Set the alt text:
@@ -450,7 +450,7 @@ But an edit tab:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Edit image group </title>
+    <title> New Hampshire – Edit image group </title>
     ...
 
 Make sure we have a metadata preview for local image groups:
@@ -477,7 +477,7 @@ Check the metadata view, to verify we have actually changed the alt text:
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
-    <title> Image group metadata </title>
+    <title> New Hampshire – Image group metadata </title>
     ...Wahlkampf...
 
 

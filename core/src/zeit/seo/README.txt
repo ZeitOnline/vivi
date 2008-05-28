@@ -18,7 +18,7 @@ Open the test content and go to the SEO page:
 >>> browser.getLink('SEO').click()
 >>> print browser.contents
 <?xml ...
-    <title> View SEO data </title>
+    <title> testcontent – View SEO data </title>
     ...
 
 

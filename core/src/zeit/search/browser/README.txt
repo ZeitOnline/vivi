@@ -46,7 +46,7 @@ Note that in the test we only can search for "linux", so we do that:
 >>> browser.getControl('Search').click()
 >>> print browser.contents
 <?xml ...
-    <title> Search </title>
+    <title> / – Search </title>
     ...
 <table class="contentListing hasMetadata">
   <thead>

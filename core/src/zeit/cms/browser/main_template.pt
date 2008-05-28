@@ -29,15 +29,16 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
     <html xmlns="http://www.w3.org/1999/xhtml"
-        tal:define="contenttitle options/title|view/title|context/title|default;
-                    favicon context/++resource++zeit.cms/icons/favicon.png">
+      tal:define="view_title options/title|view/title|string:Zeit CMS;
+      context_title context/@@standard_macros/context_title;
+      favicon context/++resource++zeit.cms/icons/favicon.png">
       <head>
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
         "/>
         <title>
           <metal:title metal:define-slot="title"
-            tal:content="contenttitle"
+            tal:content="string: $context_title – $view_title"
             i18n:translate="">
             Zeit CMS 
           </metal:title>
@@ -153,7 +154,7 @@
             tal:condition="not:menu_items">
             <li class="selected">
               <a tal:attributes="href view/@@absolute_url"
-                tal:content="contenttitle"
+                tal:content="view_title"
                 i18n:translate="">
                 Anzeigen
               </a>

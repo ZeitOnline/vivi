@@ -32,7 +32,9 @@ HTTPError: HTTP Error 404: Not Found
 
 >>> print browser.contents
 <?xml ...
-    <title> Zeit CMS </title>
+    <title>
+           Object: &lt;zope.app.folder.folder.Folder object at 0x...&gt;, name: u'doesnotexist' – Zeit CMS
+    </title>
     ...
 
 

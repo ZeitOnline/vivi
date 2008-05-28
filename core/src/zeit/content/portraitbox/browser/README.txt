@@ -54,7 +54,7 @@ Let's check it in:
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
 <?xml ...
-    <title> View portraitbox </title>
+    <title> Hans Wurst – View portraitbox </title>
     ...
 
 
@@ -78,7 +78,7 @@ Make sure an box has a default view:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans')
 >>> print browser.contents
 <?xml ...
-    <title> View portraitbox </title>
+    <title> Hans Wurst – View portraitbox </title>
     ...
 
 

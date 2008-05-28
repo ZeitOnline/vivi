@@ -15,6 +15,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.repository.interfaces
 import zeit.content.image.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class Image(zope.app.file.browser.image.ImageData):
@@ -30,9 +31,7 @@ class Image(zope.app.file.browser.image.ImageData):
 
 class ImageView(object):
 
-    @property
-    def title(self):
-        return self.metadata.title
+    title = _('View image')
 
     @zope.cachedescriptors.property.Lazy
     def metadata(self):

@@ -178,7 +178,7 @@ Open the link's metadata view:
 >>> browser.getLink('View metadata').click()
 >>> print browser.contents
 <?xml ...
-    <title> View link metadata </title>
+    <title> gocept homepage – View link metadata </title>
     ...
 
  

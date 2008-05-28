@@ -65,7 +65,7 @@ Let's add another text entry:
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <?xml ...
-    <title> Edit infobox </title>
+    <title> Altersvorsorge – Edit infobox </title>
     ...Updated on...
 
 
@@ -74,7 +74,7 @@ Let's check it in:
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
 <?xml ...
-    <title> View infobox </title>
+    <title> Altersvorsorge – View infobox </title>
     ...
 
 
@@ -98,5 +98,5 @@ Make sure an infobox has a default view:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/infobox')
 >>> print browser.contents
 <?xml ...
-    <title> View infobox </title>
+    <title> Altersvorsorge – View infobox </title>
     ...
