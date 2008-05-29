@@ -16,6 +16,8 @@ zeit.cms changes
 - Auf der Biga gibt es jetzt einen Link zum Bild (bug #4180).
 - Der HTML-Titel im CMS beinhaltet jetzt den Titel des Objekts (bug #4152). 
 - ObjectBrowser zeigt jetzt den aktuellen Pfad an (bug #4058).
+- ObjectBrowser gibt eine Meldung aus, wenn im Ordner nichts auswählbares
+  vorhanden ist.
 
 0.9.15 (2008-05-26)
 -------------------

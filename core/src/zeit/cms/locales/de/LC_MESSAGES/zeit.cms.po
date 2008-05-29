@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed May 28 11:06:18 2008\n"
-"PO-Revision-Date: 2008-05-28 11:07+0100\n"
+"POT-Creation-Date: Thu May 29 10:00:43 2008\n"
+"PO-Revision-Date: 2008-05-29 10:02+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -235,7 +235,7 @@ msgstr "Ein Fehler ist aufgetreten."
 msgid "Error"
 msgstr "Fehler"
 
-#: src/zeit/cms/browser/main_template.pt:201
+#: src/zeit/cms/browser/main_template.pt:202
 msgid "Add..."
 msgstr "Hinzufügen …"
 
@@ -692,6 +692,10 @@ msgstr "Zeigen"
 msgid "Delete"
 msgstr "Löschen"
 
+#: src/zeit/cms/repository/browser/objectbrowser.pt:21
+msgid "There are no selectable objects in this folder."
+msgstr "Es gibt keine auswählbaren Objekte in diesem Ordner."
+
 #: src/zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr "${object-unique-id} umbenennen"
@@ -1008,6 +1012,10 @@ msgstr "Bild hinzufügen"
 #: src/zeit/content/image/browser/form.py:65
 msgid "Edit image"
 msgstr "Bild bearbeiten"
+
+#: src/zeit/content/image/browser/image.py:34
+msgid "View image"
+msgstr "Bild zeigen"
 
 #: src/zeit/content/image/browser/image_view.pt:24
 msgid "Volume/Year"

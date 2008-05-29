@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed May 28 11:06:18 2008\n"
+"POT-Creation-Date: Thu May 29 10:00:43 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -247,7 +247,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:201
+#: src/zeit/cms/browser/main_template.pt:202
 msgid "Add..."
 msgstr ""
 
@@ -704,6 +704,10 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: src/zeit/cms/repository/browser/objectbrowser.pt:21
+msgid "There are no selectable objects in this folder."
+msgstr ""
+
 #: src/zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr ""
@@ -1019,6 +1023,10 @@ msgstr ""
 
 #: src/zeit/content/image/browser/form.py:65
 msgid "Edit image"
+msgstr ""
+
+#: src/zeit/content/image/browser/image.py:34
+msgid "View image"
 msgstr ""
 
 #: src/zeit/content/image/browser/image_view.pt:24

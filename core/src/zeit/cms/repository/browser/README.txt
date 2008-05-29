@@ -169,7 +169,6 @@ name. Without filter everything is displayed:
 
 Let's filter for folders:
 
-
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/@@get_object_browser'
 ...     '?type_filter=folders')
@@ -204,6 +203,20 @@ Let's filter for folders:
 
 >>> 'Politik' in browser.contents
 False
+
+When there are no suitable objects, we'll get a message:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     '@@get_object_browser?type_filter=folders')
+>>> print browser.contents
+  <h1>http://xml.zeit.de/online/2007/01</h1>
+  ...
+  <div class="objectbrowser-content no-content">
+    There are no selectable objects in this folder.
+  </div>
+  ...
+
 
 To get the initial browsing location the IDefaultBrowsingLocation interface is
 used. Do some setup:

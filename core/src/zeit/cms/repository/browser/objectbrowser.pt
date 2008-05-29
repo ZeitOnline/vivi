@@ -13,8 +13,15 @@
   </div>
 
   <div class="objectbrowser-content"
+    tal:condition="view/content"
     tal:content="structure view/contentTable">
     Content table
+  </div>
+
+  <div class="objectbrowser-content no-content"
+    tal:condition="not:view/content"
+    i18n:translate="">
+    There are no selectable objects in this folder.
   </div>
 
   <div class="tree-view-url"

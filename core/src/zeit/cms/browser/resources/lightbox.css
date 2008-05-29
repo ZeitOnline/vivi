@@ -90,6 +90,10 @@
   overflow-y: auto;
 }
 
+#lightbox > .objectbrowser-content.no-content {
+  padding: 2em;
+}
+
 #lightbox > .objectbrowser-content > .contentListing {
   margin-top: 0;
 }
