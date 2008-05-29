@@ -15,6 +15,7 @@ zeit.cms changes
   gedrückt wird geht ein neues Tab/Fenster auf (bug #4175).
 - Auf der Biga gibt es jetzt einen Link zum Bild (bug #4180).
 - Der HTML-Titel im CMS beinhaltet jetzt den Titel des Objekts (bug #4152). 
+- ObjectBrowser zeigt jetzt den aktuellen Pfad an (bug #4058).
 
 0.9.15 (2008-05-26)
 -------------------
