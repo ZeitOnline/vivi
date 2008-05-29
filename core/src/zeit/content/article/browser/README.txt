@@ -412,7 +412,7 @@ xml source:
           </homepage>
         </reference>
       </references>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu xsi:nil="true"/>
       </image>
     </block>
@@ -477,7 +477,7 @@ at its xml source:
           </homepage>
         </reference>
       </references>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="jpeg">
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu xsi:nil="true"/>
       </image>
       <references>

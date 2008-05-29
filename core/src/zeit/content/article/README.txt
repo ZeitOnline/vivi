@@ -236,7 +236,7 @@ And the image is referenced in the XML structure:
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       expires="2007-04-01T00:00:00+00:00"
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
-      type="jpeg">
+      type="JPG">
       <bu xsi:nil="true"/>
     </image>...
   </head>
