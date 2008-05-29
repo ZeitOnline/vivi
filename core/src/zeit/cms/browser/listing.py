@@ -295,9 +295,6 @@ class Listing(object):
         MetadataColumn(u'Metadaten', name='metadata'),
     )
 
-    def __call__(self, *args, **kw):
-        return super(Listing, self).__call__(*args, **kw)
-
     @zope.cachedescriptors.property.Lazy
     def contentContext(self):
         return self.context
@@ -332,17 +329,6 @@ class Listing(object):
     def filter_content(self, obj):
         if self.filter_interface is not None:
             return self.filter_interface.providedBy(obj)
-        if self.filter_source is not None:
-            return obj in self.filter_source
 
         # Default is to show content:
         return True
-
-    @zope.cachedescriptors.property.Lazy
-    def filter_source(self):
-        source_name = self.request.get('type_filter')
-        if not source_name:
-            return None
-        return zope.component.getUtility(
-            zeit.cms.content.interfaces.ICMSContentSource,
-            name=source_name)

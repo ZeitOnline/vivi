@@ -110,6 +110,7 @@ reachable at `get_object_browser` for every folder:
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/'
 ...              '@@get_object_browser')
 >>> print browser.contents
+  <h1>http://xml.zeit.de/online/2007/01</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
       <li active="True" class="Root">
@@ -129,6 +130,7 @@ name. Without filter everything is displayed:
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              '@@get_object_browser')
 >>> print browser.contents
+  <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
       <li active="True" class="Root">
@@ -172,6 +174,7 @@ Let's filter for folders:
 ...     'http://localhost/++skin++cms/repository/@@get_object_browser'
 ...     '?type_filter=folders')
 >>> print browser.contents
+  <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
       <li active="True" class="Root">

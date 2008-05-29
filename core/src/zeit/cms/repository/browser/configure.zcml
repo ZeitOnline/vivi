@@ -113,6 +113,7 @@
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="get_object_browser"
+    class=".objectbrowser.ObjectBrowser"
     template="objectbrowser.pt"
     permission="zope.View" 
     />

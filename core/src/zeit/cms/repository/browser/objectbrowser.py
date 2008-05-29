@@ -5,9 +5,11 @@
 import zope.component
 import zope.interface
 
-import zeit.cms.repository.interfaces
-import zeit.cms.interfaces
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 
 
 @zope.component.adapter(
@@ -28,3 +30,21 @@ def content_default_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+class ObjectBrowser(zeit.cms.browser.listing.Listing):
+    """Objectbrowser."""
+
+    def filter_content(self, obj):
+        if self.filter_source is not None:
+            return obj in self.filter_source
+        return True
+
+    @zope.cachedescriptors.property.Lazy
+    def filter_source(self):
+        source_name = self.request.get('type_filter')
+        if not source_name:
+            return None
+        return zope.component.getUtility(
+            zeit.cms.content.interfaces.ICMSContentSource,
+            name=source_name)

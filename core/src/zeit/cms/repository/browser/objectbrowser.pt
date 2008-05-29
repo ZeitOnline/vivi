@@ -1,14 +1,19 @@
 <tal:block
   tal:define="
   repository context/@@get_repository;
-  tree_view nocall:repository/@@tree.html"
-  ><div id="popup-navtree" class="Tree"
+  tree_view nocall:repository/@@tree.html">
+  
+  <h1 tal:content="context/uniqueId|nothing">
+    http://xml.zeit.de/
+  </h1>
+  
+  <div id="popup-navtree" class="Tree"
     tal:content="structure tree_view">
     Navigation tree
   </div>
 
   <div class="objectbrowser-content"
-    tal:content="structure context/@@view.html/contentTable">
+    tal:content="structure view/contentTable">
     Content table
   </div>
 
