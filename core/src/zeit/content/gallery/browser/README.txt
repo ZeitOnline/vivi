@@ -242,11 +242,11 @@ Sadly the xml is not updated, yet:
     ...
         <block name="03.jpg">
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expires="..." src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpeg">
+          <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expires="..." src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str">ZEIT online</copyright>
           </image>
-          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expires="..." src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpeg">
+          <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expires="..." src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpg">
             <bu xsi:nil="true"/>
             <copyright py:pytype="str">ZEIT online</copyright>
           </thumbnail>

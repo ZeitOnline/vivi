@@ -59,5 +59,7 @@ def XMLReference(context):
         metadata,
         zeit.cms.content.interfaces.IXMLReference, name='image')
     image.set('src', context.uniqueId)
-    image.set('type', context.contentType.split('/')[-1])
+    if '.' in context.__name__:
+        base, ext = context.__name__.rsplit('.', 1)
+        image.set('type', ext)
     return image
