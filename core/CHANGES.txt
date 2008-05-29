@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.16 (unreleased)
+0.9.16 (2008-05-29)
 -------------------
 
 - Anlegen von Objekten mit Umlauten oder anderen wirren Zeichen führt nicht
