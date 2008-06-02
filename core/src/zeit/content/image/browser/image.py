@@ -10,6 +10,8 @@ import zope.publisher.interfaces
 
 import zope.app.file.browser.image
 
+import z3c.conditionalviews
+
 import zeit.cms.content.property
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
@@ -19,6 +21,10 @@ from zeit.cms.i18n import MessageFactory as _
 
 
 class Image(zope.app.file.browser.image.ImageData):
+
+    @z3c.conditionalviews.ConditionalView
+    def __call__(self):
+        return self.show()
 
     @property
     def width(self):

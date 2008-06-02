@@ -67,7 +67,7 @@ class LuceneSearch(object):
         query = ' '.join(query)
 
         return urllib.urlencode((
-            ('q', query),
+            ('q', query.encode('utf8')),
             ('sort', sort),
             ('fields', 'author:title'),
             ('res', '100'),

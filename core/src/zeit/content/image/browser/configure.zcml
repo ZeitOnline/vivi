@@ -65,6 +65,13 @@
     class=".image.Image"
     />
 
+  <adapter
+    factory="z3c.conditionalviews.adapters.LastModificationDate"
+    for="..interfaces.IImage
+    zeit.cms.browser.interfaces.ICMSLayer
+    .image.Image"
+    />
+
   <browser:defaultView
     for="zeit.content.image.interfaces.IImage"
     name="index.html"

@@ -3,8 +3,10 @@
 # $Id$
 
 import cStringIO
+import datetime
 
 import Image  # PIL
+import pytz
 
 import zope.component
 import zope.interface
@@ -35,6 +37,9 @@ class ImageTransform(object):
 
         image = zeit.content.image.image.Image(data=image_data.getvalue())
         image.__parent__ = self.context
+        thumb_times = zope.dublincore.interfaces.IDCTimes(image)
+        image_times = zope.dublincore.interfaces.IDCTimes(self.context)
+        thumb_times.modified = image_times.modified
         return image
 
 
