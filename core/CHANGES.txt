@@ -4,6 +4,8 @@ zeit.cms changes
 0.9.17 (unreleased)
 -------------------
 
+- Suche stirbt nicht mehr an Umlauten (bug #4195).
+
 0.9.16 (2008-05-29)
 -------------------
 
