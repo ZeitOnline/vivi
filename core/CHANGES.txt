@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Suche stirbt nicht mehr an Umlauten (bug #4195).
 - WYSIWYG-Editor: Listen werden jetzt korrekt unterstützt (bug #4223).
+- Datums/Zeit-Felder haben jetzt Knöpfe für "in einer Woche" und "in einem
+  Monat".
 
 0.9.16 (2008-05-29)
 -------------------

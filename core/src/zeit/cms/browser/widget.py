@@ -15,6 +15,8 @@ import zope.app.form.browser.widget
 import zope.app.form.browser.itemswidgets
 import zope.app.pagetemplate.viewpagetemplatefile
 
+import zc.datetimewidget.datetimewidget
+
 import zeit.cms.repository.interfaces
 import zeit.cms.browser.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -256,3 +258,25 @@ class MultiObjectSequenceDisplayWidget(
         else:
             value = self.context.default
         return self._toFormValue(value)
+
+
+DATETIME_WIDGET_ADDITIONAL = """\
+<input type="button" value="%(label)s"
+    onclick="javascript:var date = new Date();
+        %(increase)s;
+        $('%(field)s').value = date.print('%%Y-%%m-%%d %%H:%%M:%%S');" />
+"""
+class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
+    """A datetime widget with additional buttons."""
+
+    def __call__(self):
+        html = super(self.__class__, self).__call__()
+        week = DATETIME_WIDGET_ADDITIONAL % dict(
+            field=self.name,
+            label="1W",
+            increase="date.setDate(date.getDate() + 7)")
+        month = DATETIME_WIDGET_ADDITIONAL % dict(
+            field=self.name,
+            label="1M",
+            increase="date.setMonth(date.getMonth() + 1)")
+        return html + week + month

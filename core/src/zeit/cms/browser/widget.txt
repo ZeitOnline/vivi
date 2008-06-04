@@ -238,3 +238,29 @@ True
 >>> gsm.unregisterUtility(
 ...     repository, zeit.cms.repository.interfaces.IRepository)
 True
+
+
+We have a special Datetime widget, which proivides buttons for in one day an
+in one month:
+
+>>> field = zope.schema.Datetime()
+>>> widget = zeit.cms.browser.widget.DatetimeWidget(field, request)
+>>> print widget()
+<input class="textType" id="field." name="field." size="20" type="text" value=""  />
+<input type="button" value="..." id="field._trigger">
+<script type="text/javascript">
+  Calendar.setup({
+  inputField: 'field.',
+  button: 'field._trigger',
+  ifFormat: '%Y-%m-%d %H:%M:%S',
+  showsTime: true
+});
+</script>
+<input type="button" value="1W"
+    onclick="javascript:var date = new Date();
+        date.setDate(date.getDate() + 7);
+        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');" />
+<input type="button" value="1M"
+    onclick="javascript:var date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');" />

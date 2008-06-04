@@ -50,4 +50,14 @@
     permission="zope.Public"
     />
 
+  <!-- date time -->
+  <adapter
+    for="zope.schema.interfaces.IDatetime
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.DatetimeWidget"
+    permission="zope.Public"
+    />
+
+
 </configure>
