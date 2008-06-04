@@ -35,6 +35,17 @@ class HTMLConverter(object):
     zope.component.adapts(zope.interface.Interface)
     zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLConverter)
 
+    xml_html_tags = {
+        'intertitle': 'h3',
+        'ul': 'ul',
+        'ol': 'ol',
+    }
+    html_xml_tags = dict((value, key) for key, value in xml_html_tags.items())
+    assert len(html_xml_tags) == len(xml_html_tags)
+
+    editable_xml_nodes = frozenset(['p', 'intertitle', 'article_extra',
+                                    'ul', 'ol'])
+
     def __init__(self, context):
         self.context = context
         self.request = (
@@ -43,33 +54,21 @@ class HTMLConverter(object):
     def to_html(self, tree):
         """return html snippet of article."""
         tree = zope.security.proxy.removeSecurityProxy(tree)
-        # XXX spaghetti warning
         html = []
         for node in self._html_getnodes(tree):
             # Copy all nodes. This magically removes namespace declarations.
             node = copy.copy(node)
+            for filter in (self._replace_image_nodes_by_img,
+                           self._replace_ids_by_urls,
+                           self._fix_xml_tag,
+                           self._xml_article_extra):
+                node = filter(node)
+                if node is None:
+                    break
 
-            image_nodes = node.xpath('image')
-            if image_nodes:
-                self._replace_image_nodes_by_img(image_nodes)
-
-            anchors = node.xpath('a')
-            if anchors:
-                self._replace_ids_by_urls(anchors)
-
-            if node.tag == 'intertitle':
-                node.tag = 'h3'
-            elif node.tag == 'article_extra':
-                new_node = lxml.objectify.XML('<p><input/></p>')
-                new_node['input'].attrib.update(dict(
-                        type='text',
-                        name='',
-                        value='%s:%s' % (node.get('id'), node.get('videoID')),
-                        size='60'))
-                node = new_node
-
-            html.append(lxml.etree.tostring(
-                node, pretty_print=True, encoding=unicode))
+            if node is not None:
+                html.append(lxml.etree.tostring(
+                    node, pretty_print=True, encoding=unicode))
         return '\n'.join(html)
 
 
@@ -82,36 +81,46 @@ class HTMLConverter(object):
             parent = node.getparent()
             parent.remove(node)
         for node in html.iterchildren():
-            if not node.countchildren() and not node.text:
-                continue
-            if node.text and not node.text.strip():
-                continue
+            for filter in (self._filter_empty,
+                           self._fix_html_tag,
+                           self._replace_img_nodes_by_image,
+                           self._replace_urls_by_ids,
+                           self._html_article_extra):
+                node = filter(node)
+                if node is None:
+                    # Indicates that the node should be dropped.
+                    break
 
-            if node.tag == 'h3':
-                node.tag = 'intertitle'
-            elif node.tag != 'p':
-                node.tag = 'p'
+            if node is not None:
+                tree.append(node)
 
-            img_nodes = node.xpath('img')
-            if img_nodes:
-                self._replace_img_nodes_by_image(img_nodes)
-            anchors = node.xpath('a')
-            if anchors:
-                self._replace_urls_by_ids(anchors)
-
-            if node.tag == 'p' and node.find('input') is not None:
-                node = self._article_extra(node)
-
-            tree.append(node)
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
     def _html_getnodes(self, tree):
         for node in tree.iterchildren():
-            if node.tag in ('p', 'intertitle', 'article_extra'):
+            if node.tag in self.editable_xml_nodes:
                 yield node
 
-    def _replace_image_nodes_by_img(self, image_nodes):
+    def _filter_empty(self, node):
+        if not node.countchildren() and not node.text:
+            return
+        if node.text and not node.text.strip():
+            return
+        return node
+
+    def _fix_xml_tag(self, node):
+        new_tag = self.xml_html_tags.get(node.tag)
+        if new_tag is not None:
+            node.tag = new_tag
+        return node
+
+    def _fix_html_tag(self, node):
+        node.tag = self.html_xml_tags.get(node.tag, 'p')
+        return node
+
+    def _replace_image_nodes_by_img(self, node):
         """Replace XML <image/> by HTML <img/>."""
+        image_nodes = node.xpath('image')
         for image_node in image_nodes:
             unique_id = image_node.get('src')
             if unique_id.startswith('/cms/work/'):
@@ -129,10 +138,12 @@ class HTMLConverter(object):
             new_node = lxml.objectify.E.img(src=url)
             image_node.getparent().replace(image_node, new_node)
             new_node.tail = image_node.tail
+        return node
 
-    def _replace_img_nodes_by_image(self, image_nodes):
+    def _replace_img_nodes_by_image(self, node):
         """Replace HTML <img/> by XML <image/>."""
         repository_url = self.url(self.repository)
+        image_nodes = node.xpath('img')
         for image_node in image_nodes:
             url = image_node.get('src')
             parent = image_node.getparent()
@@ -153,8 +164,22 @@ class HTMLConverter(object):
                 new_node = lxml.objectify.E.image(src=url)
             parent.replace(image_node, new_node)
             new_node.tail = image_node.tail
+        return node
 
-    def _article_extra(self, node):
+    def _xml_article_extra(self, node):
+        if node.tag != 'article_extra':
+            return node
+        new_node = lxml.objectify.XML('<p><input/></p>')
+        new_node['input'].attrib.update(dict(
+                type='text',
+                name='',
+                value='%s:%s' % (node.get('id'), node.get('videoID')),
+                size='60'))
+        return new_node
+
+    def _html_article_extra(self, node):
+        if node.tag != 'p' or node.find('input') is None:
+            return node
         input_node = node['input']
         value = input_node.get('value')
         if ':' in value:
@@ -168,19 +193,23 @@ class HTMLConverter(object):
             node.set('id', id)
         return node
 
-    def _replace_ids_by_urls(self, anchors):
+    def _replace_ids_by_urls(self, node):
+        anchors = node.xpath('a')
         for anchor in anchors:
             id = anchor.get('href')
             if not id:
                 continue
             anchor.set('href', self._id_to_url(id))
+        return node
 
-    def _replace_urls_by_ids(self, anchors):
+    def _replace_urls_by_ids(self, node):
+        anchors = node.xpath('a')
         for anchor in anchors:
             url = anchor.get('href')
             if not url:
                 continue
             anchor.set('href', self._url_to_id(url))
+        return node
 
     @staticmethod
     def _replace_entities(value):
@@ -219,7 +248,6 @@ class HTMLConverter(object):
     def url(self, obj):
         return zope.component.getMultiAdapter(
             (obj, self.request), name='absolute_url')()
-
 
 
 class HTMLContentBase(object):

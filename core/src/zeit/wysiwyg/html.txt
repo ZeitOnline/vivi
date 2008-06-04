@@ -166,6 +166,62 @@ rule is applied after that:
 </article>
 
 
+Lists
+-----
+
+Lists are <ul> and <ol>. They're supported as root tag:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><ul><li>bar</li><li>baz</li></ul>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <ul>
+      <li>bar</li>
+      <li>baz</li>
+    </ul>
+  </body>
+</article>
+
+Of course the other way round works as well:
+
+>>> print converter.to_html(article.xml['body'])
+<p>Foo</p>
+<ul>
+  <li>bar</li>
+  <li>baz</li>
+</ul>
+
+<ol> also works:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><ol><li>bar</li><li>baz</li></ol>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <ol>
+      <li>bar</li>
+      <li>baz</li>
+    </ol>
+  </body>
+</article>
+
+Of course the other way round works as well:
+
+>>> print converter.to_html(article.xml['body'])
+<p>Foo</p>
+<ol>
+  <li>bar</li>
+  <li>baz</li>
+</ol>
 
 Mapping of cms urls to unique id and vice versa
 -----------------------------------------------
