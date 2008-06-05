@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-0.3 (unreleased)
+0.3 (2008-06-05)
 ----------------
 
 - The terms do not break when a principal is deleted (bug #4146).
