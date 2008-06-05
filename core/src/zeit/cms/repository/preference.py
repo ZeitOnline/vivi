@@ -2,9 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
-import zc.set
-
 import persistent
+import BTrees
 
 import zope.annotation
 import zope.component
@@ -27,27 +26,24 @@ class UserPreferences(persistent.Persistent,
     zope.component.adapts(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 
     default_shown_containers = (
-        'http://xml.zeit.de/online',
-        'http://xml.zeit.de/online/2007',
-        'http://xml.zeit.de/2007',
-        'http://xml.zeit.de/bilder',
-        'http://xml.zeit.de/bilder/2007',
-        'http://xml.zeit.de/deutschland',
-        'http://xml.zeit.de/hp_channels',
-        'http://xml.zeit.de/international',
-        'http://xml.zeit.de/kultur',
-        'http://xml.zeit.de/leben',
-        'http://xml.zeit.de/themen',
-        'http://xml.zeit.de/wirtschaft',
-        'http://xml.zeit.de/wissen',
+        'http://xml.zeit.de/repository/2007',
+        'http://xml.zeit.de/repository/2008',
+        'http://xml.zeit.de/repository/bilder',
+        'http://xml.zeit.de/repository/bilder/2007',
+        'http://xml.zeit.de/repository/bilder/2008',
+        'http://xml.zeit.de/repository/hp_channels',
+        'http://xml.zeit.de/repository/online',
+        'http://xml.zeit.de/repository/online/2007',
+        'http://xml.zeit.de/repository/online/2008',
+        'http://xml.zeit.de/repository/themen',
     )
 
     def __init__(self):
-        self._hidden_containers = zc.set.Set()
+        self._hidden_containers = BTrees.family32.OI.TreeSet()
         self._set_default_hidden_containers()
 
     def hide_container(self, container):
-        self._hidden_containers.add(container.uniqueId)
+        self._hidden_containers.insert(container.uniqueId)
 
     def show_container(self, container):
         try:

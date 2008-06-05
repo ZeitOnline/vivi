@@ -379,19 +379,16 @@ objet. Login bob:
 There is a list of containers which are shown by default:
 
 >>> pprint(preferences.default_shown_containers)
-('http://xml.zeit.de/online',
- 'http://xml.zeit.de/online/2007',
- 'http://xml.zeit.de/2007',
- 'http://xml.zeit.de/bilder',
- 'http://xml.zeit.de/bilder/2007',
- 'http://xml.zeit.de/deutschland',
- 'http://xml.zeit.de/hp_channels',
- 'http://xml.zeit.de/international',
- 'http://xml.zeit.de/kultur',
- 'http://xml.zeit.de/leben',
- 'http://xml.zeit.de/themen',
- 'http://xml.zeit.de/wirtschaft',
- 'http://xml.zeit.de/wissen')
+('http://xml.zeit.de/repository/2007',
+ 'http://xml.zeit.de/repository/2008',
+ 'http://xml.zeit.de/repository/bilder',
+ 'http://xml.zeit.de/repository/bilder/2007',
+ 'http://xml.zeit.de/repository/bilder/2008',
+ 'http://xml.zeit.de/repository/hp_channels',
+ 'http://xml.zeit.de/repository/online',
+ 'http://xml.zeit.de/repository/online/2007',
+ 'http://xml.zeit.de/repository/online/2008',
+ 'http://xml.zeit.de/repository/themen')
 
 
 From this list the default hidden_containers are derifed uppon instanciation.

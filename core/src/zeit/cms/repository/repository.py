@@ -9,6 +9,8 @@ import transaction
 
 import zope.annotation.interfaces
 import zope.cachedescriptors.method
+import zope.component
+import zope.component.interfaces
 import zope.interface
 import zope.securitypolicy.interfaces
 
@@ -129,7 +131,10 @@ class Container(zope.app.container.contained.Contained):
             delattr(self, '_v_local_unique_map')
         except AttributeError:
             pass
-        self.repository._invalidate_content_cache()
+        try:
+            self.repository._invalidate_content_cache()
+        except zope.component.interfaces.ComponentLookupError:
+            pass
 
 
 class Repository(persistent.Persistent, Container):
