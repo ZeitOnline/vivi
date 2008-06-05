@@ -141,11 +141,17 @@ class SyndicationError(Exception):
 
 class IMySyndicationTargets(zope.interface.Interface):
 
-    targets = zope.schema.Tuple(
-        title=_("Syndication targets"),
-        default=(),
-        required=False,
-        value_type=zope.schema.Object(IFeed))
+    def add(feed):
+        """Add feed to my targets."""
+
+    def remove(feed):
+        """Remove feed from my targets."""
+
+    def __contains__(feed):
+        """Return (bool) whether feed is a target or not."""
+
+    def __iter__():
+        """Iterate over targets."""
 
 
 class IFeedMetadataUpdater(zope.interface.Interface):

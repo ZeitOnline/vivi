@@ -28,18 +28,31 @@ To get his syndication targets we need his workingcopy:
 >>> bobs_workingcopy = zope.component.getUtility(
 ...     IWorkingcopyLocation).getWorkingcopy()
 
-The workingcopy can be adapted to `IMySyndicationTargets`:
+The workingcopy can be adapted to `IMySyndicationTargets` [#create-feeds]_:
 
 >>> from zeit.cms.syndication.interfaces import IMySyndicationTargets
 >>> bobs_syndication_targets = IMySyndicationTargets(bobs_workingcopy)
 >>> bobs_syndication_targets
 <zeit.cms.syndication.mytargets.MySyndicationTargets object at 0x...>
+>>> import zope.interface.verify
+>>> zope.interface.verify.verifyObject(
+...     IMySyndicationTargets, bobs_syndication_targets)
+True    
 
 The syndication target object has an attribute `targets`, which initially is
-empty:
+filled with a default:
 
 >>> bobs_syndication_targets.targets
-()
+<BTrees.OIBTree.OITreeSet object at 0x...>
+>>> len(bobs_syndication_targets.targets)
+2
+>>> list(bobs_syndication_targets.targets)
+[<zeit.cms.content.keyreference.CMSContentKeyReference object at 0x...>,
+ <zeit.cms.content.keyreference.CMSContentKeyReference object at 0x...>]
+>>> default_targets = list(bobs_syndication_targets)
+>>> default_targets
+[<zeit.cms.syndication.feed.Feed object at 0x...>,
+ <zeit.cms.syndication.feed.Feed object at 0x...>]
 
 We have two feeds in the demo system, get them:
 
@@ -48,9 +61,16 @@ We have two feeds in the demo system, get them:
 
 Add the politik feed to the targets:
 
->>> bobs_syndication_targets.targets = (politik, )
->>> bobs_syndication_targets.targets
-(<zeit.cms.syndication.feed.Feed object at 0x...>,)
+>>> politik in bobs_syndication_targets
+False
+>>> bobs_syndication_targets.add(politik)
+>>> politik in bobs_syndication_targets
+True
+
+Remove the default targets:
+
+>>> bobs_syndication_targets.remove(default_targets[0])
+>>> bobs_syndication_targets.remove(default_targets[1])
 
 
 Syndication Manager
@@ -325,3 +345,17 @@ Footnotes
     >>> content = repository['testcontent']
     >>> ICMSContent.providedBy(content)
     True
+
+
+.. [#create-feeds] Create some feeds we need for testing the defaults.
+
+    >>> import zeit.cms.repository.folder
+    >>> import zeit.cms.syndication.feed
+    >>> repository['hp_channels'] = zeit.cms.repository.folder.Folder()
+    >>> repository['hp_channels']['channel_news'] = (
+    ...     zeit.cms.syndication.feed.Feed())
+    >>> repository['hp_channels']['channel_magazin'] = (
+    ...     zeit.cms.syndication.feed.Feed())
+    
+
+    

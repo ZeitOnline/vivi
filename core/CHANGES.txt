@@ -9,6 +9,7 @@ zeit.cms changes
 - Datums/Zeit-Felder haben jetzt Knöpfe für "in einer Woche" und "in einem
   Monat".
 - Neue Defaults für nicht-angezeigte Ordner (bug #4229).
+- Defaults für Syndizierungsziele (bug #4229).
 
 0.9.16 (2008-05-29)
 -------------------

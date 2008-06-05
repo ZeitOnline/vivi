@@ -88,7 +88,7 @@ class SyndicationManager(object):
             zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
         workingcopy = location.getWorkingcopy()
         targets = zeit.cms.syndication.interfaces.IMySyndicationTargets(
-            workingcopy).targets
+            workingcopy)
         result = {}
         for target in targets:
             result[target.uniqueId] = target

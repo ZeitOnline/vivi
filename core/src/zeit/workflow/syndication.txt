@@ -77,9 +77,8 @@ Add feeds to the target list[#functionaltest]_[#needs-interaction]_:
 >>> workingcopy = location.getWorkingcopy()
 >>> targets = zeit.cms.syndication.interfaces.IMySyndicationTargets(
 ...     workingcopy)
->>> targets.targets += (repository['politik.feed'], 
-...                     repository['wirtschaft.feed'])
-
+>>> targets.add(repository['politik.feed'])
+>>> targets.add(repository['wirtschaft.feed'])
 
 Get a test content and syndicate it:
 

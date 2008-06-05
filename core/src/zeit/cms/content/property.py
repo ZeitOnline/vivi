@@ -219,30 +219,6 @@ class SingleResource(ObjectPathProperty):
         super(SingleResource, self).__set__(instance, node)
 
 
-class KeyReferenceTuple(object):
-
-    def __init__(self, attribute):
-        self.attribute = attribute
-
-    def __get__(self, instance, class_):
-        if instance is None:
-            return self
-        result = []
-        for key_ref in getattr(instance, self.attribute):
-            try:
-                obj = key_ref()
-            except KeyError:
-                continue
-            result.append(obj)
-
-        return tuple(result)
-
-    def __set__(self, instance, values):
-        new_value = tuple(zope.app.keyreference.interfaces.IKeyReference(obj)
-                          for obj in values)
-        setattr(instance, self.attribute, new_value)
-
-
 def mapAttributes(*names):
     vars = sys._getframe(1).f_locals
 

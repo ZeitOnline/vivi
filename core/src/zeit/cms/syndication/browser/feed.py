@@ -204,19 +204,16 @@ class EditFeedView(FeedView):
 class MyTargets(zeit.cms.browser.view.Base):
 
     def add_to_targets(self):
-        if self.context not in self.my_targets.targets:
-            self.my_targets.targets += (self.context, )
+        if self.context not in self.my_targets:
+            self.my_targets.add(self.context)
             self.send_message(
                 _('"${name}" has been added to your syndication targets.',
                   mapping=dict(name=self.context.__name__)))
         return self.redirect()
 
     def remove_from_my_targets(self):
-        targets = list(self.my_targets.targets)
-        if self.context in targets:
-            index = targets.index(self.context)
-            del targets[index]
-            self.my_targets.targets = tuple(targets)
+        if self.context in self.my_targets:
+            self.my_targets.remove(self.context)
             self.send_message(
                 _('"${name}" has been removed from your syndication targets.',
                   mapping=dict(name=self.context.__name__)))
@@ -227,7 +224,7 @@ class MyTargets(zeit.cms.browser.view.Base):
 
     @property
     def in_targets(self):
-        return self.context in self.my_targets.targets
+        return self.context in self.my_targets
 
     @zope.cachedescriptors.property.Lazy
     def my_targets(self):
@@ -248,7 +245,7 @@ class RememberSyndicationTargetMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     title = _('Remember as syndication target')
 
     def render(self):
-        view = zope.component.getMultiAdapter((self.context, self.request), 
+        view = zope.component.getMultiAdapter((self.context, self.request),
             name='remove-from-my-syndication-targets.html')
         if view.in_targets:
             return ''
