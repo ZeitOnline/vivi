@@ -90,7 +90,7 @@ import zeit.connector.search
 logger = logging.getLogger(__name__)
 
 # The property holding the "resource type".
-RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
+RESOURCE_TYPE_PROPERTY = zeit.cms.connector.interfaces.RESOURCE_TYPE_PROPERTY
 
 # Highest possible datetime value. We use datetime-with-timezone everywhere.
 # The MAXYEAR-1 is there to protect us from passing this bound when

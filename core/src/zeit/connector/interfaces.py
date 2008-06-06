@@ -33,6 +33,9 @@ zope.security.checker.BasicTypes[_DeleteProperty] = (
     zope.security.checker.NoProxy)
 
 
+RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
+
+
 class ConnectorError(Exception):
     """Generic, resource related, error in the connector."""
 
@@ -215,10 +218,9 @@ class IResource(zope.interface.Interface):
     # unique ids though makeing URI invalid.
     id = zope.interface.Attribute("Unique id of resource")
 
-    # TODO: make type a choice. This requires a source for valid types. We
-    # might want to use the interface dotted name instead of just 'article' or
-    # 'image'.
-    type = zope.interface.Attribute("Resource type (folder, image, ...).")
+    type = zope.interface.Attribute(
+        "Resource type (folder, image, ...). This is mapped to the property "
+        "defined by `RESOURCE_TYPE_PROPERTY`")
 
     data = zope.interface.Attribute(
         u"Resource main data (body, image data) as a file-like object.")

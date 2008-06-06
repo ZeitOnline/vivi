@@ -89,10 +89,12 @@ class Connector(object):
         if id in self._deleted:
             raise KeyError(id)
         properties = self._get_properties(id)
-        type = properties.get(('resourcetype', 'DAV:'))
+        type = properties.get(
+            zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
         if type is None:
             type = self.getResourceType(id)
-            properties[('resourcetype', 'DAV:')] = type
+            properties[
+                zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
         if type == 'collection':
             data = StringIO.StringIO()
         else:
@@ -110,7 +112,8 @@ class Connector(object):
         path = self._path(id)[:-1]
         name = self._path(id)[-1]
         self._paths.setdefault(path, set()).add(name)
-        resource.properties[('resourcetype', 'DAV:')] = resource.type
+        resource.properties[
+            zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         self._set_properties(id, resource.properties)
 
     def __delitem__(self, id):
