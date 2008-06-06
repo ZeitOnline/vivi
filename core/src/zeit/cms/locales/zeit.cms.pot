@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu May 29 10:00:43 2008\n"
+"POT-Creation-Date: Fri Jun  6 14:53:59 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -145,7 +145,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/form.py:206
 #: src/zeit/cms/content/browser/template.zcml:40
-#: src/zeit/content/image/browser/configure.zcml:97
+#: src/zeit/content/image/browser/configure.zcml:104
 #: src/zeit/content/gallery/browser/configure.zcml:103
 #: src/zeit/content/gallery/browser/overview.pt:23
 msgid "Edit"
@@ -160,7 +160,7 @@ msgstr ""
 #: src/zeit/cms/repository/browser/folder.zcml:17
 #: src/zeit/cms/syndication/browser/configure.zcml:47
 #: src/zeit/content/image/browser/configure.zcml:31
-#: src/zeit/content/image/browser/configure.zcml:166
+#: src/zeit/content/image/browser/configure.zcml:173
 msgid "View"
 msgstr ""
 
@@ -284,11 +284,11 @@ msgstr ""
 msgid "The action you were trying to do could not be finished."
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:45
+#: src/zeit/cms/browser/widget.py:47
 msgid "The given id is invalid."
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:48
+#: src/zeit/cms/browser/widget.py:50
 msgid "The object could not be found."
 msgstr ""
 
@@ -447,6 +447,26 @@ msgstr ""
 
 #: src/zeit/cms/content/browser/template.zcml:48
 msgid "Properties"
+msgstr ""
+
+#: src/zeit/cms/content/browser/typechange.pt:10
+#. Default: ""
+#.  "You are about to change the type of an object. Be sure you know what you\n"
+#.  "      are doing."
+msgid "change-type-warning"
+msgstr ""
+
+#: src/zeit/cms/content/browser/typechange.pt:36
+msgid "Type changed. Loading ..."
+msgstr ""
+
+#: src/zeit/cms/content/browser/typechange.pt:5
+msgid "Change type of ${object-unique-id}"
+msgstr ""
+
+#: src/zeit/cms/content/browser/typechange.py:68
+#: src/zeit/cms/content/browser/typechange.pt:27
+msgid "Change type"
 msgstr ""
 
 #: src/zeit/cms/content/field.py:32
@@ -800,16 +820,16 @@ msgstr ""
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:221
+#: src/zeit/cms/syndication/browser/feed.py:218
 #. Default: ""
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:248
+#: src/zeit/cms/syndication/browser/feed.py:245
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:263
+#: src/zeit/cms/syndication/browser/feed.py:260
 msgid "Remove from my syndication targets"
 msgstr ""
 
@@ -860,15 +880,11 @@ msgstr ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:145
-msgid "Syndication targets"
-msgstr ""
-
-#: src/zeit/cms/syndication/interfaces.py:197
+#: src/zeit/cms/syndication/interfaces.py:203
 msgid "No automatic metadata update"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:198
+#: src/zeit/cms/syndication/interfaces.py:204
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr ""
 
@@ -909,7 +925,7 @@ msgid "No edited documents."
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:24
-#: src/zeit/content/image/browser/configure.zcml:196
+#: src/zeit/content/image/browser/configure.zcml:203
 #: src/zeit/content/gallery/browser/configure.zcml:32
 #: src/zeit/content/link/browser/configure.zcml:17
 #: src/zeit/content/infobox/browser/configure.zcml:18
@@ -918,7 +934,7 @@ msgid "Edit metadata"
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:40
-#: src/zeit/content/image/browser/configure.zcml:180
+#: src/zeit/content/image/browser/configure.zcml:187
 #: src/zeit/content/gallery/browser/configure.zcml:49
 #: src/zeit/content/link/browser/configure.zcml:32
 #: src/zeit/content/infobox/browser/configure.zcml:36
@@ -1007,7 +1023,7 @@ msgstr ""
 msgid "Image only"
 msgstr ""
 
-#: src/zeit/content/image/browser/configure.zcml:118
+#: src/zeit/content/image/browser/configure.zcml:125
 msgid "Image (single)"
 msgstr ""
 
@@ -1025,7 +1041,7 @@ msgstr ""
 msgid "Edit image"
 msgstr ""
 
-#: src/zeit/content/image/browser/image.py:34
+#: src/zeit/content/image/browser/image.py:40
 msgid "View image"
 msgstr ""
 
@@ -1055,7 +1071,7 @@ msgstr ""
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:139
-#: src/zeit/content/image/browser/configure.zcml:129
+#: src/zeit/content/image/browser/configure.zcml:136
 #: src/zeit/content/gallery/browser/configure.zcml:75
 msgid "Images"
 msgstr ""
@@ -1073,7 +1089,7 @@ msgid "Image group metadata"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagegroup.py:62
-#: src/zeit/content/image/browser/configure.zcml:158
+#: src/zeit/content/image/browser/configure.zcml:165
 msgid "Image group"
 msgstr ""
 
@@ -1084,7 +1100,7 @@ msgstr ""
 
 #: src/zeit/content/image/browser/imagegroup.py:74
 #: src/zeit/content/portraitbox/interfaces.py:24
-#: src/zeit/content/image/browser/configure.zcml:188
+#: src/zeit/content/image/browser/configure.zcml:195
 msgid "Image"
 msgstr ""
 

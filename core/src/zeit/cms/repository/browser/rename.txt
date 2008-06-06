@@ -26,7 +26,7 @@ Let's open the document indicated by the javascript link:
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              'online/2007/01/Somalia/@@rename-box')
 >>> print browser.contents
-<div id="rename-box">
+<div id="rename-box" class="floating">
   <h1>
     Rename
     http://xml.zeit.de/online/2007/01/Somalia
@@ -46,7 +46,7 @@ When we just submit we'll get an error because 'Somalia' already exists:
 
 >>> browser.getControl('Rename').click()
 >>> print browser.contents
-<div id="rename-box">
+<div id="rename-box" class="floating">
     ...
     <ul class="errors">
        <li>
@@ -64,7 +64,7 @@ Choose a new name now and submit:
 The page contains the url to the renamed object:
 
 >>> print browser.contents
-<div id="rename-box">
+<div id="rename-box" class="floating">
     ...
    <span class="nextUrl">http://localhost/++skin++cms/repository/online/2007/01/Somalia-krieg/@@view.html</span>
     ...

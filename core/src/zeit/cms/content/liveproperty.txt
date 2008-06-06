@@ -17,11 +17,11 @@ properties[#functionaltest]_:
 Let's see what properties we've got:
 
 >>> sorted(properties.keys())
-[('getlastmodified', 'DAV:'), ('resourcetype', 'DAV:')]
+[('getlastmodified', 'DAV:'), ('type', 'http://namespaces.zeit.de/CMS/meta')]
 >>> import pprint
 >>> pprint.pprint(dict(properties))
 {('getlastmodified', 'DAV:'): u'...',
- ('resourcetype', 'DAV:'): 'testcontenttype'}
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
 
 
 To set properties via the LiveProperty class properties have to be registered
@@ -49,7 +49,7 @@ True
 >>> pprint.pprint(dict(properties))
 {('foo', 'test'): 'bar',
  ('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
- ('resourcetype', 'DAV:'): 'testcontenttype'}
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
 
 
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu May 29 10:00:43 2008\n"
-"PO-Revision-Date: 2008-05-29 10:02+0100\n"
+"POT-Creation-Date: Fri Jun  6 14:53:59 2008\n"
+"PO-Revision-Date: 2008-06-06 15:02+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -133,7 +133,7 @@ msgstr "Abbrechen"
 
 #: src/zeit/cms/browser/form.py:206
 #: src/zeit/cms/content/browser/template.zcml:40
-#: src/zeit/content/image/browser/configure.zcml:97
+#: src/zeit/content/image/browser/configure.zcml:104
 #: src/zeit/content/gallery/browser/configure.zcml:103
 #: src/zeit/content/gallery/browser/overview.pt:23
 msgid "Edit"
@@ -148,7 +148,7 @@ msgstr "Keine Änderungen"
 #: src/zeit/cms/repository/browser/folder.zcml:17
 #: src/zeit/cms/syndication/browser/configure.zcml:47
 #: src/zeit/content/image/browser/configure.zcml:31
-#: src/zeit/content/image/browser/configure.zcml:166
+#: src/zeit/content/image/browser/configure.zcml:173
 msgid "View"
 msgstr "Anzeigen"
 
@@ -272,11 +272,11 @@ msgstr "Weitere Aktionen"
 msgid "The action you were trying to do could not be finished."
 msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
 
-#: src/zeit/cms/browser/widget.py:45
+#: src/zeit/cms/browser/widget.py:47
 msgid "The given id is invalid."
 msgstr "Die angegebene Id ist nicht gültig."
 
-#: src/zeit/cms/browser/widget.py:48
+#: src/zeit/cms/browser/widget.py:50
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
@@ -436,6 +436,26 @@ msgstr "WebDAV-Properties bearbeiten"
 #: src/zeit/cms/content/browser/template.zcml:48
 msgid "Properties"
 msgstr "Eigenschaften"
+
+#. Default: ""
+#.  "You are about to change the type of an object. Be sure you know what you\n"
+#.  "      are doing."
+#: src/zeit/cms/content/browser/typechange.pt:10
+msgid "change-type-warning"
+msgstr "Achtung: Sie wollen den Typ eines Objekts ändern. Bei falscher Wahl kann dies u.U. dazu führen, dass das Objekt im CMS nicht verwendbar ist und ein Administratoreingriff nötig wird."
+
+#: src/zeit/cms/content/browser/typechange.pt:36
+msgid "Type changed. Loading ..."
+msgstr "Typ geändert. Lade …"
+
+#: src/zeit/cms/content/browser/typechange.pt:5
+msgid "Change type of ${object-unique-id}"
+msgstr "Typ von »${object-unique-id}« ändern "
+
+#: src/zeit/cms/content/browser/typechange.py:68
+#: src/zeit/cms/content/browser/typechange.pt:27
+msgid "Change type"
+msgstr "Typ ändern"
 
 #: src/zeit/cms/content/field.py:32
 msgid "Invalid structure."
@@ -789,15 +809,15 @@ msgid "\"${name}\" has been added to your syndication targets."
 msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:221
+#: src/zeit/cms/syndication/browser/feed.py:218
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr "»${name}« wurde aus Ihren Syndizierungszielen entfernt."
 
-#: src/zeit/cms/syndication/browser/feed.py:248
+#: src/zeit/cms/syndication/browser/feed.py:245
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: src/zeit/cms/syndication/browser/feed.py:263
+#: src/zeit/cms/syndication/browser/feed.py:260
 msgid "Remove from my syndication targets"
 msgstr "Aus Syndizierungszielen entfernen"
 
@@ -848,15 +868,11 @@ msgstr "»${id}« wird veröffentlicht."
 msgid "Could not publish \"${name}\"."
 msgstr "»${name}« konnte nicht veröffentlicht werden."
 
-#: src/zeit/cms/syndication/interfaces.py:145
-msgid "Syndication targets"
-msgstr "Syndizierungsziele"
-
-#: src/zeit/cms/syndication/interfaces.py:197
+#: src/zeit/cms/syndication/interfaces.py:203
 msgid "No automatic metadata update"
 msgstr "Keine automatische Aktualisierung der Metadaten"
 
-#: src/zeit/cms/syndication/interfaces.py:198
+#: src/zeit/cms/syndication/interfaces.py:204
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels nicht automatisch aktualisiert."
 
@@ -897,7 +913,7 @@ msgid "No edited documents."
 msgstr "Keine bearbeiteten Dokumente."
 
 #: src/zeit/content/centerpage/browser/configure.zcml:24
-#: src/zeit/content/image/browser/configure.zcml:196
+#: src/zeit/content/image/browser/configure.zcml:203
 #: src/zeit/content/gallery/browser/configure.zcml:32
 #: src/zeit/content/link/browser/configure.zcml:17
 #: src/zeit/content/infobox/browser/configure.zcml:18
@@ -906,7 +922,7 @@ msgid "Edit metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/centerpage/browser/configure.zcml:40
-#: src/zeit/content/image/browser/configure.zcml:180
+#: src/zeit/content/image/browser/configure.zcml:187
 #: src/zeit/content/gallery/browser/configure.zcml:49
 #: src/zeit/content/link/browser/configure.zcml:32
 #: src/zeit/content/infobox/browser/configure.zcml:36
@@ -995,7 +1011,7 @@ msgstr "Text"
 msgid "Image only"
 msgstr "Nur Bild"
 
-#: src/zeit/content/image/browser/configure.zcml:118
+#: src/zeit/content/image/browser/configure.zcml:125
 msgid "Image (single)"
 msgstr "Einzelbild"
 
@@ -1013,7 +1029,7 @@ msgstr "Bild hinzufügen"
 msgid "Edit image"
 msgstr "Bild bearbeiten"
 
-#: src/zeit/content/image/browser/image.py:34
+#: src/zeit/content/image/browser/image.py:40
 msgid "View image"
 msgstr "Bild zeigen"
 
@@ -1043,7 +1059,7 @@ msgstr "Typ"
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:139
-#: src/zeit/content/image/browser/configure.zcml:129
+#: src/zeit/content/image/browser/configure.zcml:136
 #: src/zeit/content/gallery/browser/configure.zcml:75
 msgid "Images"
 msgstr "Bilder"
@@ -1061,7 +1077,7 @@ msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
 #: src/zeit/content/image/browser/imagegroup.py:62
-#: src/zeit/content/image/browser/configure.zcml:158
+#: src/zeit/content/image/browser/configure.zcml:165
 msgid "Image group"
 msgstr "Bildergruppe"
 
@@ -1072,7 +1088,7 @@ msgstr "Ausmaße"
 
 #: src/zeit/content/image/browser/imagegroup.py:74
 #: src/zeit/content/portraitbox/interfaces.py:24
-#: src/zeit/content/image/browser/configure.zcml:188
+#: src/zeit/content/image/browser/configure.zcml:195
 msgid "Image"
 msgstr "Bild"
 
@@ -1412,6 +1428,8 @@ msgstr "${name}: ${new_value}"
 msgid "Edit WYSIWYG"
 msgstr "Bearbeiten"
 
+#~ msgid "Syndication targets"
+#~ msgstr "Syndizierungsziele"
 #~ msgid "Article"
 #~ msgstr "Artikel"
 #~ msgid "Edit article"

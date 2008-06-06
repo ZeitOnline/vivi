@@ -1,5 +1,5 @@
-<div id="rename-box" i18n:domain="zeit.cms">
-    <tal:replace replace="resource_library:zeit.cms.Lightbox" />
+<div id="rename-box" class="floating" i18n:domain="zeit.cms">
+
   <h1 i18n:translate="">
     Rename
     <span tal:replace="context/uniqueId"

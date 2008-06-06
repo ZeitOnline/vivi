@@ -10,6 +10,7 @@ zeit.cms changes
   Monat".
 - Neue Defaults für nicht-angezeigte Ordner (bug #4229).
 - Defaults für Syndizierungsziele (bug #4229).
+- Es gibt jetzt die Möglichkeit den Typ von Objekten im UI zu ändern.
 
 0.9.16 (2008-05-29)
 -------------------

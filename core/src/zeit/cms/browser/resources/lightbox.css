@@ -13,6 +13,10 @@
   display: none;
 }
 
+#lightbox > .floating > * {
+    padding: 0.4em;
+}
+
 #lightbox > .keyword-tree {
     position: absolute;
     top: 0;
@@ -134,6 +138,7 @@
     width: 15em;
     float: right;
 }
+
 
 
 /*

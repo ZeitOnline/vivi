@@ -71,7 +71,8 @@ zeit.cms.LightboxForm = Class.extend({
             }, this.form.elements);
 
         var data = map(function(element) {
-                element = $(element.id);
+                if (element.type == 'radio' && !element.checked)
+                    return
                 return element.name + "=" + encodeURIComponent(element.value)
             }, elements);
         data.push(action + '=clicked')

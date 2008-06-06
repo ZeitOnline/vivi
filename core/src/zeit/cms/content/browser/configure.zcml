@@ -116,5 +116,27 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  
+  <!-- Type change -->
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="typechange-box"
+    class=".typechange.TypeChange"
+    template="typechange.pt"
+    permission="zeit.RenameContent"
+    />
+
+  <browser:viewlet
+    name="TypeChange"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".typechange.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.RenameContent"
+    lightbox="@@typechange-box"
+    icon=""
+    sort="120"
+    />
 
 </configure>

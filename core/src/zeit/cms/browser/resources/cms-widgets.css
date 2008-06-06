@@ -468,9 +468,3 @@ table.properties textarea {
   color: #ddd;
   float: right;
 }
-
-
-/* rename box */
-#rename-box > * {
-  padding: 0.4em;
-}

@@ -1,0 +1,80 @@
+Changing content types
+======================
+
+
+There is a UI to force an object to change it's type. This is necessary because
+there is sometimes (often?) wrong information in the DAV server.
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
+
+
+The type change is a lightbox:
+
+>>> browser.getLink('Change type')
+<Link text='[IMG] Change type' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@typechange-box')">
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01'
+...     '/Somalia/@@typechange-box')
+>>> print browser.contents
+<div class="floating">
+  <h1>
+    Change type of
+    http://xml.zeit.de/online/2007/01/Somalia
+  </h1>
+  ...
+
+
+We can select which type we want to 
+
+>>> browser.getControl(name='newtype').displayOptions
+['channel', 'channel_cp', 'collection', 'unknown']
+
+Just clicking "change" w/o selecting anything displays the form again:
+
+>>> browser.getControl('Change type').click()
+>>> print browser.contents
+<div class="floating">
+  <h1>
+    Change type of
+    http://xml.zeit.de/online/2007/01/Somalia
+  </h1>
+  ...
+
+Make it a channel. 
+
+>>> browser.getControl(name='newtype').displayValue = ['channel_cp']
+>>> browser.getControl('Change type').click()
+>>> print browser.contents
+<div class="floating">
+  <h1>
+    Change type of
+    http://xml.zeit.de/online/2007/01/Somalia
+  </h1>
+    <div>
+      Type changed. Loading ...
+    </div>
+    <span class="nextUrl">http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html</span>
+</div>
+
+
+Opening the channel will break horribly: 
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+
+
+Verify the type in the connector:
+
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> res = connector['http://xml.zeit.de/online/2007/01/Somalia']
+>>> res.type
+u'channel_cp'
