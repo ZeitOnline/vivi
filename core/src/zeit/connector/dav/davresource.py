@@ -66,25 +66,6 @@ def _make_qname_tuple ( string ):
     match = re.match("{(?P<uri>.+)}(?P<name>.+)", string)
     return (match.group('name'), match.group('uri'))
 
-def _get_nsuri ( node ):
-    try:
-        nsu = _make_qname_tuple(node.tag)[0]
-    except libxml2.treeError:
-        nsu = None
-        pass
-    return nsu
-#
-
-#:note: dead code!
-def _get_nsprefix ( node ):
-    try:
-        ns = node.ns()
-        nsp = ns.get_name()
-    except libxml2.treeError:
-        nsp = None
-        pass
-    return nsp
-#
 
 #:old:
 #:fixme:: this is _not_ namespace aware and hence
@@ -212,14 +193,17 @@ def _parse_status_line(line):
     line = line.strip("\r\n\t ")
     m = _stat_patt.match(line)
     # EEK! m==None should be caught by exception below, but isn't :-(
-    if m is None:
-        raise DAVBadStatusLineError, ("Can't grok status line %r" % line)
-    try:
+    if m is not None:
         # FIXME: we might try to grok protocol version (in m.group(1))
         stat, reason = m.group(2, 3)
-        return(int(stat), reason)
-    except:
-        raise DAVBadStatusLineError, ("Can't grok status line %r" % line)
+        try:
+            stat = int(stat)
+        except ValueError:
+            pass
+        else:
+            return stat, reason
+
+    raise DAVBadStatusLineError("Can't grok status line %r" % line)
 
 #:fixme: I don't like this setup: why group properties by their status code
 # at all. Does a read operation on a property need to check in all DAVPropstat
@@ -524,7 +508,7 @@ class DAVResource:
             self.collection = (v is not None) and (v.find('collection') >= 0)
         except DAVError, ex:
             if ex.args[0] == 404:
-                raise DAVNotFoundError, ex.args
+                raise DAVNotFoundError(ex.args)
             else:
                 raise
         return self._result
@@ -886,7 +870,7 @@ class DAVResource:
                 self.locktoken = None
             return
         # FIXME Other exceptions here?
-        raise DAVUnlockFailedError, (davres,)
+        raise DAVUnlockFailedError(davres)
 
     def _propfind ( self, depth=0 ):
         """Query all properties for this resource and return a DAVResult instance.
@@ -921,7 +905,7 @@ class DAVResource:
             self._conn._con._http_vsn_str = 'HTTP/1.1'
             self._conn._con._http_vsn = 11
         if davres.status >= 300: # or davres.status in (404,200):
-            raise DAVError, (davres.status, davres.reason, davres)
+            raise DAVError(davres.status, davres.reason, davres)
         return davres
 
     def _proppatch ( self, body, locktoken ):
