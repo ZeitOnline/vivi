@@ -1157,10 +1157,12 @@ class DAVCollection ( DAVResource ):
         path = urlparse(url, 'http', 0)[2]
         # do delete
         res = self._do_del(url, path, locktoken=locktoken)
+        res.read()
         if res.status == 423:
             raise DAVLockedError(res.status, res.reason, url)
         if res.status >= 300:
             raise DAVDeleteFailedError(res.status, res.reason, url)
         # deleted and done
+        res.close()
         self.update()
         return

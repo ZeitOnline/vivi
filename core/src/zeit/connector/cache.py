@@ -65,11 +65,10 @@ class ResourceCache(persistent.Persistent):
         buffer_size = 102400
         if hasattr(data, 'seek'):
             data.seek(0)
-        while True:
-            s = data.read(buffer_size)
+        s = data.read(buffer_size)
+        while s:
             blob_file.write(s)
-            if len(s) < buffer_size:
-                break
+            s = data.read(buffer_size)
         blob_file.close()
         self._etags[key] = current_etag
         self._data[key] = blob

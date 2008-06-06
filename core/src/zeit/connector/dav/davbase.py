@@ -1,44 +1,31 @@
-import urllib
-import urlparse
-import httplib
 import base64
+import httplib
 import mimetypes
 import re
-
-###
-# This is for debugging, when std{out|err} stolen from under us.
-# I sometimes have no patience to grovel for The Enlightened Way (TM).
-# Stolen from connector.py
-# *NOT TO BE USED IN PRODUCTION*
 import sys
-def holler(txt):
-    sys.__stdout__.write(txt)
+import urllib
+import urlparse
 
-try:
-    False
-    True
-except NameError:
-    True = 1
-    False = not True
-    pass
+# This is for debugging, *NOT TO BE USED IN PRODUCTION*
+DEBUG_REQUEST = False
 
 XML_DOC_HEADER = '<?xml version="1.0" encoding="utf-8"?>'
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 
-# block size for copying files up to the server
-BLOCKSIZE = 16384
-
-###
 
 class BadAuthTypeError ( Exception ):
     pass
-#
 
 class RedirectError ( Exception ):
     pass
-#
+
 
 class HTTPBasicAuthCon:
+    """Connection which authenticates.
+
+    NOTE: currently doesn't authenticate.
+
+    """
 
     connect_class = httplib.HTTPConnection
     rx = re.compile('[ \t]*([^ \t]+)[ \t]+realm="([^"]*)"')
@@ -48,7 +35,7 @@ class HTTPBasicAuthCon:
         self._resp = None
         self._authon = False
         self._con = self.connect_class(host, port, strict)
-##        self._con.debuglevel = 999
+        self._con.debuglevel = 0
         self._realms = {}
         self._user = ''
         self._passwd = ''
@@ -92,11 +79,9 @@ class HTTPBasicAuthCon:
         return
 
     def request ( self, method, uri, body=None, headers={} ):
-        if self._resp is not None:
-            self._resp.close()
-            self._resp = None
-        con = self._con
-        getresp = con.getresponse
+        #if self._resp is not None:
+        #    self._resp.close()
+        #    self._resp = None
         if self._authon:
             # short cut to avoid useless requests
             raw = "%s:%s" % self.get_auth(self._realm)
@@ -109,24 +94,10 @@ class HTTPBasicAuthCon:
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))
-        con.request(method, uri, body, headers)
-        resp = getresp()
-        if resp.status == 401:
-            self._auth(resp, headers)
-            con.request(method, uri, body, headers)
-            resp = getresp()
-            self._resp = resp
-            if resp.status < 400:
-                self._authon = True
-        self._resp = resp
-        return resp
+        self._con.request(method, uri, body, headers)
 
-    def getresponse ( self ):
-        try:
-            return self._resp
-        except AttributeError:
-            pass
-        return None
+    def getresponse(self):
+        return self._con.getresponse()
 
     def close ( self ):
         if self._resp is not None:
@@ -251,12 +222,19 @@ class DAVBase:
     def _request(self, method, url, body=None, extra_hdrs={}):
         "Internal method for sending a request."
         self._recursion_level = getattr(self, '_recursion_level', 0) + 1
-##        holler("### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n#################\n" % \
-##               (method, url, "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]), body))
+        if DEBUG_REQUEST:
+            print >>sys.stderr, (
+                "### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n############\n" % (
+                    method, url,
+                    "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]),
+                    body))
         self.request(method, url, body, extra_hdrs) # that's HTTPxxxAuthCon.request, called via DAVConnection
         resp = self.getresponse()
-##        holler("### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % \
-##               (resp.status, resp.reason, "\n  ".join(["%s: %s" % h for h in resp.getheaders()])))
+        if DEBUG_REQUEST:
+            print >>sys.stderr, (
+                "### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % (
+                    (resp.status, resp.reason,
+                     "\n  ".join(["%s: %s" % h for h in resp.getheaders()]))))
         if resp.status in (301, 302, 303, 305, 307):
             # redirect silently
             # Location: header *MUST* be there
@@ -265,6 +243,8 @@ class DAVBase:
             if self._recursion_level > 10:
                 # do NOT descend further, return last response
                 return resp
+            resp.read()
+            #resp.close()
             resp = self._request(method, new_uri, body, extra_hdrs)
         self._recursion_level -= 1
         return resp

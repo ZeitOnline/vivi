@@ -24,15 +24,6 @@ class ZopeConnector(zeit.connector.connector.Connector):
     connections = gocept.cache.property.TransactionBoundCache(
         '_connections', threading.local)
 
-    def _conn(self, root='default'):
-        try:
-            connection = getattr(self.connections, root)
-        except AttributeError:
-            logging.debug('New connection')
-            connection = super(ZopeConnector, self)._conn(root)
-            setattr(self.connections, root, connection)
-        return connection
-
     @property
     def body_cache(self):
         return zope.component.getUtility(

@@ -66,6 +66,7 @@ import os
 import random
 import re
 import sys
+import threading
 import time
 import urlparse
 
@@ -147,6 +148,7 @@ class Connector(object):
     """
 
     zope.interface.implements(zeit.connector.interfaces.IConnector)
+    connections = threading.local()
 
     def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
@@ -156,17 +158,23 @@ class Connector(object):
 
     def _conn(self, root='default'):
         """Try to get a cached connection suitable for url"""
-        # FIXME: someone will have to invalidate the connections at some point.
-        url = self._roots[root]
-        (scheme, netloc) = urlparse.urlsplit(url)[0:2]
-        snetloc = "%s://%s" % (scheme, netloc)
-        try: # grmblmmblpython
-            host, port = netloc.split(':', 1)
-            port = int(port)
-        except ValueError:
-            host, port = netloc, None
-        # FIXME: Argh. DAVConnection should take schema as well!!!
-        return DAVConnection(host, port)
+        try:
+            connection = getattr(self.connections, root)
+        except AttributeError:
+            logger.debug('New connection')
+            # FIXME: someone will have to invalidate the connections at some point.
+            url = self._roots[root]
+            (scheme, netloc) = urlparse.urlsplit(url)[0:2]
+            snetloc = "%s://%s" % (scheme, netloc)
+            try: # grmblmmblpython
+                host, port = netloc.split(':', 1)
+                port = int(port)
+            except ValueError:
+                host, port = netloc, None
+            # FIXME: Argh. DAVConnection should take schema as well!!!
+            connection = DAVConnection(host, port)
+            setattr(self.connections, root, connection)
+        return connection
 
     def listCollection(self, id):
         """List the filenames of a collection identified by <id> (see[8]). """
@@ -258,8 +266,11 @@ class Connector(object):
             data = cache.getData(id, properties)
         except KeyError:
             logger.debug("Getting body from dav: %s" % id)
-            data = self._get_dav_resource(id).get()
-            data = cache.setData(id, properties, data)
+            response = self._get_dav_resource(id).get()
+            data = cache.setData(id, properties, response)
+            if not response.isclosed():
+                additional_data = response.read()
+                assert not additional_data
         if data is None:
             # This apparently happens when the resource does not have a
             # body but only properties.
@@ -354,7 +365,8 @@ class Connector(object):
             for name, child_id in self.listCollection(old_id):
                 self.copy(child_id, urlparse.urljoin(new_id, name))
         else:
-            conn.copy(old_loc, new_loc)
+            response = conn.copy(old_loc, new_loc)
+            response.read()
         self._invalidate_cache(new_id, parent=True)
 
     def move(self, old_id, new_id):
@@ -591,14 +603,15 @@ class Connector(object):
         hresp = DAVResource(url, conn=self._conn()).head()
         if not hresp:
             return None # FIXME throw exception?
+        hresp.read()
         st = int(hresp.status)
         if  st== httplib.OK:
             return hresp.getheader('ETag', 'Unspecified ETag')
         elif st == httplib.NOT_FOUND:
             return None
         else:
-            raise DAVUnexpectedResultError, \
-                  ('Unexpected result code for %s: %d' % (url, st))
+            raise DAVUnexpectedResultError(
+                'Unexpected result code for %s: %d' % (url, st))
 
     def _get_dav_resource(self, id, ensure=None):
         """returns resource corresponding to <id>, which see [8],
@@ -680,7 +693,9 @@ class Connector(object):
         if self.property_cache.get(id) is not None:
             return id
         dav_resource = DAVResource(self._id2loc(id + '/'), conn=self._conn())
-        if dav_resource.head().status == 200:
+        response = dav_resource.head()
+        response.read()
+        if response.status == 200:
             return id + '/'
         return id
 
