@@ -15,9 +15,10 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
         'adapter.txt',
-        'keyword.txt',
-        'property.txt',
         'field.txt',
+        'keyword.txt',
+        'lxmlpickle.txt',
+        'property.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
         setUp=zeit.cms.testing.setUp))

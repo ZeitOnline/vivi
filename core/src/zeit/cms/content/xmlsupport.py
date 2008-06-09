@@ -18,6 +18,7 @@ import zeit.connector.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
+import zeit.cms.content.lxmlpickle  # extended pickle support
 
 
 class XMLRepresentationBase(object):
