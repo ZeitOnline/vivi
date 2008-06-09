@@ -606,19 +606,18 @@ class DAVResource:
     def change_properties( self, pdict, delmark=None, locktoken=None):
         """Set, update or delete the properties in pdict on this resource.
 
-        Delete properties when the property value _is_ delmark (unless
-        delmark is none: then no deleting occurs).
+        Delete properties when the property value _is_ delmark.
 
         Returns a DAVResult instance as result.
 
-        The property names (keys of pdict) *have* to be tuples of (name, nsuri).
-        The property values _won't_ be xml escaped before they're stored and should
-        be well-formed and name-space-complete XML
+        The property names (keys of pdict) *have* to be tuples of (name,
+        nsuri).  The property values *will* be xml escaped before they're
+        stored.
+
         """
-        # generate xml body for request
-        # make xml header incl. namspace declarations
         if not pdict:
             return None
+
         set_properties = []
         delete_properties = []
 
@@ -641,7 +640,8 @@ class DAVResource:
                 set_properties.append(
                     make_element(namespace, name)(value))
 
-        # NOTE: xset and xdel can't be both empty because pdict isn't.
+        # NOTE: set_properties and delete_properties can't be both empty
+        # because pdict isn't.
 
         body = make_element('DAV:', 'propertyupdate')()
         if set_properties:
