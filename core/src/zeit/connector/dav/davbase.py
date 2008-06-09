@@ -216,7 +216,6 @@ class DAVBase:
         if locktoken[0] != '<':
             locktoken = '<' + locktoken + '>'
         headers['Lock-Token'] = locktoken
-##         headers['If'] = '(' + locktoken + ')'
         return self._request('UNLOCK', url, extra_hdrs=headers)
 
     def _request(self, method, url, body=None, extra_hdrs={}):
@@ -248,7 +247,6 @@ class DAVBase:
             resp = self._request(method, new_uri, body, extra_hdrs)
         self._recursion_level -= 1
         return resp
-#
 
 
 class DAVConnection ( HTTPBasicAuthCon, DAVBase ):
@@ -258,7 +256,7 @@ class DAVConnection ( HTTPBasicAuthCon, DAVBase ):
         self._con._http_vsn_str = 'HTTP/1.1'
         self._con._http_vsn = 11
         return
-#
+
 
 import socket
 if getattr(socket, 'ssl', None):
@@ -266,7 +264,6 @@ if getattr(socket, 'ssl', None):
     class HTTPSBasicAuthCon ( HTTPBasicAuthCon ):
         connect_class = httplib.HTTPSConnection
         pass
-    #
 
     class DAVSConnection ( HTTPSBasicAuthCon, DAVBase):
         def __init__ ( self, host, port=None, strict=None):
@@ -274,5 +271,3 @@ if getattr(socket, 'ssl', None):
             self._con._http_vsn_str = 'HTTP/1.1'
             self._con._http_vsn = 11
             return
-    #
-###
