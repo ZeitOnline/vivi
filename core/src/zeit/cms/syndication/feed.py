@@ -124,7 +124,10 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         for unique_id in self.keys():
             try:
                 yield repository.getContent(unique_id)
-            except (KeyError, ValueError), e:
+            except ValueError, e:
+                entry = self.entry_map[unique_id]
+                yield FakeEntry(unique_id, entry)
+            except KeyError, e:
                 logger.warning("Found invalid reference to %s in "
                                "channel %s. Ignoring." % (
                                    unique_id, self.uniqueId))
@@ -249,3 +252,11 @@ def syndicated_in(content, catalog):
     if not feed:
         return None
     return list(feed)
+
+
+class FakeEntry(object):
+    """..."""
+
+    def __init__(self, id, entry):
+        self.uniqueId = id
+        self.title = unicode(entry.find('title'))

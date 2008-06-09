@@ -39,6 +39,14 @@
     name="related"
     />
 
+  <class class=".feed.FakeEntry">
+    <require interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View" />
+    <require
+      attributes="title"
+      permission="zope.View" />
+  </class>
+
   <!-- old channel support -->
 
   <adapter factory=".oldchannel.bodyContainerFactory" name="channel_cp" />

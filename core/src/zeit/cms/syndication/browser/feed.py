@@ -19,6 +19,7 @@ import zeit.cms.browser.view
 import zeit.cms.browser.menu
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.cms.syndication.feed
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -80,12 +81,6 @@ class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     @property
     def searchableText(self):
         return self.title
-
-    @property
-    def metadata(self):
-        id = self.context.__name__
-        return ('<span class="Metadata">%s</span><span'
-                ' class="DeleteId">%s</span>' %(item.url, id))
 
     year = page = volume = ressort = workflowState = modifiedBy = author = None
 
@@ -260,9 +255,32 @@ class RemoveFromMySyndicationTargetsMenuItem(
     title = _('Remove from my syndication targets')
 
     def render(self):
-        view = zope.component.getMultiAdapter((self.context, self.request), 
+        view = zope.component.getMultiAdapter((self.context, self.request),
             name='remove-from-my-syndication-targets.html')
         if not view.in_targets:
             return ''
         else:
             return super(RemoveFromMySyndicationTargetsMenuItem, self).render()
+
+
+
+class FakeEntryRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
+    """Adapter for listing a feed."""
+
+    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
+    zope.component.adapts(zeit.cms.syndication.feed.FakeEntry,
+                          zeit.cms.browser.interfaces.ICMSLayer)
+
+    @property
+    def title(self):
+        return self.context.title
+
+    @property
+    def searchableText(self):
+        return self.title
+
+    @property
+    def url(self):
+        return self.context.uniqueId
+
+    year = page = volume = ressort = workflowState = modifiedBy = author = None

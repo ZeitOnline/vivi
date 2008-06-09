@@ -463,3 +463,53 @@ We remove it now from the syndication targets:
 <?xml ...
     <li class="message">"politik.feed" has been removed from your syndication targets.</li>
 ...
+
+
+
+External urls in href
+---------------------
+
+When there are external url in the href we generate a fake object.  Make sure
+we can see it in the UI:
+
+>>> browser.getLink('Politik').click()
+>>> browser.getLink('Source').click()
+>>> browser.getControl('XML').value = '''\
+... <channel>
+...   <title>Politik</title>
+...   <container>
+...     <block layout="" priority="" href="http://www.zeit.de/news/artikel/2008/04/22/2517661.xml" id="" sticky="">
+...         <supertitle>Schmiergeldaffäre</supertitle>
+...         <title>Samsung-Chef Lee tritt zurück</title>
+...         <text>Der mächtigste Geschäftsmann Südkoreas, Lee Kun Hee, zieht sich von seinem Posten zurück. Der Chef des Samsung-Konzerns ist wegen Steuerhinterziehung angeklagt. Ihm drohen mehrere Jahre Haft.</text>
+...         <byline/>
+...         <short>
+...             <title>Schmiergeldaffäre</title>
+...             <text>Samsung-Chef Lee tritt zurück</text>
+...         </short>
+...         <related>
+...             <block href="cms:/cms/work/online/2008/16/bahn-spd-kommentar" pos="1">
+...                 <title>Bahnprivatisierung</title>
+...                 <text>SPD-Chef Beck beweist Führungsstärke</text>
+...             </block>
+...         </related>
+...     </block>
+...   </container>
+...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+... </channel>'''
+
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+    ...Updated on...
+>>> browser.getLink('Sort').click()
+>>> print browser.contents
+<?xml ...
+    <td>
+      <a href="http://www.zeit.de/news/artikel/2008/04/22/2517661.xml">Samsung-Chef Lee tritt zurück</a>
+    </td>
+    <td>
+      1
+    </td>
+    ...
+

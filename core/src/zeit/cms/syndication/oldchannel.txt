@@ -34,7 +34,7 @@ Let's get it from the repository:
 >>> import pprint
 >>> pprint.pprint(list(channel.keys()))
 ['http://xml.zeit.de/online/2007/01/Somalia',
- 'http://xml.zeit.de/online/2007/01/Querdax',
+ 'http://xml.zeit.de/online/2200/01/Querdax',
  'cms:/cms/work/online/2008/17/lebensmittel-dickmacher',
  'http://www.zeit.de/news/artikel/2008/04/22/2517661.xml',
  'cms:/cms/work/online/2008/17/bank-of-england-finanzspritze',
@@ -73,45 +73,22 @@ the actual data[#loghandler]_:
 
 >>> contents = list(channel)
 >>> len(contents)
-2
+32
 >>> contents
 [<zeit.cms.repository.unknown.UnknownResource object at 0x...>,
- <zeit.cms.repository.unknown.UnknownResource object at 0x...>]
+ <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
+ ...]
+
+The fake entries represent urls which do not point to the CMS:
+>>> fake_entry = contents[1]
+>>> fake_entry.title
+u'Informationen gegen H\xfcftgold'
+
 
 Verify the log:
 
 >>> print log.getvalue()
-Found invalid reference to cms:/cms/work/online/2008/17/lebensmittel-dickmacher in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to http://www.zeit.de/news/artikel/2008/04/22/2517661.xml in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/bank-of-england-finanzspritze in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/lebensmittel-dickmacher-interview in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/17/Argument-Kartellamt-und-Fussball in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/boers-o-meter-oel-euro-aktien in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/poststreik-montag in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/17/Immoblienkrise-USA in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/17/P-Zapf in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/pierer-siemens-skandal in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/meldung-citigroup in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/bg-reisanbau in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/17/Atomlobby in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/siemens-klage-vorstand in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/nahrungskrise-china-klima-gentechnik in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/fruehjahrsgutachten in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/17/F-Steuern in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to http://www.zeit.de/video/player?videoID=2008041759e678 in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/17/Welthunger in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to http://blog.zeit.de/herdentrieb/ in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/17/oel-preis-brasilien-querdax in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/bg-hungerproteste in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/meldung-chemie in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to http://www.zeit.de/news/artikel/2008/04/16/2514163.xml in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/nahrung-hunger-braun in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/scholz-lafontaine-rente in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/interview-diouf in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to javascript:void(openme('http://www.zeit.de/themen/wirtschaft/nahrungskrise/map-hungerproteste',870,530,'middle','map_popup_01')); in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/finanztest-ruerup-rente in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/online/2008/16/bg-lebensmittel-2 in channel http://xml.zeit.de/bodycont. Ignoring.
-Found invalid reference to cms:/cms/work/2008/16/Christine-Licci in channel http://xml.zeit.de/bodycont. Ignoring.
+Found invalid reference to http://xml.zeit.de/online/2200/01/Querdax in channel http://xml.zeit.de/bodycont. Ignoring.
 
 
 Insert a new object into the channel:

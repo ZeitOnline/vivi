@@ -5,6 +5,7 @@
   i18n_domain="zeit.cms">
 
   <adapter factory=".feed.FeedListRepresentation" />    
+  <adapter factory=".feed.FakeEntryRepresentation" />    
   <adapter factory=".feed.feed_preview" />    
 
   <browser:icon

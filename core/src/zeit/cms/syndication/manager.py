@@ -91,5 +91,7 @@ class SyndicationManager(object):
             workingcopy)
         result = {}
         for target in targets:
-            result[target.uniqueId] = target
+            feed = zeit.cms.syndication.interfaces.IFeed(target, None)
+            if feed is not None:
+                result[target.uniqueId] = target
         return result
