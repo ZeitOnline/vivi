@@ -3,13 +3,15 @@
 DAVResource is the class to use; it points to a location (URL) and offers
 some methods to retrieve informations about the refered to resource.
 """
-# import pdb
 import urllib
 from urlparse import urlparse, urlunparse, urljoin
 import httplib
 from pprint import pformat
 import re
-import lxml.etree as etree 
+
+import lxml.etree
+import lxml.objectify
+
 import davbase, davconnection
 from davxml import xml_from_string
 
@@ -62,7 +64,8 @@ def _mk_if_data ( url, locktoken ):
     s = '<%(url)s>(<%(locktoken)s>)' % locals()
     return s
 
-def _make_qname_tuple ( string ):
+def _make_qname_tuple (string):
+    __traceback_info__ = (string,)
     match = re.match("{(?P<uri>.+)}(?P<name>.+)", string)
     return (match.group('name'), match.group('uri'))
 
@@ -248,7 +251,7 @@ class DAVPropstat:
             if  len(prop) < 1:
                  pvalue = prop.text # .strip()
             else:
-                 pvalue = etree.tostring(prop)
+                 pvalue = lxml.etree.tostring(prop)
                  # pvalue = etree.tostring(Etree(prop))
             # pprint({'name':pkey, 'value':pvalue})
             self.properties[pkey] = pvalue
@@ -600,105 +603,7 @@ class DAVResource:
         etag = self._result.get_etag(self.path)
         return etag
 
-##     def get_src_link ( self ):
-##         """If there is a source property return the src link otherwise return None.
-##         """
-##         if self.auto_request or not self._result:
-##             self.update()
-##         result = self._result
-##         res = result.res_doc.xpathEval('//D:source/D:link/D:src')
-##         if not res:
-##             return None
-##         return res[0].get_content()
-
-##     def get_dst_link ( self ):
-##         """If there is a source property, return the dst link otherwise return None.
-##         """
-##         if self.auto_request or not self._result:
-##             self.update()
-##         result = self._result
-##         res = result.res_doc.xpathEval('//D:source/D:link/D:dst')
-##         if not res:
-##             return None
-##         return res[0].get_content()
-
-##     def set_dst_link ( self, url ):
-##         """Set the link/dst element of the source property to the given url.
-
-##         Returns a DAVResult instance as result.
-
-##         The link/src element is set to the url this resource refers to.
-##         The urls are xml escaped before they're stored.
-##         """
-##         xml_head = '<?xml version="1.0" ?>\n<propertyupdate xmlns="DAV:">\n'
-##         xml_head += '<set><prop>'
-##         xml_tail = '</prop></set></propertyupdate>'
-##         body = '<source><link><dst>' + xml_escape(url) + '</dst><src>' + xml_escape(self.url) + '</src></link></source>'
-##         xml =  xml_head + body + xml_tail
-##         res = self._proppatch(xml)
-##         return res
-
-    def set_properties ( self, pdict, locktoken=None ):
-        """Set or update the properties in pdict on this resource.
-
-        Returns a DAVResult instance as result.
-
-        The property names (keys of pdict) *have* to be tuples of (name, nsuri).
-        The property values will be xml escaped before they're stored and should be strings.
-        """
-        # generate xml body for request
-        # make xml header incl. namspace declarations
-        nsdict = _mk_nsdict(pdict.keys())
-        xml_head = u'<?xml version="1.0" ?>\n<propertyupdate xmlns="DAV:"'
-        for uri, prefix in nsdict.items():
-            xml_head += u' xmlns:%s="%s"' % (prefix, uri)
-        xml_head += u'>\n'
-        xml_head += u'<set><prop>'
-        xml_tail = u'</prop></set></propertyupdate>'
-        xset = u''
-        # create body
-        for k, v in pdict.items():
-            name, nsuri = k
-            if type(v) == type(''):
-                v = v.decode('utf-8')
-            prefix = nsdict[nsuri].decode('utf-8')
-            pn = prefix + u':' + name.decode('utf-8')
-            if not v:
-                v = u''
-##             v = v.encode('utf-8')
-            v = xml_escape(v)
-            xset += u'<%s>%s</%s>\n' % (pn, v, pn)
-        xml_body = xml_head + xset + xml_tail
-        xml_body = xml_body.encode('utf-8')
-        res = self._proppatch(xml_body, locktoken=locktoken)
-        return res
-
-    def del_properties ( self, plist, locktoken=None ):
-        """Delete the properties in plist on this resource.
-
-        Returns a DAVResult instance as result.
-
-        plist has to be a list of (name, nsuri) tuples.
-        """
-        # generate xml body for request
-        nsdict = _mk_nsdict(plist)
-        xml_head = '<?xml version="1.0" ?>\n<propertyupdate xmlns="DAV:"'
-        for uri, prefix in nsdict.items():
-            xml_head += ' xmlns:%s="%s"' % (prefix, uri)
-        xml_head += '>\n'
-        xml_head += '<remove><prop>\n'
-        xml_tail = '</prop></remove></propertyupdate>'
-        xset = ''
-        for k in plist:
-            name, nsuri = k
-            prefix = nsdict[nsuri]
-            pn = prefix + u':' + name
-            xset += '<%s />\n' % pn
-        xml_body = xml_head + xset + xml_tail
-        res = self._proppatch(xml_body, locktoken=locktoken)
-        return res
-
-    def change_properties ( self, pdict, delmark=None, locktoken=None ):
+    def change_properties( self, pdict, delmark=None, locktoken=None):
         """Set, update or delete the properties in pdict on this resource.
 
         Delete properties when the property value _is_ delmark (unless
@@ -714,36 +619,45 @@ class DAVResource:
         # make xml header incl. namspace declarations
         if not pdict:
             return None
-        nsdict = _mk_nsdict(pdict.keys())
-        xset = u''
-        xdel = u''
-        for k, v in pdict.items():
-            name, nsuri = k
-            if nsuri == 'DAV:':
+        set_properties = []
+        delete_properties = []
+
+        make_element = lambda namespace, name: (
+            getattr(lxml.objectify.E, '{%s}%s' % (namespace, name)))
+
+        for (name, namespace), value in pdict.items():
+            if namespace == 'DAV:':
                 # We are not supposed to touch these (maybe others?)
                 continue
-            prefix = nsdict[nsuri]
-            pn = prefix + u':' + name
 
-            if v is delmark: # delete
-                xdel += '<%s />\n' % pn
+            if value is delmark:  # delete
+                delete_properties.append(
+                    make_element(namespace, name)())
             else:            # set/change
                 # the values should be unicode. If they are not the we at least
                 # try to make one. This is ok for ascii stirngs and breaks on
                 # every encoded string. Just like it should.
-                v = unicode(v)
-                xset += u'<%s>%s</%s>\n' % (pn, v, pn)
+                value = unicode(value)
+                set_properties.append(
+                    make_element(namespace, name)(value))
 
-        # NOTE: xset and xdel cant't be both empty because pdict isn't
-        xml_body = u'<?xml version="1.0" ?>\n<propertyupdate xmlns="DAV:" '  + \
-                   u' '.join(['xmlns:%s="%s"' % (abb, ns) for (ns, abb) in nsdict.items()]) + \
-                   u'>\n'
-        if xset:
-            xml_body += u'<set><prop>\n' + xset + u'</prop></set>\n'
-        if xdel:
-            xml_body += u'<remove><prop>\n' + xdel + u'</prop></remove>\n'
-        xml_body += '</propertyupdate>'
-        xml_body = xml_body.encode('utf-8')
+        # NOTE: xset and xdel can't be both empty because pdict isn't.
+
+        body = make_element('DAV:', 'propertyupdate')()
+        if set_properties:
+            body.append(
+                make_element('DAV:', 'set')(
+                    make_element('DAV:', 'prop')(*set_properties)))
+        if delete_properties:
+            body.append(
+                make_element('DAV:', 'remove')(
+                    make_element('DAV:', 'prop')(*set_properties)))
+
+        lxml.objectify.deannotate(body)
+
+        xml_body = lxml.etree.tostring(body.getroottree(),
+                                       encoding='UTF-8',
+                                       xml_declaration=True)
         res = self._proppatch(xml_body, locktoken=locktoken)
         return res
 
