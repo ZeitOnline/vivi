@@ -21,7 +21,7 @@ class _DavXmlDoc:
 
     def from_string ( self, string ):
         try:
-            doc = lxml.etree.parse(StringIO(string))
+            doc = lxml.etree.fromstring(string)
         except lxml.etree.XMLSyntaxError, e:
             raise DavXmlParseError, e.error_log.filter_levels(
                 lxml.etree.ErrorLevels.FATAL)
