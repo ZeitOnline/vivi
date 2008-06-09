@@ -75,6 +75,7 @@ def xmlContentFactory(factory):
 
     return adapter
 
+
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLSource)
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
 def xml_source(context):
