@@ -13,6 +13,7 @@ zeit.cms changes
 - Es gibt jetzt die Möglichkeit den Typ von Objekten im UI zu ändern.
 - Beim Bearbeiten/Aus-/Einchecken werden Processing-Instructiongs nicht mehr
   gelöscht (bug #4258).
+- Aktion zum expliziten invalidieren des Caches eines Ordners.
 
 0.9.16 (2008-05-29)
 -------------------

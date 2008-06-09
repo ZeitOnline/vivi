@@ -273,3 +273,24 @@ the unique id:
 ...              'http://xml.zeit.de/online/2007/01/Somalia')
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
+
+
+Invalidating the cache
+======================
+
+There is a button in the UI to invalidate the cache, or in other words to
+reload. Reloading sends an IResourceInvalidatedEvent.
+
+>>> import zeit.connector.interfaces
+>>> @zope.component.adapter(
+...     zeit.connector.interfaces.IResourceInvalidatedEvent)
+... def invalid(event):
+...     print "Invalidate:", event.id
+>>> zope.component.provideHandler(invalid)
+
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> browser.getLink('Reload').click()
+Invalidate: http://xml.zeit.de/online/2007/01
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/01/@@view.html'

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri Jun  6 14:53:59 2008\n"
-"PO-Revision-Date: 2008-06-06 15:02+0100\n"
+"POT-Creation-Date: Mon Jun  9 13:25:18 2008\n"
+"PO-Revision-Date: 2008-06-09 13:25+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -715,6 +715,10 @@ msgstr "Löschen"
 #: src/zeit/cms/repository/browser/objectbrowser.pt:21
 msgid "There are no selectable objects in this folder."
 msgstr "Es gibt keine auswählbaren Objekte in diesem Ordner."
+
+#: src/zeit/cms/repository/browser/reload.py:26
+msgid "Reload folder"
+msgstr "Ordner neu laden"
 
 #: src/zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"

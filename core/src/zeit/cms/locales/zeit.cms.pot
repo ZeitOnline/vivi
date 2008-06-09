@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jun  6 14:53:59 2008\n"
+"POT-Creation-Date: Mon Jun  9 13:25:18 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -726,6 +726,10 @@ msgstr ""
 
 #: src/zeit/cms/repository/browser/objectbrowser.pt:21
 msgid "There are no selectable objects in this folder."
+msgstr ""
+
+#: src/zeit/cms/repository/browser/reload.py:26
+msgid "Reload folder"
 msgstr ""
 
 #: src/zeit/cms/repository/browser/rename-box.pt:5
