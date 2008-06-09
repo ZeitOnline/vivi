@@ -99,3 +99,31 @@ class CommonMetadataDisplayForm(CommonMetadataFormBase,
     """Display form which contains the common metadata."""
 
     for_display = True  # omit custom widget w/ js-validation
+
+
+
+class AssetBase(object):
+    """Asset form field definitions."""
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.IRelatedContent)
+
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('Assets and related'),
+            'wide-widgets full-width'),
+    )
+
+    @classmethod
+    def add_asset_interface(class_, interface):
+        class_.form_fields += zope.formlib.form.FormFields(interface)
+
+
+class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
+    """Form to edit assets."""
+
+    title = _('Edit assets')
+
+class AssetView(AssetBase, zeit.cms.browser.form.DisplayForm):
+
+    title = _('Assets')

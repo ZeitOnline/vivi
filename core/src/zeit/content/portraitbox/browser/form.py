@@ -10,6 +10,7 @@ import gocept.form.grouped
 import zeit.cms.interfaces
 import zeit.cms.browser.form
 import zeit.wysiwyg.interfaces
+import zeit.cms.content.browser.form
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.content.portraitbox.interfaces
@@ -51,3 +52,6 @@ class Display(FormBase, zeit.cms.browser.form.DisplayForm):
     title = _('View portraitbox')
     form_fields = FormBase.form_fields.omit('__name__')
 
+
+zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+    zeit.content.portraitbox.interfaces.IPortraitboxReference)

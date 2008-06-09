@@ -139,4 +139,32 @@
     sort="120"
     />
 
+  <!-- asset views -->
+  <browser:page
+    name="asset_edit.html"
+    for=".interfaces.IAssetViews"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AssetEdit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit assets"
+    />
+
+  <browser:page
+    name="asset_view.html"
+    for=".interfaces.IAssetViews"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AssetView"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for=".interfaces.IAssetViews"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="asset_view.html"
+    permission="zope.View"
+    menu="zeit-context-views"
+    title="Assets"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
 </configure>

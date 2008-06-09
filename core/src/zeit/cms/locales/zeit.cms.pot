@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jun  9 13:25:18 2008\n"
+"POT-Creation-Date: Mon Jun  9 13:54:44 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -356,20 +356,34 @@ msgstr ""
 msgid "clipboard-paste-explain"
 msgstr ""
 
+#: src/zeit/cms/content/browser/form.py:113
+msgid "Assets and related"
+msgstr ""
+
+#: src/zeit/cms/content/browser/form.py:125
+#: src/zeit/cms/content/browser/configure.zcml:143
+msgid "Edit assets"
+msgstr ""
+
+#: src/zeit/cms/content/browser/form.py:129
+#: src/zeit/cms/content/browser/configure.zcml:160
+msgid "Assets"
+msgstr ""
+
 #: src/zeit/cms/content/browser/form.py:34
 msgid "Navigation"
 msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:38
-#: src/zeit/content/infobox/browser/form.py:31
-#: src/zeit/content/portraitbox/browser/form.py:28
+#: src/zeit/content/infobox/browser/form.py:32
+#: src/zeit/content/portraitbox/browser/form.py:29
 msgid "Head"
 msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:42
 #: src/zeit/content/image/browser/form.py:30
-#: src/zeit/content/infobox/browser/form.py:27
-#: src/zeit/content/infobox/browser/form.py:47
+#: src/zeit/content/infobox/browser/form.py:28
+#: src/zeit/content/infobox/browser/form.py:48
 msgid "Texts"
 msgstr ""
 
@@ -1162,15 +1176,15 @@ msgstr ""
 msgid "Enter a URL this image should link to."
 msgstr ""
 
-#: src/zeit/content/infobox/browser/form.py:38
+#: src/zeit/content/infobox/browser/form.py:39
 msgid "Add infobox"
 msgstr ""
 
-#: src/zeit/content/infobox/browser/form.py:43
+#: src/zeit/content/infobox/browser/form.py:44
 msgid "Edit infobox"
 msgstr ""
 
-#: src/zeit/content/infobox/browser/form.py:55
+#: src/zeit/content/infobox/browser/form.py:56
 msgid "View infobox"
 msgstr ""
 
@@ -1191,11 +1205,11 @@ msgstr ""
 msgid "Add link"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:37
+#: src/zeit/content/link/browser/form.py:36
 msgid "Edit link"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:42
+#: src/zeit/content/link/browser/form.py:41
 msgid "View link metadata"
 msgstr ""
 
@@ -1203,19 +1217,19 @@ msgstr ""
 msgid "Link address"
 msgstr ""
 
-#: src/zeit/content/portraitbox/browser/form.py:31
+#: src/zeit/content/portraitbox/browser/form.py:32
 msgid "Portrait"
 msgstr ""
 
-#: src/zeit/content/portraitbox/browser/form.py:40
+#: src/zeit/content/portraitbox/browser/form.py:41
 msgid "Add portraitbox"
 msgstr ""
 
-#: src/zeit/content/portraitbox/browser/form.py:45
+#: src/zeit/content/portraitbox/browser/form.py:46
 msgid "Edit portraitbox"
 msgstr ""
 
-#: src/zeit/content/portraitbox/browser/form.py:51
+#: src/zeit/content/portraitbox/browser/form.py:52
 msgid "View portraitbox"
 msgstr ""
 

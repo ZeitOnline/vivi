@@ -8,6 +8,7 @@ import gocept.form.grouped
 
 import zeit.cms.interfaces
 import zeit.cms.browser.form
+import zeit.cms.content.browser.form
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.content.infobox.interfaces
@@ -53,3 +54,7 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
 class Display(FormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('View infobox')
+
+
+zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+    zeit.content.infobox.interfaces.IInfoboxReference)

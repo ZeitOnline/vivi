@@ -26,3 +26,7 @@ class IXMLTreeWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
 
 class IXMLSnippetWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
     """A widget for editing xml snippets."""
+
+
+class IAssetViews(zope.interface.Interface):
+    """Marker interface for object which want asset views."""

@@ -10,10 +10,10 @@ import zope.i18nmessageid
 import gocept.form.grouped
 
 import zeit.cms.browser.form
+import zeit.cms.content.browser.form
 import zeit.cms.interfaces
-import zeit.content.image.interfaces
 import zeit.content.image.image
-
+import zeit.content.image.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -72,3 +72,7 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
             # in case the (image) data is empty, do not change it.
             del data['data']
         super(EditForm, self).handle_edit_action.success(data)
+
+
+zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+    zeit.content.image.interfaces.IImages)

@@ -33,8 +33,9 @@ After adding the link is checked out.
 >>> 'There were errors' in browser.contents
 False
 
-Add an image:
+Adding related objects is done on the asset page:
 
+>>> browser.getLink('Edit assets').click()
 >>> browser.getControl('Add Images').click()
 >>> browser.getControl(name="form.images.0.").value = (
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG')

@@ -83,3 +83,7 @@ class EditEntry(zeit.cms.browser.form.EditForm):
             fields=('image', 'layout', 'title', 'html'),
             css_class='full-width wide-widgets'),
     )
+
+
+zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+    zeit.content.gallery.interfaces.IGalleryReference)
