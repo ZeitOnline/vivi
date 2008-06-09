@@ -56,32 +56,10 @@
     menu="zeit-context-views" title="Edit WYSIWYG"
     />
 
-  <browser:page
-    name="asset_edit.html"
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.AssetEdit"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit assets"
-    />
-
-  <browser:page
-    name="asset_view.html"
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.AssetView"
-    permission="zope.View"
-    />
-
-  <browser:menuItem
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    action="asset_view.html"
-    permission="zope.View"
-    menu="zeit-context-views"
-    title="Assets"
-    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
-    />
+  <!-- make the article want asset views. -->
+  <class class="..article.Article">
+    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
+  </class>
 
   <adapter factory=".article.ArticleListRepresentation" />
 

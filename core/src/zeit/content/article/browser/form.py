@@ -127,31 +127,3 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.RemainingFields(
             _('Content'),
             css_class='full-width wide-widgets'),)
-
-
-class AssetBase(object):
-    """Asset form field definitions."""
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.interfaces.IImages,
-        zeit.cms.content.interfaces.IRelatedContent,
-        zeit.content.infobox.interfaces.IInfoboxReference,
-        zeit.content.portraitbox.interfaces.IPortraitboxReference,
-        zeit.content.gallery.interfaces.IGalleryReference,
-    )
-
-    field_groups = (
-        gocept.form.grouped.RemainingFields(
-            _('Assets and related'),
-            'wide-widgets full-width'),
-    )
-
-
-class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
-    """Form to edit assets."""
-
-    title = _('Edit assets')
-
-class AssetView(AssetBase, zeit.cms.browser.form.DisplayForm):
-
-    title = _('Assets')
