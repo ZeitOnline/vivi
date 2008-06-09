@@ -167,4 +167,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
+  <subscriber handler=".form.register_asset_interface" />
+
 </configure>

@@ -5,6 +5,8 @@
 
 import zope.formlib.form
 
+import zope.app.appsetup.interfaces
+
 import gocept.form.grouped
 
 import zeit.cms.interfaces
@@ -53,5 +55,7 @@ class Display(FormBase, zeit.cms.browser.form.DisplayForm):
     form_fields = FormBase.form_fields.omit('__name__')
 
 
-zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-    zeit.content.portraitbox.interfaces.IPortraitboxReference)
+@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
+def register_asset_interface(event):
+    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+        zeit.content.portraitbox.interfaces.IPortraitboxReference)

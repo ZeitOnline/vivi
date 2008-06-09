@@ -7,8 +7,7 @@
   <adapter factory=".portraitbox.content_browse_location" />
   <adapter factory=".portraitbox.reference_browse_location" />
   <adapter factory=".portraitbox.folder_browse_location" />
-
-
+  <subscriber handler=".form.register_asset_interface" />
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"

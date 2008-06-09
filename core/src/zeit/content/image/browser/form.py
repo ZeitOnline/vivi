@@ -4,6 +4,8 @@
 
 import datetime
 
+import zope.app.appsetup.interfaces
+
 import zope.formlib.form
 import zope.i18nmessageid
 
@@ -74,5 +76,7 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
         super(EditForm, self).handle_edit_action.success(data)
 
 
-zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-    zeit.content.image.interfaces.IImages)
+@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
+def register_asset_interface(event):
+    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+        zeit.content.image.interfaces.IImages)

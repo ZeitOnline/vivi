@@ -6,6 +6,8 @@ import datetime
 
 import zope.formlib.form
 
+import zope.app.appsetup.interfaces
+
 import gocept.form.grouped
 
 import zeit.cms.browser.form
@@ -85,5 +87,7 @@ class EditEntry(zeit.cms.browser.form.EditForm):
     )
 
 
-zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-    zeit.content.gallery.interfaces.IGalleryReference)
+@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
+def register_asset_interface(event):
+    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+        zeit.content.gallery.interfaces.IGalleryReference)

@@ -4,6 +4,8 @@
 
 import zope.formlib.form
 
+import zope.app.appsetup.interfaces
+
 import gocept.form.grouped
 
 import zeit.cms.interfaces
@@ -56,5 +58,7 @@ class Display(FormBase, zeit.cms.browser.form.DisplayForm):
     title = _('View infobox')
 
 
-zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-    zeit.content.infobox.interfaces.IInfoboxReference)
+@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
+def register_asset_interface(event):
+    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
+        zeit.content.infobox.interfaces.IInfoboxReference)

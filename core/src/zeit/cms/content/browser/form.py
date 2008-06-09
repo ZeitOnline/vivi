@@ -1,9 +1,12 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Content related forms."""
 
 import copy
 
+import zope.testing.cleanup
+
+import zope.app.appsetup.interfaces
 import zope.app.form.browser.textwidgets
 
 import gocept.form.grouped
@@ -105,8 +108,7 @@ class CommonMetadataDisplayForm(CommonMetadataFormBase,
 class AssetBase(object):
     """Asset form field definitions."""
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.IRelatedContent)
+    form_fields = None
 
     field_groups = (
         gocept.form.grouped.RemainingFields(
@@ -116,7 +118,11 @@ class AssetBase(object):
 
     @classmethod
     def add_asset_interface(class_, interface):
-        class_.form_fields += zope.formlib.form.FormFields(interface)
+        new_fields = zope.formlib.form.FormFields(interface)
+        if class_.form_fields is None:
+            class_.form_fields = new_fields
+        else:
+            class_.form_fields += new_fields
 
 
 class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
@@ -127,3 +133,14 @@ class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
 class AssetView(AssetBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('Assets')
+
+
+
+def _clean_asset_interfaces():
+    AssetBase.form_fields = None
+zope.testing.cleanup.addCleanUp(_clean_asset_interfaces)
+
+
+@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
+def register_asset_interface(event):
+    AssetBase.add_asset_interface(zeit.cms.content.interfaces.IRelatedContent)

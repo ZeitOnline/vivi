@@ -5,6 +5,7 @@
 
   <adapter factory=".infobox.ListRepresentation" />
   <adapter factory=".infobox.infoboxreference_browse_location" />
+  <subscriber handler=".form.register_asset_interface" />
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
