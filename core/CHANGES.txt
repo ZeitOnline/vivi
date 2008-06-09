@@ -14,6 +14,7 @@ zeit.cms changes
 - Beim Bearbeiten/Aus-/Einchecken werden Processing-Instructiongs nicht mehr
   gelöscht (bug #4258).
 - Aktion zum expliziten invalidieren des Caches eines Ordners.
+- Link-Objekt wird nach dem Anlegen auch automatisch ausgecheckt (bug #4254).
 
 0.9.16 (2008-05-29)
 -------------------

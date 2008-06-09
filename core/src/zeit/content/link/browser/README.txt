@@ -28,15 +28,10 @@ Now we're looking at the add form. Fill in some data:
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 
-After adding the link is *not* checked out, because there is nothing more to
-edit:
+After adding the link is checked out.
 
->>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/gocept.link/@@view.html'
-
-We need to add an image, so check out the link:
-
->>> browser.getLink('Checkout').click()
+>>> 'There were errors' in browser.contents
+False
 
 Add an image:
 
