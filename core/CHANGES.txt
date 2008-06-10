@@ -4,6 +4,8 @@ zeit.cms changes
 0.9.18 (unreleased)
 -------------------
 
+- Rekursives veröffentlichen und zurückziehen.
+
 0.9.17 (2008-06-10)
 -------------------
 

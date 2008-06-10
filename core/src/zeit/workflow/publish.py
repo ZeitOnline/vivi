@@ -1,6 +1,6 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Publish and retract actions."""
 
 import datetime
 import logging
@@ -110,6 +110,21 @@ class PublishRetractTask(object):
             return obj
         return manager.checkin()
 
+    def recurse(self, method, obj):
+        """Apply method recursively on obj."""
+        stack = [obj]
+        result_obj = None
+        while stack:
+            current_obj = stack.pop(0)
+            logger.debug('%s %s' % (method, current_obj.uniqueId))
+            new_obj = method(current_obj)
+            if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
+                stack.extend(new_obj.values())
+            if result_obj is None:
+                result_obj = new_obj
+
+        return result_obj
+
     @staticmethod
     def login(principal):
         interaction = zope.security.management.getInteraction()
@@ -143,21 +158,6 @@ class PublishTask(PublishRetractTask):
         # XXX actually publish
         self.recurse(self.after_publish, obj)
 
-    def recurse(self, method, obj):
-        """Apply method recursively on obj."""
-        stack = [obj]
-        result_obj = None
-        while stack:
-            current_obj = stack.pop(0)
-            logger.info('%s %s' % (method, current_obj.uniqueId))
-            new_obj = method(current_obj)
-            if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
-                stack.extend(new_obj.values())
-            if result_obj is None:
-                result_obj = new_obj
-
-        return result_obj
-
     def before_publish(self, obj):
         """Do everything necessary before the actual publish."""
 
@@ -166,15 +166,18 @@ class PublishTask(PublishRetractTask):
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
-        now = datetime.datetime.now(pytz.UTC)
+        # ARGH. This is evil. We need to put the publish time a few seconds
+        # into the future to be *after* the cycle call below. During the cycle
+        # the object will be most likely changed. It therefore would have a
+        # modification after the publication and would be shown as stale in the
+        # CMS.
+        now = datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=60)
         info.date_last_published = now
         if not info.date_first_released:
             info.date_first_released = now
 
         new_obj = self.cycle(obj)
-        if new_obj is not None:
-            obj = new_obj
-        return obj
+        return new_obj
 
     def after_publish(self, obj):
         self.log.log(obj, _('Published'))
@@ -191,17 +194,25 @@ class RetractTask(PublishRetractTask):
             logger.warning(
                 "Retracting object %s which is not published." % obj.uniqueId)
 
+
+        obj = self.recurse(self.before_retract, obj)
+        # XXX actually retract
+        self.recurse(self.after_retract, obj)
+
+    def before_retract(self, obj):
+        """Do things before the actual retract."""
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(obj))
-
-        # XXX retract
-
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
         self.log.log(obj, _('Retracted'))
         new_obj = self.cycle(obj)
-        if new_obj is not None:
-            obj = new_obj
+        return new_obj
+
+    def after_retract(self, obj):
+        """Do things after retract."""
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj))
+        return obj
 
     @property
     def repository(self):

@@ -298,7 +298,28 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
      Published
 
 
+Retracting is also possible recursivly:
 
+>>> publish.retract()
+>>> tasks.process()
+>>> workflow.published
+False
+
+Make sure the subobjects are also retracted:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(
+...     container['eta-zapatero']).published
+False
+
+
+This is also logged:
+
+>>> result = log.get_log(container['eta-zapatero'])
+>>> print_log(result)
+http://xml.zeit.de/online/2007/01/eta-zapatero
+     Published
+http://xml.zeit.de/online/2007/01/eta-zapatero
+     Retracted
 
 
 [#cleanup]_
