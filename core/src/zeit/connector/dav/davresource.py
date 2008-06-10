@@ -6,11 +6,10 @@ some methods to retrieve informations about the refered to resource.
 import urllib
 from urlparse import urlparse, urlunparse, urljoin
 import httplib
-from pprint import pformat
+import pprint
 import re
 
 import lxml.etree
-import lxml.objectify
 
 import davbase, davconnection
 from davxml import xml_from_string
@@ -31,66 +30,20 @@ except NameError:
 _DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
 _DEFAULT_OWNER2 = u'<DAV:href>pydav-client-2</DAV:href>'
 
-# They stole print() here now.
-# See similar code (and rant) in connector/connector.py
-import sys
-def holler(txt):
-    sys.__stdout__.write(txt)
 
-###
-def xml_escape( s ):
-    """Escape (quote) special chars for use with xml.
-    """
-    s = s.replace("&", "&amp;")
-    s = s.replace('"', "&quot;")
-    s = s.replace("<", "&lt;")
-    return s.replace(">", "&gt;",)
-#
-
-#:note: used in set_properties and del_properties,
-# most likely of no use soon ;-)
-def _mk_nsdict ( names ):
-    preflist = list('ABCDEFGHIJKLMOPQRSTUVWXYZ')
-    nsdict = {}
-    for n in names:
-        nn, ns = n
-        if not nsdict.has_key(ns):
-            nsdict[ns] = preflist[0]
-            preflist = preflist[1:]
-    return nsdict
 
 #:note: Used to generate an 'If' header
 def _mk_if_data ( url, locktoken ):
     s = '<%(url)s>(<%(locktoken)s>)' % locals()
     return s
 
-def _make_qname_tuple (string):
+_qname_pattern = re.compile("{(?P<uri>.+)}(?P<name>.+)")
+def _make_qname_tuple(string, pattern=_qname_pattern):
     __traceback_info__ = (string,)
-    match = re.match("{(?P<uri>.+)}(?P<name>.+)", string)
+    match = pattern.match(string)
     return (match.group('name'), match.group('uri'))
 
 
-#:old:
-#:fixme:: this is _not_ namespace aware and hence
-# should be replaced ...
-def _find_child ( node, name ):
-##     chlds = node.get_children()
-# Hollaender! "childs" tzk, tzk, tzk ....
-    chlds = node.children
-    ret = []
-    if type(chlds) != type([]):
-        # XXX introduced this with Py2.1 support
-	while chlds:
-	    if chlds.get_name() == name:
-                ret.append(chlds)
-	    chlds = chlds.next
-	return ret
-    for n in chlds:
-        if n.get_name() == name:
-            ret.append(n)
-    return ret
-
-#:new:
 #:fixme: refactor/rename: this is really _find_dav_children
 #:note:  should we only look for direct children?
 def _find_child ( node, name ):
@@ -126,7 +79,8 @@ class DAVNotConnectedError ( DAVError ):
     """Exception raised if there is no connection to the server.
     """
     pass
- 
+
+
 class DAVLockFailedError ( DAVError ):
     """Exception raised if an attempt to lock a resource failed.
     """
@@ -221,7 +175,7 @@ class DAVPropstat:
         self.properties = {}
         self.locking_info = {}
         self.description = ''
-        self._parse_ps(doc, ps_node)     
+        self._parse_ps(doc, ps_node)
         return
 
     #:new:
@@ -298,8 +252,9 @@ class DAVPropstat:
 
     def __repr__ ( self ):
         return "DAVPropstat: Status: %r %r %r\n" % (self.status, self.reason, self.description) + \
-               "  Properties:" + pformat(self.properties, 2) + \
-               "\n  Locking info: " + pformat(self.locking_info, 2)
+               "  Properties:" + pprint.pformat(self.properties, 2) + \
+               "\n  Locking info: " + pprint.pformat(self.locking_info, 2)
+
 
 class DAVResponse:
     """FIXME: document
@@ -330,7 +285,7 @@ class DAVResponse:
             ps = DAVPropstat(doc, node)
             self.propstats.append(ps)
         return
-    
+
     def has_errors ( self ):
         s = self.status
         if s is not None and s >= 300:
@@ -351,7 +306,6 @@ class DAVResponse:
         psl = [ ps.properties for ps in self.propstats if ps.status < 300 ]
         for p in psl:
             ret.update(p)
-#        OUT.debug('get_all_properties')
         return ret
 
     def get_locking_info ( self ):
@@ -364,6 +318,7 @@ class DAVResponse:
     def __repr__ ( self ):
         return "  DAVResponse for %s: %r %r\n  " % (self.url, self.status, self.reason) + \
         "\n  ".join([p.__repr__() for p in self.propstats])
+
 
 class DAVResult:
 
@@ -622,7 +577,7 @@ class DAVResource:
         delete_properties = []
 
         make_element = lambda namespace, name: (
-            getattr(lxml.objectify.E, '{%s}%s' % (namespace, name)))
+            lxml.etree.Element('{%s}%s' % (namespace, name)))
 
         for (name, namespace), value in pdict.items():
             if namespace == 'DAV:':
@@ -631,29 +586,31 @@ class DAVResource:
 
             if value is delmark:  # delete
                 delete_properties.append(
-                    make_element(namespace, name)())
+                    make_element(namespace, name))
             else:            # set/change
                 # the values should be unicode. If they are not the we at least
                 # try to make one. This is ok for ascii stirngs and breaks on
                 # every encoded string. Just like it should.
                 value = unicode(value)
-                set_properties.append(
-                    make_element(namespace, name)(value))
+                node = make_element(namespace, name)
+                node.text = value
+                set_properties.append(node)
 
         # NOTE: set_properties and delete_properties can't be both empty
         # because pdict isn't.
 
-        body = make_element('DAV:', 'propertyupdate')()
-        if set_properties:
-            body.append(
-                make_element('DAV:', 'set')(
-                    make_element('DAV:', 'prop')(*set_properties)))
-        if delete_properties:
-            body.append(
-                make_element('DAV:', 'remove')(
-                    make_element('DAV:', 'prop')(*set_properties)))
+        body = make_element('DAV:', 'propertyupdate')
+        def _append_change(name, nodes):
+            if not nodes:
+                return
+            change_node = lxml.etree.Element(name)
+            prop_node = lxml.etree.Element('{DAV:}prop')
+            change_node.append(prop_node)
+            prop_node.extend(nodes)
+            body.append(change_node)
 
-        lxml.objectify.deannotate(body)
+        _append_change('{DAV:}set', set_properties)
+        _append_change('{DAV:}remove', delete_properties)
 
         xml_body = lxml.etree.tostring(body.getroottree(),
                                        encoding='UTF-8',
@@ -798,26 +755,21 @@ class DAVResource:
                 lt =  '<' + self.locktoken + '>'
             hdrs['Lock-Token'] = self.locktoken
             hdrs['If'] = '<%s>(%s)' % (self.url, lt)
-        #:fixme: Don't use string concatenation to build XML     
-        xml = '<?xml version="1.0" encoding="utf-8"?>\n'
-        xml += '<propfind xmlns="DAV:"><allprop/></propfind>\n'
+        xml = lxml.etree.Element('{DAV:}propfind')
+        xml.append(lxml.etree.Element('{DAV:}allprop'))
+        xmlstr = lxml.etree.tostring(xml, encoding='UTF-8',
+                                     xml_declaration=True)
         try:
-            self._conn._con._http_vsn_str = 'HTTP/1.0'
-            self._conn._con._http_vsn = 10
-            try:
-                response = self._conn.propfind(self.url, body=xml,
-                                               depth=depth, extra_hdrs=hdrs)
-            except davbase.RedirectError, err:
-                new_url = err.args[0]
-                self._set_url(new_url)
-                # re-issue request
-                response = self._conn.propfind(self.url, body=xml,
-                                               depth=depth, extra_hdrs=hdrs)
-                pass
-            davres = DAVResult(response)
-        finally:
-            self._conn._con._http_vsn_str = 'HTTP/1.1'
-            self._conn._con._http_vsn = 11
+            response = self._conn.propfind(self.url, body=xmlstr,
+                                           depth=depth, extra_hdrs=hdrs)
+        except davbase.RedirectError, err:
+            new_url = err.args[0]
+            self._set_url(new_url)
+            # re-issue request
+            response = self._conn.propfind(self.url, body=xmlstr,
+                                           depth=depth, extra_hdrs=hdrs)
+            pass
+        davres = DAVResult(response)
         if davres.status >= 300: # or davres.status in (404,200):
             raise DAVError(davres.status, davres.reason, davres)
         return davres
@@ -838,14 +790,8 @@ class DAVResource:
                 lt =  '<' + mytoken + '>'
             hdrs['Lock-Token'] = mytoken
             hdrs['If'] = '<%s>(%s)' % (self.url, lt)
-        try:
-            self._conn._con._http_vsn_str = 'HTTP/1.0'
-            self._conn._con._http_vsn = 10
-            response = self._conn.proppatch(self.url, body=body, extra_hdrs=hdrs)
-            davres = DAVResult(response)
-        finally:
-            self._conn._con._http_vsn_str = 'HTTP/1.1'
-            self._conn._con._http_vsn = 11
+        response = self._conn.proppatch(self.url, body=body, extra_hdrs=hdrs)
+        davres = DAVResult(response)
         if davres.status in (200,404) or davres.status >= 300:
             raise DAVError, (davres.status, davres.reason, davres)
         return davres

@@ -7,6 +7,7 @@ CHANGES
 - General code cleanup
 - Explicitly reading all data from response instead of brutally closing the
   connection.
+- Use lxml to generate xml instead of string-concatenation in most places.
 
 0.19 (2008-05-23)
 -----------------

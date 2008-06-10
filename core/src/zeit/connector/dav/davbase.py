@@ -6,10 +6,11 @@ import sys
 import urllib
 import urlparse
 
+import lxml.etree
+
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
 
-XML_DOC_HEADER = '<?xml version="1.0" encoding="utf-8"?>'
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 
 
@@ -105,7 +106,7 @@ class HTTPBasicAuthCon:
             self._resp = None
         self._con.close()
         return
-#
+
 
 class DAVBase:
 
@@ -196,16 +197,21 @@ class DAVBase:
             headers['Timeout'] = 'Infinite'
         else:
             headers['Timeout'] = 'Second-%d' % timeout
-        #:fixme: Here we should use ElementTree to construct a
-        # proper XML request body
-        body = [XML_DOC_HEADER,
-               '<DAV:lockinfo xmlns:DAV="DAV:">',
-               '<DAV:lockscope><DAV:%s/></DAV:lockscope>' % scope,
-               '<DAV:locktype><DAV:%s/></DAV:locktype>' % type]
+        body = lxml.etree.Element('{DAV:}lockinfo')
+        node = lxml.etree.Element('{DAV:}lockscope')
+        node.append(lxml.etree.Element('{DAV:}%s' % scope))
+        body.append(node)
+        node = lxml.etree.Element('{DAV:}locktype')
+        node.append(lxml.etree.Element('{DAV:}%s' % type))
+        body.append(node)
         if owner:
-            body.append('<DAV:owner>%s</DAV:owner>\n' % owner)
-        body.append('</DAV:lockinfo>')
-        return self._request('LOCK', url, ''.join(body), extra_hdrs=headers)
+            node = lxml.etree.Element('{DAV:}owner')
+            node.text = owner
+            body.append(node)
+        xmlstr = lxml.etree.tostring(body,
+                                     encoding='UTF-8',
+                                     xml_declaration=True)
+        return self._request('LOCK', url, xmlstr, extra_hdrs=headers)
 
     def unlock(self, url, locktoken, extra_hdrs=None):
         if extra_hdrs is None:
