@@ -150,11 +150,13 @@ We did quite some stuff now. Verify the object log:
 
 >>> import zeit.objectlog.interfaces
 >>> log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
->>> result = list(log.get_log(somalia))
+>>> result = log.get_log(somalia)
 >>> import zope.i18n
->>> for e in result:
-...     print e.get_object().uniqueId
-...     print '    ', zope.i18n.translate(e.message)
+>>> def print_log(result):
+...     for e in result:
+...         print e.get_object().uniqueId
+...         print '    ', zope.i18n.translate(e.message)
+>>> print_log(result)
 http://xml.zeit.de/online/2007/01/Somalia
      Edited: yes
 http://xml.zeit.de/online/2007/01/Somalia
@@ -256,7 +258,50 @@ When we de-publish the object, the status-flag is removed again:
 </testtype>
 
 
-That was the workflow[#cleanup]_.
+Recursive publish
+-----------------
+
+It is possible to publish entire folder structures. This is simply done by
+publishing a container.
+
+>>> container = repository['online']['2007']['01']
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
+>>> publish = zeit.cms.workflow.interfaces.IPublish(container)
+>>> bool(workflow.published)
+False
+
+Let's have a look a another object. It is not published:
+
+>>> not not zeit.cms.workflow.interfaces.IPublishInfo(
+...     container['eta-zapatero']).published
+False
+
+Now publish the folder:
+
+>>> workflow.urgent = True
+>>> publish.publish()
+>>> tasks.process()
+>>> workflow.published
+True
+
+Now also all subitems are published:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(
+...     container['eta-zapatero']).published
+True
+
+This is also logged:
+
+>>> result = log.get_log(container['eta-zapatero'])
+>>> print_log(result)
+http://xml.zeit.de/online/2007/01/eta-zapatero
+     Published
+
+
+
+
+
+[#cleanup]_
 
 .. [#functionaltest] We need to set the site since we're a functional test:
 

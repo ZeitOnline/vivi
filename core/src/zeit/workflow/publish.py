@@ -100,14 +100,14 @@ class PublishRetractTask(object):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
         if not manager.canCheckout:
             logger.error("Could not checkout %s" % obj.uniqueId)
-            return
+            return obj
         checked_out = manager.checkout()
 
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         if not manager.canCheckin:
             logger.error("Could not checkin %s" % obj.uniqeId)
             del checked_out.__parent__[checked_out.__name__]
-            return
+            return obj
         return manager.checkin()
 
     @staticmethod
@@ -127,21 +127,44 @@ class PublishRetractTask(object):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
+
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
     def run(self, obj, info):
         logger.info('Publishing %s' % obj.uniqueId)
-
         if not info.can_publish():
             logger.error("Could not publish %s" % obj.uniqueId)
             self.log.log(
                 obj, _("Could not publish because conditions not satisifed."))
             return
 
+        obj = self.recurse(self.before_publish, obj)
+        # XXX actually publish
+        self.recurse(self.after_publish, obj)
+
+    def recurse(self, method, obj):
+        """Apply method recursively on obj."""
+        stack = [obj]
+        result_obj = None
+        while stack:
+            current_obj = stack.pop(0)
+            logger.info('%s %s' % (method, current_obj.uniqueId))
+            new_obj = method(current_obj)
+            if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
+                stack.extend(new_obj.values())
+            if result_obj is None:
+                result_obj = new_obj
+
+        return result_obj
+
+    def before_publish(self, obj):
+        """Do everything necessary before the actual publish."""
+
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(obj))
 
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
         now = datetime.datetime.now(pytz.UTC)
         info.date_last_published = now
@@ -151,10 +174,12 @@ class PublishTask(PublishRetractTask):
         new_obj = self.cycle(obj)
         if new_obj is not None:
             obj = new_obj
+        return obj
 
-        # XXX actually publish
+    def after_publish(self, obj):
         self.log.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj))
+        return obj
 
 
 class RetractTask(PublishRetractTask):
