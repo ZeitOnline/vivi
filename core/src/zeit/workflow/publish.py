@@ -4,6 +4,8 @@
 
 import datetime
 import logging
+import os.path
+import subprocess
 import pytz
 
 import zope.component
@@ -12,6 +14,7 @@ import zope.interface
 import zope.security.management
 
 import zope.app.security.interfaces
+import zope.app.appsetup.product
 
 import lovely.remotetask.interfaces
 
@@ -110,14 +113,14 @@ class PublishRetractTask(object):
             return obj
         return manager.checkin()
 
-    def recurse(self, method, obj):
+    def recurse(self, method, obj, *args):
         """Apply method recursively on obj."""
         stack = [obj]
         result_obj = None
         while stack:
             current_obj = stack.pop(0)
             logger.debug('%s %s' % (method, current_obj.uniqueId))
-            new_obj = method(current_obj)
+            new_obj = method(current_obj, *args)
             if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
                 stack.extend(new_obj.values())
             if result_obj is None:
@@ -155,7 +158,7 @@ class PublishTask(PublishRetractTask):
             return
 
         obj = self.recurse(self.before_publish, obj)
-        # XXX actually publish
+        self.call_publish_script(obj)
         self.recurse(self.after_publish, obj)
 
     def before_publish(self, obj):
@@ -179,9 +182,41 @@ class PublishTask(PublishRetractTask):
         new_obj = self.cycle(obj)
         return new_obj
 
+    def call_publish_script(self, obj):
+        """Actually do the publication."""
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        publish_script = config['publish-script']
+        path_prefix = config['path-prefix']
+
+        unique_ids = []
+        self.recurse(self.get_unique_id, obj, unique_ids)
+
+        # The publish script doesn't want URLs but local paths. Munge them.
+        unique_ids = [
+            os.path.join(
+                path_prefix,
+                uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
+            for uid in unique_ids]
+
+        # Call the script. This does the actual publish.
+        proc = subprocess.Popen(
+            [publish_script], bufsize=-1,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = proc.communicate('\n'.join(unique_ids))
+        if stdout:
+            logger.info("Publish script output:\n%s" % stdout)
+        if stderr:
+            logger.error("Publish script error:\n%s" % stderr)
+
     def after_publish(self, obj):
         self.log.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj))
+        return obj
+
+    def get_unique_id(self, obj, unique_ids):
+        unique_ids.append(obj.uniqueId)
         return obj
 
 

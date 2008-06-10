@@ -322,6 +322,76 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
      Retracted
 
 
+Publish script
+--------------
+
+The actual publishing happens by external the publish script[#loghandler]_.
+Publish the folder again and verify the log:
+
+>>> publish.publish()
+>>> tasks.process()
+>>> print logfile.getvalue()
+Publishing http://xml.zeit.de/online/2007/01
+Could not checkout http://xml.zeit.de/online/2007/01
+Publish script output:
+Publishing test script
+work/online/2007/01
+work/online/2007/01/4schanzentournee-abgesang
+work/online/2007/01/Arbeitsmarktzahlen
+work/online/2007/01/EU-Beitritt-rumaenien-bulgarien
+work/online/2007/01/Flugsicherheit
+work/online/2007/01/Ford-Beerdigung
+work/online/2007/01/Gesundheitsreform-Die
+work/online/2007/01/Guantanamo
+work/online/2007/01/Lateinamerika-Jahresrueckblick
+work/online/2007/01/Mehrwertsteuer-Jobs
+work/online/2007/01/Merkel-Ansprache
+work/online/2007/01/Querdax
+work/online/2007/01/Querdax-05-01-07
+work/online/2007/01/RUND-Olympique-Marseille
+work/online/2007/01/Rosia-Montana
+work/online/2007/01/Saarland
+work/online/2007/01/Saddam-Anschlaege
+work/online/2007/01/Saddam-Kommentar
+work/online/2007/01/Saddam-Prozess
+work/online/2007/01/Saddam-Verbuendete
+work/online/2007/01/Schrempp
+work/online/2007/01/Somalia
+work/online/2007/01/Somalia-Grill
+work/online/2007/01/Somalia-Treffen
+work/online/2007/01/Spitzenkandidat-Stoiber
+work/online/2007/01/Stern-Umfrage-Bayern
+work/online/2007/01/bildergalerie-mehrwertsteuer
+work/online/2007/01/bildergalerie-mehrwertsteuer-erhoehung
+work/online/2007/01/bildergalerie-spiegel
+work/online/2007/01/elterngeld-schlieben
+work/online/2007/01/eta-zapatero
+work/online/2007/01/eta-zapatero-kommentar
+work/online/2007/01/eu-praesidentschaft-gustavsson
+work/online/2007/01/finanztest-online-banking
+work/online/2007/01/finanztest-online-banking-tipps
+work/online/2007/01/flugzeugabsturz-indonesien
+work/online/2007/01/index
+work/online/2007/01/internationale-presseschau-japan-irak-klima
+work/online/2007/01/lebenslagen-01
+work/online/2007/01/mein-leben-mit-musik-52
+work/online/2007/01/rauchen-verbessert-die-welt
+work/online/2007/01/rund-Sprachforschung
+work/online/2007/01/saddam-exekution
+work/online/2007/01/saddam-grab
+work/online/2007/01/saddam-hinrichtung-2006
+work/online/2007/01/saddam-luttwak
+work/online/2007/01/saddam-nachruf
+work/online/2007/01/somalia-donnerstag
+work/online/2007/01/somalia-kismayu
+work/online/2007/01/studiVZ
+work/online/2007/01/teddy-kollek-nachruf
+work/online/2007/01/terror-abschuss-schaeuble
+work/online/2007/01/thailand-anschlaege
+work/online/2007/01/weissrussland-russland-gas
+done.
+
+
 [#cleanup]_
 
 .. [#functionaltest] We need to set the site since we're a functional test:
@@ -347,7 +417,8 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 
     >>> zope.security.management.endInteraction()
     >>> zope.app.component.hooks.setSite(old_site)
-
+    >>> logging.root.removeHandler(log_handler)
+    >>> logging.root.setLevel(old_log_level)
 
 .. [#needsinteraction] For publising we need an interacion, i.e. a request
 
@@ -358,3 +429,14 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
     >>> request.setPrincipal(principal)
     >>> import zope.security.management
     >>> zope.security.management.newInteraction(request)
+
+.. [#loghandler] We need a log handler
+
+    >>> import logging
+    >>> import StringIO
+    >>> logfile = StringIO.StringIO()
+    >>> log_handler = logging.StreamHandler(logfile)
+    >>> logging.root.addHandler(log_handler)
+    >>> old_log_level = logging.root.level
+    >>> logging.root.setLevel(logging.INFO)
+
