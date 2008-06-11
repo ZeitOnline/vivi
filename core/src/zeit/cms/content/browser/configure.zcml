@@ -135,7 +135,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.RenameContent"
     lightbox="@@typechange-box"
-    icon=""
+    icon="/@@/zeit.cms/icons/workflow.png"
     sort="120"
     />
 
