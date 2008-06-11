@@ -7,7 +7,7 @@
       i18n:translate="">
       The action you were trying to do could not be finished because the 
       resource
-      <span class="unique-id" tal:content="context/uniqueId"
+      <span class="unique-id" tal:content="python:context.uniqueId"
         i18n:name="resource-id">http://xml.zeit.de/asdf</span> was locked.
     </div>
     <pre tal:content="context"></pre>

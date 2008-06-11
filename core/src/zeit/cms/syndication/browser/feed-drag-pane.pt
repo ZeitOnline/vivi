@@ -4,7 +4,7 @@
     A feed.
   </div>
   <div class="UniqueId"
-    tal:content="context/uniqueId">
+    tal:content="python:context.uniqueId">
   </div>
 </tal:block>
 

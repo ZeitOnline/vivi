@@ -2,7 +2,7 @@
 
   <h1 i18n:translate="">
     Change type of
-    <span tal:replace="context/uniqueId"
+    <span tal:replace="python:context.uniqueId"
       i18n:name="object-unique-id"/>
   </h1>
 

@@ -6,7 +6,7 @@
     tal:content="view/metadata/title">
   </div>
   <div class="UniqueId"
-    tal:content="context/uniqueId">
+    tal:content="python:context.uniqueId">
   </div>
 </tal:block>
 
