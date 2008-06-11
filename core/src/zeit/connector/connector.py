@@ -390,6 +390,7 @@ class Connector(object):
             properties,
             delmark=zeit.connector.interfaces.DeleteProperty,
             locktoken=locktoken)
+        # XXX could we just update the cache ourselves?
         self._invalidate_cache(id)
 
     def lock(self, id, principal, until):
