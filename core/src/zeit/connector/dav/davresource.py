@@ -14,18 +14,6 @@ import lxml.etree
 import davbase, davconnection
 from davxml import xml_from_string
 
-# from debug import OUT
-# OUT.color_off()
-
-### What on earth is this supposed to do?
-try:
-    False
-    True
-except NameError:
-    True = 1
-    False = not True
-    pass
-
 
 _DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
 _DEFAULT_OWNER2 = u'<DAV:href>pydav-client-2</DAV:href>'
