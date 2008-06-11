@@ -5,6 +5,9 @@ CHANGES
 -----------------
 
 - Make sure 'NoneType' object has no attribute 'group' doesn't occur anymore.
+- Make sure XML-like content can be put in a property by prefixing it. This is
+  a temporary fix until it is decided what the DAV server will do in this case.
+
 
 0.20 (2008-06-10)
 -----------------
