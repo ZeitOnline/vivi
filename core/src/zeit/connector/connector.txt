@@ -116,6 +116,7 @@ To unlock it, you would have to supply the locktoken. The library takes
 care of that, though:
 
 >>> connector.unlock('http://xml.zeit.de/testing/conn1')
+u'opaquelocktoken:...'
 >>> connector.locked('http://xml.zeit.de/testing/conn1')
 (None, None, False)
 >>> lockinfo.get('http://xml.zeit.de/testing/conn1') is None
@@ -130,6 +131,7 @@ To specify an infinte lock, timeout can be None:
 (u'frodo', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
  True)
 >>> connector.unlock('http://xml.zeit.de/testing/conn1')
+u'opaquelocktoken:...'
 
 Remove the `conn1` after user:
 
@@ -202,6 +204,7 @@ Resources can be overwritten by just assigning them again:
 Unlock the resource again:
 
 >>> connector.unlock('http://xml.zeit.de/testing/conn3')
+u'opaquelocktoken:...'
 
 Delete the resource:
 

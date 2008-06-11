@@ -163,8 +163,9 @@ class Connector(object):
         #        "%s is already locked." % id)
         self._locked[id] = (principal, until, True)
 
-    def unlock(self, id):
+    def unlock(self, id, locktoken=None):
         del self._locked[id]
+        return locktoken
 
     def locked(self, id):
         return self._locked.get(id, (None, None, None))

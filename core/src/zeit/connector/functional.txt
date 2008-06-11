@@ -82,6 +82,55 @@ anyway:
 
 
 
+
+Transaction integration
+=======================
+
+Locking
+-------
+
+When an object is locked and the transaction is rolled back, the object will be
+automatically unlocked.
+
+>>> import StringIO
+>>> id = 'http://xml.zeit.de/testing/lockrollback'
+>>> res = zeit.connector.resource.Resource(
+...     id, 'lockrollback', 'text',
+...     StringIO.StringIO('Pop goes the weasel!'),
+...     contentType='text/plain')
+>>> connector.add(res)
+>>> connector.lock(res.id, 'frodo', until=None)
+'opaquelocktoken:...'
+>>> connector.locked(res.id)
+(u'frodo', datetime.datetime(...), True)
+
+Now rollback:
+
+>>> import transaction
+>>> transaction.abort()
+
+The resource is no longer locked:
+
+>>> connector.locked(res.id)
+(None, None, False)
+
+
+Make sure the resource stays locked on commit:
+
+>>> connector.lock(res.id, 'frodo', until=None)
+'opaquelocktoken:...'
+>>> transaction.commit()
+>>> connector._invalidate_cache(res.id)
+>>> connector.locked(res.id)
+(u'frodo', datetime.datetime(...), True)
+
+Remove the resource to clean up:
+
+>>> del connector[res.id]
+
+
+
+
 After tests we clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)

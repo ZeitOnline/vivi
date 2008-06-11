@@ -148,33 +148,44 @@ class Connector(object):
     """
 
     zope.interface.implements(zeit.connector.interfaces.IConnector)
-    connections = threading.local()
 
     def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
         self._roots = roots # "extra" roots, a dict. ATM only xroots['search']
         self._conns = {} # conn cache for above. Hrrgrr. WARNING: indexed by netloc!
         self._prefix = prefix
+        self.connections = threading.local()
 
-    def _conn(self, root='default'):
+    def get_connection(self, root='default'):
         """Try to get a cached connection suitable for url"""
+        assert root == 'default'  # XXX disabled search for the Moment.
         try:
             connection = getattr(self.connections, root)
         except AttributeError:
-            logger.debug('New connection')
-            # FIXME: someone will have to invalidate the connections at some point.
-            url = self._roots[root]
-            (scheme, netloc) = urlparse.urlsplit(url)[0:2]
-            snetloc = "%s://%s" % (scheme, netloc)
-            try: # grmblmmblpython
-                host, port = netloc.split(':', 1)
-                port = int(port)
-            except ValueError:
-                host, port = netloc, None
-            # FIXME: Argh. DAVConnection should take schema as well!!!
-            connection = DAVConnection(host, port)
+            connection = self.create_connection(root)
             setattr(self.connections, root, connection)
         return connection
+
+    def create_connection(self, root):
+        """Create a new connection."""
+        logger.debug('New connection')
+        url = self._roots[root]
+        (scheme, netloc) = urlparse.urlsplit(url)[0:2]
+        snetloc = "%s://%s" % (scheme, netloc)
+        try: # grmblmmblpython
+            host, port = netloc.split(':', 1)
+            port = int(port)
+        except ValueError:
+            host, port = netloc, None
+        # FIXME: Argh. DAVConnection should take schema as well!!!
+        return DAVConnection(host, port)
+
+    def disconnect(self):
+        connections = self.connections
+        try:
+            del connections.default
+        except AttributeError:
+            pass
 
     def listCollection(self, id):
         """List the filenames of a collection identified by <id> (see[8]). """
@@ -356,7 +367,7 @@ class Connector(object):
             if new_id.endswith('/'):
                 new_id = new_id[:len(new_id)-1]
 
-        conn = self._conn('default')
+        conn = self.get_connection('default')
 
         if old_id.endswith('/'):
             # We cannot copy folders directly
@@ -400,7 +411,7 @@ class Connector(object):
         try:
             # NOTE: _timeout() returns None for timeouts too long. This blends
             #       with DAVConnection, which converts None to 'Infinite'.
-            token = self._conn().do_lock(url,
+            token = self.get_connection().do_lock(url,
                                          owner=principal,
                                          depth=0,
                                          timeout=_abs2timeout(until))
@@ -420,10 +431,11 @@ class Connector(object):
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
         if locktoken:
             try:
-                self._conn().do_unlock(url, locktoken)
+                self.get_connection().do_unlock(url, locktoken)
             finally:
                 self._put_my_lockinfo(id, None)
         self._invalidate_cache(id)
+        return locktoken
 
     def locked(self, id):
         id = self._get_cannonical_id(id)
@@ -464,7 +476,7 @@ class Connector(object):
         # Do we need a different conn for SEARCH?
         # NOTE: this code may become obsolete.
         #       We need it now to use a different netloc for different xconns.
-        conn = self._conn('search')
+        conn = self.get_connection('search')
 
         davres = davresource.DAVResult(
                conn.search(self._roots.get('search', self._roots['default']),
@@ -589,7 +601,7 @@ class Connector(object):
         # parent is assumed to exist.
         if not id.endswith('/'):
             id += '/'
-        conn = self._conn()
+        conn = self.get_connection()
         url = self._id2loc(id)
         davres = davresource.DAVResult(conn.mkcol(url))
         if davres.has_errors():
@@ -601,7 +613,7 @@ class Connector(object):
            (Actually return the ETag, but don't rely on that yet)
         """
         url = self._id2loc(id)
-        hresp = DAVResource(url, conn=self._conn()).head()
+        hresp = DAVResource(url, conn=self.get_connection()).head()
         if not hresp:
             return None # FIXME throw exception?
         hresp.read()
@@ -623,11 +635,11 @@ class Connector(object):
         # be collections. This ain't strictly right
         wantcoll = (ensure == 'collection' or url.endswith('/'))
         if wantcoll:
-            res = DAVCollection(url, conn = self._conn()) # FIXME auto_request?
+            res = DAVCollection(url, conn = self.get_connection()) # FIXME auto_request?
         elif ensure == 'file':
-            res = DAVFile(url, conn = self._conn()) # FIXME auto_request?
+            res = DAVFile(url, conn = self.get_connection()) # FIXME auto_request?
         else: # Tis one to disappear when [14] fixed
-            res = DAVResource(url, conn = self._conn()) # FIXME auto_request?
+            res = DAVResource(url, conn = self.get_connection()) # FIXME auto_request?
         return res
 
     def _get_dav_lock(self, id):
@@ -693,7 +705,7 @@ class Connector(object):
             return id + '/'
         if self.property_cache.get(id) is not None:
             return id
-        dav_resource = DAVResource(self._id2loc(id + '/'), conn=self._conn())
+        dav_resource = DAVResource(self._id2loc(id + '/'), conn=self.get_connection())
         response = dav_resource.head()
         response.read()
         if response.status == 200:

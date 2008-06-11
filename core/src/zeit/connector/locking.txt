@@ -26,6 +26,7 @@ Traceback (most recent call last):
 LockingError: http://xml.zeit.de/testing/lt1 is already locked.
 
 >>> connector.unlock(res.id)
+u'opaquelocktoken:...'
 >>> del connector[res.id]
 
 
@@ -39,7 +40,7 @@ We unlock the resource under the hood and of course expect that we can add it:
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> connector._conn().do_unlock(url, token)
+>>> connector.get_connection().do_unlock(url, token)
 >>> connector.add(res)
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
@@ -51,7 +52,7 @@ Edge case 1.1: With existing resource:
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> connector._conn().do_unlock(url, token)
+>>> connector.get_connection().do_unlock(url, token)
 >>> connector.add(res)
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
@@ -63,7 +64,7 @@ Edge case 1.2: Unlocking:
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> connector._conn().do_unlock(url, token)
+>>> connector.get_connection().do_unlock(url, token)
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
 
@@ -75,12 +76,14 @@ Lock the resoruce under the hood; we get a useful error:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge2'
 >>> url = connector._id2loc(res.id)
->>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
+>>> token = connector.get_connection().do_lock(
+...     url, owner='gimli', depth=0, timeout=20)
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
 LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
+'opaquelocktoken:...'
 
 Edge case 2.1: With existing resource:
 
@@ -88,12 +91,14 @@ Edge case 2.1: With existing resource:
 >>> connector.add(res)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
+>>> token = connector.get_connection().do_lock(
+...     url, owner='gimli', depth=0, timeout=20)
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
 LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
+'opaquelocktoken:...'
 >>> del connector[res.id]
 
 Edge case 2.2: Locking
@@ -102,12 +107,14 @@ Edge case 2.2: Locking
 >>> connector.add(res)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> token = connector._conn().do_lock(url, owner='gimli', depth=0, timeout=20)
+>>> token = connector.get_connection().do_lock(
+...     url, owner='gimli', depth=0, timeout=20)
 >>> connector.lock(res.id, 'saruman', until=None)
 Traceback (most recent call last):
     ...
 LockingError: http://xml.zeit.de/testing/edge2.2 is already locked.
 >>> connector.unlock(res.id, token)
+'opaquelocktoken:...'
 >>> del connector[res.id]
 
 
@@ -125,7 +132,7 @@ API to create an anonymous lock. Create a resource first:
 Now lock:
 
 >>> dav_url = connector._id2loc(connector._get_cannonical_id(res.id))
->>> token = connector._conn().do_lock(dav_url)
+>>> token = connector.get_connection().do_lock(dav_url)
 
 Deleting the resource now will yield a `LockedByOtherSystemError`:
 
@@ -136,7 +143,7 @@ LockedByOtherSystemError: (None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999
 
 Unlock the resource and remove it:
 
->>> connector._conn().do_unlock(dav_url, token)
+>>> connector.get_connection().do_unlock(dav_url, token)
 >>> del connector[res.id]
 
 
@@ -149,13 +156,14 @@ Edge case 4: We think the resource is locked but it is by somebody else
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> r2 = connector[res.id]
 >>> url = connector._id2loc(res.id)
->>> connector._conn().do_unlock(url, token)
->>> new_token = connector._conn().do_lock(
+>>> connector.get_connection().do_unlock(url, token)
+>>> new_token = connector.get_connection().do_lock(
 ...     url, owner='gimli', depth=0, timeout=20)
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
 LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
 >>> connector.unlock(res.id)
+u'opaquelocktoken:...'
 >>> connector.add(res)
 >>> del connector[res.id]

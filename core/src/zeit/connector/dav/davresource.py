@@ -1002,8 +1002,10 @@ class DAVCollection ( DAVResource ):
 
     def _do_del ( self, url, path, locktoken=None ):
         # issue del request and hold result
-        if locktoken: hdr = { 'If': _mk_if_data(url, mytoken) }
-        else: hdr = {}
+        if locktoken:
+            hdr = {'If': _mk_if_data(url, locktoken)}
+        else:
+            hdr = {}
         return self._conn.delete(path, hdr)
 
     def delete ( self, name, locktoken=None ):
