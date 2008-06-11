@@ -30,6 +30,7 @@ except NameError:
 _DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
 _DEFAULT_OWNER2 = u'<DAV:href>pydav-client-2</DAV:href>'
 
+XML_PREFIX_MARKER = u'||ESCAPE||'
 
 
 #:note: Used to generate an 'If' header
@@ -206,6 +207,8 @@ class DAVPropstat:
             # And what about structured values?
             if  len(prop) < 1:
                  pvalue = prop.text # .strip()
+                 if pvalue and pvalue.startswith(XML_PREFIX_MARKER):
+                     pvalue = pvalue[len(XML_PREFIX_MARKER):]
             else:
                  pvalue = lxml.etree.tostring(prop)
                  # pvalue = etree.tostring(Etree(prop))
@@ -594,6 +597,12 @@ class DAVResource:
                 # try to make one. This is ok for ascii stirngs and breaks on
                 # every encoded string. Just like it should.
                 value = unicode(value)
+                # Temporary fix to avoid webdav server confusion. When the
+                # value starts with a '<' the server does some magic. Avoid
+                # this by adding a magic marker before the actual value.
+                if (value.startswith('<')
+                    or value.startswith(XML_PREFIX_MARKER)):
+                    value = XML_PREFIX_MARKER + value
                 node = make_element(namespace, name)
                 node.text = value
                 set_properties.append(node)
