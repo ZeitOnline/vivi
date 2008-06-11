@@ -471,6 +471,24 @@ XXX not currently tested
 # (u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07', None)]
 
 
+
+Internals
+=========
+
+Let's test some internals. There is a _make_qname_tuple tuple which splits tag
+names in the form {namespace}name to a tuple (name, namespace):
+
+>>> import zeit.connector.dav.davresource
+>>> zeit.connector.dav.davresource._make_qname_tuple('{ns}name')
+('name', 'ns')
+
+We must be sure that this function also survives tag names w/o namespace:
+
+>>> zeit.connector.dav.davresource._make_qname_tuple('name')
+('name', None)
+
+
+
 .. [#create-folder-structure] Create a folder structure for copy/move
 
     Create helpers for creating folders/files:

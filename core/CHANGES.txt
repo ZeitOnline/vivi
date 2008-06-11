@@ -4,6 +4,8 @@ CHANGES
 0.21 (unreleased)
 -----------------
 
+- Make sure 'NoneType' object has no attribute 'group' doesn't occur anymore.
+
 0.20 (2008-06-10)
 -----------------
 

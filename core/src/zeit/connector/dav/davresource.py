@@ -41,7 +41,9 @@ _qname_pattern = re.compile("{(?P<uri>.+)}(?P<name>.+)")
 def _make_qname_tuple(string, pattern=_qname_pattern):
     __traceback_info__ = (string,)
     match = pattern.match(string)
-    return (match.group('name'), match.group('uri'))
+    if match is None:
+        return string, None
+    return match.group('name'), match.group('uri')
 
 
 #:fixme: refactor/rename: this is really _find_dav_children
