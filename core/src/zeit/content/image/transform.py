@@ -37,9 +37,10 @@ class ImageTransform(object):
 
         image = zeit.content.image.image.Image(data=image_data.getvalue())
         image.__parent__ = self.context
-        thumb_times = zope.dublincore.interfaces.IDCTimes(image)
         image_times = zope.dublincore.interfaces.IDCTimes(self.context)
-        thumb_times.modified = image_times.modified
+        if image_times.modified:
+            thumb_times = zope.dublincore.interfaces.IDCTimes(image)
+            thumb_times.modified = image_times.modified
         return image
 
 
