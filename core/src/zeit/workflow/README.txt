@@ -392,6 +392,25 @@ work/online/2007/01/weissrussland-russland-gas
 done.
 
 
+Retract script
+--------------
+
+The retract script removes files and foldes but it just needs the root to
+recursivly remove.
+
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> publish.retract()
+>>> tasks.process()
+>>> print logfile.getvalue()
+Retracting http://xml.zeit.de/online/2007/01
+Could not checkout http://xml.zeit.de/online/2007/01
+Retract script output:
+Retracting test script
+work/online/2007/01
+done.
+
+
 [#cleanup]_
 
 .. [#functionaltest] We need to set the site since we're a functional test:

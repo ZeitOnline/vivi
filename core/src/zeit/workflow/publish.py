@@ -128,6 +128,14 @@ class PublishRetractTask(object):
 
         return result_obj
 
+    def convert_uid_to_path(self, uid):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        path_prefix = config['path-prefix']
+        return os.path.join(
+            path_prefix,
+            uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
+
     @staticmethod
     def login(principal):
         interaction = zope.security.management.getInteraction()
@@ -187,17 +195,12 @@ class PublishTask(PublishRetractTask):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         publish_script = config['publish-script']
-        path_prefix = config['path-prefix']
 
         unique_ids = []
         self.recurse(self.get_unique_id, obj, unique_ids)
 
         # The publish script doesn't want URLs but local paths. Munge them.
-        unique_ids = [
-            os.path.join(
-                path_prefix,
-                uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
-            for uid in unique_ids]
+        unique_ids = [self.convert_uid_to_path(uid) for uid in unique_ids]
 
         # Call the script. This does the actual publish.
         proc = subprocess.Popen(
@@ -231,7 +234,7 @@ class RetractTask(PublishRetractTask):
 
 
         obj = self.recurse(self.before_retract, obj)
-        # XXX actually retract
+        self.call_retract_script(obj)
         self.recurse(self.after_retract, obj)
 
     def before_retract(self, obj):
@@ -243,6 +246,23 @@ class RetractTask(PublishRetractTask):
         self.log.log(obj, _('Retracted'))
         new_obj = self.cycle(obj)
         return new_obj
+
+    def call_retract_script(self, obj):
+        """Call the script. This does the actual retract."""
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        retract_script = config['retract-script']
+        path = self.convert_uid_to_path(obj.uniqueId)
+
+        proc = subprocess.Popen(
+            [retract_script], bufsize=-1,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = proc.communicate(path)
+        if stdout:
+            logger.info("Retract script output:\n%s" % stdout)
+        if stderr:
+            logger.error("Retract script error:\n%s" % stderr)
 
     def after_retract(self, obj):
         """Do things after retract."""

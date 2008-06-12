@@ -20,7 +20,8 @@ WorkflowLayer = zope.app.testing.functional.ZCMLLayer(
 product_config = {
     'publish-script': os.path.join(
         os.path.dirname(__file__), 'publish.sh'),
-    'retract-script': 'XXX',
+    'retract-script': os.path.join(
+        os.path.dirname(__file__), 'retract.sh'),
     'path-prefix': 'work',
 }
 
