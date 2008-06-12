@@ -8,6 +8,9 @@ zeit.cms changes
 - Lighbox-Überschrift überdeckt jetzt nicht mehr den Schließen-Knopf
 - Homepage-Teaser werden jetzt auch per JS begrenzt.
 - Das Verwenden verschiedener Formate in einer Bildergruppe ist jetzt erlaubt.
+- Veröffentlichungs- und Zurückziehscript eingebunden.
+- Spezieller Workflow für Assets (derzeit nur Bilder).
+
 
 0.9.17 (2008-06-10)
 -------------------

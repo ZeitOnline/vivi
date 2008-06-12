@@ -48,3 +48,12 @@ class ICMSContent(zope.interface.Interface):
         title=_("File name"),
         readonly=True,
         constraint=valid_name)
+
+
+class IAsset(ICMSContent):
+    """Assets are special, usually simple, content objects.
+
+    Assets are useles themselves but are integrated into other objects.
+    An example is the image.
+
+    """

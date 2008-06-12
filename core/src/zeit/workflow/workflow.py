@@ -7,8 +7,6 @@ import datetime
 import logging
 
 import pytz
-import rwproperty
-import transaction
 
 import zope.component
 import zope.event
@@ -17,7 +15,6 @@ import zope.location.location
 
 import z3c.flashmessage.interfaces
 
-import zeit.connector.interfaces
 import zeit.objectlog.interfaces
 
 import zeit.cms.interfaces
@@ -29,6 +26,7 @@ import zeit.cms.workflow.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.workflow.interfaces
+import zeit.workflow.timebased
 
 
 if 'all' not in globals():
@@ -44,47 +42,21 @@ WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 logger = logging.getLogger(__name__)
 
 
-class Workflow(object):
+class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     """Adapt ICMSContent to IWorkflow using the "live" data from connector.
 
     We must read and write properties directly from the DAV to be sure we
     actually can do the transition.
     """
 
-    zope.interface.implements(zeit.workflow.interfaces.IWorkflowStatus)
+    zope.interface.implements(zeit.workflow.interfaces.IContentWorkflow)
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     zeit.cms.content.dav.mapProperties(
-        zeit.workflow.interfaces.IWorkflowStatus,
+        zeit.workflow.interfaces.IContentWorkflow,
         WORKFLOW_NS,
-        ('edited', 'corrected', 'refined', 'published',
-         'images_added', 'urgent', 'date_last_published'),
+        ('edited', 'corrected', 'refined', 'images_added', 'urgent'),
         live=True)
-
-    zeit.cms.content.dav.mapProperty(
-        zeit.workflow.interfaces.IWorkflowStatus['release_period'].fields[0],
-        WORKFLOW_NS, 'released_from', live=True)
-    zeit.cms.content.dav.mapProperty(
-        zeit.workflow.interfaces.IWorkflowStatus['release_period'].fields[1],
-        WORKFLOW_NS, 'released_to', live=True)
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.workflow.interfaces.IWorkflowStatus,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('date_first_released',),
-        live=True)
-
-    def __init__(self, context):
-        self.context = context
-
-    @rwproperty.getproperty
-    def release_period(self):
-        return self.released_from, self.released_to
-
-    @rwproperty.setproperty
-    def release_period(self, value):
-        if value is None:
-            value = None, None
-        self.released_from, self.released_to = value
 
     def can_publish(self):
         if self.urgent:
@@ -94,11 +66,6 @@ class Workflow(object):
         return False
 
 
-@zope.component.adapter(Workflow)
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-def workflowProperties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
-
 
 class FeedMetadataUpdater(object):
     """Add the expire/publication time to feed entry."""
@@ -107,7 +74,7 @@ class FeedMetadataUpdater(object):
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
     def update_entry(self, entry, content):
-        workflow = zeit.workflow.interfaces.IWorkflowStatus(content, None)
+        workflow = zeit.workflow.interfaces.IContentWorkflow(content, None)
         if workflow is None:
             return
 
@@ -123,7 +90,7 @@ class FeedMetadataUpdater(object):
 
 
 @zope.component.adapter(
-    Workflow,
+    zeit.workflow.interfaces.IContentWorkflow,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
 def log_workflow_changes(workflow, event):
     if event.field.__name__ not in ('edited', 'corrected', 'refined',

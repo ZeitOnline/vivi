@@ -28,5 +28,6 @@ def test_suite():
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
         checker=checker,
+        product_config={'zeit.workflow': zeit.workflow.test.product_config},
         layer=zeit.workflow.test.WorkflowLayer))
     return suite

@@ -2,8 +2,11 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser">
 
-  <adapter factory=".workflow.Workflow" />
-  <adapter factory=".workflow.workflowProperties" />
+  <adapter factory=".workflow.ContentWorkflow" 
+    provides="zeit.workflow.interfaces.IContentWorkflow"
+    trusted="yes"
+    />
+  <adapter factory=".timebased.workflowProperties" />
   <utility
     factory=".workflow.FeedMetadataUpdater"
     name="workflow"
@@ -12,21 +15,33 @@
 
   <adapter factory=".source.fromNotNecessary" />
 
-  <class class=".workflow.Workflow">
+  <class class=".workflow.ContentWorkflow">
     <require
-      permission="zope.View" interface=".interfaces.IWorkflowStatus"
+      permission="zope.View" interface=".interfaces.IContentWorkflow"
       />
     <require
       permission="zeit.workflow.Publish"
-      set_schema=".interfaces.IWorkflowStatus"
-      />
-    <require
-      permission="zeit.workflow.Publish"
-      interface="zeit.cms.workflow.interfaces.IPublish"
+      set_schema=".interfaces.IContentWorkflow"
       />
   </class>
 
   <subscriber handler=".workflow.remove_from_channels_after_retract" />
+
+  <!-- Asset workflow -->
+  <adapter factory=".asset.AssetWorkflow"
+    provides="zeit.workflow.interfaces.IAssetWorkflow"
+    trusted="yes"
+    />
+
+  <class class=".asset.AssetWorkflow">
+    <require
+      permission="zope.View" interface=".interfaces.IAssetWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IAssetWorkflow"
+      />
+  </class>
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />

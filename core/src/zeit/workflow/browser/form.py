@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import zope.component
+import zope.interface
 import zope.formlib.form
 
 import gocept.form.action
@@ -10,8 +12,10 @@ import gocept.form.grouped
 import zeit.objectlog.interfaces
 
 import zeit.cms.browser.form
+import zeit.cms.browser.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces
+import zeit.workflow.browser.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -19,29 +23,17 @@ def is_published(form, action):
     return form.info.published
 
 
+def workflow_form_factory(context, request):
+    return zope.component.queryMultiAdapter(
+        (context, request),
+        zeit.workflow.browser.interfaces.IWorkflowForm)
+
+
 class WorkflowForm(zeit.cms.browser.form.EditForm):
 
+    zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
+
     title = _("Workflow")
-
-    field_groups = (
-        gocept.form.grouped.Fields(
-            _("Status"),
-            ('last_modified_by', 'date_last_modified',
-             'published', 'date_last_published', 'date_first_released',
-             'edited', 'corrected', 'refined', 'images_added'),
-            css_class='column-left'),
-        gocept.form.grouped.RemainingFields(
-            _("Settings"), css_class='column-right'),
-        gocept.form.grouped.Fields(
-            _("Log"), fields=('logs', ),
-            css_class='full-width')
-    )
-
-    form_fields = (
-        zope.formlib.form.FormFields(zeit.workflow.interfaces.IWorkflowStatus)
-        + zope.formlib.form.FormFields(zeit.objectlog.interfaces.ILog)
-        + zope.formlib.form.FormFields(
-            zeit.cms.workflow.interfaces.IModified))
 
     @zope.formlib.form.action(_('Save state only'))
     def handle_save_state(self, action, data):
@@ -83,4 +75,56 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
 
     @property
     def info(self):
-        return zeit.workflow.interfaces.IWorkflowStatus(self.context)
+        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+
+class ContentWorkflow(WorkflowForm):
+
+    zope.component.adapts(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.browser.interfaces.ICMSLayer)
+
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Status"),
+            ('last_modified_by', 'date_last_modified',
+             'published', 'date_last_published', 'date_first_released',
+             'edited', 'corrected', 'refined', 'images_added'),
+            css_class='column-left'),
+        gocept.form.grouped.RemainingFields(
+            _("Settings"), css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Log"), fields=('logs', ),
+            css_class='full-width')
+    )
+
+    form_fields = (
+        zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow,
+                                     zeit.objectlog.interfaces.ILog,
+                                     zeit.cms.workflow.interfaces.IModified))
+
+
+class AssetWorkflow(WorkflowForm):
+
+    zope.component.adapts(
+        zeit.cms.interfaces.IAsset,
+        zeit.cms.browser.interfaces.ICMSLayer)
+
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Status"),
+            ('last_modified_by', 'date_last_modified',
+             'published', 'date_last_published', 'date_first_released'),
+            css_class='column-left'),
+        gocept.form.grouped.RemainingFields(
+            _("Settings"), css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Log"), fields=('logs', ),
+            css_class='full-width')
+    )
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IAssetWorkflow,
+            zeit.objectlog.interfaces.ILog,
+            zeit.cms.workflow.interfaces.IModified))

@@ -79,7 +79,7 @@ class IImageMetadata(zope.interface.Interface):
         required=False)
 
 
-class IImage(zeit.cms.interfaces.ICMSContent,
+class IImage(zeit.cms.interfaces.IAsset,
              zope.app.file.interfaces.IImage):
     """Image."""
 
@@ -100,7 +100,7 @@ class IThumbnailFolder(zope.interface.Interface):
     """The folder where to find thumbnails for an image."""
 
 
-class IImageGroup(zeit.cms.interfaces.ICMSContent):
+class IImageGroup(zeit.cms.interfaces.IAsset):
     """An image group groups images with the same motif together."""
 
 

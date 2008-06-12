@@ -13,7 +13,7 @@ Create a dummy content object:
 >>> 
 >>> class Content(object):
 ...     zope.interface.implements(
-...         zeit.workflow.interfaces.IWorkflowStatus,
+...         zeit.workflow.interfaces.IContentWorkflow,
 ...         zeit.cms.interfaces.ICMSContent)
 ...     uniqueId = 'content1'
 ...     released_from = None

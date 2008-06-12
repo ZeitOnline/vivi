@@ -12,7 +12,7 @@ import zeit.workflow.interfaces
 class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
 
     fields = zope.formlib.form.FormFields(
-        zeit.workflow.interfaces.IWorkflowStatus)
+        zeit.workflow.interfaces.IContentWorkflow)
 
 
     widgets = None
@@ -30,4 +30,4 @@ class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
 
     @zope.cachedescriptors.property.Lazy
     def workflow(self):
-        return zeit.workflow.interfaces.IWorkflowStatus(self.context, None)
+        return zeit.workflow.interfaces.IContentWorkflow(self.context, None)

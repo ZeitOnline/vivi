@@ -9,13 +9,25 @@ Workflow betreffende Status. Aus Nutzersicht ergeben sich quasi parallele
 Aktivitäten[#functionaltest]_.
 
 >>> somalia = repository['online']['2007']['01']['Somalia']
->>> workflow = zeit.workflow.interfaces.IWorkflowStatus(somalia)
 >>> import zeit.workflow.interfaces
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
+>>> workflow
+<zeit.workflow.workflow.ContentWorkflow object at 0x...>
+
+Make sure adapting to IPublishInfo yields the same:
+
+>>> import zeit.cms.workflow.interfaces
+>>> zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+<zeit.workflow.workflow.ContentWorkflow object at 0x...>
+
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
-...     zeit.workflow.interfaces.IWorkflowStatus, workflow)
+...     zeit.workflow.interfaces.IContentWorkflow, workflow)
 True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> publish
+<zeit.workflow.publish.Publish object at 0x...>
+
 
 Activities / States
 ===================
@@ -200,7 +212,7 @@ http://xml.zeit.de/online/2007/01/Somalia
 
 
 Date first released
--------------------
+===================
 
 
 When an object is published for the first time, the "date first released" is
@@ -211,7 +223,7 @@ xml.
 >>> article = repository['testcontent']
 >>> article
 <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
->>> workflow = zeit.workflow.interfaces.IWorkflowStatus(article)
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(article)
 >>> workflow.date_first_released is None
 True
 >>> workflow.urgent = True
@@ -258,8 +270,50 @@ When we de-publish the object, the status-flag is removed again:
 </testtype>
 
 
+Assets workflow
+===============
+
+The asset workflow is also a time based workflow but there are no constraints
+in regard to when an asset can be published.
+
+Make UnknownResources an asset to test the workflow:
+
+>>> old_implements = list(zope.interface.implementedBy(
+...     zeit.cms.repository.unknown.UnknownResource))
+>>> zope.interface.classImplements(
+...     zeit.cms.repository.unknown.UnknownResource,
+...     zeit.cms.interfaces.IAsset)
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+>>> workflow
+<zeit.workflow.asset.AssetWorkflow object at 0x...>
+>>> workflow.can_publish()
+True
+>>> not not workflow.published
+False
+
+Publish somalia:
+
+>>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> publish.publish()
+>>> tasks.process()
+>>> workflow.published
+True
+
+Retract of course also works:
+
+>>> publish.retract()
+>>> tasks.process()
+>>> workflow.published
+False
+
+Reset the implements:
+
+>>> zope.interface.classImplementsOnly(
+...     zeit.cms.repository.unknown.UnknownResource,
+...     *old_implements)
+
 Recursive publish
------------------
+=================
 
 It is possible to publish entire folder structures. This is simply done by
 publishing a container.
@@ -321,6 +375,11 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 http://xml.zeit.de/online/2007/01/eta-zapatero
      Retracted
 
+
+
+
+Actual publish retract
+======================
 
 Publish script
 --------------

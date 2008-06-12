@@ -5,13 +5,35 @@
 
   <adapter factory=".token.fromNotNecessary" />
 
-  <browser:page
+  <!-- Register a multiplexer which returns the actual object on
+  IRepositoryContent. The workflow_form_factory then does another lookup for
+  ICMSContent or IAsset or what ever. 
+  -->
+  <adapter
+    for="zeit.cms.repository.interfaces.IRepositoryContent
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.publisher.interfaces.browser.IBrowserPage"
+    factory=".form.workflow_form_factory"
     name="workflow.html"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:menuItem
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.WorkflowForm"
+    menu="zeit-context-views"
+    title="Workflow"
+    action="@@workflow.html"
     permission="zeit.workflow.Publish"
-    menu="zeit-context-views" title="Workflow"
+    />
+
+  <adapter
+    factory=".form.ContentWorkflow"
+    provides=".interfaces.IWorkflowForm"
+    />
+  <adapter
+    factory=".form.AssetWorkflow"
+    provides=".interfaces.IWorkflowForm"
     />
 
   <browser:viewlet

@@ -21,7 +21,23 @@ NotNecessary = zeit.workflow.source.NotNecessary
 WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 
-class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
+class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
+    """Time based publishing."""
+
+    release_period = zc.form.field.Combination(
+        (zope.schema.Datetime(title=_("From"), required=False),
+         zope.schema.Datetime(title=_("To"), required=False)),
+        title=_('Publication period'),
+        description=_('Leave empty for no constraint.'),
+        required=False)
+
+    released_from = zope.interface.Attribute(
+        "Object is released from this date.")
+    released_to = zope.interface.Attribute(
+        "Object is released to this date.")
+
+
+class IContentWorkflow(ITimeBasedPublishing):
     """Zeit Workflow interface.
 
     Currently there is only a *very* simple and static property based workflow
@@ -55,17 +71,9 @@ class IWorkflowStatus(zeit.cms.workflow.interfaces.IPublishInfo):
                       'without setting corrected/refined/etc.'),
         default=False)
 
-    release_period = zc.form.field.Combination(
-        (zope.schema.Datetime(title=_("From"), required=False),
-         zope.schema.Datetime(title=_("To"), required=False)),
-        title=_('Publication period'),
-        description=_('Leave empty for no constraint.'),
-        required=False)
 
-    released_from = zope.interface.Attribute(
-        "Object is released from this date.")
-    released_to = zope.interface.Attribute(
-        "Object is released to this date.")
+class IAssetWorkflow(ITimeBasedPublishing):
+    """Workflow for assets."""
 
 
 class IOldCMSStatus(zope.interface.Interface):
