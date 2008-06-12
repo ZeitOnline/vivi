@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Rekursives veröffentlichen und zurückziehen.
 - Lighbox-Überschrift überdeckt jetzt nicht mehr den Schließen-Knopf
+- Homepage-Teaser werden jetzt auch per JS begrenzt.
 
 0.9.17 (2008-06-10)
 -------------------
