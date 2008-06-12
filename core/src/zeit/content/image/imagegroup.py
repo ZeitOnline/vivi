@@ -79,12 +79,13 @@ def XMLReference(context):
     type = None
     for sub_image_name in context:
         base, ext = sub_image_name.rsplit('.', 1)
-        if type is None:
+        if base.endswith('x140'):
+            # This is deciding
             type = ext
-        elif type != ext:
-            # XXX test this path
-            raise ValueError("Invalid image group, mix of formats.")
-    if type is not None:
-        image.set('type', type)
+            break
+        if type is None:
+            # Just remember the first type
+            type = ext
 
+    image.set('type', type)
     return image

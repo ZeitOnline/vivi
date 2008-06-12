@@ -108,6 +108,54 @@ Set the link:
 </image>
 
 
+The type attribute is rather complex.
+
+Case 1 is simple, we've seen it above: When there is only one extension it's
+used as type.
+
+Case 2: When there is a mix of formats the type an object which ends in x140 is 
+used:
+
+>>> import zeit.content.image.image
+>>> group['title-120x140.gif'] = zeit.content.image.image.Image()
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True)
+<image
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    href="http://www.asdf.com"
+    base-id="http://xml.zeit.de/image-group"
+    type="gif">
+  <bu xsi:nil="true"/>
+  <copyright py:pytype="str">Zeit online</copyright>
+  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+</image>
+
+
+Case 3: When there is a mix of formats and no image ends in x140 the "first"
+one is used:
+
+>>> del group['title-120x140.gif']
+>>> group['title-120x120.gif'] = zeit.content.image.image.Image()
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True)
+<image
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    href="http://www.asdf.com"
+    base-id="http://xml.zeit.de/image-group" type="jpg">
+  <bu xsi:nil="true"/>
+  <copyright py:pytype="str">Zeit online</copyright>
+  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+</image>
+
+
 Cleanup
 =======
 
