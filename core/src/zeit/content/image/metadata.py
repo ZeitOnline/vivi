@@ -55,11 +55,6 @@ def MetadataXMLReference(context):
             node.set('link', link)
         copyrights.append(node)
 
-    #expires = context.expires
-    #if expires:
-    #    expires = expires.isoformat()
-    #    attributes['expires'] = expires
-
     set_if_not_empty('title', context.title)
     set_if_not_empty('alt', context.alt)
     set_if_not_empty('href', context.links_to)
