@@ -4,6 +4,7 @@
 
 import logging
 import operator
+import threading
 import urllib2
 import xml.sax.saxutils
 
@@ -98,8 +99,9 @@ class SubNavigationSource(SimpleContextualXMLSource):
         sub_navs = reduce(
             operator.add, [ressort_node.findall('subnavigation')
              for ressort_node in ressort_nodes])
-        return set([unicode(sub.get('name'))
+        result = set([unicode(sub.get('name'))
                     for sub in sub_navs])
+        return result
 
     @gocept.cache.method.Memoize(60)
     def getTitle(self, context, value):
@@ -148,6 +150,7 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
                     zeit.cms.interfaces.ICMSContentType))
 
 
+_collect_lock = threading.Lock()
 _collect_counter = 0
 @zope.component.adapter(zope.app.publication.interfaces.IBeforeTraverseEvent)
 def collect_caches(event):
@@ -159,8 +162,14 @@ def collect_caches(event):
     """
     global _collect_counter
     _collect_counter += 1
-    if _collect_counter >= 100:
-        logger.debug("Collecting caches.")
-        # collect every 100 requests
-        gocept.cache.method.collect()
-        _collect_counter = 0
+    locked = _collect_lock.acquire(False)
+    if not locked:
+        return
+    try:
+        if _collect_counter >= 100:
+            logger.debug("Collecting caches.")
+            # collect every 100 requests
+            gocept.cache.method.collect()
+            _collect_counter = 0
+    finally:
+        _collect_lock.release()
