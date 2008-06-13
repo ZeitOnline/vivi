@@ -69,8 +69,7 @@ class CommonMetadataFormBase(object):
         if not self.for_display:
             # Change the widgets of the teaser fields
             change_field_names = (
-                'teaserText', 'shortTeaserTitle', 'shortTeaserText',
-                'hpTeaserTitle', 'hpTeaserText')
+                'teaserText', 'shortTeaserTitle', 'shortTeaserText')
             form_fields = self.form_fields.omit(*change_field_names)
             changed_fields = []
             for field in change_field_names:

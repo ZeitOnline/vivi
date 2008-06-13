@@ -141,13 +141,12 @@ class ICommonMetadata(zope.interface.Interface):
 
     hpTeaserTitle = zope.schema.Text(
         title=_('Homepage teaser title'),
-        required=False,
-        max_length=20)
+        required=False)
 
     hpTeaserText = zope.schema.Text(
         title=_('Homepage teaser text'),
-        required=False,
-        max_length=50)
+        required=False)
+
 
     vg_wort_id = zope.schema.TextLine(
         title=_('VG Wort Id'),
