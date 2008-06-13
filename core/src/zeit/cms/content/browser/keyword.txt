@@ -38,6 +38,13 @@ Keywords which are already in the Taxonomy. Let's perform a typeahead search
 with the ajax browser:
 
 >>> ajax.open('http://localhost/@@keyword-typeahead?searchTerm=Was')
+>>> print ajax.headers
+Status: 200 Ok
+Cache-Control: max-age=3600
+Content-Length: 1409
+Content-Type: text/html;charset=utf-8
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+
 >>> print ajax.contents
 <ul>
  <li>

@@ -108,23 +108,27 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
     },
 
     typeaheadSearch: function(searchterm) {
-        var searchTerm = searchterm; 
+        if (this.typeahead_deferred != null) {
+            this.typeahead_deferred.cancel()
+        }
 
+        var searchTerm = searchterm; 
         var url = '/@@keyword-typeahead'
         var query = {'searchTerm': searchTerm};
-        var d = doSimpleXMLHttpRequest(url, query);
+        var d = callLater(0.2, doSimpleXMLHttpRequest, url, query);
         d.addCallbacks(
           function(result) {
               widget.updateTypeaheadResults(result.responseText);
-          })
+        });
+        this.typeahead_deferred = d;
 
     },
 
     connectTypeAhead: function() {
         this.typeahead_container = $('keyword-typeahead-results');
+        this.typeahead_deferred = null;
         var textinput = $('new_keyword_code');
         connect(textinput, 'onkeyup', this, 'handleTextinput');
     },
 
 });
-

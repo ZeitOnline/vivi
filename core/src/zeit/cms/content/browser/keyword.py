@@ -86,6 +86,10 @@ class KeywordsDisplayWidget(
 
 class TypeaheadSearch(object):
 
+    def __call__(self):
+        self.request.response.setHeader('Cache-Control', 'max-age=3600');
+        return self.index()
+
     def search(self, searchterm=None):
         if searchterm is None:
             return
