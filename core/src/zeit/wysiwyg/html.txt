@@ -361,7 +361,7 @@ image:
   <body>
     <title>Title</title>
     <p>Fuer menschliche
- <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"><bu xsi:nil="true"/></image>
+ <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu xsi:nil="true"/></image>
   Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
