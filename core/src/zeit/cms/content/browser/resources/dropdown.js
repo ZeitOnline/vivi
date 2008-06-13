@@ -9,6 +9,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
             return
         }
         connect(master, 'onchange', this, 'update');
+        this.update();
     },
 
     update: function(event) {
@@ -17,11 +18,15 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
             this.update_url, {master_token: this.master.value});
         d.addCallback(function(result) {
             var data = evalJSONRequest(result)
+            var selected = othis.slave.value;
             othis.slave.options.length = 1
             forEach(data, function(new_option) {
                 var label = new_option[0]
                 var value = new_option[1]
                 var option = new Option(label, value)
+                if (value == selected) {
+                    option.selected = true;
+                }
                 othis.slave.options[othis.slave.options.length] = option;
             });
         });

@@ -214,15 +214,32 @@ that we get *all* sub navigation elements
  u'Nahost',
  u'US-Wahl']
 
-Select 'Deutschland':
+Select 'Deutschland'. Since ITestContentType is an ICMSContent we still get
+everything. This is actually not desired but is the only way we can avoid
+saving the ressort first and then the subressort:
 
 >>> content.ressort = u'Deutschland'
 >>> pprint(sorted(list(bound)))
 [u'Datenschutz',
  u'Integration',
  u'Joschka Fisher',
- u'Meinung']
+ u'Meinung',
+ u'Nahost',
+ u'US-Wahl']
 
+When we use an object as context which does not provide ICMSContent but is
+adaptable to ICommonMetadata we'll get filtered results:
+
+>>> import zope.interface
+>>> import zeit.cms.content.interfaces
+>>> class Meta(object):
+...     zope.interface.implements(
+...         zeit.cms.content.interfaces.ICommonMetadata) 
+>>> meta = Meta()
+>>> meta.ressort = u'Deutschland'
+>>> bound = sub_ressort(meta)
+>>> pprint(sorted(list(bound)))
+[u'Datenschutz', u'Integration', u'Joschka Fisher', u'Meinung']
 
 Verify terms/titles:
 

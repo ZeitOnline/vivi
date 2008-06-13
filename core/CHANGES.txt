@@ -11,6 +11,8 @@ zeit.cms changes
 - Veröffentlichungs- und Zurückziehscript eingebunden.
 - Spezieller Workflow für Assets (derzeit nur Bilder).
 - Zeitgesteuertes veröffentlichen/zurückziehen.
+- Unterressort auswählen funktioniert jetzt ohne vorherigem Speichern des
+  Ressorts (bug #4268).
 
 
 0.9.17 (2008-06-10)

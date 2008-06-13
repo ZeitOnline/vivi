@@ -4,6 +4,7 @@
 
 import cjson
 import lxml.etree
+import pytz
 
 import zope.component
 import zope.interface
@@ -91,4 +92,7 @@ class SubNavigationUpdater(object):
         for value in source:
             term = terms.getTerm(value)
             result.append((term.title, term.token))
-        return cjson.encode(sorted(result))
+
+        self.request.response.setHeader('Cache-Control', 'max-age=3600')
+        self.request.response.setHeader('Content-Type', 'application/json')
+        return cjson.encode(sorted(result)).encode('utf8')

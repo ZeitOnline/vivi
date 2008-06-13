@@ -136,6 +136,8 @@ class SubNavigationSource(SimpleContextualXMLSource):
         return nodes
 
     def _get_ressort(self, context):
+        if zeit.cms.interfaces.ICMSContent.providedBy(context):
+            return None
         metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
         if metadata is None:
             return None
