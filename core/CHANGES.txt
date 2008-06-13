@@ -20,6 +20,7 @@ zeit.cms changes
 - Formulare sind nicht mehr Denglisch (bug #3734).
 - WYSIWYG-Editor: Popups zeigen jetzt den Cursor an (bug #4221).
 - Tab "Syndizieren": Die Ziele sind jetzt nach der Id sortiert (bug #4269).
+- XML-Daten werden jetzt mit Pretty-Print zum DAV gegeben (bug #4256).
 
 
 0.9.17 (2008-06-10)
