@@ -8,9 +8,10 @@ import rwproperty
 import zope.component
 import zope.interface
 
-import zeit.cms.repository.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.related
-
+import zeit.cms.interfaces
+import zeit.cms.syndication.interfaces
 import zeit.content.image.interfaces
 
 
@@ -61,3 +62,15 @@ class FeedMetadataUpdater(object):
         entry['image'] = zope.component.getAdapter(
             image,
             zeit.cms.content.interfaces.IXMLReference, name='image')
+
+
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_image_reference_on_checkin(context, event):
+    images = zeit.content.image.interfaces.IImages(context, None)
+    if images is None:
+        return
+    image_list = images.images
+    if image_list:
+        images.images = image_list

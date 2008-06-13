@@ -147,4 +147,6 @@ def update_related_on_checkin(context, event):
     related = zeit.cms.content.interfaces.IRelatedContent(context, None)
     if related is None:
         return
-    related.related = related.related
+    related_list = related.related
+    if related_list:
+        related.related = related_list

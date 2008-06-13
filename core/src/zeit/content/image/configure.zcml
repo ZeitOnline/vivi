@@ -105,5 +105,6 @@
     factory=".imagereference.FeedMetadataUpdater"
     name="zeit.cms.image"
     />
+  <subscriber handler=".imagereference.update_image_reference_on_checkin" />
 
 </configure>

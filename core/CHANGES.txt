@@ -23,6 +23,8 @@ zeit.cms changes
 - XML-Daten werden jetzt mit Pretty-Print zum DAV gegeben (bug #4256).
 - Dateiliste: Klick auf den Dateinamen selektiert die Zeile jetzt (bug #4255).
 - Homepage-Teaser/-Text haben jetzt keine Längenbegrenzung mehr.
+- Die Metadaten von Relateds und Bildern werden jetzt beim Checkin aktualisiert
+  (bug #4226).
 
 
 0.9.17 (2008-06-10)

@@ -163,7 +163,7 @@ The xml structure of a and b contain "Tease me" now:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c" year="None" issue="None">
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
         <title py:pytype="str">Tease me</title>
         <description xsi:nil="true"/>
         ...
@@ -175,7 +175,7 @@ The xml structure of a and b contain "Tease me" now:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c" year="None" issue="None">
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
         <title py:pytype="str">Tease me</title>
         <description xsi:nil="true"/>
         ...
@@ -199,7 +199,7 @@ And check in:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c" year="None" issue="None">
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
         <title py:pytype="str">Tease me</title>
         <description xsi:nil="true"/>
         ...
@@ -211,7 +211,7 @@ And check in:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/b" year="None" issue="None">
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/b">
         <title xsi:nil="true"/>
         <description xsi:nil="true"/>
         ...

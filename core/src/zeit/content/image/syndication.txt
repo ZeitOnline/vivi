@@ -13,11 +13,14 @@ Setup functional test:
 
 Create a dummy object which provideds IXMLContent:
 
+>>> import zope.annotation.interfaces
 >>> import zope.interface
 >>> import zeit.cms.content.interfaces
 >>> import lxml.objectify
 >>> class Content(object):
-...     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
+...     zope.interface.implements(
+...         zeit.cms.content.interfaces.IXMLContent,
+...         zope.annotation.interfaces.IAttributeAnnotatable)
 ...     uniqueId = 'dummy-content'
 ...     xml = lxml.objectify.XML('<content><head/></content>')
 ...
@@ -72,7 +75,7 @@ Update the metadata of the feed. The image is now referenced:
   <object_limit py:pytype="int">50</object_limit>
 </channel>
 
-When more than one image is reference, only the first one will be in the feed:
+When more than one image is referenced, only the first one will be in the feed:
 
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
@@ -93,7 +96,52 @@ When more than one image is reference, only the first one will be in the feed:
   <object_limit py:pytype="int">50</object_limit>
 </channel>
 
+
+When we change the metadata of the imagegroup the content is updated on
+checkin. Change the metadata of the group [#needsinteraction]_:
+
+>>> import zeit.cms.checkout.interfaces
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     group).checkout()
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
+>>> metadata.title = u"Image title"
+>>> group = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+
+Send out the checkin event:
+
+>>> import zope.security.testing
+>>> import zeit.cms.checkout.interfaces
+>>> zope.event.notify(
+...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
+...         content, zope.security.testing.Principal('hans.wurst')))
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<content>
+  <head>
+    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        title="Image title"
+        base-id="http://xml.zeit.de/image-group" 
+        type="jpg">
+      <bu xsi:nil="true"/>
+    </image>
+    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+      <bu xsi:nil="true"/>
+    </image>
+  </head>
+</content>
+
+
 Cleanup
 =======
 
+>>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
+
+.. [#needsinteraction] Create interaction
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)

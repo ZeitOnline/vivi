@@ -29,7 +29,7 @@ def test_suite():
         'syndication.txt',
         'transform.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS),
+                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
         layer=ImageLayer))
     return suite
 
