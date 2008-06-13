@@ -223,6 +223,11 @@ Also associate a portraitbox[#portraitbox]_:
 
 >>> browser.getControl('Portraitbox').value = 'http://xml.zeit.de/pb'
 
+Aggregate the comments of another object:
+
+>>> browser.getControl('Aggregate comments').value = (
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+
 Apply changes:
 
 >>> browser.getControl('Apply').click()

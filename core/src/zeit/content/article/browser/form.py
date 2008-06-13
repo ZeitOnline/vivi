@@ -9,6 +9,8 @@ import zope.formlib.form
 import zope.publisher.interfaces.browser
 import zope.session.interfaces
 
+import zope.app.appsetup.interfaces
+
 import gocept.form.grouped
 import zc.resourcelibrary
 
@@ -127,3 +129,4 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.RemainingFields(
             _('Content'),
             css_class='full-width wide-widgets'),)
+

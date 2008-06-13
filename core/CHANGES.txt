@@ -5,6 +5,7 @@ zeit.content.article changes
 ----------------
 
 - Asset-View refaktoriert: Verwenden des Asset-Supports aus dem Core.
+- "Kommentare zusammenfassen" (bug #3734).
 
 1.1 (2008-05-29)
 ----------------

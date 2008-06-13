@@ -159,3 +159,12 @@ class IBookRecension(zope.interface.Interface):
         title=_('Raw data'),
         required=False,
         readonly=True)
+
+
+class IAggregatedComments(zope.interface.Interface):
+
+    comment_id = zope.schema.Choice(
+        title=_('Aggregate comments'),
+        description=_('aggregate-comments-description'),
+        required=False,
+        source=zeit.cms.content.contentsource.cmsContentSource)

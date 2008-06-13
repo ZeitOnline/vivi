@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue May 20 15:52:19 2008\n"
-"PO-Revision-Date: 2008-05-20 15:59+0100\n"
+"POT-Creation-Date: Fri Jun 13 16:07:03 2008\n"
+"PO-Revision-Date: 2008-06-13 16:10+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,68 +11,54 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: src/zeit/content/article/browser/configure.zcml:15
-msgid "Edit metadata"
-msgstr "Metadaten"
-
-#: src/zeit/content/article/browser/configure.zcml:156
+#: src/zeit/content/article/browser/configure.zcml:125
 msgid "Add"
 msgstr "Hinzufügen …"
 
-#: src/zeit/content/article/browser/configure.zcml:165
+#: src/zeit/content/article/browser/configure.zcml:134
 #: src/zeit/content/article/browser/recension-overview.pt:7
 #: src/zeit/content/article/browser/recension-overview.pt:48
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/content/article/browser/configure.zcml:33
+#: src/zeit/content/article/browser/configure.zcml:18
+msgid "Edit metadata"
+msgstr "Metadaten"
+
+#: src/zeit/content/article/browser/configure.zcml:36
 msgid "View metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/configure.zcml:50
+#: src/zeit/content/article/browser/configure.zcml:53
 msgid "Edit WYSIWYG"
 msgstr "Bearbeiten"
 
-#: src/zeit/content/article/browser/configure.zcml:97
+#: src/zeit/content/article/browser/configure.zcml:78
 msgid "Article"
 msgstr "Artikel"
 
-#: src/zeit/content/article/browser/form.py:108
+#: src/zeit/content/article/browser/form.py:109
 msgid "Edit article"
 msgstr "Artikel bearbeiten"
 
-#: src/zeit/content/article/browser/form.py:119
+#: src/zeit/content/article/browser/form.py:115
 msgid "View article metadata"
 msgstr "Metadaten"
 
-#: src/zeit/content/article/browser/form.py:134
+#: src/zeit/content/article/browser/form.py:130
 msgid "Content"
 msgstr "Inhalt"
 
-#: src/zeit/content/article/browser/form.py:151
-msgid "Assets and related"
-msgstr "Assets und Related"
-
-#: src/zeit/content/article/browser/form.py:159
-#: src/zeit/content/article/browser/configure.zcml:59
-msgid "Edit assets"
-msgstr "Assets bearbeiten"
-
-#: src/zeit/content/article/browser/form.py:163
-#: src/zeit/content/article/browser/configure.zcml:76
-msgid "Assets"
-msgstr "Assets"
-
-#: src/zeit/content/article/browser/form.py:58
+#: src/zeit/content/article/browser/form.py:59
 #: src/zeit/content/article/browser/recension.py:71
 msgid "misc."
 msgstr "sonstiges"
 
-#: src/zeit/content/article/browser/form.py:65
+#: src/zeit/content/article/browser/form.py:66
 msgid "Optionen"
 msgstr "Optionen"
 
-#: src/zeit/content/article/browser/form.py:74
+#: src/zeit/content/article/browser/form.py:75
 msgid "Add article"
 msgstr "Artikel hinzufügen"
 
@@ -98,12 +84,12 @@ msgid "Add..."
 msgstr "Hinzufügen …"
 
 #: src/zeit/content/article/browser/recension.py:103
-#: src/zeit/content/article/interfaces.py:196
+#: src/zeit/content/article/interfaces.py:159
 msgid "Raw data"
 msgstr "Roh-Daten"
 
 #: src/zeit/content/article/browser/recension.py:21
-#: src/zeit/content/article/browser/configure.zcml:138
+#: src/zeit/content/article/browser/configure.zcml:107
 msgid "Recensions"
 msgstr "Rezensionsinformationen"
 
@@ -112,7 +98,7 @@ msgid "Book details"
 msgstr "Buchdetails"
 
 #: src/zeit/content/article/browser/recension.py:67
-#: src/zeit/content/article/interfaces.py:172
+#: src/zeit/content/article/interfaces.py:135
 #: src/zeit/content/article/browser/recension-overview.pt:16
 msgid "Publisher"
 msgstr "Verlag"
@@ -129,136 +115,140 @@ msgstr "Rezensionsinformationen hinzufügen"
 msgid "Edit book information"
 msgstr "Rezensionsinformationen bearbeiten"
 
-#: src/zeit/content/article/interfaces.py:105
-msgid "Syndication Log"
-msgstr "Syndizierungs-Log"
-
-#: src/zeit/content/article/interfaces.py:139
+#: src/zeit/content/article/interfaces.py:102
 msgid "Authors"
 msgstr "Autoren"
 
-#: src/zeit/content/article/interfaces.py:143
+#: src/zeit/content/article/interfaces.py:106
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/content/article/interfaces.py:145
+#: src/zeit/content/article/interfaces.py:108
 msgid "Title"
 msgstr "Titel"
 
-#: src/zeit/content/article/interfaces.py:148
+#: src/zeit/content/article/interfaces.py:111
 msgid "Info"
 msgstr "Info"
 
-#: src/zeit/content/article/interfaces.py:152
+#: src/zeit/content/article/interfaces.py:115
 msgid "Genre"
 msgstr "Genre"
 
-#: src/zeit/content/article/interfaces.py:156
+#: src/zeit/content/article/interfaces.py:119
 msgid "ZEIT category"
 msgstr "ZEIT-Kategorie"
 
-#: src/zeit/content/article/interfaces.py:160
+#: src/zeit/content/article/interfaces.py:123
 msgid "Agelimit"
 msgstr "Altersbeschränkung"
 
-#: src/zeit/content/article/interfaces.py:164
+#: src/zeit/content/article/interfaces.py:127
 msgid "Original language"
 msgstr "Originalsprache"
 
-#: src/zeit/content/article/interfaces.py:168
+#: src/zeit/content/article/interfaces.py:131
 msgid "Translator"
 msgstr "Übersetzer"
 
 #. Default: "Location"
-#: src/zeit/content/article/interfaces.py:176
+#: src/zeit/content/article/interfaces.py:139
 msgid "book-location"
 msgstr "Ort"
 
-#: src/zeit/content/article/interfaces.py:180
+#: src/zeit/content/article/interfaces.py:143
 #: src/zeit/content/article/browser/recension-overview.pt:32
 msgid "Year"
 msgstr "Jahr"
 
-#: src/zeit/content/article/interfaces.py:184
+#: src/zeit/content/article/interfaces.py:147
 msgid "Media type"
 msgstr "Medientyp"
 
-#: src/zeit/content/article/interfaces.py:188
+#: src/zeit/content/article/interfaces.py:151
 msgid "Pages"
 msgstr "Seiten"
 
-#: src/zeit/content/article/interfaces.py:192
+#: src/zeit/content/article/interfaces.py:155
 msgid "Price (EUR)"
 msgstr "Preis in €"
 
-#: src/zeit/content/article/interfaces.py:28
-msgid "Syndication Time"
-msgstr "Syndizierungszeit"
+#: src/zeit/content/article/interfaces.py:167
+msgid "Aggregate comments"
+msgstr "Kommentare zusammenfassen"
 
-#: src/zeit/content/article/interfaces.py:32
-msgid "Syndicated in"
-msgstr "Syndiziert in"
+#: src/zeit/content/article/interfaces.py:168
+msgid "aggregate-comments-description"
+msgstr "Wählen Sie das Objekt von dem die Kommentare verwendet werden sollen."
 
-#: src/zeit/content/article/interfaces.py:42
+#: src/zeit/content/article/interfaces.py:25
 msgid "Comments allowed"
 msgstr "Kommentare erlaubt"
 
-#: src/zeit/content/article/interfaces.py:46
+#: src/zeit/content/article/interfaces.py:29
 msgid "Banner"
 msgstr "Banner"
 
-#: src/zeit/content/article/interfaces.py:50
+#: src/zeit/content/article/interfaces.py:33
 msgid "Box Most Read"
 msgstr "Box „Meistgelesene Artikel“"
 
-#: src/zeit/content/article/interfaces.py:56
+#: src/zeit/content/article/interfaces.py:39
 msgid "Pagebreak"
 msgstr "Seitenumbruch"
 
-#: src/zeit/content/article/interfaces.py:57
+#: src/zeit/content/article/interfaces.py:40
 msgid "Paragraphs per page until a pagebreak."
 msgstr "Absätze pro Seite."
 
-#: src/zeit/content/article/interfaces.py:62
+#: src/zeit/content/article/interfaces.py:45
 msgid "Paragraphsamount"
 msgstr "Absatzanzahl"
 
-#: src/zeit/content/article/interfaces.py:63
+#: src/zeit/content/article/interfaces.py:46
 msgid "Amount of paragraphs in total."
 msgstr "Absätze insgesamt:"
 
-#: src/zeit/content/article/interfaces.py:68
+#: src/zeit/content/article/interfaces.py:51
 msgid "Daily Newsletter"
 msgstr "Tages-Newsletter"
 
-#: src/zeit/content/article/interfaces.py:69
+#: src/zeit/content/article/interfaces.py:52
 msgid "Should this article be listed in the daily newsletter?"
 msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
 
-#: src/zeit/content/article/interfaces.py:74
-msgid "Automatic Teasersyndication"
-msgstr "Automatische Teaser-Syndizierung"
-
-#: src/zeit/content/article/interfaces.py:75
-msgid "Teaser will automatically be updated in the enabled channels."
-msgstr "Beim Checkin werden Teaser in den aktivierten Channels automatisch aktualisiert."
-
-#: src/zeit/content/article/interfaces.py:82
+#: src/zeit/content/article/interfaces.py:57
 msgid "Textlength"
 msgstr "Anschläge"
 
-#: src/zeit/content/article/interfaces.py:86
+#: src/zeit/content/article/interfaces.py:61
 msgid "Has recension content"
 msgstr "Hat Rezensionsinformationen"
 
-#: src/zeit/content/article/interfaces.py:90
+#: src/zeit/content/article/interfaces.py:65
 msgid "First related as box"
 msgstr "Erstes Related als Box"
 
-#: src/zeit/content/article/interfaces.py:98
-msgid "Article is syndicated in these feeds."
-msgstr "Artikel ist in folgenden Feeds syndiziert."
-
+#~ msgid "Assets and related"
+#~ msgstr "Assets und Related"
+#~ msgid "Edit assets"
+#~ msgstr "Assets bearbeiten"
+#~ msgid "Assets"
+#~ msgstr "Assets"
+#~ msgid "Syndication Log"
+#~ msgstr "Syndizierungs-Log"
+#~ msgid "Syndication Time"
+#~ msgstr "Syndizierungszeit"
+#~ msgid "Syndicated in"
+#~ msgstr "Syndiziert in"
+#~ msgid "Automatic Teasersyndication"
+#~ msgstr "Automatische Teaser-Syndizierung"
+#~ msgid "Teaser will automatically be updated in the enabled channels."
+#~ msgstr ""
+#~ "Beim Checkin werden Teaser in den aktivierten Channels automatisch "
+#~ "aktualisiert."
+#~ msgid "Article is syndicated in these feeds."
+#~ msgstr "Artikel ist in folgenden Feeds syndiziert."
 #~ msgid "Calendar"
 #~ msgstr "Kalender"
 #~ msgid "Event"
@@ -279,8 +269,6 @@ msgstr "Artikel ist in folgenden Feeds syndiziert."
 #~ msgstr "Datum/Uhrzeit des Terminbeginns"
 #~ msgid "Title will be shown in overview pages."
 #~ msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
-#~ msgid "Related content"
-#~ msgstr "Verlinkte Objekte"
 #~ msgid "Documents that are related to this object."
 #~ msgstr "Dokumente, die verlinkt werden sollen."
 #~ msgid "Location/Type"
@@ -617,8 +605,6 @@ msgstr "Artikel ist in folgenden Feeds syndiziert."
 #~ msgstr "Syndizierungsziele"
 #~ msgid "Limit amount"
 #~ msgstr "Anzahl begrenzen"
-#~ msgid "limit-amount-description"
-#~ msgstr "limit-amount-description"
 #~ msgid "Last modified by"
 #~ msgstr "Zuletzt geändert von"
 #~ msgid "Date last modified"
