@@ -112,7 +112,7 @@ Now, fill the form and add the article:
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.getControl('Sub ressort').displayOptions
-['(no value)', 'Joschka Fisher', 'Datenschutz', 'Integration', 'Meinung']
+['(no value)', 'Joschka Fisher', 'Integration', 'Meinung', 'Datenschutz', 'US-Wahl', 'Nahost']
 >>> browser.getControl('Sub ressort').displayValue = ['Integration']
 >>> browser.getControl('VG Wort Id').value = 'ada94da'
 >>> 'There were errors' in browser.contents
