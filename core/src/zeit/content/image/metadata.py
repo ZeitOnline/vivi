@@ -9,6 +9,7 @@ import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.cms.syndication.interfaces
 
 import zeit.content.image.interfaces
 
@@ -20,7 +21,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/image',
-        ('expires', 'alt', 'caption', 'links_to'))
+        ('alt', 'caption', 'links_to'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
@@ -54,10 +55,10 @@ def MetadataXMLReference(context):
             node.set('link', link)
         copyrights.append(node)
 
-    expires = context.expires
-    if expires:
-        expires = expires.isoformat()
-        attributes['expires'] = expires
+    #expires = context.expires
+    #if expires:
+    #    expires = expires.isoformat()
+    #    attributes['expires'] = expires
 
     set_if_not_empty('title', context.title)
     set_if_not_empty('alt', context.alt)
@@ -67,4 +68,5 @@ def MetadataXMLReference(context):
         lxml.objectify.E.bu(context.caption),
         *copyrights,
         **attributes)
+
     return image

@@ -13,12 +13,6 @@
       </td>
     </tr>
     <tr>
-      <td i18n:translate="">Expires</td>
-      <td tal:content="view/metadata/expires">
-        1.1.07
-      </td>
-    </tr>
-    <tr>
       <td i18n:translate="">Volume/Year</td>
       <td>
         <span

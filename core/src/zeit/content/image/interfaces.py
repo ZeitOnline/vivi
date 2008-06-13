@@ -26,10 +26,6 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
 
 class IImageMetadata(zope.interface.Interface):
 
-    expires = zope.schema.Datetime(
-        title=_("Expires"),
-        required=False)
-
     title = zope.schema.TextLine(
         title=_("Image title"),
         default=u'',

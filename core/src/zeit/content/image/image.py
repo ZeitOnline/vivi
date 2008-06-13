@@ -62,4 +62,9 @@ def XMLReference(context):
     if '.' in context.__name__:
         base, ext = context.__name__.rsplit('.', 1)
         image.set('type', ext)
+    # The image reference can be seen like an element in a feed. Let the magic
+    # update the xml node.
+    for name, utility in zope.component.getUtilitiesFor(
+        zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
+        utility.update_entry(image, context)
     return image

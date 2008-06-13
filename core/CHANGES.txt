@@ -16,6 +16,7 @@ zeit.cms changes
 - Keyword-Typeahead rennt jetzt nicht mehr bei jedem Buchstaben zum Server;
   außerdem wird das Ergebnis vom Browser gecacht (bug 4270).
 - "Unendlich"-Knopf bei Datumseingabe (leert das Feld).
+- Bilder haben kein besonderes Löschdatum mehr, dafür ist der Workflow da.
 
 
 0.9.17 (2008-06-10)

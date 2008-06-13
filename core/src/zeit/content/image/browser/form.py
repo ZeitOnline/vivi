@@ -46,14 +46,6 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
     factory = zeit.content.image.image.Image
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request and 'form.actions.add' not in self.request:
-            form = self.request.form
-            form['form.expires'] = (
-                datetime.date.today() + datetime.timedelta(days=7)).strftime(
-                    '%Y-%m-%d 00:00:00')
-        super(AddForm, self).setUpWidgets(ignore_request)
-
     def validate(self, action, data):
         if (not self.request.form.get('form.__name__') and
             self.request.form.get('form.data')):
