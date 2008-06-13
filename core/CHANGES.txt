@@ -19,6 +19,7 @@ zeit.cms changes
 - Bilder haben kein besonderes Löschdatum mehr, dafür ist der Workflow da.
 - Formulare sind nicht mehr Denglisch (bug #3734).
 - WYSIWYG-Editor: Popups zeigen jetzt den Cursor an (bug #4221).
+- Tab "Syndizieren": Die Ziele sind jetzt nach der Id sortiert (bug #4269).
 
 
 0.9.17 (2008-06-10)

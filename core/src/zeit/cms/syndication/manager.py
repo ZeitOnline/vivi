@@ -31,7 +31,9 @@ class SyndicationManager(object):
 
     @property
     def targets(self):
-        return self._target_mapping.values()
+        return sorted(
+            self._target_mapping.values(),
+            key=lambda t: t.uniqueId)
 
     @property
     def canSyndicate(self):
