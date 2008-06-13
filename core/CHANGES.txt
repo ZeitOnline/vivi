@@ -17,6 +17,7 @@ zeit.cms changes
   außerdem wird das Ergebnis vom Browser gecacht (bug 4270).
 - "Unendlich"-Knopf bei Datumseingabe (leert das Feld).
 - Bilder haben kein besonderes Löschdatum mehr, dafür ist der Workflow da.
+- Formulare sind nicht mehr Denglisch (bug #3734).
 
 
 0.9.17 (2008-06-10)
