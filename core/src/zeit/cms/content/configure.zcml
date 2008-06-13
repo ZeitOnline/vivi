@@ -102,6 +102,7 @@
     provides=".interfaces.IRelatedContent" />
   <adapter factory=".related.related_from_template" />
   <adapter factory=".related.BasicReference" name="related" />
+  <subscriber handler=".related.update_related_on_checkin" />
 
   <!-- automatic xml updating -->
   <adapter factory=".xmlsupport.PropertyToXMLAttribute" />

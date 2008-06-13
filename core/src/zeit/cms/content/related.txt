@@ -3,47 +3,20 @@ Related content
 ===============
 
 
-Content can be related. The default way is relating xml content, so create a
-dummy content:
+Content can be related. The default way is relating xml
+content[#functionaltest]_:
 
-
->>> import zope.interface
->>> import zope.interface.verify
->>> import zeit.cms.content.interfaces
->>> import lxml.objectify
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
-...     uniqueId = 'dummy-content'
-...     xml = lxml.objectify.E.content(
-...         lxml.objectify.E.head())
-...
->>> content = Content()
-
-
-Also create a mock repository:
-
->>> repository_content = {}
->>>
->>> class Repository(object):
-...
-...     def getContent(self, unique_id):
-...         return repository_content[unique_id]
-...
-...     def add(self, content):
-...         repository_content[content.uniqueId] = content
-...
->>> repository = Repository()
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(
-...     repository, zeit.cms.repository.interfaces.IRepository)
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
 
 Add content to repository:
 
->>> repository.add(content)
+>>> repository['content'] = content
 
 Adapt it to IReference, currenty there are no references:
 
 >>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.content.interfaces.IRelatedContent, related)
 True
@@ -56,9 +29,9 @@ True
 
 Add a related content:
 
->>> related_content = Content()
->>> related_content.uniqueId = 'related-content-uid'
->>> repository.add(related_content)
+>>> related_content = (
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+>>> repository['related'] = related_content
 >>> related.related = (related_content, )
 
 
@@ -66,54 +39,119 @@ Let's have a look at the source:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference type="intern" href="related-content-uid"/>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
     </references>
   </head>
-</content>
+  <body/>
+</testtype>
 
 Also check the source of related:
 
 >>> print lxml.etree.tostring(related.xml, pretty_print=True)
-<references xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <reference type="intern" href="related-content-uid"/>
+<references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    type="intern" href="http://xml.zeit.de/related">
+    <title xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <short>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+    </short>
+    <homepage>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+    </homepage>
+  </reference>
 </references>
 
 >>> related.related
-(<Content object at 0x...>,)
+(<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>,)
 >>> related.related[0].uniqueId
-'related-content-uid'
+u'http://xml.zeit.de/related'
+
 
 Assigning the same content object again doesn't change the xml:
 
 >>> related.related = (related_content, )
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference type="intern" href="related-content-uid"/>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
     </references>
   </head>
-</content>
+  <body/>
+</testtype>
 
 
 Let's add another related content:
 
->>> related_content2 = Content()
->>> related_content2.uniqueId = 'related-content-2-uid'
->>> repository.add(related_content2)
+>>> related_content2 = (
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+>>> repository['related2'] = related_content2
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference type="intern" href="related-content-uid"/>
-      <reference type="intern" href="related-content-2-uid"/>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related2">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
     </references>
   </head>
-</content>
+  <body/>
+</testtype>
+
 
 
 Metadata
@@ -122,8 +160,6 @@ Metadata
 Now what about the metadata? When the related object is adaptable to
 ICommonMetadata some information is included in the XML:
 
->>> zope.interface.directlyProvides(
-...     related_content, zeit.cms.content.interfaces.ICommonMetadata)
 >>> related_content.year = 2006
 >>> related_content.volume = 19
 >>> related_content.teaserTitle = 'I relate the title'
@@ -133,15 +169,54 @@ ICommonMetadata some information is included in the XML:
 >>> related_content.hpTeaserTitle = None
 >>> related_content.hpTeaserText = None
 
+So far nothing has changed:
 
-Reassign the two objects an verify the xml:
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <references>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related2">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+    </references>
+  </head>
+  <body/>
+</testtype>
+
+
+
+when we reassign the two objects the metadata will be reflected in the xml:
 
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference type="intern" href="related-content-uid" year="2006" issue="19">
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related" year="2006" issue="19">
         <title py:pytype="str">I relate the title</title>
         <description py:pytype="str">Dude.</description>
         <short>
@@ -153,15 +228,87 @@ Reassign the two objects an verify the xml:
           <text xsi:nil="true"/>
         </homepage>
       </reference>
-      <reference type="intern" href="related-content-2-uid"/>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/related2">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
     </references>
   </head>
-</content>
+  <body/>
+</testtype>
 
 
-Cleanup
-=======
+Since re-assigning is not suiteable for actual use there is an event handler
+for checkin. Change some data again:
 
->>> gsm.unregisterUtility(
-...     repository, zeit.cms.repository.interfaces.IRepository)
-True
+>>> related_content.year = 2007
+>>> repository['related'] = related_content
+
+After sending the event the metadata is updated:
+
+>>> import zope.event
+>>> import zope.security.testing
+>>> import zeit.cms.checkout.interfaces
+>>> zope.event.notify(
+...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
+...         content, zope.security.testing.Principal('hans.wurst')))
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <references>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        type="intern" href="http://xml.zeit.de/related" year="2007" issue="19">
+        <title py:pytype="str">I relate the title</title>
+        <description py:pytype="str">Dude.</description>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/related2">
+        <title xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+    </references>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    name="last_modified_by">hans.wurst</attribute>
+  </head>
+  <body/>
+</testtype>
+
+
+Cleanup:
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functionaltest] We need to set the site since we're a functional test: 
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Do some imports and get the repository
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)

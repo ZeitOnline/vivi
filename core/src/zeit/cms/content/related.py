@@ -8,7 +8,9 @@ import rwproperty
 import zope.component
 import zope.interface
 
+import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.checkout.interfaces
 
 
 class RelatedBase(object):
@@ -112,8 +114,10 @@ def BasicReference(context):
 
     metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     if metadata is not None:
-        reference.set('year', unicode(metadata.year))
-        reference.set('issue', unicode(metadata.volume))
+        if metadata.year:
+            reference.set('year', unicode(metadata.year))
+        if metadata.volume:
+            reference.set('issue', unicode(metadata.volume))
         reference['title'] = metadata.teaserTitle
         reference['description'] = metadata.teaserText
 
@@ -133,3 +137,14 @@ def related(content, catalog):
     if related is None:
         return None
     return related.related
+
+
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_related_on_checkin(context, event):
+    """Update the related metadata before checkin."""
+    related = zeit.cms.content.interfaces.IRelatedContent(context, None)
+    if related is None:
+        return
+    related.related = related.related
