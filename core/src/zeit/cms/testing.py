@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
+import re
 import os
 
+import zope.testing.renormalizing
 from zope.testing import doctest
 
 import zope.component
@@ -17,6 +19,11 @@ import zeit.connector.interfaces
 cms_layer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'CMSLayer', allow_teardown=True)
+
+
+checker = zope.testing.renormalizing.RENormalizing([
+    (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>')
+])
 
 
 def setUp(test):
@@ -55,6 +62,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw['setUp'] = setUp
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
+    kw.setdefault('checker', checker)
 
     def tearDown(test):
         zope.app.testing.functional.FunctionalTestSetup().tearDown()

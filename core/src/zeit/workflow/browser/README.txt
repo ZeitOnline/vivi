@@ -198,7 +198,7 @@ again:
 Publishing checked out resources
 ================================
 
-There are a view race conditions regarding webdav properties. We concider the
+There are a few race conditions regarding webdav properties. We concider the
 workflow properties "live" i.e. they are only supposed to exist on the server.
 When an object is checked out, all properties are copied so they can be stored
 back to the server  on check in. Live properties must survive this.
@@ -242,15 +242,15 @@ The retract action is protected by javascript (which doesn't matter here):
 
 >>> print browser.contents
 <?xml ...
-            <input type="submit" id="form.actions.5361766520737461746520616e642072657472616374" name="form.actions.5361766520737461746520616e642072657472616374" value="Save state and retract" class="button" />
+            <input type="submit" id="form.actions.retract" name="form.actions.retract" value="Save state and retract now" class="button" />
         <script type="text/javascript">
-            function confirm_Zm9ybS5hY3Rpb25zLjUzNjE3NjY1MjA3Mzc0NjE3NDY1MjA2MTZlNjQyMDcyNjU3NDcyNjE2Mz(){
+            function confirm_Zm9ybS5hY3Rpb25zLnJldHJhY3(){
                 var confirmed = confirm("Really retract? This will remove the object from all channels it is syndicated in and make it unavailable to the public!");
                 if (confirmed)
                     return true;
                 return false;
             }
-            document.getElementById("form.actions.5361766520737461746520616e642072657472616374").onclick = confirm_Zm9ybS5hY3Rpb25zLjUzNjE3NjY1MjA3Mzc0NjE3NDY1MjA2MTZlNjQyMDcyNjU3NDcyNjE2Mz;
+            document.getElementById("form.actions.retract").onclick = confirm_Zm9ybS5hY3Rpb25zLnJldHJhY3;
         </script>
         ...
 

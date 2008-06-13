@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 class TaskDescription(object):
     """Data to be passed to publish/retract tasks."""
 
-    def __init__(self, uniqueId):
-        self.uniqueId = uniqueId
+    def __init__(self, obj):
+        self.uniqueId = obj.uniqueId
         self.principal = self.get_principal().id
 
     @staticmethod
@@ -59,13 +59,13 @@ class Publish(object):
 
         self.log(self.context, _('Publication scheduled'))
         self.tasks.add(u'zeit.workflow.publish',
-                       TaskDescription(self.context.uniqueId))
+                       TaskDescription(self.context))
 
     def retract(self):
         """Retract object."""
         self.log(self.context, _('Retracting scheduled'))
         self.tasks.add(u'zeit.workflow.retract',
-                       TaskDescription(self.context.uniqueId))
+                       TaskDescription(self.context))
 
     @property
     def tasks(self):

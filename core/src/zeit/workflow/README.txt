@@ -209,6 +209,135 @@ http://xml.zeit.de/online/2007/01/Somalia
      Retracted
      
 
+Time based publish / retract
+============================
+
+It is possible to set a publish and/or retract time. This will create a task
+which will be executed at the given time.
+
+>>> studivz = repository['online']['2007']['01']['studiVZ']
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(studivz)
+>>> not not workflow.published
+False
+>>> 
+>>> workflow.release_period
+(None, None)
+>>> workflow.urgent = True
+>>> workflow.can_publish()
+True
+>>> import datetime
+>>> import pytz
+>>> publish_on = (
+...     datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=3))
+>>> workflow.release_period = (publish_on, None)
+
+Processing now doesn't publish because the publish time is not reached, yet:
+
+>>> tasks.process()
+>>> not not workflow.published
+False
+
+Let's wait a second and process; still not published:
+
+>>> import time
+>>> time.sleep(1)
+>>> tasks.process()
+>>> not not workflow.published
+False
+
+We can increase the publish time while a task is active, it will be cancelled
+then:
+
+>>> job_id = workflow.publish_job_id
+>>> tasks.getStatus(job_id)
+'delayed'
+
+>>> publish_on += datetime.timedelta(seconds=1)
+>>> workflow.release_period = (publish_on, None)
+>>> tasks.getStatus(job_id)
+'cancelled'
+>>> job_id = workflow.publish_job_id
+>>> tasks.getStatus(job_id)
+'delayed'
+>>> tasks.process()
+
+Waiting another two seconds will publish the object:
+
+>>> time.sleep(2)
+>>> tasks.process()
+>>> workflow.published
+True
+>>> tasks.getStatus(job_id)
+'completed'
+
+
+When we set an publication time in the past, the object will just be published
+imediately:
+
+>>> orig_publish_date = workflow.date_last_published
+>>> publish_on = datetime.datetime(2000, 2, 3, tzinfo=pytz.UTC)
+>>> workflow.release_period = (publish_on, None)
+>>> tasks.process()
+>>> orig_publish_date < workflow.date_last_published
+True
+
+
+
+Retracting works in the same way:
+
+>>> retract_on = (datetime.datetime.now(pytz.UTC) +
+...               datetime.timedelta(seconds=2))
+>>> workflow.release_period = (publish_on, retract_on)
+>>> tasks.process()
+>>> job_id = workflow.retract_job_id
+>>> tasks.getStatus(job_id)
+'delayed'
+
+Wait:
+
+>>> time.sleep(2)
+>>> tasks.process()
+
+The object is rectracted now:
+
+>>> workflow.published
+False
+>>> tasks.getStatus(job_id)
+'completed'
+
+When we just set the same dates again, nothing happens:
+
+>>> workflow.release_period = (publish_on, retract_on)
+>>> workflow.published
+False
+>>> tasks.getStatus(job_id)
+'completed'
+
+We can also reset the dates:
+
+>>> workflow.release_period = (None, None)
+
+The actions are logged:
+
+>>> print_log(log.get_log(studivz))
+http://xml.zeit.de/online/2007/01/studiVZ
+     Urgent: yes
+http://xml.zeit.de/online/2007/01/studiVZ
+     To be published on 2008 6 13  07:38:48  (job #4)
+http://xml.zeit.de/online/2007/01/studiVZ
+     Scheduled publication cancelled (job #4).
+http://xml.zeit.de/online/2007/01/studiVZ
+     To be published on 2008 6 13  07:38:49  (job #5)
+http://xml.zeit.de/online/2007/01/studiVZ
+     Published
+http://xml.zeit.de/online/2007/01/studiVZ
+     To be published on 2000 2 3  00:00:00  (job #6)
+http://xml.zeit.de/online/2007/01/studiVZ
+     Published
+http://xml.zeit.de/online/2007/01/studiVZ
+     To be retracted on 2008 6 13  07:38:50  (job #7)
+http://xml.zeit.de/online/2007/01/studiVZ
+     Retracted
 
 
 Date first released
@@ -311,6 +440,7 @@ Reset the implements:
 >>> zope.interface.classImplementsOnly(
 ...     zeit.cms.repository.unknown.UnknownResource,
 ...     *old_implements)
+
 
 Recursive publish
 =================

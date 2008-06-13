@@ -1,6 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Workflow forms."""
 
 import zope.component
 import zope.interface
@@ -35,11 +35,13 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
 
     title = _("Workflow")
 
-    @zope.formlib.form.action(_('Save state only'))
+    @zope.formlib.form.action(_('Save state only'),
+                              name='save')
     def handle_save_state(self, action, data):
         self.applyChanges(data)
 
-    @zope.formlib.form.action(_('Save state and publish'))
+    @zope.formlib.form.action(_('Save state and publish now'),
+                              name='publish')
     def handle_publish(self, action, data):
         self.applyChanges(data)
         mapping = dict(
@@ -47,15 +49,18 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
             id=self.context.uniqueId)
         if self.info.can_publish():
             self.publish.publish()
-            self.send_message(_('scheduled-for-publishing',
-                                mapping=mapping))
+            self.send_message(
+                _('scheduled-for-immediate-publishing',
+                  default=u"${id} has been scheduled for publishing.",
+                  mapping=mapping))
         else:
             self.send_message(_('publish-preconditions-not-met',
                                 mapping=mapping),
                               type='error')
 
     @gocept.form.action.confirm(
-        _('Save state and retract'),
+        _('Save state and retract now'),
+        name='retract',
         confirm_message=_('Really retract? This will remove the object from '
                           'all channels it is syndicated in and make it '
                           'unavailable to the public!'),
@@ -66,8 +71,10 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
             name=self.context.__name__,
             id=self.context.uniqueId)
         self.publish.retract()
-        self.send_message(_('scheduled-for-retracting',
-                            mapping=mapping))
+        self.send_message(
+            _('scheduled-for-immediate-retracting',
+              default=u"${id} has been scheduled for retracting.",
+              mapping=mapping))
 
     @property
     def publish(self):

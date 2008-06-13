@@ -10,6 +10,7 @@ zeit.cms changes
 - Das Verwenden verschiedener Formate in einer Bildergruppe ist jetzt erlaubt.
 - Veröffentlichungs- und Zurückziehscript eingebunden.
 - Spezieller Workflow für Assets (derzeit nur Bilder).
+- Zeitgesteuertes veröffentlichen/zurückziehen.
 
 
 0.9.17 (2008-06-10)

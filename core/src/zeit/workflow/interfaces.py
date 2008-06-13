@@ -1,7 +1,6 @@
-# vim: fileencoding=utf8 encoding=utf8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Workflow interfaces."""
 
 import zope.interface
 import zope.schema
@@ -28,13 +27,9 @@ class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
         (zope.schema.Datetime(title=_("From"), required=False),
          zope.schema.Datetime(title=_("To"), required=False)),
         title=_('Publication period'),
-        description=_('Leave empty for no constraint.'),
+        description=_('workflow-publication-period-description',
+                      u'Leave empty for no constraint.'),
         required=False)
-
-    released_from = zope.interface.Attribute(
-        "Object is released from this date.")
-    released_to = zope.interface.Attribute(
-        "Object is released to this date.")
 
 
 class IContentWorkflow(ITimeBasedPublishing):
