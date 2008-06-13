@@ -18,6 +18,7 @@ zeit.cms changes
 - "Unendlich"-Knopf bei Datumseingabe (leert das Feld).
 - Bilder haben kein besonderes Löschdatum mehr, dafür ist der Workflow da.
 - Formulare sind nicht mehr Denglisch (bug #3734).
+- WYSIWYG-Editor: Popups zeigen jetzt den Cursor an (bug #4221).
 
 
 0.9.17 (2008-06-10)
