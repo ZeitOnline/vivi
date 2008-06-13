@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Fri Jun 13 09:47:48 2008\n"
-"PO-Revision-Date: 2008-06-13 09:55+0100\n"
+"PO-Revision-Date: 2008-06-13 10:11+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1391,7 +1391,7 @@ msgstr "Veröffentlichungszeitraum"
 #. Default: "Leave empty for no constraint."
 #: src/zeit/workflow/interfaces.py:30
 msgid "workflow-publication-period-description"
-msgstr "Der Veröffentlichungszeitraum gibt an, wann das Objekt automatisch veröffentlicht und wieder zurückgezogen wird (leer für keine Einschränkung)."
+msgstr "Leer für keine Einschränkung. Der Veröffentlichungszeitraum gibt an, wann das Objekt automatisch veröffentlicht und wieder zurückgezogen wird. In diesem Fall muss nur Status gespeichert werden. "
 
 #: src/zeit/workflow/interfaces.py:44
 msgid "status-edited"
