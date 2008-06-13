@@ -8,8 +8,8 @@
     />
   <adapter factory=".timebased.workflowProperties" />
   <utility
-    factory=".workflow.FeedMetadataUpdater"
-    name="workflow"
+    factory=".timebased.FeedMetadataUpdater"
+    name="timebased-workflow"
     />
   <subscriber handler=".workflow.log_workflow_changes" />
 

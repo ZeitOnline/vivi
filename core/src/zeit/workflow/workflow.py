@@ -66,29 +66,6 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         return False
 
 
-
-class FeedMetadataUpdater(object):
-    """Add the expire/publication time to feed entry."""
-
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
-
-    def update_entry(self, entry, content):
-        workflow = zeit.workflow.interfaces.IContentWorkflow(content, None)
-        if workflow is None:
-            return
-
-        date = ''
-        if workflow.released_from:
-            date = workflow.released_from.isoformat()
-        entry.set('publication-date', date)
-
-        date = ''
-        if workflow.released_to:
-            date = workflow.released_to.isoformat()
-        entry.set('expires', date)
-
-
 @zope.component.adapter(
     zeit.workflow.interfaces.IContentWorkflow,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
