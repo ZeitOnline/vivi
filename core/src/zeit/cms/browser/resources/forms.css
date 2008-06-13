@@ -7,13 +7,13 @@
 
 input[type="button"],
 input[type="submit"] {
-    color: black;
+    background-color: #dee7ec;
     border: 1px solid #196692;
     color: black;
-    vertical-align: middle;
-    background-color: #dee7ec;
-    padding: 1px;
     cursor: pointer;
+    font-size: 100%;
+    padding: 1px;
+    vertical-align: middle;
 }
 
 input[type="button"]:hover,
