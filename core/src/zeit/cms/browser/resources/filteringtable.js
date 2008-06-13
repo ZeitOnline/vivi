@@ -78,7 +78,8 @@ zeit.cms.FilteringTable = Class.extend({
         if (old_selected) {
             removeElementClass(old_selected, 'selected');
        }
-        var tr = event.target().parentNode
+        var tr = MochiKit.DOM.getFirstParentByTagAndClassName(
+            event.target(), 'TR')
         this.contentElement.old_selected = tr;
         addElementClass(tr, 'selected');
     },
@@ -93,7 +94,8 @@ zeit.cms.FilteringTable = Class.extend({
     },
 
     get_base_url: function(event) {
-        var tr = event.target().parentNode
+        var tr = MochiKit.DOM.getFirstParentByTagAndClassName(
+            event.target(), 'TR')
         var url_node = getFirstElementByTagAndClassName('span', 'URL', tr);
         if (url_node) {
             return url_node.textContent;
@@ -126,11 +128,8 @@ zeit.cms.FilteringTable = Class.extend({
     },
 
     enableDrag: function(event) {
-        var td = event.target()
-        if (td.nodeName != 'TD')
-            return
-
-        var row = td.parentNode;
+        var row = MochiKit.DOM.getFirstParentByTagAndClassName(
+            event.target(), 'TR')
         if (typeof(row.draggble) == "undefined") {
             row.draggable = new Draggable(row, {
                 starteffect: null,
