@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 # $Id$
@@ -266,6 +267,10 @@ DATETIME_WIDGET_ADDITIONAL = """\
         %(increase)s;
         $('%(field)s').value = date.print('%%Y-%%m-%%d %%H:%%M:%%S');" />
 """
+DATETIME_WIDGET_INFTY = u"""\
+<input type="button" value="∞"
+    onclick="javascript:$('%(field)s').value = '';" />
+"""
 class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
     """A datetime widget with additional buttons."""
 
@@ -279,4 +284,8 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
             field=self.name,
             label="1M",
             increase="date.setMonth(date.getMonth() + 1)")
-        return html + week + month
+        infty = DATETIME_WIDGET_INFTY % dict(
+            field=self.name)
+        return (u'<div class="dateTimeWidget">'
+                + html + week + month + infty
+                + '</div>')

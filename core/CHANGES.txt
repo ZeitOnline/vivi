@@ -15,6 +15,7 @@ zeit.cms changes
   Ressorts (bug #4268).
 - Keyword-Typeahead rennt jetzt nicht mehr bei jedem Buchstaben zum Server;
   außerdem wird das Ergebnis vom Browser gecacht (bug 4270).
+- "Unendlich"-Knopf bei Datumseingabe (leert das Feld).
 
 
 0.9.17 (2008-06-10)

@@ -246,6 +246,7 @@ in one month:
 >>> field = zope.schema.Datetime()
 >>> widget = zeit.cms.browser.widget.DatetimeWidget(field, request)
 >>> print widget()
+<div class="dateTimeWidget">
 <input class="textType" id="field." name="field." size="20" type="text" value=""  />
 <input type="button" value="..." id="field._trigger">
 <script type="text/javascript">
@@ -264,3 +265,6 @@ in one month:
     onclick="javascript:var date = new Date();
         date.setMonth(date.getMonth() + 1);
         $('field.').value = date.print('%Y-%m-%d %H:%M:%S');" />
+<input type="button" value="∞"
+    onclick="javascript:$('field.').value = '';" />
+</div>        
