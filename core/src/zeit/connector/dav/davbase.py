@@ -92,6 +92,7 @@ class HTTPBasicAuthCon:
         if ulist[1]:
             headers['Host'] = ulist[1]
         headers['Connection'] = 'keep-alive'
+        headers['User-Agent'] = 'zeit.connector'
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))

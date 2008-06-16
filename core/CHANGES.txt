@@ -1,13 +1,15 @@
 CHANGES
 =======
 
-0.21 (unreleased)
+0.21 (2008-06-16)
 -----------------
 
 - Make sure 'NoneType' object has no attribute 'group' doesn't occur anymore.
 - Make sure XML-like content can be put in a property by prefixing it. This is
   a temporary fix until it is decided what the DAV server will do in this case.
-
+- Added a DataManager where the connector can register things to clean up on
+  transaction abort.
+- Sending User-Agent "zeit.connector"
 
 0.20 (2008-06-10)
 -----------------
