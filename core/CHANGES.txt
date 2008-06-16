@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-1.2 (unreleased)
+1.2 (2008-06-16)
 ----------------
 
 - Asset-View refaktoriert: Verwenden des Asset-Supports aus dem Core.
