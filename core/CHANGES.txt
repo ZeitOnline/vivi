@@ -4,6 +4,8 @@ zeit.cms changes
 0.9.19 (unreleased)
 -------------------
 
+- Re-added released_from/released_to to the Workflow interfaces.
+
 0.9.18 (2008-06-16)
 -------------------
 

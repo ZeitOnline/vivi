@@ -31,6 +31,11 @@ class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
                       u'Leave empty for no constraint.'),
         required=False)
 
+    released_from = zope.interface.Attribute(
+        "Easy access to release_period[0]")
+    released_to = zope.interface.Attribute(
+        "Easy access to release_period[1]")
+
 
 class IContentWorkflow(ITimeBasedPublishing):
     """Zeit Workflow interface.
