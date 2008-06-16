@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jun 13 09:47:48 2008\n"
+"POT-Creation-Date: Mon Jun 16 08:38:49 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -65,7 +65,7 @@ msgstr ""
 #: src/zeit/cms/browser/listing.py:275
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:257
+#: src/zeit/cms/content/interfaces.py:256
 #: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
@@ -81,7 +81,7 @@ msgid "Title will be shown in overview pages."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:264
+#: src/zeit/cms/content/interfaces.py:263
 msgid "Related content"
 msgstr ""
 
@@ -284,11 +284,11 @@ msgstr ""
 msgid "The action you were trying to do could not be finished."
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:47
+#: src/zeit/cms/browser/widget.py:48
 msgid "The given id is invalid."
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:50
+#: src/zeit/cms/browser/widget.py:51
 msgid "The object could not be found."
 msgstr ""
 
@@ -356,16 +356,16 @@ msgstr ""
 msgid "clipboard-paste-explain"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:116
+#: src/zeit/cms/content/browser/form.py:115
 msgid "Assets and related"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:132
+#: src/zeit/cms/content/browser/form.py:131
 #: src/zeit/cms/content/browser/configure.zcml:143
 msgid "Edit assets"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:136
+#: src/zeit/cms/content/browser/form.py:135
 #: src/zeit/cms/content/browser/configure.zcml:160
 msgid "Assets"
 msgstr ""
@@ -531,23 +531,23 @@ msgstr ""
 msgid "Homepage teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:148
+#: src/zeit/cms/content/interfaces.py:147
 msgid "Homepage teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:153
+#: src/zeit/cms/content/interfaces.py:152
 msgid "VG Wort Id"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:225
+#: src/zeit/cms/content/interfaces.py:224
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:265
+#: src/zeit/cms/content/interfaces.py:264
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:295
+#: src/zeit/cms/content/interfaces.py:294
 msgid "Hits today"
 msgstr ""
 
@@ -560,14 +560,14 @@ msgid "Root of ontology"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:61
-#: src/zeit/content/image/interfaces.py:39
+#: src/zeit/content/image/interfaces.py:35
 #: src/zeit/search/interfaces.py:21
 #: src/zeit/search/browser/sidebar.pt:46
 msgid "Year"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:66
-#: src/zeit/content/image/interfaces.py:45
+#: src/zeit/content/image/interfaces.py:41
 #: src/zeit/search/interfaces.py:22
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
@@ -1054,7 +1054,7 @@ msgstr ""
 msgid "Add image"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:67
+#: src/zeit/content/image/browser/form.py:59
 msgid "Edit image"
 msgstr ""
 
@@ -1062,23 +1062,23 @@ msgstr ""
 msgid "View image"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:22
+#: src/zeit/content/image/browser/image_view.pt:16
 msgid "Volume/Year"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:41
+#: src/zeit/content/image/browser/image_view.pt:35
 msgid "Image title: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:44
+#: src/zeit/content/image/browser/image_view.pt:38
 msgid "ALT: ${alt}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:47
+#: src/zeit/content/image/browser/image_view.pt:41
 msgid "Image sub text: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:51
+#: src/zeit/content/image/browser/image_view.pt:45
 msgid "Links to: ${link}"
 msgstr ""
 
@@ -1087,7 +1087,7 @@ msgid "Type"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:139
+#: src/zeit/content/image/interfaces.py:135
 #: src/zeit/content/image/browser/configure.zcml:139
 #: src/zeit/content/gallery/browser/configure.zcml:76
 msgid "Images"
@@ -1130,48 +1130,43 @@ msgid "The action you were trying to do could not be finished because the resour
 msgstr ""
 
 #: src/zeit/content/image/interfaces.py:30
-#: src/zeit/content/image/browser/image_view.pt:16
-msgid "Expires"
-msgstr ""
-
-#: src/zeit/content/image/interfaces.py:34
 msgid "Image title"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:51
+#: src/zeit/content/image/interfaces.py:47
 msgid "Copyrights"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:57
+#: src/zeit/content/image/interfaces.py:53
 msgid "Copyright"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:61
+#: src/zeit/content/image/interfaces.py:57
 #: src/zeit/content/link/browser/configure.zcml:8
 msgid "Link"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:62
+#: src/zeit/content/image/interfaces.py:58
 msgid "Link to copyright holder"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:66
+#: src/zeit/content/image/interfaces.py:62
 msgid "Alternative text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:67
+#: src/zeit/content/image/interfaces.py:63
 msgid "Enter a textual description of the image"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:72
+#: src/zeit/content/image/interfaces.py:68
 msgid "Image sub text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:77
+#: src/zeit/content/image/interfaces.py:73
 msgid "Links to"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:78
+#: src/zeit/content/image/interfaces.py:74
 msgid "Enter a URL this image should link to."
 msgstr ""
 
@@ -1477,7 +1472,7 @@ msgstr ""
 msgid "scheduled-retracting-cancelled"
 msgstr ""
 
-#: src/zeit/workflow/workflow.py:102
+#: src/zeit/workflow/workflow.py:79
 #. Default: ""
 msgid "${name}: ${new_value}"
 msgstr ""
