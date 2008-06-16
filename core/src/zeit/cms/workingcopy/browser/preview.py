@@ -34,6 +34,11 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         del preview_obj.__parent__[preview_obj.__name__]
         return preview_request.read()
 
+    def get_preview_url_for(self, preview_context):
+        url = super(WorkingcopyPreview, self).get_preview_url_for(preview_context)
+        url = '%s?%s' % (url, self.request.environment['QUERY_STRING'])
+        return url
+
     def get_preview_object(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')

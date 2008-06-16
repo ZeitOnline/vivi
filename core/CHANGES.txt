@@ -25,6 +25,8 @@ zeit.cms changes
 - Homepage-Teaser/-Text haben jetzt keine Längenbegrenzung mehr.
 - Die Metadaten von Relateds und Bildern werden jetzt beim Checkin aktualisiert
   (bug #4226).
+- Workgingcopy-Preview gibt Query-Argumente jetzt beim Rendern weiter, so dass
+  man auch die Seiten durchblättern kann (bug #4286).
 
 
 0.9.17 (2008-06-10)

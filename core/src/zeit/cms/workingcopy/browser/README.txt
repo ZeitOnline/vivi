@@ -238,7 +238,6 @@ Open the checked out somalia and change its source:
 
 When we look at the preview now[#prepare-preview]_:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Preview').click()
 >>> print browser.contents
 The quick brown fox jumps over the lazy dog.
@@ -259,6 +258,16 @@ preview doesn't break when the folders already exist:
 >>> browser.getLink('Preview').click()
 >>> print browser.contents
 The quick brown fox jumps over the lazy dog.
+
+Query arguments are passed to the server:
+
+>>> 
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'Somalia/@@view.html')
+>>> url = browser.getLink('Preview').url
+>>> browser.open(url + '?foo=bar')
+>>> print browser.contents
+The quick brown foo jumps over the lazy bar.
 
 
 Clean up:
@@ -282,9 +291,14 @@ Clean up:
     >>> import sha
     >>> hash = sha.new('http://xml.zeit.de/online/2007/01/Somalia')
     >>> hash.update('zope.user')
-    >>> name = hash.hexdigest()
+    >>> name = hash.hexdigest() + '?'
     >>> file(os.path.join(preview_dir, name), 'w').write(
     ...     'The quick brown fox jumps over the lazy dog.')
+
+    Create another file:
+    >>> foo_name = name + 'foo=bar'
+    >>> file(os.path.join(preview_dir, foo_name), 'w').write(
+    ...     'The quick brown foo jumps over the lazy bar.')
 
     >>> import zope.app.appsetup.product
     >>> cms_config = zope.app.appsetup.product._configs['zeit.cms']
