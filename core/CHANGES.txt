@@ -9,6 +9,7 @@ zeit.cms changes
 - XML-Editor: Lange URLs im <block href=... zerfetzen das Layout nicht mehr
 - XML-Editor: Bearbeiten von hrefs im <block>
 - XML-Editor: Besseres "Click-Verhalten" beim Anzeigen der Aktionen
+- Bessere Unterstützung für alte Bildergelerien (mit migrierten Pfaden)
 
 0.9.19 (2008-06-16)
 -------------------

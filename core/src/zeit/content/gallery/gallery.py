@@ -191,14 +191,17 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
         # This might be an old instance.
         matching_images = self._entries_container.xpath('block/image')
+        new_id = None
         for image in matching_images:
-            if not image.get('src').startswith('/cms/work/'):
-                continue
-            if image.get('src').endswith('/' + key):
+            src = image.get('src')
+            if src.startswith('/cms/work/'):
+                new_id = src.replace('/cms/work/', 'http://xml.zeit.de/')
+            elif src.startswith('http://xml.zeit.de/'):
+                new_id = src
+            if new_id is not None and src.endswith('/' + key):
                 block = image.getparent()
                 block.set('name', key)
-                image.set('src', image.get('src').replace(
-                    '/cms/work/', 'http://xml.zeit.de/'))
+                image.set('src', new_id)
                 self._p_changed = True
                 return block
 
@@ -211,10 +214,13 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         image_sources = self._entries_container.xpath('block/image/@src')
         unique_id = None
         for path in image_sources:
-            if not path.startswith('/cms/work'):
-                continue
-            unique_id = 'http://xml.zeit.de/%s' % path[9:]
-            break
+            if path.startswith('/cms/work'):
+                unique_id = 'http://xml.zeit.de/%s' % path[9:]
+            elif path.startswith('http://xml.zeit.de'):
+                unique_id = path
+            if unique_id is not None:
+                break
+
         if not unique_id:
             return
 

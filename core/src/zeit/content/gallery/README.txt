@@ -664,6 +664,72 @@ now:
 <zeit.content.gallery.gallery.GalleryEntry object at 0x...>
 
 
+Let's make sure this also works, when the image urls are not starting wich
+/cms/work but are already convertet to http://xml.zeit.de urls:
+
+>>> gallery.xml = lxml.objectify.XML(u"""\
+...     <centerpage>
+...       <head>
+...       </head>
+...       <body>
+...         <column layout="left"/>
+...         <column layout="right">
+...           <container>
+...             <block>
+...               <text>
+...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...               </text>
+...               <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" 
+...                     width="380" align="left">
+...                 <copyright>© Martin Rose/Getty Images</copyright>
+...                 BILD 
+...               </image>
+...             </block>
+...             <block>
+...               <image expires="2007-04-09" src="http://xml.zeit.de/2006/01.jpg" width="380"
+...                 align="left">
+...                 <copyright>© Martin Rose/Getty Images</copyright> BILD </image>
+...             </block>
+...           </container>
+...         </column>
+...       </body>
+...     </centerpage>""")
+
+
+The image folder is resolved correcty, too:
+
+>>> gallery.image_folder.uniqueId
+u'http://xml.zeit.de/2006'
+
+The keys also correct(ed) and the names are set:
+
+>>> list(gallery.keys())
+[u'DSC00109_2.JPG', u'01.jpg'] 
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+<centerpage>
+  <head>
+      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/2006</image-folder></head>
+  <body>
+    <column layout="left"/>
+    <column layout="right">
+      <container>
+        <block name="DSC00109_2.JPG">
+          <text>
+                 Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+              </text>
+          <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright>
+                BILD
+              </image>
+        </block>
+        <block name="01.jpg">
+          <image expires="2007-04-09" src="http://xml.zeit.de/2006/01.jpg" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright> BILD </image>
+        </block>
+      </container>
+    </column>
+  </body>
+</centerpage>
+
+
 Cleanup
 +++++++
 
