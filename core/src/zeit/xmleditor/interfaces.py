@@ -31,13 +31,18 @@ class IBlock(IEditableStructure):
 
     priority = zope.schema.Int(
         title=u"Priorität",
-        default=500)
+        default=500,
+        required=False)
     layout = zope.schema.TextLine(
         title=u"Layout",
         required=False)
     id = zope.schema.TextLine(
         title=u"Id",
         required=False)
+    href = zope.schema.URI(
+        title=u"URL/HREF",
+        required=False)
+
 
 class IText(IEditableStructure):
 

@@ -126,7 +126,7 @@ not in the document, yet:
 ...     xml = xml_tree
 ...     url = ObjectPathAttributeProperty('.a', 'href')
 ...     words = ObjectPathAttributeProperty(
-...         '.count', 'words', zope.schema.Int())
+...         '.count', 'words', zope.schema.Int(default=0))
 ...     chars = ObjectPathAttributeProperty(
 ...         '.count', 'chars', zope.schema.Int())
 ...     sentences = ObjectPathAttributeProperty(
@@ -166,6 +166,14 @@ Traceback (most recent call last):
 WrongType: (6.25, (<type 'int'>, <type 'long'>))
 >>> content.words
 53
+
+
+Let's change words to an invalid value, we'll get the missing value back then:
+
+>>> xml_tree['count'].set('words', 'foo')
+>>> content.words is None
+True
+
 
 
 Referencing Resources

@@ -121,7 +121,10 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
             # If we've got a field assigned, let the field convert the value.
             # But only if it is a string. This is mostly the case, but if the
             # attribute is missing `value` is none.
-            value = self.field.fromUnicode(value)
+            try:
+                value = self.field.fromUnicode(value)
+            except ValueError:
+                value = self.field.missing_value
         elif isinstance(value, str):
             value = unicode(value)
         return value

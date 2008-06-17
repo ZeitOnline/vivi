@@ -4,6 +4,12 @@ zeit.cms changes
 0.9.20 (unreleased)
 -------------------
 
+- XML-Editor: <column> unterhalb von <block> erlaubt (Zuender)
+- XML-Editor: <block> mit priority="" geht nicht mehr kaputt.
+- XML-Editor: Lange URLs im <block href=... zerfetzen das Layout nicht mehr
+- XML-Editor: Bearbeiten von hrefs im <block>
+- XML-Editor: Besseres "Click-Verhalten" beim Anzeigen der Aktionen
+
 0.9.19 (2008-06-16)
 -------------------
 

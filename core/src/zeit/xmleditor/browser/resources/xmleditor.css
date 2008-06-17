@@ -129,6 +129,7 @@
   font-size: 80%;
   color: #808080;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 

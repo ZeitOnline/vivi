@@ -47,6 +47,8 @@ class Block(StructureBase):
         None, 'layout')
     id = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'id')
+    href = zeit.cms.content.property.ObjectPathAttributeProperty(
+        None, 'href')
 
 
 class Text(StructureBase):

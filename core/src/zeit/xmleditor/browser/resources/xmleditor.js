@@ -65,7 +65,17 @@ XMLEditor.prototype = {
     showActionsPane: function(where, node) {
         // Show the actions pane for `node` at position `where`
         var editor = this;
-        var path = node.getAttribute('path')
+        while (true) {
+            var path = node.getAttribute('path')
+            if (path == null) {
+                node = node.parentNode
+            } else {
+                break
+            }
+            if (node.nodeName == 'HTML') {
+                break
+            }
+        }
         if (path == null) {
             return;
         }

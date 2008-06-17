@@ -112,7 +112,7 @@
               </xsl:for-each>
            </xsl:when>
           <xsl:otherwise>
-              <xsl:apply-templates select="line | feed | ad | raw | title | byline | supertitle | text | image"/>
+              <xsl:apply-templates select="line | feed | ad | raw | title | byline | supertitle | text | image | column"/>
           </xsl:otherwise>
       </xsl:choose>
     </div>
