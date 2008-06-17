@@ -94,7 +94,7 @@ XMLEditor.prototype = {
         d.addCallback(function(result) {
             var node_dim = getElementDimensions(node);
             var pane_dim = getElementDimensions(actions_pane);
-            var new_width = node_dim.w - 2;
+            var new_width = node_dim.w - 3;
             if (new_width > pane_dim.w) {
                 // We only want to make the pane larger. If it is larger than
                 // the node already looks bad.
@@ -102,7 +102,7 @@ XMLEditor.prototype = {
             }
             setElementDimensions(actions_pane, pane_dim);
             var pane_pos = getElementPosition(actions_pane)
-            pane_pos.x -= 2;
+            pane_pos.x -= 3;
             pane_pos.y -= pane_dim.h;
             setElementPosition(actions_pane, pane_pos);
             setStyle(actions_pane, {'opacity': '1'});
@@ -130,7 +130,7 @@ XMLEditor.prototype = {
     },
 
     createActionsPane: function(node) {
-        actions_pane = document.createElement('div');
+        var actions_pane = document.createElement('div');
         setStyle(actions_pane, {'opacity': '0'});
         actions_pane.id = 'xml-editor-actions';
 
