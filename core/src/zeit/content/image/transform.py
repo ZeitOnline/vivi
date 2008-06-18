@@ -5,7 +5,7 @@
 import cStringIO
 import datetime
 
-import Image  # PIL
+import PIL.Image
 import pytz
 
 import zope.component
@@ -23,14 +23,14 @@ class ImageTransform(object):
     def __init__(self, context):
         self.context = context
         try:
-            self.image = Image.open(cStringIO.StringIO(context.data))
+            self.image = PIL.Image.open(cStringIO.StringIO(context.data))
             self.image.load()
         except IOError:
             raise zeit.content.image.interfaces.ImageProcessingError(
                 "Cannot transform image %s" % context.__name__)
 
     def thumbnail(self, width, height):
-        self.image.thumbnail((width, height), Image.ANTIALIAS)
+        self.image.thumbnail((width, height), PIL.Image.ANTIALIAS)
 
         image_data = cStringIO.StringIO()
         self.image.save(image_data, self.image.format)

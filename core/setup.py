@@ -15,7 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
-        'PIL',
+        'PILwoTk',
         'ZODB3>3.7',
         'decorator',
         'gocept.cache',
