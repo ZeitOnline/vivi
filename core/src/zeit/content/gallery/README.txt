@@ -599,6 +599,7 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...             <block>
 ...               <text>
 ...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...                  <a href="fooo">link</a>
 ...               </text>
 ...               <image expires="2007-04-09" src="/cms/work/2006/DSC00109_2.JPG" 
 ...                     width="380" align="left">
@@ -643,6 +644,7 @@ The keys also correct(ed) and the names are set:
         <block name="DSC00109_2.JPG">
           <text>
                  Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+                 <a href="fooo">link</a>
               </text>
           <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright>
                 BILD
@@ -662,6 +664,20 @@ now:
 
 >>> gallery['01.jpg']
 <zeit.content.gallery.gallery.GalleryEntry object at 0x...>
+
+The entries' text is wrapped in a <p> node:
+
+>>> entry = gallery['DSC00109_2.JPG']
+>>> entry.text
+<Element text at ...>
+>>> print lxml.etree.tostring(entry.text, pretty_print=True)
+<text xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <p>
+                 Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+                 <a href="fooo">link</a>
+              </p>
+</text>
+
 
 
 Let's make sure this also works, when the image urls are not starting wich

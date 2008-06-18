@@ -105,6 +105,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.text = node.find('text')
         if entry.text is None:
             entry.text = lxml.objectify.E.text()
+        elif entry.text.text:
+            # Hrm. There is text which is not wrapped in another node, wrap it.
+            entry.text = lxml.objectify.E.text(
+                lxml.objectify.E.p(entry.text.text,
+                                   *entry.text.getchildren()))
         entry.layout = node.get('layout')
         if entry.layout is not None:
             entry.layout = unicode(entry.layout)
