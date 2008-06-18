@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.20 (unreleased)
+0.9.20 (2008-06-18)
 -------------------
 
 - XML-Editor: <column> unterhalb von <block> erlaubt (Zuender)
@@ -9,7 +9,7 @@ zeit.cms changes
 - XML-Editor: Lange URLs im <block href=... zerfetzen das Layout nicht mehr
 - XML-Editor: Bearbeiten von hrefs im <block>
 - XML-Editor: Besseres "Click-Verhalten" beim Anzeigen der Aktionen
-- Bessere Unterstützung für alte Bildergelerien (mit migrierten Pfaden)
+- Bessere Unterstützung für alte Bildergelerie
 
 0.9.19 (2008-06-16)
 -------------------
