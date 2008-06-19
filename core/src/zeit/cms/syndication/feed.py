@@ -255,7 +255,7 @@ def syndicated_in(content, catalog):
 
 
 class FakeEntry(object):
-    """..."""
+    """Entry which does not reference an object in the CMS."""
 
     def __init__(self, id, entry):
         self.uniqueId = id
