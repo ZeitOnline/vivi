@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.21 (unreleased)
+0.9.21 (2008-06-19)
 -------------------
 
 - Noch bessere Unterstützung für alte Bildergalerien, so dass auch der Text
