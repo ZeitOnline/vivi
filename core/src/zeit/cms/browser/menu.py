@@ -118,7 +118,7 @@ class DropDownMenuBase(object):
         for menu_item in provider.viewlets:
             if menu_item.selected:
                 self.selected = True
-            break
+                break
 
         self.items = provider.render()
 

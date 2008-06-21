@@ -1,0 +1,14 @@
+Default form
+============
+
+The form automatically assigns year and volume from the global settings:
+
+>>> import zope.publisher.browser
+>>> request = zope.publisher.browser.TestRequest()
+>>> import zeit.cms.content.browser.form
+>>> form = zeit.cms.content.browser.form.CommonMetadataAddForm(
+...    getRootFolder(), request)
+>>> form.setUpWidgets()
+>>> import pprint
+>>> pprint.pprint(request.form)
+{'form.year': '2008', 'form.volume': '26'}

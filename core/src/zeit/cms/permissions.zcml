@@ -57,5 +57,10 @@
     title="Manage WebDAV locks"
     />
 
+  <permission
+    id="zeit.ChangeGlobalSettings"
+    title="Change global settings"
+    />
+
 </configure>
 

@@ -8,6 +8,7 @@ zeit.cms changes
   Channel eingetragen (bug #4293).
 - Globale Menus umgebaut, so dass weniger wichtige Eintrage in einem Dropdown
   verfügbar sind.
+- Manuelles einstellen von Jahr/Ausgabe (bug #4273).
 
 0.9.21 (2008-06-19)
 -------------------

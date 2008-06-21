@@ -242,6 +242,7 @@
   <include package="zeit.cms.clipboard.browser" />
   <include package="zeit.cms.content.browser" />
   <include package="zeit.cms.locking.browser" />
+  <include package="zeit.cms.settings.browser" />
 
 
 

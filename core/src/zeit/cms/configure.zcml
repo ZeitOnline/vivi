@@ -27,6 +27,7 @@
   <include package=".locking" />
   <include package=".workflow" />
   <include package=".relation" />
+  <include package=".settings" />
 
 
   <!-- configuration -->

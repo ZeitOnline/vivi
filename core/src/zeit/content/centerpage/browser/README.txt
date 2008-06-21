@@ -55,13 +55,10 @@ defaults:
 >>> import datetime
 >>> now = datetime.datetime.now()
 
->>> browser.getControl(name='form.year').value == str(now.year)
-True
->>> current_week = str(int(now.strftime('%W')))
->>> if current_week == '0':
-...     current_week = '1'
->>> browser.getControl(name='form.volume').value == current_week
-True
+>>> browser.getControl(name='form.year').value
+'2008'
+>>> browser.getControl(name='form.volume').value
+'26'
 
 
 Now, fill the form and add the CP:

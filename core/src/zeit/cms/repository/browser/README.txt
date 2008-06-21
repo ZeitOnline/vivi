@@ -13,7 +13,7 @@ File Listing
 ============
 
 The filelisting is to be found under /repository. Open it:
->>> browser.handleErrors = False
+
 >>> browser.open('http://localhost/++skin++cms/repository')
 
 To dive into folder objects we use a Javascript based tree. The testbrowser
