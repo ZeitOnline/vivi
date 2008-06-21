@@ -349,12 +349,31 @@ pre {
 }
 #main-navigation {
     position: absolute;
-    margin-top: 0.5em;
+    margin-top: 0.25em;
     padding: 0;
 }
 
 #main-navigation > li {
   padding: 0.5em;
+  margin-bottom: 0;
+}
+
+#main-navigation > li.secondary > a {
+  vertical-align: bottom;
+  opacity: 0.5;
+}
+
+#main-navigation > li.secondary > a:hover {
+  opacity: 1;
+}
+
+#main-navigation > li > a > img {
+  border: none;
+  vertical-align: bottom;
+}
+
+#Menu-zeit\.cms\.secondary-global-views {
+  right: 0;
 }
 
 

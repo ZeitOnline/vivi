@@ -1,9 +1,8 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Menu infrastructure."""
 
-import random
-
+import zope.viewlet.interfaces
 import zope.viewlet.viewlet
 
 import zope.app.pagetemplate
@@ -28,6 +27,7 @@ class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 
     sort = 0
     def __cmp__(self, other):
+        __traceback_info__ = (self, other)
         return cmp(float(self.sort), float(other.sort))
 
 
@@ -50,7 +50,7 @@ class MenuViewlet(MenuItemBase):
         return menu.getMenuItems(self.context, self.request)
 
 
-class GlobalMenuItem(z3c.menu.simple.menu.GlobalMenuItem):
+class GlobalMenuItem(MenuItemBase, z3c.menu.simple.menu.GlobalMenuItem):
     """A menu item in the global menu."""
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -76,17 +76,17 @@ class CMSMenuItem(GlobalMenuItem):
 
     title = _("CMS")
     viewURL = "@@index.html"
+    sort = 0
 
     @property
     def selected(self):
-        result = 0
+        """We are selected when no other item is selected."""
         for viewlet in self.manager.viewlets:
-            if viewlet.pathitem and not viewlet.selected:
-                result += 1
-            elif viewlet.pathitem and viewlet.selected:
-                result -= 1
-
-        return result > 0
+            if viewlet is self:
+                continue
+            if viewlet.selected:
+                return False
+        return True
 
 
 class LightboxActionMenuItem(ActionMenuItem):
@@ -96,10 +96,38 @@ class LightboxActionMenuItem(ActionMenuItem):
         'action-menu-item-with-lightbox.pt')
 
 
-class SecondaryActions(MenuItemBase):
+class DropDownMenuBase(object):
 
     sort = 1000
+    items_provider = None
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'secondary_context_actions.pt')
+    activeCSS = 'secondary selected'
+    inActiveCSS = 'secondary'
+    selected = False
 
-    @zope.cachedescriptors.property.Lazy
     def menu_id(self):
-        return 'ActionsMenu%s' % str(random.random())[2:]
+        return 'Menu-%s' % self.items_provider
+
+    def update(self):
+        provider = zope.component.getMultiAdapter(
+            (self.context, self.request, self),
+            zope.viewlet.interfaces.IViewletManager,
+            self.items_provider)
+        provider.update()
+        for menu_item in provider.viewlets:
+            if menu_item.selected:
+                self.selected = True
+            break
+
+        self.items = provider.render()
+
+
+
+class SecondaryActions(DropDownMenuBase, MenuItemBase):
+    """Menu for secondary actions."""
+
+    css = None
+
+class GlobalSecondaryActions(DropDownMenuBase, GlobalMenuItem):
+    """Menu for global secondary actions."""

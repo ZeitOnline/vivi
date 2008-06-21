@@ -115,11 +115,30 @@
     />
 
   <browser:viewlet
-    name="zeit.cms.SecondaryActionsMenuItem"
     for="*"
+    layer=".interfaces.ICMSLayer"
+    name="zeit.cms.SecondaryActionsMenuItem"
     manager=".interfaces.IContextActions"
     class=".menu.SecondaryActions"
     template="secondary_context_actions.pt"
+    permission="zope.View"
+    items_provider="zeit.cms.secondary-context-actions"
+    />
+
+  <browser:viewlet
+    for="*"
+    name="zeit.cms.SecondaryGlobalViews"
+    layer=".interfaces.ICMSLayer"
+    manager=".interfaces.IGlobalViews"
+    class=".menu.GlobalSecondaryActions"
+    permission="zope.View"
+    items_provider="zeit.cms.secondary-global-views"
+    />
+
+  <browser:viewletManager
+    provides=".interfaces.ISecondaryGlobalViews"
+    name="zeit.cms.secondary-global-views"
+    layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />
 

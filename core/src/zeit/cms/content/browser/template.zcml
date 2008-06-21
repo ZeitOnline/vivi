@@ -14,10 +14,11 @@
   <browser:viewlet
     name="templates"
     for="*"
-    manager="zeit.cms.browser.interfaces.IGlobalViews"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
     class=".template.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.ManageApplication"
+    sort="100"
     />
 
   <gocept:pagelet

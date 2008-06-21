@@ -22,7 +22,8 @@ Open the template managment ui:
     <ul id="main-navigation"><li class="selected">
     <a href="http://localhost/++skin++cms/@@index.html">CMS</a>
     </li>
-    <li class="">
+    <li class="secondary">
+    ...
     <a href="http://localhost/++skin++cms/templates">Templates</a>
     ...
 >>> browser.getLink('Templates').click()
@@ -34,7 +35,8 @@ Open the template managment ui:
     <ul id="main-navigation"><li class="">
     <a href="http://localhost/++skin++cms/@@index.html">CMS</a>
     </li>
-    <li class="selected">
+    <li class="secondary selected">
+    ... 
     <a href="http://localhost/++skin++cms/templates">Templates</a>
     ...
     There are no template managers registered.

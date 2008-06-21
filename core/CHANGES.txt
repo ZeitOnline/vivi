@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Die Relateds werden beim Ändern des relateds nicht mehr doppelt in den
   Channel eingetragen (bug #4293).
+- Globale Menus umgebaut, so dass weniger wichtige Eintrage in einem Dropdown
+  verfügbar sind.
 
 0.9.21 (2008-06-19)
 -------------------

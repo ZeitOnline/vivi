@@ -17,6 +17,7 @@
     class=".calendar_view.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
+    sort="10"
     />
 
   <browser:page
