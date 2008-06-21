@@ -186,19 +186,6 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
             (self._created_object, self.request), name='absolute_url')()
         return '%s/@@%s' % (url, view)
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request:
-            if 'form.actions.add' not in self.request:
-                form = self.request.form
-                form['form.year'] = str(datetime.datetime.now().year)
-                volume = str(int(  # Strip leading 0
-                    datetime.datetime.now().strftime('%W')))
-                if volume == '0':
-                    # I'm not sure that's right.
-                    volume = '1'
-                form['form.volume'] = volume
-        super(AddForm, self).setUpWidgets(ignore_request)
-
 
 class EditForm(FormBase, gocept.form.grouped.EditForm):
     """Edit form."""

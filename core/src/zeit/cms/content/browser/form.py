@@ -3,6 +3,7 @@
 """Content related forms."""
 
 import copy
+import datetime
 
 import zope.testing.cleanup
 
@@ -90,6 +91,19 @@ class CommonMetadataFormBase(object):
 class CommonMetadataAddForm(CommonMetadataFormBase,
                             zeit.cms.browser.form.AddForm):
     """Add form which contains the common metadata."""
+
+    def setUpWidgets(self, ignore_request=False):
+        if not ignore_request:
+            if 'form.actions.add' not in self.request:
+                form = self.request.form
+                form['form.year'] = str(datetime.datetime.now().year)
+                volume = str(int(  # Strip leading 0
+                    datetime.datetime.now().strftime('%W')))
+                if volume == '0':
+                    # I'm not sure that's right.
+                    volume = '1'
+                form['form.volume'] = volume
+        super(CommonMetadataAddForm, self).setUpWidgets(ignore_request)
 
 
 class CommonMetadataEditForm(CommonMetadataFormBase,
