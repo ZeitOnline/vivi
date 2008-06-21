@@ -240,10 +240,8 @@ class RelatedMetadataUpdater(object):
         related = zeit.cms.content.interfaces.IRelatedContent(content, None)
         if related is None:
             return
-        if not related.related:
-            return
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
-        entry.append(xml_repr.xml)
+        entry[xml_repr.xml.tag] = xml_repr.xml
 
 
 def syndicated_in(content, catalog):

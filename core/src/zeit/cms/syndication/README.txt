@@ -169,6 +169,7 @@ Check the source of the feed first:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </homepage>
+      <references/>
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
@@ -204,6 +205,7 @@ Verify the channel source again:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </homepage>
+      <references/>
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
@@ -240,6 +242,7 @@ The feed has not changed this time:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </homepage>
+      <references/>
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>

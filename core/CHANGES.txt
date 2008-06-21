@@ -4,6 +4,8 @@ zeit.cms changes
 0.9.22 (unreleased)
 -------------------
 
+- Die Relateds werden beim Ändern des relateds nicht mehr doppelt in den
+  Channel eingetragen (bug #4293).
 
 0.9.21 (2008-06-19)
 -------------------

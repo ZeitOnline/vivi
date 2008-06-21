@@ -29,9 +29,14 @@ class RelatedBase(object):
 
     @rwproperty.getproperty
     def xml(self):
-        self._assure_tree()
-        xml = self.path.find(self._get_xml())
-        return xml.getparent()
+        if self.path.hasattr(self._get_xml()):
+            xml = self.path(self._get_xml()).getparent()
+        else:
+            self.path.setattr(self._get_xml(), None)
+            xml = self.path(self._get_xml()).getparent()
+            self.path.setattr(self._get_xml(), ())
+
+        return xml
 
     @rwproperty.setproperty
     def xml(self, value):
@@ -74,12 +79,6 @@ class RelatedBase(object):
             return self.path.find(self._get_xml())
         except AttributeError:
             return []
-
-    def _assure_tree(self):
-        try:
-            xml = self.path.find(self._get_xml())
-        except AttributeError:
-            self.path.setattr(self._get_xml(), None)
 
     def _get_xml(self):
         return zope.security.proxy.removeSecurityProxy(self.context.xml)
