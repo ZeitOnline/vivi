@@ -99,8 +99,13 @@ class Connector(object):
             data = StringIO.StringIO()
         else:
             data = self._get_file(id)
+        path = self._path(id)
+        if path:
+            name = path[-1]
+        else:
+            name = ''
         return zeit.connector.resource.Resource(
-            id, self._path(id)[-1], type, data, properties)
+            id, name, type, data, properties)
 
     def __setitem__(self, id, object):
         if id in self._deleted:

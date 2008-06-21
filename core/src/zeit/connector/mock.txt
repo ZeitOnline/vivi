@@ -82,6 +82,11 @@ Traceback (most recent call last):
 ...
 KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
 
+It is also possible to get the root:
+
+>>> connector['http://xml.zeit.de/']
+<zeit.connector.resource.Resource object at 0x...>
+
 
 Locking and Unlocking
 =====================
