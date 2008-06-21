@@ -93,13 +93,10 @@ defaults:
 >>> import datetime
 >>> now = datetime.datetime.now()
 
->>> browser.getControl(name='form.year').value == str(now.year)
-True
->>> current_week = str(int(now.strftime('%W')))
->>> if current_week == '0':
-...     current_week = '1'
->>> browser.getControl(name='form.volume').value == current_week
-True
+>>> browser.getControl(name='form.year').value
+'2008'
+>>> browser.getControl(name='form.volume').value
+'26'
 
 
 Now, fill the form and add the article:
@@ -485,20 +482,6 @@ at its xml source:
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu xsi:nil="true"/>
       </image>
-      <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
-          <title py:pytype="str">Bomben in Bangkok</title>
-          <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
-          <short>
-            <title py:pytype="str">Thailand</title>
-            <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
-          </short>
-          <homepage>
-            <title xsi:nil="true"/>
-            <text xsi:nil="true"/>
-          </homepage>
-        </reference>
-      </references>
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
