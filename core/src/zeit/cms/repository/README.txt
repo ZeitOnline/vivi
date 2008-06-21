@@ -54,6 +54,11 @@ interface:
 >>> IRepositoryContent.providedBy(c_2007)
 True
 
+The repository itself provides IRepositoryContent too:
+
+>>> IRepositoryContent.providedBy(repository)
+True
+
  
 Getting Content objects
 =======================

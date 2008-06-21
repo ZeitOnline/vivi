@@ -10,9 +10,12 @@ import zope.publisher.interfaces
 
 import zope.app.file.browser.image
 
+import zeit.connector.interfaces
+
 import zeit.cms.content.property
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
+import zeit.cms.settings.interfaces
 import zeit.cms.repository.interfaces
 import zeit.content.image.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -134,22 +137,40 @@ def imagefolder_browse_location(context, source):
 
     """
     unique_id = context.uniqueId
-
-    split = list(urlparse.urlsplit(unique_id))
-    path = split[2]
-
-    path = path.replace('/online', '', 1)
-    if not path.startswith('/bilder'):
-        path = '/bilder' + path
-
-    split[2] = path
-    unique_id = urlparse.urlunsplit(split)
-
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
+    base = image_folder = None
     try:
-        image_folder = repository.getContent(unique_id)
+        obj_in_repository = repository.getContent(unique_id)
     except KeyError:
+        pass
+    else:
+        # Try to get a base folder
+        while base is None:
+            properties = zeit.connector.interfaces.IWebDAVProperties(
+                obj_in_repository, None)
+            if properties is None:
+                break
+            base = properties.get(('base-folder',
+                                   'http://namespaces.zeit.de/CMS/Image'))
+            obj_in_repository = obj_in_repository.__parent__
+
+    if base is not None:
+        try:
+            base_obj = repository.getContent(base)
+        except KeyError:
+            pass
+        else:
+            # Get from the base folder to the year/volume folder
+            settings = zeit.cms.settings.interfaces.IGlobalSettings(context)
+            try:
+                image_folder = base_obj[
+                    '%04d' % settings.default_year][
+                    '%02d' % settings.default_volume]
+            except KeyError:
+                pass
+
+    if image_folder is None:
         all_content_source = zope.component.getUtility(
             zeit.cms.content.interfaces.ICMSContentSource, name='all-types')
         image_folder = zope.component.queryMultiAdapter(

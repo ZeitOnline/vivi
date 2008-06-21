@@ -9,6 +9,11 @@ zeit.cms changes
 - Globale Menus umgebaut, so dass weniger wichtige Eintrage in einem Dropdown
   verfügbar sind.
 - Manuelles einstellen von Jahr/Ausgabe (bug #4273).
+- Bilderordner beim Asset-Bearbeiten wird jetzt durch manuell eingestelltes
+  Jahr/Ausgabe bestimmt. Auf jedem Ordner kann durch die WebDAV-Property
+  {http://namespaces.zeit.de/CMS/Image}base-folder bestimmt werden wo die
+  Wurzel für den Bereich ist (z.B. /zuender ->
+  http://xml.zeit.de/bilder/zuender/)
 
 0.9.21 (2008-06-19)
 -------------------

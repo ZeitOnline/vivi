@@ -9,6 +9,8 @@
 
   <!-- Live properties -->
   <adapter factory=".liveproperty.LiveProperties"/>
+  <adapter factory=".liveproperty.LiveProperties"
+    for="zeit.cms.repository.interfaces.IRepository" />
   <class class=".liveproperty.LiveProperties">
     <require
       interface="zeit.connector.interfaces.IWebDAVReadProperties"

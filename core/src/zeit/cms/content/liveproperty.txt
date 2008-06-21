@@ -81,6 +81,12 @@ The live property value has not changed:
 'bar'
 
 
+The repository itself has live properties:
+
+>>> zeit.connector.interfaces.IWebDAVProperties(repository)
+<zeit.cms.content.liveproperty.LiveProperties object at 0x...>
+
+
 Clean up:
 
 >>> zope.security.management.endInteraction()

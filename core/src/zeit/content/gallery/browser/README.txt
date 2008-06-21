@@ -303,6 +303,14 @@ setup:
 ...     return zope.component.getMultiAdapter(
 ...         (obj, zeit.content.gallery.interfaces.galleryFolderSource),
 ...         zeit.cms.browser.interfaces.IDefaultBrowsingLocation).uniqueId
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> connector.changeProperties(
+...     'http://xml.zeit.de/',
+...     {('base-folder', 'http://namespaces.zeit.de/CMS/Image'):
+...      'http://xml.zeit.de/bilder'})
+
 
 For the island gallery we currently have its container as location, because the
 image folder doesn't exist:
@@ -317,19 +325,19 @@ Create the image folder:
 
 >>> browser.open('http://localhost/++skin++cms/repository')
 >>> add_folder('bilder')
->>> add_folder('2007')
->>> add_folder('01')
+>>> add_folder('2008')
+>>> add_folder('26')
 >>> add_folder('bildergalerien')
 
 We get the right location now:
 
 >>> get_location(gallery)
-u'http://xml.zeit.de/bilder/2007/01/bildergalerien'
+u'http://xml.zeit.de/bilder/2008/26/bildergalerien'
 
 For add forms we need to make sure we'll get the right location on the folder:
 
 >>> get_location(gallery.__parent__)
-u'http://xml.zeit.de/bilder/2007/01/bildergalerien'
+u'http://xml.zeit.de/bilder/2008/26/bildergalerien'
 
 Clean up:
 

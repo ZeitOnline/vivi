@@ -140,9 +140,11 @@ class Container(zope.app.container.contained.Contained):
 class Repository(persistent.Persistent, Container):
     """Access the webdav repository."""
 
-    zope.interface.implements(zeit.cms.repository.interfaces.IRepository,
-                              zeit.cms.repository.interfaces.IFolder,
-                              zope.annotation.interfaces.IAttributeAnnotatable)
+    zope.interface.implements(
+        zeit.cms.repository.interfaces.IRepository,
+        zeit.cms.repository.interfaces.IFolder,
+        zeit.cms.repository.interfaces.IRepositoryContent,
+        zope.annotation.interfaces.IAttributeAnnotatable)
 
     uniqueId = zeit.cms.interfaces.ID_NAMESPACE
     _v_registered = False
