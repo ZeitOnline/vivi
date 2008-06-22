@@ -2,131 +2,133 @@
 XML tests
 =========
 
-
 Mapping of DAV properties to xml
 ================================
 
 A content which implements IDAVPropertiesInXML will have it's webdav properties
 mapped to xml on change, checkin, checkout.
 
-Create a content class. The content class must provide IDAVPropertiesInXML for
-the event handlers to do something. It also needs to be adaptable to or provide
-directly IXMLRepresentation.
+Let's mark testcontent as IDAVPropertiesInXML:
 
->>> import lxml.objectify
->>> import lxml.etree
 >>> import zope.interface
->>> import zeit.cms.content.dav
 >>> import zeit.cms.content.interfaces
->>> class Content(object):
-...     zope.interface.implements(
-...         zeit.cms.content.interfaces.IXMLRepresentation,
-...         zeit.cms.content.interfaces.IDAVPropertiesInXML)
-...     xml = lxml.objectify.fromstring('<a/>')
-...     title = zeit.cms.content.dav.DAVProperty(
-...         zope.schema.TextLine(), 'myns', 'title')
-...
-...     def __init__(self):
-...         self.properties = {}
-...
-
-Set security:
-
->>> import zope.app.security.protectclass
->>> zope.app.security.protectclass.protectName(Content, 'xml', 'zope.Public')
->>> zope.app.security.protectclass.protectSetAttribute(
-...     Content, 'xml', 'zope.Public')
-
-We need an adapter for the webdav properties:
-
->>> import zope.component
->>> gsm = zope.component.getGlobalSiteManager()
->>> def contentDavProps(context):
-...     return context.properties
->>> gsm.registerAdapter(
-...     contentDavProps,
-...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
-
->>> content = Content()
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> old_implements = list(zope.interface.implementedBy(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType))
+>>> zope.interface.classImplements(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.cms.content.interfaces.IDAVPropertiesInXML)
 
 
 Update on property change
-=========================
+-------------------------
 
 When we set the title, an IDAVPropertyChangedEvent is issued. Thus the xml will
-change and contain the property:
+change and contain the property[#functional]_:
 
->>> content.title = u'Mary had a little lamb.'
+>>> content = repository['testcontent']
+>>> import zeit.cms.checkout.interfaces
+>>> content = zeit.cms.checkout.interfaces.ICheckoutManager(content).checkout()
+>>> content.year = 2004
+>>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
+<testtype>
   <head>
-    <attribute
-      xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" 
-      ns="myns" name="title">Mary had a little lamb.</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str"
+        ns="http://namespaces.zeit.de/CMS/document" name="year">2004</attribute>
   </head>
-</a>
+  <body/>
+</testtype>
 
 
 Setting the value to None, which is the default of the field, will remove the
 property:
 
->>> content.title = None
+>>> content.year = None
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
+<testtype>
   <head/>
-</a>
-
+  <body/>
+</testtype>
 
 Checkin handler
-===============
+---------------------------------------------------------------------------------------------------------------------------------------
 
 The checkin handler copies all webdav properties to the xml *before* the object
 is checked in. It removes all existing head.attribute nodes before adding the
 properties. Add some attributes to make sure they're removed:
 
 >>> content.xml = lxml.objectify.XML(u"""\
-...     <a>
+...     <testtype>
 ...      <head>
 ...        <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
 ...        <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
-...      </head>
-...    </a>""")
+...      </head><body/>
+...    </testtype>""")
 
 
-Let's add some properties under the hood. Note thad properties in the DAV:
+Let's add some properties under the hood. Note that properties in the DAV:
 namespace are *not* mapped:
 
 >>> import zeit.connector.interfaces
->>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(
+...     repository['testcontent'])
+>>> properties.register_live_property('am-i', 'under-the-hood')
+>>> properties.register_live_property('foobar', 'DAV:')
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
+<testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
   </head>
-</a>
+  <body/>
+</testtype>
 
 
-When an IBeforeCheckinEvent is sent the xml is updated:
-
->>> import zope.event
->>> import zeit.cms.checkout.interfaces
->>> zope.event.notify(zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-...     content, None))
+>>> content = zeit.cms.checkout.interfaces.ICheckinManager(content).checkin()
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<a>
+<testtype>
   <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="under-the-hood" name="am-i">4711</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    py:pytype="str"
+    ns="under-the-hood" name="am-i">4711</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+        name="last_modified_by">bob</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta"
+        name="type">testcontenttype</attribute>
   </head>
-</a>
+  <body/>
+</testtype>
 
 
 
 Clean up:
 
->>> gsm.unregisterAdapter(
-...     contentDavProps,
-...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
-True
+>>> zope.interface.classImplementsOnly(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     *old_implements)
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zope.security.management
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'bob')
+    >>> participation = zope.security.testing.Participation(principal)
+    >>> zope.security.management.newInteraction(participation)
+
+    Get the repository:
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
