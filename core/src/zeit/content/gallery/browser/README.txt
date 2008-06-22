@@ -238,7 +238,7 @@ Sadly the xml is not updated, yet:
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
         <block name="03.jpg">
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
@@ -252,7 +252,7 @@ Sadly the xml is not updated, yet:
           </thumbnail>
         </block>
         ...
-</centerpage>
+</gallery>
 
 
 So synchronise with the image folder:

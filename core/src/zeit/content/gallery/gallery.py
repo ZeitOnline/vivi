@@ -28,7 +28,7 @@ import zeit.content.gallery.interfaces
 # A gallery used to be a center page, that's why we initialize it with such a
 # template.
 GALLERY_TEMPLATE = u"""\
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
     <body>
         <column layout="left"/>
@@ -36,12 +36,12 @@ GALLERY_TEMPLATE = u"""\
             <container/>
         </column>
     </body>
-</centerpage>"""
+</gallery>"""
 
 
 
 class Gallery(zeit.cms.content.metadata.CommonMetadata):
-    """CenterPage"""
+    """Gallery"""
 
     zope.interface.implements(zeit.content.gallery.interfaces.IGallery)
 

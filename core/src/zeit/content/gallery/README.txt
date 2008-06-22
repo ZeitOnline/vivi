@@ -39,7 +39,7 @@ The gallery is also noted in the xml structure:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -59,7 +59,7 @@ The gallery is also noted in the xml structure:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 Adding images to the image folder
@@ -97,7 +97,7 @@ We need to call `reload_image_folder`:
 The change is reflected in the xml:
 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -128,7 +128,7 @@ The change is reflected in the xml:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 Get the entry for 01.jpg:
 
@@ -154,7 +154,7 @@ xml:
 >>> entry.text = lxml.objectify.E.text(
 ...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -185,14 +185,14 @@ xml:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 When we assign the entry the change will be reflected:
 
 >>> gallery['01.jpg'] = entry
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -225,7 +225,7 @@ When we assign the entry the change will be reflected:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 When an `ObjectModifiedEvent` is issued for an entry, the gallery is updated as
@@ -236,7 +236,7 @@ well:
 >>> entry.title = u'Der Wecker klingelt'
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(entry))
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -270,7 +270,7 @@ well:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 Let's make sure we actually can get the saved data:
@@ -303,7 +303,7 @@ True
 >>> entry.layout = u'image-only'
 >>> gallery['01.jpg'] = entry
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -337,7 +337,7 @@ True
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 When we set the layout to None again, the layout attribute is removed:
@@ -348,7 +348,7 @@ u'image-only'
 >>> entry.layout = None
 >>> gallery['01.jpg'] = entry
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -382,7 +382,7 @@ u'image-only'
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 
@@ -403,7 +403,7 @@ Let's change the order:
 This is of course reflected int he XML:
 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -437,7 +437,7 @@ This is of course reflected int he XML:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 When the list passed does not match exactly the entries of the gallery, a
 ValueError is raised:
@@ -518,7 +518,7 @@ KeyError: u'http://xml.zeit.de/2006/01.jpg'
 Note that his has *not* changed the xml so far:
 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -552,14 +552,14 @@ Note that his has *not* changed the xml so far:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 When calling `reload_image_folder` the entry is removed from the xml:
 
 >>> gallery.reload_image_folder()
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
   </head>
@@ -579,7 +579,7 @@ When calling `reload_image_folder` the entry is removed from the xml:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 Old XML format
@@ -589,7 +589,7 @@ The old xml format is a bit more lazy. Let's add the second image again:
 
 >>> add_image()
 >>> gallery.xml = lxml.objectify.XML(u"""\
-...     <centerpage>
+...     <gallery>
 ...       <head>
 ...       </head>
 ...       <body>
@@ -615,7 +615,7 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...           </container>
 ...         </column>
 ...       </body>
-...     </centerpage>""")
+...     </gallery>""")
 
 
 There are three major differences to the new xml:
@@ -634,7 +634,7 @@ The keys also correct(ed) and the names are set:
 >>> list(gallery.keys())
 [u'DSC00109_2.JPG', u'01.jpg'] 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<gallery>
   <head>
       <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/2006</image-folder></head>
   <body>
@@ -656,7 +656,7 @@ The keys also correct(ed) and the names are set:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 Getting an gallery entry w/o text element used to break (bug #4042) but works
@@ -684,7 +684,7 @@ Let's make sure this also works, when the image urls are not starting wich
 /cms/work but are already convertet to http://xml.zeit.de urls:
 
 >>> gallery.xml = lxml.objectify.XML(u"""\
-...     <centerpage>
+...     <gallery>
 ...       <head>
 ...       </head>
 ...       <body>
@@ -709,7 +709,7 @@ Let's make sure this also works, when the image urls are not starting wich
 ...           </container>
 ...         </column>
 ...       </body>
-...     </centerpage>""")
+...     </gallery>""")
 
 
 The image folder is resolved correcty, too:
@@ -722,7 +722,7 @@ The keys also correct(ed) and the names are set:
 >>> list(gallery.keys())
 [u'DSC00109_2.JPG', u'01.jpg'] 
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<centerpage>
+<gallery>
   <head>
       <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/2006</image-folder></head>
   <body>
@@ -743,7 +743,7 @@ The keys also correct(ed) and the names are set:
       </container>
     </column>
   </body>
-</centerpage>
+</gallery>
 
 
 Cleanup
