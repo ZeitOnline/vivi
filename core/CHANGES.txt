@@ -14,6 +14,8 @@ zeit.cms changes
   {http://namespaces.zeit.de/CMS/Image}base-folder bestimmt werden wo die
   Wurzel für den Bereich ist (z.B. /zuender ->
   http://xml.zeit.de/bilder/zuender/)
+- Kein Fehler mehr beim Bearbeiten von Objekten, die nicht mehr im Repository
+  existieren (bug #4291).
 
 0.9.21 (2008-06-19)
 -------------------

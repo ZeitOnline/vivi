@@ -105,6 +105,19 @@ namespace are *not* mapped:
   <body/>
 </testtype>
 
+There was once a bug which prevented the editing of (checked out) documents
+when they were no longer in the repository. Checkout testcontent again, then
+delete it from the repository:
+
+>>> content = repository['testcontent']
+>>> content = zeit.cms.checkout.interfaces.ICheckoutManager(content).checkout()
+>>> del repository['testcontent']
+
+We can now still change the values here w/o getting an error:
+
+>>> content.year = 2009
+>>> content.year
+2009
 
 
 Clean up:
