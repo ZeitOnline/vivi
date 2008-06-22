@@ -63,6 +63,9 @@
     name="view.html"
     />
 
+  <class class="..gallery.Gallery">
+    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
+  </class>
 
   <!-- Add view -->
   <browser:page

@@ -16,6 +16,7 @@ zeit.cms changes
   http://xml.zeit.de/bilder/zuender/)
 - Kein Fehler mehr beim Bearbeiten von Objekten, die nicht mehr im Repository
   existieren (bug #4291).
+- Biga hat jetzt Assets (bug #4294).
 
 0.9.21 (2008-06-19)
 -------------------

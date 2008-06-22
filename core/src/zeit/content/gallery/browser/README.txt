@@ -264,6 +264,12 @@ So synchronise with the image folder:
 >>> '03.jpg' in browser.getControl('XML Source').value
 False
 
+Galleries also have assets:
+
+>>> browser.getLink('Edit assets').click()
+>>> browser.getControl('Add Related')
+<SubmitControl name='form.related.add' type='submit'>
+
 
 Checkin
 =======
