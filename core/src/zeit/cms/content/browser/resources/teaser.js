@@ -33,8 +33,8 @@ var TeaserCopy = Class.extend({
 
 connect(window, 'onload', function(event) {
     new TeaserCopy('form.title', 'form.teaserTitle');
-    new TeaserCopy('form.title', 'form.shortTeaserTitle');
+    new TeaserCopy('form.supertitle', 'form.shortTeaserTitle');
     new TeaserCopy('form.subtitle', 'form.teaserText');
-    new TeaserCopy('form.subtitle', 'form.shortTeaserText');
+    new TeaserCopy('form.title', 'form.shortTeaserText');
 })
 

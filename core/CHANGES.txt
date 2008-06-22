@@ -18,6 +18,8 @@ zeit.cms changes
   existieren (bug #4291).
 - Biga hat jetzt Assets (bug #4294).
 - Biga hat jetzt <gallery> als Root-Tag (bug #4295).
+- Metadaten bearbeiten: Spitzmarke füllt Kurzteasertitel und Titel füllt
+  Kurzteasertext (bug #4251).
 
 0.9.21 (2008-06-19)
 -------------------
