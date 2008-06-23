@@ -1,8 +1,10 @@
 zeit.content.article changes
 ============================
 
-1.3 (unreleased)
+1.3 (2008-06-23)
 ----------------
+
+- Tests auf zeit.cms 0.9.22 angepasst.
 
 1.2 (2008-06-16)
 ----------------
