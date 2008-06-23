@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.22 (unreleased)
+0.22 (2008-06-23)
 -----------------
 
 - Mock: Allowed to get the root as resource.
