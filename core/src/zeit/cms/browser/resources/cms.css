@@ -348,9 +348,10 @@ pre {
    z-index: -1;
 }
 #main-navigation {
-    position: absolute;
     margin-top: 0.25em;
     padding: 0;
+    position: absolute;
+    width: 20em;
 }
 
 #main-navigation > li {
@@ -376,6 +377,10 @@ pre {
   right: 0;
 }
 
+#Menu-zeit\.cms\.secondary-global-views > li {
+    display: block;
+    white-space: nowrap;
+}
 
 #folder-actions {
     margin: 0em;
