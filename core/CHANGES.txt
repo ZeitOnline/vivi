@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-0.9.22 (unreleased)
+0.9.22 (2008-06-23)
 -------------------
 
 - Die Relateds werden beim Ändern des relateds nicht mehr doppelt in den
