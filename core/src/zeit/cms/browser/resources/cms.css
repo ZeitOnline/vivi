@@ -373,11 +373,11 @@ pre {
   vertical-align: bottom;
 }
 
-#Menu-zeit\.cms\.secondary-global-views {
+#main-navigation > li.secondary > ul {
   right: 0;
 }
 
-#Menu-zeit\.cms\.secondary-global-views > li {
+#main-navigation > li.secondary > ul > li {
     display: block;
     white-space: nowrap;
 }

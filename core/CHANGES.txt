@@ -4,6 +4,8 @@ zeit.cms changes
 1.0 (unreleased)
 ----------------
 
+- Menu im Metadaten-Preview funktioniert wieder.
+
 
 0.9.22 (2008-06-23)
 -------------------

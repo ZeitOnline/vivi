@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 """Menu infrastructure."""
 
+import time
+
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
 
@@ -106,10 +108,9 @@ class DropDownMenuBase(object):
     inActiveCSS = 'secondary'
     selected = False
 
-    def menu_id(self):
-        return 'Menu-%s' % self.items_provider
-
     def update(self):
+        self.menu_id = 'Menu-%s-%s' % (self.items_provider, time.time())
+
         provider = zope.component.getMultiAdapter(
             (self.context, self.request, self),
             zope.viewlet.interfaces.IViewletManager,
