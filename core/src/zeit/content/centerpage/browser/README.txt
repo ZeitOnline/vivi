@@ -93,6 +93,13 @@ Make sure there is the edit metadata tab:
 'http://localhost/++skin++cms/workingcopy/zope.user/index/@@edit.html'
 
 
+Make sure there is the edit assets tab:
+
+>>> browser.getLink('Edit assets').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/index/@@asset_edit.html'
+
+
 Note that the metadata view screen is not available on checked out center
 pages:
 
@@ -108,6 +115,7 @@ Editing CPs
 
 We change some values and submit:
 
+>>> browser.getLink('Edit metadata').click()
 >>> browser.getControl(name='form.title').value = 'Wirtschaft'
 >>> browser.getControl('Apply').click()
 

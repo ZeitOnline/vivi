@@ -10,6 +10,7 @@ zeit.cms changes
 - Metadaten-Vorschau bei Bilderguppen zeigt Thumbnails der Bilder.
 - Bildergruppe geht nicht kaputt, wenn ein Ordner zur Bildergruppe wird, der
   nicht nur Bilder enthält (bug #4301).
+- Asset-Views bei Center-Page (bug #4306).
 
 0.9.22 (2008-06-23)
 -------------------

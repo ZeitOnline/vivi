@@ -3,6 +3,9 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <class class="..centerpage.CenterPage">
+    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
+  </class>
 
   <adapter factory=".centerpage.ListRepresentation" />
   <browser:icon
