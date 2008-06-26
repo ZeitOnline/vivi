@@ -14,7 +14,7 @@ import zope.app.form.interfaces
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.widget
 import zope.app.form.browser.itemswidgets
-import zope.app.pagetemplate.viewpagetemplatefile
+import zope.app.pagetemplate
 
 import zc.datetimewidget.datetimewidget
 
@@ -26,7 +26,7 @@ from zeit.cms.i18n import MessageFactory as _
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
     _missing = u""
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
         'object-reference-widget.pt')
 
     content_types_source = zeit.cms.content.sources.CMSContentTypeSource()
@@ -181,7 +181,7 @@ class MultiObjectSequenceWidget(
     MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.SimpleInputWidget):
 
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-edit-widget.pt')
 
     def __init__(self, context, field, schema, request):
@@ -241,7 +241,7 @@ class MultiObjectSequenceDisplayWidget(
     MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.DisplayWidget):
 
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-display-widget.pt')
 
     def __init__(self, context, field, schema, request):
