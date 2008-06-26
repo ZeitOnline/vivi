@@ -5,7 +5,7 @@ setup(
     version='1.4dev',
     author='gocept',
     author_email='mail@gocept.com',
-    url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
+    url='https://svn.gocept.com/repos/gocept-int/zeit.cms/zeit.content.article',
     description="""\
 """,
     packages=find_packages('src'),
@@ -39,7 +39,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.cms>=0.9.22',
+        'zeit.cms>=1.0b1',
         'zeit.connector>=0.14',
         'zeit.objectlog>=0.2',
         'zope.app.apidoc',
