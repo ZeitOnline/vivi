@@ -22,7 +22,6 @@ Setup functional test:
 >>> zope.app.component.hooks.setSite(getRootFolder())
 
 
-
 Addding and Removing
 =====================
 
@@ -74,6 +73,35 @@ We can query the feed if an object is in it:
 True
 >>> Article('foobar') in feed
 False
+
+
+Let's also add an object from the repository:
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> feed.insert(0, repository['testcontent'])
+>>> list(feed.keys())
+['http://xml.zeit.de/testcontent', 'art3', 'art1']
+>>> list(feed)
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>,
+ <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
+ <zeit.cms.syndication.feed.FakeEntry object at 0x...>]
+
+
+When we remove the testcontent from the repository the testcontent in the feed
+will also become a fake entry:
+
+>>> del repository['testcontent']
+>>> list(feed)
+[<zeit.cms.syndication.feed.FakeEntry object at 0x...>,
+ <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
+ <zeit.cms.syndication.feed.FakeEntry object at 0x...>]
+
+Remove the testcontent from the feed:
+
+>>> feed.remove(list(feed)[0])
 
 
 
@@ -363,9 +391,6 @@ too:
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
 >>> content.uniqueId = 'tct'
->>> import zeit.cms.repository.interfaces
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
 >>> related = zeit.cms.content.interfaces.IRelatedContent(content)
 >>> related.related = (repository['online']['2007']['01']['Somalia'],
 ...                    repository['online']['2007']['01']['eta-zapatero'])

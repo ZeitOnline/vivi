@@ -4,7 +4,9 @@ zeit.cms changes
 1.0 (unreleased)
 ----------------
 
+- Styling des globalen Drop-Down-Menus
 - Menu im Metadaten-Preview funktioniert wieder.
+- Sortieren bestimmter Channels geht wieder (bug #4302).
 
 
 0.9.22 (2008-06-23)

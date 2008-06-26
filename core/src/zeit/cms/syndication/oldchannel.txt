@@ -68,28 +68,18 @@ Let's get it from the repository:
  'cms:/cms/work/2008/16/Christine-Licci']
 
 
-Note that there are a lot of invalid ids. We'll filter those out when listing
-the actual data[#loghandler]_:
-
 >>> contents = list(channel)
 >>> len(contents)
-32
+33
 >>> contents
 [<zeit.cms.repository.unknown.UnknownResource object at 0x...>,
  <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
  ...]
 
 The fake entries represent urls which do not point to the CMS:
->>> fake_entry = contents[1]
+>>> fake_entry = contents[2]
 >>> fake_entry.title
 u'Informationen gegen H\xfcftgold'
-
-
-Verify the log:
-
->>> print log.getvalue()
-Found invalid reference to http://xml.zeit.de/online/2200/01/Querdax in channel http://xml.zeit.de/bodycont. Ignoring.
-
 
 Insert a new object into the channel:
 
@@ -118,7 +108,6 @@ True
 
 Clean up:
 
->>> logging.root.setLevel(old_log_level)
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
@@ -136,16 +125,6 @@ Clean up:
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
 
-
-.. [#loghandler] Register a log handler
-
-    >>> import logging
-    >>> import StringIO
-    >>> log = StringIO.StringIO()
-    >>> log_handler = logging.StreamHandler(log)
-    >>> logging.root.addHandler(log_handler)
-    >>> old_log_level = logging.root.level
-    >>> logging.root.setLevel(logging.INFO)
 
 .. [#needsinteraction]
 

@@ -76,7 +76,8 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         self._p_changed = True
 
     def remove(self, content):
-        content = zeit.cms.interfaces.ICMSContent(content)
+        if not isinstance(content, FakeEntry):
+            content = zeit.cms.interfaces.ICMSContent(content)
         unique_id = content.uniqueId
         self._remove_by_id(unique_id)
 
@@ -124,13 +125,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         for unique_id in self.keys():
             try:
                 yield repository.getContent(unique_id)
-            except ValueError, e:
+            except (KeyError, ValueError), e:
                 entry = self.entry_map[unique_id]
                 yield FakeEntry(unique_id, entry)
-            except KeyError, e:
-                logger.warning("Found invalid reference to %s in "
-                               "channel %s. Ignoring." % (
-                                   unique_id, self.uniqueId))
 
     def __contains__(self, obj):
         if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
