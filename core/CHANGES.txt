@@ -15,6 +15,8 @@ zeit.cms changes
   "unbekannten Resourcen" kaputt (bug #4300).
 - DailyNL in den Standard-Metadaten (bug #4307).
 - JS-Warnung, wenn kein Firefox verwendet wird (bug #4305).
+- Popup-Asset/Image-Browser expandiert den automatisch Baum wenn man in einem 
+  Ordner drin ist.
 
 0.9.22 (2008-06-23)
 -------------------

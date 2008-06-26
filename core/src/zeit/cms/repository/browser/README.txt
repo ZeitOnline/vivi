@@ -218,6 +218,19 @@ When there are no suitable objects, we'll get a message:
   ...
 
 
+Within the object browser the tree is automatically expanded:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     '@@get_object_browser')
+>>> print browser.contents
+  <h1>http://xml.zeit.de/online/2007/01</h1>
+  ...
+      <li action="collapse" active="True" class="NotRoot"
+          uniqueid="http://xml.zeit.de/online/2007/01">
+          ...
+
+
 To get the initial browsing location the IDefaultBrowsingLocation interface is
 used. Do some setup:
 

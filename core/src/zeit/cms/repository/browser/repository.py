@@ -61,7 +61,8 @@ class Tree(zeit.cms.browser.tree.Tree):
             zeit.cms.repository.interfaces.IRepository)
 
     def isRoot(self, container):
-        return zeit.cms.repository.interfaces.IRepository.providedBy(container)
+        return zeit.cms.repository.interfaces.IRepository.providedBy(
+            container)
 
     def getUniqueId(self, object):
         if self.isRoot(object):
@@ -90,6 +91,13 @@ class Tree(zeit.cms.browser.tree.Tree):
         return zeit.cms.repository.interfaces.IUserPreferences(
             zeit.cms.workingcopy.interfaces.IWorkingcopy(
                 self.request.principal))
+
+    def expanded(self, obj):
+        if self.request.form.get('autoexpand-tree'):
+            url = self.getUrl(obj)
+            if self.selected(url):
+                return True
+        return super(Tree, self).expanded(obj)
 
 
 class HiddenCollections(zeit.cms.browser.view.Base):

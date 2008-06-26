@@ -35,6 +35,10 @@ def content_default_browse_location(context, source):
 class ObjectBrowser(zeit.cms.browser.listing.Listing):
     """Objectbrowser."""
 
+    def __call__(self):
+        self.request.form['autoexpand-tree'] = True
+        return super(ObjectBrowser, self).__call__()
+
     def filter_content(self, obj):
         if self.filter_source is not None:
             return obj in self.filter_source
