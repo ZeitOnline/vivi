@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Jun 21 16:08:17 2008\n"
+"POT-Creation-Date: Thu Jun 26 15:07:05 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -65,7 +65,7 @@ msgstr ""
 #: src/zeit/cms/browser/listing.py:275
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:256
+#: src/zeit/cms/content/interfaces.py:262
 #: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
@@ -81,7 +81,7 @@ msgid "Title will be shown in overview pages."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:263
+#: src/zeit/cms/content/interfaces.py:269
 msgid "Related content"
 msgstr ""
 
@@ -146,7 +146,7 @@ msgstr ""
 #: src/zeit/cms/browser/form.py:193
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:107
-#: src/zeit/content/gallery/browser/configure.zcml:104
+#: src/zeit/content/gallery/browser/configure.zcml:107
 #: src/zeit/content/gallery/browser/overview.pt:23
 msgid "Edit"
 msgstr ""
@@ -207,7 +207,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/listing.py:279
 #: src/zeit/cms/interfaces.py:48
-#: src/zeit/content/image/browser/imagegroup.py:68
+#: src/zeit/content/image/browser/imagegroup.py:69
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
@@ -251,7 +251,7 @@ msgstr ""
 msgid "Add..."
 msgstr ""
 
-#: src/zeit/cms/browser/menu.py:77
+#: src/zeit/cms/browser/menu.py:79
 msgid "CMS"
 msgstr ""
 
@@ -356,16 +356,16 @@ msgstr ""
 msgid "clipboard-paste-explain"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:128
+#: src/zeit/cms/content/browser/form.py:134
 msgid "Assets and related"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:144
+#: src/zeit/cms/content/browser/form.py:150
 #: src/zeit/cms/content/browser/configure.zcml:143
 msgid "Edit assets"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:148
+#: src/zeit/cms/content/browser/form.py:154
 #: src/zeit/cms/content/browser/configure.zcml:160
 msgid "Assets"
 msgstr ""
@@ -387,7 +387,11 @@ msgstr ""
 msgid "Texts"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:60
+#: src/zeit/cms/content/browser/form.py:55
+msgid "Options"
+msgstr ""
+
+#: src/zeit/cms/content/browser/form.py:65
 msgid "misc."
 msgstr ""
 
@@ -539,15 +543,23 @@ msgstr ""
 msgid "VG Wort Id"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:224
+#: src/zeit/cms/content/interfaces.py:156
+msgid "Daily newsletter"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:157
+msgid "Should this article be listed in the daily newsletter?"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:230
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:264
+#: src/zeit/cms/content/interfaces.py:270
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:294
+#: src/zeit/cms/content/interfaces.py:300
 msgid "Hits today"
 msgstr ""
 
@@ -913,11 +925,11 @@ msgstr ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:203
+#: src/zeit/cms/syndication/interfaces.py:207
 msgid "No automatic metadata update"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:204
+#: src/zeit/cms/syndication/interfaces.py:208
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr ""
 
@@ -957,7 +969,7 @@ msgstr ""
 msgid "No edited documents."
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:24
+#: src/zeit/content/centerpage/browser/configure.zcml:27
 #: src/zeit/content/image/browser/configure.zcml:206
 #: src/zeit/content/gallery/browser/configure.zcml:33
 #: src/zeit/content/link/browser/configure.zcml:17
@@ -966,7 +978,7 @@ msgstr ""
 msgid "Edit metadata"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:40
+#: src/zeit/content/centerpage/browser/configure.zcml:43
 #: src/zeit/content/image/browser/configure.zcml:190
 #: src/zeit/content/gallery/browser/configure.zcml:50
 #: src/zeit/content/link/browser/configure.zcml:32
@@ -975,11 +987,11 @@ msgstr ""
 msgid "View metadata"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:65
+#: src/zeit/content/centerpage/browser/configure.zcml:68
 msgid "Center-Page"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:82
+#: src/zeit/content/centerpage/browser/configure.zcml:85
 msgid "Edit content"
 msgstr ""
 
@@ -997,11 +1009,11 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/configure.zcml:68
+#: src/zeit/content/gallery/browser/configure.zcml:71
 msgid "Gallery"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/configure.zcml:93
+#: src/zeit/content/gallery/browser/configure.zcml:96
 msgid "Synchronise with image folder"
 msgstr ""
 
@@ -1061,12 +1073,12 @@ msgid "Image (single)"
 msgstr ""
 
 #: src/zeit/content/image/browser/form.py:29
-#: src/zeit/content/image/browser/imagegroup.py:86
+#: src/zeit/content/image/browser/imagegroup.py:87
 msgid "Image data"
 msgstr ""
 
 #: src/zeit/content/image/browser/form.py:45
-#: src/zeit/content/image/browser/imagegroup.py:81
+#: src/zeit/content/image/browser/imagegroup.py:82
 msgid "Add image"
 msgstr ""
 
@@ -1074,7 +1086,7 @@ msgstr ""
 msgid "Edit image"
 msgstr ""
 
-#: src/zeit/content/image/browser/image.py:37
+#: src/zeit/content/image/browser/image.py:40
 msgid "View image"
 msgstr ""
 
@@ -1105,7 +1117,7 @@ msgstr ""
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:135
 #: src/zeit/content/image/browser/configure.zcml:139
-#: src/zeit/content/gallery/browser/configure.zcml:76
+#: src/zeit/content/gallery/browser/configure.zcml:79
 msgid "Images"
 msgstr ""
 
@@ -1126,12 +1138,12 @@ msgstr ""
 msgid "Image group"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:71
+#: src/zeit/content/image/browser/imagegroup.py:72
 #: src/zeit/content/image/browser/image_view.pt:10
 msgid "Dimensions"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:74
+#: src/zeit/content/image/browser/imagegroup.py:75
 #: src/zeit/content/portraitbox/interfaces.py:24
 #: src/zeit/content/image/browser/configure.zcml:198
 msgid "Image"

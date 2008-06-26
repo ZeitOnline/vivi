@@ -124,6 +124,11 @@ We get the value back:
 >>> browser.getControl(name='form.title').value
 'Wirtschaft'
 
+Make sure we can set the dailyNL:
+
+>>> browser.getControl('Daily newsletter')
+<ItemControl name='form.dailyNewsletter' type='checkbox' optionValue='on' selected=False>
+
 
 XML-Editor
 ==========
@@ -198,6 +203,7 @@ page:
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
   </head>
   <body>
     <title>Wirtschaft</title>
@@ -343,6 +349,7 @@ Have a look at the source:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
   </head>
   <body>
     <title>Homepage</title>

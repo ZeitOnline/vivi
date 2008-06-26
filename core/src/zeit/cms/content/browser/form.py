@@ -51,6 +51,11 @@ class CommonMetadataFormBase(object):
          'shortTeaserTitle', 'shortTeaserText',
          'hpTeaserTitle', 'hpTeaserText'),
         css_class='wide-widgets column-left')
+    option_fields = gocept.form.grouped.Fields(
+        _("Options"),
+        ('dailyNewsletter', ),
+        css_class='widgets-float column-left')
+
 
     field_groups = (
         navigation_fields,
@@ -59,6 +64,7 @@ class CommonMetadataFormBase(object):
         gocept.form.grouped.RemainingFields(
             _("misc."),
             css_class= 'column-right'),
+        option_fields,
         )
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,

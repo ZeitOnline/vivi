@@ -63,3 +63,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'automaticMetadataUpdateDisabled',
         use_default=True)
+
+    dailyNewsletter = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['dailyNewsletter'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')

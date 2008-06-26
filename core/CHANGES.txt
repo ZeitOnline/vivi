@@ -13,6 +13,7 @@ zeit.cms changes
 - Asset-Views bei Center-Page (bug #4306).
 - SyndicatedIn-Source war optimistisch über den Inhalt und ging bei
   "unbekannten Resourcen" kaputt (bug #4300).
+- DailyNL in den Standard-Metadaten (bug #4307).
 
 0.9.22 (2008-06-23)
 -------------------
