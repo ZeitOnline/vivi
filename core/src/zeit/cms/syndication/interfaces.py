@@ -193,7 +193,11 @@ class SyndicatedInSource(
         return relations.get_relations(context, 'syndicated_in')
 
     def getTitle(self, context, value):
-        return value.title
+        if IReadFeed.providedBy(value):
+            return value.title
+        if zeit.cms.interfaces.ICMSContent.providedBy(value):
+            return value.uniqueId
+        return str(value)  # XXX not tested, but should not be reached anyway.
 
 
 class IAutomaticMetadataUpdate(zope.interface.Interface):

@@ -11,6 +11,8 @@ zeit.cms changes
 - Bildergruppe geht nicht kaputt, wenn ein Ordner zur Bildergruppe wird, der
   nicht nur Bilder enthält (bug #4301).
 - Asset-Views bei Center-Page (bug #4306).
+- SyndicatedIn-Source war optimistisch über den Inhalt und ging bei
+  "unbekannten Resourcen" kaputt (bug #4300).
 
 0.9.22 (2008-06-23)
 -------------------

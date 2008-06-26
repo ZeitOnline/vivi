@@ -117,7 +117,8 @@ Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent object at 0x...>
 >>> list(target)[0].uniqueId == content.uniqueId
 True
 
-Syndicating is not possible when the feed is locked by somebody else.
+Syndicating is not possible when the feed is locked by somebody
+else[#remove-event-handler]_.
 
 >>> import zeit.connector.interfaces
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -249,6 +250,7 @@ The feed has not changed this time:
 </channel>
 
 
+
 The metadata update doesn't fail when the content is removed from the feed
 under the hood.
 
@@ -263,13 +265,55 @@ We need to re-enable the automatic update during checkout:
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> checked_out.automaticMetadataUpdateDisabled = frozenset([])
->>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+>>> content = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 
-Even after checkout there is nothing in the feed:
+Even after checkout/checkin there is nothing in the feed:
 
 >>> len(repository['politik.feed'])
 0
+
+
+Make sure the ``SyndicatedInSource`` works even when 1. the channel is no
+longer a channel and 2. the channel is removed:
+
+Initially there is the politik feed in:
+
+>>> source = zeit.cms.syndication.interfaces.SyndicatedInSource()(content)
+>>> list(source)
+[<zeit.cms.syndication.feed.Feed object at 0x...>]
+>>> feed = list(source)[0]
+
+>>> import zope.publisher.browser
+>>> import zope.app.form.browser
+>>> request = zope.publisher.browser.TestRequest()
+>>> terms = zope.component.getMultiAdapter(
+...     (source, request),
+...     zope.app.form.browser.interfaces.ITerms)
+>>> terms.getTerm(feed).title
+u'Politik'
+
+Change the type of politik feed to unknown:
+
+
+>>> connector.changeProperties(
+...     feed.uniqueId, {
+...         zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY: 'unknown'})
+>>> import transaction
+>>> transaction.commit()  # clears some caches
+
+Now there is an unknown resource in the channel:
+
+>>> list(source)
+[<zeit.cms.repository.unknown.UnknownResource object at 0x...>]
+>>> terms.getTerm(list(source)[0]).title
+u'http://xml.zeit.de/politik.feed'
+
+
+When we remove the feed from the repository, the source is empty:
+
+>>> del repository['politik.feed']
+>>> list(source)
+[]
 
 
 Ordering of Content in a Feed
@@ -301,10 +345,6 @@ Cleanup
 After the test we restore the old site:
 
 >>> zope.security.management.endInteraction()
->>> site_manager.unregisterHandler(
-...     eventHandler,
-...     (ICMSContent, IContentSyndicatedEvent))
-True
 >>> zope.app.component.hooks.setSite(old_site)
 
 
@@ -360,5 +400,9 @@ Footnotes
     >>> repository['hp_channels']['channel_magazin'] = (
     ...     zeit.cms.syndication.feed.Feed())
     
+.. [#remove-event-handler]
 
-    
+    >>> site_manager.unregisterHandler(
+    ...     eventHandler,
+    ...     (ICMSContent, IContentSyndicatedEvent))
+    True
