@@ -9,7 +9,7 @@
       tal:attributes="src context/++resource++zeit.cms/icons/submenu.png" />
   </a>
   <ul class="secondary-context-actions hidden"
-    tal:attributes="id view/menu_id"
+    tal:attributes="id view/menu_id; class view/menu_class"
     tal:content="structure actions">
   </ul>
 </li>
