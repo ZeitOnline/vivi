@@ -53,9 +53,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     pageBreak = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['pageBreak'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'paragraphsperpage')
-    dailyNewsletter = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['dailyNewsletter'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,

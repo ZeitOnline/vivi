@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri Jun 13 16:07:03 2008\n"
-"PO-Revision-Date: 2008-06-13 16:10+0100\n"
+"POT-Creation-Date: Thu Jun 26 15:10:37 2008\n"
+"PO-Revision-Date: 2008-06-26 15:13+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -55,7 +55,7 @@ msgid "misc."
 msgstr "sonstiges"
 
 #: src/zeit/content/article/browser/form.py:66
-msgid "Optionen"
+msgid "Options"
 msgstr "Optionen"
 
 #: src/zeit/content/article/browser/form.py:75
@@ -84,7 +84,7 @@ msgid "Add..."
 msgstr "Hinzufügen …"
 
 #: src/zeit/content/article/browser/recension.py:103
-#: src/zeit/content/article/interfaces.py:159
+#: src/zeit/content/article/interfaces.py:153
 msgid "Raw data"
 msgstr "Roh-Daten"
 
@@ -98,7 +98,7 @@ msgid "Book details"
 msgstr "Buchdetails"
 
 #: src/zeit/content/article/browser/recension.py:67
-#: src/zeit/content/article/interfaces.py:135
+#: src/zeit/content/article/interfaces.py:129
 #: src/zeit/content/article/browser/recension-overview.pt:16
 msgid "Publisher"
 msgstr "Verlag"
@@ -115,69 +115,65 @@ msgstr "Rezensionsinformationen hinzufügen"
 msgid "Edit book information"
 msgstr "Rezensionsinformationen bearbeiten"
 
-#: src/zeit/content/article/interfaces.py:102
-msgid "Authors"
-msgstr "Autoren"
-
-#: src/zeit/content/article/interfaces.py:106
+#: src/zeit/content/article/interfaces.py:100
 msgid "Author"
 msgstr "Autoren"
 
-#: src/zeit/content/article/interfaces.py:108
+#: src/zeit/content/article/interfaces.py:102
 msgid "Title"
 msgstr "Titel"
 
-#: src/zeit/content/article/interfaces.py:111
+#: src/zeit/content/article/interfaces.py:105
 msgid "Info"
 msgstr "Info"
 
-#: src/zeit/content/article/interfaces.py:115
+#: src/zeit/content/article/interfaces.py:109
 msgid "Genre"
 msgstr "Genre"
 
-#: src/zeit/content/article/interfaces.py:119
+#: src/zeit/content/article/interfaces.py:113
 msgid "ZEIT category"
 msgstr "ZEIT-Kategorie"
 
-#: src/zeit/content/article/interfaces.py:123
+#: src/zeit/content/article/interfaces.py:117
 msgid "Agelimit"
 msgstr "Altersbeschränkung"
 
-#: src/zeit/content/article/interfaces.py:127
+#: src/zeit/content/article/interfaces.py:121
 msgid "Original language"
 msgstr "Originalsprache"
 
-#: src/zeit/content/article/interfaces.py:131
+#: src/zeit/content/article/interfaces.py:125
 msgid "Translator"
 msgstr "Übersetzer"
 
 #. Default: "Location"
-#: src/zeit/content/article/interfaces.py:139
+#: src/zeit/content/article/interfaces.py:133
 msgid "book-location"
 msgstr "Ort"
 
-#: src/zeit/content/article/interfaces.py:143
+#: src/zeit/content/article/interfaces.py:137
 #: src/zeit/content/article/browser/recension-overview.pt:32
 msgid "Year"
 msgstr "Jahr"
 
-#: src/zeit/content/article/interfaces.py:147
+#: src/zeit/content/article/interfaces.py:141
 msgid "Media type"
 msgstr "Medientyp"
 
-#: src/zeit/content/article/interfaces.py:151
+#: src/zeit/content/article/interfaces.py:145
 msgid "Pages"
 msgstr "Seiten"
 
-#: src/zeit/content/article/interfaces.py:155
+#: src/zeit/content/article/interfaces.py:149
 msgid "Price (EUR)"
 msgstr "Preis in €"
 
-#: src/zeit/content/article/interfaces.py:167
+#: src/zeit/content/article/interfaces.py:161
 msgid "Aggregate comments"
 msgstr "Kommentare zusammenfassen"
 
-#: src/zeit/content/article/interfaces.py:168
+#: src/zeit/content/article/interfaces.py:162
 msgid "aggregate-comments-description"
 msgstr "Wählen Sie das Objekt von dem die Kommentare verwendet werden sollen."
 
@@ -210,25 +206,25 @@ msgid "Amount of paragraphs in total."
 msgstr "Absätze insgesamt:"
 
 #: src/zeit/content/article/interfaces.py:51
-msgid "Daily Newsletter"
-msgstr "Tages-Newsletter"
-
-#: src/zeit/content/article/interfaces.py:52
-msgid "Should this article be listed in the daily newsletter?"
-msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
-
-#: src/zeit/content/article/interfaces.py:57
 msgid "Textlength"
 msgstr "Anschläge"
 
-#: src/zeit/content/article/interfaces.py:61
+#: src/zeit/content/article/interfaces.py:55
 msgid "Has recension content"
 msgstr "Hat Rezensionsinformationen"
 
-#: src/zeit/content/article/interfaces.py:65
+#: src/zeit/content/article/interfaces.py:59
 msgid "First related as box"
 msgstr "Erstes Related als Box"
 
+#: src/zeit/content/article/interfaces.py:96
+msgid "Authors"
+msgstr "Autoren"
+
+#~ msgid "Daily Newsletter"
+#~ msgstr "Tages-Newsletter"
+#~ msgid "Should this article be listed in the daily newsletter?"
+#~ msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
 #~ msgid "Assets and related"
 #~ msgstr "Assets und Related"
 #~ msgid "Edit assets"

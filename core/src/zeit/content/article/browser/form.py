@@ -63,7 +63,7 @@ class ArticleFormBase(object):
              'automaticMetadataUpdateDisabled', 'template'),
             css_class='column-right'),
         gocept.form.grouped.Fields(
-            _("Optionen"),
+            _("Options"),
             ('dailyNewsletter', 'boxMostRead', 'commentsAllowed',
              'banner', 'has_recensions', 'artbox_thema'),
             css_class='widgets-float column-left'))

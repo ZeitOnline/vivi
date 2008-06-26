@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jun 13 16:07:03 2008\n"
+"POT-Creation-Date: Thu Jun 26 15:10:37 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -67,7 +67,7 @@ msgid "misc."
 msgstr ""
 
 #: src/zeit/content/article/browser/form.py:66
-msgid "Optionen"
+msgid "Options"
 msgstr ""
 
 #: src/zeit/content/article/browser/form.py:75
@@ -96,7 +96,7 @@ msgid "Add..."
 msgstr ""
 
 #: src/zeit/content/article/browser/recension.py:103
-#: src/zeit/content/article/interfaces.py:159
+#: src/zeit/content/article/interfaces.py:153
 msgid "Raw data"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgid "Book details"
 msgstr ""
 
 #: src/zeit/content/article/browser/recension.py:67
-#: src/zeit/content/article/interfaces.py:135
+#: src/zeit/content/article/interfaces.py:129
 #: src/zeit/content/article/browser/recension-overview.pt:16
 msgid "Publisher"
 msgstr ""
@@ -127,69 +127,65 @@ msgstr ""
 msgid "Edit book information"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:102
-msgid "Authors"
-msgstr ""
-
-#: src/zeit/content/article/interfaces.py:106
+#: src/zeit/content/article/interfaces.py:100
 msgid "Author"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:108
+#: src/zeit/content/article/interfaces.py:102
 msgid "Title"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:111
+#: src/zeit/content/article/interfaces.py:105
 msgid "Info"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:115
+#: src/zeit/content/article/interfaces.py:109
 msgid "Genre"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:119
+#: src/zeit/content/article/interfaces.py:113
 msgid "ZEIT category"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:123
+#: src/zeit/content/article/interfaces.py:117
 msgid "Agelimit"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:127
+#: src/zeit/content/article/interfaces.py:121
 msgid "Original language"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:131
+#: src/zeit/content/article/interfaces.py:125
 msgid "Translator"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:139
+#: src/zeit/content/article/interfaces.py:133
 #. Default: "Location"
 msgid "book-location"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:143
+#: src/zeit/content/article/interfaces.py:137
 #: src/zeit/content/article/browser/recension-overview.pt:32
 msgid "Year"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:147
+#: src/zeit/content/article/interfaces.py:141
 msgid "Media type"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:151
+#: src/zeit/content/article/interfaces.py:145
 msgid "Pages"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:155
+#: src/zeit/content/article/interfaces.py:149
 msgid "Price (EUR)"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:167
+#: src/zeit/content/article/interfaces.py:161
 msgid "Aggregate comments"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:168
+#: src/zeit/content/article/interfaces.py:162
 msgid "aggregate-comments-description"
 msgstr ""
 
@@ -222,22 +218,18 @@ msgid "Amount of paragraphs in total."
 msgstr ""
 
 #: src/zeit/content/article/interfaces.py:51
-msgid "Daily Newsletter"
-msgstr ""
-
-#: src/zeit/content/article/interfaces.py:52
-msgid "Should this article be listed in the daily newsletter?"
-msgstr ""
-
-#: src/zeit/content/article/interfaces.py:57
 msgid "Textlength"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:61
+#: src/zeit/content/article/interfaces.py:55
 msgid "Has recension content"
 msgstr ""
 
-#: src/zeit/content/article/interfaces.py:65
+#: src/zeit/content/article/interfaces.py:59
 msgid "First related as box"
+msgstr ""
+
+#: src/zeit/content/article/interfaces.py:96
+msgid "Authors"
 msgstr ""
 

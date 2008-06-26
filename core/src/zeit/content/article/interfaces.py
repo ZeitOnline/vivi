@@ -47,12 +47,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         readonly=True,
         required=False)
 
-    dailyNewsletter = zope.schema.Bool(
-        title=_("Daily Newsletter"),
-        description=_(
-            "Should this article be listed in the daily newsletter?"),
-        default=False)
-
     textLength = zope.schema.Int(
         title=_('Textlength'),
         required=False)
