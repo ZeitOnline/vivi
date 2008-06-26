@@ -4,6 +4,7 @@ CHANGES
 1.0 (unreleased)
 ----------------
 
+- Using event system in ZopeConnector to invalidate caches.
 
 0.22 (2008-06-23)
 -----------------

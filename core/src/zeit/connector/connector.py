@@ -121,12 +121,6 @@ class DAVUnexpectedResultError(DAVError):
 # - Collection resources SHOULD end in slash, non-collections SHOULD NOT
 #   (not sure whether we should enforce it, but we comply with it).
 
-def _id_splitlast(id):
-    # Split id in parent/name parts
-    # FIXME fix borderline cases: _splitlast(""), _splitlast("/")
-    parent, last = id.rstrip('/').rsplit('/', 1)
-    return parent + '/', last
-
 _max_timeout_days = ((sys.maxint-1) / 86400) - 1
 
 def _abs2timeout(time):
@@ -203,7 +197,7 @@ class Connector(object):
             if child_id != child_id.encode('ascii', 'replace'):
                 # We want to ignore objects with strange characters in the id.
                 continue
-            yield (_id_splitlast(child_id)[1], child_id)
+            yield (self._id_splitlast(child_id)[1], child_id)
 
     def _get_resource_type(self, id):
         __traceback_info__ = (id, )
@@ -298,7 +292,7 @@ class Connector(object):
         except davresource.DAVNotFoundError:
             raise KeyError("The resource %r does not exist." % id)
         return zeit.connector.resource.CachedResource(
-            id, _id_splitlast(id)[1],
+            id, self._id_splitlast(id)[1],
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
@@ -315,7 +309,7 @@ class Connector(object):
     def __delitem__(self, id):
         """Remove the resource from the repository."""
         id = self._get_cannonical_id(id)
-        parent, name = _id_splitlast(id)
+        parent, name = self._id_splitlast(id)
 
         # Invalidate the cache to make sure we have the real lock information
         self._invalidate_cache(id)
@@ -571,7 +565,7 @@ class Connector(object):
                                       datetime.timedelta(seconds=60))
         else: # We are a file resource:
             if(self._check_dav_resource(id) is None):
-                (parent, name) = _id_splitlast(id)
+                (parent, name) = self._id_splitlast(id)
                 parent = self._get_dav_resource(parent, ensure='collection')
                 davres = parent.create_file(name, data, resource.contentType,
                                             locktoken=locktoken)
@@ -684,7 +678,7 @@ class Connector(object):
         """invalidate cache."""
         invalidate = [id]
         if parent:
-            parent, last = _id_splitlast(id)
+            parent, last = self._id_splitlast(id)
             invalidate.append(parent)
 
         for id in invalidate:
@@ -711,6 +705,14 @@ class Connector(object):
         if response.status == 200:
             return id + '/'
         return id
+
+    @staticmethod
+    def _id_splitlast(id):
+        # Split id in parent/name parts
+        # FIXME fix borderline cases: _splitlast(""), _splitlast("/")
+        parent, last = id.rstrip('/').rsplit('/', 1)
+        return parent + '/', last
+
 
     @zope.cachedescriptors.property.Lazy
     def body_cache(self):

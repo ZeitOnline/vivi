@@ -10,9 +10,11 @@ import threading
 import transaction
 import transaction.interfaces
 
-import zope.app.appsetup.product
 import zope.component
+import zope.event
 import zope.interface
+
+import zope.app.appsetup.product
 
 import gocept.cache.property
 
@@ -65,6 +67,18 @@ class ZopeConnector(zeit.connector.connector.Connector):
     def locktokens(self):
         return zope.component.getUtility(
             zeit.connector.interfaces.ILockInfoStorage)
+
+    def _invalidate_cache(self, id, parent=False):
+        """invalidate cache."""
+        invalidate = [id]
+        if parent:
+            parent, last = self._id_splitlast(id)
+            invalidate.append(parent)
+
+        for id in invalidate:
+            logger.debug("Invalidating %s" % id)
+            zope.event.notify(
+                zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
 
 def connectorFactory():
@@ -139,7 +153,6 @@ class DataManager(object):
         for method, args, kwargs in self.cleanup:
             method(*args, **kwargs)
         self.cleanup[:] = []
-
 
 
 class ConnectorSavepoint(object):
