@@ -230,7 +230,8 @@ var ObjectReferenceWidget = Class.extend({
             var url = getFirstElementByTagAndClassName(
                 'div', 'tree-view-url', othis.lightbox.content_box).innerHTML;
             var navtree = new Tree(url, 'popup-navtree');
-            var scroll_state = new zeit.cms.ScrollStateRestorer('popup-navtree');
+            var scroll_state = new zeit.cms.ScrollStateRestorer(
+                'popup-navtree');
             scroll_state.restoreScrollState();
             return result;
         });
