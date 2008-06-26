@@ -53,7 +53,7 @@ property:
 </testtype>
 
 Checkin handler
----------------------------------------------------------------------------------------------------------------------------------------
+---------------
 
 The checkin handler copies all webdav properties to the xml *before* the object
 is checked in. It removes all existing head.attribute nodes before adding the
@@ -95,6 +95,9 @@ namespace are *not* mapped:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     py:pytype="str"
     ns="under-the-hood" name="am-i">4711</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+        name="date-last-modified">...-...-...T...+00:00</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
         name="last_modified_by">bob</attribute>

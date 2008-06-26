@@ -17,6 +17,7 @@ zeit.cms changes
 - JS-Warnung, wenn kein Firefox verwendet wird (bug #4305).
 - Popup-Asset/Image-Browser expandiert den automatisch Baum wenn man in einem 
   Ordner drin ist.
+- date-last-modified als webdav-property für XML-Inhalte (bug #4310).
 
 0.9.22 (2008-06-23)
 -------------------

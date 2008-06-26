@@ -44,7 +44,9 @@ The gallery is now noted in the webdav properties of `content`:
 >>> import pprint
 >>> pprint.pprint(dict(properties))
 {('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id',
- ('biga-src', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id'}
+ ('biga-src', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id',
+ ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
+ 
 
 
 The browse location of a gallery reference depends on the adapted object and

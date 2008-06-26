@@ -3,8 +3,10 @@
 # $Id$
 
 import StringIO
+import datetime
 
 import lxml.objectify
+import pytz
 
 import persistent
 import gocept.lxml.objectify
@@ -14,11 +16,12 @@ import zope.security.proxy
 
 import zope.app.container.contained
 
-import zeit.connector.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.content.property
 import zeit.cms.content.lxmlpickle  # extended pickle support
+import zeit.cms.content.property
+import zeit.cms.interfaces
+import zeit.connector.interfaces
 
 
 class XMLRepresentationBase(object):
@@ -65,8 +68,18 @@ class PropertyToXMLAttribute(object):
 
     def __init__(self, context):
         self.context = context
-        self.properties = dict(
-            zeit.connector.interfaces.IWebDAVProperties(context))
+        dav_properties = zeit.connector.interfaces.IWebDAVProperties(context)
+
+        # Set the date-last-modified to now
+        try:
+            dav_properties[('date-last-modified',
+                            zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)] = (
+                                datetime.datetime.now(pytz.UTC).isoformat())
+        except zope.security.interfaces.Forbidden:
+            # Don't do this for live properties.
+            pass
+
+        self.properties = dict(dav_properties)
 
         # Now get the current live-properties
         repository = zope.component.queryUtility(
