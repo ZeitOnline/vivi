@@ -7,7 +7,9 @@ zeit.cms changes
 - Styling des globalen Drop-Down-Menus
 - Menu im Metadaten-Preview funktioniert wieder.
 - Sortieren bestimmter Channels geht wieder (bug #4302).
-
+- Metadaten-Vorschau bei Bilderguppen zeigt Thumbnails der Bilder.
+- Bildergruppe geht nicht kaputt, wenn ein Ordner zur Bildergruppe wird, der
+  nicht nur Bilder enthält (bug #4301).
 
 0.9.22 (2008-06-23)
 -------------------

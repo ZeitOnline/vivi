@@ -60,6 +60,7 @@ class ImageColumn(zc.table.column.GetterColumn):
 class View(zeit.cms.browser.listing.Listing):
 
     title = _('Image group')
+    filter_interface = zeit.content.image.interfaces.IImage
 
     columns = (
         zc.table.column.SelectionColumn(idgetter=lambda item: item.__name__),
@@ -99,3 +100,12 @@ class Metadata(object):
     @zope.cachedescriptors.property.Lazy
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
+
+    @property
+    def images(self):
+        if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            self.context):
+            return
+        for obj in self.context.values():
+            if zeit.content.image.interfaces.IImage.providedBy(obj):
+                yield obj

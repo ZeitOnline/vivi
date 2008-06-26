@@ -350,6 +350,11 @@ table.properties textarea {
   font-size: 8pt;
 }
 
+.image-group-image-preview {
+  float: left;
+  margin: 0.5em;
+}
+
 .image-view-metadata {
   float: right;
   font-size: 8pt;

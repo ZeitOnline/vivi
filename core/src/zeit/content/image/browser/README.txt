@@ -487,9 +487,50 @@ Make sure we have a metadata preview for repository image groups:
  <div class="contextViewsAndActions">
 <div class="context-views">
     ...
-   <div>New Hampshire</div>
+    <div>New Hampshire</div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
+    </div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+    </div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+    </div>
     ...
 
+Make sure the image group view doesn't break when there is some other object
+than an image in the image group:
+
+>>> import StringIO
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> import zeit.connector.resource
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> connector.add(zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/2006/new-hampshire/foo',
+...     'foo', 'strage-type', StringIO.StringIO('data')))
+>>> import transaction
+>>> transaction.commit()
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006/new-hampshire')
+>>> print browser.contents
+<?xml ...
+    <td>
+      new-hampshire-450x200.jpg
+    </td>
+    ...
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/2006/'
+...     'new-hampshire/@@metadata_preview')
+>>> print browser.contents
+ <div class="contextViewsAndActions">
+<div class="context-views">
+    ...
+   <div>New Hampshire</div>
+    ...
 
 Broken images
 =============

@@ -116,14 +116,14 @@ pre {
 }
 
 .shadowTop {
-    background: transparent url("/@@/zeit.cms/layout/shadowTop.png") repeat-x 5px 0;
+    background: transparent url("layout/shadowTop.png") repeat-x 5px 0;
     border-right: 1px solid #4c4c4c;
     padding-top: 8px;
     padding-bottom: 5px;
 }
 
 .shadowLeft {
-    background: transparent url("/@@/zeit.cms/layout/shadowLeft.png") no-repeat top left;
+    background: transparent url("layout/shadowLeft.png") no-repeat top left;
     border-bottom: 1px solid #4c4c4c;
     padding-left: 5px;
     padding-top: 8px;
@@ -195,7 +195,7 @@ pre {
     top: 3em;
     bottom: 0;
     cursor: pointer;
-    background: transparent url("/@@/zeit.cms/layout/sidebardragger.png") no-repeat center;
+    background: transparent url("layout/sidebardragger.png") no-repeat center;
 }
 
 #sidebar.sidebar-folded {
@@ -205,7 +205,7 @@ pre {
 #sidebar-dragger.sidebar-folded {
     left: 0;
     width: 1em;
-    background: transparent url("/@@/zeit.cms/layout/sidebardragger-open.png") no-repeat center;
+    background: transparent url("layout/sidebardragger-open.png") no-repeat center;
 }
 
 #visualContentWrapper.sidebar-folded {
