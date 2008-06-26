@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-1.4 (unreleased)
+1.4 (2008-06-26)
 ----------------
 
 - DailyNL in den Standard-Metadaten (bug #4307).
