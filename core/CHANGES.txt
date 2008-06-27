@@ -10,6 +10,7 @@ zeit.cms changes
 - Assets-Popup: Einklappen/Ausklappen des Baumens ohne Zugriff auf
   WebDAV-Server.
 - Vernünftige Fehlermeldung, wenn ein Related nicht zum XML werden kann.
+- Korrektes Löschen von Caches beim abort (bug #4299).
 
 1.0b1 (2008-06-26)
 ------------------

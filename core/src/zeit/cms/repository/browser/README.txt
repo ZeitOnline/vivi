@@ -299,7 +299,8 @@ reload. Reloading sends an IResourceInvalidatedEvent.
 ...     zeit.connector.interfaces.IResourceInvalidatedEvent)
 ... def invalid(event):
 ...     print "Invalidate:", event.id
->>> zope.component.provideHandler(invalid)
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerHandler(invalid)
 
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
@@ -307,3 +308,10 @@ reload. Reloading sends an IResourceInvalidatedEvent.
 Invalidate: http://xml.zeit.de/online/2007/01
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/@@view.html'
+
+
+Clean up:
+
+>>> gsm.unregisterHandler(invalid)
+True
+

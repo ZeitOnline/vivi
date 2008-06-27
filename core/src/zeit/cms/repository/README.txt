@@ -445,6 +445,82 @@ Logout bob again:
 >>> zope.security.management.endInteraction()
 
 
+Caching
+=======
+
+The map of local_name to unique_id is cached:
+
+>>> pprint(repository._v_local_unique_map)
+{u'2006': u'http://xml.zeit.de/2006',
+ u'2007': u'http://xml.zeit.de/2007',
+ u'online': u'http://xml.zeit.de/online',
+ u'politik.feed': u'http://xml.zeit.de/politik.feed',
+ u'testcontent': u'http://xml.zeit.de/testcontent',
+ u'wirtschaft.feed': u'http://xml.zeit.de/wirtschaft.feed'}
+>>> pprint(repository['online']._v_local_unique_map)
+{u'2005': u'http://xml.zeit.de/online/2005',
+ u'2006': u'http://xml.zeit.de/online/2006',
+ u'2007': u'http://xml.zeit.de/online/2007'}
+>>> pprint(repository.uncontained_content)
+{u'http://xml.zeit.de/2006': <zeit.cms.repository.folder.Folder object at 0x...>,
+ u'http://xml.zeit.de/2007': <zeit.cms.repository.folder.Folder object at 0x...>,
+ ...
+
+
+On transaction boundaries this cache is deleted:
+
+>>> import transaction
+>>> transaction.commit()
+
+>>> repository.uncontained_content
+{}
+
+>>> repository._v_local_unique_map
+Traceback (most recent call last):
+    ...    
+AttributeError: 'Repository' object has no attribute '_v_local_unique_map'
+
+>>> repository['online']._v_local_unique_map
+Traceback (most recent call last):
+    ...    
+AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
+
+Let's fill the cache again and try abort:
+
+>>> repository.keys()
+[u'online', u'2006', u'2007', u'politik.feed', u'testcontent', u'wirtschaft.feed']
+>>> repository['online'].keys()
+[u'2005', u'2006', u'2007']
+>>> pprint(repository._v_local_unique_map)
+{u'2006': u'http://xml.zeit.de/2006',
+ u'2007': u'http://xml.zeit.de/2007',
+ u'online': u'http://xml.zeit.de/online',
+ u'politik.feed': u'http://xml.zeit.de/politik.feed',
+ u'testcontent': u'http://xml.zeit.de/testcontent',
+ u'wirtschaft.feed': u'http://xml.zeit.de/wirtschaft.feed'}
+>>> pprint(repository['online']._v_local_unique_map)
+{u'2005': u'http://xml.zeit.de/online/2005',
+ u'2006': u'http://xml.zeit.de/online/2006',
+ u'2007': u'http://xml.zeit.de/online/2007'}
+>>> pprint(repository.uncontained_content)
+{u'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder object at 0x...>}
+
+>>> transaction.abort()
+
+>>> repository.uncontained_content
+{}
+
+>>> repository._v_local_unique_map
+Traceback (most recent call last):
+    ...    
+AttributeError: 'Repository' object has no attribute '_v_local_unique_map'
+
+>>> repository['online']._v_local_unique_map
+Traceback (most recent call last):
+    ...    
+AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
+
+
 Cleanup
 =======
 

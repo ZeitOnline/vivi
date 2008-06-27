@@ -7,6 +7,8 @@ import logging
 import persistent
 import transaction
 
+import gocept.cache.property
+
 import zope.annotation.interfaces
 import zope.cachedescriptors.method
 import zope.component
@@ -31,6 +33,8 @@ class Container(zope.app.container.contained.Contained):
     zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
     uniqueId = None
+    _local_unique_map_data = gocept.cache.property.TransactionBoundCache(
+            '_v_local_unique_map', dict)
 
     # Container interface
 
@@ -93,14 +97,14 @@ class Container(zope.app.container.contained.Contained):
 
         object, event = zope.app.container.contained.containedEvent(
             object, self, name)
-        self._invalidate_cache()
+        self._local_unique_map_data.clear()
         zope.event.notify(event)
 
     def __delitem__(self, name):
         '''See interface `IWriteContainer`'''
         id = self._get_id_for_name(name)
         del self.connector[id]
-        self._invalidate_cache()
+        self._local_unique_map_data.clear()
 
     # Internal helper methods and properties:
 
@@ -120,21 +124,12 @@ class Container(zope.app.container.contained.Contained):
             slash = '/'
         return '%s%s%s' % (self.uniqueId, slash, name)
 
-    @zope.cachedescriptors.property.cachedIn('_v_local_unique_map')
+    @property
     def _local_unique_map(self):
-        transaction.get().addBeforeCommitHook(self._invalidate_cache)
-        return dict(self.connector.listCollection(self.uniqueId))
-
-    def _invalidate_cache(self):
-        logger.debug('Invalidating %s' % self.uniqueId)
-        try:
-            delattr(self, '_v_local_unique_map')
-        except AttributeError:
-            pass
-        try:
-            self.repository._invalidate_content_cache()
-        except zope.component.interfaces.ComponentLookupError:
-            pass
+        if not self._local_unique_map_data:
+            self._local_unique_map_data.update(
+                self.connector.listCollection(self.uniqueId))
+        return self._local_unique_map_data
 
 
 class Repository(persistent.Persistent, Container):
@@ -147,7 +142,8 @@ class Repository(persistent.Persistent, Container):
         zope.annotation.interfaces.IAttributeAnnotatable)
 
     uniqueId = zeit.cms.interfaces.ID_NAMESPACE
-    _v_registered = False
+    uncontained_content = gocept.cache.property.TransactionBoundCache(
+        '_v_uncontained_content', dict)
 
     def __init__(self):
         self._initalizied = False
@@ -186,13 +182,12 @@ class Repository(persistent.Persistent, Container):
         content.__parent__ = contained_content.__parent__
         return content
 
-    @zope.cachedescriptors.method.cachedIn('_v_uncontained_content')
     def getUncontainedContent(self, unique_id):
-        if not self._v_registered:
-            self._v_register = True
-            transaction.get().addBeforeCommitHook(
-                self._invalidate_content_cache)
-        content = self._get_uncontained_copy(unique_id)
+        try:
+            content = self.uncontained_content[unique_id]
+        except KeyError:
+            content = self._get_uncontained_copy(unique_id)
+            self.uncontained_content[unique_id] = content
         return content
 
     def addContent(self, content):
@@ -200,7 +195,6 @@ class Repository(persistent.Persistent, Container):
         if resource.id is None:
             raise ValueError("Objects to be added to the repository need a "
                              "unique id.")
-        self.getUncontainedContent.invalidate(self, resource.id)
         self.connector.add(resource)
 
     @property
@@ -213,12 +207,6 @@ class Repository(persistent.Persistent, Container):
         content = zeit.cms.interfaces.ICMSContent(resource)
         content.__name__ = resource.__name__
         return content
-
-    def _invalidate_content_cache(self):
-        try:
-            del self._v_uncontained_content
-        except AttributeError:
-            pass
 
 
 def repositoryFactory():
@@ -262,3 +250,10 @@ def cmscontentFactory(context):
 
     content.uniqueId = context.id
     return content
+
+
+@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+def invalidate_uncontained_content(event):
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    repository.uncontained_content.pop(event.id, None)
