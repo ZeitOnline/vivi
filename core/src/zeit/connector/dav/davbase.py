@@ -91,7 +91,7 @@ class HTTPBasicAuthCon:
     def request ( self, method, uri, body=None, headers={} ):
         if self._resp is not None and not self._resp.isclosed():
             logger.error("Response left!")
-            logger.error(resp.read())
+            logger.error(self._resp.read())
             self._resp = None
         if self._authon:
             # short cut to avoid useless requests
