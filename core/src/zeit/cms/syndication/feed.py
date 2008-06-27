@@ -10,6 +10,7 @@ import persistent
 
 import zope.component
 import zope.interface
+import zope.proxy
 
 import zope.app.container.contained
 
@@ -76,7 +77,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         self._p_changed = True
 
     def remove(self, content):
-        if not isinstance(content, FakeEntry):
+        if not isinstance(zope.proxy.removeAllProxies(content), FakeEntry):
             content = zeit.cms.interfaces.ICMSContent(content)
         unique_id = content.uniqueId
         self._remove_by_id(unique_id)

@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Die Channel-Ansicht geht nicht mehr kaputt, wenn ein Objekt ohne Titel
   syndiziert wurde (bug #4312).
+- Entfernen von Links aus Channels stabilisiert.
 
 1.0b1 (2008-06-26)
 ------------------
