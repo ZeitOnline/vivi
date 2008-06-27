@@ -110,7 +110,6 @@ class HTTPBasicAuthCon:
             # If that raises the error again, well let it raise.
             self._con.request(method, uri, body, headers)
 
-
     def getresponse(self):
         return self._con.getresponse()
 
