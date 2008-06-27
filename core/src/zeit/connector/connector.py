@@ -428,7 +428,8 @@ class Connector(object):
             try:
                 self.get_connection().do_unlock(url, locktoken)
             finally:
-                self._put_my_lockinfo(id, None)
+                if invalidate:
+                    self._put_my_lockinfo(id, None)
         if invalidate:
             self._invalidate_cache(id)
         return locktoken
