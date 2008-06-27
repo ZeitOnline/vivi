@@ -167,3 +167,14 @@ LockedByOtherSystemError: (u'gimli', datetime.datetime(...))
 u'opaquelocktoken:...'
 >>> connector.add(res)
 >>> del connector[res.id]
+
+Edge case 5: Null resouce locks
++++++++++++++++++++++++++++++++
+
+>>> res.id = 'http://xml.zeit.de/testing/edge5'
+>>> connector.lock(res.id, 'frodo', until=None)
+'opaquelocktoken:...'
+>>> connector[res.id].data
+<StringIO.StringIO instance at 0x...>
+>>> connector.unlock(res.id)
+u'opaquelocktoken:...'

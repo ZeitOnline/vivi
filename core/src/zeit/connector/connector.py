@@ -275,7 +275,7 @@ class Connector(object):
             data = cache.setData(id, properties, response)
             if not response.isclosed():
                 additional_data = response.read()
-                assert not additional_data
+                assert not additional_data, additional_data
         if data is None:
             # This apparently happens when the resource does not have a
             # body but only properties.

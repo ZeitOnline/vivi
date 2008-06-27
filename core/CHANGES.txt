@@ -5,6 +5,8 @@ CHANGES
 ----------------
 
 - Using event system in ZopeConnector to invalidate caches.
+- Fixed a bug when getting NULLResources or other resources w/o etag (bug
+  #4315).
 
 0.22 (2008-06-23)
 -----------------

@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import StringIO
 import logging
 import time
 
@@ -57,7 +58,9 @@ class ResourceCache(persistent.Persistent):
         if current_etag is None:
             # When we have no etag, we must not store the data as we have no
             # means of invalidation then.
-            return
+            f = StringIO.StringIO(data.read())
+            return f
+
         logger.debug('Storing body of %s with etag %s' % (
             unique_id, current_etag))
         blob = ZODB.blob.Blob()
