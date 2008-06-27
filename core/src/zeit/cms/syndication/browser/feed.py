@@ -129,6 +129,8 @@ class FeedView(object):
             return item.context.uniqueId
 
         def _url_formatter(value, item, formatter):
+            if not value:
+                value = item.__name__
             return u'<a href="%s">%s</a>' % (item.url, cgi.escape(value))
 
         def _escape(value, item, formatter):

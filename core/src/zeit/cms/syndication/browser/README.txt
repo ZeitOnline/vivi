@@ -148,7 +148,7 @@ Locking indicator
 
 Locking information is also be displayed in the syndication manager:
 
->>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html')
+>>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed')
 >>> browser.getLink("Checkout").click()
 >>> browser.getLink("Remember as syndication target").click()
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
@@ -513,3 +513,76 @@ we can see it in the UI:
     </td>
     ...
 
+
+
+Bug hunting
+===========
+
+People do strange things and add the channel to itself. Let's try that:
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...              'wirtschaft.feed/edit.html')
+>>> browser.getLink('Checkin').click()
+>>> browser.getLink('Syndicate').click()
+>>> browser.getControl(
+...     name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3dpcnRzY2hhZnQuZmVlZA==.'
+...     ).value = True
+>>> browser.getControl('Syndicate').click()
+
+Let's have a look at the feed now:
+
+>>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed')
+>>> print browser.contents
+<?xml ...
+    <td>
+      <a href="http://localhost/++skin++cms/repository/wirtschaft.feed">Wirtschaft</a>
+    </td>
+    <td>
+      1
+    </td>
+    ...
+
+
+Let's remove the title of the feed to make sure we don't buke. Note that there
+is now way to remove the title w/o editing the source:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getLink('Source').click()
+>>> browser.getControl('XML').value = '''\
+... <channel>
+...   <container>
+...     <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/wirtschaft.feed">
+...       <references/>
+...     </block>
+...     <block href="http://xml.zeit.de/online/2007/01/Querdax">
+...       <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+...         <title/>
+...         <text/>
+...       </teaser>
+...     </block>
+...     <block href="http://xml.zeit.de/online/2007/01/Rosia-Montana">
+...       <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+...         <title/>
+...         <text/>
+...       </teaser>
+...     </block>
+...     <block href="http://xml.zeit.de/online/2007/01/Flugsicherheit">
+...       <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+...         <title/>
+...         <text/>
+...       </teaser>
+...     </block>
+...   </container>
+...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+... </channel>'''
+>>> browser.getControl('Apply').click()
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<?xml ...
+    <td>
+      <a href="http://localhost/++skin++cms/repository/wirtschaft.feed">wirtschaft.feed</a>
+    </td>
+    <td>
+      1
+    </td>
+    ...

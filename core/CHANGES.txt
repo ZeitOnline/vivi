@@ -4,6 +4,9 @@ zeit.cms changes
 1.0b2 (unreleased)
 ------------------
 
+- Die Channel-Ansicht geht nicht mehr kaputt, wenn ein Objekt ohne Titel
+  syndiziert wurde (bug #4312).
+
 1.0b1 (2008-06-26)
 ------------------
 
