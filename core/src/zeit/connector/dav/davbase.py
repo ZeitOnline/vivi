@@ -1,5 +1,6 @@
 import base64
 import httplib
+import logging
 import mimetypes
 import re
 import sys
@@ -13,6 +14,8 @@ DEBUG_REQUEST = False
 
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 
+
+logger = logging.getLogger(__name__)
 
 class BadAuthTypeError ( Exception ):
     pass
@@ -86,9 +89,10 @@ class HTTPBasicAuthCon:
         return
 
     def request ( self, method, uri, body=None, headers={} ):
-        #if self._resp is not None:
-        #    self._resp.close()
-        #    self._resp = None
+        if self._resp is not None and not self._resp.isclosed():
+            logger.error("Response left!")
+            logger.error(resp.read())
+            self._resp = None
         if self._authon:
             # short cut to avoid useless requests
             raw = "%s:%s" % self.get_auth(self._realm)
@@ -111,7 +115,8 @@ class HTTPBasicAuthCon:
             self._con.request(method, uri, body, headers)
 
     def getresponse(self):
-        return self._con.getresponse()
+        self._resp = self._con.getresponse()
+        return self._resp
 
     def close ( self ):
         if self._resp is not None:
