@@ -12,8 +12,7 @@ import urlparse
 import lxml.etree
 import gocept.lxml.objectify
 
-import persistent.mapping
-
+import zope.event
 import zope.interface
 
 import zope.app.file.image
@@ -120,6 +119,8 @@ class Connector(object):
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         self._set_properties(id, resource.properties)
+        zope.event.notify(
+            zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
     def __delitem__(self, id):
         resource = self[id]
@@ -127,6 +128,8 @@ class Connector(object):
             del self[uid]
         self._deleted.add(id)
         self._data.pop(id, None)
+        zope.event.notify(
+            zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
     def __contains__(self, id):
         try:
