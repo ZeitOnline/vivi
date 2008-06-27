@@ -122,7 +122,7 @@ reachable at `get_object_browser` for every folder:
 </table>
 ...
 </div>
-  <div class="tree-view-url">http://localhost/++skin++cms/repository/tree.html</div>
+  <div class="tree-view-url">http://localhost/++skin++cms/repository/@@tree.html</div>
 
 The object browser also supports filtering of types via a content type source
 name. Without filter everything is displayed:
