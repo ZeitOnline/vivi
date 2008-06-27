@@ -107,7 +107,7 @@ class VolatileCache(persistent.Persistent):
 
     zope.interface.implements(zeit.connector.interfaces.IVolatileCache)
 
-    _cache_valid = False
+    _cache_valid = True  ## XXX temporarily
 
     def __init__(self):
         self._validate_cache()
