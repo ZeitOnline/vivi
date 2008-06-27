@@ -9,6 +9,7 @@ zeit.cms changes
 - Entfernen von Links aus Channels stabilisiert.
 - Assets-Popup: Einklappen/Ausklappen des Baumens ohne Zugriff auf
   WebDAV-Server.
+- Vernünftige Fehlermeldung, wenn ein Related nicht zum XML werden kann.
 
 1.0b1 (2008-06-26)
 ------------------

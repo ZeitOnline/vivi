@@ -62,10 +62,18 @@ class RelatedBase(object):
     def _set_related(self, values):
         elements = []
         for related in values:
-            related_element = zope.component.getAdapter(
+            __traceback_info__ = (self.context.uniqueId, related.uniqueId,)
+            related_element = zope.component.queryAdapter(
                 related,
                 zeit.cms.content.interfaces.IXMLReference,
                 name=self.xml_reference_name)
+            if related_element is None:
+                raise ValueError(
+                    ("Could not create xml reference '%s' for %s which "
+                     "is referenced in %s.") % (
+                         self.xml_reference_name,
+                         related.uniqueId, self.context.uniqueId))
+
             elements.append(related_element)
         self.xml = elements
 

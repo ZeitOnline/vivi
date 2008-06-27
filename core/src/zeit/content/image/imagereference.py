@@ -68,6 +68,7 @@ class FeedMetadataUpdater(object):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_image_reference_on_checkin(context, event):
+    __traceback_info__ = (context.uniqueId,)
     images = zeit.content.image.interfaces.IImages(context, None)
     if images is None:
         return

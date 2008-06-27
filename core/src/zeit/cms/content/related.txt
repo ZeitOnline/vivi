@@ -320,6 +320,20 @@ When we remove the relateds they're of course removed from the XML:
   <body/>
 </testtype>
 
+
+When we add an related which is not adaptable a useful error is raised:
+
+>>> class Strange(object):
+...     pass
+>>> strange_thing = Strange()
+>>> strange_thing.uniqueId = 'foo'
+>>> related.related = (strange_thing,)
+Traceback (most recent call last):
+    ...
+ValueError: Could not create xml reference 'related' for foo which is
+    referenced in http://xml.zeit.de/content.
+
+
 Cleanup:
 
 >>> zope.app.component.hooks.setSite(old_site)
