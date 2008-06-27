@@ -419,7 +419,7 @@ class Connector(object):
         self._invalidate_cache(id)
         return token
 
-    def unlock(self, id, locktoken=None):
+    def unlock(self, id, locktoken=None, invalidate=True):
         self._invalidate_cache(id)
         url = self._id2loc(self._get_cannonical_id(id))
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
@@ -428,7 +428,8 @@ class Connector(object):
                 self.get_connection().do_unlock(url, locktoken)
             finally:
                 self._put_my_lockinfo(id, None)
-        self._invalidate_cache(id)
+        if invalidate:
+            self._invalidate_cache(id)
         return locktoken
 
     def locked(self, id):
