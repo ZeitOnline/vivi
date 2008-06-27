@@ -153,6 +153,7 @@ class DataManager(object):
 
     def _cleanup(self):
         for method, args, kwargs in self.cleanup:
+            logger.info("Abort cleanup: %s(%s, %s)" % (method, args, kwargs))
             method(*args, **kwargs)
         self.cleanup[:] = []
 

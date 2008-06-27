@@ -420,7 +420,8 @@ class Connector(object):
         return token
 
     def unlock(self, id, locktoken=None, invalidate=True):
-        self._invalidate_cache(id)
+        if invalidate:
+            self._invalidate_cache(id)
         url = self._id2loc(self._get_cannonical_id(id))
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
         if locktoken:
