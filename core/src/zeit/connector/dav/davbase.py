@@ -35,13 +35,19 @@ class HTTPBasicAuthCon:
     def __init__ ( self, host, port=None, strict=None ):
         self._resp = None
         self._authon = False
-        self._con = self.connect_class(host, port, strict)
-        self._con.debuglevel = 0
+        self._host = host
+        self._port = port
+        self._strict = strict
         self._realms = {}
         self._user = ''
         self._passwd = ''
         self._realm = None
-        return
+        # Actually connect
+        self.connect()
+
+    def connect(self):
+        self._con = self.connect_class(self._host, self._port, self._strict)
+        self._con.debuglevel = 0
 
     def set_auth ( self, user, passwd, realm=None ):
         if realm is None:
@@ -96,7 +102,14 @@ class HTTPBasicAuthCon:
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))
-        self._con.request(method, uri, body, headers)
+        try:
+            self._con.request(method, uri, body, headers)
+        except httplib.CannotSendRequest:
+            # Yikes. The connection got into an inconsistent state! Reconnect.
+            self.connect()
+            # If that raises the error again, well let it raise.
+            self._con.request(method, uri, body, headers)
+
 
     def getresponse(self):
         return self._con.getresponse()

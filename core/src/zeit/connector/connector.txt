@@ -513,6 +513,19 @@ Clean up:
 >>> del connector[id]
 
 
+Let's make sure we don't die when the connection gets into an
+inconsistent/wrong state:
+
+>>> conn = connector.get_connection()
+>>> conn._con
+<httplib.HTTPConnection instance at 0x...>
+>>> conn._con._HTTPConnection__state
+'Idle'
+>>> conn._con._HTTPConnection__state = 'flux'
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[]
+
+
 .. [#create-folder-structure] Create a folder structure for copy/move
 
     Create helpers for creating folders/files:
