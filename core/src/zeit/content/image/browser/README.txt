@@ -159,7 +159,7 @@ Make sure the image is not changed by looking at the image view:
   </tr>
   ...
       <div>
-        Image title: Tanz beim Opernball
+        Image title: Opernball in Wien
       </div>
       <div>
         ALT: Zwei Taenzer

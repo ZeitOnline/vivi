@@ -32,7 +32,7 @@
     Zeit online
   </div>
   <div i18n:translate="">
-    Image title: <span tal:replace="view/metadata/caption" i18n:name="caption" />
+    Image title: <span tal:replace="view/metadata/title" i18n:name="caption" />
   </div>
   <div i18n:translate="">
     ALT: <span tal:replace="view/metadata/alt" i18n:name="alt" />

@@ -5,6 +5,7 @@ zeit.cms changes
 ------------------
 
 - Speichern von Assets stabiler (Persistenz-Problem).
+- Bild-Metdaten-Anzeige: Titel wird jetzt angezeigt (bug #4304).
 
 1.0b2 (2008-06-28)
 ------------------
