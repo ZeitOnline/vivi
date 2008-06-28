@@ -395,8 +395,15 @@ class Connector(object):
             properties,
             delmark=zeit.connector.interfaces.DeleteProperty,
             locktoken=locktoken)
-        # XXX could we just update the cache ourselves?
-        self._invalidate_cache(id)
+
+        # Update property cache
+        try:
+            cached_properties = self.property_cache[id]
+        except KeyError:
+            pass
+        else:
+            cached_properties.update(properties)
+            self.property_cache[id] = cached_properties
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""

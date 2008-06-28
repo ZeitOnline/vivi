@@ -9,6 +9,8 @@ CHANGES
   during "committing" phase.
 - Removed property cache invalidation during server startup since this is just
   too heavy for production use.
+- `changeProperties` doesn't invalidate the resource but updates the cache
+  itself.
 
 1.0b1 (2008-06-27)
 ------------------
