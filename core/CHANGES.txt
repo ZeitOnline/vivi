@@ -11,6 +11,7 @@ zeit.cms changes
   WebDAV-Server.
 - Vernünftige Fehlermeldung, wenn ein Related nicht zum XML werden kann.
 - Korrektes Löschen von Caches beim abort (bug #4299).
+- Sperren von Resourcen beim Veröffentlichen.
 
 1.0b1 (2008-06-26)
 ------------------
