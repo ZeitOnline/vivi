@@ -147,7 +147,8 @@ class XMLEditorActions(object):
 
     @zope.cachedescriptors.property.Lazy
     def context_node(self):
-        nodes = self.context.xml.xpath(self.request.form['path'])
+        path = self.request.form['path']
+        nodes = self.context.xml.xpath(path)
         if not nodes:
             raise ValueError("Path %r did not result in any nodes" % path)
         if len(nodes) != 1:
