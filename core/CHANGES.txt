@@ -1,11 +1,12 @@
 zeit.cms changes
 ================
 
-1.0b3 (unreleased)
+1.0b3 (2008-06-28)
 ------------------
 
 - Speichern von Assets stabiler (Persistenz-Problem).
 - Bild-Metdaten-Anzeige: Titel wird jetzt angezeigt (bug #4304).
+- CMS geht nicht mehr kaputt, wenn das today.xml leer ist (bug #4323).
 
 1.0b2 (2008-06-28)
 ------------------

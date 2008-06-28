@@ -8,6 +8,7 @@ import urlparse
 import threading
 import time
 
+import lxml.etree
 import gocept.lxml.objectify
 
 import zope.interface
@@ -54,10 +55,16 @@ class CountStorage(object):
             url = config['today-xml-url']
             logger.info("Updating click counter from %s" % url)
             request = urllib2.urlopen(url)
-            xml = gocept.lxml.objectify.fromfile(request)
-            self.id_to_count = dict(
-                (self._make_unique_id(item.get('url')),
-                 int(item.get('counter'))) for item in xml.article)
+            try:
+                xml = gocept.lxml.objectify.fromfile(request)
+            except lxml.etree.XMLSyntaxError:
+                # Hum. Sometimes we cannot parse it because the file is empty.
+                # Just ignore this update.
+                logger.error("XMLSyntaxError while updating today.xml")
+            else:
+                self.id_to_count = dict(
+                    (self._make_unique_id(item.get('url')),
+                     int(item.get('counter'))) for item in xml.article)
             self.last_refresh = now
         finally:
             self.update_lock.release()
