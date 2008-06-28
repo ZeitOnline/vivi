@@ -4,6 +4,9 @@ zeit.cms changes
 1.0b4 (unreleased)
 ------------------
 
+- Fixed cms lock handling when resources are locked by other systems (or if we
+  think it was locked by another system).
+
 1.0b3 (2008-06-28)
 ------------------
 

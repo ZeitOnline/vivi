@@ -14,8 +14,9 @@ Mock a connector:
 >>> class Connector(object):
 ...     who = None
 ...     until = None
+...     mylock = True
 ...     def locked(self, id):
-...         return self.who, self.until, False
+...         return self.who, self.until, self.mylock
 ... 
 >>> import zope.component
 >>> import zeit.connector.interfaces
@@ -56,6 +57,15 @@ When who or until is not None we'll get a lock info:
 >>> info.principal_id
 'bastard locker from hell'
 
+
+When the connector tells us that it is not us who locked but a different system
+the lock owner will be prefixed by "othersystem.":
+
+>>> connector.mylock = False
+>>> info = lock_storage.getLock(content)
+>>> info.principal_id
+'othersystem.bastard locker from hell'
+
 Set until:
 
 >>> import datetime
@@ -63,6 +73,7 @@ Set until:
 >>> connector.who = None
 >>> connector.until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
 ...     days=1)
+>>> connector.mylock = True
 >>> info = lock_storage.getLock(content)
 >>> info.principal_id
 u'zeit.cms.unknown-dav-locker'
