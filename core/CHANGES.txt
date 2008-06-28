@@ -11,6 +11,7 @@ CHANGES
   too heavy for production use.
 - `changeProperties` doesn't invalidate the resource but updates the cache
   itself.
+- Removed content migration script.
 
 1.0b1 (2008-06-27)
 ------------------

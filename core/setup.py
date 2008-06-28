@@ -35,8 +35,4 @@ setup(
             'zope.app.zcmlfiles',
         ],
     },
-    entry_points=dict(
-        console_scripts =
-            ['migrate-content-types = '
-             'zeit.connector.migrations:migrate_content_types']),
 )
