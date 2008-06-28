@@ -2,7 +2,7 @@ CHANGES
 =======
 
 
-1.0b2 (unreleased)
+1.0b2 (2008-06-28)
 ------------------
 
 - Fixed handling on transaction abort so we're not writing to the database
