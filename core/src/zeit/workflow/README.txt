@@ -524,7 +524,7 @@ Publish the folder again and verify the log:
 >>> print logfile.getvalue()
 Publishing http://xml.zeit.de/online/2007/01
 Could not checkout http://xml.zeit.de/online/2007/01
-Publish script output:
+...publish.sh:
 Publishing test script
 work/online/2007/01
 work/online/2007/01/4schanzentournee-abgesang
@@ -596,10 +596,32 @@ recursivly remove.
 >>> print logfile.getvalue()
 Retracting http://xml.zeit.de/online/2007/01
 Could not checkout http://xml.zeit.de/online/2007/01
-Retract script output:
+...retract.sh:
 Retracting test script
 work/online/2007/01
 done.
+
+
+Error handling
+--------------
+
+When the publish/retract script fails we'll get an error logged. The script
+fails when there is 'JPG' in the input data:
+
+>>> jpg = repository['2006']['DSC00109_2.JPG']
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(jpg)
+>>> workflow.urgent = True
+>>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
+>>> publish.publish()
+>>> tasks.process()
+
+>>> print_log(log.get_log(jpg))
+http://xml.zeit.de/2006/DSC00109_2.JPG
+     Urgent: yes
+http://xml.zeit.de/2006/DSC00109_2.JPG
+     Publication scheduled
+http://xml.zeit.de/2006/DSC00109_2.JPG
+     Error during publish/retract: ScriptError: ('error\n', 1)
 
 
 [#cleanup]_

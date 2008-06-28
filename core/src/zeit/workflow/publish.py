@@ -8,6 +8,8 @@ import os.path
 import subprocess
 import pytz
 
+import ZODB.POSException
+
 import zope.component
 import zope.event
 import zope.interface
@@ -17,6 +19,8 @@ import zope.app.security.interfaces
 import zope.app.appsetup.product
 
 import lovely.remotetask.interfaces
+
+import zeit.objectlog.interfaces
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -91,7 +95,17 @@ class PublishRetractTask(object):
         obj = self.repository.getContent(input.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
 
-        self.run(obj, info)
+        try:
+            self.run(obj, info)
+        except ZODB.POSException.ConflictError:
+            raise
+        except Exception, e:
+            log = zope.component.getUtility(
+                zeit.objectlog.interfaces.IObjectLog)
+            log.log(obj, _("Error during publish/retract: ${exc}: ${message}",
+                           mapping=dict(
+                               exc=e.__class__.__name__,
+                               message=str(e))))
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.
@@ -153,17 +167,36 @@ class PublishRetractTask(object):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
-    def lock(self, obj):
+    @staticmethod
+    def lock(obj):
         lockable = zope.app.locking.interfaces.ILockable(obj)
         if lockable.isLockedOut():
             lockable.breaklock()
         if not lockable.ownLock():
             lockable.lock(timeout=120)
 
-    def unlock(self, obj):
+    @staticmethod
+    def unlock(obj):
         lockable = zope.app.locking.interfaces.ILockable(obj)
         if lockable.ownLock():
             lockable.unlock()
+
+    @staticmethod
+    def call_script(filename, stdin):
+        proc = subprocess.Popen(
+            [filename], bufsize=-1,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = proc.communicate(stdin)
+        if proc.returncode:
+            logger.error("%s exited with %s" % (filename, proc.returncode))
+        if stdout:
+            logger.info("%s:\n%s" % (filename, stdout))
+        if stderr:
+            logger.error("%s:\n%s" % (filename, stderr))
+        if proc.returncode:
+            raise zeit.workflow.interfaces.ScriptError(
+                stderr, proc.returncode)
 
 
 class PublishTask(PublishRetractTask):
@@ -214,16 +247,7 @@ class PublishTask(PublishRetractTask):
         # The publish script doesn't want URLs but local paths. Munge them.
         unique_ids = [self.convert_uid_to_path(uid) for uid in unique_ids]
 
-        # Call the script. This does the actual publish.
-        proc = subprocess.Popen(
-            [publish_script], bufsize=-1,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = proc.communicate('\n'.join(unique_ids))
-        if stdout:
-            logger.info("Publish script output:\n%s" % stdout)
-        if stderr:
-            logger.error("Publish script error:\n%s" % stderr)
+        self.call_script(publish_script, '\n'.join(unique_ids))
 
     def after_publish(self, obj):
         self.log.log(obj, _('Published'))
@@ -266,16 +290,7 @@ class RetractTask(PublishRetractTask):
             'zeit.workflow')
         retract_script = config['retract-script']
         path = self.convert_uid_to_path(obj.uniqueId)
-
-        proc = subprocess.Popen(
-            [retract_script], bufsize=-1,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = proc.communicate(path)
-        if stdout:
-            logger.info("Retract script output:\n%s" % stdout)
-        if stderr:
-            logger.error("Retract script error:\n%s" % stderr)
+        self.call_script(retract_script, path)
 
     def after_retract(self, obj):
         """Do things after retract."""
