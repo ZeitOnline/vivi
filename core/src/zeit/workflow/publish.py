@@ -153,6 +153,18 @@ class PublishRetractTask(object):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
+    def lock(self, obj):
+        lockable = zope.app.locking.interfaces.ILockable(obj)
+        if lockable.isLockedOut():
+            lockable.breaklock()
+        if not lockable.ownLock():
+            lockable.lock(timeout=120)
+
+    def unlock(self, obj):
+        lockable = zope.app.locking.interfaces.ILockable(obj)
+        if lockable.ownLock():
+            lockable.unlock()
+
 
 class PublishTask(PublishRetractTask):
     """Publish object."""
@@ -239,6 +251,7 @@ class RetractTask(PublishRetractTask):
 
     def before_retract(self, obj):
         """Do things before the actual retract."""
+        self.lock(obj)
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(obj))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
@@ -267,6 +280,7 @@ class RetractTask(PublishRetractTask):
     def after_retract(self, obj):
         """Do things after retract."""
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj))
+        self.unlock(obj)
         return obj
 
     @property
