@@ -11,6 +11,7 @@ import persistent
 import zope.component
 import zope.interface
 import zope.proxy
+import zope.security.proxy
 
 import zope.app.container.contained
 
@@ -239,7 +240,8 @@ class RelatedMetadataUpdater(object):
         if related is None:
             return
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
-        entry[xml_repr.xml.tag] = xml_repr.xml
+        entry[xml_repr.xml.tag] = zope.security.proxy.removeSecurityProxy(
+            xml_repr.xml)
 
 
 def syndicated_in(content, catalog):

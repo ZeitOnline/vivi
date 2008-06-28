@@ -23,7 +23,7 @@ class RelatedBase(object):
     xml_reference_name = 'related'
 
     def __init__(self, context):
-        self.context = context
+        self.context = self.__parent__ = context
 
     # IXMLRepresentation
 
@@ -41,6 +41,7 @@ class RelatedBase(object):
     @rwproperty.setproperty
     def xml(self, value):
         self.path.setattr(self._get_xml(), value)
+        self.context._p_changed = True
 
     # Helper methods (used in subclasses)
 

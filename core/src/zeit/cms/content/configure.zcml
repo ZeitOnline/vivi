@@ -101,10 +101,30 @@
   <!-- related content -->
   <adapter
     factory=".related.RelatedContent"
-    provides=".interfaces.IRelatedContent" />
+    provides=".interfaces.IRelatedContent"
+    trusted="yes" />
   <adapter factory=".related.related_from_template" />
   <adapter factory=".related.BasicReference" name="related" />
   <subscriber handler=".related.update_related_on_checkin" />
+  <class class=".related.RelatedContent">
+    <require
+      interface=".interfaces.IRelatedContent"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRelatedContent"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zope.location.interfaces.ILocation"
+      permission="zope.View" />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zeit.EditContent" />
+  </class>
 
   <!-- automatic xml updating -->
   <adapter factory=".xmlsupport.PropertyToXMLAttribute" />

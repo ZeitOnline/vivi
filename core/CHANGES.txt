@@ -4,6 +4,8 @@ zeit.cms changes
 1.0b3 (unreleased)
 ------------------
 
+- Speichern von Assets stabiler (Persistenz-Problem).
+
 1.0b2 (2008-06-28)
 ------------------
 
