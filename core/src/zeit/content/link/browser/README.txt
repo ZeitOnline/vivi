@@ -39,6 +39,9 @@ Adding related objects is done on the asset page:
 >>> browser.getControl('Add Images').click()
 >>> browser.getControl(name="form.images.0.").value = (
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> browser.getControl('Add Related').click()
+>>> browser.getControl(name="form.related.0.").value = (
+...     'http://xml.zeit.de/online/2007/01/Somalia')
 >>> browser.getControl('Apply').click()
 >>> 'There were errors' in browser.contents
 False
@@ -50,6 +53,9 @@ Have a look at the source:
 >>> print browser.getControl(name='form.xml').value
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
+    <references>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
+    </references>
     <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
       <bu xsi:nil="true"/>
     </image>
@@ -127,7 +133,9 @@ Verify the source of the feed:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
       </homepage>
-      <references/>
+      <references>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
+      </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu xsi:nil="true"/>
       </image>
