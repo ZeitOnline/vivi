@@ -254,6 +254,7 @@ def cmscontentFactory(context):
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_uncontained_content(event):
-    repository = zope.component.getUtility(
+    repository = zope.component.queryUtility(
         zeit.cms.repository.interfaces.IRepository)
-    repository.uncontained_content.pop(event.id, None)
+    if repository is not None:
+        repository.uncontained_content.pop(event.id, None)
