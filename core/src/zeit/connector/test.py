@@ -19,10 +19,6 @@ real_connector_layer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'ConnectorLayer')
 
 
-def tearDown(test):
-    zeit.connector.cache._cleanup()
-
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
@@ -30,7 +26,6 @@ def test_suite():
         'mock.txt',
         'cache.txt',
         'locking.txt',
-        tearDown=tearDown,
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
     functional = zope.file.testing.FunctionalBlobDocFileSuite(

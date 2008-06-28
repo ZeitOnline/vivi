@@ -5,6 +5,11 @@ CHANGES
 1.0b2 (unreleased)
 ------------------
 
+- Fixed handling on transaction abort so we're not writing to the database
+  during "committing" phase.
+- Removed property cache invalidation during server startup since this is just
+  too heavy for production use.
+
 1.0b1 (2008-06-27)
 ------------------
 

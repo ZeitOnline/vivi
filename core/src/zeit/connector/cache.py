@@ -103,59 +103,39 @@ class ResourceCache(persistent.Persistent):
             del self._etags[key]
 
 
-class VolatileCache(persistent.Persistent):
+class PersistentCache(persistent.Persistent):
 
-    zope.interface.implements(zeit.connector.interfaces.IVolatileCache)
-
-    _cache_valid = True  ## XXX temporarily
+    zope.interface.implements(zeit.connector.interfaces.IPersistentCache)
 
     def __init__(self):
-        self._validate_cache()
+        self._storage = BTrees.family32.OO.BTree()
 
     def __getitem__(self, key):
-        self._validate_cache()
         try:
             return self._storage[get_storage_key(key)]
         except KeyError:
             raise KeyError(key)
 
     def get(self, key, default=None):
-        self._validate_cache()
         return self._storage.get(get_storage_key(key), default)
 
     def __contains__(self, key):
-        self._validate_cache()
         return get_storage_key(key) in self._storage
 
     def __delitem__(self, key):
-        self._validate_cache()
         try:
             del self._storage[get_storage_key(key)]
         except KeyError:
             raise KeyError(key)
 
     def __setitem__(self, key, value):
-        self._validate_cache()
         self._storage[get_storage_key(key)] = value
 
-    def _validate_cache(self):
-        """Validate cache.
 
-        The cache is invalidated when the server starts. The value
-        `_cache_valid` is stored on the *class*, i.e. *not* in the database.
-        When the server is started the cache is considered stale.
-
-        """
-        if not self._cache_valid:
-            self._storage = BTrees.family32.OO.BTree()
-            self.__class__._cache_valid = True
-
-
-class PropertyCache(VolatileCache):
+class PropertyCache(PersistentCache):
     """Property cache."""
 
     zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
-    _cache_valid = False
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
@@ -168,11 +148,10 @@ def invalidate_property_cache(event):
         pass
 
 
-class ChildNameCache(VolatileCache):
+class ChildNameCache(PersistentCache):
     """Cache for child names."""
 
     zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
-    _cache_valid = False
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
@@ -183,14 +162,3 @@ def invalidate_child_name_cache(event):
         del cache[event.id]
     except KeyError:
         pass
-
-
-
-# Test integration
-
-def _cleanup():
-    VolatileCache._cache_valid = False
-    PropertyCache._cache_valid = False
-    ChildNameCache._cache_valid = False
-
-zope.testing.cleanup.addCleanUp(_cleanup)

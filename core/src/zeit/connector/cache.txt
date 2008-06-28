@@ -146,21 +146,18 @@ Traceback (most recent call last):
 KeyError: ...
 
 
-Volatile cache
+Property cache
 ==============
 
-The volatile cache is invalidated when the server starts.  A freshly created
-cache is valid:
+The property cache is invalidated by the ResourceInvalidatedEvent.
 
->>> cache = zeit.connector.cache.VolatileCache()
->>> cache._cache_valid
-True
+>>> cache = zeit.connector.cache.PersistentCache()
 
 Validate the interface:
 
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
-...     zeit.connector.interfaces.IVolatileCache,
+...     zeit.connector.interfaces.IPersistentCache,
 ...     cache)
 True
 
@@ -183,57 +180,13 @@ KeyError: 'id'
 >>> cache.get('id') is None
 True
 
-The "server starts" condition is not actually true. The cache's data will be
-removed on the first access after the server started. Let's manually invalidate
-the cache. Whenever we access a method the cache will be validated:
-
->>> cache['foo'] = 'bar'
->>> cache.__class__._cache_valid = False
->>> cache['foo']
-Traceback (most recent call last):
-    ...
-KeyError: 'foo'
->>> cache._cache_valid
-True
-
->>> cache['foo'] = 'bar'
->>> cache.__class__._cache_valid = False
->>> cache.get('foo') is None
-True
->>> cache._cache_valid
-True
-
-
->>> cache['foo'] = 'bar'
->>> cache.__class__._cache_valid = False
->>> del cache['foo']
-Traceback (most recent call last):
-    ...
-KeyError: 'foo'
->>> cache._cache_valid
-True
-
->>> cache['foo'] = 'bar'
->>> cache.__class__._cache_valid = False
->>> cache['bar'] = 'baz'
->>> cache._cache_valid
-True
->>> cache['foo']
-Traceback (most recent call last):
-    ...
-KeyError: 'foo'
->>> cache['bar']
-'baz'
-
 
 PropertyCache
 =============
 
-The property cache is a subclass of VolatileCache. Make sure they interact
+The property cache is a subclass of PersistentCache. Make sure they interact
 correctly:
 
 >>> property_cache = zeit.connector.cache.PropertyCache()
->>> property_cache._cache_valid
-True
 >>> property_cache.get('foo') is None
 True

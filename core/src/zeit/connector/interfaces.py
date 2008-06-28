@@ -265,7 +265,7 @@ class ICache(zope.interface.common.mapping.IReadMapping,
     """Generic cache interface."""
 
 
-class IVolatileCache(ICache):
+class IPersistentCache(ICache):
     """Cache that invaidates at server startup."""
 
 
