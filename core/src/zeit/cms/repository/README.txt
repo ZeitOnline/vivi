@@ -67,7 +67,7 @@ We are getting the objects /online/2007/01/lebenslagen-01:
 
 >>> content = repository['online']['2007']['01']['lebenslagen-01']
 >>> content
-<zeit.cms.repository.unknown.UnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 
 
 The content object provides IRepositoryContent since it was read from the 
@@ -134,7 +134,7 @@ properties:
  ('year', 'http://namespaces.zeit.de/QPS/attributes'): '2006'}
 
 
-When we convert the UnknownResource back to a `Resource` object, the properties
+When we convert the PersistentUnknownResource back to a `Resource` object, the properties
 are still there:
 
 >>> resource = zeit.connector.interfaces.IResource(content)
@@ -192,10 +192,10 @@ Adding Content Objects
 
 Adding conntent objects to the repository requires them too be adaptable to
 IResource. During adding also a unique id will be assigned if the object
-doesn't have one yet. Let's create a new `UnknownResource`:
+doesn't have one yet. Let's create a new `PersistentUnknownResource`:
 
->>> from zeit.cms.repository.unknown import UnknownResource
->>> content = UnknownResource(u"I'm a shiny new object.")
+>>> from zeit.cms.repository.unknown import PersistentUnknownResource
+>>> content = PersistentUnknownResource(u"I'm a shiny new object.")
 >>> content.data
 u"I'm a shiny new object."
 
@@ -214,7 +214,7 @@ Since it does have an id we can get it back from the repository:
 
 >>> new_content = repository.getUncontainedContent(content.uniqueId)
 >>> new_content
-<zeit.cms.repository.unknown.UnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 >>> new_content.data
 u"I'm a shiny new object."
 
@@ -318,7 +318,7 @@ from the unique id:
 >>> content = repository.getContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
 >>> content
-<zeit.cms.repository.unknown.UnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 >>> content.__parent__
 <zeit.cms.repository.folder.Folder object at 0x...>
 >>> content.__parent__.__name__

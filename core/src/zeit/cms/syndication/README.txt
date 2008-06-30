@@ -304,7 +304,7 @@ Change the type of politik feed to unknown:
 Now there is an unknown resource in the channel:
 
 >>> list(source)
-[<zeit.cms.repository.unknown.UnknownResource object at 0x...>]
+[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>]
 >>> terms.getTerm(list(source)[0]).title
 u'http://xml.zeit.de/politik.feed'
 

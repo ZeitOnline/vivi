@@ -39,7 +39,7 @@
 
   <adapter factory=".unknown.unknownResourceFactory" name="unknown" />
   <adapter factory=".unknown.resourceFactory" />
-  <class class=".unknown.UnknownResource">
+  <class class=".unknown.PersistentUnknownResource">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require interface=".interfaces.IUnknownResource"
       permission="zope.View" />
@@ -49,6 +49,11 @@
       permission="zope.View" />
     <require set_schema="zeit.cms.content.interfaces.ITextContent"
       permission="zeit.EditContent" />
+  </class>
+
+  <class class=".unknown.UnknownResource">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require like_class=".unknown.PersistentUnknownResource" />
   </class>
   
 </configure>

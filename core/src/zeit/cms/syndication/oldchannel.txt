@@ -72,7 +72,7 @@ Let's get it from the repository:
 >>> len(contents)
 33
 >>> contents
-[<zeit.cms.repository.unknown.UnknownResource object at 0x...>,
+[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>,
  <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
  ...]
 

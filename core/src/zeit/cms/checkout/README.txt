@@ -90,7 +90,7 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
 >>> list(workingcopy.keys())
 [u'4schanzentournee-abgesang']
 >>> list(workingcopy.values())
-[<zeit.cms.repository.unknown.UnknownResource object at 0x...]
+[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...]
 
 
 After checking out the resource is locked in the WebDAV. This means other users
@@ -196,10 +196,10 @@ False
 >>> checked_out = manager.checkout()
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.UnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.UnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 >>> lockable.locked()
 True 
 >>> working_copy = checked_out.__parent__

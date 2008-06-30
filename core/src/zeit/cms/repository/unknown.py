@@ -19,9 +19,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 
 
-class UnknownResource(
-    persistent.Persistent,
-    zope.app.container.contained.Contained):
+class UnknownResource(zope.app.container.contained.Contained):
     """Represent an unknown resource"""
 
     zope.interface.implements(zeit.cms.repository.interfaces.IUnknownResource,
@@ -43,10 +41,28 @@ class UnknownResource(
         self.uniqueId = None
 
 
+class PersistentUnknownResource(UnknownResource,
+                                persistent.Persistent):
+    """An unknown resource that is also persistent.
+
+    We create a new class for this to be backward compatible. Just adding
+    persistent.Persisten above will yield an error:
+
+        TypeError: ('object.__new__(UnknownResource) is not safe,
+            use persistent.Persistent.__new__()',
+            <function _reconstructor at 0x1995f0>,
+            (<class 'zeit.cms.repository.unknown.UnknownResource'>,
+            <type 'object'>, None))
+
+    """
+
+
+
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def unknownResourceFactory(context):
-    res = UnknownResource(unicode(context.data.read(), 'latin1'), context.type)
+    res = PersistentUnknownResource(
+        unicode(context.data.read(), 'latin1'), context.type)
     return res
 
 
