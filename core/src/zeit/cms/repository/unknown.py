@@ -5,6 +5,8 @@
 import StringIO
 import datetime
 
+import persistent
+
 import zope.component
 import zope.interface
 
@@ -17,7 +19,9 @@ import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 
 
-class UnknownResource(zope.app.container.contained.Contained):
+class UnknownResource(
+    persistent.Persistent,
+    zope.app.container.contained.Contained):
     """Represent an unknown resource"""
 
     zope.interface.implements(zeit.cms.repository.interfaces.IUnknownResource,

@@ -8,6 +8,7 @@ zeit.cms changes
   werden (oder das CMS das denkt).
 - Workflow: Fehler beim Veröffentlichen/Zurückziehen im Objectlog speichern
   und dem Benutzer anzeigen.
+- Unknown resource ist jetzt ``Persistent``, damit klappt auch das Speichern.
 
 1.0b3 (2008-06-28)
 ------------------
