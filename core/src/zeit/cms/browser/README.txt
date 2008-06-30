@@ -173,3 +173,33 @@ Clean up:
 ...     (zeit.cms.repository.interfaces.IUnknownResource, ),
 ...     zeit.cms.browser.interfaces.IPreviewObject)
 True
+
+
+Debug view
+==========
+
+There is a view to show the refcounts:
+
+>>> browser.open('http://localhost/++skin++cms/@@debug-refcount')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 403: Forbidden
+
+But it is only accessible to managers.
+
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> browser.open('http://localhost/++skin++cms/@@debug-refcount')
+>>> print browser.contents
+<html>
+  <head>
+    <title>Refount</title>
+  </head>
+  <body>
+    <h1>Refcount</h1>
+    <table>
+      <tr>
+        <td>Class</td>
+        <td>Refcount</td>
+      </tr>
+      ...

@@ -350,4 +350,14 @@
   <adapter
     factory=".listing.listRepresentation_to_Lockable"
     />
+
+  <!-- debugging support -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="debug-refcount"
+    class=".debug.Refcount"
+    template="debug-refcount.pt"
+    permission="zope.ManageApplication"
+    />
+
 </configure>

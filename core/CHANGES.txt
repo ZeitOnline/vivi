@@ -10,6 +10,7 @@ zeit.cms changes
   und dem Benutzer anzeigen.
 - Unknown resource ist jetzt ``Persistent``, damit klappt auch das Speichern.
 - Repository entfernt Objekte im RAM an den Transaktionsgrenzen.
+- View zum anzeigen der Refcounts.
 
 1.0b3 (2008-06-28)
 ------------------
