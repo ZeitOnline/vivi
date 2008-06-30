@@ -222,6 +222,8 @@ u'http://xml.zeit.de/online'
 
 Cleanup:
 
+>>> import transaction
+>>> transaction.abort()
 >>> zope.app.component.hooks.setSite(old_site)
 
 
@@ -238,6 +240,7 @@ Open the checked out somalia and change its source:
 
 When we look at the preview now[#prepare-preview]_:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Preview').click()
 >>> print browser.contents
 The quick brown fox jumps over the lazy dog.
@@ -268,7 +271,6 @@ Query arguments are passed to the server:
 >>> browser.open(url + '?foo=bar')
 >>> print browser.contents
 The quick brown foo jumps over the lazy bar.
-
 
 Clean up:
 
