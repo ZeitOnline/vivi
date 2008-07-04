@@ -180,6 +180,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def entries(self):
+        __traceback_info__ = (self.uniqueId, )
         return self.xml.container
 
     def _remove_by_id(self, unique_id):
