@@ -1,7 +1,10 @@
 CHANGES
 =======
 
-1.0b3 (unreleased)
+1.0b4 (unreleased)
+------------------
+
+1.0b3 (2008-07-04)
 ------------------
 
 - Caches are using the plain unique id as cache key now (not reversed).
