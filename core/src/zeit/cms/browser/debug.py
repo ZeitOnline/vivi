@@ -2,28 +2,23 @@
 # See also LICENSE.txt
 """CMS debug views."""
 
-import sys
+import guppy
+
+
+hpy = guppy.hpy()
+
 
 class Refcount(object):
 
     def refcount(self, amount=None):
-        # return class reference info
-        count = {}
-        for module in sys.modules.values():
-            for symbol in dir(module):
-                ob = getattr(module, symbol)
-                if type(ob) == type(object):
-                    count[ob] = sys.getrefcount(ob)
+        result = []
 
-        pairs = []
-        for ob, v in count.items():
-            if hasattr(ob, '__module__'):
-                name='%s.%s' % (ob.__module__, ob.__name__)
-            else:
-                name='%s' % ob.__name__
-            pairs.append((v, name))
-        pairs.sort()
-        pairs.reverse()
-        if amount is not None:
-            pairs = pairs[:amount]
-        return (dict(name=pair[1], count=pair[0]) for pair in pairs)
+        hp = hpy.heap()
+        result.append(str(hp))
+
+        for x in range(3):
+            rcs = hp[0].byrcs
+            result.append(str(rcs))
+            hp = rcs
+
+        return '\n\n'.join(result)

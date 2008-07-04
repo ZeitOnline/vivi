@@ -9,6 +9,7 @@ import urllib2
 import xml.sax.saxutils
 
 import zope.component
+import zope.testing.cleanup
 import zope.app.appsetup.product
 
 import zc.sourcefactory.basic
@@ -26,7 +27,6 @@ class SimpleXMLSourceBase(object):
 
     product_configuration = 'zeit.cms'
 
-    @gocept.cache.method.Memoize(60)
     def _get_tree(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             self.product_configuration)
@@ -40,7 +40,6 @@ class SimpleXMLSourceBase(object):
         request = urllib2.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
 
-    @gocept.cache.method.Memoize(60)
     def getValues(self):
         xml = self._get_tree()
         return [unicode(serie).strip() for serie in xml.iterchildren()]
@@ -70,13 +69,11 @@ class NavigationSource(SimpleXMLSource):
 
     config_url = 'source-navigation'
 
-    @gocept.cache.method.Memoize(60)
     def getValues(self):
         tree = self._get_tree()
         return [unicode(ressort.get('name'))
                 for ressort in tree.iterchildren()]
 
-    @gocept.cache.method.Memoize(60)
     def getTitle(self, value):
         __traceback_info__ = (value, )
         tree = self._get_tree()
@@ -103,7 +100,6 @@ class SubNavigationSource(SimpleContextualXMLSource):
                     for sub in sub_navs])
         return result
 
-    @gocept.cache.method.Memoize(60)
     def getTitle(self, context, value):
         tree = self._get_tree()
         ressort = self._get_ressort(context)
@@ -148,7 +144,7 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
         return (interface for name, interface in
-                zope.component.getUtilitiesFor(
+                zope.component.getUtzRitiesFor(
                     zeit.cms.interfaces.ICMSContentType))
 
 
@@ -175,3 +171,6 @@ def collect_caches(event):
             _collect_counter = 0
     finally:
         _collect_lock.release()
+
+
+zope.testing.cleanup.addCleanUp(gocept.cache.method.clear)

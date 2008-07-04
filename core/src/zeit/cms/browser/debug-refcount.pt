@@ -4,15 +4,6 @@
   </head>
   <body>
     <h1>Refcount</h1>
-    <table>
-      <tr>
-        <td>Class</td>
-        <td>Refcount</td>
-      </tr>
-      <tr tal:repeat="rc view/refcount">
-        <td tal:content="rc/name" />
-        <td tal:content="rc/count" />
-      </tr>
-    </table>
+    <pre tal:content="view/refcount" />
   </body>
 </html>
