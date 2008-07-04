@@ -1,6 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Connector test setup."""
 
 import os
 import unittest
@@ -28,6 +28,14 @@ def test_suite():
         'locking.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
+
+    long_running = doctest.DocFileSuite(
+        'longrunning.txt',
+        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
+                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES))
+    long_running.level = 3
+    suite.addTest(long_running)
+
     functional = zope.file.testing.FunctionalBlobDocFileSuite(
         'functional.txt')
     functional.layer = real_connector_layer

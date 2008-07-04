@@ -7,7 +7,6 @@ Creating a connector:
 >>> import os
 >>> from pprint import pprint
 >>> from zeit.connector.connector import Connector
->>> from zeit.connector.cache import ResourceCache
 >>> connector = Connector(roots={
 ...       "default": os.environ['connector-url'],
 ...       "search": os.environ['search-connector-url']})

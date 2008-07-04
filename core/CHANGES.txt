@@ -11,6 +11,8 @@ CHANGES
 - PropertyCache stores the properties as OOBTree.
 - ChildNameCache stores the childnames as TreeSet
 - Small bodies (<=10 kB) are no longer stored as blob but as plain string.
+- Fix for "BadStatusLine" which occours when the DAV server closes the
+  connection.
 
 1.0b2 (2008-06-28)
 ------------------

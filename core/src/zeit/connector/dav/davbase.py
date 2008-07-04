@@ -11,6 +11,7 @@ import lxml.etree
 
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
+DEBUG_CONNECTION = False
 
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 
@@ -24,7 +25,7 @@ class RedirectError ( Exception ):
     pass
 
 
-class HTTPBasicAuthCon:
+class HTTPBasicAuthCon(object):
     """Connection which authenticates.
 
     NOTE: currently doesn't authenticate.
@@ -50,7 +51,8 @@ class HTTPBasicAuthCon:
 
     def connect(self):
         self._con = self.connect_class(self._host, self._port, self._strict)
-        self._con.debuglevel = 0
+        if DEBUG_CONNECTION:
+            self._con.debuglevel = 1
 
     def set_auth ( self, user, passwd, realm=None ):
         if realm is None:
@@ -251,8 +253,16 @@ class DAVBase:
                     method, url,
                     "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]),
                     body))
+
         self.request(method, url, body, extra_hdrs) # that's HTTPxxxAuthCon.request, called via DAVConnection
-        resp = self.getresponse()
+        try:
+            resp = self.getresponse()
+        except httplib.BadStatusLine:
+            # Gnah. We may have waited too long.  Try one more time.
+            self.connect()
+            self.request(method, url, body, extra_hdrs)
+            resp = self.getresponse()
+
         if DEBUG_REQUEST:
             print >>sys.stderr, (
                 "### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % (
