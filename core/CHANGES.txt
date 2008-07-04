@@ -4,6 +4,8 @@ CHANGES
 1.0b4 (unreleased)
 ------------------
 
+- longrunning.txt did not reset DEBUG_CONNECTION.
+
 1.0b3 (2008-07-04)
 ------------------
 

@@ -75,3 +75,7 @@ We really have reconnected (see also the connect: (...) above):
 
 >>> connection == connector.get_connection()._con
 False
+
+Clean up:
+
+>>> zeit.connector.dav.davbase.DEBUG_CONNECTION = False
