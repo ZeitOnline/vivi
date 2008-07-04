@@ -676,7 +676,11 @@ class Connector(object):
                     # Better too much than not enough
                     timeout = TIME_ETERNITY
                 else:
-                    reftime = self[id].properties[('cached-time', 'INTERNAL')]
+                    reftime = self[id].properties.get(
+                        ('cached-time', 'INTERNAL'))
+                    if not isinstance(reftime, datetime.datetime):
+                        # XXX untested
+                        reftime = datetime.datetime.now(pytz.UTC)
                     timeout = reftime + datetime.timedelta(
                         seconds=int(m.group(1)))
                 davlock['timeout'] = timeout

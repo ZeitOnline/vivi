@@ -4,6 +4,14 @@ CHANGES
 1.0b3 (unreleased)
 ------------------
 
+- Caches are using the plain unique id as cache key now (not reversed).
+- Property-Cache reuses (name, namespace) tuples hand passes out references to
+  the same tuples. This leads to having only one tuple instance per (name,
+  namespace).
+- PropertyCache stores the properties as OOBTree.
+- ChildNameCache stores the childnames as TreeSet
+- Small bodies (<=10 kB) are no longer stored as blob but as plain string.
+
 1.0b2 (2008-06-28)
 ------------------
 

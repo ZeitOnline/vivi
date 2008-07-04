@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
-import StringIO
+import cStringIO
 import logging
 import time
 
@@ -25,7 +25,7 @@ def get_storage_key(key):
     if isinstance(key, unicode):
         key = key.encode('utf8')
     assert isinstance(key, str)
-    return ''.join(reversed(key))
+    return key
 
 
 class ResourceCache(persistent.Persistent):
@@ -35,6 +35,7 @@ class ResourceCache(persistent.Persistent):
 
     CACHE_TIMEOUT = 30 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
+    BUFFER_SIZE = 10*1024
 
     def __init__(self):
         self._etags = BTrees.family64.OO.BTree()
@@ -50,7 +51,7 @@ class ResourceCache(persistent.Persistent):
         if current_etag != cached_etag:
             raise KeyError("Object %r is not cached." % unique_id)
         self._update_cache_access(key)
-        return self._data[key].open('r')
+        return self._make_filelike(self._data[key])
 
     def setData(self, unique_id, properties, data):
         key = get_storage_key(unique_id)
@@ -58,26 +59,46 @@ class ResourceCache(persistent.Persistent):
         if current_etag is None:
             # When we have no etag, we must not store the data as we have no
             # means of invalidation then.
-            f = StringIO.StringIO(data.read())
+            f = cStringIO.StringIO(data.read())
             return f
 
         logger.debug('Storing body of %s with etag %s' % (
             unique_id, current_etag))
-        blob = ZODB.blob.Blob()
-        blob_file = blob.open('w')
-        buffer_size = 102400
+
+        target = cStringIO.StringIO()
+
         if hasattr(data, 'seek'):
             data.seek(0)
-        s = data.read(buffer_size)
+        s = data.read(self.BUFFER_SIZE)
+        if len(s) < self.BUFFER_SIZE:
+            # Small object
+            small = True
+        else:
+            small = False
+            blob = ZODB.blob.Blob()
+            blob_file = blob.open('w')
+            target = blob_file
+
         while s:
-            blob_file.write(s)
-            s = data.read(buffer_size)
-        blob_file.close()
+            target.write(s)
+            s = data.read(self.BUFFER_SIZE)
+
+        if small:
+            store = target.getvalue()
+        else:
+            blob_file.close()
+            store = blob
+
         self._etags[key] = current_etag
-        self._data[key] = blob
+        self._data[key] = store
         self._update_cache_access(key)
         transaction.savepoint(optimistic=True)
-        return blob.open('r')
+        return self._make_filelike(store)
+
+    def _make_filelike(self, blob_or_str):
+        if isinstance(blob_or_str, ZODB.blob.Blob):
+            return blob_or_str.open('r')
+        return cStringIO.StringIO(blob_or_str)
 
     def _update_cache_access(self, key):
         last_access = self._last_access_time.get(key, 0)
@@ -117,7 +138,10 @@ class PersistentCache(persistent.Persistent):
             raise KeyError(key)
 
     def get(self, key, default=None):
-        return self._storage.get(get_storage_key(key), default)
+        try:
+            return self[key]
+        except KeyError:
+            return default
 
     def __contains__(self, key):
         return get_storage_key(key) in self._storage
@@ -137,6 +161,28 @@ class PropertyCache(PersistentCache):
 
     zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
 
+    name_namespaces_tuples = {}
+
+    def __getitem__(self, key):
+        return self._simplify(
+            super(PropertyCache, self).__getitem__(key))
+
+    def __setitem__(self, key, value):
+        value = BTrees.family32.OO.BTree(
+            self._simplify(value))
+        super(PropertyCache, self).__setitem__(
+            key, value)
+
+    def _simplify(self, old_dict):
+        # Value is a dict mapping (name, namespace) to value. Look it up in
+        # self.name_namespaces_tuples and use the one from there. This is to
+        # have some sort of singleton.
+        new_dict = {}
+        for key, value in old_dict.items():
+            key = self.name_namespaces_tuples.setdefault(key, key)
+            new_dict[key] = value
+        return new_dict
+
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_property_cache(event):
@@ -152,6 +198,10 @@ class ChildNameCache(PersistentCache):
     """Cache for child names."""
 
     zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
+
+    def __setitem__(self, key, value):
+        super(ChildNameCache, self).__setitem__(
+            key, BTrees.family32.OO.TreeSet(value))
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)

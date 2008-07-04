@@ -175,6 +175,24 @@ Edge case 5: Null resouce locks
 >>> connector.lock(res.id, 'frodo', until=None)
 'opaquelocktoken:...'
 >>> connector[res.id].data
-<StringIO.StringIO instance at 0x...>
+<cStringIO.StringI object at 0x...>
 >>> connector.unlock(res.id)
 u'opaquelocktoken:...'
+
+
+Locking with timeout:
+
+>>> import datetime
+>>> import pytz
+>>> res.id = 'http://xml.zeit.de/testing/edge6'
+>>> connector.add(res)
+>>> connector.lock(res.id, 'frodo', 
+...     datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=120))
+'opaquelocktoken:...'
+>>> connector.locked(res.id)
+(u'frodo', datetime.datetime(..., tzinfo=<UTC>), True)
+
+We can still write and update:
+
+>>> connector.add(res)
+>>> del connector[res.id]
