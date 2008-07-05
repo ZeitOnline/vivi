@@ -5,6 +5,10 @@ zeit.cms changes
 ------------------
 
 - View zum Anzeigen der Objekte, die den meisten Speicher verbrauchen.
+- Repository lädt jetzt Objekte auch per Pfad "/cms/work" und gibt das
+  entsprechende "http://xml.zeit.de"-Objekt zurück.
+- Portraitboxen haben jetzt noch einen <block> (bug #4325).
+- Der Text von Portraitboxen wird richtig geladen.
 
 
 1.0b5 (2008-06-30)

@@ -21,7 +21,8 @@ We are now at the add form. Set the filename:
 The infobox has a name and html content:
 
 >>> browser.getControl('First and last name').value = 'Hans Wurst'
->>> browser.getControl('Text').value = '<strong>HW</strong> is in da house'
+>>> browser.getControl('Text').value = (
+...     '<p><strong>HW</strong> is in da house</p>')
 
 Reference an image:
 
@@ -46,6 +47,23 @@ Make sure the box is listed in the workingcopy panel:
       <a href="http://localhost/++skin++cms/workingcopy/zope.user/Wurst-Hans/edit.html">Hans Wurst</a>
     </td>
     ...
+
+
+Verify the source:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('Source').value
+<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
+  <block>
+    <title py:pytype="str">Hans Wurst</title>
+    <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+      <bu xsi:nil="true"/>
+    </image>
+    <text py:pytype="str">
+      <p><strong>HW</strong> is in da house</p>
+    </text>
+  </block>
+</container>
 
 
 Let's check it in:

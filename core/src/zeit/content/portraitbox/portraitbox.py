@@ -1,6 +1,6 @@
 # Copyright (c) 2007 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Portraitbox."""
 
 import lxml.objectify
 import rwproperty
@@ -22,11 +22,11 @@ class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
         u'<container layout="artbox" label="portrait" '
         u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
 
-    name = zeit.cms.content.property.ObjectPathProperty('.title')
-    text = zeit.cms.content.property.Structure('.text')
+    name = zeit.cms.content.property.ObjectPathProperty('.block.title')
+    text = zeit.cms.content.property.Structure('.block.text')
     image = zeit.cms.content.property.SingleResource(
-        '.image', xml_reference_name='image', attributes=('base_id', 'src'))
-
+        '.block.image', xml_reference_name='image',
+        attributes=('base_id', 'src'))
 
 
 resource_factory = zope.component.adapter(
@@ -44,9 +44,24 @@ class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     """HTML content of an article."""
 
     zope.component.adapts(zeit.content.portraitbox.interfaces.IPortraitbox)
+    path = lxml.objectify.ObjectPath('.block.text')
 
     def get_tree(self):
-        text = self.context.xml.find('text')
+        xml = zope.proxy.removeAllProxies(self.context.xml)
+        text = self.path(xml, None)
         if text is None:
-            text = self.context.xml['text'] = lxml.objectify.E.text()
+            self.path.setattr(xml, '')
+            text = self.path(xml)
+        elif len(text):
+            for child in text.iterchildren():
+                if child.tag == 'p':
+                    break
+            else:
+                # There was no <p> node. Wrap the entire contents of text into
+                # a new <p>
+                children = [text.text]
+                for child in text.getchildren():
+                    children.append(child)
+                    text.remove(child)
+                text.append(lxml.objectify.E.p(*children))
         return text

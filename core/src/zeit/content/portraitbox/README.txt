@@ -15,16 +15,34 @@ Let's instanciate a box and verify the xml[#functionaltest]_:
 Set data:
 
 >>> pb.name = u'Hans Wurst'
->>> pb.text = u'<strong>Hans Wurst</strong> wursted hansig.'
+>>> pb.text = u'<p><strong>Hans Wurst</strong> wursted hansig.</p>'
 >>> pb.image = repository['2006']['DSC00109_2.JPG']
 >>> print lxml.etree.tostring(pb.xml, pretty_print=True)
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
-  <title py:pytype="str">Hans Wurst</title>
-  <text><strong>Hans Wurst</strong> wursted hansig.</text>
-  <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
-    <bu xsi:nil="true"/>
-  </image>
+  <block>
+    <title py:pytype="str">Hans Wurst</title>
+    <text>
+      <p><strong>Hans Wurst</strong> wursted hansig.</p>
+    </text>
+    <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+      <bu xsi:nil="true"/>
+    </image>
+  </block>
 </container>
+
+Verify the HTML support:
+
+>>> import zeit.wysiwyg.interfaces
+>>> html = zeit.wysiwyg.interfaces.IHTMLContent(pb)
+>>> print html.html
+<p><strong>Hans Wurst</strong> wursted hansig.</p>
+
+When there is only text and no <p> node the contents is wrapped into a <p>
+automatically:
+
+>>> pb.text = u'ist <strong>ein Hans</strong> und wurstet.'
+>>> print html.html
+<p xmlns...>ist <strong>ein Hans</strong> und wurstet.</p>
 
 
 Verify the interface:
@@ -65,6 +83,7 @@ True
 
 Clean up:
 
+>>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
 
@@ -78,3 +97,14 @@ Clean up:
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
+
+    Also setup interaction
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
+
