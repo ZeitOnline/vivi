@@ -9,6 +9,7 @@ zeit.cms changes
   entsprechende "http://xml.zeit.de"-Objekt zurück.
 - Portraitboxen haben jetzt noch einen <block> (bug #4325).
 - Der Text von Portraitboxen wird richtig geladen.
+- Biga: Text ist kein Pfichtfeld mehr (bug #4324).
 
 
 1.0b5 (2008-06-30)

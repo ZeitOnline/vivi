@@ -81,7 +81,8 @@ class IGalleryEntry(zope.interface.Interface):
         required=False)
 
     text = zeit.cms.content.field.XMLTree(
-        title=_("Text"))
+        title=_("Text"),
+        required=False)
 
     layout = zope.schema.Choice(
         title=_('Layout'),
