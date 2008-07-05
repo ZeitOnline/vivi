@@ -355,6 +355,14 @@ Traceback (most recent call last):
 KeyError: 'http://xml.zeit.de/online/foo'
 
 
+Old style paths are supported. When an Id starts with /cms/work it is
+considered as valid.
+
+>>> content = repository.getContent('/cms/work/online/2007/01/Somalia')
+>>> content.uniqueId
+u'http://xml.zeit.de/online/2007/01/Somalia'
+
+
 User Preferences
 ================
 

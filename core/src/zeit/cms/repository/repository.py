@@ -164,6 +164,7 @@ class Repository(persistent.Persistent, Container):
         if not isinstance(unique_id, basestring):
             raise TypeError("unique_id: string expected, got %s" %
                             type(unique_id))
+        unique_id = self._get_normalized_unique_id(unique_id)
         if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
             raise ValueError("The id %r is invalid." % unique_id)
         path = unique_id.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
@@ -207,6 +208,12 @@ class Repository(persistent.Persistent, Container):
         content = zeit.cms.interfaces.ICMSContent(resource)
         content.__name__ = resource.__name__
         return content
+
+    def _get_normalized_unique_id(self, unique_id):
+        if unique_id.startswith('/cms/work/'):
+            return unique_id.replace('/cms/work/',
+                                     zeit.cms.interfaces.ID_NAMESPACE)
+        return unique_id
 
 
 def repositoryFactory():
