@@ -10,6 +10,7 @@ zeit.cms changes
 - Portraitboxen haben jetzt noch einen <block> (bug #4325).
 - Der Text von Portraitboxen wird richtig geladen.
 - Biga: Text ist kein Pfichtfeld mehr (bug #4324).
+- XML-RPC-Methode zum veröffentlichen (bug #4331).
 
 
 1.0b5 (2008-06-30)

@@ -2,6 +2,8 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser">
 
+  <include package=".xmlrpc" />
+
   <adapter factory=".workflow.ContentWorkflow" 
     provides="zeit.workflow.interfaces.IContentWorkflow"
     trusted="yes"
