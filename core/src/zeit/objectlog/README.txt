@@ -176,11 +176,41 @@ Make sure the log-terms do not break when the principal is deleted:
 >>> zope.i18n.translate(term.title)
 u'2008 5 27  11:14:46  [not.there]: not-there-log'
 
+Let's make sure the log time is localized to the user's preferred time zone.
+Explicitly set a known time:
+
+>>> import pytz
+>>> import datetime
+>>> entry = list(source)[0]
+>>> entry.time = datetime.datetime(2008, 6, 21, 12, 0, tzinfo=pytz.UTC)
+
+What is the peferred time zone? Register an adapter from request to ITZInfo:
+
+>>> import zope.interface.common.idatetime
+>>> def tzinfo(request):
+...     return pytz.timezone('Europe/Berlin')
+>>> sm = zope.component.getSiteManager()
+>>> sm.registerAdapter(
+...     tzinfo, (zope.interface.Interface,),
+...     zope.interface.common.idatetime.ITZInfo)
+
+>>> zope.interface.common.idatetime.ITZInfo(request)
+<DstTzInfo 'Europe/Berlin' CET+1:00:00 STD>
+
+When we get the title'well have the "corrected" date:
+
+>>> term = terms.getTerm(list(source)[0]) 
+>>> zope.i18n.translate(term.title).startswith('2008 6 21  14:00')
+True
 
 
 Tear down / Clean up:
 
 >>> del __builtins__['Content']
+>>> sm.unregisterAdapter(
+...     tzinfo, (zope.interface.Interface,),
+...     zope.interface.common.idatetime.ITZInfo)
+True
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
