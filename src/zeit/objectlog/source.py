@@ -3,6 +3,7 @@
 # $Id$
 
 import zope.i18n
+import zope.interface.common.idatetime
 
 import zope.app.form.browser.interfaces
 
@@ -35,7 +36,11 @@ class LogEntrySource(
                 principal = value.principal
 
         formatter = request.locale.dates.getFormatter('dateTime', 'medium')
-        time = formatter.format(value.time)
+        tzinfo = zope.interface.common.idatetime.ITZInfo(request, None)
+        time = value.time
+        if tzinfo is not None:
+            time = time.astimezone(tzinfo)
+        time = formatter.format(time)
 
         message = zope.i18n.translate(value.message, context=request)
 
