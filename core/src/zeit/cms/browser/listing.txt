@@ -300,6 +300,12 @@ We don't know when the object was published. Assume it's fresh:
     ...
 
 
+Make sure the date is converted to CET (12:00 GMT -> 13:00 CET (no DST)):
+
+>>> '2007 12 6  13:00:00' in browser.contents
+True
+
+
 With a publication date *after* the modifcation date it is also fresh:
 
 >>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(

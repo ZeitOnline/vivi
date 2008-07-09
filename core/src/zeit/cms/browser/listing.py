@@ -7,6 +7,7 @@ import logging
 
 import zope.component
 import zope.interface
+import zope.interface.common.idatetime
 
 import zope.app.locking.interfaces
 import zope.app.security.interfaces
@@ -243,6 +244,11 @@ class DatetimeColumn(GetterColumn):
     def cell_formatter(self, value, item, formatter):
         if not value:
             return u''
+        tzinfo = zope.interface.common.idatetime.ITZInfo(formatter.request,
+                                                         None)
+        if tzinfo is not None:
+            value = value.astimezone(tzinfo)
+
         date_formatter = formatter.request.locale.dates.getFormatter(
             'dateTime', 'medium')
         return date_formatter.format(value)

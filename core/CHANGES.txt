@@ -12,6 +12,7 @@ zeit.cms changes
 - Biga: Text ist kein Pfichtfeld mehr (bug #4324).
 - XML-RPC-Methode zum veröffentlichen (bug #4331).
 - Align auf Bildern (bug #4349).
+- Änderungsdatum in Dateilisten in CET statt GMT (bug #4354).
 
 
 1.0b5 (2008-06-30)
