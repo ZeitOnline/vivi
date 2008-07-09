@@ -113,6 +113,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.layout = node.get('layout')
         if entry.layout is not None:
             entry.layout = unicode(entry.layout)
+
+        gallery_caption = node.find('caption')
+        if gallery_caption:
+            entry.caption = unicode(gallery_caption)
+
         return zope.location.location.located(entry, self, key)
 
     def __delitem__(self, key):
@@ -257,6 +262,10 @@ def galleryentry_factory(context):
     entry.title = None
     entry.text = None
     entry.layout = None
+
+    # Prefill the caption with the image's caption
+    metadata = zeit.content.image.interfaces.IImageMetadata(context)
+    entry.caption = metadata.caption
     return entry
 
 
@@ -283,6 +292,10 @@ class EntryXMLRepresentation(object):
         # different tree
         node['text'] = zope.security.proxy.removeSecurityProxy(
             self.context.text)
+
+        if self.context.caption:
+            node['caption'] = self.context.caption
+
         node['image'] = zope.component.getAdapter(
             self.context.image,
             zeit.cms.content.interfaces.IXMLReference, name='image')

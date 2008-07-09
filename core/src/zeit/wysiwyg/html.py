@@ -75,11 +75,16 @@ class HTMLConverter(object):
     def from_html(self, tree, value):
         """set article html."""
         tree = zope.security.proxy.removeSecurityProxy(tree)
-        value = '<div>' + self._replace_entities(value) + '</div>'
-        html = gocept.lxml.objectify.fromstring(value)
         for node in self._html_getnodes(tree):
             parent = node.getparent()
             parent.remove(node)
+
+        if not value:
+            # We're done. Just don't do anything.
+            return
+
+        value = '<div>' + self._replace_entities(value) + '</div>'
+        html = gocept.lxml.objectify.fromstring(value)
         for node in html.iterchildren():
             for filter in (self._filter_empty,
                            self._fix_html_tag,

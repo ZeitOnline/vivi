@@ -28,6 +28,11 @@
           </a>
         </td>
         <td>
+          <div class="caption"
+            tal:condition="entry/caption"
+            tal:content="entry/caption">
+            Caption
+          </div>
           <div class="title"
             tal:condition="entry/title"
             tal:content="entry/title">

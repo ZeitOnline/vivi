@@ -12,7 +12,8 @@ from zeit.cms.i18n import MessageFactory as _
 class IHTMLContent(zope.interface.Interface):
     """HTML content."""
 
-    html = zc.form.field.HTMLSnippet(title=_("Text"))
+    html = zc.form.field.HTMLSnippet(title=_("Text"),
+                                     required=False)
 
 
 class IHTMLConverter(zope.interface.Interface):

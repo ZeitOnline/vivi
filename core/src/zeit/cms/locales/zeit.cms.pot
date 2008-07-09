@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 26 15:07:05 2008\n"
+"POT-Creation-Date: Wed Jul  9 16:28:06 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -62,11 +62,11 @@ msgid "Date when the event starts."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:275
+#: src/zeit/cms/browser/listing.py:281
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
 #: src/zeit/cms/content/interfaces.py:262
-#: src/zeit/cms/syndication/browser/feed.py:153
+#: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
@@ -180,54 +180,54 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:196
+#: src/zeit/cms/browser/listing.py:197
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:217
+#: src/zeit/workflow/publish.py:253
 msgid "Published"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:199
+#: src/zeit/cms/browser/listing.py:200
 msgid "Published but has changes"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:202
+#: src/zeit/cms/browser/listing.py:203
 msgid "Not published"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:264
+#: src/zeit/cms/browser/listing.py:270
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:271
-#: src/zeit/cms/syndication/browser/feed.py:149
+#: src/zeit/cms/browser/listing.py:277
+#: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:279
+#: src/zeit/cms/browser/listing.py:285
 #: src/zeit/cms/interfaces.py:48
 #: src/zeit/content/image/browser/imagegroup.py:69
 #: src/zeit/search/interfaces.py:16
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:283
+#: src/zeit/cms/browser/listing.py:289
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:286
-#: src/zeit/cms/syndication/browser/feed.py:160
+#: src/zeit/cms/browser/listing.py:292
+#: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:288
+#: src/zeit/cms/browser/listing.py:294
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:292
+#: src/zeit/cms/browser/listing.py:298
 #: src/zeit/cms/content/interfaces.py:71
 #: src/zeit/search/browser/search.py:110
 #: src/zeit/search/interfaces.py:23
@@ -247,7 +247,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:202
+#: src/zeit/cms/browser/main_template.pt:205
 msgid "Add..."
 msgstr ""
 
@@ -572,14 +572,14 @@ msgid "Root of ontology"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:61
-#: src/zeit/content/image/interfaces.py:35
+#: src/zeit/content/image/interfaces.py:53
 #: src/zeit/search/interfaces.py:21
 #: src/zeit/search/browser/sidebar.pt:46
 msgid "Year"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:66
-#: src/zeit/content/image/interfaces.py:41
+#: src/zeit/content/image/interfaces.py:59
 #: src/zeit/search/interfaces.py:22
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
@@ -785,12 +785,12 @@ msgstr ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:100
+#: src/zeit/cms/repository/browser/repository.py:108
 #. Default: ""
 msgid "\"${name}\" is now hidden from the navigation tree."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:107
+#: src/zeit/cms/repository/browser/repository.py:115
 #. Default: ""
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
@@ -848,34 +848,34 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:140
+#: src/zeit/cms/syndication/browser/feed.py:142
 #: src/zeit/cms/browser/tree.pt:18
 msgid "Remove"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:143
+#: src/zeit/cms/syndication/browser/feed.py:145
 msgid "Pinned"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:146
+#: src/zeit/cms/syndication/browser/feed.py:148
 msgid "Hidden on HP"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:205
+#: src/zeit/cms/syndication/browser/feed.py:207
 #. Default: ""
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:213
+#: src/zeit/cms/syndication/browser/feed.py:215
 #. Default: ""
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:240
+#: src/zeit/cms/syndication/browser/feed.py:242
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:255
+#: src/zeit/cms/syndication/browser/feed.py:257
 msgid "Remove from my syndication targets"
 msgstr ""
 
@@ -1005,7 +1005,7 @@ msgstr ""
 
 #: src/zeit/content/centerpage/interfaces.py:33
 #: src/zeit/content/centerpage/interfaces.py:41
-#: src/zeit/content/gallery/interfaces.py:87
+#: src/zeit/content/gallery/interfaces.py:88
 msgid "Layout"
 msgstr ""
 
@@ -1037,15 +1037,15 @@ msgstr ""
 msgid "Show image"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:43
+#: src/zeit/content/gallery/browser/overview.pt:47
 msgid "Save sorting"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:105
+#: src/zeit/content/gallery/interfaces.py:111
 msgid "Image gallery as box"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:110
+#: src/zeit/content/gallery/interfaces.py:116
 msgid "Embedded image gallery"
 msgstr ""
 
@@ -1062,6 +1062,14 @@ msgstr ""
 #: src/zeit/content/portraitbox/interfaces.py:21
 #: src/zeit/wysiwyg/interfaces.py:15
 msgid "Text"
+msgstr ""
+
+#: src/zeit/content/gallery/interfaces.py:93
+msgid "Image caption"
+msgstr ""
+
+#: src/zeit/content/gallery/interfaces.py:94
+msgid "gallery-image-caption-description"
 msgstr ""
 
 #: src/zeit/content/gallery/source.py:12
@@ -1094,19 +1102,19 @@ msgstr ""
 msgid "Volume/Year"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:35
+#: src/zeit/content/image/browser/image_view.pt:39
 msgid "Image title: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:38
+#: src/zeit/content/image/browser/image_view.pt:42
 msgid "ALT: ${alt}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:41
+#: src/zeit/content/image/browser/image_view.pt:45
 msgid "Image sub text: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:45
+#: src/zeit/content/image/browser/image_view.pt:49
 msgid "Links to: ${link}"
 msgstr ""
 
@@ -1115,7 +1123,7 @@ msgid "Type"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:135
+#: src/zeit/content/image/interfaces.py:158
 #: src/zeit/content/image/browser/configure.zcml:139
 #: src/zeit/content/gallery/browser/configure.zcml:79
 msgid "Images"
@@ -1158,44 +1166,61 @@ msgid "The action you were trying to do could not be finished because the resour
 msgstr ""
 
 #: src/zeit/content/image/interfaces.py:30
+msgid "left"
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:31
+msgid "center"
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:32
+msgid "right"
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:48
 msgid "Image title"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:47
+#: src/zeit/content/image/interfaces.py:65
 msgid "Copyrights"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:53
+#: src/zeit/content/image/interfaces.py:71
 msgid "Copyright"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:57
+#: src/zeit/content/image/interfaces.py:75
 #: src/zeit/content/link/browser/configure.zcml:8
 msgid "Link"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:58
+#: src/zeit/content/image/interfaces.py:76
 msgid "Link to copyright holder"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:62
+#: src/zeit/content/image/interfaces.py:80
 msgid "Alternative text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:63
+#: src/zeit/content/image/interfaces.py:81
 msgid "Enter a textual description of the image"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:68
+#: src/zeit/content/image/interfaces.py:86
 msgid "Image sub text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:73
+#: src/zeit/content/image/interfaces.py:91
 msgid "Links to"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:74
+#: src/zeit/content/image/interfaces.py:92
 msgid "Enter a URL this image should link to."
+msgstr ""
+
+#: src/zeit/content/image/interfaces.py:96
+#: src/zeit/content/image/browser/image_view.pt:24
+msgid "Alignment"
 msgstr ""
 
 #: src/zeit/content/infobox/browser/form.py:41
@@ -1411,60 +1436,65 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:27
+#: src/zeit/workflow/interfaces.py:31
 msgid "From"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:28
+#: src/zeit/workflow/interfaces.py:32
 msgid "To"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:29
+#: src/zeit/workflow/interfaces.py:33
 msgid "Publication period"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:30
+#: src/zeit/workflow/interfaces.py:34
 #. Default: "Leave empty for no constraint."
 msgid "workflow-publication-period-description"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:49
+#: src/zeit/workflow/interfaces.py:53
 msgid "status-edited"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:54
+#: src/zeit/workflow/interfaces.py:58
 msgid "status-corrected"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:59
+#: src/zeit/workflow/interfaces.py:63
 msgid "status-refined"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:64
+#: src/zeit/workflow/interfaces.py:68
 msgid "status-images-added"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:69
+#: src/zeit/workflow/interfaces.py:73
 msgid "Urgent"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:70
+#: src/zeit/workflow/interfaces.py:74
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:165
+#: src/zeit/workflow/publish.py:105
+#. Default: ""
+msgid "Error during publish/retract: ${exc}: ${message}"
+msgstr ""
+
+#: src/zeit/workflow/publish.py:210
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:246
+#: src/zeit/workflow/publish.py:283
 msgid "Retracted"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:60
+#: src/zeit/workflow/publish.py:64
 msgid "Publication scheduled"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:66
+#: src/zeit/workflow/publish.py:70
 msgid "Retracting scheduled"
 msgstr ""
 

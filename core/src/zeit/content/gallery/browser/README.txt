@@ -133,6 +133,7 @@ Each entry can be edited on the overview page:
 >>> browser.getControl('Layout').displayOptions
 ['(no value)', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
+>>> browser.getControl('Image caption').value = "Mann/Stein"
 >>> browser.getControl('Apply').click()
 
 After saving we're back at the overview:

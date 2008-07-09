@@ -571,6 +571,15 @@ id:
 </article>
 
 
+The text field is not required, so the converter must be able to eat "None":
+
+>>> converter.from_html(article.xml['body'], None)
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body/>
+</article>
+
 Clean up:
 
 >>> zope.security.management.endInteraction()

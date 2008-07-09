@@ -240,9 +240,18 @@ input#form\.copyrights[type=text] {
   width: 100%;
 }
 
-.gallery .image-column {
+table.gallery .image-column {
   text-align: center;
   width: 10em;
+  vertical-align: top;
+}
+
+table.gallery td {
+  padding-bottom: 3em;
+}
+
+table.gallery .caption {
+  padding-bottom: 1em;
 }
 
 #folderActionForm {
@@ -302,7 +311,7 @@ form .column-right.image-form {
     width: 48%;
 }
 
-.image-form #form\.caption {
+textarea#form\.caption {
     height: 8em;
 }
 
