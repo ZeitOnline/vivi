@@ -8,6 +8,7 @@ import zope.schema
 import zope.app.file.interfaces
 
 import zc.form.field
+import zc.sourcefactory.basic
 
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -22,6 +23,23 @@ class ImageProcessingError(TypeError):
 
 class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
+
+
+class AlignmentSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    values = ((u'left', _('left')),
+              (u'center', _('center')),
+              (u'right', _('right')))
+
+    def __init__(self):
+        self.titles = dict(self.values)
+        self.values = tuple(v[0] for v in self.values)
+
+    def getValues(self):
+        return self.values
+
+    def getTitle(self, value):
+        return self.titles[value]
 
 
 class IImageMetadata(zope.interface.Interface):
@@ -73,6 +91,11 @@ class IImageMetadata(zope.interface.Interface):
         title=_('Links to'),
         description=_('Enter a URL this image should link to.'),
         required=False)
+
+    alignment = zope.schema.Choice(
+        title=_('Alignment'),
+        source=AlignmentSource(),
+        default='left')
 
 
 class IImage(zeit.cms.interfaces.IAsset,

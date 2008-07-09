@@ -89,6 +89,9 @@ We now see the form and fill out some values:
 >>> browser.getControl(name='form.volume').value = '9'
 >>> browser.getControl(name='form.alt').value = 'Zwei Taenzer'
 >>> browser.getControl(name='form.caption').value = 'Tanz beim Opernball'
+>>> browser.getControl('Alignment').displayOptions
+['left', 'center', 'right']
+>>> browser.getControl('Alignment').displayValue = ['center']
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
 >>> browser.getControl('Apply').click()
 >>> 'There where errors' in browser.contents
@@ -151,12 +154,22 @@ Make sure the image is not changed by looking at the image view:
     Opernball in Wien – View image
   </title>
   ...
-  <tr>
-    <td>Dimensions</td>
-    <td>
-      119x160
-    </td>
-  </tr>
+    <tr>
+      <td>Dimensions</td>
+      <td>
+        119x160
+      </td>
+    </tr>
+    <tr>
+      <td>Volume/Year</td>
+      <td>
+        9/2007
+      </td>
+    </tr>
+    <tr>
+      <td>Alignment</td>
+      <td>center</td>
+    </tr>
   ...
       <div>
         Image title: Opernball in Wien

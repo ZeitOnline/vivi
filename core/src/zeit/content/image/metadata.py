@@ -21,7 +21,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/image',
-        ('alt', 'caption', 'links_to'))
+        ('alt', 'caption', 'links_to', 'alignment'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
@@ -58,6 +58,7 @@ def MetadataXMLReference(context):
     set_if_not_empty('title', context.title)
     set_if_not_empty('alt', context.alt)
     set_if_not_empty('href', context.links_to)
+    set_if_not_empty('align', context.alignment)
 
     image = lxml.objectify.E.image(
         lxml.objectify.E.bu(context.caption),

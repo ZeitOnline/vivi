@@ -11,6 +11,7 @@ zeit.cms changes
 - Der Text von Portraitboxen wird richtig geladen.
 - Biga: Text ist kein Pfichtfeld mehr (bug #4324).
 - XML-RPC-Methode zum veröffentlichen (bug #4331).
+- Align auf Bildern (bug #4349).
 
 
 1.0b5 (2008-06-30)

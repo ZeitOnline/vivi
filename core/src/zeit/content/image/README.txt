@@ -66,12 +66,14 @@ Reference the image via XML:
   <bu xsi:nil="true"/>
 </image>
 
-Set the copyright:
+Set the copyright and alignment:
 
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
->>> zeit.content.image.interfaces.IImageMetadata(group).copyrights = (
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(group)
+>>> metadata.copyrights = (
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
+>>> metadata.alignment = u'right'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
@@ -80,6 +82,7 @@ Set the copyright:
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       align="right"
        base-id="http://xml.zeit.de/image-group" type="jpg">
   <bu xsi:nil="true"/>
   <copyright py:pytype="str">Zeit online</copyright>
@@ -100,6 +103,7 @@ Set the link:
 <image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       align="right"
        href="http://www.asdf.com"
        base-id="http://xml.zeit.de/image-group" type="jpg">
   <bu xsi:nil="true"/>
@@ -126,6 +130,7 @@ used:
     xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
     type="gif">
@@ -148,6 +153,7 @@ one is used:
     xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group" type="jpg">
   <bu xsi:nil="true"/>

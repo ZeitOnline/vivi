@@ -26,7 +26,7 @@ class ImageFormBase(object):
 
     field_groups = (
         gocept.form.grouped.Fields(
-            _("Image data"), ('__name__', 'data', 'contentType', 'expires'),
+            _("Image data"), ('__name__', 'data', 'contentType', 'alignment'),
             css_class='column-left image-form'),
         gocept.form.grouped.RemainingFields(
             _("Texts"),
