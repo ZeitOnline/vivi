@@ -128,14 +128,20 @@ class PersistentCache(persistent.Persistent):
 
     zope.interface.implements(zeit.connector.interfaces.IPersistentCache)
 
+    CACHE_VALUE_CLASS = None  # Set in subclass
+
     def __init__(self):
         self._storage = BTrees.family32.OO.BTree()
 
     def __getitem__(self, key):
         try:
-            return self._storage[get_storage_key(key)]
+            value = self._storage[get_storage_key(key)]
         except KeyError:
             raise KeyError(key)
+        if self._is_deleted(value):
+            raise KeyError(key)
+        value = self._simplify(value)
+        return value
 
     def get(self, key, default=None):
         try:
@@ -147,13 +153,30 @@ class PersistentCache(persistent.Persistent):
         return get_storage_key(key) in self._storage
 
     def __delitem__(self, key):
-        try:
+        value = self._storage[get_storage_key(key)]
+        if isinstance(value, self.CACHE_VALUE_CLASS):
+            self._mark_deleted(value)
+        else:
             del self._storage[get_storage_key(key)]
-        except KeyError:
-            raise KeyError(key)
 
     def __setitem__(self, key, value):
-        self._storage[get_storage_key(key)] = value
+        value = self._simplify(value)
+        old_value = self._storage.get(get_storage_key(key))
+        if isinstance(old_value, self.CACHE_VALUE_CLASS):
+            self._set_value(old_value, value)
+        else:
+            value = self.CACHE_VALUE_CLASS(value)
+            self._storage[get_storage_key(key)] = value
+
+    def _is_deleted(self, value):
+        return zeit.connector.interfaces.DeleteProperty in value
+
+    def _set_value(self, old_value, new_value):
+        old_value.clear()
+        old_value.update(new_value)
+
+    def _simplify(self, value):
+        return value
 
 
 class PropertyCache(PersistentCache):
@@ -162,16 +185,11 @@ class PropertyCache(PersistentCache):
     zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
 
     name_namespaces_tuples = {}
+    CACHE_VALUE_CLASS = BTrees.family32.OO.BTree
 
-    def __getitem__(self, key):
-        return self._simplify(
-            super(PropertyCache, self).__getitem__(key))
-
-    def __setitem__(self, key, value):
-        value = BTrees.family32.OO.BTree(
-            self._simplify(value))
-        super(PropertyCache, self).__setitem__(
-            key, value)
+    def _mark_deleted(self, value):
+        value.clear()
+        value[zeit.connector.interfaces.DeleteProperty] = None
 
     def _simplify(self, old_dict):
         # Value is a dict mapping (name, namespace) to value. Look it up in
@@ -199,9 +217,11 @@ class ChildNameCache(PersistentCache):
 
     zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
 
-    def __setitem__(self, key, value):
-        super(ChildNameCache, self).__setitem__(
-            key, BTrees.family32.OO.TreeSet(value))
+    CACHE_VALUE_CLASS = BTrees.family32.OO.TreeSet
+
+    def _mark_deleted(self, value):
+        value.clear()
+        value.insert(zeit.connector.interfaces.DeleteProperty)
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)

@@ -219,6 +219,13 @@ KeyError: 'id'
 >>> cache.get('id') is None
 True
 
+Note that there is actually still the entry in the cache, but marked as
+deleted:
+
+>>> cache._storage['id']
+<BTrees.OOBTree.OOBTree object at 0x...>
+>>> list(cache._storage['id'])
+[DeleteProperty]
 
 The property cache does some magic to prevent extensive memory consumption. The
 keys in the cache *value* are rather few, maybe 200. So it keeps track of the
@@ -271,3 +278,21 @@ The data is returned as a TreeSet. That also means the a list will be sorted:
 <BTrees.OOBTree.OOTreeSet object at 0x...>
 >>> list(cache['id'])
 ['bar', 'baz', 'foo']
+
+When we remove things from the cache they're gone:
+
+>>> del cache['id']
+>>> cache['id']
+Traceback (most recent call last):
+    ...
+KeyError: 'id'
+
+>>> cache.get('id') is None
+True
+
+But actually the're just marked as deleted:
+
+>>> cache._storage['id']
+<BTrees.OOBTree.OOTreeSet object at 0x...>
+>>> list(cache._storage['id'])
+[DeleteProperty]

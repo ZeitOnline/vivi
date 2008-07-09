@@ -5,6 +5,7 @@ CHANGES
 ------------------
 
 - longrunning.txt did not reset DEBUG_CONNECTION.
+- Removed conflict hotspot from property and child id cache.
 
 1.0b3 (2008-07-04)
 ------------------
