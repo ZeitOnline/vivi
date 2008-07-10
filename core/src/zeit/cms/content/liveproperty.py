@@ -44,9 +44,6 @@ class LiveProperties(object, UserDict.DictMixin):
             raise zope.security.interfaces.Forbidden(key)
         self.connector.changeProperties(self.context.uniqueId, {key: value})
 
-    # def update()
-
-
     @property
     def resource(self):
         return self.connector[self.context.uniqueId]
