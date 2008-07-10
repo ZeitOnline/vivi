@@ -29,32 +29,30 @@ class ObjectLog(persistent.Persistent):
     zope.interface.implements(zeit.objectlog.interfaces.IObjectLog)
 
     def __init__(self):
-        # Map *seconds* to log entry
-        self._time_line = BTrees.family64.IO.BTree()
         # Map object to an object time line
         self._object_log = BTrees.family64.OO.BTree()
 
     def get_log(self, object):
         key = zope.app.keyreference.interfaces.IKeyReference(object)
-        object_timeline = self._object_log.get(key, [])
-        for time_key in sorted(object_timeline):
-            yield self._time_line[time_key]
+        object_log = self._object_log.get(key, [])
+        for key in object_log:
+            yield object_log[key]
 
     def log(self, object, message, mapping=None):
         logger.debug("Logging: %s %s %s" % (object, message, mapping))
         obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
 
+        object_log = self._object_log.get(obj_key)
+        if object_log is None:
+            # Create a timeline for the object.
+            object_log = self._object_log[obj_key] = BTrees.family64.IO.BTree()
+
         log_entry = LogEntry(object, message, mapping)
 
         time_key = int(time.time() * 10e6)
-        while not self._time_line.insert(time_key, log_entry):
+        while not object_log.insert(time_key, log_entry):
             time_key += 1
 
-        if obj_key not in self._object_log:
-            # Create another timeline for the object itself.
-            self._object_log[obj_key] = BTrees.family64.II.TreeSet()
-
-        self._object_log[obj_key].insert(time_key)
         # Create savepoint to assing oid to log-entries. Required for
         # displaying in the same transaction.
         transaction.savepoint(optimistic=True)
