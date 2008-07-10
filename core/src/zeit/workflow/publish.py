@@ -102,6 +102,8 @@ class PublishRetractTask(object):
         except ZODB.POSException.ConflictError:
             raise
         except Exception, e:
+            logger.error("Error during publish/retract %s: %s" % (
+                e.__class__.__name__, str(e)))
             log = zope.component.getUtility(
                 zeit.objectlog.interfaces.IObjectLog)
             log.log(obj, _("Error during publish/retract: ${exc}: ${message}",
