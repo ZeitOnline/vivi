@@ -5,6 +5,7 @@
 import zope.component
 
 import lovely.remotetask
+import lovely.remotetask.processor
 import lovely.remotetask.interfaces
 
 import zeit.cms.content.interfaces
@@ -28,9 +29,11 @@ def installLocalUtility(root, factory, name, interface, utility_name=u''):
 
 def installTaskService():
     site_manager = zope.component.getSiteManager()
-    installLocalUtility(
+    tasks = installLocalUtility(
         site_manager, lovely.remotetask.TaskService, 'tasks.general',
         lovely.remotetask.interfaces.ITaskService, utility_name='general')
+    # Use MultiProcessor for parallel processing.
+    tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
 
 
 def installRelations():
