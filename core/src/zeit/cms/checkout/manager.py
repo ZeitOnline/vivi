@@ -14,6 +14,7 @@ import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.cms.workingcopy.workingcopy
 
 
 class CheckoutManager(object):
@@ -44,7 +45,7 @@ class CheckoutManager(object):
                 return False
         return True
 
-    def checkout(self, event=True):
+    def checkout(self, event=True, temporary=False):
         if not self.canCheckout:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 "Cannot checkout.")
@@ -59,23 +60,26 @@ class CheckoutManager(object):
                 raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                     *e.args)
 
+        if temporary:
+            workingcopy = zeit.cms.workingcopy.workingcopy.Workingcopy()
+        else:
+            workingcopy = self.workingcopy
+
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckoutEvent(
-                    self.context, self.principal))
-
+                    self.context, workingcopy, self.principal))
         content = zeit.cms.workingcopy.interfaces.ILocalContent(self.context)
-        namechooser = zope.app.container.interfaces.INameChooser(
-            self.workingcopy)
+        namechooser = zope.app.container.interfaces.INameChooser(workingcopy)
         name = namechooser.chooseName(content.__name__, content)
-        added = self.workingcopy[name] = content
+        added = workingcopy[name] = content
 
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckoutEvent(
-                    added, self.principal))
+                    added, workingcopy, self.principal))
 
-        return self.workingcopy[name]
+        return workingcopy[name]
 
     @property
     def canCheckin(self):
@@ -91,17 +95,18 @@ class CheckoutManager(object):
         if not self.canCheckin:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 "Cannot checkin.")
+        workingcopy =  self.context.__parent__
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-                    self.context, self.principal))
+                    self.context, workingcopy, self.principal))
         unique_id = self.context.uniqueId
         added = zeit.cms.repository.interfaces.IRepositoryContent(self.context)
-        del self.workingcopy[self.context.__name__]
+        del workingcopy[self.context.__name__]
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
-                    added, self.principal))
+                    added, workingcopy, self.principal))
         try:
             lockable = zope.app.locking.interfaces.ILockable(added)
             lockable.unlock()

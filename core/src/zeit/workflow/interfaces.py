@@ -2,6 +2,10 @@
 # See also LICENSE.txt
 """Workflow interfaces."""
 
+import datetime
+
+import pytz
+
 import zope.interface
 import zope.schema
 
@@ -24,12 +28,18 @@ class ScriptError(Exception):
     """Raised when the publish/retract script fails."""
 
 
+# lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
+MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
+
+
 class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
     """Time based publishing."""
 
     release_period = zc.form.field.Combination(
-        (zope.schema.Datetime(title=_("From"), required=False),
-         zope.schema.Datetime(title=_("To"), required=False)),
+        (zope.schema.Datetime(title=_("From"), required=False,
+                              max=MAX_PUBLISH_DATE),
+         zope.schema.Datetime(title=_("To"), required=False,
+                              max=MAX_PUBLISH_DATE)),
         title=_('Publication period'),
         description=_('workflow-publication-period-description',
                       u'Leave empty for no constraint.'),

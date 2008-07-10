@@ -96,7 +96,7 @@ def remove_from_channels_after_retract(context, event):
     for feed in syndicated_in:
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
         try:
-            checked_out = manager.checkout()
+            checked_out = manager.checkout(temporary=True)
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             logger.error(
                 "Could not remove %s from %s because channel locked." % (

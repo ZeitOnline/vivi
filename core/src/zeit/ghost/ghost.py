@@ -18,8 +18,7 @@ import zeit.cms.workingcopy.interfaces
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def add_ghost_after_checkin(context, event):
     """Add a ghost for the checked in object."""
-    workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
-        event.principal)
+    workingcopy = event.workingcopy
     entry = zeit.cms.clipboard.entry.Entry(context)
     zope.interface.directlyProvides(
         entry, zeit.cms.workingcopy.interfaces.ILocalContent)
@@ -33,8 +32,7 @@ def add_ghost_after_checkin(context, event):
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def remove_ghost_after_checkout(context, event):
     """Remove ghost of checked out object, if any."""
-    workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
-        event.principal)
+    workingcopy = event.workingcopy
     unique_id = context.uniqueId
 
     for name in list(workingcopy):
@@ -59,8 +57,7 @@ def remove_excessive_ghosts(context, event):
     to remove.
 
     """
-    workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
-        event.principal)
+    workingcopy = event.workingcopy
     target_size = 7
     while True:
         if len(workingcopy) <= target_size:

@@ -24,8 +24,9 @@ We also subscribe a testing handler to the CheckoutEvent:
 
 >>> def checkoutEvent(context, event):
 ...     print 'Event:', event
-...     print '    Principal:', principal.id
+...     print '    Principal:', event.principal.id
 ...     print '    Content:', context
+...     print '    Workingcopy:', event.workingcopy
 ...
 >>> import zope.component
 >>> from zeit.cms.interfaces import ICMSContent
@@ -83,9 +84,11 @@ When we check out the document, we will find a copy in the working copy:
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> workingcopy = IWorkingcopy(principal)
 >>> list(workingcopy.keys())
 [u'4schanzentournee-abgesang']
@@ -152,9 +155,11 @@ True
 Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
      Principal: zope.user
      Content: <zeit.cms...>
+     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
      Principal: zope.user
      Content: <zeit.cms...>
+     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 
 `checked_in` is the object in the repository:
 
@@ -197,9 +202,11 @@ False
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> lockable.locked()
 True 
 >>> working_copy = checked_out.__parent__
@@ -207,6 +214,53 @@ True
 >>> lockable.locked()
 False
 
+
+Temporary checkouts
+===================
+
+There are quite some system events which do checkouts. Those should not
+interfere with the user. The system usually checks out content as "temporary".
+
+>>> manager = ICheckoutManager(content)
+>>> checked_out = manager.checkout(temporary=True)
+Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+
+The workingcopy is still empty:
+
+>>> list(workingcopy.keys())
+[]
+
+The checked out content is stored in a temporary workingcopy:
+
+>>> checked_out.__parent__
+<zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+>>> checked_out.__parent__.__parent__ is None
+True
+>>> list(checked_out.__parent__.keys())
+[u'4schanzentournee-abgesang']
+
+We can also check in the temporary checkout:
+
+>>> manager = ICheckinManager(checked_out)
+>>> manager.canCheckin
+True
+>>> manager.checkin()
+Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 
 
 Cleanup

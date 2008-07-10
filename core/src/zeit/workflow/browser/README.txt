@@ -370,6 +370,25 @@ The workflow logs various changes in an objectlog. Verify this:
 ...
 
 
+Set a very hight value for publish/retract to make sure we cannot set this:
+
+>>> browser.getControl(name='form.release_period.combination_00').value = (
+...     '2040-05-06')
+>>> browser.getControl(name='form.release_period.combination_01').value = (
+...     '2040-05-06')
+>>> browser.getControl('Save state only').click()
+>>> print browser.contents
+<?xml ...
+ <input class="textType" id="form.release_period.combination_00" name="form.release_period.combination_00" size="20" type="text" value="2040-05-06"  />
+ ...
+ <span class="error">Value is too big</span>
+ ...
+ <input class="textType" id="form.release_period.combination_01" name="form.release_period.combination_01" size="20" type="text" value="2040-05-06"  />
+ ...
+ <span class="error">Value is too big</span>
+ ...
+
+
 Clean up
 --------
 

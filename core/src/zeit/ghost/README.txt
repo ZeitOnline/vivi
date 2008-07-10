@@ -77,6 +77,15 @@ u'4schanzentournee-abgesang-2'
 >>> checked_out.uniqueId
 u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 
+When we do a temporary checkout no ghost will be added to the workingcopy:
+
+>>> manager = ICheckoutManager(collection['Flugsicherheit'])
+>>> checked_out = manager.checkout(temporary=True)
+>>> manager = ICheckinManager(checked_out)
+>>> manager.checkin()
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+>>> list(workingcopy.keys())
+[u'4schanzentournee-abgesang-2']
 
 Automatic ghost removing
 ========================

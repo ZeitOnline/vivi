@@ -269,7 +269,7 @@ After sending the event the metadata is updated:
 >>> import zeit.cms.checkout.interfaces
 >>> zope.event.notify(
 ...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-...         content, zope.security.testing.Principal('hans.wurst')))
+...         content, None, zope.security.testing.Principal('hans.wurst')))
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>

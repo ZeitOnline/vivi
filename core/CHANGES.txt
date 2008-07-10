@@ -14,6 +14,9 @@ zeit.cms changes
 - Align auf Bildern (bug #4349).
 - Änderungsdatum in Dateilisten in CET statt GMT (bug #4354).
 - Extra-BU bei Bildergallerien.
+- Begrenzung des Veröffentlichungszeitruams auf Daten bis 2030, weil sonst der
+  lovely.remotetask mist baut.
+- Konzept von temporären Checkouts um parallel veröffentlichen zu können.
 
 
 1.0b5 (2008-06-30)

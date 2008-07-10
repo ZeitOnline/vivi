@@ -12,15 +12,16 @@ class ICheckoutManager(zope.interface.Interface):
     canCheckout = zope.interface.Attribute(
         "True if the object can be checked out, False otherwise.")
 
-    def checkout(event=True):
+    def checkout(event=True, temporary=False):
         """Checkout the managed object.
-
 
         returns the checked out object.
 
         Issues CheckOutEvent if `event` is True.
-        """
+        If temporary is True the object will be added to a temporary
+        workingcopy.
 
+        """
 
 class ICheckinManager(zope.interface.Interface):
 
@@ -63,11 +64,14 @@ class IBeforeCheckinEvent(ICheckinCheckoutEvent):
 class IAfterCheckinEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked in."""
 
+    old_object = zope.interface.Attribute("The obect before checkin.")
+
 
 class EventBase(zope.component.interfaces.ObjectEvent):
 
-    def __init__(self, object, principal):
+    def __init__(self, object, workingcopy, principal):
         super(EventBase, self).__init__(object)
+        self.workingcopy = workingcopy
         self.principal = principal
 
 

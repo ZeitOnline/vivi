@@ -25,6 +25,8 @@ import zeit.objectlog.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.cms.workingcopy.workingcopy
+
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -114,11 +116,15 @@ class PublishRetractTask(object):
         properties to xml on checkout/checkin.
 
         """
+        # We do not use the user's workingcopy but a "fresh" one which we just
+        # throw away after wards. This has two effects: 1. The users'
+        # workingcopy istn't cluttered with ghosts and 2. we can publish in
+        # parallel.
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
         if not manager.canCheckout:
             logger.error("Could not checkout %s" % obj.uniqueId)
             return obj
-        checked_out = manager.checkout()
+        checked_out = manager.checkout(temporary=True)
 
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         if not manager.canCheckin:
