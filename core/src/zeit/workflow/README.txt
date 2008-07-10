@@ -522,6 +522,7 @@ Publish the folder again and verify the log:
 >>> publish.publish()
 >>> tasks.process()
 >>> print logfile.getvalue()
+Running job ...
 Publishing http://xml.zeit.de/online/2007/01
 Could not checkout http://xml.zeit.de/online/2007/01
 ...publish.sh:
@@ -594,12 +595,13 @@ recursivly remove.
 >>> publish.retract()
 >>> tasks.process()
 >>> print logfile.getvalue()
+Running job ...
 Retracting http://xml.zeit.de/online/2007/01
-Could not checkout http://xml.zeit.de/online/2007/01
 ...retract.sh:
 Retracting test script
 work/online/2007/01
 done.
+Could not checkout http://xml.zeit.de/online/2007/01
 
 
 Error handling
@@ -613,6 +615,8 @@ fails when there is 'JPG' in the input data:
 >>> workflow.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
 >>> publish.publish()
+>>> import transaction
+>>> transaction.commit()
 >>> tasks.process()
 
 >>> print_log(log.get_log(jpg))

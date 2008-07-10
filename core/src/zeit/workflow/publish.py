@@ -9,6 +9,7 @@ import subprocess
 import pytz
 
 import ZODB.POSException
+import transaction
 
 import zope.component
 import zope.event
@@ -90,6 +91,7 @@ class PublishRetractTask(object):
     #inputSchema = zope.schema.Object()  # XXX
 
     def __call__(self, service, jobid, input):
+        logger.info("Running job %s" % jobid)
         uniqueId = input.uniqueId
         principal = input.principal
         self.login(principal)
@@ -97,19 +99,31 @@ class PublishRetractTask(object):
         obj = self.repository.getContent(input.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
 
-        try:
-            self.run(obj, info)
-        except ZODB.POSException.ConflictError:
-            raise
-        except Exception, e:
-            logger.error("Error during publish/retract %s: %s" % (
-                e.__class__.__name__, str(e)))
-            log = zope.component.getUtility(
-                zeit.objectlog.interfaces.IObjectLog)
-            log.log(obj, _("Error during publish/retract: ${exc}: ${message}",
-                           mapping=dict(
-                               exc=e.__class__.__name__,
-                               message=str(e))))
+        retries = 0
+        while True:
+            try:
+                self.run(obj, info)
+                transaction.commit()
+            except ZODB.POSException.ConflictError, e:
+                retries += 1
+                if retries > 3:
+                    raise
+                # Spiels noch einmal, Sam.
+                logger.exception(e)
+                transaction.abort()
+            except Exception, e:
+                logger.error("Error during publish/retract")
+                logger.exception(e)
+                log = zope.component.getUtility(
+                    zeit.objectlog.interfaces.IObjectLog)
+                log.log(obj, _("Error during publish/retract: ${exc}: ${message}",
+                               mapping=dict(
+                                   exc=e.__class__.__name__,
+                                   message=str(e))))
+                break
+            else:
+                # Everything okay. 
+                break
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.
@@ -276,7 +290,6 @@ class RetractTask(PublishRetractTask):
             logger.warning(
                 "Retracting object %s which is not published." % obj.uniqueId)
 
-
         obj = self.recurse(self.before_retract, obj)
         self.call_retract_script(obj)
         self.recurse(self.after_retract, obj)
@@ -289,8 +302,7 @@ class RetractTask(PublishRetractTask):
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
         self.log.log(obj, _('Retracted'))
-        new_obj = self.cycle(obj)
-        return new_obj
+        return obj
 
     def call_retract_script(self, obj):
         """Call the script. This does the actual retract."""
@@ -303,6 +315,7 @@ class RetractTask(PublishRetractTask):
     def after_retract(self, obj):
         """Do things after retract."""
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj))
+        obj = self.cycle(obj)
         self.unlock(obj)
         return obj
 
