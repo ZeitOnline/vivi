@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-0.5 (unreleased)
+0.5 (2008-07-10)
 ----------------
 
 - Removed the global timeline as it is a conflict hotspot.
