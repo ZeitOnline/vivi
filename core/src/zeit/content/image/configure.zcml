@@ -1,5 +1,11 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
+  <utility 
+    name="zeit.content.image"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
   <adapter factory=".image.imageFactory" name="image" />
   <adapter factory=".image.resourceFactory" />
   <adapter factory=".image.XMLReference" name="image" />
@@ -124,6 +130,8 @@
       set_schema="zeit.cms.content.interfaces.IXMLRepresentation"
       permission="zeit.EditContent" />
   </class>
+
+  <subscriber handler=".imagereference.update_objects_referenced_by_images" />
 
 
 </configure>

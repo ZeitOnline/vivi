@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import lxml.etree
 import lxml.objectify
 import rwproperty
 
@@ -11,6 +12,7 @@ import zope.interface
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.related
 import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.image.interfaces
 
@@ -75,3 +77,49 @@ def update_image_reference_on_checkin(context, event):
     image_list = images.images
     if image_list:
         images.images = image_list
+
+
+def image_referenced_by(content, catalog):
+    """Index support for relation catalog."""
+    images = zeit.content.image.interfaces.IImages(content, None)
+    if images is None:
+        return
+    return images.images
+
+
+def update_image_reference_of_checked_out(checked_out):
+    """Update the object which relate the checked out.
+
+    returns True if object has changed, False otherwise.
+
+    """
+    images = zeit.content.image.interfaces.IImages(checked_out, None)
+    if images is None:
+        return False
+    xml_before = lxml.etree.tostring(
+        zeit.cms.content.interfaces.IXMLRepresentation(images).xml)
+
+    # Update related
+    images.images = images.images
+
+    # Make sure there actually was a change.
+    xml_after = lxml.etree.tostring(
+        zeit.cms.content.interfaces.IXMLRepresentation(images).xml)
+
+    if xml_before == xml_after:
+        return False
+
+    return True
+
+
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def update_objects_referenced_by_images(context, event):
+    """Update objects which are referenced by images."""
+    relations = zope.component.getUtility(
+        zeit.cms.relation.interfaces.IRelations)
+    relating_objects = relations.get_relations(context, 'image_referenced_by')
+    for related_object in relating_objects:
+        zeit.cms.relation.corehandlers.with_checked_out(
+            related_object, update_image_reference_of_checked_out)

@@ -11,21 +11,13 @@ Setup functional test:
 >>> old_site = zope.app.component.hooks.getSite()
 >>> zope.app.component.hooks.setSite(getRootFolder())
 
-Create a dummy object which provideds IXMLContent:
+Get a content from the repository:
 
->>> import zope.annotation.interfaces
->>> import zope.interface
->>> import zeit.cms.content.interfaces
->>> import lxml.objectify
->>> class Content(object):
-...     zope.interface.implements(
-...         zeit.cms.content.interfaces.IXMLContent,
-...         zope.annotation.interfaces.IAttributeAnnotatable)
-...     uniqueId = 'dummy-content'
-...     xml = lxml.objectify.XML('<content><head/></content>')
-...
->>> content = Content()
-
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['testcontent']
 
 Also create a feed:
 
@@ -42,7 +34,19 @@ We have not added any image, so no image is referenced:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="dummy-content">
+    <block href="http://xml.zeit.de/testcontent">
+      <supertitle xsi:nil="true"/>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
       <references/>
     </block>
   </container>
@@ -55,11 +59,17 @@ We will mostly want to reference image groups, so create one first:
 >>> import zeit.content.image.test
 >>> group = zeit.content.image.test.create_image_group()
 
-Reference the image group:
+Reference the image group[#needsinteraction]_:
 
+>>> import zeit.cms.content.interfaces
+>>> import zeit.cms.checkout.interfaces
 >>> import zeit.content.image.interfaces
->>> images = zeit.content.image.interfaces.IImages(content)
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> images = zeit.content.image.interfaces.IImages(checked_out)
 >>> images.images = (group, )
+>>> content = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
 
 Update the metadata of the feed. The image is now referenced:
 
@@ -68,8 +78,8 @@ Update the metadata of the feed. The image is now referenced:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="dummy-content">
-     <references/>
+    <block href="http://xml.zeit.de/testcontent">
+     ...
       <image base-id="http://xml.zeit.de/image-group" type="jpg">
         <bu xsi:nil="true"/>
       </image>
@@ -90,8 +100,8 @@ When more than one image is referenced, only the first one will be in the feed:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="dummy-content">
-     <references/>
+    <block href="http://xml.zeit.de/testcontent">
+      ...
       <image base-id="http://xml.zeit.de/image-group" type="jpg">
         <bu xsi:nil="true"/>
       </image>
@@ -102,37 +112,46 @@ When more than one image is referenced, only the first one will be in the feed:
 
 
 When we change the metadata of the imagegroup the content is updated on
-checkin. Change the metadata of the group [#needsinteraction]_:
+checkin of the imagegroup. Change the metadata of the group.
 
->>> import zeit.cms.checkout.interfaces
+Before:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+<testtype>
+  <head>
+    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        base-id="http://xml.zeit.de/image-group" 
+        type="jpg">
+      <bu xsi:nil="true"/>
+    </image>
+    ...
+  </head>
+  <body/>
+</testtype>
+
+Now check out, change title and check in:
+
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     group).checkout()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
 >>> metadata.title = u"Image title"
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 
-Send out the checkin event:
+The content has changed automatically:
 
->>> import zope.security.testing
->>> import zeit.cms.checkout.interfaces
->>> zope.event.notify(
-...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-...         content, None, zope.security.testing.Principal('hans.wurst')))
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
-<content>
-  <head>
-    <references/>
-    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        title="Image title"
-        base-id="http://xml.zeit.de/image-group" 
-        type="jpg">
-      <bu xsi:nil="true"/>
-    </image>
-    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
-      <bu xsi:nil="true"/>
-    </image>
-  </head>
-</content>
+
+Reference index
+===============
+
+When an image is related to another object this is indexed. We can find this
+out via the relations utility:
+
+>>> import zeit.cms.relation.interfaces
+>>> relations = zope.component.getUtility(
+...     zeit.cms.relation.interfaces.IRelations)
+>>> list(relations.get_relations(group, 'image_referenced_by'))
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
 
 
 Cleanup
