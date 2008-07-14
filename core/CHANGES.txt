@@ -8,8 +8,11 @@ zeit.cms changes
   referenzieren.
 - Im Workflow-Log wird bei zeitgesteuerten Tasks die Zeit jetzt in CET
   angezeigt (nur bei neuen Einträgen; bug #4355).
-- Bei einchecken wird der Benutzer benachrichtigt, wenn die Related-Metadaten
+- Beim Einchecken wird der Benutzer benachrichtigt, wenn die Related-Metadaten
   nicht aktualisiert werden konnten.
+- Beim Einchecken wird der Benutzer benachrichtigt, wenn die Metadaten in nicht
+  in den Channeln aktualisiert werden konnten.
+
 
 1.0b6 (2008-07-10)
 ------------------

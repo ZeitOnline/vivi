@@ -186,7 +186,7 @@ Checkout content, change a teaser and check back in:
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
 
-Verify the channel source again:
+Now, the channel metadata has changed:
 
 >>> print lxml.etree.tostring(repository['politik.feed'].xml,
 ...     pretty_print=True)
@@ -212,8 +212,70 @@ Verify the channel source again:
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
 
+When the feed is locked, it cannot be updated. Check out the feed so it is
+locked (and cannot be checked out):
 
-Forbid the automatic update:
+>>> checked_out_channel = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['politik.feed']).checkout()
+
+Change the content and check in. If the feed was not locked it would be
+updated:
+
+>>> import zeit.cms.checkout.interfaces
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> checked_out.teaserTitle = u'nice other Teaser Title'
+>>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+
+The feed was not updated:
+
+>>> print lxml.etree.tostring(repository['politik.feed'].xml,
+...     pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent">
+      <supertitle xsi:nil="true"/>
+      <title py:pytype="str">nice Teaser Title</title>
+      <text xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
+      <references/>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+The fact that the feed was not updated is also noted to the user via a flash
+message:
+
+>>> import zope.i18n
+>>> import z3c.flashmessage.interfaces
+>>> receiver = zope.component.getUtility(
+...     z3c.flashmessage.interfaces.IMessageReceiver)
+>>> message = list(receiver.receive())[0]
+>>> zope.i18n.translate(message.message)
+u'Could not checkout "http://xml.zeit.de/politik.feed" for automatic object update.'
+>>> message.type
+'error'
+
+Check the feed back in:
+
+>>> zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out_channel).checkin()
+<zeit.cms.syndication.feed.Feed object at 0x...>
+
+
+When the automatic update is forbidden by the user, the feed is not update
+automatically. Forbid the automatic update:
 
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
@@ -373,11 +435,13 @@ Footnotes
 
     Log in bob:
 
+    >>> import zope.publisher.browser
     >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'bob')
-    >>> participation = zope.security.testing.Participation(principal)
+    >>> bob = zope.security.testing.Principal(u'bob')
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> request.setPrincipal(bob)
     >>> import zope.security.management
-    >>> zope.security.management.newInteraction(participation)
+    >>> zope.security.management.newInteraction(request)
 
 
 .. [2] Get content from the repository:

@@ -28,7 +28,7 @@ def update_index_on_checkin(context, event):
         zeit.cms.relation.interfaces.IRelations)
     relations.index(context)
 
-def with_checked_out(content, function):
+def with_checked_out(content, function, events=True):
     """Call a function with a checked out version of content.
 
     Function makes sure content is checked back in after the function ran.
@@ -37,8 +37,6 @@ def with_checked_out(content, function):
     # XXX should be moved to some central place.
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     if not manager.canCheckout:
-        # XXX test this path!
-        # XXX this warning should be displayed to the user ASAP.
         log.warning("Could not checkout %s for related update." %
                        content.uniqueId)
         source = zope.component.getUtility(
@@ -48,13 +46,14 @@ def with_checked_out(content, function):
               mapping=dict(id=content.uniqueId)),
             'error')
         return
-    checked_out = manager.checkout(temporary=True)
+    checked_out = manager.checkout(temporary=True, event=events)
 
     changed = function(checked_out)
 
     if changed:
-        manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
-        manager.checkin()
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(
+            checked_out)
+        manager.checkin(event=events)
     else:
         del checked_out.__parent__[checked_out.__name__]
 

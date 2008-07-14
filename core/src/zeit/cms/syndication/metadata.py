@@ -9,8 +9,10 @@ import zope.component
 import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.relation.interfaces
+import zeit.cms.relation.corehandlers
 
-logger = logging.getLogger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @zope.component.adapter(
@@ -21,7 +23,7 @@ def updateFeedOnCheckin(context, event):
     auto = zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate(
         context, None)
     if auto is None:
-        logger.debug("No automatic update of metadata for %s because"
+        log.debug("No automatic update of metadata for %s because"
                      "no IAutomaticMetadataUpdate adapter found." %(
                          context.uniqueId,))
         return
@@ -33,34 +35,15 @@ def updateFeedOnCheckin(context, event):
     updateable_feeds = set(syndicated_in).difference(
         auto.automaticMetadataUpdateDisabled)
 
-    checked_out = []
-
-    for feed in updateable_feeds:
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
+    def update_feed_metadata(checked_out_feed):
         try:
-            co_feed = manager.checkout(event=False)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
-            # Ignore this channel.
-            logger.error("Could not update channel %s after checkin of %s: "
-                         "%s: %s" % (
-                             feed.uniqueId, context.uniqueId,
-                             e.__class__.__name__, e.args))
-            continue
-        checked_out.append(co_feed)
-
-    for feed in checked_out:
-        try:
-            feed.updateMetadata(context)
+            checked_out_feed.updateMetadata(context)
         except KeyError:
             # Hum. The context wasn't in the feed actually. Well, after the
             # checkin the index will be upated.
             pass
+        return True  # Assume feed always changes.
 
-    # Everything is checked out and updated now. Check back in.
-    for feed in checked_out:
-        manager = zeit.cms.checkout.interfaces.ICheckinManager(feed)
-        try:
-            manager.checkin(event=False)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
-            # Leave object checked out. And continue with the others.
-            pass
+    for feed in updateable_feeds:
+        zeit.cms.relation.corehandlers.with_checked_out(
+            feed, update_feed_metadata, events=False)
