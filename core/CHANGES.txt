@@ -4,6 +4,8 @@ CHANGES
 1.0b5 (unreleased)
 ------------------
 
+- Only invalidate parent on adding resource when really necessary.
+
 1.0b4 (2008-07-09)
 ------------------
 

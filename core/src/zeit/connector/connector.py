@@ -597,7 +597,7 @@ class Connector(object):
 
         if autolock and locktoken: # This was _our_ lock. Cleanup:
             self.unlock(id, locktoken=locktoken)
-        self._invalidate_cache(resource.id, parent=True)
+        self._invalidate_cache(resource.id, parent=invalidate_parent)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.
