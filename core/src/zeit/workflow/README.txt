@@ -628,6 +628,35 @@ http://xml.zeit.de/2006/DSC00109_2.JPG
      Error during publish/retract: ScriptError: ('error\n', 1)
 
 
+Retry handling
+--------------
+
+When there is a ConflictError, publication is tried again up too three times.
+Create a subclass for PublishRetractTask which raises a ConflictError when run:
+
+>>> import ZODB.POSException
+>>> import zeit.workflow.publish
+>>> class ConflictingTask(zeit.workflow.publish.PublishRetractTask):
+...     run_count = 0
+...     def run(self, obj, info):
+...         self.run_count += 1
+...         raise ZODB.POSException.ConflictError()
+
+When we run this task it'll be tried three times. After the third run the
+conflict error is passed on:
+
+>>> task = ConflictingTask()
+>>> input = zeit.workflow.publish.TaskDescription(jpg)
+>>> task(None, 1, input)
+Traceback (most recent call last):
+    ...
+ConflictError: database conflict error
+
+>>> task.run_count 
+3
+
+
+
 [#cleanup]_
 
 .. [#functionaltest] We need to set the site since we're a functional test:

@@ -5,7 +5,10 @@
 import datetime
 import logging
 import os.path
+import random
 import subprocess
+import time
+
 import pytz
 
 import ZODB.POSException
@@ -46,7 +49,6 @@ class TaskDescription(object):
         interaction = zope.security.management.getInteraction()
         for p in interaction.participations:
             return p.principal
-
 
 
 class Publish(object):
@@ -106,11 +108,13 @@ class PublishRetractTask(object):
                 transaction.commit()
             except ZODB.POSException.ConflictError, e:
                 retries += 1
-                if retries > 3:
+                if retries >= 3:
                     raise
                 # Spiels noch einmal, Sam.
                 logger.exception(e)
                 transaction.abort()
+                # Stagger retry:
+                time.sleep(random.uniform(0, 2**(retries)))
             except Exception, e:
                 logger.error("Error during publish/retract")
                 logger.exception(e)
@@ -132,14 +136,15 @@ class PublishRetractTask(object):
         properties to xml on checkout/checkin.
 
         """
-        # We do not use the user's workingcopy but a "fresh" one which we just
-        # throw away after wards. This has two effects: 1. The users'
-        # workingcopy istn't cluttered with ghosts and 2. we can publish in
-        # parallel.
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
         if not manager.canCheckout:
             logger.error("Could not checkout %s" % obj.uniqueId)
             return obj
+
+        # We do not use the user's workingcopy but a "fresh" one which we just
+        # throw away after wards. This has two effects: 1. The users'
+        # workingcopy istn't cluttered with ghosts and 2. we can publish in
+        # parallel.
         checked_out = manager.checkout(temporary=True)
 
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
