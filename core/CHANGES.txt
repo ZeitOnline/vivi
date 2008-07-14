@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Automatisches Update der Bildmetadaten in Objekten, die das Bild
   referenzieren.
+- Im Workflow-Log wird bei zeitgesteuerten Tasks die Zeit jetzt in CET
+  angezeigt (nur bei neuen Einträgen; bug #4355).
 
 1.0b6 (2008-07-10)
 ------------------

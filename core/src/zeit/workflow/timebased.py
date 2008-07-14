@@ -140,11 +140,14 @@ class TimeBasedWorkflow(object):
         log.log(self.context, message)
 
     @staticmethod
-    def format_datetime(datetime):
+    def format_datetime(dt):
         interaction = zope.security.management.getInteraction()
         request = interaction.participations[0]
+        tzinfo = zope.interface.common.idatetime.ITZInfo(request, None)
+        if tzinfo is not None:
+            dt = dt.astimezone(tzinfo)
         formatter = request.locale.dates.getFormatter('dateTime', 'medium')
-        return formatter.format(datetime)
+        return formatter.format(dt)
 
 
 @zope.component.adapter(TimeBasedWorkflow)

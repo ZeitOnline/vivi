@@ -331,7 +331,7 @@ http://xml.zeit.de/online/2007/01/studiVZ
 http://xml.zeit.de/online/2007/01/studiVZ
      Published
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2000 2 3  00:00:00  (job #6)
+     To be published on 2000 2 3  01:00:00  (job #6)
 http://xml.zeit.de/online/2007/01/studiVZ
      Published
 http://xml.zeit.de/online/2007/01/studiVZ
@@ -339,6 +339,13 @@ http://xml.zeit.de/online/2007/01/studiVZ
 http://xml.zeit.de/online/2007/01/studiVZ
      Retracted
 
+The date is actually logged in t he Europe/Belin time zone. Explicitly
+compare this and (preventing normalizer):
+
+>>> entry = list(log.get_log(studivz))[5]
+>>> u'To be published on 2000 2 3  01:00:00  (job #6)' == (
+...    zope.i18n.translate(entry.message))
+True
 
 Date first released
 ===================
@@ -676,6 +683,9 @@ ConflictError: database conflict error
     >>> import lovely.remotetask.interfaces
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
+
+    Also register an tzinfo adapter:
+
 
 
 .. [#cleanup] Clean up
