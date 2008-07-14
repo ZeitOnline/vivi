@@ -220,6 +220,85 @@ And check in:
     ...
 
 
+When an object is locked or cannot be checked out due to other reasons a
+message is send to the user (via flashmessage).
+
+
+Verify the source of "d" before we do anything:
+
+>>> print lxml.etree.tostring(repository['d'].xml, pretty_print=True)
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <references>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <title py:pytype="str">Tease me</title>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+    </references>
+    ...
+  </head>
+  <body/>
+</testtype>
+
+Lock "d" by checking it out:
+
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['d']).checkout()
+
+Check out "c" and modify it. Then check in.
+
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['c']).checkout()
+>>> checked_out.teaserTitle = 'New teaser title'
+>>> c = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+
+"d" has not changed:
+
+>>> print lxml.etree.tostring(repository['d'].xml, pretty_print=True)
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <references>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <title py:pytype="str">Tease me</title>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+    </references>
+    ...
+  </head>
+  <body/>
+</testtype>
+
+The error is filed in the flashmessages:
+
+>>> import zope.i18n
+>>> import z3c.flashmessage.interfaces
+>>> receiver = zope.component.getUtility(
+...     z3c.flashmessage.interfaces.IMessageReceiver)
+>>> message = list(receiver.receive())[0]
+>>> zope.i18n.translate(message.message)
+u'Could not checkout "http://xml.zeit.de/d" for automatic object update.'
+>>> message.type
+'error'
+
+
+Clean up:
+
 >>> zope.app.component.hooks.setSite(old_site)
 >>> zope.security.management.endInteraction()
 

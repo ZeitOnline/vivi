@@ -8,13 +8,16 @@ import lxml.etree
 import zope.interface
 import zope.component
 
+import z3c.flashmessage.interfaces
+
 import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.relation.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
-logger = logging.getLogger(__name__)
+log= logging.getLogger(__name__)
 
 
 @zope.component.adapter(
@@ -34,9 +37,16 @@ def with_checked_out(content, function):
     # XXX should be moved to some central place.
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     if not manager.canCheckout:
+        # XXX test this path!
         # XXX this warning should be displayed to the user ASAP.
-        logger.warning("Could not checkout %s for related update." %
+        log.warning("Could not checkout %s for related update." %
                        content.uniqueId)
+        source = zope.component.getUtility(
+            z3c.flashmessage.interfaces.IMessageSource, name='session')
+        source.send(
+            _('Could not checkout "${id}" for automatic object update.',
+              mapping=dict(id=content.uniqueId)),
+            'error')
         return
     checked_out = manager.checkout(temporary=True)
 
