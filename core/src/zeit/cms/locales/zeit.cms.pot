@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul  9 16:28:06 2008\n"
+"POT-Creation-Date: Mon Jul 14 19:52:32 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -182,7 +182,7 @@ msgstr ""
 
 #: src/zeit/cms/browser/listing.py:197
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:253
+#: src/zeit/workflow/publish.py:280
 msgid "Published"
 msgstr ""
 
@@ -698,6 +698,11 @@ msgstr ""
 msgid "Change global settings"
 msgstr ""
 
+#: src/zeit/cms/relation/corehandlers.py:45
+#. Default: ""
+msgid "Could not checkout \"${id}\" for automatic object update."
+msgstr ""
+
 #: src/zeit/cms/repository/browser/collection_metadata.pt:4
 msgid "${amount} Entries"
 msgstr ""
@@ -1037,7 +1042,7 @@ msgstr ""
 msgid "Show image"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:47
+#: src/zeit/content/gallery/browser/overview.pt:48
 msgid "Save sorting"
 msgstr ""
 
@@ -1436,65 +1441,65 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:31
+#: src/zeit/workflow/interfaces.py:39
 msgid "From"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:32
+#: src/zeit/workflow/interfaces.py:41
 msgid "To"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:33
+#: src/zeit/workflow/interfaces.py:43
 msgid "Publication period"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:34
+#: src/zeit/workflow/interfaces.py:44
 #. Default: "Leave empty for no constraint."
 msgid "workflow-publication-period-description"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:53
+#: src/zeit/workflow/interfaces.py:63
 msgid "status-edited"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:58
+#: src/zeit/workflow/interfaces.py:68
 msgid "status-corrected"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:63
+#: src/zeit/workflow/interfaces.py:73
 msgid "status-refined"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:68
+#: src/zeit/workflow/interfaces.py:78
 msgid "status-images-added"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:73
+#: src/zeit/workflow/interfaces.py:83
 msgid "Urgent"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:74
+#: src/zeit/workflow/interfaces.py:84
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:105
+#: src/zeit/workflow/publish.py:123
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:210
+#: src/zeit/workflow/publish.py:237
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:283
+#: src/zeit/workflow/publish.py:309
 msgid "Retracted"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:64
+#: src/zeit/workflow/publish.py:69
 msgid "Publication scheduled"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:70
+#: src/zeit/workflow/publish.py:75
 msgid "Retracting scheduled"
 msgstr ""
 

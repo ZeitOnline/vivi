@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Jul  9 16:28:06 2008\n"
-"PO-Revision-Date: 2008-07-09 16:45+0100\n"
+"POT-Creation-Date: Mon Jul 14 19:52:32 2008\n"
+"PO-Revision-Date: 2008-07-14 19:53+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -170,7 +170,7 @@ msgstr "Formular"
 
 #: src/zeit/cms/browser/listing.py:197
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:253
+#: src/zeit/workflow/publish.py:280
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -686,6 +686,11 @@ msgstr "WebDAV-Locks verwalten"
 msgid "Change global settings"
 msgstr "Globale Einstellungen ändern"
 
+#. Default: ""
+#: src/zeit/cms/relation/corehandlers.py:45
+msgid "Could not checkout \"${id}\" for automatic object update."
+msgstr "Die Metadaten in »${id}« konnten nicht automatisch aktualisiert werden, weil das Auschecken nicht möglich war."
+
 #: src/zeit/cms/repository/browser/collection_metadata.pt:4
 msgid "${amount} Entries"
 msgstr "${amount} Einträge"
@@ -1025,7 +1030,7 @@ msgstr "Bildergalerie-Eintrag bearbeiten"
 msgid "Show image"
 msgstr "Bild zeigen"
 
-#: src/zeit/content/gallery/browser/overview.pt:47
+#: src/zeit/content/gallery/browser/overview.pt:48
 msgid "Save sorting"
 msgstr "Sortierung speichern"
 
@@ -1424,65 +1429,65 @@ msgstr "»${id}« wird zurückgezogen."
 msgid "Status"
 msgstr "Status"
 
-#: src/zeit/workflow/interfaces.py:31
+#: src/zeit/workflow/interfaces.py:39
 msgid "From"
 msgstr "Von"
 
-#: src/zeit/workflow/interfaces.py:32
+#: src/zeit/workflow/interfaces.py:41
 msgid "To"
 msgstr "Bis"
 
-#: src/zeit/workflow/interfaces.py:33
+#: src/zeit/workflow/interfaces.py:43
 msgid "Publication period"
 msgstr "Veröffentlichungszeitraum"
 
 #. Default: "Leave empty for no constraint."
-#: src/zeit/workflow/interfaces.py:34
+#: src/zeit/workflow/interfaces.py:44
 msgid "workflow-publication-period-description"
 msgstr "Leer für keine Einschränkung. Der Veröffentlichungszeitraum gibt an, wann das Objekt automatisch veröffentlicht und wieder zurückgezogen wird. In diesem Fall muss nur Status gespeichert werden. "
 
-#: src/zeit/workflow/interfaces.py:53
+#: src/zeit/workflow/interfaces.py:63
 msgid "status-edited"
 msgstr "Redigiert"
 
-#: src/zeit/workflow/interfaces.py:58
+#: src/zeit/workflow/interfaces.py:68
 msgid "status-corrected"
 msgstr "Korrigiert"
 
-#: src/zeit/workflow/interfaces.py:63
+#: src/zeit/workflow/interfaces.py:73
 msgid "status-refined"
 msgstr "Veredelt"
 
-#: src/zeit/workflow/interfaces.py:68
+#: src/zeit/workflow/interfaces.py:78
 msgid "status-images-added"
 msgstr "Bilder hinzugefügt (Grafik)"
 
-#: src/zeit/workflow/interfaces.py:73
+#: src/zeit/workflow/interfaces.py:83
 msgid "Urgent"
 msgstr "Eilig"
 
-#: src/zeit/workflow/interfaces.py:74
+#: src/zeit/workflow/interfaces.py:84
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können ohne die anderen Status setzen zu müssen."
 
 #. Default: ""
-#: src/zeit/workflow/publish.py:105
+#: src/zeit/workflow/publish.py:123
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: src/zeit/workflow/publish.py:210
+#: src/zeit/workflow/publish.py:237
 msgid "Could not publish because conditions not satisifed."
 msgstr "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
 
-#: src/zeit/workflow/publish.py:283
+#: src/zeit/workflow/publish.py:309
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
-#: src/zeit/workflow/publish.py:64
+#: src/zeit/workflow/publish.py:69
 msgid "Publication scheduled"
 msgstr "Wird veröffentlicht"
 
-#: src/zeit/workflow/publish.py:70
+#: src/zeit/workflow/publish.py:75
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
