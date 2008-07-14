@@ -156,7 +156,12 @@ class Tree(zope.publisher.browser.BrowserView):
         self.treeState.add(uniqueId)
 
     def collapseNode(self, uniqueId):
-        self.treeState.remove(uniqueId)
+        try:
+            self.treeState.remove(uniqueId)
+        except KeyError:
+            # If unique id is not in the state it is already collapsed. That's
+            # okay
+            pass
 
 
 class TreeExpand(object):

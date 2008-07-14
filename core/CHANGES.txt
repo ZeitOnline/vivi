@@ -12,6 +12,7 @@ zeit.cms changes
   nicht aktualisiert werden konnten.
 - Beim Einchecken wird der Benutzer benachrichtigt, wenn die Metadaten in nicht
   in den Channeln aktualisiert werden konnten.
+- collapseTree liefert keinen sinnlosen KeyError mehr (bug #4308).
 
 
 1.0b6 (2008-07-10)
