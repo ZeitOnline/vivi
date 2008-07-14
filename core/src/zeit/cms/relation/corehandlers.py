@@ -34,11 +34,14 @@ def with_checked_out(content, function, events=True):
     Function makes sure content is checked back in after the function ran.
 
     """
-    # XXX should be moved to some central place.
+    # XXX should be moved to some central place like zeit.cms.checkout.helper
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
-    if not manager.canCheckout:
+    try:
+        checked_out = manager.checkout(temporary=True, event=events)
+    except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
         log.warning("Could not checkout %s for related update." %
                        content.uniqueId)
+        log.exception(e)
         source = zope.component.getUtility(
             z3c.flashmessage.interfaces.IMessageSource, name='session')
         source.send(
@@ -46,7 +49,6 @@ def with_checked_out(content, function, events=True):
               mapping=dict(id=content.uniqueId)),
             'error')
         return
-    checked_out = manager.checkout(temporary=True, event=events)
 
     changed = function(checked_out)
 
