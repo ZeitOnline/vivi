@@ -35,6 +35,7 @@ def with_checked_out(content, function, events=True):
 
     """
     # XXX should be moved to some central place like zeit.cms.checkout.helper
+    __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     try:
         checked_out = manager.checkout(temporary=True, event=events)
@@ -84,6 +85,12 @@ def update_relating_of_checked_out(checked_out):
         zeit.cms.content.interfaces.IXMLRepresentation(related).xml)
 
     if xml_before == xml_after:
+        return False
+
+    # Okay to be really sure this isn't just some xml snafu put both xmls
+    # through an etree again
+    if (lxml.etree.tostring(lxml.etree.fromstring(xml_before)) ==
+        lxml.etree.tostring(lxml.etree.fromstring(xml_after))):
         return False
 
     return True

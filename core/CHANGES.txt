@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Checkout/checkin während des Veröffentlichungsvorgangs funktioniert wieder
   immer (AttributeError: 'BaseResponse' object has no attribute 'getCookie')
+- Sicherstellen, dass das automatische Related-Update aequivalente XMLs auch
+  als gleich ansieht (sonst gibt es einen Recursion-Error beim Checkin).
 
 1.0b7 (2008-07-14)
 ------------------
