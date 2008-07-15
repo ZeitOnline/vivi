@@ -4,6 +4,9 @@ zeit.cms changes
 1.0 (unreleased)
 ----------------
 
+- Checkout/checkin während des Veröffentlichungsvorgangs funktioniert wieder
+  immer (AttributeError: 'BaseResponse' object has no attribute 'getCookie')
+
 1.0b7 (2008-07-14)
 ------------------
 

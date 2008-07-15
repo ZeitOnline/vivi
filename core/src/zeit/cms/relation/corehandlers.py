@@ -44,10 +44,14 @@ def with_checked_out(content, function, events=True):
         log.exception(e)
         source = zope.component.getUtility(
             z3c.flashmessage.interfaces.IMessageSource, name='session')
-        source.send(
-            _('Could not checkout "${id}" for automatic object update.',
-              mapping=dict(id=content.uniqueId)),
-            'error')
+        message = _('Could not checkout "${id}" for automatic object update.',
+                    mapping=dict(id=content.uniqueId))
+        try:
+            source.send(message, 'error')
+        except AttributeError:
+            # This is to avoid:
+            # 'BaseResponse' object has no attribute 'getCookie'
+            pass
         return
 
     changed = function(checked_out)

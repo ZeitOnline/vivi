@@ -297,6 +297,46 @@ u'Could not checkout "http://xml.zeit.de/d" for automatic object update.'
 'error'
 
 
+Make sure the checkout/checkin doesn't break when there is no session or the
+session cannot be obtained. Set a request which confuses zope.session:
+
+>>> zope.security.management.endInteraction()
+>>> import zope.publisher.base
+>>> request = zope.publisher.base.BaseRequest(None, {}, positional=())
+>>> request.setPrincipal(zope.security.testing.Principal(u'hans'))
+>>> zope.security.management.newInteraction(request)
+
+Check out and in again:
+
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['c']).checkout()
+>>> checked_out.teaserTitle = 'Even newer teaser title'
+>>> c = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+
+"d" has again not changed:
+
+>>> print lxml.etree.tostring(repository['d'].xml, pretty_print=True)
+<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <references>
+      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <title py:pytype="str">Tease me</title>
+        <description xsi:nil="true"/>
+        <short>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </short>
+        <homepage>
+          <title xsi:nil="true"/>
+          <text xsi:nil="true"/>
+        </homepage>
+      </reference>
+    </references>
+    ...
+  </head>
+  <body/>
+</testtype>
+
 Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
