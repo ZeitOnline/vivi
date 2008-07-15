@@ -1,7 +1,7 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import lovely.removetask.processor
+import lovely.remotetask.processor
 
 import zeit.cms.generation
 
