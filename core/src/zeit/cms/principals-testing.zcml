@@ -1,28 +1,28 @@
 <configure
-   xmlns="http://namespaces.zope.org/zope"
-   xmlns:meta="http://namespaces.zope.org/meta"
-   i18n_domain="zope">
-  
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zope">
+
   <principal
-      id="zope.mgr"
-      title="Manager"
-      login="zmgr"
-      password="mgrpw" />
+    id="zope.mgr"
+    title="Manager"
+    login="zmgr"
+    password="mgrpw" />
 
   <!-- Bootstrap principal used to make local grant to the principal above -->
   <principal
-      id="zope.globalmgr"
-      title="Manager"
-      login="globalmgr"
-      password="globalmgrpw" />
+    id="zope.globalmgr"
+    title="Manager"
+    login="globalmgr"
+    password="globalmgrpw" />
 
   <grant role="zope.Manager" principal="zope.globalmgr" />
 
   <!-- Principal that tests generally run as -->
   <principal
-      id="zope.user"
-      title="User"
-      login="user"
-      password="userpw" />
+    id="zope.user"
+    title="User"
+    login="user"
+    password="userpw" />
 
 </configure>
