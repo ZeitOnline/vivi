@@ -193,10 +193,6 @@ circular references. Let c relate to b and change something:
 >>> related.related = (b, )
 >>> c.teaserTitle = u'Tease me gently.'
 
-Change something in b w/o sending 
-
->>> connector = zope.component.getUtility(zeit.connector.interfaces.I
-
 And check in:
 
 >>> c = zeit.cms.checkout.interfaces.ICheckinManager(c).checkin()
@@ -205,7 +201,7 @@ And check in:
   ...
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
-        <title py:pytype="str">Tease me</title>
+        <title py:pytype="str">Tease me gently.</title>
         <description xsi:nil="true"/>
         ...
       </reference>
@@ -236,7 +232,7 @@ Verify the source of "d" before we do anything:
   <head>
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
-        <title py:pytype="str">Tease me</title>
+        <title py:pytype="str">Tease me gently.</title>
         <description xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
@@ -272,7 +268,7 @@ Check out "c" and modify it. Then check in.
   <head>
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
-        <title py:pytype="str">Tease me</title>
+        <title py:pytype="str">Tease me gently.</title>
         <description xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
@@ -325,7 +321,7 @@ Check out and in again:
   <head>
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
-        <title py:pytype="str">Tease me</title>
+        <title py:pytype="str">Tease me gently.</title>
         <description xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
