@@ -1,0 +1,92 @@
+Deleting content
+================
+
+Deleting works by clicking on the 'Delete' icon in the context-actions
+menu. The user get's a confirmation screen, on where he explicitly
+confirms deleting the content.
+
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++cms/repository/2007/01')
+>>> 'LS-Personalvertretung' in browser.contents
+True
+>>> article_view_url = (
+...     'http://localhost/++skin++cms/repository/2007/01/'
+...     'LS-Personalvertretung/deletecontent.html')
+>>> browser.open(article_view_url)
+>>> print browser.contents
+<div class="topcontent deleteScreen">
+  <h1>Delete content</h1>
+  <p>
+    <span>
+      Do you really want to delete the object from the folder
+      "<span class="containerName">01</span>"?
+    </span>
+  </p>
+  <p class="DeleteItem">
+    <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    <span>LS-Personalvertretung</span>
+    (<span>http://xml.zeit.de/2007/01/LS-Personalvertretung</span>)
+  </p>
+  <form action="http://localhost/++skin++cms/repository/2007/01/LS-Personalvertretung/deletecontent.html">
+    <p>
+      <input type="submit" value="Delete" name="delete" />
+    </p>
+  </form>
+</div>
+
+
+After deleting the article it is gone:
+
+>>> browser.getControl("Delete").click()
+>>> 'LS-Personalvertretung' in browser.contents
+False
+
+The "Delete" Link references now a javascript driven Lightbox:
+
+>>> browser.getLink("Delete", index=1)
+<Link text='[IMG] Delete'
+    url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/2007/01/@@deletecontent.html')">
+
+The user selects an article and clicks on the delete icon. Deletion of
+content is context dependent, so he might accidently delete a folder. If
+this happens, he is beeing warned in the confirmation dialog:
+
+>>> folder_view_url = (
+...     'http://localhost/++skin++cms/repository/2007/01/'
+...     'deletecontent.html')
+>>> browser.open(folder_view_url)
+>>> print browser.contents
+<div class="topcontent deleteScreen">
+  <h1>Delete content</h1>
+  <p>
+    <span>
+      Do you really want to delete the object from the folder
+      "<span class="containerName">2007</span>"?
+    </span>
+  </p>
+  <p class="DeleteItem">
+    <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IFolder-zmi_icon.png" alt="Folder" width="20" height="20" border="0" />
+    <span>01</span>
+    (<span>http://xml.zeit.de/2007/01</span>)
+  </p>
+  <p class="warning">
+      You're about to delete a folder with content!
+  </p>
+  <form action="http://localhost/++skin++cms/repository/2007/01/deletecontent.html">
+    <p>
+      <input type="submit" value="Delete" name="delete" />
+    </p>
+  </form>
+</div>
+
+
+>>> browser.getControl("Delete").click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/2007'
+>>> browser.open('http://localhost/++skin++cms/repository/2007/01')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 404: Not Found
+

@@ -185,12 +185,17 @@ The xml structure of a and b contain "Tease me" now:
 
 
 We need to make sure that we don't run into an infinte loop when we have
-circular references. Let c relate to b
+circular references. Let c relate to b and change something:
 
 >>> c = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     repository['c']).checkout()
 >>> related = zeit.cms.content.interfaces.IRelatedContent(c)
 >>> related.related = (b, )
+>>> c.teaserTitle = u'Tease me gently.'
+
+Change something in b w/o sending 
+
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.I
 
 And check in:
 
