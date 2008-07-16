@@ -27,6 +27,14 @@ def get_storage_key(key):
     assert isinstance(key, str)
     return key
 
+class StringRef(persistent.Persistent):
+
+    def __init__(self, s):
+        self._str = s
+
+    def open(self, mode):
+        return cStringIO.StringIO(self._str)
+
 
 class ResourceCache(persistent.Persistent):
     """Cache for ressource data."""
@@ -51,7 +59,11 @@ class ResourceCache(persistent.Persistent):
         if current_etag != cached_etag:
             raise KeyError("Object %r is not cached." % unique_id)
         self._update_cache_access(key)
-        return self._make_filelike(self._data[key])
+        value = self._data[key]
+        if isinstance(value, str):
+            logger.warning("Loaded str for %s" % unique_id)
+            raise KeyError(unique_id)
+        return self._make_filelike(value)
 
     def setData(self, unique_id, properties, data):
         key = get_storage_key(unique_id)
@@ -84,7 +96,7 @@ class ResourceCache(persistent.Persistent):
             s = data.read(self.BUFFER_SIZE)
 
         if small:
-            store = target.getvalue()
+            store = StringRef(target.getvalue())
         else:
             blob_file.close()
             store = blob
@@ -96,9 +108,10 @@ class ResourceCache(persistent.Persistent):
         return self._make_filelike(store)
 
     def _make_filelike(self, blob_or_str):
-        if isinstance(blob_or_str, ZODB.blob.Blob):
-            return blob_or_str.open('r')
-        return cStringIO.StringIO(blob_or_str)
+        if isinstance(blob_or_str, str):
+            # Legacy
+            return cStringIO.StringIO(blob_or_str)
+        return blob_or_str.open('r')
 
     def _update_cache_access(self, key):
         last_access = self._last_access_time.get(key, 0)

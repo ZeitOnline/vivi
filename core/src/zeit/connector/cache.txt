@@ -45,11 +45,18 @@ small objects:
 >>> cache.getData('some-id', properties)
 <cStringIO.StringI object at 0x...>
 
-We have data in the cache. Since it's a small object it is stored as a plain
-string:
+We have data in the cache. Since it's a small object it is stored as a
+reference to a plain string:
 
 >>> from zeit.connector.cache import get_storage_key
->>> cache._data[get_storage_key('some-id')]
+>>> cached = cache._data[get_storage_key('some-id')]
+>>> cached
+<zeit.connector.cache.StringRef object at 0x...>
+>>> cached._str
+'datadata/end of line.'
+>>> cached.open('r')
+<cStringIO.StringI object at 0x...>
+>>> cached.open('r').read()
 'datadata/end of line.'
 >>> cache._etags[get_storage_key('some-id')]
 'hurz'
