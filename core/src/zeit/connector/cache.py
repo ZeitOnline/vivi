@@ -192,12 +192,46 @@ class PersistentCache(persistent.Persistent):
         return value
 
 
+class WebDAVPropertyKey(object):
+
+    __slots__ = ('name',)
+    _instances = {}  # class variable
+
+    def __new__(cls, name):
+        instance = cls._instances.get(name)
+        if instance is None:
+            instance = cls._instances[name] = object.__new__(cls)
+        return instance
+
+    def __init__(self, name):
+        self.name = name
+
+    def __getitem__(self, idx):
+        return self.name.__getitem__(idx)
+
+    def __cmp__(self, other):
+        if isinstance(other, WebDAVPropertyKey):
+            return cmp(self.name, other.name)
+        return cmp(self.name, other)
+
+    def __hash__(self):
+        return hash(self.name)
+
+    def __repr__(self):
+        return '<WebDAVPropertyKey %s>' % (self.name,)
+
+    def __reduce__(self):
+        return (WebDAVPropertyKey, (self.name,))
+
+
+zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
+
+
 class PropertyCache(PersistentCache):
     """Property cache."""
 
     zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
 
-    name_namespaces_tuples = {}
     CACHE_VALUE_CLASS = BTrees.family32.OO.BTree
 
     def _mark_deleted(self, value):
@@ -205,12 +239,10 @@ class PropertyCache(PersistentCache):
         value[zeit.connector.interfaces.DeleteProperty] = None
 
     def _simplify(self, old_dict):
-        # Value is a dict mapping (name, namespace) to value. Look it up in
-        # self.name_namespaces_tuples and use the one from there. This is to
-        # have some sort of singleton.
         new_dict = {}
         for key, value in old_dict.items():
-            key = self.name_namespaces_tuples.setdefault(key, key)
+            if not isinstance(key, WebDAVPropertyKey):
+                key = WebDAVPropertyKey(key)
             new_dict[key] = value
         return new_dict
 

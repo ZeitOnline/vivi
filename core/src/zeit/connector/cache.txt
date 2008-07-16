@@ -206,9 +206,9 @@ Test the methods:
 
 >>> cache['id'] = {'foo': 'bar'}
 >>> cache['id']
-{'foo': 'bar'}
+{<WebDAVPropertyKey foo>: 'bar'}
 >>> cache.get('id')
-{'foo': 'bar'}
+{<WebDAVPropertyKey foo>: 'bar'}
 >>> cache.get('foo', "don't have that")
 "don't have that"
 
@@ -260,8 +260,12 @@ key:
 True
 >>> key2_back is key2
 False
->>> key2_back is key
-True
+
+>>> import pprint
+>>> pprint.pprint(zeit.connector.cache.WebDAVPropertyKey._instances)
+{'foo': <WebDAVPropertyKey foo>,
+ ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>}
+
 
 
 Note that internally no dictionaries are stored but BTrees:
