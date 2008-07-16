@@ -8,6 +8,7 @@ zeit.cms changes
   immer (AttributeError: 'BaseResponse' object has no attribute 'getCookie')
 - Sicherstellen, dass das automatische Related-Update aequivalente XMLs auch
   als gleich ansieht (sonst gibt es einen Recursion-Error beim Checkin).
+- Ordner löschen dürfen nur noch Benutzer mit der Rolle "Producer".
 
 1.0b7 (2008-07-14)
 ------------------

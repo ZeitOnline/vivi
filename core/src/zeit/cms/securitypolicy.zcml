@@ -15,6 +15,7 @@
   <role id="zope.Member" title="Site Member" />
 
   <role id="zeit.Editor" title="Editor" />
+  <role id="zeit.Producer" title="Producer" />
   <role id="zeit.Owner" title="Owner" />
 
 
@@ -94,6 +95,12 @@
   <grant
     role="zeit.Editor"
     permission="zeit.workflow.ManageLocks"
+    />
+
+  <!-- Producer grants -->
+  <grant
+    role="zeit.Producer"
+    permission="zeit.DeleteFolder"
     />
 
   <!-- Owner grants -->

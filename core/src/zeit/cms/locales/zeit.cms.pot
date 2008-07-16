@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jul 14 19:52:32 2008\n"
+"POT-Creation-Date: Wed Jul 16 08:49:34 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -667,19 +667,19 @@ msgid "Delete ZEIT content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:30
-msgid "Checkout content"
+msgid "Delete folders"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:35
-msgid "Checkin content"
+msgid "Checkout content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:40
-msgid "Create and modify calendar entries"
+msgid "Checkin content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:45
-msgid "Syndicate content"
+msgid "Create and modify calendar entries"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:5
@@ -687,18 +687,22 @@ msgid "Rename content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:50
-msgid "Publish objects"
+msgid "Syndicate content"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:55
-msgid "Manage WebDAV locks"
+msgid "Publish objects"
 msgstr ""
 
 #: src/zeit/cms/permissions.zcml:60
+msgid "Manage WebDAV locks"
+msgstr ""
+
+#: src/zeit/cms/permissions.zcml:65
 msgid "Change global settings"
 msgstr ""
 
-#: src/zeit/cms/relation/corehandlers.py:45
+#: src/zeit/cms/relation/corehandlers.py:48
 #. Default: ""
 msgid "Could not checkout \"${id}\" for automatic object update."
 msgstr ""
@@ -801,11 +805,11 @@ msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
 
 #: src/zeit/cms/securitypolicy.zcml:12
-msgid "Everybody"
+msgid "All users have this role implicitly"
 msgstr ""
 
 #: src/zeit/cms/securitypolicy.zcml:12
-msgid "All users have this role implicitly"
+msgid "Everybody"
 msgstr ""
 
 #: src/zeit/cms/securitypolicy.zcml:14
@@ -821,6 +825,10 @@ msgid "Editor"
 msgstr ""
 
 #: src/zeit/cms/securitypolicy.zcml:18
+msgid "Producer"
+msgstr ""
+
+#: src/zeit/cms/securitypolicy.zcml:19
 msgid "Owner"
 msgstr ""
 

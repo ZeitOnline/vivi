@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Jul 14 19:52:32 2008\n"
-"PO-Revision-Date: 2008-07-14 19:53+0100\n"
+"POT-Creation-Date: Wed Jul 16 08:49:34 2008\n"
+"PO-Revision-Date: 2008-07-16 08:50+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -655,39 +655,43 @@ msgid "Delete ZEIT content"
 msgstr "ZEIT-Inhalte löschen"
 
 #: src/zeit/cms/permissions.zcml:30
+msgid "Delete folders"
+msgstr "Ordner löschen"
+
+#: src/zeit/cms/permissions.zcml:35
 msgid "Checkout content"
 msgstr "Inhalt auschecken"
 
-#: src/zeit/cms/permissions.zcml:35
+#: src/zeit/cms/permissions.zcml:40
 msgid "Checkin content"
 msgstr "Inhalt einchecken"
 
-#: src/zeit/cms/permissions.zcml:40
+#: src/zeit/cms/permissions.zcml:45
 msgid "Create and modify calendar entries"
 msgstr "Kalendereinträge erstellen und bearbeiten"
-
-#: src/zeit/cms/permissions.zcml:45
-msgid "Syndicate content"
-msgstr "Syndizieren"
 
 #: src/zeit/cms/permissions.zcml:5
 msgid "Rename content"
 msgstr "Inhalt umbenennen"
 
 #: src/zeit/cms/permissions.zcml:50
+msgid "Syndicate content"
+msgstr "Syndizieren"
+
+#: src/zeit/cms/permissions.zcml:55
 msgid "Publish objects"
 msgstr "Veröffentlichen"
 
-#: src/zeit/cms/permissions.zcml:55
+#: src/zeit/cms/permissions.zcml:60
 msgid "Manage WebDAV locks"
 msgstr "WebDAV-Locks verwalten"
 
-#: src/zeit/cms/permissions.zcml:60
+#: src/zeit/cms/permissions.zcml:65
 msgid "Change global settings"
 msgstr "Globale Einstellungen ändern"
 
 #. Default: ""
-#: src/zeit/cms/relation/corehandlers.py:45
+#: src/zeit/cms/relation/corehandlers.py:48
 msgid "Could not checkout \"${id}\" for automatic object update."
 msgstr "Die Metadaten in »${id}« konnten nicht automatisch aktualisiert werden, weil das Auschecken nicht möglich war."
 
@@ -789,12 +793,12 @@ msgid "\"${name}\" is now shown in the navigation tree."
 msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
 
 #: src/zeit/cms/securitypolicy.zcml:12
-msgid "Everybody"
-msgstr "Jeder"
-
-#: src/zeit/cms/securitypolicy.zcml:12
 msgid "All users have this role implicitly"
 msgstr "All users have this role implicitly"
+
+#: src/zeit/cms/securitypolicy.zcml:12
+msgid "Everybody"
+msgstr "Jeder"
 
 #: src/zeit/cms/securitypolicy.zcml:14
 msgid "Site Manager"
@@ -809,6 +813,10 @@ msgid "Editor"
 msgstr "Editor"
 
 #: src/zeit/cms/securitypolicy.zcml:18
+msgid "Producer"
+msgstr "Producer"
+
+#: src/zeit/cms/securitypolicy.zcml:19
 msgid "Owner"
 msgstr "Eigentümer"
 
@@ -1548,8 +1556,6 @@ msgstr "Bearbeiten"
 #~ msgstr "Artikel hinzufügen"
 #~ msgid "Location"
 #~ msgstr "Ort"
-#~ msgid "Price"
-#~ msgstr "Preis"
 #~ msgid "Edit Recension"
 #~ msgstr "Rezensionsinformationen bearbeiten"
 #~ msgid "recension-no-items"

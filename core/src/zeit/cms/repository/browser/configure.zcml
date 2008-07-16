@@ -67,6 +67,7 @@
     />
 
   <!-- Delete view -->
+
   <browser:viewlet
     name="Delete"
     for="zeit.cms.interfaces.ICMSContent"
@@ -75,17 +76,38 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.DeleteContent"
     icon="/@@/zeit.cms/icons/delete.png"
-    lightbox="@@deletecontent.html"
+    lightbox="@@delete.html"
     sort="100"
     />
 
   <browser:page
-    name="deletecontent.html"
+    name="delete.html"
     for="zeit.cms.interfaces.ICMSContent"
     template="delete.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".delete.DeleteContent"
     permission="zeit.DeleteContent"
+    />
+
+  <browser:viewlet
+    name="Delete"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".menu.Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.DeleteFolder"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    sort="100"
+    />
+
+  <browser:page
+    name="delete.html"
+    for="zeit.cms.repository.interfaces.IFolder"
+    template="delete.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".delete.DeleteContent"
+    permission="zeit.DeleteFolder"
     />
 
 

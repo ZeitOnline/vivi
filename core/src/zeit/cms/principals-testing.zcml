@@ -25,4 +25,13 @@
     login="user"
     password="userpw" />
 
+  <!-- A producer -->
+  <principal
+    id="zope.producer"
+    title="Producer"
+    login="producer"
+    password="producerpw" />
+
+  <grant role="zeit.Producer" principal="zope.producer" />
+
 </configure>

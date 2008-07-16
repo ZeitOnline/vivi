@@ -28,6 +28,11 @@
     />
 
   <permission
+    id="zeit.DeleteFolder"
+    title="Delete folders"
+    />
+
+  <permission
     id="zeit.Checkout"
     title="Checkout content"
     />
