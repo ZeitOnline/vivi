@@ -4,8 +4,11 @@
 
 import persistent
 
+import zope.securitypolicy.interfaces
+
 import zope.app.container.btree
 import zope.app.container.contained
+import zope.app.security.settings
 
 import zc.sourcefactory.basic
 
@@ -51,3 +54,33 @@ class Template(zope.app.container.contained.Contained,
 
     xml = None
     title = None
+
+
+class TemplateRoleMap(object):
+
+    zope.component.adapts(zeit.cms.content.interfaces.ITemplate)
+    zope.interface.implements(
+        zope.securitypolicy.interfaces.IRolePermissionMap)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getPermissionsForRole(self, role_id):
+        if role_id == 'zeit.Producer':
+            return [('zope.ManageContent', zope.app.security.settings.Allow)]
+        return []
+
+    def getRolesForPermission(self, permission_id):
+        if permission_id == 'zope.ManageContent':
+            return [('zeit.Producer', zope.app.security.settings.Allow)]
+        return []
+
+    def getSetting(self, permission_id, role_id):
+        if (permission_id == 'zope.ManageContent' and
+            role_id == 'zeit.Producer'):
+            return zope.app.security.settings.Allow
+        return zope.app.security.settings.Unset
+
+    def getRolesAndPermissions(self):
+        return [('zope.ManageContent', 'zeit.Producer',
+                 zope.app.security.settings.Allow)]

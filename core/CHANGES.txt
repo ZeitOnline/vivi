@@ -9,6 +9,7 @@ zeit.cms changes
 - Sicherstellen, dass das automatische Related-Update aequivalente XMLs auch
   als gleich ansieht (sonst gibt es einen Recursion-Error beim Checkin).
 - Ordner löschen dürfen nur noch Benutzer mit der Rolle "Producer".
+- Templates können jetzt mit der Rolle "Producer" bearbeitet werden.
 
 1.0b7 (2008-07-14)
 ------------------

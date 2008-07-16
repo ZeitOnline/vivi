@@ -52,7 +52,7 @@
       />
     <require
       interface="zope.app.container.interfaces.IWriteContainer"
-      permission="zope.ManageApplication"
+      permission="zeit.EditTemplates"
       />
   </class>
 
@@ -63,7 +63,7 @@
       />
     <require
       interface="zope.app.container.interfaces.IWriteContainer"
-      permission="zope.ManageApplication"
+      permission="zeit.EditTemplates"
       />
   </class>
 
@@ -76,13 +76,14 @@
       />
     <require
       set_schema=".interfaces.ITemplate"
-      permission="zope.ManageApplication"
+      permission="zeit.EditTemplates"
       />
   </class>
   <adapter factory=".adapter.webDAVPropertiesFactory"
     for=".interfaces.ITemplate"
     trusted="yes"
     />
+  <adapter factory=".template.TemplateRoleMap" />
 
   <!-- content source -->
   <utility

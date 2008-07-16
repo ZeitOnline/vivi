@@ -9,8 +9,9 @@ Create a testbrowser and open the homepage:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> browser.addHeader('Authorization', 'Basic producer:producerpw')
 >>> browser.open('http://localhost/++skin++cms/' )
+>>> browser.handleErrors = False
 
 Open the template managment ui:
 

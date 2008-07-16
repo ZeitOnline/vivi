@@ -102,6 +102,10 @@
     role="zeit.Producer"
     permission="zeit.DeleteFolder"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.EditTemplates"
+    />
 
   <!-- Owner grants -->
   <grant

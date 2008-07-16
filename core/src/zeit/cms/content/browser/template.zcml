@@ -8,7 +8,7 @@
     name="index.html"
     class=".template.Manager"
     template="template-manager.pt"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     />
 
   <browser:viewlet
@@ -17,7 +17,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
     class=".template.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     sort="100"
     />
 
@@ -26,7 +26,7 @@
     name="index.html"
     class=".template.Listing"
     template="template-listing.pt"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
@@ -34,7 +34,7 @@
     for="zeit.cms.content.interfaces.ITemplateManager"
     name="zeit.cms.content.template.add.html"
     class=".template.Add"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     menu="zeit-add-menu" title="Template"
     />
 
@@ -42,7 +42,7 @@
     for="zeit.cms.content.interfaces.ITemplate"
     name="index.html"
     class=".template.Edit"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     menu="zeit-context-views" title="Edit"
     />
 
@@ -51,7 +51,7 @@
     name="webdav-properties.html"
     class=".template.Properties"
     template="template-properties.pt"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     menu="zeit-context-views" title="Properties"
     />
 
@@ -60,7 +60,7 @@
     action="delete"
     menu="folder-actions"
     title="Delete"
-    permission="zope.ManageApplication"
+    permission="zeit.EditTemplates"
     />
 
   <adapter factory=".template.TemplateWidgetSetup" />

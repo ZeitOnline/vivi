@@ -19,6 +19,7 @@ def test_suite():
         'keyword.txt',
         'lxmlpickle.txt',
         'property.txt',
+        'template.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
         setUp=zeit.cms.testing.setUp))

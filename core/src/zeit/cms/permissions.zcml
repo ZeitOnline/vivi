@@ -67,5 +67,10 @@
     title="Change global settings"
     />
 
+  <permission
+    id="zeit.EditTemplates"
+    title="Edit templates"
+    />
+
 </configure>
 
