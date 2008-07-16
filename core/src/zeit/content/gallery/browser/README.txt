@@ -203,7 +203,7 @@ images were added. Remove the image 03.jpg from the gallery folder:
 
 >>> bookmark = browser.url
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/deletecontent.html')
+...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/delete.html')
 >>> print browser.contents
 <div ...
       Do you really want to delete the object from the folder
