@@ -106,6 +106,10 @@
     role="zeit.Producer"
     permission="zeit.EditTemplates"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.ChangeGlobalSettings"
+    />
 
   <!-- Owner grants -->
   <grant
