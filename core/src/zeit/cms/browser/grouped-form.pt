@@ -37,12 +37,12 @@
         </div>
 
         <div class="field-group"
-          tal:define="groups view/field_groups">
+          tal:define="groups view/widget_groups">
           <tal:group tal:repeat="group groups">
             <fieldset
               tal:condition="group/widgets"
-              tal:attributes="class group/css_class">
-              <legend tal:content="group/title">Kopf</legend>
+              tal:attributes="class group/meta/css_class">
+              <legend tal:content="group/meta/title">Kopf</legend>
               <div tal:define="widgets group/widgets">
                 <metal:macro use-macro="context/@@grouped_form_macros/render_form_widget" />
               </div>

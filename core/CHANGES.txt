@@ -10,6 +10,8 @@ zeit.cms changes
   als gleich ansieht (sonst gibt es einen Recursion-Error beim Checkin).
 - Ordner löschen dürfen nur noch Benutzer mit der Rolle "Producer".
 - Templates können jetzt mit der Rolle "Producer" bearbeitet werden.
+- Es kommen keine Daten mehr aus anderen Threads in den eigenen (via
+  gocept.form>=0.7.5).
 
 1.0b7 (2008-07-14)
 ------------------

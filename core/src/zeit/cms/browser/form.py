@@ -70,11 +70,6 @@ class FormBase(zeit.cms.browser.view.Base):
         return zope.formlib.form.applyChanges(
             object, self.form_fields, data, self.adapters)
 
-    def setUpWidgets(self, ignore_request=False):
-        if self.widget_groups:
-            self._convert_to_fieldgroups()
-        super(FormBase, self).setUpWidgets(ignore_request)
-
     def render(self):
         self._send_message()
         if self.status and not self.errors:
@@ -84,25 +79,6 @@ class FormBase(zeit.cms.browser.view.Base):
                 #self.send_message(self.status)  # XXX
                 return self.request.response.redirect(next_url)
         return super(FormBase, self).render()
-
-    def _convert_to_fieldgroups(self):
-        """Convert old widget_group to gocept.form's field_groups.
-
-        This is there so we don't need to manualle rewrite all the forms. Once
-        all forms have been changed this code can be removed of course.
-
-        """
-        field_groups = []
-
-        for title, field_names, css_class in self.widget_groups:
-            if field_names is REMAINING_FIELDS:
-                group = gocept.form.grouped.RemainingFields(
-                    title, css_class)
-            else:
-                group = gocept.form.grouped.Fields(
-                    title, field_names, css_class)
-            field_groups.append(group)
-        self.field_groups = field_groups
 
     def _send_message(self):
         """Send message from self.status and self.errors via flashmessage."""
