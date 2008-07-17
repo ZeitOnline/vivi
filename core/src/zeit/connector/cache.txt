@@ -51,7 +51,7 @@ reference to a plain string:
 >>> from zeit.connector.cache import get_storage_key
 >>> cached = cache._data[get_storage_key('some-id')]
 >>> cached
-<zeit.connector.cache.StringRef object at 0x...>
+<zeit.connector.cache.SlottedStringRef object at 0x...>
 >>> cached._str
 'datadata/end of line.'
 >>> cached.open('r')

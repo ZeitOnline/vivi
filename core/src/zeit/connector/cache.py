@@ -36,6 +36,12 @@ class StringRef(persistent.Persistent):
         return cStringIO.StringIO(self._str)
 
 
+class SlottedStringRef(StringRef):
+    """A variant of StringRef using slots for less memory consumption."""
+
+    __slots__ = ('_str',)
+
+
 class ResourceCache(persistent.Persistent):
     """Cache for ressource data."""
 
@@ -96,7 +102,7 @@ class ResourceCache(persistent.Persistent):
             s = data.read(self.BUFFER_SIZE)
 
         if small:
-            store = StringRef(target.getvalue())
+            store = SlottedStringRef(target.getvalue())
         else:
             blob_file.close()
             store = blob
