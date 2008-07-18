@@ -33,7 +33,7 @@ class SimpleXMLSourceBase(object):
         url = cms_config[self.config_url]
         return self._get_tree_from_url(url)
 
-    @gocept.cache.method.Memoize(3600, ignore_self=True)
+    @gocept.cache.method.Memoize(600, ignore_self=True)
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
