@@ -13,6 +13,7 @@ zeit.cms changes
 - Es kommen keine Daten mehr aus anderen Threads in den eigenen (via
   gocept.form>=0.7.5).
 - Listing von Links robuster.
+- Die Panels Clipboard und Bearbeitete Dokumente haben die Plaetze getauscht.
 
 1.0b7 (2008-07-14)
 ------------------

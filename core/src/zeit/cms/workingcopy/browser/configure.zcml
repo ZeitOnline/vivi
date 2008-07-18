@@ -10,7 +10,7 @@
   </resourceLibrary>
 
   <browser:viewlet
-    name="20_workingcopy"
+    name="50_workingcopy"
     for="*"
     manager="zeit.cms.browser.interfaces.ISidebar"
     template="sidebar.pt"
