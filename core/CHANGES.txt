@@ -12,6 +12,7 @@ zeit.cms changes
 - Templates können jetzt mit der Rolle "Producer" bearbeitet werden.
 - Es kommen keine Daten mehr aus anderen Threads in den eigenen (via
   gocept.form>=0.7.5).
+- Listing von Links robuster.
 
 1.0b7 (2008-07-14)
 ------------------
