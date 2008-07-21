@@ -31,7 +31,7 @@ Adding the content text works by clicking the `add contents` button:
 >>> browser.getControl(name='form.contents.0..combination_00').value = (
 ...     'Renteninformation')
 >>> browser.getControl(name='form.contents.0..combination_01').value = (
-...    'Nutzen Sie die Renteninformation, um Ihre Versorgungslücke im ')
+...    '<p>Nutzen Sie die Renteninformation, um Ihre Versorgungslücke im</p>')
 
 Finnaly add the infobox:
 
@@ -61,7 +61,7 @@ Let's add another text entry:
 >>> browser.getControl(name='form.contents.1..combination_00').value = (
 ...     'Fehlende Versicherungszeiten')
 >>> browser.getControl(name='form.contents.1..combination_01').value = (
-...     'Pruefen Sie, ob in Ihrer Renteninformation alle ')
+...     '<p>Pruefen Sie, ob in Ihrer Renteninformation alle</p>')
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <?xml ...

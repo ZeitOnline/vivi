@@ -63,6 +63,10 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
     kw.setdefault('checker', checker)
+    kw.setdefault('optionflags', (doctest.REPORT_NDIFF +
+                                  doctest.INTERPRET_FOOTNOTES +
+                                  doctest.NORMALIZE_WHITESPACE +
+                                  doctest.ELLIPSIS))
 
     def tearDown(test):
         zope.app.testing.functional.FunctionalTestSetup().tearDown()
