@@ -79,7 +79,7 @@ Let's add an image to the image folder:
 ...     image.data = test_data
 ...     metadata = zeit.content.image.interfaces.IImageMetadata(image)
 ...     metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
-...     metadata.caption = u'Nice 01 image'
+...     metadata.caption = u'Nice <em>01</em> image'
 ...     repository['2006']['01.jpg'] = image
 ...
 >>> add_image()
@@ -117,13 +117,13 @@ The change is reflected in the xml:
         </block>
         <block name="01.jpg">
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption py:pytype="str">Nice 01 image</caption>
+          <caption>Nice <em>01</em> image</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -153,14 +153,14 @@ None
 The caption is pre-filled with the caption of the image:
 
 >>> entry.caption
-u'Nice 01 image'
+u'Nice <em>01</em> image'
 
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
 >>> entry.text = lxml.objectify.E.text(
 ...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
->>> entry.caption = u'Gallery caption'
+>>> entry.caption = u'Gallery<br/>caption'
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
@@ -181,13 +181,13 @@ xml:
         </block>
         <block name="01.jpg">
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption py:pytype="str">Nice 01 image</caption>
+          <caption>Nice <em>01</em> image</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -222,13 +222,13 @@ When we assign the entry the change will be reflected:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption py:pytype="str">Gallery caption</caption>
+          <caption>Gallery<br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -268,13 +268,13 @@ well:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption py:pytype="str">Gallery caption</caption>
+          <caption>Gallery<br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -294,7 +294,7 @@ u'Der Wecker klingelt'
 >>> entry.text['p']
 u'Seit zwei Uhr in der Fr\xc3\xbch'
 >>> entry.caption
-u'Gallery caption'
+u'Gallery<br/>caption'
 
 
 Entry layout
@@ -338,13 +338,13 @@ True
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption py:pytype="str">Gallery caption</caption>
+          <caption>Gallery<br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -384,13 +384,13 @@ u'image-only'
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption py:pytype="str">Gallery caption</caption>
+          <caption>Gallery<br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -431,13 +431,13 @@ This is of course reflected int he XML:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption py:pytype="str">Gallery caption</caption>
+          <caption>Gallery<br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -556,13 +556,13 @@ Note that his has *not* changed the xml so far:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption py:pytype="str">Gallery caption</caption>
+          <caption>Gallery<br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu py:pytype="str">Nice 01 image</bu>
+            <bu>Nice <em>01</em> image</bu>
             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>

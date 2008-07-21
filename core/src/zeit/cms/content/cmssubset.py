@@ -7,8 +7,9 @@ import sprout.silvasubset
 
 MARKUP_BASE = ('i', 'em')
 MARKUP_LINK = ('a', )
+MARKUP_BR = ('br',)
 
-MARKUP_HEADING = MARKUP_BASE + MARKUP_LINK
+MARKUP_HEADING = MARKUP_BASE + MARKUP_LINK + MARKUP_BR
 
 # Replace left hand side tags in user input by right hand side:
 MARKUP_TEXT_TRANSLATION = {
@@ -46,6 +47,9 @@ def create_cms_subset():
     subset.registerElement(
         sprout.htmlsubset.Element(
             'a', ['href'], ['target'], MARKUP_BASE, AHandler))
+    subset.registerElement(
+        sprout.htmlsubset.Element('br', [], [], [],
+                                  sprout.silvasubset.BrHandler))
     # 'block' tag is used to produce fake surrounding tag, real one will
     # be something else. Need to register allowed elements for it
     subset.registerElement(

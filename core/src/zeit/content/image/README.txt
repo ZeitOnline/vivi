@@ -66,7 +66,8 @@ Reference the image via XML:
   <bu xsi:nil="true"/>
 </image>
 
-Set the copyright and alignment:
+
+Set metadata:
 
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(group)
@@ -74,6 +75,7 @@ Set the copyright and alignment:
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
 >>> metadata.alignment = u'right'
+>>> metadata.caption = u'Cap>tion<br/><a href="#">foo</a>'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
@@ -84,11 +86,31 @@ Set the copyright and alignment:
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        align="right"
        base-id="http://xml.zeit.de/image-group" type="jpg">
-  <bu xsi:nil="true"/>
+  <bu>Cap&gt;tion<br/><a href="#">foo</a></bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
+Make sure we don't die when there is an invalid XML snippet stored:
+
+>>> import zeit.connector.interfaces
+>>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(group)
+>>> properties[('caption', 'http://namespaces.zeit.de/CMS/image')] = u'5 < 7'
+>>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True)
+<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       align="right"
+       base-id="http://xml.zeit.de/image-group" type="jpg">
+  <bu>5 &lt; 7</bu>
+  <copyright py:pytype="str">Zeit online</copyright>
+  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+</image>
 
 Set the link:
 
@@ -106,7 +128,7 @@ Set the link:
        align="right"
        href="http://www.asdf.com"
        base-id="http://xml.zeit.de/image-group" type="jpg">
-  <bu xsi:nil="true"/>
+  <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -134,7 +156,7 @@ used:
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
     type="gif">
-  <bu xsi:nil="true"/>
+  <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -156,7 +178,7 @@ one is used:
     align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group" type="jpg">
-  <bu xsi:nil="true"/>
+  <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>

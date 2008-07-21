@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import copy
 import xml.sax.saxutils
 
 import lxml.etree
@@ -115,8 +116,10 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
             entry.layout = unicode(entry.layout)
 
         gallery_caption = node.find('caption')
-        if gallery_caption:
-            entry.caption = unicode(gallery_caption)
+        if gallery_caption is not None:
+            entry.caption = gallery_caption.text + u''.join(
+                lxml.etree.tostring(copy.copy(node), encoding=unicode)
+                for node in gallery_caption.iterchildren())
 
         return zope.location.location.located(entry, self, key)
 
@@ -294,7 +297,8 @@ class EntryXMLRepresentation(object):
             self.context.text)
 
         if self.context.caption:
-            node['caption'] = self.context.caption
+            node.append(lxml.objectify.fromstring(
+                '<caption>%s</caption>' % (self.context.caption,)))
 
         node['image'] = zope.component.getAdapter(
             self.context.image,
