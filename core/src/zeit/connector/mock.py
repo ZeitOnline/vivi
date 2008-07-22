@@ -44,6 +44,7 @@ class Connector(object):
         self._paths = {}
         self._deleted = set()
         self._properties = {}
+        self._content_types = {}
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
@@ -104,7 +105,8 @@ class Connector(object):
         else:
             name = ''
         return zeit.connector.resource.Resource(
-            id, name, type, data, properties)
+            id, name, type, data, properties,
+            contentType=self._content_types.get(id, ''))
 
     def __setitem__(self, id, object):
         if id in self._deleted:
@@ -119,6 +121,7 @@ class Connector(object):
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         self._set_properties(id, resource.properties)
+        self._content_types[id] = resource.contentType
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
@@ -182,7 +185,7 @@ class Connector(object):
         print  "Searching: ", expression._collect()._render()
 
         unique_ids = [
-            u'http://xml.zeit.de/online/2007/01/Somalia', 
+            u'http://xml.zeit.de/online/2007/01/Somalia',
             u'http://xml.zeit.de/online/2007/01/Saarland',
             u'http://xml.zeit.de/2006/52/Stimmts']
 

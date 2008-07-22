@@ -8,6 +8,7 @@ CHANGES
 - Use a Singleton class for webdav property keys.
 - Body-Cache always returns an object which can be passed beyond the
   transaction boundary now.
+- Mock stores Content-Type of resources now.
 
 1.0 (2008-07-14)
 ----------------
