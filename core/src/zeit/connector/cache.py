@@ -4,6 +4,7 @@
 
 import cStringIO
 import logging
+import tempfile
 import time
 
 import persistent
@@ -114,10 +115,28 @@ class ResourceCache(persistent.Persistent):
         return self._make_filelike(store)
 
     def _make_filelike(self, blob_or_str):
-        if isinstance(blob_or_str, str):
+        if isinstance(blob_or_str, ZODB.blob.Blob):
+            try:
+                commited_name = blob_or_str.committed()
+            except ZODB.blob.BlobError:
+                # In the rather rare case that the blob was created in this
+                # transaction, we have to copy the data to a temporary file.
+                data = blob_or_str.open('r')
+                tmp = tempfile.NamedTemporaryFile()
+                s = data.read(self.BUFFER_SIZE)
+                while s:
+                    tmp.write(s)
+                    s = data.read(self.BUFFER_SIZE)
+                tmp.seek(0, 0)
+                data_file = open(tmp.name, 'rb')
+            else:
+                data_file = open(commited_name, 'rb')
+        elif isinstance(blob_or_str, str):
             # Legacy
-            return cStringIO.StringIO(blob_or_str)
-        return blob_or_str.open('r')
+            data_file = cStringIO.StringIO(blob_or_str)
+        else:
+            data_file = blob_or_str.open('r')
+        return data_file
 
     def _update_cache_access(self, key):
         last_access = self._last_access_time.get(key, 0)

@@ -6,6 +6,8 @@ CHANGES
 
 - Body-Cache doesn't store strings directly but via a persistent object.
 - Use a Singleton class for webdav property keys.
+- Body-Cache always returns an object which can be passed beyond the
+  transaction boundary now.
 
 1.0 (2008-07-14)
 ----------------

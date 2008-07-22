@@ -18,14 +18,28 @@ Get the connector:
 <zeit.connector.zopeconnector.ZopeConnector object at 0x...>
 
 
+Get a folder:
+
 >>> connector['http://xml.zeit.de/testing']
 <zeit.connector.resource.CachedResource object at 0x...>
+
+Get a file-like resource:
+
 >>> res = connector['http://xml.zeit.de/index']
 >>> res
 <zeit.connector.resource.CachedResource object at 0x...>
 >>> res.data
 <open file '...', mode 'rb' at 0x...>
 
+After committing we'll still get a file back:
+
+>>> import transaction
+>>> transaction.commit()
+>>> res = connector['http://xml.zeit.de/index']
+>>> res.data
+<open file '...', mode 'rb' at 0x...>
+
+The directory listing is empty:
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing'))
 []

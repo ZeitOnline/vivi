@@ -175,16 +175,31 @@ Create data which is large than that:
 >>> file_handle.read() == large_data
 True
 
-We can get the data also via `getData` now which also returns a StringIO for
-small objects:
+We can get the data also via `getData` which returns an open file handle:
 
+>>> cache.getData('some-id', properties).__class__
+<type 'file'>
 >>> cache.getData('some-id', properties)
 <open file '...', mode 'rb' at 0x...>
 
 Internally a blob is created in this case:
 
->>> cache._data[get_storage_key('some-id')]
+>>> blob = cache._data[get_storage_key('some-id')]
+>>> blob
 <ZODB.blob.Blob object at 0x...>
+
+When the transaction is commited we'll get a file directly from the blob
+storage. Make the blob commited:
+
+>>> blob._p_blob_committed = blob._p_blob_uncommitted
+>>> blob._p_blob_uncommitted = None
+
+We get the commited data now:
+
+>>> cache.getData('some-id', properties)
+<open file '...', mode 'rb' at 0x...>
+>>> cache.getData('some-id', properties).read() == large_data
+True
 
 
 Property Cache
