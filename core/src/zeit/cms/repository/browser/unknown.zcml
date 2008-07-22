@@ -30,7 +30,6 @@
     action="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
-    icon="metadata-view"
     />
 
   <browser:page

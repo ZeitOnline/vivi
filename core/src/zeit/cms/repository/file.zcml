@@ -1,0 +1,34 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".file.repositoryfile_factory" name="file" />
+  <adapter factory=".file.localfile_factory" />
+  <adapter factory=".file.resource_factory" />
+
+  <class class=".file.RepositoryFile">
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View"
+      />
+    <require
+      attributes="open openDetached mimeType size"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".file.LocalFile">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View"
+      />
+    <require
+      attributes="openDetached mimeType size"
+      permission="zope.View"
+      />
+    <require
+      attributes="open"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>

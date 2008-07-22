@@ -1,0 +1,103 @@
+File views
+==========
+
+Set the file as default type:
+
+>>> import zope.app.appsetup.product
+>>> cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+>>> cms_config['default-type'] = 'file'
+
+
+Open the default metadata view of a file[#browser]_:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006'
+...              '/DSC00109_2.JPG/@@view.html')
+>>> print browser.contents
+<?xml ...
+ <title>... View file </title>
+ ...
+ <div><dl>
+  <dt>Filename</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
+  </dd>
+  <dt>Size</dt>
+  <dd>
+    882409 bytes
+  </dd>
+</dl>
+...
+
+Check the file out. The edit view also contains the metadata:
+
+>>> browser.getLink('Checkout').click()
+>>> print browser.contents
+<?xml ...
+ <title>... Edit file </title>
+ ...
+ <div><dl>
+  <dt>Filename</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
+  </dd>
+  <dt>Size</dt>
+  <dd>
+    882409 bytes
+  </dd>
+</dl>
+...
+
+Let's upload a new file:
+
+>>> import StringIO
+>>> ctrl = browser.getControl('Upload new file')
+>>> ctrl.filename = 'new.txt'
+>>> ctrl.value = StringIO.StringIO('Mary had a little lamb.')
+>>> browser.handleErrors = False
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+ <title>... Edit file </title>
+ ...Your changes have been saved...
+ ...
+ <div><dl>
+  <dt>Filename</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
+  </dd>
+  <dt>Size</dt>
+  <dd>
+    23 bytes
+  </dd>
+</dl>
+...
+
+When we check in the file is updated in the repository:
+
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<?xml ...
+ <title>... View file </title>
+ ...
+ <div><dl>
+  <dt>Filename</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
+  </dd>
+  <dt>Size</dt>
+  <dd>
+    23 bytes
+  </dd>
+</dl>
+...
+
+
+
+
+
+.. [#browser]
+
+    >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+    >>> browser = ExtendedTestBrowser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+

@@ -1,0 +1,17 @@
+<tal:block i18n:domain="zeit.cms">
+  <div tal:content="structure context/@@file-details"/>
+
+  <form method="post" enctype="multipart/form-data"
+    tal:attributes="action view/@@absolute_url">
+    <div class="widget">
+      <label for="form.upload" i18n:translate="">
+        Upload new file
+      </label>
+      <input type="file" name="form.upload" id="form.upload" />
+    </div>
+    <input type="submit" name="form.actions.apply" value="Apply"
+      i18n:attributes="value" />
+
+  </form>
+
+</tal:block>

@@ -1,0 +1,56 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="file-details"
+    template="file_details.pt"
+    permission="zope.View"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".file.FileView"
+    template="file_view.pt"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".file.EditForm"
+    template="file_edit.pt"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+
+
+  <adapter factory=".file.FileListRepresentation" />
+
+
+  <browser:icon
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/file.png"
+    />
+
+</configure>

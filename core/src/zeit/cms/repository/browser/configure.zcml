@@ -34,6 +34,7 @@
 
   <include file="unknown.zcml" />
   <include file="folder.zcml" />
+  <include file="file.zcml" />
 
   <!-- entry page -->
   <browser:page

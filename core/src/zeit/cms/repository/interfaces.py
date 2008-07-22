@@ -3,6 +3,7 @@
 # $Id$
 
 import zope.interface
+import zope.file.interfaces
 
 import zeit.cms.interfaces
 
@@ -64,6 +65,11 @@ class IUnknownResource(zeit.cms.interfaces.ICMSContent):
     """
 
     type = zope.interface.Attribute("Raw type info got from connector.")
+
+
+class IFile(zeit.cms.interfaces.ICMSContent,
+            zope.file.interfaces.IFile):
+    """A file like object in the CMS."""
 
 
 class ICollection(zope.app.container.interfaces.IContainer):

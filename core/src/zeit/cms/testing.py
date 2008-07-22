@@ -5,6 +5,7 @@
 import re
 import os
 
+import zope.file.testing
 import zope.testing.renormalizing
 from zope.testing import doctest
 
@@ -75,7 +76,7 @@ def FunctionalDocFileSuite(*paths, **kw):
         connector._reset()
     kw['tearDown'] = tearDown
 
-    test = zope.app.testing.functional.FunctionalDocFileSuite(
+    test = zope.file.testing.FunctionalBlobDocFileSuite(
         *paths, **kw)
     test.layer = layer
 

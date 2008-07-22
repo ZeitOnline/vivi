@@ -13,6 +13,8 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'delete.txt',
+        'file.txt',
         'rename.txt',
-        'tree.txt'))
+        'tree.txt',
+    ))
     return suite

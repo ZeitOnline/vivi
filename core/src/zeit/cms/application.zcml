@@ -14,6 +14,8 @@
   <include package="zope.viewlet" />
   <include package="zope.contentprovider" />
   <include package="zope.session" />
+  <include package="zope.mimetype" file="meta.zcml" />
+  <include package="zope.mimetype" />
 
   <include package="zope.app.securitypolicy" file="meta.zcml"/>
   <include package="zope.app.securitypolicy"/>
@@ -32,7 +34,6 @@
   <include package="zope.app.onlinehelp"/>
   <include package="zope.app.apidoc" file="meta.zcml"/>
   <include package="zope.app.apidoc"/>
-
 
   <include package="zc.resourcelibrary" file="meta.zcml"/>
   <include package="zc.resourcelibrary" />

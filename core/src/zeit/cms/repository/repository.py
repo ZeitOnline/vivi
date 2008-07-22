@@ -10,13 +10,13 @@ import transaction
 import gocept.cache.property
 
 import zope.annotation.interfaces
+import zope.app.appsetup.product
+import zope.app.container.contained
 import zope.cachedescriptors.method
 import zope.component
 import zope.component.interfaces
 import zope.interface
 import zope.securitypolicy.interfaces
-
-import zope.app.container.contained
 
 import zeit.connector.interfaces
 
@@ -248,14 +248,19 @@ def cmscontentFactory(context):
 
     """
     def adapter(type):
-        return zope.component.getAdapter(
+        return zope.component.queryAdapter(
             context, zeit.cms.interfaces.ICMSContent, type)
-    try:
-        content = adapter(context.type)
-    except zope.component.interfaces.ComponentLookupError:
-        content = adapter('unknown')
 
-    content.uniqueId = context.id
+    content = adapter(context.type)
+    if content is None:
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        default_type = cms_config.get('default-type', 'unknown')
+        content = adapter(default_type)
+
+    if content is not None:
+        content.uniqueId = context.id
+
     return content
 
 
