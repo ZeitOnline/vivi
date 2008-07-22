@@ -61,5 +61,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="metadata_preview"
+    template="file_metadata.pt"
+    permission="zope.View"
+    />
 
 </configure>

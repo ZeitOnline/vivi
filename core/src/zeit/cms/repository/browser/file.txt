@@ -30,6 +30,7 @@ Open the default metadata view of a file[#browser]_:
 </dl>
 ...
 
+
 Download the file:
 
 >>> bookmark = browser.url
@@ -85,7 +86,6 @@ Let's upload a new file:
 >>> import StringIO
 >>> browser.getControl('Upload new file').add_file(
 ...     StringIO.StringIO('Mary had a little lamb.'), 'text/plain', 'new.txt')
->>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <?xml ...
@@ -155,6 +155,25 @@ Content-Type: text/plain
 >>> browser.contents
 'Mary had a little lamb.'
 
+
+The metadata preview also shows the file details:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006'
+...              '/DSC00109_2.JPG/@@metadata_preview')
+>>> print browser.contents
+ <div...
+    <dl>
+  <dt>Filename</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
+  </dd>
+  <dt>Content type</dt>
+  <dd>text/plain</dd>
+  <dt>Size</dt>
+  <dd>
+    23 bytes
+  </dd>
+  ...
 
 
 .. [#browser]
