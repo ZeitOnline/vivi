@@ -25,20 +25,13 @@ class UnknownResource(zope.app.container.contained.Contained):
     zope.interface.implements(zeit.cms.repository.interfaces.IUnknownResource,
                               zeit.cms.content.interfaces.ITextContent)
 
+    uniqueId = None
+
     def __init__(self, data, type_info=None):
         if not isinstance(data, unicode):
             raise TypeError('data must be unicode.')
         self.data = data
         self.type = type_info
-
-        # provide suitable defaults for year and volume and online
-        now = datetime.datetime.now()
-        self.year = now.year
-        self.volume = int(now.strftime('%W'))
-        self.ressort = 'online'
-
-        # we don't have a unique id initially:
-        self.uniqueId = None
 
 
 class PersistentUnknownResource(UnknownResource,
