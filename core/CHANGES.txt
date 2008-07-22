@@ -16,6 +16,7 @@ zeit.cms changes
 - Die Panels Clipboard und Bearbeitete Dokumente haben die Plaetze getauscht.
 - WYSIWYG-Editor bei der Infobox (bug #4364).
 - <a href> und <br/> in der BU (bug #4366).
+- Sinnvolles Metadata-Preview bei Bildergallerien.
 
 1.0b7 (2008-07-14)
 ------------------

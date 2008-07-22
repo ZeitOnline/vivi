@@ -290,6 +290,28 @@ We now have a view tab:
     <title> Auf den Spuren der Elfen – View gallery metadata </title>
     ...
 
+There is also a metdata preview showing the images:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/island'
+...     '/@@metadata_preview')
+>>> print browser.contents
+<div ...
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+    </div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+    </div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+    </div>
+    <div class="image-group-image-preview">
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+    </div>
+    ...
+
+
 
 Browsing location
 =================
