@@ -21,6 +21,8 @@ Open the default metadata view of a file[#browser]_:
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
+  <dt>Content type</dt>
+  <dd></dd>
   <dt>Size</dt>
   <dd>
     882409 bytes
@@ -28,8 +30,23 @@ Open the default metadata view of a file[#browser]_:
 </dl>
 ...
 
+Download the file:
+
+>>> bookmark = browser.url
+>>> browser.getLink('DSC00109_2').click()
+>>> print browser.headers
+Status: 200 Ok
+Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Length: 882409
+Content-Type: application/octet-stream
+...
+>>> browser.contents
+'\xff\xd8\xff\xe1\x0c\xdaExif...'
+
+
 Check the file out. The edit view also contains the metadata:
 
+>>> browser.open(bookmark)
 >>> browser.getLink('Checkout').click()
 >>> print browser.contents
 <?xml ...
@@ -40,6 +57,8 @@ Check the file out. The edit view also contains the metadata:
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
+  <dt>Content type</dt>
+  <dd></dd>
   <dt>Size</dt>
   <dd>
     882409 bytes
@@ -47,12 +66,25 @@ Check the file out. The edit view also contains the metadata:
 </dl>
 ...
 
+We can also download the file here:
+
+>>> bookmark = browser.url
+>>> browser.getLink('DSC00109_2').click()
+>>> print browser.headers
+Status: 200 Ok
+Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Length: 882409
+Content-Type: application/octet-stream
+...
+>>> browser.contents
+'\xff\xd8\xff\xe1\x0c\xdaExif...'
+
 Let's upload a new file:
 
+>>> browser.open(bookmark)
 >>> import StringIO
->>> ctrl = browser.getControl('Upload new file')
->>> ctrl.filename = 'new.txt'
->>> ctrl.value = StringIO.StringIO('Mary had a little lamb.')
+>>> browser.getControl('Upload new file').add_file(
+...     StringIO.StringIO('Mary had a little lamb.'), 'text/plain', 'new.txt')
 >>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
@@ -65,6 +97,8 @@ Let's upload a new file:
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
+  <dt>Content type</dt>
+  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     23 bytes
@@ -72,8 +106,23 @@ Let's upload a new file:
 </dl>
 ...
 
+We can download the new file now:
+
+>>> bookmark = browser.url
+>>> browser.getLink('DSC00109_2').click()
+>>> print browser.headers
+Status: 200 Ok
+Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Length: 23
+Content-Type: text/plain
+...
+>>> browser.contents
+'Mary had a little lamb.'
+
+
 When we check in the file is updated in the repository:
 
+>>> browser.open(bookmark)
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
 <?xml ...
@@ -84,6 +133,8 @@ When we check in the file is updated in the repository:
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
+  <dt>Content type</dt>
+  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     23 bytes
@@ -91,7 +142,18 @@ When we check in the file is updated in the repository:
 </dl>
 ...
 
+We can still download the new file:
 
+>>> bookmark = browser.url
+>>> browser.getLink('DSC00109_2').click()
+>>> print browser.headers
+Status: 200 Ok
+Content-Disposition: attachment; filename="DSC00109_2.JPG"
+Content-Length: 23
+Content-Type: text/plain
+...
+>>> browser.contents
+'Mary had a little lamb.'
 
 
 

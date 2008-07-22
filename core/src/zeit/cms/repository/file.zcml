@@ -6,11 +6,7 @@
 
   <class class=".file.RepositoryFile">
     <require
-      interface="zeit.cms.interfaces.ICMSContent"
-      permission="zope.View"
-      />
-    <require
-      attributes="open openDetached mimeType size"
+      interface=".interfaces.IFile"
       permission="zope.View"
       />
   </class>
@@ -22,8 +18,12 @@
       permission="zope.View"
       />
     <require
-      attributes="openDetached mimeType size"
+      attributes="openDetached mimeType size parameters"
       permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IFile"
+      permission="zeit.EditContent"
       />
     <require
       attributes="open"

@@ -20,10 +20,11 @@ class RepositoryFile(zope.app.container.contained.Contained):
 
     zope.interface.implements(zeit.cms.repository.interfaces.IFile)
 
-    def __init__(self, uniqueId):
+    def __init__(self, uniqueId, mimeType):
         super(RepositoryFile, self).__init__()
         self.uniqueId = uniqueId
         self.parameters = {}
+        self.mimeType = mimeType
 
     def open(self, mode='r'):
         if mode != 'r':
@@ -40,13 +41,6 @@ class RepositoryFile(zope.app.container.contained.Contained):
         return f.tell()
 
     @property
-    def mimeType(self):
-        getter = zope.component.getUtility(
-            zope.mimetype.interfaces.IMimeTypeGetter)
-        data = self.open().read(100)
-        return getter(name=self.__name__, data=data)
-
-    @property
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
@@ -54,7 +48,7 @@ class RepositoryFile(zope.app.container.contained.Contained):
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def repositoryfile_factory(context):
-    return RepositoryFile(context.id)
+    return RepositoryFile(context.id, context.contentType)
 
 
 class LocalFile(persistent.Persistent, RepositoryFile):
@@ -65,8 +59,8 @@ class LocalFile(persistent.Persistent, RepositoryFile):
     local_data = None
     BLOCK_SIZE = 10240
 
-    def __init__(self, uniqueId):
-        super(LocalFile, self).__init__(uniqueId)
+    def __init__(self, uniqueId, mimeType):
+        super(LocalFile, self).__init__(uniqueId, mimeType)
 
     def open(self, mode='r'):
         if mode not in ('r', 'w'):
@@ -83,7 +77,7 @@ class LocalFile(persistent.Persistent, RepositoryFile):
 @zope.component.adapter(RepositoryFile)
 @zope.interface.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
 def localfile_factory(context):
-    f = LocalFile(context.uniqueId)
+    f = LocalFile(context.uniqueId, context.mimeType)
     f.__name__ = context.__name__
     return f
 
@@ -94,4 +88,5 @@ def resource_factory(context):
     return zeit.cms.connector.Resource(
         context.uniqueId, context.__name__, 'file',
         zope.security.proxy.removeSecurityProxy(context.open('r')),
+        contentType=context.mimeType,
         properties=zeit.cms.interfaces.IWebDAVProperties(context))

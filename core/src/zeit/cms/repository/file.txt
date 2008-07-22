@@ -22,7 +22,7 @@ required:
 
 >>> import zeit.cms.repository.file
 >>> f = zeit.cms.repository.file.RepositoryFile(
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG', 'image/jpeg')
 >>> f
 <zeit.cms.repository.file.RepositoryFile object at 0x...>
 
@@ -56,17 +56,10 @@ Traceback (most recent call last):
     ...
 ValueError: w
 
+The mime type is available via the ``mimeType`` attribute
 
-The mime type can be derived from the file name:
-
->>> f.mimeType is None
-True
->>> f.__name__ = 'DSC00109_2.JPG'
 >>> f.mimeType
 'image/jpeg'
-
-
-XXX test the mime type may be derived from the content.
 
 
 LocalFile
@@ -76,7 +69,7 @@ The LocalFile actually stores data.
 
 
 >>> local = zeit.cms.repository.file.LocalFile(
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG', 'image/jpeg')
 >>> local
 <zeit.cms.repository.file.LocalFile object at 0x...>
 
@@ -104,10 +97,6 @@ So far we have no local copy:
 
 >>> local.local_data is None
 True
-
-The mime type can be derived from the file name:
-
->>> local.__name__ = 'DSC00109_2.JPG'
 >>> local.mimeType
 'image/jpeg'
 
@@ -116,6 +105,7 @@ The LocalFile can be opened for writing:
 >>> f_write = local.open('w')
 >>> f_write.write('New data')
 >>> f_write.close()
+>>> local.mimeType = 'text/plain'
 
 The file has stored the new data now:
 
@@ -148,6 +138,8 @@ when specified accordingly :
 <zeit.cms.repository.file.RepositoryFile object at 0x...>
 >>> f.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
+>>> f.mimeType
+''
 
 When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 
@@ -163,6 +155,7 @@ When we change some data ...
 >>> f_write = local.open('w')
 >>> f_write.write('new data')
 >>> f_write.close()
+>>> local.mimeType = 'text/plain'
 
 ... and adapt to IRepositoryContent we'll have the file updated in the
 repository:
@@ -172,6 +165,8 @@ repository:
 <zeit.cms.repository.file.RepositoryFile object at 0x...>
 >>> repository_file.open().read()
 'new data'
+>>> repository_file.mimeType
+'text/plain'
 
 
 >>> zope.app.component.hooks.setSite(old_site)

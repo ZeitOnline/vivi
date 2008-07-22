@@ -23,6 +23,7 @@ class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     author = title = subtitle = byline = ressort = volume = page = year = \
             searchableText = None
 
+
 class FileView(object):
 
     title = _('View file')
@@ -37,12 +38,13 @@ class EditForm(zeit.cms.browser.view.Base):
     def update(self):
         if 'form.actions.apply' not in self.request.form:
             return
-        read = self.request.form['form.upload'].read
+        upload = self.request.form['form.upload']
         target = zope.security.proxy.removeSecurityProxy(
             self.context.open('w'))
-        s = read(self.BUFFER_SIZE)
+        s = upload.read(self.BUFFER_SIZE)
         while s:
             target.write(s)
-            s = read(self.BUFFER_SIZE)
+            s = upload.read(self.BUFFER_SIZE)
         target.close()
+        self.context.mimeType = upload.headers['content-type']
         self.send_message(_('Your changes have been saved.'))

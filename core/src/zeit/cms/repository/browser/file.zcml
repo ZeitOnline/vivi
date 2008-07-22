@@ -53,4 +53,13 @@
     file="resources/file.png"
     />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class="zope.file.download.Download"
+    permission="zope.View"
+    />
+
+
 </configure>

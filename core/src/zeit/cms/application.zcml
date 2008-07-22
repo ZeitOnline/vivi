@@ -16,6 +16,7 @@
   <include package="zope.session" />
   <include package="zope.mimetype" file="meta.zcml" />
   <include package="zope.mimetype" />
+  <include package="zope.file" />
 
   <include package="zope.app.securitypolicy" file="meta.zcml"/>
   <include package="zope.app.securitypolicy"/>
