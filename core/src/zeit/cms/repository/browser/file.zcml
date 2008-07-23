@@ -48,8 +48,8 @@
     for="zeit.cms.repository.interfaces.IFile"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zmi_icon"
-    width="20"
-    height="20"
+    width="18"
+    height="18"
     file="resources/file.png"
     />
 
