@@ -31,7 +31,7 @@ The type change is a lightbox:
 We can select which type we want to 
 
 >>> browser.getControl(name='newtype').displayOptions
-['channel', 'channel_cp', 'collection', 'unknown']
+['channel', 'channel_cp', 'collection', 'file', 'unknown']
 
 Just clicking "change" w/o selecting anything displays the form again:
 
