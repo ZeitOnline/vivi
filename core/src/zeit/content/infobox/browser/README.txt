@@ -2,19 +2,12 @@
 Infobox
 =======
 
-Create a testbrowser first:
-
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
-
-
-
-Lets create an infobox:
+Lets create an infobox[#browser]_:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Infobox']
+>>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 We are now at the add form. Set the filename:
@@ -76,6 +69,14 @@ Let's check it in:
 <?xml ...
     <title> Altersvorsorge – View infobox </title>
     ...
+      <td class="label">
+        <label for="form.contents.0..combination_01">
+          <span>Text</span>
+        </label>
+      </td>
+  <td class="field">
+    <div class="widget">&lt;p&gt;Nutzen Sie die Renteninformation, um Ihre Versorgungslücke im&lt;/p&gt;
+    ...
 
 
 Make sure there is a metadata preview:
@@ -100,3 +101,10 @@ Make sure an infobox has a default view:
 <?xml ...
     <title> Altersvorsorge – View infobox </title>
     ...
+
+
+.. [#browser] Create a testbrowser first:
+
+    >>> from zope.testbrowser.testing import Browser
+    >>> browser = Browser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')

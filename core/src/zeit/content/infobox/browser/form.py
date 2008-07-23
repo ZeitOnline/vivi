@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+import copy
+
 import gocept.form.grouped
 import zc.form.browser.combinationwidget
 import zope.app.appsetup.interfaces
@@ -21,11 +23,9 @@ import zeit.content.infobox.infobox
 
 class FormBase(object):
 
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.infobox.interfaces.IInfobox) +
-        zope.formlib.form.FormFields(
-            zeit.cms.interfaces.ICMSContent))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.infobox.interfaces.IInfobox,
+        zeit.cms.interfaces.ICMSContent)
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -35,6 +35,22 @@ class FormBase(object):
         gocept.form.grouped.RemainingFields(
             _('Head'),
             css_class='column-right'))
+
+    for_display = False
+
+    def __init__(self, context, request):
+        super(FormBase, self).__init__(context, request)
+
+        if not self.for_display:
+            contents = copy.copy(self.form_fields['contents'])
+            contents.custom_widget = (
+                lambda context, request: (
+                    zope.app.form.browser.TupleSequenceWidget(
+                        context,
+                        zeit.content.infobox.interfaces.IInfobox['contents'],
+                        request, subwidget=ContentWidget)))
+            self.form_fields = self.form_fields.omit('contents') + (
+                zope.formlib.form.FormFields(contents))
 
 
 class ContentWidget(zc.form.browser.combinationwidget.CombinationWidget):
@@ -61,13 +77,11 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
 
     factory = zeit.content.infobox.infobox.Infobox
     title = _('Add infobox')
-    #form_fields['contents'].custom_widget = ContentWidget
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit infobox')
-    form_fields = FormBase.form_fields.omit('__name__')
     field_groups = (
         gocept.form.grouped.Fields(
             _('Texts'),
@@ -75,16 +89,11 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
             css_class='full-width wide-widgets'),
     )
 
-    form_fields['contents'].custom_widget = lambda context, request: (
-        zope.app.form.browser.TupleSequenceWidget(
-            context, zeit.content.infobox.interfaces.IInfobox['contents'],
-            request, subwidget=ContentWidget))
-
-
 
 class Display(FormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('View infobox')
+    for_display = True
 
 
 @zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
