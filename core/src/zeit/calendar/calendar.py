@@ -31,7 +31,7 @@ class Calendar(zope.app.container.btree.BTreeContainer):
             yield self[event_id]
 
     def haveEvents(self, date):
-        """Return if there are events occuring on `date`."""
+        """Return whether there are events occuring on `date`."""
         return bool(self._date_index.get(date))
 
     def __setitem__(self, key, value):
