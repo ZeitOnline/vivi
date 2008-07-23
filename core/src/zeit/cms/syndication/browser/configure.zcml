@@ -45,12 +45,13 @@
     menu="zeit-context-views" title="Sort"
     />
 
-  <browser:page
-    name="view.html"
+  <gocept:pagelet
     for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zope.View"
-    template="feed_view.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
     class=".feed.FeedView"
+    template="feed_view.pt"
+    permission="zope.View"
     menu="zeit-context-views" title="View"
     />
 
