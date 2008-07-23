@@ -143,13 +143,22 @@
     />
 
 
-
   <!-- Skin, Templates and widgets --> 
+
   <include file="skin.zcml" />
   <include file="widget.zcml" />
 
   <!-- Zeit form layout -->
+
   <adapter factory=".sourceedit.form_template" name="sourceedit_form"/> 
+
+  <browser:page
+    for="*"
+    layer=".interfaces.ICMSLayer"
+    name="form_macros"
+    template="grouped-form-macros.pt"
+    permission="zope.Public"
+    />
 
   <!-- Sidebar -->  
 

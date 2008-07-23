@@ -30,12 +30,11 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <gocept:pagelet
+  <browser:page
     for="zeit.cms.repository.interfaces.IFile"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.html"
     class=".file.EditForm"
-    template="file_edit.pt"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit"
     />

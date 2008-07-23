@@ -8,6 +8,9 @@ Set the file as default type:
 >>> cms_config['default-type'] = 'file'
 
 
+Viewing, downloading and changing files
++++++++++++++++++++++++++++++++++++++++
+
 Open the default metadata view of a file[#browser]_:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006'
@@ -53,7 +56,7 @@ Check the file out. The edit view also contains the metadata:
 <?xml ...
  <title>... Edit file </title>
  ...
- <div><dl>
+ <div class=...><dl>
   <dt>Filename</dt>
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
@@ -92,7 +95,7 @@ Let's upload a new file:
  <title>... Edit file </title>
  ...Your changes have been saved...
  ...
- <div><dl>
+ <div ...><dl>
   <dt>Filename</dt>
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
@@ -174,6 +177,11 @@ The metadata preview also shows the file details:
     23 bytes
   </dd>
   ...
+
+Adding files
+++++++++++++
+
+Files are added like 
 
 
 .. [#browser]

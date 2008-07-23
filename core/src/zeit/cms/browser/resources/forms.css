@@ -331,6 +331,11 @@ textarea#form\.caption {
   height: 38em;
 }
 
+/* file form */
+
+.file-details {
+  float: right;
+}
 
 /* 
  * tablefilter 
