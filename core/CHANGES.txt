@@ -17,6 +17,7 @@ zeit.cms changes
 - WYSIWYG-Editor bei der Infobox (bug #4364).
 - <a href> und <br/> in der BU (bug #4366).
 - Sinnvolles Metadata-Preview bei Bildergallerien.
+- Neuer Inhaltstyp: Datei
 
 1.0b7 (2008-07-14)
 ------------------

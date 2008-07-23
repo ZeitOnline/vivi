@@ -38,6 +38,10 @@ class FileView(object):
 
 class IFileEditSchema(zope.interface.Interface):
 
+    __name__ = zope.schema.TextLine(
+        title=_('File name'),
+        required=False)
+
     blob = zope.schema.Object(
         zope.interface.Interface,
         title=_('Upload new file'))
@@ -59,27 +63,50 @@ class BlobWidget(zope.app.form.browser.FileWidget):
             else:
                 return self.context.missing_value
 
+class FormBase(object):
 
-class EditForm(zeit.cms.browser.form.FormBase,
-               gocept.form.grouped.Form):
-
-    title = _('Edit file')
     form_fields = zope.formlib.form.FormFields(IFileEditSchema)
     form_fields['blob'].custom_widget = BlobWidget
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        os.path.join(os.path.dirname(__file__), 'file_edit.pt'))
 
     BUFFER_SIZE = 10240
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_apply(self, action, data):
-        upload = data['blob']
+    def update_file(self, file, data):
         target = zope.security.proxy.removeSecurityProxy(
-            self.context.open('w'))
-        s = upload.read(self.BUFFER_SIZE)
+            file.open('w'))
+        s = data.read(self.BUFFER_SIZE)
         while s:
             target.write(s)
-            s = upload.read(self.BUFFER_SIZE)
+            s = data.read(self.BUFFER_SIZE)
         target.close()
-        self.context.mimeType = upload.headers['content-type']
+        file.mimeType = data.headers['content-type']
+
+
+class AddForm(FormBase,
+              zeit.cms.browser.form.AddForm):
+
+    title = _('Add file')
+
+    def create(self, data):
+        file = zeit.cms.repository.file.LocalFile()
+        self.update_file(file, data['blob'])
+        name = data.get('__name__')
+        if not name:
+            name = getattr(data['blob'], 'filename', '')
+        if name:
+            file.__name__ = name
+        return file
+
+
+class EditForm(FormBase,
+               zeit.cms.browser.form.FormBase,
+               gocept.form.grouped.Form):
+
+    form_fields = FormBase.form_fields.omit('__name__')
+    title = _('Edit file')
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        os.path.join(os.path.dirname(__file__), 'file_edit.pt'))
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_apply(self, action, data):
+        self.update_file(self.context, data['blob'])
         self.send_message(_('Your changes have been saved.'))

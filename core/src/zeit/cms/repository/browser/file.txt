@@ -20,7 +20,7 @@ Open the default metadata view of a file[#browser]_:
  <title>... View file </title>
  ...
  <div><dl>
-  <dt>Filename</dt>
+  <dt>File name</dt>
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
@@ -57,7 +57,7 @@ Check the file out. The edit view also contains the metadata:
  <title>... Edit file </title>
  ...
  <div class=...><dl>
-  <dt>Filename</dt>
+  <dt>File name</dt>
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
@@ -89,6 +89,7 @@ Let's upload a new file:
 >>> import StringIO
 >>> browser.getControl('Upload new file').add_file(
 ...     StringIO.StringIO('Mary had a little lamb.'), 'text/plain', 'new.txt')
+>>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <?xml ...
@@ -96,7 +97,7 @@ Let's upload a new file:
  ...Your changes have been saved...
  ...
  <div ...><dl>
-  <dt>Filename</dt>
+  <dt>File name</dt>
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
@@ -132,7 +133,7 @@ When we check in the file is updated in the repository:
  <title>... View file </title>
  ...
  <div><dl>
-  <dt>Filename</dt>
+  <dt>File name</dt>
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
@@ -166,7 +167,7 @@ The metadata preview also shows the file details:
 >>> print browser.contents
  <div...
     <dl>
-  <dt>Filename</dt>
+  <dt>File name</dt>
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
@@ -181,7 +182,94 @@ The metadata preview also shows the file details:
 Adding files
 ++++++++++++
 
-Files are added like 
+Files are added like other types:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['File']
+>>> browser.open(menu.value[0])
+>>> print browser.contents
+<?xml ...
+ <title>... Add file </title>
+ ...
+
+We can upload a file w/o setting a file name:
+
+>>> browser.getControl('Upload new file').add_file(
+...     StringIO.StringIO('Mary had a giant ogre.'), 'text/plain', 'ogre.txt')
+>>> browser.getControl('Add').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/ogre.txt/@@edit.html'
+
+After adding we're at the edit form:
+
+>>> print browser.contents
+<?xml ...
+ <title>... Edit file </title>
+ ...
+ <div class=...><dl>
+  <dt>File name</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/workingcopy/zope.user/ogre.txt">ogre.txt</a>
+  </dd>
+  <dt>Content type</dt>
+  <dd>text/plain</dd>
+  <dt>Size</dt>
+  <dd>
+    22 bytes
+  </dd>
+</dl>
+...
+
+We can download the file:
+
+>>> bookmark = browser.url
+>>> browser.getLink('ogre.txt').click()
+>>> print browser.headers
+Status: 200 Ok
+Content-Disposition: attachment; filename="ogre.txt"
+Content-Length: 22
+Content-Type: text/plain
+...
+>>> browser.contents
+'Mary had a giant ogre.'
+
+Check it in:
+
+>>> browser.open(bookmark)
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<?xml ...
+ <title>... View file </title>
+ ...
+ <div class=...><dl>
+  <dt>File name</dt>
+  <dd>
+    <a href="http://localhost/++skin++cms/repository/2006/ogre.txt">ogre.txt</a>
+  </dd>
+  <dt>Content type</dt>
+  <dd>text/plain</dd>
+  <dt>Size</dt>
+  <dd>
+    22 bytes
+  </dd>
+</dl>
+...
+
+
+When adding a file it is possible to explicitly set the file name:
+
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['File']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('Upload new file').add_file(
+...     StringIO.StringIO('Mary had a medium pig.'), 'text/plain', 'pig.txt')
+>>> browser.getControl('File name').value = 'medium-pig.txt'
+>>> browser.getControl('Add').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/medium-pig.txt/@@edit.html'
 
 
 .. [#browser]

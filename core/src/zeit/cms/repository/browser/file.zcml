@@ -1,7 +1,8 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:gocept="http://namespaces.gocept.com/zcml">
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFile"
@@ -66,6 +67,14 @@
     name="metadata_preview"
     template="file_metadata.pt"
     permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.cms.repository.file.Add"
+    permission="zeit.AddContent"
+    class=".file.AddForm"
+    menu="zeit-add-menu" title="File"
     />
 
 </configure>

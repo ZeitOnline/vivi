@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Jul 16 08:49:34 2008\n"
-"PO-Revision-Date: 2008-07-16 08:50+0100\n"
+"POT-Creation-Date: Wed Jul 23 15:32:20 2008\n"
+"PO-Revision-Date: 2008-07-23 15:34+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,8 @@ msgid "Edit event"
 msgstr "Termin bearbeiten"
 
 #: src/zeit/calendar/browser/event.py:70
-#: src/zeit/cms/browser/form.py:238
+#: src/zeit/cms/browser/form.py:213
+#: src/zeit/cms/repository/browser/file.py:109
 msgid "Apply"
 msgstr "Speichern"
 
@@ -98,20 +99,20 @@ msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
 msgid "context sensitive actions"
 msgstr "context sensitive actions"
 
-#: src/zeit/cms/browser/configure.zcml:188
-#: src/zeit/cms/browser/configure.zcml:203
+#: src/zeit/cms/browser/configure.zcml:197
+#: src/zeit/cms/browser/configure.zcml:212
 msgid "Source"
 msgstr "Quelltext"
 
-#: src/zeit/cms/browser/configure.zcml:278
+#: src/zeit/cms/browser/configure.zcml:287
 msgid "Zeit CMS User Preferences"
 msgstr "Benutzereinstellungen"
 
-#: src/zeit/cms/browser/configure.zcml:332
+#: src/zeit/cms/browser/configure.zcml:341
 msgid "Live"
 msgstr "Live"
 
-#: src/zeit/cms/browser/configure.zcml:341
+#: src/zeit/cms/browser/configure.zcml:350
 msgid "Development"
 msgstr "Relaunch"
 
@@ -123,15 +124,16 @@ msgstr "context sensitive views"
 msgid "folder specific actions"
 msgstr "folder specific actions"
 
-#: src/zeit/cms/browser/form.py:146
+#: src/zeit/cms/browser/form.py:121
 msgid "Add"
 msgstr "Hinzufügen …"
 
-#: src/zeit/cms/browser/form.py:168
+#: src/zeit/cms/browser/form.py:143
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/zeit/cms/browser/form.py:193
+#: src/zeit/cms/browser/form.py:168
+#: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:107
 #: src/zeit/content/gallery/browser/configure.zcml:107
@@ -139,13 +141,14 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:235
+#: src/zeit/cms/browser/form.py:210
 msgid "No changes"
 msgstr "Keine Änderungen"
 
-#: src/zeit/cms/browser/form.py:246
+#: src/zeit/cms/browser/form.py:221
 #: src/zeit/cms/repository/browser/unknown.zcml:26
 #: src/zeit/cms/repository/browser/folder.zcml:17
+#: src/zeit/cms/repository/browser/file.zcml:24
 #: src/zeit/cms/syndication/browser/configure.zcml:48
 #: src/zeit/content/image/browser/configure.zcml:33
 #: src/zeit/content/image/browser/configure.zcml:176
@@ -153,7 +156,7 @@ msgid "View"
 msgstr "Anzeigen"
 
 #: src/zeit/cms/browser/globalmenuitem.pt:3
-#: src/zeit/cms/browser/grouped-form.pt:26
+#: src/zeit/cms/browser/grouped-form-macros.pt:24
 #: src/zeit/cms/browser/lightbox.pt:3
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
@@ -195,8 +198,10 @@ msgstr "Autoren"
 
 #: src/zeit/cms/browser/listing.py:285
 #: src/zeit/cms/interfaces.py:48
+#: src/zeit/cms/repository/browser/file.py:42
 #: src/zeit/content/image/browser/imagegroup.py:69
 #: src/zeit/search/interfaces.py:16
+#: src/zeit/cms/repository/browser/file_details.pt:2
 msgid "File name"
 msgstr "Dateiname"
 
@@ -363,15 +368,15 @@ msgid "Navigation"
 msgstr "Navigation"
 
 #: src/zeit/cms/content/browser/form.py:44
-#: src/zeit/content/infobox/browser/form.py:34
+#: src/zeit/content/infobox/browser/form.py:36
 #: src/zeit/content/portraitbox/browser/form.py:31
 msgid "Head"
 msgstr "Kopf"
 
 #: src/zeit/cms/content/browser/form.py:48
 #: src/zeit/content/image/browser/form.py:32
-#: src/zeit/content/infobox/browser/form.py:30
-#: src/zeit/content/infobox/browser/form.py:50
+#: src/zeit/content/infobox/browser/form.py:32
+#: src/zeit/content/infobox/browser/form.py:87
 msgid "Texts"
 msgstr "Texte"
 
@@ -690,6 +695,10 @@ msgstr "WebDAV-Locks verwalten"
 msgid "Change global settings"
 msgstr "Globale Einstellungen ändern"
 
+#: src/zeit/cms/permissions.zcml:70
+msgid "Edit templates"
+msgstr "Vorlage bearbeiten"
+
 #. Default: ""
 #: src/zeit/cms/relation/corehandlers.py:48
 msgid "Could not checkout \"${id}\" for automatic object update."
@@ -723,6 +732,46 @@ msgstr "Inhalt löschen"
 #: src/zeit/cms/repository/browser/delete.pt:9
 msgid "delete_content_text"
 msgstr "Möchten Sie das folgende Objekt aus dem Ordner »${container-title}« wirklich löschen?"
+
+#: src/zeit/cms/repository/browser/file.py:105
+msgid "Edit file"
+msgstr "Datei bearbeiten"
+
+#: src/zeit/cms/repository/browser/file.py:112
+msgid "Your changes have been saved."
+msgstr "Ihre Änderungen wurden gespeichert."
+
+#: src/zeit/cms/repository/browser/file.py:35
+msgid "View file"
+msgstr "Datei anzeigen"
+
+#: src/zeit/cms/repository/browser/file.py:47
+msgid "Upload new file"
+msgstr "Neue Datei hochladen"
+
+#: src/zeit/cms/repository/browser/file.py:59
+msgid "Form input is not a file object"
+msgstr "Form input is not a file object"
+
+#: src/zeit/cms/repository/browser/file.py:87
+msgid "Add file"
+msgstr "Datei hinzufügen"
+
+#: src/zeit/cms/repository/browser/file.zcml:72
+msgid "File"
+msgstr "Datei"
+
+#: src/zeit/cms/repository/browser/file_details.pt:10
+msgid "Content type"
+msgstr "Content-Type"
+
+#: src/zeit/cms/repository/browser/file_details.pt:12
+msgid "Size"
+msgstr "Größe"
+
+#: src/zeit/cms/repository/browser/file_details.pt:14
+msgid "${size} bytes"
+msgstr "${size} Byte"
 
 #: src/zeit/cms/repository/browser/folder.py:17
 msgid "Add folder"
@@ -902,7 +951,7 @@ msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel 
 
 #: src/zeit/cms/syndication/browser/manager.py:111
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:323
+#: src/zeit/cms/browser/configure.zcml:332
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -1059,7 +1108,7 @@ msgid "Folder containing images to display in the gallery."
 msgstr "Ordner, der die Bilder enthält, die in der Bildergalerie angezeigt werden sollen."
 
 #: src/zeit/content/gallery/interfaces.py:84
-#: src/zeit/content/infobox/interfaces.py:24
+#: src/zeit/content/infobox/interfaces.py:23
 #: src/zeit/content/portraitbox/interfaces.py:21
 #: src/zeit/wysiwyg/interfaces.py:15
 msgid "Text"
@@ -1224,15 +1273,15 @@ msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 msgid "Alignment"
 msgstr "Ausrichtiung"
 
-#: src/zeit/content/infobox/browser/form.py:41
+#: src/zeit/content/infobox/browser/form.py:79
 msgid "Add infobox"
 msgstr "Infobox hinzufügen"
 
-#: src/zeit/content/infobox/browser/form.py:46
+#: src/zeit/content/infobox/browser/form.py:84
 msgid "Edit infobox"
 msgstr "Infobox bearbeiten"
 
-#: src/zeit/content/infobox/browser/form.py:58
+#: src/zeit/content/infobox/browser/form.py:95
 msgid "View infobox"
 msgstr "Infobox anzeigen"
 

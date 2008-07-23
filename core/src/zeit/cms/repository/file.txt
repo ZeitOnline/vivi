@@ -120,6 +120,29 @@ We have a local blob now:
 <ZODB.blob.Blob object at 0x...>
 
 
+Local files can also be created w/o an existing file in the repository:
+
+>>> local = zeit.cms.repository.file.LocalFile()
+
+A freshly created file cannot be opened for reading:
+
+>>> local.open('r')
+Traceback (most recent call last):
+    ...
+ValueError: Cannot open for reading, no data available.
+
+Writing works as usual:
+
+>>> f_write = local.open('w')
+>>> f_write.write(
+...     'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen')
+>>> f_write.close()
+>>> local.open('r').read()
+'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen'
+>>> local.mimeType
+''
+
+
 Integration
 +++++++++++
 

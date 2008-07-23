@@ -59,15 +59,21 @@ class LocalFile(persistent.Persistent, RepositoryFile):
     local_data = None
     BLOCK_SIZE = 10240
 
-    def __init__(self, uniqueId, mimeType):
+    def __init__(self, uniqueId=None, mimeType=''):
         super(LocalFile, self).__init__(uniqueId, mimeType)
 
     def open(self, mode='r'):
         if mode not in ('r', 'w'):
             raise ValueError(mode)
+
+        if (not self.uniqueId
+            and self.local_data is None
+            and mode == 'r'):
+            raise ValueError("Cannot open for reading, no data available.")
+
         if self.local_data is None:
-            data = super(LocalFile, self).open()
             if mode == 'r':
+                data = super(LocalFile, self).open()
                 return data
             self.local_data = ZODB.blob.Blob()
 
