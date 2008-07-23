@@ -26,7 +26,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -181,7 +181,11 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def entries(self):
         __traceback_info__ = (self.uniqueId, )
-        return self.xml.container
+        try:
+            return self.xml['container']
+        except AttributeError, e:
+            log.exception(e)
+            raise RuntimeError("Invalid channel XML format.")
 
     def _remove_by_id(self, unique_id):
         for entry in self.iterentries():

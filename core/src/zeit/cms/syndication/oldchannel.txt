@@ -13,7 +13,7 @@ Resource which we inject directly to the connector and then load from the
 repository[#functionaltest]_
 
 >>> import os.path
->>> xml = file(os.path.join(os.path.dirname(__file__), 'testdata',
+>>> xml = open(os.path.join(os.path.dirname(__file__), 'testdata',
 ...            'bodycontainer.xml'))
 >>> import zeit.connector.resource
 >>> resource = zeit.connector.resource.Resource(
@@ -104,6 +104,25 @@ Make sure a can access to old channels generally is possible[#needsinteraction]_
 >>> zope.security.canAccess(channel, 'uniqueId')
 True
 
+
+When we create an new-style channel with old-style data, a RuntimeError is
+raised:
+
+>>> xml = open(os.path.join(os.path.dirname(__file__), 'testdata',
+...            'bodycontainer.xml'))
+>>> import zeit.connector.resource
+>>> resource = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/bodycont-broken',
+...     'bodcont',
+...     'channel',
+...     xml)
+
+>>> connector.add(resource)
+>>> channel = repository.getContent(resource.id)
+>>> list(channel.keys())
+Traceback (most recent call last):
+    ...
+RuntimeError: Invalid channel XML format.
 
 
 Clean up:
