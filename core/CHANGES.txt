@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.1 (unreleased)
+1.1 (2008-07-24)
 ----------------
 
 - Body-Cache doesn't store strings directly but via a persistent object.
