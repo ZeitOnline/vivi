@@ -10,7 +10,7 @@ import re
 import sys
 import time
 
-import iso8601
+import zc.iso8601.parse
 import gocept.lxml.interfaces
 import pytz
 
@@ -241,8 +241,8 @@ class DatetimeProperty(object):
         if not value:
             return None
         try:
-            return iso8601.parse_date(value)
-        except iso8601.ParseError:
+            return zc.iso8601.parse.datetimetz(value)
+        except ValueError:
             pass
         try:
             # Uff. Try the "Thu, 13 Mar 2008 13:48:37 GMT" format

@@ -25,7 +25,7 @@ setup(
         'gocept.mochikit>=1.3.2',
         'gocept.pagelet',
         'guppy',
-        'iso8601>=0.1.2',
+        'zc.iso8601',
         'lovely.remotetask',
         'lxml>=2.0.2',
         'python-cjson',

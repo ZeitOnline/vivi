@@ -18,6 +18,7 @@ zeit.cms changes
 - <a href> und <br/> in der BU (bug #4366).
 - Sinnvolles Metadata-Preview bei Bildergallerien.
 - Neuer Inhaltstyp: Datei
+- Verbesserter Parser für das ISO8601-Datumsformat.
 
 1.0b7 (2008-07-14)
 ------------------
