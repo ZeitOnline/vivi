@@ -120,7 +120,12 @@ Verify the source of the feed:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/gocept.link">
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+      href="http://xml.zeit.de/online/2007/01/gocept.link"
+      ns0:href="http://gocept.com">
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">gocept teaser</title>
       <text xsi:nil="true"/>

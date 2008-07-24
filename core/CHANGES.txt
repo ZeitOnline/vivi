@@ -19,6 +19,8 @@ zeit.cms changes
 - Sinnvolles Metadata-Preview bei Bildergallerien.
 - Neuer Inhaltstyp: Datei
 - Verbesserter Parser für das ISO8601-Datumsformat.
+- Links fügen beim Syndizieren ihr Ziel in den Channel ein (als Attribut
+  ``{http://namespaces.zeit.de/CMS/link}href``)
 
 1.0b7 (2008-07-14)
 ------------------

@@ -9,6 +9,7 @@ import zope.interface
 import zeit.cms.content.adapter
 import zeit.cms.content.metadata
 import zeit.cms.content.property
+import zeit.cms.syndication.interfaces
 
 import zeit.content.link.interfaces
 
@@ -32,3 +33,19 @@ resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
     'link')
 resourceFactory = zope.component.adapter(
     zeit.content.link.interfaces.ILink)(resourceFactory)
+
+
+class FeedMetadataUpdater(object):
+    """Add the expire/publication time to feed entry."""
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+
+    def update_entry(self, entry, content):
+        if not zeit.content.link.interfaces.ILink.providedBy(content):
+            return
+
+        url = content.url
+        if not url:
+            url = ''
+        entry.set('{http://namespaces.zeit.de/CMS/link}href', url)
