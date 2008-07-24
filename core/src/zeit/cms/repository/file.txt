@@ -36,8 +36,8 @@ True
 
 The file has a size:
 
->>> f.size
-882409L
+>>> int(f.size)
+882409
 
 We can get the data via the ``open`` method:
 
@@ -81,8 +81,8 @@ The LocalFile also provides the IFile interface:
 True
 
 
->>> local.size
-882409L
+>>> int(local.size)
+882409
 
 We can get the data via the ``open`` method:
 
@@ -111,8 +111,8 @@ The file has stored the new data now:
 
 >>> local.open().read()
 'New data'
->>> local.size
-8L
+>>> int(local.size)
+8
 
 We have a local blob now:
 
