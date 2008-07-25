@@ -63,10 +63,10 @@ defaults:
 
 Now, fill the form and add the CP:
 
->>> browser.getControl(name='form.year').value = '2007'
->>> browser.getControl(name='form.volume').value = '2'
+>>> browser.getControl('Year').value = ''
+>>> browser.getControl('Volume').value = ''
 >>> browser.getControl(name='form.__name__').value = 'index'
->>> browser.getControl(name='form.title').value = 'Politik'
+>>> browser.getControl('Title').value = 'Politik'
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl('Comments allowed').selected = True
@@ -79,13 +79,20 @@ and we're looking at the metadata screen (i.e. edit form):
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/index/@@edit.html'
 
->>> browser.getControl(name='form.year').value
-'2007'
->>> browser.getControl(name='form.volume').value
-'2'
->>> browser.getControl(name='form.title').value
+Year and volume are not required:
+
+>>> browser.getControl('Year').value
+''
+>>> browser.getControl('Volume').value
+''
+>>> browser.getControl('Title').value
 'Politik'
 
+Set a year and a volume:
+
+>>> browser.getControl('Year').value = '2007'
+>>> browser.getControl('Volume').value = '2'
+>>> browser.getControl('Apply').click()
 
 Make sure there is the edit metadata tab:
 
@@ -199,13 +206,13 @@ page:
 >>> print browser.getControl(name='form.xml').value
 <centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">2</attribute>
   </head>
   <body>
     <title>Wirtschaft</title>

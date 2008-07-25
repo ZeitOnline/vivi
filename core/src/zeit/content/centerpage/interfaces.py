@@ -1,8 +1,8 @@
-# vim:fileencoding=utf-8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Centerpage interfaces."""
 
+import copy
 import zope.schema
 
 import zeit.cms.interfaces
@@ -14,6 +14,13 @@ import zeit.xmleditor.interfaces
 
 class ICenterPageMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Cennter page metadata."""
+
+    year = copy.copy(zeit.cms.content.interfaces.ICommonMetadata['year'])
+    year.required = False
+
+    volume = copy.copy(zeit.cms.content.interfaces.ICommonMetadata['volume'])
+    volume.required = False
+
 
 class ICenterPage(ICenterPageMetadata,
                   zeit.cms.content.interfaces.IXMLContent):

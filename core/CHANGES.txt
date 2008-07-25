@@ -22,6 +22,7 @@ zeit.cms changes
 - Links fügen beim Syndizieren ihr Ziel in den Channel ein (als Attribut
   ``{http://namespaces.zeit.de/CMS/link}href``), bug #4407.
 - "Kommentare erlaubt" jetzt bei den Standardmetadaten (bug #4385).
+- Bei der Center-Page ist Ausgabe und Jahr kein Pflichtfeld mehr (bug #4408).
 
 1.0b7 (2008-07-14)
 ------------------
