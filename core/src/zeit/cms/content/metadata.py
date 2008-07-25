@@ -31,6 +31,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'author',
         use_default=True)
 
+    commentsAllowed = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
+
     keywords = zeit.cms.content.keyword.KeywordsProperty()
 
     title = zeit.cms.content.property.Structure(

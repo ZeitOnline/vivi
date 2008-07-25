@@ -158,6 +158,10 @@ class ICommonMetadata(zope.interface.Interface):
             "Should this article be listed in the daily newsletter?"),
         default=False)
 
+    commentsAllowed = zope.schema.Bool(
+        title=_("Comments allowed"),
+        default=True)
+
 
 class IDAVPropertyConverter(zope.interface.Interface):
     """Parse a unicode string from a DAV property to a value and vice versa."""

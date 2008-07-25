@@ -21,6 +21,7 @@ zeit.cms changes
 - Verbesserter Parser für das ISO8601-Datumsformat.
 - Links fügen beim Syndizieren ihr Ziel in den Channel ein (als Attribut
   ``{http://namespaces.zeit.de/CMS/link}href``), bug #4407.
+- "Kommentare erlaubt" jetzt bei den Standardmetadaten (bug #4385).
 
 1.0b7 (2008-07-14)
 ------------------

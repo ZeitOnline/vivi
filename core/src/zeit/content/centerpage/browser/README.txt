@@ -69,6 +69,7 @@ Now, fill the form and add the CP:
 >>> browser.getControl(name='form.title').value = 'Politik'
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Comments allowed').selected = True
 >>> browser.getControl(name='form.actions.add').click()
 
 
@@ -204,6 +205,7 @@ page:
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
   </head>
   <body>
     <title>Wirtschaft</title>
@@ -350,6 +352,7 @@ Have a look at the source:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Hans Sachs</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
   </head>
   <body>
     <title>Homepage</title>
