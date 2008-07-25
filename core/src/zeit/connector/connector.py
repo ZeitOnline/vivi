@@ -403,7 +403,6 @@ class Connector(object):
             pass
         else:
             cached_properties.update(properties)
-            self.property_cache[id] = cached_properties
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
