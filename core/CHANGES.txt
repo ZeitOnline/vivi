@@ -24,6 +24,8 @@ zeit.cms changes
 - "Kommentare erlaubt" jetzt bei den Standardmetadaten (bug #4385).
 - Bei der Center-Page ist Ausgabe und Jahr kein Pflichtfeld mehr (bug #4408).
 - Copyright-Default jetzt "ZEIT ONLINE" (bug #4409).
+- WYSIWYG-Editor: Bilder, die nicht direkt unterhalb des <p> sind werden
+  richtig erkannt.
 
 1.0b7 (2008-07-14)
 ------------------

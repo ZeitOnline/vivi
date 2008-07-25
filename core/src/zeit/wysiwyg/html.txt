@@ -493,6 +493,23 @@ too:
   </body>
 </article>
 
+Bug: ``<p><strong><img`` was not recognised correctly:
+
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+...            Hurz</strong> foobar </p>
+...     <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p><strong><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu xsi:nil="true"/></image>
+           Hurz</strong> foobar </p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
 
 Videos
 ------

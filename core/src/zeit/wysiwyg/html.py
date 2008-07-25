@@ -148,7 +148,7 @@ class HTMLConverter(object):
     def _replace_img_nodes_by_image(self, node):
         """Replace HTML <img/> by XML <image/>."""
         repository_url = self.url(self.repository)
-        image_nodes = node.xpath('img')
+        image_nodes = node.xpath('descendant::img')
         for image_node in image_nodes:
             url = image_node.get('src')
             parent = image_node.getparent()
