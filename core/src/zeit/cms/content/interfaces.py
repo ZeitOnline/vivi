@@ -102,7 +102,7 @@ class ICommonMetadata(zope.interface.Interface):
     copyrights = zope.schema.TextLine(
         title=_("Copyright (c)"),
         description=_("Do not enter (c)."),
-        default=u"ZEIT online")
+        default=u"ZEIT ONLINE")
 
     supertitle = zope.schema.TextLine(
         title=_("Kicker"),

@@ -27,9 +27,9 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'dav.txt',
         'liveproperty.txt',
+        'metadata.txt',
         'related.txt',
         'sources.txt',
         'xmlsupport.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
+    ))
     return suite

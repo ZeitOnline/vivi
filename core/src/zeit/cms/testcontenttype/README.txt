@@ -44,10 +44,6 @@ Now that was pretty boring. Add a title and year (from common metadata):
   </body>
 </testtype>
 
-Set "comments allowed" from common metadata:
-
->>> content.commentsAllowed = True
-
 Make sure we can adapt to webdav properties:
 
 >>> import zeit.connector.interfaces
@@ -56,8 +52,7 @@ Make sure we can adapt to webdav properties:
 <zeit.connector.resource.WebDAVProperties object at 0x...>
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{('comments', u'http://namespaces.zeit.de/CMS/document'): 'yes',
- ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...',
+{('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...',
  ('year', u'http://namespaces.zeit.de/CMS/document'): u'2008'}
 
 

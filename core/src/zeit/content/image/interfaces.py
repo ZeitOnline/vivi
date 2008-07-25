@@ -63,7 +63,7 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
-        default=(),
+        default=((u'ZEIT ONLINE', 'http://www.zeit.de/'),),
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(

@@ -32,8 +32,6 @@ Add some images to the folder:
 ...     menu = browser.getControl(name='add_menu')
 ...     menu.displayValue = ['Image (single)']
 ...     browser.open(menu.value[0])
-...     browser.getControl('Add Copyrights').click()
-...     browser.getControl('Copyright').value = 'ZEIT online'
 ...     test_file = os.path.join(os.path.dirname(__file__),
 ...                              'testdata', name)
 ...     test_data = file(test_file, 'rb')
@@ -247,11 +245,11 @@ Sadly the xml is not updated, yet:
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" align="left" src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpg">
             <bu xsi:nil="true"/>
-            <copyright py:pytype="str">ZEIT online</copyright>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" align="left" src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpg">
             <bu xsi:nil="true"/>
-            <copyright py:pytype="str">ZEIT online</copyright>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         ...
