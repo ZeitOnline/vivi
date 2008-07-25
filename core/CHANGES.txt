@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.5 (unreleased)
+----------------
+
+- "Kommentare erlaubt" ist in den Kern gewandert.
+
 1.4 (2008-06-26)
 ----------------
 

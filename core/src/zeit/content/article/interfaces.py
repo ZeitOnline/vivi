@@ -21,10 +21,6 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
-    commentsAllowed = zope.schema.Bool(
-        title=_("Comments allowed"),
-        default=True)
-
     banner = zope.schema.Bool(
         title=_("Banner"),
         default=True)

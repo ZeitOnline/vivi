@@ -675,11 +675,19 @@ prevent entering more than the allowed length. Makre sure the widget is used:
     >>> import zeit.content.infobox.infobox
     >>> infobox = zeit.content.infobox.infobox.Infobox()
     >>> infobox.supertitle = u'Altersvorsorge'
+    >>> import zope.publisher.browser
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal('bob')
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
     >>> infobox.contents = (
-    ...     ('Informationen', 'Nutzen Sie die Renteninformation, etc'),
+    ...     ('Informationen', '<p>Nutzen Sie die Renteninformation, etc</p>'),
     ...     ('Fehlende Versicherungszeiten',
-    ...      'Pruefen Sie, ob in Ihrer Renteninformation alle'))
+    ...      '<p>Pruefen Sie, ob in Ihrer Renteninformation alle</p>'))
     >>> repository['infobox'] = infobox
+    >>> zope.security.management.endInteraction()
 
     Commit the transaction so our browser sees the change. Also unset the site
     again:

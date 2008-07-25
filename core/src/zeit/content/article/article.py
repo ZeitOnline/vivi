@@ -44,9 +44,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     textLength = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['textLength'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')
-    commentsAllowed = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['commentsAllowed'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
     boxMostRead = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['boxMostRead'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'mostread')
