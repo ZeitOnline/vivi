@@ -29,3 +29,10 @@ class Edit(FormBase,
     """Edit plain text."""
 
     title = _('Edit plain text')
+
+
+class Display(FormBase,
+              zeit.cms.browser.form.DisplayForm):
+    """View plain text."""
+
+    title = _('View plain text')

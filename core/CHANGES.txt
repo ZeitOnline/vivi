@@ -26,6 +26,7 @@ zeit.cms changes
 - Copyright-Default jetzt "ZEIT ONLINE" (bug #4409).
 - WYSIWYG-Editor: Bilder, die nicht direkt unterhalb des <p> sind werden
   richtig erkannt.
+- Content-Typ für Text, HTML oder sonstwie rohe Daten (bug #4360).
 
 1.0b7 (2008-07-14)
 ------------------

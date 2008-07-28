@@ -21,5 +21,23 @@
     />
 
 
+  <browser:page
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".form.Display"
+    permission="zope.View"
+    menu="zeit-context-views" title="View"
+    />
+
+  <browser:icon
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="18"
+    height="18"
+    file="texticon.png"
+    />
+
 </configure>
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul 23 15:32:20 2008\n"
+"POT-Creation-Date: Mon Jul 28 16:48:55 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 #: src/zeit/cms/browser/listing.py:281
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:262
+#: src/zeit/cms/content/interfaces.py:266
 #: src/zeit/cms/syndication/browser/feed.py:155
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
@@ -82,7 +82,7 @@ msgid "Title will be shown in overview pages."
 msgstr ""
 
 #: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:269
+#: src/zeit/cms/content/interfaces.py:273
 msgid "Related content"
 msgstr ""
 
@@ -149,6 +149,7 @@ msgstr ""
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:107
 #: src/zeit/content/gallery/browser/configure.zcml:107
+#: src/zeit/content/text/browser/configure.zcml:14
 #: src/zeit/content/gallery/browser/overview.pt:23
 msgid "Edit"
 msgstr ""
@@ -158,12 +159,13 @@ msgid "No changes"
 msgstr ""
 
 #: src/zeit/cms/browser/form.py:221
-#: src/zeit/cms/repository/browser/unknown.zcml:26
-#: src/zeit/cms/repository/browser/folder.zcml:17
+#: src/zeit/cms/repository/browser/unknown.zcml:25
+#: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
 #: src/zeit/cms/syndication/browser/configure.zcml:48
 #: src/zeit/content/image/browser/configure.zcml:33
 #: src/zeit/content/image/browser/configure.zcml:176
+#: src/zeit/content/text/browser/configure.zcml:24
 msgid "View"
 msgstr ""
 
@@ -556,15 +558,19 @@ msgstr ""
 msgid "Should this article be listed in the daily newsletter?"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:230
+#: src/zeit/cms/content/interfaces.py:162
+msgid "Comments allowed"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:234
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:270
+#: src/zeit/cms/content/interfaces.py:274
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:300
+#: src/zeit/cms/content/interfaces.py:304
 msgid "Hits today"
 msgstr ""
 
@@ -790,7 +796,7 @@ msgid "Add folder"
 msgstr ""
 
 #: src/zeit/cms/repository/browser/folder.py:19
-#: src/zeit/cms/repository/browser/folder.zcml:94
+#: src/zeit/cms/repository/browser/folder.zcml:92
 msgid "Folder"
 msgstr ""
 
@@ -798,11 +804,11 @@ msgstr ""
 msgid "Edit folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.zcml:56
+#: src/zeit/cms/repository/browser/folder.zcml:54
 msgid "Hide"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.zcml:75
+#: src/zeit/cms/repository/browser/folder.zcml:73
 msgid "Show"
 msgstr ""
 
@@ -893,7 +899,7 @@ msgstr ""
 msgid "Default volume"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/configure.zcml:137
+#: src/zeit/cms/syndication/browser/configure.zcml:138
 #: src/zeit/cms/syndication/browser/manager.pt:16
 msgid "Syndicate"
 msgstr ""
@@ -1019,10 +1025,6 @@ msgstr ""
 msgid "Date first released"
 msgstr ""
 
-#: src/zeit/cms/workingcopy/browser/configure.zcml:22
-msgid "Content"
-msgstr ""
-
 #: src/zeit/cms/workingcopy/browser/sidebar.pt:13
 msgid "Edited documents"
 msgstr ""
@@ -1057,16 +1059,16 @@ msgstr ""
 msgid "Edit content"
 msgstr ""
 
-#: src/zeit/content/centerpage/interfaces.py:27
+#: src/zeit/content/centerpage/interfaces.py:34
 msgid "Label"
 msgstr ""
 
-#: src/zeit/content/centerpage/interfaces.py:30
+#: src/zeit/content/centerpage/interfaces.py:37
 msgid "Style"
 msgstr ""
 
-#: src/zeit/content/centerpage/interfaces.py:33
-#: src/zeit/content/centerpage/interfaces.py:41
+#: src/zeit/content/centerpage/interfaces.py:40
+#: src/zeit/content/centerpage/interfaces.py:48
 #: src/zeit/content/gallery/interfaces.py:88
 msgid "Layout"
 msgstr ""
@@ -1349,6 +1351,36 @@ msgstr ""
 #: src/zeit/content/portraitbox/interfaces.py:42
 #: src/zeit/content/portraitbox/browser/configure.zcml:12
 msgid "Portraitbox"
+msgstr ""
+
+#: src/zeit/content/text/browser/configure.zcml:6
+msgid "Plain text"
+msgstr ""
+
+#: src/zeit/content/text/browser/form.py:23
+msgid "Add plain text"
+msgstr ""
+
+#: src/zeit/content/text/browser/form.py:31
+msgid "Edit plain text"
+msgstr ""
+
+#: src/zeit/content/text/browser/form.py:38
+msgid "View plain text"
+msgstr ""
+
+#: src/zeit/content/text/interfaces.py:17
+#. Default: ""
+msgid "Could not encode charachters ${start}-${end} to ${encoding} (${characters}): ${reason}"
+msgstr ""
+
+#: src/zeit/content/text/interfaces.py:34
+#: src/zeit/cms/workingcopy/browser/configure.zcml:22
+msgid "Content"
+msgstr ""
+
+#: src/zeit/content/text/interfaces.py:37
+msgid "Encoding"
 msgstr ""
 
 #: src/zeit/search/browser/configure.zcml:39
