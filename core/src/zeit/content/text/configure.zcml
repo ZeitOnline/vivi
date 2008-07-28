@@ -2,6 +2,14 @@
 
   <class class=".text.Text">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IText"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IText"
+      permission="zeit.EditContent"
+      />
   </class>
 
   <adapter factory=".text.text_factory" name="text" />
