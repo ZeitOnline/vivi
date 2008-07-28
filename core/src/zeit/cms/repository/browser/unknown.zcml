@@ -4,7 +4,6 @@
 
   <!-- Unkown Resource -->
 
-  <adapter factory=".adapter.UnknownResourceListing" />
   <browser:icon
     for="zeit.cms.repository.interfaces.IUnknownResource"
     name="zmi_icon"

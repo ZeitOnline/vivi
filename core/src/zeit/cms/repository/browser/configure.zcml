@@ -177,4 +177,7 @@
     permission="zope.View"
     />
 
+  <!-- Default content support -->
+  <adapter factory=".adapter.CMSContentListRepresentation" />
+
 </configure>

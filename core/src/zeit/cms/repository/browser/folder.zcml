@@ -4,8 +4,6 @@
 
   <!-- Collection / Folder -->
 
-  <adapter factory=".adapter.CollectionListRepresentation" />
-
   <browser:page
     for="zeit.cms.repository.interfaces.IRepository"
     permission="zope.View"

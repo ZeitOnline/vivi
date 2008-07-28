@@ -18,7 +18,7 @@
         <label>
           <input type="radio" name="newtype" 
             tal:attributes="value item/resource_type"/>
-          <img tal:replace="structure item/content/@@zmi_icon" />
+          <img tal:replace="structure item/content/@@zmi_icon | nothing"/>
           <span tal:content="item/resource_type" />
         </label>
         <br/>
