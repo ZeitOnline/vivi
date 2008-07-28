@@ -6,6 +6,7 @@
   <adapter factory=".dav.ChoiceProperty" /> 
   <adapter factory=".dav.ChoicePropertyWithIterableSource" />
   <adapter factory=".dav.ChoicePropertyWithPrincipalSource" />
+  <adapter factory=".dav.ChoicePropertyWithIterableVocabulary" /> 
   <adapter factory=".dav.BoolProperty" /> 
   <adapter factory=".dav.DatetimeProperty" />
   <adapter factory=".dav.CollectionProperty" />

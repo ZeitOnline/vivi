@@ -295,6 +295,38 @@ Here we don't check for valid users:
 >>> converter.toProperty(u'foo.bar')
 u'foo.bar'
 
+Vocabularies
+------------
+
+Vocabularies work like sources:
+
+>>> field = zope.schema.Choice(
+...     values=('A', 'B', 'C', 1))
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.toProperty(1)
+'1'
+
+Values which are not in the vocabulary raise a ValueError:
+
+>>> converter.toProperty('1')
+Traceback (most recent call last):
+    ...
+ValueError: 1
+
+Converting from a property returns the right value:
+
+>>> converter.fromProperty('A')
+'A'
+>>> converter.fromProperty('1')
+1
+
+Converting a value which is not a token raises a ValueError:
+
+>>> converter.fromProperty('asdf')
+Traceback (most recent call last):
+    ...
+ValueError: asdf
+
 
 Datetime
 ++++++++

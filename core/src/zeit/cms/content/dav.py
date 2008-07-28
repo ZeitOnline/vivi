@@ -42,7 +42,7 @@ class DAVProperty(object):
         else:
             self.missing_value = field.missing_value
         if live:
-            # We cannot use a getUtility here, because this happens on improt
+            # We cannot use a getUtility here, because this happens on import
             # time. We haven't got CA then.
             (zeit.cms.content.liveproperty.LiveProperties
              .register_live_property(name, namespace))
@@ -206,6 +206,30 @@ class ChoicePropertyWithPrincipalSource(object):
 
     def toProperty(self, value):
         return unicode(value)
+
+
+class ChoicePropertyWithIterableVocabulary(object):
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(zope.schema.interfaces.IChoice,
+                          zope.schema.interfaces.IIterableVocabulary)
+
+    def __init__(self, context, vocabulary):
+        self.context = context
+        self.vocabulary = vocabulary
+
+    def fromProperty(self, value):
+        for term in self.vocabulary:
+            if term.token == value:
+                return term.value
+        raise ValueError(value)
+
+    def toProperty(self, value):
+        for term in self.vocabulary:
+            if term.value == value:
+                return term.token
+        raise ValueError(value)
 
 
 class BoolProperty(object):
