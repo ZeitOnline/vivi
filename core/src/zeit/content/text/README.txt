@@ -3,8 +3,14 @@ Text
 
 Text is used to add/edit HTML or plain text in the CMS.
 
+Implementation
+++++++++++++++
+
 >>> import zeit.content.text.text
->>> text = zeit.content.text.text.Text(u'Mary had a little lamb.')
+>>> text = zeit.content.text.text.Text()
+>>> text
+<zeit.content.text.text.Text object at 0x...>
+>>> text.text = u'Mary had a little lamb.'
 >>> text.text
 u'Mary had a little lamb.'
 
@@ -60,3 +66,57 @@ When we change the encoding to ISO8859-15 the validation is no longer passed:
 >>> import zope.i18n
 >>> zope.i18n.translate(error.doc())
 u'Could not encode charachters 23-24 to ISO8859-15 (\u2014): character maps to <undefined>'
+
+
+Switching back to UTF-8 solves the problem:
+
+>>> text.encoding = 'UTF-8'
+>>> zope.schema.getValidationErrors(
+...     zeit.content.text.interfaces.IText, text)
+[]
+
+Integration
++++++++++++
+
+Let's add the text created above to the repository[#functional]_:
+
+>>> repository['atext'] = text
+
+Let's get the text from the repository:
+
+>>> text = repository['atext']
+>>> text
+<zeit.content.text.text.Text object at 0x...>
+>>> text.text
+u'Mary had a little lamb \u2014 and is happy.'
+>>> text.encoding
+'UTF-8'
+
+
+When we remove the stored encoding a encoding is guessed:
+
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> connector.changeProperties('http://xml.zeit.de/atext',
+...     {('encoding', zeit.content.text.interfaces.DAV_NAMESPACE):
+...         zeit.connector.interfaces.DeleteProperty})
+>>> text = repository['atext']
+>>> text.text
+u'Mary had a little lamb \u2014 and is happy.'
+>>> text.encoding
+'UTF-8'
+
+
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional] 
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)

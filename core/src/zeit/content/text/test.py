@@ -14,7 +14,7 @@ import zeit.cms.testing
 
 TextLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'zeit.content.text', allow_teardown=True)
+    __name__, 'TextLayer', allow_teardown=True)
 
 
 def test_suite():

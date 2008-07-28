@@ -4,5 +4,8 @@
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
   </class>
 
+  <adapter factory=".text.text_factory" name="text" />
+  <adapter factory=".text.resource_factory"/>
+
 </configure>
 
