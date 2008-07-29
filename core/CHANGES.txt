@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.2 (unreleased)
+1.2 (2008-07-29)
 ----------------
 
 - Do not re-set the property cache on ``changeProperties`` but just update.
