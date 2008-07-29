@@ -6,11 +6,9 @@ import datetime
 import os.path
 
 import pytz
-import rwproperty
 
 import zope.event
 import zope.formlib.form
-import zope.formlib.interfaces
 import zope.interface.common.idatetime
 
 import zope.app.container.interfaces
@@ -18,7 +16,6 @@ import zope.app.pagetemplate
 from zope.i18nmessageid import ZopeMessageFactory as _zope
 
 import gocept.form.grouped
-import z3c.flashmessage.interfaces
 
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces

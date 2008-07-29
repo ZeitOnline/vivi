@@ -7,8 +7,6 @@ import zope.component
 import zope.cachedescriptors.property
 import zope.location.interfaces
 
-import zeit.cms.repository.interfaces
-
 
 class Breadcrumbs(object):
 
