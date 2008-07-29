@@ -22,9 +22,6 @@
   <include package="zeit.xmleditor" />
   <include package="zeit.xmleditor.browser" />
   
-  <include package="zeit.calendar" />
-  <include package="zeit.calendar.browser" />
-
   <include package="zeit.search" />
   <include package="zeit.search.browser" />
 
