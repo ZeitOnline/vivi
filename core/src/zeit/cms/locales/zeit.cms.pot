@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jul 28 16:48:55 2008\n"
+"POT-Creation-Date: Tue Jul 29 12:32:39 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -22,89 +22,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-
-#: src/zeit/calendar/browser/calendar_view.py:27
-msgid "Calendar"
-msgstr ""
-
-#: src/zeit/calendar/browser/event.py:25
-msgid "Event"
-msgstr ""
-
-#: src/zeit/calendar/browser/event.py:29
-#: src/zeit/calendar/interfaces.py:31
-msgid "Description"
-msgstr ""
-
-#: src/zeit/calendar/browser/event.py:33
-msgid "Related"
-msgstr ""
-
-#: src/zeit/calendar/browser/event.py:53
-msgid "Add event"
-msgstr ""
-
-#: src/zeit/calendar/browser/event.py:67
-msgid "Edit event"
-msgstr ""
-
-#: src/zeit/calendar/browser/event.py:70
-#: src/zeit/cms/browser/form.py:213
-#: src/zeit/cms/repository/browser/file.py:109
-msgid "Apply"
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:23
-msgid "Start"
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:24
-msgid "Date when the event starts."
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:27
-#: src/zeit/cms/browser/listing.py:281
-#: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:117
-#: src/zeit/cms/content/interfaces.py:266
-#: src/zeit/cms/syndication/browser/feed.py:155
-#: src/zeit/cms/syndication/interfaces.py:37
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:34
-#: src/zeit/content/gallery/interfaces.py:80
-#: src/zeit/content/infobox/interfaces.py:22
-#: src/zeit/search/browser/search.py:102
-#: src/zeit/search/interfaces.py:18
-msgid "Title"
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:28
-msgid "Title will be shown in overview pages."
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:35
-#: src/zeit/cms/content/interfaces.py:273
-msgid "Related content"
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:36
-msgid "Documents that are related to this object."
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:43
-msgid "Location/Type"
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:44
-msgid "Where should the article be placed."
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:48
-msgid "Topic?"
-msgstr ""
-
-#: src/zeit/calendar/interfaces.py:49
-msgid "Is the article a topic for the next week?"
-msgstr ""
 
 #: src/zeit/cms/browser/configure.zcml:17
 #: src/zeit/cms/browser/configure.zcml:22
@@ -136,15 +53,15 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:121
+#: src/zeit/cms/browser/form.py:118
 msgid "Add"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:143
+#: src/zeit/cms/browser/form.py:140
 msgid "Cancel"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:168
+#: src/zeit/cms/browser/form.py:165
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:107
@@ -154,11 +71,16 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:210
+#: src/zeit/cms/browser/form.py:207
 msgid "No changes"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:221
+#: src/zeit/cms/browser/form.py:210
+#: src/zeit/cms/repository/browser/file.py:109
+msgid "Apply"
+msgstr ""
+
+#: src/zeit/cms/browser/form.py:218
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
@@ -208,6 +130,20 @@ msgstr ""
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:281
+#: src/zeit/cms/content/browser/template.py:48
+#: src/zeit/cms/content/interfaces.py:117
+#: src/zeit/cms/content/interfaces.py:266
+#: src/zeit/cms/syndication/browser/feed.py:155
+#: src/zeit/cms/syndication/interfaces.py:37
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:34
+#: src/zeit/content/gallery/interfaces.py:80
+#: src/zeit/content/infobox/interfaces.py:22
+#: src/zeit/search/browser/search.py:102
+#: src/zeit/search/interfaces.py:18
+msgid "Title"
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:285
@@ -564,6 +500,10 @@ msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:234
 msgid "XML Source"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:273
+msgid "Related content"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:274
