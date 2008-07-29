@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.0 (unreleased)
+1.0 (2008-07-29)
 ----------------
 
 - Checkout/checkin während des Veröffentlichungsvorgangs funktioniert wieder
