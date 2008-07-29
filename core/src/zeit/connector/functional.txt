@@ -45,6 +45,26 @@ The directory listing is empty:
 []
 
 
+There was a bug that the property changes where not visible when using
+``changeProperties``. Now we get the properties back:
+
+>>> import StringIO
+>>> id = 'http://xml.zeit.de/testing/prop-change'
+>>> res = zeit.connector.resource.Resource(
+...     id, 'propchange', 'text',
+...     StringIO.StringIO('Pop goes the weasel!'),
+...     contentType='text/plain')
+>>> connector.add(res)
+>>> connector.changeProperties(
+...     id, {('colour', 'http://namespaces.zeit.de/test'): u'gr\xfcn'})
+>>> res_got = connector[id]
+>>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
+u'gr\xfcn'
+>>> del connector[id]
+>>> list(connector.listCollection('http://xml.zeit.de/testing'))
+[]
+
+
 Invalidation events
 ===================
 
@@ -108,7 +128,6 @@ Locking
 When an object is locked and the transaction is rolled back, the object will be
 automatically unlocked.
 
->>> import StringIO
 >>> id = 'http://xml.zeit.de/testing/lockrollback'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lockrollback', 'text',
