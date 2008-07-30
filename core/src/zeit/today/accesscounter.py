@@ -22,3 +22,19 @@ class AccessCounter(object):
         storage = zope.component.getUtility(
             zeit.today.interfaces.ICountStorage)
         return storage.get_count(self.context.uniqueId)
+
+    @property
+    def total_hits(self):
+        lifetime = zeit.today.interfaces.ILifeTimeCounter(self.context, None)
+        if lifetime is None:
+            return None
+        if not lifetime.total_hits:
+            return None
+
+        # The lifetime total hits do not contain today's hits, but we want to
+        # take today's hits into account.
+        today = self.hits
+        if today is None:
+            today = 0
+
+        return lifetime.total_hits + today

@@ -1,0 +1,157 @@
+Livetime values
+===============
+
+The hit counting is supplemented by a lifetime counter. At least once a day the
+hit counters from the day before are retrieved and summed up with the data of
+the days before.
+
+Each day we'll get a ``yesterday.xml``. The date the file relates to is noted
+in the file so we rely on that. Create a file for
+2007-01-01[#yesterday-helper]_:
+
+>>> write_yesterday('2007-01-01', [
+...     ('/online/2007/01/Somalia', 254),
+...     ('/online/2007/01/eta-zapatero', 63),
+...     ('/online/2007/01/Ford-Beerdigung', 4223)])
+
+
+Update the counters now[#functional]_:
+
+>>> import zeit.today.yesterday
+>>> zeit.today.yesterday.update_lifetime_counters()
+
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
+first_count = 2007-01-01
+last_count = 2007-01-01
+total_hits = 254
+
+
+Calling multiple times a day doesn't harm:
+
+>>> zeit.today.yesterday.update_lifetime_counters()
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
+first_count = 2007-01-01
+last_count = 2007-01-01
+total_hits = 254
+
+
+Now, the next day (imagine sunset/sunrise here):
+
+>>> import time
+>>> time.sleep(0.1)
+>>> write_yesterday('2007-01-02', [
+...     ('/online/2007/01/Somalia', 6),
+...     ('/online/2007/01/eta-zapatero', 32),
+...     ('/online/2007/01/Ford-Beerdigung', 563)])
+>>> zeit.today.yesterday.update_lifetime_counters()
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
+first_count = 2007-01-01
+last_count = 2007-01-02
+total_hits = 260
+
+When a file with a date in the past is loaded those figures are *not* counted:
+
+>>> write_yesterday('2005-01-02', [
+...     ('/online/2007/01/Somalia', 10000)])
+>>> zeit.today.yesterday.update_lifetime_counters()
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
+first_count = 2007-01-01
+last_count = 2007-01-02
+total_hits = 260
+
+
+Let's get the accumulated values of the other two items:
+
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Ford-Beerdigung')
+first_count = 2007-01-01
+last_count = 2007-01-02
+total_hits = 4786
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/eta-zapatero')
+first_count = 2007-01-01
+last_count = 2007-01-02
+total_hits = 95
+
+
+
+
+Note that nothing is counted when the object could not be loaded from the
+repository (that is no error is raised):
+
+>>> write_yesterday('2007-01-03', [('/online/2007/01/foo-bar-baz', 6)])
+>>> zeit.today.yesterday.update_lifetime_counters()
+
+
+The IAccessCounter interface allows access to the total hits:
+
+>>> import zeit.cms.content.interfaces
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> ac = zeit.cms.content.interfaces.IAccessCounter(repository.getContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia'))
+>>> ac.total_hits
+260
+
+When we have hits from today those are added to the total hits:
+
+>>> storage = zope.component.getUtility(zeit.today.interfaces.ICountStorage)
+>>> storage.id_to_count['http://xml.zeit.de/online/2007/01/Somalia'] = 7
+>>> ac.total_hits
+267
+
+
+Clean up:
+
+>>> import os
+>>> os.remove(yesterday_file)
+>>> zope.app.component.hooks.setSite(old_site)
+>>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = old_interval
+
+.. [#yesterday-helper]
+    
+    Create a helper function to write the xml file:
+
+    >>> import tempfile
+    >>> handle, yesterday_file = tempfile.mkstemp()
+    >>> def write_yesterday(date, data):
+    ...     f = open(yesterday_file, 'w')
+    ...     print >>f, '<?xml version="1.0"?><articles>',
+    ...     rank = 0
+    ...     for path, hits in sorted(data, key=lambda x: x[1]):
+    ...         rank += 1
+    ...         print >>f, ('<article date="%s" rang="%s" url="%s" '
+    ...                     'counter="%s"/>') % (date, rank, path, hits),
+    ...     print >>f, '</articles>'
+    ...     f.close()
+
+    Set the xml url to the file which will be written by the helper function:
+
+    >>> import zope.app.appsetup.product
+    >>> cfg = zope.app.appsetup.product.getProductConfiguration('zeit.today')
+    >>> cfg['yesterday-xml-url'] = 'file://%s' % yesterday_file
+
+    Add a helper to print the lifetime properties:
+
+    >>> def print_lifetime_props(unique_id):
+    ...     properties = connector[unique_id].properties
+    ...     for (name, namespace), value in sorted(properties.items()):
+    ...         if namespace == zeit.today.interfaces.LIFETIME_DAV_NAMESPACE:
+    ...             print name, '=', value
+
+    Lower the refresh interval so we need not wait 5 minutes :)
+    
+    >>> import zeit.today.storage
+    >>> old_interval  = zeit.today.storage.CountStorage.REFRESH_INTERVAL
+    >>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = 0.1
+
+
+.. [#functional]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> import zeit.connector.interfaces
+    >>> connector = zope.component.getUtility(
+    ...     zeit.connector.interfaces.IConnector)

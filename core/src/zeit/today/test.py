@@ -24,6 +24,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'yesterday.txt',
         layer=TodayLayer,
         product_config={'zeit.today': {'today-xml-url': today_xml_url}}
     ))

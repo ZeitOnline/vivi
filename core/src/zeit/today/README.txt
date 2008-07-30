@@ -43,6 +43,17 @@ When we ask for an completly wrong `unique_id` we get None, too:
 >>> count_util.get_count('asdf') is None
 True
 
+We can iterate over the entire storage:
+
+>>> sorted(count_util)
+['http://xml.zeit.de/1997/26/jurist.txt.19970620.xml',
+ 'http://xml.zeit.de/1999/10/199910.khmer.neu_.xml', 
+ ...]
+
+We can get the date for which the data was returned:
+
+>>> count_util.get_count_date('http://xml.zeit.de/2020/index')
+
 
 Access counter
 ==============
@@ -61,3 +72,18 @@ Adapt content to IAccessCounter:
 <zeit.today.accesscounter.AccessCounter object at 0x...>
 >>> counter.hits
 7992
+
+The total hits are none here, because haven't done the functional test setup
+and thus the adapter is not found. 
+
+>>> counter.total_hits is None
+True
+
+
+The ``counter`` object implements the IAccessCounter interface:
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.content.interfaces.IAccessCounter, counter)
+True
+
+

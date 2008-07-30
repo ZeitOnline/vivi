@@ -302,7 +302,14 @@ class IAccessCounter(zope.interface.Interface):
 
     hits = zope.schema.Int(
         title=_('Hits today'),
-        description=(u'How many times was this page viewed today.'),
+        description=_('Indicates how many times a page viewed today.'),
+        required=False,
+        default=None)
+
+    total_hits = zope.schema.Int(
+        title=_('Total hits'),
+        description=_('Indicates how many times a page was viewed in total, '
+                      'i.e. during its entire life time.'),
         required=False,
         default=None)
 

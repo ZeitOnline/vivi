@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import datetime
 import logging
 import urllib2
 import urlparse
@@ -29,6 +30,7 @@ class CountStorage(object):
     def __init__(self, url_getter):
         self.url = url_getter
         self.id_to_count = {}
+        self.id_to_date = {}
         self.update_lock = threading.Lock()
         self.last_refresh = None
 
@@ -36,6 +38,15 @@ class CountStorage(object):
         """Return access count for given unique id."""
         self._refresh()
         return self.id_to_count.get(unique_id)
+
+    def get_count_date(self, unique_id):
+        """Return access count for given unique id."""
+        self._refresh()
+        return self.id_to_date.get(unique_id)
+
+    def __iter__(self):
+        self._refresh()
+        return iter(self.id_to_count)
 
     def _refresh(self):
         now = time.time()
@@ -63,7 +74,12 @@ class CountStorage(object):
             else:
                 self.id_to_count = dict(
                     (self._make_unique_id(item.get('url')),
-                     int(item.get('counter'))) for item in xml.article)
+                     int(item.get('counter'))) for item in xml['article'])
+                self.id_to_date = dict(
+                    (self._make_unique_id(item.get('url')),
+                     datetime.date(*(time.strptime(item.get('date'),
+                                                   '%Y-%m-%d')[0:3])))
+                    for item in xml['article'])
             self.last_refresh = now
         finally:
             self.update_lock.release()
