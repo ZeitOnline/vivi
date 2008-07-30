@@ -113,7 +113,7 @@ Also clips with strange titles can be added:
 >>> clipboard.addClip('++etc++site')
 >>> list(clipboard.keys())
 [u'Vita', u'myfeed', u'Verfolgt-2', u'Verfolgt', u'Traum-Umberto-Eco',
- u'Politik', u'Wirtschaft', 'binbash', 'property@', 'etc++site']
+ u'Politik', u'Wirtschaft', u'binbash', u'property@', u'etc++site']
 
 
 Removing clips
