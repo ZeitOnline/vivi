@@ -4,6 +4,9 @@ zeit.cms changes
 1.1 (unreleased)
 ----------------
 
+- WYSIWYG-Editor kommt besser mit beliebigen ``article_extra``-Tags klar (bug
+  #4442).
+
 1.0 (2008-07-29)
 ----------------
 

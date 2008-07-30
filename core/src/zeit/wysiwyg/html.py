@@ -174,11 +174,20 @@ class HTMLConverter(object):
     def _xml_article_extra(self, node):
         if node.tag != 'article_extra':
             return node
+        extra_data = dict(node.attrib)
+        value = extra_data.pop('id', '')
+        if extra_data:
+            extra_data = ' '.join('%s=%s' % (key, value)
+                                  for key, value in extra_data.items())
+            if value:
+                value += ': %s' % extra_data
+            else:
+                value = extra_data
         new_node = lxml.objectify.XML('<p><input/></p>')
         new_node['input'].attrib.update(dict(
                 type='text',
                 name='',
-                value='%s:%s' % (node.get('id'), node.get('videoID')),
+                value=value,
                 size='60'))
         return new_node
 
@@ -188,14 +197,38 @@ class HTMLConverter(object):
         input_node = node['input']
         value = input_node.get('value')
         if ':' in value:
-            id, video_id = value.split(':', 1)
+            id, extra_data = value.split(':', 1)
+        elif '=' in value:
+            id = None
+            extra_data = value
         else:
-            id=None
-            video_id = value
+            id = value
+            extra_data = None
 
-        node = lxml.objectify.E.article_extra(videoID=video_id)
+        data = {}
+
+        if extra_data is not None:
+            elements = extra_data.strip().split()
+            data = {}
+            for element in elements:
+                if '=' in element:
+                    key, value = element.split('=')
+                else:
+                    key = value = element
+                data[key] = value
+
         if id is not None:
-            node.set('id', id)
+            data['id'] = id
+
+        node = lxml.objectify.E.article_extra()
+        invalid_counter = 0
+        for key, value in data.items():
+            try:
+                node.set(key, value)
+            except ValueError:
+                # Key is not a valid attribute name.
+                invalid_counter += 1
+                node.set('invalid%s' % invalid_counter, '%s=%s' % (key, value))
         return node
 
     def _replace_ids_by_urls(self, node):
