@@ -5,15 +5,6 @@ today.xml click counter
 `zeit.today` reads the today.xml click counter and provides an adapter to
 `IAccessCounter`.
 
-Set up the product config:
-
->>> import os
->>> import zope.app.appsetup.product
->>> config = zope.app.appsetup.product._configs['zeit.today'] = {}
->>> config['today-xml-url'] = 'file://%s' % os.path.join(
-...     os.path.dirname(__file__), 'today.xml')
-
-
 Storage
 =======
 

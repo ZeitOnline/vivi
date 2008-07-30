@@ -16,10 +16,15 @@ TodayLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'TodayLayer', allow_teardown=True)
 
+today_xml_url = 'file://%s' % os.path.join(
+    os.path.dirname(__file__), 'today.xml')
+
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=TodayLayer))
+        layer=TodayLayer,
+        product_config={'zeit.today': {'today-xml-url': today_xml_url}}
+    ))
     return suite
