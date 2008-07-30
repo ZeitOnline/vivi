@@ -375,6 +375,34 @@ Traceback (most recent call last):
     ...
 ValueError: Thu, 13 Mar 2008 13:48:37 CET
 
+Date
+++++
+
+Dates are also supported:
+
+>>> field = zope.schema.Date()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('2007-05-25')
+datetime.date(2007, 5, 25)
+
+Invalid dates raise a ValueError:
+
+>>> converter.fromProperty("1.1.07")
+Traceback (most recent call last):
+    ...
+ValueError: time data did not match format:  data=1.1.07  fmt=%Y-%m-%d
+
+
+The date is written in iso format:
+
+>>> converter.toProperty(datetime.date(1980, 2, 5))
+'1980-02-05'
+
+None is represented as an empty stirng:
+
+>>> converter.toProperty(None)
+u''
+
 
 
 Collection of TextLine

@@ -284,6 +284,26 @@ class DatetimeProperty(object):
         return value.isoformat()
 
 
+class DateProperty(object):
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(zope.schema.interfaces.IDate)
+
+    def __init__(self, context):
+        self.context = context
+
+    def fromProperty(self, value):
+        if not value:
+            return None
+        return datetime.date(*(time.strptime(value, '%Y-%m-%d')[0:3]))
+
+    def toProperty(self, value):
+        if value is None:
+            return u''
+        return value.isoformat()
+
+
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 @zope.component.adapter(zope.schema.interfaces.ICollection)
 def CollectionProperty(context):
