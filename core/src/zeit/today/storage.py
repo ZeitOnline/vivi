@@ -26,7 +26,8 @@ class CountStorage(object):
 
     REFRESH_INTERVAL = 5*60  # 5 minutes
 
-    def __init__(self):
+    def __init__(self, url_getter):
+        self.url = url_getter
         self.id_to_count = {}
         self.update_lock = threading.Lock()
         self.last_refresh = None
@@ -50,9 +51,7 @@ class CountStorage(object):
             self.update_lock.release()
             return
         try:
-            config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.today')
-            url = config['today-xml-url']
+            url = self.url()
             logger.info("Updating click counter from %s" % url)
             request = urllib2.urlopen(url)
             try:
@@ -72,3 +71,12 @@ class CountStorage(object):
     @staticmethod
     def _make_unique_id(path):
         return urlparse.urljoin('http://xml.zeit.de', path)
+
+
+@zope.interface.implementer(zeit.today.interfaces.ICountStorage)
+def today_storage_factory():
+    def url_getter():
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.today')
+        return config['today-xml-url']
+    return CountStorage(url_getter)

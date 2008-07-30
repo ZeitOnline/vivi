@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <utility factory=".storage.CountStorage" />
+  <utility factory=".storage.today_storage_factory" />
   <adapter factory=".accesscounter.AccessCounter" />
 
 </configure>
