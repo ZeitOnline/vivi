@@ -23,6 +23,7 @@ setup(
         'gocept.form[formlib]>=0.7.5',
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.3.2',
+        'gocept.runner',
         'gocept.pagelet',
         'guppy',
         'zc.iso8601',
@@ -68,4 +69,7 @@ setup(
             'z3c.etestbrowser',
         ],
     },
+    entry_points = dict(
+        console_scripts =
+        ['run-lifetime-hits-importer = zeit.today.yesterday:main'])
 )

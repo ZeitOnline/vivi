@@ -4,6 +4,7 @@
 
 import logging
 
+import gocept.runner
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -78,8 +79,6 @@ def update_lifetime_counters():
 
         lifetime.last_count = count_date
 
-
-# Get item from storage
-# get content object
-# update properties
-
+@gocept.runner.appmain(ticks=3600)
+def main():
+    update_lifetime_counters()
