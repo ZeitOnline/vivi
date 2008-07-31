@@ -7,14 +7,13 @@ import logging
 import os
 import threading
 
+import ZConfig
 import transaction
 import transaction.interfaces
-
+import zope.app.appsetup.product
 import zope.component
 import zope.event
 import zope.interface
-
-import zope.app.appsetup.product
 
 import gocept.cache.property
 
