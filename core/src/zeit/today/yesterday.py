@@ -59,7 +59,7 @@ def update_lifetime_counters():
         try:
             content = repository.getContent(unique_id)
         except KeyError:
-            log.info("Could not find %s" % unique_id)
+            log.error("Could not find %s" % unique_id)
             continue
 
         lifetime = zeit.today.interfaces.ILifeTimeCounter(content)
@@ -78,7 +78,10 @@ def update_lifetime_counters():
             lifetime.total_hits += count
 
         lifetime.last_count = count_date
+        log.debug("Updated %s (%s hits)" % (unique_id, lifetime.total_hits))
 
 @gocept.runner.appmain(ticks=3600)
 def main():
+    log.info("Updating hit counters.")
     update_lifetime_counters()
+    log.info("Finished updating hit counters.")
