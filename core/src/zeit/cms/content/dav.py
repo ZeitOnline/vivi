@@ -14,6 +14,7 @@ import zc.iso8601.parse
 import gocept.lxml.interfaces
 import pytz
 
+import zope.app.security
 import zope.component
 import zope.event
 import zope.proxy
