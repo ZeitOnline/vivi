@@ -605,7 +605,7 @@ the system. Make sure this doesn't happen any more:
 >>> gallery.xml['body']['column'][1]['container']['block'].append(
 ...     lxml.objectify.E.caption())
 >>> list(gallery.values())
-[<zeit.content.gallery.gallery.GalleryEntry object at 0x...>>]
+[<zeit.content.gallery.gallery.GalleryEntry object at 0x...>]
 
 
 Old XML format
