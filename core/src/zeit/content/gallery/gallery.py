@@ -117,7 +117,10 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
         gallery_caption = node.find('caption')
         if gallery_caption is not None:
-            entry.caption = gallery_caption.text + u''.join(
+            text = gallery_caption.text
+            if text is None:
+                text = ''
+            entry.caption = text + u''.join(
                 lxml.etree.tostring(copy.copy(node), encoding=unicode)
                 for node in gallery_caption.iterchildren())
 

@@ -599,6 +599,15 @@ When calling `reload_image_folder` the entry is removed from the xml:
 </gallery>
 
 
+At one point we had galleries with an empty caption-tag which broke
+the system. Make sure this doesn't happen any more:
+
+>>> gallery.xml['body']['column'][1]['container']['block'].append(
+...     lxml.objectify.E.caption())
+>>> list(gallery.values())
+[<zeit.content.gallery.gallery.GalleryEntry object at 0x...>>]
+
+
 Old XML format
 ==============
 
