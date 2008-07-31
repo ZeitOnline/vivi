@@ -58,7 +58,7 @@ class Viewlet(zope.viewlet.viewlet.ViewletBase):
             self.context).search_preferences
 
 
-class MetadataColumn(zc.table.column.GetterColumn):
+class MetadataColumn(zeit.cms.browser.listing.GetterColumn):
 
     def __init__(self, base_url, **kwargs):
         if not base_url.endswith('/'):

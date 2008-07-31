@@ -92,16 +92,13 @@ class Manager(zeit.cms.browser.view.Base):
             zc.table.column.SelectionColumn(_id_getter),
             zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
             zc.table.column.GetterColumn(
-                u'Titel',
+                _('Title'),
                 lambda t, c: t.title),
+            zeit.cms.browser.column.LinkColumn(
+                title=_('Path'),
+                cell_formatter=lambda t, v, f: v.uniqueId),
             zc.table.column.GetterColumn(
-                u'Pfad',
-                lambda t, c: '<a href="%s">%s</a>' % (
-                    zope.traversing.browser.absoluteurl.absoluteURL(
-                        t, self.request),
-                    t.uniqueId)),
-            zc.table.column.GetterColumn(
-                u'Position',
+                _('Position'),
                 lambda t, c: t.getPosition(self.context) or ''),
             zeit.cms.browser.column.LinkColumn(
                 hide_header=True,

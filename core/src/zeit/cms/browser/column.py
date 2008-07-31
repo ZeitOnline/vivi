@@ -56,7 +56,7 @@ class LinkColumn(zc.table.column.GetterColumn):
                 css_class = 'class="%s" ' % css_class
             target = u''
             if self.target:
-                target = 'target="%s"' % self.target
+                target = 'target="%s" ' % self.target
             result = u'<a %s%shref="%s">%s</a>' % (
                 target, css_class, url, content)
         return result

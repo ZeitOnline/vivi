@@ -78,7 +78,7 @@ Visit the syndication page again:
       <td>
       </td>
       <td>
-        <a ...target="_blank"...>Preview</a>
+        <a ...target="_blank" ...>Preview</a>
       </td>
     </tr>
   </tbody>

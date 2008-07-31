@@ -122,7 +122,17 @@ def listRepresentation_to_Lockable(obj):
     return zope.app.locking.interfaces.ILockable(obj.context, None)
 
 
-class MetadataColumn(zc.table.column.GetterColumn):
+class GetterColumn(zc.table.column.GetterColumn):
+
+    zope.interface.implements(zc.table.interfaces.ISortableColumn)
+
+    def cell_formatter(self, value, item, formatter):
+        if value is None:
+            return u''
+        return unicode(value)
+
+
+class MetadataColumn(GetterColumn):
 
     def __init__(self, title=u'', searchable_text=True, **kwargs):
         super(MetadataColumn, self).__init__(title=title, **kwargs)
@@ -140,7 +150,7 @@ class MetadataColumn(zc.table.column.GetterColumn):
         return ''.join(result)
 
 
-class LockedColumn(zc.table.column.GetterColumn):
+class LockedColumn(GetterColumn):
 
     def getter(self, item, formatter):
         lockable = zope.app.locking.interfaces.ILockable(item, None)
@@ -167,7 +177,7 @@ class LockedColumn(zc.table.column.GetterColumn):
             img, title)
 
 
-class TypeColumn(zc.table.column.GetterColumn):
+class TypeColumn(GetterColumn):
 
     def getter(self, item, formatter):
         icon = zope.component.queryMultiAdapter(
@@ -206,16 +216,6 @@ class PublishedColumn(zc.table.column.GetterColumn):
             img, title)
 
 
-class GetterColumn(zc.table.column.GetterColumn):
-
-    zope.interface.implements(zc.table.interfaces.ISortableColumn)
-
-    def cell_formatter(self, value, item, formatter):
-        if value is None:
-            return u''
-        return unicode(value)
-
-
 class FilenameColumn(GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
@@ -231,12 +231,23 @@ class HitColumn(GetterColumn):
             item.context, None)
         if access_counter is None:
             return None
-        return access_counter.hits
+        return access_counter
 
     def cell_formatter(self, value, item, formatter):
         if value is None:
             return u''
-        return '<span class="hitCounter">%s</span>' % value
+
+        today, total = value.hits, value.total_hits
+
+        if not total and not today:
+            return u''
+
+        if not today:
+            today = u'\N{EMPTY SET}'
+        if not total:
+            total = today
+
+        return '<span class="hitCounter">%s / %s</span>' % (today, total)
 
 
 class DatetimeColumn(GetterColumn):

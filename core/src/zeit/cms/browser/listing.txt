@@ -84,10 +84,12 @@ we just get an empty column:
   ...
 
 
-Now create an access counter which alwasy returns 42:
+Now create an access counter which alwasy returns 42 for today an 31415 for
+total hits:
 
 >>> class AccessCounter(object):
 ...     hits = 42
+...     total_hits = 31415
 ...     def __init__(self, context):
 ...         self.context = context
 ...
@@ -100,7 +102,7 @@ Now create an access counter which alwasy returns 42:
 ...     zeit.cms.content.interfaces.IAccessCounter)
 
 
-Now we have 42 accesses:
+Now we have 42 / 31415 accesses:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print browser.contents
@@ -127,7 +129,88 @@ Now we have 42 accesses:
       2008 3 7  12:47:16
     </td>
     <td>
-      <span class="hitCounter">42</span>
+      <span class="hitCounter">42 / 31415</span>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
+    </td>
+  </tr>
+  ...
+
+When there are no hits today the rendering is different:
+
+>>> AccessCounter.hits = None
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">4schanzentournee-abgesang</span>
+    </td>
+    <td>
+      2008 3 7  12:47:16
+    </td>
+    <td>
+      <span class="hitCounter">∅ / 31415</span>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
+    </td>
+  </tr>
+  ...
+
+When we have only hits from today, those are also displayed as total hits:
+
+>>> AccessCounter.hits = 543
+>>> AccessCounter.total_hits = None
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    <td>
+      <span class="filename">4schanzentournee-abgesang</span>
+    </td>
+    <td>
+      2008 3 7  12:47:16
+    </td>
+    <td>
+      <span class="hitCounter">543 / 543</span>
     </td>
     <td>
     </td>
