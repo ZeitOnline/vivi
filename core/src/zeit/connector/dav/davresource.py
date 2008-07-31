@@ -186,6 +186,7 @@ class DAVPropstat:
             'D:responsedescription', namespaces={'D' : 'DAV:'})
         if desc:
             self.description = desc[0].text.strip()
+
         # parse property name/value pairs
         prop_nodes = context_node.xpath(
             'D:prop/*', namespaces={'D' : 'DAV:'})
@@ -199,9 +200,10 @@ class DAVPropstat:
                      pvalue = pvalue[len(XML_PREFIX_MARKER):]
             else:
                  pvalue = lxml.etree.tostring(prop)
-                 # pvalue = etree.tostring(Etree(prop))
-            # pprint({'name':pkey, 'value':pvalue})
+            if pvalue is None:
+                pvalue = u''
             self.properties[pkey] = pvalue
+
         # "special" properties
         # DAV:
         #:fixme: can we use restype = doc.xpathEval(path, ps_node)

@@ -189,6 +189,13 @@ We can change properties explicitly using `changeProperties`:
 >>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
 u'gr\xfcn'
 
+Make sure we don't get None values:
+
+>>> res_got.properties[('resourcetype', 'DAV:')]
+u''
+
+
+
 
 Resources can be overwritten by just assigning them again:
 
