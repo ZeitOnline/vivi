@@ -6,6 +6,7 @@ zeit.cms changes
 
 - WYSIWYG-Editor kommt besser mit beliebigen ``article_extra``-Tags klar (bug
   #4442).
+- Importieren und Speichern der Vortagszugriffzahlen.
 
 1.0 (2008-07-29)
 ----------------
