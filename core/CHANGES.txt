@@ -1,8 +1,11 @@
 CHANGES
 =======
 
-1.4.1 (2008-08-01)
+1.5 (unreleased)
 ----------------
+
+1.4.1 (2008-08-01)
+------------------
 
 - Made cache sweep more stable agains inconsistent data.
 
