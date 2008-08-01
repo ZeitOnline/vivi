@@ -1,15 +1,18 @@
 zeit.cms changes
 ================
 
-1.2 (unreleased)
-----------------
+1.1.1 (2008-08-01)
+------------------
+
+- Import der Vortagszugriffszahlen jetzt mit explizitem Locking. Zudem besseres
+  Verhalten bei ungültigen Pfaden.
 
 1.1 (2008-08-01)
 ----------------
 
 - WYSIWYG-Editor kommt besser mit beliebigen ``article_extra``-Tags klar (bug
   #4442).
-- Importieren und Speichern der Vortagszugriffzahlen.
+- Importieren und Speichern der Vortagszugriffszahlen.
 
 1.0 (2008-07-29)
 ----------------

@@ -72,13 +72,25 @@ last_count = 2007-01-02
 total_hits = 95
 
 
-
-
 Note that nothing is counted when the object could not be loaded from the
 repository (that is no error is raised):
 
->>> write_yesterday('2007-01-03', [('/online/2007/01/foo-bar-baz', 6)])
+>>> write_yesterday('2007-01-03', [
+...     ('/online/2007/01/foo-bar-baz', 6),
+...     ('//index', 392)])
 >>> zeit.today.yesterday.update_lifetime_counters()
+
+Locked objects are also ignored:
+
+>>> connector.lock('http://xml.zeit.de/online/2007/01/eta-zapatero',
+...                'frodo', until=None)
+>>> write_yesterday('2007-01-04', [
+...     ('/online/2007/01/eta-zapatero', 6)])
+>>> zeit.today.yesterday.update_lifetime_counters()
+>>> print_lifetime_props('http://xml.zeit.de/online/2007/01/eta-zapatero')
+first_count = 2007-01-01
+last_count = 2007-01-02
+total_hits = 95
 
 
 The IAccessCounter interface allows access to the total hits:
@@ -94,6 +106,7 @@ The IAccessCounter interface allows access to the total hits:
 
 When we have hits from today those are added to the total hits:
 
+>>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = 1
 >>> storage = zope.component.getUtility(zeit.today.interfaces.ICountStorage)
 >>> storage.id_to_count['http://xml.zeit.de/online/2007/01/Somalia'] = 7
 >>> ac.total_hits
@@ -106,6 +119,7 @@ Clean up:
 >>> os.remove(yesterday_file)
 >>> zope.app.component.hooks.setSite(old_site)
 >>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = old_interval
+>>> zope.security.management.endInteraction()
 
 .. [#yesterday-helper]
     
@@ -142,7 +156,7 @@ Clean up:
     
     >>> import zeit.today.storage
     >>> old_interval  = zeit.today.storage.CountStorage.REFRESH_INTERVAL
-    >>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = 0.1
+    >>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = 0
 
 
 .. [#functional]
@@ -151,7 +165,16 @@ Clean up:
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
 
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
+
     >>> import zope.component
     >>> import zeit.connector.interfaces
     >>> connector = zope.component.getUtility(
     ...     zeit.connector.interfaces.IConnector)
+

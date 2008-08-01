@@ -20,4 +20,10 @@
 
   <include package="zeit.today" />
 
+  <principal
+    id="zope.hitimporter"
+    title="Hit importer"
+    login="hitimporter"
+    password="asdf" />
+
 </configure>

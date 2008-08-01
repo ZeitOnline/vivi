@@ -6,6 +6,7 @@ import logging
 
 import gocept.runner
 import zope.app.appsetup.product
+import zope.app.locking.interfaces
 import zope.component
 import zope.interface
 
@@ -51,11 +52,12 @@ def webdav_properties(context):
 
 def update_lifetime_counters():
     storage = zope.component.getUtility(zeit.today.interfaces.ICountStorage,
-                                       name='yesterday')
+                                        name='yesterday')
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
 
     for unique_id in storage:
+        __traceback_info__ = (unique_id,)
         try:
             content = repository.getContent(unique_id)
         except (KeyError, ValueError):
@@ -71,16 +73,29 @@ def update_lifetime_counters():
             # Already counted
             continue
 
-        if lifetime.first_count is None:
-            lifetime.first_count = count_date
-            lifetime.total_hits = count
-        else:
-            lifetime.total_hits += count
+        lockable = zope.app.locking.interfaces.ILockable(content)
+        try:
+            lockable.lock()
+        except zope.app.locking.interfaces.LockingError:
+            log.warning("Could not update %s because it is locked." %
+                        unique_id)
+            continue
 
-        lifetime.last_count = count_date
+        try:
+            if lifetime.first_count is None:
+                lifetime.first_count = count_date
+                lifetime.total_hits = count
+            else:
+                lifetime.total_hits += count
+
+            lifetime.last_count = count_date
+        finally:
+            lockable.unlock()
         log.debug("Updated %s (%s hits)" % (unique_id, lifetime.total_hits))
 
-@gocept.runner.appmain(ticks=3600)
+
+# XXX the principal should go to product config
+@gocept.runner.appmain(ticks=3600, principal='zope.hitimporter')
 def main():
     log.info("Updating hit counters.")
     update_lifetime_counters()

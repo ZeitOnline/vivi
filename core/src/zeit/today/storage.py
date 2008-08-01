@@ -70,7 +70,8 @@ class CountStorage(object):
             except lxml.etree.XMLSyntaxError:
                 # Hum. Sometimes we cannot parse it because the file is empty.
                 # Just ignore this update.
-                logger.error("XMLSyntaxError while updating today.xml")
+                logger.error("XMLSyntaxError while updating %s" % url,
+                             exc_info=True)
             else:
                 self.id_to_count = dict(
                     (self._make_unique_id(item.get('url')),
