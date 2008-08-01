@@ -58,7 +58,7 @@ def update_lifetime_counters():
     for unique_id in storage:
         try:
             content = repository.getContent(unique_id)
-        except KeyError:
+        except (KeyError, ValueError):
             log.error("Could not find %s" % unique_id)
             continue
 
