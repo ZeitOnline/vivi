@@ -156,10 +156,10 @@ class ResourceCache(persistent.Persistent):
         timeout = long((time.time() - self.CACHE_TIMEOUT) * 10e6)
         for access_time in self._time_to_id.keys(max=timeout):
             key = self._time_to_id[access_time]
-            del self._last_access_time[key]
-            del self._time_to_id[access_time]
-            del self._data[key]
-            del self._etags[key]
+            self._last_access_time.pop(key, None)
+            self._time_to_id.pop(access_time, None)
+            self._data.pop(key, None)
+            self._etags.pop(key, None)
 
 
 class PersistentCache(persistent.Persistent):
