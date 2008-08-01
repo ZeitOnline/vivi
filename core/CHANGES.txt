@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.4 (2008-07-31)
+1.4 (2008-08-01)
 ----------------
 
 - Empty WebDAV properties were returned as None and subsequently stored as
