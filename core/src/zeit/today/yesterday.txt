@@ -15,10 +15,38 @@ in the file so we rely on that. Create a file for
 ...     ('/online/2007/01/Ford-Beerdigung', 4223)])
 
 
-Update the counters now[#functional]_:
+Update the counters now[#functional]_. Note that we're doing a while loop as
+the function returns None when it has completed one update and something
+evaluating to True otherwise (Actualy it returns a sleep time for the main
+loop)[#log-handler]_:
 
+>>> run_count = 0
 >>> import zeit.today.yesterday
->>> zeit.today.yesterday.update_lifetime_counters()
+>>> while True:
+...     ticks = zeit.today.yesterday.update_lifetime_counters()
+...     run_count += 1
+...     print "Iteration", run_count, "ticks", ticks
+...     print log.getvalue(),
+...     log.seek(0)
+...     log.truncate()
+...     if ticks is None:
+...         break
+Iteration 1 ticks 0.025
+new transaction
+Updating click counter from file://...
+Iteration 2 ticks 0.025
+Getting resource u'http://xml.zeit.de/online'
+Getting resource u'http://xml.zeit.de/online/2007'
+Getting resource u'http://xml.zeit.de/online/2007/01'
+Getting resource u'http://xml.zeit.de/online/2007/01/Ford-Beerdigung'
+Updated http://xml.zeit.de/online/2007/01/Ford-Beerdigung (4223 hits)
+Iteration 3 ticks 0.025
+Getting resource u'http://xml.zeit.de/online/2007/01/Somalia'
+Updated http://xml.zeit.de/online/2007/01/Somalia (254 hits)
+Iteration 4 ticks None
+Getting resource u'http://xml.zeit.de/online/2007/01/eta-zapatero'
+Updated http://xml.zeit.de/online/2007/01/eta-zapatero (63 hits)
+
 
 >>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
 first_count = 2007-01-01
@@ -28,7 +56,8 @@ total_hits = 254
 
 Calling multiple times a day doesn't harm:
 
->>> zeit.today.yesterday.update_lifetime_counters()
+>>> while zeit.today.yesterday.update_lifetime_counters():
+...     pass
 >>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
 first_count = 2007-01-01
 last_count = 2007-01-01
@@ -43,7 +72,8 @@ Now, the next day (imagine sunset/sunrise here):
 ...     ('/online/2007/01/Somalia', 6),
 ...     ('/online/2007/01/eta-zapatero', 32),
 ...     ('/online/2007/01/Ford-Beerdigung', 563)])
->>> zeit.today.yesterday.update_lifetime_counters()
+>>> while zeit.today.yesterday.update_lifetime_counters():
+...     pass
 >>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
 first_count = 2007-01-01
 last_count = 2007-01-02
@@ -53,7 +83,8 @@ When a file with a date in the past is loaded those figures are *not* counted:
 
 >>> write_yesterday('2005-01-02', [
 ...     ('/online/2007/01/Somalia', 10000)])
->>> zeit.today.yesterday.update_lifetime_counters()
+>>> while zeit.today.yesterday.update_lifetime_counters():
+...     pass
 >>> print_lifetime_props('http://xml.zeit.de/online/2007/01/Somalia')
 first_count = 2007-01-01
 last_count = 2007-01-02
@@ -78,7 +109,8 @@ repository (that is no error is raised):
 >>> write_yesterday('2007-01-03', [
 ...     ('/online/2007/01/foo-bar-baz', 6),
 ...     ('//index', 392)])
->>> zeit.today.yesterday.update_lifetime_counters()
+>>> while zeit.today.yesterday.update_lifetime_counters():
+...     pass
 
 Locked objects are also ignored:
 
@@ -86,7 +118,8 @@ Locked objects are also ignored:
 ...                'frodo', until=None)
 >>> write_yesterday('2007-01-04', [
 ...     ('/online/2007/01/eta-zapatero', 6)])
->>> zeit.today.yesterday.update_lifetime_counters()
+>>> while zeit.today.yesterday.update_lifetime_counters():
+...     pass
 >>> print_lifetime_props('http://xml.zeit.de/online/2007/01/eta-zapatero')
 first_count = 2007-01-01
 last_count = 2007-01-02
@@ -120,6 +153,12 @@ Clean up:
 >>> zope.app.component.hooks.setSite(old_site)
 >>> zeit.today.storage.CountStorage.REFRESH_INTERVAL = old_interval
 >>> zope.security.management.endInteraction()
+
+Restore old log handler:
+
+>>> logging.root.removeHandler(log_handler)
+>>> logging.root.setLevel(old_log_level)
+
 
 .. [#yesterday-helper]
     
@@ -177,4 +216,15 @@ Clean up:
     >>> import zeit.connector.interfaces
     >>> connector = zope.component.getUtility(
     ...     zeit.connector.interfaces.IConnector)
+
+.. [#log-handler] Register a log handler
+
+    >>> import logging
+    >>> import StringIO
+    >>> log = StringIO.StringIO()
+    >>> log_handler = logging.StreamHandler(log)
+    >>> logging.root.addHandler(log_handler)
+    >>> old_log_level = logging.root.level
+    >>> logging.root.setLevel(logging.DEBUG)
+
 
