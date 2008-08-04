@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.1.2 (unreleased)
-----------------
+1.1.2 (2008-08-04)
+------------------
 
 - Import der Vortagszugriffszahlen in mehreren Transaktionen.
 
