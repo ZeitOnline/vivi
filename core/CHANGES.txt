@@ -4,6 +4,12 @@ CHANGES
 1.5 (unreleased)
 ----------------
 
+1.4.2 (2008-08-05)
+------------------
+
+- When the connector invalidates resources, the're reloaded immedeately to
+  have less conflict potential.
+
 1.4.1 (2008-08-01)
 ------------------
 

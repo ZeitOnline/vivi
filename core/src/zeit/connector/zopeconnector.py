@@ -81,6 +81,17 @@ class ZopeConnector(zeit.connector.connector.Connector):
             zope.event.notify(
                 zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
+        # Reload the invalidated resources immedeately. This should lead to
+        # less connflict potential as other threads see a valid resource. Also
+        # reverse the invalidateds to get the parent first. This gives the
+        # chance of having to do only one PROPFIND instead of two.
+        if parent:
+            for id in reversed(invalidate):
+                try:
+                    self[id]
+                except KeyError:
+                    pass
+
 
 def connectorFactory():
     """Factory for creating the connector with data from zope.conf."""
