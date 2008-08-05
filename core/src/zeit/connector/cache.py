@@ -56,7 +56,7 @@ class ResourceCache(persistent.Persistent):
         self._etags = BTrees.family64.OO.BTree()
         self._data = BTrees.family64.OO.BTree()
         self._last_access_time = BTrees.family64.OI.BTree()
-        self._time_to_id = BTrees.family64.IO.BTree()
+        self._access_time_to_ids = BTrees.family32.IO.BTree()
 
     def getData(self, unique_id, properties):
         key = get_storage_key(unique_id)
@@ -139,28 +139,42 @@ class ResourceCache(persistent.Persistent):
         return data_file
 
     def _update_cache_access(self, key):
-        last_access = self._last_access_time.get(key, 0)
-        new_access = long(time.time() * 10e6)
-        # only update if necessary
-        if last_access + self.UPDATE_INTERVAL * 10e6 < new_access:
-            logger.debug('Updating access time for %s' % key)
-            self._last_access_time[key] = new_access
+        last_access_time = self._last_access_time.get(key, 0)
+        if last_access_time / 10e6 < 10e6:
+            # Ignore old access times. This is to allow an update w/o downtime.
 
-            if last_access:
-                del self._time_to_id[last_access]
-            self._time_to_id[new_access] = key
+            old_set = self._access_time_to_ids.get(last_access_time)
+            if old_set is not None:
+                try:
+                    old_set.remove(key)
+                except KeyError:
+                    pass
 
+        new_access_time = self._get_time_key(time.time())
+        try:
+            new_set = self._access_time_to_ids[new_access_time]
+        except KeyError:
+            new_set = self._access_time_to_ids[new_access_time] = (
+                BTrees.family32.OI.TreeSet())
+        new_set.insert(key)
+        self._last_access_time[key] = new_access_time
         self._sweep()
 
     def _sweep(self):
-        timeout = long((time.time() - self.CACHE_TIMEOUT) * 10e6)
-        for access_time in self._time_to_id.keys(max=timeout):
-            key = self._time_to_id[access_time]
-            self._last_access_time.pop(key, None)
-            self._time_to_id.pop(access_time, None)
-            self._data.pop(key, None)
-            self._etags.pop(key, None)
+        timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)
+        access_times_to_remove = []
+        for access_time in self._access_time_to_ids.keys(max=timeout):
+            access_times_to_remove.append(access_time)
+            id_set = self._access_time_to_ids[access_time]
+            for id in id_set:
+                self._last_access_time.pop(id, None)
+                self._data.pop(id, None)
+                self._etags.pop(id, None)
+        for access_time in access_times_to_remove:
+            self._access_time_to_ids.pop(access_time, None)
 
+    def _get_time_key(self, time):
+        return int(time / self.UPDATE_INTERVAL)
 
 class PersistentCache(persistent.Persistent):
 

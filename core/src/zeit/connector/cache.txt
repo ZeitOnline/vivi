@@ -66,8 +66,11 @@ Also the access times are noted in the cache:
 >>> last_access = cache._last_access_time[get_storage_key('some-id')]
 >>> isinstance(last_access, (int, long))
 True
->>> get_storage_key(cache._time_to_id[last_access])
-'some-id'
+>>> cache._access_time_to_ids[last_access]
+<BTrees.OIBTree.OITreeSet object at 0x...>
+>>> list(cache._access_time_to_ids[last_access])
+['some-id']
+
 
 When we now access getData the access time will not be update since less than
 1 second has passed:
@@ -84,21 +87,20 @@ Let's wait 1 second:
 
 If we access now the time will be updated:
 
-
 >>> cache.getData('some-id', properties)
 <cStringIO.StringI object at 0x...>
 >>> new_access = cache._last_access_time[get_storage_key('some-id')]
->>> new_access == last_access
-False
+>>> new_access > last_access
+True
 
 Also the the time to id mapping has been updated:
 
->>> cache._time_to_id[last_access]
-Traceback (most recent call last):
-    ...
-KeyError: ...
->>> get_storage_key(cache._time_to_id[new_access])
-'some-id'
+>>> list(cache._access_time_to_ids[last_access])
+[]
+>>> cache._access_time_to_ids[new_access]
+<BTrees.OIBTree.OITreeSet object at 0x...>
+>>> list(cache._access_time_to_ids[new_access])
+['some-id']
 
 
 Add another resource to the cache to see how resources are removed from the

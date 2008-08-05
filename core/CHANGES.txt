@@ -4,6 +4,13 @@ CHANGES
 1.5 (unreleased)
 ----------------
 
+1.4.3 (2008-08-05)
+------------------
+
+- Changed the way the body cache keeps track of access times. The new way is
+  hopefully less conflict prone.
+
+
 1.4.2 (2008-08-05)
 ------------------
 
