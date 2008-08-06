@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Jul 29 12:32:39 2008\n"
+"POT-Creation-Date: Wed Aug  6 15:47:08 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -107,36 +107,41 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:197
+#: src/zeit/cms/browser/listing.py:207
 #: src/zeit/cms/workflow/interfaces.py:37
 #: src/zeit/workflow/publish.py:280
 msgid "Published"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:200
+#: src/zeit/cms/browser/listing.py:210
 msgid "Published but has changes"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:203
+#: src/zeit/cms/browser/listing.py:213
 msgid "Not published"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:270
+#: src/zeit/cms/browser/listing.py:277
+msgid "Directory listing"
+msgstr ""
+
+#: src/zeit/cms/browser/listing.py:281
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:277
+#: src/zeit/cms/browser/listing.py:288
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:281
+#: src/zeit/cms/browser/listing.py:292
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:117
 #: src/zeit/cms/content/interfaces.py:266
 #: src/zeit/cms/syndication/browser/feed.py:155
+#: src/zeit/cms/syndication/browser/manager.py:95
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
@@ -146,7 +151,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:285
+#: src/zeit/cms/browser/listing.py:296
 #: src/zeit/cms/interfaces.py:48
 #: src/zeit/cms/repository/browser/file.py:42
 #: src/zeit/content/image/browser/imagegroup.py:69
@@ -155,22 +160,22 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:289
+#: src/zeit/cms/browser/listing.py:300
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:292
+#: src/zeit/cms/browser/listing.py:303
 #: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:294
+#: src/zeit/cms/browser/listing.py:305
 #: src/zeit/cms/content/interfaces.py:76
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:298
+#: src/zeit/cms/browser/listing.py:309
 #: src/zeit/cms/content/interfaces.py:71
 #: src/zeit/search/browser/search.py:110
 #: src/zeit/search/interfaces.py:23
@@ -190,7 +195,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:205
+#: src/zeit/cms/browser/main_template.pt:204
 msgid "Add..."
 msgstr ""
 
@@ -512,6 +517,19 @@ msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:304
 msgid "Hits today"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:305
+msgid "Indicates how many times a page viewed today."
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:310
+#: src/zeit/today/interfaces.py:40
+msgid "Total hits"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:311
+msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:36
@@ -907,7 +925,11 @@ msgstr ""
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:111
+#: src/zeit/cms/syndication/browser/manager.py:101
+msgid "Position"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/manager.py:108
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:332
 msgid "Preview"
@@ -931,6 +953,10 @@ msgstr ""
 #: src/zeit/cms/syndication/browser/manager.py:64
 #. Default: ""
 msgid "Could not publish \"${name}\"."
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/manager.py:98
+msgid "Path"
 msgstr ""
 
 #: src/zeit/cms/syndication/interfaces.py:207
@@ -1417,6 +1443,18 @@ msgstr ""
 
 #: src/zeit/seo/interfaces.py:17
 msgid "HTML description"
+msgstr ""
+
+#: src/zeit/today/interfaces.py:41
+msgid "Total hits between first and last count."
+msgstr ""
+
+#: src/zeit/today/interfaces.py:44
+msgid "Date the first hit was counted on"
+msgstr ""
+
+#: src/zeit/today/interfaces.py:47
+msgid "Date the last hit was counted on"
 msgstr ""
 
 #: src/zeit/workflow/browser/form.py:102

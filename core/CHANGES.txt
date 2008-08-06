@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-1.2 (unreleased)
-----------------
+1.1.3 (unreleased)
+------------------
+
+- Korrektes Übersetzen des View-Titels.
 
 1.1.2 (2008-08-04)
 ------------------

@@ -40,10 +40,9 @@
           }
         "/>
         <title>
-          <metal:title metal:define-slot="title"
-            tal:content="string: $context_title – $view_title"
-            i18n:translate="">
-            Zeit CMS 
+          <metal:title metal:define-slot="title">
+            <span tal:replace="context_title" /> –
+            <span tal:replace="view_title" i18n:translate=""/>
           </metal:title>
         </title>
         <link rel="icon" tal:attributes="href favicon"

@@ -376,7 +376,25 @@ modification time.
     ...
 
 
+Title
+=====
 
+The title of the listing is "Directory listing"
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml...
+    <title> 01 – Directory listing </title>
+    ...
+
+When we switch to German the title is translated:
+
+>>> browser.addHeader('Accept-Language', 'de')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml...
+    <title> 01 – Dateiliste </title>
+    ...
 
 Clean up:
 

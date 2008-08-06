@@ -274,7 +274,7 @@ class DatetimeColumn(GetterColumn):
 class Listing(object):
     """Object listing view"""
 
-    title = u"Dateiliste"
+    title = _('Directory listing')
     types_source = zeit.cms.content.sources.CMSContentTypeSource()
     css_class = 'contentListing hasMetadata'
     filter_interface = None
