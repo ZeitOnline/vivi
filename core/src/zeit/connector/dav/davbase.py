@@ -246,7 +246,6 @@ class DAVBase:
 
     def _request(self, method, url, body=None, extra_hdrs={}):
         "Internal method for sending a request."
-        self._recursion_level = getattr(self, '_recursion_level', 0) + 1
         if DEBUG_REQUEST:
             print >>sys.stderr, (
                 "### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n############\n" % (
@@ -268,18 +267,6 @@ class DAVBase:
                 "### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % (
                     (resp.status, resp.reason,
                      "\n  ".join(["%s: %s" % h for h in resp.getheaders()]))))
-        if resp.status in (301, 302, 303, 305, 307):
-            # redirect silently
-            # Location: header *MUST* be there
-            new_uri = resp.msg['Location']
-            # RECURSION AHEAD !
-            if self._recursion_level > 10:
-                # do NOT descend further, return last response
-                return resp
-            resp.read()
-            #resp.close()
-            resp = self._request(method, new_uri, body, extra_hdrs)
-        self._recursion_level -= 1
         return resp
 
 

@@ -197,7 +197,7 @@ class Connector(object):
             if child_id != child_id.encode('ascii', 'replace'):
                 # We want to ignore objects with strange characters in the id.
                 continue
-            yield (self._id_splitlast(child_id)[1], child_id)
+            yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
 
     def _get_resource_type(self, id):
         __traceback_info__ = (id, )
@@ -639,11 +639,11 @@ class Connector(object):
         # be collections. This ain't strictly right
         wantcoll = (ensure == 'collection' or url.endswith('/'))
         if wantcoll:
-            res = DAVCollection(url, conn = self.get_connection()) # FIXME auto_request?
+            res = DAVCollection(url, conn=self.get_connection())
         elif ensure == 'file':
-            res = DAVFile(url, conn = self.get_connection()) # FIXME auto_request?
+            res = DAVFile(url, conn=self.get_connection())
         else: # Tis one to disappear when [14] fixed
-            res = DAVResource(url, conn = self.get_connection()) # FIXME auto_request?
+            res = DAVResource(url, conn=self.get_connection())
         return res
 
     def _get_dav_lock(self, id):
@@ -713,10 +713,10 @@ class Connector(object):
             return id + '/'
         if self.property_cache.get(id) is not None:
             return id
-        dav_resource = DAVResource(self._id2loc(id + '/'), conn=self.get_connection())
+        dav_resource = DAVResource(self._id2loc(id), conn=self.get_connection())
         response = dav_resource.head()
         response.read()
-        if response.status == 200:
+        if response.status == 301:
             return id + '/'
         return id
 
@@ -725,6 +725,8 @@ class Connector(object):
         # Split id in parent/name parts
         # FIXME fix borderline cases: _splitlast(""), _splitlast("/")
         parent, last = id.rstrip('/').rsplit('/', 1)
+        if id.endswith('/'):
+            last = last + '/'
         return parent + '/', last
 
 

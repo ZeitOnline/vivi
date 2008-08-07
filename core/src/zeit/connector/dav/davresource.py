@@ -621,10 +621,11 @@ class DAVResource:
 
     def is_collection ( self ):
         """Returns true if self refers to a collection.
+
+        We just simply deduct this from the URL.
+
         """
-        if self.auto_request or not self._result:
-            self.update()
-        return self.collection
+        return self.url.endswith('/')
 
     def get ( self, xhdrs=None ):
         """Issue a get request to the url of this instance and return
@@ -841,7 +842,6 @@ class DAVFile ( DAVResource ):
             hdrs['Lock-Token'] = '<' + mytoken + '>' # FIXME cf. _proppatch. Which is right?
             hdrs['If'] = '<%s>(<%s>)' % (self.url, mytoken)
         etag = self.get_etag()
-##         print 'upload: ETAG:', etag
         if etag:
             try:
                 ifclause = hdrs['If']
@@ -857,9 +857,8 @@ class DAVFile ( DAVResource ):
         res = DAVResult(res)
         if res.status not in (200, 201, 204):
             raise DAVUploadFailedError, (res.status, res.reason)
-        self.update()
-        return
-#
+        self.invalidate()
+
 
 class DAVCollection ( DAVResource ):
 
@@ -998,7 +997,7 @@ class DAVCollection ( DAVResource ):
         res, url = self._do_create_file(name, data=data, content_type=content_type, locktoken=locktoken)
         if res.status in (200, 201):
             # created, return file
-            self.update()
+            self.invalidate()
             return DAVFile(url, self._conn)
         raise DAVCreationFailedError, (res.status, res.reason, url)
 
@@ -1025,7 +1024,4 @@ class DAVCollection ( DAVResource ):
             raise DAVLockedError(res.status, res.reason, url)
         if res.status >= 300:
             raise DAVDeleteFailedError(res.status, res.reason, url)
-        # deleted and done
-        res.close()
-        self.update()
-        return
+        self.invalidate()

@@ -24,54 +24,61 @@ Remember the connection for later:
 Get a list:
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
-connect: (...)
-send: 'HEAD http://.../testing/ HTTP/1.1...Connection: keep-alive...
-reply: 'HTTP/1.1 200 OK\r\n'
+connect: (zip6.zeit.de, 9000)
+send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
+reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
 header: Server: ...
-header: Keep-Alive: timeout=15, max=100
+header: Location: http://zip6.zeit.de:9000/cms/work/testing/
+header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
-header: Content-Type: text/html;charset=UTF-8
-send: 'PROPFIND ...
+header: Content-Type: text/html; charset=iso-8859-1
+send: 'PROPFIND http://zip6.zeit.de:9000/cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: zip6.zeit.de:9000\r\nUser-Agent: zeit.connector\r\n\r\n'
 send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
 header: Server: ...
+header: MS-Author-Via: DAV
 header: Content-Length: 914
-header: Keep-Alive: timeout=15, max=99
+header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/xml; charset="utf-8"
-...
+header: X-Pad: avoid browser bug
 []
 
 
 So apparently we may only wait 15 seconds before the connection will time out.
+In this case we will silently reconnect. The first HEAD request does not reach
+the server, then the reconnect happens and the HEAD request is send again:
 
 >>> import time
->>> time.sleep(15)
+>>> time.sleep(16)
 >>> connector._invalidate_cache('http://xml.zeit.de/testing/')
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
-send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing/ HTTP/1.1...
+send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: ''
-connect: (...)
-send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing/ HTTP/1.1...
-reply: 'HTTP/1.1 200 OK\r\n'
+connect: (zip6.zeit.de, 9000)
+send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
+reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
 header: Server: ...
-header: Keep-Alive: timeout=15, max=100
+header: Location: http://zip6.zeit.de:9000/cms/work/testing/
+header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
-header: Content-Type: text/html;charset=UTF-8
-send: 'PROPFIND ...
+header: Content-Type: text/html; charset=iso-8859-1
+send: 'PROPFIND http://zip6.zeit.de:9000/cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: zip6.zeit.de:9000\r\nUser-Agent: zeit.connector\r\n\r\n'
 send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
 header: Server: ...
+header: MS-Author-Via: DAV
 header: Content-Length: 914
-header: Keep-Alive: timeout=15, max=99
+header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/xml; charset="utf-8"
-...
+header: X-Pad: avoid browser bug
 []
+
 
 We really have reconnected (see also the connect: (...) above):
 

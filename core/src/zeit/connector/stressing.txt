@@ -1,0 +1,49 @@
+Stress tests
+============
+
+>>> import os
+>>> from zeit.connector.connector import Connector
+>>> connector = Connector(roots={
+...       "default": os.environ['connector-url']})
+
+
+Let's change properties in a folder in parallel. The actual problem arises only
+on parallel delete on which the server just stops putting out XML.
+
+
+>>> base_id = 'http://xml.zeit.de/testing/stresslock'
+>>> import StringIO
+>>> import random
+>>> import time
+>>> import zeit.connector.interfaces
+>>> from zeit.connector.resource import Resource
+>>> def stress():
+...     nr = str(thread.get_ident()).encode('base64')[:-3]
+...     id = base_id + str(nr)
+...     res = Resource(id,
+...                'stresslock',
+...                'text',
+...                StringIO.StringIO('Pop goes the weasel!'),
+...                contentType = 'text/plain')
+...     res.properties[('foo', 'bar')] = 'baz'
+...     res.properties[('count', 'bar')] = '-1'
+...     connector.add(res)
+...     for count in range(50):
+...         token = connector.lock(id, 'test', None)
+...         r = connector[id]
+...         assert r.properties[('count', 'bar')]  == str(count-1), dict(r.properties)
+...         connector.changeProperties(id, {('count', 'bar'): str(count)})
+...         token = connector.unlock(id)
+...     del connector[id]
+
+>>> import thread
+>>> import threading
+>>> threads = []
+>>> while len(threads) < 10:
+...     threads.append(threading.Thread(target=stress))
+>>> for t in threads:
+...     t.start()
+>>> for t in threads:
+...     t.join()
+
+

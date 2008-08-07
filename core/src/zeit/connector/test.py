@@ -22,10 +22,11 @@ real_connector_layer = zope.app.testing.functional.ZCMLLayer(
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
-        'connector.txt',
-        'mock.txt',
         'cache.txt',
+        'connector.txt',
         'locking.txt',
+        'mock.txt',
+        'stressing.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
 
@@ -43,11 +44,19 @@ def test_suite():
     return suite
 
 
-def print_tree(connector, base, level=0):
+def print_tree(connector, base):
     """Helper to print a tree."""
+    print '\n'.join(list_tree(connector, base))
+
+
+def list_tree(connector, base, level=0):
+    """Helper to print a tree."""
+    result = []
     if level == 0:
-        print base
+        result.append(base)
     for name, uid in sorted(connector.listCollection(base)):
-        print uid, connector[uid].type
+        result.append('%s %s' % (uid, connector[uid].type))
         if uid.endswith('/'):
-            print_tree(connector, uid, level+1)
+            result.extend(list_tree(connector, uid, level+1))
+
+    return result

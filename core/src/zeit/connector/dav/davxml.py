@@ -23,6 +23,7 @@ class _DavXmlDoc:
         try:
             doc = lxml.etree.fromstring(string)
         except lxml.etree.XMLSyntaxError, e:
+            open('/tmp/error.xml', 'w').write(string)
             raise DavXmlParseError, e.error_log.filter_levels(
                 lxml.etree.ErrorLevels.FATAL)
         self.doc = doc

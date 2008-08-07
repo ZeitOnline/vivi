@@ -1,8 +1,16 @@
 CHANGES
 =======
 
-1.5 (unreleased)
-----------------
+1.4.4 (unreleased)
+------------------
+
+- The discovery of the cannonical id of a resource does a HEAD request on the
+  base url (w/o trailing slash) now. This leads to massively decreased 404's on
+  the server.
+- Removed auto-redirect in dav module as this was not required and just added
+  complexity.
+- Removed unnecessary PROPFIND's in dav module.
+- Added a stress test which does property changes in parallel.
 
 1.4.3 (2008-08-05)
 ------------------
