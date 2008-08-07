@@ -125,7 +125,7 @@ class HTMLConverter(object):
 
     def _replace_image_nodes_by_img(self, node):
         """Replace XML <image/> by HTML <img/>."""
-        image_nodes = node.xpath('image')
+        image_nodes = node.xpath('descendant::image')
         for image_node in image_nodes:
             unique_id = image_node.get('src')
             if unique_id.startswith('/cms/work/'):

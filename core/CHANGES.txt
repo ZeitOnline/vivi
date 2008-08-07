@@ -4,6 +4,9 @@ zeit.cms changes
 1.1.4 (unreleased)
 ------------------
 
+- WYSIWYG-Editor: Bilder, die nicht direkt unterhalb des <p> sind werden
+  richtig in HTML konvertiert.
+
 1.1.3 (2008-08-06)
 ------------------
 

@@ -13,7 +13,7 @@ We need the functional test setup and an interaction:
 >>> old_site = zope.app.component.hooks.getSite()
 >>> zope.app.component.hooks.setSite(getRootFolder())
 >>> request = zope.publisher.browser.TestRequest()
->>> request.setPrincipal(zope.security.testing.Principal('hans'))
+>>> request.setPrincipal(zope.security.testing.Principal(u'hans'))
 >>> zope.security.management.newInteraction(request)
 
 
@@ -314,7 +314,7 @@ The other way round:
 Images
 ------
 
-Articles can have inline images. This looks as follows:
+Articles can have inline images[#copyright-and-bu]_. This looks as follows:
 
 >>> source = u'''\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -361,12 +361,24 @@ image:
   <body>
     <title>Title</title>
     <p>Fuer menschliche
- <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu xsi:nil="true"/></image>
+ <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
   Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
   </body>
 </article>
+
+Just re-check the conversion to HTML:
+
+>>> print converter.to_html(article.xml['body'])
+<p xmlns:py="http://codespeak.net/lxml/objectify/pytype">Fuer menschliche
+ <img xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+  Zellen ist das toll.</p>
+<BLANKLINE>
+<p>Aus winzigen embryonalen ...</p>
+<BLANKLINE>
+<p>Selbst wenn </p>
+
 
 
 We are greedy against old paths in the XML:
@@ -504,11 +516,21 @@ Bug: ``<p><strong><img`` was not recognised correctly:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
   <body>
-    <p><strong><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu xsi:nil="true"/></image>
+    <p><strong><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
            Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
   </body>
 </article>
+
+
+Recheck the conversion to HTML:
+
+>>> print converter.to_html(article.xml['body'])
+<p xmlns:py="http://codespeak.net/lxml/objectify/pytype"><strong><img xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+           Hurz</strong> foobar </p>
+<p>Selbst wenn </p>
+
+
 
 
 ``article_extra``
@@ -692,3 +714,17 @@ Clean up:
 
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#copyright-and-bu] Set a copyright and a BU for the image
+
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+    >>> image = repository['2006']['DSC00109_2.JPG']
+    >>> import zeit.cms.checkout.interfaces
+    >>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
+    >>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
+    >>> metadata.copyrights = ((u'ZEIT ONLINE', u'http://zeit.de'),)
+    >>> metadata.caption = u'Cap cap cap'
+    >>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()
