@@ -35,10 +35,10 @@ Resources
 Get an object. We will get a cached resource:
 
 >>> index_id = "http://xml.zeit.de/deutschland/index"
->>> ressource = connector[index_id]
->>> ressource
+>>> resource = connector[index_id]
+>>> resource
 <zeit.connector.resource.CachedResource object at 0x...>
->>> print ressource.data.read()
+>>> print resource.data.read()
 <?xml ...
 <centerpage ...
 
@@ -62,6 +62,8 @@ We can also get directory resources:
 >>> resource = connector['http://xml.zeit.de/deutschland/']
 >>> resource.type
 'collection'
+>>> resource.__name__
+'deutschland'
 
 Storing an object. The object will be created when not yet there.
 Don't forget content-type:

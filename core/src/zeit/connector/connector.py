@@ -292,7 +292,7 @@ class Connector(object):
         except davresource.DAVNotFoundError:
             raise KeyError("The resource %r does not exist." % id)
         return zeit.connector.resource.CachedResource(
-            id, self._id_splitlast(id)[1],
+            id, self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
