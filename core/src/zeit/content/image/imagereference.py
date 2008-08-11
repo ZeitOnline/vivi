@@ -10,10 +10,10 @@ import zope.component
 import zope.interface
 
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.relation.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.content.image.interfaces
 
 
@@ -46,21 +46,12 @@ def images_from_template(context):
     return ImagesAdapter(context)
 
 
-class FeedMetadataUpdater(object):
+class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     """Add the *first* referenced image to the feed entry."""
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+    target_iface = zeit.content.image.interfaces.IImages
 
-    def __init__(self, context):
-        self.context = context
-
-    def update(self, entry):
-        images = zeit.content.image.interfaces.IImages(
-            self.context, None)
-        if images is None:
-            return
+    def update_with_context(self, entry, images):
         if not images.images:
             # No image referenced
             return

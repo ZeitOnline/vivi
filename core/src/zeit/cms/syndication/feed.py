@@ -208,26 +208,17 @@ resourceFactory = zope.component.adapter(
     zeit.cms.syndication.interfaces.IFeed)(resourceFactory)
 
 
-class CommonMetadataUpdater(object):
+class CommonMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     """Put information for ICommonMetadata into the channel."""
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
     short_title_path = lxml.objectify.ObjectPath('.short.title')
     short_text_path = lxml.objectify.ObjectPath('.short.text')
     homepage_title_path = lxml.objectify.ObjectPath('.homepage.title')
     homepage_text_path = lxml.objectify.ObjectPath('.homepage.text')
 
-    def __init__(self, context):
-        self.context = context
+    target_iface = zeit.cms.content.interfaces.ICommonMetadata
 
-    def update(self, entry):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(
-            self.context, None)
-        if metadata is None:
-            return
+    def update_with_context(self, entry, metadata):
         entry['supertitle'] = metadata.supertitle
         entry['title'] = metadata.teaserTitle
         entry['text'] = metadata.teaserText
@@ -239,21 +230,12 @@ class CommonMetadataUpdater(object):
 
 
 
-class RelatedMetadataUpdater(object):
+class RelatedMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     """Put information from IRelated into the channel."""
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+    target_iface = zeit.cms.related.interfaces.IRelatedContent
 
-    def __init__(self, context):
-        self.context = context
-
-    def update(self, entry):
-        related = zeit.cms.related.interfaces.IRelatedContent(
-            self.context, None)
-        if related is None:
-            return
+    def update_with_context(self, entry, related):
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
         entry[xml_repr.xml.tag] = zope.security.proxy.removeSecurityProxy(
             xml_repr.xml)

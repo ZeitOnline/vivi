@@ -154,18 +154,6 @@ class IMySyndicationTargets(zope.interface.Interface):
         """Iterate over targets."""
 
 
-class IFeedMetadataUpdater(zope.interface.Interface):
-    """Update feed entry metadata.
-    """
-
-    def update(entry):
-        """Update entry with data from context.
-
-        Entry: lxml.objectify'ed element from the feed.
-
-        """
-
-
 class IFeedSource(zeit.cms.content.interfaces.ICMSContentSource):
     """A source for feeds."""
 

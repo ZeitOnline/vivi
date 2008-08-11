@@ -245,7 +245,11 @@ class IXMLReferenceUpdater(zope.interface.Interface):
     """Objects that update metadata etc on XML references."""
 
     def update(xml_node):
-        """Update xml_node with data from the content object."""
+        """Update xml_node with data from the content object.
+
+        xml_node: lxml.objectify'ed element
+
+        """
 
 
 class IXMLSource(zope.interface.Interface):

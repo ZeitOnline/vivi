@@ -163,18 +163,39 @@ def map_dav_properties_to_xml_before_checkin(context, event):
 
 
 class XMLReferenceUpdater(object):
-    """Adapter that updates metadata etc on an XML reference."""
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
+    target_iface = None
+
     def __init__(self, context):
         self.context = context
+
+    def update(self, xml_node):
+        """Only run the real update if context is adaptable to target_iface.
+
+        Subclasses need to set the target_iface attribute and implement
+        update_with_context(xml_node, context) in order to use this feature.
+
+        """
+        context = self.target_iface(self.context, None)
+        if context is None:
+            return
+        return self.update_with_context(xml_node, context)
+
+
+class XMLReferenceUpdaterRunner(XMLReferenceUpdater):
+    """Adapter that updates metadata etc on an XML reference."""
 
     def update(self, xml_node):
         """Update xml_node with data from the content object."""
         for name, updater in zope.component.getAdapters(
             (self.context,),
-            zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
+            zeit.cms.content.interfaces.IXMLReferenceUpdater):
+            if not name:
+                # The unnamed adapter is the one which runs all the named
+                # adapters, i.e. this one.
+                continue
             updater.update(xml_node)

@@ -109,7 +109,7 @@
     />
   <adapter factory=".imagereference.images_from_template" />
   <adapter
-    factory=".imagereference.FeedMetadataUpdater"
+    factory=".imagereference.XMLReferenceUpdater"
     name="zeit.cms.image"
     />
   <subscriber handler=".imagereference.update_image_reference_on_checkin" />

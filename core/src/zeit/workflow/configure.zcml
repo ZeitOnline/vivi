@@ -10,7 +10,7 @@
     />
   <adapter factory=".timebased.workflowProperties" />
   <adapter
-    factory=".timebased.FeedMetadataUpdater"
+    factory=".timebased.XMLReferenceUpdater"
     name="timebased-workflow"
     />
   <subscriber handler=".workflow.log_workflow_changes" />

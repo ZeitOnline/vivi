@@ -37,6 +37,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <adapter factory=".link.FeedMetadataUpdater" name="zeit.content.link" />
+  <adapter factory=".link.XMLReferenceUpdater" name="zeit.content.link" />
 
 </configure>

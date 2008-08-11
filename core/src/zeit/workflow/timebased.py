@@ -15,7 +15,7 @@ import lovely.remotetask.interfaces
 
 import zeit.connector.interfaces
 import zeit.cms.content.dav
-import zeit.cms.content.interfaces
+import zeit.cms.content.xmlsupport
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -157,22 +157,12 @@ def workflowProperties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
 
-class FeedMetadataUpdater(object):
+class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     """Add the expire/publication time to feed entry."""
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
+    target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
 
-    def __init__(self, context):
-        self.context = context
-
-    def update(self, entry):
-        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(
-            self.context, None)
-        if workflow is None:
-            return
-
+    def update_with_context(self, entry, workflow):
         date = ''
         if workflow.released_from:
             date = workflow.released_from.isoformat()
