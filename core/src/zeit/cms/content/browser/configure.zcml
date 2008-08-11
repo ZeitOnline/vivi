@@ -79,8 +79,6 @@
     permission="zope.View"
     />
 
-  <adapter factory=".related.related_content_browse_location" />
-  
   <!-- Teaser copying -->
   <resourceLibrary name="zeit.cms.content.teaser"
     require="gocept.mochikit.jsclass mochikit">

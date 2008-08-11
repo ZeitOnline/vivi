@@ -1,13 +1,11 @@
-# vim:fileencoding=utf-8 encoding=utf-8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.interfaces
-import zope.schema.interfaces
+import zope.schema
 
 import zeit.cms.content.field
 import zeit.cms.content.sources
@@ -16,8 +14,7 @@ import zeit.cms.interfaces
 import zeit.cms.content.contentsource
 from zeit.cms.content._bootstrapinterfaces import ICMSContentSource
 
-
-_ = zope.i18nmessageid.MessageFactory('zeit.cms')
+from zeit.cms.i18n import MessageFactory as _
 
 
 # XXX There is too much, too unordered in here, clean this up.
@@ -264,18 +261,6 @@ class ITemplate(IXMLRepresentation):
     """A template for xml content types."""
 
     title = zope.schema.TextLine(title=_('Title'))
-
-
-class IRelatedContent(zope.interface.Interface):
-    """Relate other content."""
-
-    related = zope.schema.Tuple(
-        title=_("Related content"),
-        description=_("Objects that are related to this object."),
-        default=(),
-        required=False,
-        value_type=zope.schema.Choice(
-            source=zeit.cms.content.contentsource.cmsContentSource))
 
 
 class IDAVPropertiesInXML(zope.interface.Interface):

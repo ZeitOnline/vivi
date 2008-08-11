@@ -6,11 +6,11 @@ import zope.component
 import zope.interface
 
 import zeit.cms.content.interfaces
-import zeit.cms.content.related
+import zeit.cms.related.related
 
 
 @zope.component.adapter(
-    zeit.cms.content.related.RelatedContent,
+    zeit.cms.related.related.RelatedContent,
     zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)

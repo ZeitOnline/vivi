@@ -15,10 +15,10 @@ Add content to repository:
 
 Adapt it to IReference, currenty there are no references:
 
->>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(content)
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
-...     zeit.cms.content.interfaces.IRelatedContent, related)
+...     zeit.cms.related.interfaces.IRelatedContent, related)
 True
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.content.interfaces.IXMLRepresentation, related)

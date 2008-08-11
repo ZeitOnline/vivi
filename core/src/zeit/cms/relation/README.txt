@@ -38,7 +38,8 @@ The content doesn't have any relateds currently, nor is it related anywhere:
 
 Relate b and c to a via IRelatedContent
 
->>> related = zeit.cms.content.interfaces.IRelatedContent(a)
+>>> import zeit.cms.related.interfaces
+>>> related = zeit.cms.related.interfaces.IRelatedContent(a)
 >>> related.related = (repository['b'], repository['c'])
 >>> repository['a'] = a
 >>> relations.index(a)
@@ -66,7 +67,7 @@ Note that `get_relations` is not transitive. So if d references a, askind for
 c's references will still just yield a:
 
 >>> d = repository['d']
->>> related = zeit.cms.content.interfaces.IRelatedContent(d)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(d)
 >>> related.related = (repository['a'],)
 >>> repository['d'] = d
 >>> relations.index(d)
@@ -104,7 +105,7 @@ c[#needs-interaction]_:
 >>> import zeit.cms.checkout.interfaces
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     repository['d']).checkout()
->>> related = zeit.cms.content.interfaces.IRelatedContent(checked_out)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(checked_out)
 >>> related.related = (repository['c'],)
 
 Nothing has been indexed so far:
@@ -139,7 +140,7 @@ Add another relation from b to c, so that updateing c will update a and b:
 
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     repository['b']).checkout()
->>> related = zeit.cms.content.interfaces.IRelatedContent(checked_out)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(checked_out)
 >>> related.related = (repository['c'],)
 >>> b = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 >>> relations.index(b)
@@ -189,7 +190,7 @@ circular references. Let c relate to b and change something:
 
 >>> c = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     repository['c']).checkout()
->>> related = zeit.cms.content.interfaces.IRelatedContent(c)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(c)
 >>> related.related = (b, )
 >>> c.teaserTitle = u'Tease me gently.'
 

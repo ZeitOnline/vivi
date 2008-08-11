@@ -19,6 +19,7 @@
   <include file="permissions.zcml" />
 
   <include package=".content" />
+  <include package=".related" />
   <include package=".checkout"  />
   <include package=".repository" />
   <include package=".workingcopy" />
@@ -32,7 +33,7 @@
 
   <!-- configuration -->
 
-  <utility 
+  <utility
     name="zeit.cms"
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"

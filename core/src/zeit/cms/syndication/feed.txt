@@ -387,11 +387,11 @@ changes:
 When an object has related content, this information is part of the metadata,
 too:
 
->>> import zeit.cms.content.interfaces
+>>> import zeit.cms.related.interfaces
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
 >>> content.uniqueId = 'tct'
->>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(content)
 >>> related.related = (repository['online']['2007']['01']['Somalia'],
 ...                    repository['online']['2007']['01']['eta-zapatero'])
 >>> feed.insert(0, content)
@@ -438,7 +438,7 @@ too:
 
 When we change the order this is reflected:
 
->>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(content)
 >>> related.related = (repository['online']['2007']['01']['eta-zapatero'],
 ...                    repository['online']['2007']['01']['Somalia'])
 >>> feed.updateMetadata(content)
@@ -485,7 +485,7 @@ When we change the order this is reflected:
 
 We can also remove all relateds:
 
->>> related = zeit.cms.content.interfaces.IRelatedContent(content)
+>>> related = zeit.cms.related.interfaces.IRelatedContent(content)
 >>> related.related = ()
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source

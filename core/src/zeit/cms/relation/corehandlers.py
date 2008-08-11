@@ -13,6 +13,7 @@ import z3c.flashmessage.interfaces
 import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.related.interfaces
 import zeit.cms.relation.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
@@ -67,7 +68,7 @@ def with_checked_out(content, function, events=True):
 
 def update_relating_of_checked_out(checked_out):
     """Update the objects which relate the checked_out."""
-    related = zeit.cms.content.interfaces.IRelatedContent(
+    related = zeit.cms.related.interfaces.IRelatedContent(
         checked_out, None)
     if related is None:
         return False

@@ -14,6 +14,8 @@ import gocept.form.grouped
 import zc.resourcelibrary
 
 import zeit.cms.browser.form
+import zeit.cms.content.interfaces
+import zeit.cms.related.interfaces
 import zeit.cms.settings.interfaces
 import zeit.cms.syndication.interfaces
 from zeit.cms.i18n import MessageFactory as _
@@ -162,4 +164,4 @@ zope.testing.cleanup.addCleanUp(_clean_asset_interfaces)
 
 @zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
 def register_asset_interface(event):
-    AssetBase.add_asset_interface(zeit.cms.content.interfaces.IRelatedContent)
+    AssetBase.add_asset_interface(zeit.cms.related.interfaces.IRelatedContent)

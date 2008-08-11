@@ -22,6 +22,7 @@ import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.related.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 
@@ -241,7 +242,7 @@ class RelatedMetadataUpdater(object):
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
     def update_entry(self, entry, content):
-        related = zeit.cms.content.interfaces.IRelatedContent(content, None)
+        related = zeit.cms.related.interfaces.IRelatedContent(content, None)
         if related is None:
             return
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
