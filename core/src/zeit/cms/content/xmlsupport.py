@@ -21,6 +21,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
 import zeit.cms.content.property
 import zeit.cms.interfaces
+import zeit.cms.syndication.interfaces
 import zeit.connector.interfaces
 
 
@@ -159,3 +160,16 @@ def map_dav_properties_to_xml_before_checkin(context, event):
         zeit.cms.content.interfaces.IXMLRepresentation(context))
     sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
     sync.sync()
+
+
+class XMLReferenceUpdater(object):
+    """Utility that updates metadata etc on an XML reference."""
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IXMLReferenceUpdater)
+
+    def __call__(self, xml_node, content):
+        """Update xml_node with data from the content object."""
+        for name, utility in zope.component.getUtilitiesFor(
+            zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
+            utility.update_entry(xml_node, content)

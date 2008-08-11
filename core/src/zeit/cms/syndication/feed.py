@@ -145,9 +145,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     def updateMetadata(self, content):
         entry = self.entry_map[content.uniqueId]
-        for name, utility in zope.component.getUtilitiesFor(
-            zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
-            utility.update_entry(entry, content)
+        updater = zope.component.getUtility(
+            zeit.cms.content.interfaces.IXMLReferenceUpdater)
+        updater(entry, content)
 
     # helpers and internal API:
 

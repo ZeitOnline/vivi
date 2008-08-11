@@ -99,6 +99,9 @@
     provides=".interfaces.IDAVPropertyConverter"
     />
 
+  <!-- XML support -->
+  <utility factory=".xmlsupport.XMLReferenceUpdater" />
+
   <!-- automatic xml updating -->
   <adapter factory=".xmlsupport.PropertyToXMLAttribute" />
   <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
