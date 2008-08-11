@@ -113,8 +113,8 @@ def related_from_template(context):
     return RelatedContent(context)
 
 
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def BasicReference(context):
     reference = lxml.objectify.E.reference()
     reference.set('type', 'intern')
