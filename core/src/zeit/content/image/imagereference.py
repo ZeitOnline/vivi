@@ -10,14 +10,14 @@ import zope.component
 import zope.interface
 
 import zeit.cms.checkout.interfaces
-import zeit.cms.content.related
 import zeit.cms.interfaces
+import zeit.cms.related.related
 import zeit.cms.relation.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.image.interfaces
 
 
-class ImagesAdapter(zeit.cms.content.related.RelatedBase):
+class ImagesAdapter(zeit.cms.related.related.RelatedBase):
 
     zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
     zope.interface.implements(zeit.content.image.interfaces.IImages)
