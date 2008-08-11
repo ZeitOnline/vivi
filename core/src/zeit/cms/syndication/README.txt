@@ -161,6 +161,7 @@ Check the source of the feed first:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -197,6 +198,7 @@ Now, the channel metadata has changed:
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -239,6 +241,7 @@ The feed was not updated:
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -296,6 +299,7 @@ The feed has not changed this time:
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>

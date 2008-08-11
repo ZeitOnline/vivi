@@ -38,6 +38,7 @@ We have not added any image, so no image is referenced:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>

@@ -212,8 +212,12 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
     def update_with_context(self, entry, metadata):
         entry['supertitle'] = metadata.supertitle
         entry['title'] = metadata.teaserTitle
-        entry['text'] = metadata.teaserText
+        entry['text'] = entry['description'] = metadata.teaserText
         entry['byline'] = metadata.byline
+        if metadata.year:
+            entry.set('year', unicode(metadata.year))
+        if metadata.volume:
+            entry.set('issue', unicode(metadata.volume))
         self.short_title_path.setattr(entry, metadata.shortTeaserTitle)
         self.short_text_path.setattr(entry, metadata.shortTeaserText)
         self.homepage_title_path.setattr(entry, metadata.hpTeaserTitle)

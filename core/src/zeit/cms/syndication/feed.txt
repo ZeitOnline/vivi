@@ -332,10 +332,11 @@ Insert the article to the feed:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="art2">
+    <block href="art2" year="2007" issue="4">
       <supertitle py:pytype="str">Frankreich</supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
       <short>
         <title py:pytype="str">Frankreich</title>
@@ -365,10 +366,11 @@ changes:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="art2">
+    <block href="art2" year="2007" issue="4">
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
       <short>
         <title py:pytype="str">Frankreich</title>
@@ -403,6 +405,7 @@ too:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -417,10 +420,11 @@ too:
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero"/>
       </references>
     </block>
-    <block href="art2">
+    <block href="art2" year="2007" issue="4">
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
       <short>
         <title py:pytype="str">Frankreich</title>
@@ -450,6 +454,7 @@ When we change the order this is reflected:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -464,10 +469,11 @@ When we change the order this is reflected:
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
       </references>
     </block>
-    <block href="art2">
+    <block href="art2" year="2007" issue="4">
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
       <short>
         <title py:pytype="str">Frankreich</title>
@@ -496,6 +502,7 @@ We can also remove all relateds:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -507,10 +514,11 @@ We can also remove all relateds:
       </homepage>
       <references/>
     </block>
-    <block href="art2">
+    <block href="art2" year="2007" issue="4">
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
       <short>
         <title py:pytype="str">Frankreich</title>
@@ -540,6 +548,7 @@ node in the HTML:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
@@ -551,10 +560,11 @@ node in the HTML:
       </homepage>
       <references/>
     </block>
-    <block href="art2">
+    <block href="art2" year="2007" issue="4">
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
+      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
       <short>
         <title py:pytype="str">Frankreich</title>

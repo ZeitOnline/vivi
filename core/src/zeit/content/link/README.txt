@@ -54,6 +54,7 @@ Create a channel and insert the link[#functional]_:
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
       <short>
         <title xsi:nil="true"/>
