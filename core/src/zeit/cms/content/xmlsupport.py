@@ -1,6 +1,5 @@
 # Copyright (c) 2007 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import StringIO
 import datetime
@@ -12,6 +11,7 @@ import persistent
 import gocept.lxml.objectify
 
 import zope.interface
+import zope.security.interfaces
 import zope.security.proxy
 
 import zope.app.container.contained
@@ -19,9 +19,7 @@ import zope.app.container.contained
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
-import zeit.cms.content.property
 import zeit.cms.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.connector.interfaces
 
 
