@@ -100,7 +100,7 @@
     />
 
   <!-- XML support -->
-  <utility factory=".xmlsupport.XMLReferenceUpdater" />
+  <adapter factory=".xmlsupport.XMLReferenceUpdater" />
 
   <!-- automatic xml updating -->
   <adapter factory=".xmlsupport.PropertyToXMLAttribute" />

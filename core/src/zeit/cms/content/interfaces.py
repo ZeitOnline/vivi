@@ -242,9 +242,9 @@ class IXMLReference(zope.interface.Interface):
 
 
 class IXMLReferenceUpdater(zope.interface.Interface):
-    """Utility that updates metadata etc on an XML reference."""
+    """Objects that update metadata etc on XML references."""
 
-    def __call__(xml_node, content):
+    def update(xml_node):
         """Update xml_node with data from the content object."""
 
 

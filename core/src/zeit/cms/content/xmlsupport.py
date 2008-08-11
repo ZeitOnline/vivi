@@ -163,13 +163,17 @@ def map_dav_properties_to_xml_before_checkin(context, event):
 
 
 class XMLReferenceUpdater(object):
-    """Utility that updates metadata etc on an XML reference."""
+    """Adapter that updates metadata etc on an XML reference."""
 
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
-    def __call__(self, xml_node, content):
+    def __init__(self, context):
+        self.context = context
+
+    def update(self, xml_node):
         """Update xml_node with data from the content object."""
         for name, utility in zope.component.getUtilitiesFor(
             zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
-            utility.update_entry(xml_node, content)
+            utility.update_entry(xml_node, self.context)
