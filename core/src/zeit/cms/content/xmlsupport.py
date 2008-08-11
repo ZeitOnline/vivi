@@ -174,6 +174,7 @@ class XMLReferenceUpdater(object):
 
     def update(self, xml_node):
         """Update xml_node with data from the content object."""
-        for name, utility in zope.component.getUtilitiesFor(
+        for name, updater in zope.component.getAdapters(
+            (self.context,),
             zeit.cms.syndication.interfaces.IFeedMetadataUpdater):
-            utility.update_entry(xml_node, self.context)
+            updater.update(xml_node)

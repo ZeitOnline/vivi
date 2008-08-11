@@ -9,7 +9,7 @@
     trusted="yes"
     />
   <adapter factory=".timebased.workflowProperties" />
-  <utility
+  <adapter
     factory=".timebased.FeedMetadataUpdater"
     name="timebased-workflow"
     />

@@ -108,7 +108,7 @@
     trusted="yes"
     />
   <adapter factory=".imagereference.images_from_template" />
-  <utility
+  <adapter
     factory=".imagereference.FeedMetadataUpdater"
     name="zeit.cms.image"
     />

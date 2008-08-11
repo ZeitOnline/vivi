@@ -17,6 +17,7 @@ import zeit.connector.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
@@ -159,11 +160,16 @@ def workflowProperties(context):
 class FeedMetadataUpdater(object):
     """Add the expire/publication time to feed entry."""
 
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
-    def update_entry(self, entry, content):
-        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(content, None)
+    def __init__(self, context):
+        self.context = context
+
+    def update(self, entry):
+        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(
+            self.context, None)
         if workflow is None:
             return
 

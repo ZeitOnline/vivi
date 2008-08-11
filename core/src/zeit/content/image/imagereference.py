@@ -49,11 +49,16 @@ def images_from_template(context):
 class FeedMetadataUpdater(object):
     """Add the *first* referenced image to the feed entry."""
 
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
-    def update_entry(self, entry, content):
-        images = zeit.content.image.interfaces.IImages(content, None)
+    def __init__(self, context):
+        self.context = context
+
+    def update(self, entry):
+        images = zeit.content.image.interfaces.IImages(
+            self.context, None)
         if images is None:
             return
         if not images.images:

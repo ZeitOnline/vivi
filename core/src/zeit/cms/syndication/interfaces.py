@@ -158,11 +158,10 @@ class IFeedMetadataUpdater(zope.interface.Interface):
     """Update feed entry metadata.
     """
 
-    def update_entry(entry, obj):
-        """Update entry with data from obj.
+    def update(entry):
+        """Update entry with data from context.
 
         Entry: lxml.objectify'ed element from the feed.
-        obj: the object to be updated.
 
         """
 

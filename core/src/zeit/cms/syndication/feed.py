@@ -211,6 +211,7 @@ resourceFactory = zope.component.adapter(
 class CommonMetadataUpdater(object):
     """Put information for ICommonMetadata into the channel."""
 
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
@@ -219,8 +220,12 @@ class CommonMetadataUpdater(object):
     homepage_title_path = lxml.objectify.ObjectPath('.homepage.title')
     homepage_text_path = lxml.objectify.ObjectPath('.homepage.text')
 
-    def update_entry(self, entry, content):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+    def __init__(self, context):
+        self.context = context
+
+    def update(self, entry):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(
+            self.context, None)
         if metadata is None:
             return
         entry['supertitle'] = metadata.supertitle
@@ -237,11 +242,16 @@ class CommonMetadataUpdater(object):
 class RelatedMetadataUpdater(object):
     """Put information from IRelated into the channel."""
 
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeedMetadataUpdater)
 
-    def update_entry(self, entry, content):
-        related = zeit.cms.related.interfaces.IRelatedContent(content, None)
+    def __init__(self, context):
+        self.context = context
+
+    def update(self, entry):
+        related = zeit.cms.related.interfaces.IRelatedContent(
+            self.context, None)
         if related is None:
             return
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
