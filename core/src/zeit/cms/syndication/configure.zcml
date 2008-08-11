@@ -30,15 +30,6 @@
       permission="zeit.cms.Syndicate" />
   </class>
 
-  <adapter
-    factory=".feed.CommonMetadataUpdater"
-    name="commonmetadata"
-    />
-  <adapter
-    factory=".feed.RelatedMetadataUpdater"
-    name="related"
-    />
-
   <class class=".feed.FakeEntry">
     <require interface="zeit.cms.interfaces.ICMSContent"
       permission="zope.View" />

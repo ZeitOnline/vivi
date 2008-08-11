@@ -1,28 +1,22 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import logging
 
 import gocept.lxml.objectify
 import lxml.etree
-import persistent
 
 import zope.component
 import zope.interface
 import zope.proxy
 import zope.security.proxy
 
-import zope.app.container.contained
-
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
-import zeit.cms.content.util
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
-import zeit.cms.related.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 
@@ -206,39 +200,6 @@ resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
     'channel')
 resourceFactory = zope.component.adapter(
     zeit.cms.syndication.interfaces.IFeed)(resourceFactory)
-
-
-class CommonMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    """Put information for ICommonMetadata into the channel."""
-
-    short_title_path = lxml.objectify.ObjectPath('.short.title')
-    short_text_path = lxml.objectify.ObjectPath('.short.text')
-    homepage_title_path = lxml.objectify.ObjectPath('.homepage.title')
-    homepage_text_path = lxml.objectify.ObjectPath('.homepage.text')
-
-    target_iface = zeit.cms.content.interfaces.ICommonMetadata
-
-    def update_with_context(self, entry, metadata):
-        entry['supertitle'] = metadata.supertitle
-        entry['title'] = metadata.teaserTitle
-        entry['text'] = metadata.teaserText
-        entry['byline'] = metadata.byline
-        self.short_title_path.setattr(entry, metadata.shortTeaserTitle)
-        self.short_text_path.setattr(entry, metadata.shortTeaserText)
-        self.homepage_title_path.setattr(entry, metadata.hpTeaserTitle)
-        self.homepage_text_path.setattr(entry, metadata.hpTeaserText)
-
-
-
-class RelatedMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    """Put information from IRelated into the channel."""
-
-    target_iface = zeit.cms.related.interfaces.IRelatedContent
-
-    def update_with_context(self, entry, related):
-        xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
-        entry[xml_repr.xml.tag] = zope.security.proxy.removeSecurityProxy(
-            xml_repr.xml)
 
 
 def syndicated_in(content, catalog):

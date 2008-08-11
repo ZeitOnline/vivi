@@ -5,6 +5,7 @@
     trusted="yes" />
   <adapter factory=".related.related_from_template" />
   <adapter factory=".related.BasicReference" name="related" />
+  <adapter factory=".related.RelatedMetadataUpdater" name="related" />
   <subscriber handler=".related.update_related_on_checkin" />
   <class class=".related.RelatedContent">
     <require
