@@ -54,8 +54,11 @@ Let's have a look at the source:
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -76,8 +79,11 @@ Also check the source of related:
 <references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     type="intern" href="http://xml.zeit.de/related">
+    <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
     <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>
     <short>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -104,8 +110,11 @@ Assigning the same content object again doesn't change the xml:
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -133,8 +142,11 @@ Let's add another related content:
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -146,8 +158,11 @@ Let's add another related content:
       </reference>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related2">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -187,8 +202,11 @@ So far nothing has changed:
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -200,8 +218,11 @@ So far nothing has changed:
       </reference>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related2">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -227,8 +248,11 @@ when we reassign the two objects the metadata will be reflected in the xml:
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related" year="2006" issue="19">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
+        <text py:pytype="str">Dude.</text>
         <description py:pytype="str">Dude.</description>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -239,8 +263,11 @@ when we reassign the two objects the metadata will be reflected in the xml:
         </homepage>
       </reference>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/related2">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -276,8 +303,11 @@ After sending the event the metadata is updated:
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         type="intern" href="http://xml.zeit.de/related" year="2007" issue="19">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
+        <text py:pytype="str">Dude.</text>
         <description py:pytype="str">Dude.</description>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -288,8 +318,11 @@ After sending the event the metadata is updated:
         </homepage>
       </reference>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/related2">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>

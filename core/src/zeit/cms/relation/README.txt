@@ -165,8 +165,11 @@ The xml structure of a and b contain "Tease me" now:
     ...
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me</title>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         ...
       </reference>
     </references>
@@ -177,8 +180,11 @@ The xml structure of a and b contain "Tease me" now:
     ...
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me</title>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         ...
       </reference>
     </references>
@@ -202,8 +208,11 @@ And check in:
   ...
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         ...
       </reference>
     </references>
@@ -214,8 +223,11 @@ And check in:
     ...
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/b">
+        <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         ...
       </reference>
     </references>
@@ -233,8 +245,11 @@ Verify the source of "d" before we do anything:
   <head>
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -269,8 +284,11 @@ Check out "c" and modify it. Then check in.
   <head>
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>
@@ -322,8 +340,11 @@ Check out and in again:
   <head>
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+        <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
+        <text xsi:nil="true"/>
         <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
         <short>
           <title xsi:nil="true"/>
           <text xsi:nil="true"/>

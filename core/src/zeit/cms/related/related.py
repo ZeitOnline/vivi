@@ -121,21 +121,11 @@ def BasicReference(context):
     reference.set('type', 'intern')
     reference.set('href', context.uniqueId)
 
-    metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
-    if metadata is not None:
-        if metadata.year:
-            reference.set('year', unicode(metadata.year))
-        if metadata.volume:
-            reference.set('issue', unicode(metadata.volume))
-        reference['title'] = metadata.teaserTitle
-        reference['description'] = metadata.teaserText
-
-        reference.append(lxml.objectify.E.short(
-            lxml.objectify.E.title(metadata.shortTeaserTitle),
-            lxml.objectify.E.text(metadata.shortTeaserText)))
-        reference.append(lxml.objectify.E.homepage(
-            lxml.objectify.E.title(metadata.hpTeaserTitle),
-            lxml.objectify.E.text(metadata.hpTeaserText)))
+    updater = zope.component.getAdapter(
+        context,
+        zeit.cms.content.interfaces.IXMLReferenceUpdater,
+        name='commonmetadata')
+    updater.update(reference)
 
     return reference
 
