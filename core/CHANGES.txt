@@ -5,6 +5,7 @@ zeit.cms changes
 ------------------
 
 - Links als Related Content fügen ihre Ziel-URL ins XML ein.
+- Logs in Workflow-Ansicht werden auf die letzten 20 Einträge begrenzt.
 
 1.1.4 (2008-08-06)
 ------------------
