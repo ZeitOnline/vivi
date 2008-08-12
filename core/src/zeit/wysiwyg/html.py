@@ -84,6 +84,7 @@ class HTMLConverter(object):
             return
 
         value = '<div>' + self._replace_entities(value) + '</div>'
+        __traceback_info__ = (value,)
         html = gocept.lxml.objectify.fromstring(value)
         for node in html.iterchildren():
             for filter in (self._filter_empty,
