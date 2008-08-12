@@ -4,6 +4,8 @@ zeit.cms changes
 1.1.5 (unreleased)
 ------------------
 
+- Links als Related Content fügen ihre Ziel-URL ins XML ein.
+
 1.1.4 (2008-08-06)
 ------------------
 

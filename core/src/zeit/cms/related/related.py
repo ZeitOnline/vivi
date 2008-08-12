@@ -121,10 +121,7 @@ def BasicReference(context):
     reference.set('type', 'intern')
     reference.set('href', context.uniqueId)
 
-    updater = zope.component.getAdapter(
-        context,
-        zeit.cms.content.interfaces.IXMLReferenceUpdater,
-        name='commonmetadata')
+    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(reference)
 
     return reference
@@ -157,6 +154,9 @@ class RelatedMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.cms.related.interfaces.IRelatedContent
 
     def update_with_context(self, entry, related):
+        if entry.tag == 'reference':
+            # prevent infinite recursion
+            return
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
         entry[xml_repr.xml.tag] = zope.security.proxy.removeSecurityProxy(
             xml_repr.xml)
