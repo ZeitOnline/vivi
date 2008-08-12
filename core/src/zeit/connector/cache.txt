@@ -1,6 +1,8 @@
-=================
-Ressource Caching
-=================
+Caches
+======
+
+Body cache
+++++++++++
 
 We are caching the bodies of resources. The cache removes objects a given time
 after the last access, by default 30 days.
@@ -8,11 +10,14 @@ after the last access, by default 30 days.
 >>> import zeit.connector.cache
 >>> cache = zeit.connector.cache.ResourceCache()
 
-
 Let's set the cache timeout to 4 second, since we don't want to wait 30 days:
 
 >>> cache.CACHE_TIMEOUT = 4
 >>> cache.UPDATE_INTERVAL = 0.9
+
+
+Validation
+----------
 
 For getting data from the cache, the cache needs the etag from the properties:
 
@@ -102,6 +107,8 @@ Also the the time to id mapping has been updated:
 >>> list(cache._access_time_to_ids[new_access])
 ['some-id']
 
+Removal of cached bodies by time out
+------------------------------------
 
 Add another resource to the cache to see how resources are removed from the
 cache:
@@ -159,6 +166,9 @@ Traceback (most recent call last):
 KeyError: ...
 
 
+Large data handling
+-------------------
+
 For large objects we store a blob. What a large object is, is determined by the
 buffer size:
 
@@ -205,7 +215,7 @@ True
 
 
 Property Cache
-==============
+++++++++++++++
 
 The property cache is invalidated by the ResourceInvalidatedEvent. This is
 
@@ -291,8 +301,8 @@ Note that internally no dictionaries are stored but BTrees:
 <BTrees.OOBTree.OOBTree object at 0x...>
 
 
-Child Name Cache
-================
+Child name cache
+++++++++++++++++
 
 The childname cache just stores a mapping of unique id to a list of child
 names:
