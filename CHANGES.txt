@@ -4,6 +4,9 @@ zeit.objectlog changes
 0.6 (unreleased)
 ----------------
 
+- Added ILogProcessor to allow for registering adapters that process logs when
+  accessed through the ILog.logs property.
+
 0.5 (2008-07-10)
 ----------------
 

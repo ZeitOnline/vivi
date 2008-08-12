@@ -204,12 +204,49 @@ When we get the title'well have the "corrected" date:
 True
 
 
-Tear down / Clean up:
+Processing object logs
+======================
+
+So far, we've always obtained complete logs of objects. Sometimes, e.g. for
+display in the UI, one wants to process them first, e.g. select only a few
+entries. This can be done by registering an ILogProcessor adapter from the
+context object in question. This way, application policy for displaying object
+logs is not hard-coded into the zeit.objectlog package.
+
+The adapter has a __call__ method that modifies the iterable of log entries if
+the log is accessed through the ILog.logs property. Let's create a processor
+that reduces the list of log entries to just the last two:
+
+>>> [entry.message for entry in content_log.logs]
+['not-there-log', 'bling', 'baz', 'bar', 'Foo']
+
+>>> class Processor(object):
+...     zope.component.adapts(zope.interface.Interface)
+...     zope.interface.implements(zeit.objectlog.interfaces.ILogProcessor)
+...     def __init__(self, context):
+...         pass
+...     def __call__(self, entries):
+...         return tuple(entries)[-2:]
+>>> sm.registerAdapter(Processor)
+
+>>> [entry.message for entry in content_log.logs]
+['not-there-log', 'bling']
+
+The adapter does not affect the get_log method:
+
+>>> [entry.message for entry in content_log.get_log()]
+['Foo', 'bar', 'baz', 'bling', 'not-there-log']
+
+
+Tear down / Clean up
+====================
 
 >>> del __builtins__['Content']
 >>> sm.unregisterAdapter(
 ...     tzinfo, (zope.interface.Interface,),
 ...     zope.interface.common.idatetime.ITZInfo)
+True
+>>> sm.unregisterAdapter(Processor)
 True
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)

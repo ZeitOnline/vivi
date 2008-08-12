@@ -1,6 +1,5 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import datetime
 import logging
@@ -11,6 +10,7 @@ import persistent
 import pytz
 import transaction
 
+import zope.component
 import zope.interface
 import zope.security.management
 
@@ -98,4 +98,8 @@ class Log(object):
 
     @property
     def logs(self):
-        return tuple(reversed(tuple(self.get_log())))
+        entries = self.get_log()
+        processor = zeit.objectlog.interfaces.ILogProcessor(object, None)
+        if processor is not None:
+            entries = processor(entries)
+        return tuple(reversed(tuple(entries)))
