@@ -48,7 +48,7 @@ setup(
         'zc.table',
         'zdaemon',
         'zeit.connector>=1.1',
-        'zeit.objectlog>=0.2',
+        'zeit.objectlog>=0.6',
         'zope.app.apidoc',
         'zope.app.catalog',
         'zope.app.component>=3.4.0b3',
