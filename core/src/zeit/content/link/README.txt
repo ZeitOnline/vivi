@@ -3,10 +3,10 @@ Link object
 ===========
 
 
-The link object basically stores an URL. For syndication etc. it is possible to
+The link object basically stores a URL. For syndication etc. it is possible to
 store the common metadata as well.
 
-Instanciate a link and verify the inital xml:
+Instantiate a link and verify the initial xml:
 
 >>> import zeit.content.link.link
 >>> link = zeit.content.link.link.Link()
@@ -18,7 +18,7 @@ Instanciate a link and verify the inital xml:
   <body/>
 </link>
 
-Now that was pretty boring. Add a title and an url:
+Now that was pretty boring. Add a title and a URL:
 
 >>> link.title = 'gocept'
 >>> link.url = 'http://gocept.com'
@@ -32,8 +32,8 @@ Now that was pretty boring. Add a title and an url:
 </link>
 
 
-Syndcation
-==========
+Syndication
+===========
 
 The target URL is added to the channel on syndication.
 
@@ -46,7 +46,9 @@ Create a channel and insert the link[#functional]_:
 
 
 >>> print feed.xml_source
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
     <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
