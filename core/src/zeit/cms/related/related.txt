@@ -13,7 +13,7 @@ Add content to repository:
 
 >>> repository['content'] = content
 
-Adapt it to IReference, currenty there are no references:
+Adapt it to IRelatedContent, currently there are no references:
 
 >>> related = zeit.cms.related.interfaces.IRelatedContent(content)
 >>> import zope.interface.verify
