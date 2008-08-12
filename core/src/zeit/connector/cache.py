@@ -140,25 +140,30 @@ class ResourceCache(persistent.Persistent):
 
     def _update_cache_access(self, key):
         last_access_time = self._last_access_time.get(key, 0)
+        new_access_time = self._get_time_key(time.time())
+
+        old_set = None
         if last_access_time / 10e6 < 10e6:
             # Ignore old access times. This is to allow an update w/o downtime.
-
             old_set = self._access_time_to_ids.get(last_access_time)
+
+        try:
+            new_set = self._access_time_to_ids[new_access_time]
+        except KeyError:
+            new_set = self._access_time_to_ids[new_access_time] = (
+                BTrees.family32.OI.TreeSet())
+
+        if old_set != new_set:
             if old_set is not None:
                 try:
                     old_set.remove(key)
                 except KeyError:
                     pass
 
-        new_access_time = self._get_time_key(time.time())
-        try:
-            new_set = self._access_time_to_ids[new_access_time]
-        except KeyError:
-            new_set = self._access_time_to_ids[new_access_time] = (
-                BTrees.family32.OI.TreeSet())
-        new_set.insert(key)
-        self._last_access_time[key] = new_access_time
-        self._sweep()
+            new_set.insert(key)
+            self._last_access_time[key] = new_access_time
+
+            self._sweep()
 
     def _sweep(self):
         timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)

@@ -22,7 +22,6 @@ real_connector_layer = zope.app.testing.functional.ZCMLLayer(
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
-        'cache.txt',
         'connector.txt',
         'locking.txt',
         'mock.txt',
@@ -38,6 +37,7 @@ def test_suite():
     suite.addTest(long_running)
 
     functional = zope.file.testing.FunctionalBlobDocFileSuite(
+        'cache.txt',
         'functional.txt')
     functional.layer = real_connector_layer
     suite.addTest(functional)

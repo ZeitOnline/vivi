@@ -4,6 +4,8 @@ CHANGES
 1.4.5 (unreleased)
 ------------------
 
+- Fixed a bug in the body cache which lead to a database write on cache read.
+
 1.4.4 (2008-08-07)
 ------------------
 

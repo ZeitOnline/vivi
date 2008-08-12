@@ -213,6 +213,46 @@ We get the commited data now:
 >>> cache.getData('some-id', properties).read() == large_data
 True
 
+Transaction integration
+-----------------------
+
+When a resource is just read from the cache, no part of the cache needs to be
+written to the database (given that no timeouts had to be updated).
+
+Create a new cache and attach it to the database root:
+
+>>> cache = zeit.connector.cache.ResourceCache()
+>>> getRootFolder()['cache'] = cache
+>>> import transaction
+>>> transaction.commit()
+
+Add an object to the cache and commit:
+
+>>> data = StringIO('Frodo went deep into Mordor.')
+>>> properties = {('getetag', 'DAV:'): 'ent'}
+>>> file_handle = cache.setData('mordor', properties, data)
+>>> transaction.commit()
+
+After commiting everything is "not changed" of course. Now get an the object
+from the cache:
+
+>>> file_handle = cache.getData('mordor', properties)
+
+All the cache parts are still not changed:
+
+>>> cache._p_changed
+False
+>>> cache._etags._p_changed
+False
+>>> cache._data._p_changed
+False
+>>> cache._last_access_time._p_changed
+False
+>>> cache._access_time_to_ids._p_changed
+False
+>>> [s for s in cache._access_time_to_ids.values() if s._p_changed]
+[]
+
 
 Property Cache
 ++++++++++++++
