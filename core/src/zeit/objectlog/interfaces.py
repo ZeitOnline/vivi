@@ -1,6 +1,5 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.interface
 
@@ -59,3 +58,10 @@ class ILog(zope.interface.Interface):
         value_type=zope.schema.Choice(
             source=zeit.objectlog.source.LogEntrySource()),
         readonly=True)
+
+
+class  ILogProcessor(zope.interface.Interface):
+    """Adapter that may be used to process the context's object log."""
+
+    def __call__(log_entries):
+        """Transform an iterable of log entries into another."""
