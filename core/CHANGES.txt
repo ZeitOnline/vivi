@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.4.5 (unreleased)
+1.4.5 (2008-08-12)
 ------------------
 
 - Fixed a bug in the body cache which lead to a database write on cache read.
