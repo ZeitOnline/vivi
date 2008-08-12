@@ -387,10 +387,11 @@ xml source:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2">
       <supertitle py:pytype="str">Halle</supertitle>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline py:pytype="str">by Dr. Who</byline>
       <short>
         <title xsi:nil="true"/>
@@ -402,8 +403,11 @@ xml source:
       </homepage>
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+          <supertitle py:pytype="str">Thailand</supertitle>
           <title py:pytype="str">Bomben in Bangkok</title>
+          <text py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</text>
           <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+          <byline py:pytype="str">von Ulrich Ladurner</byline>
           <short>
             <title py:pytype="str">Thailand</title>
             <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
@@ -452,10 +456,11 @@ at its xml source:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer">
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2">
       <supertitle py:pytype="str">Halle</supertitle>
       <title py:pytype="str">Trinker zur Kasse</title>
       <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
       <byline py:pytype="str">by Dr. Who</byline>
       <short>
         <title xsi:nil="true"/>
@@ -467,8 +472,11 @@ at its xml source:
       </homepage>
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+          <supertitle py:pytype="str">Thailand</supertitle>
           <title py:pytype="str">Bomben in Bangkok</title>
+          <text py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</text>
           <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
+          <byline py:pytype="str">von Ulrich Ladurner</byline>
           <short>
             <title py:pytype="str">Thailand</title>
             <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
