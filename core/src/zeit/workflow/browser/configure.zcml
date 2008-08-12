@@ -46,4 +46,6 @@
     permission="zope.View"
     />
 
+  <adapter factory=".objectlog.ProcessForDisplay" />
+
 </configure>
