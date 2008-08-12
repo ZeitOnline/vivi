@@ -16,4 +16,4 @@ class ProcessForDisplay(object):
         pass
 
     def __call__(self, entries):
-        return tuple(entries)[-5:]
+        return tuple(entries)[-20:]
