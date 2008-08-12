@@ -99,7 +99,8 @@ class Log(object):
     @property
     def logs(self):
         entries = self.get_log()
-        processor = zeit.objectlog.interfaces.ILogProcessor(object, None)
+        processor = zeit.objectlog.interfaces.ILogProcessor(self.context,
+                                                            None)
         if processor is not None:
             entries = processor(entries)
         return tuple(reversed(tuple(entries)))
