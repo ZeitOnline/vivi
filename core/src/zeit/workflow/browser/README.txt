@@ -365,6 +365,31 @@ The workflow logs various changes in an objectlog. Verify this:
 <FORMATTED DATE>  [User]: Edited: no</div>
 ...
 
+If the object log is very long, only the latest 20 entries will be
+shown:
+
+>>> browser.getControl('Edited').displayValue = ['yes']
+>>> browser.getControl('Save state only').click()
+
+>>> for i in xrange(25):
+...     browser.getControl('Edited').displayValue = ['yes']
+...     browser.getControl('Save state only').click()
+...     browser.getControl('Edited').displayValue = ['not necessary']
+...     browser.getControl('Save state only').click()
+>>> browser.contents.count('  [User]: ')
+20
+
+This is really only a matter of displaying the log; the complete object log is
+still accessible[#needs-repository]_:
+
+>>> content = repository['online']['2007']['01']['Saarland']
+>>> import zeit.objectlog.interfaces
+>>> log = zeit.objectlog.interfaces.ILog(content)
+>>> len(list(log.get_log()))
+65
+>>> len(log.logs)
+20
+
 
 Form validation
 ===============
@@ -420,3 +445,10 @@ Clean up
     ...     transaction.abort()
     ...     tasks.process()
     ...     zope.security.management.endInteraction()
+
+.. [#needs-repository]
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
