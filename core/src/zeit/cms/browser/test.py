@@ -15,5 +15,5 @@ def test_suite():
         'widget.txt',
         'debug.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
+                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
     return suite

@@ -1,43 +1,13 @@
-==============
+Widgets
+=======
+
 Object widgets
-==============
+++++++++++++++
 
-The object widgets are used to reference objects.
+The object widgets are used to reference objects[#object-widget-setup]_.
 
-
-Create a mock repository:
-
->>> import zope.component
->>> import zope.interface
->>> import zeit.cms.interfaces
->>> import zeit.cms.repository.interfaces
->>>
->>> class Repository(object):
-...     __parent__ = getRootFolder()
-...     __name__ = 'repo'
-...
-...     def getContent(self, unique_id):
-...         if unique_id.startswith('http://content'):
-...             return Content()
-...         if unique_id.startswith('http://exists'):
-...             return object()
-...         if not unique_id.startswith('http://'):
-...             raise ValueError('Invalid id')
-...         raise KeyError(unique_id)
-...
->>> repository = Repository()
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(
-...     repository, zeit.cms.repository.interfaces.IRepository)
-
-Create a simple content object:
-
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
-...     __parent__ = repository
-...     __name__ = u'content'
-...     uniqueId = 'http://content'
-
+Input widget
+------------
 
 Create a field and bind it at an instance of `Content`:
 
@@ -57,21 +27,6 @@ Create an instance of the object reference widget:
 ...     field, source, request)
 >>> widget
 <zeit.cms.browser.widget.ObjectReferenceWidget object at 0x...>
-
-To browse the repository the widget needs to look up the default browsing
-location. Create a mock adapter which returns the repository:
-
->>> def browsing_location_adapter(context, schema):
-...     print "Returning location for", context
-...     print "   ", schema
-...     return repository
->>> import zeit.cms.browser.interfaces
->>> import zeit.cms.content.interfaces
->>> gsm.registerAdapter(
-...     browsing_location_adapter,
-...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
-...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-
 
 Get the default browsing location now:
 
@@ -228,6 +183,20 @@ ConversionError: (u'The given id is invalid.', None)
 
 
 
+Display widget
+--------------
+
+The display widget for object renders the Unique Id as content and the title as
+link title:
+
+>>> request = zope.publisher.browser.TestRequest()
+>>> widget = zeit.cms.browser.widget.ObjectReferenceDisplayWidget(
+...     field, source, request)
+>>> widget.setRenderedValue(Content())
+>>> print widget()
+<a href="http://127.0.0.1/repo/content" title="content">http://content</a>
+
+
 Clean up:
 
 >>> gsm.unregisterAdapter(
@@ -239,6 +208,9 @@ True
 ...     repository, zeit.cms.repository.interfaces.IRepository)
 True
 
+
+Datetime widget
++++++++++++++++
 
 We have a special Datetime widget, which proivides buttons for in one day an
 in one month:
@@ -268,3 +240,56 @@ in one month:
 <input type="button" value="∞"
     onclick="javascript:$('field.').value = '';" />
 </div>        
+
+
+
+.. [#object-widget-setup]
+
+    Create a mock repository:
+
+    >>> import zope.component
+    >>> import zope.interface
+    >>> import zeit.cms.interfaces
+    >>> import zeit.cms.repository.interfaces
+    >>>
+    >>> class Repository(object):
+    ...     __parent__ = getRootFolder()
+    ...     __name__ = 'repo'
+    ...
+    ...     def getContent(self, unique_id):
+    ...         if unique_id.startswith('http://content'):
+    ...             return Content()
+    ...         if unique_id.startswith('http://exists'):
+    ...             return object()
+    ...         if not unique_id.startswith('http://'):
+    ...             raise ValueError('Invalid id')
+    ...         raise KeyError(unique_id)
+    ...
+    >>> repository = Repository()
+    >>> gsm = zope.component.getGlobalSiteManager()
+    >>> gsm.registerUtility(
+    ...     repository, zeit.cms.repository.interfaces.IRepository)
+
+    Create a simple content object:
+
+    >>> class Content(object):
+    ...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+    ...     __parent__ = repository
+    ...     __name__ = u'content'
+    ...     uniqueId = 'http://content'
+
+    To browse the repository the widget needs to look up the default browsing
+    location. Create a mock adapter which returns the repository:
+
+    >>> def browsing_location_adapter(context, schema):
+    ...     print "Returning location for", context
+    ...     print "   ", schema
+    ...     return repository
+    >>> import zeit.cms.browser.interfaces
+    >>> import zeit.cms.content.interfaces
+    >>> gsm.registerAdapter(
+    ...     browsing_location_adapter,
+    ...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
+    ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+

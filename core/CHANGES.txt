@@ -4,6 +4,9 @@ zeit.cms changes
 1.1.6 (unreleased)
 ------------------
 
+- Asset-View: Read-Only-Ansicht zeigt jetzt die URL an, der Title wird als
+  Tool-Tip angezeigt (bug #4219).
+
 1.1.5 (2008-08-12)
 ------------------
 
