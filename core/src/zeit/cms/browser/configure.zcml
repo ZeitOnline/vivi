@@ -253,6 +253,7 @@
   <include package="zeit.cms.related.browser" />
   <include package="zeit.cms.locking.browser" />
   <include package="zeit.cms.settings.browser" />
+  <include package="zeit.cms.workflow.browser" />
 
 
 

@@ -73,8 +73,6 @@ class IListRepresentation(zope.interface.Interface):
     volume = zope.schema.Int(title=u"Volume")
     year = zope.schema.Int(title=u"Year")
 
-    workflowState = zope.interface.Attribute("Workflow State")
-
     modifiedBy = zope.interface.Attribute("Datetime of last modification")
 
     modifiedOn = zope.interface.Attribute(

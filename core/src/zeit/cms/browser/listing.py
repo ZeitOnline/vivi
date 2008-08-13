@@ -5,16 +5,14 @@
 import datetime
 import logging
 
-import zope.component
-import zope.i18n
-import zope.interface
-import zope.interface.common.idatetime
-
+import zc.table.column
+import zc.table.table
 import zope.app.locking.interfaces
 import zope.app.security.interfaces
-
-import zc.table.table
-import zc.table.column
+import zope.component
+import zope.interface
+import zope.interface.common.idatetime
+import zope.viewlet.interfaces
 
 import zeit.cms.browser.interfaces
 import zeit.cms.content.sources
@@ -192,32 +190,15 @@ class TypeColumn(GetterColumn):
 class PublishedColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
-        return zeit.cms.workflow.interfaces.IPublishInfo(
-            item.context, None)
+        return item.context  # The actual content object, not list_repr
 
-    def cell_formatter(self, publish_info, item, formatter):
-        if publish_info is None:
-            return u''
-        times = zope.dublincore.interfaces.IDCTimes(item.context)
-        if publish_info.published:
-            if (not times.modified
-                or not publish_info.date_last_published
-                or (publish_info.date_last_published >
-                     times.modified)):
-                img = 'published'
-                title = _('Published')
-            else:
-                img = 'published-with-changes'
-                title = _('Published but has changes')
-        else:
-            img = 'not-published'
-            title = _('Not published')
-
-        title = zope.i18n.translate(title, context=formatter.request)
-        cms_resources= zope.component.getAdapter(
-            formatter.request, name='zeit.cms')
-        return '<img src="%s/icons/%s.png" title="%s" />' % (
-            cms_resources(), img, title)
+    def cell_formatter(self, value, item, formatter):
+        viewlet_manager = zope.component.getMultiAdapter(
+            (value, formatter.request, self),
+            zope.viewlet.interfaces.IViewletManager,
+            name='zeit.cms.workflow-indicator')
+        viewlet_manager.update()
+        return viewlet_manager.render()
 
 
 class FilenameColumn(GetterColumn):
