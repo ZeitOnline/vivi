@@ -6,6 +6,7 @@ import datetime
 import logging
 
 import zope.component
+import zope.i18n
 import zope.interface
 import zope.interface.common.idatetime
 
@@ -211,6 +212,8 @@ class PublishedColumn(zc.table.column.GetterColumn):
         else:
             img = 'not-published'
             title = _('Not published')
+
+        title = zope.i18n.translate(title, context=formatter.request)
 
         return '<img src="/@@/zeit.cms/icons/%s.png" title="%s" />' % (
             img, title)

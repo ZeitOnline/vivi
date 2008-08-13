@@ -375,12 +375,38 @@ modification time.
     </td>
     ...
 
+There was a bug that the titles where not translated:
+
+>>> browser.addHeader('Accept-Language', 'de')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> print browser.contents
+<?xml ...
+  <tbody>
+  <tr class="odd">
+    <td>
+      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
+    </td>
+    <td>
+    </td>
+    <td>
+      <img src="/@@/zeit.cms/icons/published.png" title="Veröffentlicht" />
+    </td>
+    <td>
+    </td>
+    <td>
+      4schanzentournee-abgesang
+    </td>
+    ...
+
+
 
 Title
 =====
 
 The title of the listing is "Directory listing"
 
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print browser.contents
 <?xml...
