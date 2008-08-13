@@ -58,7 +58,7 @@ we just get an empty column:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" />
     </td>
     <td>
     </td>
@@ -115,7 +115,7 @@ Now we have 42 / 31415 accesses:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" />
     </td>
     <td>
     </td>
@@ -155,7 +155,7 @@ When there are no hits today the rendering is different:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" />
     </td>
     <td>
     </td>
@@ -196,7 +196,7 @@ When we have only hits from today, those are also displayed as total hits:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/not-published.png" title="Not published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" />
     </td>
     <td>
     </td>
@@ -251,7 +251,7 @@ Let's indicate a published object:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" />
     </td>
     <td>
     </td>
@@ -284,7 +284,7 @@ We don't know when the object was published. Assume it's fresh:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" />
     </td>
     <td>
     </td>
@@ -315,7 +315,7 @@ With a publication date *after* the modifcation date it is also fresh:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" />
     </td>
     <td>
     </td>
@@ -340,7 +340,7 @@ With a publication time *before* the modifaction time it is not fresh:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/published-with-changes.png" title="Published but has changes" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/published-with-changes.png" title="Published but has changes" />
     </td>
     <td>
     </td>
@@ -366,7 +366,7 @@ modification time.
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/published.png" title="Published" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" />
     </td>
     <td>
     </td>
@@ -389,7 +389,7 @@ There was a bug that the titles where not translated:
     <td>
     </td>
     <td>
-      <img src="/@@/zeit.cms/icons/published.png" title="Veröffentlicht" />
+      <img src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Veröffentlicht" />
     </td>
     <td>
     </td>

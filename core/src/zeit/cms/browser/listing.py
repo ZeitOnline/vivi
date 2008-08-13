@@ -1,6 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Directory listing and listing helpers."""
 
 import datetime
 import logging
@@ -214,9 +214,10 @@ class PublishedColumn(zc.table.column.GetterColumn):
             title = _('Not published')
 
         title = zope.i18n.translate(title, context=formatter.request)
-
-        return '<img src="/@@/zeit.cms/icons/%s.png" title="%s" />' % (
-            img, title)
+        cms_resources= zope.component.getAdapter(
+            formatter.request, name='zeit.cms')
+        return '<img src="%s/icons/%s.png" title="%s" />' % (
+            cms_resources(), img, title)
 
 
 class FilenameColumn(GetterColumn):
