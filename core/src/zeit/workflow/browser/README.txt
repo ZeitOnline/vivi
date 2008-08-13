@@ -2,21 +2,23 @@
 Zeit Workflow
 =============
 
-The workflow is state oriented. There are several states which all can be set
+The workflow is state oriented. There are several states which can all be set
 using the workflow tab[#browser]_[#tasks]_:
 
 >>> browser.open('http://localhost:8080/++skin++cms/repository/testcontent')
 >>> browser.getLink('Workflow').click()
+
 
 States
 ======
 
 The states are explained below.
 
+
 Bearbeitet (Redaktion)
 ++++++++++++++++++++++
 
-This state tells if the editors have finished their work. The initlal value is
+This state tells if the editors have finished their work. The initial value is
 "no":
 
 >>> browser.getControl('Edited').displayValue
@@ -28,7 +30,7 @@ The available options are as follows:
 ['no', 'yes', 'not necessary']
 
 
-Korrigiert 
+Korrigiert
 ++++++++++
 
 Korrigiert states if the Korrektor is done. The state has the same values as
@@ -38,6 +40,7 @@ Korrigiert states if the Korrektor is done. The state has the same values as
 ['no']
 >>> browser.getControl('Corrected').displayOptions
 ['no', 'yes', 'not necessary']
+
 
 Veredelt
 ++++++++
@@ -54,7 +57,7 @@ same values as **Bearbeitet**:
 Bilder hinzugefügt
 ++++++++++++++++++
 
-The graphics department adds image. The state has the same values as
+The graphics department added images. The state has the same values as
 **Bearbeitet**:
 
 >>> browser.getControl('Images added').displayValue
@@ -66,18 +69,17 @@ The graphics department adds image. The state has the same values as
 Eilmeldung
 ++++++++++
 
-Checking the Eilmeldung box makes the dockument public even though it was not
+Checking the Eilmeldung box makes the document public even though it was not
 corrected etc:
 
 >>> browser.getControl('Urgent').selected
 False
 
 
-
 Veröffentlichungszeitraum
 +++++++++++++++++++++++++
 
-An object is only visible to public during the timespan given. Leaving the
+An object is only visible to the public during the timespan given. Leaving the
 fields empty means no restriction. This is also the default:
 
 >>> browser.getControl('From').value
@@ -97,7 +99,6 @@ currently be set to any value at will. Let's say our document is edited:
 >>> browser.getControl('Edited').displayValue
 ['yes']
 
-
 To publish the document, hit the 'publish' button:
 
 >>> browser.getControl("publish").click()
@@ -106,7 +107,7 @@ This failed because only `edited` was set to 'yes':
 
 >>> print browser.contents
 <?xml ...
-        <li class="error">Could not publish "testcontent" because the publishing 
+        <li class="error">Could not publish "testcontent" because the publishing
         pre-conditions are not met. Check the states and/or the urgent-flag.
         Your state changes were saved.</li>
     ...
@@ -122,14 +123,13 @@ Use the urgent flag to override:
         ...
         <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
         ...
-        
-
 
 
 Automatic workflow properties
 =============================
 
 There are some properties which are set automatically on various occasions.
+
 
 Date first released
 +++++++++++++++++++
@@ -194,15 +194,13 @@ again:
         ...
 
 
-
 Publishing checked out resources
 ================================
 
-There are a few race conditions regarding webdav properties. We concider the
+There are a few race conditions regarding webdav properties. We consider the
 workflow properties "live" i.e. they are only supposed to exist on the server.
 When an object is checked out, all properties are copied so they can be stored
 back to the server  on check in. Live properties must survive this.
-
 
 Check out an unpublished object:
 
@@ -302,10 +300,8 @@ The object is still published:
         <div class="widget">True</div>
         ...
 
-
-
-Now try the other way round, unpublish a published document while it is checked
-out:
+Now try the other way around, unpublish a published document while it is
+checked out:
 
 >>> browser.getControl('publish').click()
 >>> print browser.contents
@@ -355,7 +351,7 @@ The object is still unpublished:
 
 
 Log
----
+===
 
 The workflow logs various changes in an objectlog. Verify this:
 
@@ -370,7 +366,10 @@ The workflow logs various changes in an objectlog. Verify this:
 ...
 
 
-Set a very hight value for publish/retract to make sure we cannot set this:
+Form validation
+===============
+
+Set a very high value for publish/retract to make sure we cannot set this:
 
 >>> browser.getControl(name='form.release_period.combination_00').value = (
 ...     '2040-05-06')
@@ -390,7 +389,7 @@ Set a very hight value for publish/retract to make sure we cannot set this:
 
 
 Clean up
---------
+========
 
 >>> zope.app.component.hooks.setSite(old_site)
 
@@ -421,4 +420,3 @@ Clean up
     ...     transaction.abort()
     ...     tasks.process()
     ...     zope.security.management.endInteraction()
-    
