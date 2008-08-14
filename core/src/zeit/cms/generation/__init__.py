@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+
+import decorator
 
 import zope.app.component
 import zope.app.component.hooks
@@ -23,3 +24,10 @@ def do_evolve(context, evolver):
         evolver(root)
     finally:
         zope.app.component.hooks.setSite(site)
+
+
+# XXX do_evolve should be phased out and implemented as the decorator itself.
+
+@decorator.decorator
+def get_root(evolver, context):
+    do_evolve(context, evolver)
