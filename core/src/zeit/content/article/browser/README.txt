@@ -323,8 +323,10 @@ Let's make sure the image is linked:
 <?xml ...
 <!DOCTYPE ...
  <div class="widget"><ol class="sequenceWidget" >
- <li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a></li>
- <li><a href="http://localhost/++skin++cms/repository/image-group">image-group</a></li>
+ <li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"
+        title="DSC00109_2.JPG">http://xml.zeit.de/2006/DSC00109_2.JPG</a></li>
+ <li><a href="http://localhost/++skin++cms/repository/image-group"
+        title="image-group">http://xml.zeit.de/image-group</a></li>
  </ol></div>
   ...
 
