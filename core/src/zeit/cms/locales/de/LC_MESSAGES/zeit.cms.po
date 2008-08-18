@@ -1283,20 +1283,20 @@ msgid "Link address"
 msgstr "Link-Adresse (URL)"
 
 #: src/zeit/content/portraitbox/browser/form.py:34
-msgid "Portrait"
-msgstr "Portrait"
+msgid "Porträt"
+msgstr "Porträt"
 
 #: src/zeit/content/portraitbox/browser/form.py:43
 msgid "Add portraitbox"
-msgstr "Portraitbox hinzufügen"
+msgstr "Porträtbox hinzufügen"
 
 #: src/zeit/content/portraitbox/browser/form.py:48
 msgid "Edit portraitbox"
-msgstr "Portraitbox bearbeiten"
+msgstr "Porträtbox bearbeiten"
 
 #: src/zeit/content/portraitbox/browser/form.py:54
 msgid "View portraitbox"
-msgstr "Portraitbox anzeigen"
+msgstr "Porträtbox anzeigen"
 
 #: src/zeit/content/portraitbox/interfaces.py:18
 msgid "First and last name"
@@ -1304,8 +1304,8 @@ msgstr "Vor- und Nachname"
 
 #: src/zeit/content/portraitbox/interfaces.py:42
 #: src/zeit/content/portraitbox/browser/configure.zcml:12
-msgid "Portraitbox"
-msgstr "Portraitbox"
+msgid "Porträtbox"
+msgstr "Porträtbox"
 
 #: src/zeit/content/text/browser/configure.zcml:6
 msgid "Plain text"
