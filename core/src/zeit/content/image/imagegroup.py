@@ -78,6 +78,8 @@ def XMLReference(context):
 
     type = None
     for sub_image_name in context:
+        if '.' not in sub_image_name:
+            continue
         base, ext = sub_image_name.rsplit('.', 1)
         if base.endswith('x140'):
             # This is deciding
