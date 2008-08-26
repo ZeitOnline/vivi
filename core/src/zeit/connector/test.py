@@ -25,12 +25,12 @@ def test_suite():
         'connector.txt',
         'locking.txt',
         'mock.txt',
-        'stressing.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
 
     long_running = doctest.DocFileSuite(
         'longrunning.txt',
+        'stressing.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES))
     long_running.level = 3
@@ -40,6 +40,7 @@ def test_suite():
         'cache.txt',
         'functional.txt')
     functional.layer = real_connector_layer
+    functional.level = 3
     suite.addTest(functional)
     return suite
 
