@@ -70,6 +70,7 @@ Set the most important values:
 
 >>> browser.getControl('File name').value = 'island'
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
 >>> browser.getControl('Daily newsletter').selected = True
 >>> browser.getControl(name="form.image_folder").value = (
 ...     'http://xml.zeit.de/online/2007/01/gallery')

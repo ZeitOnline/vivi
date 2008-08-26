@@ -23,6 +23,7 @@ Now we're looking at the add form. Fill in some data:
 
 >>> browser.getControl('File name').value = 'gocept.link'
 >>> browser.getControl('Title').value = 'gocept homepage'
+>>> browser.getControl('Ressort').displayValue = ['Leben']
 >>> browser.getControl('Teaser title').value = 'gocept teaser'
 >>> browser.getControl('Link address').value = 'http://gocept.com'
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'

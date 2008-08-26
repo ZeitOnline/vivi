@@ -91,9 +91,43 @@ Make sure we have a default view:
 'http://localhost/++skin++cms/repository/testcontent/@@view.html'
 
 
-After checking out we can edit:
+After checking out we can edit. The ressort has a "(no value)" entry which is
+invalid though:
 
 >>> browser.getLink('Checkout').click()
->>> browser.getControl('Title').value = 'Testing'
+>>> browser.getControl('Ressort').displayValue
+['(no value)']
+>>> browser.getControl('Ressort').displayOptions
+['(no value)', 'Deutschland', ...]
 >>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+    <div id="messages" class="haveMessages">
+      <ul>
+        <li class="error">Year: Required input is missing.</li>
+        <li class="error">Volume: Required input is missing.</li>
+        <li class="error">Ressort: Required input is missing.</li>
+        <li class="error">Title: Required input is missing.</li>
+        <li class="error">Authors: Wrong contained type</li>
+        <li class="error">Copyright (c): Required input is missing.</li>
+      </ul>
+      ...
+
+
+
+>>> browser.getControl('Year').value = '2008'
+>>> browser.getControl('Volume').value = '21'
+>>> browser.getControl('Ressort').displayValue = ['International']
+>>> browser.getControl('Title').value = 'Testing'
+>>> browser.getControl(name='form.authors.0.').value = 'ich'
+>>> browser.getControl('Copyright').value = 'ich'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<?xml ...
+    <div id="messages" class="haveMessages">
+      <ul>
+        <li class="message">Updated on ...</li>
+      </ul>
+      ...
+
 >>> browser.getLink('Checkin').click()

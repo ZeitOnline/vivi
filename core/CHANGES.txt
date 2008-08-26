@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Asset-View: Read-Only-Ansicht zeigt jetzt die URL an, der Title wird als
   Tool-Tip angezeigt (bug #4219).
+- Ressort muss jetzt vom Benutzer eingegeben werden, »Deutschland« ist nicht
+  mehr vorausgewählt (bug #4387).
 
 1.1.5 (2008-08-12)
 ------------------

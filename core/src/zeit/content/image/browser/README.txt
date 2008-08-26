@@ -580,6 +580,7 @@ Now try to add a gallery:
 >>> menu.displayValue = ['Gallery']
 >>> browser.open(menu.value[0])
 >>> browser.getControl('Title').value = 'New Gallery'
+>>> browser.getControl('Ressort').displayValue = ['Kultur']
 >>> browser.getControl('File name').value = 'gallery'
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl('Image folder').value = 'http://xml.zeit.de/broken_image_folder'
