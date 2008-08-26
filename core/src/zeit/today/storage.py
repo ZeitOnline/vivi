@@ -73,14 +73,15 @@ class CountStorage(object):
                 logger.error("XMLSyntaxError while updating %s" % url,
                              exc_info=True)
             else:
-                self.id_to_count = dict(
-                    (self._make_unique_id(item.get('url')),
-                     int(item.get('counter'))) for item in xml['article'])
-                self.id_to_date = dict(
-                    (self._make_unique_id(item.get('url')),
-                     datetime.date(*(time.strptime(item.get('date'),
-                                                   '%Y-%m-%d')[0:3])))
-                    for item in xml['article'])
+                if xml.find('article') is not None:
+                    self.id_to_count = dict(
+                        (self._make_unique_id(item.get('url')),
+                         int(item.get('counter'))) for item in xml['article'])
+                    self.id_to_date = dict(
+                        (self._make_unique_id(item.get('url')),
+                         datetime.date(*(time.strptime(item.get('date'),
+                                                       '%Y-%m-%d')[0:3])))
+                        for item in xml['article'])
             self.last_refresh = now
         finally:
             self.update_lock.release()

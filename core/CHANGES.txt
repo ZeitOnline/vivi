@@ -8,6 +8,7 @@ zeit.cms changes
   Tool-Tip angezeigt (bug #4219).
 - Ressort muss jetzt vom Benutzer eingegeben werden, »Deutschland« ist nicht
   mehr vorausgewählt (bug #4387).
+- Aussetzer um kurz nach Mitternacht behoben.
 
 1.1.5 (2008-08-12)
 ------------------

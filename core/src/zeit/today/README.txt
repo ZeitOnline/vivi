@@ -87,3 +87,41 @@ The ``counter`` object implements the IAccessCounter interface:
 True
 
 
+
+Edge cases
+==========
+
+There are two edge cases:
+
+1. The today.xml file is empty -- this happens quite regularly throughout the
+   day.
+2. The today.xml file does not contain any <article> nodes. This happens after
+   midnight when the counters have been reset but nothin has been counted so
+   far.
+
+
+Create an empty file and initialize a counter:
+
+>>> import tempfile
+>>> fd, name = tempfile.mkstemp()
+>>> def url_get():
+...     return 'file://' + name
+>>> counter = zeit.today.storage.CountStorage(url_get)
+
+Getting objects doesn't raise an exception:
+
+>>> counter.get_count('foo') is None
+True
+
+Let's add the root node to verify the second edge case:
+
+>>> open(name, 'w').write("<?xml version='1.0'?>\n<articles/>")
+>>> counter = zeit.today.storage.CountStorage(url_get)
+>>> counter.get_count('foo') is None
+True
+
+
+Clean up:
+
+>>> import os
+>>> os.remove(name)
