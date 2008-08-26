@@ -60,6 +60,9 @@ Let's add one:
 >>> browser.getControl('Add').click()
 >>> browser.getControl('Title').value = 'Der Schwarm'
 >>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
+>>> browser.getControl('ZEIT category').displayValue
+['(no value)']
+>>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <?xml ...
@@ -131,6 +134,7 @@ Let's add another recension:
 >>> browser.getLink('Recensions').click()
 >>> browser.getControl('Add').click()
 >>> browser.getControl('Title').value = 'Minima Moraklia'
+>>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
 >>> browser.getControl('Publisher').value = 'Suhrkamp'
 >>> browser.getControl('Location').value = 'Zuerich'

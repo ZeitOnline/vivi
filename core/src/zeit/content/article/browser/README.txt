@@ -106,6 +106,7 @@ Now, fill the form and add the article:
 >>> browser.getControl(name='form.__name__').value = 'KFZ-Steuer'
 >>> browser.getControl(name='form.title').value = (
 ...     'EU <em>unterstuetzt</em> Stinker-Steuer')
+>>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.getControl('Sub ressort').displayOptions

@@ -45,6 +45,7 @@ setup(
         'zope.app.apidoc',
         'zope.app.catalog',
         'zope.app.component>=3.4.0b3',
+        'zope.app.form>=3.6.0',
         'zope.app.locking',
         'zope.app.onlinehelp',
         'zope.app.preference',

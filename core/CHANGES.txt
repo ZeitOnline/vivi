@@ -1,8 +1,10 @@
 zeit.content.article changes
 ============================
 
-1.6 (unreleased)
-----------------
+1.5.2 (unreleased)
+------------------
+
+- Aktualisiert für zope.app.form 3.6.0 und zeit.cms 1.1.6
 
 1.5.1 (2008-08-12)
 ------------------
