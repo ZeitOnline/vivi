@@ -30,3 +30,9 @@ Make sure those results are cached:
 
 >>> request.response.getHeader('Cache-Control')
 'max-age=3600'
+
+
+For values which are not in the source we'll get an empty list:
+
+>>> updater(master_token='foo')
+'[]'

@@ -77,8 +77,11 @@ class SubNavigationUpdater(object):
             (self.navigation_source, request),
             zope.app.form.browser.interfaces.ITerms)
 
-    def __call__(self, master_token):
-        master_value = self.master_terms.getValue(master_token)
+    def get_result(self, master_token):
+        try:
+            master_value = self.master_terms.getValue(master_token)
+        except KeyError:
+            return []
 
         class Fake(object):
             zope.interface.implements(
@@ -93,6 +96,10 @@ class SubNavigationUpdater(object):
             term = terms.getTerm(value)
             result.append((term.title, term.token))
 
+        return sorted(result)
+
+    def __call__(self, master_token):
+        result = self.get_result(master_token)
         self.request.response.setHeader('Cache-Control', 'max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
         return cjson.encode(sorted(result)).encode('utf8')
