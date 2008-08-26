@@ -1,7 +1,10 @@
 zeit.cms changes
 ================
 
-1.1.6 (unreleased)
+1.1.7 (unreleased)
+------------------
+
+1.1.6 (2008-08-26)
 ------------------
 
 - Asset-View: Read-Only-Ansicht zeigt jetzt die URL an, der Title wird als
