@@ -4,6 +4,8 @@ zeit.cms changes
 1.1.7 (unreleased)
 ------------------
 
+- Styling in  der Dateiliste korrigiert.
+
 1.1.6 (2008-08-26)
 ------------------
 

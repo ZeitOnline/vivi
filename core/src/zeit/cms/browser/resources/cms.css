@@ -529,3 +529,8 @@ pre {
 .publish-state {
   vertical-align: middle;
 }
+
+.workflow-column {
+  white-space: nowrap;
+  letter-spacing: -0.15em;
+}

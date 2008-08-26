@@ -198,7 +198,8 @@ class PublishedColumn(zc.table.column.GetterColumn):
             zope.viewlet.interfaces.IViewletManager,
             name='zeit.cms.workflow-indicator')
         viewlet_manager.update()
-        return viewlet_manager.render()
+        return '<div class="workflow-column">%s</div>' % (
+            viewlet_manager.render(),)
 
 
 class FilenameColumn(GetterColumn):
