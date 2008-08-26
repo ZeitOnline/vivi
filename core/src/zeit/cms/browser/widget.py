@@ -94,6 +94,14 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
         return 'false'
 
+    @property
+    def workflow(self):
+        workflow = zope.component.getMultiAdapter(
+            (self._getCurrentValue(), self.request, self),
+            zope.viewlet.interfaces.IViewletManager,
+            name='zeit.cms.workflow-indicator')
+        workflow.update()
+        return workflow.render()
 
 
 class ObjectReferenceSequenceWidget(
@@ -130,9 +138,15 @@ class ObjectReferenceDisplayWidget(
             (value, self.request),
             zeit.cms.browser.interfaces.IListRepresentation)
 
-        return zope.app.form.browser.widget.renderElement(
+        link = zope.app.form.browser.widget.renderElement(
             'a', href=list_repr.url, contents=value.uniqueId,
             title=list_repr.title)
+        workflow = zope.component.getMultiAdapter(
+            (value, self.request, self),
+            zope.viewlet.interfaces.IViewletManager,
+            name='zeit.cms.workflow-indicator')
+        workflow.update()
+        return link + '\n' + workflow.render()
 
 
 @zope.component.adapter(

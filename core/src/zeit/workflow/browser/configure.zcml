@@ -48,4 +48,27 @@
 
   <adapter factory=".objectlog.ProcessForDisplay" />
 
+
+  <!-- Status indicators -->
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.cms.workflow.browser.interfaces.IWorkflowIndicator"
+    name="status"
+    class=".indicator.ContentStatus"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.IAsset"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.cms.workflow.browser.interfaces.IWorkflowIndicator"
+    name="status"
+    class=".indicator.AssetStatus"
+    permission="zope.View"
+    />
+
 </configure>

@@ -513,3 +513,19 @@ pre {
 .secondary-context-actions .action-title {
     display: inline;
 }
+
+.state-no {
+  color: #dd0033;
+}
+
+.state-notnecessary{
+  opacity: 0.5;
+}
+
+.state-yes {
+  color: #33aa00;
+}
+
+.publish-state {
+  vertical-align: middle;
+}

@@ -9,6 +9,9 @@ zeit.cms changes
 - Ressort muss jetzt vom Benutzer eingegeben werden, »Deutschland« ist nicht
   mehr vorausgewählt (bug #4387).
 - Aussetzer um kurz nach Mitternacht behoben.
+- Dateiliste zeigt mehr Informationen zum Workflow-Zustand.
+- Widget zum referenzieren von Objekten zeigt Informationen zum
+  Workflow-Zustand.
 
 1.1.5 (2008-08-12)
 ------------------

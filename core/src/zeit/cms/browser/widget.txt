@@ -20,9 +20,10 @@ Create a field and bind it at an instance of `Content`:
 
 Create an instance of the object reference widget:
 
->>> import zope.publisher.browser
+>>> import zeit.cms.browser.interfaces
 >>> import zeit.cms.browser.widget
->>> request = zope.publisher.browser.TestRequest()
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
 >>> widget
@@ -66,10 +67,12 @@ Returning location for <Content object at 0x...>
 
 
 
-Set the value to an existing, valid value:
+Set the value to an existing, valid value; we now also see workflow
+information:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://content'})
+...     form={'field.reference': u'http://content'},
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
 >>> widget.getInputValue()
@@ -86,6 +89,7 @@ Returning location for <Content object at 0x...>
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
     type="button" name="showReferencedObject" value="→" />
+  <img class="publish-state" src="http://127.0.0.1/@@/zeit.cms/icons/not-published.png" title="Not published" />
 </div>
 <script>
   new ObjectReferenceWidget(
@@ -100,7 +104,8 @@ Returning location for <Content object at 0x...>
 Set the value to an existing but invalid value, so we get an validation error:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://exists/blubs'})
+...     form={'field.reference': u'http://exists/blubs'},
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
 >>> widget.getInputValue()
@@ -137,7 +142,8 @@ Returning location for <Content object at 0x...>
 Test the validation. Set a non existent resource:
   
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://foo'})
+...     form={'field.reference': u'http://foo'},
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
 >>> widget.getInputValue()
@@ -187,14 +193,18 @@ Display widget
 --------------
 
 The display widget for object renders the Unique Id as content and the title as
-link title:
+link title. The workflow status is shown as well:
 
->>> request = zope.publisher.browser.TestRequest()
+>>> import zeit.cms.browser.interfaces
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceDisplayWidget(
 ...     field, source, request)
 >>> widget.setRenderedValue(Content())
 >>> print widget()
 <a href="http://127.0.0.1/repo/content" title="content">http://content</a>
+<img class="publish-state" src="http://127.0.0.1/@@/zeit.cms/icons/not-published.png" title="Not published" />
+
 
 
 Clean up:
@@ -208,6 +218,7 @@ True
 ...     repository, zeit.cms.repository.interfaces.IRepository)
 True
 
+>>> zope.security.management.endInteraction()
 
 Datetime widget
 +++++++++++++++
@@ -272,8 +283,11 @@ in one month:
 
     Create a simple content object:
 
+    >>> import zope.annotation.interfaces
     >>> class Content(object):
-    ...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+    ...     zope.interface.implements(
+    ...         zeit.cms.interfaces.ICMSContent,
+    ...         zope.annotation.interfaces.IAttributeAnnotatable)
     ...     __parent__ = repository
     ...     __name__ = u'content'
     ...     uniqueId = 'http://content'
@@ -292,4 +306,15 @@ in one month:
     ...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
     ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
+    Setup interaction: 
+
+    >>> import zope.publisher.browser
+    >>> import zope.security.testing
+    >>> import zeit.cms.browser.interfaces
+    >>> request = zope.publisher.browser.TestRequest(
+    ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+    >>> request.setPrincipal(
+    ...     zope.security.testing.Principal(u'zope.globalmgr'))
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
 
