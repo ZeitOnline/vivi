@@ -18,6 +18,7 @@
   <include package="zeit.cms" file="principals-testing.zcml" />
 
   <include package="zeit.content.rawxml" />
+  <include package="zeit.content.rawxml.browser" />
 
 </configure>
 

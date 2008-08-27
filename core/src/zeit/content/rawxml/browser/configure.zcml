@@ -1,0 +1,23 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.content.rawxml">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.content.rawxml.Add"
+    class=".form.Add"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="Raw XML"
+    />
+
+  <browser:page
+    for="zeit.content.rawxml.interfaces.IRawXML"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+</configure>

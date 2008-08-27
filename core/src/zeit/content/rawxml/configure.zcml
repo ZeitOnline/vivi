@@ -3,6 +3,14 @@
 
   <class class=".rawxml.RawXML">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IRawXML"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRawXML"
+      permission="zeit.EditContent"
+      />
   </class>
 
   <adapter factory=".rawxml.resourceFactory" />
