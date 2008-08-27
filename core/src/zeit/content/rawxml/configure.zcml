@@ -1,0 +1,8 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <class class=".rawxml.RawXML">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+  </class>
+
+</configure>
