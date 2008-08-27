@@ -20,3 +20,12 @@ class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.rawxml.interfaces.IRawXML,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('title', ))
+
+
+resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
+    'rawxml')
+resourceFactory = zope.component.adapter(
+        zeit.content.rawxml.interfaces.IRawXML)(resourceFactory)
+
+
+contentFactory = zeit.cms.content.adapter.xmlContentFactory(RawXML)

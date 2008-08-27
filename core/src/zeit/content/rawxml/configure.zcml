@@ -5,4 +5,7 @@
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
   </class>
 
+  <adapter factory=".rawxml.resourceFactory" />
+  <adapter factory=".rawxml.contentFactory" name="rawxml" />
+
 </configure>
