@@ -4,6 +4,10 @@ Raw XML
 The raw xml type is mainly there to support arbitrary blocks in
 channels[#functional]_.
 
+
+Basics
+++++++
+
 Create an intance and set some data:
 
 >>> import lxml.objectify
@@ -54,6 +58,65 @@ u'Roh'
 >>> import lxml.etree
 >>> lxml.etree.tostring(new_content.xml)
 '<a/>'
+
+
+Syndication
++++++++++++
+
+One of the interesting features about the raw xml content is that all its
+content is added to a channel on syndication. Add the content created above to
+a channel:
+
+>>> channel = repository['politik.feed']
+>>> channel.insert(0, content)
+>>> print lxml.etree.tostring(channel.xml, pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/raw">
+      <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true"/>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+
+Let's add some more  xml:
+
+>>> content.xml.append(lxml.objectify.E.foo(bar='baz'))
+>>> content.xml.append(lxml.objectify.E.blubs('oink'))
+>>> channel.updateMetadata(content)
+>>> print lxml.etree.tostring(channel.xml, pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/raw">
+      <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true">
+        <foo bar="baz"/>
+        <blubs py:pytype="str">oink</blubs>
+      </a>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+It is possible to omit the root note when syndicating:
+
+>>> content.omitRootOnSyndicate = True
+>>> channel.updateMetadata(content)
+>>> print lxml.etree.tostring(channel.xml, pretty_print=True)
+<channel>
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/raw">
+      <foo xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" bar="baz" ns0:isSyndicatedRawXML="true"/>
+      <blubs xmlns:ns1="http://namespaces.zeit.de/CMS/RawXML" py:pytype="str" ns1:isSyndicatedRawXML="true">oink</blubs>
+    </block>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+<BLANKLINE>
+
 
 
 Clean up:

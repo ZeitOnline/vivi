@@ -8,4 +8,6 @@
   <adapter factory=".rawxml.resourceFactory" />
   <adapter factory=".rawxml.contentFactory" name="rawxml" />
 
+  <adapter factory=".rawxml.RawXMLMetadataUpdater" name="rawxml" />
+
 </configure>

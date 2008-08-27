@@ -5,15 +5,18 @@ import zope.schema
 
 import zeit.cms.interfaces
 import zeit.cms.content.field
+import zeit.cms.content.interfaces
 
 from zeit.content.rawxml.i18n import MessageFactory as _
 
 
-class IRawXML(zeit.cms.interfaces.IAsset):
+class IRawXML(zeit.cms.interfaces.IAsset,
+              zeit.cms.content.interfaces.IXMLRepresentation):
     """An asset which is just raw xml."""
 
     title = zope.schema.TextLine(
         title=_('Title'))
 
-    xml = zeit.cms.content.field.XMLTree(
-        title=_('XML'))
+    omitRootOnSyndicate = zope.schema.Bool(
+        title=_('Omit root node when syndicting'),
+        description=_('omitRootOnSyndicate-description'))
