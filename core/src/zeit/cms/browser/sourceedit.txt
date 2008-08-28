@@ -1,0 +1,57 @@
+Editing/viewing source
+======================
+
+Let's view the source of an object:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++cms/repository/testcontent')
+>>> browser.getLink('View source').click()
+>>> print browser.contents
+<?xml ...
+              <div class="widget"><pre>&lt;testtype&gt;
+  &lt;head/&gt;
+  &lt;body/&gt;
+&lt;/testtype&gt;
+</pre></div>
+...
+
+When we check out an object we can edit the source:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML').value
+<testtype>
+  <head/>
+  <body/>
+</testtype>
+
+>>> browser.getControl('XML').value = (
+...     '<testtype><head><foo/></head><body/></testtype>')
+>>> browser.getControl('Apply').click()
+>>> print browser.getControl('XML').value
+<testtype>
+  <head>
+    <foo/>
+  </head>
+  <body/>
+</testtype>
+
+After checking in we see the changes in the source view:
+
+>>> browser.getLink('Checkin').click()
+>>> browser.getLink('View source').click()
+>>> print browser.contents
+<?xml ...
+              <div class="widget"><pre>&lt;testtype&gt;
+  &lt;head&gt;
+    &lt;foo/&gt;
+    ...
+    &lt;attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by"&gt;zope.user&lt;/attribute&gt;
+    &lt;attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="type"&gt;testcontenttype&lt;/attribute&gt;
+  &lt;/head&gt;
+  &lt;body/&gt;
+&lt;/testtype&gt;
+</pre></div>
+...

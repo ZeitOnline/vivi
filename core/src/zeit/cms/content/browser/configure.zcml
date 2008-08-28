@@ -64,6 +64,14 @@
     />
 
   <adapter
+    for="zeit.cms.content.field.IXMLTree
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.XMLTreeDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
     for="zeit.cms.content.field.IXMLSnippet
     zeit.cms.browser.interfaces.ICMSLayer"
     provides=".interfaces.IXMLSnippetWidget"

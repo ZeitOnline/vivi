@@ -204,17 +204,29 @@
 
   <browser:page
     for="zeit.cms.content.interfaces.IXMLContent"
+    layer=".interfaces.ICMSLayer"
     name="xml_source_edit.html"
     class=".sourceedit.XMLEditForm"
     permission="zeit.EditContent"
+    menu="zeit-context-views" title="Source"
+    />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.IXMLContent"
+    layer=".interfaces.ICMSLayer"
+    name="xml_source_view.html"
+    class=".sourceedit.XMLDisplayForm"
+    permission="zope.View"
     />
 
   <browser:menuItem
     for="zeit.cms.content.interfaces.IXMLContent"
+    layer=".interfaces.ICMSLayer"
     menu="zeit-context-views"
-    title="Source"
-    action="@@xml_source_edit.html"
-    permission="zeit.EditContent"
+    title="View source"
+    action="@@xml_source_view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <browser:page

@@ -1,21 +1,22 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+
+import xml.sax.saxutils
 
 import cjson
 import lxml.etree
+import lxml.objectify
 import pytz
 
-import zope.component
-import zope.interface
-import zope.formlib.namedtemplate
-
+import zc.form.browser.combinationwidget
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.textwidgets
+import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
-
-import zc.form.browser.combinationwidget
+import zope.component
+import zope.formlib.namedtemplate
+import zope.interface
 
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -42,6 +43,22 @@ class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
                 value = value.getroottree()
             return lxml.etree.tounicode(value, pretty_print=True).replace(
                 '\n', '\r\n')
+
+
+class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
+
+    def __call__(self):
+        if self._renderedValueSet():
+            content = self._data
+            content = zope.proxy.removeAllProxies(content)
+            content = lxml.etree.tostring(content, pretty_print=True,
+                                          encoding=unicode)
+        else:
+            content = self.context.default
+        if not content:
+            content = u''
+        return zope.app.form.browser.widget.renderElement(
+            'pre', contents=xml.sax.saxutils.escape(content))
 
 
 class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):

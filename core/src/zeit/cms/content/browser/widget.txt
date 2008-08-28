@@ -79,6 +79,28 @@ Traceback (most recent call last):
 ConversionError: (Couldn't find end of Start Tag ed line 1, line 1, column 4, None)
 
 
+Dispaly field
++++++++++++++
+
+XMLTrees can also be displayed:
+
+>>> widget = zeit.cms.content.browser.widget.XMLTreeDisplayWidget(
+...     field, request)
+>>> print widget()
+<pre></pre>
+
+Set a tree as rendered value:
+
+>>> widget.setRenderedValue(content.whole_tree)
+>>> print widget()
+<pre>&lt;a&gt;
+  &lt;b/&gt;
+  &lt;editme&gt;
+    &lt;c/&gt;
+  &lt;/editme&gt;
+&lt;/a&gt;
+</pre>
+
 
 XML snippets
 ============

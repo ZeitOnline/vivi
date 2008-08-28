@@ -14,5 +14,6 @@ def test_suite():
         'debug.txt',
         'error-views.txt',
         'listing.txt',
+        'sourceedit.txt',
         'widget.txt'))
     return suite

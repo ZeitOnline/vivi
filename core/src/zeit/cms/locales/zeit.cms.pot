@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Aug 26 10:39:23 2008\n"
+"POT-Creation-Date: Thu Aug 28 10:31:31 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -29,19 +29,23 @@ msgid "context sensitive actions"
 msgstr ""
 
 #: src/zeit/cms/browser/configure.zcml:197
-#: src/zeit/cms/browser/configure.zcml:212
+#: src/zeit/cms/browser/configure.zcml:205
 msgid "Source"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:289
+#: src/zeit/cms/browser/configure.zcml:222
+msgid "View source"
+msgstr ""
+
+#: src/zeit/cms/browser/configure.zcml:301
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:343
+#: src/zeit/cms/browser/configure.zcml:355
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:352
+#: src/zeit/cms/browser/configure.zcml:364
 msgid "Development"
 msgstr ""
 
@@ -107,22 +111,22 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:262
+#: src/zeit/cms/browser/listing.py:263
 msgid "Directory listing"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:266
+#: src/zeit/cms/browser/listing.py:267
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:273
+#: src/zeit/cms/browser/listing.py:274
 #: src/zeit/cms/syndication/browser/feed.py:151
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:277
+#: src/zeit/cms/browser/listing.py:278
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:114
 #: src/zeit/cms/content/interfaces.py:274
@@ -137,7 +141,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:281
+#: src/zeit/cms/browser/listing.py:282
 #: src/zeit/cms/interfaces.py:48
 #: src/zeit/cms/repository/browser/file.py:42
 #: src/zeit/content/image/browser/imagegroup.py:69
@@ -146,22 +150,22 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:285
+#: src/zeit/cms/browser/listing.py:286
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:288
+#: src/zeit/cms/browser/listing.py:289
 #: src/zeit/cms/syndication/browser/feed.py:162
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:290
+#: src/zeit/cms/browser/listing.py:291
 #: src/zeit/cms/content/interfaces.py:73
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:294
+#: src/zeit/cms/browser/listing.py:295
 #: src/zeit/cms/content/interfaces.py:68
 #: src/zeit/search/browser/search.py:110
 #: src/zeit/search/interfaces.py:23
@@ -212,6 +216,14 @@ msgstr ""
 
 #: src/zeit/cms/browser/secondary_context_actions.pt:5
 msgid "Additional actions"
+msgstr ""
+
+#: src/zeit/cms/browser/sourceedit.py:37
+msgid "Edit source code"
+msgstr ""
+
+#: src/zeit/cms/browser/sourceedit.py:42
+msgid "View sourcecode"
 msgstr ""
 
 #: src/zeit/cms/browser/system-error.pt:8
@@ -295,12 +307,12 @@ msgid "Assets and related"
 msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:152
-#: src/zeit/cms/content/browser/configure.zcml:141
+#: src/zeit/cms/content/browser/configure.zcml:149
 msgid "Edit assets"
 msgstr ""
 
 #: src/zeit/cms/content/browser/form.py:156
-#: src/zeit/cms/content/browser/configure.zcml:158
+#: src/zeit/cms/content/browser/configure.zcml:166
 msgid "Assets"
 msgstr ""
 
@@ -917,7 +929,7 @@ msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:108
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:334
+#: src/zeit/cms/browser/configure.zcml:346
 msgid "Preview"
 msgstr ""
 
@@ -1575,15 +1587,15 @@ msgstr ""
 msgid "Retracting scheduled"
 msgstr ""
 
-#: src/zeit/workflow/source.py:30
+#: src/zeit/workflow/source.py:46
 msgid "yes"
 msgstr ""
 
-#: src/zeit/workflow/source.py:31
+#: src/zeit/workflow/source.py:47
 msgid "no"
 msgstr ""
 
-#: src/zeit/workflow/source.py:32
+#: src/zeit/workflow/source.py:48
 msgid "not necessary"
 msgstr ""
 
