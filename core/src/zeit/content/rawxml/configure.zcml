@@ -1,5 +1,6 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:i18n="http://namespaces.zope.org/i18n">
 
   <class class=".rawxml.RawXML">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
@@ -17,5 +18,7 @@
   <adapter factory=".rawxml.contentFactory" name="rawxml" />
 
   <adapter factory=".rawxml.RawXMLMetadataUpdater" name="rawxml" />
+
+  <i18n:registerTranslations directory="locales" />
 
 </configure>
