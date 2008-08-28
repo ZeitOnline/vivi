@@ -1,0 +1,8 @@
+zeit.content.rawxml changes
+===========================
+
+0.1 (2008-08-28)
+++++++++++++++++
+
+- Erstes release.
+
