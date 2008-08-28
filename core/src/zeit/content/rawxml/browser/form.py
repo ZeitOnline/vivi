@@ -31,3 +31,9 @@ class Edit(Base,
            zeit.cms.browser.form.EditForm):
 
     title = _('Edit Raw XML')
+
+
+class Display(Base,
+              zeit.cms.browser.form.DisplayForm):
+
+    title = _('View Raw XML')
