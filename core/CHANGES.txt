@@ -1,11 +1,10 @@
 zeit.cms changes
 ================
 
-1.1.8 (unreleased)
+1.1.8 (2008-08-28)
 ------------------
 
 - Readonly-Ansicht für den Quelltext (Bug #4358).
-
 
 1.1.7 (2008-08-26)
 ------------------
