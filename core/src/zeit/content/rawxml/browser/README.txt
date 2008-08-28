@@ -29,7 +29,6 @@ We're now at the edit page:
     <title>... Edit Raw XML </title>
     ...
 
-
 In the edited documents panel we see the title of the object and its icon:
 
 >>> print browser.contents
@@ -47,15 +46,12 @@ In the edited documents panel we see the title of the object and its icon:
   </tr>
   ...
 
-
-
 The xml is pretty printed:
 
 >>> print browser.getControl('XML').value
 <block>
   <feed/>
 </block>
-
 
 Set the omit root flag: 
 
@@ -65,7 +61,6 @@ There is an edit tab:
 
 >>> browser.getLink('Edit', index=1)
 <Link text='Edit' url='http://localhost/++skin++cms/workingcopy/zope.user/rawxml/@@edit.html'>
-
 
 
 After checking in we see the read/only view:
@@ -80,6 +75,3 @@ After checking in we see the read/only view:
 &lt;/block&gt;
 </pre></div>
 ...
-
-
-
