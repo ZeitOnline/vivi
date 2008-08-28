@@ -4,6 +4,7 @@
 import copy
 
 import zope.interface
+import zope.proxy
 
 import zeit.cms.content.xmlsupport
 import zeit.cms.content.dav
@@ -55,7 +56,8 @@ class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
 
         # Append new nodes
-        node = copy.deepcopy(self.context.xml)
+        node = copy.deepcopy(
+            zope.proxy.removeAllProxies(self.context.xml))
         if self.context.omitRootOnSyndicate:
             insert_nodes = node.getchildren()
         else:
