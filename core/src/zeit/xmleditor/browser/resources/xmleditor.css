@@ -23,7 +23,6 @@
   cursor: pointer;
 }
 
-
 #xml-editor-edit-pane textarea {
   width: 90%;
   height: 10ex;
@@ -33,6 +32,12 @@
 #xml-editor img.action {
   margin-right: 3px;
   cursor: pointer;
+}
+
+#xml-editor img.action[action="hideActions"] {
+    position: absolute;
+    right: 0;
+    top: 0.3em;
 }
 
 #xml-editor #xml-editor-actions {
