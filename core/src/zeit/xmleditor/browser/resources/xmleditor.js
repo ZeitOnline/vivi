@@ -1,6 +1,5 @@
 // Copyright (c) 2007-2008 gocept gmbh & co. kg
 // See also LICENSE.txt
-// $Id$
 
 function XMLEditor(base_url, element_id) {
     var editor = this;
@@ -473,7 +472,7 @@ XMLEditor.prototype = {
         var node = document.evaluate
             (xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE,
             null).singleNodeValue;
-        var where = Coordinates(node.offsetLeft, node.offsetTop);
+        var where = getElementPosition(node);
         this.showEditText(node, where)
         return result
     },
