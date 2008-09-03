@@ -8,6 +8,7 @@ import datetime
 import PIL.Image
 import pytz
 
+import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
@@ -30,10 +31,27 @@ class ImageTransform(object):
                 "Cannot transform image %s" % context.__name__)
 
     def thumbnail(self, width, height):
-        self.image.thumbnail((width, height), PIL.Image.ANTIALIAS)
+        image = self.image.copy()
+        image.thumbnail((width, height), PIL.Image.ANTIALIAS)
+        return self._construct_image(image)
 
+    def resize(self, width=None, height=None):
+        if width is None and height is None:
+            raise TypeError('Need at least one of width and height.')
+
+        orig_width, orig_height = self.image.size
+
+        if width is None:
+            width = orig_width * height / orig_height
+        elif height is None:
+            height = orig_height * width / orig_width
+
+        image = self.image.resize((width, height), PIL.Image.ANTIALIAS)
+        return self._construct_image(image)
+
+    def _construct_image(self, image):
         image_data = cStringIO.StringIO()
-        self.image.save(image_data, self.image.format)
+        image.save(image_data, self.image.format)
 
         image = zeit.content.image.image.Image(data=image_data.getvalue())
         image.__parent__ = self.context
@@ -47,12 +65,27 @@ class ImageTransform(object):
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
 def persistent_thumbnail_factory(context):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.image') or {}
+    method_name = config.get('thumbnail-method', 'thumbnail')
+    width = config.get('thumbnail-width', 50)
+    if width:
+        width = int(width)
+    else:
+        width = None
+    height = config.get('thumbnail-height', 50)
+    if height:
+        height = int(height)
+    else:
+        height = None
+
     thumbnail_container = zeit.content.image.interfaces.IThumbnailFolder(
         context)
     image_name = context.__name__
     if image_name not in thumbnail_container:
         transform = zeit.content.image.interfaces.ITransform(context)
-        thumbnail = transform.thumbnail(50, 50)
+        method = getattr(transform, method_name)
+        thumbnail = method(width, height)
 
         zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail).update(
             zeit.connector.interfaces.IWebDAVReadProperties(context))

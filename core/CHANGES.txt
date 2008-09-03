@@ -4,6 +4,10 @@ zeit.cms changes
 1.1.9 (unreleased)
 ------------------
 
+- Die Größe und Skalierungsart (mit/ohne Boundingbox) der Thumbnails (für
+  Bigas) ist jetzt konfigurierbar.
+- Hit-Counter kommt jetzt besser mit Pfaden ala //index klar.
+
 1.1.8 (2008-08-28)
 ------------------
 

@@ -91,14 +91,10 @@ True
 Edge cases
 ==========
 
-There are two edge cases:
+Empty today.xml
++++++++++++++++
 
-1. The today.xml file is empty -- this happens quite regularly throughout the
-   day.
-2. The today.xml file does not contain any <article> nodes. This happens after
-   midnight when the counters have been reset but nothin has been counted so
-   far.
-
+The today.xml file is empty -- this happens quite regularly throughout the day.
 
 Create an empty file and initialize a counter:
 
@@ -113,13 +109,38 @@ Getting objects doesn't raise an exception:
 >>> counter.get_count('foo') is None
 True
 
-Let's add the root node to verify the second edge case:
+No article nodes
+++++++++++++++++
+
+The today.xml file does not contain any <article> nodes. This happens after
+midnight when the counters have been reset but nothin has been counted so far.
 
 >>> open(name, 'w').write("<?xml version='1.0'?>\n<articles/>")
 >>> counter = zeit.today.storage.CountStorage(url_get)
 >>> counter.get_count('foo') is None
 True
 
+
+Duplicate object references
++++++++++++++++++++++++++++
+
+It happens that an object is referenced multiple times in the today.xml (after
+normalisation):
+
+>>> open(name, 'w').write("""\
+... <?xml version='1.0'?>
+... <articles>
+...     <article date="2007-06-01" rang="1" counter="25" url="/index"/>
+...     <article date="2007-06-01" rang="2" counter="17" url="/foo"/>
+...     <article date="2007-06-01" rang="3" counter="3" url="////index"/>
+... </articles>""")
+
+
+The counter aggregates those figures:
+
+>>> counter = zeit.today.storage.CountStorage(url_get)
+>>> counter.get_count('http://xml.zeit.de/index')
+28
 
 Clean up:
 

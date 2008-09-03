@@ -111,6 +111,14 @@ class ITransform(zope.interface.Interface):
         returns IImage object.
         """
 
+    def resize(width=None, height=None):
+        """Create a resized version of the image.
+
+        returns IImage object.
+        raises TypeError of both width and height are ommited.
+
+        """
+
 class IPersistentThumbnail(IImage):
     """Persistent thumbnail version of an image."""
 

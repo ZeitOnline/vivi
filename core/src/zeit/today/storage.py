@@ -74,21 +74,28 @@ class CountStorage(object):
                              exc_info=True)
             else:
                 if xml.find('article') is not None:
-                    self.id_to_count = dict(
-                        (self._make_unique_id(item.get('url')),
-                         int(item.get('counter'))) for item in xml['article'])
-                    self.id_to_date = dict(
-                        (self._make_unique_id(item.get('url')),
-                         datetime.date(*(time.strptime(item.get('date'),
-                                                       '%Y-%m-%d')[0:3])))
-                        for item in xml['article'])
+                    id_to_count = {}
+                    id_to_date = {}
+                    for item in xml['article']:
+                        url = self._make_unique_id(item.get('url'))
+                        count = int(item.get('counter'))
+                        date = datetime.date(
+                            *(time.strptime(item.get('date'),
+                                            '%Y-%m-%d')[0:3]))
+                        id_to_count.setdefault(url, 0)
+                        id_to_count[url] += count
+                        id_to_date[url] = date
+                    self.id_to_count = id_to_count
+                    self.id_to_date = id_to_date
             self.last_refresh = now
         finally:
             self.update_lock.release()
 
     @staticmethod
     def _make_unique_id(path):
-        return urlparse.urljoin('http://xml.zeit.de', path)
+        while '//' in path:
+            path = path.replace('//', '/')
+        return urlparse.urljoin('http://xml.zeit.de/', path)
 
 
 @zope.interface.implementer(zeit.today.interfaces.ICountStorage)
