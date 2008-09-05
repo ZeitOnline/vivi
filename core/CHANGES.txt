@@ -7,6 +7,7 @@ zeit.cms changes
 - Die Größe und Skalierungsart (mit/ohne Boundingbox) der Thumbnails (für
   Bigas) ist jetzt konfigurierbar.
 - Hit-Counter kommt jetzt besser mit Pfaden ala //index klar.
+- XML-Editor: Styling-Fixes
 
 1.1.8 (2008-08-28)
 ------------------
