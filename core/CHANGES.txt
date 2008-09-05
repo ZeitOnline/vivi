@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.1.9 (unreleased)
+1.1.9 (2008-09-05)
 ------------------
 
 - Die Größe und Skalierungsart (mit/ohne Boundingbox) der Thumbnails (für
