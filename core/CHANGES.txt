@@ -4,6 +4,8 @@ zeit.cms changes
 1.1.10 (unreleased)
 -------------------
 
+- Zuweisen von Keywords sorgte im FF3 für Fehler.
+
 1.1.9 (2008-09-05)
 ------------------
 

@@ -88,6 +88,7 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
 
     handleClick: function(event) {
         var target = event.target();
+        var handled_here = true;
         if (target.getAttribute('name') == 'new_keyword') {
             this.showAddKeyword();
         } else if (target.nodeName == 'A' &&
@@ -97,6 +98,10 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
             this.addKeyword(target.getAttribute('href'));
         } else {
             arguments.callee.$.handleClick.call(this, event);
+            handled_here = false;
+        }
+        if (handled_here) {
+            event.stop();
         }
     },
 
