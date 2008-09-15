@@ -120,16 +120,18 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
     def handle_add(self, action, data):
         self.createAndAdd(data)
 
-    def add(self, object):
-        chooser = zope.app.container.interfaces.INameChooser(self.context)
+    def add(self, object, container=None):
+        if container is None:
+            container = self.context
+        chooser = zope.app.container.interfaces.INameChooser(container)
         name = chooser.chooseName(self.suggestName(object), object)
-        self.context[name] = object
-        object = self.context[name]
+        container[name] = object
+        object = container[name]
 
         # Check the document out right away (if possible).
         if self.checkout:
             manager = zeit.cms.checkout.interfaces.ICheckoutManager(
-                self.context[name], None)
+                container[name], None)
             if manager is not None and manager.canCheckout:
                 object = manager.checkout()
                 self._checked_out = True
