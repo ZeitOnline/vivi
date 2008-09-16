@@ -52,14 +52,18 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.content.image.interfaces.IImages
 
     def update_with_context(self, entry, images):
-        if not images.images:
-            # No image referenced
-            return
-        # only add first image
-        image = images.images[0]
-        entry['image'] = zope.component.getAdapter(
-            image,
-            zeit.cms.content.interfaces.IXMLReference, name='image')
+        if images.images:
+            # only add first image
+            image = images.images[0]
+            entry['image'] = zope.component.getAdapter(
+                image,
+                zeit.cms.content.interfaces.IXMLReference, name='image')
+        else:
+            # No image referenced. Remove an image node we might have produced
+            # earlier.
+            image_node = entry.find('image')
+            if image_node is not None:
+                entry.remove(image_node)
 
 
 @zope.component.adapter(
