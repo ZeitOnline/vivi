@@ -1,8 +1,10 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import StringIO
 import xml.sax.saxutils
 
+import SilverCity.XML
 import cjson
 import lxml.etree
 import lxml.objectify
@@ -56,9 +58,11 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
         else:
             content = self.context.default
         if not content:
-            content = u''
-        return zope.app.form.browser.widget.renderElement(
-            'pre', contents=xml.sax.saxutils.escape(content))
+            return u''
+        io = StringIO.StringIO()
+        SilverCity.XML.XMLHTMLGenerator().generate_html(
+            io, content.encode('UTF-8'))
+        return io.getvalue().decode('UTF-8')
 
 
 class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):

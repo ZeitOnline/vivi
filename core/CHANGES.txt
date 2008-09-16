@@ -5,6 +5,8 @@ zeit.cms changes
 -------------------
 
 - Zuweisen von Keywords sorgte im FF3 für Fehler.
+- Scrollbar bei der R/O-Ansicht des Quelltexts (bug #4459).
+- Syntax-Highliting in der R/O-Ansicht des Quelltexts.
 
 1.1.9 (2008-09-05)
 ------------------

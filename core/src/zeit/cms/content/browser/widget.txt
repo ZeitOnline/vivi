@@ -86,20 +86,20 @@ XMLTrees can also be displayed:
 
 >>> widget = zeit.cms.content.browser.widget.XMLTreeDisplayWidget(
 ...     field, request)
->>> print widget()
-<pre></pre>
+>>> widget()
+u''
 
 Set a tree as rendered value:
 
 >>> widget.setRenderedValue(content.whole_tree)
 >>> print widget()
-<pre>&lt;a&gt;
-  &lt;b/&gt;
-  &lt;editme&gt;
-    &lt;c/&gt;
-  &lt;/editme&gt;
-&lt;/a&gt;
-</pre>
+<span class="h_tag">&lt;a&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;b</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;editme&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="h_tag">&lt;c</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;/editme&gt;</span><span class="h_default"><br/>
+</span><span class="h_tag">&lt;/a&gt;</span><span class="h_default"><br/>
+</span>
 
 
 XML snippets

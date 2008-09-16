@@ -1,7 +1,7 @@
 Editing/viewing source
 ======================
 
-Let's view the source of an object:
+Let's view the source of an object. The source syntax highlighted:
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
@@ -10,11 +10,11 @@ Let's view the source of an object:
 >>> browser.getLink('View source').click()
 >>> print browser.contents
 <?xml ...
-              <div class="widget"><pre>&lt;testtype&gt;
-  &lt;head/&gt;
-  &lt;body/&gt;
-&lt;/testtype&gt;
-</pre></div>
+              <div class="widget"><span class="h_tag">&lt;testtype&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;head</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;body</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
+</span><span class="h_tag">&lt;/testtype&gt;</span><span class="h_default"><br/>
+</span></div>
 ...
 
 When we check out an object we can edit the source:
@@ -44,14 +44,16 @@ After checking in we see the changes in the source view:
 >>> browser.getLink('View source').click()
 >>> print browser.contents
 <?xml ...
-              <div class="widget"><pre>&lt;testtype&gt;
-  &lt;head&gt;
-    &lt;foo/&gt;
-    ...
-    &lt;attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by"&gt;zope.user&lt;/attribute&gt;
-    &lt;attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="type"&gt;testcontenttype&lt;/attribute&gt;
-  &lt;/head&gt;
-  &lt;body/&gt;
-&lt;/testtype&gt;
-</pre></div>
+              <div class="widget"><span class="h_tag">&lt;testtype&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;head&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="h_tag">&lt;foo</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
 ...
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="h_tag">&lt;attribute</span><span class="h_other">&nbsp;</span><span class="h_attribute">xmlns:py</span><span class="h_other">=</span><span class="h_doublestring">"<a href="http://codespeak.net/lxml/objectify/pytype">http://codespeak.net/lxml/objectify/pytype</a>"</span><span class="h_other">&nbsp;</span><span class="h_attribute">py:pytype</span><span class="h_other">=</span><span class="h_doublestring">"str"</span><span class="h_other">&nbsp;</span><span class="h_attribute">ns</span><span class="h_other">=</span><span class="h_doublestring">"<a href="http://namespaces.zeit.de/CMS/document">http://namespaces.zeit.de/CMS/document</a>"</span><span class="h_other">&nbsp;</span><span class="h_attribute">name</span><span class="h_other">=</span><span class="h_doublestring">"last_modified_by"</span><span class="h_tag">&gt;</span><span class="h_default">zope.user</span><span class="h_tag">&lt;/attribute&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="h_tag">&lt;attribute</span><span class="h_other">&nbsp;</span><span class="h_attribute">xmlns:py</span><span class="h_other">=</span><span class="h_doublestring">"<a href="http://codespeak.net/lxml/objectify/pytype">http://codespeak.net/lxml/objectify/pytype</a>"</span><span class="h_other">&nbsp;</span><span class="h_attribute">py:pytype</span><span class="h_other">=</span><span class="h_doublestring">"str"</span><span class="h_other">&nbsp;</span><span class="h_attribute">ns</span><span class="h_other">=</span><span class="h_doublestring">"<a href="http://namespaces.zeit.de/CMS/meta">http://namespaces.zeit.de/CMS/meta</a>"</span><span class="h_other">&nbsp;</span><span class="h_attribute">name</span><span class="h_other">=</span><span class="h_doublestring">"type"</span><span class="h_tag">&gt;</span><span class="h_default">testcontenttype</span><span class="h_tag">&lt;/attribute&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;/head&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;body</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
+</span><span class="h_tag">&lt;/testtype&gt;</span><span class="h_default"><br/>
+</span></div>
+            </div>
+...
+

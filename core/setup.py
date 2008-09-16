@@ -16,6 +16,7 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'PILwoTk',
+        'SilverCity',
         'ZODB3>3.7',
         'decorator',
         'gocept.cache>=0.2',
