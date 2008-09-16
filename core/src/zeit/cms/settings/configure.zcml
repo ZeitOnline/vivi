@@ -4,7 +4,7 @@
   <class class=".settings.GlobalSettings">
     <require
       interface=".interfaces.IGlobalSettings"
-      permission="zope.View"
+      permission="zeit.ViewGlobalSettings"
       />
     <require
       set_schema=".interfaces.IGlobalSettings"

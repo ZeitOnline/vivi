@@ -49,6 +49,11 @@
     permission="zope.View"
     />
 
+  <grant
+    principal="zope.Everybody"
+    permission="zeit.ViewGlobalSettings"
+    />
+
   <!-- Currently every authenticated user is an editor. -->
   <grant
     principal="zope.Authenticated"

@@ -63,6 +63,11 @@
     />
 
   <permission
+    id="zeit.ViewGlobalSettings"
+    title="View global settings"
+    />
+
+  <permission
     id="zeit.ChangeGlobalSettings"
     title="Change global settings"
     />
