@@ -1,8 +1,10 @@
 zeit.content.rawxml changes
 ===========================
 
-0.2 (unreleased)
+0.2 (2008-09-16)
 ----------------
+
+- Aktualisiert auf zeit.cms 1.1.10 mit Syntax-Highlighting
 
 0.1 (2008-08-28)
 ----------------

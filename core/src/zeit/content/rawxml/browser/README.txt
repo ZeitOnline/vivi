@@ -70,10 +70,10 @@ After checking in we see the read/only view:
 <?xml ...
     <title>... View Raw XML </title>
     ...
-        <div class="widget"><pre>&lt;block&gt;
-  &lt;feed/&gt;
-&lt;/block&gt;
-</pre></div>
+        <div class="widget"><span class="h_tag">&lt;block&gt;</span><span class="h_default"><br/>
+&nbsp;&nbsp;</span><span class="h_tag">&lt;feed</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
+</span><span class="h_tag">&lt;/block&gt;</span><span class="h_default"><br/>
+</span></div>
 ...
 
 
