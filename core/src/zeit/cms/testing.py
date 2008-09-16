@@ -57,6 +57,12 @@ def setup_product_config(product_config={}):
     zope.app.appsetup.product._configs.update(product_config)
 
 
+optionflags = (doctest.REPORT_NDIFF +
+               doctest.INTERPRET_FOOTNOTES +
+               doctest.NORMALIZE_WHITESPACE +
+               doctest.ELLIPSIS)
+
+
 def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
@@ -64,10 +70,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
     kw.setdefault('checker', checker)
-    kw.setdefault('optionflags', (doctest.REPORT_NDIFF +
-                                  doctest.INTERPRET_FOOTNOTES +
-                                  doctest.NORMALIZE_WHITESPACE +
-                                  doctest.ELLIPSIS))
+    kw.setdefault('optionflags', optionflags)
 
     def tearDown(test):
         zope.app.testing.functional.FunctionalTestSetup().tearDown()
