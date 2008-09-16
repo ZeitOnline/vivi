@@ -24,8 +24,8 @@ def updateFeedOnCheckin(context, event):
         context, None)
     if auto is None:
         log.debug("No automatic update of metadata for %s because"
-                     "no IAutomaticMetadataUpdate adapter found." %(
-                         context.uniqueId,))
+                  "no IAutomaticMetadataUpdate adapter found." %(
+                      context.uniqueId,))
         return
 
     relations = zope.component.getUtility(
