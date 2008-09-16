@@ -55,7 +55,7 @@ class CommonMetadataFormBase(object):
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
-        ('dailyNewsletter', ),
+        ('dailyNewsletter', 'commentsAllowed'),
         css_class='widgets-float column-left')
 
 
