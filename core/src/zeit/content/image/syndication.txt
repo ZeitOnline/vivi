@@ -141,6 +141,19 @@ Now check out, change title and check in:
 
 The content has changed automatically:
 
+>>> print lxml.etree.tostring(
+...     repository['testcontent'].xml, pretty_print=True),
+<testtype>
+  <head>
+    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="Image title" base-id="http://xml.zeit.de/image-group" type="jpg">
+      <bu xsi:nil="true"/>
+    </image>
+    ...
+  </head>
+  <body/>
+</testtype>
+
+
 
 Reference index
 ===============
