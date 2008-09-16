@@ -19,8 +19,7 @@ class Base(object):
         zeit.content.link.interfaces.ILink,
         zeit.cms.content.interfaces.ICommonMetadata,
         zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
-        zeit.cms.interfaces.ICMSContent,
-        zeit.content.image.interfaces.IImages)
+        zeit.cms.interfaces.ICMSContent)
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
