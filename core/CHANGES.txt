@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Wenn ein Bild von einem Artikel entfernt wird, wird dies jetzt auch im
   Channel reflektiert.
+- Die Ausgabenummer ist generell kein Pflichtfeld mehr.
 
 1.1.10 (2008-09-16)
 -------------------

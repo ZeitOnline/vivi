@@ -105,7 +105,6 @@ invalid though:
     <div id="messages" class="haveMessages">
       <ul>
         <li class="error">Year: Required input is missing.</li>
-        <li class="error">Volume: Required input is missing.</li>
         <li class="error">Ressort: Required input is missing.</li>
         <li class="error">Title: Required input is missing.</li>
         <li class="error">Authors: Wrong contained type</li>
