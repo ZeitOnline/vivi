@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.1.11 (unreleased)
+1.1.11 (2008-09-18)
 -------------------
 
 - Wenn ein Bild von einem Artikel entfernt wird, wird dies jetzt auch im
