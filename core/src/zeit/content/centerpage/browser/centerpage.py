@@ -43,3 +43,5 @@ class XMLEditor(zeit.xmleditor.browser.editor.Editor):
     }
 
     XSLT = os.path.join(os.path.dirname(__file__), 'centerpage.xslt')
+
+XMLEditor.load_xslt()

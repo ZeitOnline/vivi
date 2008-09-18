@@ -87,11 +87,14 @@ class Editor(object):
     def xml_source(self):
         ns = lxml.etree.FunctionNamespace("http://www.zeit.de/exslt")
         ns['nodepath'] = xslt_getNodePath
-        xslt = lxml.etree.XSLT(lxml.etree.parse(self.XSLT))
-        rendered_html = str(xslt(zope.proxy.removeAllProxies(self.xml)))
+        rendered_html = str(self.xslt(zope.proxy.removeAllProxies(self.xml)))
         __traceback_info__ = (rendered_html, )
         value = lxml.etree.XML(rendered_html)
         return lxml.etree.tounicode(value, pretty_print=True)
+
+    @classmethod
+    def load_xslt(cls):
+        cls.xslt = lxml.etree.XSLT(lxml.etree.parse(cls.XSLT))
 
 
 class XMLEditorActions(object):
