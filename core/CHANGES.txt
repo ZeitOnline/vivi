@@ -4,6 +4,8 @@ zeit.cms changes
 1.1.12 (unreleased)
 -------------------
 
+- Channel ist jetzt ein Asset.
+
 1.1.11 (2008-09-18)
 -------------------
 

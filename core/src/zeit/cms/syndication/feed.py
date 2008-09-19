@@ -26,7 +26,9 @@ log = logging.getLogger(__name__)
 
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    zope.interface.implements(zeit.cms.syndication.interfaces.IFeed)
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeed,
+        zeit.cms.interfaces.IAsset)
 
     title = zeit.cms.content.property.ObjectPathProperty('.title')
     object_limit = zeit.cms.content.property.ObjectPathProperty(

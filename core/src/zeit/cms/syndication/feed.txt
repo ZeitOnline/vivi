@@ -14,6 +14,12 @@ Feeds contain an ordered list of documents:
 ...     zeit.cms.syndication.interfaces.IFeed, feed)
 True
 
+A feed is an asset:
+
+>>> import zeit.cms.interfaces
+>>> zeit.cms.interfaces.IAsset.providedBy(feed)
+True
+
 
 Setup functional test:
 
@@ -35,9 +41,8 @@ Feeds behave mostly like a list. An empty feed doen't contain any objects:
 We now will add objects to the feed. Let's create some fake object:
 
 >>> import zope.interface
->>> from zeit.cms.interfaces import ICMSContent
 >>> class Article(object):
-...     zope.interface.implements(ICMSContent)
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
 ...     def __init__(self, id=None):
 ...         self.uniqueId = id
 
