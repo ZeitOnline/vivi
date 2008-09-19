@@ -26,13 +26,18 @@ required:
 >>> f
 <zeit.cms.repository.file.RepositoryFile object at 0x...>
 
-It provides the IFile interface:
+It provides the IFile and IAsset interfaces:
 
 >>> import zope.interface.verify
+>>> import zeit.cms.interfaces
 >>> import zeit.cms.repository.interfaces
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.repository.interfaces.IFile, f)
 True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IAsset, f)
+True
+
 
 The file has a size:
 

@@ -4,21 +4,22 @@
 
 import ZODB.blob
 import persistent
-
 import zope.app.container.contained
 import zope.component
 import zope.interface
 import zope.security.proxy
 
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.connector.interfaces
-import zeit.cms.repository.interfaces
 
 
 class RepositoryFile(zope.app.container.contained.Contained):
     """A file in the repository."""
 
-    zope.interface.implements(zeit.cms.repository.interfaces.IFile)
+    zope.interface.implements(zeit.cms.repository.interfaces.IFile,
+                              zeit.cms.interfaces.IAsset)
 
     def __init__(self, uniqueId, mimeType):
         super(RepositoryFile, self).__init__()
