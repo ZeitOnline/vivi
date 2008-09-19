@@ -49,7 +49,7 @@ Make the test content type an asset to test the workflow:
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> old_implements = list(zope.interface.implementedBy(
 ...     zeit.cms.testcontenttype.testcontenttype.TestContentType))
->>> zope.interface.classImplements(
+>>> zope.interface.classImplementsOnly(
 ...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
 ...     zeit.cms.interfaces.IAsset)
 >>> content = repository['testcontent']

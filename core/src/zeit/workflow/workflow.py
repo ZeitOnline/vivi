@@ -50,7 +50,7 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     """
 
     zope.interface.implements(zeit.workflow.interfaces.IContentWorkflow)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.component.adapts(zeit.cms.interfaces.IEditorialContent)
 
     zeit.cms.content.dav.mapProperties(
         zeit.workflow.interfaces.IContentWorkflow,

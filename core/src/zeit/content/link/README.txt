@@ -11,6 +11,19 @@ Instantiate a link and verify the initial xml:
 >>> import zeit.content.link.link
 >>> link = zeit.content.link.link.Link()
 
+Verify the interfaces:
+
+>>> import zope.interface.verify
+>>> import zeit.cms.interfaces
+>>> import zeit.content.link.interfaces
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.link.interfaces.ILink, link)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IEditorialContent, link)
+True
+
+
 >>> import lxml.etree
 >>> print lxml.etree.tostring(link.xml, pretty_print=True)
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">

@@ -1,6 +1,5 @@
 # Copyright (c) 2007 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import copy
 
@@ -11,12 +10,14 @@ import zope.interface
 
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-
+import zeit.cms.interfaces
 import zeit.content.infobox.interfaces
+
 
 class Infobox(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    zope.interface.implements(zeit.content.infobox.interfaces.IInfobox)
+    zope.interface.implements(zeit.content.infobox.interfaces.IInfobox,
+                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = (
         u'<container layout="artbox" label="info" '

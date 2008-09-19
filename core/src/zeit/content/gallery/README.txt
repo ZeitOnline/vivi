@@ -16,6 +16,18 @@ gallery it is empty:
 >>> len(gallery)
 0
 
+The gallery provides the IGallery and IEditorialContent interfaces:
+
+>>> import zope.interface.verify
+>>> import zeit.cms.interfaces
+>>> import zeit.content.gallery.interfaces
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.gallery.interfaces.IGallery, gallery)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IEditorialContent, gallery)
+True
+
 Now assign an image folder. We deliberatly use one where other objects are in,
 too:
 
@@ -303,7 +315,6 @@ Entry layout
 Each entry can have a different layout. This is defined by a source. Currently
 the only valid value besides None is 'image-only':
 
->>> import zeit.content.gallery.interfaces
 >>> field = zeit.content.gallery.interfaces.IGalleryEntry['layout']
 >>> list(field.vocabulary)
 [u'image-only']

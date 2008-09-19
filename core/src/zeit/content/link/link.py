@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """Implementation of the link content type."""
 
 import zope.component
@@ -10,14 +9,15 @@ import zeit.cms.content.adapter
 import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-
+import zeit.cms.interfaces
 import zeit.content.link.interfaces
 
 
 class Link(zeit.cms.content.metadata.CommonMetadata):
     """A type for managing links to non-local content."""
 
-    zope.interface.implements(zeit.content.link.interfaces.ILink)
+    zope.interface.implements(zeit.content.link.interfaces.ILink,
+                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = (
         '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">'

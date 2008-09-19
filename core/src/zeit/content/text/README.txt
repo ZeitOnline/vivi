@@ -29,6 +29,12 @@ Text instance provide the IText interface:
 ...     zeit.content.text.interfaces.IText, text)
 True
 
+... and the IAsset interface:
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IAsset, text)
+True
+
 There is an invariant which makes sure the ``text`` can be representet in
 ``encoding``. Currently we have no umlauts and UTF-8 encoding so everything is
 fine:

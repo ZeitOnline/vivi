@@ -9,14 +9,15 @@ import zope.interface
 
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-import zeit.wysiwyg.html
-
+import zeit.cms.interfaces
 import zeit.content.portraitbox.interfaces
+import zeit.wysiwyg.html
 
 
 class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    zope.interface.implements(zeit.content.portraitbox.interfaces.IPortraitbox)
+    zope.interface.implements(zeit.content.portraitbox.interfaces.IPortraitbox,
+                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<container layout="artbox" label="portrait" '

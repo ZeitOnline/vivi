@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import copy
 import xml.sax.saxutils
@@ -44,7 +43,8 @@ GALLERY_TEMPLATE = u"""\
 class Gallery(zeit.cms.content.metadata.CommonMetadata):
     """Gallery"""
 
-    zope.interface.implements(zeit.content.gallery.interfaces.IGallery)
+    zope.interface.implements(zeit.content.gallery.interfaces.IGallery,
+                              zeit.cms.interfaces.IEditorialContent)
 
     _image_folder = zeit.cms.content.property.SingleResource(
         '.head.image-folder')

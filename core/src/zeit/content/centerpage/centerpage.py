@@ -34,7 +34,8 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(
         zeit.content.centerpage.interfaces.ICenterPage,
-        zeit.cms.content.interfaces.IDAVPropertiesInXML)
+        zeit.cms.content.interfaces.IDAVPropertiesInXML,
+        zeit.cms.interfaces.IEditorialContent)
 
     default_template = CP_TEMPLATE
 

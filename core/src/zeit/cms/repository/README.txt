@@ -78,9 +78,17 @@ True
 
 It also provides the ICMSContent interface:
  
->>> from zeit.cms.interfaces import ICMSContent
->>> ICMSContent.providedBy(content)
-True 
+>>> import zope.interface.verify
+>>> import zeit.cms.interfaces
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.ICMSContent, content)
+True
+
+We consider UnknownResources as editorial content (at least in the tests):
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IEditorialContent, content)
+True
 
 When we get the same object again, we *really* get the *same* object:
 
@@ -276,7 +284,6 @@ to copy:
 
 Get the copier:
 
->>> import zope.interface.verify
 >>> copier = zope.copypastemove.interfaces.IObjectCopier(to_copy)
 >>> zope.interface.verify.verifyObject(
 ...     zope.copypastemove.interfaces.IObjectCopier, copier)

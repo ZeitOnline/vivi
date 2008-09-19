@@ -7,7 +7,7 @@
 
   <!-- Register a multiplexer which returns the actual object on
   IRepositoryContent. The workflow_form_factory then does another lookup for
-  ICMSContent or IAsset or what ever. 
+  IEditorialContent or IAsset or what ever. 
   -->
   <adapter
     for="zeit.cms.repository.interfaces.IRepositoryContent
@@ -35,6 +35,10 @@
     factory=".form.AssetWorkflow"
     provides=".interfaces.IWorkflowForm"
     />
+  <adapter
+    factory=".form.NoWorkflow"
+    provides=".interfaces.IWorkflowForm"
+    />
 
   <browser:viewlet
     name="workflow"
@@ -52,7 +56,7 @@
   <!-- Status indicators -->
 
   <browser:viewlet
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zeit.cms.interfaces.IEditorialContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.cms.workflow.browser.interfaces.IWorkflowIndicator"

@@ -416,11 +416,13 @@ in regard to when an asset can be published.
 
 Make UnknownResources an asset to test the workflow:
 
+>>> import zope.annotation.interfaces
 >>> old_implements = list(zope.interface.implementedBy(
-...     zeit.cms.repository.unknown.UnknownResource))
->>> zope.interface.classImplements(
-...     zeit.cms.repository.unknown.UnknownResource,
+...     zeit.cms.repository.unknown.PersistentUnknownResource))
+>>> zope.interface.classImplementsOnly(
+...     zeit.cms.repository.unknown.PersistentUnknownResource,
 ...     zeit.cms.interfaces.IAsset)
+
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
 >>> workflow
 <zeit.workflow.asset.AssetWorkflow object at 0x...>
@@ -447,15 +449,35 @@ False
 Reset the implements:
 
 >>> zope.interface.classImplementsOnly(
-...     zeit.cms.repository.unknown.UnknownResource,
+...     zeit.cms.repository.unknown.PersistentUnknownResource,
 ...     *old_implements)
 
 
 Recursive publish
 =================
 
-It is possible to publish entire folder structures. This is simply done by
-publishing a container.
+It is possible to publish entire folder structures. The default for folders
+though is that they're not publishable at all:
+
+>>> container = repository['online']['2007']['01']
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt',
+    <zeit.cms.repository.folder.Folder object at 0x...>,
+    <InterfaceClass zeit.cms.workflow.interfaces.IPublishInfo>)
+
+
+Let's pretend a folder was editoral content:
+
+>>> import zeit.cms.repository.folder
+>>> old_implements = list(zope.interface.implementedBy(
+...     zeit.cms.repository.folder.Folder))
+>>> zope.interface.classImplements(
+...     zeit.cms.repository.folder.Folder,
+...     zeit.cms.interfaces.IEditorialContent)
+
+Now recursive publishing works by simply publishing a container.
 
 >>> container = repository['online']['2007']['01']
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
@@ -513,7 +535,6 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
      Published
 http://xml.zeit.de/online/2007/01/eta-zapatero
      Retracted
-
 
 
 
@@ -662,6 +683,11 @@ ConflictError: database conflict error
 >>> task.run_count 
 3
 
+Reset the folder implements:
+
+>>> zope.interface.classImplementsOnly(
+...     zeit.cms.repository.folder.Folder,
+...     *old_implements)
 
 
 [#cleanup]_

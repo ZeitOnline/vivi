@@ -1,4 +1,6 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <include file="file.zcml" />
 
@@ -52,6 +54,12 @@
     <require set_schema="zeit.cms.content.interfaces.ITextContent"
       permission="zeit.EditContent" />
   </class>
+
+  <class class=".unknown.PersistentUnknownResource"
+    zcml:have="zeit.cms.testing">
+    <implements interface="zeit.cms.interfaces.IEditorialContent" />
+  </class>
+
 
   <class class=".unknown.UnknownResource">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />

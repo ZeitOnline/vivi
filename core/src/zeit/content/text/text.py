@@ -7,13 +7,15 @@ import persistent
 import zope.app.container.contained
 
 import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zeit.content.text.interfaces
 
 
 class Text(persistent.Persistent,
            zope.app.container.contained.Contained):
 
-    zope.interface.implements(zeit.content.text.interfaces.IText)
+    zope.interface.implements(zeit.content.text.interfaces.IText,
+                              zeit.cms.interfaces.IAsset)
 
     uniqueId = None
 

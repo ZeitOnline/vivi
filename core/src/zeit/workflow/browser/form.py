@@ -88,7 +88,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
 class ContentWorkflow(WorkflowForm):
 
     zope.component.adapts(
-        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.interfaces.IEditorialContent,
         zeit.cms.browser.interfaces.ICMSLayer)
 
     field_groups = (
@@ -133,5 +133,29 @@ class AssetWorkflow(WorkflowForm):
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IAssetWorkflow,
+            zeit.objectlog.interfaces.ILog,
+            zeit.cms.workflow.interfaces.IModified))
+
+
+class NoWorkflow(zeit.cms.browser.form.EditForm):
+
+    zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
+
+    zope.component.adapts(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.browser.interfaces.ICMSLayer)
+
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Status"),
+            ('last_modified_by', 'date_last_modified'),
+            css_class='full-width'),
+        gocept.form.grouped.Fields(
+            _("Log"), fields=('logs', ),
+            css_class='full-width')
+    )
+
+    form_fields = (
+        zope.formlib.form.FormFields(
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified))

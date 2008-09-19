@@ -10,6 +10,19 @@ tuple of tuples *yikes* [#functional]_:
 >>> import zeit.content.infobox.infobox
 >>> ib = zeit.content.infobox.infobox.Infobox()
 
+Verify interfaces. The infobox is editorial content, even though it is used as
+an asset:
+
+>>> import zope.interface.verify
+>>> import zeit.cms.interfaces
+>>> import zeit.content.infobox.interfaces
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.infobox.interfaces.IInfobox, ib)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IEditorialContent, ib)
+True
+
 Initially there are no entries:
 
 >>> import lxml.etree

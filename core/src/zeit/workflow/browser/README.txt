@@ -413,6 +413,22 @@ Set a very high value for publish/retract to make sure we cannot set this:
  ...
 
 
+Folder workflow
+===============
+
+Folders do not have a workflow. Their workflow tab has no actions but shows the
+other information
+
+>>> browser.open('http://localhost/++skin++cms/repository/online')
+>>> browser.getLink('Workflow').click()
+>>> print browser.contents
+<?xml ...
+          <span>Last modified by</span>
+          ...
+          <span>Date last modified</span>
+          ...
+
+
 Clean up
 ========
 

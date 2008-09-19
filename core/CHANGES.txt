@@ -4,7 +4,11 @@ zeit.cms changes
 1.1.12 (unreleased)
 -------------------
 
-- Channel und File sind jetzt Assets.
+- Konzept des »Redaktionellen Inhalts« zur Unterscheidung verschiedener
+  Workflows.
+- Ordner können nicht mehr veröffentlich oder zurückgezogen werden.
+- Channel, File, Portraitbox und Text sind jetzt Assets.
+
 
 1.1.11 (2008-09-18)
 -------------------

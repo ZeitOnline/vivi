@@ -12,6 +12,20 @@ Let's instanciate a box and verify the xml[#functionaltest]_:
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     layout="artbox" label="portrait"/>
 
+Portraitbox is an asset:
+
+>>> import zope.interface.verify
+>>> import zeit.cms.interfaces
+>>> import zeit.content.portraitbox.interfaces
+>>> import zeit.content.centerpage.centerpage
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.portraitbox.interfaces.IPortraitbox, pb)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IAsset, pb)
+True
+
+
 Set data:
 
 >>> pb.name = u'Hans Wurst'
@@ -48,7 +62,6 @@ automatically:
 Verify the interface:
 
 >>> import zope.interface.verify
->>> import zeit.content.portraitbox.interfaces
 >>> zope.interface.verify.verifyObject(
 ...     zeit.content.portraitbox.interfaces.IPortraitbox, pb)
 True
