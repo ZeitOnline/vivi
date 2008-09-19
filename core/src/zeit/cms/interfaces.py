@@ -50,6 +50,15 @@ class ICMSContent(zope.interface.Interface):
         constraint=valid_name)
 
 
+class IEditorialContent(ICMSContent):
+    """Editorial content.
+
+    Editorial content is content which actually *is* content. That is in
+    contrast to for example folders which are used for structuring.
+
+    """
+
+
 class IAsset(ICMSContent):
     """Assets are special, usually simple, content objects.
 

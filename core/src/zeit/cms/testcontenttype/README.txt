@@ -30,6 +30,19 @@ Instanciate and verify the inital xml:
   <body/>
 </testtype>
 
+The type provides the ITestContentType and IEditorialContent interfaces:
+
+>>> import zope.interface.verify
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testcontenttype.interfaces
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.testcontenttype.interfaces.ITestContentType, content)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.interfaces.IEditorialContent, content)
+True
+
+
 Now that was pretty boring. Add a title and year (from common metadata):
 
 >>> content.title = u'gocept'
