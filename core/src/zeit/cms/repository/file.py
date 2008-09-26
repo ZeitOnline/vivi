@@ -58,7 +58,6 @@ class LocalFile(persistent.Persistent, RepositoryFile):
     zope.interface.implements(zeit.cms.workingcopy.interfaces.ILocalContent)
 
     local_data = None
-    BLOCK_SIZE = 10240
 
     def __init__(self, uniqueId=None, mimeType=''):
         super(LocalFile, self).__init__(uniqueId, mimeType)
