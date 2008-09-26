@@ -2,11 +2,11 @@
   <metal:data fill-slot="preview"
     tal:define="
     preview nocall:context/@@metadata-preview;
-    image nocall:context/@@index.html">
+    image nocall:context/@@view.html">
 
     <div class="image-metadata">
       <img tal:replace="structure preview/tag" />
-      <div tal:content="context/contentType" />
+      <div tal:content="context/mimeType" />
       <div>
         <span tal:replace="image/width" />x<span tal:replace="image/height" />
       </div>

@@ -16,8 +16,8 @@
           </span>
         </div>
         <div class="image-metadata">
-          <div tal:content="item/image/contentType" />
-          <div tal:define="image_view nocall:item/image/@@index.html">
+          <div tal:content="item/image/mimeType" />
+          <div tal:define="image_view nocall:item/image/@@view.html">
             <span tal:replace="image_view/width" />x<span tal:replace="image_view/height" />
           </div>
         </div> 

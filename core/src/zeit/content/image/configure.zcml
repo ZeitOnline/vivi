@@ -6,14 +6,21 @@
     component=".generation.manager"
     />
 
-  <adapter factory=".image.imageFactory" name="image" />
-  <adapter factory=".image.resourceFactory" />
+  <adapter factory=".image.repositoryimage_factory" name="image" />
+  <adapter factory=".image.localimage_factory" />
+  <adapter factory=".image.resource_factory" />
   <adapter factory=".image.XMLReference" name="image" />
   <adapter factory=".transform.ImageTransform" />
   <adapter factory=".transform.persistent_thumbnail_factory" />
   <adapter factory=".transform.thumbnail_folder_factory" />
 
-  <class class=".image.Image">
+  <class class=".image.RepositoryImage">
+    <require
+      interface=".interfaces.IImage"
+      permission="zope.View" />
+  </class>
+
+  <class class=".image.LocalImage">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
       interface=".interfaces.IImage"

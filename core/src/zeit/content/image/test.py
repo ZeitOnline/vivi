@@ -43,10 +43,12 @@ def create_image_group():
     for filename in ('new-hampshire-450x200.jpg',
                      'new-hampshire-artikel.jpg',
                      'obama-clinton-120x120.jpg'):
-        image = zeit.content.image.image.Image()
-        image.data = file(
-            os.path.join(
-                os.path.dirname(__file__),
-                'browser', 'testdata', filename), 'rb').read()
+        image = zeit.content.image.image.LocalImage()
+        image.contentType = 'image/jpeg'
+        fh = image.open('w')
+        fh.write(open(os.path.join(
+            os.path.dirname(__file__),
+            'browser', 'testdata', filename), 'rb').read())
+        fh.close()
         group[filename] = image
     return group

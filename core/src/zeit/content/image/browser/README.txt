@@ -4,8 +4,8 @@ Image
 
 Create a browser first:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
+>>> import zope.testbrowser.testing
+>>> browser = zope.testbrowser.testing.Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 Listing
@@ -43,7 +43,7 @@ Image Data
 
 We get the image itself just by accessing its url:
 
->>> image = ExtendedTestBrowser()
+>>> image = zope.testbrowser.testing.Browser()
 >>> image.addHeader('Authorization', 'Basic user:userpw')
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
@@ -81,9 +81,8 @@ We now see the form and fill out some values:
 >>> test_file = os.path.join(
 ...     os.path.dirname(__file__), 'testdata', 'opernball.jpg')
 >>> test_data = file(test_file, 'rb')
->>> file_control = browser.getControl(name='form.data')
->>> file_control.filename = 'opernball.jpg'
->>> file_control.value = test_data
+>>> file_control = browser.getControl(name='form.blob')
+>>> file_control.add_file(test_data, 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl(name='form.title').value = 'Opernball'
 >>> browser.getControl(name='form.year').value = '2007'
 >>> browser.getControl(name='form.volume').value = '9'
@@ -142,8 +141,9 @@ When editing an image and not uploading a new image the old image is kept:
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl(name='form.title').value = 'Opernball in Wien'
 >>> browser.getControl('Apply').click()
->>> 'There where errors' in browser.contents
-False
+>>> print browser.contents
+<?xml...
+    ...Updated on ...
 
 Make sure the image is not changed by looking at the image view:
 
@@ -214,9 +214,8 @@ Let's add an image:
 Load the opernball image data an add w/o setting a file name. This selects the
 filename automatically.
 
->>> file_control = browser.getControl(name='form.data')
->>> file_control.filename = 'opernball.jpg'
->>> file_control.value = file(test_file, 'rb')
+>>> file_control = browser.getControl(name='form.blob')
+>>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl(name='form.volume').value != '0'
 True
 >>> browser.getControl(name='form.actions.add').click()
@@ -330,7 +329,7 @@ Set the file data:
 ...     test_file = os.path.join(
 ...         os.path.dirname(__file__), 'testdata', name)
 ...     test_data = file(test_file, 'rb')
-...     file_control = browser.getControl(name='form.data')
+...     file_control = browser.getControl(name='form.blob')
 ...     file_control.filename = name
 ...     file_control.value = test_data
 
@@ -548,53 +547,62 @@ than an image in the image group:
 Broken images
 =============
 
-We add a folder with a broken image:
+It is not possible to create images with broken data (i.e. PIL must be able to
+read it):
 
 >>> browser.open('http://localhost/++skin++cms/repository')
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Folder']
->>> browser.open(menu.value[0])
->>> browser.getControl('File name').value = 'broken_image_folder'
->>> browser.getControl('Add').click()
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image (single)']
 >>> browser.open(menu.value[0])
->>> browser.url
-'http://localhost/++skin++cms/repository/broken_image_folder/@@zeit.content.image.Add'
-
->>> import StringIO
 >>> test_data = StringIO.StringIO('392-392938r82r')
->>> file_control = browser.getControl(name='form.data')
->>> file_control.filename = 'corrupt.jpg'
->>> file_control.value = test_data
->>> browser.getControl(name='form.volume').value != '0'
-True
+>>> file_control = browser.getControl(name='form.blob')
+>>> file_control.add_file(test_data, 'image/jpeg', 'corrupt.jpg')
 >>> browser.getControl(name='form.actions.add').click()
->>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/corrupt.jpg/@@edit.html'
-
-Now try to add a gallery:
-
->>> browser.open('http://localhost/++skin++cms/repository')
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Gallery']
->>> browser.open(menu.value[0])
->>> browser.getControl('Title').value = 'New Gallery'
->>> browser.getControl('Ressort').displayValue = ['Kultur']
->>> browser.getControl('File name').value = 'gallery'
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.getControl('Image folder').value = 'http://xml.zeit.de/broken_image_folder'
->>> browser.getControl(name="form.actions.add").click()
-Traceback (most recent call last):
-...
-HTTPError: HTTP Error 500: Internal Server Error
-
->>> browser.url
-'http://localhost/++skin++cms/repository/@@zeit.content.gallery.Add'
 >>> print browser.contents
-<!DOCTYPE html ...
-  <title>Error</title>
-  ...
-  <h1>An error occured</h1>
-  ...
-  <pre>Cannot transform image  ...
+<?xml ...
+    ...The uploaded image could not be identified...
+
+
+
+Headers and caching
+===================
+
+Images are sent with correct-type, length and last-modified headers:
+
+>>> image.open(
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+>>> print image.headers
+Status: 200 Ok
+Content-Length: 2926
+Content-Type: image/jpeg
+Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+
+
+An if-modified-since header is also honoured:
+
+>>> image.addHeader('If-Modified-Since', 'Fri, 07 Apr 2008 12:47:16 GMT')
+>>> image.open(
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 304: Not Modified
+>>> print image.headers
+Status: 304 Not Modified
+Content-Length: 0
+Content-Type: image/jpeg
+Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+
+
+>>> image = zope.testbrowser.testing.Browser()
+>>> image.addHeader('Authorization', 'Basic user:userpw')
+>>> image.addHeader('If-Modified-Since', 'Fri, 07 Feb 2008 12:47:16 GMT')
+>>> image.open(
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+>>> print image.headers
+Status: 200 Ok
+Content-Length: 2926
+Content-Type: image/jpeg
+Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)

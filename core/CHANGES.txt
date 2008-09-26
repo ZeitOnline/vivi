@@ -8,6 +8,7 @@ zeit.cms changes
   Workflows.
 - Ordner können nicht mehr veröffentlich oder zurückgezogen werden.
 - Channel, File, Portraitbox und Text sind jetzt Assets.
+- Bilder gehen jetzt sinnvoll mit Arbeitsspeicher um (Bug #4410).
 
 
 1.1.11 (2008-09-18)

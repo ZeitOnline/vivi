@@ -40,7 +40,7 @@ object:
 
 >>> thumb = transform.thumbnail(100, 100)
 >>> thumb
-<zeit.content.image.image.Image object at 0x...>
+<zeit.content.image.image.LocalImage object at 0x...>
 
 Note that the thumbnail method doesn't exactly sacle to the given width/height
 but uses this as a bounding box:
@@ -88,7 +88,7 @@ be adapted to IPersistentThumbnail:
 The persistent thumbnail is an image itself:
 
 >>> persistent_thumbnail
-<zeit.content.image.image.Image object at 0x...>
+<zeit.content.image.image.RepositoryImage object at 0x...>
 
 It always has 50x50 as bounding box so far:
 

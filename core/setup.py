@@ -34,7 +34,7 @@ setup(
         'rwproperty>=1.0',
         'setuptools',
         'sprout',
-        'z3c.conditionalviews',
+        'z3c.conditionalviews>=1.0b2.dev-r91510',
         'z3c.flashmessage',
         'z3c.menu.simple>=0.5.1',
         'z3c.traverser',

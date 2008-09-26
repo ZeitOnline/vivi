@@ -4,27 +4,53 @@
 
 import urlparse
 
+import z3c.conditionalviews
 import zope.cachedescriptors.property
 import zope.component
+import zope.file.download
 import zope.publisher.interfaces
 
-import zope.app.file.browser.image
-
-import zeit.connector.interfaces
-
-import zeit.cms.content.property
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
-import zeit.cms.settings.interfaces
+import zeit.cms.browser.view
+import zeit.cms.content.property
 import zeit.cms.repository.interfaces
+import zeit.cms.settings.interfaces
+import zeit.connector.interfaces
 import zeit.content.image.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
-class Image(zope.app.file.browser.image.ImageData):
+def get_img_tag(image, request):
+    """Render <img.../>-tag."""
+    url = zope.component.getMultiAdapter(
+        (image, request), name='absolute_url')
+    width, height = image.getImageSize()
+    return '<img src="%s" alt="" height="%s" width="%s" border="0" />' % (
+        url, height, width)
+
+
+class Image(zope.file.download.Display):
 
     def __call__(self):
-        return self.show()
+        self.request.response.setHeader('Content-Type', self.context.mimeType)
+        return self.stream_image()
+
+    @z3c.conditionalviews.ConditionalView
+    def stream_image(self):
+        return super(Image, self).__call__()
+
+
+class ImageView(zeit.cms.browser.view.Base):
+
+    title = _('View image')
+
+    @zope.cachedescriptors.property.Lazy
+    def metadata(self):
+        return zeit.content.image.interfaces.IImageMetadata(self.context)
+
+    def tag(self):
+        return get_img_tag(self.context, self.request)
 
     @property
     def width(self):
@@ -35,22 +61,13 @@ class Image(zope.app.file.browser.image.ImageData):
         return self.context.getImageSize()[1]
 
 
-class ImageView(object):
-
-    title = _('View image')
-
-    @zope.cachedescriptors.property.Lazy
-    def metadata(self):
-        return zeit.content.image.interfaces.IImageMetadata(self.context)
-
-
 class Scaled(object):
 
     def __call__(self):
         return self.scaled()
 
-    def tag(self, *args, **kwargs):
-        return self.scaled.tag(*args, **kwargs)
+    def tag(self):
+        return get_img_tag(self.scaled.context, self.request)
 
     @zope.cachedescriptors.property.Lazy
     def scaled(self):
@@ -65,16 +82,9 @@ class Scaled(object):
             (image, self.request), name='index.html')
         return image_view
 
-    @property
-    def width(self):
-        return self.scaled.getImageSize()[0]
-
-    @property
-    def height(self):
-        return self.scaled.getImageSize()[1]
-
 
 class Preview(Scaled):
+
     width = 500
     height = 500
 

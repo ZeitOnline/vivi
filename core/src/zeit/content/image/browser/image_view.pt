@@ -1,10 +1,10 @@
 <div id="edit-form"
-  tal:define="image nocall:context/@@index.html"
+  tal:define="image nocall:context/@@view.html"
   i18n:domain="zeit.cms">
   <table class="image-view-metadata">
     <tr>
       <td i18n:translate="">Type</td>
-      <td tal:content="context/contentType">image/jpeg</td>
+      <td tal:content="context/mimeType">image/jpeg</td>
     </tr>
     <tr>
       <td i18n:translate="">Dimensions</td>

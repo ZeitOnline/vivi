@@ -18,7 +18,7 @@
           <a title="Show image"
             tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
             i18n:attributes="title">
-            <img tal:replace="structure entry/thumbnail/@@index.html/tag" />
+            <img tal:replace="structure entry/thumbnail/@@view.html/tag" />
           </a>
           <a href="#" title="Edit"
             i18n:attributes="title"

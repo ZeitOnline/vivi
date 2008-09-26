@@ -3,12 +3,10 @@
 # See also LICENSE.txt
 # $Id$
 
-import zope.schema
-
-import zope.app.file.interfaces
-
 import zc.form.field
 import zc.sourcefactory.basic
+import zope.file.interfaces
+import zope.schema
 
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -99,8 +97,11 @@ class IImageMetadata(zope.interface.Interface):
 
 
 class IImage(zeit.cms.interfaces.IAsset,
-             zope.app.file.interfaces.IImage):
+             zope.file.interfaces.IFile):
     """Image."""
+
+    def getImageSize():
+        """return tuple (width, heigth) of image."""
 
 
 class ITransform(zope.interface.Interface):

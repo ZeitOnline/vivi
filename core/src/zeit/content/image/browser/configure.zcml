@@ -64,7 +64,6 @@
     name="index.html"
     for="zeit.content.image.interfaces.IImage"
     permission="zope.View"
-    allowed_attributes="__call__ tag"
     class=".image.Image"
     />
 

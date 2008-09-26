@@ -58,7 +58,7 @@ class DisplayImageWidget(zope.app.form.browser.widget.DisplayWidget):
         else:
             content = self.context.default
         image = zope.component.getMultiAdapter(
-            (content, self.request), name='index.html')
+            (content, self.request), name='view.html')
         return image.tag()
 
     def hasInput(self):

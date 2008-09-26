@@ -40,6 +40,68 @@ Test the image xml reference:
 </image>
 
 
+When the image is adapted to ILocalContent we'll get a LocalImage:
+
+>>> image
+<zeit.content.image.image.RepositoryImage object at 0x...>
+>>> image.mimeType
+'image/jpeg'
+>>> import zeit.cms.workingcopy.interfaces
+>>> local = zeit.cms.workingcopy.interfaces.ILocalContent(image)
+>>> local
+<zeit.content.image.image.LocalImage object at 0x...>
+>>> local.__name__
+u'DSC00109_2.JPG'
+>>> local.mimeType
+'image/jpeg'
+
+Let's set some metadata on the local image:
+
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(local)
+>>> metadata.title = 'my title'
+
+When we make a resource from a LocalImage the contentType is set correctly:
+
+>>> import zeit.connector.interfaces
+>>> resource = zeit.connector.interfaces.IResource(local)
+>>> resource.contentType
+'image/jpeg'
+
+The properties contain the title:
+
+>>> import pprint
+>>> pprint.pprint(dict(resource.properties))
+{('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
+ ('title', 'http://namespaces.zeit.de/CMS/document'): u'my title',
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'image'}
+
+Le's add the local image to the repository:
+
+>>> repository['2006']['DSC00109_2.JPG'] = local
+
+The metadata is still there:
+
+>>> image = repository['2006']['DSC00109_2.JPG']
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
+>>> metadata.title
+u'my title'
+
+The local image also has the title:
+
+>>> local = zeit.cms.workingcopy.interfaces.ILocalContent(image)
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(local)
+>>> metadata.title
+u'my title'
+
+The repository image factory returns None when the image cannot be identified:
+
+>>> import zeit.content.image.image
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> zeit.content.image.image.repositoryimage_factory(
+...     connector['http://xml.zeit.de/online/2007/01/Somalia']) is None
+True
+
+
 Image group
 ===========
 
@@ -99,7 +161,6 @@ The interface default for the copyright is:
 
 Make sure we don't die when there is an invalid XML snippet stored:
 
->>> import zeit.connector.interfaces
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(group)
 >>> properties[('caption', 'http://namespaces.zeit.de/CMS/image')] = u'5 < 7'
@@ -148,8 +209,10 @@ used as type.
 Case 2: When there is a mix of formats the type of an image whose name ends
 in x140 is used:
 
->>> import zeit.content.image.image
->>> group['title-120x140.gif'] = zeit.content.image.image.Image()
+>>> image = zeit.content.image.image.LocalImage()
+>>> image.contentType = 'image/jpeg'
+>>> image.open('w').write('foo')
+>>> group['title-120x140.gif'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
@@ -172,7 +235,10 @@ Case 3: When there is a mix of formats and no image ends in x140 the "first"
 one is used:
 
 >>> del group['title-120x140.gif']
->>> group['title-120x120.gif'] = zeit.content.image.image.Image()
+>>> image = zeit.content.image.image.LocalImage()
+>>> image.contentType = 'image/jpeg'
+>>> image.open('w').write('bar')
+>>> group['title-120x120.gif'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
@@ -192,7 +258,11 @@ one is used:
 
 Images whose names have no extension at all will be ignored:
 
->>> group['title-120x140'] = zeit.content.image.image.Image()
+
+>>> image = zeit.content.image.image.LocalImage()
+>>> image.contentType = 'image/jpeg'
+>>> image.open('w').write('blubs')
+>>> group['title-120x140'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')

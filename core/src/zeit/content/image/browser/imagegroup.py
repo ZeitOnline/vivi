@@ -79,15 +79,16 @@ class View(zeit.cms.browser.listing.Listing):
 
 class AddImage(zeit.content.image.browser.form.AddForm):
 
-    title = _("Add image")
-    factory = zeit.content.image.image.Image
     checkout = False
 
     field_groups = (
         gocept.form.grouped.RemainingFields(_("Image data")),
     )
+
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.interfaces.IImage).omit('contentType')
+        zeit.content.image.browser.interfaces.IFileEditSchema)
+    form_fields['blob'].custom_widget = (
+        zeit.cms.repository.browser.file.BlobWidget)
 
     def nextURL(self):
         url = zope.component.getMultiAdapter(

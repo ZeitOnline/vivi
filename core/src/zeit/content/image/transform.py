@@ -1,8 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import cStringIO
 import datetime
 
 import PIL.Image
@@ -11,6 +9,7 @@ import pytz
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
+import zope.security.proxy
 
 import zeit.cms.repository.folder
 import zeit.content.image.interfaces
@@ -24,7 +23,8 @@ class ImageTransform(object):
     def __init__(self, context):
         self.context = context
         try:
-            self.image = PIL.Image.open(cStringIO.StringIO(context.data))
+            self.image = PIL.Image.open(
+                zope.security.proxy.removeSecurityProxy(context.open()))
             self.image.load()
         except IOError:
             raise zeit.content.image.interfaces.ImageProcessingError(
@@ -49,11 +49,12 @@ class ImageTransform(object):
         image = self.image.resize((width, height), PIL.Image.ANTIALIAS)
         return self._construct_image(image)
 
-    def _construct_image(self, image):
-        image_data = cStringIO.StringIO()
-        image.save(image_data, self.image.format)
+    def _construct_image(self, pil_image):
 
-        image = zeit.content.image.image.Image(data=image_data.getvalue())
+        image = zeit.content.image.image.LocalImage()
+        image.mimeType = self.context.mimeType
+        pil_image.save(image.open('w'), self.image.format)
+
         image.__parent__ = self.context
         image_times = zope.dublincore.interfaces.IDCTimes(self.context)
         if image_times.modified:

@@ -34,10 +34,9 @@ Add some images to the folder:
 ...     browser.open(menu.value[0])
 ...     test_file = os.path.join(os.path.dirname(__file__),
 ...                              'testdata', name)
-...     test_data = file(test_file, 'rb')
-...     file_control = browser.getControl(name='form.data')
-...     file_control.filename = name
-...     file_control.value = test_data
+...     test_data = open(test_file, 'rb')
+...     file_control = browser.getControl(name='form.blob')
+...     file_control.add_file(test_data, 'image/jpeg', name)
 ...     browser.getControl(name='form.actions.add').click()
 ...     browser.getLink('Checkin').click() 
 ...     url = browser.url

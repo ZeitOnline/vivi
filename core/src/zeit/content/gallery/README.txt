@@ -86,9 +86,10 @@ Let's add an image to the image folder:
 ...     filename = os.path.join(os.path.dirname(__file__),
 ...                         'browser', 'testdata', '01.jpg')
 ...     test_data = file(filename, 'rb').read()
-...     image = zeit.content.image.image.Image()
+...     image = zeit.content.image.image.LocalImage()
 ...     image.__name__ = '01.jpg'
-...     image.data = test_data
+...     image.contentType = 'image/jpeg'
+...     image.open('w').write(test_data)
 ...     metadata = zeit.content.image.interfaces.IImageMetadata(image)
 ...     metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
 ...     metadata.caption = u'Nice <em>01</em> image'
