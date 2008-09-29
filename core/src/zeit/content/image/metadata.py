@@ -26,6 +26,12 @@ class ImageMetadata(object):
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
         ('title', 'year', 'volume', 'copyrights'))
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImageMetadata,
+        'http://namespaces.zeit.de/CMS/document',
+        ('copyrights',),
+        use_default=True)
+
 
     def __init__(self, context):
         self.context = context

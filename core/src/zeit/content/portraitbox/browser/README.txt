@@ -58,6 +58,7 @@ Verify the source:
     <title py:pytype="str">Hans Wurst</title>
     <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
       <bu xsi:nil="true"/>
+      <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
     </image>
     <text py:pytype="str">
       <p><strong>HW</strong> is in da house</p>

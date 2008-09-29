@@ -63,9 +63,11 @@ The gallery is also noted in the xml structure:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
       </container>
@@ -123,9 +125,11 @@ The change is reflected in the xml:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block name="01.jpg">
@@ -187,9 +191,11 @@ xml:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block name="01.jpg">
@@ -226,9 +232,11 @@ When we assign the entry the change will be reflected:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block name="01.jpg">
@@ -271,9 +279,11 @@ well:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block name="01.jpg">
@@ -340,9 +350,11 @@ True
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block layout="image-only" name="01.jpg">
@@ -386,9 +398,11 @@ u'image-only'
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block name="01.jpg">
@@ -457,9 +471,11 @@ This is of course reflected int he XML:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
       </container>
@@ -558,9 +574,11 @@ Note that his has *not* changed the xml so far:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         <block name="01.jpg">
@@ -600,9 +618,11 @@ When calling `reload_image_folder` the entry is removed from the xml:
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu xsi:nil="true"/>
+            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
       </container>

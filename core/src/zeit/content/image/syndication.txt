@@ -83,6 +83,7 @@ Update the metadata of the feed. The image is now referenced:
      ...
       <image base-id="http://xml.zeit.de/image-group" type="jpg">
         <bu xsi:nil="true"/>
+        <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
       </image>
     </block>
   </container>
@@ -112,6 +113,7 @@ When more than one image is referenced, only the first one will be in the feed:
       <references/>
       <image base-id="http://xml.zeit.de/image-group" type="jpg">
         <bu xsi:nil="true"/>
+        <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
       </image>
     </block>
   </container>
@@ -160,6 +162,7 @@ Before:
         base-id="http://xml.zeit.de/image-group" 
         type="jpg">
       <bu xsi:nil="true"/>
+      <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
     </image>
     ...
   </head>
@@ -182,6 +185,7 @@ The content has changed automatically:
   <head>
     <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="Image title" base-id="http://xml.zeit.de/image-group" type="jpg">
       <bu xsi:nil="true"/>
+      <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
     </image>
     ...
   </head>

@@ -75,7 +75,15 @@ For editing an image, we need to check it out:
 
 >>> browser.getLink('Checkout').click()
 
-We now see the form and fill out some values:
+We now see the form. The image did not have any metadata prefilled. The
+copyright is filled with the default value though:
+
+>>> browser.getControl(name='form.copyrights.0..combination_00').value
+'ZEIT ONLINE'
+>>> browser.getControl(name='form.copyrights.0..combination_01').value
+'http://www.zeit.de/'
+
+Fill out some values:
 
 >>> import os
 >>> test_file = os.path.join(
@@ -83,11 +91,11 @@ We now see the form and fill out some values:
 >>> test_data = file(test_file, 'rb')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'opernball.jpg')
->>> browser.getControl(name='form.title').value = 'Opernball'
->>> browser.getControl(name='form.year').value = '2007'
->>> browser.getControl(name='form.volume').value = '9'
->>> browser.getControl(name='form.alt').value = 'Zwei Taenzer'
->>> browser.getControl(name='form.caption').value = 'Tanz beim Opernball'
+>>> browser.getControl('Image title').value = 'Opernball'
+>>> browser.getControl('Year').value = '2007'
+>>> browser.getControl('Volume').value = '9'
+>>> browser.getControl('Alternative').value = 'Zwei Taenzer'
+>>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
 >>> browser.getControl('Alignment').displayOptions
 ['left', 'center', 'right']
 >>> browser.getControl('Alignment').displayValue = ['center']
