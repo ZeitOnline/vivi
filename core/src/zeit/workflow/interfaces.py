@@ -8,6 +8,7 @@ import pytz
 import zc.form.field
 import zope.app.security.vocabulary
 import zope.interface
+import zope.interface.common.sequence
 import zope.schema
 
 import zeit.cms.workflow.interfaces
@@ -97,3 +98,15 @@ class IOldCMSStatus(zope.interface.Interface):
     status = zope.schema.TextLine(
         title=u"Status like old CMS (OK, or not present)",
         required=False)
+
+
+class IPublicationDependencies(zope.interface.Interface):
+    """Adapter to find the publication dependencies of an object."""
+
+    def get_dependencies():
+        """Return a sequence of all depdnent objects.
+
+    The sequence contains all objects which need to be published along with the
+    adapted object. Dependent containers will be published recursively.
+
+    """

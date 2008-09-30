@@ -56,4 +56,8 @@
   <subscriber handler=".oldstatus.set_status" />
   <subscriber handler=".oldstatus.remove_status" />
 
+
+  <!-- dependencies -->
+  <adapter factory=".dependency.Dependencies" />
+
 </configure>

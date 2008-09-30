@@ -690,6 +690,54 @@ Reset the folder implements:
 ...     *old_implements)
 
 
+
+Dependencies
+============
+
+Objects can declare publication dependencies. The most prominent example is the
+image gallery which references a folder containing images. This folder is
+published together with the gallery automatically.
+
+Let's assume the Somalia article has a dependency on the DSC00109_2.JPG. This
+is done via a named adapter to IPublicationDependencies:
+
+>>> class SomaliaImage(object):
+...     def __init__(self, context):
+...         self.context = context
+...     def get_dependencies(self):
+...         if self.context.uniqueId.endswith('Somalia'):
+...             return (repository['2006']['DSC00109_2.JPG'],)
+...         return ()
+...
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     SomaliaImage,
+...     (zeit.cms.repository.interfaces.IUnknownResource,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='somalia')
+
+Get the dependencies for the somalia article. There is an adapter which gathers
+all the named adapters:
+
+>>> deps = zeit.workflow.interfaces.IPublicationDependencies(
+...     somalia).get_dependencies()
+>>> deps
+[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>]
+>>> len(deps)
+1
+>>> deps[0].uniqueId
+u'http://xml.zeit.de/2006/DSC00109_2.JPG'
+
+Remove the test adapter:
+
+>>> gsm.unregisterAdapter(
+...     SomaliaImage,
+...     (zeit.cms.repository.interfaces.IUnknownResource,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='somalia')
+True
+
+
 [#cleanup]_
 
 .. [#functionaltest] We need to set the site since we're a functional test:
@@ -709,9 +757,6 @@ Reset the folder implements:
     >>> import lovely.remotetask.interfaces
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
-
-    Also register an tzinfo adapter:
-
 
 
 .. [#cleanup] Clean up
