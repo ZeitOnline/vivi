@@ -116,14 +116,14 @@ class PublishRetractTask(object):
                 # Stagger retry:
                 time.sleep(random.uniform(0, 2**(retries)))
             except Exception, e:
-                logger.error("Error during publish/retract")
-                logger.exception(e)
+                logger.error("Error during publish/retract", exc_info=True)
                 log = zope.component.getUtility(
                     zeit.objectlog.interfaces.IObjectLog)
-                log.log(obj, _("Error during publish/retract: ${exc}: ${message}",
-                               mapping=dict(
-                                   exc=e.__class__.__name__,
-                                   message=str(e))))
+                log.log(
+                    obj, _("Error during publish/retract: ${exc}: ${message}",
+                           mapping=dict(
+                               exc=e.__class__.__name__,
+                               message=str(e))))
                 break
             else:
                 # Everything okay. 
