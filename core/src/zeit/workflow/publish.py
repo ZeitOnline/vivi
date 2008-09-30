@@ -272,9 +272,9 @@ class PublishTask(PublishRetractTask):
         self.recurse(self.get_unique_id, obj, unique_ids)
 
         # The publish script doesn't want URLs but local paths. Munge them.
-        unique_ids = [self.convert_uid_to_path(uid) for uid in unique_ids]
+        paths = [self.convert_uid_to_path(uid) for uid in unique_ids]
 
-        self.call_script(publish_script, '\n'.join(unique_ids))
+        self.call_script(publish_script, '\n'.join(paths))
 
     def after_publish(self, obj):
         self.log.log(obj, _('Published'))
