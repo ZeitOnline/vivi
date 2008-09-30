@@ -5,13 +5,10 @@
 import datetime
 
 import pytz
-
+import zc.form.field
+import zope.app.security.vocabulary
 import zope.interface
 import zope.schema
-
-import zope.app.security.vocabulary
-
-import zc.form.field
 
 import zeit.cms.workflow.interfaces
 import zeit.workflow.source
