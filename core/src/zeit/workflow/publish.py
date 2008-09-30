@@ -157,17 +157,40 @@ class PublishRetractTask(object):
     def recurse(self, method, obj, *args):
         """Apply method recursively on obj."""
         stack = [obj]
+        seen = set()
         result_obj = None
         while stack:
             current_obj = stack.pop(0)
+            if current_obj.uniqueId in seen:
+                continue
+            seen.add(current_obj.uniqueId)
             logger.debug('%s %s' % (method, current_obj.uniqueId))
             new_obj = method(current_obj, *args)
+
+            # Dive into folders
             if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
                 stack.extend(new_obj.values())
+
+            # Dive into dependent objects
+            deps = zeit.workflow.interfaces.IPublicationDependencies(new_obj)
+            stack.extend(deps.get_dependencies())
+
             if result_obj is None:
                 result_obj = new_obj
 
         return result_obj
+
+    def get_all_paths(self, obj):
+        unique_ids = []
+        self.recurse(self.get_unique_id, obj, unique_ids)
+        # The publish/retract scripts doesn't want URLs but local paths, so
+        # munge them.
+        paths = [self.convert_uid_to_path(uid) for uid in unique_ids]
+        return paths
+
+    def get_unique_id(self, obj, unique_ids):
+        unique_ids.append(obj.uniqueId)
+        return obj
 
     def convert_uid_to_path(self, uid):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -267,22 +290,12 @@ class PublishTask(PublishRetractTask):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         publish_script = config['publish-script']
-
-        unique_ids = []
-        self.recurse(self.get_unique_id, obj, unique_ids)
-
-        # The publish script doesn't want URLs but local paths. Munge them.
-        paths = [self.convert_uid_to_path(uid) for uid in unique_ids]
-
+        paths = self.get_all_paths(obj)
         self.call_script(publish_script, '\n'.join(paths))
 
     def after_publish(self, obj):
         self.log.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj))
-        return obj
-
-    def get_unique_id(self, obj, unique_ids):
-        unique_ids.append(obj.uniqueId)
         return obj
 
 
@@ -314,8 +327,8 @@ class RetractTask(PublishRetractTask):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         retract_script = config['retract-script']
-        path = self.convert_uid_to_path(obj.uniqueId)
-        self.call_script(retract_script, path)
+        paths = reversed(self.get_all_paths(obj))
+        self.call_script(retract_script, '\n'.join(paths))
 
     def after_retract(self, obj):
         """Do things after retract."""

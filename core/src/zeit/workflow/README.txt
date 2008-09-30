@@ -615,8 +615,8 @@ done.
 Retract script
 --------------
 
-The retract script removes files and foldes but it just needs the root to
-recursivly remove.
+The retract script removes files and folders. It removes in the opposite order
+of publish:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
@@ -627,6 +627,13 @@ Running job ...
 Retracting http://xml.zeit.de/online/2007/01
 ...retract.sh:
 Retracting test script
+work/online/2007/01/weissrussland-russland-gas
+work/online/2007/01/thailand-anschlaege
+work/online/2007/01/terror-abschuss-schaeuble
+work/online/2007/01/teddy-kollek-nachruf
+...
+work/online/2007/01/Arbeitsmarktzahlen
+work/online/2007/01/4schanzentournee-abgesang
 work/online/2007/01
 done.
 Could not checkout http://xml.zeit.de/online/2007/01
@@ -698,20 +705,23 @@ Objects can declare publication dependencies. The most prominent example is the
 image gallery which references a folder containing images. This folder is
 published together with the gallery automatically.
 
-Let's assume the Somalia article has a dependency on the DSC00109_2.JPG. This
+Simple dependencies
++++++++++++++++++++
+
+Let's assume the Somalia article has a dependency on the politik.feed. This
 is done via a named adapter to IPublicationDependencies:
 
->>> class SomaliaImage(object):
+>>> class SomaliaFeed(object):
 ...     def __init__(self, context):
 ...         self.context = context
 ...     def get_dependencies(self):
 ...         if self.context.uniqueId.endswith('Somalia'):
-...             return (repository['2006']['DSC00109_2.JPG'],)
+...             return (repository['politik.feed'],)
 ...         return ()
 ...
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerAdapter(
-...     SomaliaImage,
+...     SomaliaFeed,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
 ...     zeit.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
@@ -722,16 +732,110 @@ all the named adapters:
 >>> deps = zeit.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 >>> deps
-[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>]
+[<zeit.cms.syndication.feed.Feed object at 0x...>]
 >>> len(deps)
 1
 >>> deps[0].uniqueId
-u'http://xml.zeit.de/2006/DSC00109_2.JPG'
+u'http://xml.zeit.de/politik.feed'
+>>> feed = deps[0]
 
-Remove the test adapter:
+Currently neither the article nor the image is published:
+
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
+>>> workflow.published
+False
+>>> workflow.urgent = True
+>>> workflow.can_publish()
+True
+>>> feed_workflow = zeit.workflow.interfaces.IAssetWorkflow(feed)
+>>> not not feed_workflow.published
+False
+
+When we publish somalia now the feed is published automatically:
+
+>>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> publish.publish()
+>>> tasks.process()
+>>> workflow.published
+True
+>>> feed_workflow.published
+True
+
+Of couse the feed as a log entry:
+
+>>> print_log(log.get_log(feed))
+http://xml.zeit.de/politik.feed
+     Published
+
+
+Recursive dependencies
+++++++++++++++++++++++
+
+When the feed references the article nothing special happens: both are
+published when either is published.
+
+Add the reverse dependency:
+
+>>> class FeedSomalia(object):
+...     def __init__(self, context):
+...         self.context = context
+...     def get_dependencies(self):
+...         if self.context == feed:
+...             return (somalia,)
+...         return ()
+...
+>>> import zeit.cms.syndication.interfaces
+>>> gsm.registerAdapter(
+...     FeedSomalia,
+...     (zeit.cms.syndication.interfaces.IFeed,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='feed')
+
+
+Publish somalia again:
+
+>>> publish.publish()
+>>> tasks.process()
+>>> print_log(log.get_log(feed))
+http://xml.zeit.de/politik.feed
+     Published
+http://xml.zeit.de/politik.feed
+     Published
+
+Dependend retract
++++++++++++++++++
+
+Retract honours dependencies, too:
+
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> publish.retract()
+>>> tasks.process()
+>>> feed_workflow.published
+False
+
+Make sure the file would actually have been removed:
+
+>>> print logfile.getvalue(),
+Running job 19
+Retracting http://xml.zeit.de/online/2007/01/Somalia
+...retract.sh:
+Retracting test script
+work/politik.feed
+work/online/2007/01/Somalia
+done.
+
+
+Remove the test adapters:
 
 >>> gsm.unregisterAdapter(
-...     SomaliaImage,
+...     FeedSomalia,
+...     (zeit.cms.syndication.interfaces.IFeed,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='feed')
+True
+>>> gsm.unregisterAdapter(
+...     SomaliaFeed,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
 ...     zeit.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
