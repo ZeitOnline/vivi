@@ -7,7 +7,6 @@ import UserDict
 import zope.component
 import zope.interface
 import zope.security.interfaces
-import zope.testing.cleanup
 
 import zeit.connector.interfaces
 
@@ -62,9 +61,6 @@ class LiveProperties(object, UserDict.DictMixin):
     @classmethod
     def is_live_property(cls, name, namespace):
         return (name, namespace) in cls.live_properties
-
-
-zope.testing.cleanup.addCleanUp(LiveProperties.live_properties.clear)
 
 
 @zope.component.adapter(
