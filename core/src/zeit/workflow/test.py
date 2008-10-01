@@ -14,7 +14,7 @@ import zope.app.testing.functional
 import zeit.cms.testing
 
 
-class WorkflowLayer(zope.app.testing.functional.ZCMLLayer):
+class WorkflowLayerFactory(zope.app.testing.functional.ZCMLLayer):
     """Layer which copies the publish/retract scripts and makes them
     executable."""
 
@@ -44,7 +44,7 @@ class WorkflowLayer(zope.app.testing.functional.ZCMLLayer):
         return destination
 
 
-WorkflowLayer = WorkflowLayer(
+WorkflowLayer = WorkflowLayerFactory(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'WorkflowLayer', allow_teardown=True)
 
