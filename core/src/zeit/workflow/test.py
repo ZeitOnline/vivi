@@ -3,11 +3,9 @@
 
 import os
 import os.path
-import unittest
 import stat
 import tempfile
-
-from zope.testing import doctest
+import unittest
 
 import zope.app.testing.functional
 
