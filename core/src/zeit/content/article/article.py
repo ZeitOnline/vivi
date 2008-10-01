@@ -37,7 +37,8 @@ ARTICLE_TEMPLATE = """\
 class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
 
-    zope.interface.implements(zeit.content.article.interfaces.IArticle)
+    zope.interface.implements(zeit.content.article.interfaces.IArticle,
+                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = ARTICLE_TEMPLATE
 
