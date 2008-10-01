@@ -8,7 +8,8 @@
     provides="zeit.workflow.interfaces.IContentWorkflow"
     trusted="yes"
     />
-  <adapter factory=".timebased.workflowProperties" />
+  <adapter factory=".publishinfo.NotPublishablePublishInfo" />
+  <adapter factory=".publishinfo.workflowProperties" />
   <adapter
     factory=".timebased.XMLReferenceUpdater"
     name="timebased-workflow"

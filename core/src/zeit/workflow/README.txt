@@ -461,12 +461,10 @@ though is that they're not publishable at all:
 
 >>> container = repository['online']['2007']['01']
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
-Traceback (most recent call last):
-    ...
-TypeError: ('Could not adapt',
-    <zeit.cms.repository.folder.Folder object at 0x...>,
-    <InterfaceClass zeit.cms.workflow.interfaces.IPublishInfo>)
-
+>>> workflow
+<zeit.workflow.publishinfo.NotPublishablePublishInfo object at 0x...>
+>>> workflow.can_publish()
+False
 
 Let's pretend a folder was editoral content:
 
@@ -826,6 +824,77 @@ work/online/2007/01/Somalia
 done.
 
 
+Depending on non workflowed objects
++++++++++++++++++++++++++++++++++++
+
+When there is a dependency on an object which is not publishable by itself it
+will be published nevertheles.
+
+Let somalia also depend on the /2007 folder:
+
+>>> class SomaliaFolder(object):
+...     def __init__(self, context):
+...         self.context = context
+...     def get_dependencies(self):
+...         if self.context.uniqueId.endswith('Somalia'):
+...             return (repository['2007'],)
+...         return ()
+...
+>>> import zeit.cms.syndication.interfaces
+>>> gsm.registerAdapter(
+...     SomaliaFolder,
+...     (zeit.cms.repository.interfaces.IUnknownResource,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='folder')
+
+>>> zeit.workflow.interfaces.IPublicationDependencies(
+...     somalia).get_dependencies()
+[<zeit.cms.repository.folder.Folder object at 0x...>,
+ <zeit.cms.syndication.feed.Feed object at 0x...>]
+
+2007 is not published:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(repository['2007']).published
+False
+
+When somalia is published, the folder and its content is also published:
+
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> publish.publish()
+>>> tasks.process()
+>>> print logfile.getvalue(),
+Running job 20
+Publishing http://xml.zeit.de/online/2007/01/Somalia
+Could not checkout http://xml.zeit.de/2007
+Could not checkout http://xml.zeit.de/2007/01
+Could not checkout http://xml.zeit.de/2007/02
+...publish.sh:
+Publishing test script
+work/online/2007/01/Somalia
+work/2007
+work/politik.feed
+work/2007/01
+work/2007/02
+work/2007/test
+work/2007/01/LB-Sch-ttler
+...
+work/2007/02/Vorspann-Dappen
+work/2007/02/W-Clear-02
+done.
+
+And 2007 is marked as published now:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(repository['2007']).published
+True
+
+The publication is also logged in the object log:
+
+>>> print_log(log.get_log(repository['2007']))
+http://xml.zeit.de/2007
+     Published
+
+
 Remove the test adapters:
 
 >>> gsm.unregisterAdapter(
@@ -839,6 +908,12 @@ True
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
 ...     zeit.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
+True
+>>> gsm.unregisterAdapter(
+...     SomaliaFolder,
+...     (zeit.cms.repository.interfaces.IUnknownResource,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='folder')
 True
 
 

@@ -23,20 +23,16 @@ from zeit.cms.i18n import MessageFactory as _
 
 import zeit.workflow.interfaces
 import zeit.workflow.publish
+import zeit.workflow.publishinfo
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 
 
-class TimeBasedWorkflow(object):
+class TimeBasedWorkflow(zeit.workflow.publishinfo.NotPublishablePublishInfo):
     """Timebased workflow."""
 
     zope.interface.implements(zeit.workflow.interfaces.ITimeBasedPublishing)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
-    zeit.cms.content.dav.mapProperties(
-        zeit.cms.workflow.interfaces.IPublishInfo,
-        WORKFLOW_NS, ('published', 'date_last_published'),
-        live=True)
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing[
             'release_period'].fields[0],
@@ -45,11 +41,6 @@ class TimeBasedWorkflow(object):
         zeit.workflow.interfaces.ITimeBasedPublishing[
             'release_period'].fields[1],
         WORKFLOW_NS, 'released_to', live=True)
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.cms.workflow.interfaces.IPublishInfo,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('date_first_released',),
-        live=True)
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.Int(), WORKFLOW_NS, 'publish_job_id', live=True)
@@ -149,12 +140,6 @@ class TimeBasedWorkflow(object):
             dt = dt.astimezone(tzinfo)
         formatter = request.locale.dates.getFormatter('dateTime', 'medium')
         return formatter.format(dt)
-
-
-@zope.component.adapter(TimeBasedWorkflow)
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-def workflowProperties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
