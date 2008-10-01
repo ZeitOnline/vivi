@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.1.12 (unreleased)
--------------------
+1.2 (2008-10-01)
+----------------
 
 - Konzept des »Redaktionellen Inhalts« zur Unterscheidung verschiedener
   Workflows.
