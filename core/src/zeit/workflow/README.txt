@@ -854,7 +854,8 @@ Let somalia also depend on the /2007 folder:
 
 2007 is not published:
 
->>> zeit.cms.workflow.interfaces.IPublishInfo(repository['2007']).published
+>>> not not zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['2007']).published
 False
 
 When somalia is published, the folder and its content is also published:
