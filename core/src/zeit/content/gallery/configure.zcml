@@ -60,4 +60,7 @@
     name="zeit.content.gallery"
     />
 
+  <!-- Workflow -->
+  <adapter factory=".workflow.PublicationDependencies" />
+
 </configure>

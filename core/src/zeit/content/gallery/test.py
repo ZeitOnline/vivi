@@ -5,16 +5,19 @@
 import os
 import unittest
 
-from zope.testing import doctest
-
 import zope.app.testing.functional
 
 import zeit.cms.testing
+import zeit.workflow.test
 
 
-ImageLayer = zope.app.testing.functional.ZCMLLayer(
+GalleryLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'GalleryLayer', allow_teardown=True)
+
+GalleryWorkflowLayer = zeit.workflow.test.WorkflowLayerFactory(
+    os.path.join(os.path.dirname(__file__), 'ftesting-workflow.zcml'),
+    __name__, 'GalleryWorkflowLayer', allow_teardown=True)
 
 
 def test_suite():
@@ -22,7 +25,9 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'reference.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS),
-        layer=ImageLayer))
+        layer=GalleryLayer))
+    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'workflow.txt',
+        product_config={'zeit.workflow': zeit.workflow.test.product_config},
+        layer=GalleryWorkflowLayer))
     return suite

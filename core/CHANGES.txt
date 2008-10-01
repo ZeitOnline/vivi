@@ -9,6 +9,9 @@ zeit.cms changes
 - Ordner können nicht mehr veröffentlich oder zurückgezogen werden.
 - Channel, File, Portraitbox und Text sind jetzt Assets.
 - Bilder gehen jetzt sinnvoll mit Arbeitsspeicher um (Bug #4410).
+- Abhängiges Veröffentlichen: Wenn eine Bildergalerie veröffentlicht wird, wird
+  ihr angehänger Bilderordner automatisch mitveröffentlicht. Beim Zurückziehen
+  wird der Bilderordner auch entfernt.
 
 
 1.1.11 (2008-09-18)

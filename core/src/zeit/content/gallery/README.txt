@@ -86,8 +86,8 @@ Let's add an image to the image folder:
 >>> import zeit.content.image.interfaces
 >>> def add_image():
 ...     filename = os.path.join(os.path.dirname(__file__),
-...                         'browser', 'testdata', '01.jpg')
-...     test_data = file(filename, 'rb').read()
+...                             'browser', 'testdata', '01.jpg')
+...     test_data = open(filename, 'rb').read()
 ...     image = zeit.content.image.image.LocalImage()
 ...     image.__name__ = '01.jpg'
 ...     image.contentType = 'image/jpeg'
@@ -802,6 +802,10 @@ The keys also correct(ed) and the names are set:
     </column>
   </body>
 </gallery>
+
+
+Publising
++++++++++
 
 
 Cleanup
