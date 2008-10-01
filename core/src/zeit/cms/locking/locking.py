@@ -47,7 +47,11 @@ class LockStorage(object):
                 lock.created + lock.timeout, pytz.UTC)
         else:
             until = None
-        self.connector.lock(object.uniqueId, lock.principal_id, until)
+        try:
+            self.connector.lock(object.uniqueId, lock.principal_id, until)
+        except zeit.connector.interfaces.LockingError, e:
+            raise zope.app.locking.interfaces.LockingError(e.uniqueId, *e.args)
+
 
     def delLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):

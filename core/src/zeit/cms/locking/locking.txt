@@ -10,16 +10,19 @@ Setup
 
 Mock a connector:
 
->>> import zope.component
+>>> import zeit.connector.interfaces
 >>> class Connector(object):
 ...     who = None
 ...     until = None
 ...     mylock = True
 ...     def locked(self, id):
 ...         return self.who, self.until, self.mylock
+...     def lock(self, obj_id, principal_id, until):
+...         if obj_id == 'alreadylocked':
+...             raise zeit.connector.interfaces.LockingError(obj_id)
+...         print "Locking %s for %s until %s" % (obj_id, principal_id, until)
 ... 
 >>> import zope.component
->>> import zeit.connector.interfaces
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> connector = Connector()
 >>> gsm.registerUtility(
@@ -96,6 +99,41 @@ Deleting a lock for a non-cms object does nothing because it cannot be locked
 anyway:
 
 >>> lock_storage.delLock(object())
+
+Setting an allowed lock calls the lock method of the connector:
+
+>>> info.principal_id = u'cms.gandalf'
+>>> lock_storage.setLock(content, info)
+Locking foo for cms.gandalf until ...
+
+Locking again doesn't harm:
+
+>>> lock_storage.setLock(content, info)
+Locking foo for cms.gandalf until ...
+
+An ``timeout`` value of None is also passed to the connector:
+
+>>> info.timeout = None
+>>> lock_storage.setLock(content, info)
+Locking foo for cms.gandalf until None
+
+When we try to lock an object where the connector raises a
+zeit.connector.interfaces.LockingError, the setLock method raises an
+zope.app.locking.interfaces.LockingError:
+
+>>> content.uniqueId = 'alreadylocked'
+>>> lock_storage.setLock(content, info)
+Traceback (most recent call last):
+    ...
+LockingError: alreadylocked
+
+We *really* got the one from zope.app.locking:
+
+>>> try:
+...     lock_storage.setLock(content, info)
+... except Exception, e:
+...     print e.__module__
+zope.app.locking.interfaces
 
 
 Clean up

@@ -4,6 +4,8 @@ zeit.cms changes
 1.2.1 (unreleased)
 ------------------
 
+- Locking erzeugt die richtige Exception.
+
 1.2 (2008-10-01)
 ----------------
 
