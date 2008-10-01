@@ -212,7 +212,7 @@ Get an image from the repository and attach it[#needsinteraction]_:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> image = repository['2006']['DSC00109_2.JPG']
 >>> image
-<zeit.content.image.image.Image object at 0x...>
+<zeit.content.image.image.RepositoryImage object at 0x...>
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     image).checkout()
 >>> image_metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
@@ -224,7 +224,7 @@ Get an image from the repository and attach it[#needsinteraction]_:
 It's now stored on the article:
 
 >>> images.images
-(<zeit.content.image.image.Image object at 0x...>,)
+(<zeit.content.image.image.RepositoryImage object at 0x...>,)
 
 And the image is referenced in the XML structure:
 
@@ -237,6 +237,7 @@ And the image is referenced in the XML structure:
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
       type="JPG">
       <bu xsi:nil="true"/>
+      <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
     </image>...
   </head>
   ...

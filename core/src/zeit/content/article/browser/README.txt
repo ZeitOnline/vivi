@@ -425,6 +425,7 @@ xml source:
       </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu xsi:nil="true"/>
+        <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
       </image>
     </block>
   </container>
@@ -494,6 +495,7 @@ at its xml source:
       </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu xsi:nil="true"/>
+        <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
       </image>
     </block>
   </container>
