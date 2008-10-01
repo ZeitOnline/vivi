@@ -1,8 +1,8 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import os
+import os.path
 import unittest
 import stat
 import tempfile
@@ -59,7 +59,5 @@ def test_suite():
         'README.txt',
         'syndication.txt',
         layer=WorkflowLayer,
-        product_config={'zeit.workflow': product_config},
-        optionflags=(doctest.INTERPRET_FOOTNOTES|doctest.ELLIPSIS|
-                     doctest.REPORT_NDIFF|doctest.NORMALIZE_WHITESPACE)))
+        product_config={'zeit.workflow': product_config}))
     return suite
