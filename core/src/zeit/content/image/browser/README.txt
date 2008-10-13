@@ -79,9 +79,9 @@ We now see the form. The image did not have any metadata prefilled. The
 copyright is filled with the default value though:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value
-'ZEIT ONLINE'
+'\xc2\xa9'
 >>> browser.getControl(name='form.copyrights.0..combination_01').value
-'http://www.zeit.de/'
+''
 
 Fill out some values:
 
@@ -100,6 +100,10 @@ Fill out some values:
 ['left', 'center', 'right']
 >>> browser.getControl('Alignment').displayValue = ['center']
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+...     'ZEIT ONLINE')
+>>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+...     'http://www.zeit.de/')
 >>> browser.getControl('Apply').click()
 >>> 'There where errors' in browser.contents
 False
@@ -226,6 +230,10 @@ filename automatically.
 >>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl(name='form.volume').value != '0'
 True
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+...     'ZEIT ONLINE')
+>>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+...     'http://www.zeit.de/')
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
@@ -299,6 +307,10 @@ Lets create an image group:
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+...     'ZEIT ONLINE')
+>>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+...     'http://www.zeit.de/')
 >>> browser.getControl(name='form.actions.add').click()
 
 Image groups are not checked out by default, because adding new images will be
