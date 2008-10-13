@@ -328,7 +328,7 @@ class CollectionTextLineProperty(object):
         self._type = context._type
         if isinstance(self._type, tuple):
             # XXX this is way hacky
-            self._type = self._type[-1]
+            self._type = self._type[0]
 
     def fromProperty(self, value):
         from_prop = zeit.cms.content.interfaces.IDAVPropertyConverter(
