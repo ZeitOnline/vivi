@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.2.2. (unreleased)
--------------------
+1.2.2 (2008-10-13)
+------------------
 
 - Standard-Copyright bei bildern ist jetzt ein leeres Feld mit dem
   Copyright-Zeichen. Vor dem Speichern muss man das Feld löschen oder ein
