@@ -100,6 +100,7 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
 
     factory = None
     next_view = None
+    cancel_next_view = None
     checkout = True
 
     _checked_out = False
@@ -144,6 +145,8 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         url = zope.component.getMultiAdapter(
             (self.context, self.request),
             name="absolute_url")()
+        if self.cancel_next_view:
+            url = '/@@'.join((url, self.cancel_next_view))
         self.request.response.redirect(url)
 
     def suggestName(self, object):
