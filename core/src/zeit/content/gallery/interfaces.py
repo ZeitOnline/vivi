@@ -28,7 +28,7 @@ galleryFolderSource = GalleryFolderSource()
 
 
 class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
-    """Cennter page metadata."""
+    """Center page metadata."""
 
     image_folder = zope.schema.Choice(
         title=_("Image folder"),
