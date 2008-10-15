@@ -119,10 +119,10 @@ class Container(zope.app.container.contained.Contained):
 
     def _get_id_for_name(self, name):
         if self.uniqueId.endswith('/'):
-            slash = ''
+            separator = ''
         else:
-            slash = '/'
-        return '%s%s%s' % (self.uniqueId, slash, name)
+            separator = '/'
+        return separator.join((self.uniqueId, name))
 
     @property
     def _local_unique_map(self):
