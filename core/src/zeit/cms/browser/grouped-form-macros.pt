@@ -3,6 +3,8 @@
   <h1 tal:condition="view/label" tal:content="view/label"/>
 
   <div id="edit-form" class="grouped-form">
+
+
     <form action="."
       tal:attributes="action request/URL" method="post"
       class="edit-form" enctype="multipart/form-data"
@@ -34,6 +36,7 @@
         </ul>
       </div>
 
+
       <div class="field-group"
         tal:define="groups view/widget_groups">
         <tal:group tal:repeat="group groups">
@@ -41,6 +44,7 @@
             tal:condition="group/widgets"
             tal:attributes="class group/meta/css_class">
             <legend tal:content="group/meta/title">Kopf</legend>
+            <metal:contentslot define-slot="above-form" />
             <div tal:define="widgets group/widgets">
               <metal:macro use-macro="context/@@grouped_form_macros/render_form_widget" />
             </div>
