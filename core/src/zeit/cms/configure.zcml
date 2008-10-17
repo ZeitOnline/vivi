@@ -50,4 +50,7 @@
     type=".interfaces.ICMSContentType"
     />
 
+  <!-- cleanup -->
+  <subscriber handler=".cleanup.clean_exc_info" />
+
 </configure>

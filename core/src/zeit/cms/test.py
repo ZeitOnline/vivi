@@ -14,6 +14,5 @@ def test_suite():
         'content.txt'))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'async.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
+        'cleanup.txt'))
     return suite

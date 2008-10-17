@@ -1,8 +1,11 @@
 zeit.cms changes
 ================
 
-1.2.3 (unreleased)
+1.2.3 (2008-10-17)
 ------------------
+
+- Sicherstellen, dass Request-Objekte nicht ewig rumliegen und Speicher
+  verbrauchen.
 
 1.2.2 (2008-10-13)
 ------------------
