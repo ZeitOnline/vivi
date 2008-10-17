@@ -17,7 +17,8 @@ setup(
     install_requires=[
         'PILwoTk',
         'SilverCity',
-        'ZODB3>3.7',
+        'ZODB3>=3.8.1',
+        'transaction',
         'decorator',
         'gocept.cache>=0.2',
         'gocept.fckeditor',
