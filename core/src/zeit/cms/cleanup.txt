@@ -38,6 +38,20 @@ The exc_info is empty now:
 (None, None, None)
 
 
+Another place where the request object stay referenced is zope.security where
+the previous interaction is kept. Since we don't need this, we also remove it
+after the request.
+
+>>> import zope.security.management
+>>> zope.security.management.thread_local.previous_interaction = "something"
+>>> zope.event.notify(
+...     zope.app.publication.interfaces.EndRequestEvent(None, None))
+>>> zope.security.management.thread_local.previous_interaction
+Traceback (most recent call last):
+    ...
+AttributeError: 'thread._local' object has no attribute 'previous_interaction'
+
+
 Also, since we're creating so many objects, we let the garbace collection come
 more often:
 

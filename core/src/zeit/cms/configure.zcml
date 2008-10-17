@@ -52,5 +52,6 @@
 
   <!-- cleanup -->
   <subscriber handler=".cleanup.clean_exc_info" />
+  <subscriber handler=".cleanup.clean_previous_interaction" />
 
 </configure>
