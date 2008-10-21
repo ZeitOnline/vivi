@@ -35,7 +35,7 @@ Good. Let's publish:
 
 >>> publish('http://xml.zeit.de/online/2007/01/Somalia')
 True
->>> zope.security.management.restoreInteraction()
+>>> new_interaction()
 >>> tasks.process()
 >>> zope.security.management.endInteraction()
 >>> workflow.published
@@ -76,9 +76,11 @@ Clean up:
     Setup interaction:
 
     >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
     >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> request.setPrincipal(principal)
     >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
+    >>> def new_interaction():
+    ...     request = zope.publisher.browser.TestRequest()
+    ...     principal = zope.security.testing.Principal(u'zope.user')
+    ...     request.setPrincipal(principal)
+    ...     zope.security.management.newInteraction(request)
+    >>> new_interaction()
