@@ -140,13 +140,17 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         self._created_object = object
         self._finished_add = True
 
-    @zope.formlib.form.action(_("Cancel"), validator=lambda *a: ())
-    def cancel(self, action, data):
+    def cancelNextURL(self):
         url = zope.component.getMultiAdapter(
             (self.context, self.request),
             name="absolute_url")()
         if self.cancel_next_view:
             url = '/@@'.join((url, self.cancel_next_view))
+        return url
+
+    @zope.formlib.form.action(_("Cancel"), validator=lambda *a: ())
+    def cancel(self, action, data):
+        url = self.cancelNextURL()
         self.request.response.redirect(url)
 
     def suggestName(self, object):
