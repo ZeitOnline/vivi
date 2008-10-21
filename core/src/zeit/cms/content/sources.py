@@ -144,7 +144,7 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
         return (interface for name, interface in
-                zope.component.getUtzRitiesFor(
+                zope.component.getUtilitiesFor(
                     zeit.cms.interfaces.ICMSContentType))
 
 
