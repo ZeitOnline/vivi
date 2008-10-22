@@ -69,18 +69,15 @@ Verify the source:
 
 Let's check it in:
 
->>> browser.handleErrors = False
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
-<?xml ...
-    <title> Hans Wurst – View portraitbox </title>
-    ...
+>>> print browser.title.strip()
+Hans Wurst – View source code
 
 
 Make sure there is a metadata preview:
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans/...'
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     'Wurst-Hans/@@metadata_preview')

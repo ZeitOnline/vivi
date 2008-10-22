@@ -269,7 +269,7 @@ We check in the document. We look a the document in the repository then:
 
 >>> browser.getLink('Checkin').click()
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/02/index/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/02/index/...'
 
 Make sure there is also a link to the view:
 

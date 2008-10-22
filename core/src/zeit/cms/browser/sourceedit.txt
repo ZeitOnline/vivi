@@ -8,6 +8,8 @@ Let's view the source of an object. The source syntax highlighted:
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
 >>> browser.getLink('View source').click()
+>>> print browser.title.strip()
+testcontent – View source code
 >>> print browser.contents
 <?xml ...
               <div class="widget"><span class="h_tag">&lt;testtype&gt;</span><span class="h_default"><br/>
@@ -20,7 +22,8 @@ Let's view the source of an object. The source syntax highlighted:
 When we check out an object we can edit the source:
 
 >>> browser.getLink('Checkout').click()
->>> browser.getLink('Source').click()
+>>> print browser.title.strip()
+testcontent – Edit source code
 >>> print browser.getControl('XML').value
 <testtype>
   <head/>
@@ -41,7 +44,8 @@ When we check out an object we can edit the source:
 After checking in we see the changes in the source view:
 
 >>> browser.getLink('Checkin').click()
->>> browser.getLink('View source').click()
+>>> print browser.title.strip()
+testcontent – View source code
 >>> print browser.contents
 <?xml ...
               <div class="widget"><span class="h_tag">&lt;testtype&gt;</span><span class="h_default"><br/>

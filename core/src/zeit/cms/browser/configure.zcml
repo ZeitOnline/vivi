@@ -228,6 +228,11 @@
     permission="zope.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
+  
+  <adapter
+    factory=".sourceedit.display_view_name" name="xml_source_edit.html" />
+  <adapter
+    factory=".sourceedit.edit_view_name" name="xml_source_view.html" />
 
   <browser:page
     for="zeit.cms.content.interfaces.ICommonMetadata"

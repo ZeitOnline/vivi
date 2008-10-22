@@ -543,7 +543,7 @@ Let's have a look at the feed now:
     ...
 
 
-Let's remove the title of the feed to make sure we don't buke. Note that there
+Let's remove the title of the feed to make sure we don't puke. Note that there
 is now way to remove the title w/o editing the source:
 
 >>> browser.getLink('Checkout').click()
@@ -577,6 +577,7 @@ is now way to remove the title w/o editing the source:
 ... </channel>'''
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
+>>> browser.getLink('View').click()
 >>> print browser.contents
 <?xml ...
     <td>

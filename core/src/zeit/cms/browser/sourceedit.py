@@ -39,4 +39,16 @@ class XMLEditForm(XMLBaseForm, zope.formlib.form.EditForm):
 
 class XMLDisplayForm(XMLBaseForm, zope.formlib.form.DisplayForm):
 
-    title = _('View sourcecode')
+    title = _('View source code')
+
+
+@zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
+def edit_view_name(context):
+    return 'xml_source_edit.html'
+
+
+@zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
+def display_view_name(context):
+    return 'xml_source_view.html'
