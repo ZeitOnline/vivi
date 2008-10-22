@@ -11,7 +11,6 @@ Create a testbrowser and open the homepage:
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic producer:producerpw')
 >>> browser.open('http://localhost/++skin++cms/' )
->>> browser.handleErrors = False
 
 Open the template managment ui:
 
