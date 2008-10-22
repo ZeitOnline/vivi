@@ -175,10 +175,10 @@ Let's add another recension:
   ...
 
 
-Let's check in. We don't have an edit link or add button then:
+Let's check in. We don't have an edit link or add button then (note that we're
+automatically at the recensions page):
 
 >>> browser.getLink('Checkin').click()
->>> browser.getLink('Recensions').click()
 >>> print browser.contents
 <?xml ...
             <div id="content">
@@ -216,3 +216,10 @@ Let's check in. We don't have an edit link or add button then:
 Traceback (most recent call last):
     ...
 LookupError: label 'Add'
+
+
+After checking out from the recensions page, they can be edited directly:
+
+>>> browser.getLink('Checkout').click()
+>>> print browser.title.strip()
+Rückkehr der Warlords – Recensions

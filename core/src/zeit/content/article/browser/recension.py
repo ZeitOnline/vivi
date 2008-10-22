@@ -102,3 +102,15 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
         gocept.form.grouped.RemainingFields(
             _('Raw data'),
             css_class='fullWidth'),)
+
+
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
+def edit_view_name(context):
+    return 'recensions.html'
+
+
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
+def display_view_name(context):
+    return 'recensions.html'

@@ -6,6 +6,7 @@ zeit.content.article changes
 
 - Bearbeiten von Rezensionen klarer gemacht (bug #4437).
 - Anpassungen für zeit.cms 1.2.4
+- Rezensionsview beim checkin/checkout stabil halten.
 
 1.5.6 (2008-10-13)
 ------------------
