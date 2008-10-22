@@ -150,3 +150,23 @@ class IPreviewObject(zope.interface.Interface):
     previewable object.
 
     """
+
+
+class IEditViewName(zope.interface.Interface):
+    """Adapter to get the edit view name for context and display view name.
+
+    edit_view_name = getAdapter(
+        a_content_object,
+        IEditViewName, name='view.html')
+
+    """
+
+
+class IDisplayViewName(zope.interface.Interface):
+    """Adapter to get the display view name for context and edit view name.
+
+    display_view_name = getAdapter(
+        a_content_object,
+        IDisplayViewName, name='edit.html')
+
+    """

@@ -12,13 +12,14 @@
     class=".manager.Checkout"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="Checkout"
     for="zeit.cms.interfaces.ICMSContent"
-    menu="zeit-context-actions"
-    title="Checkout"
-    action="@@checkout"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".manager.CheckoutMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.Checkout"
-    filter="context/@@checkout/canCheckout"
+    icon="/@@/zeit.cms/icons/checkout.png"
     />
 
   <browser:view
@@ -29,13 +30,14 @@
     class=".manager.Checkin"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="Checkin"
     for="zeit.cms.interfaces.ICMSContent"
-    menu="zeit-context-actions"
-    title="Checkin"
-    action="@@checkin"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".manager.CheckinMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.Checkin"
-    filter="context/@@checkin/canCheckin"
+    icon="/@@/zeit.cms/icons/checkin.png"
     />
 
 </configure>
