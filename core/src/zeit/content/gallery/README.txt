@@ -804,10 +804,6 @@ The keys also correct(ed) and the names are set:
 </gallery>
 
 
-Publising
-+++++++++
-
-
 Cleanup
 +++++++
 
