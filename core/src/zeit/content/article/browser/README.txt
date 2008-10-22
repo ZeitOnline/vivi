@@ -23,7 +23,7 @@ The metadata preview shows the most important data in list views:
       <div class="teaser-title" title="Teaser">...
 
 >>> browser.getLink('Checkout')
-<Link text='actionmenuicon[IMG] Checkout' ...>
+<Link text='[IMG] Checkout' ...>
 
 Make sure we have a "view" link:
 
