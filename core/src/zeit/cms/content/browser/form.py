@@ -14,7 +14,9 @@ import gocept.form.grouped
 import zc.resourcelibrary
 
 import zeit.cms.browser.form
+import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.content.browser.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.settings.interfaces
 import zeit.cms.syndication.interfaces
@@ -165,3 +167,15 @@ zope.testing.cleanup.addCleanUp(_clean_asset_interfaces)
 @zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
 def register_asset_interface(event):
     AssetBase.add_asset_interface(zeit.cms.related.interfaces.IRelatedContent)
+
+
+@zope.component.adapter(zeit.cms.content.browser.interfaces.IAssetViews)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
+def asset_edit_view_name(context):
+    return 'asset_edit.html'
+
+
+@zope.component.adapter(zeit.cms.content.browser.interfaces.IAssetViews)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
+def asset_display_view_name(context):
+    return 'asset_view.html'
