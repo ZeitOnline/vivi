@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Oct 22 08:41:40 2008\n"
+"POT-Creation-Date: Wed Oct 22 14:41:46 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -37,15 +37,15 @@ msgstr ""
 msgid "View source"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:301
+#: src/zeit/cms/browser/configure.zcml:306
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:355
+#: src/zeit/cms/browser/configure.zcml:360
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:364
+#: src/zeit/cms/browser/configure.zcml:369
 msgid "Development"
 msgstr ""
 
@@ -224,7 +224,7 @@ msgid "Edit source code"
 msgstr ""
 
 #: src/zeit/cms/browser/sourceedit.py:42
-msgid "View sourcecode"
+msgid "View source code"
 msgstr ""
 
 #: src/zeit/cms/browser/system-error.pt:8
@@ -239,22 +239,22 @@ msgstr ""
 msgid "The object could not be found."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/configure.zcml:15
-msgid "Checkout"
-msgstr ""
-
-#: src/zeit/cms/checkout/browser/configure.zcml:32
-msgid "Checkin"
-msgstr ""
-
-#: src/zeit/cms/checkout/browser/manager.py:17
+#: src/zeit/cms/checkout/browser/manager.py:18
 #. Default: ""
 msgid "\"${name}\" has been checked out."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:35
+#: src/zeit/cms/checkout/browser/manager.py:46
 #. Default: ""
 msgid "\"${name}\" has been checked in."
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/manager.py:87
+msgid "Checkout"
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/manager.py:98
+msgid "Checkin"
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/clip.py:100
@@ -303,42 +303,42 @@ msgstr ""
 msgid "clipboard-paste-explain"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:136
+#: src/zeit/cms/content/browser/form.py:138
 msgid "Assets and related"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:152
+#: src/zeit/cms/content/browser/form.py:154
 #: src/zeit/cms/content/browser/configure.zcml:149
 msgid "Edit assets"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:156
+#: src/zeit/cms/content/browser/form.py:158
 #: src/zeit/cms/content/browser/configure.zcml:166
 msgid "Assets"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:42
+#: src/zeit/cms/content/browser/form.py:44
 msgid "Navigation"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:46
+#: src/zeit/cms/content/browser/form.py:48
 #: src/zeit/content/infobox/browser/form.py:36
 #: src/zeit/content/portraitbox/browser/form.py:31
 msgid "Head"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:50
+#: src/zeit/cms/content/browser/form.py:52
 #: src/zeit/content/image/browser/form.py:29
 #: src/zeit/content/infobox/browser/form.py:32
 #: src/zeit/content/infobox/browser/form.py:87
 msgid "Texts"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:57
+#: src/zeit/cms/content/browser/form.py:59
 msgid "Options"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:67
+#: src/zeit/cms/content/browser/form.py:69
 msgid "misc."
 msgstr ""
 
@@ -934,7 +934,7 @@ msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.py:108
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:346
+#: src/zeit/cms/browser/configure.zcml:351
 msgid "Preview"
 msgstr ""
 
