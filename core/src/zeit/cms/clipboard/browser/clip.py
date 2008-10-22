@@ -1,6 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
+"""Menu item delclarations."""
 
 import zope.component
 import zope.interface
@@ -63,10 +63,10 @@ class NotOnClipboardMenuItem(object):
             return u''
         return super(NotOnClipboardMenuItem, self).render()
 
+
 class DeleteClipMenuItem(NotOnClipboardMenuItem,
                          zeit.cms.browser.menu.ActionMenuItem):
     """MenuItem for deleting clips."""
-
 
 
 class RenameClipMenuitem(NotOnClipboardMenuItem,
