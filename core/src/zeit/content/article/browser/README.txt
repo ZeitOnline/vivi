@@ -558,7 +558,7 @@ Add another template:
 >>> admin.getControl('Source').value = (
 ...     '<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
 ...     '<head/><body/></article>\n'
-...     '<?ZEIT:StyleGroup zeitwissen-extrablatt?>')
+...     '<?ZEIT-StyleGroup zeitwissen-extrablatt?>')
 >>> admin.getControl('Add').click()
 >>> print admin.contents
 <?xml ...
@@ -647,9 +647,7 @@ Let's have a look at the source:
     <title>Extrablatt 53</title>
   </body>
 </article>
-<?ZEIT:StyleGroup zeitwissen-extrablatt?>
-
-
+<?ZEIT-StyleGroup zeitwissen-extrablatt?>
 
 
 Javascript validations
