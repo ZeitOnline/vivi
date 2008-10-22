@@ -24,6 +24,7 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
         '<head/><body/></link>')
 
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
+    target = zeit.cms.content.property.ObjectPathProperty('.body.target')
 
 
 
@@ -45,3 +46,10 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if not url:
             url = ''
         entry.set('{http://namespaces.zeit.de/CMS/link}href', url)
+
+        target_attribute = '{http://namespaces.zeit.de/CMS/link}target'
+        if self.context.target:
+            entry.set(target_attribute, self.context.target)
+        else:
+            entry.attrib.pop(target_attribute, None)
+

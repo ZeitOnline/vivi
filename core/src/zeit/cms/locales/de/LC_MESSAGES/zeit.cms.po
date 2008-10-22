@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Sep 29 17:00:01 2008\n"
-"PO-Revision-Date: 2008-09-29 18:13+0100\n"
+"POT-Creation-Date: Wed Oct 22 08:41:40 2008\n"
+"PO-Revision-Date: 2008-10-22 08:47+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,15 +45,15 @@ msgstr "context sensitive views"
 msgid "folder specific actions"
 msgstr "folder specific actions"
 
-#: src/zeit/cms/browser/form.py:118
+#: src/zeit/cms/browser/form.py:119
 msgid "Add"
 msgstr "Hinzufügen …"
 
-#: src/zeit/cms/browser/form.py:142
+#: src/zeit/cms/browser/form.py:143
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/zeit/cms/browser/form.py:167
+#: src/zeit/cms/browser/form.py:170
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:106
@@ -63,16 +63,16 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:209
+#: src/zeit/cms/browser/form.py:212
 msgid "No changes"
 msgstr "Keine Änderungen"
 
-#: src/zeit/cms/browser/form.py:212
+#: src/zeit/cms/browser/form.py:215
 #: src/zeit/cms/repository/browser/file.py:109
 msgid "Apply"
 msgstr "Speichern"
 
-#: src/zeit/cms/browser/form.py:220
+#: src/zeit/cms/browser/form.py:223
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
@@ -84,7 +84,7 @@ msgid "View"
 msgstr "Anzeigen"
 
 #: src/zeit/cms/browser/globalmenuitem.pt:3
-#: src/zeit/cms/browser/grouped-form-macros.pt:24
+#: src/zeit/cms/browser/grouped-form-macros.pt:26
 #: src/zeit/cms/browser/lightbox.pt:3
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
@@ -968,7 +968,7 @@ msgstr "limit-amount-description"
 
 #: src/zeit/cms/workflow/browser/indicator.py:31
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:280
+#: src/zeit/workflow/publish.py:297
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1303,8 +1303,16 @@ msgid "View link metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/link/interfaces.py:16
+msgid "New window"
+msgstr "Neues Fenster"
+
+#: src/zeit/content/link/interfaces.py:28
 msgid "Link address"
 msgstr "Link-Adresse (URL)"
+
+#: src/zeit/content/link/interfaces.py:31
+msgid "Target"
+msgstr "Ziel"
 
 #: src/zeit/content/portraitbox/browser/form.py:34
 msgid "Portrait"
@@ -1527,44 +1535,44 @@ msgstr "Status"
 msgid "${title}: ${state}"
 msgstr "${title}: ${state}"
 
-#: src/zeit/workflow/interfaces.py:39
+#: src/zeit/workflow/interfaces.py:37
 msgid "From"
 msgstr "Von"
 
-#: src/zeit/workflow/interfaces.py:41
+#: src/zeit/workflow/interfaces.py:39
 msgid "To"
 msgstr "Bis"
 
-#: src/zeit/workflow/interfaces.py:43
+#: src/zeit/workflow/interfaces.py:41
 msgid "Publication period"
 msgstr "Veröffentlichungszeitraum"
 
 #. Default: "Leave empty for no constraint."
-#: src/zeit/workflow/interfaces.py:44
+#: src/zeit/workflow/interfaces.py:42
 msgid "workflow-publication-period-description"
 msgstr "Leer für keine Einschränkung. Der Veröffentlichungszeitraum gibt an, wann das Objekt automatisch veröffentlicht und wieder zurückgezogen wird. In diesem Fall muss nur Status gespeichert werden. "
 
-#: src/zeit/workflow/interfaces.py:63
+#: src/zeit/workflow/interfaces.py:61
 msgid "status-edited"
 msgstr "✐ Redigiert"
 
-#: src/zeit/workflow/interfaces.py:68
+#: src/zeit/workflow/interfaces.py:66
 msgid "status-corrected"
 msgstr "✔ Korrigiert"
 
-#: src/zeit/workflow/interfaces.py:73
+#: src/zeit/workflow/interfaces.py:71
 msgid "status-refined"
 msgstr "☆ Veredelt"
 
-#: src/zeit/workflow/interfaces.py:78
+#: src/zeit/workflow/interfaces.py:76
 msgid "status-images-added"
 msgstr "❐ Bilder hinzugefügt (Grafik) "
 
-#: src/zeit/workflow/interfaces.py:83
+#: src/zeit/workflow/interfaces.py:81
 msgid "Urgent"
 msgstr "Eilig"
 
-#: src/zeit/workflow/interfaces.py:84
+#: src/zeit/workflow/interfaces.py:82
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können ohne die anderen Status setzen zu müssen."
 
@@ -1573,11 +1581,11 @@ msgstr "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu k�
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: src/zeit/workflow/publish.py:237
+#: src/zeit/workflow/publish.py:260
 msgid "Could not publish because conditions not satisifed."
 msgstr "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
 
-#: src/zeit/workflow/publish.py:309
+#: src/zeit/workflow/publish.py:322
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -1601,25 +1609,25 @@ msgstr "nein"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#. Default: "To be retracted on ${date} (job #${job})"
-#: src/zeit/workflow/timebased.py:103
-msgid "scheduled-for-retracting-on"
-msgstr "Automatisch zurückziehen am ${date} (job #${job})"
-
 #. Default: "Scheduled publication cancelled (job #${job})."
-#: src/zeit/workflow/timebased.py:77
+#: src/zeit/workflow/timebased.py:68
 msgid "scheduled-publishing-cancelled"
 msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
 
 #. Default: "To be published on ${date} (job #${job})"
-#: src/zeit/workflow/timebased.py:85
+#: src/zeit/workflow/timebased.py:76
 msgid "scheduled-for-publishing-on"
 msgstr "Automatisch veröffentlichen am ${date} (job #${job})"
 
 #. Default: "Scheduled retracting cancelled (job #${job})."
-#: src/zeit/workflow/timebased.py:95
+#: src/zeit/workflow/timebased.py:86
 msgid "scheduled-retracting-cancelled"
 msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
+
+#. Default: "To be retracted on ${date} (job #${job})"
+#: src/zeit/workflow/timebased.py:94
+msgid "scheduled-for-retracting-on"
+msgstr "Automatisch zurückziehen am ${date} (job #${job})"
 
 #. Default: ""
 #: src/zeit/workflow/workflow.py:79

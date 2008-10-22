@@ -31,16 +31,18 @@ True
   <body/>
 </link>
 
-Now that was pretty boring. Add a title and a URL:
+Now that was pretty boring. Add title, URL and target:
 
 >>> link.title = 'gocept'
 >>> link.url = 'http://gocept.com'
+>>> link.target = '_blank'
 >>> print lxml.etree.tostring(link.xml, pretty_print=True)
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
     <title>gocept</title>
     <url py:pytype="str">http://gocept.com</url>
+    <target py:pytype="str">_blank</target>
   </body>
 </link>
 
@@ -65,7 +67,41 @@ Create a channel and insert the link[#functional]_:
   <title/>
   <container>
     <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-      href="http://xml.zeit.de/link" ns0:href="http://gocept.com">
+      href="http://xml.zeit.de/link"
+      ns0:href="http://gocept.com" ns0:target="_blank">
+      <supertitle xsi:nil="true"/>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+      <description xsi:nil="true"/>
+      <byline xsi:nil="true"/>
+      <short>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </short>
+      <homepage>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+      </homepage>
+      <references/>
+    </block>
+  </container>
+  <object_limit py:pytype="int">50</object_limit>
+</channel>
+
+When the target is removed from the link, the attribute is removed from the
+channel:
+
+>>> link.target = None
+>>> feed.updateMetadata(link)
+>>> print feed.xml_source
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
+  <container>
+    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+      href="http://xml.zeit.de/link"
+      ns0:href="http://gocept.com">
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
