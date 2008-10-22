@@ -39,3 +39,15 @@ class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
 
     title = _('View SEO data')
+
+
+@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
+def edit_view_name(context):
+    return 'seo-edit.html'
+
+
+@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
+def display_view_name(context):
+    return 'seo-view.html'

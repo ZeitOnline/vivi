@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Bei Link-Objekten kann jetzt »Neues Fenster« als Ziel ausgewählt werden (bug
   #4488).
+- Beim Auschecken und Einchecken bleiben die Views stabil, d.h. wenn man sich
+  z.B. die Assets anguckt und auscheckt, kann man danach direkt die Assets
+  bearbeiten (bug #4357).
 
 1.2.3 (2008-10-17)
 ------------------

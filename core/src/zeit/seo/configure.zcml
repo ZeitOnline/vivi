@@ -34,5 +34,8 @@
     menu="zeit-context-views" title="Edit SEO"
     />
 
+  <adapter factory=".browser.edit_view_name" name="seo-view.html" />
+  <adapter factory=".browser.display_view_name" name="seo-edit.html" />
+
 </configure>
 
