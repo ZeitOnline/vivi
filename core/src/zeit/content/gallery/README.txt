@@ -630,6 +630,12 @@ When calling `reload_image_folder` the entry is removed from the xml:
   </body>
 </gallery>
 
+Reloading the image folder will also re-create all the thumbnails. The
+thumbnail of the removed image is also remove:
+
+>>> repository['2006']['thumbnails'].keys()
+[u'DSC00109_2.JPG']
+
 
 At one point we had galleries with an empty caption-tag which broke
 the system. Make sure this doesn't happen any more:

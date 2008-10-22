@@ -9,6 +9,8 @@ zeit.cms changes
 - Beim Auschecken und Einchecken bleiben die Views stabil, d.h. wenn man sich
   z.B. die Assets anguckt und auscheckt, kann man danach direkt die Assets
   bearbeiten (bug #4357).
+- Beim »Synchronisieren« des Bilderordners einer Galerie werden die Thumbnails
+  neu erzeugt (bug #4496).
 
 1.2.3 (2008-10-17)
 ------------------
