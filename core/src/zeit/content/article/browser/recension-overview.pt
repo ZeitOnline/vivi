@@ -1,15 +1,26 @@
-<div class="recensions" i18n:domain="zeit.content.article">
+<div class="recensions" i18n:domain="zeit.content.article"
+  tal:define="can_edit python:request.interaction.checkPermission(
+    'zeit.EditContent', context)">
   <tal:replace replace="resource_library:zeit.cms.recension" />
   <div class="recension"
     tal:condition="view/recensions"
     tal:repeat="recension view/recensions">
 
     <a href="#" title="Edit" class="RecensionTitle"
+      tal:condition="can_edit"
       tal:attributes="href string:${recension/url}/@@edit.html"
-      i18n:attributes="title">
+      i18n:attributes="title"
+      i18n:translate="">
+      <span i18n:name="authors" tal:replace="recension/authors" />:
+      <span i18n:name="title" tal:replace="recension/title" />
+      [edit]
+    </a>
+
+    <div class="RecensionTitle"
+      tal:condition="not:can_edit">
       <span tal:replace="recension/authors" />:
       <span tal:replace="recension/title" />
-    </a>
+    </div>
 
     <dl>
       <tal:con condition="recension/publisher">
@@ -61,6 +72,7 @@
   </p>
 
   <form action=""
+    tal:condition="can_edit"
     tal:attributes="action string:${view/container/@@absolute_url}/@@add"
     class="add">
     <input type="submit"

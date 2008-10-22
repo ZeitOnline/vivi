@@ -71,7 +71,7 @@ Let's add one:
   <div class="recension">
     <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
-      Der Schwarm
+      Der Schwarm [edit]
     </a>
     ...
 
@@ -90,7 +90,7 @@ Let's edit and add some more information:
   <div class="recension">
     <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
-      Der Schwarm
+      Der Schwarm [edit]
     </a>
     <dl>
       <dt>Publisher</dt>
@@ -133,7 +133,7 @@ Let's add another recension:
 
 >>> browser.getLink('Recensions').click()
 >>> browser.getControl('Add').click()
->>> browser.getControl('Title').value = 'Minima Moraklia'
+>>> browser.getControl('Title').value = 'Minima Moralia'
 >>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
 >>> browser.getControl('Publisher').value = 'Suhrkamp'
@@ -148,7 +148,7 @@ Let's add another recension:
   <div class="recension">
     <a href=".../recensions/0/@@edit.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
-      Der Schwarm
+      Der Schwarm [edit]
     </a>
     ...
       <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
@@ -162,7 +162,7 @@ Let's add another recension:
   <div class="recension">
     <a href=".../recensions/1/@@edit.html" title="Edit" class="RecensionTitle">
       Theodor W. Adorno:
-      Minima Moraklia
+      Minima Moralia [edit]
     </a>
     ...
     <dd class="publisher">Suhrkamp</dd>
@@ -174,3 +174,45 @@ Let's add another recension:
     <dd class="price">13.80</dd>
   ...
 
+
+Let's check in. We don't have an edit link or add button then:
+
+>>> browser.getLink('Checkin').click()
+>>> browser.getLink('Recensions').click()
+>>> print browser.contents
+<?xml ...
+            <div id="content">
+    <div class="recensions">
+  <div class="recension">
+    <div class="RecensionTitle">
+      Frank Schwanitz:
+      Der Schwarm
+    </div>
+    ...
+      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+      ...
+      <dd class="location">Koeln</dd>
+      ...
+      <dd class="year">2004</dd>
+      ...
+      <dd class="price">24.90</dd>
+      ...
+  <div class="recension">
+    <div class="RecensionTitle">
+      Theodor W. Adorno:
+      Minima Moralia
+    </div>
+    ...
+    <dd class="publisher">Suhrkamp</dd>
+    ...
+    <dd class="location">Zuerich</dd>
+    ...
+    <dd class="year">2001</dd>
+    ...
+    <dd class="price">13.80</dd>
+  ...
+
+>>> browser.getControl('Add')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Add'
