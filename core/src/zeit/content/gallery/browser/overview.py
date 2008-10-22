@@ -5,8 +5,10 @@
 import zope.cachedescriptors.property
 import zope.component
 
+import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.wysiwyg.interfaces
+from zeit.cms.i18n import MessageFactory as _
 
 
 class Overview(object):
@@ -24,13 +26,10 @@ class Overview(object):
         return zeit.cms.content.interfaces.ICommonMetadata(self.context)
 
 
-class Synchronise(object):
+class Synchronise(zeit.cms.browser.view.Base):
 
-    def update(self):
+    def __call__(self):
         self.context.reload_image_folder()
-
-    def render(self):
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request), name='absolute_url')
-        self.request.response.redirect('%s/@@overview.html' % url)
+        self.send_message(_('Image folder was synchronised.'))
+        self.redirect(self.url('@@overview.html'))
         return''

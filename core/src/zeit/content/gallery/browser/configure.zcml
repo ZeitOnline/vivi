@@ -86,7 +86,7 @@
     menu="zeit-context-views" title="Images"
     />
   
-  <gocept:pagelet
+  <browser:page
     for="..interfaces.IGallery"
     class=".overview.Synchronise"
     name="synchronise-with-image-folder"

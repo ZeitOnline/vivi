@@ -265,6 +265,10 @@ So synchronise with the image folder:
 >>> browser.getLink('Synchronise with image folder').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/@@overview.html'
+>>> print browser.contents
+<?xml ...
+        <li class="message">Image folder was synchronised.</li>
+        ...
 >>> browser.getLink('Source').click()
 >>> '03.jpg' in browser.getControl('XML Source').value
 False
