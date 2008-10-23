@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Oct 23 09:55:28 2008\n"
+"POT-Creation-Date: Thu Oct 23 11:48:21 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -119,7 +119,7 @@ msgid "There are no objects in this folder."
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:274
-#: src/zeit/cms/syndication/browser/feed.py:143
+#: src/zeit/cms/syndication/browser/feed.py:145
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
@@ -129,7 +129,7 @@ msgstr ""
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
-#: src/zeit/cms/syndication/browser/feed.py:147
+#: src/zeit/cms/syndication/browser/feed.py:149
 #: src/zeit/cms/syndication/browser/manager.py:95
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
@@ -155,7 +155,7 @@ msgid "Modified"
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:289
-#: src/zeit/cms/syndication/browser/feed.py:154
+#: src/zeit/cms/syndication/browser/feed.py:152
 msgid "Hits"
 msgstr ""
 
@@ -876,42 +876,47 @@ msgstr ""
 msgid "Edit contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:137
+#: src/zeit/cms/syndication/browser/feed.py:138
+#. Default: "#"
+msgid "title-position-in-feed"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/feed.py:159
 msgid "Pinned"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:140
+#: src/zeit/cms/syndication/browser/feed.py:167
 msgid "Hidden on HP"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:164
+#: src/zeit/cms/syndication/browser/feed.py:178
 msgid "Edit feed contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:178
+#: src/zeit/cms/syndication/browser/feed.py:197
 #: src/zeit/cms/browser/tree.pt:18
 msgid "Remove"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:215
+#: src/zeit/cms/syndication/browser/feed.py:229
 #. Default: ""
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:223
+#: src/zeit/cms/syndication/browser/feed.py:237
 #. Default: ""
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:250
+#: src/zeit/cms/syndication/browser/feed.py:264
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:265
+#: src/zeit/cms/syndication/browser/feed.py:279
 msgid "Remove from my syndication targets"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:91
+#: src/zeit/cms/syndication/browser/feed.py:92
 msgid "Feed contents"
 msgstr ""
 

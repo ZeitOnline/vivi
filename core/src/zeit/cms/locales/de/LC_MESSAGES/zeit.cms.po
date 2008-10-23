@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Oct 23 09:55:28 2008\n"
-"PO-Revision-Date: 2008-10-23 09:56+0100\n"
+"POT-Creation-Date: Thu Oct 23 11:48:21 2008\n"
+"PO-Revision-Date: 2008-10-23 11:48+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -107,7 +107,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: src/zeit/cms/browser/listing.py:274
-#: src/zeit/cms/syndication/browser/feed.py:143
+#: src/zeit/cms/syndication/browser/feed.py:145
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
@@ -117,7 +117,7 @@ msgstr "Autoren"
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
-#: src/zeit/cms/syndication/browser/feed.py:147
+#: src/zeit/cms/syndication/browser/feed.py:149
 #: src/zeit/cms/syndication/browser/manager.py:95
 #: src/zeit/cms/syndication/interfaces.py:37
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
@@ -143,7 +143,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: src/zeit/cms/browser/listing.py:289
-#: src/zeit/cms/syndication/browser/feed.py:154
+#: src/zeit/cms/syndication/browser/feed.py:152
 msgid "Hits"
 msgstr "Treffer"
 
@@ -864,42 +864,47 @@ msgstr "Metadaten"
 msgid "Edit contents"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/syndication/browser/feed.py:137
+#. Default: "#"
+#: src/zeit/cms/syndication/browser/feed.py:138
+msgid "title-position-in-feed"
+msgstr "#"
+
+#: src/zeit/cms/syndication/browser/feed.py:159
 msgid "Pinned"
 msgstr "Fest"
 
-#: src/zeit/cms/syndication/browser/feed.py:140
+#: src/zeit/cms/syndication/browser/feed.py:167
 msgid "Hidden on HP"
 msgstr "Versteckt auf HP"
 
-#: src/zeit/cms/syndication/browser/feed.py:164
+#: src/zeit/cms/syndication/browser/feed.py:178
 msgid "Edit feed contents"
 msgstr "Inhalt des Channels bearbeiten"
 
-#: src/zeit/cms/syndication/browser/feed.py:178
+#: src/zeit/cms/syndication/browser/feed.py:197
 #: src/zeit/cms/browser/tree.pt:18
 msgid "Remove"
 msgstr "Entfernen"
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:215
+#: src/zeit/cms/syndication/browser/feed.py:229
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:223
+#: src/zeit/cms/syndication/browser/feed.py:237
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr "»${name}« wurde aus Ihren Syndizierungszielen entfernt."
 
-#: src/zeit/cms/syndication/browser/feed.py:250
+#: src/zeit/cms/syndication/browser/feed.py:264
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: src/zeit/cms/syndication/browser/feed.py:265
+#: src/zeit/cms/syndication/browser/feed.py:279
 msgid "Remove from my syndication targets"
 msgstr "Aus Syndizierungszielen entfernen"
 
-#: src/zeit/cms/syndication/browser/feed.py:91
+#: src/zeit/cms/syndication/browser/feed.py:92
 msgid "Feed contents"
 msgstr "Inhalt des Channels"
 
