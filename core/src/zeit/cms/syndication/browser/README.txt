@@ -149,7 +149,6 @@ Locking indicator
 Locking information is also be displayed in the syndication manager:
 
 >>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed')
->>> browser.handleErrors = False
 >>> browser.getLink("Checkout").click()
 >>> browser.getLink("Remember as syndication target").click()
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
@@ -302,6 +301,9 @@ Politik – Feed contents
   <thead>
     <tr>
       <th>
+        #
+      </th>
+      <th>
         Pinned
       </th>
       <th>
@@ -314,9 +316,6 @@ Politik – Feed contents
       </th>
       <th>
         Title
-      </th>
-      <th>
-        Position
       </th>
       <th>
         Hits
@@ -336,6 +335,9 @@ Politik – Edit feed contents
   <thead>
     <tr>
       <th>
+        #
+      </th>
+      <th>
         Remove
       </th>
       <th>
@@ -353,15 +355,15 @@ Politik – Edit feed contents
         Title
       </th>
       <th>
-        Position
-      </th>
-      <th>
         Hits
       </th>
     </tr>
   </thead>
   <tbody>
   <tr>
+    <td>
+      1
+    </td>
     <td>
       ...<input ...name="remove..." ...type="checkbox".../>
     </td>
@@ -379,9 +381,6 @@ Politik – Edit feed contents
     </td>
     <td>
       <a href="http://localhost/++skin++cms/repository/online/2007/01/rauchen-verbessert-die-welt">rauchen-verbessert-die-welt</a>
-    </td>
-    <td>
-      1
     </td>
     <td>
     </td>
@@ -547,10 +546,11 @@ we can see it in the UI:
 >>> print browser.contents
 <?xml ...
     <td>
-      <a href="http://www.zeit.de/news/artikel/2008/04/22/2517661.xml">Samsung-Chef Lee tritt zurück</a>
-    </td>
-    <td>
       1
+    </td>
+    ...
+    <td>
+      <a href="http://www.zeit.de/news/artikel/2008/04/22/2517661.xml">Samsung-Chef Lee tritt zurück</a>
     </td>
     ...
 
@@ -576,10 +576,11 @@ Let's have a look at the feed now:
 >>> print browser.contents
 <?xml ...
     <td>
-      <a href="http://localhost/++skin++cms/repository/wirtschaft.feed">Wirtschaft</a>
-    </td>
-    <td>
       1
+    </td>
+    ...
+    <td>
+      <a href="http://localhost/++skin++cms/repository/wirtschaft.feed">Wirtschaft</a>
     </td>
     ...
 
@@ -622,9 +623,10 @@ is now way to remove the title w/o editing the source:
 >>> print browser.contents
 <?xml ...
     <td>
-      <a href="http://localhost/++skin++cms/repository/wirtschaft.feed">wirtschaft.feed</a>
-    </td>
-    <td>
       1
+    </td>
+    ...
+    <td>
+      <a href="http://localhost/++skin++cms/repository/wirtschaft.feed">wirtschaft.feed</a>
     </td>
     ...

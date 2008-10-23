@@ -132,6 +132,10 @@ class FeedView(object):
             return cgi.escape(unicode(value))
 
         return (
+            zc.table.column.GetterColumn(
+                _('title-position-in-feed', default=u'#'),
+                lambda t, c: self.context.getPosition(t.context) or '',
+                cell_formatter=_escape),
             OrderedSelectionColumn(
                 self._id_getter, getter=self.pinned, prefix='pin',
                 title=_("Pinned")),
@@ -147,10 +151,6 @@ class FeedView(object):
                 _('Title'),
                 lambda t, c: t.title,
                 cell_formatter=_url_formatter),
-            zc.table.column.GetterColumn(
-                u'Position',
-                lambda t, c: self.context.getPosition(t.context) or '',
-                cell_formatter=_escape),
             zeit.cms.browser.listing.HitColumn(_('Hits')),
         )
 
@@ -172,7 +172,7 @@ class EditFeedView(FeedView):
     @zope.cachedescriptors.property.Lazy
     def columns(self):
         columns = list(super(EditFeedView, self).columns)
-        columns[0:0] = [
+        columns[1:1] = [
             zc.table.column.SelectionColumn(
                 self._id_getter, getter=lambda x: False, prefix='remove',
                 title=_('Remove')),
@@ -181,9 +181,9 @@ class EditFeedView(FeedView):
 
     def updateFeed(self):
         content = self.content
-        delete_column = self.columns[0]
-        pin_column = self.columns[1]
-        hide_column = self.columns[2]
+        delete_column = self.columns[1]
+        pin_column = self.columns[2]
+        hide_column = self.columns[3]
 
         orderd_objects = pin_column.getItems(content, self.request)
         orderd_ids = [obj.context.uniqueId for obj in orderd_objects]
