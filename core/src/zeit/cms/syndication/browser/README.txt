@@ -149,6 +149,7 @@ Locking indicator
 Locking information is also be displayed in the syndication manager:
 
 >>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed')
+>>> browser.handleErrors = False
 >>> browser.getLink("Checkout").click()
 >>> browser.getLink("Remember as syndication target").click()
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
@@ -289,12 +290,46 @@ Sorting
 -------
 
 On the sorting tab the feed elements can be sorted via drag and drop. They can
-also be pinned and hidden from the homepage. Open the politik.feed and check it
-out:
+also be pinned and hidden from the homepage. Open the politik.feed and first
+have a look at its display view:
 
 >>> browser.open('/++skin++cms/repository/politik.feed')
+>>> print browser.title.strip()
+Politik – Feed contents
+>>> print browser.contents
+<?xml ...
+<table class="feedsorting">
+  <thead>
+    <tr>
+      <th>
+        Pinned
+      </th>
+      <th>
+        Hidden on HP
+      </th>
+      <th>
+      </th>
+      <th>
+        Author
+      </th>
+      <th>
+        Title
+      </th>
+      <th>
+        Position
+      </th>
+      <th>
+        Hits
+      </th>
+    </tr>
+  </thead>
+  ...
+
+Check it out to change the order. We're at the edit/sort page after checking out:
+
 >>> browser.getLink('Checkout').click()
->>> browser.getLink('Sort').click()
+>>> print browser.title.strip()
+Politik – Edit feed contents
 >>> print browser.contents
 <?xml ...
 <table class="feedsorting">
@@ -355,6 +390,12 @@ out:
 </table>
 ...
 
+Note that there is no "Contents" tab after checkout:
+
+>>> browser.getLink('Contents')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
 
 Select the one entry we've syndicated for pinning:
 
@@ -401,9 +442,9 @@ Let's have a look at the source now:
 Removing items from channels
 ----------------------------
 
-Items can be removed at the sort page:
+Items can be removed at the contents page:
 
->>> browser.getLink('Sort').click()
+>>> browser.getLink('Edit contents').click()
 >>> browser.getControl(name='remove.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==.').value = True
 >>> browser.getControl('Save').click()
 
@@ -502,7 +543,7 @@ we can see it in the UI:
 >>> print browser.contents
 <?xml ...
     ...Updated on...
->>> browser.getLink('Sort').click()
+>>> browser.getLink('Edit contents').click()
 >>> print browser.contents
 <?xml ...
     <td>
@@ -577,7 +618,7 @@ is now way to remove the title w/o editing the source:
 ... </channel>'''
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
->>> browser.getLink('View').click()
+>>> browser.getLink('Contents').click()
 >>> print browser.contents
 <?xml ...
     <td>

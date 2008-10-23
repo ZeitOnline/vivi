@@ -88,15 +88,13 @@ class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
 class FeedView(object):
     """Sorts, pins and hides from hp."""
 
+    title = _('Feed contents')
+
     def pinned(self, item):
         return self.context.pinned(item.context)
 
     def hidden(self, item):
         return self.context.hidden(item.context)
-
-    @zope.cachedescriptors.property.Lazy
-    def title(self):
-        return "Inhalt des Feeds: %s" % self.context.title
 
     @property
     def content(self):
@@ -125,9 +123,6 @@ class FeedView(object):
     @zope.cachedescriptors.property.Lazy
     def columns(self):
 
-        def _id_getter(item):
-            return item.context.uniqueId
-
         def _url_formatter(value, item, formatter):
             if not value:
                 value = item.__name__
@@ -137,14 +132,11 @@ class FeedView(object):
             return cgi.escape(unicode(value))
 
         return (
-            zc.table.column.SelectionColumn(
-                _id_getter, getter=lambda x: False, prefix='remove',
-                title=_('Remove')),
             OrderedSelectionColumn(
-                _id_getter, getter=self.pinned, prefix='pin',
+                self._id_getter, getter=self.pinned, prefix='pin',
                 title=_("Pinned")),
             zc.table.column.SelectionColumn(
-                _id_getter, getter=self.hidden, prefix='hide',
+                self._id_getter, getter=self.hidden, prefix='hide',
                 title=_("Hidden on HP")),
             zeit.cms.browser.listing.TypeColumn(u''),
             zc.table.column.GetterColumn(
@@ -162,14 +154,30 @@ class FeedView(object):
             zeit.cms.browser.listing.HitColumn(_('Hits')),
         )
 
+    @staticmethod
+    def _id_getter(item):
+        return item.context.uniqueId
+
 
 class EditFeedView(FeedView):
+
+    title = _('Edit feed contents')
 
     def __call__(self):
         render = super(EditFeedView, self).__call__
         if self.request.form:
             self.updateFeed()
         return render()
+
+    @zope.cachedescriptors.property.Lazy
+    def columns(self):
+        columns = list(super(EditFeedView, self).columns)
+        columns[0:0] = [
+            zc.table.column.SelectionColumn(
+                self._id_getter, getter=lambda x: False, prefix='remove',
+                title=_('Remove')),
+        ]
+        return tuple(columns)
 
     def updateFeed(self):
         content = self.content

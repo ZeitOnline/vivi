@@ -42,7 +42,7 @@
     template="feed_sorting.pt"
     class=".feed.EditFeedView"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views" title="Sort"
+    menu="zeit-context-views" title="Edit contents"
     />
 
   <gocept:pagelet
@@ -52,7 +52,16 @@
     class=".feed.FeedView"
     template="feed_view.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Contents"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
   <browser:defaultView

@@ -11,6 +11,8 @@ zeit.cms changes
   bearbeiten (bug #4357).
 - Beim »Synchronisieren« des Bilderordners einer Galerie werden die Thumbnails
   neu erzeugt (bug #4496).
+- Channels: Kein »Anzeigen«-Tab mehr bei ausgecheckten Channels; kein
+  »Entfernen« mehr auf dem Anzeigen-Tab.
 
 1.2.3 (2008-10-17)
 ------------------
