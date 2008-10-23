@@ -15,7 +15,7 @@ zeit.cms changes
   »Entfernen« mehr auf dem Anzeigen-Tab; die Checkboxen sind nicht mehr
   anclickbar (bug #4114).
 - Channels: Checkbox um layout="big" einzustellen.
-- Channels: Checkbox um Relateds zu verstecken.
+- Channels: Checkbox um Relateds zu verstecken (bug #4492).
 - Channels: Positives ausdrücken der Checkboxen: »Versteckt auf HP« → »Auf HP
   anzeigen« und »Relateds verstecken« → »Relateds anzeigen«
 
