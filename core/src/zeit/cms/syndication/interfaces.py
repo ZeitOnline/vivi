@@ -1,13 +1,11 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import zc.sourcefactory.contextual
 import zope.component
 import zope.component.interfaces
 import zope.interface
 import zope.schema
-
-import zc.sourcefactory.contextual
 
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
