@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Oct 23 12:53:09 2008\n"
-"PO-Revision-Date: 2008-10-23 13:27+0100\n"
+"POT-Creation-Date: Thu Oct 23 15:51:49 2008\n"
+"PO-Revision-Date: 2008-10-23 15:52+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -107,7 +107,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: src/zeit/cms/browser/listing.py:274
-#: src/zeit/cms/syndication/browser/feed.py:145
+#: src/zeit/cms/syndication/browser/feed.py:149
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
@@ -117,9 +117,9 @@ msgstr "Autoren"
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
-#: src/zeit/cms/syndication/browser/feed.py:149
+#: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/cms/syndication/browser/manager.py:95
-#: src/zeit/cms/syndication/interfaces.py:37
+#: src/zeit/cms/syndication/interfaces.py:50
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
@@ -143,7 +143,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: src/zeit/cms/browser/listing.py:289
-#: src/zeit/cms/syndication/browser/feed.py:152
+#: src/zeit/cms/syndication/browser/feed.py:156
 msgid "Hits"
 msgstr "Treffer"
 
@@ -869,42 +869,48 @@ msgid "Edit contents"
 msgstr "Bearbeiten"
 
 #. Default: "#"
-#: src/zeit/cms/syndication/browser/feed.py:138
+#: src/zeit/cms/syndication/browser/feed.py:141
 msgid "title-position-in-feed"
 msgstr "#"
 
-#: src/zeit/cms/syndication/browser/feed.py:159
+#: src/zeit/cms/syndication/browser/feed.py:163
+#: src/zeit/cms/syndication/interfaces.py:38
 msgid "Pinned"
 msgstr "Fest"
 
-#: src/zeit/cms/syndication/browser/feed.py:167
+#: src/zeit/cms/syndication/browser/feed.py:171
+#: src/zeit/cms/syndication/interfaces.py:41
 msgid "Hidden on HP"
 msgstr "¬HP"
 
-#: src/zeit/cms/syndication/browser/feed.py:178
+#: src/zeit/cms/syndication/browser/feed.py:179
+msgid "Big"
+msgstr "Big"
+
+#: src/zeit/cms/syndication/browser/feed.py:190
 msgid "Edit feed contents"
 msgstr "Inhalt des Channels bearbeiten"
 
 #. Default: "Remove"
-#: src/zeit/cms/syndication/browser/feed.py:197
+#: src/zeit/cms/syndication/browser/feed.py:209
 msgid "title-remove"
 msgstr "Entf."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:229
+#: src/zeit/cms/syndication/browser/feed.py:238
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:237
+#: src/zeit/cms/syndication/browser/feed.py:246
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr "»${name}« wurde aus Ihren Syndizierungszielen entfernt."
 
-#: src/zeit/cms/syndication/browser/feed.py:264
+#: src/zeit/cms/syndication/browser/feed.py:273
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: src/zeit/cms/syndication/browser/feed.py:279
+#: src/zeit/cms/syndication/browser/feed.py:288
 msgid "Remove from my syndication targets"
 msgstr "Aus Syndizierungszielen entfernen"
 
@@ -966,19 +972,23 @@ msgstr "»${name}« konnte nicht veröffentlicht werden."
 msgid "Path"
 msgstr "Pfad"
 
-#: src/zeit/cms/syndication/interfaces.py:194
+#: src/zeit/cms/syndication/interfaces.py:192
 msgid "No automatic metadata update"
 msgstr "Keine automatische Aktualisierung der Metadaten"
 
-#: src/zeit/cms/syndication/interfaces.py:195
+#: src/zeit/cms/syndication/interfaces.py:193
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels nicht automatisch aktualisiert."
 
-#: src/zeit/cms/syndication/interfaces.py:39
+#: src/zeit/cms/syndication/interfaces.py:44
+msgid "Big layout"
+msgstr "Großes Layout"
+
+#: src/zeit/cms/syndication/interfaces.py:52
 msgid "Limit amount"
 msgstr "Anzahl begrenzen"
 
-#: src/zeit/cms/syndication/interfaces.py:40
+#: src/zeit/cms/syndication/interfaces.py:53
 msgid "limit-amount-description"
 msgstr "limit-amount-description"
 

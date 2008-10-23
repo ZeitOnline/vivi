@@ -310,6 +310,9 @@ Politik – Feed contents
         Hidden on HP
       </th>
       <th>
+        Big
+      </th>
+      <th>
       </th>
       <th>
         Author
@@ -351,6 +354,9 @@ Politik – Edit feed contents
       </th>
       <th>
         Hidden on HP
+      </th>
+      <th>
+        Big
       </th>
       <th>
       </th>
@@ -443,6 +449,37 @@ Let's have a look at the source now:
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
 
+
+Big layout
+----------
+
+To make a "big" layout the correponding checkbox can be clicked:
+
+>>> browser.getLink('Edit contents').click()
+>>> browser.getControl(name="layout.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
+...     ).value = True
+>>> browser.getControl('Save').click()
+>>> browser.getControl(name="layout.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
+...     ).value
+True
+
+Its also indicated in the source:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML').value.replace('\r\n', '\n')
+<channel> 
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           pinned="true"
+           hp_hide="true"
+           layout="big"/>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
 
 Removing items from channels
 ----------------------------

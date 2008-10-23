@@ -40,6 +40,8 @@ class IEntry(zope.interface.Interface):
     hidden = zope.schema.Bool(
         title=_('Hidden on HP'))
 
+    big_layout = zope.schema.Bool(
+        title=_('Big layout'))
 
 
 class IReadFeed(zope.interface.Interface):

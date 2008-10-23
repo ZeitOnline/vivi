@@ -98,6 +98,9 @@ class FeedView(object):
     def hidden(self, item):
         return self.context.getMetadata(item.context).hidden
 
+    def big_layout(self, item):
+        return self.context.getMetadata(item.context).big_layout
+
     @property
     def content(self):
         result = []
@@ -140,6 +143,7 @@ class FeedView(object):
                 cell_formatter=_escape),
             self.pinned_column,
             self.hidden_column,
+            self.layout_column,
             zeit.cms.browser.listing.TypeColumn(u''),
             zc.table.column.GetterColumn(
                 _('Author'),
@@ -165,6 +169,14 @@ class FeedView(object):
         column = zc.table.column.SelectionColumn(
             self._id_getter, getter=self.hidden, prefix='hide',
             title=_("Hidden on HP"))
+        column.widget_extra = self.checkbox_widget_extra
+        return column
+
+    @zope.cachedescriptors.property.Lazy
+    def layout_column(self):
+        column = zc.table.column.SelectionColumn(
+            self._id_getter, getter=self.big_layout, prefix='layout',
+            title=_("Big"))
         column.widget_extra = self.checkbox_widget_extra
         return column
 
@@ -206,6 +218,7 @@ class EditFeedView(FeedView):
         to_remove = set(self.delete_column.getSelected(content, self.request))
         pinned = set(self.pinned_column.getSelected(content, self.request))
         hidden = set(self.hidden_column.getSelected(content, self.request))
+        big_layout = set(self.layout_column.getSelected(content, self.request))
         for obj in content:
             if obj in to_remove:
                 self.context.remove(obj.context)
@@ -213,6 +226,7 @@ class EditFeedView(FeedView):
             metadata = self.context.getMetadata(obj.context)
             metadata.pinned = obj in pinned
             metadata.hidden = obj in hidden
+            metadata.big_layout = obj in big_layout
 
 
 class MyTargets(zeit.cms.browser.view.Base):

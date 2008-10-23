@@ -216,6 +216,17 @@ class Entry(object):
     def hidden(self, value):
         self._set_bool('hp_hide', value)
 
+    @rwproperty.getproperty
+    def big_layout(self):
+        return self.xml.get('layout') == 'big'
+
+    @rwproperty.setproperty
+    def big_layout(self, value):
+        if value:
+            self.xml.set('layout', 'big')
+        else:
+            self.xml.attrib.pop('layout', None)
+
     def _set_bool(self, attribute, value):
         if value:
             value = 'true'

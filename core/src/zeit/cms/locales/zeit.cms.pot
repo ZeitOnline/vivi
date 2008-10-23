@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Oct 23 12:53:09 2008\n"
+"POT-Creation-Date: Thu Oct 23 15:51:49 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -119,7 +119,7 @@ msgid "There are no objects in this folder."
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:274
-#: src/zeit/cms/syndication/browser/feed.py:145
+#: src/zeit/cms/syndication/browser/feed.py:149
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
@@ -129,9 +129,9 @@ msgstr ""
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
-#: src/zeit/cms/syndication/browser/feed.py:149
+#: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/cms/syndication/browser/manager.py:95
-#: src/zeit/cms/syndication/interfaces.py:37
+#: src/zeit/cms/syndication/interfaces.py:50
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
@@ -155,7 +155,7 @@ msgid "Modified"
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:289
-#: src/zeit/cms/syndication/browser/feed.py:152
+#: src/zeit/cms/syndication/browser/feed.py:156
 msgid "Hits"
 msgstr ""
 
@@ -880,43 +880,49 @@ msgstr ""
 msgid "Edit contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:138
+#: src/zeit/cms/syndication/browser/feed.py:141
 #. Default: "#"
 msgid "title-position-in-feed"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:159
+#: src/zeit/cms/syndication/browser/feed.py:163
+#: src/zeit/cms/syndication/interfaces.py:38
 msgid "Pinned"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:167
+#: src/zeit/cms/syndication/browser/feed.py:171
+#: src/zeit/cms/syndication/interfaces.py:41
 msgid "Hidden on HP"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:178
+#: src/zeit/cms/syndication/browser/feed.py:179
+msgid "Big"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/feed.py:190
 msgid "Edit feed contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:197
+#: src/zeit/cms/syndication/browser/feed.py:209
 #. Default: "Remove"
 msgid "title-remove"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:229
+#: src/zeit/cms/syndication/browser/feed.py:238
 #. Default: ""
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:237
+#: src/zeit/cms/syndication/browser/feed.py:246
 #. Default: ""
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:264
+#: src/zeit/cms/syndication/browser/feed.py:273
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:279
+#: src/zeit/cms/syndication/browser/feed.py:288
 msgid "Remove from my syndication targets"
 msgstr ""
 
@@ -978,19 +984,23 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:194
+#: src/zeit/cms/syndication/interfaces.py:192
 msgid "No automatic metadata update"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:195
+#: src/zeit/cms/syndication/interfaces.py:193
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:39
+#: src/zeit/cms/syndication/interfaces.py:44
+msgid "Big layout"
+msgstr ""
+
+#: src/zeit/cms/syndication/interfaces.py:52
 msgid "Limit amount"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:40
+#: src/zeit/cms/syndication/interfaces.py:53
 msgid "limit-amount-description"
 msgstr ""
 

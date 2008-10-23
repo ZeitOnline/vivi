@@ -298,6 +298,31 @@ Show again:
 >>> feed.getMetadata(third).hidden
 False
 
+Big layout
+++++++++++
+
+The layout can be big:
+
+>>> feed.getMetadata(third).big_layout = True
+>>> feed.getMetadata(third).big_layout
+True
+>>> import lxml.etree
+>>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+<block
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    href="third" pinned="false" hp_hide="false" layout="big"/>
+
+When the layout is not big, the attribute is removed:
+
+>>> feed.getMetadata(third).big_layout = False
+>>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+<block
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    href="third" pinned="false" hp_hide="false"/>
 
 
 XML-Representation
