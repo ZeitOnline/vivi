@@ -324,6 +324,33 @@ When the layout is not big, the attribute is removed:
     xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     href="third" pinned="false" hp_hide="false"/>
 
+Hidden relateds
++++++++++++++++
+
+Relateds can be marked as hidden:
+
+
+>>> feed.getMetadata(third).hidden_relateds = True
+>>> feed.getMetadata(third).hidden_relateds
+True
+>>> import lxml.etree
+>>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+<block
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    href="third" pinned="false" hp_hide="false" hidden_relateds="true"/>
+
+The default is that they're shown though:
+
+>>> feed.getMetadata(third).hidden_relateds = False
+>>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+<block
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    href="third" pinned="false" hp_hide="false" hidden_relateds="false"/>
+
 
 XML-Representation
 ==================

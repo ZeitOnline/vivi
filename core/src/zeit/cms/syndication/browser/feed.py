@@ -101,6 +101,9 @@ class FeedView(object):
     def big_layout(self, item):
         return self.context.getMetadata(item.context).big_layout
 
+    def hidden_relateds(self, item):
+        return self.context.getMetadata(item.context).hidden_relateds
+
     @property
     def content(self):
         result = []
@@ -144,6 +147,7 @@ class FeedView(object):
             self.pinned_column,
             self.hidden_column,
             self.layout_column,
+            self.hidden_relateds_column,
             zeit.cms.browser.listing.TypeColumn(u''),
             zc.table.column.GetterColumn(
                 _('Author'),
@@ -177,6 +181,14 @@ class FeedView(object):
         column = zc.table.column.SelectionColumn(
             self._id_getter, getter=self.big_layout, prefix='layout',
             title=_("Big"))
+        column.widget_extra = self.checkbox_widget_extra
+        return column
+
+    @zope.cachedescriptors.property.Lazy
+    def hidden_relateds_column(self):
+        column = zc.table.column.SelectionColumn(
+            self._id_getter, getter=self.big_layout, prefix='hidden_relateds',
+            title=_('Hidden relateds'))
         column.widget_extra = self.checkbox_widget_extra
         return column
 
@@ -219,6 +231,8 @@ class EditFeedView(FeedView):
         pinned = set(self.pinned_column.getSelected(content, self.request))
         hidden = set(self.hidden_column.getSelected(content, self.request))
         big_layout = set(self.layout_column.getSelected(content, self.request))
+        hidden_relateds = set(
+            self.hidden_relateds_column.getSelected(content, self.request))
         for obj in content:
             if obj in to_remove:
                 self.context.remove(obj.context)
@@ -227,6 +241,7 @@ class EditFeedView(FeedView):
             metadata.pinned = obj in pinned
             metadata.hidden = obj in hidden
             metadata.big_layout = obj in big_layout
+            metadata.hidden_relateds = obj in hidden_relateds
 
 
 class MyTargets(zeit.cms.browser.view.Base):

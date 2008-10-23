@@ -41,6 +41,9 @@ class IEntry(zope.interface.Interface):
     big_layout = zope.schema.Bool(
         title=_('Big layout'))
 
+    hidden_relateds = zope.schema.Bool(
+        title=_('Hidden relateds'))
+
 
 class IReadFeed(zope.interface.Interface):
     """Feed read interface."""

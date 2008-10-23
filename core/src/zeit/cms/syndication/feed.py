@@ -209,7 +209,7 @@ class Entry(object):
         self._set_bool('pinned', value)
 
     @rwproperty.getproperty
-    def hidden (self):
+    def hidden(self):
         return self.xml.get('hp_hide') == 'true'
 
     @rwproperty.setproperty
@@ -226,6 +226,14 @@ class Entry(object):
             self.xml.set('layout', 'big')
         else:
             self.xml.attrib.pop('layout', None)
+
+    @rwproperty.getproperty
+    def hidden_relateds(self):
+        return self.xml.get('hidden_relateds') == 'true'
+
+    @rwproperty.setproperty
+    def hidden_relateds(self, value):
+        self._set_bool('hidden_relateds', value)
 
     def _set_bool(self, attribute, value):
         if value:

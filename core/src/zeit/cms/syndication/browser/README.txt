@@ -313,6 +313,9 @@ Politik – Feed contents
         Big
       </th>
       <th>
+        Hidden relateds
+      </th>
+      <th>
       </th>
       <th>
         Author
@@ -357,6 +360,9 @@ Politik – Edit feed contents
       </th>
       <th>
         Big
+      </th>
+      <th>
+        Hidden relateds
       </th>
       <th>
       </th>
@@ -444,7 +450,8 @@ Let's have a look at the source now:
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
            pinned="true"
-           hp_hide="true"/>
+           hp_hide="true"
+           hidden_relateds="false"/>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
@@ -476,6 +483,39 @@ Its also indicated in the source:
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
            pinned="true"
            hp_hide="true"
+           hidden_relateds="false"
+           layout="big"/>
+  </container>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+</channel>
+
+Hidden relateds
+---------------
+
+There is a checkbox to hide the relateds:
+
+>>> browser.getLink('Edit contents').click()
+>>> browser.getControl(name="hidden_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
+...     ).value = True
+>>> browser.getControl('Save').click()
+>>> browser.getControl(name="hidden_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
+...     ).value
+True
+
+Its also indicated in the source:
+
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML').value.replace('\r\n', '\n')
+<channel> 
+  <title>Politik</title>
+  <container>
+    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           pinned="true"
+           hp_hide="true"
+           hidden_relateds="true"
            layout="big"/>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>

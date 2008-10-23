@@ -14,7 +14,8 @@ zeit.cms changes
 - Channels: Kein »Anzeigen«-Tab mehr bei ausgecheckten Channels; kein
   »Entfernen« mehr auf dem Anzeigen-Tab; die Checkboxen sind nicht mehr
   anclickbar (bug #4114).
-- Channels: layout="big" einstellbar.
+- Channels: Checkbox um layout="big" einzustellen.
+- Channels: Checkbox um Relateds zu verstecken.
 
 1.2.3 (2008-10-17)
 ------------------
