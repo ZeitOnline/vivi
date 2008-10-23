@@ -265,7 +265,6 @@ We are looking at the add form now. Fill in the title and add the feed:
 >>> browser.getControl('Title').value = 'Zuender'
 >>> browser.getControl('File name').value = 'zuender'
 >>> browser.getControl('Limit amount').value = '20'
->>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 
 
@@ -323,6 +322,12 @@ Politik – Feed contents
     </tr>
   </thead>
   ...
+
+The checkboxes are not clickable:
+
+>>> browser.getControl(name='pin:list').disabled
+True
+
 
 Check it out to change the order. We're at the edit/sort page after checking out:
 

@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import cgi
 import logging
@@ -28,6 +27,8 @@ logger = logging.getLogger(__name__)
 
 class OrderedSelectionColumn(zc.table.column.SelectionColumn):
     """Selection Column which allows ordered retrieval."""
+
+    widget_extra = ''
 
     def getItems(self, items, request):
         used_ids = request.get(self.prefix + '.used')
@@ -57,8 +58,8 @@ class OrderedSelectionColumn(zc.table.column.SelectionColumn):
             checked_html = 'checked="checked"'
         return (
             u'<input type="hidden" name="%s" value="%s" />'
-            u'<input type="checkbox" name="%s" value="%s" %s /> ') % (
-            used_name, value, name, value, checked_html)
+            u'<input type="checkbox" name="%s" value="%s" %s %s/> ') % (
+            used_name, value, name, value, checked_html, self.widget_extra)
 
     def input(self, items, request):
         raise NotImplementedError()
@@ -89,6 +90,7 @@ class FeedView(object):
     """Sorts, pins and hides from hp."""
 
     title = _('Feed contents')
+    checkbox_widget_extra = 'disabled="disabled"'
 
     def pinned(self, item):
         return self.context.pinned(item.context)
@@ -136,12 +138,8 @@ class FeedView(object):
                 _('title-position-in-feed', default=u'#'),
                 lambda t, c: self.context.getPosition(t.context) or '',
                 cell_formatter=_escape),
-            OrderedSelectionColumn(
-                self._id_getter, getter=self.pinned, prefix='pin',
-                title=_("Pinned")),
-            zc.table.column.SelectionColumn(
-                self._id_getter, getter=self.hidden, prefix='hide',
-                title=_("Hidden on HP")),
+            self.pinned_column,
+            self.hidden_column,
             zeit.cms.browser.listing.TypeColumn(u''),
             zc.table.column.GetterColumn(
                 _('Author'),
@@ -154,6 +152,22 @@ class FeedView(object):
             zeit.cms.browser.listing.HitColumn(_('Hits')),
         )
 
+    @zope.cachedescriptors.property.Lazy
+    def pinned_column(self):
+        column = OrderedSelectionColumn(
+            self._id_getter, getter=self.pinned, prefix='pin',
+            title=_("Pinned"))
+        column.widget_extra = self.checkbox_widget_extra
+        return column
+
+    @zope.cachedescriptors.property.Lazy
+    def hidden_column(self):
+        column = zc.table.column.SelectionColumn(
+            self._id_getter, getter=self.hidden, prefix='hide',
+            title=_("Hidden on HP"))
+        column.widget_extra = self.checkbox_widget_extra
+        return column
+
     @staticmethod
     def _id_getter(item):
         return item.context.uniqueId
@@ -162,6 +176,7 @@ class FeedView(object):
 class EditFeedView(FeedView):
 
     title = _('Edit feed contents')
+    checkbox_widget_extra = ''
 
     def __call__(self):
         render = super(EditFeedView, self).__call__
@@ -172,26 +187,25 @@ class EditFeedView(FeedView):
     @zope.cachedescriptors.property.Lazy
     def columns(self):
         columns = list(super(EditFeedView, self).columns)
-        columns[1:1] = [
-            zc.table.column.SelectionColumn(
-                self._id_getter, getter=lambda x: False, prefix='remove',
-                title=_('Remove')),
-        ]
+        columns[1:1] = [self.delete_column]
         return tuple(columns)
+
+    @zope.cachedescriptors.property.Lazy
+    def delete_column(self):
+        return zc.table.column.SelectionColumn(
+            self._id_getter, getter=lambda x: False, prefix='remove',
+            title=_('Remove'))
 
     def updateFeed(self):
         content = self.content
-        delete_column = self.columns[1]
-        pin_column = self.columns[2]
-        hide_column = self.columns[3]
 
-        orderd_objects = pin_column.getItems(content, self.request)
+        orderd_objects = self.pinned_column.getItems(content, self.request)
         orderd_ids = [obj.context.uniqueId for obj in orderd_objects]
         self.context.updateOrder(orderd_ids)
 
-        to_remove = set(delete_column.getSelected(content, self.request))
-        selected = set(pin_column.getSelected(content, self.request))
-        hidden = set(hide_column.getSelected(content, self.request))
+        to_remove = set(self.delete_column.getSelected(content, self.request))
+        selected = set(self.pinned_column.getSelected(content, self.request))
+        hidden = set(self.hidden_column.getSelected(content, self.request))
         for obj in content:
             if obj in to_remove:
                 self.context.remove(obj.context)
