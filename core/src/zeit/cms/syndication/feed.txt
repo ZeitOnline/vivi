@@ -184,9 +184,26 @@ Feeds are cms content. So we also need to create them from resources:
 >>> list(feed.keys())
 ['/2006/siemens']
 
+Metadata object
+===============
+
+The metadata object is used to modify metadata of syndicated objects:
+
+>>> feed = Feed()
+>>> feed.insert(0, Article('first'))
+>>> metadata = feed.getMetadata(Article('first'))
+>>> metadata
+<zeit.cms.syndication.feed.Entry object at 0x...>
+>>> metadata.pinned
+False
+>>> metadata.hidden
+False
+>>> metadata.__parent__ == feed
+True
+
 
 Pinning
-=======
++++++++
 
 Pinning is a mechanism to keep contained objects at a certain position
 regardles if other objects are added. Other objects will silently float
@@ -194,8 +211,6 @@ around.
 
 Let's fill a feed with some objects:
 
->>> feed = Feed()
->>> feed.insert(0, Article('first'))
 >>> feed.insert(0, Article('second'))
 >>> third = Article('third')
 >>> feed.insert(0, third)
@@ -206,7 +221,7 @@ Let's fill a feed with some objects:
 We pin the `third` article to its posistion now and add a fifth article. The
 `third` article is still at the 2nd position:
 
->>> feed.pin(third)
+>>> feed.getMetadata(third).pinned = True
 >>> fifth = Article('fifth')
 >>> feed.insert(0, fifth)
 >>> list(feed.keys())
@@ -216,7 +231,7 @@ We pin the `third` article to its posistion now and add a fifth article. The
 We pin the `fifth` now and insert another article. Both `fifth` and `third`
 keep their places:
 
->>> feed.pin(fifth)
+>>> feed.getMetadata(fifth).pinned = True
 >>> feed.insert(0, Article('sixth'))
 >>> list(feed.keys())
 ['fifth', 'third', 'sixth', 'fourth', 'second', 'first']
@@ -225,7 +240,7 @@ keep their places:
 Now we unpin `third` and insert an article. `fifths` stays but `third` moves on
 now:
 
->>> feed.unpin(third)
+>>> feed.getMetadata(third).pinned = False
 >>> feed.insert(0, Article('seventh'))
 >>> list(feed.keys())
 ['fifth', 'seventh', 'third', 'sixth', 'fourth', 'second', 'first']
@@ -242,7 +257,6 @@ The method `updateOrder` can be used to completely resort a feed:
 If pinned entries are moved they are pinned to their new place. `fifth` is
 still pinned:
 
->>> feed.unpin(third)
 >>> feed.insert(0, Article('eighth'))
 >>> list(feed.keys())
 ['eighth', 'first', 'second', 'third', 'fifth', 'fourth', 'sixth', 'seventh']
@@ -263,25 +277,25 @@ ValueError: The order argument must contain the same keys as the feed.
 
 
 Hiding and showing on the homepage
-==================================
+++++++++++++++++++++++++++++++++++
 
 Sometimes it is necessary to syndicate an object but hide it from the homepage.
 Normally an object is not hidden:
 
->>> feed.hidden(third)
+>>> feed.getMetadata(third).hidden
 False
 
 Hide:
 
->>> feed.hide(third)
->>> feed.hidden(third)
+>>> feed.getMetadata(third).hidden = True
+>>> feed.getMetadata(third).hidden
 True
 
 
 Show again:
 
->>> feed.show(third)
->>> feed.hidden(third)
+>>> feed.getMetadata(third).hidden = False
+>>> feed.getMetadata(third).hidden
 False
 
 

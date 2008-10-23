@@ -133,6 +133,7 @@ in the feed:
 Let's look at the feed in the repository, to make sure our document is really
 in there:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('http://xml.zeit.de/politik.feed').click()
 >>> print browser.contents
 <?xml version...

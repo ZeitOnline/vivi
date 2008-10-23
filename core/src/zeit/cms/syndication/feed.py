@@ -2,12 +2,11 @@
 # See also LICENSE.txt
 
 import logging
-
-import gocept.lxml.objectify
 import lxml.etree
-
+import rwproperty
 import zope.component
 import zope.interface
+import zope.location.location
 import zope.proxy
 import zope.security.proxy
 
@@ -80,30 +79,6 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         unique_id = content.uniqueId
         self._remove_by_id(unique_id)
 
-    def pinned(self, content):
-        entry = self.entry_map[content.uniqueId]
-        return entry.get('pinned') == 'true'
-
-    def pin(self, content):
-        entry = self.entry_map[content.uniqueId]
-        entry.set('pinned', 'true')
-
-    def unpin(self, content):
-        entry = self.entry_map[content.uniqueId]
-        entry.set('pinned', 'false')
-
-    def hidden(self, content):
-        entry = self.entry_map[content.uniqueId]
-        return entry.get('hp_hide') == 'true'
-
-    def hide(self, content):
-        entry = self.entry_map[content.uniqueId]
-        return entry.set('hp_hide', 'true')
-
-    def show(self, content):
-        entry = self.entry_map[content.uniqueId]
-        return entry.set('hp_hide', 'false')
-
     def updateOrder(self, order):
         entries = self.entry_map
         if set(order) != set(entries.keys()):
@@ -144,6 +119,10 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
         updater.update(entry)
 
+    def getMetadata(self, content):
+        return zope.location.location.located(
+            Entry(self.entry_map[content.uniqueId]), self)
+
     # helpers and internal API:
 
     def iterentries(self):
@@ -154,9 +133,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         return dict((entry.get('href'), entry) for entry in self.iterentries())
 
     def pin_map(self):
-        return dict((id, entry.get('href'))
-                    for id, entry in enumerate(self.iterentries())
-                    if entry.get('pinned') == 'true')
+        return dict((id, content.uniqueId)
+                    for id, content in enumerate(self)
+                    if self.getMetadata(content).pinned)
 
     def restorePinning(self, pin_map):
         items = list(self.keys())
@@ -210,6 +189,39 @@ def syndicated_in(content, catalog):
     if not feed:
         return None
     return list(feed)
+
+
+class Entry(object):
+    """An entry in the feed."""
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IEntry)
+
+    def __init__(self, element):
+        self.xml = element
+
+    @rwproperty.getproperty
+    def pinned(self):
+        return self.xml.get('pinned') == 'true'
+
+    @rwproperty.setproperty
+    def pinned(self, value):
+        self._set_bool('pinned', value)
+
+    @rwproperty.getproperty
+    def hidden (self):
+        return self.xml.get('hp_hide') == 'true'
+
+    @rwproperty.setproperty
+    def hidden(self, value):
+        self._set_bool('hp_hide', value)
+
+    def _set_bool(self, attribute, value):
+        if value:
+            value = 'true'
+        else:
+            value = 'false'
+        self.xml.set(attribute, value)
 
 
 class FakeEntry(object):

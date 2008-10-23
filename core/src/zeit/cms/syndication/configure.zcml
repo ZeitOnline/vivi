@@ -24,6 +24,17 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".feed.Entry">
+    <require
+      interface=".interfaces.IEntry"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IEntry"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".manager.SyndicationManager">
     <require
       interface=".interfaces.ISyndicationManager"

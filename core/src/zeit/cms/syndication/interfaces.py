@@ -31,6 +31,17 @@ class ISyndicationManager(zope.interface.Interface):
         """
 
 
+class IEntry(zope.interface.Interface):
+    """An entry in a feed."""
+
+    pinned = zope.schema.Bool(
+        title=_('Pinned'))
+
+    hidden = zope.schema.Bool(
+        title=_('Hidden on HP'))
+
+
+
 class IReadFeed(zope.interface.Interface):
     """Feed read interface."""
 
@@ -41,12 +52,6 @@ class IReadFeed(zope.interface.Interface):
         default=50,
         min=1,
         required=False)
-
-    def pinned(content):
-        """Returns true, if content is pinned"""
-
-    def hidden(content):
-        """Returns true, if the content is hidden on the homepage."""
 
     def __len__():
         """Return amount of objects syndicated."""
@@ -70,6 +75,9 @@ class IReadFeed(zope.interface.Interface):
 
         """
 
+    def getMetadata(content):
+        """Returns IEntry instance corresponding to content."""
+
 
 class IWriteFeed(zope.interface.Interface):
     """Feed write interface."""
@@ -83,18 +91,6 @@ class IWriteFeed(zope.interface.Interface):
         raises ValueError if `content` not in feed.
 
         """
-
-    def pin(content):
-        """Pin `content` to current position."""
-
-    def unpin(content):
-        """Remove pining for `content`. """
-
-    def hide(content):
-        """Hide `content` on homepage."""
-
-    def show(content):
-        """Show `content on homepage."""
 
     def updateOrder(order):
         """Revise the order of keys, replacing the current ordering.

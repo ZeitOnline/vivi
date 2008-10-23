@@ -25,7 +25,7 @@ Create a feed:
 >>> feed = zeit.cms.syndication.feed.Feed()
 
 
-Insert an object in the feed:
+Insert an object in the feed[#functionaltest]_:
 
 >>> content = Content()
 >>> feed.insert(0, content)
@@ -68,7 +68,7 @@ Removing of objects from channels on retract
 
 When a syndicated object is retracted it is also removed from the channels.
 
-Add feeds to the target list[#functionaltest]_[#needs-interaction]_:
+Add feeds to the target list[#needs-interaction]_:
 
 >>> import zeit.cms.syndication.interfaces
 >>> import zeit.cms.workingcopy.interfaces

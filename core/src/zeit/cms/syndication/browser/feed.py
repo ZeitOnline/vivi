@@ -93,10 +93,10 @@ class FeedView(object):
     checkbox_widget_extra = 'disabled="disabled"'
 
     def pinned(self, item):
-        return self.context.pinned(item.context)
+        return self.context.getMetadata(item.context).pinned
 
     def hidden(self, item):
-        return self.context.hidden(item.context)
+        return self.context.getMetadata(item.context).hidden
 
     @property
     def content(self):
@@ -204,20 +204,15 @@ class EditFeedView(FeedView):
         self.context.updateOrder(orderd_ids)
 
         to_remove = set(self.delete_column.getSelected(content, self.request))
-        selected = set(self.pinned_column.getSelected(content, self.request))
+        pinned = set(self.pinned_column.getSelected(content, self.request))
         hidden = set(self.hidden_column.getSelected(content, self.request))
         for obj in content:
             if obj in to_remove:
                 self.context.remove(obj.context)
                 continue
-            if obj in selected:
-                self.context.pin(obj.context)
-            else:
-                self.context.unpin(obj.context)
-            if obj in hidden:
-                self.context.hide(obj.context)
-            else:
-                self.context.show(obj.context)
+            metadata = self.context.getMetadata(obj.context)
+            metadata.pinned = obj in pinned
+            metadata.hidden = obj in hidden
 
 
 class MyTargets(zeit.cms.browser.view.Base):
