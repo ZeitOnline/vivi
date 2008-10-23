@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Oct 23 16:06:13 2008\n"
-"PO-Revision-Date: 2008-10-23 16:13+0100\n"
+"POT-Creation-Date: Thu Oct 23 16:35:07 2008\n"
+"PO-Revision-Date: 2008-10-23 16:41+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -878,19 +878,18 @@ msgstr "#"
 msgid "Pinned"
 msgstr "Fest"
 
+#. Default: "HP"
 #: src/zeit/cms/syndication/browser/feed.py:175
-#: src/zeit/cms/syndication/interfaces.py:39
-msgid "Hidden on HP"
-msgstr "¬HP"
+msgid "title-visible-on-hp"
+msgstr "HP"
 
 #: src/zeit/cms/syndication/browser/feed.py:183
 msgid "Big"
 msgstr "Big"
 
 #: src/zeit/cms/syndication/browser/feed.py:191
-#: src/zeit/cms/syndication/interfaces.py:45
-msgid "Hidden relateds"
-msgstr "¬Relateds"
+msgid "Relateds"
+msgstr "Relateds"
 
 #: src/zeit/cms/syndication/browser/feed.py:202
 msgid "Edit feed contents"
@@ -902,20 +901,20 @@ msgid "title-remove"
 msgstr "Entf."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:253
+#: src/zeit/cms/syndication/browser/feed.py:254
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr "»${name}« wurde zu Ihren Syndizierungszielen hinzugefügt."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/feed.py:261
+#: src/zeit/cms/syndication/browser/feed.py:262
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr "»${name}« wurde aus Ihren Syndizierungszielen entfernt."
 
-#: src/zeit/cms/syndication/browser/feed.py:288
+#: src/zeit/cms/syndication/browser/feed.py:289
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: src/zeit/cms/syndication/browser/feed.py:303
+#: src/zeit/cms/syndication/browser/feed.py:304
 msgid "Remove from my syndication targets"
 msgstr "Aus Syndizierungszielen entfernen"
 
@@ -985,9 +984,17 @@ msgstr "Keine automatische Aktualisierung der Metadaten"
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels nicht automatisch aktualisiert."
 
+#: src/zeit/cms/syndication/interfaces.py:39
+msgid "Hidden on HP"
+msgstr "¬HP"
+
 #: src/zeit/cms/syndication/interfaces.py:42
 msgid "Big layout"
 msgstr "Großes Layout"
+
+#: src/zeit/cms/syndication/interfaces.py:45
+msgid "Hidden relateds"
+msgstr "¬Relateds"
 
 #: src/zeit/cms/syndication/interfaces.py:53
 msgid "Limit amount"
@@ -1680,8 +1687,6 @@ msgstr "Bearbeiten"
 #~ msgstr "Kalender"
 #~ msgid "Event"
 #~ msgstr "Termin"
-#~ msgid "Related"
-#~ msgstr "Related"
 #~ msgid "Add event"
 #~ msgstr "Termin hinzufügen"
 #~ msgid "Edit event"

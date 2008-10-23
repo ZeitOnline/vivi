@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Oct 23 16:06:13 2008\n"
+"POT-Creation-Date: Thu Oct 23 16:35:07 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -891,8 +891,8 @@ msgid "Pinned"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/feed.py:175
-#: src/zeit/cms/syndication/interfaces.py:39
-msgid "Hidden on HP"
+#. Default: "HP"
+msgid "title-visible-on-hp"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/feed.py:183
@@ -900,8 +900,7 @@ msgid "Big"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/feed.py:191
-#: src/zeit/cms/syndication/interfaces.py:45
-msgid "Hidden relateds"
+msgid "Relateds"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/feed.py:202
@@ -913,21 +912,21 @@ msgstr ""
 msgid "title-remove"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:253
+#: src/zeit/cms/syndication/browser/feed.py:254
 #. Default: ""
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:261
+#: src/zeit/cms/syndication/browser/feed.py:262
 #. Default: ""
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:288
+#: src/zeit/cms/syndication/browser/feed.py:289
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:303
+#: src/zeit/cms/syndication/browser/feed.py:304
 msgid "Remove from my syndication targets"
 msgstr ""
 
@@ -997,8 +996,16 @@ msgstr ""
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr ""
 
+#: src/zeit/cms/syndication/interfaces.py:39
+msgid "Hidden on HP"
+msgstr ""
+
 #: src/zeit/cms/syndication/interfaces.py:42
 msgid "Big layout"
+msgstr ""
+
+#: src/zeit/cms/syndication/interfaces.py:45
+msgid "Hidden relateds"
 msgstr ""
 
 #: src/zeit/cms/syndication/interfaces.py:53

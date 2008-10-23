@@ -16,6 +16,8 @@ zeit.cms changes
   anclickbar (bug #4114).
 - Channels: Checkbox um layout="big" einzustellen.
 - Channels: Checkbox um Relateds zu verstecken.
+- Channels: Positives ausdrücken der Checkboxen: »Versteckt auf HP« → »Auf HP
+  anzeigen« und »Relateds verstecken« → »Relateds anzeigen«
 
 1.2.3 (2008-10-17)
 ------------------

@@ -307,13 +307,13 @@ Politik – Feed contents
         Pinned
       </th>
       <th>
-        Hidden on HP
+        HP
       </th>
       <th>
         Big
       </th>
       <th>
-        Hidden relateds
+        Relateds
       </th>
       <th>
       </th>
@@ -356,13 +356,13 @@ Politik – Edit feed contents
         Pinned
       </th>
       <th>
-        Hidden on HP
+        HP
       </th>
       <th>
         Big
       </th>
       <th>
-        Hidden relateds
+        Relateds
       </th>
       <th>
       </th>
@@ -382,15 +382,7 @@ Politik – Edit feed contents
     <td>
       1
     </td>
-    <td>
-      ...<input ...name="remove..." ...type="checkbox".../>
-    </td>
-    <td>
-      ...<input type="checkbox" name="pin:list".../>
-    </td>
-    <td>
-      ...<input ...name="hide..." ...type="checkbox".../>
-    </td>
+    ...
     <td>
       <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
     </td>
@@ -425,17 +417,17 @@ Select the one entry we've syndicated for pinning:
 Now hide on hp:
 
 >>> hide_ctl = browser.getControl(
-...     name='hide.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
-...          'tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
->>> hide_ctl.value
-False
->>> hide_ctl.value = True
->>> browser.getControl('Save').click()
->>> hide_ctl = browser.getControl(
-...     name='hide.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
+...     name='hp.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
 ...          'tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
 >>> hide_ctl.value
 True
+>>> hide_ctl.value = False
+>>> browser.getControl('Save').click()
+>>> hide_ctl = browser.getControl(
+...     name='hp.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
+...          'tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
+>>> hide_ctl.value
+False
 
 
 Let's have a look at the source now:
@@ -495,12 +487,12 @@ Hidden relateds
 There is a checkbox to hide the relateds:
 
 >>> browser.getLink('Edit contents').click()
->>> browser.getControl(name="hidden_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
-...     ).value = True
+>>> browser.getControl(name="visible_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
+...     ).value = False
 >>> browser.getControl('Save').click()
->>> browser.getControl(name="hidden_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
+>>> browser.getControl(name="visible_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
 ...     ).value
-True
+False
 
 Its also indicated in the source:
 

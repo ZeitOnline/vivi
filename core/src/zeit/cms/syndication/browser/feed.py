@@ -95,14 +95,14 @@ class FeedView(object):
     def pinned(self, item):
         return self.context.getMetadata(item.context).pinned
 
-    def hidden(self, item):
-        return self.context.getMetadata(item.context).hidden
+    def visible_on_hp(self, item):
+        return not self.context.getMetadata(item.context).hidden
 
     def big_layout(self, item):
         return self.context.getMetadata(item.context).big_layout
 
-    def hidden_relateds(self, item):
-        return self.context.getMetadata(item.context).hidden_relateds
+    def visible_relateds(self, item):
+        return not self.context.getMetadata(item.context).hidden_relateds
 
     @property
     def content(self):
@@ -145,9 +145,9 @@ class FeedView(object):
                 lambda t, c: self.context.getPosition(t.context) or '',
                 cell_formatter=_escape),
             self.pinned_column,
-            self.hidden_column,
+            self.visible_on_hp_column,
             self.layout_column,
-            self.hidden_relateds_column,
+            self.visible_relateds_column,
             zeit.cms.browser.listing.TypeColumn(u''),
             zc.table.column.GetterColumn(
                 _('Author'),
@@ -169,10 +169,10 @@ class FeedView(object):
         return column
 
     @zope.cachedescriptors.property.Lazy
-    def hidden_column(self):
+    def visible_on_hp_column(self):
         column = zc.table.column.SelectionColumn(
-            self._id_getter, getter=self.hidden, prefix='hide',
-            title=_("Hidden on HP"))
+            self._id_getter, getter=self.visible_on_hp, prefix='hp',
+            title=_('title-visible-on-hp', default=u'HP'))
         column.widget_extra = self.checkbox_widget_extra
         return column
 
@@ -185,10 +185,10 @@ class FeedView(object):
         return column
 
     @zope.cachedescriptors.property.Lazy
-    def hidden_relateds_column(self):
+    def visible_relateds_column(self):
         column = zc.table.column.SelectionColumn(
-            self._id_getter, getter=self.big_layout, prefix='hidden_relateds',
-            title=_('Hidden relateds'))
+            self._id_getter, getter=self.visible_relateds,
+            prefix='visible_relateds', title=_('Relateds'))
         column.widget_extra = self.checkbox_widget_extra
         return column
 
@@ -229,19 +229,20 @@ class EditFeedView(FeedView):
 
         to_remove = set(self.delete_column.getSelected(content, self.request))
         pinned = set(self.pinned_column.getSelected(content, self.request))
-        hidden = set(self.hidden_column.getSelected(content, self.request))
+        visible_on_hp = set(
+            self.visible_on_hp_column .getSelected(content, self.request))
         big_layout = set(self.layout_column.getSelected(content, self.request))
-        hidden_relateds = set(
-            self.hidden_relateds_column.getSelected(content, self.request))
+        visible_relateds = set(
+            self.visible_relateds_column.getSelected(content, self.request))
         for obj in content:
             if obj in to_remove:
                 self.context.remove(obj.context)
                 continue
             metadata = self.context.getMetadata(obj.context)
             metadata.pinned = obj in pinned
-            metadata.hidden = obj in hidden
+            metadata.hidden = obj not in visible_on_hp
             metadata.big_layout = obj in big_layout
-            metadata.hidden_relateds = obj in hidden_relateds
+            metadata.hidden_relateds = obj not in visible_relateds
 
 
 class MyTargets(zeit.cms.browser.view.Base):
