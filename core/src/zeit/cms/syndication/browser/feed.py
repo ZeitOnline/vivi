@@ -194,7 +194,7 @@ class EditFeedView(FeedView):
     def delete_column(self):
         return zc.table.column.SelectionColumn(
             self._id_getter, getter=lambda x: False, prefix='remove',
-            title=_('Remove'))
+            title=_('title-remove', default=u'Remove'))
 
     def updateFeed(self):
         content = self.content

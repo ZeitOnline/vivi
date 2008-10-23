@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Oct 23 11:48:21 2008\n"
-"PO-Revision-Date: 2008-10-23 11:53+0100\n"
+"POT-Creation-Date: Thu Oct 23 12:53:09 2008\n"
+"PO-Revision-Date: 2008-10-23 13:27+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,11 +49,11 @@ msgstr "folder specific actions"
 msgid "Add"
 msgstr "Hinzufügen …"
 
-#: src/zeit/cms/browser/form.py:143
+#: src/zeit/cms/browser/form.py:151
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/zeit/cms/browser/form.py:170
+#: src/zeit/cms/browser/form.py:174
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:106
@@ -63,16 +63,16 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/zeit/cms/browser/form.py:212
+#: src/zeit/cms/browser/form.py:216
 msgid "No changes"
 msgstr "Keine Änderungen"
 
-#: src/zeit/cms/browser/form.py:215
+#: src/zeit/cms/browser/form.py:219
 #: src/zeit/cms/repository/browser/file.py:109
 msgid "Apply"
 msgstr "Speichern"
 
-#: src/zeit/cms/browser/form.py:223
+#: src/zeit/cms/browser/form.py:227
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
@@ -83,7 +83,7 @@ msgid "View"
 msgstr "Anzeigen"
 
 #: src/zeit/cms/browser/globalmenuitem.pt:3
-#: src/zeit/cms/browser/grouped-form-macros.pt:26
+#: src/zeit/cms/browser/grouped-form-macros.pt:24
 #: src/zeit/cms/browser/lightbox.pt:3
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
@@ -217,6 +217,10 @@ msgstr "Quelltext anzeigen"
 #: src/zeit/cms/browser/system-error.pt:8
 msgid "The action you were trying to do could not be finished."
 msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
+
+#: src/zeit/cms/browser/tree.pt:18
+msgid "Remove"
+msgstr "Entfernen"
 
 #: src/zeit/cms/browser/widget.py:48
 msgid "The given id is invalid."
@@ -881,10 +885,10 @@ msgstr "¬HP"
 msgid "Edit feed contents"
 msgstr "Inhalt des Channels bearbeiten"
 
+#. Default: "Remove"
 #: src/zeit/cms/syndication/browser/feed.py:197
-#: src/zeit/cms/browser/tree.pt:18
-msgid "Remove"
-msgstr "Entfernen"
+msgid "title-remove"
+msgstr "Entf."
 
 #. Default: ""
 #: src/zeit/cms/syndication/browser/feed.py:229

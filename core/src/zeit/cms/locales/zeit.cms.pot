@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Oct 23 11:48:21 2008\n"
+"POT-Creation-Date: Thu Oct 23 12:53:09 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -61,11 +61,11 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:143
+#: src/zeit/cms/browser/form.py:151
 msgid "Cancel"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:170
+#: src/zeit/cms/browser/form.py:174
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:106
@@ -75,16 +75,16 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:212
+#: src/zeit/cms/browser/form.py:216
 msgid "No changes"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:215
+#: src/zeit/cms/browser/form.py:219
 #: src/zeit/cms/repository/browser/file.py:109
 msgid "Apply"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:223
+#: src/zeit/cms/browser/form.py:227
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
@@ -95,7 +95,7 @@ msgid "View"
 msgstr ""
 
 #: src/zeit/cms/browser/globalmenuitem.pt:3
-#: src/zeit/cms/browser/grouped-form-macros.pt:26
+#: src/zeit/cms/browser/grouped-form-macros.pt:24
 #: src/zeit/cms/browser/lightbox.pt:3
 #: src/zeit/cms/browser/sourceedit.pt:16
 #: src/zeit/cms/browser/sourceedit.pt:39
@@ -228,6 +228,10 @@ msgstr ""
 
 #: src/zeit/cms/browser/system-error.pt:8
 msgid "The action you were trying to do could not be finished."
+msgstr ""
+
+#: src/zeit/cms/browser/tree.pt:18
+msgid "Remove"
 msgstr ""
 
 #: src/zeit/cms/browser/widget.py:48
@@ -894,8 +898,8 @@ msgid "Edit feed contents"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/feed.py:197
-#: src/zeit/cms/browser/tree.pt:18
-msgid "Remove"
+#. Default: "Remove"
+msgid "title-remove"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/feed.py:229
