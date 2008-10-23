@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
 "POT-Creation-Date: Thu Oct 23 11:48:21 2008\n"
-"PO-Revision-Date: 2008-10-23 11:48+0100\n"
+"PO-Revision-Date: 2008-10-23 11:53+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -875,7 +875,7 @@ msgstr "Fest"
 
 #: src/zeit/cms/syndication/browser/feed.py:167
 msgid "Hidden on HP"
-msgstr "Versteckt auf HP"
+msgstr "¬HP"
 
 #: src/zeit/cms/syndication/browser/feed.py:178
 msgid "Edit feed contents"
