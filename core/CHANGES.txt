@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-1.5.7 (unreleased)
+1.5.7 (2008-10-24)
 ------------------
 
 - Bearbeiten von Rezensionen klarer gemacht (bug #4437).
