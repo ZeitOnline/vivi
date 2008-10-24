@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.2.4 (unreleased)
+1.2.4 (2008-10-24)
 ------------------
 
 - Bei Link-Objekten kann jetzt »Neues Fenster« als Ziel ausgewählt werden (bug
