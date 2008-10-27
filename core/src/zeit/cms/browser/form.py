@@ -1,21 +1,16 @@
 # Copyright (c) 2006-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import datetime
+import gocept.form.grouped
 import os.path
-
 import pytz
-
+import zope.app.container.interfaces
+import zope.app.pagetemplate
 import zope.event
 import zope.formlib.form
 import zope.interface.common.idatetime
-
-import zope.app.container.interfaces
-import zope.app.pagetemplate
 from zope.i18nmessageid import ZopeMessageFactory as _zope
-
-import gocept.form.grouped
 
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
