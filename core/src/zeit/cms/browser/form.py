@@ -72,8 +72,7 @@ class FormBase(zeit.cms.browser.view.Base):
             # rendered w/o error
             next_url = self.nextURL()
             if next_url is not None:
-                #self.send_message(self.status)  # XXX
-                return self.request.response.redirect(next_url)
+                return self.redirect(next_url)
         return super(FormBase, self).render()
 
     def _send_message(self):
@@ -141,12 +140,7 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         self._finished_add = True
 
     def cancelNextURL(self):
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request),
-            name="absolute_url")()
-        if self.cancel_next_view:
-            url = '/@@'.join((url, self.cancel_next_view))
-        return url
+        return self.url('@@' + self.cancel_next_view)
 
     @zope.formlib.form.action(_("Cancel"), validator=lambda *a: ())
     def cancel(self, action, data):
@@ -163,9 +157,7 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
             view = 'edit.html'
         else:
             view = 'view.html'
-        url = zope.component.getMultiAdapter(
-            (self._created_object, self.request), name='absolute_url')()
-        return '%s/@@%s' % (url, view)
+        return self.url(self._created_object, '@@' + view)
 
 
 class EditForm(FormBase, gocept.form.grouped.EditForm):
@@ -186,12 +178,9 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
 
         view = ''
         if self.redirect_to_view:
-            view = '/@@%s' % self.redirect_to_view
+            view = '@@' + self.redirect_to_view
 
-        return '%s%s' % (
-            zope.component.getMultiAdapter(
-                (new_context, self.request), name='absolute_url')(),
-            view)
+        return self.url(new_context, view)
 
     def applyChanges(self, data):
         """Apply changes and set message."""
