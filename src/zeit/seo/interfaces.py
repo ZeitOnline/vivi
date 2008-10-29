@@ -5,7 +5,7 @@
 import zope.interface
 import zope.schema
 
-from zeit.cms.i18n import MessageFactory as _
+from zeit.seo.i18n import MessageFactory as _
 
 class ISEO(zope.interface.Interface):
 
@@ -17,3 +17,11 @@ class ISEO(zope.interface.Interface):
         title=_('HTML description'),
         required=False)
 
+    lexical_resource_query = zope.schema.TextLine(
+        title=_('Lexical resource query'),
+        required=False)
+
+    left_column = zope.schema.Choice(
+        title=_('Left column'),
+        values=('custom',),
+        required=False)
