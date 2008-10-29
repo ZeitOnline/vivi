@@ -1,5 +1,0 @@
-<div id="edit-form">
-  <form>
-    <table tal:replace="structure view/contentTable" />
-  </form>
-</div>

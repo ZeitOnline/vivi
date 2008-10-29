@@ -1,9 +1,0 @@
-<html>
-  <head>
-    <title>Refount</title>
-  </head>
-  <body>
-    <h1>Refcount</h1>
-    <pre tal:content="view/refcount" />
-  </body>
-</html>

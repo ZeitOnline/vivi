@@ -1,7 +1,0 @@
-<configure xmlns="http://namespaces.zope.org/zope">
-
-  <subscriber handler=".corehandlers.update_index_on_checkin" />
-  <subscriber handler=".corehandlers.update_relating" />
-
-</configure>
-
