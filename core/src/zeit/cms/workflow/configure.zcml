@@ -1,9 +1,0 @@
-<configure
-  xmlns="http://namespaces.zope.org/zope">
-
-  <adapter factory=".modified.Modified" />
-  <adapter factory=".modified.modifiedProperties" />
-  <subscriber handler=".modified.update_last_modified_by" />
-
-</configure>
-

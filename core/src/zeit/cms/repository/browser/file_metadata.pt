@@ -1,5 +1,0 @@
-<metal:macro use-macro="context/@@standard_macros/metadata-preview">
-  <metal:data fill-slot="preview">
-    <tal:block replace="structure context/@@file-details" />
-  </metal:data>
-</metal:macro>

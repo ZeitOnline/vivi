@@ -1,3 +1,0 @@
-<configure xmlns="http://namespaces.zope.org/zope">
-  <adapter factory=".related.related_content_browse_location" />
-</configure>

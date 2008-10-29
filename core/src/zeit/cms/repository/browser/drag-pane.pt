@@ -1,8 +1,0 @@
-<tal:block>
-  <div class="Text"
-    tal:content="view/name">
-  </div>
-  <div class="UniqueId"
-    tal:content="view/uniqueId">
-  </div>
-</tal:block>

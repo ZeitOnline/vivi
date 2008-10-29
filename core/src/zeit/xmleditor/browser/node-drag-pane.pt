@@ -1,7 +1,0 @@
-<tal:block>
-  <div style="max-width: 20em">
-    &lt;<span tal:replace="view/context_node/tag" />&gt;
-    <span tal:replace="view/context_node/text" />
-
-  </div>
-</tal:block>

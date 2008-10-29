@@ -1,8 +1,0 @@
-<html metal:use-macro="context/@@standard_macros/page">
-  <div metal:fill-slot="body">
-
-      Feed view ... XXX
-    
-  </div>
-</html>
-
