@@ -4,6 +4,8 @@ zeit.cms changes
 1.2.5 (unreleased)
 ------------------
 
+- Keywords werden alle 5 Minuten neu geladen (Bug #4501).
+
 1.2.4 (2008-10-24)
 ------------------
 
