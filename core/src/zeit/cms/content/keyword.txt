@@ -2,12 +2,6 @@
 PRISM Keywords
 ==============
 
-Setup the product config:
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.setup_product_config()
-
-
 Keywords Utility
 ================
 
