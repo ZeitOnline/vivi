@@ -26,6 +26,14 @@ class SEO(object):
         zeit.seo.interfaces.ISEO['html_description'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-description')
 
+    lexical_resource_query = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['lexical_resource_query'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'lexicalResourceQuery')
+
+    left_column = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['left_column'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'leftcolumn')
+
     def __init__(self, context):
         self.context = context
 

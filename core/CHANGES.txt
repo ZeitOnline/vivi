@@ -4,4 +4,5 @@ zeit.cms changes
 1.2.5 (unreleased)
 ------------------
 
+- Neue Felder: »Lexical resource query« und »Left column«
 - Erstes Release nach der Trennung von zeit.cms

@@ -8,8 +8,8 @@ optimisation.
 Browser Tests
 =============
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
+>>> import zope.testbrowser
+>>> browser = zope.testbrowser.testing.Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 Open the test content and go to the SEO page:
@@ -30,16 +30,22 @@ Fill out the form:
 >>> browser.getControl('HTML title').value = 'HTML title'
 >>> browser.getControl('HTML description').value = 'HTML description'
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl('Lexical').value = 'irgendwas'
+>>> browser.getControl('Left column').displayOptions
+['(no value)', 'custom']
+>>> browser.getControl('Left column').displayValue = ['custom']
 >>> browser.getControl('Apply').click()
 
 Verify the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('Source').value
+>>> print browser.getControl('Source').value.replace('\r', '')
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="lexicalResourceQuery">irgendwas</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="leftcolumn">custom</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
   </head>
   <body/>
