@@ -41,7 +41,6 @@
   <include package="zeit.content.text.browser" />
 
   <include package="zeit.ghost" />
-  <include package="zeit.seo" />
   <include package="zeit.today" />
 
 </configure>
