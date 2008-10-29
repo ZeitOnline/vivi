@@ -1,0 +1,31 @@
+<div class="topcontent deleteScreen"
+  i18n:domain="zeit.cms">
+    <tal:replace replace="resource_library:zeit.cms.Lightbox" />
+  <h1 i18n:translate="delete_content_header">Delete content</h1>
+
+  <p>
+    <span i18n:translate="delete_content_text">
+      Do you really want to delete the object from the folder
+      "<span class="containerName" tal:content="view/container_title"
+        i18n:name="container-title" />"?
+    </span>
+  </p>
+  <p class="DeleteItem">
+    <img class="zmi_icon" tal:replace="structure view/icon" />
+    <span tal:content="view/title" />
+    (<span tal:content="view/unique_id" />)
+
+  </p>
+  <p class="warning" tal:condition="view/is_folder_with_content"
+      i18n:translate="delete_content_folder_warning">
+      You're about to delete a folder with content!
+  </p>
+
+  <form action=""
+    tal:attributes="action view/@@absolute_url">
+    <p>
+      <input type="submit" value="Delete" name="delete"
+        i18n:attributes="value" />
+    </p>
+  </form>
+</div>

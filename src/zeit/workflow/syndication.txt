@@ -1,0 +1,173 @@
+===========
+Syndication
+===========
+
+When objects which are adaptable to IWorkflow are syndicated, the publication
+and expiration date will be added to the feed.
+
+Create a dummy content object:
+
+>>> import zope.interface
+>>> import zeit.cms.interfaces
+>>> import zeit.workflow.interfaces
+>>> 
+>>> class Content(object):
+...     zope.interface.implements(
+...         zeit.workflow.interfaces.IContentWorkflow,
+...         zeit.cms.interfaces.ICMSContent)
+...     uniqueId = 'content1'
+...     released_from = None
+...     released_to = None
+
+Create a feed:
+
+>>> import zeit.cms.syndication.feed
+>>> feed = zeit.cms.syndication.feed.Feed()
+
+
+Insert an object in the feed[#functionaltest]_:
+
+>>> content = Content()
+>>> feed.insert(0, content)
+
+There is no expiration/publication date in the feed, because we have not set
+any:
+
+>>> print feed.xml_source
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
+  <container>
+    <block href="content1" publication-date="" expires=""/>
+  </container>
+  <object_limit py:pytype="int">50</object_limit>
+</channel>
+
+
+When we set the expiration and/or publication date the change will be
+reflected:
+
+>>> import datetime
+>>> import pytz
+>>> content.released_from = datetime.datetime(
+...     2008, 1, 5, 16, 0, tzinfo=pytz.UTC)
+>>> content.released_to = datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC)
+>>> feed.updateMetadata(content)
+>>> print feed.xml_source
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <title/>
+  <container>
+    <block href="content1" publication-date="2008-01-05T16:00:00+00:00" expires="2008-01-06T00:00:00+00:00"/>
+  </container>
+  <object_limit py:pytype="int">50</object_limit>
+</channel>
+
+
+
+Removing of objects from channels on retract
+++++++++++++++++++++++++++++++++++++++++++++
+
+When a syndicated object is retracted it is also removed from the channels.
+
+Add feeds to the target list[#needs-interaction]_:
+
+>>> import zeit.cms.syndication.interfaces
+>>> import zeit.cms.workingcopy.interfaces
+>>> location = zope.component.getUtility(
+...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+>>> workingcopy = location.getWorkingcopy()
+>>> targets = zeit.cms.syndication.interfaces.IMySyndicationTargets(
+...     workingcopy)
+>>> targets.add(repository['politik.feed'])
+>>> targets.add(repository['wirtschaft.feed'])
+
+Get a test content and syndicate it:
+
+>>> len(repository['politik.feed'])
+0
+>>> content = repository['testcontent']
+>>> manager = zeit.cms.syndication.interfaces.ISyndicationManager(content)
+>>> manager.syndicate([repository['politik.feed']])
+>>> len(repository['politik.feed'])
+1
+
+Publish/retract the content. This removes it from the feed:
+
+>>> import zeit.cms.workflow.interfaces
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['testcontent'])
+>>> info.urgent = True
+>>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
+>>> publish.publish()
+>>> tasks.process()
+>>> publish.retract()
+>>> tasks.process()
+>>> len(repository['politik.feed'])
+0
+
+
+The event handler doesn't break when the feed has the content removed under the
+hood. Add testcontent to the feed again:
+
+>>> len(repository['politik.feed'])
+0
+>>> content = repository['testcontent']
+>>> manager = zeit.cms.syndication.interfaces.ISyndicationManager(content)
+>>> manager.syndicate([repository['politik.feed']])
+>>> len(repository['politik.feed'])
+1
+
+Publish:
+
+>>> import zeit.cms.workflow.interfaces
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['testcontent'])
+>>> info.urgent = True
+>>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
+>>> publish.publish()
+>>> tasks.process()
+
+
+Modify politik feed but avoid the checkout/checkin cycle:
+
+>>> politik = repository['politik.feed']
+>>> politik.remove(content)
+>>> repository.addContent(politik)
+>>> len(repository['politik.feed'])
+0
+
+Now retract:
+
+>>> publish.retract()
+>>> tasks.process()
+>>> len(repository['politik.feed'])
+0
+
+Clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)
+>>> zope.security.management.endInteraction()
+
+
+.. [#functionaltest] Setup functional test and get some common utilities
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+    >>> import lovely.remotetask.interfaces
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')
+
+
+.. [#needs-interaction] 
+
+    >>> import zope.security.management
+    >>> import zope.security.testing
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> request.setPrincipal(zope.security.testing.Principal(u'zope.user'))
+    >>> zope.security.management.newInteraction(request)

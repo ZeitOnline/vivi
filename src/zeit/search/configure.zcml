@@ -1,0 +1,10 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <class class=".search.SearchResult">
+    <allow interface=".interfaces.ISearchResult" />
+  </class>
+
+  <utility factory=".search.MetaSearch" />
+
+</configure>

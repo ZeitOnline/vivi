@@ -1,0 +1,11 @@
+<metal:content-listing use-macro="context/@@standard_macros/content-listing">
+
+  <metal:hidden fill-slot="hidden-fields">
+    <input type="hidden"
+      tal:repeat="item view/last_search_hidden_fields"
+      tal:attributes="
+      name item/name;
+      value item/value" />
+  </metal:hidden>
+
+</metal:content-listing> 

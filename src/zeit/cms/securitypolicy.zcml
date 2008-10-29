@@ -1,0 +1,158 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zeit.cms">
+
+  <include package="zope.securitypolicy" />
+
+  <securityPolicy
+    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <!-- Roles -->
+  <role id="zope.Anonymous" title="Everybody"
+    description="All users have this role implicitly" />
+  <role id="zope.Manager" title="Site Manager" />
+  <role id="zope.Member" title="Site Member" />
+
+  <role id="zeit.Editor" title="Editor" />
+  <role id="zeit.Producer" title="Producer" />
+  <role id="zeit.Owner" title="Owner" />
+
+
+  <!-- Groups and other principals -->
+  <unauthenticatedPrincipal
+    id="zope.anybody"
+    title="Unauthenticated User"
+    />
+  <unauthenticatedGroup
+    id="zope.Anybody"
+    title="Unauthenticated Users" 
+    />
+  <authenticatedGroup
+    id="zope.Authenticated"
+    title="Authenticated Users" 
+    />
+  <everybodyGroup
+    id="zope.Everybody"
+    title="All Users" 
+    />
+
+  <!-- Permission grants -->
+  <grantAll role="zope.Manager" />
+
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.app.dublincore.view"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.View"
+    />
+
+  <grant
+    principal="zope.Everybody"
+    permission="zeit.ViewGlobalSettings"
+    />
+
+  <!-- Currently every authenticated user is an editor. -->
+  <grant
+    principal="zope.Authenticated"
+    role="zeit.Editor"
+    />
+
+  <!-- Editor grants -->
+  <grant
+    role="zeit.Editor"
+    permission="zeit.RenameContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.CopyContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.Checkout"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.Checkin"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.AddContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.DeleteContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.calendar.Edit"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.cms.Syndicate"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.workflow.Publish"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.workflow.ManageLocks"
+    />
+
+  <!-- Producer grants -->
+  <grant
+    role="zeit.Producer"
+    permission="zeit.DeleteFolder"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.EditTemplates"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.ChangeGlobalSettings"
+    />
+
+  <!-- Owner grants -->
+  <grant
+    role="zeit.Owner"
+    permission="zope.ManageContent"
+    />
+
+  <!-- lxml security settings -->
+
+  <class class="lxml.objectify.ObjectifiedElement">
+    <require permission="zope.View"
+      attributes="
+      __getitem__
+      find
+      findall
+      getparent
+      index
+      iterchildren
+      tag
+      xpath
+      "/>
+    <require permission="zeit.EditContent"
+      attributes="
+      __setslice__
+      append
+      insert
+      makeelement
+      " />
+  </class>
+
+  <class class="lxml.objectify.StringElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+  
+  <class class="lxml.etree.ElementChildIterator">
+    <require permission="zope.View"
+      attributes="__iter__ next" />
+  </class>
+
+
+</configure>

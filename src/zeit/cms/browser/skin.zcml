@@ -1,0 +1,100 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:z3c="http://namespaces.zope.org/z3c">
+
+  <utility
+      component="z3c.conditionalviews.ConditionalHTTPRequest"
+      provides="zope.app.publication.interfaces.IHTTPRequestFactory"
+      />
+
+
+  <interface
+    zcml:condition="have zeit.cms.testing"
+    interface=".interfaces.ICMSTestingSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
+
+  <interface
+    zcml:condition="not-have zeit.cms.testing"
+    interface=".interfaces.ICMSSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
+
+  <browser:page
+    for="*"
+    name="standard_macros"
+    permission="zope.View"
+    class=".standardmacros.StandardMacros"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="*"
+    name="breadcrumbs"
+    permission="zope.View"
+    class=".breadcrumbs.Breadcrumbs"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="*"
+    name="main_template"
+    permission="zope.View"
+    template="main_template.pt"
+    layer=".interfaces.ICMSLayer" />
+
+
+  <!-- pagelet support -->
+
+  <z3c:layout
+    for="*"
+    template="layout-template.pt"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <!-- resource libraries -->
+
+  <include package="gocept.mochikit" />
+
+  <resourceLibrary
+    name="zeit.cms"
+    require="mochikit mochikit.DragAndDrop gocept.mochikit.jsclass
+    gocept.mochikit.lightbox">
+    <directory source="resources" include="
+      base.js
+      dnd.js
+      menu.js
+      messages.js
+      forms.css
+      tables.css
+      lightbox.css
+      lightbox.js
+      cms-widgets.css
+      cms.css
+      "/>
+  </resourceLibrary>
+
+  <!-- remove those ... -->
+  <resourceLibrary name="zeit.cms.DragAndDrop" require="zeit.cms" />
+  <resourceLibrary name="zeit.cms.Lightbox" require="zeit.cms" />
+
+  <resourceLibrary name="zeit.cms.filteringtable">
+    <directory source="resources" include="filteringtable.js" />
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.tree"
+    require="zeit.cms">
+    <directory source="resources" include="tree.js"/>
+  </resourceLibrary>
+
+  <resourceLibrary name="zeit.cms.error"
+    require="zeit.cms">
+    <directory source="resources" include="error.css" />
+  </resourceLibrary>
+
+</configure>
+

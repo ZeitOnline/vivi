@@ -1,0 +1,7 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".mock.MockPublish" />
+  <adapter factory=".mock.MockPublishInfo" />
+
+</configure>
+

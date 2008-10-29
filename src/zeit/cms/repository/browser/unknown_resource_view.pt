@@ -1,0 +1,19 @@
+<metal:use-macro use-macro="context/@@standard_macros/page">
+  <tal:block metal:fill-slot="body">
+
+    Unbekannte Resource: Es gibt keinen speziellen Editor für unbekannte
+    Resourcen. Die 100 ersten Zeichen des Inhalts der Resource folgen:
+
+    <pre tal:content="view/get_excerpt">
+      bla bla
+    </pre>
+
+    Webdav properties:
+
+    <pre tal:content="view/get_properties">
+      {...}
+    </pre>
+
+  </tal:block>
+</metal:use-macro>
+

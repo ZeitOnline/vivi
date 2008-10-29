@@ -1,0 +1,24 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    name="locks.html"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    class=".lock.Lock"
+    permission="zeit.workflow.ManageLocks"
+    />
+
+  <browser:viewlet
+    name="Manage lock"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".lock.MenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.workflow.ManageLocks"
+    lightbox="@@locks.html"
+    sort="80"
+    />
+
+</configure>

@@ -1,0 +1,203 @@
+<configure 
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:z3c="http://namespaces.zope.org/z3c"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".entry.entryListRepresentationFactory" />
+  <adapter 
+    factory=".entry.entry_icon"
+    name="zmi_icon"/>
+  <adapter factory=".clip.ClipListRepresentation" />
+  <adapter factory=".clipboard.ClipboardListRepresentation" />
+
+  <browser:viewlet
+    name="40_clipboard"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    class=".clipboard.Sidebar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboard"
+    permission="zope.View"
+    name="tree.html"
+    class=".clipboard.Tree"
+    allowed_interface="zeit.cms.browser.interfaces.ITree"
+    />
+
+  <browser:pages
+    for="zeit.cms.clipboard.interfaces.IClipboard"
+    class=".clipboard.Tree"
+    permission="zope.ManageContent"
+    allowed_interface="zeit.cms.browser.interfaces.ITree">
+
+    <browser:page 
+      name="addContent"
+      attribute="addContent"
+      />
+
+    <browser:page 
+      name="addContainer"
+      attribute="addContainer"
+      />
+
+    <browser:page 
+      name="moveContent"
+      attribute="moveContent"
+      />
+
+  </browser:pages>
+
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.Entry"
+    permission="zope.View"
+    name="index.html"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.Entry"
+    permission="zope.View"
+    name="edit.html"
+    />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.DragPane"
+    permission="zope.View"
+    name="drag-pane.html"
+    />
+
+
+  <resourceLibrary name="zeit.cms.clipboard" require="zeit.cms.DragAndDrop">
+    <directory source="resources" include="clipboard.js" />
+  </resourceLibrary>
+
+  <browser:containerViews
+    for="zeit.cms.clipboard.interfaces.IClipboard"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:page
+    name="listing.html"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    class="zeit.cms.browser.listing.Listing"
+    template="content_listing.pt"
+    permission="zope.View"
+    />
+  <browser:defaultView
+    for="zeit.cms.clipboard.interfaces.IClip"
+    name="listing.html" />
+
+  <browser:page
+    for="zeit.cms.clipboard.interfaces.IClip"
+    template="clip-drag.pt"
+    permission="zope.View"
+    class=".clip.ClipDragPane"
+    name="drag-pane.html"
+    />
+
+  <browser:viewlet
+    name="Delete"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.DeleteClipMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zope.ManageContent"
+    icon="/@@/zeit.cms/icons/delete.png"
+    title="Delete"
+    action="@@delete-clip"
+    sort="100"
+    />
+
+  <browser:page
+    name="delete-clip"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.DeleteClip"
+    permission="zope.ManageContent"
+    />
+
+  <browser:page
+    name="ajax-delete-entry"
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.AjaxDeleteEntry"
+    attribute="delete"
+    permission="zope.ManageContent"
+    />
+
+  <browser:page
+    name="ajax.get_unique_id"
+    for="zeit.cms.clipboard.interfaces.IClipboardEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".entry.Entry"
+    attribute="get_unique_id"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="rename-clip-lightbox"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.Rename"
+    permission="zope.ManageContent"
+    />
+
+  <browser:viewlet
+    name="Rename"
+    for="zeit.cms.clipboard.interfaces.IClip"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".clip.RenameClipMenuitem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zope.ManageContent"
+    icon="/@@/zeit.cms/icons/rename.png"
+    title="Rename"
+    lightbox="@@rename-clip-lightbox"
+    sort="99"
+    />
+
+
+  <!-- copy paste move -->
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="insert_from_clipboard.lightbox"
+    class=".copypastemove.InsertLightbox"
+    template="insert_from_clipboard.pt"
+    permission="zeit.CopyContent"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="copy"
+    class=".copypastemove.Insert"
+    permission="zeit.CopyContent"
+    />
+
+  <browser:viewlet
+    name="Insert"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".copypastemove.InsertMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.CopyContent"
+    sort="110"
+    lightbox="@@insert_from_clipboard.lightbox"
+    />
+  
+
+</configure>

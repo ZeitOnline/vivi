@@ -1,0 +1,110 @@
+Mock publisher
+==============
+
+The mock is used for testing.
+
+>>> import zope.interface.verify
+>>> import zeit.cms.workflow.interfaces
+>>> import zeit.cms.workflow.mock
+
+Register adapters
+
+>>> import zope.component
+>>> import zeit.cms.workflow.mock
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     zeit.cms.workflow.mock.MockPublish)
+>>> gsm.registerAdapter(
+...     zeit.cms.workflow.mock.MockPublishInfo)
+
+
+Register event handlers to make sure the proper events are sent out:
+
+>>> def event(event):
+...     print event
+...     print "   ", event.object.uniqueId
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IBeforePublishEvent,))
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IPublishedEvent,))
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IBeforeRetractEvent,))
+>>> gsm.registerHandler(
+...     event, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+
+Let's try this on a testcontent:
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content.uniqueId = 'http://xml.zeit.de/testcontent'
+>>> workflow = zeit.cms.workflow.interfaces.IPublish(content)
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(content)
+
+
+Verify the interfaces:
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.workflow.interfaces.IPublish, workflow)
+True
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.workflow.interfaces.IPublishInfo, info)
+True
+
+
+We can set explicitly if we can publish:
+
+>>> info.can_publish()
+False
+>>> info.set_can_publish(True)
+>>> info.can_publish()
+True
+
+`publish()` raises an exception if can_publish returns False:
+
+>>> info.set_can_publish(False)
+>>> workflow.publish()
+Traceback (most recent call last):
+    ...
+PublishingError: Cannot publish.
+
+
+It spits out a message otherwise:
+
+>>> info.set_can_publish(True)
+>>> workflow.publish()
+<zeit.cms.workflow.interfaces.BeforePublishEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+Publishing: http://xml.zeit.de/testcontent
+<zeit.cms.workflow.interfaces.PublishedEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+
+
+The object is published now:
+
+>>> info.published
+True
+
+
+Retract:
+
+>>> workflow.retract()
+<zeit.cms.workflow.interfaces.BeforeRetractEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+Retracting: http://xml.zeit.de/testcontent
+<zeit.cms.workflow.interfaces.RetractedEvent object at 0x...>
+    http://xml.zeit.de/testcontent
+
+
+The object is no longer published:
+
+>>> info.published
+False
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     zeit.cms.workflow.mock.MockPublish)
+True
+>>> gsm.unregisterAdapter(
+...     zeit.cms.workflow.mock.MockPublishInfo)
+True

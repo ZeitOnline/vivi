@@ -1,0 +1,156 @@
+================
+Image transforms
+================
+
+The transforms create thumbnails and may later be extended for rotating images
+or alike.
+
+Setup functional test:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+
+Resizing
+========
+
+Thumbnails
+++++++++++
+
+An image can be adapted to ITransform which can create thumbnail images. For
+thumbnails a bounding box is defined in which the image is placed into.
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.content.image.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> image = repository['2006']['DSC00109_2.JPG']
+>>> transform = zeit.content.image.interfaces.ITransform(image)
+>>> import zope.interface.verify
+>>> zope.interface.verify.verifyObject(
+...     zeit.content.image.interfaces.ITransform, transform)
+True
+>>> transform
+<zeit.content.image.transform.ImageTransform object at 0x...>
+
+The transform's `thumbnail` method creates thumbnails and returns a new IImage
+object:
+
+>>> thumb = transform.thumbnail(100, 100)
+>>> thumb
+<zeit.content.image.image.LocalImage object at 0x...>
+
+Note that the thumbnail method doesn't exactly sacle to the given width/height
+but uses this as a bounding box:
+
+>>> thumb.getImageSize()
+(100, 75)
+
+Simple resize
++++++++++++++
+
+For resizing the new width and/or hight might be given.
+
+>>> resized = transform.resize(100, 100)
+>>> resized.getImageSize()
+(100, 100)
+
+If one is ommitted the other is calculated so that the aspect ratio is kept.
+
+>>> resized = transform.resize(width=100)
+>>> resized.getImageSize()
+(100, 75)
+>>> resized = transform.resize(height=100)
+>>> resized.getImageSize()
+(133, 100)
+
+
+If neither width nor height is passed a TypeError is raised:
+
+>>> transform.resize()
+Traceback (most recent call last):
+    ...
+TypeError: Need at least one of width and height.
+
+
+
+Persistent Thumbnails
+=====================
+
+It is sometimes required to have persistent thumbnails. An image can therefore
+be adapted to IPersistentThumbnail:
+
+>>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
+...     image)
+
+The persistent thumbnail is an image itself:
+
+>>> persistent_thumbnail
+<zeit.content.image.image.RepositoryImage object at 0x...>
+
+It always has 50x50 as bounding box so far:
+
+>>> persistent_thumbnail.getImageSize()
+(50, 37)
+
+It is contained in the folder `thumbnails` with the same name as the image:
+
+>>> image.uniqueId
+u'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> persistent_thumbnail.uniqueId
+u'http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG'
+
+
+When adapting again, no new thumbnail is created but the one in the repository
+is used:
+
+>>> zeit.content.image.interfaces.IPersistentThumbnail(
+...     image) == persistent_thumbnail
+True
+
+We can change the behaviour of persistent thumbnail generation via product
+config:
+
+>>> config = {
+...     'thumbnail-width': '200',
+...     'thumbnail-height': '200'}
+>>> import zope.app.appsetup.product
+>>> zope.app.appsetup.product.setProductConfiguration(
+...     'zeit.content.image', config)
+
+We need to delete the persistent thumbnail as thumbnails are not automatically
+invalidated:
+
+>>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
+>>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
+...     image)
+>>> persistent_thumbnail.getImageSize()
+(200, 150)
+
+
+To use the resize method it must be specified in the config:
+
+>>> config['thumbnail-method'] = 'resize'
+>>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
+>>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
+...     image)
+>>> persistent_thumbnail.getImageSize()
+(200, 200)
+
+It is possible to set width/height to an empty string, which will keep the
+aspect ratio:
+
+>>> config['thumbnail-width'] = ''
+>>> del persistent_thumbnail.__parent__[persistent_thumbnail.__name__]
+>>> persistent_thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
+...     image)
+>>> persistent_thumbnail.getImageSize()
+(266, 200)
+
+
+Cleanup
+=======
+
+>>> zope.app.component.hooks.setSite(old_site)

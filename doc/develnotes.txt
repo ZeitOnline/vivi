@@ -1,0 +1,326 @@
+====================================
+ ZEIT CMS – Implementierungsnotizen
+====================================
+
+:Autor: Christian Zagrodnick <cz@gocept.com>
+:Datum: $Date$
+:Revision: $Revision$
+
+Primäre Komponenten
+===================
+
+Dateiverwaltung
++++++++++++++++
+
+:Implementiert in:  zeit.cms.repository
+:Plan: Z1
+:Umsetzung: Z1–
+
+
+Die Dateiverwaltung zeigt den Inhalt des Document-Stores hierarchisch. Dazu
+gibt es in der Seitenleiste einen Baum, in dem einzelne Ebenen auf und zu
+geklappt werden können. Wird ein Ordner im Baum angeclickt erscheint dessen
+Inhalt im Hauptbereich.
+
+Die Dateiliste im Hauptbereich zeigt die beinhalteten Objekte. Ordner werden
+*nicht* angezeigt. Wird in der Dateiliste ein Eintrag angeklickt erscheint die
+Metadaten-Vorschau sowie die Liste der möglichen Aktionen. Aktionen derzeit
+sind:
+
+* Anzeigen
+
+* Syndizieren
+
+* Auschecken
+
+Bearbeiten etc. ist hier *nicht* Teil der Aktionen, weil sie ein ausgechecktes
+Dokument voraussetzen.
+
+Es gibt noch einige Punkte, die noch zu klären sind:
+
+* Es wurde gewünscht, beim Click auf den Titel direkt zur Bearbeiten-Ansicht
+  des Dokuments zu gelangen. Das Bearbeiten erfordert jedoch, das Dokument
+  auszuchecken. Dies implizit durch einen einfachen Click auf „Bearbeiten“
+  auszulösen erscheint gefährlich. Es ist zu prüfen ob der Link / die Links in
+  der Metadaten-Vorschau nicht sinnvoller bzw. ausreichend sind.
+
+
+Einige Ideen aus den Projekttreffen sind noch nicht implementiert:
+
+* Jeder Benutzer soll auswählen können wo für ihn der Baum anfängt, also z.B. in
+  `/cms/work/online`. 
+
+* Benutzer sollen einzelne Ordner ausblenden können.
+
+
+
+Checkin/Checkout
+++++++++++++++++
+
+:Implementiert in: zeit.cms.checkout, zeit.cms.workingcopy
+:Plan: Z1
+:Umsetzung: Z1–
+
+
+Beim Checkout wird ein Objekt aus dem Repository kopiert und in den lokalen
+Arbeitsbereich („working copy“) des angemeldeten Benutzers gelegt. Checkin ist
+der entsprechend entgegengesetzte Prozess.
+
+Ein ausgechecktes Dokument wird für den auscheckenden Benutzer im
+Document-Store gesperrt.
+
+
+Offene Punkte:
+
+* Soll es ein Lock-Override geben? „Das Dokument ist gesperrt von xzy.
+  Trotzdem einchecken?“ 
+
+  --> Ja. Lock wird übernommen. Am Besten mit Benachrichtigung an den alten
+  Lock-Inhaber.
+
+
+
+Metadaten-Editor
+++++++++++++++++
+
+:Implementiert in: via Zope-Schema und `formlib` beim jeweiligen Content-Typ
+:Plan: Z2
+:Umsetzung: Z1–
+
+Der Metadaten-Editor zeigt wie im alten CMS mehrere Eingabe- und Auswahlfelder.
+Die Anordnung der Felder ist derzeit noch recht roh, die Daten können aber
+bereits bearbeitet werden.
+
+Daten für Auswahlfelder (Keywords, ...) sollen aus XML-Dateien des Backends
+erzeugt werden. Das ist noch nicht implementiert.
+
+
+Quelltext-Editor
+++++++++++++++++
+
+:Implementiert in: zeit.cms.browser
+:Plan: Z1
+:Umsetzung: Z1–
+
+Der Quelltext-Editor ist letztlich nur eine Textarea, in der der XML-Quelltext
+des Dokuments angezeigt wird. Ist das vom Benutzer eingegebene XML nicht
+wohlgeformt gibt es einen Validierungsfehler. Das XML wird dann nicht
+gespeichert.
+
+Hier sollte auch eine Schema-Prüfung stattfinden. Da keine bisher keine Schemas
+vorliegen wurde auch noch keine Prüfung implementiert.
+
+
+Struktur-Editor
++++++++++++++++
+
+Der Struktur-Editor zeigt die bearbeitbaren XML-Knoten hell umrahmt an. Fährt
+der Benutzer mit der Maus über einen Knoten werden ihm die
+Bearbeitungsmöglichkeiten angezeigt:
+
+Kind einfügen, davor einfügen, dathinter einfügen
+    Nach anklicken der Aktion wird eine Liste der hinzufügbaren Knoten
+    angezeigt.
+
+Bearbeiten
+    Es erscheint ein Formular in dem der Knoten bearbeitet werden kann.
+
+Löschen
+    Der Knoten wird entfernt.
+
+
+Alle Aktionen finden statt, ohne dass die Seite neulädt. Das heißt, dass der
+Browser nicht „herumspringt“.
+
+Feeds und Bilder werden per Drag-And-Drop aus dem Clipboard eingefügt.
+
+Der Struktur-Editor wird derzeit nur zum Bearbeiten von Center-Pages verwendet.
+
+
+WYSIWYG-Editor
+++++++++++++++
+
+Der WYSIWYG-Editor basiert auf dem FCKEditor. Hier kann der Fließtext von
+Artikeln bearbeitet werden. Der Text wird als XHTML bearbeitet. Es ist dennoch
+möglich `<intertitle>` hinzuzufügen.
+
+
+
+Syndizierung
+++++++++++++
+
+:Implementiert in: zeit.cms.syndication
+:Plan: Z1
+:Umsetzung: Z1–
+
+
+„Syndizieren“ ist eine Aktion auf Dokumenten. Ein Dokument muss dazu *nicht*
+ausgecheckt werden [#]_. Wird die Aktion ausgeführt werden dem Benutzer
+alle [#]_ möglichen Syndizierungsziele mit der aktuellen Position des Dokuments
+im jeweiligen Ziel angezeigt. Der Benutzer kann dann die Feeds auswählen in die
+er Syndizieren möchte.
+
+Bei der Syndizierung wird der Feed zunächst ausgecheckt. Das zu syndizierende
+Dokument wird eingefügt und der Feed sofort wieder eingecheckt. Beim Einfügen
+des Dokuments werden diverse Metadaten in den Feed eingefügt (z.Zt. der
+Teaser und der IndexTeaser).
+
+Im Feed enthaltende Dokumente können im Editor des Feeds können umsortiert
+(Drag and Drop) und „gepinnt“ werden. Gepinnte Dokumente behalten ihre
+Position wenn neue Dokumente in den Feed syndiziert werden.
+
+
+.. [#] Artikel werden bei der Syndizierung verändert: sie referenzieren wo sie
+       syndiziert wurden. Das hat zur Folge, dass ein Artikel wärend der
+       Syndizierung implizit aus- und wieder eingecheckt wird. Der Benutzer
+       bekommt davon nichts mit.
+       
+.. [#] Es gibt noch keine Suche über das Backend, welche alle Feeds anzeigen
+       könnte. Daher wird derzeit nur ein festverdrahteter Feed angezeigt.
+
+
+Suche
++++++
+
+Konnte bisher nicht begonen werden, weil keine Klarheit über die
+Backendschnittstelle besteht und das Backend keine Suchfunktionalität
+bereitstellt.
+
+
+Virtuelle Ordner
+++++++++++++++++
+
+Benötigen die Suchfunktionalität und konnten daher nicht begonnen werden.
+
+
+Clip-Verwaltung
++++++++++++++++
+
+Es gibt ein Panel das als Clipboard dient. In das Panel können aus Dateilisten
+(Dateiverwaltung) Objekte per Drag-And-Drop eingefügt werden. Das Clipbaord
+selbst ist hierarchisch organisiert: an beliebigen Stellen können „Clips“
+hinzugefügt werden, in die wiederum Objekte eingefügt werden können. 
+
+Die Hierarchie wird als Baum dargestellt. Clips können auf- und zugeklappt
+werden. Umsortierung der Einträge erfolgt per Drag-And-Drop.
+
+
+Rechteverwaltung
+++++++++++++++++
+
+Es gibt jetzt getrennte Rechte im Repository und in dein eigenen, ausgecheckten
+Dokumenten. In Ermangelung der Backend-Funktionen gibt es noch keine
+Unterscheidung unterschiedlicher Benutzer.
+
+
+Benutzerverwaltung
+++++++++++++++++++
+
+Da noch nicht klar ist, wie dies konkret an das Backend angebunden wird wurde
+hiermit noch nicht begonnen.
+
+Workflow
+++++++++
+
+Da noch nicht klar ist, wie dies konkret an das Backend angebunden wird wurde
+hiermit noch nicht begonnen.
+
+
+Assetverwaltung
++++++++++++++++
+
+Derzeit können Bilder angelegt und bearbeitet werden. 
+
+
+Kalender
+++++++++
+
+Wurde noch nicht benonnen.
+
+
+
+Technologiekomponenten
+======================
+
+
+Backend-Anbindung
++++++++++++++++++
+
+:Implementiert in: zeit.cms.connector
+:Plan: Z1
+:Umsetzung: Z1–
+
+
+Es gibt eine Test-Implementation, die ihre Daten aus dem Dateisystem liest und
+Veränderungen lediglich im Arbeitsspeicher hält. Dies ist für das Testen
+wichtig.
+
+Wir hatten noch keinen Connector, der mit dem echten WebDAV redet. Es gibt
+daher noch keine Erfahrung was die Performance mit echten Daten angeht. An
+einigen stellen werden Daten bzw. Objekte zwischengespeichert (gecacht). Dies
+wird vermutlich noch ein weiteren Stellen passieren müssen.
+
+
+Skin
+++++
+
+:Implementiert in: zeit.cms.browser
+:Plan: Z1, Z3
+:Umsetzung: Z1–
+
+Das Skin zeigt grob wo es hingeht. Technologisch ist es vorbereitet um ohne
+größeren Aufwand weitere Panels in die Sidebar hinzuzufügen (via Viewlets).
+
+Teilweise scrollt noch die gesamte Seite und die Metadaten-Vorschau ist
+außerhalb des Fensters. Diese und andere Darstellungsprobleme werden spätestens
+in Z3 behoben.
+
+
+Systemarchitektur
++++++++++++++++++
+
+:Plan: Z1–Z2
+:Umsetzung: Z1–
+
+
+
+Objectify
+---------
+
+Die verwendete XML-Bibliothek `lxml` bietet eine Möglichkeit XML-Bäume auf
+sinnvolle Python-Objekte abzubilden: `lxml.objectify`. Alle (XML-)Objekte halten
+ihren XML-Baum nicht im Quelltext sondern als Objectify-Tree.
+
+
+XML-Properties
+--------------
+
+XML-Properties sind ein einfacher Weg Attribute auf Python-Klassen in ein
+XML-Dokument abzubilden::
+
+    >>> class Article(...):
+    ...
+    ...     title = zeit.cms.content.property.ObjectPathProperty(
+    ...         'article.body.title')
+
+
+Der Artikel (`zeit.content.article`) bietet eine Beispielimplementation.
+
+
+Connector-Mock
+--------------
+
+Der Connector-Mock schreibt Daten nicht auf die Festplatte sondern hält alle
+Veränderungen im Arbeitsspeicher. Er verhält sich ähnlich zu Zopes DemoStorage.
+Der Connector-Mock ist nötig um die automatisierten Tests sinnvoll ausführen zu
+können.
+
+Manager
+-------
+
+Für Syndizierung und Checkin/Checkout gibt es Manager, die die benötigten
+Komponenten miteinander verbinden. Der Checkout-Manager verbindet das
+Repository mit der Workingcopy und löst die entsprechenden Checkout-Events aus.
+Die Syndizierung verbindet Content-Objekte mit den Feeds.  Auf diese Art und
+Weise muss z.B. das Repository nichts von der Workingcopy wissen was zu einer
+loseren Kopplung der Komponenten führt.

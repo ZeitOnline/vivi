@@ -1,0 +1,64 @@
+<configure 
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <resourceLibrary
+    name="zeit.cms.workingcopy"
+    require="zeit.cms">
+    <directory source="resources" include="workingcopy.js" />
+  </resourceLibrary>
+
+  <browser:viewlet
+    name="50_workingcopy"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    class=".workingcopy.Sidebar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="listing.html"
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    class="zeit.cms.browser.listing.Listing"
+    template="content_listing.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    title="Content" menu="zeit-context-views"
+    />
+
+
+  <browser:defaultView
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    name="listing.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:containerViews
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopy"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:containerViews
+    for="zeit.cms.workingcopy.interfaces.IWorkingcopyLocation"
+    contents="zope.ManageContent"
+    />
+
+  <!-- object browser -->
+  <adapter factory=".workingcopy.localcontent_default_browsing_location" />
+
+  <!-- preview -->
+  <browser:page
+    name="show_preview"
+    class=".preview.WorkingcopyPreview"
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-actions-external" title="Preview"
+    />
+
+</configure>
+

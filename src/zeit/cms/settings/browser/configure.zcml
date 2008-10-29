@@ -1,0 +1,33 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="global-settings.html"
+    class=".form.Global"
+    permission="zeit.ChangeGlobalSettings"
+    />
+
+  <browser:viewlet
+    name="settings"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
+    class=".menu.Global"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.ChangeGlobalSettings"
+    sort="90"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="global-settings.xml"
+    class=".export.XML"
+    template="export-xml.pt"
+    permission="zope.Public"
+    />
+
+</configure>
+

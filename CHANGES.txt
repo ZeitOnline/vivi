@@ -1,0 +1,538 @@
+zeit.cms changes
+================
+
+1.2.5 (unreleased)
+------------------
+
+1.2.4 (2008-10-24)
+------------------
+
+- Bei Link-Objekten kann jetzt »Neues Fenster« als Ziel ausgewählt werden (bug
+  #4488).
+- Beim Auschecken und Einchecken bleiben die Views stabil, d.h. wenn man sich
+  z.B. die Assets anguckt und auscheckt, kann man danach direkt die Assets
+  bearbeiten (bug #4357).
+- Beim »Synchronisieren« des Bilderordners einer Galerie werden die Thumbnails
+  neu erzeugt (bug #4496).
+- Channels: Kein »Anzeigen«-Tab mehr bei ausgecheckten Channels; kein
+  »Entfernen« mehr auf dem Anzeigen-Tab; die Checkboxen sind nicht mehr
+  anclickbar (bug #4114).
+- Channels: Checkbox um layout="big" einzustellen.
+- Channels: Checkbox um Relateds zu verstecken (bug #4492).
+- Channels: Positives ausdrücken der Checkboxen: »Versteckt auf HP« → »Auf HP
+  anzeigen« und »Relateds verstecken« → »Relateds anzeigen«
+
+1.2.3 (2008-10-17)
+------------------
+
+- Sicherstellen, dass Request-Objekte nicht ewig rumliegen und Speicher
+  verbrauchen.
+
+1.2.2 (2008-10-13)
+------------------
+
+- Standard-Copyright bei Bildern ist jetzt ein leeres Feld mit dem
+  Copyright-Zeichen. Vor dem Speichern muss man das Feld löschen oder ein
+  Copyright eintragen.
+
+1.2.1 (2008-10-01)
+------------------
+
+- Locking erzeugt die richtige Exception.
+
+1.2 (2008-10-01)
+----------------
+
+- Konzept des »Redaktionellen Inhalts« zur Unterscheidung verschiedener
+  Workflows.
+- Ordner können nicht mehr veröffentlich oder zurückgezogen werden.
+- Channel, File, Portraitbox und Text sind jetzt Assets.
+- Bilder gehen jetzt sinnvoll mit Arbeitsspeicher um (Bug #4410).
+- Abhängiges Veröffentlichen: Wenn eine Bildergalerie veröffentlicht wird, wird
+  ihr angehänger Bilderordner automatisch mitveröffentlicht. Beim Zurückziehen
+  wird der Bilderordner auch entfernt.
+
+
+1.1.11 (2008-09-18)
+-------------------
+
+- Wenn ein Bild von einem Artikel entfernt wird, wird dies jetzt auch im
+  Channel reflektiert.
+- Die Ausgabenummer ist generell kein Pflichtfeld mehr (Bug #4458).
+
+1.1.10 (2008-09-16)
+-------------------
+
+- Zuweisen von Keywords sorgte im FF3 für Fehler.
+- Scrollbar bei der R/O-Ansicht des Quelltexts (bug #4459).
+- Syntax-Highliting in der R/O-Ansicht des Quelltexts.
+- XML-Export der Standardeinstellungen für Jahr/Ausgabe (für Video-DB).
+
+1.1.9 (2008-09-05)
+------------------
+
+- Die Größe und Skalierungsart (mit/ohne Boundingbox) der Thumbnails (für
+  Bigas) ist jetzt konfigurierbar.
+- Hit-Counter kommt jetzt besser mit Pfaden ala //index klar.
+- XML-Editor: Styling-Fixes
+
+1.1.8 (2008-08-28)
+------------------
+
+- Readonly-Ansicht für den Quelltext (Bug #4358).
+
+1.1.7 (2008-08-26)
+------------------
+
+- Styling in  der Dateiliste korrigiert.
+
+1.1.6 (2008-08-26)
+------------------
+
+- Asset-View: Read-Only-Ansicht zeigt jetzt die URL an, der Title wird als
+  Tool-Tip angezeigt (bug #4219).
+- Ressort muss jetzt vom Benutzer eingegeben werden, »Deutschland« ist nicht
+  mehr vorausgewählt (bug #4387).
+- Aussetzer um kurz nach Mitternacht behoben.
+- Dateiliste zeigt mehr Informationen zum Workflow-Zustand.
+- Widget zum referenzieren von Objekten zeigt Informationen zum
+  Workflow-Zustand.
+
+1.1.5 (2008-08-12)
+------------------
+
+- Links als Related Content fügen ihre Ziel-URL ins XML ein.
+- Logs in Workflow-Ansicht werden auf die letzten 20 Einträge begrenzt.
+
+1.1.4 (2008-08-06)
+------------------
+
+- WYSIWYG-Editor: Bilder, die nicht direkt unterhalb des <p> sind werden
+  richtig in HTML konvertiert.
+
+1.1.3 (2008-08-06)
+------------------
+
+- Korrektes Übersetzen des View-Titels.
+
+1.1.2 (2008-08-04)
+------------------
+
+- Import der Vortagszugriffszahlen in mehreren Transaktionen.
+
+1.1.1 (2008-08-01)
+------------------
+
+- Import der Vortagszugriffszahlen jetzt mit explizitem Locking. Zudem besseres
+  Verhalten bei ungültigen Pfaden.
+
+1.1 (2008-08-01)
+----------------
+
+- WYSIWYG-Editor kommt besser mit beliebigen ``article_extra``-Tags klar (bug
+  #4442).
+- Importieren und Speichern der Vortagszugriffszahlen.
+
+1.0 (2008-07-29)
+----------------
+
+- Checkout/checkin während des Veröffentlichungsvorgangs funktioniert wieder
+  immer (AttributeError: 'BaseResponse' object has no attribute 'getCookie')
+- Sicherstellen, dass das automatische Related-Update aequivalente XMLs auch
+  als gleich ansieht (sonst gibt es einen Recursion-Error beim Checkin).
+- Ordner löschen dürfen nur noch Benutzer mit der Rolle "Producer".
+- Templates können jetzt mit der Rolle "Producer" bearbeitet werden.
+- Es kommen keine Daten mehr aus anderen Threads in den eigenen (via
+  gocept.form>=0.7.5).
+- Listing von Links robuster.
+- Die Panels Clipboard und Bearbeitete Dokumente haben die Plaetze getauscht.
+- WYSIWYG-Editor bei der Infobox (bug #4364).
+- <a href> und <br/> in der BU (bug #4366).
+- Sinnvolles Metadata-Preview bei Bildergallerien.
+- Neuer Inhaltstyp: Datei
+- Verbesserter Parser für das ISO8601-Datumsformat.
+- Links fügen beim Syndizieren ihr Ziel in den Channel ein (als Attribut
+  ``{http://namespaces.zeit.de/CMS/link}href``), bug #4407.
+- "Kommentare erlaubt" jetzt bei den Standardmetadaten (bug #4385).
+- Bei der Center-Page ist Ausgabe und Jahr kein Pflichtfeld mehr (bug #4408).
+- Copyright-Default jetzt "ZEIT ONLINE" (bug #4409).
+- WYSIWYG-Editor: Bilder, die nicht direkt unterhalb des <p> sind werden
+  richtig erkannt.
+- Content-Typ für Text, HTML oder sonstwie rohe Daten (bug #4360).
+
+1.0b7 (2008-07-14)
+------------------
+
+- Automatisches Update der Bildmetadaten in Objekten, die das Bild
+  referenzieren.
+- Im Workflow-Log wird bei zeitgesteuerten Tasks die Zeit jetzt in CET
+  angezeigt (nur bei neuen Einträgen; bug #4355).
+- Beim Einchecken wird der Benutzer benachrichtigt, wenn die Related-Metadaten
+  nicht aktualisiert werden konnten.
+- Beim Einchecken wird der Benutzer benachrichtigt, wenn die Metadaten in nicht
+  in den Channeln aktualisiert werden konnten.
+- collapseTree liefert keinen sinnlosen KeyError mehr (bug #4308).
+
+
+1.0b6 (2008-07-10)
+------------------
+
+- View zum Anzeigen der Objekte, die den meisten Speicher verbrauchen.
+- Repository lädt jetzt Objekte auch per Pfad "/cms/work" und gibt das
+  entsprechende "http://xml.zeit.de"-Objekt zurück.
+- Portraitboxen haben jetzt noch einen <block> (bug #4325).
+- Der Text von Portraitboxen wird richtig geladen.
+- Biga: Text ist kein Pfichtfeld mehr (bug #4324).
+- XML-RPC-Methode zum veröffentlichen (bug #4331).
+- Align auf Bildern (bug #4349).
+- Änderungsdatum in Dateilisten in CET statt GMT (bug #4354).
+- Extra-BU bei Bildergallerien.
+- Begrenzung des Veröffentlichungszeitruams auf Daten bis 2030, weil sonst der
+  lovely.remotetask mist baut.
+- Konzept von temporären Checkouts um parallel veröffentlichen zu können.
+
+
+1.0b5 (2008-06-30)
+------------------
+
+- TypeError beim laden der UnknownResource durch neue Subclass
+  PersistentUnknownResource behoben.
+
+1.0b4 (2008-06-30)
+------------------
+
+- CMS-Lock-Behandlung repariert wenn Resourcen in anderne System gesperrt
+  werden (oder das CMS das denkt).
+- Workflow: Fehler beim Veröffentlichen/Zurückziehen im Objectlog speichern
+  und dem Benutzer anzeigen.
+- Unknown resource ist jetzt ``Persistent``, damit klappt auch das Speichern.
+- Repository entfernt Objekte im RAM an den Transaktionsgrenzen.
+- View zum anzeigen der Refcounts.
+
+1.0b3 (2008-06-28)
+------------------
+
+- Speichern von Assets stabiler (Persistenz-Problem).
+- Bild-Metdaten-Anzeige: Titel wird jetzt angezeigt (bug #4304).
+- CMS geht nicht mehr kaputt, wenn das today.xml leer ist (bug #4323).
+
+1.0b2 (2008-06-28)
+------------------
+
+- Die Channel-Ansicht geht nicht mehr kaputt, wenn ein Objekt ohne Titel
+  syndiziert wurde (bug #4312).
+- Entfernen von Links aus Channels stabilisiert.
+- Assets-Popup: Einklappen/Ausklappen des Baumens ohne Zugriff auf
+  WebDAV-Server.
+- Vernünftige Fehlermeldung, wenn ein Related nicht zum XML werden kann.
+- Korrektes Löschen von Caches beim abort (bug #4299).
+- Sperren von Resourcen beim Veröffentlichen.
+
+1.0b1 (2008-06-26)
+------------------
+
+- Styling des globalen Drop-Down-Menus
+- Menu im Metadaten-Preview funktioniert wieder.
+- Sortieren bestimmter Channels geht wieder (bug #4302).
+- Metadaten-Vorschau bei Bilderguppen zeigt Thumbnails der Bilder.
+- Bildergruppe geht nicht kaputt, wenn ein Ordner zur Bildergruppe wird, der
+  nicht nur Bilder enthält (bug #4301).
+- Asset-Views bei Center-Page (bug #4306).
+- SyndicatedIn-Source war optimistisch über den Inhalt und ging bei
+  "unbekannten Resourcen" kaputt (bug #4300).
+- DailyNL in den Standard-Metadaten (bug #4307).
+- JS-Warnung, wenn kein Firefox verwendet wird (bug #4305).
+- Popup-Asset/Image-Browser expandiert den automatisch Baum wenn man in einem 
+  Ordner drin ist.
+- date-last-modified als webdav-property für XML-Inhalte (bug #4310).
+
+0.9.22 (2008-06-23)
+-------------------
+
+- Die Relateds werden beim Ändern des relateds nicht mehr doppelt in den
+  Channel eingetragen (bug #4293).
+- Globale Menus umgebaut, so dass weniger wichtige Eintrage in einem Dropdown
+  verfügbar sind.
+- Manuelles einstellen von Jahr/Ausgabe (bug #4273).
+- Bilderordner beim Asset-Bearbeiten wird jetzt durch manuell eingestelltes
+  Jahr/Ausgabe bestimmt. Auf jedem Ordner kann durch die WebDAV-Property
+  {http://namespaces.zeit.de/CMS/Image}base-folder bestimmt werden wo die
+  Wurzel für den Bereich ist (z.B. /zuender ->
+  http://xml.zeit.de/bilder/zuender/)
+- Kein Fehler mehr beim Bearbeiten von Objekten, die nicht mehr im Repository
+  existieren (bug #4291).
+- Biga hat jetzt Assets (bug #4294).
+- Biga hat jetzt <gallery> als Root-Tag (bug #4295).
+- Metadaten bearbeiten: Spitzmarke füllt Kurzteasertitel und Titel füllt
+  Kurzteasertext (bug #4251).
+
+0.9.21 (2008-06-19)
+-------------------
+
+- Noch bessere Unterstützung für alte Bildergalerien, so dass auch der Text
+  richtig übernommen wird.
+
+0.9.20 (2008-06-18)
+-------------------
+
+- XML-Editor: <column> unterhalb von <block> erlaubt (Zuender)
+- XML-Editor: <block> mit priority="" geht nicht mehr kaputt.
+- XML-Editor: Lange URLs im <block href=... zerfetzen das Layout nicht mehr
+- XML-Editor: Bearbeiten von hrefs im <block>
+- XML-Editor: Besseres "Click-Verhalten" beim Anzeigen der Aktionen
+- Bessere Unterstützung für alte Bildergelerie
+
+0.9.19 (2008-06-16)
+-------------------
+
+- Re-added released_from/released_to to the Workflow interfaces.
+
+0.9.18 (2008-06-16)
+-------------------
+
+- Rekursives veröffentlichen und zurückziehen.
+- Lighbox-Überschrift überdeckt jetzt nicht mehr den Schließen-Knopf
+- Homepage-Teaser werden jetzt auch per JS begrenzt.
+- Das Verwenden verschiedener Formate in einer Bildergruppe ist jetzt erlaubt.
+- Veröffentlichungs- und Zurückziehscript eingebunden.
+- Spezieller Workflow für Assets (derzeit nur Bilder).
+- Zeitgesteuertes veröffentlichen/zurückziehen.
+- Unterressort auswählen funktioniert jetzt ohne vorherigem Speichern des
+  Ressorts (bug #4268).
+- Keyword-Typeahead rennt jetzt nicht mehr bei jedem Buchstaben zum Server;
+  außerdem wird das Ergebnis vom Browser gecacht (bug 4270).
+- "Unendlich"-Knopf bei Datumseingabe (leert das Feld).
+- Bilder haben kein besonderes Löschdatum mehr, dafür ist der Workflow da.
+- Formulare sind nicht mehr Denglisch (bug #3734).
+- WYSIWYG-Editor: Popups zeigen jetzt den Cursor an (bug #4221).
+- Tab "Syndizieren": Die Ziele sind jetzt nach der Id sortiert (bug #4269).
+- XML-Daten werden jetzt mit Pretty-Print zum DAV gegeben (bug #4256).
+- Dateiliste: Klick auf den Dateinamen selektiert die Zeile jetzt (bug #4255).
+- Homepage-Teaser/-Text haben jetzt keine Längenbegrenzung mehr.
+- Die Metadaten von Relateds und Bildern werden jetzt beim Checkin aktualisiert
+  (bug #4226).
+- Workgingcopy-Preview gibt Query-Argumente jetzt beim Rendern weiter, so dass
+  man auch die Seiten durchblättern kann (bug #4286).
+
+
+0.9.17 (2008-06-10)
+-------------------
+
+- Suche stirbt nicht mehr an Umlauten (bug #4195).
+- WYSIWYG-Editor: Listen werden jetzt korrekt unterstützt (bug #4223).
+- Datums/Zeit-Felder haben jetzt Knöpfe für "in einer Woche" und "in einem
+  Monat".
+- Neue Defaults für nicht-angezeigte Ordner (bug #4229).
+- Defaults für Syndizierungsziele (bug #4229).
+- Es gibt jetzt die Möglichkeit den Typ von Objekten im UI zu ändern.
+- Beim Bearbeiten/Aus-/Einchecken werden Processing-Instructiongs nicht mehr
+  gelöscht (bug #4258).
+- Aktion zum expliziten invalidieren des Caches eines Ordners.
+- Link-Objekt wird nach dem Anlegen auch automatisch ausgecheckt (bug #4254).
+- Asset-View refaktoriert: Links haben jetzt auch einen Asset-View.
+- Channels verstehen jetzt <block>s mit einem externen HREF. Diese Blöcke
+  werden angezeigt und können sortiert/entfernt werden (bug #4259).
+
+0.9.16 (2008-05-29)
+-------------------
+
+- Anlegen von Objekten mit Umlauten oder anderen wirren Zeichen führt nicht
+  mehr zum Systemfehler sondern gibt "Einschrankung nicht erfüllt" aus (bug
+  #4166).
+- Zweite Biga-Referenz im Artikel
+- Aus einem Channel können Objekte jetzt gelöscht werden (bug #4179).
+- Wird ein falsches Objekt bei den Assets referenziert gibt es jetzt eine
+  sinnvolle Fehlermeldung anstatt "Raised if Validaiont fails" (bug #4174).
+- Objekte Referenzieren: Wenn der Pfeil -> mit aktivem Shift, Ctrl oder Meta
+  gedrückt wird geht ein neues Tab/Fenster auf (bug #4175).
+- Auf der Biga gibt es jetzt einen Link zum Bild (bug #4180).
+- Der HTML-Titel im CMS beinhaltet jetzt den Titel des Objekts (bug #4152). 
+- ObjectBrowser zeigt jetzt den aktuellen Pfad an (bug #4058).
+- ObjectBrowser gibt eine Meldung aus, wenn im Ordner nichts auswählbares
+  vorhanden ist.
+
+0.9.15 (2008-05-26)
+-------------------
+
+- Channels werden beim Syndizieren gesperrt.
+- zeit.relation ist jetzt zeit.cms.relation.
+- Teilweise wurde ein <head><relateds> implizit ereugt, bug #4183.
+- Jedes Objekt weiß jetzt wohin es Syndiziert wurde (via zeit.cms.relation, bug
+  #4178).
+- Beim zurückziehen im Workflow wird ein Objekt aus den Channeln in denen es
+  enthalten ist entfernt (bug #4177).
+- Bildergalerie speichert ihre DAV-Properties jetzt auch im XML.
+- Zurückziehen von Objekten muss nochmals bestätigt werden, incl. Warnung über
+  die Konsequenzen.
+- Nachrichten werden nur noch im Fehlerfall 5s angezeigt, sonst 0.5.
+- Metadaten eines Bildes beim Referenzieren korrekt eingebunden (bug #4189).
+- Wenn eine Bildergruppe eingebettet wird hat das <image>-Tag jetzt das
+  Attribute "type", welches die Extension der Bilder angibt (bug #4188).
+- Wenn der WYSIWYG-Editor <div>s oder andere falsche Tags produziert, wird ein
+  <p> daraus (bug #4171).
+
+0.9.14 (2008-05-20)
+-------------------
+
+- Ein Objekt kann nur noch einmal ausgecheckt werden.
+- Sortierung des Panels "Ausgecheckte Dokumente" korrigiert: das zuletzt
+  ausgecheckte ist oben.
+- Diverse Typos, Wording
+- Sub-Navigation: Ermöglicht, dass es mehrere Subnavigations mit dem selben
+  Namen gibt.
+- Bilder/Links sind im WYSIWYG-Editor jetzt interne CMS-Links, damit z.B.
+  Bilder inline sofort angezeigt werden können (bug #4163).
+- WYSIWYG-Editor: Bild im Absatz einfügen löscht nicht mehr den Rest des
+  Textes.
+- WYSIWYG-Editor: Paste from Word erzeugt zuverlässiger Absätze
+- Im Preview von ausgecheckten Dokumenten kann man jetzt "reload" drücken (und
+  das Preview wird auch aktualisiert, Bug #4173)
+- Artikel ist jetzt in einem eigenen Package: zeit.content.article
+
+
+0.9.13 (2008-05-13)
+-------------------
+
+- Properties mit dem Namespace "DAV:" werden jetzt nicht mehr in XML-Dokumente
+  kopiert (bug #4126).
+- Filter in Dateiliste reagiert jetzt auf Dateinamen (bug #4132).
+- Videos können jetzt im WYSIWYG-Editor bearbeitet und eingefügt werden (bug
+  #4149).
+- Neuer Contenttype: Portraitboxen (bug #3852).
+- Portraitbox in Artikel verlinken (bug #4051).
+- Behandlung von Clipboard-Einträgen auf gelöschte Objekte verbessert.
+- Sortierung nach Änderungsdatum ging nicht immer (bug #4150).
+- Wenn ein Verzeichnis XML-Resourcen enthält, die kein valides XML enthalten
+  werden sie jetzt als unbekannte Resource interpretiert (bug #4151).  
+
+
+0.9.12 (2008-04-30)
+-------------------
+
+- "Erstes Related als Box" (bug #4053).
+- status=OK bei veröffentlichten Dokumenten (bug #4125).
+- Sortierung der Suche (Jahr/Ausgabe) korrigiert (bug #4113).
+- ehannels mit body/container liefert kein Forbidden mehr.
+
+0.9.11 (2008-04-28)
+-------------------
+
+- Selten gebrauchte Aktionen in ein DropDown verschoben (derzeit umbenennen und
+  löschen).
+- Einige Menu-Titel wurden nicht übersetzt (bug #4115)
+- Unterstützung für alte Channels mit body/container (bug #4109).
+- Favicon im CMS jetzt mit rosa Hintergrund zur besseren Unterscheidung (bug
+  #4127).
+- Objekte können jetzt kopiert werden: Aktion auf Ordnern bei der man das zu
+  kopierende Objekt aus dem Clipboard wählt (bug #4130).
+- Breadcrumbs sind wieder draggable.
+- Keine freie Eingabe von Keywords mehr (bug #4120).
+- Doppelte Eingabe von Keywords nicht mehr möglich (bug #4119).
+- Liste der Keywords bei Typeahead ist jetzt sortiert.
+
+0.9.10 (2008-04-22)
+-------------------
+
+- Droppen von Objekten in einen Channel führt nicht mehr zum JS-Fehler (sondern
+  zu einer richtigen Fehlermeldung), bug #4094.
+- Horizontales scrollen in der Dateiliste erlaubt, wenn die Tabelle zu breit
+  wird.
+- Channel haben jetzt <channel> als Root-Tag (bug #4109).
+- Relateds werden jetzt bei der Syndizierung mit eingefügt (bug #4106).
+- Asset-Bearbeiten/Anzeigen-Seite produzierte einen Systemfehler, wenn es
+  artbox_info als Property gab, diese aber leer war oder einen ungültigen Wert
+  hatte (bug #4124)
+- Formlayout bei geringer Breite nicht mehr zerpflückt (bug #4118).
+- Homepage-Teaser hinzugefügt (bug #4122).
+- Related werden jetzt mit Kurzteaser und HP-Teaser eingebettet.
+- Factored out zeit.ldap into its own package.
+- Im Workflowtab werden Statusänderungen jetzt als Log angezeigt (bug #4121).
+
+0.9.9 (2008-04-14)
+------------------
+
+- Veraltete Einträge im Funktions-/Methodencache werden jetzt alle 100 Requests
+  entfernt.
+- Im Channel werden die Treffer/Hits (today.xml) des jeweiligen Dokuments
+  angezeigt (bug #4093).
+- Bildergalerie: Layout kann pro Bild eingestellt werden (bug #4048).
+- Bildergallerie bei Artikel referenzieren (bug #4052).
+- Workflowstatus "Bearbeitet" heißt jetzt "redigiert" (bug #4089).
+- Draggen von Dokumenten in den Kalender funktioniert wieder (bug #4096).
+- Kalender-Eintrag: Formular übersichtlicher
+- Draggen von Elementen aus "Bearbeitete Dokumente" (bug #4095).
+- Bearbeite Dokumente: Das zuletzt ausgecheckte Dokument steht jetzt oben (bug
+  #4054).
+- Verlinkte Objekte: 3-Punkte-Symbol mit Mouse over versehen (bug #4057).
+- Verlinkte Objekte: Zusätzlicher Knopf (Pfeil nach rechts) um zum verlinkten
+  Objekt zu gelangen (bug #4082).
+
+0.9.8 (2008-04-09)
+------------------
+
+- Related konnte nicht mehr in der Lightbox ausgewählt werden
+  (ScrollStateRestorer not defined).
+- Bug beim Referenzieren von Objekten behoben, z.B. ging ein Image als Related
+  nicht, unbekannte Resourcen konnten nicht verlinkt werden (Systemfehler).
+- Titel der Workflow-Status-Suchfelder korrigiert (bug #4088).
+- Besseres cachen der Datenquellen (in zeit.cms.content.sources).
+- WYSIWYG-Editor: Auswählen von Objekten aus dem Clipboard repariert (bug
+  #4097).
+- Fließtext kann jetzt Bilder beinhalten. Diese sind vom Server per FCKEditor
+  Filebrowser auswählbar (bug #4090)
+- Text in der Gallery ist jetzt auch per WYSIWYG-Editor bearbeitbar (bug
+  #4091).
+
+
+0.9.7 (2008-04-07)
+------------------
+
+- Die Bedingungen für die Veröffentlichung werden explizit geprüft: Ein Objekt
+  kann nur veröffentlicht werden, wenn es "eilig" ist oder die Status auf ja /
+  nicht nötig stehen (bug #4068).
+- Objekte können zurückgezogen werden (aus der Veröffentlichung, bug #4081)
+- Suche kann die Workflowstatus "bearbeitet" und "Bilder hinzugefügt" suchen
+  (bug #4083).
+- Die Not Found (404) Seite sieht jetzt wieder ansprechend aus.
+- Systemfehler werden jetzt etwas schöner und informativer angezeigt (bug
+  #4033).
+- Bilder haben jetzt eine URL (bug #4047).
+- Bug in Clickcounter-Cache behoben: today.xml wird jetzt auch gecacht.
+- Indikator im Dateilisting zeigt den Veröffentlichungszustand: nicht
+  veröffentlicht (rot), veröffentlicht (grün) oder veröffentlicht mit
+  Änderungen im CMS (gelb/orange). (bug #3954)
+- Metadaten-Vorschau zeigt sämtliche Workflow-Attribute auf der rechten Seite
+  (bug #3954).
+
+
+0.9.6 (2008-04-03)
+------------------
+
+- DefaultView fuer Infobox hinzugefügt.
+- Assets eines Artikels werden jetzt in eigenem Formular bearbeitet.
+- Automatisches Anlegen des Ordners mit den Workingcopy-Vorschau-Daten (bug
+  #4056)
+- Standardlöschdatum eines Bildes "in 7 Tagen" (bug #4019)
+- Das Unterressort ist jetzt auch eine Drop-Down. Es ist abhängig von der
+  Auswahl des Ressorts (bug #4036).
+- Wenn ein Artikel ein Ressort mit Umlaut hatte, welches nicht in der
+  ressort.xml enthalten war ab es einen Systemfehler beim logging.
+
+
+0.9.5 (2008-03-25)
+------------------
+
+- Besser sichtbar gemacht ob ein Objekt gesperrt ist (bug #4025)
+- Sortierung in Listen: Jahres/Ausgaben-Ordner zuerst, Groß-/Kleinschreibung
+  ignorieren (bug #3926)
+- Bei Aktionen Nachricht an den User senden (bug #4022)
+- "Sperre stehlen" gibt dem stehlenden jetzt den Lock.
+- Fixed clipboard entry delete from action menu.
+- Made context action icons lighter with hover effect.
+- Using (x) delete icon instead of "Remove" in clipboard (bug #4045)
+- Allowed-renaming of clips (bug #4063)
+- Fixed a bug which prevented adding clips containing / or starting with @ or +
+- Hide root nodes in repository and clipboard because those are redundant
+  (panel header already shows this information). Also moved the trees to the
+  left to save some space. As a side effect one now has to add a clip before
+  adding anything to the clipboard.

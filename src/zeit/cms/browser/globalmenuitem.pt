@@ -1,0 +1,7 @@
+<li class=""
+  tal:attributes="class view/css">
+<a
+  tal:attributes="href view/url;"
+  tal:content="view/title"
+  i18n:translate="">Menu item</a>
+</li>

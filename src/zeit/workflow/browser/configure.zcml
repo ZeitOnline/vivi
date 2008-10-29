@@ -1,0 +1,78 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".token.fromNotNecessary" />
+
+  <!-- Register a multiplexer which returns the actual object on
+  IRepositoryContent. The workflow_form_factory then does another lookup for
+  IEditorialContent or IAsset or what ever. 
+  -->
+  <adapter
+    for="zeit.cms.repository.interfaces.IRepositoryContent
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.publisher.interfaces.browser.IBrowserPage"
+    factory=".form.workflow_form_factory"
+    name="workflow.html"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Workflow"
+    action="@@workflow.html"
+    permission="zeit.workflow.Publish"
+    />
+
+  <adapter
+    factory=".form.ContentWorkflow"
+    provides=".interfaces.IWorkflowForm"
+    />
+  <adapter
+    factory=".form.AssetWorkflow"
+    provides=".interfaces.IWorkflowForm"
+    />
+  <adapter
+    factory=".form.NoWorkflow"
+    provides=".interfaces.IWorkflowForm"
+    />
+
+  <browser:viewlet
+    name="workflow"
+    manager="zeit.cms.browser.interfaces.IMetadataPreview"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".metadata.WorkflowPreview"
+    template="workflow-preview.pt"
+    permission="zope.View"
+    />
+
+  <adapter factory=".objectlog.ProcessForDisplay" />
+
+
+  <!-- Status indicators -->
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.IEditorialContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.cms.workflow.browser.interfaces.IWorkflowIndicator"
+    name="status"
+    class=".indicator.ContentStatus"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.IAsset"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.cms.workflow.browser.interfaces.IWorkflowIndicator"
+    name="status"
+    class=".indicator.AssetStatus"
+    permission="zope.View"
+    />
+
+</configure>

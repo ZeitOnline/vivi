@@ -1,0 +1,730 @@
+Converting to HTML
+==================
+
+The HTML representation ... 
+
+
+We need the functional test setup and an interaction:
+
+>>> import zope.security.management
+>>> import zope.security.testing
+>>> import zope.publisher.browser
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> request = zope.publisher.browser.TestRequest()
+>>> request.setPrincipal(zope.security.testing.Principal(u'hans'))
+>>> zope.security.management.newInteraction(request)
+
+
+Create an XML structure containing a body:
+
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>A paragraph</p>
+...     <p>Another <em>paragraph</em></p>
+...     <teaser/>
+...   </body>
+... </article>'''
+
+Instanciate a test content:
+>>> import StringIO
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+
+Manually adapt to HTML:
+
+>>> import zope.publisher.browser
+>>> import zeit.wysiwyg.html
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> converter
+<zeit.wysiwyg.html.HTMLConverter object at 0x...>
+
+Get the HTML representation:
+
+>>> print converter.to_html(article.xml['body'])
+<p>A paragraph</p>
+<p>Another <em>paragraph</em></p>
+
+
+The original article xml is of course unmodifed so far:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <p>A paragraph</p>
+    <p>Another <em>paragraph</em></p>
+    <teaser/>
+  </body>
+</article>
+
+
+Now for something more complex, the intertitle:
+
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>A paragraph</p>
+...     <intertitle>Paragraphs are nice</intertitle>  
+...     <p>Another <em>paragraph</em></p>
+...     <teaser/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+
+In the html `intertitle` becomes an `h3`:
+>>> print converter.to_html(article.xml['body'])
+<p>A paragraph</p>
+<h3>Paragraphs are nice</h3>
+<p>Another <em>paragraph</em></p>
+
+
+Now we change the HTML and see the reflection in the article XML. The `h3` in
+the html becomes an `intertitle` again:
+
+>>> converter.from_html(article.xml['body'], """\
+...   <p>A paragraph with more <em>markup</em></p>
+...   <h3>Paragraphs are nice</h3>
+...   <p>Another <em>paragraph</em></p>
+...   <p>Bla bla bla</p>
+... """)
+
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>A paragraph with more <em>markup</em></p>
+    <intertitle>Paragraphs are nice</intertitle>
+    <p>Another <em>paragraph</em></p>
+    <p>Bla bla bla</p>
+  </body>
+</article>
+
+
+HTML-entities are replaced by the real character, but XML entities are not:
+
+>>> converter.from_html(article.xml['body'], """\
+...   <p>&mdash;&gt;&lt;</p>
+... """)
+
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>—&gt;&lt;</p>
+  </body>
+</article>
+
+Empty p-tags and tags containing nothing but whitespace will be removed on
+saving. br's inside a <p> are kept:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><h3/><foo/><p/><p> </p><p><b>bar<br/></b></p>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <p>
+      <b>bar<br/></b>
+    </p>
+  </body>
+</article>
+
+Also all "root"-tags we don't know are converted to <p>. The "remove empty p"
+rule is applied after that:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><div>blah</div><div/><foo>bluba</foo>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <p>blah</p>
+    <p>bluba</p>
+  </body>
+</article>
+
+
+Lists
+-----
+
+Lists are <ul> and <ol>. They're supported as root tag:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><ul><li>bar</li><li>baz</li></ul>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <ul>
+      <li>bar</li>
+      <li>baz</li>
+    </ul>
+  </body>
+</article>
+
+Of course the other way round works as well:
+
+>>> print converter.to_html(article.xml['body'])
+<p>Foo</p>
+<ul>
+  <li>bar</li>
+  <li>baz</li>
+</ul>
+
+<ol> also works:
+
+>>> converter.from_html(article.xml['body'],
+...     '<p>Foo</p><ol><li>bar</li><li>baz</li></ol>')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8')
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Foo</p>
+    <ol>
+      <li>bar</li>
+      <li>baz</li>
+    </ol>
+  </body>
+</article>
+
+Of course the other way round works as well:
+
+>>> print converter.to_html(article.xml['body'])
+<p>Foo</p>
+<ol>
+  <li>bar</li>
+  <li>baz</li>
+</ol>
+
+Mapping of cms urls to unique id and vice versa
+-----------------------------------------------
+
+The converter has a helper method to convert urls which point to the cms to a
+unique id:
+
+>>> converter._url_to_id('http://127.0.0.1/repository/wirtschaft.feed')
+u'http://xml.zeit.de/wirtschaft.feed'
+>>> converter._url_to_id('http://127.0.0.1/repository/online/2007/01/Somalia')
+u'http://xml.zeit.de/online/2007/01/Somalia'
+
+When the url doesn't point to an existing object in the repository, the url is
+returned:
+
+>>> converter._url_to_id('http://127.0.0.1/repository/online/2020/hamwanich')
+'http://127.0.0.1/repository/online/2020/hamwanich'
+>>> converter._url_to_id('http://127.0.0.1/flubber')
+'http://127.0.0.1/flubber'
+
+The url is also just returned if it is completely unrelated:
+>>> converter._url_to_id('http://gocept.com')
+'http://gocept.com'
+
+
+The method `_id_to_url` handles the other way round:
+
+>>> converter._id_to_url('http://xml.zeit.de/wirtschaft.feed')
+'http://127.0.0.1/repository/wirtschaft.feed'
+>>> converter._id_to_url('http://xml.zeit.de/online/2007/01/Somalia')
+'http://127.0.0.1/repository/online/2007/01/Somalia'
+
+When the id doesn't point to an existing object in the repository, the id is
+returned:
+
+>>> converter._id_to_url('http://xml.zeit.de/online/2020/hamwanich')
+'http://xml.zeit.de/online/2020/hamwanich'
+>>> converter._id_to_url('http://xml.zeit.de/flubber')
+'http://xml.zeit.de/flubber'
+
+The url is also just returned if it is completely unrelated:
+
+>>> converter._id_to_url('http://gocept.com')
+'http://gocept.com'
+
+
+We map all <a href=..."> according to the schema above:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>Aus winzigen embryonalen ...</p>
+...     <p>Fuer <a href="http://xml.zeit.de/online/2007/01/Somalia">
+...         menschliche</a></p>
+...     <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>Aus winzigen embryonalen ...</p>
+<p>Fuer <a href="http://127.0.0.1/repository/online/2007/01/Somalia">
+        menschliche</a></p>
+<p>Selbst wenn </p>
+
+The other way round:
+
+>>> converter.from_html(article.xml['body'], """\
+...     <p>Aus winzigen embryonalen ...</p>
+...     <p>Fuer <a
+...         href="http://127.0.0.1/repository/online/2007/01/eta-zapatero">
+...     menschliche</a></p>
+...     <p>Selbst wenn </p>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article ...>
+  <head/>
+  <body>
+    <title>Title</title>
+    <p>Aus winzigen embryonalen ...</p>
+    <p>Fuer <a href="http://xml.zeit.de/online/2007/01/eta-zapatero">
+    menschliche</a></p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+
+Images
+------
+
+Articles can have inline images[#copyright-and-bu]_. This looks as follows:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>Aus winzigen embryonalen ...</p>
+...     <p>Fuer menschliche
+...      <image type="jpg" expires="2100-01-01"
+...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
+...         align="right">
+...         <bu>Der erste Schritt zum Klon</bu>
+...         <copyright>jemand</copyright> BILD </image> Zellen ist das toll.</p>
+...         <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+
+So the image is included in a paragraph. When creating html we'll get an <img>
+tag:
+
+>>> print converter.to_html(article.xml['body'])
+<p>Aus winzigen embryonalen ...</p>
+<p>Fuer menschliche
+ <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+  Zellen ist das toll.</p>
+<p>Selbst wenn </p>
+
+
+Setting an img in html creates an image tag. This copies the data from the
+image:
+
+>>> converter.from_html(article.xml['body'], '''\
+... <p>Fuer menschliche
+...  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+...   Zellen ist das toll.</p>
+... <p>Aus winzigen embryonalen ...</p>
+... <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article ...>
+  <head/>
+  <body>
+    <title>Title</title>
+    <p>Fuer menschliche
+ <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
+  Zellen ist das toll.</p>
+    <p>Aus winzigen embryonalen ...</p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+Just re-check the conversion to HTML:
+
+>>> print converter.to_html(article.xml['body'])
+<p xmlns:py="http://codespeak.net/lxml/objectify/pytype">Fuer menschliche
+ <img xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+  Zellen ist das toll.</p>
+<BLANKLINE>
+<p>Aus winzigen embryonalen ...</p>
+<BLANKLINE>
+<p>Selbst wenn </p>
+
+
+
+We are greedy against old paths in the XML:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <p>Fuer menschliche
+...      <image type="jpg" expires="2100-01-01"
+...         src="/cms/work/2006/DSC00109_2.JPG"
+...         align="right">
+...         <bu>Der erste Schritt zum Klon</bu>
+...         <copyright>jemand</copyright> BILD </image></p>
+...         <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>Fuer menschliche
+ <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
+<p>Selbst wenn </p>
+
+
+If the image does not longer exists, we render an img-tag with the unique id:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <p>Fuer menschliche
+...      <image type="jpg" expires="2100-01-01"
+...         src="http://xml.zeit.de/bilder/asdf.jpg"
+...         align="right">
+...         <bu>Der erste Schritt zum Klon</bu>
+...         <copyright>jemand</copyright> BILD </image></p>
+...         <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>Fuer menschliche
+ <img ... src="http://xml.zeit.de/bilder/asdf.jpg"/></p>
+<p>Selbst wenn </p>
+
+
+When the url doesn't belong to the CMS it is put out directly, as well:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <p>Fuer menschliche
+...      <image type="jpg" expires="2100-01-01"
+...         src="http://images.gocept.com/bilder/asdf.jpg"
+...         align="right">
+...         <bu>Der erste Schritt zum Klon</bu>
+...         <copyright>jemand</copyright> BILD </image></p>
+...         <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>Fuer menschliche
+ <img ... src="http://images.gocept.com/bilder/asdf.jpg"/></p>
+<p>Selbst wenn </p>
+
+
+When setting an image with an url outsite of the cms or otherwise unknown to
+the cms, a simple <image src="..."> element is created:
+
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>Fuer menschliche
+...     <img src="http://images.gocept.com/bilder/asdf.jpg"/></p>
+...     <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>Fuer menschliche
+    <image src="http://images.gocept.com/bilder/asdf.jpg"/></p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+Make sure this works also when the url starts with the repository url:
+
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>Fuer menschliche
+...     <img src="http://127.0.0.1/repository/bilder/asdf.jpg"/></p>
+...     <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>Fuer menschliche
+    <image src="http://127.0.0.1/repository/bilder/asdf.jpg"/></p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+When a non-image resource is referenced a simpele <image> tag is generated,
+too:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>Fuer menschliche
+...     <img src="http://127.0.0.1/repository/politik.feed"/></p>
+...     <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>Fuer menschliche
+    <image src="http://127.0.0.1/repository/politik.feed"/></p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+Bug: ``<p><strong><img`` was not recognised correctly:
+
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+...            Hurz</strong> foobar </p>
+...     <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p><strong><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires=""><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
+           Hurz</strong> foobar </p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
+
+Recheck the conversion to HTML:
+
+>>> print converter.to_html(article.xml['body'])
+<p xmlns:py="http://codespeak.net/lxml/objectify/pytype"><strong><img xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+           Hurz</strong> foobar </p>
+<p>Selbst wenn </p>
+
+
+
+
+``article_extra``
+-----------------
+
+There are several hooks in the XSLTs which are triggered with the
+``article_extra`` tag.
+
+Videos for instance are not managed in the CMS, they're just referenced via
+something like `<article_extra id="video_article" videoID="20080402334ddf"/>`.
+
+Create an "article" which references a video:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <p>No bo po co to.</p>
+...     <article_extra id="video_article" videoID="20080402334ddf"/>
+...     <p>Foo bar</p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+
+The HTML used for editing is a ``input``-tag.
+
+>>> print converter.to_html(article.xml['body'])
+<p>No bo po co to.</p>
+<p>
+  <input type="text" name="" value="video_article: videoID=20080402334ddf"
+    size="60"/>
+</p>
+<p>Foo bar</p>
+
+Converting back yields the ``article_extra``
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <p><input type="text" name="" value="video_article: videoID=newvideoid" /></p>
+...     <p>Foo bar</p>''')
+
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <article_extra videoID="newvideoid" id="video_article"/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
+
+Attributes only
++++++++++++++++
+
+When there is no : in the value just the attributes are set:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <p><input type="text" name="" value="videoID=another-videoid" /></p>
+...     <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <article_extra videoID="another-videoid"/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
+
+>>> print converter.to_html(article.xml['body'])
+<p>No bo po co to.</p>
+<p>
+  <input type="text" name="" value="videoID=another-videoid" size="60"/>
+</p>
+<p>Foo bar</p>
+
+
+
+Multiple attributes
++++++++++++++++++++
+
+It is possible to set multiple attributes:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <p><input type="text" name="" value="videoID=another-videoid foo=bar" /></p>
+...     <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <article_extra foo="bar" videoID="another-videoid"/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
+>>> print converter.to_html(article.xml['body'])
+<p>No bo po co to.</p>
+<p>
+  <input type="text" name="" value="foo=bar videoID=another-videoid" size="60"/>
+</p>
+<p>Foo bar</p>
+
+
+No attributes
+-------------
+
+It is also possible to just set the id, as for the mailformular:
+
+>>> converter.from_html(article.xml['body'], '''\
+...  <p>No bo po co to.</p>
+...  <p>
+...   <input type="text" name="" value="mailformular" size="60"/>
+...  </p>
+...  <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <article_extra id="mailformular"/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
+>>> print converter.to_html(article.xml['body'])
+<p>No bo po co to.</p>
+<p>
+  <input type="text" name="" value="mailformular" size="60"/>
+</p>
+<p>Foo bar</p>
+
+
+
+Faulty value
+++++++++++++
+
+When there is more than one : in the key, ``invalid`` attributes will be
+created:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <p><input type="text" name="" value="foo:another:videoid foo:bar=baz" /></p>
+...     <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <article_extra invalid1="foo:bar=baz" id="foo"
+        invalid2="another:videoid=another:videoid"/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
+>>> print converter.to_html(article.xml['body'])
+<p>No bo po co to.</p>
+<p>
+  <input type="text" name="" value="foo: invalid2=another:videoid=another:videoid invalid1=foo:bar=baz" size="60"/>
+</p>
+<p>Foo bar</p>
+
+The text field is not required, so the converter must be able to eat "None":
+
+>>> converter.from_html(article.xml['body'], None)
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body/>
+</article>
+
+
+
+Clean up:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#copyright-and-bu] Set a copyright and a BU for the image
+
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+    >>> image = repository['2006']['DSC00109_2.JPG']
+    >>> import zeit.cms.checkout.interfaces
+    >>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
+    >>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
+    >>> metadata.copyrights = ((u'ZEIT ONLINE', u'http://zeit.de'),)
+    >>> metadata.caption = u'Cap cap cap'
+    >>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()

@@ -1,0 +1,26 @@
+<div class="object-widget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id string:${view/name}.outerdiv">
+  <input type="hidden" value="1"
+    tal:attributes="name string:${view/name}.present" />
+  <input class="object-reference" type="text"
+    tal:attributes="
+    id view/name;
+    name view/name;
+    value view/_getFormValue" />
+  <input title="Choose object" class="browse-objects" type="button" 
+    name="browseObjects" value="…" 
+    i18n:attributes="title" />
+  <input title="Show object" class="show-referenced-object" type="button" 
+    name="showReferencedObject" value="→" 
+    i18n:attributes="title" />
+  <tal:workflow replace="structure view/workflow" />
+</div>
+<script tal:content="string:
+  new ObjectReferenceWidget(
+  '${view/name}.outerdiv',
+  '${view/default_browsing_location/@@absolute_url}',
+  '${view/type_filter_token}',
+  ${view/show_popup});
+  ">
+</script>

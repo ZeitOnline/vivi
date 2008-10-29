@@ -1,0 +1,22 @@
+<div id="rename-box" class="floating" i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">
+    Rename
+    <span tal:replace="python:context.uniqueId"
+      i18n:name="object-unique-id"/>
+  </h1>
+  <div class="warning"
+    i18n:translate="rename-box-warning">
+    Note: Renaming destroys links. 
+  </div>
+
+  <span class="nextUrl"
+    tal:content="string:${context/@@absolute_url}/@@view.html" />
+
+  <form id="lightbox.form" action="#"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form">
+
+  </form>
+
+</div>  
