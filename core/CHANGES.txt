@@ -5,6 +5,7 @@ zeit.cms changes
 ------------------
 
 - Keywords werden alle 5 Minuten neu geladen (Bug #4501).
+- SEO aus dem Kern entfernt.
 
 1.2.4 (2008-10-24)
 ------------------
