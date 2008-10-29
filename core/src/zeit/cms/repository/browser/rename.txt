@@ -1,0 +1,83 @@
+========
+Renaming
+========
+
+Renaming involves quite a bit javascript, try to test it anyway.
+
+Create a browser first:
+
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+
+Open a document view. There is a javascript link to rename:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
+>>> browser.getLink('Rename')
+<Link text='[IMG] Rename'
+ url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@rename-box')">
+
+Let's open the document indicated by the javascript link:
+
+
+>>> browser.handleErrors = False
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'online/2007/01/Somalia/@@rename-box')
+>>> print browser.contents
+<div id="rename-box" class="floating">
+  <h1>
+    Rename
+    http://xml.zeit.de/online/2007/01/Somalia
+  </h1>
+  <div class="warning">
+    Note: Renaming destroys links.
+  </div>
+  ...
+</div>
+
+The new name field initially contains the old name:
+
+>>> browser.getControl('New file name').value
+'Somalia'
+
+When we just submit we'll get an error because 'Somalia' already exists:
+
+>>> browser.getControl('Rename').click()
+>>> print browser.contents
+<div id="rename-box" class="floating">
+    ...
+    <ul class="errors">
+       <li>
+          New file name: <span class="error">"Somalia" already exists.</span>
+       </li>
+    </ul>
+    ...
+
+
+Choose a new name now and submit:
+
+>>> browser.getControl('New file name').value = 'Somalia-krieg'
+>>> browser.getControl('Rename').click()
+
+The page contains the url to the renamed object:
+
+>>> print browser.contents
+<div id="rename-box" class="floating">
+    ...
+   <span class="nextUrl">http://localhost/++skin++cms/repository/online/2007/01/Somalia-krieg/@@view.html</span>
+    ...
+    
+
+When we open the indicated url, well have a message waiting that the content
+was renamed:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/'
+...              '2007/01/Somalia-krieg/@@view.html')
+>>> print browser.contents
+<?xml ...
+   <li class="message">Renamed "Somalia" to "Somalia-krieg"</li>
+              ...
+
+

@@ -1,0 +1,183 @@
+FCK filebrowser connector
+=========================
+
+The filebrowser connector connects the fck editor to the CMS.
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+The connector has a strange, well php-like, interface, so we have to pass all
+the information as arguments instead of having views on objects :/
+
+>>> base_url = 'http://localhost/@@zeit-fckeditor-link-browser.html?%s'
+
+
+List the folders and files in /
+
+>>> import urllib
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/" url="http://localhost"/>
+  <Folders>
+    <Folder name="repository" title="repository"/>
+    <Folder name="zeit.cms.clipboard.clipboard.Clipboard"
+            title="Clipboard"/>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+Descent to the repository:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/repository/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/repository/"
+                 url="http://localhost"/>
+  <Folders>
+    <Folder name="online" title="online"/>
+    <Folder name="2006" title="2006"/>
+    <Folder name="2007" title="2007"/>
+  </Folders>
+  <Files>
+    <File size="0" url="http://localhost/repository/politik.feed"
+          name="politik.feed (Politik)"/>
+    <File size="0" url="http://localhost/repository/testcontent"
+          name="testcontent (testcontent)"/>
+    <File size="0" url="http://localhost/repository/wirtschaft.feed"
+          name="wirtschaft.feed (Wirtschaft)"/>
+  </Files>
+</Connector>
+
+
+Let's descent from the root into the clipboard:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
+                 url="http://localhost"/>
+  <Folders>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+The clipboard is empty. This is not very interesting. Create a clip and put
+something in there:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
+...     'title=New+Clip')
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
+...     'add_to=New+Clip&unique_id=http://xml.zeit.de/wirtschaft.feed')
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/'
+...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
+...     'add_to=New+Clip&unique_id=http://xml.zeit.de/politik.feed')
+
+
+Let's have a look how the clipboard looks now:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
+                 url="http://localhost"/>
+  <Folders>
+    <Folder name="New Clip" title="New Clip"/>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+
+Our clip is listed! Decent:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/New Clip'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/New Clip"
+                 url="http://localhost"/>
+  <Folders>
+  </Folders>
+  <Files>
+    <File size="0" url="http://localhost/repository/politik.feed"
+          name="politik.feed (Politik)"/>
+    <File size="0" url="http://localhost/repository/wirtschaft.feed"
+          name="wirtschaft.feed (Wirtschaft)"/>
+  </Files>
+</Connector>
+
+
+For easier image browsing the folder /bilder is automatically added to the root
+when it exists. Currently it doesn't exist. We saw that above. Create it:
+
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Folder']
+>>> url = menu.value[0]
+>>> browser.open(menu.value[0])
+>>> browser.getControl("File name").value = 'bilder'
+>>> browser.getControl("Add").click()
+
+The root listing contains it now:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/" url="http://localhost"/>
+  <Folders>
+    <Folder name="bilder" title="bilder"/>
+    <Folder name="repository" title="repository"/>
+    <Folder name="zeit.cms.clipboard.clipboard.Clipboard"
+            title="Clipboard"/>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>
+
+List it:
+
+>>> browser.open(base_url % (urllib.urlencode(
+...     dict(Command='GetFoldersAndFiles',
+...          Type='File',
+...          CurrentFolder='/bilder/'))))
+>>> print browser.contents
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector resourceType="File" command="GetFoldersAndFiles">
+  <CurrentFolder path="/bilder/" url="http://localhost"/>
+  <Folders>
+  </Folders>
+  <Files>
+  </Files>
+</Connector>

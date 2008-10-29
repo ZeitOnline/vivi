@@ -1,0 +1,70 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <include file="file.zcml" />
+
+  <class class=".repository.Repository">
+    <require like_class="zope.app.folder.folder.Folder" />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View" />
+  </class>
+
+  <class class=".folder.Folder">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require like_class="zope.app.folder.folder.Folder" />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View" />
+  </class>
+
+  <interface
+    interface=".interfaces.IFolder"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+  <adapter factory=".folder.folderFactory" name="collection" />
+  <adapter factory=".folder.folderToResource" />
+  <adapter factory=".folder.folder_sort_key" />
+
+  <adapter factory=".repository.cmscontentFactory" />
+  <subscriber handler=".repository.invalidate_uncontained_content" />
+
+  <!-- content object creation
+
+  The adapters are registered with the identifying name. Note that those names
+  are not known yet, and therefore are filled with guessed values.
+  -->
+
+  <subscriber handler=".repository.initializeRepository" />
+  
+  <adapter factory=".preference.preferenceFactory" />
+
+  <adapter factory=".unknown.unknownResourceFactory" name="unknown" />
+  <adapter factory=".unknown.resourceFactory" />
+  <class class=".unknown.PersistentUnknownResource">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require interface=".interfaces.IUnknownResource"
+      permission="zope.View" />
+    <require set_schema=".interfaces.IUnknownResource"
+      permission="zeit.EditContent" />
+    <require interface="zeit.cms.content.interfaces.ITextContent"
+      permission="zope.View" />
+    <require set_schema="zeit.cms.content.interfaces.ITextContent"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".unknown.PersistentUnknownResource"
+    zcml:have="zeit.cms.testing">
+    <implements interface="zeit.cms.interfaces.IEditorialContent" />
+  </class>
+
+
+  <class class=".unknown.UnknownResource">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require like_class=".unknown.PersistentUnknownResource" />
+  </class>
+  
+</configure>
+

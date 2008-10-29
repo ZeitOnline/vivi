@@ -1,0 +1,16 @@
+<dl i18n:domain="zeit.cms">
+  <dt i18n:translate="">File name</dt>
+  <dd>
+    <a href="download"
+      tal:attributes="href context/@@absolute_url"
+      tal:content="context/__name__">
+      foo.pdf
+    </a>
+  </dd>
+  <dt i18n:translate="">Content type</dt>
+  <dd tal:content="context/mimeType">application/pdf</dd>
+  <dt i18n:translate="">Size</dt>
+  <dd i18n:translate="">
+    <span tal:replace="context/size" i18n:name="size"/> bytes
+  </dd>
+</dl>

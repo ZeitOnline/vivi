@@ -1,0 +1,23 @@
+CMS content
+===========
+
+The `ICMSContent` interface defines that __name__ can only have a very limited
+set of characters:
+
+>>> import zeit.cms.interfaces
+>>> field = zeit.cms.interfaces.ICMSContent['__name__']
+>>> field.validate(u'ABC')
+>>> field.validate(u'abc')
+>>> field.validate(u'ab99')
+>>> field.validate(u'bl:')
+Traceback (most recent call last):
+    ...
+ConstraintNotSatisfied: bl:
+>>> field.validate(u'bl\xfc')
+Traceback (most recent call last):
+    ...
+ConstraintNotSatisfied: <unprintable instance object>
+>>> field.validate(u'bl/')
+Traceback (most recent call last):
+    ...
+ConstraintNotSatisfied: bl/

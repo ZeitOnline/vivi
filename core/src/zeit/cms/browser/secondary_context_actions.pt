@@ -1,0 +1,15 @@
+<li i18n:domain="zeit.cms"
+  tal:define="actions view/items"
+  tal:condition="actions"
+  tal:attributes="class view/css">
+  <a title="Additional actions" 
+    tal:attributes="href string:javascript:zeit.cms.menu.toggle('${view/menu_id}')"
+    i18n:attributes="title">
+    <img alt="actionmenuicon"
+      tal:attributes="src context/++resource++zeit.cms/icons/submenu.png" />
+  </a>
+  <ul class="secondary-context-actions hidden"
+    tal:attributes="id view/menu_id"
+    tal:content="structure actions">
+  </ul>
+</li>

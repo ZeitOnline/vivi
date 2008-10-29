@@ -1,0 +1,264 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+  i18n:domain="zeit.cms">
+
+  <metal:macro define-macro="error-page"><!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      tal:define="favicon context/++resource++zeit.cms/icons/favicon.png">
+      <head>
+        <title i18n:translate="">Error</title>
+        <link rel="icon" tal:attributes="href favicon"
+          type="image/x-icon" />
+        <link rel="shortcut icon" tal:attributes="href favicon"
+          type="image/x-icon" />
+        <tal:replace replace="resource_library:zeit.cms.error" />
+      </head>
+      <body>
+        <div id="content">
+        <metal:contentslot define-slot="body">
+          content
+        </metal:contentslot>
+        </div>
+      </body>
+    </html>
+  </metal:macro>
+
+  <metal:macro define-macro="page"><?xml version="1.0"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      tal:define="view_title options/title|view/title|string:Zeit CMS;
+      context_title context/@@standard_macros/context_title;
+      favicon context/++resource++zeit.cms/icons/favicon.png">
+      <head>
+        <script type="text/javascript" tal:content="string:
+          var application_url = '${request/getApplicationURL}';
+          if (navigator.userAgent.indexOf('Firefox') == -1) {
+            alert('Das CMS funktioniert nur mit Firefox');
+          }
+        "/>
+        <title>
+          <metal:title metal:define-slot="title">
+            <span tal:replace="context_title" /> –
+            <span tal:replace="view_title" i18n:translate=""/>
+          </metal:title>
+        </title>
+        <link rel="icon" tal:attributes="href favicon"
+          type="image/x-icon" />
+        <link rel="shortcut icon" tal:attributes="href favicon"
+          type="image/x-icon" />
+        <tal:replace replace="resource_library:zeit.cms" />
+        <tal:replace replace="resource_library:zeit.cms.panels" /> 
+        <tal:replace replace="structure provider:gocept.mochikit.javascript" />
+
+      </head>
+      <body id="body"
+        tal:define="
+        site_url request/getApplicationURL;
+        sidebar_css context/@@sidebar_handlers/css_class">
+        <div id="visualContentSeparator" class="sidebar-expanded"
+             tal:attributes="class sidebar_css">
+          </div>
+          <div id="header"
+              tal:attributes="class sidebar_css">
+          <ul id="breadcrumbs">
+            <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
+              <a tal:attributes="title  item/title;
+                href   item/url;"
+                tal:content="item/title">
+                Directory foo
+              </a>
+              <span tal:condition="item/uniqueId"
+                class="URL" tal:content="item/url" />
+              <span class="breadcrumb-separator"
+                tal:condition="not:repeat/item/end">
+                →
+              </span> 
+            </li>
+          </ul>
+          <ul id="main-navigation"
+              tal:content="structure provider:zeit.cms.GlobalViews">
+            </ul>
+
+            <div class="GlobalInformation" 
+                 tal:content="structure provider:zeit.cms.GlobalInformation" />
+        </div>
+
+        <div id="sidebar" 
+             tal:define="sidebar provider:zeit.cms.Sidebar"
+             tal:condition="sidebar"
+             tal:attributes="class sidebar_css"
+             tal:content="structure sidebar">
+          Sidebar panels
+        </div>
+        <div id="sidebar-dragger"
+          tal:attributes="class sidebar_css">
+        </div>
+
+        <script type="text/javascript" tal:content="string:
+          connect(window, 'onload', function(event) {
+            var panel_handler = new zeit.cms.PanelHandler('$site_url');
+            panel_handler.registerPanelHandlers();
+            });
+
+            connect(window, 'onload', function(event) {
+                var sidebar_dragger = new SidebarDragger('$site_url');
+                connect('sidebar-dragger', 'onclick', sidebar_dragger,
+                        'toggle');
+            });
+            ">
+          </script>
+
+        
+          <div id="visualContentWrapper"
+            tal:attributes="class sidebar_css">
+
+            <metal:actions
+              use-macro="context/@@standard_macros/context-views-and-actions" />
+
+            <div id="content">
+              <metal:contentslot define-slot="body">
+                content
+              </metal:contentslot>
+            </div>
+          </div>
+
+
+      </body>
+    </html>
+  </metal:macro>
+  
+  
+  <metal:macro define-macro="context-views-and-actions">
+
+    <div class="contextViewsAndActions">
+      <div class="context-views"
+        tal:define="context_url context/@@absolute_url;
+        menu_items context/@@view_get_menu/zeit-context-views">
+        <ul>
+          <tal:have_items tal:condition="menu_items">
+            <tal:repeat 
+              repeat="menu_item menu_items">
+              <li
+                tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
+                tal:attributes="class string:${klass} ${menu_item/selected}">
+                <a
+                  tal:attributes="href string:$context_url/${menu_item/action}"
+                  tal:content="menu_item/title" i18n:translate="">
+                  Checkout
+                </a>
+              </li>
+            </tal:repeat>
+          </tal:have_items>
+          <tal:not_have_items
+            tal:condition="not:menu_items">
+            <li class="selected">
+              <a tal:attributes="href view/@@absolute_url"
+                tal:content="view_title"
+                i18n:translate="">
+                Anzeigen
+              </a>
+            </li>
+          </tal:not_have_items>
+        </ul>
+
+      </div>
+
+      <div class="context-actions"
+        tal:define="context_url context/@@absolute_url">
+        <ul>
+          <tal:replace replace="structure provider:zeit.cms.context-actions" />
+        </ul>
+      </div>
+    </div>
+  </metal:macro>
+
+  <metal:macro define-macro="metadata-preview">
+    <metal:actions use-macro="context/@@standard_macros/context-views-and-actions" />
+    <div id="metadata_preview">
+      <metal:data define-slot="preview"></metal:data>
+    </div>
+    <div id="metadata-additions">
+      <tal:additional
+        tal:content="structure provider:zeit.cms.MetadataPreview" />
+    </div>
+  </metal:macro>
+
+  <metal:macro define-macro="content-listing">
+    <tal:block replace="resource_library:zeit.cms.filteringtable" />
+  
+
+    <form name="containerContentsForm" method="get"
+      action="" id="folderActionForm">
+
+      <metal:slot define-slot="hidden-fields"></metal:slot>
+
+      <div id="content-actions">
+
+        <select id="add_menu"
+            name="add_menu" onchange="add_content(this)"
+            tal:define="menu_items context/@@view_get_menu/zeit-add-menu"
+            tal:condition="menu_items" >
+            <option value="" i18n:translate="">Add...</option>
+          <option
+            tal:repeat="menu_item menu_items"
+            tal:attributes="value string:$context_url/${menu_item/action}"
+            tal:content="menu_item/title" i18n:translate="">
+              Article
+          </option>
+        </select>
+
+    </div>
+        
+        <div id="tableFilter">
+          Filter: <input type="text" value="" />
+        </div>
+
+  
+      <div id="topcontent">
+        
+          <table
+            tal:condition="view/content"
+            tal:replace="structure view/contentTable">
+            Table with contents...
+          </table>
+
+          <span class="Info"
+            tal:condition="not:view/content"
+            tal:content="view/no_content_message"
+            i18n:translate="">
+          There are no objects in this folder.
+        </span>
+      </div>
+      <div id="bottomcontent"></div>
+    </form>
+  </metal:macro>
+
+  <metal:macro define-macro="render_form_widget">
+    <tal:block repeat="widget widgets">
+      <div class="field" 
+        tal:define="hint widget/hint"
+        tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
+
+        <label tal:attributes="for widget/name">
+          <span i18n:translate="" tal:content="widget/label">label</span>
+          <span class="annotation" tal:condition="widget/required">(Pflichtfeld)</span>
+        </label>
+
+
+        <div class="hint" tal:content="widget/hint"/>
+
+        <div tal:condition="widget/error" class="error">
+          <span tal:replace="structure widget/error">error</span>
+        </div>
+
+        <div class="widget" tal:content="structure widget">
+          <input type="text" />
+        </div>
+      </div>
+
+    </tal:block>
+  </metal:macro>
+</html>

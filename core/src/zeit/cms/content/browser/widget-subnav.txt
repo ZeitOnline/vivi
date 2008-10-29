@@ -1,0 +1,38 @@
+Subnavigation
+=============
+
+The subnavigation depends on the navigation. There is an ajax form which spits
+out the new data.
+
+Get the json view:
+
+>>> import zope.component
+>>> import zope.publisher.browser
+>>> import zeit.cms.browser.interfaces
+>>> request = zope.publisher.browser.TestRequest()
+>>> zope.publisher.browser.applySkin(
+...     request, zeit.cms.browser.interfaces.ICMSSkin)
+>>> updater = zope.component.getMultiAdapter(
+...     (getRootFolder(), request), name='subnavigationupdater.json')
+
+
+>>> u'Deutschland' in updater.navigation_source
+True
+>>> dt_term = updater.master_terms.getTerm(u'Deutschland')
+>>> updater(master_token=dt_term.token)
+'[["Datenschutz", "3da775df8d065507c482a20bf7a93427"],
+  ["Integration", "1115b855bb2a508bc2ca0609cc2d0f65"],
+  ["Joschka Fisher", "d3eaed24e3bebd3c218443bd44778823"],
+  ["Meinung", "58943ab3ce913fa50e3c4566e2f10f7b"]]'
+
+
+Make sure those results are cached:
+
+>>> request.response.getHeader('Cache-Control')
+'max-age=3600'
+
+
+For values which are not in the source we'll get an empty list:
+
+>>> updater(master_token='foo')
+'[]'

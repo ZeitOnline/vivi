@@ -1,0 +1,117 @@
+Live properties
+===============
+
+Live properties operate directly on the dav server (NOTE: this is **not** the
+same as live properties in the DAV sense. In DAV live properties are computed
+properties).
+
+When we get the properties of an object from the repository we'll get live
+properties[#functionaltest]_:
+
+>>> import zeit.connector.interfaces
+>>> content = repository['testcontent']
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
+>>> properties
+<zeit.cms.content.liveproperty.LiveProperties object at 0x...>
+
+Let's see what properties we've got:
+
+>>> sorted(properties.keys())
+[('getlastmodified', 'DAV:'), ('type', 'http://namespaces.zeit.de/CMS/meta')]
+>>> import pprint
+>>> pprint.pprint(dict(properties))
+{('getlastmodified', 'DAV:'): u'...',
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
+
+
+To set properties via the LiveProperty class properties have to be registered
+as live. This is a safty belt to avoid accidently setting non-live properties.
+Also this is required to make sure that live properties are not overwritten
+when checking in an object:
+
+>>> properties[('foo', 'test')] = 'bar'
+Traceback (most recent call last):
+    ...
+Forbidden: ('foo', 'test')
+
+Register foo/test as live property:
+
+>>> import zeit.cms.content.interfaces
+>>> lp_manager = zope.component.getUtility(
+...     zeit.cms.content.interfaces.ILivePropertyManager)
+>>> lp_manager.is_live_property('foo', 'test')
+False
+>>> lp_manager.register_live_property('foo', 'test')
+>>> lp_manager.is_live_property('foo', 'test')
+True
+
+>>> properties[('foo', 'test')] = 'bar'
+>>> pprint.pprint(dict(properties))
+{('foo', 'test'): 'bar',
+ ('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
+
+
+
+Since foo/test is a live property now, it will not be overwritten when we check
+in an object:
+
+>>> import zeit.cms.checkout.interfaces
+>>> manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+>>> checked_out = manager.checkout()
+>>> checked_out_properties = zeit.connector.interfaces.IWebDAVProperties(
+...     checked_out)
+>>> checked_out_properties
+<zeit.connector.resource.WebDAVProperties object at 0x...>
+>>> checked_out_properties[('foo', 'test')] = 'new-value-in-checked-out'
+
+Of course until now nothing has changed in the live-properties
+
+>>> properties[('foo', 'test')]
+'bar'
+
+Check in:
+
+>>> manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
+>>> checked_in = manager.checkin()
+
+The live property value has not changed:
+
+>>> properties[('foo', 'test')]
+'bar'
+
+
+The repository itself has live properties:
+
+>>> zeit.connector.interfaces.IWebDAVProperties(repository)
+<zeit.cms.content.liveproperty.LiveProperties object at 0x...>
+
+
+Clean up:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functionaltest] We need to set the site since we're a functional test:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Do some imports and get the repository
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> import zeit.cms.workflow.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+
+    Setup interaction: 
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)

@@ -1,0 +1,44 @@
+<div class="floating">
+
+  <h1 i18n:translate="">
+    Change type of
+    <span tal:replace="python:context.uniqueId"
+      i18n:name="object-unique-id"/>
+  </h1>
+
+  <tal:form condition="not:view/changed">
+    <div class="warning" i18n:translate="change-type-warning">
+      You are about to change the type of an object. Be sure you know what you
+      are doing.
+    </div>
+
+    <form id="lightbox.form" action="#"
+      tal:attributes="action request/URL">
+      <tal:repeat repeat="item view/adapters">
+        <label>
+          <input type="radio" name="newtype" 
+            tal:attributes="value item/resource_type"/>
+          <img tal:replace="structure item/content/@@zmi_icon | nothing"/>
+          <span tal:content="item/resource_type" />
+        </label>
+        <br/>
+      </tal:repeat>
+      <div class="form-controls">
+        <input type="submit" class="button" 
+          name="form.actions.changetype" value="Change type"
+          i18n:attributes="value" />
+      </div>
+
+    </form>
+  </tal:form>
+  <tal:form condition="view/changed">
+
+    <div i18n:translate="">
+      Type changed. Loading ...
+    </div>
+
+    <span class="nextUrl"
+      tal:content="string:${context/@@absolute_url}/@@view.html" />
+
+  </tal:form>
+</div>

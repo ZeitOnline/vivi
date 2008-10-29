@@ -1,0 +1,85 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter
+    factory=".testcontenttype.test_content_type_factory"
+    name="testcontenttype" />
+  <adapter factory=".testcontenttype.resourceFactory" />
+
+  <class class=".testcontenttype.TestContentType">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
+    <require
+      interface=".interfaces.ITestContentType"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITestContentType"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLContent"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLContent"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <interface
+    interface=".interfaces.ITestContentType"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+  <browser:defaultView
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:view
+    name="view.html"
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    class="zeit.cms.content.browser.form.CommonMetadataDisplayForm"
+    />
+
+  <browser:menuItem
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@view.html"
+    menu="zeit-context-views"
+    title="View metadata"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:page
+    name="edit.html"
+    for=".interfaces.ITestContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.cms.content.browser.form.CommonMetadataEditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+</configure>

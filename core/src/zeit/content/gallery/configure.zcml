@@ -1,0 +1,66 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".gallery.galleryFactory" name="gallery" />
+  <adapter factory=".gallery.resourceFactory" />
+  <adapter factory=".gallery.galleryentry_factory" />
+  <adapter factory=".gallery.EntryXMLRepresentation" />
+  <subscriber handler=".gallery.update_gallery_on_entry_change" />
+
+  <utility
+    component=".interfaces.galleryFolderSource"
+    name="gallery-folders"
+    />
+
+  <class class=".gallery.Gallery">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
+    <require
+      interface=".interfaces.IReadGallery"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IReadGallery"
+      permission="zeit.EditContent" />
+    <require
+      interface=".interfaces.IWriteGallery"
+      permission="zeit.EditContent" />
+    <require
+      interface="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
+      permission="zeit.EditContent" />
+  </class>
+
+  <interface
+    interface=".interfaces.IGallery"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+  <!-- Entry -->
+  <class class=".gallery.GalleryEntry">
+    <require
+      interface=".interfaces.IGalleryEntry"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IGalleryEntry"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter factory=".gallery.EntryHTMLContent" />
+  <adapter factory=".gallery.EntryHTMLConverter" />
+
+  <!-- References -->
+  <adapter factory=".reference.GalleryReference" />
+  <adapter factory=".reference.gallery_reference_to_webdav_properties" />
+  <adapter factory=".reference.gallery_reference_browse_location" />
+  <utility
+    component=".interfaces.gallerySource"
+    name="zeit.content.gallery"
+    />
+
+  <!-- Workflow -->
+  <adapter factory=".workflow.PublicationDependencies" />
+
+</configure>

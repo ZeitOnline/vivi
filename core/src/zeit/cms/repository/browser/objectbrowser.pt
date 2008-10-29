@@ -1,0 +1,32 @@
+<tal:block
+  tal:define="
+  repository context/@@get_repository;
+  tree_view nocall:repository/@@tree.html"
+  i18n:domain="zeit.cms">
+  
+  <h1 tal:content="python:context.uniqueId">
+    http://xml.zeit.de/
+  </h1>
+  
+  <div id="popup-navtree" class="Tree"
+    tal:content="structure tree_view">
+    Navigation tree
+  </div>
+
+  <div class="objectbrowser-content"
+    tal:condition="view/content"
+    tal:content="structure view/contentTable">
+    Content table
+  </div>
+
+  <div class="objectbrowser-content no-content"
+    tal:condition="not:view/content"
+    i18n:translate="">
+    There are no selectable objects in this folder.
+  </div>
+
+  <div class="tree-view-url"
+    tal:content="string:${repository/@@absolute_url}/@@tree.html">
+  </div>
+
+</tal:block>

@@ -1,0 +1,122 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include file="dav.zcml" />
+
+  <adapter factory=".adapter.webDAVPropertiesFactory" trusted="yes" />
+  <adapter factory=".adapter.webdavproperties_to_cms_content" />
+  <adapter factory=".adapter.xml_source" />
+  <adapter factory=".adapter.content_sort_key" />
+
+  <!-- Live properties -->
+  <adapter factory=".liveproperty.LiveProperties"/>
+  <adapter factory=".liveproperty.LiveProperties"
+    for="zeit.cms.repository.interfaces.IRepository" />
+  <class class=".liveproperty.LiveProperties">
+    <require
+      interface="zeit.connector.interfaces.IWebDAVReadProperties"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <utility
+    component=".liveproperty.LiveProperties"
+    provides=".interfaces.ILivePropertyManager"
+    />
+  <subscriber handler=".liveproperty.remove_live_properties" />
+  <adapter factory=".liveproperty.live_to_cmscontent" />
+
+
+  <adapter factory=".keyreference.CMSContentKeyReference" />
+
+  <!-- Keywords -->
+
+  <interface
+    interface=".interfaces.IKeyword"
+    type=".interfaces.IKeywordInterface" />
+
+  <class class=".keyword.Keyword">
+    <allow interface=".interfaces.IKeyword" />
+  </class>
+
+  <utility factory=".keyword.KeywordUtility" />
+  
+
+  <!-- Templates -->
+  <class class=".template.TemplateManagerContainer">
+    <require
+      interface=".interfaces.ITemplateManagerContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.app.container.interfaces.IWriteContainer"
+      permission="zeit.EditTemplates"
+      />
+  </class>
+
+  <class class=".template.TemplateManager">
+    <require
+      interface=".interfaces.ITemplateManager"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.app.container.interfaces.IWriteContainer"
+      permission="zeit.EditTemplates"
+      />
+  </class>
+
+  <class class=".template.Template">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ITemplate"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITemplate"
+      permission="zeit.EditTemplates"
+      />
+  </class>
+  <adapter factory=".adapter.webDAVPropertiesFactory"
+    for=".interfaces.ITemplate"
+    trusted="yes"
+    />
+  <adapter factory=".template.TemplateRoleMap" />
+
+  <!-- content source -->
+  <utility
+    component=".contentsource.cmsContentSource"
+    name="all-types"
+    />
+  <utility
+    component=".contentsource.folderSource"
+    name="folders"
+    />
+  <adapter
+    factory=".contentsource.ChoicePropertyWithCMSContentSource"
+    provides=".interfaces.IDAVPropertyConverter"
+    />
+
+  <!-- XML support -->
+  <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
+
+  <adapter
+    factory=".xmlsupport.CommonMetadataUpdater"
+    name="commonmetadata"
+    />
+
+  <!-- automatic xml updating -->
+  <adapter factory=".xmlsupport.PropertyToXMLAttribute" />
+  <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
+  <subscriber handler=".xmlsupport.map_dav_properties_to_xml_before_checkin" />
+
+  <!-- dublin core -->
+  <adapter factory=".dublincore.DCTimes" />
+  <adapter factory=".dublincore.webdav_properties" />
+
+  <!-- source cache cleaner -->
+  <subscriber handler=".sources.collect_caches" />
+
+</configure>

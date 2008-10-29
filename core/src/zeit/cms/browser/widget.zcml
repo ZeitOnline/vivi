@@ -1,0 +1,63 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter
+    for="zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.ObjectReferenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectReferenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".widget.objectWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".widget.objectDisplayWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.ObjectReferenceSequenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory="zope.app.form.browser.sequencewidget.SequenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- date time -->
+  <adapter
+    for="zope.schema.interfaces.IDatetime
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.DatetimeWidget"
+    permission="zope.Public"
+    />
+
+
+</configure>

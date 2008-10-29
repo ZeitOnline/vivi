@@ -1,0 +1,50 @@
+Lucene search
+=============
+
+The lucene search has pretty current data directly from the backend.
+
+>>> import zeit.search.lucene
+>>> lucene = zeit.search.lucene.LuceneSearch()
+
+
+The Lucene search generates an http query:
+
+>>> lucene.get_query_args(dict(
+...     text='Merkel Stoiber'))
+'q=Merkel+Stoiber&sort=date&fields=author%3Atitle&res=100'
+>>> lucene.get_query_args(dict(
+...     text='Merkel Stoiber',
+...     year=2005))
+'q=Merkel+Stoiber+jahr%3A%222005%22&sort=date&fields=author%3Atitle&res=100'
+>>> lucene.get_query_args(dict(
+...     text='Merkel Stoiber',
+...     year=2005,
+...     ressort="Dummy Ressort"))
+'q=Merkel+Stoiber+print-ressort%3A%22Dummy+Ressort%22+jahr%3A%222005%22&sort=date&fields=author%3Atitle&res=100'
+>>> lucene.get_query_args(dict(year=2005)) 
+'q=jahr%3A%222005%22&sort=date&fields=author%3Atitle&res=100'
+>>> lucene.get_query_args(dict(text=u'\xd6lkrise')) 
+'q=%C3%96lkrise&sort=date&fields=author%3Atitle&res=100'
+
+
+
+
+Now verify the actual search:
+
+>>> result = lucene(dict(text='merkel'))
+>>> len(result)
+101
+
+>>> r1 = sorted(result, key=lambda x: x.relevance, reverse=True)[0]
+>>> r1.uniqueId
+'http://xml.zeit.de/2001/20/Korrektur_-GR_In_der_Besprechung_von_Reinhard_Merkels'
+>>> r1.title
+u'Korrektur ...'
+>>> r1.author
+u'D.Z.'
+>>> r1.year
+2001
+>>> r1.volume
+20
+>>> r1.page is None
+True

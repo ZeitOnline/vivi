@@ -1,0 +1,713 @@
+==============
+DAV Properties
+==============
+
+The DAV properties map properties from the WebDAV properties dictionary to
+python values.
+
+Plain Unicode Values
+====================
+
+Plain unicode values can be mapped if the field implements IFromUnicode. The
+mapping from the internal value to unicode just uses `unicode()`.
+
+A plain text field:
+
+>>> import zeit.cms.content.interfaces
+>>> import zope.schema
+
+>>> text_field = zope.schema.Text()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(text_field)
+>>> converter
+<zeit.cms.content.dav.UnicodeProperty object at 0x...>
+>>> converter.fromProperty('a text')
+u'a text'
+>>> converter.fromProperty(u'another text')
+u'another text'
+>>> converter.fromProperty(u'')
+u''
+>>> converter.toProperty(u'')
+u''
+>>> converter.toProperty(u'Foo')
+u'Foo'
+
+
+Try this for some fields. Integer goes first:
+
+>>> int_field = zope.schema.Int()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(int_field)
+>>> converter
+<zeit.cms.content.dav.UnicodeProperty object at 0x...>
+>>> converter.fromProperty('5')
+5
+>>> converter.fromProperty('text')
+Traceback (most recent call last):
+    ...
+ValueError: invalid literal for int(): text
+
+
+The other way round is handled by the toProperty method:
+
+>>> converter.toProperty(5)
+u'5'
+>>> converter.toProperty(1234)
+u'1234'
+
+
+Floats are also supported:
+
+
+>>> float_field = zope.schema.Float()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(float_field)
+>>> converter
+<zeit.cms.content.dav.UnicodeProperty object at 0x...>
+>>> converter.fromProperty(5)
+5.0
+>>> converter.fromProperty(5.25)
+5.25
+
+>>> converter.fromProperty('text')
+Traceback (most recent call last):
+    ...
+ValueError: invalid literal for float(): text
+
+Convert float to property. Doesn't fail for integers of course:
+
+>>> converter.toProperty(5.25)
+u'5.25'
+>>> converter.toProperty(593)
+u'593'
+
+
+
+Booleans
+++++++++
+
+The default representation of booleans is yes/no:
+
+>>> field = zope.schema.Bool()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('yes')
+True
+>>> converter.fromProperty('no')
+False
+
+Python's True/False also works though:
+
+>>> converter.fromProperty('True')
+True
+>>> converter.fromProperty('False')
+False
+
+Other, unknown values result in False:
+
+>>> converter.fromProperty('foobar')
+False
+
+When converting a bool to a property, yes/no is always used:
+
+>>> converter.toProperty(True)
+'yes'
+>>> converter.toProperty('another true value in python sense')
+'yes'
+>>> converter.toProperty(False)
+'no'
+>>> converter.toProperty(None)
+'no'
+>>> converter.toProperty([])
+'no'
+
+
+Choices
++++++++
+
+How choices are stored in dav depends on the vocabulary or source. If the
+source is iterable we assume that there are not many values, that is that it
+doesn't harm to actually iterate over the source.
+
+Iterable sources
+----------------
+
+For choices wich iterable sources tokenize the value before storing it to the
+dav. There is a standard tokenizer for bool. So create a choice which allows
+True and False:
+
+>>> class BoolSource(list):
+...     zope.interface.implements(zope.schema.interfaces.IIterableSource)
+>>> field = zope.schema.Choice(source=BoolSource([True, False]))
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('yes')
+True
+>>> converter.fromProperty('no')
+False 
+
+Other values result in ... currently a ValueError since I have no clue what
+would be smart to do here:
+
+>>> converter.fromProperty('dunno')
+Traceback (most recent call last):
+    ...
+ValueError: dunno
+
+
+Converting to a property results in the token:
+
+>>> converter.toProperty(True)
+'yes'
+>>> converter.toProperty(False)
+'no'
+
+It is not checked if the value actually is valid for the field as this is not
+the resposonsibility of the converter. So we'd get any available token
+back.  For some arbitrary object we get a TypeError since we could not get a
+token:
+
+>>> converter.toProperty(object())
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt',
+            <object object at 0x...>,
+            <InterfaceClass zeit.cms.content.interfaces.IDAVToken>)
+
+
+The `DAVProperty` takes care of invalid values and logs them. Prepare the
+logger:
+
+>>> import StringIO
+>>> import logging
+>>> log = StringIO.StringIO()
+>>> logging.root.addHandler(logging.StreamHandler(log))
+
+Create a dav property and set an invalid value for the choice.
+
+>>> import zeit.connector.interfaces
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> dav_prop = zeit.cms.content.dav.DAVProperty(
+...     field, 'my-ns', 'myname')
+>>> testcontent = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> testcontent.uniqueId = u'http://xml.zeit.de/foo'
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(testcontent)
+>>> properties[('myname', 'my-ns')] = u'f\xfcblas'
+
+When we try to get the data we'll get the default value (None):
+
+>>> dav_prop.__get__(testcontent, object) is None
+True
+>>> print log.getvalue()
+Could not parse DAV property value u'f\xfcblas' for TestContentType.myname
+at http://xml.zeit.de/foo
+[ValueError: (u'f\xfcblas',)]. Using default None instead.
+
+
+For content objects there is also a token adapter:
+
+>>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+...     uniqueId = u'my-unique-id'
+>>> content = Content()
+>>> zeit.cms.content.interfaces.IDAVToken(content)
+u'my-unique-id'
+
+
+Content sources
+---------------
+
+There is another implementation for ICMSContentSources. It stores the Unique Id
+of the object and gets the object back from the unique id. We use the folder
+source here to show that content is only returned if it is actually in the
+source (setup functional test first):
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+>>> field = zope.schema.Choice(
+...     source=zeit.cms.content.contentsource.FolderSource())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> folder = converter.fromProperty(u'http://xml.zeit.de/online')
+>>> folder
+<zeit.cms.repository.folder.Folder object at 0x...>
+>>> folder.uniqueId
+u'http://xml.zeit.de/online'
+
+When a unique id references an object wich doesn't exist, None is returned:
+
+>>> converter.fromProperty(u'http://xml.zeit.de/online/gibtsnich') is None
+True
+
+When a unique id references an object which exists but is not contained in the
+source, None is returned, too:
+
+>>> converter.fromProperty(
+...     'http://xml.zeit.de/online/2007/01/thailand-anschlaege') is None
+True
+
+Bug #4124: When the property exists, but is empty or None, the source raised
+some AttributeError. Make sure this doesn't happen any more:
+
+>>> converter.fromProperty(None) is None
+True
+>>> converter.fromProperty('') is None
+True
+
+Make also sure that invalid ids don't cause an error:
+
+>>> converter.fromProperty('bla bla') is None
+True
+
+
+Restore old site:
+>>> zope.app.component.hooks.setSite(old_site)
+
+The other way round stores the unique id:
+
+>>> converter.toProperty(folder)
+u'http://xml.zeit.de/online'
+
+
+Principal source
+----------------
+
+The principal source is not iterable (for reason), but the principal id is a
+good and stable token, as well as the actual value:
+
+>>> import zope.app.security.vocabulary
+>>> field = zope.schema.Choice(
+...     source=zope.app.security.vocabulary.PrincipalSource())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty(u'zope.user')
+u'zope.user'
+
+When the user is not in the source, a ValueError is raised:
+>>> converter.fromProperty(u'foo.bar')
+Traceback (most recent call last):
+    ...
+ValueError: foo.bar
+
+
+Converting to a property also just yields the principal id:
+
+>>> converter.toProperty(u'zope.user')
+u'zope.user'
+
+Here we don't check for valid users:
+
+>>> converter.toProperty(u'foo.bar')
+u'foo.bar'
+
+Vocabularies
+------------
+
+Vocabularies work like sources:
+
+>>> field = zope.schema.Choice(
+...     values=('A', 'B', 'C', 1))
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.toProperty(1)
+'1'
+
+Values which are not in the vocabulary raise a ValueError:
+
+>>> converter.toProperty('1')
+Traceback (most recent call last):
+    ...
+ValueError: 1
+
+Converting from a property returns the right value:
+
+>>> converter.fromProperty('A')
+'A'
+>>> converter.fromProperty('1')
+1
+
+Converting a value which is not a token raises a ValueError:
+
+>>> converter.fromProperty('asdf')
+Traceback (most recent call last):
+    ...
+ValueError: asdf
+
+
+Datetime
+++++++++
+
+Datetimes are stored in iso 8601 format:
+
+>>> field = zope.schema.Datetime()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('2007-05-25T13:24:59Z')
+datetime.datetime(2007, 5, 25, 13, 24, 59, tzinfo=<UTC>)
+
+>>> converter.fromProperty('2007-06-12T09:10:00+01:00')
+datetime.datetime(2007, 6, 12, 8, 10, tzinfo=<UTC>)
+
+We can also parse ISO dates w/o seconds:
+
+>>> converter.fromProperty('2007-05-25T13:24Z')
+datetime.datetime(2007, 5, 25, 13, 24, tzinfo=<UTC>)
+
+
+When the date is invalid, a ValueError is raised:
+
+>>> print converter.fromProperty('asdf')
+Traceback (most recent call last):
+    ...
+ValueError: asdf
+
+Converting datetimes takes timezone info into account:
+
+>>> import datetime
+>>> import pytz
+>>> converter.toProperty(datetime.datetime(
+...     2004, 1, 4, 10, 32, tzinfo=pytz.timezone('Europe/Berlin')))
+'2004-01-04T10:32:00+01:00'
+
+
+The "other" format is supported, too (read only):
+
+>>> converter.fromProperty("Thu, 13 Mar 2008 13:48:37 GMT")
+datetime.datetime(2008, 3, 13, 13, 48, 37, tzinfo=<UTC>)
+
+Note that only the "GMT" timezone is supported:
+
+>>> converter.fromProperty("Thu, 13 Mar 2008 13:48:37 CET")
+Traceback (most recent call last):
+    ...
+ValueError: Thu, 13 Mar 2008 13:48:37 CET
+
+Date
+++++
+
+Dates are also supported:
+
+>>> field = zope.schema.Date()
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('2007-05-25')
+datetime.date(2007, 5, 25)
+
+Invalid dates raise a ValueError:
+
+>>> converter.fromProperty("1.1.07")
+Traceback (most recent call last):
+    ...
+ValueError: time data did not match format:  data=1.1.07  fmt=%Y-%m-%d
+
+
+The date is written in iso format:
+
+>>> converter.toProperty(datetime.date(1980, 2, 5))
+'1980-02-05'
+
+None is represented as an empty stirng:
+
+>>> converter.toProperty(None)
+u''
+
+
+
+Collection of TextLine
+++++++++++++++++++++++
+
+Collections of TextLine are serialised with a semicolon as separator. 
+
+>>> field = zope.schema.Tuple(
+...     value_type=zope.schema.TextLine(),
+...     default=())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('Peter Buhr;Klaus Kleber')
+(u'Peter Buhr', u'Klaus Kleber')
+
+A single author also gives a tuple:
+
+>>> converter.fromProperty('Klaus Kleber')
+(u'Klaus Kleber',)
+
+
+The other way round, items are joined with a semicolon:
+
+>>> converter.toProperty(('Peter Buhr', 'Klaus Kleber'))
+u'Peter Buhr;Klaus Kleber'
+
+In case there is a semicolon in a value, it will be escaped:
+
+>>> converter.toProperty(('Peter Buhr', 'Klaus; Kl;eb;er'))
+u'Peter Buhr;Klaus\\; Kl\\;eb\\;er'
+
+Make sure the DAV value is correctly converted back to a tuple:
+
+>>> converter.fromProperty(u'Peter Buhr;Klaus\\; Kl\\;eb\\;er')
+(u'Peter Buhr', u'Klaus; Kl;eb;er')
+
+
+As the collection serialiser is registered for ICollection we can also use
+List, Set and FrozenSet as field:
+
+>>> field = zope.schema.List(
+...     value_type=zope.schema.TextLine(),
+...     default=[])
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('Peter Buhr;Klaus Kleber')
+[u'Peter Buhr', u'Klaus Kleber']
+
+>>> field = zope.schema.Set(
+...     value_type=zope.schema.TextLine(),
+...     default=set())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
+>>> result
+set([..., ...])
+>>> sorted(result)
+[u'Klaus Kleber', u'Peter Buhr']
+
+>>> field = zope.schema.FrozenSet(
+...     value_type=zope.schema.TextLine(),
+...     default=frozenset())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
+>>> result
+frozenset([..., ...])
+>>> sorted(result)
+[u'Klaus Kleber', u'Peter Buhr']
+
+
+
+Generic serialiser
+++++++++++++++++++
+
+There is a generic tuple serializer which uses zope.xmlpickle for serialising:
+
+>>> field = zope.schema.Tuple(
+...     value_type=zope.schema.Dict())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> value = converter.toProperty(({'foo': u'b\xfcr'}, {'bar': 2}))
+>>> type(value)
+<type 'unicode'>
+>>> print value
+<pickle>
+  <tuple>
+    <dictionary>
+      <item key="foo">
+          <unicode>bür</unicode>
+      </item>
+    </dictionary>
+    <dictionary>
+      <item key="bar">
+          <int>2</int>
+      </item>
+    </dictionary>
+  </tuple>
+</pickle>
+
+The other way round "eats" the generated xml:
+
+>>> converter.fromProperty(u"""
+... <pickle>
+...   <tuple>
+...     <dictionary>
+...       <item key="foo">
+...           <unicode>b\xfcr</unicode>
+...       </item>
+...     </dictionary>
+...     <dictionary>
+...       <item key="holladrio">
+...           <float>2.25</float>
+...       </item>
+...     </dictionary>
+...   </tuple>
+... </pickle>""")
+({'foo': u'b\xfcr'}, {'holladrio': 2.25})
+
+
+As it is generic it basically works for all other fields as well:
+
+>>> field = zope.schema.List(
+...     value_type=zope.schema.Int())
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> print converter.toProperty([4, 2, 55, 2])
+<pickle>
+  <list>
+    <int>4</int>
+    <int>2</int>
+    <int>55</int>
+    <int>2</int>
+  </list>
+</pickle>
+
+>>> converter.fromProperty(u"""
+... <pickle>
+...   <list>
+...     <int>4</int>
+...     <int>2</int>
+...     <int>55</int>
+...     <int>200</int>
+...   </list>
+... </pickle>""")
+[4, 2, 55, 200]
+
+
+If the xml pickle is invalid an ValueError is raised:
+
+>>> converter.fromProperty(u'5')
+Traceback (most recent call last):
+    ...
+ValueError: Start tag expected, '<' not found, line 1, column 1
+
+>>> converter.fromProperty(u'<int>5</int>')
+Traceback (most recent call last):
+    ...
+ValueError: Invalid pickle.
+
+
+
+DAVProperty
+===========
+
+The `DAVProperty` class is there to easily map attributes to WebDAV properties.
+Let's create a little content class:
+
+>>> import zope.interface
+>>> import zeit.cms.interfaces
+>>> from zeit.cms.content.dav import DAVProperty
+>>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+...     properties = {}
+...     title = DAVProperty(zope.schema.TextLine(), 'myns', 'title')
+...
+>>> def contentDavProps(context):
+...     return context.properties
+>>> site_manager = zope.app.component.hooks.getSiteManager()
+>>> site_manager.registerAdapter(
+...     contentDavProps,
+...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
+>>> content = Content()
+
+When properties change an IDAVPropertyChangedEvent is issued. Register a
+subscriber:
+
+>>> import zope.app.component.hooks
+>>> import zope.component
+>>>
+>>> def print_change(object, event):
+...     print "Event:", event
+...     print "    Object:", object
+...     print "    Old:", event.old_value
+...     print "    New:", event.new_value
+...     print "    NS:", event.property_namespace
+...     print "    Name:", event.property_name
+...     print "    Field:", event.field
+...
+>>> site_manager.registerHandler(
+...     print_change,
+...     (zope.interface.Interface,
+...      zeit.cms.content.interfaces.IDAVPropertyChangedEvent))
+
+As the properties dictionary is empty, we'll get the title's default value from
+the field:
+
+>>> print content.title
+None
+
+Setting the title will fill the properties dictionary with the name and
+namespace:
+
+>>> content.title = 'Mary had a little lamb.'
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Old: None
+    New: Mary had a little lamb.
+    NS: myns
+    Name: title
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
+>>> content.properties
+{('title', 'myns'): u'Mary had a little lamb.'}
+
+
+When we set the title to None again, the property will be marked as to be
+deleted:
+
+>>> content.title = None
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Old: Mary had a little lamb.
+    New: DeleteProperty
+    NS: myns
+    Name: title
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
+>>> content.properties
+{('title', 'myns'): DeleteProperty}
+>>> content.title is None
+True
+
+
+When a content object is adapted to extend functionality it is common to have
+an adapter to IWebDAVProperties from the adapter. In this case the orgiginal
+object would not be notified about changes. Make sure the object is really
+notified. This is done by getting the object which actually defined the webdav
+properties, by adapting the properties to ICMSContent. Create a dummy object:
+
+>>> class Foo(object):
+...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed')
+
+Create an adapter from Foo to ICMSContent:
+
+>>> def foo_properties_to_cms(context):
+...     return content
+>>> site_manager.registerAdapter(
+...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
+
+We also need to make Foo adaptable to IWebDAVProperties:
+
+>>> def foo_props(context):
+...     return content.properties
+>>> site_manager.registerAdapter(
+...     foo_props,
+...     (Foo, ), zeit.cms.interfaces.IWebDAVProperties)
+
+Instanciate a `foo` and change the property. This yields two events:
+
+>>> foo = Foo()
+>>> foo.changed = 'now'
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Object: <Content object at 0x...>
+    Old: None
+    New: now
+    NS: myns
+    Name: changed
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
+Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
+    Object: <Foo object at 0x...>
+    Old: None
+    New: now
+    NS: myns
+    Name: changed
+    Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
+
+Remove the event listener and adapter:
+
+>>> site_manager.unregisterHandler(
+...     print_change,
+...     (zope.interface.Interface,
+...      zeit.cms.content.interfaces.IDAVPropertyChangedEvent))
+True
+>>> site_manager.unregisterAdapter(
+...     contentDavProps,
+...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
+True
+>>> site_manager.unregisterAdapter(
+...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
+True
+
+
+Live property support
++++++++++++++++++++++
+
+The DAVProperty has some support for marking properties as live properties:
+
+>>> import zeit.cms.content.interfaces
+>>> lp_manager = zope.component.getUtility(
+...     zeit.cms.content.interfaces.ILivePropertyManager)
+>>> lp_manager.is_live_property('changed', 'myns')
+False
+>>> class Foo(object):
+...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed',
+...                           live=True)
+>>> lp_manager.is_live_property('changed', 'myns')
+True

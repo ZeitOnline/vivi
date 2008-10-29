@@ -1,0 +1,37 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zope">
+
+  <principal
+    id="zope.mgr"
+    title="Manager"
+    login="zmgr"
+    password="mgrpw" />
+
+  <!-- Bootstrap principal used to make local grant to the principal above -->
+  <principal
+    id="zope.globalmgr"
+    title="Manager"
+    login="globalmgr"
+    password="globalmgrpw" />
+
+  <grant role="zope.Manager" principal="zope.globalmgr" />
+
+  <!-- Principal that tests generally run as -->
+  <principal
+    id="zope.user"
+    title="User"
+    login="user"
+    password="userpw" />
+
+  <!-- A producer -->
+  <principal
+    id="zope.producer"
+    title="Producer"
+    login="producer"
+    password="producerpw" />
+
+  <grant role="zeit.Producer" principal="zope.producer" />
+
+</configure>

@@ -1,0 +1,5 @@
+<html metal:use-macro="context/@@standard_macros/view">
+  <metal:body fill-slot="body">
+    <form metal:use-macro="context/@@form_macros/form"/>
+  </metal:body>
+</html>

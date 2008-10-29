@@ -1,0 +1,72 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".portraitbox.ListRepresentation" />
+  <adapter factory=".portraitbox.content_browse_location" />
+  <adapter factory=".portraitbox.reference_browse_location" />
+  <adapter factory=".portraitbox.folder_browse_location" />
+  <subscriber handler=".form.register_asset_interface" />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.portraitbox.Add"
+    permission="zeit.AddContent"
+    class=".form.Add"
+    menu="zeit-add-menu" title="Portraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Display"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="zeit.content.portraitbox.interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    for="..interfaces.IPortraitbox"
+    permission="zope.View"
+    template="metadata.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:icon
+    for="zeit.content.portraitbox.interfaces.IPortraitbox"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/portraitbox.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+</configure>
+

@@ -1,0 +1,5 @@
+<html metal:use-macro="context/@@standard_macros/page">
+  <div metal:fill-slot="body">
+    <pre tal:content="context/data" />
+  </div>
+</html>

@@ -1,0 +1,100 @@
+=============
+Image folders
+=============
+
+There is a policy that the image folder depends on the year/volume. 
+
+Lets create a testbrowser first:
+
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+
+Create the bilder structure:
+
+>>> def add_folder(name):
+...     menu = browser.getControl(name='add_menu')
+...     menu.displayValue = ['Folder']
+...     browser.open(menu.value[0])
+...     browser.getControl('File name').value = name
+...     browser.getControl('Add').click()
+...     return browser.url
+...
+>>> browser.open('http://localhost/++skin++cms/')
+>>> add_folder('bilder')
+'http://localhost/++skin++cms/repository/bilder/@@view.html'
+>>> add_folder('2007')
+'http://localhost/++skin++cms/repository/bilder/2007/@@view.html'
+>>> add_folder('01')
+'http://localhost/++skin++cms/repository/bilder/2007/01/@@view.html'
+>>> browser.getLink('2007').click()
+>>> add_folder('02')
+'http://localhost/++skin++cms/repository/bilder/2007/02/@@view.html'
+
+Also set the default year/volume:
+
+>>> browser.getLink('Global settings').click()
+>>> browser.getControl('year').value = '2007'
+>>> browser.getControl('volume').value = '1'
+>>> browser.getControl('Apply').click()
+
+Now check for the image folder of /2007/01. We do that in python so we need
+some setup:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>>
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.content.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> source = zope.component.getUtility(
+...     zeit.cms.content.interfaces.ICMSContentSource, name='images')
+>>> def get_location(obj):
+...     return zope.component.getMultiAdapter(
+...         (obj, source),
+...         zeit.cms.browser.interfaces.IDefaultBrowsingLocation).uniqueId
+
+The current location is the folder itself because we have not set a root:
+
+>>> get_location(repository['2007']['01'])
+u'http://xml.zeit.de/2007/01'
+
+Set the base folder:
+
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> connector.changeProperties(
+...     'http://xml.zeit.de/',
+...     {('base-folder', 'http://namespaces.zeit.de/CMS/Image'):
+...      'http://xml.zeit.de/bilder'})
+
+We'll get a folder inside the images now:
+
+>>> get_location(repository['2007']['01'])
+u'http://xml.zeit.de/bilder/2007/01'
+
+For the `online` foders we have the same image folder:
+
+>>> get_location(repository['online']['2007']['01'])
+u'http://xml.zeit.de/bilder/2007/01'
+
+
+When there is no image folder nothing bad happens:
+
+>>> browser.getLink('Global settings').click()
+>>> browser.getControl('year').value = '2020'
+>>> browser.getControl('volume').value = '7'
+>>> browser.getControl('Apply').click()
+>>> get_location(repository['2006']['49'])
+u'http://xml.zeit.de/2006/49'
+
+
+Cleanup:
+
+>>> zope.app.component.hooks.setSite(old_site)
+

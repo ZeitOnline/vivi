@@ -1,0 +1,64 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package=".xmlrpc" />
+
+  <adapter factory=".workflow.ContentWorkflow" 
+    provides="zeit.workflow.interfaces.IContentWorkflow"
+    trusted="yes"
+    />
+  <adapter factory=".publishinfo.NotPublishablePublishInfo" />
+  <adapter factory=".publishinfo.workflowProperties" />
+  <adapter
+    factory=".timebased.XMLReferenceUpdater"
+    name="timebased-workflow"
+    />
+  <subscriber handler=".workflow.log_workflow_changes" />
+
+  <adapter factory=".source.fromNotNecessary" />
+
+  <class class=".workflow.ContentWorkflow">
+    <require
+      permission="zope.View" interface=".interfaces.IContentWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IContentWorkflow"
+      />
+  </class>
+
+  <subscriber handler=".workflow.remove_from_channels_after_retract" />
+
+  <!-- Asset workflow -->
+  <adapter factory=".asset.AssetWorkflow"
+    provides="zeit.workflow.interfaces.IAssetWorkflow"
+    trusted="yes"
+    />
+
+  <class class=".asset.AssetWorkflow">
+    <require
+      permission="zope.View" interface=".interfaces.IAssetWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IAssetWorkflow"
+      />
+  </class>
+
+  <!-- Publish -->
+  <adapter factory=".publish.Publish" />
+  <utility factory=".publish.PublishTask" name="zeit.workflow.publish" />
+  <utility factory=".publish.RetractTask" name="zeit.workflow.retract" />
+
+  <!-- Old status -->
+  <adapter factory=".oldstatus.OldStatus" />
+  <adapter factory=".oldstatus.properties" />
+  <subscriber handler=".oldstatus.set_status" />
+  <subscriber handler=".oldstatus.remove_status" />
+
+
+  <!-- dependencies -->
+  <adapter factory=".dependency.Dependencies" />
+
+</configure>

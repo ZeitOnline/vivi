@@ -1,0 +1,4 @@
+<div id="user-information"
+  tal:content="request/principal/title | request/principal/id">
+  ldap.ich
+</div>

@@ -1,0 +1,16 @@
+<div tal:attributes="id view/form_id | nothing">
+  <tal:replace replace="resource_library:zeit.cms.Lightbox" />
+  <h1 i18n:translate=""
+    tal:content="view/title">
+    Title
+  </h1>
+
+  <span class="nextUrl" tal:content="view/nextURL" />
+
+  <form id="lightbox.form" action="#"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form">
+
+  </form>
+
+</div>  

@@ -1,0 +1,144 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <utility 
+    name="zeit.content.image"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <adapter factory=".image.repositoryimage_factory" name="image" />
+  <adapter factory=".image.localimage_factory" />
+  <adapter factory=".image.resource_factory" />
+  <adapter factory=".image.XMLReference" name="image" />
+  <adapter factory=".transform.ImageTransform" />
+  <adapter factory=".transform.persistent_thumbnail_factory" />
+  <adapter factory=".transform.thumbnail_folder_factory" />
+
+  <class class=".image.RepositoryImage">
+    <require
+      interface=".interfaces.IImage"
+      permission="zope.View" />
+  </class>
+
+  <class class=".image.LocalImage">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IImage"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IImage"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".transform.ImageTransform">
+    <require
+      interface=".interfaces.ITransform"
+      permission="zope.View" />
+  </class>
+  
+  <interface
+    interface=".interfaces.IImage"
+    type=".interfaces.IImageType"
+    />
+
+  <!-- Image group -->
+
+  <class class=".imagegroup.ImageGroup">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require like_class="zeit.cms.repository.folder.Folder" />
+    <require
+      interface=".interfaces.IImageGroup"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IImageGroup"
+      permission="zeit.EditContent" />
+  </class>
+
+  <interface
+    interface=".interfaces.IImageGroup"
+    type=".interfaces.IImageType"
+    />
+
+  <adapter factory=".imagegroup.imageGroupToResource" />
+  <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
+  <adapter factory=".imagegroup.XMLReference" name="image" />
+
+  <class class=".imagegroup.LocalImageGroup">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ILocalImageGroup"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ILocalImageGroup"
+      permission="zeit.EditContent" />
+  </class>
+  
+  <adapter factory=".imagegroup.local_image_group_factory" />
+  <adapter
+    for=".interfaces.ILocalImageGroup"
+    factory=".imagegroup.imageGroupToResource"
+    />
+
+  <!-- metadata -->
+
+  <adapter
+    factory=".metadata.ImageMetadata" 
+    for=".interfaces.IImage"
+    />
+
+  <adapter
+    factory=".metadata.ImageMetadata" 
+    for=".interfaces.IImageGroup"
+    />
+
+  <adapter
+    factory=".metadata.ImageMetadata" 
+    for=".interfaces.ILocalImageGroup"
+    />
+
+  <adapter factory=".metadata.metadata_webdav_properties" />
+  <adapter factory=".metadata.MetadataXMLReference" name="image" />
+
+
+  <!-- source -->
+  <utility
+    provides="zeit.cms.content.interfaces.ICMSContentSource"
+    component=".interfaces.imageSource"
+    name="images"
+    />
+
+
+  <!-- image references -->
+  <adapter
+    factory=".imagereference.ImagesAdapter"
+    provides=".interfaces.IImages"
+    trusted="yes"
+    />
+  <adapter factory=".imagereference.images_from_template" />
+  <adapter
+    factory=".imagereference.XMLReferenceUpdater"
+    name="zeit.cms.image"
+    />
+  <subscriber handler=".imagereference.update_image_reference_on_checkin" />
+  <class class=".imagereference.ImagesAdapter">
+    <require
+      interface=".interfaces.IImages"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IImages"
+      permission="zeit.EditContent" />
+    <require
+      interface="zope.location.interfaces.ILocation"
+      permission="zope.View" />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zeit.EditContent" />
+  </class>
+
+  <subscriber handler=".imagereference.update_objects_referenced_by_images" />
+
+
+</configure>
