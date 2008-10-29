@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.2.5 (unreleased)
+1.2.5 (2008-10-29)
 ------------------
 
 - Neue Felder: »Lexical resource query« und »Left column«
