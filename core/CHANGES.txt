@@ -4,6 +4,8 @@ zeit.content.article changes
 1.5.8 (unreleased)
 ------------------
 
+- Anpassungen für zeit.cms 1.2.6
+
 1.5.7 (2008-10-24)
 ------------------
 

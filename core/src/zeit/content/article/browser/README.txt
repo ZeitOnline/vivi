@@ -392,7 +392,7 @@ xml source:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2">
+    <block ...href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2"...>
       <supertitle py:pytype="str">Halle</supertitle>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -462,7 +462,7 @@ at its xml source:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2">
+    <block ...href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2"...>
       <supertitle py:pytype="str">Halle</supertitle>
       <title py:pytype="str">Trinker zur Kasse</title>
       <text xsi:nil="true"/>
