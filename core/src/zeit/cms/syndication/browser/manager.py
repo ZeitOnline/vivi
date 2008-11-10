@@ -25,7 +25,9 @@ class Manager(zeit.cms.browser.view.Base):
             targets = self.select_column.getSelected(self.manager.targets,
                                                      self.request)
             if 'syndicate' in self.request.form:
-                self.syndicate(targets)
+                self.syndicate(targets, hidden=False)
+            if 'syndicate-wo-hp' in self.request.form:
+                self.syndicate(targets, hidden=True)
             if 'publish' in self.request.form:
                 self.publish(targets)
         super(Manager, self).update()
@@ -33,9 +35,9 @@ class Manager(zeit.cms.browser.view.Base):
     def has_content(self):
         return self.manager.targets
 
-    def syndicate(self, targets):
+    def syndicate(self, targets, **kw):
         try:
-            self.manager.syndicate(targets)
+            self.manager.syndicate(targets, **kw)
         except zeit.cms.syndication.interfaces.SyndicationError, e:
             self.send_message(
                 _('Could not syndicate because "${name}" could not be '

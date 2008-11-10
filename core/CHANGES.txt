@@ -4,6 +4,8 @@ zeit.cms changes
 1.2.6 (unreleased)
 ------------------
 
+- Syndizieren mit gleichzeitigem verstecken auf der Homepage (bug #4521).
+
 1.2.5 (2008-10-29)
 ------------------
 

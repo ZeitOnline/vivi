@@ -46,7 +46,7 @@ class SyndicationManager(object):
             return False
         return True
 
-    def syndicate(self, targets):
+    def syndicate(self, targets, **kw):
         targets = list(targets)
         for target in targets:
             if target.uniqueId not in self._target_mapping:
@@ -66,6 +66,10 @@ class SyndicationManager(object):
         # Everything is checked out now. Syndicate.
         for target in checked_out:
             target.insert(0, self.context)
+            if kw:
+                metadata = target.getMetadata(self.context)
+                for key, value in kw.items():
+                    setattr(metadata, key, value)
 
         for target in checked_out:
             manager = zeit.cms.checkout.interfaces.ICheckinManager(target)
