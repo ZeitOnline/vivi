@@ -1,12 +1,10 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import logging
 import lxml.etree
-
-import zope.interface
 import zope.component
+import zope.interface
 
 import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
@@ -14,7 +12,6 @@ import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.relation.interfaces
-
 
 
 @zope.component.adapter(
