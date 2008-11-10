@@ -24,8 +24,8 @@ class Manager(zeit.cms.browser.view.Base):
 
     def update(self):
         if self.request.form:
-            targets = self.columns[0].getSelected(self.manager.targets,
-                                                  self.request)
+            targets = self.select_column.getSelected(self.manager.targets,
+                                                     self.request)
             if 'syndicate' in self.request.form:
                 self.syndicate(targets)
             if 'publish' in self.request.form:
@@ -89,11 +89,8 @@ class Manager(zeit.cms.browser.view.Base):
     @property
     def columns(self):
 
-        def _id_getter(item):
-            return item.uniqueId
-
         return (
-            zc.table.column.SelectionColumn(_id_getter),
+            self.select_column,
             zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
             zc.table.column.GetterColumn(
                 _('Title'),
@@ -112,3 +109,10 @@ class Manager(zeit.cms.browser.view.Base):
                 cell_formatter=lambda i, v, f: _('Preview')),
         )
 
+    @zope.cachedescriptors.property.Lazy
+    def select_column(self):
+        return zc.table.column.SelectionColumn(self._id_getter)
+
+    @staticmethod
+    def _id_getter(item):
+        return item.uniqueId
