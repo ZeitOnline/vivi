@@ -382,29 +382,6 @@ When we remove the feed from the repository, the source is empty:
 []
 
 
-Ordering of Content in a Feed
-=============================
-
-When new content is published into a feed it is inserted on the top making the
-new document the first.
-
-It is sometimes, if not often, necessary to apply a manual order to a feed's
-content. For instance if an article is very important it should be kept on the
-top until furhter notice. This mechanism we call pinnig.
-
-
-Questions Regarding Implementation 
-==================================
-
-* The syndication targets reside in the backend, but we need to generate a
-  list of them. This basically means we need a query like
-  `backend.search(type='feed')`.
-
-* At which point is the feed published to the production server? Is this a
-  separate workflow step? Will feeds be published like any other content? Or
-  will we publish documents together with the feed?
-
-
 Cleanup
 =======
 
