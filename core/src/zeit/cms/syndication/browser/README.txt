@@ -54,7 +54,7 @@ Visit the syndication page again:
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE html...
-<table>
+<table...
   <thead>
     ...
     <th>
@@ -68,6 +68,7 @@ Visit the syndication page again:
         <input ... />
       </td>
       <td>
+        ...lock-open...
       </td>
       <td>
         Politik
@@ -98,7 +99,7 @@ in the feed:
 <!DOCTYPE html...
     <li class="message">"rauchen-verbessert-die-welt" has been syndicated to
     politik.feed</li>...
-<table>
+<table...
   <thead>
     ...
     <th>
@@ -112,6 +113,7 @@ in the feed:
         <input ... />
       </td>
       <td>
+        ...lock-open...
       </td>
       <td>
         Politik
@@ -133,7 +135,6 @@ in the feed:
 Let's look at the feed in the repository, to make sure our document is really
 in there:
 
->>> browser.handleErrors = False
 >>> browser.getLink('http://xml.zeit.de/politik.feed').click()
 >>> print browser.contents
 <?xml version...
@@ -167,7 +168,7 @@ Locking information is also be displayed in the syndication manager:
         <input .../>
       </td>
       <td>
-        <img src="/@@/zeit.cms/icons/lock-closed-mylock.png" title="Von Ihnen gesperrt" />
+        ...lock-closed-mylock...
       </td>
       <td>
         Wirtschaft
@@ -552,7 +553,7 @@ The 'Politik' Feed is currently a syndication target:
       <input ...  />
     </td>
     <td>
-      <img ...lock-closed-mylock.png" ... />
+        ...lock-closed-mylock...
     </td>
     <td>
       Politik

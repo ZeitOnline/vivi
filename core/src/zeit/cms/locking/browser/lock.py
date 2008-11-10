@@ -87,21 +87,46 @@ class Lock(zeit.cms.browser.lightbox.Form):
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
-    locked_icon = 'lock-closed.png'
-    not_locked_icon = 'lock-open.png'
-    own_lock_icon = 'lock-closed-mylock.png'
     title = _('Manage lock')
 
-    @property
-    def icon(self):
-        if self.lockable.ownLock():
-            icon = self.own_lock_icon
-        elif self.lockable.locked():
-            icon = self.locked_icon
-        else:
-            icon = self.not_locked_icon
-        return '/@@/zeit.cms/icons/%s' % icon
+    def img_tag(self):
+        return zope.component.getMultiAdapter(
+            (self.context, self.request),
+            name='get_locking_indicator')
 
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
         return zope.app.locking.interfaces.ILockable(self.context)
+
+
+def get_locking_indicator(context, request):
+    lockable = zope.app.locking.interfaces.ILockable(context, None)
+    if lockable is None:
+        return ''
+    locked = lockable.locked()
+    mylock = locked and lockable.ownLock()
+    if mylock:
+        img = 'lock-closed-mylock'
+        title = 'Von Ihnen gesperrt'
+    elif locked:
+        img = 'lock-closed'
+        authentication = zope.component.getUtility(
+            zope.app.security.interfaces.IAuthentication)
+        locker = lockable.locker()
+        try:
+            locker = authentication.getPrincipal(locker).title
+        except zope.app.security.interfaces.PrincipalLookupError:
+            pass
+        title = 'Gesperrt von %s' % lockable.locker()
+    else:
+        img = 'lock-open'
+        title = _('Not locked')
+    resource_url = zope.component.getMultiAdapter(
+        (request,), name='zeit.cms')()
+    return '<img src="%s/icons/%s.png" title="%s" class="%s" />' % (
+        resource_url, img, title, img)
+
+
+def get_locking_indicator_for_listing(context, request):
+    return zope.component.getMultiAdapter(
+        (context.context, request), name='get_locking_indicator')

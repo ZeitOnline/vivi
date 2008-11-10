@@ -149,31 +149,14 @@ class MetadataColumn(GetterColumn):
         return ''.join(result)
 
 
-class LockedColumn(GetterColumn):
+class LockedColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
-        lockable = zope.app.locking.interfaces.ILockable(item, None)
-        if lockable is None:
-            return ''
-        locked = lockable.locked()
-        mylock = locked and lockable.ownLock()
-        if mylock:
-            img = 'lock-closed-mylock'
-            title = 'Von Ihnen gesperrt'
-        elif locked:
-            img = 'lock-closed'
-            authentication = zope.component.getUtility(
-                zope.app.security.interfaces.IAuthentication)
-            locker = lockable.locker()
-            try:
-                locker = authentication.getPrincipal(locker).title
-            except zope.app.security.interfaces.PrincipalLookupError:
-                pass
-            title = 'Gesperrt von %s' % lockable.locker()
-        else:
-            return ''
-        return '<img src="/@@/zeit.cms/icons/%s.png" title="%s" />' % (
-            img, title)
+        return zope.component.getMultiAdapter(
+            (item, formatter.request), name='get_locking_indicator')
+
+    def cell_formatter(self, value, item, formatter):
+        return unicode(value)
 
 
 class TypeColumn(GetterColumn):

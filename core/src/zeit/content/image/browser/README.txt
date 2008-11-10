@@ -389,8 +389,7 @@ Let's have a look at the index:
     <td>
       <input class="hiddenType" id="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==..used" name="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==." name="selection_column.bmV3LWhhbXBzaGlyZS00NTB4MjAwLmpwZw==." type="checkbox" value="on"  />
     </td>
-    <td>
-    </td>
+    ...
     <td>
       new-hampshire-450x200.jpg
     </td>
@@ -408,8 +407,7 @@ Let's have a look at the index:
     <td>
       <input class="hiddenType" id="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==..used" name="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==." name="selection_column.bmV3LWhhbXBzaGlyZS1hcnRpa2VsLmpwZw==." type="checkbox" value="on"  />
     </td>
-    <td>
-    </td>
+    ...
     <td>
       new-hampshire-artikel.jpg
     </td>
@@ -427,8 +425,7 @@ Let's have a look at the index:
     <td>
       <input class="hiddenType" id="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==..used" name="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==..used" type="hidden" value="" /> <input class="checkboxType" id="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==." name="selection_column.b2JhbWEtY2xpbnRvbi0xMjB4MTIwLmpwZw==." type="checkbox" value="on"  />
     </td>
-    <td>
-    </td>
+    ...
     <td>
       obama-clinton-120x120.jpg
     </td>

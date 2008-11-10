@@ -49,6 +49,12 @@ table > * > tr > td {
    display: none;
 }
 
+/* don't display unlocked indicator */
+table.contentListing > tbody > tr > td > img.lock-open,
+table.syndication-manager > tbody > tr > td > img.lock-open {
+    display: none;
+}
+
 .zc-table-sortable {
   cursor: pointer;
 }

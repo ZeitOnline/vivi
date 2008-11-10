@@ -52,19 +52,7 @@ we just get an empty column:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
-    <td>
-      <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" /></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
+    ... 
     <td>
       <span class="filename">4schanzentournee-abgesang</span>
     </td>
@@ -73,13 +61,7 @@ we just get an empty column:
     </td>
     <td>
     </td>
-    <td>
-    </td>
-    <td>
-    </td>
-    <td>
-      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
-    </td>
+    ...
   </tr>
   ...
 
@@ -109,16 +91,7 @@ Now we have 42 / 31415 accesses:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
-    <td>
-      <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" /></div>
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       4schanzentournee-abgesang
     </td>
@@ -131,13 +104,7 @@ Now we have 42 / 31415 accesses:
     <td>
       <span class="hitCounter">42 / 31415</span>
     </td>
-    <td>
-    </td>
-    <td>
-    </td>
-    <td>
-      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
-    </td>
+    ...
   </tr>
   ...
 
@@ -149,19 +116,7 @@ When there are no hits today the rendering is different:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
-    <td>
-      <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" /></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
+    ...
     <td>
       <span class="filename">4schanzentournee-abgesang</span>
     </td>
@@ -171,13 +126,7 @@ When there are no hits today the rendering is different:
     <td>
       <span class="hitCounter">∅ / 31415</span>
     </td>
-    <td>
-    </td>
-    <td>
-    </td>
-    <td>
-      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
-    </td>
+    ...
   </tr>
   ...
 
@@ -190,19 +139,7 @@ When we have only hits from today, those are also displayed as total hits:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
-    <td>
-      <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/not-published.png" title="Not published" /></div>
-    </td>
-    <td>
-    </td>
-    <td>
-      4schanzentournee-abgesang
-    </td>
+   ...
     <td>
       <span class="filename">4schanzentournee-abgesang</span>
     </td>
@@ -212,13 +149,7 @@ When we have only hits from today, those are also displayed as total hits:
     <td>
       <span class="hitCounter">543 / 543</span>
     </td>
-    <td>
-    </td>
-    <td>
-    </td>
-    <td>
-      <span class="SearchableText">4schanzentournee-abgesang</span><span class="URL">http://localhost/++skin++cms/repository/online/2007/01/4schanzentournee-abgesang</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang</span>
-    </td>
+    ...
   </tr>
   ...
 
@@ -245,11 +176,7 @@ Let's indicate a published object:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" /></div>
     </td>
@@ -278,11 +205,7 @@ We don't know when the object was published. Assume it's fresh:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" /></div>
     </td>
@@ -309,11 +232,7 @@ With a publication date *after* the modifcation date it is also fresh:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" /></div>
     </td>
@@ -334,11 +253,7 @@ With a publication time *before* the modifaction time it is not fresh:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/published-with-changes.png" title="Published but has changes" /></div>
     </td>
@@ -360,11 +275,7 @@ modification time.
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Published" /></div>
     </td>
@@ -383,11 +294,7 @@ There was a bug that the titles where not translated:
 <?xml ...
   <tbody>
   <tr class="odd">
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-    </td>
+    ...
     <td>
       <div class="workflow-column"><img class="publish-state" src="http://localhost/++skin++cms/@@/zeit.cms/icons/published.png" title="Veröffentlicht" /></div>
     </td>
@@ -428,4 +335,3 @@ Clean up:
 ...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
 ...     zeit.cms.content.interfaces.IAccessCounter)
 True
-

@@ -20,6 +20,8 @@ from zeit.cms.i18n import MessageFactory as _
 class Manager(zeit.cms.browser.view.Base):
     """Syndication manager UI."""
 
+    css_class = 'syndication-manager'
+
     def update(self):
         if self.request.form:
             targets = self.columns[0].getSelected(self.manager.targets,
@@ -78,9 +80,11 @@ class Manager(zeit.cms.browser.view.Base):
 
     @property
     def table(self):
-        return zc.table.table.FormSortFormatter(
+        formatter = zc.table.table.FormSortFormatter(
             self.context, self.request, self.manager.targets,
             columns=self.columns)
+        formatter.cssClasses['table'] = self.css_class
+        return formatter
 
     @property
     def columns(self):

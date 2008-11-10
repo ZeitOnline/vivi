@@ -3,6 +3,20 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <view
+    for="zope.interface.Interface"
+    type="zeit.cms.browser.interfaces.ICMSLayer"
+    name="get_locking_indicator"
+    factory=".lock.get_locking_indicator"
+    />
+
+  <view
+    for="zeit.cms.browser.interfaces.IListRepresentation"
+    type="zeit.cms.browser.interfaces.ICMSLayer"
+    name="get_locking_indicator"
+    factory=".lock.get_locking_indicator_for_listing"
+    />
+
   <browser:page
     name="locks.html"
     for="zeit.cms.repository.interfaces.IRepositoryContent"

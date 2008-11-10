@@ -3,6 +3,7 @@
 """Menu infrastructure."""
 
 import time
+import xml.sax.saxutils
 
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
@@ -96,6 +97,9 @@ class LightboxActionMenuItem(ActionMenuItem):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'action-menu-item-with-lightbox.pt')
+
+    def img_tag(self):
+        return '<img src=%s />' % xml.sax.saxutils.quoteattr(self.icon)
 
 
 class DropDownMenuBase(object):
