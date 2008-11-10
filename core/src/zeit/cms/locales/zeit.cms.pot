@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Oct 23 16:35:07 2008\n"
+"POT-Creation-Date: Mon Nov 10 19:48:53 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -57,15 +57,15 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:119
+#: src/zeit/cms/browser/form.py:113
 msgid "Add"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:151
+#: src/zeit/cms/browser/form.py:140
 msgid "Cancel"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:174
+#: src/zeit/cms/browser/form.py:161
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
 #: src/zeit/content/image/browser/configure.zcml:106
@@ -75,16 +75,16 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:216
+#: src/zeit/cms/browser/form.py:200
 msgid "No changes"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:219
+#: src/zeit/cms/browser/form.py:203
 #: src/zeit/cms/repository/browser/file.py:109
 msgid "Apply"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:227
+#: src/zeit/cms/browser/form.py:211
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
@@ -110,27 +110,27 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:263
+#: src/zeit/cms/browser/listing.py:246
 msgid "Directory listing"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:267
+#: src/zeit/cms/browser/listing.py:250
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:274
+#: src/zeit/cms/browser/listing.py:257
 #: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:278
+#: src/zeit/cms/browser/listing.py:261
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
 #: src/zeit/cms/syndication/browser/feed.py:157
-#: src/zeit/cms/syndication/browser/manager.py:95
+#: src/zeit/cms/syndication/browser/manager.py:96
 #: src/zeit/cms/syndication/interfaces.py:51
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:34
 #: src/zeit/content/gallery/interfaces.py:80
@@ -140,7 +140,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:282
+#: src/zeit/cms/browser/listing.py:265
 #: src/zeit/cms/interfaces.py:48
 #: src/zeit/cms/repository/browser/file.py:42
 #: src/zeit/content/image/browser/imagegroup.py:69
@@ -150,22 +150,22 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:286
+#: src/zeit/cms/browser/listing.py:269
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:289
+#: src/zeit/cms/browser/listing.py:272
 #: src/zeit/cms/syndication/browser/feed.py:160
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:291
+#: src/zeit/cms/browser/listing.py:274
 #: src/zeit/cms/content/interfaces.py:74
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:295
+#: src/zeit/cms/browser/listing.py:278
 #: src/zeit/cms/content/interfaces.py:69
 #: src/zeit/search/browser/search.py:110
 #: src/zeit/search/interfaces.py:23
@@ -189,7 +189,7 @@ msgstr ""
 msgid "Add..."
 msgstr ""
 
-#: src/zeit/cms/browser/menu.py:79
+#: src/zeit/cms/browser/menu.py:80
 msgid "CMS"
 msgstr ""
 
@@ -258,6 +258,11 @@ msgstr ""
 
 #: src/zeit/cms/checkout/browser/manager.py:98
 msgid "Checkin"
+msgstr ""
+
+#: src/zeit/cms/checkout/helper.py:30
+#. Default: ""
+msgid "Could not checkout \"${id}\" for automatic object update."
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/clip.py:100
@@ -578,6 +583,19 @@ msgstr ""
 msgid "Locked until"
 msgstr ""
 
+#: src/zeit/cms/locking/browser/lock.py:110
+msgid "Locked by you"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:120
+#. Default: ""
+msgid "Locked by ${user}"
+msgstr ""
+
+#: src/zeit/cms/locking/browser/lock.py:124
+msgid "Not locked"
+msgstr ""
+
 #: src/zeit/cms/locking/browser/lock.py:29
 msgid "Locks"
 msgstr ""
@@ -609,7 +627,7 @@ msgstr ""
 msgid "\"${name}\" has been unlocked."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:93
+#: src/zeit/cms/locking/browser/lock.py:90
 msgid "Manage lock"
 msgstr ""
 
@@ -679,11 +697,6 @@ msgstr ""
 
 #: src/zeit/cms/related/interfaces.py:17
 msgid "Objects that are related to this object."
-msgstr ""
-
-#: src/zeit/cms/relation/corehandlers.py:49
-#. Default: ""
-msgid "Could not checkout \"${id}\" for automatic object update."
 msgstr ""
 
 #: src/zeit/cms/repository/browser/collection_metadata.pt:4
@@ -943,6 +956,11 @@ msgid "Edit Channel"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.pt:18
+#. Default: "Synd. w/o HP"
+msgid "syndicate-wo-hp"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/manager.pt:20
 msgid "Publish"
 msgstr ""
 
@@ -954,37 +972,37 @@ msgstr ""
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:101
+#: src/zeit/cms/syndication/browser/manager.py:102
 msgid "Position"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:108
+#: src/zeit/cms/syndication/browser/manager.py:109
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:351
 msgid "Preview"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:41
+#: src/zeit/cms/syndication/browser/manager.py:43
 #. Default: ""
 msgid "Could not syndicate because \"${name}\" could not be locked or checked out."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:47
+#: src/zeit/cms/syndication/browser/manager.py:49
 #. Default: ""
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:61
+#: src/zeit/cms/syndication/browser/manager.py:63
 #. Default: ""
 msgid "scheduled-for-publishing"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:64
+#: src/zeit/cms/syndication/browser/manager.py:66
 #. Default: ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:98
+#: src/zeit/cms/syndication/browser/manager.py:99
 msgid "Path"
 msgstr ""
 
@@ -1486,38 +1504,6 @@ msgstr ""
 
 #: src/zeit/search/interfaces.py:29
 msgid "Relevance of result"
-msgstr ""
-
-#: src/zeit/seo/browser.py:26
-msgid "SEO data"
-msgstr ""
-
-#: src/zeit/seo/browser.py:29
-msgid "Standard metadata"
-msgstr ""
-
-#: src/zeit/seo/browser.py:36
-msgid "Edit SEO data"
-msgstr ""
-
-#: src/zeit/seo/browser.py:41
-msgid "View SEO data"
-msgstr ""
-
-#: src/zeit/seo/configure.zcml:18
-msgid "View SEO"
-msgstr ""
-
-#: src/zeit/seo/configure.zcml:28
-msgid "Edit SEO"
-msgstr ""
-
-#: src/zeit/seo/interfaces.py:13
-msgid "HTML title"
-msgstr ""
-
-#: src/zeit/seo/interfaces.py:17
-msgid "HTML description"
 msgstr ""
 
 #: src/zeit/today/interfaces.py:41

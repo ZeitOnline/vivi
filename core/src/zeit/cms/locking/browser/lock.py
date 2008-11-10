@@ -107,7 +107,7 @@ def get_locking_indicator(context, request):
     mylock = locked and lockable.ownLock()
     if mylock:
         img = 'lock-closed-mylock'
-        title = 'Von Ihnen gesperrt'
+        title = _('Locked by you')
     elif locked:
         img = 'lock-closed'
         authentication = zope.component.getUtility(
@@ -117,7 +117,8 @@ def get_locking_indicator(context, request):
             locker = authentication.getPrincipal(locker).title
         except zope.app.security.interfaces.PrincipalLookupError:
             pass
-        title = 'Gesperrt von %s' % lockable.locker()
+        title = _('Locked by ${user}',
+                  mapping=dict(user=lockable.locker()))
     else:
         img = 'lock-open'
         title = _('Not locked')
