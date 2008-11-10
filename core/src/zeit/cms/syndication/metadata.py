@@ -9,7 +9,7 @@ import zope.component
 import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.relation.interfaces
-import zeit.cms.relation.corehandlers
+import zeit.cms.checkout.helper
 
 
 log = logging.getLogger(__name__)
@@ -45,5 +45,5 @@ def updateFeedOnCheckin(context, event):
         return True  # Assume feed always changes.
 
     for feed in updateable_feeds:
-        zeit.cms.relation.corehandlers.with_checked_out(
+        zeit.cms.checkout.helper.with_checked_out(
             feed, update_feed_metadata, events=False)

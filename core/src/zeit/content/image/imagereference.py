@@ -10,6 +10,7 @@ import zope.component
 import zope.interface
 
 import zeit.cms.checkout.interfaces
+import zeit.cms.checkout.helper
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.related.related
@@ -121,5 +122,5 @@ def update_objects_referenced_by_images(context, event):
         zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context, 'image_referenced_by')
     for related_object in relating_objects:
-        zeit.cms.relation.corehandlers.with_checked_out(
+        zeit.cms.checkout.helper.with_checked_out(
             related_object, update_image_reference_of_checked_out)
