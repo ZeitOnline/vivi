@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.2.7 (unreleased)
+1.2.7 (2008-11-10)
 ------------------
 
 - Übersetzungen korrigiert.
