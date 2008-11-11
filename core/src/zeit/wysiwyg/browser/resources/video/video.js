@@ -36,15 +36,15 @@ function Ok() {
     var input = oEditor.FCKSelection.GetSelectedElement();
     if (input == null) {
         var input = FCK.EditorDocument.createElement('INPUT');
-        var selected_element = oEditor.FCKSelection.GetParentElement();
+        var selected_element = oEditor.FCKSelection.GetBoundaryParentElement();
         selected_element.parentNode.insertBefore(
-            new_node, 
+            input, 
             selected_element.nextSibling);
     }
      
-    input.value = 'video_article: videoID=' + video_id;
-    input.type = 'text';
-    input.size = 60;
+    input.setAttribute('value', 'video_article: videoID=' + video_id);
+    input.setAttribute('type', 'text');
+    input.setAttribute('size', '60');
 
     return true;
 }
