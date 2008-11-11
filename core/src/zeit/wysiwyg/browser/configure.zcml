@@ -33,5 +33,4 @@
     permission="zope.View"
     />
 
-
 </configure>
