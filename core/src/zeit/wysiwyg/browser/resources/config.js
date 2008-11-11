@@ -4,7 +4,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         '/',
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
-        ['OrderedList','UnorderedList', 'Table', 'Image', 'TextField'],
+        ['OrderedList','UnorderedList', 'Table', 'Image', 'Zeit_Add_Video', 'TextField'],
         ['Link','Unlink','Anchor'],
 ];
 
@@ -24,6 +24,8 @@ FCKConfig.ImageBrowserURL = FCKConfig.LinkBrowserURL
 FCKConfig.LinkUpload = false;
 FCKConfig.ImageUpload = false;
 FCKConfig.FlashUpload = false;
+
+FCKConfig.Plugins.Add('video', '', FCKConfig.PageConfig.ZeitResources + '/');
 
 
 FCKConfig.CleanWordKeepsStructure = true;

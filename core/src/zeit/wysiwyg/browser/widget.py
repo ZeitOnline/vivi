@@ -9,7 +9,7 @@ TEMPLATE = '''\
 <input type="hidden" id="%(field_name)s" name="%(field_name)s"
     value="%(html)s" />
 <input type="hidden" id="%(field_name)s___Config"
-    value="EditorAreaCSS=%(config-path)s/editor.css&CustomConfigurationsPath=%(config-path)s/config.js" />
+    value="EditorAreaCSS=%(config-path)s/editor.css&CustomConfigurationsPath=%(config-path)s/config.js&ZeitResources=%(config-path)s" />
 <iframe id="%(field_name)s___Frame" class="fckeditor"
     src="%(editor-path)s/editor/fckeditor.html?InstanceName=%(field_name)s&amp;Toolbar=Zeit"
     frameborder="0" scolling="no"></iframe>
