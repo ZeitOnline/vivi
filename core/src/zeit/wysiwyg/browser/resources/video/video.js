@@ -19,13 +19,21 @@ window.addEventListener('load', function() {
     
     var selected_element = oEditor.FCKSelection.GetSelectedElement();
     if (selected_element) {
-        GetE('videoId').value = /.*=(.*)$/.exec(selected_element.value)[1];
+        var m;
+        m = /.* videoID=([^ ]+)/.exec(selected_element.value);
+        if (m != null)
+            GetE('videoId').value = m[1];
+
+        m = /.* expires=([^ ]+)/.exec(selected_element.value);
+        if (m != null)
+            GetE('expires').value = m[1];
     }
 }, false);
 
 
 function Ok() {
     var video_id = GetE('videoId').value;
+    var expires = GetE('expires').value;
     if (!video_id) {
         GetE('videoId').focus();
         alert('Die Video-Id muss ausgefüllt werden.');
@@ -42,7 +50,9 @@ function Ok() {
             selected_element.nextSibling);
     }
      
-    input.setAttribute('value', 'video_article: videoID=' + video_id);
+    var value = 'video_article: videoID=' + video_id + ' expires=' + expires;
+    input.setAttribute('value', value);
+    input.value = value;
     input.setAttribute('type', 'text');
     input.setAttribute('size', '60');
 
