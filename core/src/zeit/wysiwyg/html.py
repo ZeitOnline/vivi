@@ -1,23 +1,18 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import copy
 import datetime
 import htmlentitydefs
-import time
-
-import gocept.lxml.objectify
 import lxml.etree
 import lxml.objectify
 import rwproperty
-
+import time
 import zc.iso8601.parse
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.interface.common.idatetime
-import zope.publisher.interfaces.browser
 import zope.security.management
 import zope.security.proxy
 import zope.traversing.interfaces
@@ -93,7 +88,7 @@ class HTMLConverter(object):
 
         value = '<div>' + self._replace_entities(value) + '</div>'
         __traceback_info__ = (value,)
-        html = gocept.lxml.objectify.fromstring(value)
+        html = lxml.objectify.fromstring(value)
         for node in html.iterchildren():
             for filter in (self._filter_empty,
                            self._fix_html_tag,
