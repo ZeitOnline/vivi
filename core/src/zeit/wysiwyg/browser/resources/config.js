@@ -13,7 +13,7 @@ FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/office2003/' ;
 
 FCKConfig.FirefoxSpellChecker = true ;
 
-FCKConfig.FontFormats   = 'p;h3';
+FCKConfig.FontFormats = 'p;h3';
 
 FCKConfig.LinkBrowserURL = (
     FCKConfig.BasePath +

@@ -3,16 +3,20 @@
 # $Id$
 
 import copy
+import datetime
 import htmlentitydefs
+import time
 
 import gocept.lxml.objectify
 import lxml.etree
 import lxml.objectify
 import rwproperty
 
+import zc.iso8601.parse
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
+import zope.interface.common.idatetime
 import zope.publisher.interfaces.browser
 import zope.security.management
 import zope.security.proxy
@@ -44,7 +48,7 @@ class HTMLConverter(object):
     assert len(html_xml_tags) == len(xml_html_tags)
 
     editable_xml_nodes = frozenset(['p', 'intertitle', 'article_extra',
-                                    'ul', 'ol'])
+                                    'ul', 'ol', 'video'])
 
     def __init__(self, context):
         self.context = context
@@ -58,10 +62,14 @@ class HTMLConverter(object):
         for node in self._html_getnodes(tree):
             # Copy all nodes. This magically removes namespace declarations.
             node = copy.copy(node)
+            # XXX we should use utilities for getting the converters for a
+            # node, should we not?
             for filter in (self._replace_image_nodes_by_img,
                            self._replace_ids_by_urls,
                            self._fix_xml_tag,
-                           self._xml_article_extra):
+                           self._xml_article_extra,
+                           self._xml_video,
+                          ):
                 node = filter(node)
                 if node is None:
                     break
@@ -91,7 +99,9 @@ class HTMLConverter(object):
                            self._fix_html_tag,
                            self._replace_img_nodes_by_image,
                            self._replace_urls_by_ids,
-                           self._html_article_extra):
+                           self._html_video,
+                           self._html_article_extra,
+                          ):
                 node = filter(node)
                 if node is None:
                     # Indicates that the node should be dropped.
@@ -175,6 +185,13 @@ class HTMLConverter(object):
     def _xml_article_extra(self, node):
         if node.tag != 'article_extra':
             return node
+
+        # Check for videoID and replace by video tag. This is handled then by
+        # the video handler
+        if node.get('videoID'):
+            return lxml.objectify.E.video(
+                videoID=node.get('videoID'))
+
         extra_data = dict(node.attrib)
         value = extra_data.pop('id', '')
         if extra_data:
@@ -278,6 +295,53 @@ class HTMLConverter(object):
         except (KeyError, ValueError):
             return id
         return self.url(obj)
+
+    def _xml_video(self, node):
+        if node.tag != 'video':
+            return node
+        video_id = node.get('videoID')
+        expires = node.get('expires')
+        if expires:
+            try:
+                expires = zc.iso8601.parse.datetimetz(expires)
+            except ValueError:
+                expires = ''
+            else:
+                tz = zope.interface.common.idatetime.ITZInfo(self.request)
+                expires = expires.astimezone(tz).strftime('%Y-%m-%d %H:%M')
+        else:
+            expires = ''
+
+        node = lxml.objectify.E.div(
+            lxml.objectify.E.div(video_id, **{'class': 'videoId'}),
+            lxml.objectify.E.div(expires, **{'class': 'expires'}),
+            **{'class': 'video'})
+        lxml.objectify.deannotate(node)
+        return node
+
+    def _html_video(self, node):
+        if node.get('class') != 'video':
+            return node
+
+        video_id = expires = ''
+
+        nodes = node.xpath('div[@class="videoId"]')
+        if nodes:
+            video_id = unicode(nodes[0])
+        nodes = node.xpath('div[@class="expires"]')
+        if nodes:
+            expires = unicode(nodes[0])
+            try:
+                expires = datetime.datetime(
+                    *(time.strptime(expires, '%Y-%m-%d %H:%M')[0:6]))
+            except ValueError:
+                expires = ''
+            else:
+                tz = zope.interface.common.idatetime.ITZInfo(self.request)
+                expires = expires.replace(tzinfo=tz)
+                expires = expires.isoformat()
+        video = lxml.objectify.E.video(videoID=video_id, expires=expires)
+        return video
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
