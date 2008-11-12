@@ -1,8 +1,8 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.app.form.browser.textwidgets
+import zope.component
 
 
 TEMPLATE = '''\
