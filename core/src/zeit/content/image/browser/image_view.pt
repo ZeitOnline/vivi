@@ -30,11 +30,15 @@
     <img tal:replace="structure context/@@preview/tag" />
   </a>
   
-  <div
-    tal:repeat="copyright view/metadata/copyrights"
-    tal:content="string: ©$copyright">
-    Zeit online
-  </div>
+  <ol class="image-copyrights">
+    <li tal:repeat="copyright view/copyrights">
+      <span tal:replace="copyright/copyright">ZEIT</span>
+      (<a tal:attributes="href copyright/url"
+        tal:content="copyright/url">
+        http://...
+      </a>)
+    </li>
+  </ol>
   <div i18n:translate="">
     Image title: <span tal:replace="view/metadata/title" i18n:name="caption" />
   </div>

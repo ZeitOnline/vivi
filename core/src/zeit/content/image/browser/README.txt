@@ -183,6 +183,12 @@ Make sure the image is not changed by looking at the image view:
       <td>center</td>
     </tr>
   ...
+  <ol class="image-copyrights">
+    <li>
+      ZEIT ONLINE
+      (<a href="http://www.zeit.de/">http://www.zeit.de/</a>)
+    </li>
+  </ol>...
       <div>
         Image title: Opernball in Wien
       </div>

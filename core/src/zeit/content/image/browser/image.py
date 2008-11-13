@@ -60,6 +60,15 @@ class ImageView(zeit.cms.browser.view.Base):
     def height(self):
         return self.context.getImageSize()[1]
 
+    @property
+    def copyrights(self):
+        result = []
+        for copyright, url in self.metadata.copyrights:
+            result.append(dict(
+                copyright=copyright,
+                url=url))
+        return result
+
 
 class Scaled(object):
 
