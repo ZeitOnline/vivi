@@ -1,0 +1,18 @@
+<div id="copyright-box" class="floating" i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">
+    Set copyright for all images in
+    <span tal:replace="python:context.uniqueId"
+      i18n:name="object-unique-id"/>
+  </h1>
+
+  <span class="nextUrl"
+    tal:content="string:${context/@@absolute_url}/@@view.html" />
+
+  <form id="lightbox.form" action="#"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form">
+
+  </form>
+
+</div>  

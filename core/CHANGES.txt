@@ -10,6 +10,7 @@ zeit.cms changes
 - Lightbox-Formulare: Nach dem ersten Submit wurden die Handler nicht
   aufgesetzt, so dass ein zweiter Submit nicht (korrekt) funktionierte.
   Unterstütung für Checkboxen.
+- Massenänderung der Copyrights aller Bilder in einem Ordner.
 
 
 1.2.7 (2008-11-10)

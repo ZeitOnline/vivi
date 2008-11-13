@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Nov 10 19:48:53 2008\n"
-"PO-Revision-Date: 2008-11-10 19:49+0100\n"
+"POT-Creation-Date: Thu Nov 13 14:09:32 2008\n"
+"PO-Revision-Date: 2008-11-13 14:15+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Abbrechen"
 #: src/zeit/cms/browser/form.py:161
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
-#: src/zeit/content/image/browser/configure.zcml:106
+#: src/zeit/content/image/browser/configure.zcml:110
 #: src/zeit/content/gallery/browser/configure.zcml:107
 #: src/zeit/content/text/browser/configure.zcml:14
 #: src/zeit/content/gallery/browser/overview.pt:23
@@ -76,8 +76,8 @@ msgstr "Speichern"
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
-#: src/zeit/content/image/browser/configure.zcml:33
-#: src/zeit/content/image/browser/configure.zcml:175
+#: src/zeit/content/image/browser/configure.zcml:37
+#: src/zeit/content/image/browser/configure.zcml:179
 #: src/zeit/content/text/browser/configure.zcml:24
 msgid "View"
 msgstr "Anzeigen"
@@ -1061,7 +1061,7 @@ msgid "No edited documents."
 msgstr "Keine bearbeiteten Dokumente."
 
 #: src/zeit/content/centerpage/browser/configure.zcml:27
-#: src/zeit/content/image/browser/configure.zcml:205
+#: src/zeit/content/image/browser/configure.zcml:209
 #: src/zeit/content/gallery/browser/configure.zcml:33
 #: src/zeit/content/link/browser/configure.zcml:17
 #: src/zeit/content/infobox/browser/configure.zcml:19
@@ -1070,7 +1070,7 @@ msgid "Edit metadata"
 msgstr "Metadaten"
 
 #: src/zeit/content/centerpage/browser/configure.zcml:43
-#: src/zeit/content/image/browser/configure.zcml:189
+#: src/zeit/content/image/browser/configure.zcml:193
 #: src/zeit/content/gallery/browser/configure.zcml:50
 #: src/zeit/content/link/browser/configure.zcml:32
 #: src/zeit/content/infobox/browser/configure.zcml:37
@@ -1171,9 +1171,26 @@ msgstr "Die Bildunterschrift wird nicht in das Bild übernommen sondern gilt nur
 msgid "Image only"
 msgstr "Nur Bild"
 
-#: src/zeit/content/image/browser/configure.zcml:127
+#: src/zeit/content/image/browser/configure.zcml:131
 msgid "Image (single)"
 msgstr "Einzelbild"
+
+#: src/zeit/content/image/browser/copyright.pt:5
+msgid "Set copyright for all images in ${object-unique-id}"
+msgstr "Copyright für alle Bilder in »${object-unique-id}« ändern"
+
+#: src/zeit/content/image/browser/copyright.py:15
+msgid "Bulk change image copyright"
+msgstr "Bilder-Copyright ändern"
+
+#: src/zeit/content/image/browser/copyright.py:30
+msgid "Set copyrights"
+msgstr "Copyright setzen"
+
+#. Default: ""
+#: src/zeit/content/image/browser/copyright.py:44
+msgid "Copyright changed for: ${changes}"
+msgstr "Copyright geändert für: ${changes}."
 
 #: src/zeit/content/image/browser/form.py:26
 #: src/zeit/content/image/browser/imagegroup.py:85
@@ -1196,19 +1213,19 @@ msgstr "Bild zeigen"
 msgid "Volume/Year"
 msgstr "Ausgabe/Jahr"
 
-#: src/zeit/content/image/browser/image_view.pt:39
+#: src/zeit/content/image/browser/image_view.pt:43
 msgid "Image title: ${caption}"
 msgstr "Bildtitel ${caption}"
 
-#: src/zeit/content/image/browser/image_view.pt:42
+#: src/zeit/content/image/browser/image_view.pt:46
 msgid "ALT: ${alt}"
 msgstr "ALT: ${alt}"
 
-#: src/zeit/content/image/browser/image_view.pt:45
+#: src/zeit/content/image/browser/image_view.pt:49
 msgid "Image sub text: ${caption}"
 msgstr "Bildunterschrift: ${caption}"
 
-#: src/zeit/content/image/browser/image_view.pt:49
+#: src/zeit/content/image/browser/image_view.pt:53
 msgid "Links to: ${link}"
 msgstr "Verlinkt nach: ${link}"
 
@@ -1218,7 +1235,7 @@ msgstr "Typ"
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:167
-#: src/zeit/content/image/browser/configure.zcml:138
+#: src/zeit/content/image/browser/configure.zcml:142
 #: src/zeit/content/gallery/browser/configure.zcml:79
 msgid "Images"
 msgstr "Bilder"
@@ -1236,7 +1253,7 @@ msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
 #: src/zeit/content/image/browser/imagegroup.py:62
-#: src/zeit/content/image/browser/configure.zcml:167
+#: src/zeit/content/image/browser/configure.zcml:171
 msgid "Image group"
 msgstr "Bildergruppe"
 
@@ -1247,7 +1264,7 @@ msgstr "Ausmaße"
 
 #: src/zeit/content/image/browser/imagegroup.py:75
 #: src/zeit/content/portraitbox/interfaces.py:24
-#: src/zeit/content/image/browser/configure.zcml:197
+#: src/zeit/content/image/browser/configure.zcml:201
 msgid "Image"
 msgstr "Bild"
 

@@ -8,6 +8,10 @@
   <adapter factory=".image.imageadapter_browse_location" />
   <subscriber handler=".form.register_asset_interface" />
 
+  <resourceLibrary name="zeit.content.image">
+    <directory source="resources" />
+  </resourceLibrary>
+
   <resourceLibrary
     name="zeit.content.image.drag-images"
     require="zeit.cms.DragAndDrop">
@@ -216,6 +220,29 @@
     class=".imagegroup.Metadata"
     template="imagegroup_metadata.pt"
     permission="zope.View"
+    />
+
+  <!-- copyright setter -->
+  <!-- XXX the permission is bad. -->
+
+  <browser:viewlet
+    name="bulk-image-copyright-change"
+    for="zeit.cms.repository.interfaces.ICollection"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".copyright.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.Checkout"
+    icon="/@@/zeit.content.image/bulk-copyright.png"
+    lightbox="@@set-image-copyright"
+    sort="200"
+    />
+
+  <browser:page
+    name="set-image-copyright"
+    for="zeit.cms.repository.interfaces.ICollection"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".copyright.Form"
+    permission="zeit.Checkout"
     />
 
 </configure>

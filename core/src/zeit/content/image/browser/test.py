@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import datetime
 import os
@@ -25,6 +24,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'copyright.txt',
         'imagefolder.txt',
         checker=checker,
         layer=zeit.content.image.test.ImageLayer))

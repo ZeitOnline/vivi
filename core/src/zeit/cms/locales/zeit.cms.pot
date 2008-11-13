@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Nov 10 19:48:53 2008\n"
+"POT-Creation-Date: Thu Nov 13 14:09:32 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -68,7 +68,7 @@ msgstr ""
 #: src/zeit/cms/browser/form.py:161
 #: src/zeit/cms/repository/browser/file.zcml:34
 #: src/zeit/cms/content/browser/template.zcml:41
-#: src/zeit/content/image/browser/configure.zcml:106
+#: src/zeit/content/image/browser/configure.zcml:110
 #: src/zeit/content/gallery/browser/configure.zcml:107
 #: src/zeit/content/text/browser/configure.zcml:14
 #: src/zeit/content/gallery/browser/overview.pt:23
@@ -88,8 +88,8 @@ msgstr ""
 #: src/zeit/cms/repository/browser/unknown.zcml:25
 #: src/zeit/cms/repository/browser/folder.zcml:15
 #: src/zeit/cms/repository/browser/file.zcml:24
-#: src/zeit/content/image/browser/configure.zcml:33
-#: src/zeit/content/image/browser/configure.zcml:175
+#: src/zeit/content/image/browser/configure.zcml:37
+#: src/zeit/content/image/browser/configure.zcml:179
 #: src/zeit/content/text/browser/configure.zcml:24
 msgid "View"
 msgstr ""
@@ -1073,7 +1073,7 @@ msgid "No edited documents."
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:27
-#: src/zeit/content/image/browser/configure.zcml:205
+#: src/zeit/content/image/browser/configure.zcml:209
 #: src/zeit/content/gallery/browser/configure.zcml:33
 #: src/zeit/content/link/browser/configure.zcml:17
 #: src/zeit/content/infobox/browser/configure.zcml:19
@@ -1082,7 +1082,7 @@ msgid "Edit metadata"
 msgstr ""
 
 #: src/zeit/content/centerpage/browser/configure.zcml:43
-#: src/zeit/content/image/browser/configure.zcml:189
+#: src/zeit/content/image/browser/configure.zcml:193
 #: src/zeit/content/gallery/browser/configure.zcml:50
 #: src/zeit/content/link/browser/configure.zcml:32
 #: src/zeit/content/infobox/browser/configure.zcml:37
@@ -1183,8 +1183,25 @@ msgstr ""
 msgid "Image only"
 msgstr ""
 
-#: src/zeit/content/image/browser/configure.zcml:127
+#: src/zeit/content/image/browser/configure.zcml:131
 msgid "Image (single)"
+msgstr ""
+
+#: src/zeit/content/image/browser/copyright.pt:5
+msgid "Set copyright for all images in ${object-unique-id}"
+msgstr ""
+
+#: src/zeit/content/image/browser/copyright.py:15
+msgid "Bulk change image copyright"
+msgstr ""
+
+#: src/zeit/content/image/browser/copyright.py:30
+msgid "Set copyrights"
+msgstr ""
+
+#: src/zeit/content/image/browser/copyright.py:44
+#. Default: ""
+msgid "Copyright changed for: ${changes}"
 msgstr ""
 
 #: src/zeit/content/image/browser/form.py:26
@@ -1208,19 +1225,19 @@ msgstr ""
 msgid "Volume/Year"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:39
+#: src/zeit/content/image/browser/image_view.pt:43
 msgid "Image title: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:42
+#: src/zeit/content/image/browser/image_view.pt:46
 msgid "ALT: ${alt}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:45
+#: src/zeit/content/image/browser/image_view.pt:49
 msgid "Image sub text: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:49
+#: src/zeit/content/image/browser/image_view.pt:53
 msgid "Links to: ${link}"
 msgstr ""
 
@@ -1230,7 +1247,7 @@ msgstr ""
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
 #: src/zeit/content/image/interfaces.py:167
-#: src/zeit/content/image/browser/configure.zcml:138
+#: src/zeit/content/image/browser/configure.zcml:142
 #: src/zeit/content/gallery/browser/configure.zcml:79
 msgid "Images"
 msgstr ""
@@ -1248,7 +1265,7 @@ msgid "Image group metadata"
 msgstr ""
 
 #: src/zeit/content/image/browser/imagegroup.py:62
-#: src/zeit/content/image/browser/configure.zcml:167
+#: src/zeit/content/image/browser/configure.zcml:171
 msgid "Image group"
 msgstr ""
 
@@ -1259,7 +1276,7 @@ msgstr ""
 
 #: src/zeit/content/image/browser/imagegroup.py:75
 #: src/zeit/content/portraitbox/interfaces.py:24
-#: src/zeit/content/image/browser/configure.zcml:197
+#: src/zeit/content/image/browser/configure.zcml:201
 msgid "Image"
 msgstr ""
 
