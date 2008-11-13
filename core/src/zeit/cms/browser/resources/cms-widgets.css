@@ -70,10 +70,10 @@ table.properties textarea {
 }
 
 .folded h1 {
-  background-image: url("/@@/zeit.cms/layout/unfold.png");
+  background-image: url("layout/unfold.png");
 }
 .unfolded h1 {
-  background-image: url("/@@/zeit.cms/layout/fold.png");
+  background-image: url("layout/fold.png");
 }
 
 .folded h1 a {
@@ -180,30 +180,30 @@ table.properties textarea {
 }
 
 .Tree li {
-   list-style-image: url("/@@/zeit.cms/layout/tline.png");
-   background: url("/@@/zeit.cms/layout/vline.png") repeat-y top left;
+   list-style-image: url("layout/tline.png");
+   background: url("layout/vline.png") repeat-y top left;
    cursor: pointer;
 }
 .Tree li:last-child {
-   list-style-image: url("/@@/zeit.cms/layout/lline.png");
+   list-style-image: url("layout/lline.png");
    background-image: none;
 }
 
 .Tree li[action="collapse"] {
-   list-style-image: url("/@@/zeit.cms/layout/minus.png");
+   list-style-image: url("layout/minus.png");
 }
 .Tree ul > li[action="collapse"].collapse:last-child {
-   list-style-image: url("/@@/zeit.cms/layout/minus_lastchild.png");
+   list-style-image: url("layout/minus_lastchild.png");
 }
 .Tree li.Root:last-child {
    list-style: none;
 }
 
 .Tree li[action="expand"] {
-   list-style-image: url("/@@/zeit.cms/layout/plus.png");
+   list-style-image: url("layout/plus.png");
 }
 .Tree li[action="expand"]:last-child {
-   list-style-image: url("/@@/zeit.cms/layout/plus_lastchild.png");
+   list-style-image: url("layout/plus_lastchild.png");
 }
 
 .Tree li[active] > p > a {
@@ -373,7 +373,7 @@ table.properties textarea {
   padding-bottom: 0.5em;
 }
 .objectsequencewidget {
-  background: white url("/@@/zeit.cms/icons/drop-widget.png") no-repeat 1em center;
+  background: white url("icons/drop-widget.png") no-repeat 1em center;
 }
 .objectsequencewidget img[action="delete"] {
   margin-left: 1em;
@@ -385,7 +385,7 @@ table.properties textarea {
   opacity: 1;
 }
 .drop-widget-hover {
-  background: #ccc url("/@@/zeit.cms/icons/drop-widget-hover.png") no-repeat right center;
+  background: #ccc url("icons/drop-widget-hover.png") no-repeat right center;
 }
 .drop-widget-hover .new {
   visibility: hidden;
