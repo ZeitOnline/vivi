@@ -1,6 +1,5 @@
 // Copyright (c) 2007-2008 gocept gmbh & co. kg
 // See also LICENSE.txt
-// $Id$
 
 connect(MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
     // Generic handler for displaying the drag pane for draggables
