@@ -5,7 +5,7 @@
       tal:replace="python: ', '.join(context.authors) + ':'">
       John Doe:
     </span>
-    <span tal:replace="python:context.title">
+    <span tal:replace="context/title">
       How to make Doe
     </span>
   </div>
