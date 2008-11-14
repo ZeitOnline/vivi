@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 # $Id$
 
+import time
 import xml.sax.saxutils
 
 import zope.component
@@ -10,11 +11,12 @@ import zope.interface
 import zope.schema
 import zope.schema.interfaces
 
-import zope.app.form.interfaces
 import zope.app.form.browser.interfaces
-import zope.app.form.browser.widget
 import zope.app.form.browser.itemswidgets
+import zope.app.form.browser.widget
+import zope.app.form.interfaces
 import zope.app.pagetemplate
+import zope.traversing.browser.interfaces
 
 import zc.datetimewidget.datetimewidget
 
@@ -134,19 +136,24 @@ class ObjectReferenceDisplayWidget(
             value = self.context.default
         if value == self.context.missing_value:
             return ""
-        list_repr = zope.component.getMultiAdapter(
+
+        url = zope.component.getMultiAdapter(
             (value, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
+            zope.traversing.browser.interfaces.IAbsoluteURL)
+        link_id = 'link.%s' % time.time()
 
         link = zope.app.form.browser.widget.renderElement(
-            'a', href=list_repr.url, contents=value.uniqueId,
-            title=list_repr.title)
+            'a', href=url, id=link_id,
+            contents=value.uniqueId)
+        script = ('<script language="javascript">\n'
+                  '    new zeit.cms.LinkToolTip("%s")\n'
+                  '</script>') % link_id
         workflow = zope.component.getMultiAdapter(
             (value, self.request, self),
             zope.viewlet.interfaces.IViewletManager,
             name='zeit.cms.workflow-indicator')
         workflow.update()
-        return link + '\n' + workflow.render()
+        return link + '\n' + workflow.render() + '\n' + script
 
 
 @zope.component.adapter(

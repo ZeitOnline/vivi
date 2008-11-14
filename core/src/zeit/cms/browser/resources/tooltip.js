@@ -4,7 +4,7 @@
 zeit.cms.ToolTip = Class.extend({
     
     construct: function(context, url_getter) {
-        this.context = context
+        this.context = $(context);
         this.url_getter = url_getter;
 
         this.mouse_over_deferred = null;
@@ -74,6 +74,27 @@ zeit.cms.ToolTip = Class.extend({
         $('tooltip').parentNode.removeChild($('tooltip'));
     },
 
-
 });
+
+
+zeit.cms.LinkToolTip = zeit.cms.ToolTip.extend({
+
+    construct: function(context) {
+        var othis = this;
+        var url_getter = function() {
+            return othis.getURLFromLink()
+        }
+        arguments.callee.$.construct.call(othis, context, url_getter);
+    },
+
+    getURLFromLink: function() {
+        var othis = this;
+        var url = othis.context.href;
+        if (!url) {
+            return null;
+        }
+        return url + '/@@drag-pane.html';
+    },
+});
+
 
