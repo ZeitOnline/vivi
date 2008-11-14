@@ -122,7 +122,7 @@ zeit.cms.LightboxForm = Class.extend({
             });
         othis.form = $('lightbox.form');
         if (othis.form != null) {
-            connect(othis.form, 'submit', function(event) {
+            connect(othis.form, 'onsubmit', function(event) {
                 // prevent accidential submit
                 event.stop()
             });
