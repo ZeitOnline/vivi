@@ -567,6 +567,21 @@ than an image in the image group:
    <div>New Hampshire</div>
     ...
 
+
+The image group has a special drag pane which shows all the images:
+
+>>> browser.handleErrors = False
+>>> browser.open(
+...     'http://localhost/++skin++cms/'
+...     'repository/2006/new-hampshire/@@drag-pane.html')
+>>> print browser.contents
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+  <div class="Text">New Hampshire</div>
+  <div class="UniqueId">http://xml.zeit.de/2006/new-hampshire</div>
+
+
 Broken images
 =============
 

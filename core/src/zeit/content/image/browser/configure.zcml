@@ -222,6 +222,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    name="drag-pane.html"
+    for="..interfaces.IImageGroup"
+    class=".image.ImageView"
+    template="image-group-drag.pt"
+    permission="zope.View"
+    />
+
+
   <!-- copyright setter -->
   <!-- XXX the permission is bad. -->
 
