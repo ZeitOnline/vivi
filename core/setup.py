@@ -36,6 +36,7 @@ setup(
         'setuptools',
         'sprout',
         'z3c.conditionalviews>=1.0b2.dev-r91510',
+        'z3c.etestbrowser',
         'z3c.flashmessage',
         'z3c.menu.simple>=0.5.1',
         'z3c.traverser',
@@ -67,11 +68,6 @@ setup(
         'zope.sendmail',
         'zope.xmlpickle',
     ],
-    extras_require={
-        'test': [
-            'z3c.etestbrowser',
-        ],
-    },
     entry_points = dict(
         console_scripts =
         ['run-lifetime-hits-importer = zeit.today.yesterday:main'])
