@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.cachedescriptors.property
 import zope.component
@@ -11,10 +10,9 @@ import zeit.cms.browser.form
 import zeit.cms.browser.tree
 import zeit.cms.browser.view
 import zeit.cms.interfaces
-import zeit.cms.workingcopy.interfaces
-
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
+import zeit.cms.workingcopy.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
