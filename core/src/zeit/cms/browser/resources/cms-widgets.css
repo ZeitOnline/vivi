@@ -240,6 +240,7 @@ table.properties textarea {
  * Drag-Pane
  *
  * */
+#tooltip,
 #drag-pane {
   position: absolute;
   background-color: #ffdd11;
@@ -247,6 +248,7 @@ table.properties textarea {
   padding: 5px;
 }
 
+#tooltip .text,
 #drag-pane .text {
   font-weight: bold;
 }
