@@ -66,6 +66,7 @@
     gocept.mochikit.lightbox">
     <directory source="resources" include="
       base.js
+      tooltip.js
       dnd.js
       menu.js
       messages.js

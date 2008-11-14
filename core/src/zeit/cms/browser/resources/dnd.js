@@ -110,6 +110,7 @@ var ObjectReferenceWidget = Class.extend({
 
     construct: function(element, default_browsing_url, type_filter,
                         show_popup) {
+        var othis = this;
         this.element = $(element);
         this.default_browsing_url = default_browsing_url;
         this.type_filter = type_filter;
@@ -117,9 +118,7 @@ var ObjectReferenceWidget = Class.extend({
             'input', 'object-reference', this.element);
         this.input.object_reference_widget = this;
         this.changed = false;
-        this.mouse_over_deferred = null;
 
-        var othis = this;
         new Droppable(this.element, {
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
@@ -130,8 +129,10 @@ var ObjectReferenceWidget = Class.extend({
         connect(this.input, 'onchange', function(event) {
             othis.changed = true;
         });
-        connect(element, 'onmouseover', this, 'handleMouseOver');
-        connect(element, 'onmouseout', this, 'handleMouseOut');
+
+        new zeit.cms.ToolTip(element, function() {
+            return othis.getToolTipURL();
+        });
 
         // this saves a click and shows the object browser initially
         if (show_popup) {
@@ -174,39 +175,6 @@ var ObjectReferenceWidget = Class.extend({
             var func = bind(action, this);
             func(argument);
         }
-    },
-
-    handleMouseOver: function(event) {
-        var othis = this;
-        if (this.mouse_over_deferred !== null) {
-            return;
-        }
-        MochiKit.Logging.log("Start waiting for tooltip");
-        this.mouse_over_deferred = MochiKit.Async.callLater(
-            0.4, function(result) {
-                MochiKit.Logging.log('Loading tooltip.');
-                var unique_id = othis.getObject();
-                var qs = MochiKit.Base.queryString({
-                    'unique_id': unique_id,
-                    'view': '@@drag-pane.html'});
-                var url = application_url + '/redirect_to?' + qs
-                var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-                d.addCallback(function(result) {
-                    othis.showToolTip(
-                        result.responseText, event.mouse().client);
-                    return result;
-                });
-                othis.mouse_over_deferred = null;
-        });
-    },
-
-    handleMouseOut: function(event) {
-        if (this.mouse_over_deferred === null) {
-            return;
-        }
-        MochiKit.Logging.log('Cancelled tooltip.');
-        this.mouse_over_deferred.cancel();
-        this.mouse_over_deferred = null;
     },
 
     handleNewUrl: function(url) {
@@ -273,32 +241,17 @@ var ObjectReferenceWidget = Class.extend({
         return d;
     },
 
-    showToolTip: function(text, where) {
+    getToolTipURL: function() {
         var othis = this;
-        var body = $('body');
-        var div = DIV({'id': 'tooltip'});
-        div.innerHTML = text;
-        MochiKit.Style.setElementPosition(div, where);
-        body.appendChild(div);
-
-        var signals = [];
-        signals.push(
-            MochiKit.Signal.connect(
-                this.element, 'onmousemove', function(event) {
-                    othis.hideToolTip(signals);
-        }));
-        signals.push(
-            MochiKit.Signal.connect(
-                'tooltip', 'onmousemove', function(event) {
-                    othis.hideToolTip(signals);
-        }));
-    },
-
-    hideToolTip: function(signals) {
-        forEach(signals, function(signal) {
-            MochiKit.Signal.disconnect(signal);
-        });
-        $('tooltip').parentNode.removeChild($('tooltip'));
+        var unique_id = othis.getObject();
+        if (!unique_id) {
+            return null;
+        }
+        var qs = MochiKit.Base.queryString({
+            'unique_id': unique_id,
+            'view': '@@drag-pane.html'});
+        var url = application_url + '/redirect_to?' + qs
+        return url;
     },
 });
 
