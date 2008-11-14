@@ -11,6 +11,8 @@ zeit.cms changes
   aufgesetzt, so dass ein zweiter Submit nicht (korrekt) funktionierte.
   Unterstütung für Checkboxen.
 - Massenänderung der Copyrights aller Bilder in einem Ordner.
+- Bei Verlinkungen (z.B. Assets) wird jetzt ein größerer Tooltip angezeigt
+  (beil Bildern auch mit Bild).
 
 
 1.2.7 (2008-11-10)
