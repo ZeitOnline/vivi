@@ -287,6 +287,16 @@ the unique id:
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
 
+When another view is desired it can be passed as the ``view`` query argument:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/@@redirect_to'
+...     '?unique_id=http://xml.zeit.de/online/2007/01/Somalia'
+...     '&view=@@drag-pane.html')
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@drag-pane.html'
+
+
 
 Invalidating the cache
 ======================

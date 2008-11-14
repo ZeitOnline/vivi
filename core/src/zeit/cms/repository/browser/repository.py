@@ -138,11 +138,11 @@ class HiddenCollections(zeit.cms.browser.view.Base):
 
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
 
-    def __call__(self, unique_id):
+    def __call__(self, unique_id, view='@@view.html'):
         # TODO: create a meaningful error message when the object doesn't
         # exist.
         obj = self.repository.getContent(unique_id)
-        self.redirect(self.url(obj, '@@view.html'))
+        self.redirect(self.url(obj, view))
         return u''
 
     @property
