@@ -237,7 +237,7 @@ table.properties textarea {
 
 
 /*
- * Drag-Pane
+ * Drag-Pane, Tooltip
  *
  * */
 #tooltip,
@@ -251,6 +251,10 @@ table.properties textarea {
 #tooltip .text,
 #drag-pane .text {
   font-weight: bold;
+}
+
+#tooltip .UniqueId {
+    display: none;
 }
 
 .URL {
