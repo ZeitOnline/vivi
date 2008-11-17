@@ -197,6 +197,13 @@ So let's change the sorting:
     ...
 </table>...
 
+Galleries also have assets:
+
+>>> bookmark = browser.url
+>>> browser.getLink('Edit assets').click()
+>>> browser.getControl('Add Related')
+<SubmitControl name='form.related.add' type='submit'>
+
 
 Reloading the image folder
 ==========================
@@ -204,7 +211,6 @@ Reloading the image folder
 Sometimes it will be necessary to manually reload the image folder, i.e. when
 images were added. Remove the image 03.jpg from the gallery folder:
 
->>> bookmark = browser.url
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/delete.html')
 >>> print browser.contents
@@ -273,12 +279,6 @@ So synchronise with the image folder:
 >>> browser.getLink('Source').click()
 >>> '03.jpg' in browser.getControl('XML Source').value
 False
-
-Galleries also have assets:
-
->>> browser.getLink('Edit assets').click()
->>> browser.getControl('Add Related')
-<SubmitControl name='form.related.add' type='submit'>
 
 
 Checkin
