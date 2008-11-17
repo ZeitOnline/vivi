@@ -145,13 +145,14 @@ After saving we're back at the overview:
   <tr>
     <td class="image-column">
       <input type="hidden" ...
-      <a title="Show image"
-       href="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/@@view.html">
-       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
-     </a>
       <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg"
         title="Edit">
+       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
         <div class="image-name">01.jpg</div>
+      </a>
+      <a title="Show image"...
+         href="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/@@view.html">
+       Show image
       </a>
     </td>
     <td>
