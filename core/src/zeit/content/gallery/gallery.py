@@ -81,7 +81,10 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                     # Ignore all non image types
                     del self[name]
             else:
-                if name not in self:
+                if name in self:
+                    # Update the existing entry
+                    self[name] = self[name]
+                else:
                     self[name] = entry
 
         for name in self._list_all_keys():

@@ -682,11 +682,12 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...     </gallery>""")
 
 
-There are three major differences to the new xml:
+There are some major differences to the new xml:
 
 1. The image folder is not explicitly noted and needs to be decuced.
 2. The blocks containing the images do not have names.
 3. The <text> node is optional.
+4. Text can be directly in the <text> node.
 
 The image folder is /2006, decuced from /cms/work/2006/DSC00109_2.jpg:
 
@@ -706,16 +707,23 @@ The keys also correct(ed) and the names are set:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text>
+            <text...>
+               <p>
                  Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
                  <a href="fooo">link</a>
-              </text>
-          <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright>
-                BILD
-              </image>
+               </p>
+             </text>
+          <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
+          <thumbnail...
         </block>
         <block name="01.jpg">
-          <image expires="2007-04-09" src="http://xml.zeit.de/2006/01.jpg" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright> BILD </image>
+          <text.../>
+          <caption>Nice <em>01</em> image</caption>
+          <image ... src="http://xml.zeit.de/2006/01.jpg"...
+             <bu>Nice <em>01</em> image</bu>
+             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+           </image>
+           <thumbnail...
         </block>
       </container>
     </column>
@@ -794,15 +802,19 @@ The keys also correct(ed) and the names are set:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text>
+          <text...>
+            <p ...>
                  Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
-              </text>
-          <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright>
-                BILD
-              </image>
+             </p>
+          </text>
+          <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
+          <thumbnail...
         </block>
         <block name="01.jpg">
-          <image expires="2007-04-09" src="http://xml.zeit.de/2006/01.jpg" width="380" align="left"><copyright>&#194;&#169; Martin Rose/Getty Images</copyright> BILD </image>
+          <text.../>
+          <caption...
+          <image ... src="http://xml.zeit.de/2006/01.jpg" ...
+          <thumbnail...
         </block>
       </container>
     </column>

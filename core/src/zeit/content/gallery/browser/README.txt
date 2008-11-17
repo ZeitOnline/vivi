@@ -281,6 +281,34 @@ So synchronise with the image folder:
 False
 
 
+Synchronising the image folder is also necessary when the metadata (especially
+the caption) of the image changes:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     'gallery/01.jpg/@@view.html')
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Image sub text').value = 'Bite my shiny metal ass'
+>>> browser.getControl('Apply').click()
+>>> browser.getLink('Checkin').click()
+>>> browser.open(bookmark)
+>>> browser.getLink('Synchronise with image folder').click()
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
+<gallery...
+        <block layout="image-only" name="01.jpg">
+          ...
+          <caption>Mann/Stein</caption>
+          <image ... src="http://xml.zeit.de/online/2007/01/gallery/01.jpg" ...
+            <bu>Bite my shiny metal ass</bu>...
+          </image>
+          <thumbnail ...
+            <bu>Bite my shiny metal ass</bu>...
+          </thumbnail>
+        </block>
+        ...
+
+
 Checkin
 =======
 
