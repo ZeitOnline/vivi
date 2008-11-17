@@ -247,10 +247,9 @@ The quick brown fox jumps over the lazy dog.
 
 The preview object will have been be removed though:
 
->>> browser.open('http://localhost/++skin++cms/repository/previews/')
->>> print browser.contents
-<?xml ...
-    ...There are no objects in this folder...
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> 'preview-zope.user' in browser.contents
+False
 
 
 Check the preview again to make sure the created folders are used and the
@@ -285,26 +284,23 @@ Clean up:
     >>> import os.path
     >>> import tempfile
     >>> tempdir = tempfile.mkdtemp()
-    >>> preview_dir = os.path.join(tempdir, 'previews')
-    >>> os.mkdir(preview_dir)
 
-    Create a preview file:
+    Create a preview file. It is created deep in a folder, so create those as
+    well:
 
-    >>> import sha
-    >>> hash = sha.new('http://xml.zeit.de/online/2007/01/Somalia')
-    >>> hash.update('zope.user')
-    >>> name = hash.hexdigest() + '?'
-    >>> file(os.path.join(preview_dir, name), 'w').write(
+    >>> preview_dir = os.path.join(tempdir, 'online', '2007', '01')
+    >>> os.makedirs(preview_dir)
+
+    >>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia?')
+    >>> open(name, 'w').write(
     ...     'The quick brown fox jumps over the lazy dog.')
 
     Create another file:
     >>> foo_name = name + 'foo=bar'
-    >>> file(os.path.join(preview_dir, foo_name), 'w').write(
+    >>> file(foo_name, 'w').write(
     ...     'The quick brown foo jumps over the lazy bar.')
 
     >>> import zope.app.appsetup.product
     >>> cms_config = zope.app.appsetup.product._configs['zeit.cms']
 
     >>> cms_config['preview-prefix'] = u'file://%s' % tempdir
-    >>> cms_config['workingcopy-preview-base'] = (
-    ...     u'http://xml.zeit.de/previews/')
