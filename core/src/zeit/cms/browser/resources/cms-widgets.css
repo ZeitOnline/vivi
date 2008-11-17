@@ -246,6 +246,7 @@ table.properties textarea {
   background-color: #ffdd11;
   border: 1px solid black;
   padding: 5px;
+  max-width: 18em;
 }
 
 #tooltip .text,
