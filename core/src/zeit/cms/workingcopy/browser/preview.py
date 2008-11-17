@@ -1,22 +1,18 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import urlparse
-import urllib2
 import time
-
+import urllib2
+import urlparse
+import zope.app.appsetup.product
 import zope.cachedescriptors.property
 import zope.component
 
-import zope.app.appsetup.product
-
-import zeit.connector.interfaces
-
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.repository.folder
 import zeit.cms.browser.preview
+import zeit.cms.interfaces
+import zeit.cms.repository.folder
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
 
 
 class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
