@@ -323,12 +323,11 @@ u'Gallery<br/>caption'
 Entry layout
 ++++++++++++
 
-Each entry can have a different layout. This is defined by a source. Currently
-the only valid value besides None is 'image-only':
+Each entry can have a different layout. This is defined by a source:
 
 >>> field = zeit.content.gallery.interfaces.IGalleryEntry['layout']
 >>> list(field.vocabulary)
-[u'image-only']
+[u'hidden', u'image-only']
 
 Let's set a layout on 01.jpg:
 

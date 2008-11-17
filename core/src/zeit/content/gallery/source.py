@@ -9,7 +9,9 @@ from zeit.cms.i18n import MessageFactory as _
 
 class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    values = {u'image-only': _('Image only')}
+    values = {u'image-only': _('Image only'),
+              u'hidden': _('Hidden'),
+             }
 
     def getValues(self):
         return self.values.keys()

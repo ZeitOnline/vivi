@@ -133,7 +133,7 @@ Each entry can be edited on the overview page:
 >>> browser.getControl('Text').value = (
 ...     '<p><strong>Der Mann am Stein</strong></p>')
 >>> browser.getControl('Layout').displayOptions
-['(no value)', 'Image only']
+['(no value)', 'Hidden', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
 >>> browser.getControl('Image caption').value = "Mann/Stein"
 >>> browser.getControl('Apply').click()
@@ -145,6 +145,7 @@ After saving we're back at the overview:
   <tr>
     <td class="image-column">
       <input type="hidden" ...
+      <div class="gallery-layout">Image only</div>
       <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg"
         title="Edit">
        <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />

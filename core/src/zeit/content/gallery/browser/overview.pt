@@ -15,6 +15,10 @@
         <td class="image-column">
           <input type="hidden" name="images:list"
             tal:attributes="value entry/__name__" />
+          <div class="gallery-layout"
+            tal:content="python: view.get_entry_layout(entry)">
+            Nur BIld
+          </div>
           <a href="#" title="Edit"
             i18n:attributes="title"
             tal:attributes="href entry/@@absolute_url">

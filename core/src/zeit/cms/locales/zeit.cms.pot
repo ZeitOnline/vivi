@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Nov 13 14:09:32 2008\n"
+"POT-Creation-Date: Mon Nov 17 15:19:09 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -71,7 +71,7 @@ msgstr ""
 #: src/zeit/content/image/browser/configure.zcml:110
 #: src/zeit/content/gallery/browser/configure.zcml:107
 #: src/zeit/content/text/browser/configure.zcml:14
-#: src/zeit/content/gallery/browser/overview.pt:23
+#: src/zeit/content/gallery/browser/overview.pt:22
 msgid "Edit"
 msgstr ""
 
@@ -234,11 +234,11 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:48
+#: src/zeit/cms/browser/widget.py:50
 msgid "The given id is invalid."
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:51
+#: src/zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
 msgstr ""
 
@@ -826,12 +826,12 @@ msgstr ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:108
+#: src/zeit/cms/repository/browser/repository.py:106
 #. Default: ""
 msgid "\"${name}\" is now hidden from the navigation tree."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:115
+#: src/zeit/cms/repository/browser/repository.py:113
 #. Default: ""
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
@@ -1136,11 +1136,12 @@ msgstr ""
 msgid "Edit gallery entry"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:18
+#: src/zeit/content/gallery/browser/overview.pt:29
+#: src/zeit/content/gallery/browser/overview.pt:29
 msgid "Show image"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:48
+#: src/zeit/content/gallery/browser/overview.pt:54
 msgid "Save sorting"
 msgstr ""
 
@@ -1181,6 +1182,10 @@ msgstr ""
 
 #: src/zeit/content/gallery/source.py:12
 msgid "Image only"
+msgstr ""
+
+#: src/zeit/content/gallery/source.py:13
+msgid "Hidden"
 msgstr ""
 
 #: src/zeit/content/image/browser/configure.zcml:131

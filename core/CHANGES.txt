@@ -9,6 +9,8 @@ zeit.cms changes
 - Bigas: Die Bildunterschriften in den <image>- und <thumbnail>-Tags wurden
   auch nach dem »Synchronisieren« nicht aktualisiert. Unberührt bleibt hiervon
   das <caption>-Tag. (Bug #4530)
+- Biga: Neues Layout »hidden« für die Bilder. Dies erlaubt das Ausblenden von
+  nicht benötigten Bildern.
  	
 
 1.3 (2008-11-17)

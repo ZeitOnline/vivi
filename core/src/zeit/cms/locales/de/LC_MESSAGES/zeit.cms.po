@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Thu Nov 13 14:09:32 2008\n"
-"PO-Revision-Date: 2008-11-13 14:15+0100\n"
+"POT-Creation-Date: Mon Nov 17 15:19:09 2008\n"
+"PO-Revision-Date: 2008-11-17 15:36+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "Abbrechen"
 #: src/zeit/content/image/browser/configure.zcml:110
 #: src/zeit/content/gallery/browser/configure.zcml:107
 #: src/zeit/content/text/browser/configure.zcml:14
-#: src/zeit/content/gallery/browser/overview.pt:23
+#: src/zeit/content/gallery/browser/overview.pt:22
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -222,11 +222,11 @@ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
 msgid "Remove"
 msgstr "Entfernen"
 
-#: src/zeit/cms/browser/widget.py:48
+#: src/zeit/cms/browser/widget.py:50
 msgid "The given id is invalid."
 msgstr "Die angegebene Id ist nicht gültig."
 
-#: src/zeit/cms/browser/widget.py:51
+#: src/zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
@@ -815,12 +815,12 @@ msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
 
 #. Default: ""
-#: src/zeit/cms/repository/browser/repository.py:108
+#: src/zeit/cms/repository/browser/repository.py:106
 msgid "\"${name}\" is now hidden from the navigation tree."
 msgstr "»${name}« wird jetzt nicht mehr im Navigationsbaum angezeigt."
 
 #. Default: ""
-#: src/zeit/cms/repository/browser/repository.py:115
+#: src/zeit/cms/repository/browser/repository.py:113
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
 
@@ -1124,11 +1124,11 @@ msgstr "Metadaten der Bildergalerie ansehen"
 msgid "Edit gallery entry"
 msgstr "Bildergalerie-Eintrag bearbeiten"
 
-#: src/zeit/content/gallery/browser/overview.pt:18
+#: src/zeit/content/gallery/browser/overview.pt:29
 msgid "Show image"
 msgstr "Bild zeigen"
 
-#: src/zeit/content/gallery/browser/overview.pt:48
+#: src/zeit/content/gallery/browser/overview.pt:54
 msgid "Save sorting"
 msgstr "Sortierung speichern"
 
@@ -1170,6 +1170,10 @@ msgstr "Die Bildunterschrift wird nicht in das Bild übernommen sondern gilt nur
 #: src/zeit/content/gallery/source.py:12
 msgid "Image only"
 msgstr "Nur Bild"
+
+#: src/zeit/content/gallery/source.py:13
+msgid "Hidden"
+msgstr "Versteckt"
 
 #: src/zeit/content/image/browser/configure.zcml:131
 msgid "Image (single)"
