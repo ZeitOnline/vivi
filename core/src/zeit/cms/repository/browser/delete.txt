@@ -18,6 +18,7 @@ True
 >>> print browser.contents
 <div class="topcontent deleteScreen">
   <h1>Delete content</h1>
+  ...
   <p>
     <span>
       Do you really want to delete the object from the folder
@@ -29,17 +30,24 @@ True
     <span>LS-Personalvertretung</span>
     (<span>http://xml.zeit.de/2007/01/LS-Personalvertretung</span>)
   </p>
-  <form action="http://localhost/++skin++cms/repository/2007/01/LS-Personalvertretung/delete.html">
+  <form action="http://localhost/++skin++cms/repository/2007/01/LS-Personalvertretung/delete.html"
+        id="lightbox.form">
     <p>
-      <input type="submit" value="Delete" name="delete" />
+      <input type="submit" value="Delete" name="form.actions.delete" />
     </p>
   </form>
 </div>
 
 
-After deleting the article it is gone:
+After deleting the form is rendered with a next URL.
 
 >>> browser.getControl("Delete").click()
+>>> print browser.contents
+<span class="nextUrl">http://localhost/++skin++cms/repository/2007/01</span>
+
+The article it is gone of couse:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2007/01')
 >>> 'LS-Personalvertretung' in browser.contents
 False
 
@@ -49,47 +57,6 @@ The "Delete" Link references javascript driven Lightbox:
 >>> browser.getLink("Delete", index=1)
 <Link text='[IMG] Delete'
     url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/2007/01/Miami/@@delete.html')">
-
-The user selects an article and clicks on the delete icon. Deletion of
-content is context dependent, so he might accidently delete a folder. If
-this happens, he is beeing warned in the confirmation dialog:
-
->>> view_url = (
-...     'http://localhost/++skin++cms/repository/2007/01/Miami'
-...     '/@@delete.html')
->>> browser.open(view_url)
->>> print browser.contents
-<div class="topcontent deleteScreen">
-  <h1>Delete content</h1>
-  <p>
-    <span>
-      Do you really want to delete the object from the folder
-      "<span class="containerName">01</span>"?
-    </span>
-  </p>
-  <p class="DeleteItem">
-    <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png"
-        alt="UnknownResource" width="20" height="20" border="0" />
-    <span>Miami</span>
-    (<span>http://xml.zeit.de/2007/01/Miami</span>)
-  </p>
-  <form action="http://localhost/++skin++cms/repository/2007/01/Miami/delete.html">
-    <p>
-      <input type="submit" value="Delete" name="delete" />
-    </p>
-  </form>
-</div>
-
-
-After deleting we're at the folder containing the deleted object:
-
->>> browser.getControl("Delete").click()
->>> browser.url
-'http://localhost/++skin++cms/repository/2007/01'
->>> browser.open('http://localhost/++skin++cms/repository/2007/01/Miami')
-Traceback (most recent call last):
-    ...
-HTTPError: HTTP Error 404: Not Found
 
 
 Deleting folders
@@ -118,6 +85,7 @@ There is an extra warning about deleting the folder:
 >>> print browser.contents
 <div class="topcontent deleteScreen">
   <h1>Delete content</h1>
+  ...
   <p>
     <span>
       Do you really want to delete the object from the folder
@@ -132,9 +100,10 @@ There is an extra warning about deleting the folder:
   <p class="warning">
       You're about to delete a folder with content!
   </p>
-  <form action="http://localhost/++skin++cms/repository/2007/01/delete.html">
+  <form action="http://localhost/++skin++cms/repository/2007/01/delete.html"
+        id="lightbox.form">
     <p>
-      <input type="submit" value="Delete" name="delete" />
+      <input type="submit" value="Delete" name="form.actions.delete" />
     </p>
   </form>
 </div>
@@ -143,8 +112,6 @@ There is an extra warning about deleting the folder:
 After deleting the folder is gone:
 
 >>> browser.getControl("Delete").click()
->>> browser.url
-'http://localhost/++skin++cms/repository/2007'
 >>> browser.open('http://localhost/++skin++cms/repository/2007/01')
 Traceback (most recent call last):
     ...

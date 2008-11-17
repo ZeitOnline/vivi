@@ -13,16 +13,18 @@ import zeit.cms.repository.interfaces
 
 class DeleteContent(zeit.cms.browser.view.Base):
 
+    nextUrl = None
+
     def __call__(self, *args, **kwargs):
         form = self.request.form
-        if form.get('delete'):
+        if form.get('form.actions.delete'):
             return self.delete()
         return super(DeleteContent, self).__call__(*args, **kwargs)
 
     def delete(self):
         folder = self.context.__parent__
         del folder[self.context.__name__]
-        self.redirect(self.url(folder))
+        return '<span class="nextUrl">%s</span>' % self.url(folder)
 
     @zope.cachedescriptors.property.Lazy
     def container_title(self):

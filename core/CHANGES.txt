@@ -14,6 +14,7 @@ zeit.cms changes
 - Previews von ausgecheckten Dokumenten werden jetzt im Verzeichnis des
   Ursprungsobjekts erzeugt. Damit können contextabhängige Styles angesehen
   werden (v.a. Zuender). (Bug #4311)
+- Löschen funktioniert wieder.
  	
 
 1.3 (2008-11-17)

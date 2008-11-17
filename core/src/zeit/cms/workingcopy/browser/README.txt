@@ -85,6 +85,7 @@ Let's open the delete form:
 >>> print browser.contents
 <div class="topcontent deleteScreen">
   <h1>Delete content</h1>
+  ...
   <p>
     <span>
       Do you really want to delete the object from the folder
@@ -96,11 +97,9 @@ Let's open the delete form:
     <span>Somalia</span>
     (<span>http://xml.zeit.de/online/2007/01/Somalia</span>)
   </p>
-<BLANKLINE>
-<BLANKLINE>
-  <form action="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/delete.html">
+  <form action="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/delete.html"...
     <p>
-      <input type="submit" value="Delete" name="delete" />
+      <input type="submit" value="Delete" name="form.actions.delete" />
     </p>
   </form>
 </div>
@@ -109,6 +108,7 @@ Let's open the delete form:
 Let's delete it:
 
 >>> browser.getControl('Delete').click()
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
 >>> print browser.contents
 <?xml ...
       <div id="topcontent">

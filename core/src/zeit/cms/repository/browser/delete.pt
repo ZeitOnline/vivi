@@ -3,6 +3,8 @@
     <tal:replace replace="resource_library:zeit.cms.Lightbox" />
   <h1 i18n:translate="delete_content_header">Delete content</h1>
 
+  <span class="nextUrl" tal:content="view/nextUrl" />
+
   <p>
     <span i18n:translate="delete_content_text">
       Do you really want to delete the object from the folder
@@ -21,10 +23,10 @@
       You're about to delete a folder with content!
   </p>
 
-  <form action=""
+  <form action="" id="lightbox.form"
     tal:attributes="action view/@@absolute_url">
     <p>
-      <input type="submit" value="Delete" name="delete"
+      <input type="submit" value="Delete" name="form.actions.delete"
         i18n:attributes="value" />
     </p>
   </form>
