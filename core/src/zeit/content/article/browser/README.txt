@@ -322,16 +322,8 @@ Let's make sure the image is linked:
 >>> browser.getLink('Assets').click()
 >>> print browser.contents 
 <?xml ...
-<!DOCTYPE ...
- <div class="widget"><ol class="sequenceWidget" >
- <li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"
-        title="DSC00109_2.JPG">http://xml.zeit.de/2006/DSC00109_2.JPG</a>
- </li>
- <li><a href="http://localhost/++skin++cms/repository/image-group"
-        title="image-group">http://xml.zeit.de/image-group</a>
- </li>
- </ol></div>
-  ...
+<li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"...>http://xml.zeit.de/2006/DSC00109_2.JPG</a>...
+<li><a href="http://localhost/++skin++cms/repository/image-group"...>http://xml.zeit.de/image-group</a>...
 
 After checking in we also do not have an edit metadata link:
 
