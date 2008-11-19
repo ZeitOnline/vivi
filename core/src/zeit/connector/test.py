@@ -37,11 +37,15 @@ def test_suite():
     suite.addTest(long_running)
 
     functional = zope.file.testing.FunctionalBlobDocFileSuite(
-        'cache.txt',
         'functional.txt')
     functional.layer = real_connector_layer
     functional.level = 3
     suite.addTest(functional)
+
+    cache = zope.file.testing.FunctionalBlobDocFileSuite('cache.txt')
+    cache.layer = real_connector_layer
+    suite.addTest(cache)
+
     return suite
 
 

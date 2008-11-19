@@ -229,6 +229,8 @@ class PersistentCache(persistent.Persistent):
         return zeit.connector.interfaces.DeleteProperty in value
 
     def _set_value(self, old_value, new_value):
+        if self._cache_values_equal(old_value, new_value):
+            return
         old_value.clear()
         old_value.update(new_value)
 
@@ -290,6 +292,10 @@ class PropertyCache(PersistentCache):
             new_dict[key] = value
         return new_dict
 
+    @staticmethod
+    def _cache_values_equal(a, b):
+        return dict(a.items()) == dict(b.items())
+
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_property_cache(event):
@@ -312,6 +318,9 @@ class ChildNameCache(PersistentCache):
         value.clear()
         value.insert(zeit.connector.interfaces.DeleteProperty)
 
+    @staticmethod
+    def _cache_values_equal(a, b):
+        return set(a) == set(b)
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_child_name_cache(event):

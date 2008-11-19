@@ -257,8 +257,6 @@ False
 Property Cache
 ++++++++++++++
 
-The property cache is invalidated by the ResourceInvalidatedEvent. This is
-
 >>> cache = zeit.connector.cache.PropertyCache()
 
 Validate the interface:
@@ -302,7 +300,7 @@ deleted:
 [DeleteProperty]
 
 The property cache does some magic to prevent extensive memory consumption. The
-keys in the cache *value* are rather few, maybe 200. So it keeps track of the
+keys in the cache *values* are rather few, maybe 200. So it keeps track of the
 different keys and stores/returns references to already passed ones.
 
 >>> key = ('ns', 'name')
@@ -333,6 +331,20 @@ False
 {'foo': <WebDAVPropertyKey foo>,
  ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>}
 
+
+When the a value is set to the cache which is equal to the value it alreay
+stores, the new value is not updated. We verify this by setting a new value
+which is equal but not the same:
+
+>>> cache['id']
+{<WebDAVPropertyKey ('ns', 'name')>: 'somevalue'}
+>>> new_properties =  {('ns', 'name'): u'somevalue'}
+
+Setting ``new_properties`` does not update the ``somevalue`` to unicode:
+
+>>> cache['id'] = new_properties
+>>> cache['id']
+{<WebDAVPropertyKey ('ns', 'name')>: 'somevalue'}
 
 
 Note that internally no dictionaries are stored but BTrees:
@@ -374,3 +386,17 @@ But actually the're just marked as deleted:
 <BTrees.OOBTree.OOTreeSet object at 0x...>
 >>> list(cache._storage['id'])
 [DeleteProperty]
+
+
+When the a value is set to the cache which is equal to the value it alreay
+stores, the new value is not updated. We verify this by setting a new value
+which is equal but not the same:
+
+>>> cache['id'] = ['foo', 'bar', 'baz']
+>>> new_children =  ['foo', 'bar', u'baz']
+
+Setting ``new_children`` does not update ``baz`` to unicode:
+
+>>> cache['id'] = new_children
+>>> list(cache['id'])
+['bar', 'baz', 'foo']

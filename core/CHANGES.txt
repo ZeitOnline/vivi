@@ -4,6 +4,9 @@ CHANGES
 1.4.6 (unreleased)
 ------------------
 
+- PropertyCache and ChildNameCache do not write data when the value is
+  already stored in the cache. This should lead to fewer conflict errors.
+
 1.4.5 (2008-08-12)
 ------------------
 
