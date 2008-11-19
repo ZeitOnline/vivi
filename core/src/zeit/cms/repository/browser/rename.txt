@@ -22,7 +22,6 @@ Open a document view. There is a javascript link to rename:
 Let's open the document indicated by the javascript link:
 
 
->>> browser.handleErrors = False
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              'online/2007/01/Somalia/@@rename-box')
 >>> print browser.contents
