@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.4.6 (unreleased)
+1.4.6 (2008-11-19)
 ------------------
 
 - PropertyCache and ChildNameCache do not write data when the value is
