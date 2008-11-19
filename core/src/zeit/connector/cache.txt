@@ -257,6 +257,8 @@ False
 Property Cache
 ++++++++++++++
 
+The property cache stores all the webdav proprties[#cleanup]_:
+
 >>> cache = zeit.connector.cache.PropertyCache()
 
 Validate the interface:
@@ -400,3 +402,11 @@ Setting ``new_children`` does not update ``baz`` to unicode:
 >>> cache['id'] = new_children
 >>> list(cache['id'])
 ['bar', 'baz', 'foo']
+
+
+.. [#cleanup] 
+
+    We need to manually clear the key cache from previous tests runs due to
+    isolation problems:
+
+    >>> zeit.connector.cache.WebDAVPropertyKey._instances.clear()

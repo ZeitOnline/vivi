@@ -4,12 +4,10 @@
 
 import os
 import unittest
-
+import zope.app.appsetup.product
+import zope.app.testing.functional
 import zope.file.testing
 from zope.testing import doctest
-
-import zope.app.testing.functional
-import zope.app.appsetup.product
 
 import zeit.connector.cache
 
@@ -19,20 +17,22 @@ real_connector_layer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'ConnectorLayer')
 
 
+optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
+             doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
         'connector.txt',
         'locking.txt',
         'mock.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
+        optionflags=optionflags))
 
     long_running = doctest.DocFileSuite(
         'longrunning.txt',
         'stressing.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES))
+        optionflags=optionflags)
     long_running.level = 3
     suite.addTest(long_running)
 
@@ -42,7 +42,9 @@ def test_suite():
     functional.level = 3
     suite.addTest(functional)
 
-    cache = zope.file.testing.FunctionalBlobDocFileSuite('cache.txt')
+    cache = zope.file.testing.FunctionalBlobDocFileSuite(
+        'cache.txt',
+        optionflags=optionflags)
     cache.layer = real_connector_layer
     suite.addTest(cache)
 

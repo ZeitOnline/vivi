@@ -1,17 +1,14 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import cStringIO
-import logging
-import tempfile
-import time
-
-import persistent
-import transaction
 import BTrees
 import ZODB.blob
-
+import cStringIO
+import logging
+import persistent
+import tempfile
+import time
+import transaction
 import zope.component
 import zope.interface
 import zope.testing.cleanup
@@ -19,7 +16,7 @@ import zope.testing.cleanup
 import zeit.connector.interfaces
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 def get_storage_key(key):
@@ -27,6 +24,7 @@ def get_storage_key(key):
         key = key.encode('utf8')
     assert isinstance(key, str)
     return key
+
 
 class StringRef(persistent.Persistent):
 
@@ -68,7 +66,7 @@ class ResourceCache(persistent.Persistent):
         self._update_cache_access(key)
         value = self._data[key]
         if isinstance(value, str):
-            logger.warning("Loaded str for %s" % unique_id)
+            log.warning("Loaded str for %s" % unique_id)
             raise KeyError(unique_id)
         return self._make_filelike(value)
 
@@ -81,7 +79,7 @@ class ResourceCache(persistent.Persistent):
             f = cStringIO.StringIO(data.read())
             return f
 
-        logger.debug('Storing body of %s with etag %s' % (
+        log.debug('Storing body of %s with etag %s' % (
             unique_id, current_etag))
 
         target = cStringIO.StringIO()
@@ -180,6 +178,7 @@ class ResourceCache(persistent.Persistent):
 
     def _get_time_key(self, time):
         return int(time / self.UPDATE_INTERVAL)
+
 
 class PersistentCache(persistent.Persistent):
 
@@ -321,6 +320,7 @@ class ChildNameCache(PersistentCache):
     @staticmethod
     def _cache_values_equal(a, b):
         return set(a) == set(b)
+
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_child_name_cache(event):
