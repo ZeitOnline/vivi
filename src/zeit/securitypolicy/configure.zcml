@@ -1,0 +1,9 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zeit.cms">
+
+  <include file="packages.zcml" />
+  <include file="security.zcml" />
+
+</configure>

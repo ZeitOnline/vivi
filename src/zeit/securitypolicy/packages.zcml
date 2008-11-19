@@ -1,0 +1,24 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zeit.cms" file="integration.zcml" />
+  <include package="zeit.invalidate" />
+
+  <include package="zeit.content.article" />
+  <include package="zeit.content.article.browser" />
+
+  <include package="zeit.content.rawxml" />
+  <include package="zeit.content.rawxml.browser" />
+
+  <include package="zeit.calendar" />
+  <include package="zeit.calendar.browser" />
+
+  <include package="zeit.content.video" />
+  <include package="zeit.content.video.browser" />
+
+  <include package="zeit.content.quiz" />
+  <include package="zeit.content.quiz.browser" />
+
+  <include package="zeit.seo" />
+
+</configure>
+
