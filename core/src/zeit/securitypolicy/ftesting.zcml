@@ -1,0 +1,47 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <!-- This file is the equivalent of site.zcml and it is -->
+  <!-- used for functional testing setup -->
+
+  <include package="zeit.cms" />
+  <include package="zeit.connector" file="mock-connector.zcml" />
+  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
+  <include package="zope.app.securitypolicy.tests" file="functional.zcml" />
+
+  <include package="zeit.securitypolicy" />
+
+  <principal
+    id="zope.mgr"
+    title="Manager"
+    login="zmgr"
+    password="mgrpw" />
+
+  <!-- Bootstrap principal used to make local grant to the principal above -->
+  <principal
+    id="zope.globalmgr"
+    title="Manager"
+    login="globalmgr"
+    password="globalmgrpw" />
+
+  <grant role="zope.Manager" principal="zope.globalmgr" />
+
+  <!-- Principal that tests generally run as -->
+  <principal
+    id="zope.user"
+    title="User"
+    login="user"
+    password="userpw" />
+
+  <!-- A producer -->
+  <principal
+    id="zope.producer"
+    title="Producer"
+    login="producer"
+    password="producerpw" />
+
+  <grant role="zeit.Producer" principal="zope.producer" />
+
+
+</configure>
+
