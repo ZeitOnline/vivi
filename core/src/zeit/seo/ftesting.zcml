@@ -1,8 +1,7 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
    xmlns:meta="http://namespaces.zope.org/meta"
-   i18n_domain="zope"
-   >
+   i18n_domain="zope">
 
    <meta:provides feature="zeit.cms.testing" />
 
@@ -21,5 +20,14 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.seo" />
+
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.seo.View"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.seo.Edit"
+    />
 
 </configure>
