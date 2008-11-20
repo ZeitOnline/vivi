@@ -5,8 +5,10 @@ import os.path
 import unittest
 import xlrd
 import zope.app.testing.functional
+import zope.component
 
 import zeit.cms.testing
+import zeit.connector.interfaces
 
 
 SecurityPolicyLayer = zope.app.testing.functional.ZCMLLayer(
@@ -19,13 +21,11 @@ class TestSecurityPolicyXLSSheet(
 
     layer = SecurityPolicyLayer
 
-    def __init__(self, username, skin, path, form, expected):
-        zope.app.testing.functional.BrowserTestCase.__init__(self)
+    def __init__(self, username, cases, description):
+        super(TestSecurityPolicyXLSSheet, self).__init__()
         self.username = username
-        self.skin = skin
-        self.path = path
-        self.form = form
-        self.expected = expected
+        self.cases = cases
+        self.description = description
 
         if username == 'anonymous':
             self.basic = None
@@ -34,23 +34,33 @@ class TestSecurityPolicyXLSSheet(
             self.basic = '%s:%s' % (self.username, password)
 
     def setUp(self):
+        super(TestSecurityPolicyXLSSheet, self).setUp()
         zeit.cms.testing.setup_product_config()
+
+    def tearDown(self):
+        self.connector._reset()
+        super(TestSecurityPolicyXLSSheet, self).tearDown()
 
     def runTest(self):
         # if form XXX
-        path_with_skin = '/++skin++%s%s' % (self.skin, self.path)
-        response = self.publish(
-            path_with_skin, basic=self.basic, handle_errors=True)
-        status = response.getStatus()
-        self.assertEquals(
-            (status < 400), self.expected,
-            '%s (expected <400: %s)' % (status, bool(self.expected)))
+        for skin, path, form, expected in self.cases:
+            path_with_skin = '/++skin++%s%s' % (skin, path)
+            path_with_skin = path_with_skin % dict(username=self.username)
+            response = self.publish(
+                path_with_skin, basic=self.basic, handle_errors=True)
+            status = response.getStatus()
+            self.assertEquals(
+                (status < 400), expected,
+                '%s: %s (expected <400: %s)' % (path, status, bool(expected)))
 
     def __str__(self):
-        return '%s: [%s]%s (%s.%s)' % (
-            self.username, self.skin, self.path,
+        return '%s (%s.%s)' % (
+            self.description,
             self.__class__.__module__, self.__class__.__name__)
 
+    @property
+    def connector(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 def xls_tests():
     book = xlrd.open_workbook(os.path.join(
@@ -67,16 +77,24 @@ def xls_tests():
         if not username:
             continue
 
+        cases = []
+        start_row = None
         for row in xrange(2, sheet.nrows):
+            if start_row is None:
+                start_row = row
             skin = sheet.cell_value(row, 0)
             path = sheet.cell_value(row, 1)
             form = sheet.cell_value(row, 2)
             expected = sheet.cell_value(row, expected_column)
-            if not path:
-                continue
-
-            suite.addTest(TestSecurityPolicyXLSSheet(
-                username, skin, path, form, expected))
+            if path:
+                cases.append((skin, path, form, expected))
+            if cases and (not path or row == sheet.nrows-1):
+                description = 'test.xls rows %d-%d for %s' % (
+                    start_row+1, row, username)
+                suite.addTest(TestSecurityPolicyXLSSheet(
+                    username, cases, description))
+                cases = []
+                start_row = None
 
     return suite
 
