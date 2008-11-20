@@ -14,7 +14,7 @@ import zeit.connector.cache
 
 real_connector_layer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'ConnectorLayer')
+    __name__, 'ConnectorLayer', allow_teardown=True)
 
 
 optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +

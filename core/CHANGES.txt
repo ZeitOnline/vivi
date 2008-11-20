@@ -4,6 +4,9 @@ CHANGES
 1.4.7 (unreleased)
 ------------------
 
+- No more test extra.
+- Functional test layer can be torn down.
+
 1.4.6 (2008-11-19)
 ------------------
 
