@@ -1,8 +1,11 @@
 CHANGES
 =======
 
-0.4 (unreleased)
-----------------
+0.3.1 (unreleased)
+------------------
+
+- No test extra.
+- Test layer can be torn down.
 
 0.3 (2008-04-04)
 ----------------

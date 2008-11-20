@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.invalidate',
-    version='0.4dev',
+    version='0.3.1dev',
     author='Christian Zagrodnick',
     author_email='cz@gocept.com',
     description="""\
@@ -16,15 +16,11 @@ setup(
     install_requires=[
         'setuptools',
         'zeit.connector>=0.12',
+        'zope.app.securitypolicy',
+        'zope.app.zcmlfiles',
         'zope.location',
         'zope.publisher',
-    ],
-    extras_require={
-        'test': [
-            'zope.securitypolicy',
-            'zope.testing',
-            'zope.app.zcmlfiles',
-            'zope.app.securitypolicy',
+        'zope.securitypolicy',
+        'zope.testing',
         ],
-    },
 )
