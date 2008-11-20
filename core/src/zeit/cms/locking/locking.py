@@ -1,14 +1,10 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import datetime
-import time
-
-import pytz
-
 import persistent.mapping
-
+import pytz
+import time
 import zope.app.locking.interfaces
 import zope.component
 import zope.interface
