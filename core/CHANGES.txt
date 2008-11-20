@@ -4,6 +4,9 @@ zeit.cms changes
 1.3 (unreleased)
 ----------------
 
+- Separate Permissions für das Ansehen/Bearbeiten von SEO-Daten. Das ermöglicht
+  das Ausblenden des Tabs für die meisten Benutzer.
+
 1.2.5 (2008-10-29)
 ------------------
 
