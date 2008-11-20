@@ -46,11 +46,6 @@
     id="zeit.Checkin"
     title="Checkin content"
     />
-
-  <permission
-    id="zeit.calendar.Edit"
-    title="Create and modify calendar entries"
-    />
   
   <permission
     id="zeit.cms.Syndicate"

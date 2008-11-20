@@ -110,10 +110,6 @@
     />
   <grant
     principal="zope.Authenticated"
-    permission="zeit.calendar.Edit"
-    />
-  <grant
-    principal="zope.Authenticated"
     permission="zeit.cms.Syndicate"
     />
   <grant
