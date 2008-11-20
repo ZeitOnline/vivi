@@ -15,7 +15,7 @@
   <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
   <include package="zope.app.securitypolicy.tests" file="functional.zcml" />
 
-  <include package="zeit.cms" file="principals-testing.zcml" />
+  <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
