@@ -5,6 +5,7 @@ import datetime
 import persistent.mapping
 import pytz
 import time
+import zope.app.locking.adapter
 import zope.app.locking.interfaces
 import zope.component
 import zope.interface
