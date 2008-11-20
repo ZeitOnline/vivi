@@ -116,5 +116,13 @@
     role="zeit.Producer"
     permission="zeit.ChangeGlobalSettings"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.seo.View"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.seo.Edit"
+    />
 
 </configure>
