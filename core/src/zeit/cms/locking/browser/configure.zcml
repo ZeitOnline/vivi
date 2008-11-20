@@ -21,7 +21,7 @@
     name="locks.html"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     class=".lock.Lock"
-    permission="zeit.workflow.ManageLocks"
+    permission="zeit.Lock"
     />
 
   <browser:viewlet
@@ -30,7 +30,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".lock.MenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
-    permission="zeit.workflow.ManageLocks"
+    permission="zeit.Lock"
     lightbox="@@locks.html"
     sort="80"
     />

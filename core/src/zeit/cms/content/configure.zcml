@@ -79,11 +79,19 @@
       permission="zeit.EditTemplates"
       />
   </class>
-  <adapter factory=".adapter.webDAVPropertiesFactory"
+  <adapter factory=".template.webDAVPropertiesFactory"
     for=".interfaces.ITemplate"
     trusted="yes"
     />
-  <adapter factory=".template.TemplateRoleMap" />
+  <class class=".template.TemplateWebDAVProperties">
+    <require
+      interface="zeit.connector.interfaces.IWebDAVReadProperties"
+      permission="zope.View" />
+    <require
+      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
+      permission="zeit.EditTemplates" />
+  </class>
+
 
   <!-- content source -->
   <utility

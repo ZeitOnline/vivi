@@ -10,8 +10,11 @@ import pytz
 import persistent.mapping
 
 import zope.app.locking.interfaces
+import zope.component
+import zope.interface
 
 import zeit.connector.interfaces
+import zeit.cms.interfaces
 import zeit.cms.locking.interfaces
 
 
@@ -90,3 +93,12 @@ class LockInfo(persistent.mapping.PersistentMapping):
             self.__class__.__module__,
             self.__class__.__name__,
             id(self))
+
+
+class CMSLockingAdapter(zope.app.locking.adapter.LockingAdapter):
+    """Special locking adapter with different security."""
+
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.interface.implements(zope.app.locking.interfaces.ILockable)
+
+    __repr__ = object.__repr__

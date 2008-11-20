@@ -17,5 +17,16 @@
       />
   </class>
 
+  <adapter factory=".locking.CMSLockingAdapter" trusted="yes" />
+  <class class=".locking.CMSLockingAdapter">
+    <allow attributes="locked ownLock isLockedOut getLockInfo" />
+    <require permission="zope.View"
+      attributes="locker" />
+    <require permission="zeit.Lock"
+      attributes="lock unlock" />
+    <require permission="zeit.ManageLocks"
+      attributes="breaklock" />
+  </class>
+
 
 </configure>

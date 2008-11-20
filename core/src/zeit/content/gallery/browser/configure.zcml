@@ -70,9 +70,10 @@
   <!-- Add view -->
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zope.ManageContent"
-    class=".form.AddGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zeit.content.gallery.Add"
+    class=".form.AddGallery"
+    permission="zeit.AddContent"
     menu="zeit-add-menu" title="Gallery"
     />
 

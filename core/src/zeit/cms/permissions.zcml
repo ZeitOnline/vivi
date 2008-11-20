@@ -18,6 +18,11 @@
     />
 
   <permission
+    id="zeit.ChangeRepository"
+    title="Change objects in the repository"
+    />
+
+  <permission
     id="zeit.AddContent"
     title="Add ZEIT content"
     />
@@ -58,9 +63,15 @@
     />
 
   <permission
-    id="zeit.workflow.ManageLocks"
+    id="zeit.Lock"
+    title="Lock and unlock objects"
+    />
+
+  <permission
+    id="zeit.ManageLocks"
     title="Manage WebDAV locks"
     />
+
 
   <permission
     id="zeit.ViewGlobalSettings"

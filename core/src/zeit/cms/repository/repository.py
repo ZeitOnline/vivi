@@ -15,6 +15,7 @@ import zope.app.container.contained
 import zope.cachedescriptors.method
 import zope.component
 import zope.component.interfaces
+import zope.copypastemove
 import zope.interface
 import zope.securitypolicy.interfaces
 
@@ -224,11 +225,6 @@ def repositoryFactory():
         repository)
     perms.denyPermissionToPrincipal('zeit.EditContent', 'zope.Everybody')
 
-    # Grant zope.ManageContent to zeit.Editor so editors can lock/unlock
-    # content.
-    rpm = zope.securitypolicy.interfaces.IRolePermissionManager(
-        repository)
-    rpm.grantPermissionToRole('zope.ManageContent', 'zeit.Editor')
     return repository
 
 
@@ -270,3 +266,9 @@ def invalidate_uncontained_content(event):
         zeit.cms.repository.interfaces.IRepository)
     if repository is not None:
         repository.uncontained_content.pop(event.id, None)
+
+
+class CMSObjectMover(zope.copypastemove.ObjectMover):
+    """Objectmover for ICMSContent."""
+
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)

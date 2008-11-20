@@ -6,6 +6,7 @@
 
   <!-- Include requirements -->
   <include file="application.zcml" />
+  <include package="zeit.cms" file="securitypolicy.zcml" />
 
   <!-- selenium will only be included in `selenium mode' -->
   <configure
@@ -39,10 +40,6 @@
     component=".generation.manager"
     />
 
-  <adapter factory="zope.app.locking.adapter.LockingAdapter"
-    for="zeit.cms.interfaces.ICMSContent"
-    trusted="yes" />
-
   <i18n:registerTranslations directory="locales" />
 
   <interface
@@ -53,5 +50,37 @@
   <!-- cleanup -->
   <subscriber handler=".cleanup.clean_exc_info" />
   <subscriber handler=".cleanup.clean_previous_interaction" />
+
+  <!-- lxml security settings -->
+
+  <class class="lxml.objectify.ObjectifiedElement">
+    <require permission="zope.View"
+      attributes="
+      __getitem__
+      find
+      findall
+      getparent
+      index
+      iterchildren
+      tag
+      xpath
+      "/>
+    <require permission="zeit.EditContent"
+      attributes="
+      __setslice__
+      append
+      insert
+      makeelement
+      " />
+  </class>
+
+  <class class="lxml.objectify.StringElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+  
+  <class class="lxml.etree.ElementChildIterator">
+    <require permission="zope.View"
+      attributes="__iter__ next" />
+  </class>
 
 </configure>

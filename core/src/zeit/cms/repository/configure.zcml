@@ -5,7 +5,14 @@
   <include file="file.zcml" />
 
   <class class=".repository.Repository">
-    <require like_class="zope.app.folder.folder.Folder" />
+    <require
+      permission="zope.View"
+      interface="zope.app.container.interfaces.IReadContainer" 
+      />
+    <require
+      permission="zeit.ChangeRepository"
+      interface="zope.app.container.interfaces.IWriteContainer"
+      />
     <require
       interface="zeit.cms.interfaces.ICMSContent"
       permission="zope.View" />
@@ -13,10 +20,7 @@
 
   <class class=".folder.Folder">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require like_class="zope.app.folder.folder.Folder" />
-    <require
-      interface="zeit.cms.interfaces.ICMSContent"
-      permission="zope.View" />
+    <require like_class=".repository.Repository" />
   </class>
 
   <interface
@@ -66,5 +70,11 @@
     <require like_class=".unknown.PersistentUnknownResource" />
   </class>
   
+  <adapter
+    factory=".repository.CMSObjectMover"
+    permission="zeit.RenameContent"
+    trusted="yes"
+    />
+
 </configure>
 

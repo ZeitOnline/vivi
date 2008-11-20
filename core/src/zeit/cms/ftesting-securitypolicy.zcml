@@ -1,0 +1,144 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+<!-- Security policy for tests -->
+
+  <include package="zope.securitypolicy" />
+  <securityPolicy
+    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <!-- Roles -->
+  <role id="zope.Anonymous" title="Everybody"
+    description="All users have this role implicitly" />
+  <role id="zope.Manager" title="Site Manager" />
+  <role id="zope.Member" title="Site Member" />
+
+  <!-- Groups and other principals -->
+  <unauthenticatedPrincipal
+    id="zope.anybody"
+    title="Unauthenticated User"
+    />
+  <unauthenticatedGroup
+    id="zope.Anybody"
+    title="Unauthenticated Users" 
+    />
+  <authenticatedGroup
+    id="zope.Authenticated"
+    title="Authenticated Users" 
+    />
+  <everybodyGroup
+    id="zope.Everybody"
+    title="All Users" 
+    />
+
+  <principal
+    id="zope.mgr"
+    title="Manager"
+    login="zmgr"
+    password="mgrpw" />
+
+  <!-- Bootstrap principal used to make local grant to the principal above -->
+  <principal
+    id="zope.globalmgr"
+    title="Manager"
+    login="globalmgr"
+    password="globalmgrpw" />
+
+  <grant role="zope.Manager" principal="zope.globalmgr" />
+
+  <!-- Principal that tests generally run as -->
+  <principal
+    id="zope.user"
+    title="User"
+    login="user"
+    password="userpw" />
+
+  <!-- A producer -->
+  <principal
+    id="zope.producer"
+    title="Producer"
+    login="producer"
+    password="producerpw" />
+
+
+
+  <!-- Grants -->
+  <grantAll role="zope.Manager" />
+
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.app.dublincore.view"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.View"
+    />
+
+  <grant
+    principal="zope.Everybody"
+    permission="zeit.ViewGlobalSettings"
+    />
+
+  <!-- authenticated grants -->
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.RenameContent"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.CopyContent"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.Checkout"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.Checkin"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.AddContent"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.DeleteContent"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.ChangeRepository"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.calendar.Edit"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.cms.Syndicate"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.workflow.Publish"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.Lock"
+    />
+
+  <!-- Producer grants -->
+
+  <grant
+    principal="zope.producer"
+    permission="zeit.DeleteFolder"
+    />
+  <grant
+    principal="zope.producer"
+    permission="zeit.EditTemplates"
+    />
+  <grant
+    principal="zope.producer"
+    permission="zeit.ChangeGlobalSettings"
+    />
+
+</configure>
+
