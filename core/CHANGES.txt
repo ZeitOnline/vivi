@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Sicherheitsrichtlinien (securitypolicy)  ist aus dem Kern in ein separates
   Paket gewandert. Das sorgt für mehr Flexibilität.
+- Permission-Deklaration für den Kalender entfernt (Bug #4511).
 
 1.4 (2008-11-18)
 ----------------
