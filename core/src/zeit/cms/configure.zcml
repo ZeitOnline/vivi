@@ -3,6 +3,7 @@
   xmlns:i18n="http://namespaces.zope.org/i18n"
   i18n_domain="zeit.cms">
 
+  <include file="meta.zcml" />
 
   <!-- Include requirements -->
   <include file="application.zcml" />

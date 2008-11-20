@@ -42,6 +42,8 @@
   -->
 
   <subscriber handler=".repository.initializeRepository" />
+  <subscriber
+    handler=".repository.deny_edit_permissions_in_repository_on_startup" />
   
   <adapter factory=".preference.preferenceFactory" />
 

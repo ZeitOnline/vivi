@@ -1,5 +1,6 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
   i18n_domain="zeit.cms">
   
   <permission
@@ -12,7 +13,7 @@
     title="Copy content"
     />
 
-  <permission
+  <zeit:edit-permission
     id="zeit.EditContent"
     title="Edit ZEIT content"
     />

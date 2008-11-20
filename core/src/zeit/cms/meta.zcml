@@ -1,0 +1,13 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta">
+
+  <meta:directive
+    namespace="http://namespaces.zeit.de/CMS/zcml"
+    name="edit-permission"
+    schema=".zcml.IEditPermissionDirective"
+    handler=".zcml.edit_permission"
+    />
+
+</configure>
+

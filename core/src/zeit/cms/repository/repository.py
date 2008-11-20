@@ -219,12 +219,7 @@ class Repository(persistent.Persistent, Container):
 
 def repositoryFactory():
     repository = Repository()
-    # Deny EditContent to everybody (i.e. also to managers) because this really
-    # really must not be possible.
-    perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(
-        repository)
-    perms.denyPermissionToPrincipal('zeit.EditContent', 'zope.Everybody')
-
+    deny_edit_permissions_in_repository(repository)
     return repository
 
 
@@ -232,6 +227,24 @@ def repositoryFactory():
                         zope.app.container.interfaces.IObjectAddedEvent)
 def initializeRepository(repository, event):
     repository._initalizied = True
+
+
+@zope.component.adapter(
+    zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+def deny_edit_permissions_in_repository_on_startup(event):
+    root = event.database.open().root()
+    root_folder = root[
+        zope.app.publication.zopepublication.ZopePublication.root_name]
+    repository = root_folder['repository']
+    deny_edit_permissions_in_repository(repository)
+
+
+def deny_edit_permissions_in_repository(repository):
+    perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(
+        repository)
+    for perm_id, perm in zope.component.getUtilitiesFor(
+        zeit.cms.interfaces.IEditPermission):
+        perms.denyPermissionToPrincipal(perm_id, 'zope.Everybody')
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)

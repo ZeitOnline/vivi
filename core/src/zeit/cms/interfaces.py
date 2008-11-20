@@ -7,6 +7,7 @@ import re
 import zope.i18nmessageid
 import zope.interface
 import zope.schema
+import zope.security
 
 import zope.app.container.interfaces
 
@@ -66,3 +67,7 @@ class IAsset(ICMSContent):
     An example is the image.
 
     """
+
+
+class IEditPermission(zope.security.interfaces.IPermission):
+    """A permission which is always forbidden in the repository."""
