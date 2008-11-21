@@ -48,8 +48,15 @@
     title="CvD"
     login="cvd"
     password="cvdpw" />
-
   <grant role="zeit.CvD" principal="zope.cvd" />
+
+  <!-- A seo -->
+  <principal
+    id="zope.seo"
+    title="SEO"
+    login="seo"
+    password="seopw" />
+  <grant role="zeit.SEO" principal="zope.seo" />
 
 </configure>
 
