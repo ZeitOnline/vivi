@@ -38,10 +38,18 @@
     id="zope.producer"
     title="Producer"
     login="producer"
-    password="producerpw" />
-
+    password="producerpw"
+    />
   <grant role="zeit.Producer" principal="zope.producer" />
 
+  <!-- A cvd -->
+  <principal
+    id="zope.cvd"
+    title="CvD"
+    login="cvd"
+    password="cvdpw" />
+
+  <grant role="zeit.CvD" principal="zope.cvd" />
 
 </configure>
 

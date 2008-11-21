@@ -15,6 +15,7 @@
 
   <role id="zeit.Editor" title="Editor" />
   <role id="zeit.Producer" title="Producer" />
+  <role id="zeit.CvD" title="Chef vom Dienst" />
 
   <!-- Groups and other principals -->
   <unauthenticatedPrincipal
@@ -98,10 +99,6 @@
     role="zeit.Editor"
     permission="zeit.Lock"
     />
-  <grant
-    role="zeit.Editor"
-    permission="zeit.ManageLocks"
-    />
 
   <!-- Producer grants -->
   <grant
@@ -123,6 +120,17 @@
   <grant
     role="zeit.Producer"
     permission="zeit.seo.Edit"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.ManageLocks"
+    />
+
+
+  <!-- CvD grants -->
+  <grant
+    role="zeit.CvD"
+    permission="zeit.ManageLocks"
     />
 
 </configure>
