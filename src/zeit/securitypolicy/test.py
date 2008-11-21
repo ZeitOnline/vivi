@@ -42,16 +42,28 @@ class TestSecurityPolicyXLSSheet(
         super(TestSecurityPolicyXLSSheet, self).tearDown()
 
     def runTest(self):
-        # if form XXX
         for skin, path, form, expected in self.cases:
+            if skin.strip() == 'python:':
+                test = self
+                eval(path)
+                continue
             path_with_skin = '/++skin++%s%s' % (skin, path)
             path_with_skin = path_with_skin % dict(username=self.username)
+
+            if form:
+                form_dict = eval(form)
+            else:
+                form_dict = None
+
             response = self.publish(
-                path_with_skin, basic=self.basic, handle_errors=True)
+                path_with_skin, basic=self.basic, form=form_dict,
+                handle_errors=True)
             status = response.getStatus()
             self.assertEquals(
                 (status < 400), expected,
-                '%s: %s (expected <400: %s)' % (path, status, bool(expected)))
+                '%s: %s (expected <400: %s)\n%s' % (
+                    path, status, bool(expected),
+                    response.getBody().decode('utf8')))
 
     def __str__(self):
         return '%s (%s.%s)' % (
