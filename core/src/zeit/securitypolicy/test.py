@@ -62,8 +62,8 @@ class TestSecurityPolicyXLSSheet(
             self.assertEquals(
                 (status < 400), expected,
                 '%s: %s (expected <400: %s)\n%s' % (
-                    path, status, bool(expected),
-                    response.getBody().decode('utf8')))
+                    path.encode('utf8'), status, bool(expected),
+                    response.getBody()))
 
     def __str__(self):
         return '%s (%s.%s)' % (

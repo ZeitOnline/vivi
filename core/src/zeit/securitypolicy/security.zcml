@@ -16,6 +16,7 @@
   <role id="zeit.Editor" title="Editor" />
   <role id="zeit.Producer" title="Producer" />
   <role id="zeit.CvD" title="Chef vom Dienst" />
+  <role id="zeit.SEO" title="Search engine optimiser" />
 
   <!-- Groups and other principals -->
   <unauthenticatedPrincipal
@@ -131,6 +132,16 @@
   <grant
     role="zeit.CvD"
     permission="zeit.ManageLocks"
+    />
+
+  <!-- SEO grants -->
+  <grant
+    role="zeit.SEO"
+    permission="zeit.seo.View"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.seo.Edit"
     />
 
 </configure>
