@@ -1,0 +1,9 @@
+CHANGES
+=======
+
+0.1 (2008-11-21)
+----------------
+
+- Extra Rolle für CvDs (kann Sperren stehlen).
+- Extra Rolle für SEO (damit wird normalen Redakteuren das SEO-Tab nicht mehr
+  angezeigt).
