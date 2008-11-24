@@ -69,28 +69,10 @@ class ZopeConnector(zeit.connector.connector.Connector):
         return zope.component.getUtility(
             zeit.connector.interfaces.ILockInfoStorage)
 
-    def _invalidate_cache(self, id, parent=False):
-        """invalidate cache."""
-        invalidate = [id]
-        if parent:
-            parent, last = self._id_splitlast(id)
-            invalidate.append(parent)
-
-        for id in invalidate:
-            logger.debug("Invalidating %s" % id)
-            zope.event.notify(
-                zeit.connector.interfaces.ResourceInvaliatedEvent(id))
-
-        # Reload the invalidated resources immedeately. This should lead to
-        # less connflict potential as other threads see a valid resource. Also
-        # reverse the invalidateds to get the parent first. This gives the
-        # chance of having to do only one PROPFIND instead of two.
-        if parent:
-            for id in reversed(invalidate):
-                try:
-                    self[id]
-                except KeyError:
-                    pass
+    @staticmethod
+    def _remove_from_caches(id, caches):
+        zope.event.notify(
+            zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
 
 def connectorFactory():

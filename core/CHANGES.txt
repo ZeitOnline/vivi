@@ -1,8 +1,11 @@
 CHANGES
 =======
 
-1.4.8 (unreleased)
-------------------
+1.5 (2008-11-24)
+----------------
+
+- Be smarter when invalidating folders when objects are added or deleted. This
+  should lead to much better performance for adds/deletes.
 
 1.4.7 (2008-11-20)
 ------------------

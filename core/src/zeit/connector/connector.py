@@ -316,7 +316,7 @@ class Connector(object):
         token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
 
         self._get_dav_resource(parent).delete(name, token)
-        self._invalidate_cache(id, parent=True)
+        self._invalidate_cache(id, deleted=True)
 
     def __contains__(self, id):
         # Because we cache a lot it will be ok to just grab the object:
@@ -372,7 +372,7 @@ class Connector(object):
         else:
             response = conn.copy(old_loc, new_loc)
             response.read()
-        self._invalidate_cache(new_id, parent=True)
+        self._invalidate_cache(new_id, added=True)
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`.
@@ -560,12 +560,12 @@ class Connector(object):
             resource.data.seek(0)
         data = resource.data.read() # FIXME [17]: check possibility to pass data as IO object
 
-        invalidate_parent = False
+        added = False
 
         if iscoll:
             if not self._check_dav_resource(id):
                 self._add_collection(id)
-                invalidate_parent = True
+                added = True
             davres = self._get_dav_resource(id, ensure='collection')
             # NOTE: here be race condition. Lock-null trick doesn't work,
             #       so we lock _after_ creation
@@ -579,7 +579,7 @@ class Connector(object):
                 parent = self._get_dav_resource(parent, ensure='collection')
                 davres = parent.create_file(name, data, resource.contentType,
                                             locktoken=locktoken)
-                invalidate_parent = True
+                added = True
             else:
                 davres = self._get_dav_resource(id, ensure='file')
                 davres.upload(data, resource.contentType,
@@ -597,7 +597,7 @@ class Connector(object):
 
         if autolock and locktoken: # This was _our_ lock. Cleanup:
             self.unlock(id, locktoken=locktoken)
-        self._invalidate_cache(resource.id, parent=invalidate_parent)
+        self._invalidate_cache(id, added=added)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.
@@ -688,20 +688,46 @@ class Connector(object):
             davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
         return davlock
 
-    def _invalidate_cache(self, id, parent=False):
-        """invalidate cache."""
-        invalidate = [id]
-        if parent:
-            parent, last = self._id_splitlast(id)
-            invalidate.append(parent)
+    @staticmethod
+    def _remove_from_caches(id, caches):
+        for cache in caches:
+            try:
+                del cache[id]
+            except KeyError:
+                logger.debug("%s not in %s" % (id, cache))
 
-        for id in invalidate:
-            logger.debug("Invalidating %s" % id)
-            for cache in (self.property_cache, self.child_name_cache):
+    def _invalidate_cache(self, id, added=False, deleted=False):
+        """invalidate cache (and refill)."""
+
+        self._remove_from_caches(id, [self.property_cache,
+                                     self.child_name_cache])
+
+        if added or deleted:
+            parent, name = self._id_splitlast(id)
+            try:
+                children = self.child_name_cache[parent]
+            except KeyError:
+                # Hunk. Nothing. Let's do the full update.
+                self._remove_from_caches(parent, [self.property_cache])
+
+                # Reload the invalidated resources immedeately. This should
+                # lead to less connflict potential as other threads see a valid
+                # resource. 
                 try:
-                    del cache[id]
+                    self[parent]
                 except KeyError:
-                    logger.debug("%s not in %s" % (id, cache))
+                    pass
+            else:
+                if deleted and id in children:
+                    children.remove(id)
+                else:
+                    children.insert(unicode(id))
+
+                # Update the parent's properties:
+                davres = self._get_dav_resource(parent)
+                if davres._result is None:
+                    davres.update(depth=0)
+                self._update_property_cache(davres)
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""
@@ -740,7 +766,7 @@ class Connector(object):
 
     @zope.cachedescriptors.property.Lazy
     def child_name_cache(self):
-        return {}
+        return zeit.connector.cache.ChildNameCache()
 
     @zope.cachedescriptors.property.Lazy
     def locktokens(self):
