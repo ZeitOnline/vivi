@@ -4,6 +4,8 @@ zeit.cms changes
 1.6 (unreleased)
 ----------------
 
+- WYSIWYG-Editor: Formular zum Bild-Bearbeiten vereinfacht (Bug #4170).
+
 1.5 (2008-11-20)
 ----------------
 

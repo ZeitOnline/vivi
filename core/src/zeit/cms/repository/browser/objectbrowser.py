@@ -1,12 +1,12 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.component
 import zope.interface
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
+import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -52,3 +52,18 @@ class ObjectBrowser(zeit.cms.browser.listing.Listing):
         return zope.component.getUtility(
             zeit.cms.content.interfaces.ICMSContentSource,
             name=source_name)
+
+
+class BrowsingLocation(zeit.cms.browser.view.Base):
+
+    def __call__(self, type_filter):
+        source = zope.component.getUtility(
+            zeit.cms.content.interfaces.ICMSContentSource,
+            name=type_filter)
+        location = zope.component.queryMultiAdapter(
+            (self.context, source),
+            zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+        self.redirect(self.url(
+            location, '@@get_object_browser?type_filter=%s' % type_filter))
+        return ''

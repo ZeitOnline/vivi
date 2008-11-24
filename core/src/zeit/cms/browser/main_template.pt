@@ -35,6 +35,7 @@
       <head>
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
+          var context_url = '${context/@@absolute_url}';
           if (navigator.userAgent.indexOf('Firefox') == -1) {
             alert('Das CMS funktioniert nur mit Firefox');
           }

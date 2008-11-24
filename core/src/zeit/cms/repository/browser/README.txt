@@ -276,6 +276,16 @@ Cleanup:
 >>> zope.app.component.hooks.setSite(old_site)
 
 
+There is a view all ICMSContent which redirects to the browsing location:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/'
+...     '@@default-browsing-location?type_filter=all-types')
+>>> print browser.url
+http://localhost/++skin++cms/repository/online/2007/01/@@get_object_browser?type_filter=all-types
+
+
+
 Viewing objects by unique_id
 ============================
 

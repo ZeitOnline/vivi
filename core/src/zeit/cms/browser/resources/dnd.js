@@ -218,6 +218,7 @@ var ObjectReferenceWidget = Class.extend({
     selectObject: function(unique_id) {
         this.changed = true;
         this.input.value = unique_id;
+        MochiKit.Signal.signal(this.input, 'onchange');
     },
 
     getObject: function() {
@@ -225,9 +226,10 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     loadContentFromUrl: function(url) {
-        var d = this.lightbox.load_url(
-            url + '/@@get_object_browser',
-            {type_filter: this.type_filter});
+        if (url.indexOf('@@') == -1) {
+            url = url + '/@@get_object_browser';
+        }
+        var d = this.lightbox.load_url(url, {type_filter: this.type_filter});
         var othis = this;
         d.addCallback(function(result) {
             var url = getFirstElementByTagAndClassName(
@@ -274,13 +276,13 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
 
     handleDrop: function(element) {
         // On drop we create a new field
-        setCookie(this.widget_id, element.uniqueId);
+        zeit.cms.setCookie(this.widget_id, element.uniqueId);
         var add_button = this.form[this.widget_id + '.add'];
         add_button.click();
     },
 
     setObject: function() {
-        var unique_id =  getCookie(this.widget_id);
+        var unique_id =  zeit.cms.getCookie(this.widget_id);
         if (!unique_id) {
             return
         }
@@ -296,7 +298,7 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
             return
         }
         widget.selectObject(unique_id);
-        setCookie(this.widget_id, '');
+        zeit.cms.setCookie(this.widget_id, '');
     },
 
 });

@@ -134,7 +134,7 @@
   <!-- popup browser -->
 
   <browser:page
-    for="zeit.cms.repository.interfaces.IFolder"
+    for="zeit.cms.repository.interfaces.ICollection"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="get_object_browser"
     class=".objectbrowser.ObjectBrowser"
@@ -144,6 +144,14 @@
 
   <adapter factory=".objectbrowser.folder_default_browse_location" />
   <adapter factory=".objectbrowser.content_default_browse_location" />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="default-browsing-location"
+    class=".objectbrowser.BrowsingLocation"
+    permission="zope.View" 
+    />
 
   <!-- unique id redirector -->
   <browser:page
