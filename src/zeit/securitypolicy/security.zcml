@@ -100,6 +100,10 @@
     role="zeit.Editor"
     permission="zeit.Lock"
     />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.ChangeRepository"
+    />
 
   <!-- Producer grants -->
   <grant
