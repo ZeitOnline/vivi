@@ -8,6 +8,7 @@ import lxml.etree
 import lxml.objectify
 import rwproperty
 import time
+import xml.sax.saxutils
 import zc.iso8601.parse
 import zope.cachedescriptors.property
 import zope.component
@@ -43,7 +44,7 @@ class HTMLConverter(object):
     assert len(html_xml_tags) == len(xml_html_tags)
 
     editable_xml_nodes = frozenset(['p', 'intertitle', 'article_extra',
-                                    'ul', 'ol', 'video'])
+                                    'ul', 'ol', 'video', 'raw'])
 
     def __init__(self, context):
         self.context = context
@@ -64,6 +65,7 @@ class HTMLConverter(object):
                            self._fix_xml_tag,
                            self._xml_article_extra,
                            self._xml_video,
+                           self._xml_raw,
                           ):
                 node = filter(node)
                 if node is None:
@@ -96,6 +98,7 @@ class HTMLConverter(object):
                            self._replace_urls_by_ids,
                            self._html_video,
                            self._html_article_extra,
+                           self._html_raw,
                           ):
                 node = filter(node)
                 if node is None:
@@ -343,6 +346,26 @@ class HTMLConverter(object):
         video = lxml.objectify.E.video(videoID=video_id, expires=expires,
                                        format=format)
         return video
+
+    def _xml_raw(self, node):
+        if node.tag != 'raw':
+            return node
+        result = []
+        for child in node.iterchildren():
+            result.append(
+                lxml.etree.tostring(child, pretty_print=True, encoding=unicode))
+        text = '\n'.join(result)
+        node = lxml.objectify.E.div(text, **{'class': 'raw'})
+        lxml.objectify.deannotate(node)
+        return node
+
+    def _html_raw(self, node):
+        if node.get('class') != 'raw':
+            return node
+        # must only contain text, everything else will be discarded
+        text = xml.sax.saxutils.unescape(node.text)
+        node = lxml.objectify.fromstring('<raw>%s</raw>' % node.text)
+        return node
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):

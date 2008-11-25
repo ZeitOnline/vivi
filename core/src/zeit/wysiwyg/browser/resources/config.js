@@ -5,7 +5,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         '/',
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
         ['OrderedList','UnorderedList', 'Table'],
-        ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_MailForm'],
+        ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_MailForm', 'Zeit_RAW'],
         ['Link','Unlink','Anchor'],
 ];
 
@@ -29,6 +29,7 @@ FCKConfig.FlashUpload = false;
 FCKConfig.Plugins.Add('video', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('mailform', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('image', '', FCKConfig.PageConfig.ZeitResources + '/');
+FCKConfig.Plugins.Add('raw', '', FCKConfig.PageConfig.ZeitResources + '/');
 
 
 FCKConfig.CleanWordKeepsStructure = true;

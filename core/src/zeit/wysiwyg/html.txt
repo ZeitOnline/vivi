@@ -767,7 +767,76 @@ The text field is not required, so the converter must be able to eat "None":
   <body/>
 </article>
 
+Raw HTML
+--------
 
+It is possible to enter RAW html in the editor. In the XML it is marked up with
+the ``<raw>`` tag:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <p>No bo po co to.</p>
+...     <raw><embed foo="bar"/><b>booh</b></raw>
+...     <p>Foo bar</p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+
+The HTML-Representation used for editing really displays the HTML (i.e. the
+source contains entities:
+
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>No bo po co to.</p>
+<div ...class="raw">&lt;embed foo="bar"/&gt;
+&lt;b&gt;booh&lt;/b&gt;
+</div>
+<p>Foo bar</p>
+
+The other way round converts a ``<div class="raw">`` to a ``<raw>`` tag:
+
+>>> converter.from_html(article.xml['body'], """\
+... <p>No bo po co to.</p>
+... <div class="raw">&lt;embed baz="bar"/&gt;
+... &lt;strong&gt;booh&lt;/strong&gt;
+... </div>
+... <p>Foo bar</p>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <raw>
+      <embed baz="bar"/>
+      <strong>booh</strong>
+    </raw>
+    <p>Foo bar</p>
+    </body>
+</article>
+
+When there are other element nodes in the div, everything after will be
+discarded:
+
+>>> converter.from_html(article.xml['body'], """\
+... <p>No bo po co to.</p>
+... <div class="raw">&lt;embed baz="bar"/&gt;<foo/>
+... &lt;strong&gt;booh&lt;/strong&gt;
+... </div>
+... <p>Foo bar</p>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <raw>
+      <embed baz="bar"/>
+    </raw>
+    <p>Foo bar</p>
+    </body>
+</article>
 
 Clean up:
 
