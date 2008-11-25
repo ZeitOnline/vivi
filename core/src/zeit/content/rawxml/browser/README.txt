@@ -35,7 +35,7 @@ In the edited documents panel we see the title of the object and its icon:
 <?xml ...
   <tr>
     <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-content-rawxml-interfaces-IRawXML-zmi_icon.png" alt="RawXML" width="20" height="20" border="0" />
+      <img src="http://localhost/++skin++cms/@@/zeit-content-rawxml-interfaces-IRawXML-zmi_icon.png" alt="RawXML" width="18" height="18" border="0" />
     </td>
     <td>
       <a href="http://localhost/++skin++cms/workingcopy/zope.user/rawxml/edit.html">This is raw feed foo</a>
