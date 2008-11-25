@@ -8,13 +8,7 @@ function Import(aSrc) {
 var dialog = window.parent;
 var oEditor = dialog.InnerDialogLoaded();
 var oPage = oEditor.parent;
-var FCK = oEditor.FCK;
-var FCKLang = oEditor.FCKLang;
 var FCKConfig = oEditor.FCKConfig;
-var FCKTools  = oEditor.FCKTools;
-
-var date_format = '%Y-%m-%d %H:%M';
-var video_div;
 
 Import(FCKConfig.FullBasePath + 'dialog/common/fck_dialog_common.js');
 
