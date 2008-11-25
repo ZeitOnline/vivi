@@ -541,7 +541,8 @@ Videos are represented with the ``<video>`` tag in XML:
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
-...     <video videoID="20080402334ddf" expires="2000-11-30T12:00:00Z"/>
+...     <video videoID="20080402334ddf" expires="2000-11-30T12:00:00Z"
+...        format="large"/>
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
@@ -557,11 +558,12 @@ information:
 <div ... class="video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires">2000-11-30 13:00</div>
+  <div class="format">large</div>
 </div>
 <p>Foo bar</p>
 
 
-When there is no expires, or an empty one, an empty expires div is rendered:
+When there is no expires or format, or empty ones, empty divs are rendered:
 
 >>> source = u'''\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -580,6 +582,7 @@ When there is no expires, or an empty one, an empty expires div is rendered:
 <div ... class="video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires"></div>
+  <div class="format"></div>
 </div>
 <p>Foo bar</p>
 
@@ -599,7 +602,8 @@ On the way back the divs become a video node:
   <head/>
   <body>
     <p>No bo po co to.</p>
-    <video expires="2009-01-01T00:00:00+01:00" videoID="my-fine-videoid"/>
+    <video expires="2009-01-01T00:00:00+01:00" videoID="my-fine-videoid"
+        format=""/>
     <p>Foo bar</p>
   </body>
 </article>
@@ -635,6 +639,7 @@ after saving there is no more ``article_extra`` for a video:
 <div ... class="video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires"></div>
+  <div class="format"></div>
 </div>
 <p>Foo bar</p>
 

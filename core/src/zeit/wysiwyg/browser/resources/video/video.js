@@ -33,9 +33,11 @@ window.addEventListener('load', function() {
     if (get_video_div() !== null) {
         var video_id = get_video_id_div().textContent;
         var expires = get_expires_div().textContent;
+        var format = get_format_div().textContent;
 
         GetE('videoId').value = video_id;
         GetE('expires').value = expires;
+        GetE('format').value = format;
     }
 
     GetE('expires.1w').addEventListener('click', function() {
@@ -96,9 +98,18 @@ function get_expires_div() {
         'div', 'expires', video);
 }
 
+function get_format_div() {
+    var video = get_video_div();
+    if (video === null)
+        return null
+    return MochiKit.DOM.getFirstElementByTagAndClassName(
+        'div', 'format', video);
+}
+
 function Ok() {
     var video_id = GetE('videoId').value;
     var expires = GetE('expires').value;
+    var format = GetE('format').value;
     if (!video_id) {
         GetE('videoId').focus();
         alert('Die Video-Id muss ausgefüllt werden.');
@@ -122,7 +133,9 @@ function Ok() {
             DIV({'class': 'videoId'},
                 video_id),
             DIV({'class': 'expires'},
-                expires));
+                expires),
+            DIV({'class': 'format'},
+                format));
 
         var selected_element = oEditor.FCKSelection.GetBoundaryParentElement();
         selected_element.parentNode.insertBefore(
@@ -131,6 +144,7 @@ function Ok() {
     } else {
         get_video_id_div().textContent = video_id;
         get_expires_div().textContent = expires;
+        get_format_div().textContent = format;
     }
 
     return true;

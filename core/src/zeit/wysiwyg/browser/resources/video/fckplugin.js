@@ -5,7 +5,7 @@ FCKCommands.RegisterCommand(
     new FCKDialogCommand(
         'Video', 'ZEIT: Video',
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.html',
-        340, 170));
+        380, 250));
 
 
 // Create the toolbar button.

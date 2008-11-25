@@ -9,20 +9,30 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       if (FCKTools.GetStyleHtml)
       document.write(FCKTools.GetStyleHtml( GetCommonDialogCss( FCKConfig.FullBasePath + 'dialog/' ) ) ) ;
       else
-      document.write( '<link href="' + oEditor.FCKConfig.SkinPath + 'fck_dialog.css" type="text/css" rel="stylesheet">' ) ;
+      document.write( '<link href="' + oEditor.FCKConfig.SkinPath + 'fck_dialog.css" type="text/css" rel="stylesheet"/>' ) ;
     </script>
+    <link href="video.css" type="text/css" rel="stylesheet" />
   </head>
   <body>
-    <div>
+    <div class="widget">
       <label for="videoId">Video Id</label>
       <input id="videoId" type="text" />
     </div>
-    <div>
+    <div class="widget">
       <label for="expires">Expires</label>
       <input id="expires" type="text" />
       <input id="expires.1w" type="button" value="1W" />
       <input id="expires.1m" type="button" value="1M" />
       <input id="expires.infty" type="button" value="∞" />
+    </div>
+    <div class="widget">
+      <label for="format">Format</label>
+      <select id="format">
+        <option value="">(kein Wert)</option>
+        <option value="small">klein</option>
+        <option value="with-links">mit Links</option>
+        <option value="large">groß</option>
+      </select>
     </div>
   </body>
 </html>

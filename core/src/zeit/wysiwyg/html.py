@@ -296,6 +296,7 @@ class HTMLConverter(object):
             return node
         video_id = node.get('videoID')
         expires = node.get('expires')
+        format = node.get('format') or ''
         if expires:
             try:
                 expires = zc.iso8601.parse.datetimetz(expires)
@@ -310,6 +311,7 @@ class HTMLConverter(object):
         node = lxml.objectify.E.div(
             lxml.objectify.E.div(video_id, **{'class': 'videoId'}),
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
+            lxml.objectify.E.div(format, **{'class': 'format'}),
             **{'class': 'video'})
         lxml.objectify.deannotate(node)
         return node
@@ -318,7 +320,7 @@ class HTMLConverter(object):
         if node.get('class') != 'video':
             return node
 
-        video_id = expires = ''
+        video_id = expires = format = ''
 
         nodes = node.xpath('div[@class="videoId"]')
         if nodes:
@@ -335,7 +337,11 @@ class HTMLConverter(object):
                 tz = zope.interface.common.idatetime.ITZInfo(self.request)
                 expires = expires.replace(tzinfo=tz)
                 expires = expires.isoformat()
-        video = lxml.objectify.E.video(videoID=video_id, expires=expires)
+        nodes = node.xpath('div[@class="format"]')
+        if nodes:
+            format = unicode(nodes[0])
+        video = lxml.objectify.E.video(videoID=video_id, expires=expires,
+                                       format=format)
         return video
 
     @zope.cachedescriptors.property.Lazy

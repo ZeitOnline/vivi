@@ -87,12 +87,18 @@ intertitle {
     content: "Expires:";
 }
 
+.video > .format:before {
+    content: "Format:";
+}
+
 .video > .videoId:before,
-.video > .expires:before {
+.video > .expires:before,
+.video > .format:before {
     padding-right: 0.5em;
 }
 
 .video > .videoId,
-.video > .expires {
+.video > .expires,
+.video > .format {
     padding: 0.5em;
 }
