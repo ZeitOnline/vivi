@@ -75,7 +75,14 @@ After checking in we see the read/only view:
 </span><span class="h_tag">&lt;/block&gt;</span><span class="h_default"><br/>
 </span></div>
 ...
+>>> print browser.url
+http://localhost/++skin++cms/repository/rawxml/@@view.html
 
+There is also a default view:
+
+>>> browser.open('http://localhost/++skin++cms/repository/rawxml')
+>>> print browser.title.strip()
+This is raw feed foo – View Raw XML
 
 Let's syndicate. Add a channel to the targets first:
 
