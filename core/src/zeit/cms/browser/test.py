@@ -2,10 +2,25 @@
 # See also LICENSE.txt
 
 import unittest
-
+import zeit.cms.browser.listing
+import zeit.cms.testing
 from zope.testing import doctest
 
-import zeit.cms.testing
+
+class HitColumnTest(unittest.TestCase):
+
+    def test_sort_key(self):
+
+        class TestAccessCounter(object):
+            hits = 5
+            total_hits = 19
+
+        column = zeit.cms.browser.listing.HitColumn(
+            getter=lambda i, f: i)
+        self.assertEquals((19, 5),
+                          column.getSortKey(TestAccessCounter(),
+                                            formatter=None))
+
 
 def test_suite():
     suite = unittest.TestSuite()
@@ -19,4 +34,5 @@ def test_suite():
         'listing.txt',
         'sourceedit.txt',
         'widget.txt'))
+    suite.addTest(unittest.makeSuite(HitColumnTest))
     return suite

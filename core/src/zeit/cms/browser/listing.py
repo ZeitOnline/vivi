@@ -218,6 +218,10 @@ class HitColumn(GetterColumn):
 
         return '<span class="hitCounter">%s / %s</span>' % (today, total)
 
+    def getSortKey(self, item, formatter):
+        counter = self.getter(item, formatter)
+        return counter.total_hits, counter.hits
+
 
 class DatetimeColumn(GetterColumn):
 
