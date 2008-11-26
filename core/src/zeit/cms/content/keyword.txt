@@ -42,6 +42,39 @@ Traceback (most recent call last):
 KeyError: 'foo'
 
 
+The ``find_keywords`` method returns a list of matching keywords (substring):
+
+>>> list(keywords.find_keywords('staat'))
+[<zeit.cms.content.keyword.Keyword object at 0x...>, ...]
+>>> import pprint
+>>> pprint.pprint(sorted([kw.label for kw in keywords.find_keywords('staat')]))
+[u'Sozialstaat',
+ u'Staat',
+ u'Staat',
+ u'Staatliche Sozialleistung',
+ u'Staatsangeh\xf6rigkeit',
+ u'Staatsanwaltschaft',
+ u'Staatsbesuch',
+ u'Staatsdefizit',
+ u'Staatsfinanzen',
+ u'Staatsfinanzen',
+ u'Staatsgrenze',
+ u'Staatsoberhaupt',
+ u'Staatsorgane',
+ u'Staatsquote',
+ u'Staatssymbol',
+ u'Staatsverschuldung',
+ u'Verstaatlichung']
+
+We've got some labels twice – but they're twice int he ontology, so thats
+correct.
+
+Umlauts also work; and we're looking into the labels:
+
+>>> sorted([kw.label for kw in keywords.find_keywords(u'\xe4si')])
+[u'Pr\xe4sident']
+
+
 Keywords Property
 =================
 

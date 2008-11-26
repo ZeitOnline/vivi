@@ -4,6 +4,8 @@ zeit.cms changes
 1.7 (unreleased)
 ----------------
 
+- Keyword-Suche sucht jetzt auch in Labels. Damit funktionieren auch Umlaute.
+  (Bug #4520)
 
 1.6 (2008-11-26)
 ----------------

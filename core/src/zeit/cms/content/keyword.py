@@ -63,9 +63,11 @@ class KeywordUtility(object):
 
     def find_keywords(self, searchterm):
         self._load_keywords()
+        searchterm = searchterm.lower()
         return (
-            self[x] for x in self._keywords_by_code.keys()
-            if searchterm.lower() in x.lower())
+            keyword for code, keyword in self._keywords_by_code.items()
+            if (searchterm in code.lower()
+                or searchterm in keyword.label.lower()))
 
     def _load_keywords(self):
         if self.loaded is None:
