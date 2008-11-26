@@ -45,16 +45,17 @@
 
 #lightbox > .keyword-list {
     position: absolute;
-    top: 17em;
+    top: 18em;
     right: 0;
     width: 55%;
     bottom: 0;
-    margin: 1em;
     overflow-y: auto;
 }
 
 #lightbox-keyword-list {
   min-height: 40px;
+  list-style: none;
+  padding-left: 0;
 }
 
 #lightbox-keyword-list > li {
@@ -124,7 +125,7 @@
 }
 #keyword-typeahead-results ul li {
     display: inline;
-    padding: 0 1em;
+    padding: 0 2em 0 0;
 }
 
 #lightbox h1 {
@@ -136,8 +137,9 @@
 }
 
 #lightbox .suggest-keyword {
-    width: 15em;
+    width: 17em;
     float: right;
+    margin-right: 1em;
 }
 
 
