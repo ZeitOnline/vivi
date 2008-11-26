@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.6 (unreleased)
+1.6 (2008-11-26)
 ----------------
 
 - WYSIWYG-Editor: Formular zum Bild-Bearbeiten vereinfacht (Bug #4170).
