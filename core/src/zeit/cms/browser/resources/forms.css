@@ -101,6 +101,10 @@ legend {
 
 /* formlib widget styling */
 
+.sequenceWidget {
+    padding-left: 2em;
+}
+
 .sequencewidget > tbody > tr > td {
     padding: 0.5em 0;
 }
