@@ -124,3 +124,20 @@ def update_objects_referenced_by_images(context, event):
     for related_object in relating_objects:
         zeit.cms.checkout.helper.with_checked_out(
             related_object, update_image_reference_of_checked_out)
+
+
+class References(object):
+
+    zope.interface.implements(zeit.content.image.interfaces.IReferences)
+    zope.component.adapts(zeit.content.image.interfaces.IImageGroup)
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def references(self):
+        relations = zope.component.getUtility(
+            zeit.cms.relation.interfaces.IRelations)
+        relating_objects = relations.get_relations(self.context,
+                                                   'image_referenced_by')
+        return tuple(relating_objects)

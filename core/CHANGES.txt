@@ -7,6 +7,8 @@ zeit.cms changes
 - WYSIWYG-Editor: Formular zum Bild-Bearbeiten vereinfacht (Bug #4170).
 - WYSIWYG-Editor: Neues Feld »Format« im Video-Dialog.
 - WYSIWYG-Editor: Möglichkeit RAW-Tags zu bearbeiten.
+- Bei Bildern und Bildergruppen wird angezeig in welchen Objekten sie als Asset
+  verwendet werden (Bug #4037).
 
 
 1.5 (2008-11-20)

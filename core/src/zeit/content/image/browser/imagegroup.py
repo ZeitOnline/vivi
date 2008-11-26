@@ -1,31 +1,28 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.formlib.form
-import zeit.cms.browser.form
 
 import gocept.form.grouped
 import zc.table.column
-
+import zeit.cms.browser.form
 import zeit.cms.browser.listing
-from zeit.cms.i18n import MessageFactory as _
-
-import zeit.content.image.interfaces
+import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
-import zeit.content.image.browser.form
+import zeit.content.image.interfaces
+import zope.interface
+import zope.formlib.form
+from zeit.cms.i18n import MessageFactory as _
 
 
-class FormBase(zeit.content.image.browser.form.ImageFormBase):
-    # get image form base for the field groups
 
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.image.interfaces.IImageGroup) +
-        zope.formlib.form.FormFields(
-            zeit.content.image.interfaces.IImageMetadata))
+class FormBase(object):
 
+    field_groups = zeit.content.image.browser.form.ImageFormBase.field_groups
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.image.interfaces.IImageGroup,
+        zeit.content.image.interfaces.IImageMetadata,
+        zeit.content.image.interfaces.IReferences)
 
 
 class AddForm(FormBase, zeit.cms.browser.form.AddForm):

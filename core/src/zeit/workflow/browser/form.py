@@ -3,6 +3,7 @@
 """Workflow forms."""
 
 import zope.component
+import zope.dublincore.interfaces
 import zope.interface
 import zope.formlib.form
 
@@ -94,7 +95,7 @@ class ContentWorkflow(WorkflowForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'date_last_modified',
+            ('last_modified_by', 'date_last_modified', 'created',
              'published', 'date_last_published', 'date_first_released',
              'edited', 'corrected', 'refined', 'images_added'),
             css_class='column-left'),
@@ -108,7 +109,11 @@ class ContentWorkflow(WorkflowForm):
     form_fields = (
         zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow,
                                      zeit.objectlog.interfaces.ILog,
-                                     zeit.cms.workflow.interfaces.IModified))
+                                     zeit.cms.workflow.interfaces.IModified) +
+        zope.formlib.form.FormFields(
+            zope.dublincore.interfaces.IDCTimes, for_display=True).select(
+                'created'))
+
 
 
 class AssetWorkflow(WorkflowForm):

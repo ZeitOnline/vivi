@@ -46,7 +46,10 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
 
         if field.get(adapter) != newvalue:
             changed = True
-            setattr(adapter, name, newvalue)
+            try:
+                setattr(adapter, name, newvalue)
+            except AttributeError:
+                pass
 
     return changed
 

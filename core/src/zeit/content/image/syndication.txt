@@ -207,6 +207,16 @@ out via the relations utility:
 [<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
 
 
+There is also an adatper from IImage and IImageGroup to find the relating
+objects:
+
+>>> zeit.content.image.interfaces.IReferences(group).references
+(<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>,)
+>>> zeit.content.image.interfaces.IReferences(
+...     repository['2006']['DSC00109_2.JPG']).references
+()
+
+
 Cleanup
 =======
 

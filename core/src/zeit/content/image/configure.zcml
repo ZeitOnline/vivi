@@ -140,5 +140,16 @@
 
   <subscriber handler=".imagereference.update_objects_referenced_by_images" />
 
+  <adapter factory=".imagereference.References"/>
+  <adapter
+    factory=".imagereference.References"
+    for=".interfaces.IImage"
+    />
+  <class class=".imagereference.References">
+    <require
+      interface=".interfaces.IReferences"
+      permission="zope.View" />
+  </class>
+
 
 </configure>

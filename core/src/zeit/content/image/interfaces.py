@@ -169,3 +169,12 @@ class IImages(zope.interface.Interface):
         default=(),
         value_type=zope.schema.Choice(
             source=imageSource))
+
+
+class IReferences(zope.interface.Interface):
+
+    references = zope.schema.Tuple(
+        title=_('Object using this image'),
+        readonly=True,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource))

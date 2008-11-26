@@ -1,6 +1,51 @@
-=====
 Forms
 =====
+
+apply_changes_with_setattr
++++++++++++++++++++++++++++
+
+``apply_changes_with_setattr`` works like zope.formlib.form's apply changes but
+uses setattr to be able to modify readonly fields. If a field is *really* read
+only (like a property) the value is of course not set.
+
+Create a simple interface and a class:
+
+
+>>> import zope.interface
+>>> import zope.schema
+>>> class IContent(zope.interface.Interface):
+...     settable = zope.schema.Text()
+...     readonly = zope.schema.Text(readonly=True)
+...     unsettable = zope.schema.Text(readonly=True)
+>>> class Content(object):
+...     zope.interface.implements(IContent)
+...     settable = readonly = None
+...     @property
+...     def unsettable(self):
+...         return 'foo'
+
+Apply changes: ``apply_changes_with_setattr`` returns True to indicate that
+there actually where changes:
+
+>>> import zope.formlib.form
+>>> import zeit.cms.browser.form
+>>> content = Content()
+>>> form_fields = zope.formlib.form.FormFields(IContent)
+>>> data = {'settable': 'was set',
+...         'readonly': 'was also set',
+...         'unsettable': 'nope, will not be set'}
+>>> zeit.cms.browser.form.apply_changes_with_setattr(
+...     content, form_fields, data)
+True
+
+All but unsettable where set:
+
+>>> content.settable
+'was set'
+>>> content.readonly
+'was also set'
+>>> content.unsettable
+'foo'
 
 
 XXX We still need to test the optional container argument of AddForm.add().

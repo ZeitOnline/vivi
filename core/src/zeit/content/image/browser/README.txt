@@ -240,6 +240,7 @@ True
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_01').value = (
 ...     'http://www.zeit.de/')
+>>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
@@ -305,11 +306,8 @@ Lets create an image group:
 >>> menu.displayValue = ['Image group']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
->>> print browser.contents
-<?xml version="1.0"?>
-<!DOCTYPE html ...
-    <title> 2006 – Add image group </title>
-    ...
+>>> print browser.title.strip()
+2006 – Add image group
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
@@ -461,7 +459,8 @@ different from the repository version: it is no folder:
 <?xml version="1.0"?>
 <!DOCTYPE html ...
     <title> New Hampshire – Edit image group </title>
-    ...
+    ...Object using this image...
+
 
 Set the alt text:
 

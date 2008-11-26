@@ -9,6 +9,9 @@ import zeit.cms.testing
 
 def test_suite():
     suite = unittest.TestSuite()
+    suite.addTest(doctest.DocFileSuite(
+        'form.txt',
+        optionflags=zeit.cms.testing.optionflags))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'debug.txt',
