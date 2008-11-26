@@ -1,7 +1,7 @@
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-<html>
+<html i18n:domain="zeit.cms">
   <head>
     <script src="image.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -17,7 +17,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   </head>
   <body id="body">
     <div id="select-image">
-      <label for="image">Image</label>
+      <label for="image" i18n:translate="">Image</label>
       <input id="image" type="text" class="object-reference"
         style="width: 60em" />
       <input name="browseObjects" type="button" value="…" />

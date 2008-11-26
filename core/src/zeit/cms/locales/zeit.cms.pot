@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Nov 26 12:40:31 2008\n"
+"POT-Creation-Date: Wed Nov 26 12:46:04 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1262,6 +1262,7 @@ msgstr ""
 #: src/zeit/content/image/browser/imagegroup.py:72
 #: src/zeit/content/portraitbox/interfaces.py:24
 #: src/zeit/content/image/browser/configure.zcml:201
+#: src/zeit/wysiwyg/browser/resources/image/dialog.pt:20
 msgid "Image"
 msgstr ""
 
@@ -1683,5 +1684,33 @@ msgstr ""
 
 #: src/zeit/wysiwyg/browser/configure.zcml:8
 msgid "Edit WYSIWYG"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/raw/dialog.pt:20
+msgid "RAW HTML"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:18
+msgid "Video Id"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:22
+msgid "Expires"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:29
+msgid "Format"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:32
+msgid "small"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:33
+msgid "with links"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
+msgid "large"
 msgstr ""
 

@@ -4,7 +4,7 @@ FCKCommands.RegisterCommand(
     'Zeit_Add_Video' ,
     new FCKDialogCommand(
         'Video', 'ZEIT: Video',
-        FCKConfig.PageConfig.ZeitResources + '/video/dialog.html',
+        FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt',
         380, 250));
 
 

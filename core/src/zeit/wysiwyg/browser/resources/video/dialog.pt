@@ -1,7 +1,7 @@
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-<html>
+<html i18n:domain="zeit.cms">
   <head>
     <script src="video.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -15,23 +15,25 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   </head>
   <body>
     <div class="widget">
-      <label for="videoId">Video Id</label>
+      <label for="videoId" i18n:translate="">Video Id</label>
       <input id="videoId" type="text" />
     </div>
     <div class="widget">
-      <label for="expires">Expires</label>
+      <label for="expires" i18n:translate="">Expires</label>
       <input id="expires" type="text" />
       <input id="expires.1w" type="button" value="1W" />
       <input id="expires.1m" type="button" value="1M" />
       <input id="expires.infty" type="button" value="∞" />
     </div>
     <div class="widget">
-      <label for="format">Format</label>
+      <label for="format" i18n:translate="">Format</label>
       <select id="format">
-        <option value="">(kein Wert)</option>
-        <option value="small">klein</option>
-        <option value="with-links">mit Links</option>
-        <option value="large">groß</option>
+        <option value=""
+          i18n:domain="zope"
+          i18n:translate="vocabulary-missing-single-value-for-edit">(no value)</option>
+        <option value="small" i18n:translate="">small</option>
+        <option value="with-links" i18n:translate="">with links</option>
+        <option value="large" i18n:translate="">large</option>
       </select>
     </div>
   </body>

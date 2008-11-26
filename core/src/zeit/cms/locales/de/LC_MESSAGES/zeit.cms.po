@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Nov 26 12:40:31 2008\n"
-"PO-Revision-Date: 2008-11-26 12:41+0100\n"
+"POT-Creation-Date: Wed Nov 26 12:46:04 2008\n"
+"PO-Revision-Date: 2008-11-26 12:47+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1249,6 +1249,7 @@ msgstr "Ausmaße"
 #: src/zeit/content/image/browser/imagegroup.py:72
 #: src/zeit/content/portraitbox/interfaces.py:24
 #: src/zeit/content/image/browser/configure.zcml:201
+#: src/zeit/wysiwyg/browser/resources/image/dialog.pt:20
 msgid "Image"
 msgstr "Bild"
 
@@ -1672,6 +1673,34 @@ msgstr "${name}: ${new_value}"
 msgid "Edit WYSIWYG"
 msgstr "Bearbeiten"
 
+#: src/zeit/wysiwyg/browser/resources/raw/dialog.pt:20
+msgid "RAW HTML"
+msgstr "Rohes HTML"
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:18
+msgid "Video Id"
+msgstr "Video Id"
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:22
+msgid "Expires"
+msgstr "Löschdatum"
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:29
+msgid "Format"
+msgstr "Format"
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:32
+msgid "small"
+msgstr "klein"
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:33
+msgid "with links"
+msgstr "mit Links"
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
+msgid "large"
+msgstr "groß"
+
 #~ msgid "Create and modify calendar entries"
 #~ msgstr "Kalendereinträge erstellen und bearbeiten"
 #~ msgid "All users have this role implicitly"
@@ -1728,8 +1757,6 @@ msgstr "Bearbeiten"
 #~ msgstr "Thema?"
 #~ msgid "Is the article a topic for the next week?"
 #~ msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
-#~ msgid "Expires"
-#~ msgstr "Löschdatum"
 #~ msgid "Leave empty for no constraint."
 #~ msgstr "Leer für keine Einschränkung."
 #~ msgid "Syndication targets"
