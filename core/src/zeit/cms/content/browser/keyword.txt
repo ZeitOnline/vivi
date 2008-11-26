@@ -24,6 +24,7 @@ Create an ajax browser and open the keyword browser:
   <a href="keyword://TdZ/Themen der Zeit">Themen der Zeit</a>
   <span class="URL">keyword://TdZ/Themen der Zeit</span>
   ...
+  ...href="mailto:...?subject=New keyword"...
   <div class="typeahead-results">
   <h1>Similar keywords:</h1>
   <div id="keyword-typeahead-results">

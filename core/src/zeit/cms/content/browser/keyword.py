@@ -10,6 +10,7 @@ import zope.app.pagetemplate.viewpagetemplatefile
 import zeit.cms.browser.tree
 import zeit.cms.content.keyword
 import zeit.cms.browser.widget
+from zeit.cms.i18n import MessageFactory as _
 
 
 class Tree(zeit.cms.browser.tree.Tree):
@@ -52,7 +53,10 @@ class Tree(zeit.cms.browser.tree.Tree):
     def suggest_email(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
-        return cms_config['suggest-keyword-email-address']
+        address = cms_config['suggest-keyword-email-address']
+        subject = zope.i18n.translate(
+            _('New keyword'), context=self.request)
+        return 'mailto:%s?subject=%s' % (address, subject)
 
     def suggest_name(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(

@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Keyword-Suche sucht jetzt auch in Labels. Damit funktionieren auch Umlaute.
   (Bug #4520)
+- Keyword-Vorschlags-Mail mit Betreff (Bug #4281).
 
 1.6 (2008-11-26)
 ----------------

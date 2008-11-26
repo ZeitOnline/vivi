@@ -14,7 +14,7 @@
     <div class="suggest-keyword" i18n:translate="">
       If you would like to suggest a keyword, send an e-mail to
       <a href=""
-        tal:attributes="href string:mailto:${view/suggest_email}"
+        tal:attributes="href view/suggest_email"
         tal:content="view/suggest_name"
         i18n:name="recipient">
         Mr X

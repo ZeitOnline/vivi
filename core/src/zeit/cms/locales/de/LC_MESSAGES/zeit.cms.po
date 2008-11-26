@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Nov 26 12:46:04 2008\n"
-"PO-Revision-Date: 2008-11-26 12:47+0100\n"
+"POT-Creation-Date: Wed Nov 26 15:20:54 2008\n"
+"PO-Revision-Date: 2008-11-26 15:21+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -357,6 +357,10 @@ msgstr "Es gibt keine Schlagworte, die den Kriterien entsprechen."
 #: src/zeit/cms/content/browser/keyword-widget.pt:30
 msgid "Edit keywords"
 msgstr "Schlagworte bearbeiten"
+
+#: src/zeit/cms/content/browser/keyword.py:58
+msgid "New keyword"
+msgstr "Neues Schlagwort"
 
 #: src/zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
@@ -1689,15 +1693,15 @@ msgstr "Löschdatum"
 msgid "Format"
 msgstr "Format"
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:32
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
 msgid "small"
 msgstr "klein"
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:33
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:35
 msgid "with links"
 msgstr "mit Links"
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:36
 msgid "large"
 msgstr "groß"
 

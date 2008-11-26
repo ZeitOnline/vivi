@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Nov 26 12:46:04 2008\n"
+"POT-Creation-Date: Wed Nov 26 15:20:54 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -368,6 +368,10 @@ msgstr ""
 
 #: src/zeit/cms/content/browser/keyword-widget.pt:30
 msgid "Edit keywords"
+msgstr ""
+
+#: src/zeit/cms/content/browser/keyword.py:58
+msgid "New keyword"
 msgstr ""
 
 #: src/zeit/cms/content/browser/template-properties.pt:10
@@ -1702,15 +1706,15 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:32
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
 msgid "small"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:33
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:35
 msgid "with links"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:36
 msgid "large"
 msgstr ""
 
