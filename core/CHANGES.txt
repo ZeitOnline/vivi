@@ -1,6 +1,9 @@
 zeit.cms changes
 ================
 
+1.8 (unreleased)
+----------------
+
 1.7 (2008-11-27)
 ----------------
 
@@ -9,7 +12,7 @@ zeit.cms changes
 - Keyword-Vorschlags-Mail mit Betreff (Bug #4281).
 - Hits-Spalte lässt sich sortieren (Bug #4487).
 - Race-Condition beim Abfragen von Objektrelationen behoben: unter bestimmten
-  umständen wurden alle indizierten Objekte zurückgeliefert.
+  Umständen wurden alle indizierten Objekte zurückgeliefert.
 - Beim Hinzufügen von Bildern wird das dort sinnlose »Wird verwendet von« nicht
   mehr angezeigt.
 
