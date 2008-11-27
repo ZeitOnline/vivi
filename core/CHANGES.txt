@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.7 (unreleased)
+1.7 (2008-11-27)
 ----------------
 
 - Keyword-Suche sucht jetzt auch in Labels. Damit funktionieren auch Umlaute.
