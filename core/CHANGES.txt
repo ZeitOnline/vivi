@@ -8,6 +8,8 @@ zeit.cms changes
   (Bug #4520)
 - Keyword-Vorschlags-Mail mit Betreff (Bug #4281).
 - Hits-Spalte lässt sich sortieren (Bug #4487).
+- Race-Condition beim Abfragen von Objektrelationen behoben: unter bestimmten
+  umständen wurden alle indizierten Objekte zurückgeliefert.
 
 1.6 (2008-11-26)
 ----------------

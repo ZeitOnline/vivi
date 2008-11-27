@@ -30,6 +30,8 @@ class Relations(persistent.Persistent):
 
     def get_relations(self, obj, name):
         token = list(self._catalog.tokenizeValues([obj], name))[0]
+        if token is None:
+            return ()
         # TODO: add some code to remove removed objects from the index
         return (obj for obj in self._catalog.findRelations({name: token})
                 if obj is not None)

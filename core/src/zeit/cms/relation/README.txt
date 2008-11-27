@@ -23,7 +23,7 @@ references[#functionaltest]_:
 [#interface]_ 
 
 
-Get a testcontent [#createtestcontent]_:
+Get a testcontent[#createtestcontent]_:
 
 >>> a = repository['a']
 
@@ -78,6 +78,7 @@ c's references will still just yield a:
 >>> res[0].uniqueId
 u'http://xml.zeit.de/a'
 
+[#none-unique-id-yields-nothing]_
 
 When we remove a from the repository, but do not update the index, c will no
 longer reference a anyway (because we cannot find a anymore)
@@ -87,6 +88,12 @@ longer reference a anyway (because we cannot find a anymore)
 []
 
 
+.. [#none-unique-id-yields-nothing] When an object with a unique id of "None"
+    is queried, nothing will be returned:
+
+    >>> no_uid = TestContentType()
+    >>> sorted(relations.get_relations(no_uid, 'related'))
+    []
 
 
 Event handlers
