@@ -230,7 +230,7 @@ Let's add an image:
 >>> browser.open(menu.value[0])
 
 Load the opernball image data an add w/o setting a file name. This selects the
-filename automatically.
+filename automatically[#no-references]_.
 
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
@@ -240,11 +240,15 @@ True
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_01').value = (
 ...     'http://www.zeit.de/')
->>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
 
+
+.. [#no-references] There must not be the "references" field on the add form:
+
+    >>> 'Objects using this image' in browser.contents
+    False
 
 
 Image browser
@@ -309,6 +313,8 @@ Lets create an image group:
 >>> print browser.title.strip()
 2006 – Add image group
 
+[#no-references]_
+
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
@@ -322,12 +328,8 @@ done directly in the repository:
 
 >>> browser.url
 'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
->>> print browser.contents
-<?xml version="1.0"?>
-<!DOCTYPE html ...
-    <title> New Hampshire – Image group </title>
-    ...
-
+>>> print browser.title.strip()
+New Hampshire – Image group
 
 Create a few images in the group:
 
@@ -459,7 +461,7 @@ different from the repository version: it is no folder:
 <?xml version="1.0"?>
 <!DOCTYPE html ...
     <title> New Hampshire – Edit image group </title>
-    ...Object using this image...
+    ...Objects using this image...
 
 
 Set the alt text:
@@ -478,11 +480,8 @@ LinkNotFoundError
 But an edit tab:
 
 >>> browser.getLink('Edit metadata').click()
->>> print browser.contents
-<?xml version="1.0"?>
-<!DOCTYPE html ...
-    <title> New Hampshire – Edit image group </title>
-    ...
+>>> print browser.title.strip()
+New Hampshire – Edit image group
 
 Make sure we have a metadata preview for local image groups:
 

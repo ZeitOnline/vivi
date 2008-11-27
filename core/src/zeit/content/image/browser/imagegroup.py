@@ -30,6 +30,7 @@ class AddForm(FormBase, zeit.cms.browser.form.AddForm):
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
+    form_fields = FormBase.form_fields.omit('references')
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):

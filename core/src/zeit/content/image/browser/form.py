@@ -41,6 +41,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
 
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
+    form_fields = ImageFormBase.form_fields.omit('references')
     title = _("Add image")
 
     def create(self, data):

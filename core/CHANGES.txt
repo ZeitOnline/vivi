@@ -10,6 +10,8 @@ zeit.cms changes
 - Hits-Spalte lässt sich sortieren (Bug #4487).
 - Race-Condition beim Abfragen von Objektrelationen behoben: unter bestimmten
   umständen wurden alle indizierten Objekte zurückgeliefert.
+- Beim Hinzufügen von Bildern wird das dort sinnlose »Wird verwendet von« nicht
+  mehr angezeigt.
 
 1.6 (2008-11-26)
 ----------------
