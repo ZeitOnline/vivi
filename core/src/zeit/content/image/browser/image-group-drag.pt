@@ -1,6 +1,6 @@
 <tal:block>
   <img 
-    tal:repeat="image context/values"
+    tal:repeat="image python:context.values()"
     tal:replace="structure image/@@thumbnail/tag | nothing" />
 
   <div class="Text"
