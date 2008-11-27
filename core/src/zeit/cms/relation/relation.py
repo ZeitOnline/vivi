@@ -1,16 +1,12 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import persistent
 import BTrees
-
-import zope.interface
-
+import persistent
 import zc.relation.catalog
 import zc.relation.interfaces
-
 import zeit.cms.relation.interfaces
+import zope.interface
 
 
 class Relations(persistent.Persistent):
