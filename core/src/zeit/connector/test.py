@@ -37,16 +37,18 @@ def test_suite():
     suite.addTest(long_running)
 
     functional = zope.file.testing.FunctionalBlobDocFileSuite(
-        'functional.txt')
+        'cache.txt',
+        'functional.txt',
+        optionflags=optionflags)
     functional.layer = real_connector_layer
-    functional.level = 3
     suite.addTest(functional)
 
-    cache = zope.file.testing.FunctionalBlobDocFileSuite(
-        'cache.txt',
+    functional_long_running = zope.file.testing.FunctionalBlobDocFileSuite(
+        'threading.txt',
         optionflags=optionflags)
-    cache.layer = real_connector_layer
-    suite.addTest(cache)
+    functional_long_running.layer = real_connector_layer
+    functional_long_running.level = 3
+    suite.addTest(functional_long_running)
 
     return suite
 
