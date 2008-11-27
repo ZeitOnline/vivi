@@ -9,6 +9,7 @@ var dialog = window.parent;
 var oEditor = dialog.InnerDialogLoaded();
 var oPage = oEditor.parent;
 var FCKConfig = oEditor.FCKConfig;
+var FCK = oEditor.FCK;
 
 Import(FCKConfig.FullBasePath + 'dialog/common/fck_dialog_common.js');
 
@@ -69,10 +70,7 @@ function Ok() {
     var image = get_image();
     if (image === null) {
         var image = IMG({'src': image_display_url});
-        var selected_element = oEditor.FCKSelection.GetBoundaryParentElement();
-        selected_element.parentNode.insertBefore(
-            image, 
-            selected_element.nextSibling);
+        FCK.InsertElement(image);
     } else {
         image.src = image_display_url;
     }
