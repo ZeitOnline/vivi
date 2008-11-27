@@ -1,27 +1,26 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-"""Connector which integrates into Zope CA."""
+"""Connector which integrates into Zope CA and transaction machinery."""
 
+import ZConfig
+import gocept.cache.property
 import logging
 import os
 import threading
-
-import ZConfig
 import transaction
 import transaction.interfaces
+import zeit.connector.connector
+import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.component
 import zope.event
 import zope.interface
-
-import gocept.cache.property
-
-import zeit.connector.connector
-import zeit.connector.interfaces
+import zope.publisher.interfaces
+import zope.security.interfaces
+import zope.security.management
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class ZopeConnector(zeit.connector.connector.Connector):
@@ -30,7 +29,23 @@ class ZopeConnector(zeit.connector.connector.Connector):
         connection = super(self.__class__, self).create_connection(root)
         dm = connection._connector_datamanager = DataManager(self)
         transaction.get().join(dm)
+        url = self._get_calling_url()
+        if url is not None:
+            connection.additional_headers['Referrer'] = url
         return connection
+
+    def _get_calling_url(self):
+        try:
+            interaction = zope.security.management.getInteraction()
+        except zope.security.interfaces.NoInteraction:
+            return None
+        if not interaction.participations:
+            return None
+        request = interaction.participations[0]
+        if not (zope.publisher.interfaces.http.IHTTPApplicationRequest
+                .providedBy(request)):
+            return None
+        return request.getURL()
 
     def get_datamanager(self):
         conn = self.get_connection()
@@ -145,7 +160,7 @@ class DataManager(object):
 
     def _cleanup(self):
         for method, args, kwargs in self.cleanup:
-            logger.info("Abort cleanup: %s(%s, %s)" % (method, args, kwargs))
+            log.info("Abort cleanup: %s(%s, %s)" % (method, args, kwargs))
             method(*args, **kwargs)
         self.cleanup[:] = []
 

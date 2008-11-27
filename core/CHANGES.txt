@@ -4,6 +4,8 @@ CHANGES
 1.6 (unreleased)
 ----------------
 
+- Set the referrer header to the URL the current interaction was created with.
+
 1.5 (2008-11-24)
 ----------------
 

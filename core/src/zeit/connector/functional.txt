@@ -164,6 +164,36 @@ Remove the resource to clean up:
 >>> del connector[res.id]
 
 
+Referrers
+=========
+
+When the interaction has an URL we set the referrer header:
+
+>>> transaction.commit()
+>>> import zope.publisher.browser
+>>> import zope.security.management
+>>> request = zope.publisher.browser.TestRequest()
+>>> zope.security.management.newInteraction(request)
+
+
+Enable debugging of the http data:
+
+>>> import zeit.connector.dav.davbase
+>>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
+
+>>> connector._invalidate_cache('http://xml.zeit.de/testing/')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+connect: (zip6.zeit.de, 9000)
+send: 'HEAD ...\r\nReferrer: http://127.0.0.1\r\n...
+...
+[]
+
+Reset:
+
+>>> zope.security.management.endInteraction()
+>>> zeit.connector.dav.davbase.DEBUG_CONNECTION = False
+
+
 After tests we clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)

@@ -46,6 +46,7 @@ class HTTPBasicAuthCon(object):
         self._user = ''
         self._passwd = ''
         self._realm = None
+        self.additional_headers = {}
         # Actually connect
         self.connect()
 
@@ -108,6 +109,7 @@ class HTTPBasicAuthCon(object):
             headers['Host'] = ulist[1]
         headers['Connection'] = 'keep-alive'
         headers['User-Agent'] = 'zeit.connector'
+        headers.update(self.additional_headers)
         # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
         # ulist[2] = urllib.quote(ulist[2])
         uri = urlparse.urlunparse(tuple(ulist))
