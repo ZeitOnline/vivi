@@ -36,7 +36,7 @@ class HTTPBasicAuthCon(object):
     rx = re.compile('[ \t]*([^ \t]+)[ \t]+realm="([^"]*)"')
     authhdr = 'WWW-Authenticate'
 
-    def __init__ ( self, host, port=None, strict=None ):
+    def __init__ (self, host, port=None, strict=None):
         self._resp = None
         self._authon = False
         self._host = host
@@ -54,7 +54,7 @@ class HTTPBasicAuthCon(object):
         if DEBUG_CONNECTION:
             self._con.debuglevel = 1
 
-    def set_auth ( self, user, passwd, realm=None ):
+    def set_auth(self, user, passwd, realm=None):
         if realm is None:
             self._user = user
             self._passwd = passwd
@@ -64,7 +64,7 @@ class HTTPBasicAuthCon(object):
             self._authon = False
         return
 
-    def get_auth ( self, realm ):
+    def get_auth(self, realm):
         try:
             u, p = self._realms[realm]
         except KeyError:
@@ -72,7 +72,7 @@ class HTTPBasicAuthCon(object):
             pass
         return (u, p)
 
-    def _auth ( self, resp, headers ):
+    def _auth(self, resp, headers):
         # we need authentication
         resp.read()
         # do basic auth
@@ -90,7 +90,10 @@ class HTTPBasicAuthCon(object):
             headers['Authorization'] = auth
         return
 
-    def request ( self, method, uri, body=None, headers={} ):
+    def request(self, method, uri, body=None, extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         if self._resp is not None and not self._resp.isclosed():
             logger.error("Response left!")
             logger.error(self._resp.read())
@@ -120,7 +123,7 @@ class HTTPBasicAuthCon(object):
         self._resp = self._con.getresponse()
         return self._resp
 
-    def close ( self ):
+    def close(self):
         if self._resp is not None:
             self._resp.close()
             self._resp = None
@@ -128,16 +131,18 @@ class HTTPBasicAuthCon(object):
         return
 
 
-class DAVBase:
+class DAVBase(object):
 
-    def get(self, url, extra_hdrs={ }):
+    def get(self, url, extra_hdrs=None):
         return self._request('GET', url, extra_hdrs=extra_hdrs)
 
-    def head(self, url, extra_hdrs={ }):
+    def head(self, url, extra_hdrs=None):
         return self._request('HEAD', url, extra_hdrs=extra_hdrs)
 
-    def post(self, url, data={ }, body=None, extra_hdrs={ }):
-        headers = extra_hdrs.copy()
+    def post(self, url, data=None, body=None, extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         assert body or data, "body or data must be supplied"
         assert not (body and data), "cannot supply both body and data"
         if data:
@@ -152,28 +157,32 @@ class DAVBase:
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         return self._request('POST', url, body, headers)
 
-    def options(self, url='*', extra_hdrs={ }):
+    def options(self, url='*', extra_hdrs=None):
         return self._request('OPTIONS', url, extra_hdrs=extra_hdrs)
 
-    def trace(self, url, extra_hdrs={ }):
+    def trace(self, url, extra_hdrs=None):
         return self._request('TRACE', url, extra_hdrs=extra_hdrs)
 
     def put(self, url, contents,
-            content_type=None, content_enc=None, extra_hdrs={ }):
+            content_type=None, content_enc=None, extra_hdrs=None):
         if not content_type:
             content_type, content_enc = mimetypes.guess_type(url)
-        headers = extra_hdrs.copy()
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         if content_type:
             headers['Content-Type'] = content_type
         if content_enc:
             headers['Content-Encoding'] = content_enc
         return self._request('PUT', url, contents, headers)
 
-    def delete(self, url, extra_hdrs={ }):
+    def delete(self, url, extra_hdrs=None):
         return self._request('DELETE', url, extra_hdrs=extra_hdrs)
 
-    def propfind(self, url, body=None, depth=None, extra_hdrs={ }):
-        headers = extra_hdrs.copy()
+    def propfind(self, url, body=None, depth=None, extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         headers['Content-Type'] = XML_CONTENT_TYPE
         if depth is not None:
             headers['Depth'] = str(depth)
@@ -182,33 +191,41 @@ class DAVBase:
         ret = self._request('PROPFIND', url, body, headers)
         return ret
 
-    def search(self, url, body=None, extra_hdrs={}):
+    def search(self, url, body=None, extra_hdrs=None):
         return self._request('SEARCH', url, body, extra_hdrs=extra_hdrs)
 
-    def proppatch(self, url, body, extra_hdrs={ }):
-        headers = extra_hdrs.copy()
+    def proppatch(self, url, body, extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         headers['Content-Type'] = XML_CONTENT_TYPE
         ret = self._request('PROPPATCH', url, body, headers)
         return ret
 
-    def mkcol(self, url, hdrs={ }):
+    def mkcol(self, url, hdrs=None):
         return self._request('MKCOL', url, extra_hdrs=hdrs)
 
-    def move(self, src, dst, extra_hdrs={ }):
-        headers = extra_hdrs.copy()
+    def move(self, src, dst, extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         headers['Destination'] = dst
         return self._request('MOVE', src, extra_hdrs=headers)
 
-    def copy(self, src, dst, depth=None, extra_hdrs={ }):
-        headers = extra_hdrs.copy()
+    def copy(self, src, dst, depth=None, extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         headers['Destination'] = dst
         if depth is not None:
             headers['Depth'] = str(depth)
         return self._request('COPY', src, extra_hdrs=headers)
 
     def lock(self, url, owner='', timeout=None, depth=None,
-             scope='exclusive', type='write', extra_hdrs={ }):
-        headers = extra_hdrs.copy()
+             scope='exclusive', type='write', extra_hdrs=None):
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         headers['Content-Type'] = XML_CONTENT_TYPE
         headers['Host'] = self._con.host
         if depth is not None:
@@ -234,9 +251,9 @@ class DAVBase:
         return self._request('LOCK', url, xmlstr, extra_hdrs=headers)
 
     def unlock(self, url, locktoken, extra_hdrs=None):
-        if extra_hdrs is None:
-            extra_hdrs = {}
-        headers = extra_hdrs.copy()
+        headers = {}
+        if extra_hdrs:
+            headers.update(extra_hdrs)
         if not locktoken:
             return None
         if locktoken[0] != '<':
@@ -244,7 +261,7 @@ class DAVBase:
         headers['Lock-Token'] = locktoken
         return self._request('UNLOCK', url, extra_hdrs=headers)
 
-    def _request(self, method, url, body=None, extra_hdrs={}):
+    def _request(self, method, url, body=None, extra_hdrs=None):
         "Internal method for sending a request."
         if DEBUG_REQUEST:
             print >>sys.stderr, (
@@ -270,9 +287,9 @@ class DAVBase:
         return resp
 
 
-class DAVConnection ( HTTPBasicAuthCon, DAVBase ):
+class DAVConnection (HTTPBasicAuthCon, DAVBase):
 
-    def __init__ ( self, host, port=None, strict=None):
+    def __init__ (self, host, port=None, strict=None, referrer=None):
         HTTPBasicAuthCon.__init__(self, host, port, strict)
         self._con._http_vsn_str = 'HTTP/1.1'
         self._con._http_vsn = 11
