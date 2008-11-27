@@ -31,7 +31,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
         transaction.get().join(dm)
         url = self._get_calling_url()
         if url is not None:
-            connection.additional_headers['Referrer'] = url
+            connection.additional_headers['Referer'] = url
         return connection
 
     def _get_calling_url(self):
