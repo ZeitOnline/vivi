@@ -2,14 +2,22 @@
 # See also LICENSE.txt
 """Connector test setup."""
 
+import StringIO
 import os
+import thread
+import threading
+import traceback
+import transaction
 import unittest
+import zeit.connector.cache
+import zeit.connector.interfaces
+import zeit.connector.resource
 import zope.app.appsetup.product
+import zope.app.component.hooks
 import zope.app.testing.functional
+import zope.component
 import zope.file.testing
 from zope.testing import doctest
-
-import zeit.connector.cache
 
 
 real_connector_layer = zope.app.testing.functional.ZCMLLayer(
@@ -19,6 +27,109 @@ real_connector_layer = zope.app.testing.functional.ZCMLLayer(
 
 optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
              doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
+
+
+class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
+
+    layer = real_connector_layer
+    level = 3
+
+    def setUp(self):
+        """Prepares for a functional test case."""
+        super(ThreadingTest, self).setUp()
+        zope.file.testing.FunctionalBlobTestSetup().setUp()
+        self.old_site = zope.app.component.hooks.getSite()
+        zope.app.component.hooks.setSite(self.getRootFolder())
+        self.connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+
+    def tearDown(self):
+        """Cleans up after a functional test case."""
+        transaction.abort()
+        zope.file.testing.FunctionalBlobTestSetup().tearDown()
+        super(ThreadingTest, self).tearDown()
+        zope.app.component.hooks.setSite(self.old_site)
+
+    def test_threading(self):
+        threads = []
+        self.checker = []
+        while len(threads) < 10:
+            threads.append(threading.Thread(target=self.create_struct))
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        expected = [
+            '',
+            u'/testroot/ folder',
+            u'/testroot/a/ folder',
+            u'/testroot/a/a/ folder',
+            u'/testroot/a/b/ folder',
+            u'/testroot/a/b/c/ folder',
+            u'/testroot/a/b/c/foo text',
+            u'/testroot/a/f text',
+            u'/testroot/b/ folder',
+            u'/testroot/b/a/ folder',
+            u'/testroot/b/b/ folder',
+            u'/testroot/b/b/foo text',
+            u'/testroot/f text',
+            u'/testroot/g text',
+            u'/testroot/h text']
+
+        self.assertEquals(10, len(self.checker))
+        expected_list = [c for c in self.checker if c != expected]
+        self.assertEquals([], expected_list)
+
+    def create_struct(self):
+        transaction.abort()
+        base = 'http://xml.zeit.de/testing/%s' % (
+            str(thread.get_ident()).encode('base64')[:-3])
+        zope.app.component.hooks.setSite(self.getRootFolder())
+
+        def add_folder(id):
+            id = u'%s/%s' % (base, id)
+            res = zeit.connector.resource.Resource(
+                id, None, 'folder', StringIO.StringIO(''),
+                contentType = 'httpd/unix-directory')
+            self.connector.add(res)
+        def add_file(id):
+            id = u'%s/%s' % (base, id)
+            res = zeit.connector.resource.Resource(
+                id, None, 'text', StringIO.StringIO('Pop.'),
+                contentType = 'text/plain')
+            self.connector.add(res)
+
+        try:
+            add_folder('')
+            add_folder('testroot')
+            add_folder('testroot/a')
+            add_folder('testroot/a/a')
+            transaction.commit()
+            add_folder('testroot/a/b')
+            add_folder('testroot/a/b/c')
+            add_folder('testroot/b')
+            add_folder('testroot/b/a')
+            add_folder('testroot/b/b')
+            add_file('testroot/f')
+            add_file('testroot/g')
+            add_file('testroot/h')
+            add_file('testroot/a/f')
+            add_file('testroot/a/b/c/foo')
+            add_file('testroot/b/b/foo')
+            transaction.commit()
+        except Exception, e:
+            traceback.print_exc()
+
+        result = list_tree(self.connector, base)
+        self.checker.append([r.replace(base, '') for r in result])
+        try:
+            del self.connector[base]
+        except Exception, e:
+            traceback.print_exc()
+        transaction.commit()
+
+
 
 
 def test_suite():
@@ -43,12 +154,7 @@ def test_suite():
     functional.layer = real_connector_layer
     suite.addTest(functional)
 
-    functional_long_running = zope.file.testing.FunctionalBlobDocFileSuite(
-        'threading.txt',
-        optionflags=optionflags)
-    functional_long_running.layer = real_connector_layer
-    functional_long_running.level = 3
-    suite.addTest(functional_long_running)
+    suite.addTest(unittest.makeSuite(ThreadingTest))
 
     return suite
 
