@@ -4,6 +4,8 @@ zeit.cms changes
 1.8 (unreleased)
 ----------------
 
+- Einfügen aus Word in Kombination mit Firefox 3 verbessert (Bug #4529).
+
 1.7.1 (2008-11-27)
 ------------------
 

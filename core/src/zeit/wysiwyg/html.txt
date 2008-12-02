@@ -166,6 +166,30 @@ rule is applied after that:
 </article>
 
 
+Nested paragraphs
+-----------------
+
+The converter tries to be smart in regard to fixing nested paragraphs:
+
+
+>>> converter.from_html(article.xml['body'], """\
+... <p>
+...   <p>Anleitung zum Gemeinsein</p>
+...   <p>Der Kuenstler Erwin Wurm hat ...</p>
+... </p>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8'),
+<article>
+  <head/>
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Anleitung zum Gemeinsein</p>
+    <p>Der Kuenstler Erwin Wurm hat ...</p>
+  </body>
+</article>
+
+
+
 Lists
 -----
 

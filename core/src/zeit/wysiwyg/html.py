@@ -91,9 +91,14 @@ class HTMLConverter(object):
         value = '<div>' + self._replace_entities(value) + '</div>'
         __traceback_info__ = (value,)
         html = lxml.objectify.fromstring(value)
-        for node in html.iterchildren():
+        node = None
+        if html.countchildren():
+            node = html.iterchildren().next()
+        while node is not None:
+            orig_node = node
             for filter in (self._filter_empty,
                            self._fix_html_tag,
+                           self._fix_nested_paragraphs,
                            self._replace_img_nodes_by_image,
                            self._replace_urls_by_ids,
                            self._html_video,
@@ -106,7 +111,8 @@ class HTMLConverter(object):
                     break
 
             if node is not None:
-                tree.append(node)
+                tree.append(copy.copy(node))
+            node = orig_node.getnext()
 
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
@@ -131,6 +137,17 @@ class HTMLConverter(object):
     def _fix_html_tag(self, node):
         node.tag = self.html_xml_tags.get(node.tag, 'p')
         return node
+
+    def _fix_nested_paragraphs(self, node):
+        if node.tag != 'p':
+            return node
+        p_nodes = node.xpath('p')
+        if not p_nodes:
+            return node
+        parent_index = node.getparent().index(node)
+        for i, insert in enumerate(p_nodes):
+            node.getparent().insert(parent_index+i+1, insert)
+        return None
 
     def _replace_image_nodes_by_img(self, node):
         """Replace XML <image/> by HTML <img/>."""
