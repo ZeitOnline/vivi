@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-0.7 (unreleased)
+0.7 (2008-12-08)
 ----------------
 
 - When an object which is passed to ``get_log`` isn't adaptable to
