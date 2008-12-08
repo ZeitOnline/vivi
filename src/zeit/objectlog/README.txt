@@ -104,6 +104,7 @@ When we log to another object, the log is obviously seperated:
 >>> result[0].message
 'change'
 
+[#no-keyref-yields-empty-log]_
 
 Adapting objects to log
 -----------------------
@@ -268,3 +269,10 @@ True
 .. [#login]
 
     >>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
+
+
+.. [#no-keyref-yields-empty-log] When an object is not adaptable to
+    IKeyReference, it's log is always empty:
+
+    >>> list(log.get_log(object()))
+    []

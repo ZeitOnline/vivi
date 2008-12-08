@@ -4,6 +4,11 @@ zeit.objectlog changes
 0.7 (unreleased)
 ----------------
 
+- When an object which is passed to ``get_log`` isn't adaptable to
+  IKeyReference it is consisdered to not have any logs. This used to raise a
+  TypeError.
+
+
 0.6 (2008-08-12)
 ----------------
 
