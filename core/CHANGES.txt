@@ -1,7 +1,10 @@
 zeit.cms changes
 ================
 
-1.8 (unreleased)
+1.9 (unreleased)
+----------------
+
+1.8 (2008-12-08)
 ----------------
 
 - Einfügen aus Word in Kombination mit Firefox 3 verbessert (Bug #4529).
