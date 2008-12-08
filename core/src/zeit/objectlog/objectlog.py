@@ -33,7 +33,9 @@ class ObjectLog(persistent.Persistent):
         self._object_log = BTrees.family64.OO.BTree()
 
     def get_log(self, object):
-        key = zope.app.keyreference.interfaces.IKeyReference(object)
+        key = zope.app.keyreference.interfaces.IKeyReference(object, None)
+        if key is None:
+            return
         object_log = self._object_log.get(key, [])
         for key in object_log:
             yield object_log[key]
