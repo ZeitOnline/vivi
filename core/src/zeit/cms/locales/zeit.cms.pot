@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Nov 26 15:20:54 2008\n"
+"POT-Creation-Date: Mon Dec  8 14:05:36 2008\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -110,22 +110,22 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:246
+#: src/zeit/cms/browser/listing.py:250
 msgid "Directory listing"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:250
+#: src/zeit/cms/browser/listing.py:254
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:257
+#: src/zeit/cms/browser/listing.py:261
 #: src/zeit/cms/syndication/browser/feed.py:153
 #: src/zeit/search/browser/search.py:99
 #: src/zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:261
+#: src/zeit/cms/browser/listing.py:265
 #: src/zeit/cms/content/browser/template.py:48
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
@@ -140,32 +140,32 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:265
+#: src/zeit/cms/browser/listing.py:269
 #: src/zeit/cms/interfaces.py:49
 #: src/zeit/cms/repository/browser/file.py:42
-#: src/zeit/content/image/browser/imagegroup.py:66
+#: src/zeit/content/image/browser/imagegroup.py:67
 #: src/zeit/content/image/browser/interfaces.py:31
 #: src/zeit/search/interfaces.py:16
 #: src/zeit/cms/repository/browser/file_details.pt:2
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:269
+#: src/zeit/cms/browser/listing.py:273
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:272
+#: src/zeit/cms/browser/listing.py:276
 #: src/zeit/cms/syndication/browser/feed.py:160
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:274
+#: src/zeit/cms/browser/listing.py:278
 #: src/zeit/cms/content/interfaces.py:74
 #: src/zeit/search/browser/sidebar.pt:80
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:278
+#: src/zeit/cms/browser/listing.py:282
 #: src/zeit/cms/content/interfaces.py:69
 #: src/zeit/search/browser/search.py:110
 #: src/zeit/search/interfaces.py:23
@@ -1194,15 +1194,15 @@ msgid "Copyright changed for: ${changes}"
 msgstr ""
 
 #: src/zeit/content/image/browser/form.py:26
-#: src/zeit/content/image/browser/imagegroup.py:82
+#: src/zeit/content/image/browser/imagegroup.py:83
 msgid "Image data"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:44
+#: src/zeit/content/image/browser/form.py:45
 msgid "Add image"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:61
+#: src/zeit/content/image/browser/form.py:62
 msgid "Edit image"
 msgstr ""
 
@@ -1245,25 +1245,25 @@ msgstr ""
 msgid "Add image group"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:37
+#: src/zeit/content/image/browser/imagegroup.py:38
 msgid "Edit image group"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:43
+#: src/zeit/content/image/browser/imagegroup.py:44
 msgid "Image group metadata"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:59
+#: src/zeit/content/image/browser/imagegroup.py:60
 #: src/zeit/content/image/browser/configure.zcml:171
 msgid "Image group"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:69
+#: src/zeit/content/image/browser/imagegroup.py:70
 #: src/zeit/content/image/browser/image_view.pt:10
 msgid "Dimensions"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:72
+#: src/zeit/content/image/browser/imagegroup.py:73
 #: src/zeit/content/portraitbox/interfaces.py:24
 #: src/zeit/content/image/browser/configure.zcml:201
 #: src/zeit/wysiwyg/browser/resources/image/dialog.pt:20
@@ -1287,7 +1287,7 @@ msgid "The action you were trying to do could not be finished because the resour
 msgstr ""
 
 #: src/zeit/content/image/interfaces.py:177
-msgid "Object using this image"
+msgid "Objects using this image"
 msgstr ""
 
 #: src/zeit/content/image/interfaces.py:28
@@ -1694,27 +1694,31 @@ msgstr ""
 msgid "RAW HTML"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:18
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:25
 msgid "Video Id"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:22
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:27
+msgid "Audio Id"
+msgstr ""
+
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:32
 msgid "Expires"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:29
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:39
 msgid "Format"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:34
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:44
 msgid "small"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:35
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:45
 msgid "with links"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:36
+#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:46
 msgid "large"
 msgstr ""
 
