@@ -44,7 +44,7 @@ class HTMLConverter(object):
     assert len(html_xml_tags) == len(xml_html_tags)
 
     editable_xml_nodes = frozenset(['p', 'intertitle', 'article_extra',
-                                    'ul', 'ol', 'video', 'raw'])
+                                    'ul', 'ol', 'video', 'audio', 'raw'])
 
     def __init__(self, context):
         self.context = context
@@ -64,7 +64,7 @@ class HTMLConverter(object):
                            self._replace_ids_by_urls,
                            self._fix_xml_tag,
                            self._xml_article_extra,
-                           self._xml_video,
+                           self._xml_video_audio,
                            self._xml_raw,
                           ):
                 node = filter(node)
@@ -101,7 +101,7 @@ class HTMLConverter(object):
                            self._fix_nested_paragraphs,
                            self._replace_img_nodes_by_image,
                            self._replace_urls_by_ids,
-                           self._html_video,
+                           self._html_video_audio,
                            self._html_article_extra,
                            self._html_raw,
                           ):
@@ -311,10 +311,18 @@ class HTMLConverter(object):
             return id
         return self.url(obj)
 
-    def _xml_video(self, node):
-        if node.tag != 'video':
+    def _xml_video_audio(self, node):
+        if node.tag == 'video':
+            id_ = node.get('videoID')
+            id_class = 'videoId'
+            div_class = 'video'
+        elif node.tag == 'audio':
+            id_ = node.get('audioID')
+            id_class = 'audioId'
+            div_class = 'audio'
+        else:
             return node
-        video_id = node.get('videoID')
+
         expires = node.get('expires')
         format = node.get('format') or ''
         if expires:
@@ -329,22 +337,26 @@ class HTMLConverter(object):
             expires = ''
 
         node = lxml.objectify.E.div(
-            lxml.objectify.E.div(video_id, **{'class': 'videoId'}),
+            lxml.objectify.E.div(id_, **{'class': id_class}),
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
             lxml.objectify.E.div(format, **{'class': 'format'}),
-            **{'class': 'video'})
+            **{'class': div_class})
         lxml.objectify.deannotate(node)
         return node
 
-    def _html_video(self, node):
-        if node.get('class') != 'video':
+    def _html_video_audio(self, node):
+        if node.get('class') == 'video':
+            id_nodes = node.xpath('div[@class="videoId"]')
+            video = True
+        elif node.get('class') == 'audio':
+            id_nodes = node.xpath('div[@class="audioId"]')
+            video = False
+        else:
             return node
 
-        video_id = expires = format = ''
-
-        nodes = node.xpath('div[@class="videoId"]')
-        if nodes:
-            video_id = unicode(nodes[0])
+        id_ = expires = format = ''
+        if id_nodes:
+            id_ = unicode(id_nodes[0])
         nodes = node.xpath('div[@class="expires"]')
         if nodes:
             expires = unicode(nodes[0])
@@ -360,9 +372,13 @@ class HTMLConverter(object):
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])
-        video = lxml.objectify.E.video(videoID=video_id, expires=expires,
-                                       format=format)
-        return video
+        if video:
+            node = lxml.objectify.E.video(videoID=id_, expires=expires,
+                                          format=format)
+        else:
+            node = lxml.objectify.E.audio(audioID=id_, expires=expires,
+                                          format=format)
+        return node
 
     def _xml_raw(self, node):
         if node.tag != 'raw':

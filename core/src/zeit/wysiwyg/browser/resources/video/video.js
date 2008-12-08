@@ -35,9 +35,9 @@ window.addEventListener('load', function() {
         var expires = get_expires_div().textContent;
         var format = get_format_div().textContent;
 
-        GetE('videoId').value = video_id;
-        GetE('expires').value = expires;
-        GetE('format').value = format;
+        $('videoId').value = video_id;
+        $('expires').value = expires;
+        $('format').value = format;
     }
 
     GetE('expires.1w').addEventListener('click', function() {
@@ -68,12 +68,14 @@ function get_video_div() {
         selected_element = oEditor.FCKSelection.GetParentElement();
     }
 
+    var class = $('kind').value;
+
     if (selected_element !== null) {
         if (selected_element.nodeName != 'DIV' ||
-            !MochiKit.DOM.hasElementClass(selected_element, 'video')) {
+            !MochiKit.DOM.hasElementClass(selected_element, class)) {
             try {
                 selected_element = MochiKit.DOM.getFirstParentByTagAndClassName(
-                    selected_element, 'div', 'video');
+                    selected_element, 'div', class);
             } catch (e) {
                 selected_element = null;
             }
@@ -86,8 +88,9 @@ function get_video_id_div() {
     var video = get_video_div();
     if (video === null)
         return null
+    var class = $('kind').value + 'Id';
     return MochiKit.DOM.getFirstElementByTagAndClassName(
-        'div', 'videoId', video);
+        'div', class, video);
 }
 
 function get_expires_div() {

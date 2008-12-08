@@ -65,39 +65,59 @@ intertitle {
 
 
 .raw, 
+.audio, 
 .video {
     border: 1px solid black;
     padding: 0.5em;
 }
 
+.audio:after,
 .video:after {
     background-color: black;
     color: white;
-    content: "Video";
     display: block;
     text-transform: uppercase;
     padding: 0.25em;
 }
 
+.audio:after {
+    content: "Audio";
+}
+
+.video:after {
+    content: "Video";
+}
+
+.audio > .audioId:before {
+    content: "Audio-Id:";
+}
 
 .video > .videoId:before {
     content: "Video-Id:";
 }
 
+.audio > .expires:before,
 .video > .expires:before {
     content: "Expires:";
 }
 
+.audio > .format:before,
 .video > .format:before {
     content: "Format:";
 }
 
+.audio > .audioId:before,
+.audio > .expires:before,
+.audio > .format:before,
 .video > .videoId:before,
 .video > .expires:before,
 .video > .format:before {
     padding-right: 0.5em;
 }
 
+.audio > .audioId,
+.audio > .expires,
+.audio > .format,
 .video > .videoId,
 .video > .expires,
 .video > .format {
