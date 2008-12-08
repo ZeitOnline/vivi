@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Einfügen aus Word in Kombination mit Firefox 3 verbessert (Bug #4529).
 - WYSIWYG-Editor: Knopf zum Einfügen von Audio.
+- WYSIWYG-Editor: Javascript-Fehler bei Bild-Einfügen entfernt.
 
 1.7.1 (2008-11-27)
 ------------------

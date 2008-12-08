@@ -10,6 +10,7 @@ var oEditor = dialog.InnerDialogLoaded();
 var oPage = oEditor.parent;
 var FCKConfig = oEditor.FCKConfig;
 var FCK = oEditor.FCK;
+var FCKTools = oEditor.FCKTools;  // Used in dialog.pt
 
 Import(FCKConfig.FullBasePath + 'dialog/common/fck_dialog_common.js');
 
