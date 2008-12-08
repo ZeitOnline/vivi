@@ -1,8 +1,11 @@
 zeit.cms changes
 ================
 
-1.9 (unreleased)
-----------------
+1.8.1 (2008-12-08)
+------------------
+
+- WYSIWYG-Editor: Knopf zum Einfügen von Audio fügt jetzt ein Audio ein und
+  nicht ein Video.
 
 1.8 (2008-12-08)
 ----------------

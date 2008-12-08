@@ -130,10 +130,13 @@ function Ok() {
 
     oEditor.FCKUndo.SaveUndoStep();
 
+    var div_class = $('kind').value;
+    var id_div_class = $('kind').value + 'Id';
+
     if (get_video_div() === null) {
         var video_div = DIV(
-            {'class': 'video'},
-            DIV({'class': 'videoId'},
+            {'class': div_class},
+            DIV({'class': id_div_class}, 
                 video_id),
             DIV({'class': 'expires'},
                 expires),
