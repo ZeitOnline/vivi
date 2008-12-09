@@ -1,0 +1,33 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml">
+
+  <resourceLibrary
+    name="zeit.imp"
+    require="zeit.cms">
+    <directory source="resources" include="
+      imp.js
+      imp.css" />
+  </resourceLibrary>
+
+
+  <gocept:pagelet
+    for="zeit.content.image.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp.html"
+    template="imp.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.image.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp-scaled"
+    class=".scale.ScaledImage"
+    permission="zope.View"
+    />
+
+
+</configure>
+

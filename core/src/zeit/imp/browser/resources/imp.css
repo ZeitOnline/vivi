@@ -1,0 +1,20 @@
+/* CSS */
+
+#imp-image-area {
+  overflow: hidden;
+  position: absolute;
+  right: 20em;
+  left: 0;
+  top: 0;
+  bottom: 10em;
+  border: 1px solid black;
+}
+
+#imp-image-drag {
+  position: absolute;
+}
+
+#imp-image {
+}
+
+

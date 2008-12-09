@@ -1,0 +1,11 @@
+<tal:block>
+  <tal:lib replace="resource_library:zeit.imp" />
+
+  <div id="imp-image-area">
+    <div id="imp-image-drag">
+      <img id="imp-image" 
+        tal:attributes="src context/++resource++zeit.imp/loading.gif" />
+    </div>
+  </div>
+
+</tal:block>
