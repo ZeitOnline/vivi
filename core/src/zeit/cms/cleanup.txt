@@ -22,8 +22,8 @@ ValueError: 1
 
 >>> import sys
 >>> sys.exc_info()
-(<class exceptions.ValueError at 0x...>,
- <exceptions.ValueError instance at 0x...>,
+(<...exceptions.ValueError...>,
+ ...ValueError...,
  <traceback object at 0x...>)
 
 

@@ -13,7 +13,7 @@ set of characters:
 Traceback (most recent call last):
     ...
 ConstraintNotSatisfied: bl:
->>> field.validate(u'bl\xfc')
+>>> field.validate(u'bl\xfc')  #doctest: +IGNORE_EXCEPTION_DETAIL
 Traceback (most recent call last):
     ...
 ConstraintNotSatisfied: <unprintable instance object>

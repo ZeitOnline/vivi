@@ -40,7 +40,7 @@ Try this for some fields. Integer goes first:
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty('5')
 5
->>> converter.fromProperty('text')
+>>> converter.fromProperty('text')  #doctest: +IGNORE_EXCEPTION_DETAIL
 Traceback (most recent call last):
     ...
 ValueError: invalid literal for int(): text

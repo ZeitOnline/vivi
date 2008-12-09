@@ -9,9 +9,9 @@ The form automatically assigns year and volume from the global settings:
 >>> form = zeit.cms.content.browser.form.CommonMetadataAddForm(
 ...    getRootFolder(), request)
 >>> form.setUpWidgets()
->>> import pprint
->>> pprint.pprint(request.form)
-{'form.year': '2008', 'form.volume': '26'}
+>>> sorted(request.form.items())
+[('form.volume', '26'), ('form.year', '2008')]
+
 
 
 Asset form

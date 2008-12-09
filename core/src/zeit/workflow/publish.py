@@ -142,7 +142,7 @@ class PublishRetractTask(object):
             return obj
 
         # We do not use the user's workingcopy but a "fresh" one which we just
-        # throw away after wards. This has two effects: 1. The users'
+        # throw away afterwards. This has two effects: 1. The users'
         # workingcopy istn't cluttered with ghosts and 2. we can publish in
         # parallel.
         checked_out = manager.checkout(temporary=True)
@@ -233,6 +233,8 @@ class PublishRetractTask(object):
 
     @staticmethod
     def call_script(filename, stdin):
+        if isinstance(stdin, unicode):
+            stdin = stdin.encode('UTF-8')
         proc = subprocess.Popen(
             [filename], bufsize=-1,
             stdin=subprocess.PIPE,

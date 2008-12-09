@@ -4,6 +4,7 @@
 
 import re
 import os
+import sys
 
 import zope.file.testing
 import zope.testing.renormalizing
@@ -94,7 +95,7 @@ def click_wo_redirect(browser, *args, **kwargs):
             browser.getLink(*args, **kwargs).click()
         except urllib2.HTTPError, e:
             print str(e)
-            print e.headers.get('location')
+            print e.hdrs.get('location')
     finally:
         browser.mech_browser.set_handle_redirect(True)
 
