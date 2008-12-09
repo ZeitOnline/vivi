@@ -1,11 +1,20 @@
-<tal:block>
+<tal:block 
+  tal:define="metadata context/@@metadata">
   <tal:lib replace="resource_library:zeit.imp" />
 
-  <div id="imp-image-area">
+  <div id="imp-image-area" class="image-area">
     <div id="imp-image-drag">
-      <img id="imp-image" 
+      <img id="imp-image"  class="loading"
         tal:attributes="src context/++resource++zeit.imp/loading.gif" />
     </div>
+  </div>
+
+  <div id="imp-mask" class="image-area">
+  </div>
+
+  <div id="imp-metadata">
+    <div id="imp-width" tal:content="view/width" />
+    <div id="imp-height" tal:content="view/height" />
   </div>
 
 </tal:block>

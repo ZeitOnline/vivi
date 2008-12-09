@@ -8,8 +8,8 @@ class ScaledImage(zeit.content.image.browser.image.Scaled):
 
     @property
     def width(self):
-        return int(self.request.get('width', 0))
+        return int(float(self.request.get('width', 0)))
 
     @property
     def height(self):
-        return int(self.request.get('height', 0))
+        return int(float(self.request.get('height', 0)))

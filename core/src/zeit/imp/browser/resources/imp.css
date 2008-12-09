@@ -1,13 +1,21 @@
 /* CSS */
 
-#imp-image-area {
+.image-area {
   overflow: hidden;
   position: absolute;
   right: 20em;
   left: 0;
   top: 0;
   bottom: 10em;
+}
+
+#imp-image-area {
   border: 1px solid black;
+}
+
+#imp-mask {
+  opacity: 0.5;
+  z-index: 1;
 }
 
 #imp-image-drag {
@@ -18,3 +26,6 @@
 }
 
 
+#imp-metadata {
+  display: none;
+}
