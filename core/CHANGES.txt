@@ -1,10 +1,11 @@
 zeit.cms changes
 ================
 
-1.9 (unreleased)
-----------------
+1.8.2 (2008-12-10)
+------------------
 
 - Kompatibel mit Python 2.5.
+- Product-Config vor den Tests leeren.
 
 1.8.1 (2008-12-08)
 ------------------

@@ -85,6 +85,12 @@
     factory=".metadata.ImageMetadata" 
     for=".interfaces.IImage"
     />
+  <view
+    for=".interfaces.IImage"
+    type="*"
+    name="metadata"
+    factory=".interfaces.IImageMetadata"
+    />
 
   <adapter
     factory=".metadata.ImageMetadata" 

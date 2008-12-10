@@ -33,6 +33,7 @@ def setUp(test):
 
 
 def setup_product_config(product_config={}):
+    zope.app.appsetup.product._configs.clear()
     cms_config = zope.app.appsetup.product._configs['zeit.cms'] = {}
     base_path = os.path.join(os.path.dirname(__file__), 'content')
 
