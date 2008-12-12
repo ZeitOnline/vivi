@@ -17,8 +17,15 @@ on parallel delete on which the server just stops putting out XML.
 >>> import time
 >>> import zeit.connector.interfaces
 >>> from zeit.connector.resource import Resource
+>>> thread_counter = 0
+>>> import threading
+>>> lock = threading.Lock()
 >>> def stress():
-...     nr = str(thread.get_ident()).encode('base64')[:-3]
+...     global thread_counter
+...     lock.acquire()
+...     thread_counter += 1
+...     nr = thread_counter 
+...     lock.release()
 ...     id = base_id + str(nr)
 ...     res = Resource(id,
 ...                'stresslock',
@@ -36,8 +43,6 @@ on parallel delete on which the server just stops putting out XML.
 ...         token = connector.unlock(id)
 ...     del connector[id]
 
->>> import thread
->>> import threading
 >>> threads = []
 >>> while len(threads) < 10:
 ...     threads.append(threading.Thread(target=stress))
@@ -45,5 +50,3 @@ on parallel delete on which the server just stops putting out XML.
 ...     t.start()
 >>> for t in threads:
 ...     t.join()
-
-
