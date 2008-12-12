@@ -34,7 +34,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-cut-mask"
     class=".scale.MaskImage"
-    permission="zope.Public"
+    permission="zope.View"
     />
 
 </configure>

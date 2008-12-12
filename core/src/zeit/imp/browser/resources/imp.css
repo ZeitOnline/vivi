@@ -25,6 +25,9 @@
 #imp-image {
   border: 1px solid black;
 }
+#imp-image.loading {
+  border: none;
+}
 
 
 #imp-metadata {

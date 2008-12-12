@@ -5,7 +5,10 @@ zeit.imp = {}
 zeit.imp.Imp = Class.extend({
 
     construct: function() {
+        var othis = this;
         this.zoom = 1;
+        this.zoom_grid = 0.0625;
+
         this.original_dimensions = new MochiKit.DOM.Dimensions(
             new Number($('imp-width').textContent),
             new Number($('imp-height').textContent));
@@ -25,7 +28,11 @@ zeit.imp.Imp = Class.extend({
             'imp-mask-choice', 'onchange', this, 'handle_mask_select');
 
         this.load_image(this.original_dimensions);
-        removeElementClass(this.image, 'loading');
+        var ident = MochiKit.Signal.connect(
+            this.image, 'onload', function() {
+                removeElementClass(othis.image, 'loading');
+                MochiKit.Signal.disconnect(ident);
+        });
 
     },
 
@@ -34,17 +41,38 @@ zeit.imp.Imp = Class.extend({
     },
 
     zoom_image: function() {
+        var othis = this;
+
+        // First, scale using the browser's scaling capabilities.
         var new_dim = new MochiKit.DOM.Dimensions(
             this.original_dimensions.w * this.zoom,
             this.original_dimensions.h * this.zoom);
         MochiKit.Style.setElementDimensions(this.image, new_dim);
+
+        // Second, scale on server 
+        // Fit dim into grid
+        var grid_zoom = this.zoom - this.zoom % this.zoom_grid;
+        if (grid_zoom < this.zoom) {
+            // This is only *not* the case when there was no remainder
+            grid_zoom += this.zoom_grid;
+        }
+
+        var server_dim = new MochiKit.DOM.Dimensions(
+            this.original_dimensions.w * grid_zoom,
+            this.original_dimensions.h * grid_zoom);
+
+        if (this._zoom_deferred) {
+            this._zoom_deferred.cancel();
+        }
+        this._zoom_deferred = MochiKit.Async.callLater(
+            0.25, function() {othis.load_image(server_dim)});
     },
 
 
     load_image: function(dim) {
+        log('INFO', "Loading " + dim.w + "x" + dim.h);
         var query_string = MochiKit.Base.queryString(
             {'width': dim.w, 'height': dim.h});
-
         var image_url = window.context_url + '/@@imp-scaled?' + query_string;
         this.image.src = image_url; 
     },
