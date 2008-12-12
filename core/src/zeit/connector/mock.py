@@ -227,21 +227,20 @@ class Connector(object):
         properties = self._properties.get(id)
         if properties is not None:
             return properties
+        properties = {}
         # We have not properties for this type, try to read it from the file.
         # This is sort of a hack, but we need it to get properties at all
-        if self.getResourceType(id) == 'collection':
-            return {}
-        data = self._get_file(id)
-        properties = {}
-        try:
-            xml = lxml.etree.parse(data)
-        except lxml.etree.LxmlError:
-            pass
-        else:
-            nodes = xml.xpath('//head/attribute')
-            for node in nodes:
-                properties[node.get('name'), node.get('ns')] = (
-                    node.text)
+        if self.getResourceType(id) != 'collection':
+            data = self._get_file(id)
+            try:
+                xml = lxml.etree.parse(data)
+            except lxml.etree.LxmlError:
+                pass
+            else:
+                nodes = xml.xpath('//head/attribute')
+                for node in nodes:
+                    properties[node.get('name'), node.get('ns')] = (
+                        node.text)
         properties[('getlastmodified', 'DAV:')] = (
             u'Fri, 07 Mar 2008 12:47:16 GMT')
         self._properties[id] = properties

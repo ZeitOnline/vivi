@@ -221,6 +221,7 @@ But we also can get the resource:
 >>> collection.type
 'collection'
 
+
 We can also add new collections to the collection:
 
 
@@ -363,6 +364,12 @@ Initially a collection is empty:
 Remove the collection again:
 
 >>> del connector[collection_id]
+
+Existing collections also have a getlastmodified:
+
+>>> pprint(dict(connector['http://xml.zeit.de/online/2007'].properties))
+{('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'collection'}
 
 
 

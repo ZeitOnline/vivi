@@ -6,6 +6,7 @@ CHANGES
 
 - Resources of null resource locks do not longer have the HTML 404 error
   message as body.
+- Mock connector: Existing collections do have a getlastmodified property now.
 
 1.6.1 (2008-11-28)
 ------------------
