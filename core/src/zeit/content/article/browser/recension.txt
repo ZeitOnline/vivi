@@ -119,7 +119,7 @@ Let's have a look at the source code:
       <title py:pytype="str">Der Schwarm</title>
       <category py:pytype="str">Belletristik</category>
       <edition>
-        <publisher py:pytype="str">Kiepenheuer & Witsch</publisher>
+        <publisher py:pytype="str">Kiepenheuer &amp; Witsch</publisher>
         <location py:pytype="str">Koeln</location>
         <year py:pytype="int">2004</year>
         <price py:pytype="str">24.90</price>

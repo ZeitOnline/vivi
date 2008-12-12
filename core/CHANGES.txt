@@ -1,8 +1,10 @@
 zeit.content.article changes
 ============================
 
-1.5.11 (unreleased)
+1.5.11 (2008-12-12)
 -------------------
+
+- Entities in Textareas werden richtig angezeigt (nur Testbrowser).
 
 1.5.10 (2008-11-20)
 -------------------
