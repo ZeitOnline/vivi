@@ -120,6 +120,7 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
             transaction.commit()
         except Exception, e:
             traceback.print_exc()
+            transaction.abort()
 
         result = list_tree(self.connector, base)
         self.checker.append([r.replace(base, '') for r in result])
@@ -128,8 +129,6 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
         except Exception, e:
             traceback.print_exc()
         transaction.commit()
-
-
 
 
 def test_suite():
