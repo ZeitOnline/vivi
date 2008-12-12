@@ -4,6 +4,12 @@
 import os.path
 import unittest
 import zeit.imp.mask
+import zope.app.testing.functional
+
+
+imp_layer = zope.app.testing.functional.ZCMLLayer(
+    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+    __name__, 'ImpLayer', allow_teardown=True)
 
 
 class TestLayerMask(unittest.TestCase):
@@ -14,6 +20,7 @@ class TestLayerMask(unittest.TestCase):
         mask_data = mask.open('r').read()
         expected_data = open(os.path.join(
             os.path.dirname(__file__), 'test_mask.png')).read()
+        open('/tmp/foomask_data.png', 'w').write(mask_data)
         self.assertEquals(expected_data, mask_data,
                           "Mask doesn't match expected mask.")
 

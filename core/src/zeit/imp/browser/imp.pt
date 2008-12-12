@@ -10,11 +10,25 @@
   </div>
 
   <div id="imp-mask" class="image-area">
+    <img id="imp-mask-image" src="" />
   </div>
 
   <div id="imp-metadata">
     <div id="imp-width" tal:content="view/width" />
     <div id="imp-height" tal:content="view/height" />
+  </div>
+
+  <div id="imp-mask-choice">
+    <form>
+      <label>
+        <input type="radio" name="mask" value="400x200" />
+        400x200
+      </label>
+      <label>
+        <input type="radio" name="mask" value="210x210" />
+        210x210
+      </label>
+    </form>
   </div>
 
 </tal:block>

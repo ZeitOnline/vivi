@@ -4,24 +4,34 @@
 
 import PIL.Image
 import PIL.ImageDraw
+import cStringIO
 import zeit.content.image.image
 
 
-class Mask(zeit.content.image.image.LocalImage):
+class Mask(object):
+    """A mask for cropping.
 
-    uniqueId = None
+    The constructed image has a semi-transparent "border" and a transparent
+    mask where the image can be cropped from.
+
+    The images are quite small so we don't bother putting them in file.
+
+    """
 
     def __init__(self, image_size, mask_size):
         self.image_size, self.mask_size = image_size, mask_size
-        image = PIL.Image.new('RGBA', image_size, (200, 200, 200, 128))
+        image = PIL.Image.new('RGBA', image_size, (200, 200, 200, 220))
         draw = PIL.ImageDraw.ImageDraw(image)
         draw.rectangle(self._get_rect_box(), fill=(255,0,0, 0))
         del draw
-        fh = self.open('w')
-        image.save(fh, format='PNG')
-        fh.close()
+        self._data = cStringIO.StringIO()
+        image.save(self._data, format='PNG')
 
     def _get_rect_box(self):
         iw, ih = self.image_size
         mw, mh = self.mask_size
         return ((iw/2-mw/2, ih/2-mh/2),(iw/2+mw/2, ih/2+mh/2))
+
+    def open(self, mode='r'):
+        self._data.seek(0)
+        return self._data

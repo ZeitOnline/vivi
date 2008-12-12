@@ -23,9 +23,17 @@
 }
 
 #imp-image {
+  border: 1px solid black;
 }
 
 
 #imp-metadata {
   display: none;
+}
+
+#imp-mask-choice {
+  position: absolute;
+  right: 0;
+  width: 19em;
+  top:0;
 }
