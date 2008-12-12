@@ -1,24 +1,19 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """Connect to the CMS backend."""
 
 import StringIO
 import datetime
+import gocept.lxml.objectify
+import lxml.etree
 import os
 import os.path
 import urlparse
-
-import lxml.etree
-import gocept.lxml.objectify
-
-import zope.event
-import zope.interface
-
-import zope.app.file.image
-
 import zeit.connector.interfaces
 import zeit.connector.resource
+import zope.app.file.image
+import zope.event
+import zope.interface
 
 ID_NAMESPACE = u'http://xml.zeit.de/'
 
