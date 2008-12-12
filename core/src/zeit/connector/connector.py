@@ -58,7 +58,7 @@
 # [16] which content-type?
 # [17] Try to pass resource content around as IO object
 
-import StringIO
+import cStringIO
 import datetime
 import httplib
 import logging
@@ -266,20 +266,20 @@ class Connector(object):
         """Return body of resource."""
         __traceback_info__ = (id, )
         properties = self._get_resource_properties(id)
-        cache = self.body_cache
-        try:
-            data = cache.getData(id, properties)
-        except KeyError:
-            logger.debug("Getting body from dav: %s" % id)
-            response = self._get_dav_resource(id).get()
-            data = cache.setData(id, properties, response)
-            if not response.isclosed():
-                additional_data = response.read()
-                assert not additional_data, additional_data
+        data = None
+        if properties.get(('getlastmodified', 'DAV:')):
+            try:
+                data = self.body_cache.getData(id, properties)
+            except KeyError:
+                logger.debug("Getting body from dav: %s" % id)
+                response = self._get_dav_resource(id).get()
+                data = self.body_cache.setData(id, properties, response)
+                if not response.isclosed():
+                    additional_data = response.read()
+                    assert not additional_data, additional_data
         if data is None:
-            # This apparently happens when the resource does not have a
-            # body but only properties.
-            data = StringIO.StringIO()
+            # The resource does not have a body but only properties.
+            data = cStringIO.StringIO('')
         return data
 
     def __getitem__(self, id):
