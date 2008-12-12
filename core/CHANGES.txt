@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-1.7 (unreleased)
-----------------
+1.6.2 (2008-12-12)
+------------------
 
 - Resources of null resource locks do not longer have the HTML 404 error
   message as body.
