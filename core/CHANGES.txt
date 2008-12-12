@@ -1,8 +1,12 @@
 zeit.cms changes
 ================
 
-1.9 (unreleased)
-----------------
+1.8.3 (2008-12-12)
+------------------
+
+- Sperren von nicht vorhandenen Objekten ist nicht mehr möglich. Das sorgt
+  dafür, dass der Hit-Importer nicht mehr frei dreht wenn im Cache noch ein
+  Objekt vorhanden ist, welches es aber nicht mehr gibt.
 
 1.8.2 (2008-12-10)
 ------------------

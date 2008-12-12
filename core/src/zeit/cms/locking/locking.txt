@@ -11,6 +11,7 @@ Setup
 Mock a connector:
 
 >>> import zeit.connector.interfaces
+>>> import zeit.connector.resource
 >>> class Connector(object):
 ...     who = None
 ...     until = None
@@ -21,6 +22,16 @@ Mock a connector:
 ...         if obj_id == 'alreadylocked':
 ...             raise zeit.connector.interfaces.LockingError(obj_id)
 ...         print "Locking %s for %s until %s" % (obj_id, principal_id, until)
+...     def unlock(self, id):
+...         print "Unlocking", id
+...     def __getitem__(self, key):
+...         mod = 'justnow'
+...         if key == 'doesnotexist':
+...             mod = None
+...         return zeit.connector.resource.Resource(
+...             key, 'aname', 'type', None,
+...             properties={('getlastmodified', 'DAV:'): mod})
+...             
 ... 
 >>> import zope.component
 >>> gsm = zope.component.getGlobalSiteManager()
@@ -37,7 +48,7 @@ Create a fake content object:
 ...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
 ...     uniqueId = 'foo'
 
-Lockstorage
+LockStorage
 ===========
 
 The lockstorage object is the mediator between Zope and the connector.
@@ -134,6 +145,14 @@ We *really* got the one from zope.app.locking:
 ... except Exception, e:
 ...     print e.__module__
 zope.app.locking.interfaces
+
+Note that it is not possible to create locks for resources which do not exist:
+
+>>> content.uniqueId = 'doesnotexist'
+>>> lock_storage.setLock(content, info)
+Traceback (most recent call last):
+    ...
+LockingError: ('doesnotexist', 'Object does not exist.')
 
 
 Clean up
