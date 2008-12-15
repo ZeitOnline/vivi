@@ -37,5 +37,13 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.image.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp-crop"
+    class=".scale.CropImage"
+    permission="zeit.AddContent"
+    />
+
 </configure>
 

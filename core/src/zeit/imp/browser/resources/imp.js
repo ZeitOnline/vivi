@@ -29,6 +29,9 @@ zeit.imp.Imp = Class.extend({
             'imp-mask', 'onmousewheel', this, 'handle_mouse_wheel');
         MochiKit.Signal.connect(
             'imp-mask-choice', 'onchange', this, 'handle_mask_select');
+        MochiKit.Signal.connect(
+            'imp-action-crop', 'onclick', this, 'crop_image');
+            
 
         this.load_image(this.original_dimensions);
         var ident = MochiKit.Signal.connect(
@@ -112,6 +115,33 @@ zeit.imp.Imp = Class.extend({
         this.image.src = image_url; 
     },
 
+    crop_image: function() {
+        // Calculate crop box
+        var image_pos = this.get_image_position();
+        var visual_dim = this.get_visual_area_dimensions();
+        var x1 = -image_pos.x + visual_dim.w/2 - this.mask_dimensions.w/2;
+        var y1 = -image_pos.y + visual_dim.h/2 - this.mask_dimensions.h/2;
+        var x2 = -image_pos.x + visual_dim.w/2 + this.mask_dimensions.w/2;
+        var y2 = -image_pos.y + visual_dim.h/2 + this.mask_dimensions.h/2;
+
+        // Crop on server
+        var crop_url = window.context_url + '/@@imp-crop'
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            crop_url, {
+                'x1:int': x1,
+                'y1:int': y1,
+                'x2:int': x2,
+                'y2:int': y2,
+                'w:int': this.current_dimensions.w,
+                'h:int': this.current_dimensions.h,
+                'name': this.mask_dimensions.w + 'x' + this.mask_dimensions.h,
+            });
+        // Update image bar
+        // d.addCallback...
+
+    },
+
+
     handle_mouse_wheel: function(event) {
         var zoom = event.mouse().wheel.y;
         this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) * 
@@ -129,8 +159,8 @@ zeit.imp.Imp = Class.extend({
             return
         }
         var dim = this.get_visual_area_dimensions();
-        var mask_width = select.value.split('x')[0];
-        var mask_height = select.value.split('x')[1];
+        var mask_width = new Number(select.value.split('x')[0]);
+        var mask_height = new Number(select.value.split('x')[1]);
         var query = MochiKit.Base.queryString({
             'image_width:int': dim.w,
             'image_height:int': dim.h,
@@ -138,6 +168,8 @@ zeit.imp.Imp = Class.extend({
             'mask_height:int': mask_height});
         this.mask_image.src = window.application_url + '/@@imp-cut-mask?' +
             query;
+        this.mask_dimensions = new MochiKit.DOM.Dimensions(
+            mask_width, mask_height);
     },
 
 });

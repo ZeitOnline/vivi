@@ -1,15 +1,19 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import PIL.Image
 import calendar
 import zope.datetime
 import zope.dublincore.interfaces
 import zeit.cms.browser.view
 import zeit.content.image.browser.image
+import zeit.content.image.interfaces
 import zeit.imp.mask
 
 
 class ScaledImage(zeit.content.image.browser.image.Scaled):
+
+    filter = PIL.Image.NEAREST
 
     @property
     def width(self):
@@ -39,3 +43,16 @@ class MaskImage(zeit.cms.browser.view.Base):
             'Cache-Control', 'public,max-age=86400')
         self.request.response.setHeader('Content-Type', 'image/png')
         return image.open().read()
+
+
+class CropImage(zeit.cms.browser.view.Base):
+
+    def __call__(self, w, h, x1, y1, x2, y2, name):
+        transform = zeit.content.image.interfaces.ITransform(self.context)
+        image = transform.resize(w, h)
+        pil_image = PIL.Image.open(image.open())
+        format = pil_image.format
+        pil_image = pil_image.crop((x1, y1, x2, y2))
+        pil_image.save(image.open('w'), format)
+        image_name = '%s-%s' % (self.context.__parent__.__name__, name)
+        self.context.__parent__[image_name] = image

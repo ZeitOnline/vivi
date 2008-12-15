@@ -1,4 +1,5 @@
 <tal:block 
+  i18n:domain="zeit.imp"
   tal:define="metadata context/@@metadata">
   <tal:lib replace="resource_library:zeit.imp" />
 
@@ -28,7 +29,11 @@
         <input type="radio" name="mask" value="210x210" />
         210x210
       </label>
+      <input type="button" id="imp-action-crop" name="crop" value="Crop"
+        i18n:attributes="value" />
+
     </form>
+
   </div>
 
 </tal:block>
