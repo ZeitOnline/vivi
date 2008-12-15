@@ -1,17 +1,14 @@
-# coding: utf8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zc.form.field
 import zc.sourcefactory.basic
-import zope.file.interfaces
-import zope.schema
-
+import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
-import zeit.cms.content.contentsource
+import zope.file.interfaces
+import zope.schema
 from zeit.cms.i18n import MessageFactory as _
 
 
