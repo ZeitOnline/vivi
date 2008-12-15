@@ -6,12 +6,15 @@ zeit.imp.Imp = Class.extend({
 
     construct: function() {
         var othis = this;
-        this.zoom = 1;
         this.zoom_grid = 0.0625;
 
         this.original_dimensions = new MochiKit.DOM.Dimensions(
             new Number($('imp-width').textContent),
             new Number($('imp-height').textContent));
+        this.current_dimensions = this.original_dimensions;
+        this.current_position = new MochiKit.Style.Coordinates(0, 0);
+
+        this.zoom = 1;
 
         this.image = $('imp-image');
         this.mask_image = $('imp-mask-image')
@@ -36,18 +39,50 @@ zeit.imp.Imp = Class.extend({
 
     },
 
-    get_image_dimensions: function() {
+    get_visual_area_dimensions: function() {
         return MochiKit.Style.getElementDimensions('imp-image-area');
+    },
+
+    get_visual_center: function() {
+        var dim = this.get_visual_area_dimensions();
+        pos = this.get_image_position();
+        return new MochiKit.Style.Coordinates(
+            Math.floor(dim.w / 2 - pos.x),
+            Math.floor(dim.h / 2 - pos.y));
+    },
+
+    get_image_position: function() {
+        return MochiKit.Style.getElementPosition(
+            'imp-image-drag', 'imp-image-area');
     },
 
     zoom_image: function() {
         var othis = this;
 
         // First, scale using the browser's scaling capabilities.
+        var old_dim = this.current_dimensions;
+        var rnd = Math.floor
+
         var new_dim = new MochiKit.DOM.Dimensions(
-            this.original_dimensions.w * this.zoom,
-            this.original_dimensions.h * this.zoom);
+            rnd(this.original_dimensions.w * this.zoom),
+            rnd(this.original_dimensions.h * this.zoom));
+        this.current_dimensions = new_dim;
         MochiKit.Style.setElementDimensions(this.image, new_dim);
+
+
+        // Move the image so that the center of the visual area stays fixed
+        var old_center = this.get_visual_center();
+        var new_center = new MochiKit.Style.Coordinates(
+            rnd(old_center.x * new_dim.w / old_dim.w),
+            rnd(old_center.y * new_dim.h / old_dim.h));
+        
+        var old_pos = this.get_image_position();
+        var new_pos = new MochiKit.Style.Coordinates(
+            old_pos.x + old_center.x - new_center.x -1,
+            old_pos.y + old_center.y - new_center.y -1);
+        MochiKit.Style.setElementPosition('imp-image-drag', new_pos);
+
+        log("INFO", 'New pos '+ new_pos.x+'x'+new_pos.y);
 
         // Second, scale on server 
         // Fit dim into grid
@@ -79,7 +114,8 @@ zeit.imp.Imp = Class.extend({
 
     handle_mouse_wheel: function(event) {
         var zoom = event.mouse().wheel.y;
-        this.zoom = this.zoom + this.zoom * zoom / 256
+        this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) * 
+            zoom/Math.abs(zoom);
         if (this.zoom <= 0) {
             this.zoom = 0.001;
         }
@@ -92,7 +128,7 @@ zeit.imp.Imp = Class.extend({
         if (!select.nodeName == 'INPUT') {
             return
         }
-        var dim = this.get_image_dimensions();
+        var dim = this.get_visual_area_dimensions();
         var mask_width = select.value.split('x')[0];
         var mask_height = select.value.split('x')[1];
         var query = MochiKit.Base.queryString({
