@@ -48,6 +48,12 @@ but uses this as a bounding box:
 >>> thumb.getImageSize()
 (100, 75)
 
+It is possible to pass the filter for scaling:
+
+>>> import PIL.Image
+>>> transform.thumbnail(100, 100, PIL.Image.NEAREST)
+<zeit.content.image.image.LocalImage object at 0x...>
+
 Simple resize
 +++++++++++++
 
@@ -74,6 +80,12 @@ Traceback (most recent call last):
     ...
 TypeError: Need at least one of width and height.
 
+
+It is possible to pass the filter for scaling:
+
+>>> import PIL.Image
+>>> transform.resize(100, 100, PIL.Image.NEAREST)
+<zeit.content.image.image.LocalImage object at 0x...>
 
 
 Persistent Thumbnails

@@ -1,15 +1,9 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import PIL.Image
 import urlparse
-
 import z3c.conditionalviews
-import zope.cachedescriptors.property
-import zope.component
-import zope.file.download
-import zope.publisher.interfaces
-
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
@@ -18,6 +12,10 @@ import zeit.cms.repository.interfaces
 import zeit.cms.settings.interfaces
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
+import zope.cachedescriptors.property
+import zope.component
+import zope.file.download
+import zope.publisher.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -72,6 +70,8 @@ class ImageView(zeit.cms.browser.view.Base):
 
 class Scaled(object):
 
+    filter = PIL.Image.ANTIALIAS
+
     def __call__(self):
         return self.scaled()
 
@@ -85,7 +85,7 @@ class Scaled(object):
         except TypeError:
             image = self.context
         else:
-            image = image.thumbnail(self.width, self.height)
+            image = image.thumbnail(self.width, self.height, self.filter)
             image.__name__ = self.__name__
         image_view = zope.component.getMultiAdapter(
             (image, self.request), name='index.html')

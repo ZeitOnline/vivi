@@ -30,12 +30,12 @@ class ImageTransform(object):
             raise zeit.content.image.interfaces.ImageProcessingError(
                 "Cannot transform image %s" % context.__name__)
 
-    def thumbnail(self, width, height):
+    def thumbnail(self, width, height, filter=PIL.Image.ANTIALIAS):
         image = self.image.copy()
-        image.thumbnail((width, height), PIL.Image.ANTIALIAS)
+        image.thumbnail((width, height), filter)
         return self._construct_image(image)
 
-    def resize(self, width=None, height=None):
+    def resize(self, width=None, height=None, filter=PIL.Image.ANTIALIAS):
         if width is None and height is None:
             raise TypeError('Need at least one of width and height.')
 
@@ -46,7 +46,7 @@ class ImageTransform(object):
         elif height is None:
             height = orig_height * width / orig_width
 
-        image = self.image.resize((width, height), PIL.Image.ANTIALIAS)
+        image = self.image.resize((width, height), filter)
         return self._construct_image(image)
 
     def _construct_image(self, pil_image):

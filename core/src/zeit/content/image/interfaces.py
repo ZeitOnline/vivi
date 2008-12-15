@@ -2,6 +2,7 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import PIL.Image
 import zc.form.field
 import zc.sourcefactory.basic
 import zeit.cms.content.contentsource
@@ -104,13 +105,13 @@ class IImage(zeit.cms.interfaces.IAsset,
 
 class ITransform(zope.interface.Interface):
 
-    def thumbnail(width, height):
+    def thumbnail(width, height, filter=PIL.Image.ANTIALIAS):
         """Create a thumbnail version of the image.
 
         returns IImage object.
         """
 
-    def resize(width=None, height=None):
+    def resize(width=None, height=None, filter=PIL.Image.ANTIALIAS):
         """Create a resized version of the image.
 
         returns IImage object.
