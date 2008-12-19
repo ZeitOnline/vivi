@@ -20,7 +20,6 @@ class TestLayerMask(unittest.TestCase):
         mask_data = mask.open('r').read()
         expected_data = open(os.path.join(
             os.path.dirname(__file__), 'test_mask.png')).read()
-        open('/tmp/foomask_data.png', 'w').write(mask_data)
         self.assertEquals(expected_data, mask_data,
                           "Mask doesn't match expected mask.")
 
