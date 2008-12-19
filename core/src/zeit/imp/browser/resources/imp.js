@@ -137,9 +137,9 @@ zeit.imp.Imp = Class.extend({
                 'h:int': this.current_dimensions.h,
                 'name': this.mask_dimensions.w + 'x' + this.mask_dimensions.h,
             });
-        // Update image bar
-        // d.addCallback...
 
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal('content', 'imp-image-cropped')});
     },
 
 
@@ -175,6 +175,42 @@ zeit.imp.Imp = Class.extend({
 
 });
 
+
+zeit.imp.ImageBar = Class.extend({
+
+    construct: function() {
+        this.container = $('imp-image-bar');
+        this.load();
+        MochiKit.Signal.connect(
+            'content', 'imp-image-cropped', this, 'load');
+    },
+
+    load: function() {
+        var othis = this;
+        var d = MochiKit.Async.loadJSONDoc(
+            window.context_url + '/@@imp-image-bar');
+        d.addCallback(function(result) {
+            othis.replace_images(result);
+        });
+    },
+
+    replace_images: function(image_data) {
+        var othis = this;
+        othis.container.innerHTML = '';
+        forEach(image_data, function(image) {
+            // Add a query argument because we really cannot cache here.
+            var url = (image.url + '/metadata-preview?q=' +
+                new Number(new Date()));
+            othis.container.appendChild(
+                DIV({'class': 'image'},
+                    IMG({'src': url}), 
+                    SPAN({}, image.name)));
+        });
+    },
+
+});
+
 MochiKit.Signal.connect(window, 'onload', function() {
     new zeit.imp.Imp();
+    new zeit.imp.ImageBar();
 });

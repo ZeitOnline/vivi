@@ -31,9 +31,9 @@
       </label>
       <input type="button" id="imp-action-crop" name="crop" value="Crop"
         i18n:attributes="value" />
-
     </form>
-
   </div>
+
+  <div id="imp-image-bar" />
 
 </tal:block>
