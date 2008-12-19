@@ -25,10 +25,21 @@
 #imp-image {
   border: 1px solid black;
 }
-#imp-image.loading {
+
+#imp-loading-image {
   border: none;
+  position: absolute;
+  top: 0;
+  right: 20em;
+  left: 0;
+  bottom: 13em;
+  width: 220px;
+  height: 19px;
+  margin: auto;
 }
 
+#imp-loading-image > img {
+}
 
 #imp-metadata {
   display: none;

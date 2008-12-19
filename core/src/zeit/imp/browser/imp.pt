@@ -5,13 +5,16 @@
 
   <div id="imp-image-area" class="image-area">
     <div id="imp-image-drag">
-      <img id="imp-image"  class="loading"
-        tal:attributes="src context/++resource++zeit.imp/loading.gif" />
+      <img id="imp-image" src="" class="hidden" />
     </div>
   </div>
 
   <div id="imp-mask" class="image-area">
     <img id="imp-mask-image" src="" />
+  </div>
+
+  <div id="imp-loading-image">
+    <img tal:attributes="src context/++resource++zeit.imp/loading.gif" />
   </div>
 
   <div id="imp-metadata">

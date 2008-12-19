@@ -17,6 +17,7 @@ zeit.imp.Imp = Class.extend({
         this.zoom = 1;
 
         this.image = $('imp-image');
+        this.loading_image = $('imp-loading-image');
         this.mask_image = $('imp-mask-image')
 
         this.image_dragger = new MochiKit.DragAndDrop.Draggable(
@@ -36,8 +37,9 @@ zeit.imp.Imp = Class.extend({
         this.load_image(this.original_dimensions);
         var ident = MochiKit.Signal.connect(
             this.image, 'onload', function() {
-                removeElementClass(othis.image, 'loading');
+                MochiKit.DOM.removeElementClass(othis.image, 'hidden');
                 MochiKit.Signal.disconnect(ident);
+                othis.ui_loading(false);
         });
 
     },
@@ -116,6 +118,14 @@ zeit.imp.Imp = Class.extend({
     },
 
     crop_image: function() {
+        var othis = this;
+        if (this.cropping) {
+            // Do not run this twice
+            return;
+        }
+        this.cropping = true;
+        this.ui_loading(true);
+
         // Calculate crop box
         var image_pos = this.get_image_position();
         var visual_dim = this.get_visual_area_dimensions();
@@ -139,7 +149,10 @@ zeit.imp.Imp = Class.extend({
             });
 
         d.addCallback(function(result) {
-            MochiKit.Signal.signal('content', 'imp-image-cropped')});
+            MochiKit.Signal.signal('content', 'imp-image-cropped')
+            othis.cropping = false;
+            othis.ui_loading(false);
+            });
     },
 
 
@@ -171,6 +184,15 @@ zeit.imp.Imp = Class.extend({
             query;
         this.mask_dimensions = new MochiKit.DOM.Dimensions(
             mask_width, mask_height);
+    },
+
+    ui_loading: function(loading) {
+        // Indicate loading
+        if (loading) {
+            MochiKit.DOM.removeElementClass(this.loading_image, 'hidden');
+        } else {
+            MochiKit.DOM.addElementClass(this.loading_image, 'hidden');
+        }
     },
 
 });
