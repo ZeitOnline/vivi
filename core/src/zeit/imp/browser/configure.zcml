@@ -45,5 +45,13 @@
     permission="zeit.AddContent"
     />
 
+  <browser:page
+    for="zeit.content.image.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp-image-bar"
+    class=".imp.ImageBar"
+    permission="zope.View"
+    />
+
 </configure>
 
