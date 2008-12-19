@@ -12,13 +12,13 @@ zeit.imp.Imp = Class.extend({
             new Number($('imp-width').textContent),
             new Number($('imp-height').textContent));
         this.current_dimensions = this.original_dimensions;
-        this.current_position = new MochiKit.Style.Coordinates(0, 0);
 
-        this.zoom = 1;
-
-        this.image = $('imp-image');
+        this.image = null;
         this.loading_image = $('imp-loading-image');
         this.mask_image = $('imp-mask-image')
+
+        this.zoom = (this.get_visual_area_dimensions().w / 
+                     this.original_dimensions.w); 
 
         this.image_dragger = new MochiKit.DragAndDrop.Draggable(
             'imp-image-drag', {
@@ -34,10 +34,10 @@ zeit.imp.Imp = Class.extend({
             'imp-action-crop', 'onclick', this, 'crop_image');
             
 
-        this.load_image(this.original_dimensions);
+        this.zoom_image();
         var ident = MochiKit.Signal.connect(
             this.image, 'onload', function() {
-                MochiKit.DOM.removeElementClass(othis.image, 'hidden');
+                //MochiKit.DOM.removeElementClass(othis.image, 'hidden');
                 MochiKit.Signal.disconnect(ident);
                 othis.ui_loading(false);
         });
@@ -49,6 +49,9 @@ zeit.imp.Imp = Class.extend({
     },
 
     get_visual_center: function() {
+        if (this.image == null) {
+            return new MochiKit.Style.Coordinates(0, 0);
+        }
         var dim = this.get_visual_area_dimensions();
         pos = this.get_image_position();
         return new MochiKit.Style.Coordinates(
@@ -65,6 +68,13 @@ zeit.imp.Imp = Class.extend({
         var othis = this;
 
         // First, scale using the browser's scaling capabilities.
+        var old_center = this.get_visual_center();
+
+        if (this.image == null) {
+            this.image = $('imp-image-drag').appendChild(
+                IMG({'id': 'imp-image'}));
+        }
+
         var old_dim = this.current_dimensions;
         var rnd = Math.floor
 
@@ -74,18 +84,16 @@ zeit.imp.Imp = Class.extend({
         this.current_dimensions = new_dim;
         MochiKit.Style.setElementDimensions(this.image, new_dim);
 
-
         // Move the image so that the center of the visual area stays fixed
-        var old_center = this.get_visual_center();
         var new_center = new MochiKit.Style.Coordinates(
             rnd(old_center.x * new_dim.w / old_dim.w),
             rnd(old_center.y * new_dim.h / old_dim.h));
         
-        var old_pos = this.get_image_position();
-        var new_pos = new MochiKit.Style.Coordinates(
-            old_pos.x + old_center.x - new_center.x -1,
-            old_pos.y + old_center.y - new_center.y -1);
-        MochiKit.Style.setElementPosition('imp-image-drag', new_pos);
+            var old_pos = this.get_image_position();
+            var new_pos = new MochiKit.Style.Coordinates(
+                old_pos.x + old_center.x - new_center.x -1,
+                old_pos.y + old_center.y - new_center.y -1);
+            MochiKit.Style.setElementPosition('imp-image-drag', new_pos);
 
         log("INFO", 'New pos '+ new_pos.x+'x'+new_pos.y);
 
@@ -121,6 +129,9 @@ zeit.imp.Imp = Class.extend({
         var othis = this;
         if (this.cropping) {
             // Do not run this twice
+            return;
+        }
+        if (!this.mask_dimensions) {
             return;
         }
         this.cropping = true;
