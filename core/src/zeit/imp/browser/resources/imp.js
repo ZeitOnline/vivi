@@ -119,10 +119,11 @@ zeit.imp.Imp = Class.extend({
         // Calculate crop box
         var image_pos = this.get_image_position();
         var visual_dim = this.get_visual_area_dimensions();
-        var x1 = -image_pos.x + visual_dim.w/2 - this.mask_dimensions.w/2;
-        var y1 = -image_pos.y + visual_dim.h/2 - this.mask_dimensions.h/2;
-        var x2 = -image_pos.x + visual_dim.w/2 + this.mask_dimensions.w/2;
-        var y2 = -image_pos.y + visual_dim.h/2 + this.mask_dimensions.h/2;
+        var f = Math.floor
+        var x1 = f(-image_pos.x + visual_dim.w/2 - this.mask_dimensions.w/2);
+        var y1 = f(-image_pos.y + visual_dim.h/2 - this.mask_dimensions.h/2);
+        var x2 = f(-image_pos.x + visual_dim.w/2 + this.mask_dimensions.w/2);
+        var y2 = f(-image_pos.y + visual_dim.h/2 + this.mask_dimensions.h/2);
 
         // Crop on server
         var crop_url = window.context_url + '/@@imp-crop'
@@ -143,7 +144,7 @@ zeit.imp.Imp = Class.extend({
 
 
     handle_mouse_wheel: function(event) {
-        var zoom = event.mouse().wheel.y;
+        var zoom = -event.mouse().wheel.y;
         this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) * 
             zoom/Math.abs(zoom);
         if (this.zoom <= 0) {
