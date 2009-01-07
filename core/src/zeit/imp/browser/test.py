@@ -3,13 +3,27 @@
 
 import cjson
 import pkg_resources
+import subprocess
 import transaction
 import unittest
+import webbrowser
+import zc.selenium.pytest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.imp.test
 import zope.app.testing.functional
 import zope.component
+
+
+class MacOSXFirefox(webbrowser.BaseBrowser):
+
+    def open(self, url, new=0, autoraise=1):
+        proc = subprocess.Popen(
+            ['/usr/bin/open', '-a', 'Firefox', url])
+        proc.communicate()
+
+
+webbrowser.register('Firefox', MacOSXFirefox, None, -1)
 
 
 class ImageBarTest(zope.app.testing.functional.BrowserTestCase):
@@ -59,6 +73,15 @@ class ImageBarTest(zope.app.testing.functional.BrowserTestCase):
              'name': 'foo-240x120.jpg'},
             {'url': 'http://localhost/++skin++cms/repository/2006/foo-artikel.jpg',
              'name': 'foo-artikel.jpg'}])
+
+
+class Selenium(zc.selenium.pytest.Test):
+
+    def test_generic_load(self):
+        s = self.selenium
+        s.open('http://zmgr:mgrpw@%s/++skin++cms/repository/2006/'
+               'DSC00109_2.JPG/@@imp.html' % s.server)
+        s.assertTextPresent('400x200')
 
 
 def test_suite():

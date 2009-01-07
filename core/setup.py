@@ -17,5 +17,6 @@ setup(
     install_requires=[
         'setuptools',
         'zeit.cms',
+        'zc.selenium',
     ],
 )

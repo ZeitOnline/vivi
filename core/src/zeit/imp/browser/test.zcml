@@ -1,0 +1,13 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zc.selenium" />
+
+  <adapter
+    factory=".test.Selenium"
+    name="zeit.imp.browser.Selenium"
+    permission="zope.Public"
+    />
+
+</configure>
+
