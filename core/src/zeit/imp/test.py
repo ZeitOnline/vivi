@@ -23,6 +23,15 @@ class TestLayerMask(unittest.TestCase):
         self.assertEquals(expected_data, mask_data,
                           "Mask doesn't match expected mask.")
 
+    def test_mask_with_border(self):
+        # Create a 20x30 mask in an 150x100 image
+        mask = zeit.imp.mask.Mask((150, 100), (20, 30), border=True)
+        mask_data = mask.open('r').read()
+        expected_data = pkg_resources.resource_string(
+            __name__, 'test_mask_border.png')
+        self.assertEquals(expected_data, mask_data,
+                          "Mask doesn't match expected mask.")
+
     def test_rect_box(self):
         mask = zeit.imp.mask.Mask((150, 100), (20, 30))
         self.assertEquals(((65, 35), (85, 65)), mask._get_rect_box())
