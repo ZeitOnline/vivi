@@ -119,6 +119,15 @@ class Selenium(zc.selenium.pytest.Test):
             'id=imp-mask-image@src',
             '*&mask_width%3Aint=400&mask_height%3Aint=200&border=yes')
 
+    def test_image_dragging(self):
+        s = self.selenium
+        self.open_imp()
+        s.verifyEval('window.document.imp.get_image_position()',
+                     '{x: 1, y: 1}');
+        s.dragAndDrop('id=imp-mask', '+30,+100')
+        s.verifyEval('window.document.imp.get_image_position()',
+                     '{x: 31, y: 101}');
+
 
 def test_suite():
     suite = unittest.TestSuite()
