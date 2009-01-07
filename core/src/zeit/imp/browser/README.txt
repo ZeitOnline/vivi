@@ -32,7 +32,8 @@ The mask is loaded from the site with the image size and mask size parameters:
 ...     'image_width:int': '100',
 ...     'image_height:int': '200',
 ...     'mask_width:int': '20',
-...     'mask_height:int': '10'})
+...     'mask_height:int': '10',
+...     'border': ''})
 >>> browser.open('http://localhost/++skin++cms/@@imp-cut-mask?' + query)
 >>> print browser.headers
 Status: 200 Ok

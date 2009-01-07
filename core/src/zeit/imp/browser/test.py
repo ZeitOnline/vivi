@@ -7,6 +7,7 @@ import subprocess
 import transaction
 import unittest
 import webbrowser
+import xml.sax.saxutils
 import zc.selenium.pytest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -82,6 +83,11 @@ class Selenium(zc.selenium.pytest.Test):
             'http://zmgr:mgrpw@%s/++skin++cms/repository/2006/'
             'DSC00109_2.JPG/@@imp.html' % self.selenium.server)
 
+    def click_label(self, label):
+        self.selenium.click('//label[contains(string(.), %s)]' %
+                            xml.sax.saxutils.quoteattr(label))
+
+
     def test_generic_load(self):
         self.open_imp()
         self.selenium.assertTextPresent('400x200')
@@ -91,9 +97,27 @@ class Selenium(zc.selenium.pytest.Test):
         self.open_imp()
 
         s.comment('After clicking on the mask choice the image is loaded')
-        s.click("//label[text()='400x200']")
-        s.assertAttribute('id=imp-mask-image@src',
-                          '*&mask_width%3Aint=400&mask_height%3Aint=200')
+        self.click_label("400x200")
+        s.verifyAttribute(
+            'id=imp-mask-image@src',
+            '*&mask_width%3Aint=400&mask_height%3Aint=200&border=')
+
+        s.comment('The border will be passed')
+        self.click_label("Border")
+        s.verifyAttribute(
+            'id=imp-mask-image@src',
+            '*&mask_width%3Aint=400&mask_height%3Aint=200&border=yes')
+
+    def test_border_select_wo_selected_mask_does_not_fail(self):
+        s = self.selenium
+        self.open_imp()
+
+        self.click_label("1px")
+        s.verifyValue('//img[@id="imp-mask-image"]/@src', '')
+        self.click_label("400x200")
+        s.verifyAttribute(
+            'id=imp-mask-image@src',
+            '*&mask_width%3Aint=400&mask_height%3Aint=200&border=yes')
 
 
 def test_suite():

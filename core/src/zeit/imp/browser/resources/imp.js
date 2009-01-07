@@ -12,6 +12,8 @@ zeit.imp.Imp = Class.extend({
             new Number($('imp-width').textContent),
             new Number($('imp-height').textContent));
         this.current_dimensions = this.original_dimensions;
+        this.mask_dimensions = null;
+        this.border = false;
 
         this.image = null;
         this.loading_image = $('imp-loading-image');
@@ -29,9 +31,12 @@ zeit.imp.Imp = Class.extend({
         MochiKit.Signal.connect(
             'imp-mask', 'onmousewheel', this, 'handle_mouse_wheel');
         MochiKit.Signal.connect(
-            'imp-mask-choice', 'onchange', this, 'handle_mask_select');
+            'imp-configuration', 'onchange', this, 'handle_mask_select');
         MochiKit.Signal.connect(
             'imp-action-crop', 'onclick', this, 'crop_image');
+        MochiKit.Signal.connect(
+            this, 'configuration-change',
+            this, 'load_mask_on_configuration_change');
             
 
         this.zoom_image();
@@ -179,23 +184,34 @@ zeit.imp.Imp = Class.extend({
     },
 
     handle_mask_select: function(event) {
-        var select = event.target();
-        if (!select.nodeName == 'INPUT') {
+        var target = event.target();
+        if (target.name == 'mask') {
+            var mask_width = new Number(target.value.split('x')[0]);
+            var mask_height = new Number(target.value.split('x')[1]);
+            this.mask_dimensions = new MochiKit.DOM.Dimensions(
+                mask_width, mask_height);
+        } else if (target.name == 'border') {
+            this.border = target.checked;
+        }
+        MochiKit.Signal.signal(this, 'configuration-change', {});
+    },
+
+    load_mask_on_configuration_change: function(event) {
+        var dim = this.get_visual_area_dimensions();
+        var mask = this.mask_dimensions;
+        if (!mask) {
             return
         }
-        var dim = this.get_visual_area_dimensions();
-        var mask_width = new Number(select.value.split('x')[0]);
-        var mask_height = new Number(select.value.split('x')[1]);
         var query = MochiKit.Base.queryString({
             'image_width:int': dim.w,
             'image_height:int': dim.h,
-            'mask_width:int': mask_width,
-            'mask_height:int': mask_height});
+            'mask_width:int': mask.w,
+            'mask_height:int': mask.h,
+            'border': this.border?'yes':'',
+            });
         this.mask_image.setAttribute(
             'src',
             window.application_url + '/@@imp-cut-mask?' + query);
-        this.mask_dimensions = new MochiKit.DOM.Dimensions(
-            mask_width, mask_height);
     },
 
     ui_loading: function(loading) {
@@ -245,6 +261,6 @@ zeit.imp.ImageBar = Class.extend({
 });
 
 MochiKit.Signal.connect(window, 'onload', function() {
-    new zeit.imp.Imp();
+    document.imp = new zeit.imp.Imp();
     new zeit.imp.ImageBar();
 });

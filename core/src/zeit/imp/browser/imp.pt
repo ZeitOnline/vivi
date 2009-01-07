@@ -21,18 +21,30 @@
     <div id="imp-height" tal:content="view/height" />
   </div>
 
-  <div id="imp-mask-choice">
-    <form>
-      <label>
-        <input type="radio" name="mask" value="400x200" />
-        400x200
-      </label>
-      <label>
-        <input type="radio" name="mask" value="210x210" />
-        210x210
-      </label>
+  <div id="imp-configuration">
+    <form id="imp-configuration-form">
+      <div class="widget">
+        <label>
+          <input type="radio" name="mask" value="400x200" />
+          Aufmacher groß (400x200)
+        </label>
+        <label>
+          <input type="radio" name="mask" value="210x210" />
+          Aufmacher klein (210x210)
+        </label>
+
+      </div>
+      <div class="widget">
+        <label>
+          <input type="checkbox" name="border" value="true"/>
+          1px Border
+        </label>
+
+      </div>
+
       <input type="button" id="imp-action-crop" name="crop" value="Crop"
         i18n:attributes="value" />
+
     </form>
   </div>
 
