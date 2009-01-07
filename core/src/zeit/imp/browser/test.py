@@ -77,11 +77,23 @@ class ImageBarTest(zope.app.testing.functional.BrowserTestCase):
 
 class Selenium(zc.selenium.pytest.Test):
 
+    def open_imp(self):
+        self.selenium.open(
+            'http://zmgr:mgrpw@%s/++skin++cms/repository/2006/'
+            'DSC00109_2.JPG/@@imp.html' % self.selenium.server)
+
     def test_generic_load(self):
+        self.open_imp()
+        self.selenium.assertTextPresent('400x200')
+
+    def test_crop_mask(self):
         s = self.selenium
-        s.open('http://zmgr:mgrpw@%s/++skin++cms/repository/2006/'
-               'DSC00109_2.JPG/@@imp.html' % s.server)
-        s.assertTextPresent('400x200')
+        self.open_imp()
+
+        s.comment('After clicking on the mask choice the image is loaded')
+        s.click("//label[text()='400x200']")
+        s.assertAttribute('id=imp-mask-image@src',
+                          '*&mask_width%3Aint=400&mask_height%3Aint=200')
 
 
 def test_suite():

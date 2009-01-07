@@ -191,8 +191,9 @@ zeit.imp.Imp = Class.extend({
             'image_height:int': dim.h,
             'mask_width:int': mask_width,
             'mask_height:int': mask_height});
-        this.mask_image.src = window.application_url + '/@@imp-cut-mask?' +
-            query;
+        this.mask_image.setAttribute(
+            'src',
+            window.application_url + '/@@imp-cut-mask?' + query);
         this.mask_dimensions = new MochiKit.DOM.Dimensions(
             mask_width, mask_height);
     },
