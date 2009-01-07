@@ -264,7 +264,11 @@ def cmscontentFactory(context):
     if content is None:
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
-        default_type = cms_config.get('default-type', 'unknown')
+        default_type = None
+        if cms_config:
+            default_type = cms_config.get('default-type')
+        if default_type is None:
+            default_type = 'unknown'
         content = adapter(default_type)
 
     if content is not None:
