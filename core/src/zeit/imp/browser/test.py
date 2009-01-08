@@ -98,7 +98,7 @@ class Selenium(zc.selenium.pytest.Test):
                             xml.sax.saxutils.quoteattr(label))
 
 
-class BasicTests(Selenium):
+class SeleniumBasicTests(Selenium):
 
     def test_generic_load(self):
         self.selenium.assertTextPresent('400x200')
@@ -137,7 +137,7 @@ class BasicTests(Selenium):
                      '{x: 31, y: 101}');
 
 
-class CropTests(Selenium):
+class SeleniumCropTests(Selenium):
 
     def test_crop_wo_mask(self):
         s = self.selenium
