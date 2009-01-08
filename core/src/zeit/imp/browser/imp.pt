@@ -34,8 +34,8 @@
           Aufmacher klein (210x210)
         </label>
         <label>
-          <input type="radio" name="mask" value="?200x410" />
-          Artikelbild breit (…x410)
+          <input type="radio" name="mask" value="410x?200" />
+          Artikelbild breit (410x…)
         </label>
 
       </div>
