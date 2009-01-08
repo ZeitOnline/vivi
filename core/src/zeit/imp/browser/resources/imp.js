@@ -14,6 +14,7 @@ zeit.imp.Imp = Class.extend({
             new Number($('imp-height').textContent));
         this.current_dimensions = this.original_dimensions;
         this.mask_dimensions = null;
+        this.mask_variable = null;
         this.border = false;
 
         this.image = null;
@@ -188,14 +189,28 @@ zeit.imp.Imp = Class.extend({
     handle_mask_select: function(event) {
         var target = event.target();
         if (target.name == 'mask') {
-            var mask_width = new Number(target.value.split('x')[0]);
-            var mask_height = new Number(target.value.split('x')[1]);
-            this.mask_dimensions = new MochiKit.DOM.Dimensions(
-                mask_width, mask_height);
+            this.parse_mask_string(target.value);
         } else if (target.name == 'border') {
             this.border = target.checked;
         }
         MochiKit.Signal.signal(this, 'configuration-change', {});
+    },
+
+    parse_mask_string: function(value) {
+        this.mask_variable = {w: false, h: false}
+        var mask_width = value.split('x')[0];
+        if (mask_width[0] == '?') {
+            mask_width = mask_width.substr(1)
+            this.mask_variable.w = true;
+        }
+        var mask_height = value.split('x')[1];
+        if (mask_height[0] == '?') {
+            mask_height = mask_height .substr(1)
+            this.mask_variable.h = true;
+        }
+        
+        this.mask_dimensions = new MochiKit.DOM.Dimensions(
+            new Number(mask_width), new Number(mask_height));
     },
 
     load_mask_on_configuration_change: function(event) {
@@ -205,10 +220,10 @@ zeit.imp.Imp = Class.extend({
             return
         }
         var query = MochiKit.Base.queryString({
-            'image_width:int': dim.w,
-            'image_height:int': dim.h,
-            'mask_width:int': mask.w,
-            'mask_height:int': mask.h,
+            'image_width': dim.w,
+            'image_height': dim.h,
+            'mask_width': mask.w,
+            'mask_height': mask.h,
             'border': this.border?'yes':'',
             });
         this.mask_image.setAttribute(

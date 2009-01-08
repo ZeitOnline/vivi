@@ -26,12 +26,16 @@
       <div class="widget radio-group">
 
         <label>
-          <input type="radio" name="mask" value="400x200" />
-          Aufmacher groß (400x200)
+          <input type="radio" name="mask" value="450x200" />
+          Aufmacher groß (450x200)
         </label>
         <label>
           <input type="radio" name="mask" value="210x210" />
           Aufmacher klein (210x210)
+        </label>
+        <label>
+          <input type="radio" name="mask" value="?200x410" />
+          Artikelbild breit (…x410)
         </label>
 
       </div>

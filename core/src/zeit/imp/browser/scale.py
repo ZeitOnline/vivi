@@ -40,7 +40,9 @@ class MaskImage(zeit.cms.browser.view.Base):
     def __call__(self, image_width, image_height, mask_width, mask_height,
                  border):
         image = zeit.imp.mask.Mask(
-            (image_width, image_height), (mask_width, mask_height), border)
+            (int(image_width), int(image_height)),
+            (int(mask_width), int(mask_height)),
+            border)
         self.request.response.setHeader(
             'Cache-Control', 'public,max-age=86400')
         self.request.response.setHeader('Content-Type', 'image/png')

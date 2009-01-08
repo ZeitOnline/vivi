@@ -46,32 +46,32 @@ class Selenium(zc.selenium.pytest.Test):
 class SeleniumBasicTests(Selenium):
 
     def test_generic_load(self):
-        self.selenium.assertTextPresent('400x200')
+        self.selenium.assertTextPresent('450x200')
 
     def test_crop_mask(self):
         s = self.selenium
 
         s.comment('After clicking on the mask choice the image is loaded')
-        self.click_label("400x200")
+        self.click_label("450x200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
-            '*&mask_width%3Aint=400&mask_height%3Aint=200&border=')
+            '*&mask_width=450&mask_height=200&border=')
 
         s.comment('The border will be passed')
         self.click_label("Border")
         s.verifyAttribute(
             'id=imp-mask-image@src',
-            '*&mask_width%3Aint=400&mask_height%3Aint=200&border=yes')
+            '*&mask_width=450&mask_height=200&border=yes')
 
     def test_border_select_wo_selected_mask_does_not_fail(self):
         s = self.selenium
 
         self.click_label("1px")
         s.verifyValue('//img[@id="imp-mask-image"]/@src', '')
-        self.click_label("400x200")
+        self.click_label("450x200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
-            '*&mask_width%3Aint=400&mask_height%3Aint=200&border=yes')
+            '*&mask_width=450&mask_height=200&border=yes')
 
     def test_image_dragging(self):
         s = self.selenium
@@ -80,6 +80,27 @@ class SeleniumBasicTests(Selenium):
         s.dragAndDrop('id=imp-mask', '+30,+100')
         s.verifyEval('window.document.imp.get_image_position()',
                      '{x: 31, y: 101}');
+
+    def test_mask_string_parse(self):
+        s = self.selenium
+
+        s.comment('Simple dimensions')
+        s.runScript('window.document.imp.parse_mask_string("500x200")');
+        s.verifyEval('window.document.imp.mask_dimensions.w', '500')
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+
+        s.comment('The dimensions can be variable, indicated by a ?')
+        s.runScript('window.document.imp.parse_mask_string("?500x200")');
+        s.verifyEval('window.document.imp.mask_dimensions.w', '500')
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        s.verifyEval('window.document.imp.mask_variable.w', 'true')
+        s.verifyEval('window.document.imp.mask_variable.h', 'false')
+
+        s.runScript('window.document.imp.parse_mask_string("?500x?200")');
+        s.verifyEval('window.document.imp.mask_dimensions.w', '500')
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        s.verifyEval('window.document.imp.mask_variable.w', 'true')
+        s.verifyEval('window.document.imp.mask_variable.h', 'true')
 
 
 class SeleniumCropTests(Selenium):
@@ -95,7 +116,7 @@ class SeleniumCropTests(Selenium):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.dragAndDrop('id=imp-mask', '+30,+100')
-        self.click_label("400x200")
+        self.click_label("450x200")
         s.click('crop')
         s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
