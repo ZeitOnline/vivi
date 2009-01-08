@@ -7,13 +7,13 @@
   <include package="zc.selenium" />
 
   <adapter
-    factory=".test.SeleniumBasicTests"
+    factory=".test_selenium.SeleniumBasicTests"
     name="zeit.imp.browser.BasicTests"
     permission="zope.Public"
     />
 
   <adapter
-    factory=".test.SeleniumCropTests"
+    factory=".test_selenium.SeleniumCropTests"
     name="zeit.imp.browser.CropTests"
     permission="zope.Public"
     />
@@ -21,7 +21,7 @@
   <browser:page
     for="zope.location.interfaces.ISite"
     name="reset-mock-connector"
-    class=".test.ResetMockConnector"
+    class=".test_selenium.ResetMockConnector"
     permission="zope.Public"
     />
 

@@ -3,7 +3,7 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml">
 
-  <include file="test.zcml" />
+  <include package=".tests" file="test.zcml" />
 
   <resourceLibrary
     name="zeit.imp"
