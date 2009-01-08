@@ -49,11 +49,14 @@ class MaskImage(zeit.cms.browser.view.Base):
 class CropImage(zeit.cms.browser.view.Base):
 
     def __call__(self, w, h, x1, y1, x2, y2, name):
+        w, h = int(w), int(h)
+        x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
         transform = zeit.content.image.interfaces.ITransform(self.context)
         image = transform.resize(w, h)
         pil_image = PIL.Image.open(image.open())
         format = pil_image.format
         pil_image = pil_image.crop((x1, y1, x2, y2))
-        pil_image.save(image.open('w'), format)
-        image_name = '%s-%s' % (self.context.__parent__.__name__, name)
+        pil_image.save(image.open('w'), 'JPEG')
+        image_name = '%s-%s.jpg' % (self.context.__parent__.__name__, name)
         self.context.__parent__[image_name] = image
+        return self.url(image)
