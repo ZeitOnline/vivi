@@ -51,7 +51,7 @@ class CropImage(zeit.cms.browser.view.Base):
 
     # XXX This should be moved out of browser!
 
-    def __call__(self, w, h, x1, y1, x2, y2, name, border):
+    def __call__(self, w, h, x1, y1, x2, y2, name, border=''):
         w, h = int(w), int(h)
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
         border = bool(border)
