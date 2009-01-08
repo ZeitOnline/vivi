@@ -31,6 +31,12 @@ zeit.imp.Imp = Class.extend({
             'zindex': 0,
         });
         MochiKit.Signal.connect(
+            'imp-mask', 'onmousedown',
+            this, 'start_drag_change_mouse_cursor');
+        MochiKit.Signal.connect(
+            'imp-mask', 'onmouseup',
+            this, 'end_drag_change_mouse_cursor');
+        MochiKit.Signal.connect(
             'imp-mask', 'onmousewheel', this, 'handle_mouse_wheel');
         MochiKit.Signal.connect(
             'imp-configuration', 'onchange', this, 'handle_mask_select');
@@ -238,6 +244,14 @@ zeit.imp.Imp = Class.extend({
         } else {
             MochiKit.DOM.addElementClass(this.loading_image, 'hidden');
         }
+    },
+
+    start_drag_change_mouse_cursor: function(event) {
+        MochiKit.DOM.addElementClass('imp-mask', 'dragging');
+    },
+
+    end_drag_change_mouse_cursor: function(event) {
+        MochiKit.DOM.removeElementClass('imp-mask', 'dragging');
     },
 
 });

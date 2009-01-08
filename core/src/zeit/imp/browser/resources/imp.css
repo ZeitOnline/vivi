@@ -7,6 +7,7 @@
   left: 0;
   top: 0;
   bottom: 13em;
+  cursor: -moz-grab;
 }
 
 #imp-image-area {
@@ -16,6 +17,10 @@
 #imp-mask {
   opacity: 0.5;
   z-index: 1;
+}
+
+.dragging {
+    cursor: -moz-grabbing;
 }
 
 #imp-image-drag {
