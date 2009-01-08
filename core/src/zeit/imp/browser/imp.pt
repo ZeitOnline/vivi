@@ -23,7 +23,8 @@
 
   <div id="imp-configuration">
     <form id="imp-configuration-form">
-      <div class="widget">
+      <div class="widget radio-group">
+
         <label>
           <input type="radio" name="mask" value="400x200" />
           Aufmacher groß (400x200)

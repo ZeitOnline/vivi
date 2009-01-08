@@ -75,3 +75,7 @@
 #imp-image-bar > div.image > span {
     display: block;
 }
+
+.widget.radio-group > label {
+    display: block;
+}
