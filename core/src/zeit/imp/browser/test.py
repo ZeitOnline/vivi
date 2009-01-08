@@ -1,6 +1,8 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import PIL.Image
+import StringIO
 import cjson
 import pkg_resources
 import transaction
@@ -69,6 +71,19 @@ class ImageBarTest(TestBase):
 
 class CropTest(TestBase):
 
+    def get_image_data(self, **form):
+        response = self.publish(
+            self.image_path + '/@@imp-crop',
+            basic=self.auth,
+            form=dict(
+                w='1000', h='500',
+                x1='400', y1='100',
+                x2='800', y2='300',
+                name='400x200', **form))
+        path = response.getBody().replace('http://localhost', '', 1)
+        self.assertEqual('/++skin++cms/repository/2006/2006-400x200.jpg', path)
+        return self.publish(path, basic=self.auth).getBody()
+
     def test_crop_returns_image_url(self):
         response = self.publish(
             self.image_path + '/@@imp-crop',
@@ -84,20 +99,31 @@ class CropTest(TestBase):
             response.getBody())
 
     def test_crop_size(self):
-        response = self.publish(
-            self.image_path + '/@@imp-crop',
-            basic=self.auth,
-            form=dict(
-                w='1000', h='500',
-                x1='400', y1='100',
-                x2='800', y2='300',
-                name='400x200'))
-        path = response.getBody().replace('http://localhost', '', 1)
-        self.assertEqual('/++skin++cms/repository/2006/2006-400x200.jpg', path)
-        image_data = self.publish(path, basic=self.auth).getBody()
+        image_data = self.get_image_data()
         self.assertEqual(
             ('image/jpeg', 400, 200),
             zope.app.file.image.getImageInfo(image_data))
+
+    def test_crop_border(self):
+        image_data = self.get_image_data(border='1')
+        # A border does not change the image size, the border is *inside*
+        self.assertEqual(
+            ('image/jpeg', 400, 200),
+            zope.app.file.image.getImageInfo(image_data))
+
+        image = PIL.Image.open(StringIO.StringIO(image_data))
+        # Verify some pixels around the border, they're all black:
+
+        self.looks_black(image, 0,0)
+        self.looks_black(image, 0, 1)
+        self.looks_black(image, 0, 143)
+        self.looks_black(image, 0, 199)
+        self.looks_black(image, 399, 0)
+
+    def looks_black(self, img, x, y):
+        color = img.getpixel((x, y))
+        self.assertTrue(
+            sum(color) < 60, "fail %s, %s sum%s > 60" % (x, y, color))
 
 
 def test_suite():

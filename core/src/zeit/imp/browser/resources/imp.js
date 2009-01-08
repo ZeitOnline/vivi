@@ -156,13 +156,14 @@ zeit.imp.Imp = Class.extend({
         var crop_url = window.context_url + '/@@imp-crop'
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             crop_url, {
-                'x1:int': x1,
-                'y1:int': y1,
-                'x2:int': x2,
-                'y2:int': y2,
-                'w:int': this.current_dimensions.w,
-                'h:int': this.current_dimensions.h,
+                'x1': x1,
+                'y1': y1,
+                'x2': x2,
+                'y2': y2,
+                'w': this.current_dimensions.w,
+                'h': this.current_dimensions.h,
                 'name': this.mask_dimensions.w + 'x' + this.mask_dimensions.h,
+                'border': this.border?'1':'',
             });
 
         d.addCallback(function(result) {
