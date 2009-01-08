@@ -7,8 +7,14 @@
   <include package="zc.selenium" />
 
   <adapter
-    factory=".test.Selenium"
-    name="zeit.imp.browser.Selenium"
+    factory=".test.BasicTests"
+    name="zeit.imp.browser.BasicTests"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".test.CropTests"
+    name="zeit.imp.browser.CropTests"
     permission="zope.Public"
     />
 

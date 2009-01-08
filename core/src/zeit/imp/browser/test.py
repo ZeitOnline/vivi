@@ -79,6 +79,10 @@ class ImageBarTest(zope.app.testing.functional.BrowserTestCase):
 
 class Selenium(zc.selenium.pytest.Test):
 
+    def setUp(self):
+        super(Selenium, self).setUp()
+        self.open_imp()
+
     def tearDown(self):
         super(Selenium, self).tearDown()
         self.selenium.open('http://%s/@@reset-mock-connector' %
@@ -94,13 +98,13 @@ class Selenium(zc.selenium.pytest.Test):
                             xml.sax.saxutils.quoteattr(label))
 
 
+class BasicTests(Selenium):
+
     def test_generic_load(self):
-        self.open_imp()
         self.selenium.assertTextPresent('400x200')
 
     def test_crop_mask(self):
         s = self.selenium
-        self.open_imp()
 
         s.comment('After clicking on the mask choice the image is loaded')
         self.click_label("400x200")
@@ -116,7 +120,6 @@ class Selenium(zc.selenium.pytest.Test):
 
     def test_border_select_wo_selected_mask_does_not_fail(self):
         s = self.selenium
-        self.open_imp()
 
         self.click_label("1px")
         s.verifyValue('//img[@id="imp-mask-image"]/@src', '')
@@ -127,12 +130,30 @@ class Selenium(zc.selenium.pytest.Test):
 
     def test_image_dragging(self):
         s = self.selenium
-        self.open_imp()
         s.verifyEval('window.document.imp.get_image_position()',
                      '{x: 1, y: 1}');
         s.dragAndDrop('id=imp-mask', '+30,+100')
         s.verifyEval('window.document.imp.get_image_position()',
                      '{x: 31, y: 101}');
+
+
+class CropTests(Selenium):
+
+    def test_crop_wo_mask(self):
+        s = self.selenium
+        s.verifyElementNotPresent('css=#imp-image-bar > div')
+        s.comment('Nothing happens when the crop button is clicked.')
+        s.click('crop')
+        s.verifyElementNotPresent('css=#imp-image-bar > div')
+
+    def test_crop(self):
+        s = self.selenium
+        s.verifyElementNotPresent('css=#imp-image-bar > div')
+        s.dragAndDrop('id=imp-mask', '+30,+100')
+        self.click_label("400x200")
+        s.click('crop')
+        s.comment('After cropping the image is inserted in the image bar')
+        s.waitForElementPresent('css=#imp-image-bar > div')
 
 
 class ResetMockConnector(object):
