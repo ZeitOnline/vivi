@@ -11,6 +11,7 @@ import xml.sax.saxutils
 import zc.selenium.pytest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.connector.interfaces
 import zeit.imp.test
 import zope.app.testing.functional
 import zope.component
@@ -78,6 +79,11 @@ class ImageBarTest(zope.app.testing.functional.BrowserTestCase):
 
 class Selenium(zc.selenium.pytest.Test):
 
+    def tearDown(self):
+        super(Selenium, self).tearDown()
+        self.selenium.open('http://%s/@@reset-mock-connector' %
+                           self.selenium.server)
+
     def open_imp(self):
         self.selenium.open(
             'http://zmgr:mgrpw@%s/++skin++cms/repository/2006/'
@@ -128,6 +134,13 @@ class Selenium(zc.selenium.pytest.Test):
         s.verifyEval('window.document.imp.get_image_position()',
                      '{x: 31, y: 101}');
 
+
+class ResetMockConnector(object):
+
+    def __call__(self):
+        zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)._reset()
+        return "Done."
 
 def test_suite():
     suite = unittest.TestSuite()

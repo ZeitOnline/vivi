@@ -1,5 +1,6 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:zcml="http://namespaces.zope.org/zcml"
   zcml:condition="installed zc.selenium">
 
@@ -8,6 +9,13 @@
   <adapter
     factory=".test.Selenium"
     name="zeit.imp.browser.Selenium"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="reset-mock-connector"
+    class=".test.ResetMockConnector"
     permission="zope.Public"
     />
 
