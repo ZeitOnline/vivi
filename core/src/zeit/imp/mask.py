@@ -5,7 +5,6 @@
 import PIL.Image
 import PIL.ImageDraw
 import cStringIO
-import zeit.content.image.image
 
 
 class Mask(object):
