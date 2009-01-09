@@ -54,6 +54,10 @@
     right: 20em;
 }
 
+.uislidertip {
+    visibility: hidden;
+}
+
 #imp-metadata {
   display: none;
 }
