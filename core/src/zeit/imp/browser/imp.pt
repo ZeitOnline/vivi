@@ -31,18 +31,28 @@
 
         <label>
           <input type="radio" name="mask" value="450x200" />
-          Aufmacher groß (450x200)
+          Aufmacher groß (450×200)
         </label>
         <label>
           <input type="radio" name="mask" value="210x210" />
-          Aufmacher klein (210x210)
+          Aufmacher klein (210×210)
         </label>
         <label>
           <input type="radio" name="mask" value="410x?200" />
-          Artikelbild breit (410x…)
+          Artikelbild breit (410×…)
         </label>
 
       </div>
+
+      <div class="widget mask-size">
+        <input 
+          disabled="disabled" class="mask-size" type="text"
+          name="mask-w" value="" /> × 
+        <input 
+          disabled="disabled" class="mask-size" type="text"
+          name="mask-h" value="" />
+      </div>
+
       <div class="widget">
         <label>
           <input type="checkbox" name="border" value="true"/>

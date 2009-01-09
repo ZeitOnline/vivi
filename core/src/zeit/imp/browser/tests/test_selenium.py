@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -46,13 +47,13 @@ class Selenium(zc.selenium.pytest.Test):
 class SeleniumBasicTests(Selenium):
 
     def test_generic_load(self):
-        self.selenium.assertTextPresent('450x200')
+        self.selenium.assertTextPresent('450×200')
 
     def test_crop_mask(self):
         s = self.selenium
 
         s.comment('After clicking on the mask choice the image is loaded')
-        self.click_label("450x200")
+        self.click_label("450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=')
@@ -68,7 +69,7 @@ class SeleniumBasicTests(Selenium):
 
         self.click_label("1px")
         s.verifyValue('//img[@id="imp-mask-image"]/@src', '')
-        self.click_label("450x200")
+        self.click_label("450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=yes')
@@ -123,10 +124,104 @@ class SeleniumCropTests(Selenium):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.dragAndDrop('id=imp-mask', '+30,+100')
-        self.click_label("450x200")
+        self.click_label("450×200")
         s.click('crop')
         s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
+
+
+class SeleniumMaskTests(Selenium):
+
+    def test_input_fields_show_mask_size(self):
+        s = self.selenium
+        self.click_label("450×200")
+        s.verifyValue('mask-w', '450')
+        s.verifyValue('mask-h', '200')
+        self.click_label("210×210")
+        s.verifyValue('mask-w', '210')
+        s.verifyValue('mask-h', '210')
+
+    def test_input_fields_disabled_for_fixed_mask(self):
+        s = self.selenium
+        self.click_label("450×200")
+        s.storeEval(
+            "window.document.getElementById('imp-configuration-form')", 'form')
+        s.verifyEval("storedVars['form']['mask-w'].disabled", 'true');
+        s.verifyEval("storedVars['form']['mask-h'].disabled", 'true');
+
+    def test_input_fields_initally_disabled(self):
+        s = self.selenium
+        s.storeEval(
+            "window.document.getElementById('imp-configuration-form')", 'form')
+        s.verifyEval("storedVars['form']['mask-w'].disabled", 'true');
+        s.verifyEval("storedVars['form']['mask-h'].disabled", 'true');
+
+    def test_input_field_enabled_for_variable_mask(self):
+        s = self.selenium
+        self.click_label("Artikelbild breit")
+        s.storeEval(
+            "window.document.getElementById('imp-configuration-form')", 'form')
+        s.verifyEval("storedVars['form']['mask-w'].disabled", 'true');
+        s.verifyEval("storedVars['form']['mask-h'].disabled", 'false');
+
+    def test_input_field_changes_are_reflected_in_the_mask(self):
+        s = self.selenium
+        self.click_label("Artikelbild breit")
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        s.type('mask-h', '280')
+        s.verifyEval('window.document.imp.mask_dimensions.h', '280')
+
+    def test_input_field_up_arrow_once_handling(self):
+        self.selenium.comment('Pressing UP-ARROW once increases by 1.')
+        self.verify_press('\\38', '201')
+
+    def test_input_field_down_arrow_once_handling(self):
+        self.selenium.comment('Pressing DOWN-ARROW once decreases by 1.')
+        self.verify_press('\\40', '199')
+
+    def test_input_field_left_arrow_once_handling(self):
+        self.selenium.comment('Pressing LEFT-ARROW once decreases by 1.')
+        self.verify_press('\\37', '199')
+
+    def test_input_field_right_arrow_once_handling(self):
+        self.selenium.comment('Pressing RIGHT-ARROW once increases by 1.')
+        self.verify_press('\\39', '201')
+
+    def verify_press(self, key_code, expected_value):
+        s = self.selenium
+        self.click_label("Artikelbild breit")
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        s.keyDown('mask-h', key_code)
+        s.keyUp('mask-h', key_code)
+        s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
+
+    def test_input_field_up_arrow_hold_handling(self):
+        self.selenium.comment('Holding UP-ARROW increases.')
+        self.verify_hold('\\38', '>210')
+
+    def test_input_field_down_arrow_hold_handling(self):
+        self.selenium.comment('Holding DOWN-ARROW decreases.')
+        self.verify_hold('\\40', '<190')
+
+    def test_input_field_left_arrow_hold_handling(self):
+        self.selenium.comment('Holding LEFT-ARROW decreases.')
+        self.verify_hold('\\37', '<190')
+
+    def test_input_field_right_arrow_hold_handling(self):
+        self.selenium.comment('Holding RIGHT-ARROW increases.')
+        self.verify_hold('\\39', '>210')
+
+    def verify_hold(self, key_code, expected_value):
+        s = self.selenium
+        self.click_label("Artikelbild breit")
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        s.keyDown('mask-h', key_code)
+        s.pause('5000')
+        s.keyUp('mask-h', key_code)
+        s.verifyEval(
+            'window.document.imp.mask_dimensions.h %s' % expected_value,
+            'true')
+
 
 
 class ResetMockConnector(object):

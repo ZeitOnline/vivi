@@ -15,7 +15,6 @@
 }
 
 #imp-mask {
-  opacity: 0.5;
   z-index: 1;
 }
 
@@ -95,4 +94,19 @@
 
 .widget.radio-group > label {
     display: block;
+}
+
+input.mask-size {
+    width: 3em;
+}
+
+input.mask-size[disabled="disabled"] {
+    background-color: #ddd;
+    background-image: none;
+    cursor: default;
+}
+
+.widget.mask-size {
+    padding-left: 2.25em;
+    margin-bottom: 1em;
 }

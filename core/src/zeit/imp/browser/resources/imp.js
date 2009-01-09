@@ -44,7 +44,6 @@ zeit.imp.Imp = Class.extend({
         MochiKit.Signal.connect(
             this, 'configuration-change',
             this, 'load_mask_on_configuration_change');
-            
 
         this.zoom_image();
         var ident = MochiKit.Signal.connect(
@@ -196,6 +195,8 @@ zeit.imp.Imp = Class.extend({
             this.parse_mask_string(target.value);
         } else if (target.name == 'border') {
             this.border = target.checked;
+        } else {
+            return
         }
         MochiKit.Signal.signal(this, 'configuration-change', {});
     },
@@ -298,7 +299,8 @@ zeit.imp.ZoomSlider = Class.extend({
             'imp-zoom-slider', 3001,
             UI.Slider.ValueMappers.range(0, 3, 0.001));
         this.zoom_slider.setValue(imp.zoom);
-        connect(this.zoom_slider, 'valueChanged',
+        MochiKit.Signal.connect(
+            this.zoom_slider, 'valueChanged',
             this, 'update_zoom_from_slider');
     },
 
@@ -309,8 +311,88 @@ zeit.imp.ZoomSlider = Class.extend({
 
 });
 
+zeit.imp.DynamicMask = Class.extend({
+
+    construct: function(imp) {
+        this.imp = imp;
+        var form = $('imp-configuration-form')
+        this.input_w = form['mask-w'];
+        this.input_h = form['mask-h'];
+        this.d_value_change = null;
+        MochiKit.Signal.connect(
+            this.imp, 'configuration-change', this, 'update_inputs');
+        this.connect_inputs('onkeydown', 'handle_input_keydown');
+        this.connect_inputs('onkeyup', 'handle_input_keyup');
+        this.connect_inputs('onchange', 'handle_input_change');
+    },
+
+    connect_inputs: function(event, method_name) {
+        MochiKit.Signal.connect(this.input_w, event, this, method_name)
+        MochiKit.Signal.connect(this.input_h, event, this, method_name)
+    },
+
+    update_inputs: function(event) {
+        var dim = this.imp.mask_dimensions;
+        this.input_w.value = dim.w;
+        this.input_h.value = dim.h;
+        this.set_disabled(this.input_w, !this.imp.mask_variable.w);
+        this.set_disabled(this.input_h, !this.imp.mask_variable.h);
+    },
+
+    set_disabled: function(input, value) {
+        input.disabled = value;
+        if (value) {
+            input.setAttribute('disabled', 'disabled');
+        }
+    },
+
+    update_mask: function() {
+        this.imp.mask_dimensions.w = new Number(this.input_w.value);
+        this.imp.mask_dimensions.h = new Number(this.input_h.value);
+        MochiKit.Signal.signal(this.imp, 'configuration-change');
+    },
+
+    handle_input_keydown: function(event) {
+        var othis = this;
+        var input = event.target();
+        var key = event.key()['string'];
+        if (key == 'KEY_ARROW_UP' || key == 'KEY_ARROW_RIGHT') {
+            var delta = 1;
+        } else if (key == 'KEY_ARROW_DOWN' || key == 'KEY_ARROW_LEFT') {
+            var delta = -1;
+        } else {
+            return
+        }
+        event.stop();
+        var delay = 0.25;
+        var value_changer = function() {
+            input.value = new Number(input.value) + delta;
+            othis.d_value_change = MochiKit.Async.callLater(
+                delay, value_changer);
+            delay = 0.05
+        };
+        value_changer();
+    },
+
+    handle_input_keyup: function(event) {
+        if (this.d_value_change == null) {
+            return
+        }
+        this.d_value_change.cancel()
+        this.d_value_change = null;
+        this.update_mask();
+    },
+
+    handle_input_change: function(event) {
+        this.update_mask();
+    },
+
+});
+
+
 MochiKit.Signal.connect(window, 'onload', function() {
     document.imp = new zeit.imp.Imp();
     new zeit.imp.ZoomSlider(document.imp);
+    new zeit.imp.DynamicMask(document.imp);
     new zeit.imp.ImageBar();
 });
