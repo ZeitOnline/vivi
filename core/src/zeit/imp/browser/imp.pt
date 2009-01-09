@@ -21,6 +21,10 @@
     <div id="imp-height" tal:content="view/height" />
   </div>
 
+  <div id="imp-zoom">
+    <div id="imp-zoom-slider" class="uislider"></div>
+  </div>
+
   <div id="imp-configuration">
     <form id="imp-configuration-form">
       <div class="widget radio-group">

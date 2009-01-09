@@ -43,3 +43,9 @@ Content-Type: image/png
 ...
 >>> browser.contents[:10]
 '\x89PNG\r\n\x1a\n\x00\x00'
+
+
+Cropping
+========
+
+

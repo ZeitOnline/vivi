@@ -102,6 +102,13 @@ class SeleniumBasicTests(Selenium):
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'true')
 
+    def test_zoom(self):
+        s = self.selenium
+        s.comment('Zooming works with a slider')
+        s.verifyEval('window.document.imp.zoom>1', 'false')
+        s.clickAt('id=imp-zoom-slider', '200,0')
+        s.verifyEval('window.document.imp.zoom>1', 'true')
+
 
 class SeleniumCropTests(Selenium):
 

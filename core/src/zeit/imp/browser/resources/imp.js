@@ -23,7 +23,6 @@ zeit.imp.Imp = Class.extend({
 
         this.zoom = (this.get_visual_area_dimensions().w / 
                      this.original_dimensions.w); 
-
         this.image_dragger = new MochiKit.DragAndDrop.Draggable(
             'imp-image-drag', {
             'handle': $('imp-mask'),
@@ -180,7 +179,6 @@ zeit.imp.Imp = Class.extend({
             });
     },
 
-
     handle_mouse_wheel: function(event) {
         var zoom = -event.mouse().wheel.y;
         this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) * 
@@ -291,7 +289,28 @@ zeit.imp.ImageBar = Class.extend({
 
 });
 
+
+zeit.imp.ZoomSlider = Class.extend({
+
+    construct: function(imp) {
+        this.imp = imp;
+        this.zoom_slider = new UI.Slider(
+            'imp-zoom-slider', 3001,
+            UI.Slider.ValueMappers.range(0, 3, 0.001));
+        this.zoom_slider.setValue(imp.zoom);
+        connect(this.zoom_slider, 'valueChanged',
+            this, 'update_zoom_from_slider');
+    },
+
+    update_zoom_from_slider: function(event) {
+        this.imp.zoom = this.zoom_slider.value;
+        this.imp.zoom_image();
+    },
+
+});
+
 MochiKit.Signal.connect(window, 'onload', function() {
     document.imp = new zeit.imp.Imp();
+    new zeit.imp.ZoomSlider(document.imp);
     new zeit.imp.ImageBar();
 });

@@ -9,6 +9,8 @@
     name="zeit.imp"
     require="zeit.cms">
     <directory source="resources" include="
+      ui.uncompressed.js
+      uidefault.css
       imp.js
       imp.css" />
   </resourceLibrary>

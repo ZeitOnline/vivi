@@ -46,6 +46,14 @@
 #imp-loading-image > img {
 }
 
+#imp-zoom {
+    position: absolute;
+    bottom: 12em;
+    height: 1em;
+    left: 0;
+    right: 20em;
+}
+
 #imp-metadata {
   display: none;
 }
@@ -59,7 +67,7 @@
 
 #imp-image-bar {
     position: absolute;
-    height: 12em;
+    height: 11em;
     bottom: 0;
     left: 0;
     right: 0;
