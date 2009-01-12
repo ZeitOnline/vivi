@@ -103,12 +103,40 @@ class SeleniumBasicTests(Selenium):
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'true')
 
-    def test_zoom(self):
+    def test_zoom_slider(self):
         s = self.selenium
         s.comment('Zooming works with a slider')
         s.verifyEval('window.document.imp.zoom>1', 'false')
         s.clickAt('id=imp-zoom-slider', '200,0')
         s.verifyEval('window.document.imp.zoom>1', 'true')
+
+    def test_zoom_mouse_wheel(self):
+        s = self.selenium
+        s.verifyEval('window.document.imp.zoom.toPrecision(3)', '0.268')
+        self.zoom_with_wheel(10000)
+        s.verifyEval('window.document.imp.zoom>1', 'true')
+        self.zoom_with_wheel(-5000)
+        s.verifyEval('window.document.imp.zoom<1', 'true')
+        s.verifyEval('window.document.imp.zoom>0.268', 'true')
+
+    def test_zoom_with_mouse_wheel_updates_slider(self):
+        s = self.selenium
+        s.verifyEval('window.document.imp_zoom_slider.get_value()>1', 'false')
+        self.zoom_with_wheel(10000)
+        s.verifyEval('window.document.imp_zoom_slider.get_value()>1', 'true')
+
+    def zoom_with_wheel(self, delta_y):
+        self.selenium.runScript(
+        """\
+            var evt = window.document.createEvent('MouseEvents');
+            evt.initEvent('DOMMouseScroll', false, false);
+            evt.wheelDeltaX = 0;
+            evt.wheelDeltaY = %s;
+            window.document.getElementById('imp-mask').dispatchEvent(evt);
+        """ % delta_y);
+
+
+
 
 
 class SeleniumCropTests(Selenium):

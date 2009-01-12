@@ -76,6 +76,7 @@ zeit.imp.Imp = Class.extend({
     },
 
     zoom_image: function() {
+        MochiKit.Signal.signal(this, 'zoom-change');
         var othis = this;
 
         // First, scale using the browser's scaling capabilities.
@@ -302,11 +303,21 @@ zeit.imp.ZoomSlider = Class.extend({
         MochiKit.Signal.connect(
             this.zoom_slider, 'valueChanged',
             this, 'update_zoom_from_slider');
+        MochiKit.Signal.connect(
+            this.imp, 'zoom-change', this, 'update_slider_from_zoom');
     },
 
     update_zoom_from_slider: function(event) {
         this.imp.zoom = this.zoom_slider.value;
         this.imp.zoom_image();
+    },
+
+    update_slider_from_zoom: function(event) {
+        this.zoom_slider.setValue(this.imp.zoom);
+    },
+
+    get_value: function() {
+        return this.zoom_slider.value;
     },
 
 });
@@ -333,6 +344,9 @@ zeit.imp.DynamicMask = Class.extend({
 
     update_inputs: function(event) {
         var dim = this.imp.mask_dimensions;
+        if (dim === null) {
+            return
+        }
         this.input_w.value = dim.w;
         this.input_h.value = dim.h;
         this.set_disabled(this.input_w, !this.imp.mask_variable.w);
@@ -392,7 +406,7 @@ zeit.imp.DynamicMask = Class.extend({
 
 MochiKit.Signal.connect(window, 'onload', function() {
     document.imp = new zeit.imp.Imp();
-    new zeit.imp.ZoomSlider(document.imp);
+    document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
     new zeit.imp.DynamicMask(document.imp);
     new zeit.imp.ImageBar();
 });
