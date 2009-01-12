@@ -36,3 +36,14 @@ class IFileEditSchema(zope.interface.Interface):
         title=_('Upload new image'),
         required=False,
         constraint=is_image)
+
+
+class IMasterImageUploadSchema(zope.interface.Interface):
+
+    blob = zope.schema.Object(
+        zope.interface.Interface,
+        title=_('Upload master image'),
+        description=_('upload-master-image-description'),
+        required=False,
+        constraint=is_image)
+

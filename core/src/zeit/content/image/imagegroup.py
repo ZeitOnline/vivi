@@ -25,7 +25,6 @@ class ImageGroup(zeit.cms.repository.repository.Container):
     zope.interface.implements(
         zeit.content.image.interfaces.IRepositoryImageGroup)
 
-
 @zope.interface.implementer(zeit.content.image.interfaces.IImageGroup)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
 def imageGroupFactory(context):

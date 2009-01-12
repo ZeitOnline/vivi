@@ -177,3 +177,7 @@ class IReferences(zope.interface.Interface):
         readonly=True,
         value_type=zope.schema.Choice(
             source=zeit.cms.content.contentsource.cmsContentSource))
+
+
+class IMasterImage(zope.interface.Interface):
+    """Marks an image in an image group as master for the other images."""

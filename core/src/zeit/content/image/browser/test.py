@@ -26,6 +26,7 @@ def test_suite():
         'README.txt',
         'copyright.txt',
         'imagefolder.txt',
+        'master-image.txt',
         checker=checker,
         layer=zeit.content.image.test.ImageLayer))
     return suite

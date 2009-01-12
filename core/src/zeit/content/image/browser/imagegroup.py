@@ -25,12 +25,47 @@ class FormBase(object):
         zeit.content.image.interfaces.IReferences)
 
 
-class AddForm(FormBase, zeit.cms.browser.form.AddForm):
+class AddForm(FormBase,
+              zeit.cms.repository.browser.file.FormBase,
+              zeit.cms.browser.form.AddForm):
 
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
-    form_fields = FormBase.form_fields.omit('references')
+    form_fields = (
+        FormBase.form_fields.omit('references') +
+        zope.formlib.form.FormFields(
+            zeit.content.image.browser.interfaces.IMasterImageUploadSchema))
+
+    form_fields['blob'].custom_widget = (
+        zeit.cms.repository.browser.file.BlobWidget)
+
+    def create(self, data):
+        self.image = self.create_image(data)
+        group = super(AddForm, self).create(data)
+        return group
+
+    def add(self, group):
+        super(AddForm, self).add(group)
+        if self.image is not None:
+            super(AddForm, self).add(self.image, group)
+        self._created_object = group
+
+    def create_image(self, data):
+        image = zeit.content.image.image.LocalImage()
+        blob = data.pop('blob')
+        if blob is None:
+            return
+        self.update_file(image, blob)
+        name = getattr(blob, 'filename', '')
+        zeit.cms.browser.form.apply_changes_with_setattr(
+            image,
+            self.form_fields.omit('__name__'), data)
+        image.__name__ = name
+        # XXX this is not persistent over DAV, yet!
+        zope.interface.alsoProvides(
+            image, zeit.content.image.interfaces.IMasterImage)
+        return image
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
