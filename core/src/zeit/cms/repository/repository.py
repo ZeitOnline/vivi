@@ -193,6 +193,8 @@ class Repository(persistent.Persistent, Container):
         return content
 
     def addContent(self, content):
+        zope.event.notify(
+            zeit.cms.repository.interfaces.BeforeObjectAddEvent(content))
         resource = zeit.cms.interfaces.IResource(content)
         if resource.id is None:
             raise ValueError("Objects to be added to the repository need a "

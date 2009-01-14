@@ -1,11 +1,20 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.interface
-import zope.file.interfaces
 
 import zeit.cms.interfaces
+import zope.component
+import zope.file.interfaces
+import zope.interface
+
+
+class IBeforeObjectAddEvent(zope.component.interfaces.IObjectEvent):
+    """An event sent before an object will be added to the repository."""
+
+
+class BeforeObjectAddEvent(zope.component.interfaces.ObjectEvent):
+    """An event sent before an object will be added to the repository."""
+
+    zope.interface.implements(IBeforeObjectAddEvent)
 
 
 class IRepository(zope.interface.Interface):
@@ -51,6 +60,9 @@ class IRepository(zope.interface.Interface):
 
         Raises TypeError if `object` is not adaptable to IResource.
         Raises ValueError if `object` does not have a uniqueId assigned.
+
+        An IBeforeObjectAddEvent is sent before the object is added to the
+        repository.
 
         """
 

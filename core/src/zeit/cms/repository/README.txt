@@ -212,9 +212,10 @@ The content does not have a unique id yet:
 >>> print content.uniqueId
 None
 
-After adding it to the repository, it has a unique id:
+After adding it to the repository, it has a unique id[#before-add-event]_:
 
 >>> repository['i_am_new'] = content
+Adding <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 >>> content.uniqueId
 u'http://xml.zeit.de/i_am_new'
 
@@ -225,6 +226,21 @@ Since it does have an id we can get it back from the repository:
 <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 >>> new_content.data
 u"I'm a shiny new object."
+
+.. [#before-add-event] Adding sends an event. Register an event handler for
+    IBeforeObjectAddedEvent
+
+    >>> def before_added(object, event):
+    ...     print "Adding", object
+    ...     site_manager.unregisterHandler(
+    ...         before_added,
+    ...         (zeit.cms.interfaces.ICMSContent,
+    ...          zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
+    >>> site_manager = zope.component.getSiteManager()
+    >>> site_manager.registerHandler(
+    ...     before_added,
+    ...     (zeit.cms.interfaces.ICMSContent,
+    ...      zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
 
 
 Renaming objects
