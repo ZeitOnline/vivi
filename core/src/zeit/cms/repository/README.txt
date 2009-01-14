@@ -63,9 +63,11 @@ True
 Getting Content objects
 =======================
 
-We are getting the objects /online/2007/01/lebenslagen-01:
+We are getting the objects
+/online/2007/01/lebenslagen-01[#after-construct-event]_:
 
 >>> content = repository['online']['2007']['01']['lebenslagen-01']
+Constructing http://xml.zeit.de/online/2007/01/lebenslagen-01
 >>> content
 <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 
@@ -79,7 +81,6 @@ True
 It also provides the ICMSContent interface:
  
 >>> import zope.interface.verify
->>> import zeit.cms.interfaces
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.interfaces.ICMSContent, content)
 True
@@ -95,6 +96,21 @@ When we get the same object again, we *really* get the *same* object:
 >>> content is repository['online']['2007']['01']['lebenslagen-01']
 True
 
+
+.. [#after-construct-event] Constructing objects sends an event:
+
+    >>> import zeit.cms.interfaces
+    >>> def after_construct(object, event):
+    ...     print "Constructing", object.uniqueId
+    ...     site_manager.unregisterHandler(
+    ...         after_construct,
+    ...         (zeit.cms.interfaces.ICMSContent,
+    ...          zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
+    >>> site_manager = zope.component.getSiteManager()
+    >>> site_manager.registerHandler(
+    ...     after_construct,
+    ...     (zeit.cms.interfaces.ICMSContent,
+    ...      zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
 
 Unknown Resource
 ================

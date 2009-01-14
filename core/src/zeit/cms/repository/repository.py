@@ -270,6 +270,8 @@ def cmscontentFactory(context):
     if content is not None:
         content.uniqueId = context.id
 
+    zope.event.notify(
+        zeit.cms.repository.interfaces.AfterObjectConstructedEvent(content))
     return content
 
 

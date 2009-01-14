@@ -17,6 +17,16 @@ class BeforeObjectAddEvent(zope.component.interfaces.ObjectEvent):
     zope.interface.implements(IBeforeObjectAddEvent)
 
 
+class IAfterObjectConstructedEvent(zope.component.interfaces.IObjectEvent):
+    """An event sent after an ICMSContent is constructed from a resource."""
+
+
+class AfterObjectConstructedEvent(zope.component.interfaces.ObjectEvent):
+    """An event sent after an ICMSContent is constructed from a resource."""
+
+    zope.interface.implements(IAfterObjectConstructedEvent)
+
+
 class IRepository(zope.interface.Interface):
     """Access the webdav repository.
 
