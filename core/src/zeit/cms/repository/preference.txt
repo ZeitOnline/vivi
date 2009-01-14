@@ -1,0 +1,98 @@
+User Preferences
+================
+
+Users have different preferences regarding what to see and what not.
+Preferences regarding the repository are stored in an `IUserPreferences`
+objet. Login bob:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.security.management
+>>> import zope.security.testing
+>>> zope.security.management.endInteraction()
+>>> principal = zope.security.testing.Principal(u'bob')
+>>> participation = zope.security.testing.Participation(principal)
+>>> zope.security.management.newInteraction(participation)
+
+... and get his preferences:
+
+>>> import zeit.cms.workingcopy.interfaces
+>>> from zeit.cms.repository.interfaces import IUserPreferences
+>>> location = zope.component.getUtility(
+...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+>>> workingcopy = location.getWorkingcopy()
+>>> preferences = IUserPreferences(workingcopy)
+>>> preferences
+<zeit.cms.repository.preference.UserPreferences object at 0x...>
+
+
+There is a list of containers which are shown by default:
+
+>>> import pprint
+>>> pprint.pprint(preferences.default_shown_containers)
+('http://xml.zeit.de/repository/2007',
+ 'http://xml.zeit.de/repository/2008',
+ 'http://xml.zeit.de/repository/bilder',
+ 'http://xml.zeit.de/repository/bilder/2007',
+ 'http://xml.zeit.de/repository/bilder/2008',
+ 'http://xml.zeit.de/repository/hp_channels',
+ 'http://xml.zeit.de/repository/online',
+ 'http://xml.zeit.de/repository/online/2007',
+ 'http://xml.zeit.de/repository/online/2008',
+ 'http://xml.zeit.de/repository/themen')
+
+
+From this list the default hidden_containers are derifed uppon instanciation.
+So everything which is not noted in the `default_shown_containers`:
+
+>>> pprint.pprint(sorted(preferences._hidden_containers))
+[u'http://xml.zeit.de/2006',
+ u'http://xml.zeit.de/online/2005',
+ u'http://xml.zeit.de/online/2006',
+ u'http://xml.zeit.de/politik.feed',
+ u'http://xml.zeit.de/testcontent',
+ u'http://xml.zeit.de/wirtschaft.feed']
+
+
+Let's see if is_hidden works:
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+>>> preferences.is_hidden(repository['online']['2007'])
+False
+
+Let's show a container:
+
+>>> preferences.show_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+False
+
+Double show doesn't harm:
+
+>>> preferences.show_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+False
+
+
+Let's hide it again:
+
+>>> preferences.hide_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+
+Double hide dosn't harm as well:
+
+>>> preferences.hide_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+
+Logout bob again and clean up:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
