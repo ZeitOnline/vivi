@@ -1,14 +1,13 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import logging
-
-import persistent
-import transaction
 
 import gocept.cache.property
-
+import logging
+import persistent
+import transaction
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
 import zope.annotation.interfaces
 import zope.app.appsetup.product
 import zope.app.container.contained
@@ -19,13 +18,8 @@ import zope.copypastemove
 import zope.interface
 import zope.securitypolicy.interfaces
 
-import zeit.connector.interfaces
 
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-
-
-logger = logging.getLogger('zeit.cms.repository')
+log = logging.getLogger('zeit.cms.repository')
 
 
 class Container(zope.app.container.contained.Contained):
@@ -93,7 +87,7 @@ class Container(zope.app.container.contained.Contained):
             # Update resource.
             self.repository.addContent(object)
         else:
-            logger.info("Copying %s to %s" % (object.uniqueId, new_id))
+            log.info("Copying %s to %s" % (object.uniqueId, new_id))
             self.connector.copy(object.uniqueId, new_id)
 
         object, event = zope.app.container.contained.containedEvent(
@@ -206,7 +200,7 @@ class Repository(persistent.Persistent, Container):
         return self
 
     def _get_uncontained_copy(self, unique_id):
-        logger.debug("Getting resource %r" % unique_id)
+        log.debug("Getting resource %r" % unique_id)
         resource = self.connector[unique_id]
         content = zeit.cms.interfaces.ICMSContent(resource)
         content.__name__ = resource.__name__
