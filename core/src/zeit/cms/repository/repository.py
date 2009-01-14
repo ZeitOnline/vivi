@@ -46,7 +46,7 @@ class Container(zope.app.container.contained.Contained):
         unique_id = self._get_id_for_name(key)
         __traceback_info__ = (key, unique_id)
         content = self.repository.getUncontainedContent(unique_id)
-        zope.interface.directlyProvides(
+        zope.interface.alsoProvides(
             content, zeit.cms.repository.interfaces.IRepositoryContent)
         return zope.app.container.contained.contained(
             content, self, content.__name__)
@@ -271,7 +271,8 @@ def cmscontentFactory(context):
         content.uniqueId = context.id
 
     zope.event.notify(
-        zeit.cms.repository.interfaces.AfterObjectConstructedEvent(content))
+        zeit.cms.repository.interfaces.AfterObjectConstructedEvent(content,
+                                                                   context))
     return content
 
 

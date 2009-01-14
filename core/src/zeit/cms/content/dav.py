@@ -26,6 +26,8 @@ import zeit.connector.interfaces
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.liveproperty
+import zeit.cms.repository.interfaces
+import zeit.cms.workingcopy.interfaces
 
 
 logger = logging.getLogger(__name__)
@@ -48,11 +50,12 @@ class DAVProperty(object):
             (zeit.cms.content.liveproperty.LiveProperties
              .register_live_property(name, namespace))
 
-    def __get__(self, instance, class_):
+    def __get__(self, instance, class_, properties=None):
         __traceback_info = (instance, )
         if instance is None:
             return self
-        properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
+        if properties is None:
+            properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
         dav_value = properties.get((self.name, self.namespace),
                                    zeit.connector.interfaces.DeleteProperty)
 
@@ -387,7 +390,6 @@ class GenericProperty(object):
         return zope.xmlpickle.loads(
             lxml.etree.tostring(xml))
 
-
     def toProperty(self, value):
         xml = lxml.etree.fromstring(zope.xmlpickle.dumps(value))
         return lxml.etree.tounicode(xml)
@@ -444,3 +446,47 @@ def mapProperty(field, namespace, name=None, vars=None, use_default=False,
 
     vars[name] = DAVProperty(field, namespace, name, use_default=use_default,
                              live=live)
+
+
+_provides_dav_property = DAVProperty(
+    zope.schema.Object(zope.interface.Interface),
+    'http://namespaces.zeit.de/CMS/meta', 'provides', 'provides')
+
+
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+def store_provides_in_dav(obj, event):
+    # Remove all proxies to not get any implements from proxies and to avoid
+    # security
+    unwrapped = zope.proxy.removeAllProxies(obj)
+    # We don't want to store ILocalContent of course since we're about to add
+    # to the repository
+    try:
+        zope.interface.noLongerProvides(
+            unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
+    except ValueError:
+        # Can only remove directly provided interfaces.
+        pass
+    provides = unwrapped.__provides__
+    if not list(zope.interface.directlyProvidedBy(obj)):
+        # In the case we don't have any direct provides just store nothing.
+        provides = None
+    try:
+        _provides_dav_property.__set__(unwrapped, provides)
+    except zope.security.interfaces.Forbidden:
+        # We probably stored an object providing IRepositoryContent. Thus we
+        # may not change anything.
+        pass
+
+
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.repository.interfaces.IAfterObjectConstructedEvent)
+def restore_provides_from_dav(obj, event):
+    properties = event.resource.properties
+    new_provides = _provides_dav_property.__get__(obj, obj.__class__,
+                                                  properties)
+    if (new_provides is not None and
+        new_provides != getattr(obj, '__provides__', None)):
+        obj.__provides__ = new_provides

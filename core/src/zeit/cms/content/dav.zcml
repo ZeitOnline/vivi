@@ -27,4 +27,7 @@
 
   <adapter factory=".token.fromCMSContent" />
 
+  <subscriber handler=".dav.store_provides_in_dav" />
+  <subscriber handler=".dav.restore_provides_from_dav" />
+
 </configure>

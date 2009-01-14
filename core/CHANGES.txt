@@ -1,8 +1,11 @@
 zeit.cms changes
 ================
 
-1.8.5 (unreleased)
-------------------
+1.9 (unreleased)
+----------------
+
+- Interface-Deklaration auf Objekten werden im DAV abgelegt und gehen nicht
+  mehr verloren.
 
 1.8.4 (2009-01-07)
 ------------------
