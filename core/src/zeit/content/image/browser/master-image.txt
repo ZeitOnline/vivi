@@ -41,10 +41,8 @@ It is marked as master image[#functional]_:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> group = repository['2006']['opernball']
 >>> image = group['opernball.jpg']
-
-FAILS:
-#>>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
-#True
+>>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
+True
 
 >>> zope.app.component.hooks.setSite(old_site)
 
