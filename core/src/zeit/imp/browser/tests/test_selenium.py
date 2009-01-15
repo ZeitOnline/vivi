@@ -101,7 +101,7 @@ class SeleniumBasicTests(Selenium):
 
         s.comment('The dimensions can be variable, indicated by a ?')
         s.runScript(
-            'window.document.imp.parse_mask_string("art-200?500x200")');
+            'window.document.imp.parse_mask_string("art-200/?500/200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
@@ -124,7 +124,7 @@ class SeleniumBasicTests(Selenium):
 
     def test_zoom_mouse_wheel(self):
         s = self.selenium
-        s.verifyEval('window.document.imp.zoom.toPrecision(3)', '0.268')
+        s.verifyEval('window.document.imp.zoom.toPrecision(3)<0.3', 'true')
         self.zoom_with_wheel(10000)
         s.verifyEval('window.document.imp.zoom>1', 'true')
         self.zoom_with_wheel(-5000)
