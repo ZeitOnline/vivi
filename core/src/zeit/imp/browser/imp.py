@@ -4,6 +4,7 @@
 import cjson
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
+import zeit.imp.source
 import zope.cachedescriptors.property
 
 
@@ -21,6 +22,8 @@ class Imp(object):
     def master_image(self):
         return zeit.content.image.interfaces.IMasterImage(self.context)
 
+    def scales(self):
+        return zeit.imp.source.ScaleSource()
 
 class ImageBar(zeit.cms.browser.view.Base):
 

@@ -49,7 +49,6 @@ zeit.imp.Imp = Class.extend({
         this.zoom_image();
         var ident = MochiKit.Signal.connect(
             this.image, 'onload', function() {
-                //MochiKit.DOM.removeElementClass(othis.image, 'hidden');
                 MochiKit.Signal.disconnect(ident);
                 othis.ui_loading(false);
         });
@@ -169,7 +168,7 @@ zeit.imp.Imp = Class.extend({
                 'y2': y2,
                 'w': this.current_dimensions.w,
                 'h': this.current_dimensions.h,
-                'name': this.mask_dimensions.w + 'x' + this.mask_dimensions.h,
+                'name': this.name,
                 'border': this.border?'1':'',
             });
 
@@ -204,13 +203,14 @@ zeit.imp.Imp = Class.extend({
     },
 
     parse_mask_string: function(value) {
+        this.name = value.split('/')[0]
         this.mask_variable = {w: false, h: false}
-        var mask_width = value.split('x')[0];
+        var mask_width = value.split('/')[1];
         if (mask_width[0] == '?') {
             mask_width = mask_width.substr(1)
             this.mask_variable.w = true;
         }
-        var mask_height = value.split('x')[1];
+        var mask_height = value.split('/')[2];
         if (mask_height[0] == '?') {
             mask_height = mask_height .substr(1)
             this.mask_variable.h = true;
@@ -279,15 +279,17 @@ zeit.imp.ImageBar = Class.extend({
     replace_images: function(image_data) {
         var othis = this;
         othis.container.innerHTML = '';
+        var divs = [];
         forEach(image_data, function(image) {
             // Add a query argument because we really cannot cache here.
             var url = (image.url + '/metadata-preview?q=' +
                 new Number(new Date()));
-            othis.container.appendChild(
+            divs.push(
                 DIV({'class': 'image'},
                     IMG({'src': url}), 
                     SPAN({}, image.name)));
         });
+        othis.container.appendChild(DIV({}, divs));
     },
 
 });

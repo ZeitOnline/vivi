@@ -1,7 +1,10 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+
 import zope.interface
+import zope.schema
+
 
 class ICropper(zope.interface.Interface):
     """Crop master image in an image group."""
@@ -19,3 +22,13 @@ class ICropper(zope.interface.Interface):
         returns the cropped image.
 
         """
+
+
+class IPossibleScale(zope.interface.Interface):
+
+    name = zope.interface.Attribute("Name in folder")
+    width = zope.interface.Attribute(
+        "Width, leading ? indicates variable width.")
+    height = zope.interface.Attribute(
+        "height, leading ? indicates variable height.")
+    title = zope.schema.TextLine(title=u'Title')

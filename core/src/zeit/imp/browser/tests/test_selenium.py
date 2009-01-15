@@ -93,22 +93,27 @@ class SeleniumBasicTests(Selenium):
         s = self.selenium
 
         s.comment('Simple dimensions')
-        s.runScript('window.document.imp.parse_mask_string("500x200")');
+        s.runScript(
+            'window.document.imp.parse_mask_string("500x200/500/200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        s.verifyEval('window.document.imp.name', '500x200')
 
         s.comment('The dimensions can be variable, indicated by a ?')
-        s.runScript('window.document.imp.parse_mask_string("?500x200")');
+        s.runScript(
+            'window.document.imp.parse_mask_string("art-200?500x200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'false')
+        s.verifyEval('window.document.imp.name', 'art-200')
 
-        s.runScript('window.document.imp.parse_mask_string("?500x?200")');
+        s.runScript('window.document.imp.parse_mask_string("foo/?500/?200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'true')
+        s.verifyEval('window.document.imp.name', 'foo')
 
     def test_zoom_slider(self):
         s = self.selenium

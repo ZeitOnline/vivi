@@ -75,20 +75,22 @@
     left: 0;
     right: 0;
     overflow-x: auto;
+    overflow-y: hidden;
     border-top: 1px solid black;
     padding-top: 0.5em;
 }
 
-#imp-image-bar > div.image {
-    float: left;
+#imp-image-bar div.image {
+    display: table-cell;
     padding-right: 0.5em;
+    min-width: 6em;
 }
 
-#imp-image-bar > div.image > img {
+#imp-image-bar div.image > img {
     display: block;
 }
 
-#imp-image-bar > div.image > span {
+#imp-image-bar div.image > span {
     display: block;
 }
 

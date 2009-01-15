@@ -1,0 +1,52 @@
+<scales>
+
+  <scale
+    name="450x200"
+    width="450"
+    height="200"
+    title="Aufmacher groß (450×200)"
+    />
+
+  <scale
+    name="210x210"
+    width="210"
+    height="210"
+    title="Aufmacher klein (210×210)"
+    />
+
+  <scale
+    name="140x140"
+    width="140"
+    height="140"
+    title="Teaser groß (140×140)"
+    />
+
+  <scale
+    name="120x90"
+    width="120"
+    height="90"
+    title="Teaser klein (120×90)"
+    />
+
+  <scale
+    name="artikel-410"
+    width="410"
+    height="?200"
+    title="Artikelbild breit (410×…)"
+    />
+
+  <scale
+    name="artikel-210"
+    width="210"
+    height="?210"
+    title="Artikelbild schmal (210×…)"
+    />
+
+  <scale
+    name="XXXportrait"
+    width="180"
+    height="180"
+    title="Porträt / Audio (180×180)"
+    />
+
+</scales>

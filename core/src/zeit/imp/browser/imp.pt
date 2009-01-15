@@ -29,26 +29,13 @@
   <div id="imp-configuration">
     <form id="imp-configuration-form">
       <div class="widget radio-group">
-
-        <label>
-          <input type="radio" name="mask" value="450x200" />
-          Aufmacher groß (450×200)
-        </label>
-        <label>
-          <input type="radio" name="mask" value="210x210" />
-          Aufmacher klein (210×210)
-        </label>
-        <label>
-          <input type="radio" name="mask" value="410x?200" />
-          Artikelbild breit (410×…)
-        </label>
-        <label>
-          <input type="radio" name="mask" value="210x?200" />
-          Artikelbild schmal (210×…)
-        </label>
-        <label>
-          <input type="radio" name="mask" value="180x180" />
-          Porträt / Audio (180×180)
+        <label tal:repeat="scale view/scales">
+          <input type="radio" name="mask"
+            tal:attributes="value string:${scale/name}/${scale/width}/${scale/height}"
+            />
+          <span tal:replace="scale/title">
+            Aufmacher groß (450×200)
+          </span>
         </label>
       </div>
 
