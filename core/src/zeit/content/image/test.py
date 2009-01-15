@@ -1,20 +1,15 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import os.path
 import unittest
-
-import zope.component
-from zope.testing import doctest
-
-import zope.app.testing.functional
-
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-
 import zeit.content.image.image
 import zeit.content.image.imagegroup
+import zope.app.testing.functional
+import zope.component
+from zope.testing import doctest
 
 
 ImageLayer = zope.app.testing.functional.ZCMLLayer(
@@ -28,8 +23,6 @@ def test_suite():
         'README.txt',
         'syndication.txt',
         'transform.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
         layer=ImageLayer))
     return suite
 
