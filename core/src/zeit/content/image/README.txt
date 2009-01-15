@@ -102,6 +102,10 @@ The repository image factory returns None when the image cannot be identified:
 ...     connector['http://xml.zeit.de/online/2007/01/Somalia']) is None
 True
 
+There is also a view for the metadata:
+
+>>> zope.component.getMultiAdapter((image, object()), name='metadata')
+<zeit.content.image.metadata.ImageMetadata object at 0x...>
 
 Image group
 ===========
@@ -283,6 +287,11 @@ Images whose names have no extension at all will be ignored:
 </image>
 <BLANKLINE>
 
+
+There is also a view for the metadata:
+
+>>> zope.component.getMultiAdapter((group, object()), name='metadata')
+<zeit.content.image.metadata.ImageMetadata object at 0x...>
 
 Cleanup
 =======
