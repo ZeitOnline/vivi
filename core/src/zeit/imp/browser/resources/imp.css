@@ -6,7 +6,7 @@
   right: 20em;
   left: 0;
   top: 0;
-  bottom: 13em;
+  bottom: 14em;
   cursor: -moz-grab;
 }
 
@@ -36,7 +36,7 @@
   top: 0;
   right: 20em;
   left: 0;
-  bottom: 13em;
+  bottom: 14em;
   width: 220px;
   height: 19px;
   margin: auto;
@@ -47,7 +47,7 @@
 
 #imp-zoom {
     position: absolute;
-    bottom: 12em;
+    bottom: 13em;
     height: 1em;
     left: 0;
     right: 20em;
@@ -70,7 +70,7 @@
 
 #imp-image-bar {
     position: absolute;
-    height: 11em;
+    height: 12em;
     bottom: 0;
     left: 0;
     right: 0;
