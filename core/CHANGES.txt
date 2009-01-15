@@ -7,6 +7,8 @@ zeit.cms changes
 - Interface-Deklaration auf Objekten werden im DAV abgelegt und gehen nicht
   mehr verloren.
 - Select-Box bei Bildergruppen entfernt.
+- Bildergruppen haben ein Master-Bild von dem die Ausschnitte abgeleitet
+  werden.
 
 1.8.4 (2009-01-07)
 ------------------
