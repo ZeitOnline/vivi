@@ -25,6 +25,7 @@ class Imp(object):
     def scales(self):
         return zeit.imp.source.ScaleSource()
 
+
 class ImageBar(zeit.cms.browser.view.Base):
 
     def __call__(self):
@@ -34,7 +35,11 @@ class ImageBar(zeit.cms.browser.view.Base):
                 continue
             if zeit.content.image.interfaces.IMasterImage.providedBy(obj):
                 continue
+            scale_name = obj.__name__.replace(
+                self.context.__name__ + '-', '', 1)
+            scale_name = scale_name.rsplit('.', 1)[0]
             result.append(dict(
                 url=self.url(obj),
-                name=obj.__name__))
+                name=obj.__name__,
+                scale_name=scale_name))
         return cjson.encode(result)

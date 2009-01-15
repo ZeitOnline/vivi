@@ -148,9 +148,6 @@ class SeleniumBasicTests(Selenium):
         """ % delta_y);
 
 
-
-
-
 class SeleniumCropTests(Selenium):
 
     def test_crop_wo_mask(self):
@@ -163,11 +160,14 @@ class SeleniumCropTests(Selenium):
     def test_crop(self):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
+        s.verifyElementNotPresent('css=label.cropped')
         s.dragAndDrop('id=imp-mask', '+30,+100')
         self.click_label("450×200")
         s.click('crop')
         s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
+        s.comment('The label is marked as "cropped"')
+        s.verifyElementPresent('css=label.cropped')
 
 
 class SeleniumMaskTests(Selenium):

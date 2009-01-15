@@ -258,10 +258,11 @@ zeit.imp.Imp = Class.extend({
 });
 
 
-zeit.imp.ImageBar = Class.extend({
+zeit.imp.ImageData = Class.extend({
 
     construct: function() {
         this.container = $('imp-image-bar');
+        this.data = null;
         this.load();
         MochiKit.Signal.connect(
             'content', 'imp-image-cropped', this, 'load');
@@ -272,8 +273,21 @@ zeit.imp.ImageBar = Class.extend({
         var d = MochiKit.Async.loadJSONDoc(
             window.context_url + '/@@imp-image-bar');
         d.addCallback(function(result) {
-            othis.replace_images(result);
+            othis.data = result;
+            MochiKit.Signal.signal(othis, 'data-changed', result);
         });
+    },
+
+
+});
+
+
+zeit.imp.ImageBar = Class.extend({
+
+    construct: function() {
+        this.container = $('imp-image-bar');
+        MochiKit.Signal.connect(
+            document.imp_data, 'data-changed', this, 'replace_images');
     },
 
     replace_images: function(image_data) {
@@ -289,7 +303,9 @@ zeit.imp.ImageBar = Class.extend({
                     IMG({'src': url}), 
                     SPAN({}, image.name)));
         });
-        othis.container.appendChild(DIV({}, divs));
+        if (divs.length > 0) {
+            othis.container.appendChild(DIV({}, divs));
+        }
     },
 
 });
@@ -324,6 +340,7 @@ zeit.imp.ZoomSlider = Class.extend({
     },
 
 });
+
 
 zeit.imp.DynamicMask = Class.extend({
 
@@ -407,9 +424,40 @@ zeit.imp.DynamicMask = Class.extend({
 });
 
 
+zeit.imp.AlreadyCroppedIndicator = Class.extend({
+
+    construct: function() {
+        MochiKit.Signal.connect(
+            document.imp_data, 'data-changed', this, 'update');
+    },
+    
+    update: function(image_data) {
+        var othis = this;
+        var names = {};
+        forEach(image_data, function(image) {
+            names[image.scale_name] = true;
+        });
+
+        forEach($('imp-configuration-form')['mask'], function(mask) {
+            var func;
+            var name = mask.value.split('/')[0];
+            var label = mask.parentNode;
+            if (name in names) {
+                func = MochiKit.DOM.addElementClass;
+            } else {
+                func = MochiKit.DOM.removeElementClass;
+            }
+            func(label, 'cropped');
+        });
+    },
+
+});
+
 MochiKit.Signal.connect(window, 'onload', function() {
     document.imp = new zeit.imp.Imp();
     document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
+    document.imp_data = new zeit.imp.ImageData();
     new zeit.imp.DynamicMask(document.imp);
     new zeit.imp.ImageBar();
+    new zeit.imp.AlreadyCroppedIndicator();
 });

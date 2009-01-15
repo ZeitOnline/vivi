@@ -98,6 +98,11 @@
     display: block;
 }
 
+.widget.radio-group > label.cropped:after {
+  color: green;
+  content: "✔";
+}
+
 input.mask-size {
     width: 3em;
 }

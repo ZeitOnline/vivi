@@ -46,10 +46,7 @@ class TestScaleSource(zope.app.testing.functional.BrowserTestCase):
     layer = imp_layer
 
     def setUp(self):
-        scale_xml_path = pkg_resources.resource_filename(
-            __name__, 'scales.xml')
-        zeit.cms.testing.setup_product_config(
-            {'zeit.imp': {'scale-source': 'file://%s' % scale_xml_path}})
+        zeit.cms.testing.setup_product_config(product_config)
         self.source = zeit.imp.source.ScaleSource()
 
     def test_scale_source(self):
@@ -60,6 +57,10 @@ class TestScaleSource(zope.app.testing.functional.BrowserTestCase):
         self.assertEquals('450', scale.width)
         self.assertEquals('200', scale.height)
         self.assertEquals(u'Aufmacher groß (450×200)', scale.title)
+
+
+scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
+product_config = {'zeit.imp': {'scale-source': 'file://%s' % scale_xml_path}}
 
 
 def test_suite():
