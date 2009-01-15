@@ -96,7 +96,6 @@ class View(zeit.cms.browser.listing.Listing):
     filter_interface = zeit.content.image.interfaces.IImage
 
     columns = (
-        zc.table.column.SelectionColumn(idgetter=lambda item: item.__name__),
         zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
         zeit.cms.browser.listing.GetterColumn(
             title=_("File name"),
