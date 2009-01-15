@@ -42,7 +42,14 @@
           <input type="radio" name="mask" value="410x?200" />
           Artikelbild breit (410×…)
         </label>
-
+        <label>
+          <input type="radio" name="mask" value="210x?200" />
+          Artikelbild schmal (210×…)
+        </label>
+        <label>
+          <input type="radio" name="mask" value="180x180" />
+          Porträt / Audio (180×180)
+        </label>
       </div>
 
       <div class="widget mask-size">
