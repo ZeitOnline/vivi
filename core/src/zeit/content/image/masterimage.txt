@@ -1,0 +1,34 @@
+Master Image
+============
+
+An image group can have a master image[#functional]_. The image group can be
+adapted to IMasterImage to get the master image:
+
+>>> import zeit.content.image.interfaces
+>>> import zeit.content.image.test
+>>> group = zeit.content.image.test.create_image_group_with_master_image()
+>>> image = zeit.content.image.interfaces.IMasterImage(group)
+>>> image
+<zeit.content.image.image.RepositoryImage object at 0x...>
+>>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
+True
+
+An image group w/o master image obiously cannot be adapted to IMasterImage:
+
+>>> group = zeit.content.image.test.create_image_group()
+>>> zeit.content.image.interfaces.IMasterImage(group)
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt',
+    <zeit.content.image.imagegroup.ImageGroup object at 0x...>,
+    <InterfaceClass zeit.content.image.interfaces.IMasterImage>)
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional]_
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+
