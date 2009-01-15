@@ -59,7 +59,8 @@ class ImageBarTest(TestBase):
         self.repository['group']['foo-240x120.jpg'] = image
         self.assertAPI([{
             'url': 'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
-            'name': 'foo-240x120.jpg'}])
+            'name': 'foo-240x120.jpg',
+            'scale_name': 'foo-240x120'}])
 
         # Another image
         image = zeit.content.image.image.LocalImage()
@@ -69,9 +70,11 @@ class ImageBarTest(TestBase):
         transaction.commit()
         self.assertAPI([
             {'url': 'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
-             'name': 'foo-240x120.jpg'},
+             'name': 'foo-240x120.jpg',
+             'scale_name': 'foo-240x120'},
             {'url': 'http://localhost/++skin++cms/repository/group/foo-artikel.jpg',
-             'name': 'foo-artikel.jpg'}])
+             'name': 'foo-artikel.jpg',
+             'scale_name': 'foo-240x120'}])
 
 
 class CropTest(TestBase):
