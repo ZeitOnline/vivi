@@ -490,3 +490,5 @@ def restore_provides_from_dav(obj, event):
     if (new_provides is not None and
         new_provides != getattr(obj, '__provides__', None)):
         obj.__provides__ = new_provides
+        # directly provide Interface to restore the _cls on __provides__
+        zope.interface.alsoProvides(obj, zope.interface.Interface)

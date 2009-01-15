@@ -74,14 +74,50 @@ class DAVTest(zope.app.testing.functional.BrowserTestCase):
         zope.interface.alsoProvides(
             self.content, zeit.cms.workingcopy.interfaces.ILocalContent)
         self.repository['foo'] = self.content
-        self.assertTrue(
-            not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
+        self.assertEqual(
+            False, zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
                 self.repository['foo']))
+
+    def test_file(self):
+        f = zeit.cms.repository.file.LocalFile()
+        f.open('w').write('data')
+        zope.interface.alsoProvides(f, ITestInterface)
+        self.repository['foo'] = f
+        f = self.repository['foo']
+        self.assertEqual(True, ITestInterface.providedBy(f))
+        self.assertEqual(
+            False, zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(f))
+
+        f = zeit.cms.repository.file.LocalFile(f.uniqueId)
+        zope.interface.alsoProvides(f, ITestInterface)
+        self.repository['foo'] = f
+        f = self.repository['foo']
+        self.assertEqual(True, ITestInterface.providedBy(f))
+        self.assertEqual(
+            False, zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(f))
+
+    def test_restore_returns_provides_with_correct_class(self):
+        f_local = zeit.cms.repository.file.LocalFile()
+        f_local.open('w').write('blub')
+        zope.interface.alsoProvides(f_local, ITestInterface)
+        self.repository['file'] = f_local
+        f_remote = self.repository['file']
+        resource = self.connector[f_remote.uniqueId]
+        event = zeit.cms.repository.interfaces.AfterObjectConstructedEvent(
+            f_remote, resource)
+        zeit.cms.content.dav.restore_provides_from_dav(f_remote, event)
+        self.assertEquals(f_remote.__class__, f_remote.__provides__._cls)
 
     @property
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+    @property
+    def connector(self):
+        return zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+
 
 def test_suite():
     suite = unittest.TestSuite()

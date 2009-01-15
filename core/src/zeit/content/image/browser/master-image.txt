@@ -44,7 +44,29 @@ It is marked as master image[#functional]_:
 >>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
 True
 
+The master image marker survives checkout:
+
+>>> import zeit.cms.checkout.interfaces
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     image).checkout()
+>>> zeit.content.image.interfaces.IMasterImage.providedBy(checked_out)
+True
+
+... and checkin:
+
+>>> image = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
+>>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
+True
+>>> import zeit.cms.workingcopy.interfaces
+>>> zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(image)
+False
+
+
+Clean up:
+
+>>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
+
 
 .. [#browser]
 
@@ -66,3 +88,8 @@ True
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> participation = zope.security.testing.Participation(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(participation)

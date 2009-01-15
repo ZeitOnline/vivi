@@ -74,6 +74,10 @@ def localimage_factory(context):
     local.__name__ = context.__name__
     zeit.cms.interfaces.IWebDAVProperties(local).update(
         zeit.cms.interfaces.IWebDAVProperties(context))
+    # Hrmpf. I don't quite like this:
+    if zeit.content.image.interfaces.IMasterImage.providedBy(context):
+        zope.interface.alsoProvides(
+            local, zeit.content.image.interfaces.IMasterImage)
     return local
 
 
