@@ -7,8 +7,8 @@ Image Manipulation
 
 
 Scaled image
-============
->>> browser.handleErrors = False
+++++++++++++
+
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG'
 ...     '/@@imp-scaled?width=200&height=60')
@@ -23,7 +23,7 @@ Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
 
 
 Mask
-====
+++++
 
 The mask is loaded from the site with the image size and mask size parameters:
 
@@ -45,7 +45,26 @@ Content-Type: image/png
 '\x89PNG\r\n\x1a\n\x00\x00'
 
 
-Cropping
-========
+Image manipulation view
++++++++++++++++++++++++
 
+The image manipulation view is on an imagegroup containing a master image:
 
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zeit.content.image.test
+>>> url = zeit.content.image.test.create_image_group_with_master_image()
+>>> zope.app.component.hooks.setSite(old_site)
+
+>>> browser.open('http://localhost/++skin++cms/repository/group')
+
+>>> browser.getLink('Transform').click()
+>>> print browser.contents
+<?xml ...
+  <div id="imp-metadata">
+    <div id="imp-width">2048</div>
+    <div id="imp-height">1536</div>
+    <div id="imp-image-url">http://localhost/++skin++cms/repository/group/master-image.jpg</div>
+  </div>
+  ...

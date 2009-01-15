@@ -20,6 +20,7 @@ zeit.imp.Imp = Class.extend({
         this.image = null;
         this.loading_image = $('imp-loading-image');
         this.mask_image = $('imp-mask-image')
+        this.image_url = $('imp-image-url').textContent;
 
         this.zoom = (this.get_visual_area_dimensions().w / 
                      this.original_dimensions.w); 
@@ -133,7 +134,7 @@ zeit.imp.Imp = Class.extend({
         log('INFO', "Loading " + dim.w + "x" + dim.h);
         var query_string = MochiKit.Base.queryString(
             {'width': dim.w, 'height': dim.h});
-        var image_url = window.context_url + '/@@imp-scaled?' + query_string;
+        var image_url = this.image_url + '/@@imp-scaled?' + query_string;
         this.image.src = image_url; 
     },
 

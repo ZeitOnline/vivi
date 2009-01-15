@@ -51,29 +51,10 @@ class MaskImage(zeit.cms.browser.view.Base):
 
 class CropImage(zeit.cms.browser.view.Base):
 
-    # XXX This should be moved out of browser!
-
     def __call__(self, w, h, x1, y1, x2, y2, name, border=''):
         w, h = int(w), int(h)
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
         border = bool(border)
-        self.transform_image(w, h, x1, y1, x2, y2)
-        if border:
-            self.add_border()
-        self.pil_image.save(self.image.open('w'), 'JPEG')
-        image_name = '%s-%s.jpg' % (self.context.__parent__.__name__, name)
-        self.context.__parent__[image_name] = self.image
-        return self.url(self.image)
-
-    def transform_image(self, w, h, x1, y1, x2, y2):
-        transform = zeit.content.image.interfaces.ITransform(self.context)
-        self.image = transform.resize(w, h)
-        self.pil_image = PIL.Image.open(self.image.open())
-        format = self.pil_image.format
-        self.pil_image = self.pil_image.crop((x1, y1, x2, y2))
-
-    def add_border(self):
-        draw = PIL.ImageDraw.ImageDraw(self.pil_image)
-        w, h = self.pil_image.size
-        draw.rectangle((0, 0, w-1, h-1),
-                       outline=(0, 0, 0, 255))
+        cropper = zeit.imp.interfaces.ICropper(self.context)
+        image = cropper.crop(w, h, x1, y1, x2, y2, name, border)
+        return self.url(image)

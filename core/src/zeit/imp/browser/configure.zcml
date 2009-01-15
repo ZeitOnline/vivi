@@ -1,7 +1,8 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:gocept="http://namespaces.gocept.com/zcml">
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.imp">
 
   <include package=".tests" file="test.zcml" />
 
@@ -15,14 +16,14 @@
       imp.css" />
   </resourceLibrary>
 
-
   <gocept:pagelet
-    for="zeit.content.image.interfaces.IImage"
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp.html"
     class=".imp.Imp"
     template="imp.pt"
     permission="zope.View"
+    menu="zeit-context-views" title="Transform"
     />
 
   <browser:page
@@ -42,7 +43,7 @@
     />
 
   <browser:page
-    for="zeit.content.image.interfaces.IImage"
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-crop"
     class=".scale.CropImage"
@@ -50,7 +51,7 @@
     />
 
   <browser:page
-    for="zeit.content.image.interfaces.IImage"
+    for="zeit.content.image.interfaces.IImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-image-bar"
     class=".imp.ImageBar"

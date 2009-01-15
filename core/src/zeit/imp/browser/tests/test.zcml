@@ -31,4 +31,12 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="create-image-group"
+    class=".test_selenium.CreateImageGroup"
+    permission="zope.Public"
+    />
+
+
 </configure>

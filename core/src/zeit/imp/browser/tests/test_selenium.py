@@ -9,6 +9,7 @@ import webbrowser
 import xml.sax.saxutils
 import zc.selenium.pytest
 import zeit.connector.interfaces
+import zeit.content.image.test
 import zope.component
 
 
@@ -27,6 +28,7 @@ class Selenium(zc.selenium.pytest.Test):
 
     def setUp(self):
         super(Selenium, self).setUp()
+        self.create_group()
         self.open_imp()
 
     def tearDown(self):
@@ -34,10 +36,15 @@ class Selenium(zc.selenium.pytest.Test):
         self.selenium.open('http://%s/@@reset-mock-connector' %
                            self.selenium.server)
 
+    def create_group(self):
+        self.selenium.open(
+            'http://zmgr:mgrpw@%s/++skin++cms/create-image-group' %
+            self.selenium.server)
+
     def open_imp(self):
         self.selenium.open(
-            'http://zmgr:mgrpw@%s/++skin++cms/repository/2006/'
-            'DSC00109_2.JPG/@@imp.html' % self.selenium.server)
+            'http://zmgr:mgrpw@%s/++skin++cms/repository/group/@@imp.html' %
+            self.selenium.server)
 
     def click_label(self, label):
         self.selenium.click('//label[contains(string(.), %s)]' %
@@ -251,10 +258,15 @@ class SeleniumMaskTests(Selenium):
             'true')
 
 
-
 class ResetMockConnector(object):
 
     def __call__(self):
         zope.component.getUtility(
             zeit.connector.interfaces.IConnector)._reset()
         return "Done."
+
+
+class CreateImageGroup(object):
+
+    def __call__(self):
+        zeit.content.image.test.create_image_group_with_master_image()

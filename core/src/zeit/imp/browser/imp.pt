@@ -19,6 +19,7 @@
   <div id="imp-metadata">
     <div id="imp-width" tal:content="view/width" />
     <div id="imp-height" tal:content="view/height" />
+    <div id="imp-image-url" tal:content="view/master_image/@@absolute_url" />
   </div>
 
   <div id="imp-zoom">
