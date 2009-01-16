@@ -1,23 +1,17 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import StringIO
-
 import persistent
-
-import zope.component
-import zope.interface
-import zope.security.proxy
-
-import zope.app.container.contained
-
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.connector.resource
-
 import zeit.content.image.interfaces
+import zope.app.container.contained
+import zope.component
+import zope.interface
+import zope.security.proxy
 
 
 class ImageGroup(zeit.cms.repository.repository.Container):
