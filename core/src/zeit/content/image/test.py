@@ -51,11 +51,11 @@ def create_image_group():
 def create_image_group_with_master_image():
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
-    repository['group'] = zeit.content.image.imagegroup.ImageGroup()
+    group = zeit.content.image.imagegroup.ImageGroup()
+    group.master_image = u'master-image.jpg'
+    repository['group'] = group
     image = zeit.content.image.image.LocalImage()
     image.open('w').write(
         repository['2006']['DSC00109_2.JPG'].open().read())
-    zope.interface.alsoProvides(image,
-                                zeit.content.image.interfaces.IMasterImage)
     repository['group']['master-image.jpg'] = image
     return repository['group']

@@ -2,10 +2,11 @@
 # See also LICENSE.txt
 
 import PIL.Image
-
+import zc.sourcefactory.contextual
+import zeit.cms.repository.interfaces
+import zope.component
 import zope.interface
 import zope.schema
-
 from zeit.cms.i18n import MessageFactory as _
 
 class NotAnImageError(zope.schema.ValidationError):
@@ -46,4 +47,3 @@ class IMasterImageUploadSchema(zope.interface.Interface):
         description=_('upload-master-image-description'),
         required=False,
         constraint=is_image)
-

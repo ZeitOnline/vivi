@@ -14,6 +14,9 @@ import zope.schema
 from zeit.cms.i18n import MessageFactory as _
 
 
+IMAGE_NAMESPACE = 'http://namespaces.zeit.de/CMS/image'
+
+
 class ImageProcessingError(TypeError):
     """An error raised it's not possible to process the Image."""
 
@@ -127,8 +130,23 @@ class IThumbnailFolder(zope.interface.Interface):
     """The folder where to find thumbnails for an image."""
 
 
+class MasterImageSource(
+    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+
+    def getValues(self, context):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        for name in repository.getContent(context.uniqueId):
+            yield name
+
+
 class IImageGroup(zeit.cms.interfaces.IAsset):
     """An image group groups images with the same motif together."""
+
+    master_image = zope.schema.Choice(
+        title=_('Master image'),
+        source=MasterImageSource(),
+        required=False)
 
 
 class IRepositoryImageGroup(IImageGroup,

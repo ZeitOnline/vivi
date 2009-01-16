@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import gocept.form.grouped
+import rwproperty
 import zc.table.column
 import zeit.cms.browser.form
 import zeit.cms.browser.listing
@@ -12,7 +13,6 @@ import zeit.content.image.interfaces
 import zope.interface
 import zope.formlib.form
 from zeit.cms.i18n import MessageFactory as _
-
 
 
 class FormBase(object):
@@ -33,7 +33,7 @@ class AddForm(FormBase,
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit('references') +
+        FormBase.form_fields.omit('references', 'master_image') +
         zope.formlib.form.FormFields(
             zeit.content.image.browser.interfaces.IMasterImageUploadSchema))
 
@@ -43,6 +43,8 @@ class AddForm(FormBase,
     def create(self, data):
         self.image = self.create_image(data)
         group = super(AddForm, self).create(data)
+        if self.image:
+            group.master_image = self.image.__name__
         return group
 
     def add(self, group):
@@ -62,9 +64,6 @@ class AddForm(FormBase,
             image,
             self.form_fields.omit('__name__'), data)
         image.__name__ = name
-        # XXX this is not persistent over DAV, yet!
-        zope.interface.alsoProvides(
-            image, zeit.content.image.interfaces.IMasterImage)
         return image
 
 
@@ -85,9 +84,15 @@ class ImageColumn(zc.table.column.GetterColumn):
         return item.context
 
     def cell_formatter(self, value, item, formatter):
-        return zope.component.getMultiAdapter(
+        img = zope.component.getMultiAdapter(
             (value, formatter.request),
             name='preview').tag()
+        master = ''
+        if zeit.content.image.interfaces.IMasterImage.providedBy(value):
+            master = '<div class="master-image">%s</div>' % (
+                zope.i18n.translate(_('Master image'),
+                                    context=formatter.request))
+        return img + master
 
 
 class View(zeit.cms.browser.listing.Listing):

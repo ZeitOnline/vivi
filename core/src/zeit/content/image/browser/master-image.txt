@@ -31,6 +31,9 @@ After uploading the overview is diplayed. The uploaded image was created:
     <td>
       119x160
     </td>
+    <td>
+      ...Master image...
+    </td>
     ...
 
 It is marked as master image[#functional]_:
@@ -68,6 +71,44 @@ Clean up:
 >>> zope.app.component.hooks.setSite(old_site)
 
 
+Selecting the master image
+++++++++++++++++++++++++++
+
+It is possible to select the master image of an image group:
+
+>>> browser.open('http://localhost/++skin++cms/repository/image-group')
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Master image').displayValue
+['(no value)']
+>>> browser.getControl('Master image').displayOptions
+['(no value)',
+ 'new-hampshire-450x200.jpg',
+ 'new-hampshire-artikel.jpg',
+ 'obama-clinton-120x120.jpg']
+>>> browser.getControl('Master image').displayValue = ['obama']
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+...     'ZEIT ONLINE')
+>>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+...     'http://www.zeit.de/')
+>>> browser.getControl('Apply').click()
+>>> browser.getControl('Master image').displayValue
+['obama-clinton-120x120.jpg']
+>>> print browser.contents
+<?xml ...
+    ...Updated on...
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<?xml...
+    <td>
+      obama-clinton-120x120.jpg
+    </td>
+    ...
+    <td>
+      ...Master image...
+    </td>
+    ...
+
+
 .. [#browser]
 
     >>> import zope.testbrowser.testing
@@ -93,3 +134,5 @@ Clean up:
     >>> participation = zope.security.testing.Participation(principal)
     >>> import zope.security.management
     >>> zope.security.management.newInteraction(participation)
+    >>> import zeit.content.image.test
+    >>> group = zeit.content.image.test.create_image_group()

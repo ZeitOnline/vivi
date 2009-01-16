@@ -3,6 +3,7 @@
 
 import StringIO
 import persistent
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
@@ -14,10 +15,29 @@ import zope.interface
 import zope.security.proxy
 
 
-class ImageGroup(zeit.cms.repository.repository.Container):
+class ImageGroupBase(object):
+
+    zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImageGroup,
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        ('master_image', ))
+
+
+class ImageGroup(ImageGroupBase,
+                 zeit.cms.repository.repository.Container):
 
     zope.interface.implements(
         zeit.content.image.interfaces.IRepositoryImageGroup)
+
+    def __getitem__(self, key):
+        item = super(ImageGroup, self).__getitem__(key)
+        if key == self.master_image:
+            zope.interface.alsoProvides(
+                item, zeit.content.image.interfaces.IMasterImage)
+        return item
+
 
 @zope.interface.implementer(zeit.content.image.interfaces.IImageGroup)
 @zope.component.adapter(zeit.cms.interfaces.IResource)
@@ -42,7 +62,8 @@ def imageGroupToResource(context):
         properties=properties)
 
 
-class LocalImageGroup(persistent.Persistent,
+class LocalImageGroup(ImageGroupBase,
+                      persistent.Persistent,
                       zope.app.container.contained.Contained):
 
     zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
