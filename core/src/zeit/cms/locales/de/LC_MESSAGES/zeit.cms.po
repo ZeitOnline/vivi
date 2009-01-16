@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Dec  8 14:05:36 2008\n"
-"PO-Revision-Date: 2008-12-08 14:06+0100\n"
+"POT-Creation-Date: Fri Jan 16 15:44:35 2009\n"
+"PO-Revision-Date: 2009-01-16 15:50+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -131,8 +131,8 @@ msgstr "Titel"
 #: src/zeit/cms/browser/listing.py:269
 #: src/zeit/cms/interfaces.py:49
 #: src/zeit/cms/repository/browser/file.py:42
-#: src/zeit/content/image/browser/imagegroup.py:67
-#: src/zeit/content/image/browser/interfaces.py:31
+#: src/zeit/content/image/browser/imagegroup.py:106
+#: src/zeit/content/image/browser/interfaces.py:32
 #: src/zeit/search/interfaces.py:16
 #: src/zeit/cms/repository/browser/file_details.pt:2
 msgid "File name"
@@ -324,7 +324,7 @@ msgid "Head"
 msgstr "Kopf"
 
 #: src/zeit/cms/content/browser/form.py:52
-#: src/zeit/content/image/browser/form.py:29
+#: src/zeit/content/image/browser/form.py:30
 #: src/zeit/content/infobox/browser/form.py:32
 #: src/zeit/content/infobox/browser/form.py:87
 msgid "Texts"
@@ -532,14 +532,14 @@ msgid "Root of ontology"
 msgstr "Wurzel der Ontologie"
 
 #: src/zeit/cms/content/interfaces.py:58
-#: src/zeit/content/image/interfaces.py:51
+#: src/zeit/content/image/interfaces.py:53
 #: src/zeit/search/interfaces.py:21
 #: src/zeit/search/browser/sidebar.pt:46
 msgid "Year"
 msgstr "Jahr"
 
 #: src/zeit/cms/content/interfaces.py:63
-#: src/zeit/content/image/interfaces.py:57
+#: src/zeit/content/image/interfaces.py:59
 #: src/zeit/search/interfaces.py:22
 #: src/zeit/search/browser/sidebar.pt:55
 msgid "Volume"
@@ -1008,7 +1008,7 @@ msgstr "limit-amount-description"
 
 #: src/zeit/cms/workflow/browser/indicator.py:31
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:297
+#: src/zeit/workflow/publish.py:299
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1181,19 +1181,19 @@ msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
 #: src/zeit/content/image/browser/form.py:26
-#: src/zeit/content/image/browser/imagegroup.py:83
+#: src/zeit/content/image/browser/imagegroup.py:122
 msgid "Image data"
 msgstr "Bilddaten"
 
-#: src/zeit/content/image/browser/form.py:45
+#: src/zeit/content/image/browser/form.py:46
 msgid "Add image"
 msgstr "Bild hinzufügen"
 
-#: src/zeit/content/image/browser/form.py:62
+#: src/zeit/content/image/browser/form.py:63
 msgid "Edit image"
 msgstr "Bild bearbeiten"
 
-#: src/zeit/content/image/browser/image.py:46
+#: src/zeit/content/image/browser/image.py:44
 msgid "View image"
 msgstr "Bild zeigen"
 
@@ -1222,48 +1222,61 @@ msgid "Type"
 msgstr "Typ"
 
 #: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:167
+#: src/zeit/content/image/interfaces.py:184
 #: src/zeit/content/image/browser/configure.zcml:142
 #: src/zeit/content/gallery/browser/configure.zcml:80
 msgid "Images"
 msgstr "Bilder"
 
-#: src/zeit/content/image/browser/imagegroup.py:30
-msgid "Add image group"
-msgstr "Bildergruppe hinzufügen"
-
-#: src/zeit/content/image/browser/imagegroup.py:38
-msgid "Edit image group"
-msgstr "Bildergruppe bearbeiten"
-
-#: src/zeit/content/image/browser/imagegroup.py:44
-msgid "Image group metadata"
-msgstr "Metadaten der Bildergruppe"
-
-#: src/zeit/content/image/browser/imagegroup.py:60
+#: src/zeit/content/image/browser/imagegroup.py:100
 #: src/zeit/content/image/browser/configure.zcml:171
 msgid "Image group"
 msgstr "Bildergruppe"
 
-#: src/zeit/content/image/browser/imagegroup.py:70
+#: src/zeit/content/image/browser/imagegroup.py:109
 #: src/zeit/content/image/browser/image_view.pt:10
 msgid "Dimensions"
 msgstr "Ausmaße"
 
-#: src/zeit/content/image/browser/imagegroup.py:73
+#: src/zeit/content/image/browser/imagegroup.py:112
 #: src/zeit/content/portraitbox/interfaces.py:24
 #: src/zeit/content/image/browser/configure.zcml:201
 #: src/zeit/wysiwyg/browser/resources/image/dialog.pt:20
 msgid "Image"
 msgstr "Bild"
 
-#: src/zeit/content/image/browser/interfaces.py:14
+#: src/zeit/content/image/browser/imagegroup.py:32
+msgid "Add image group"
+msgstr "Bildergruppe hinzufügen"
+
+#: src/zeit/content/image/browser/imagegroup.py:72
+msgid "Edit image group"
+msgstr "Bildergruppe bearbeiten"
+
+#: src/zeit/content/image/browser/imagegroup.py:78
+msgid "Image group metadata"
+msgstr "Metadaten der Bildergruppe"
+
+#: src/zeit/content/image/browser/imagegroup.py:93
+#: src/zeit/content/image/interfaces.py:147
+msgid "Master image"
+msgstr "Hauptbild"
+
+#: src/zeit/content/image/browser/interfaces.py:15
 msgid "The uploaded image could not be identified."
 msgstr "Das hochgeladene Bild konnte nicht identifiziert werden."
 
-#: src/zeit/content/image/browser/interfaces.py:36
+#: src/zeit/content/image/browser/interfaces.py:37
 msgid "Upload new image"
 msgstr "Neues Bild hochladen"
+
+#: src/zeit/content/image/browser/interfaces.py:46
+msgid "Upload master image"
+msgstr "Hauptbild hochladen"
+
+#: src/zeit/content/image/browser/interfaces.py:47
+msgid "upload-master-image-description"
+msgstr "Das Hauptbild ist die das hochaufgelöste Bild aus dem verschiedenen Formate (Teaser, Artikel, …) ausgeschnitten werden."
 
 #: src/zeit/content/image/browser/processingerror.pt:5
 msgid "An error occured"
@@ -1273,64 +1286,64 @@ msgstr "Ein Fehler ist aufgetreten."
 msgid "The action you were trying to do could not be finished because the resource has no valid content."
 msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die Resource keinen gültigen Inhalt hat."
 
-#: src/zeit/content/image/interfaces.py:177
+#: src/zeit/content/image/interfaces.py:194
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 
-#: src/zeit/content/image/interfaces.py:28
+#: src/zeit/content/image/interfaces.py:30
 msgid "left"
 msgstr "Links"
 
-#: src/zeit/content/image/interfaces.py:29
+#: src/zeit/content/image/interfaces.py:31
 msgid "center"
 msgstr "Mitte"
 
-#: src/zeit/content/image/interfaces.py:30
+#: src/zeit/content/image/interfaces.py:32
 msgid "right"
 msgstr "Rechts"
 
-#: src/zeit/content/image/interfaces.py:46
+#: src/zeit/content/image/interfaces.py:48
 msgid "Image title"
 msgstr "Bildtitel"
 
-#: src/zeit/content/image/interfaces.py:63
+#: src/zeit/content/image/interfaces.py:65
 msgid "Copyrights"
 msgstr "Copyrights"
 
-#: src/zeit/content/image/interfaces.py:69
+#: src/zeit/content/image/interfaces.py:71
 msgid "Copyright"
 msgstr "Copyright"
 
-#: src/zeit/content/image/interfaces.py:73
+#: src/zeit/content/image/interfaces.py:75
 #: src/zeit/content/link/browser/configure.zcml:8
 msgid "Link"
 msgstr "Link"
 
-#: src/zeit/content/image/interfaces.py:74
+#: src/zeit/content/image/interfaces.py:76
 msgid "Link to copyright holder"
 msgstr "Link zum Copyright-Inhaber"
 
-#: src/zeit/content/image/interfaces.py:78
+#: src/zeit/content/image/interfaces.py:80
 msgid "Alternative text"
 msgstr "ALT-Text"
 
-#: src/zeit/content/image/interfaces.py:79
+#: src/zeit/content/image/interfaces.py:81
 msgid "Enter a textual description of the image"
 msgstr "Geben Sie eine Beschreibung des Bildes ein."
 
-#: src/zeit/content/image/interfaces.py:84
+#: src/zeit/content/image/interfaces.py:86
 msgid "Image sub text"
 msgstr "Bildunterschrift"
 
-#: src/zeit/content/image/interfaces.py:89
+#: src/zeit/content/image/interfaces.py:91
 msgid "Links to"
 msgstr "Verlinkt nach"
 
-#: src/zeit/content/image/interfaces.py:90
+#: src/zeit/content/image/interfaces.py:92
 msgid "Enter a URL this image should link to."
 msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
-#: src/zeit/content/image/interfaces.py:94
+#: src/zeit/content/image/interfaces.py:96
 #: src/zeit/content/image/browser/image_view.pt:24
 msgid "Alignment"
 msgstr "Ausrichtiung"
@@ -1620,11 +1633,11 @@ msgstr "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu k�
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: src/zeit/workflow/publish.py:260
+#: src/zeit/workflow/publish.py:262
 msgid "Could not publish because conditions not satisifed."
 msgstr "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
 
-#: src/zeit/workflow/publish.py:322
+#: src/zeit/workflow/publish.py:324
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
