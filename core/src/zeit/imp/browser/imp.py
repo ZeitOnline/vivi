@@ -2,11 +2,19 @@
 # See also LICENSE.txt
 
 import cjson
+import transaction
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
+import zeit.imp.browser.interfaces
 import zeit.imp.source
 import zope.cachedescriptors.property
 
+
+class NoMasterImageErrorView(object):
+
+    def __call__(self):
+        transaction.doom()
+        return super(NoMasterImageErrorView, self).__call__()
 
 class Imp(object):
 
@@ -20,7 +28,10 @@ class Imp(object):
 
     @zope.cachedescriptors.property.Lazy
     def master_image(self):
-        return zeit.content.image.interfaces.IMasterImage(self.context)
+        try:
+            return zeit.content.image.interfaces.IMasterImage(self.context)
+        except TypeError:
+            raise zeit.imp.browser.interfaces.NoMasterImageError()
 
     def scales(self):
         return zeit.imp.source.ScaleSource()

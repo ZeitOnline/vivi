@@ -27,6 +27,15 @@
     />
 
   <browser:page
+    for=".interfaces.NoMasterImageError"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    template="no-master-image-error.pt"
+    permission="zope.Public"
+    />
+
+
+  <browser:page
     for="zeit.content.image.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-scaled"

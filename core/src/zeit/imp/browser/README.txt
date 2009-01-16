@@ -54,7 +54,8 @@ The image manipulation view is on an imagegroup containing a master image:
 >>> old_site = zope.app.component.hooks.getSite()
 >>> zope.app.component.hooks.setSite(getRootFolder())
 >>> import zeit.content.image.test
->>> url = zeit.content.image.test.create_image_group_with_master_image()
+>>> grp = zeit.content.image.test.create_image_group_with_master_image()
+>>> grp = zeit.content.image.test.create_image_group()
 >>> zope.app.component.hooks.setSite(old_site)
 
 >>> browser.open('http://localhost/++skin++cms/repository/group')
@@ -68,3 +69,20 @@ The image manipulation view is on an imagegroup containing a master image:
     <div id="imp-image-url">http://localhost/++skin++cms/repository/group/master-image.jpg</div>
   </div>
   ...
+
+
+When there is no master image we get an error page telling us what to do:
+
+
+>>> browser.open('http://localhost/++skin++cms/repository/image-group')
+>>> browser.getLink('Transform').click()
+>>> print browser.contents
+<!DOCTYPE...
+     ...There is no master image...
+     
+
+It is possible to check out the group from here directly:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Master image').displayValue
+['(no value)']

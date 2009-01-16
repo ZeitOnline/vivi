@@ -1,0 +1,14 @@
+<html metal:use-macro="context/@@standard_macros/error-page">
+  <div metal:fill-slot="body"
+    i18n:domain="zeit.imp">
+
+    <h1 i18n:translate="">There is no master image</h1>
+    <div class="error" i18n:translate="no-master-image-help">
+      <span i18n:name="checkout">
+        <a href="@@checkout"
+          i18n:translate="">Checkout</a> 
+      </span>
+      the image group and choose one.
+    </div>
+  </div>
+</html>

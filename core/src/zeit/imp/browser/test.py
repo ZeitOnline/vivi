@@ -74,7 +74,7 @@ class ImageBarTest(TestBase):
              'scale_name': 'foo-240x120'},
             {'url': 'http://localhost/++skin++cms/repository/group/foo-artikel.jpg',
              'name': 'foo-artikel.jpg',
-             'scale_name': 'foo-240x120'}])
+             'scale_name': 'foo-artikel'}])
 
 
 class CropTest(TestBase):
