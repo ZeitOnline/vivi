@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: zeit.imp\n"
+"POT-Creation-Date: Mon Jan 19 11:00:05 2009\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: src/zeit/imp/browser/configure.zcml:19
+msgid "Transform"
+msgstr "Zuschneiden"
+
+#: src/zeit/imp/browser/imp.pt:54
+msgid "Black border (1px)"
+msgstr "Schwarzer Rahmen (1 Pixel)"
+
+#: src/zeit/imp/browser/imp.pt:59
+msgid "Crop"
+msgstr "Zuschneiden"
+
+#: src/zeit/imp/browser/no-master-image-error.pt:5
+msgid "There is no master image"
+msgstr "Es gibt kein Hauptbild"
+
+#. Default: ""
+#.  "${checkout}\n"
+#.  "      the image group and choose one."
+#: src/zeit/imp/browser/no-master-image-error.pt:7
+msgid "no-master-image-help"
+msgstr "In dieser Bildergruppe ist kein Hauptbild definiert. Sie können die Bildergruppe ${checkout} und eines definieren."
+
+#: src/zeit/imp/browser/no-master-image-error.pt:8
+msgid "Checkout"
+msgstr "auschecken"
+
