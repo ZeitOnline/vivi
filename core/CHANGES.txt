@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.9 (unreleased)
+1.9 (2009-01-19)
 ----------------
 
 - Interface-Deklaration auf Objekten werden im DAV abgelegt und gehen nicht
