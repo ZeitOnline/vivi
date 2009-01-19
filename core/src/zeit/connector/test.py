@@ -10,6 +10,7 @@ import traceback
 import transaction
 import unittest
 import zeit.connector.cache
+import zeit.connector.connector
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zope.app.appsetup.product
@@ -131,6 +132,41 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
         transaction.commit()
 
 
+class ConnectorCache(unittest.TestCase):
+
+    def setUp(self):
+        super(ConnectorCache, self).setUp()
+        self.connector = zeit.connector.connector.Connector(
+            roots={"default": os.environ['connector-url']})
+        self.rid = 'http://xml.zeit.de/testing/cache_test'
+
+    def tearDown(self):
+        for name, uid in self.connector.listCollection(
+            'http://xml.zeit.de/testing/'):
+            del self.connector[uid]
+
+    def test_deleting_non_existing_resource_does_not_create_cache_entry(self):
+        self.connector[self.rid] = zeit.connector.resource.Resource(
+            self.rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        children = self.connector.child_name_cache[
+            'http://xml.zeit.de/testing/']
+        children.remove(self.rid)
+        del self.connector[self.rid]
+        self.assertEquals([], list(children))
+
+    def test_delete_updates_cache(self):
+        self.connector[self.rid] = zeit.connector.resource.Resource(
+            self.rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        del self.connector[self.rid]
+        children = self.connector.child_name_cache[
+            'http://xml.zeit.de/testing/']
+        self.assertEquals([], list(children))
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
@@ -138,6 +174,7 @@ def test_suite():
         'locking.txt',
         'mock.txt',
         optionflags=optionflags))
+    suite.addTest(unittest.makeSuite(ConnectorCache))
 
     long_running = doctest.DocFileSuite(
         'longrunning.txt',

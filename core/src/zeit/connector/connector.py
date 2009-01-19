@@ -720,7 +720,7 @@ class Connector(object):
             else:
                 if deleted and id in children:
                     children.remove(id)
-                else:
+                elif added:
                     children.insert(unicode(id))
 
                 # Update the parent's properties:

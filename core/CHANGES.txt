@@ -1,8 +1,11 @@
 CHANGES
 =======
 
-1.7 (unreleased)
-----------------
+1.6.3 (2009-01-19)
+------------------
+
+- Fixed a bug in child-id cache which led to an invalid list of child ids in
+  some circumstances (like with the preview objects).
 
 1.6.2 (2008-12-12)
 ------------------
