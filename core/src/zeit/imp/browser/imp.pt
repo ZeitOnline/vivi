@@ -51,7 +51,7 @@
       <div class="widget">
         <label>
           <input type="checkbox" name="border" value="true"/>
-          1px Border
+          <span i18n:translate="" tal:omit-tag="">Black border (1px)</span>
         </label>
 
       </div>
