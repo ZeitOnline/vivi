@@ -103,6 +103,10 @@
   content: "✔";
 }
 
+.widget {
+  margin-bottom: 1em;
+}
+
 input.mask-size {
     width: 3em;
 }
