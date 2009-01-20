@@ -329,6 +329,12 @@ class ResizeTests(Selenium):
                      "    window.document.imp.get_crop_arguments()) =="
                      "    storedVars['cropArgs']", "true")
 
+        # Try another one, to be sure this works multiple times 
+        s.getEval('window.parent.resizeTo(1000, 800)')
+        s.verifyEval("window.MochiKit.Base.serializeJSON("
+                     "    window.document.imp.get_crop_arguments()) =="
+                     "    storedVars['cropArgs']", "true")
+
 
 class ResetMockConnector(object):
 
