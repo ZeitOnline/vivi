@@ -313,7 +313,7 @@ class ResizeTests(Selenium):
                 "storedVars['height']",
             "true")
 
-    def test_window_risize_moves_image(self):
+    def test_window_resize_moves_image(self):
         # When the area changes it's size the crop area remains centered. This
         # means we must move the image to not change the current view. That
         # means that after changing the size, the crop parameters remain the
