@@ -350,15 +350,24 @@ zeit.imp.ZoomSlider = Class.extend({
 
     construct: function(imp) {
         this.imp = imp;
+        this.zoom_slider = null;
+        this.init();
+        MochiKit.Signal.connect(this.imp, 'resize', this, 'init');
+        MochiKit.Signal.connect(
+            this.imp, 'zoom-change', this, 'update_slider_from_zoom');
+    },
+
+    init: function() {
+        if (this.zoom_slider !== null) {
+            MochiKit.Signal.disconnectAll(this.zoom_slider);
+        }
         this.zoom_slider = new UI.Slider(
             'imp-zoom-slider', 3001,
             UI.Slider.ValueMappers.range(0, 3, 0.001));
-        this.zoom_slider.setValue(imp.zoom);
+        this.zoom_slider.setValue(this.imp.zoom);
         MochiKit.Signal.connect(
             this.zoom_slider, 'valueChanged',
             this, 'update_zoom_from_slider');
-        MochiKit.Signal.connect(
-            this.imp, 'zoom-change', this, 'update_slider_from_zoom');
     },
 
     update_zoom_from_slider: function(event) {

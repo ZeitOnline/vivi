@@ -335,6 +335,14 @@ class ResizeTests(Selenium):
                      "    window.document.imp.get_crop_arguments()) =="
                      "    storedVars['cropArgs']", "true")
 
+    def test_window_resize_updates_zoom_slider(self):
+        # The zoom slider doesn't automatically support size updates.
+        s = self.selenium
+        s.storeEval('window.document.imp_zoom_slider.zoom_slider._maxLeft',
+                    'max_left')
+        s.getEval('window.parent.resizeTo(800, 900)')
+        s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft <'
+                     "    storedVars['max_left']", 'true')
 
 class ResetMockConnector(object):
 
