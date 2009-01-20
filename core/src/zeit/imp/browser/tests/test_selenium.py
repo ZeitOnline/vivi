@@ -295,6 +295,7 @@ class ResizeTests(Selenium):
         s.storeEval('window.document.imp.mask_image_dimensions.h', 'height')
         # Increase the window width affects mask, try width only first:
         s.getEval('window.parent.resizeTo(1200, 800)')
+        s.pause('500')
         s.verifyEval(
             "window.document.imp.mask_image_dimensions.w > storedVars['width']",
             "true")
@@ -305,6 +306,7 @@ class ResizeTests(Selenium):
 
         # change width and height:
         s.getEval('window.parent.resizeTo(800, 900)')
+        s.pause('500')
         s.verifyEval(
             "window.document.imp.mask_image_dimensions.w < storedVars['width']",
             "true")
@@ -325,6 +327,7 @@ class ResizeTests(Selenium):
                     'cropArgs')
 
         s.getEval('window.parent.resizeTo(900, 900)')
+        s.pause('500')
         s.verifyEval("window.MochiKit.Base.serializeJSON("
                      "    window.document.imp.get_crop_arguments()) =="
                      "    storedVars['cropArgs']", "true")
@@ -341,8 +344,27 @@ class ResizeTests(Selenium):
         s.storeEval('window.document.imp_zoom_slider.zoom_slider._maxLeft',
                     'max_left')
         s.getEval('window.parent.resizeTo(800, 900)')
+        s.pause('500')
         s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft <'
                      "    storedVars['max_left']", 'true')
+
+    def test_sidebar_switch_sends_resize_event(self):
+        # The sidebar can be switched on/off. This obiously doesn't send an
+        # onresize event to the window. We must support this nevertheless.
+
+        s = self.selenium
+        s.storeEval('window.document.imp_zoom_slider.zoom_slider._maxLeft',
+                    'max_left')
+        s.click('id=sidebar-dragger')
+        s.pause('500')
+        s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft >'
+                     "    storedVars['max_left']", 'true')
+        # Clicking again resets to the original state
+        s.click('id=sidebar-dragger')
+        s.pause('500')
+        s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft =='
+                     "    storedVars['max_left']", 'true')
+
 
 class ResetMockConnector(object):
 

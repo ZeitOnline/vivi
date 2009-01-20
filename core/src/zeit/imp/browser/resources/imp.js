@@ -32,6 +32,12 @@ zeit.imp.Imp = Class.extend({
             'starteffect': null,
             'zindex': 0,
         });
+        
+        this.resize_monitor = new zeit.imp.ResizeMonitor('imp-image-area');
+        MochiKit.Signal.connect(
+            this.resize_monitor, 'resize', function(event) {
+                MochiKit.Signal.signal(othis, 'resize');
+        });
         MochiKit.Signal.connect(
             'imp-mask', 'onmousedown',
             this, 'start_drag_change_mouse_cursor');
@@ -48,11 +54,6 @@ zeit.imp.Imp = Class.extend({
             this, 'configuration-change',
             this, 'load_mask_on_configuration_change');
 
-        // Change to monitor on box size change XXX
-        MochiKit.Signal.connect(
-            window, 'onresize', function(event) {
-                MochiKit.Signal.signal(othis, 'resize');
-        });
         MochiKit.Signal.connect(
             this, 'resize', this, 'load_mask_on_configuration_change');
         MochiKit.Signal.connect(
@@ -495,6 +496,30 @@ zeit.imp.AlreadyCroppedIndicator = Class.extend({
         });
     },
 
+});
+
+
+zeit.imp.ResizeMonitor = Class.extend({
+
+    construct: function(monitor_element) {
+        var othis = this;
+        this.element = $(monitor_element);
+        this.dimensions = this.get_current_dimensions();
+        var check = function() {
+            var new_dimensions = othis.get_current_dimensions();
+            if (!(new_dimensions.w == othis.dimensions.w &&
+                new_dimensions.h == othis.dimensions.h)) {
+                othis.dimensions = new_dimensions;
+                MochiKit.Signal.signal(othis, 'resize');
+            }
+            MochiKit.Async.callLater(0.25, check);
+        };
+        check();
+    },
+
+    get_current_dimensions: function() {
+        return MochiKit.Style.getElementDimensions(this.element);
+    },
 });
 
 MochiKit.Signal.connect(window, 'onload', function() {
