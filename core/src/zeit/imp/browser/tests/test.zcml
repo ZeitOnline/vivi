@@ -24,6 +24,12 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".test_selenium.ResizeTests"
+    name="zeit.imp.browser.ResizeTests"
+    permission="zope.Public"
+    />
+
   <browser:page
     for="zope.location.interfaces.ISite"
     name="reset-mock-connector"

@@ -263,6 +263,73 @@ class SeleniumMaskTests(Selenium):
             'true')
 
 
+class ResizeTests(Selenium):
+
+    def setUp(self):
+        s = self.selenium
+        # Remember current window dimensions to restore later.
+        s.storeEval('window.parent.outerWidth', 'window_width')
+        s.storeEval('window.parent.outerHeight', 'window_height')
+
+        # Set the size to a defined value
+        s.getEval('window.parent.resizeTo(1000, 800)')
+        s.verifyEval('window.parent.outerWidth', '1000')
+        s.verifyEval('window.parent.outerHeight', '800')
+
+        super(ResizeTests, self).setUp()
+
+        # Choose a mask
+        self.click_label("450×200")
+
+    def tearDown(self):
+        # Restore window dimensions
+        self.selenium.getEval(
+            "window.parent.resizeTo(storedVars['window_width'], "
+            "                       storedVars['window_height'])")
+        super(ResizeTests, self).tearDown()
+
+    def test_window_resize_updates_mask(self):
+        s = self.selenium
+        # Store the current mask image dimensions
+        s.storeEval('window.document.imp.mask_image_dimensions.w', 'width')
+        s.storeEval('window.document.imp.mask_image_dimensions.h', 'height')
+        # Increase the window width affects mask, try width only first:
+        s.getEval('window.parent.resizeTo(1200, 800)')
+        s.verifyEval(
+            "window.document.imp.mask_image_dimensions.w > storedVars['width']",
+            "true")
+        s.verifyEval(
+            "window.document.imp.mask_image_dimensions.h == "
+                "storedVars['height']",
+            "true")
+
+        # change width and height:
+        s.getEval('window.parent.resizeTo(800, 900)')
+        s.verifyEval(
+            "window.document.imp.mask_image_dimensions.w < storedVars['width']",
+            "true")
+        s.verifyEval(
+            "window.document.imp.mask_image_dimensions.h > "
+                "storedVars['height']",
+            "true")
+
+    def test_window_risize_moves_image(self):
+        # When the area changes it's size the crop area remains centered. This
+        # means we must move the image to not change the current view. That
+        # means that after changing the size, the crop parameters remain the
+        # same.
+
+        s = self.selenium
+        s.storeEval('window.MochiKit.Base.serializeJSON('
+                    '    window.document.imp.get_crop_arguments())',
+                    'cropArgs')
+
+        s.getEval('window.parent.resizeTo(900, 900)')
+        s.verifyEval("window.MochiKit.Base.serializeJSON("
+                     "    window.document.imp.get_crop_arguments()) =="
+                     "    storedVars['cropArgs']", "true")
+
+
 class ResetMockConnector(object):
 
     def __call__(self):

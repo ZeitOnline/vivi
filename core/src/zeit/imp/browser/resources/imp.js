@@ -14,6 +14,7 @@ zeit.imp.Imp = Class.extend({
             new Number($('imp-height').textContent));
         this.current_dimensions = this.original_dimensions;
         this.mask_dimensions = null;
+        this.mask_image_dimensions = null;
         this.mask_variable = null;
         this.border = false;
 
@@ -24,6 +25,7 @@ zeit.imp.Imp = Class.extend({
 
         this.zoom = (this.get_visual_area_dimensions().w / 
                      this.original_dimensions.w); 
+        this.stored_visual_area_dimensions = this.get_visual_area_dimensions();
         this.image_dragger = new MochiKit.DragAndDrop.Draggable(
             'imp-image-drag', {
             'handle': $('imp-mask'),
@@ -45,6 +47,17 @@ zeit.imp.Imp = Class.extend({
         MochiKit.Signal.connect(
             this, 'configuration-change',
             this, 'load_mask_on_configuration_change');
+
+        // Change to monitor on box size change XXX
+        MochiKit.Signal.connect(
+            window, 'onresize', function(event) {
+                MochiKit.Signal.signal(othis, 'resize');
+        });
+        MochiKit.Signal.connect(
+            this, 'resize', this, 'load_mask_on_configuration_change');
+        MochiKit.Signal.connect(
+            this, 'resize', this, 'move_image_on_size_change');
+
 
         this.zoom_image();
         var ident = MochiKit.Signal.connect(
@@ -137,14 +150,9 @@ zeit.imp.Imp = Class.extend({
         this.image.src = image_url; 
     },
 
-    crop_image: function() {
-        var othis = this;
-        if (this.cropping) {
-            // Do not run this twice
-            return;
-        }
+    get_crop_arguments: function() {
         if (!this.mask_dimensions) {
-            return;
+            return null;
         }
         this.cropping = true;
         this.ui_loading(true);
@@ -157,21 +165,31 @@ zeit.imp.Imp = Class.extend({
         var y1 = f(-image_pos.y + visual_dim.h/2 - this.mask_dimensions.h/2);
         var x2 = f(-image_pos.x + visual_dim.w/2 + this.mask_dimensions.w/2);
         var y2 = f(-image_pos.y + visual_dim.h/2 + this.mask_dimensions.h/2);
-
-        // Crop on server
-        var crop_url = window.context_url + '/@@imp-crop'
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            crop_url, {
-                'x1': x1,
+        return {'x1': x1,
                 'y1': y1,
                 'x2': x2,
                 'y2': y2,
                 'w': this.current_dimensions.w,
                 'h': this.current_dimensions.h,
                 'name': this.name,
-                'border': this.border?'1':'',
-            });
+                'border': this.border?'1':''}
+    },
 
+    crop_image: function() {
+        var othis = this;
+        if (this.cropping) {
+            // Do not run this twice
+            return;
+        }
+        var crop_arguments = this.get_crop_arguments();
+        if (crop_arguments === null) {
+            return;
+        } 
+
+        // Crop on server
+        var crop_url = window.context_url + '/@@imp-crop'
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            crop_url, crop_arguments);
         d.addCallback(function(result) {
             MochiKit.Signal.signal('content', 'imp-image-cropped')
             othis.cropping = false;
@@ -221,14 +239,14 @@ zeit.imp.Imp = Class.extend({
     },
 
     load_mask_on_configuration_change: function(event) {
-        var dim = this.get_visual_area_dimensions();
         var mask = this.mask_dimensions;
         if (!mask) {
             return
         }
+        this.mask_image_dimensions = this.get_visual_area_dimensions();
         var query = MochiKit.Base.queryString({
-            'image_width': dim.w,
-            'image_height': dim.h,
+            'image_width': this.mask_image_dimensions.w,
+            'image_height': this.mask_image_dimensions.h,
             'mask_width': mask.w,
             'mask_height': mask.h,
             'border': this.border?'yes':'',
@@ -236,6 +254,23 @@ zeit.imp.Imp = Class.extend({
         this.mask_image.setAttribute(
             'src',
             window.application_url + '/@@imp-cut-mask?' + query);
+    },
+
+    move_image_on_size_change: function(event) {
+        var pos = this.get_image_position();
+        pos.x -= 1;
+        pos.y -= 1;
+        log('INFO', pos.__repr__());
+
+        var dim = this.get_visual_area_dimensions();
+        var move_x = Math.floor((
+            this.stored_visual_area_dimensions.w - dim.w) / 2);
+        var move_y = Math.floor((
+            this.stored_visual_area_dimensions.h - dim.h) / 2);
+        pos.x -= move_x;
+        pos.y -= move_y;
+        MochiKit.Style.setElementPosition('imp-image-drag', pos);
+        this.stored_visual_area_dimensions = dim;
     },
 
     ui_loading: function(loading) {
