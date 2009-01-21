@@ -3,15 +3,9 @@ Checkout Manager
 ================
 
 The checkout manager is an adapter to ICMSContent managing the checkin/checkout
-process.
+process[#functional]_.
 
-We need to set the site since we're a functional test:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
-
-We also need an interaction as checkout manager needs to get the principal:
+We need an interaction as checkout manager needs to get the principal:
 
 >>> import zope.security.testing
 >>> principal = zope.security.testing.Principal(u'zope.user')
@@ -262,6 +256,43 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 
+Locking race condition
+======================
+
+There is a race condition in regard to locking: When the object is locked
+by another thread before the checkout has locked, a CheckinCheckoutError is
+raised.
+
+We provide a special LockStorage to simulate the behaviour:
+
+>>> import zeit.cms.locking.locking
+>>> import zope.app.locking.interfaces
+>>> class LockStorage(zeit.cms.locking.locking.LockStorage):
+...     def setLock(self, object, lock):
+...         raise zope.app.locking.interfaces.LockingError(object.uniqueId)
+...
+>>> lock_storage = LockStorage()
+>>> import zope.app.locking.interfaces
+>>> site_manager.registerUtility(
+...     lock_storage, zope.app.locking.interfaces.ILockStorage)
+
+Now try to checkout:
+
+>>> manager = ICheckoutManager(content)
+>>> manager.canCheckout
+True
+>>> manager.checkout()
+Traceback (most recent call last):
+    ...
+CheckinCheckoutError: http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+
+Remove the utility registration:
+
+>>> site_manager.unregisterUtility(
+...     lock_storage, zope.app.locking.interfaces.ILockStorage)
+True
+
+
 
 Cleanup
 =======
@@ -274,3 +305,9 @@ After the test we restore the old site:
 ...     (ICMSContent, ICheckinCheckoutEvent))
 True
 >>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional] We need to set the site since we're a functional test:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())

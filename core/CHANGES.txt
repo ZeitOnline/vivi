@@ -5,6 +5,7 @@ zeit.cms changes
 ------------------
 
 - Unterstützung von zope.app.renderer 3.5.0
+- Checkout gelocker Objekte konnte zu LockingError führen (Bug #4631).
 
 
 1.9 (2009-01-19)
