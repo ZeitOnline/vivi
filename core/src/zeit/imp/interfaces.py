@@ -9,6 +9,16 @@ import zope.schema
 class ICropper(zope.interface.Interface):
     """Crop master image in an image group."""
 
+    def add_filter(name, factor):
+        """Add a filter which is applied before crop.
+
+        name: one of brightnes, contrast, color, sharpness
+        factor: float 0..1000, 1 meaning no change.
+
+        raises ValueError if there is no filter for given name.
+
+    """
+
     def crop(w, h, x1, y1, x2, y2, name, border=False):
         """Crop master image from image group.
 
