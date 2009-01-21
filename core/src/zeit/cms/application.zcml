@@ -23,7 +23,6 @@
   <include package="zope.app.authentication"/>
   <include package="zope.app.server"/>
   <include package="zope.app.tree"/>
-  <include package="zope.app.renderer" file="meta.zcml"/>
   <include package="zope.app.renderer"/>
   <include package="zope.app.preference" file="meta.zcml"/>
   <include package="zope.app.preference"/>

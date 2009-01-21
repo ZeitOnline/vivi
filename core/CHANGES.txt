@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-1.10 (unreleased)
------------------
+1.9.1 (unreleased)
+------------------
+
+- Unterstützung von zope.app.renderer 3.5.0
 
 
 1.9 (2009-01-19)
