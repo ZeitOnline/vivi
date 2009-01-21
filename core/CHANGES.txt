@@ -1,15 +1,13 @@
 zeit.cms changes
 ================
 
-1.9.1 (unreleased)
+1.9.1 (2009-01-21)
 ------------------
 
 - Unterstützung von zope.app.renderer 3.5.0
 - Checkout gesperrter Objekte konnte zu LockingError führen (Bug #4631).
 - Biga Veröffentlichen mit nicht vorhandenem Bilderordner führte zu unklarer
   Fehlermeldung (Bug #4630).
-  
-
 
 1.9 (2009-01-19)
 ----------------
