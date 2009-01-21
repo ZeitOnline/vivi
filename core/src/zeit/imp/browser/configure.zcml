@@ -22,7 +22,7 @@
     name="imp.html"
     class=".imp.Imp"
     template="imp.pt"
-    permission="zope.View"
+    permission="zeit.imp.Use"
     menu="zeit-context-views" title="Transform"
     />
 
@@ -40,7 +40,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-scaled"
     class=".scale.ScaledImage"
-    permission="zope.View"
+    permission="zeit.imp.Use"
     />
 
   <browser:page
@@ -48,7 +48,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-cut-mask"
     class=".scale.MaskImage"
-    permission="zope.View"
+    permission="zeit.imp.Use"
     />
 
   <browser:page
@@ -64,7 +64,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-image-bar"
     class=".imp.ImageBar"
-    permission="zope.View"
+    permission="zeit.imp.Use"
     />
 
 </configure>

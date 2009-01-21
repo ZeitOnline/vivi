@@ -3,6 +3,11 @@
   xmlns:i18n="http://namespaces.zope.org/i18n"
   i18n_domain="zeit.imp">
 
+  <permission
+    id="zeit.imp.Use"
+    title="Use IMP"
+    />
+
   <i18n:registerTranslations directory="locales" />
 
   <adapter factory=".crop.Cropper" trusted="yes"/>
