@@ -97,6 +97,34 @@ Could not checkout http://xml.zeit.de/image-folder
 Could not checkout http://xml.zeit.de/image-folder/thumbnails
 
 
+Publishing w/o image folder
++++++++++++++++++++++++++++
+
+When the image folder is removed before the gallery is published the gallery is
+published w/o images:
+
+Delete the folder and try to publish:
+
+>>> del repository['image-folder']
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
+>>> publish.publish()
+>>> tasks.process()
+>>> gallery_info.published
+True
+>>> print logfile.getvalue(),
+Running job 3
+Publishing http://xml.zeit.de/online/gallery
+...publish.sh:
+Publishing test script
+work/online/gallery
+done.
+
+
+
+
+
 Clean up:
 
 >>> zope.security.management.endInteraction()

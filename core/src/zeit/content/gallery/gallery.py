@@ -156,6 +156,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         """Return the keys of the mapping object.
         """
         image_folder = self._image_folder
+        if image_folder is None:
+            return []
         return (name for name in self._list_all_keys()
                 if name in image_folder)
 
