@@ -6,6 +6,7 @@ zeit.imp changes
 
 - Anpassen der Bildposition etc, wenn das Browserfenster die Größe ändert oder
   die Seitenleiste ein- oder ausgefahren wird.
+- Extra Berechtigung für das Benutzen.
 
 0.1 (2009-01-19)
 ++++++++++++++++
