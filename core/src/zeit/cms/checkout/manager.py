@@ -1,20 +1,17 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.workingcopy.interfaces
+import zeit.cms.workingcopy.workingcopy
+import zope.app.container.interfaces
+import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.event
 import zope.interface
-
-import zope.app.container.interfaces
-import zope.app.locking.interfaces
-
-import zeit.cms.interfaces
-import zeit.cms.checkout.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.workingcopy.interfaces
-import zeit.cms.workingcopy.workingcopy
 
 
 class CheckoutManager(object):
