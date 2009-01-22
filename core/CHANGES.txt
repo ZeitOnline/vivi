@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.2 (unreleased)
+0.2 (2009-01-22)
 ++++++++++++++++
 
 - Anpassen der Bildposition etc, wenn das Browserfenster die Größe ändert oder
