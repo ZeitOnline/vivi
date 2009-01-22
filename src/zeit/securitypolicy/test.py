@@ -9,6 +9,7 @@ import zope.component
 
 import zeit.cms.testing
 import zeit.connector.interfaces
+import zeit.imp.test
 
 
 SecurityPolicyLayer = zope.app.testing.functional.ZCMLLayer(
@@ -35,7 +36,8 @@ class TestSecurityPolicyXLSSheet(
 
     def setUp(self):
         super(TestSecurityPolicyXLSSheet, self).setUp()
-        zeit.cms.testing.setup_product_config()
+        zeit.cms.testing.setup_product_config(
+            zeit.imp.test.product_config)
 
     def tearDown(self):
         self.connector._reset()
@@ -45,7 +47,12 @@ class TestSecurityPolicyXLSSheet(
         for skin, path, form, expected in self.cases:
             if skin.strip() == 'python:':
                 test = self
-                eval(path)
+                site = self.getSite()
+                self.setSite(self.getRootFolder())
+                try:
+                    eval(path)
+                finally:
+                    self.setSite(site)
                 continue
             path_with_skin = '/++skin++%s%s' % (skin, path)
             path_with_skin = path_with_skin % dict(username=self.username)
