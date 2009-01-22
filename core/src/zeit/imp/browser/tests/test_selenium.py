@@ -38,12 +38,12 @@ class Selenium(zc.selenium.pytest.Test):
 
     def create_group(self):
         self.selenium.open(
-            'http://zmgr:mgrpw@%s/++skin++cms/create-image-group' %
+            'http://user:userpw@%s/++skin++cms/create-image-group' %
             self.selenium.server)
 
     def open_imp(self):
         self.selenium.open(
-            'http://zmgr:mgrpw@%s/++skin++cms/repository/group/@@imp.html' %
+            'http://user:userpw@%s/++skin++cms/repository/group/@@imp.html' %
             self.selenium.server)
 
     def click_label(self, label):
@@ -364,6 +364,31 @@ class ResizeTests(Selenium):
         s.pause('500')
         s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft =='
                      "    storedVars['max_left']", 'true')
+
+
+class FilterTests(Selenium):
+
+    def test_value_mapper(self):
+        s = self.selenium
+
+        def verify_mappers(step, value):
+            s.waitForNotEval(
+                'typeof(window.document.imp_color_filter)', 'undefined')
+            s.verifyEval(
+                'window.document.imp_color_filter.to_value(%s)' % step,
+                str(value))
+            s.verifyEval(
+                'window.document.imp_color_filter.to_step(%s)' % value,
+                str(step))
+
+        verify_mappers(0, 0)
+        verify_mappers(250, 0.5)
+        verify_mappers(500, 1)
+        verify_mappers(750, 7.25)
+        verify_mappers(1000, 26)
+
+
+
 
 
 class ResetMockConnector(object):

@@ -30,6 +30,12 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".test_selenium.FilterTests"
+    name="zeit.imp.browser.FilterTests"
+    permission="zope.Public"
+    />
+
   <browser:page
     for="zope.location.interfaces.ISite"
     name="reset-mock-connector"

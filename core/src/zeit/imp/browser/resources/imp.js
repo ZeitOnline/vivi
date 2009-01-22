@@ -592,7 +592,7 @@ zeit.imp.ImageFilter = Class.extend({
         if (value <= 1) {
             return value * 500;
         }
-        return Math.sqrt(value * 500 - 1) + 10000;
+        return Math.sqrt((value-1) * 10000) + 500;
     },
 
 });
@@ -609,5 +609,5 @@ MochiKit.Signal.connect(window, 'onload', function() {
     new zeit.imp.ImageFilter('brightness');
     new zeit.imp.ImageFilter('contrast');
     new zeit.imp.ImageFilter('sharpness');
-    new zeit.imp.ImageFilter('color');
+    document.imp_color_filter = new zeit.imp.ImageFilter('color');
 });
