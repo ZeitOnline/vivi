@@ -387,8 +387,46 @@ class FilterTests(Selenium):
         verify_mappers(750, 7.25)
         verify_mappers(1000, 26)
 
+    def test_brightness_slider(self):
+        self.verify_slider('brightness')
 
+    def test_contrast_slider(self):
+        self.verify_slider('contrast')
 
+    def test_color_slider(self):
+        self.verify_slider('color')
+
+    def test_sharpness_slider(self):
+        self.verify_slider('sharpness')
+
+    def verify_slider(self, name):
+        s = self.selenium
+        selector = 'css=*[id="filter.%s"] .uislider' % name
+        s.waitForElementPresent(selector)
+
+        # Clicking 0 yields 0 as value and changes the image url
+        s.storeEval('window.document.imp.image.src', 'image_url')
+        s.clickAt(selector, '0')
+        s.verifyValue('filter.%s.input' % name, '0')
+        s.pause('300')
+        s.verifyEval(
+            "window.document.imp.image.src == storedVars['image_url']",
+            'false')
+
+        # Clicking > 0 increases the value:
+        s.clickAt(selector, '100')
+        s.verifyEval(
+            "new Number(window.document.getElementById("
+            "   'filter.%s.input').value) > 0" % name,
+            'true')
+
+    def test_slider_change_changes_crop_args(self):
+        s = self.selenium
+        selector = 'css=*[id="filter.color"] .uislider'
+        s.waitForElementPresent(selector)
+        s.clickAt(selector, '0')
+        s.pause('10')
+        s.verifyEval('window.document.imp.crop_arguments["filter.color"]', '0')
 
 
 class ResetMockConnector(object):
