@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan 19 11:00:05 2009\n"
+"POT-Creation-Date: Thu Jan 22 14:11:09 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -27,11 +27,27 @@ msgstr ""
 msgid "Transform"
 msgstr ""
 
-#: src/zeit/imp/browser/imp.pt:54
+#: src/zeit/imp/browser/imp.pt:53
 msgid "Black border (1px)"
 msgstr ""
 
-#: src/zeit/imp/browser/imp.pt:59
+#: src/zeit/imp/browser/imp.pt:60
+msgid "Brightness"
+msgstr ""
+
+#: src/zeit/imp/browser/imp.pt:66
+msgid "Contrast"
+msgstr ""
+
+#: src/zeit/imp/browser/imp.pt:72
+msgid "Sharpness"
+msgstr ""
+
+#: src/zeit/imp/browser/imp.pt:78
+msgid "Color"
+msgstr ""
+
+#: src/zeit/imp/browser/imp.pt:82
 msgid "Crop"
 msgstr ""
 
@@ -48,5 +64,9 @@ msgstr ""
 
 #: src/zeit/imp/browser/no-master-image-error.pt:8
 msgid "Checkout"
+msgstr ""
+
+#: src/zeit/imp/configure.zcml:6
+msgid "Use IMP"
 msgstr ""
 

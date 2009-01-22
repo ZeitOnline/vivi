@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.imp\n"
-"POT-Creation-Date: Mon Jan 19 11:00:05 2009\n"
+"POT-Creation-Date: Thu Jan 22 14:11:09 2009\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
@@ -15,11 +15,27 @@ msgstr ""
 msgid "Transform"
 msgstr "Zuschneiden"
 
-#: src/zeit/imp/browser/imp.pt:54
+#: src/zeit/imp/browser/imp.pt:53
 msgid "Black border (1px)"
 msgstr "Schwarzer Rahmen (1 Pixel)"
 
-#: src/zeit/imp/browser/imp.pt:59
+#: src/zeit/imp/browser/imp.pt:60
+msgid "Brightness"
+msgstr "Helligkeit"
+
+#: src/zeit/imp/browser/imp.pt:66
+msgid "Contrast"
+msgstr "Kontrast"
+
+#: src/zeit/imp/browser/imp.pt:72
+msgid "Sharpness"
+msgstr "Schärfe"
+
+#: src/zeit/imp/browser/imp.pt:78
+msgid "Color"
+msgstr "Farbe"
+
+#: src/zeit/imp/browser/imp.pt:82
 msgid "Crop"
 msgstr "Zuschneiden"
 
@@ -37,4 +53,8 @@ msgstr "In dieser Bildergruppe ist kein Hauptbild definiert. Sie können die Bil
 #: src/zeit/imp/browser/no-master-image-error.pt:8
 msgid "Checkout"
 msgstr "auschecken"
+
+#: src/zeit/imp/configure.zcml:6
+msgid "Use IMP"
+msgstr "IMP verwenden"
 
