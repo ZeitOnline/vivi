@@ -23,7 +23,7 @@ zeit.imp.Imp = Class.extend({
         this.image = null;
         this.image_server_dimensions = null;
         this.loading_image = $('imp-loading-image');
-        this.mask_image = $('imp-mask-image')
+        this.mask_image = null;
 
         this.zoom = (this.get_visual_area_dimensions().w / 
                      this.original_dimensions.w); 
@@ -266,9 +266,13 @@ zeit.imp.Imp = Class.extend({
             'mask_height': mask.h,
             'border': this.border?'yes':'',
             });
-        this.mask_image.setAttribute(
-            'src',
-            window.application_url + '/@@imp-cut-mask?' + query);
+        var image_url = window.application_url + '/@@imp-cut-mask?' + query;
+        if (this.mask_image === null) {
+            this.mask_image = $('imp-mask').appendChild(
+                IMG({'src': image_url}))
+        } else {
+            this.mask_image.setAttribute('src', image_url);
+        }
     },
 
     move_image_on_size_change: function(event) {
