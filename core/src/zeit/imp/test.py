@@ -142,6 +142,20 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         self.assertEquals(['group-foo.jpg', 'master-image.jpg'],
                           self.group.keys())
 
+    def test_border_applied_after_filters(self):
+        # The border must be applied after the filters. To verify this we
+        # create an image with no contrast which is solid gray. The border adds
+        # some black.
+        self.crop.add_filter('contrast', 0)
+        image = self.crop.crop(200, 200, 0, 0, 200, 200, border=True)
+        r, g, b = self.get_histogram(image)
+        self.assertNotEquals(40000, r[156])
+        self.assertNotEquals(40000, g[156])
+        self.assertNotEquals(40000, b[156])
+        self.assertNotEquals(0, r[0])
+        self.assertNotEquals(0, g[0])
+        self.assertNotEquals(0, b[0])
+
 
 scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
 product_config = {'zeit.imp': {'scale-source': 'file://%s' % scale_xml_path}}

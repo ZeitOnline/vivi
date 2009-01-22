@@ -40,12 +40,13 @@ class Cropper(object):
 
         pil_image = pil_image.resize((w, h), self.downsample_filter)
         pil_image = pil_image.crop((x1, y1, x2, y2))
-        if border:
-            pil_image = self.add_border(pil_image)
 
         for filter_class, factor in self.filters:
             filter = filter_class(pil_image)
             pil_image = filter.enhance(factor)
+
+        if border:
+            pil_image = self.add_border(pil_image)
 
         self.pil_image = pil_image
         return pil_image
