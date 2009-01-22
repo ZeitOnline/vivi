@@ -119,9 +119,8 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         self.assertEquals(40000, b[156])
 
     def test_sharpness_filter(self):
-        # A factor of 0 makes smooth image. The variance of a channel will be
-        # much lower than with a factor of 1000 which creates a sharp image
-        # because the colors are more evenly distributed (noise).
+        # Testing the sharpnes is not quite trival. We just check that the
+        # histograms have changed:
         self.crop.add_filter('sharpness', 0)
         image = self.crop.crop(200, 200, 0, 0, 200, 200)
         r_smooth, g, b = self.get_histogram(image)
@@ -131,13 +130,7 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         self.crop.add_filter('sharpness', 1000)
         image = self.crop.crop(200, 200, 0, 0, 200, 200)
         r_sharp, g, b = self.get_histogram(image)
-        #self.assertTrue(self.variance(r_smooth) > self.variance(r_sharp))
-        # XXX fails? why?
-
-    @staticmethod
-    def variance(l):
-        avg = float(sum(l)) / len(l)
-        return sum((x -  avg)**2 for x in l) / len(l)
+        self.assertNotEqual(r_smooth, r_sharp)
 
     def test_store_without_crop_raises(self):
         self.assertRaises(RuntimeError, self.crop.store, 'foo')
