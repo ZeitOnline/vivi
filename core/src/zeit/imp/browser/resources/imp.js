@@ -541,12 +541,25 @@ zeit.imp.ImageFilter = Class.extend({
 
     construct: function(name) {
         this.name = name;
-        this.input_element = $('imp-configuration-form')['filter.' + name];
+        this.container = $('filter.' + this.name);
+        var input_id = 'filter.' + name + '.input';
+        this.input_element = this.container.appendChild(
+            INPUT({'type': 'text',
+                   'name': 'filter.' + this.name,
+                   'id': input_id,
+                   'value': '1',
+                   'class': 'filter'}));
+        this.slider_element = this.container.appendChild(
+            DIV({'class': 'uislider'}))
+        MochiKit.DOM.getFirstElementByTagAndClassName(
+            'label', null, this.container).setAttribute('for', input_id);
+
         this.slider = new UI.Slider(
-            'imp-slider-' + name, 1001,
+            this.slider_element, 1001,
             [this.to_value, this.to_step],
             this.input_element);
         this.slider.setValue(1); // 1 is the noop.
+
         MochiKit.Signal.connect(
             this.slider, 'valueChanged', this, 'update_crop_arguments');
         this.signal_deferred = null;
@@ -566,16 +579,19 @@ zeit.imp.ImageFilter = Class.extend({
     },
 
     to_value: function(step) {
+        var value;
         if (step <= 500) {
-            return step / 500
+            value = step / 500
+        } else {
+            value = Math.pow(step-500, 2) / 10000 + 1;
         }
-        return Math.pow(step-500, 2) / 10000;
+        return new Number(value.toPrecision(3));
     },
     to_step: function(value) {
         if (value <= 1) {
             return value * 500;
         }
-        return Math.sqrt(value * 500) + 10000;
+        return Math.sqrt(value * 500 - 1) + 10000;
     },
 
 });
@@ -588,5 +604,9 @@ MochiKit.Signal.connect(window, 'onload', function() {
     new zeit.imp.DynamicMask(document.imp);
     new zeit.imp.ImageBar();
     new zeit.imp.AlreadyCroppedIndicator();
-    document.foo = new zeit.imp.ImageFilter('brightness');
+    // Filters
+    new zeit.imp.ImageFilter('brightness');
+    new zeit.imp.ImageFilter('contrast');
+    new zeit.imp.ImageFilter('sharpness');
+    new zeit.imp.ImageFilter('color');
 });

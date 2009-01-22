@@ -56,12 +56,27 @@
 
       </div>
 
-      <div class="widget">
+      <div id="filter.brightness" class="widget filter">
         <label>
           <span i18n:translate="" tal:omit-tag="">Brightness</span>
-          <input type="text" name="filter.brightness" value="1"/>
-          <div id="imp-slider-brightness" class="uislider"></div>
+        </label>
+      </div>
 
+      <div id="filter.contrast" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Contrast</span>
+        </label>
+      </div>
+
+      <div id="filter.sharpness" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Sharpness</span>
+        </label>
+      </div>
+
+      <div id="filter.color" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Color</span>
         </label>
       </div>
 

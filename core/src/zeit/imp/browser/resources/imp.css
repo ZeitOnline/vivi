@@ -121,3 +121,14 @@ input.mask-size[disabled="disabled"] {
     padding-left: 2.25em;
     margin-bottom: 1em;
 }
+
+div.filter > input {
+    width: 4em;
+    text-align: right;
+    position: absolute;
+    right: 0;
+}
+
+div.filter > label {
+    height: 2em;
+}

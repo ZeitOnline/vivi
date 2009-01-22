@@ -63,6 +63,7 @@ class CropImage(zeit.cms.browser.view.Base):
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
         border = bool(border)
         cropper = zeit.imp.interfaces.ICropper(self.context)
+        parse_filter_args(self.request, cropper)
         cropper.crop(w, h, x1, y1, x2, y2, border)
         image = cropper.store(name)
         return self.url(image)
