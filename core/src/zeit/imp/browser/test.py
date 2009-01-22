@@ -133,6 +133,12 @@ class CropTest(TestBase):
         self.assertTrue(
             sum(color) < 70, "fail %s, %s sum%s > 70" % (x, y, color))
 
+    def test_filters_applied(self):
+        # Test that the image is different with and without a filter applied
+        img1 = self.get_image_data()
+        img2 = self.get_image_data(**{'filter.brightness': '0.5'})
+        self.assertNotEqual(img1, img2)
+
 
 def test_suite():
     suite = unittest.TestSuite()
