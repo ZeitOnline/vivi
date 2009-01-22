@@ -12,12 +12,25 @@ import zeit.content.image.interfaces
 import zeit.imp.mask
 
 
+def parse_filter_args(request, crop):
+    for key, value in request.form.items():
+        if key.startswith('filter.'):
+            filter_type = key.split('.', 1)[1]
+            try:
+                factor = float(value)
+            except ValueError:
+                continue
+            crop.add_filter(filter_type, factor)
+
+
+
 class ScaledImage(zeit.cms.browser.view.Base):
 
     def __call__(self, width, height):
         width, height = int(width), int(height)
         cropper = zeit.imp.interfaces.ICropper(self.context)
         cropper.downsample_filter = PIL.Image.NEAREST
+        parse_filter_args(self.request, cropper)
         pil_image = cropper.crop(width, height, 0, 0, width, height)
         f = StringIO.StringIO()
         pil_image.save(f, 'JPEG')
