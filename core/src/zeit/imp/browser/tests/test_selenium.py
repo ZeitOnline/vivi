@@ -75,7 +75,7 @@ class SeleniumBasicTests(Selenium):
         s = self.selenium
 
         self.click_label("Schwarzer Rahmen")  # Assuming german browser
-        s.verifyValue('//img[@id="imp-mask-image"]/@src', '')
+        s.verifyElementNotPresent('id=imp-mask-image')
         self.click_label("450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',

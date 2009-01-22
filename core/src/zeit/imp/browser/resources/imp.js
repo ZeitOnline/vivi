@@ -269,7 +269,7 @@ zeit.imp.Imp = Class.extend({
         var image_url = window.application_url + '/@@imp-cut-mask?' + query;
         if (this.mask_image === null) {
             this.mask_image = $('imp-mask').appendChild(
-                IMG({'src': image_url}))
+                IMG({'id': 'imp-mask-image', 'src': image_url}))
         } else {
             this.mask_image.setAttribute('src', image_url);
         }
