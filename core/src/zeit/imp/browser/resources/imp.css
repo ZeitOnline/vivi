@@ -40,6 +40,7 @@
   width: 220px;
   height: 19px;
   margin: auto;
+  z-index: 2;
 }
 
 #imp-loading-image > img {
