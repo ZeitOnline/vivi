@@ -587,6 +587,7 @@ zeit.imp.ImageFilter = Class.extend({
         }
         return new Number(value.toPrecision(3));
     },
+
     to_step: function(value) {
         if (value <= 1) {
             return value * 500;
