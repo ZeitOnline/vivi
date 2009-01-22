@@ -3,36 +3,30 @@
 
 import PIL.Image
 import PIL.ImageDraw
+import StringIO
 import calendar
 import zope.datetime
 import zope.dublincore.interfaces
 import zeit.cms.browser.view
-import zeit.content.image.browser.image
 import zeit.content.image.interfaces
 import zeit.imp.mask
 
 
-class ScaledImage(zeit.content.image.browser.image.Scaled):
+class ScaledImage(zeit.cms.browser.view.Base):
 
-    filter = PIL.Image.NEAREST
-
-    @property
-    def width(self):
-        return int(float(self.request.get('width', 0)))
-
-    @property
-    def height(self):
-        return int(float(self.request.get('height', 0)))
-
-    def __call__(self):
+    def __call__(self, width, height):
+        width, height = int(width), int(height)
+        cropper = zeit.imp.interfaces.ICropper(self.context)
+        cropper.downsample_filter = PIL.Image.NEAREST
+        pil_image = cropper.crop(width, height, 0, 0, width, height)
+        f = StringIO.StringIO()
+        pil_image.save(f, 'JPEG')
         self.request.response.setHeader(
             'Cache-Control', 'public,max-age=3600')
-        dc = zope.dublincore.interfaces.IDCTimes(self.scaled.context, None)
-        if dc is not None:
-            lmd = zope.datetime.rfc1123_date(
-                calendar.timegm(dc.modified.utctimetuple()))
-            self.request.response.setHeader("Last-Modified", lmd)
-        return self.scaled()
+        self.request.response.setHeader(
+            'Content-Type', 'image/jpeg')
+        # Hellooo memory consumption
+        return f.getvalue()
 
 
 class MaskImage(zeit.cms.browser.view.Base):
@@ -56,5 +50,6 @@ class CropImage(zeit.cms.browser.view.Base):
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
         border = bool(border)
         cropper = zeit.imp.interfaces.ICropper(self.context)
-        image = cropper.crop(w, h, x1, y1, x2, y2, name, border)
+        cropper.crop(w, h, x1, y1, x2, y2, border)
+        image = cropper.store(name)
         return self.url(image)

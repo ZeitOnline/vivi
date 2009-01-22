@@ -17,11 +17,12 @@ zeit.imp.Imp = Class.extend({
         this.mask_image_dimensions = null;
         this.mask_variable = null;
         this.border = false;
+        // Point for extensions to add arguments.
+        this.crop_arguments = {}
 
         this.image = null;
         this.loading_image = $('imp-loading-image');
         this.mask_image = $('imp-mask-image')
-        this.image_url = $('imp-image-url').textContent;
 
         this.zoom = (this.get_visual_area_dimensions().w / 
                      this.original_dimensions.w); 
@@ -132,8 +133,8 @@ zeit.imp.Imp = Class.extend({
         }
 
         var server_dim = new MochiKit.DOM.Dimensions(
-            this.original_dimensions.w * grid_zoom,
-            this.original_dimensions.h * grid_zoom);
+            Math.floor(this.original_dimensions.w * grid_zoom),
+            Math.floor(this.original_dimensions.h * grid_zoom));
 
         if (this._zoom_deferred) {
             this._zoom_deferred.cancel();
@@ -147,7 +148,7 @@ zeit.imp.Imp = Class.extend({
         log('INFO', "Loading " + dim.w + "x" + dim.h);
         var query_string = MochiKit.Base.queryString(
             {'width': dim.w, 'height': dim.h});
-        var image_url = this.image_url + '/@@imp-scaled?' + query_string;
+        var image_url = window.context_url + '/@@imp-scaled?' + query_string;
         this.image.src = image_url; 
     },
 
@@ -166,14 +167,17 @@ zeit.imp.Imp = Class.extend({
         var y1 = f(-image_pos.y + visual_dim.h/2 - this.mask_dimensions.h/2);
         var x2 = f(-image_pos.x + visual_dim.w/2 + this.mask_dimensions.w/2);
         var y2 = f(-image_pos.y + visual_dim.h/2 + this.mask_dimensions.h/2);
-        return {'x1': x1,
-                'y1': y1,
-                'x2': x2,
-                'y2': y2,
-                'w': this.current_dimensions.w,
-                'h': this.current_dimensions.h,
-                'name': this.name,
-                'border': this.border?'1':''}
+        var args = MochiKit.Base.clone(this.crop_arguments);
+        MochiKit.Base.update(args, 
+            {'x1': x1,
+             'y1': y1,
+             'x2': x2,
+             'y2': y2,
+             'w': this.current_dimensions.w,
+             'h': this.current_dimensions.h,
+             'name': this.name,
+             'border': this.border?'1':''});
+        return args;
     },
 
     crop_image: function() {
@@ -522,6 +526,27 @@ zeit.imp.ResizeMonitor = Class.extend({
     },
 });
 
+
+zeit.imp.ImageFilter = Class.extend({
+
+    construct: function(name) {
+        this.name = name;
+        this.input_element = $('imp-configuration-form')['filter.' + name];
+        this.slider = new UI.Slider(
+            'imp-slider-' + name, 3001,
+            UI.Slider.ValueMappers.range(0, 3, 0.001),
+            this.input_element);
+        this.slider.setValue(1); // 1 is the noop.
+        MochiKit.Signal.connect(
+            this.slider, 'valueChanged', this, 'update_crop_arguments');
+    },
+
+    update_crop_arguments: function(event) {
+        document.imp.crop_arguments['filter.' + this.name] = this.slider.value;
+    },
+
+});
+
 MochiKit.Signal.connect(window, 'onload', function() {
     document.imp = new zeit.imp.Imp();
     document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
@@ -529,4 +554,5 @@ MochiKit.Signal.connect(window, 'onload', function() {
     new zeit.imp.DynamicMask(document.imp);
     new zeit.imp.ImageBar();
     new zeit.imp.AlreadyCroppedIndicator();
+    document.foo = new zeit.imp.ImageFilter('brightness');
 });

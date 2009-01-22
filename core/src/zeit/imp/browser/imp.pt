@@ -56,6 +56,15 @@
 
       </div>
 
+      <div class="widget">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Brightness</span>
+          <input type="text" name="filter.brightness" value="1"/>
+          <div id="imp-slider-brightness" class="uislider"></div>
+
+        </label>
+      </div>
+
       <input type="button" id="imp-action-crop" name="crop" value="Crop"
         i18n:attributes="value" />
 

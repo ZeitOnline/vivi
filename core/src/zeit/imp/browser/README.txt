@@ -1,23 +1,19 @@
 Image Manipulation
 ==================
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
-
+[#setup]_
 
 Scaled image
 ++++++++++++
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG'
+...     'http://localhost/++skin++cms/repository/group'
 ...     '/@@imp-scaled?width=200&height=60')
 >>> print browser.headers
 Status: 200 Ok
 Cache-Control: public,max-age=3600
 Content-Length: ...
 Content-Type: image/jpeg
-Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
 ...
 
 
@@ -50,14 +46,6 @@ Image manipulation view
 
 The image manipulation view is on an imagegroup containing a master image:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>> import zeit.content.image.test
->>> grp = zeit.content.image.test.create_image_group_with_master_image()
->>> grp = zeit.content.image.test.create_image_group()
->>> zope.app.component.hooks.setSite(old_site)
-
 >>> browser.open('http://localhost/++skin++cms/repository/group')
 
 >>> browser.getLink('Transform').click()
@@ -86,3 +74,18 @@ It is possible to check out the group from here directly:
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Master image').displayValue
 ['(no value)']
+
+
+.. [#setup]
+
+    >>> import zope.testbrowser.testing
+    >>> browser = zope.testbrowser.testing.Browser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.content.image.test
+    >>> grp = zeit.content.image.test.create_image_group_with_master_image()
+    >>> grp = zeit.content.image.test.create_image_group()
+    >>> zope.app.component.hooks.setSite(old_site)
+

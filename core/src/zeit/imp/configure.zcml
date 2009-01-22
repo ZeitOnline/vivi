@@ -10,13 +10,7 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <adapter factory=".crop.Cropper" trusted="yes"/>
-  <class class=".crop.Cropper">
-    <require
-      interface=".interfaces.ICropper"
-      permission="zeit.AddContent"
-      />
-  </class>
+  <adapter factory=".crop.Cropper" />
 
 
 </configure>

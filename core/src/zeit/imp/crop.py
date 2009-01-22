@@ -7,6 +7,7 @@ import zeit.content.image.interfaces
 import zeit.imp.interfaces
 import zope.component
 import zope.interface
+import zope.security.proxy
 
 
 class Cropper(object):
@@ -21,8 +22,11 @@ class Cropper(object):
         'sharpness': PIL.ImageEnhance.Sharpness,
     }
 
+    pil_image = None
+    downsample_filter = PIL.Image.ANTIALIAS
+
     def __init__(self, context):
-        self.context = context
+        self.context = self.__parent__ = context
         self.filters = []
 
     def add_filter(self, name, factor):
@@ -31,10 +35,10 @@ class Cropper(object):
             raise ValueError(name)
         self.filters.append((filter_class, factor))
 
-    def crop(self, w, h, x1, y1, x2, y2, name, border=False):
+    def crop(self, w, h, x1, y1, x2, y2, border=False):
         pil_image = PIL.Image.open(self.master_image.open())
 
-        pil_image = pil_image.resize((w, h), PIL.Image.ANTIALIAS)
+        pil_image = pil_image.resize((w, h), self.downsample_filter)
         pil_image = pil_image.crop((x1, y1, x2, y2))
         if border:
             pil_image = self.add_border(pil_image)
@@ -43,9 +47,14 @@ class Cropper(object):
             filter = filter_class(pil_image)
             pil_image = filter.enhance(factor)
 
-        image = zeit.content.image.image.LocalImage()
-        pil_image.save(image.open('w'), 'JPEG')
+        self.pil_image = pil_image
+        return pil_image
 
+    def store(self, name):
+        if self.pil_image is None:
+            raise RuntimeError("crop() not called.")
+        image = zeit.content.image.image.LocalImage()
+        self.pil_image.save(image.open('w'), 'JPEG')
         image_name = '%s-%s.jpg' % (self.context.__name__, name)
         self.context[image_name] = image
         return image
@@ -59,4 +68,5 @@ class Cropper(object):
 
     @property
     def master_image(self):
-        return zeit.content.image.interfaces.IMasterImage(self.context)
+        return zope.security.proxy.removeSecurityProxy(
+            zeit.content.image.interfaces.IMasterImage(self.context))
