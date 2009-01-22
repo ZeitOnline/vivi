@@ -104,6 +104,10 @@
     role="zeit.Editor"
     permission="zeit.ChangeRepository"
     />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.imp.Use"
+    />
 
   <!-- Producer grants -->
   <grant

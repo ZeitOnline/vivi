@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.securitypolicy',
-    version='0.2dev',
+    version='0.3dev',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -23,6 +23,7 @@ setup(
         'zeit.content.quiz',
         'zeit.content.rawxml',
         'zeit.content.video',
+        'zeit.imp',
         'zeit.invalidate',
         'zeit.seo',
         'zope.app.zcmlfiles',

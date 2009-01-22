@@ -20,5 +20,8 @@
 
   <include package="zeit.seo" />
 
+  <include package="zeit.imp" />
+  <include package="zeit.imp.browser" />
+
 </configure>
 
