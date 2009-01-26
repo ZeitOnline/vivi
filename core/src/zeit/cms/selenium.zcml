@@ -9,7 +9,10 @@
     permission="zope.Public"
     />
 
+  <!-- test includes -->
+
   <include package=".browser" file="selenium.zcml" />
+  <include package=".repository.browser" file="selenium.zcml" />
 
 
 </configure>

@@ -1,11 +1,10 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zc.selenium.pytest
+import zeit.cms.selenium
 
 
-class Test(zc.selenium.pytest.Test):
+class Test(zeit.cms.selenium.Test):
 
     def test_tree_keeps_state(self):
         s = self.selenium
@@ -13,13 +12,15 @@ class Test(zc.selenium.pytest.Test):
         s.comment(
             "Delete the tree state cookie to have a defined starting point")
         s.deleteCookie('zeit.cms.repository.treeState', '/')
-        s.open('http://%s/++skin++cms/' % (s.server, ))
-        s.assertTextPresent('online')
+        self.open('/')
+        s.verifyTextPresent('online')
 
         s.comment("Open `online`")
-        s.click('xpath=//span[text() = "online"]/../../img')
-        s.waitForTextPresent('2005')
+        s.click('//li[@uniqueid="http://xml.zeit.de/online"]')
+        s.waitForElementPresent(
+            '//li[@uniqueid="http://xml.zeit.de/online/2007"]')
 
-        s.comment('Click on 2005 and make sure we still have the tree open')
-        s.clickAndWait('xpath=//span[text() = "2005"]')
-        s.assertTextPresent('2005')
+        s.comment("Tree is still open after reload.")
+        self.open('/')
+        s.verifyElementPresent(
+            '//li[@uniqueid="http://xml.zeit.de/online/2007"]')
