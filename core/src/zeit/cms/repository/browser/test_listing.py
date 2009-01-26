@@ -1,51 +1,30 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zc.selenium.pytest
+import xml.sax.saxutils
+import zeit.cms.selenium
 
 
-class Test(zc.selenium.pytest.Test):
+class Test(zeit.cms.selenium.Test):
 
     def test_tablelisting_filter(self):
         s = self.selenium
 
         s.comment("Open a folder with articles.")
-        s.open('http://%s/++skin++cms/repository/online/2007/01' %(s.server, ))
-        self.assertTextDisplayed('Bomben in Bangkok')
+        self.open('/repository/online/2007/01')
+        self.verifyTextDisplayed('Somalia')
+        self.verifyTextDisplayed('presseschau')
 
         s.comment("type in a word to filter the table")
-        s.type('tableFilter', 'internat')
-        s.keyUp('tableFilter', '\13')
-        self.assertTextDisplayed('Dialog abgebrochen')
-        
-        self.assertTextNotDisplayed('Der letzte Star springt ab')
+        s.typeKeys('name=tableFilter', 'internat')
+        #s.keyUp('tableFilter', '\13')
+        self.verifyTextNotDisplayed('Somalia')
+        self.verifyTextDisplayed('presseschau')
 
-        s.comment('Now test if it filter correctly for issue.')
-        s.type('tableFilter', '47')
-        s.keyUp('tableFilter', '\13')
-        self.assertTextDisplayed('Der Tod des Diktators')
+    def verifyTextNotDisplayed(self, string):
+        self.selenium.verifyNotVisible('//tr[contains(string(.), %s)]' %
+                                       xml.sax.saxutils.quoteattr(string))
 
-    def test_deleteFile(self):
-        s = self.selenium
-        
-        s.comment("Open a folder with articles.")
-        s.open('http://%s/++skin++cms/repository/online/2007/01' %(s.server, ))
-
-        s.comment("Select one file.")
-        self.assertTextDisplayed('Bomben in Bangkok')
-        s.click('//tr[@deleteid = "thailand-anschlaege"]')
-        s.click('//input[@type="submit"]')
-        self.assertTextNotDisplayed('Positive Entwicklung')
-
-
-    def assertTextNotDisplayed(self, string):
-        s = self.selenium
-        expr = '//td[text() = "%s"]/..[contains(@style, "display: none")]' %string
-        s.assertElementPresent(expr)
-
-    def assertTextDisplayed(self, string):
-        s = self.selenium
-        expr = ('//td[text() = "%s"]/..[not(contains(@style, "display: none"))]'
-                %string)
-        s.assertElementPresent(expr)
+    def verifyTextDisplayed(self, string):
+        self.selenium.verifyVisible('//tr[contains(string(.), %s)]' %
+                                    xml.sax.saxutils.quoteattr(string))

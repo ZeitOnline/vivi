@@ -7,5 +7,11 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".test_listing.Test"
+    name="zeit.cms.repository.browser.test_listing.Test"
+    permission="zope.Public"
+    />
+
 </configure>
 
