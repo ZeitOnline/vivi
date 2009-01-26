@@ -1,21 +1,16 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import re
 import os
+import re
 import sys
-
+import zeit.connector.interfaces
+import zope.app.appsetup.product
+import zope.app.testing.functional
+import zope.component
 import zope.file.testing
 import zope.testing.renormalizing
 from zope.testing import doctest
-
-import zope.component
-
-import zope.app.testing.functional
-import zope.app.appsetup.product
-
-import zeit.connector.interfaces
 
 
 cms_layer = zope.app.testing.functional.ZCMLLayer(
