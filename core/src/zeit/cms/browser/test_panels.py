@@ -1,23 +1,32 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zc.selenium.pytest
+import zeit.cms.selenium
 
 
-class Test(zc.selenium.pytest.Test):
+class Test(zeit.cms.selenium.Test):
 
     def test_tablelisting_filter(self):
         s = self.selenium
 
         s.comment("Open a folder with articles.")
-        s.open('http://%s/++skin++cms/repository/online/2007/01' %(s.server, ))
+        self.open('/repository/online/2007/01')
 
-        self.assertPanelState('NavtreePanel', 'unfolded') 
-        s.click('//div[@id = "NavtreePanel"]/h1/a')
-        self.assertPanelState('NavtreePanel', 'folded') 
-        
+        self.assertPanelState('NavtreePanel', 'unfolded')
+        s.click('//div[@id = "NavtreePanel"]/h1')
+        self.assertPanelState('NavtreePanel', 'folded')
+        # Stays that way when reloading
+        self.open('/repository/online/2007/01')
+        self.assertPanelState('NavtreePanel', 'folded')
+
+        # unfold again:
+        s.click('//div[@id = "NavtreePanel"]/h1')
+        self.assertPanelState('NavtreePanel', 'unfolded')
+        # Stays that way when reloading
+        self.open('/repository/online/2007/01')
+        self.assertPanelState('NavtreePanel', 'unfolded')
 
     def assertPanelState(self, id, state):
         s = self.selenium
-        s.assertElementPresent("//div[@id ='%s'][@class = '%s']" %(id, state))
+        s.verifyElementPresent("//div[@id ='%s'][@class = 'panel %s']" %(
+            id, state))
