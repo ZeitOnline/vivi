@@ -10,9 +10,6 @@ import zeit.cms.testing
 import zope.component
 
 
-zeit.cms.testing.setup_product_config()
-
-
 if sys.platform == 'darwin':
     # Register a Firefox browser for Mac OS X.
     class MacOSXFirefox(webbrowser.BaseBrowser):
@@ -32,8 +29,17 @@ class ResetMockConnector(object):
         return "Done."
 
 
+class SetupProductConfig(object):
+
+    def __call__(self):
+        zeit.cms.testing.setup_product_config()
+
 
 class Test(zc.selenium.pytest.Test):
+
+    def setUp(self):
+        super(Test, self).setUp()
+        self.open('/@@setup-product-config', auth=None)
 
     def tearDown(self):
         super(Test, self).tearDown()
@@ -45,5 +51,9 @@ class Test(zc.selenium.pytest.Test):
                             xml.sax.saxutils.quoteattr(label))
 
     def open(self, path, auth='user:userpw'):
+        if auth:
+            auth = auth + '@'
+        else:
+            auth = ''
         self.selenium.open(
-            'http://%s@%s/++skin++cms%s' % (auth, self.selenium.server, path))
+            'http://%s%s/++skin++cms%s' % (auth, self.selenium.server, path))

@@ -9,6 +9,13 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="setup-product-config"
+    class=".selenium.SetupProductConfig"
+    permission="zope.Public"
+    />
+
   <!-- test includes -->
 
   <include package=".browser" file="selenium.zcml" />
