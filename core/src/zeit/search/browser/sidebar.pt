@@ -30,8 +30,9 @@
           i18n:attributes="value" />
       </p>
 
-      <div id="search-extended-show" i18n:translate="">
-        Extended ...
+      <div id="search-extended-show">
+        <tal:block i18n:translate="">Extended ...</tal:block>
+        <div id="search-extended-indicator"></div>
       </div>
 
       <fieldset id="search-extended-form">
@@ -55,7 +56,7 @@
           <label for="search.volume" i18n:translate="">
             Volume
           </label>
-          <select name="search.volume:int"
+          <select name="search.volume:int" id="search.volume"
             tal:define="last_volume last_search/volume | nothing">
             <option value="0"></option>
             <option

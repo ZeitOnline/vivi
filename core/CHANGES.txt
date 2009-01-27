@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.10 (unreleased)
+-----------------
+
+- Suche: Anzeigen wenn es erweiterte Kriterien gibt, die erweiterte Suche aber
+  eingeklappt ist (Bug #4388).
+
 1.9.1 (2009-01-21)
 ------------------
 

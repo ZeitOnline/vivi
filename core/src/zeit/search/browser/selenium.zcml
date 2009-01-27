@@ -2,8 +2,8 @@
   xmlns="http://namespaces.zope.org/zope">
 
   <adapter
-    factory=".test.Selenium"
-    name="zeit.search.browser.test.Selenium"
+    factory=".selenium.Selenium"
+    name="zeit.search.browser.selenium.Selenium"
     permission="zope.Public"
     />
 

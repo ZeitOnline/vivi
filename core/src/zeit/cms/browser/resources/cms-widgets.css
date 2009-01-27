@@ -111,6 +111,11 @@ table.properties textarea {
   color: #004455;
 }
 
+#search-extended-indicator {
+    white-space: pre;
+    color: black;
+    font-size: 0.8em;
+}
 
 .Search > form.show-extended > #search-extended-show {
   display: none;
