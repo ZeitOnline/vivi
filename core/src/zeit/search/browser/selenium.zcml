@@ -1,0 +1,10 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    factory=".test.Selenium"
+    name="zeit.search.browser.test.Selenium"
+    permission="zope.Public"
+    />
+
+</configure>
