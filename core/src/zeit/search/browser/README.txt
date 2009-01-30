@@ -53,6 +53,7 @@ Note that in the test we only can search for "linux", so we do that:
     <tr>
       <th>...Author...</th>
       <th>...Title...</th>
+      <th>...File name...</th>
       <th>...Year/Vol...</th>
       <th>...Page...</th>
       <th>...</th>
@@ -61,10 +62,12 @@ Note that in the test we only can search for "linux", so we do that:
   <tbody>
     <tr class="odd">
         ...
-      <td>
+      Programmierer aller Länder vereinigt Euch!
+      ...
+      <span class="filename">Open_Source</span>
+      ...
       <span class="SearchableText">Programmierer aller Länder vereinigt Euch!
         Von Gunhild Lütge 2003 44</span>...
-      ...
 
 
 Note that after the search the search term is still filled in the search box:

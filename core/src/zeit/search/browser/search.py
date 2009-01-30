@@ -101,6 +101,9 @@ class Search(object):
             zeit.cms.browser.listing.GetterColumn(
                 _('Title'),
                 lambda t, c: t.title),
+            zeit.cms.browser.listing.FilenameColumn(
+                _('File name'),
+                getter=lambda v, c: v.__name__),
             zeit.cms.browser.listing.GetterColumn(
                 _('Year/Vol.'),
                 getter=lambda t, c: (t.year, t.volume),
