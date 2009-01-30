@@ -20,7 +20,7 @@ The type change is a lightbox:
 ...     'http://localhost/++skin++cms/repository/online/2007/01'
 ...     '/Somalia/@@typechange-box')
 >>> print browser.contents
-<div class="floating">
+<div>
   <h1>
     Change type of
     http://xml.zeit.de/online/2007/01/Somalia
@@ -37,7 +37,7 @@ Just clicking "change" w/o selecting anything displays the form again:
 
 >>> browser.getControl('Change type').click()
 >>> print browser.contents
-<div class="floating">
+<div>
   <h1>
     Change type of
     http://xml.zeit.de/online/2007/01/Somalia
@@ -49,15 +49,17 @@ Make it a channel.
 >>> browser.getControl(name='newtype').displayValue = ['channel_cp']
 >>> browser.getControl('Change type').click()
 >>> print browser.contents
-<div class="floating">
+<div>
   <h1>
     Change type of
     http://xml.zeit.de/online/2007/01/Somalia
   </h1>
+  <div class="lightbox-full">
     <div>
       Type changed. Loading ...
     </div>
     <span class="nextUrl">http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html</span>
+  </div>
 </div>
 
 
