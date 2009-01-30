@@ -6,9 +6,11 @@ import zc.table.column
 import zc.table.table
 import zeit.cms.browser.column
 import zeit.cms.browser.listing
+import zeit.cms.browser.menu
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+import zope.cachedescriptors.property
 import zope.component
 import zope.traversing
 import zope.viewlet.viewlet
@@ -88,3 +90,29 @@ def localcontent_default_browsing_location(context, schema):
     return zope.component.queryMultiAdapter(
         (object_in_repository, schema),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+class ShowOriginal(zeit.cms.browser.menu.ActionMenuItem):
+
+    title = _('Show original')
+    sort = -0.9
+
+    def get_url(self):
+        url = zope.component.getMultiAdapter(
+            (self.content, self.request), name='absolute_url')
+        return '%s/@@view.html' % (url, )
+
+    @zope.cachedescriptors.property.Lazy
+    def content(self):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        try:
+            content = repository.getContent(self.context.uniqueId)
+        except KeyError:
+            return None
+        return content
+
+    def render(self):
+        if self.content is None:
+            return ''
+        return super(ShowOriginal, self).render()
