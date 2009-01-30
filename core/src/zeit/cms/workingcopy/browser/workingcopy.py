@@ -1,25 +1,21 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import logging
-
-import zope.component
-import zope.viewlet.viewlet
-import zope.traversing
-
-import zc.table.table
 import zc.table.column
-
+import zc.table.table
 import zeit.cms.browser.column
 import zeit.cms.browser.listing
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+import zope.component
+import zope.traversing
+import zope.viewlet.viewlet
 from zeit.cms.i18n import MessageFactory as _
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase,
@@ -62,7 +58,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
                 (obj, self.request),
                 zeit.cms.browser.interfaces.IListRepresentation)
             if list_repr is None:
-                logger.warning("Could not adapt %r to IListRepresentation",
+                log.warning("Could not adapt %r to IListRepresentation",
                                (obj, ))
             else:
                 result.append(list_repr)
