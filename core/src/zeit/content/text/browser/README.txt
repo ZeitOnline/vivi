@@ -49,13 +49,16 @@ browser and server is *always* UTF-8 regardles of the storage encoding.
  ...Updated on...
 
 
-Check in:
+Check in (note that the contents is preformatted):
 
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
 <?xml...
  <title>... View plain text </title>
  ...
+        <div class="widget"><pre>Fü</pre></div>
+        ...
+ 
 
 Check out: 
 

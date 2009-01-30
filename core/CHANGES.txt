@@ -10,6 +10,7 @@ zeit.cms changes
 - Sperren: Es wird wieder angezeigt wer ein Objekt gesperrt hat.
 - Bei ausgecheckten Dokumenten gibt es jetzt eine Aktion um zu dem Original in
   der Dateiverwaltung zu kommen (Bug #4419).
+- Anzeige beim Text-Type ist jetzt Preformatted (Bug #4446).
 
 1.9.1 (2009-01-21)
 ------------------

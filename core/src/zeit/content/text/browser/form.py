@@ -2,11 +2,12 @@
 # See also LICENSE.txt
 """Plain text forms."""
 
-import zope.formlib.form
-
+import copy
 import zeit.cms.browser.form
 import zeit.content.text.interfaces
 import zeit.content.text.text
+import zope.app.form.browser.textwidgets
+import zope.formlib.form
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -36,3 +37,6 @@ class Display(FormBase,
     """View plain text."""
 
     title = _('View plain text')
+    form_fields = copy.deepcopy(FormBase.form_fields)
+    form_fields['text'].custom_widget = (
+        zope.app.form.browser.textwidgets.BytesDisplayWidget)
