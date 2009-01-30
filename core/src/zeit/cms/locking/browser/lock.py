@@ -7,6 +7,7 @@ import zeit.cms.locking.interfaces
 import zeit.connector.interfaces
 import zope.cachedescriptors.property
 import zope.formlib.form
+import zope.i18n
 from zeit.cms.i18n import MessageFactory as _
 
 
@@ -120,6 +121,7 @@ def get_locking_indicator(context, request):
         title = _('Not locked')
     resource_url = zope.component.getMultiAdapter(
         (request,), name='zeit.cms')()
+    title = zope.i18n.translate(title, context=request)
     return '<img src="%s/icons/%s.png" title="%s" class="%s" />' % (
         resource_url, img, title, img)
 

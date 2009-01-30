@@ -9,6 +9,11 @@ The lock icon shows information about the current lock[1]_:
 >>> browser.open(url)
 >>> browser.getLink('Manage lock')
 <Link text='[IMG] Manage lock' url="javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')">
+>>> print browser.contents
+<?xml...
+    <img src=".../lock-open.png" title="Not locked" class="lock-open" />
+    ...
+
 
 Open the lightbox. The object is currently not locked:
 
@@ -71,6 +76,9 @@ Make sure a lock message was send to the user:
 <?xml ...
     <li class="message">"Somalia" has been locked.</li>
     ...
+    <img src=".../lock-closed-mylock.png" title="Locked by you"
+        class="lock-closed-mylock" />
+    ...
 
 We can now unlock Somalia:
 
@@ -117,6 +125,11 @@ Login in as zmgr and steal the lock:
 
 >>> mgr = Browser()
 >>> mgr.addHeader('Authorization', 'Basic zmgr:mgrpw')
+>>> mgr.open(url)
+>>> print mgr.contents
+<?xml ...
+    <img src=".../lock-closed.png" title="Locked by zope.user"
+        class="lock-closed" />...
 >>> mgr.open(url + '/@@locks.html')
 >>> mgr.getControl('Steal lock').click()
 >>> print mgr.contents

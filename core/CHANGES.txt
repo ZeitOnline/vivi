@@ -7,6 +7,7 @@ zeit.cms changes
 - Suche: Anzeigen wenn es erweiterte Kriterien gibt, die erweiterte Suche aber
   eingeklappt ist (Bug #4388).
 - Suche: Der Dateiname wird jetzt angezeigt (Bug #4440).
+- Sperren: Es wird wieder angezeigt wer ein Objekt gesperrt hat.
 
 1.9.1 (2009-01-21)
 ------------------
