@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jan 16 15:44:35 2009\n"
+"POT-Creation-Date: Fri Jan 30 11:43:15 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -132,7 +132,7 @@ msgstr ""
 #: src/zeit/cms/syndication/browser/feed.py:157
 #: src/zeit/cms/syndication/browser/manager.py:96
 #: src/zeit/cms/syndication/interfaces.py:51
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:34
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:32
 #: src/zeit/content/gallery/interfaces.py:80
 #: src/zeit/content/infobox/interfaces.py:22
 #: src/zeit/search/browser/search.py:102
@@ -145,6 +145,7 @@ msgstr ""
 #: src/zeit/cms/repository/browser/file.py:42
 #: src/zeit/content/image/browser/imagegroup.py:106
 #: src/zeit/content/image/browser/interfaces.py:32
+#: src/zeit/search/browser/search.py:105
 #: src/zeit/search/interfaces.py:16
 #: src/zeit/cms/repository/browser/file_details.pt:2
 msgid "File name"
@@ -161,15 +162,15 @@ msgstr ""
 
 #: src/zeit/cms/browser/listing.py:278
 #: src/zeit/cms/content/interfaces.py:74
-#: src/zeit/search/browser/sidebar.pt:80
+#: src/zeit/search/browser/sidebar.pt:81
 msgid "Ressort"
 msgstr ""
 
 #: src/zeit/cms/browser/listing.py:282
 #: src/zeit/cms/content/interfaces.py:69
-#: src/zeit/search/browser/search.py:110
+#: src/zeit/search/browser/search.py:113
 #: src/zeit/search/interfaces.py:23
-#: src/zeit/search/browser/sidebar.pt:72
+#: src/zeit/search/browser/sidebar.pt:73
 msgid "Page"
 msgstr ""
 
@@ -189,7 +190,7 @@ msgstr ""
 msgid "Add..."
 msgstr ""
 
-#: src/zeit/cms/browser/menu.py:80
+#: src/zeit/cms/browser/menu.py:85
 msgid "CMS"
 msgstr ""
 
@@ -546,14 +547,14 @@ msgstr ""
 #: src/zeit/cms/content/interfaces.py:58
 #: src/zeit/content/image/interfaces.py:53
 #: src/zeit/search/interfaces.py:21
-#: src/zeit/search/browser/sidebar.pt:46
+#: src/zeit/search/browser/sidebar.pt:47
 msgid "Year"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:63
 #: src/zeit/content/image/interfaces.py:59
 #: src/zeit/search/interfaces.py:22
-#: src/zeit/search/browser/sidebar.pt:55
+#: src/zeit/search/browser/sidebar.pt:56
 msgid "Volume"
 msgstr ""
 
@@ -587,51 +588,51 @@ msgstr ""
 msgid "Locked until"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:110
+#: src/zeit/cms/locking/browser/lock.py:107
 msgid "Locked by you"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:120
+#: src/zeit/cms/locking/browser/lock.py:117
 #. Default: ""
 msgid "Locked by ${user}"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:124
+#: src/zeit/cms/locking/browser/lock.py:121
 msgid "Not locked"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:29
+#: src/zeit/cms/locking/browser/lock.py:26
 msgid "Locks"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:49
+#: src/zeit/cms/locking/browser/lock.py:46
 msgid "Steal lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:56
+#: src/zeit/cms/locking/browser/lock.py:53
 #. Default: ""
 msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:61
+#: src/zeit/cms/locking/browser/lock.py:58
 msgid "Lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:66
+#: src/zeit/cms/locking/browser/lock.py:63
 #. Default: ""
 msgid "\"${name}\" has been locked."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:69
+#: src/zeit/cms/locking/browser/lock.py:66
 msgid "Unlock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:74
+#: src/zeit/cms/locking/browser/lock.py:71
 #. Default: ""
 msgid "\"${name}\" has been unlocked."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:90
+#: src/zeit/cms/locking/browser/lock.py:87
 msgid "Manage lock"
 msgstr ""
 
@@ -1056,6 +1057,10 @@ msgstr ""
 msgid "No edited documents."
 msgstr ""
 
+#: src/zeit/cms/workingcopy/browser/workingcopy.py:97
+msgid "Show original"
+msgstr ""
+
 #: src/zeit/content/centerpage/browser/configure.zcml:27
 #: src/zeit/content/image/browser/configure.zcml:209
 #: src/zeit/content/gallery/browser/configure.zcml:33
@@ -1470,7 +1475,7 @@ msgstr ""
 msgid "Zeit CMS Search Preferences"
 msgstr ""
 
-#: src/zeit/search/browser/search.py:105
+#: src/zeit/search/browser/search.py:108
 msgid "Year/Vol."
 msgstr ""
 
@@ -1493,28 +1498,28 @@ msgstr ""
 msgid "The search had no results."
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:128
+#: src/zeit/search/browser/sidebar.pt:129
 #. Default: "Status"
 msgid "workflow-state"
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:144
+#: src/zeit/search/browser/sidebar.pt:145
 msgid "Sort order"
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:33
+#: src/zeit/search/browser/sidebar.pt:34
 msgid "Extended ..."
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:39
+#: src/zeit/search/browser/sidebar.pt:40
 msgid "Extended"
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:42
+#: src/zeit/search/browser/sidebar.pt:43
 msgid "Hide ..."
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:96
+#: src/zeit/search/browser/sidebar.pt:97
 msgid "Print ressort"
 msgstr ""
 
