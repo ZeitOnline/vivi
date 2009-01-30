@@ -7,6 +7,18 @@
 #lightbox > div {
     position: absolute;
     top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#lightbox .lightbox-full {
+  position: absolute;
+  top: 1em;
+  bottom: 1em;
+  left: 1em;
+  right: 1em;
+  overflow: auto;
 }
 
 #lightbox .nextUrl {
