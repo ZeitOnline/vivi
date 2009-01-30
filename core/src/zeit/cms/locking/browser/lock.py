@@ -1,16 +1,12 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.cachedescriptors.property
-import zope.formlib.form
 
 import gocept.form.grouped
-
-import zeit.connector.interfaces
-
-import zeit.cms.locking.interfaces
 import zeit.cms.locking.browser.interfaces
+import zeit.cms.locking.interfaces
+import zeit.connector.interfaces
+import zope.cachedescriptors.property
+import zope.formlib.form
 from zeit.cms.i18n import MessageFactory as _
 
 
