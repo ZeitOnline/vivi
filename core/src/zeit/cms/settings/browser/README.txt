@@ -7,7 +7,6 @@ The settings can be reached via a global menu item:
 >>> browser = zope.testbrowser.testing.Browser()
 >>> browser.addHeader('Authorization', 'Basic producer:producerpw')
 >>> browser.open('http://localhost/++skin++cms/repository')
->>> browser.handleErrors = False
 >>> browser.getLink('Global settings').click()
 
 
