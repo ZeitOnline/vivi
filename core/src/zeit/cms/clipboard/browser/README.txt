@@ -586,6 +586,7 @@ Let's open the lightbox. It shows the clipboard tree:
 >>> ajax.open('http://localhost/++skin++cms/repository/online'
 ...           '/@@insert_from_clipboard.lightbox')
 >>> print ajax.contents
+<div>
   <h1>
     Copy content into
     http://xml.zeit.de/online

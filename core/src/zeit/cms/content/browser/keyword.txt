@@ -15,6 +15,7 @@ Create an ajax browser and open the keyword browser:
 ... '%2Fworkingcopy%2Fzope.manager%2'
 ... 'FLateinamerika-Jahresrueckblick%2F%40%40edit.html')
 >>> print ajax.contents
+<div>
 <div class="keyword-tree">
   <h1>Taxonomy</h1>
     <div class="Tree">
