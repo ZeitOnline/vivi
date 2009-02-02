@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.10.1 (unreleased)
+1.10.1 (2009-02-01)
 -------------------
 
 - Selenium-Tests in extra ZCML-File.
