@@ -42,7 +42,7 @@ fine:
 >>> import zope.schema
 >>> zope.schema.getValidationErrors(
 ...     zeit.content.text.interfaces.IText, text)
-[('__name__', )]
+[('__name__', RequiredMissing())]
 
 The __name__ failed, so set one:
 

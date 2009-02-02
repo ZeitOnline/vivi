@@ -111,7 +111,8 @@ Set the value to an existing but invalid value, so we get an validation error:
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
-WidgetInputError: ('reference', u'', <object object at 0x...>)
+WidgetInputError: ('reference', u'',
+    ConstraintNotSatisfied(<object object at 0x...>))
 
 
 Note that the invalid value is rendered:
@@ -262,12 +263,14 @@ in one month:
 
     Create a mock repository:
 
-    >>> import zope.component
-    >>> import zope.interface
     >>> import zeit.cms.interfaces
     >>> import zeit.cms.repository.interfaces
+    >>> import zope.component
+    >>> import zope.interface
+    >>> import zope.location.interfaces
     >>>
     >>> class Repository(object):
+    ...     zope.interface.implements(zope.location.interfaces.ILocation)
     ...     __parent__ = getRootFolder()
     ...     __name__ = 'repo'
     ...
@@ -291,6 +294,7 @@ in one month:
     >>> class Content(object):
     ...     zope.interface.implements(
     ...         zeit.cms.interfaces.ICMSContent,
+    ...         zope.location.interfaces.ILocation,
     ...         zope.annotation.interfaces.IAttributeAnnotatable)
     ...     __parent__ = repository
     ...     __name__ = u'content'

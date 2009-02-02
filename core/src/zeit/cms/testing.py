@@ -27,6 +27,12 @@ def setUp(test):
     setup_product_config(test.globs.get('product_config', {}))
 
 
+def tearDown(test):
+    connector = zope.component.getUtility(
+        zeit.connector.interfaces.IConnector)
+    connector._reset()
+
+
 def setup_product_config(product_config={}):
     zope.app.appsetup.product._configs.clear()
     cms_config = zope.app.appsetup.product._configs['zeit.cms'] = {}
@@ -64,17 +70,11 @@ def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw['setUp'] = setUp
+    kw['tearDown'] = tearDown
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
-
-    def tearDown(test):
-        zope.app.testing.functional.FunctionalTestSetup().tearDown()
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-        connector._reset()
-    kw['tearDown'] = tearDown
 
     test = zope.file.testing.FunctionalBlobDocFileSuite(
         *paths, **kw)

@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Selenium-Tests in extra ZCML-File.
 - Browsing-Location-View/-Adapter auf IContained registriert.
+- Zope-Pakete aktualisiert + abhängige Änderungen
 
 1.10 (2009-01-31)
 -----------------
