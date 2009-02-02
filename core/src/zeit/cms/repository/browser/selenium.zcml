@@ -2,16 +2,15 @@
   xmlns="http://namespaces.zope.org/zope">
 
   <adapter
-    factory=".test_tree.Test"
-    name="zeit.cms.repository.browser.test_tree.Test"
+    factory=".selenium.TestTree"
+    name="zeit.cms.repository.browser.TestTree"
     permission="zope.Public"
     />
 
   <adapter
-    factory=".test_listing.Test"
-    name="zeit.cms.repository.browser.test_listing.Test"
+    factory=".selenium.TestListing"
+    name="zeit.cms.repository.browser.TestListing"
     permission="zope.Public"
     />
 
 </configure>
-
