@@ -1,9 +1,11 @@
 zeit.cms changes
 ================
 
-1.11 (unreleased)
------------------
+1.10.1 (unreleased)
+-------------------
 
+- Selenium-Tests in extra ZCML-File.
+- Browsing-Location-View/-Adapter auf IContained registriert.
 
 1.10 (2009-01-31)
 -----------------

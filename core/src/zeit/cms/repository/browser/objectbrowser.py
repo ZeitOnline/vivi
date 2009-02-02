@@ -1,15 +1,15 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.component
-import zope.interface
-
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zope.app.container.interfaces
+import zope.component
+import zope.interface
 
 
 @zope.component.adapter(
@@ -22,7 +22,7 @@ def folder_default_browse_location(context, source):
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
+    zope.app.container.interfaces.IContained,
     zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
