@@ -4,5 +4,6 @@
 
   <include package=".browser" file="selenium.zcml" />
   <include package=".repository.browser" file="selenium.zcml" />
+  <include package=".content.browser" file="selenium.zcml" />
 
 </configure>

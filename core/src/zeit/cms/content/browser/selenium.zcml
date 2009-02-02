@@ -1,0 +1,16 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    factory=".selenium.TestKeywordWidget"
+    name="zeit.cms.content.browser.TestKeywordWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".selenium.TestTypeChangeBox"
+    name="zeit.cms.content.browser.TestTypeChangeBox"
+    permission="zope.Public"
+    />
+
+</configure>

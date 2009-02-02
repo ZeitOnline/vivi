@@ -1,4 +1,4 @@
-<tal:lightbox
+<div
   tal:define="
     clipboard nocall:view/clipboard;
     clipboard_url clipboard/@@absolute_url;
@@ -31,4 +31,4 @@
     ">
   </script>
 
-</tal:lightbox>
+</div>
