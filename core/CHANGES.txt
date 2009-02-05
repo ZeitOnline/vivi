@@ -4,6 +4,8 @@ zeit.imp changes
 0.3 (unreleased)
 ++++++++++++++++
 
+- Selenium-Infrastruktur wurde in den Kern verschoben.
+
 0.2 (2009-01-22)
 ++++++++++++++++
 

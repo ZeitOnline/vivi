@@ -3,38 +3,18 @@
 # See also LICENSE.txt
 
 
-import subprocess
-import sys
-import webbrowser
-import xml.sax.saxutils
-import zc.selenium.pytest
 import zeit.connector.interfaces
 import zeit.content.image.test
 import zope.component
+import zeit.cms.selenium
 
 
-if sys.platform == 'darwin':
-    # Register a Firefox browser for Mac OS X.
-    class MacOSXFirefox(webbrowser.BaseBrowser):
-
-        def open(self, url, new=0, autoraise=1):
-            proc = subprocess.Popen(
-                ['/usr/bin/open', '-a', 'Firefox', url])
-            proc.communicate()
-    webbrowser.register('Firefox', MacOSXFirefox, None, -1)
-
-
-class Selenium(zc.selenium.pytest.Test):
+class Selenium(zeit.cms.selenium.Test):
 
     def setUp(self):
         super(Selenium, self).setUp()
         self.create_group()
         self.open_imp()
-
-    def tearDown(self):
-        super(Selenium, self).tearDown()
-        self.selenium.open('http://%s/@@reset-mock-connector' %
-                           self.selenium.server)
 
     def create_group(self):
         self.selenium.open(
@@ -45,10 +25,6 @@ class Selenium(zc.selenium.pytest.Test):
         self.selenium.open(
             'http://user:userpw@%s/++skin++cms/repository/group/@@imp.html' %
             self.selenium.server)
-
-    def click_label(self, label):
-        self.selenium.click('//label[contains(string(.), %s)]' %
-                            xml.sax.saxutils.quoteattr(label))
 
 
 class SeleniumBasicTests(Selenium):
@@ -427,14 +403,6 @@ class FilterTests(Selenium):
         s.clickAt(selector, '0')
         s.pause('10')
         s.verifyEval('window.document.imp.crop_arguments["filter.color"]', '0')
-
-
-class ResetMockConnector(object):
-
-    def __call__(self):
-        zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)._reset()
-        return "Done."
 
 
 class CreateImageGroup(object):

@@ -38,13 +38,6 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="reset-mock-connector"
-    class=".test_selenium.ResetMockConnector"
-    permission="zope.Public"
-    />
-
-  <browser:page
-    for="zope.location.interfaces.ISite"
     name="create-image-group"
     class=".test_selenium.CreateImageGroup"
     permission="zope.Public"
