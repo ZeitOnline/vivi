@@ -49,6 +49,7 @@ class TestScaleSource(zope.app.testing.functional.BrowserTestCase):
     layer = imp_layer
 
     def setUp(self):
+        super(TestScaleSource, self).setUp()
         zeit.cms.testing.setup_product_config(product_config)
         self.source = zeit.imp.source.ScaleSource()
 
