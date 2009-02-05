@@ -1,8 +1,10 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import cjson
 import subprocess
 import sys
+import urllib
 import webbrowser
 import xml.sax.saxutils
 import zc.selenium.pytest
@@ -31,15 +33,19 @@ class ResetMockConnector(object):
 
 class SetupProductConfig(object):
 
-    def __call__(self):
-        zeit.cms.testing.setup_product_config()
+    def __call__(self, product_config):
+        zeit.cms.testing.setup_product_config(cjson.decode(product_config))
 
 
 class Test(zc.selenium.pytest.Test):
 
+    product_config = {}
+
     def setUp(self):
         super(Test, self).setUp()
-        self.open('/@@setup-product-config', auth=None)
+        product_config = cjson.encode(self.product_config)
+        query = urllib.urlencode(dict(product_config=product_config))
+        self.open('/@@setup-product-config?' + query, auth=None)
 
     def tearDown(self):
         super(Test, self).tearDown()

@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.10.2 (2009-02-05)
+-------------------
+
+- Selenium-Tests können jetzt die Product-Config setzten.
+
 1.10.1 (2009-02-01)
 -------------------
 
