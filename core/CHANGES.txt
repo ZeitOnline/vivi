@@ -5,6 +5,9 @@ zeit.imp changes
 ++++++++++++++++
 
 - Selenium-Infrastruktur wurde in den Kern verschoben.
+- Bei einem zu kleinen Bildschirm konnten keine Bilder zugeschnitten werden,
+  weil die Bilderleiste sich über den Knopf gelegt hatte. Bei kleinen
+  Bildschirmen funktioniert es jetzt, sieht aber nicht schön aus (Bug #4651).
 
 0.2 (2009-01-22)
 ++++++++++++++++

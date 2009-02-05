@@ -7,9 +7,12 @@ import zeit.connector.interfaces
 import zeit.content.image.test
 import zope.component
 import zeit.cms.selenium
+import zeit.imp.test
 
 
 class Selenium(zeit.cms.selenium.Test):
+
+    product_config = zeit.imp.test.product_config
 
     def setUp(self):
         super(Selenium, self).setUp()

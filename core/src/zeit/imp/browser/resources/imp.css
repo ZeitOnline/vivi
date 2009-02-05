@@ -67,6 +67,9 @@
   right: 0;
   width: 19em;
   top:0;
+  z-index: 1;
+  overflow-y: auto;
+  background-color: white;
 }
 
 #imp-image-bar {
