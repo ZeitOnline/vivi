@@ -2,8 +2,8 @@
   xmlns="http://namespaces.zope.org/zope">
 
   <adapter
-    factory=".test_panels.Test"
-    name="zeit.cms.browser.test_panels.Test"
+    factory=".selenium.Editor"
+    name="zeit.wysiwyg.browser.Editor"
     permission="zope.Public"
     />
 

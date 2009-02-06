@@ -144,9 +144,17 @@ function Ok() {
                 format));
 
         var selected_element = oEditor.FCKSelection.GetBoundaryParentElement();
-        selected_element.parentNode.insertBefore(
-            video_div, 
-            selected_element.nextSibling);
+        if (selected_element.nodeName == 'BODY') {
+            selected_element.appendChild(video_div);
+        } else {
+            selected_element.parentNode.insertBefore(
+                video_div, 
+                selected_element.nextSibling);
+        }
+        if (video_div.nextSibling === null) {
+            // Note: between the ' ' there is a no break space.
+            video_div.parentNode.appendChild(P({}, ' '));
+        }
     } else {
         get_video_id_div().textContent = video_id;
         get_expires_div().textContent = expires;
