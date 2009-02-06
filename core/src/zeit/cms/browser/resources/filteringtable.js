@@ -151,6 +151,6 @@ function add_content(menu) {
   if (url.indexOf('http') == -1) {
     return false;
   }
-  top.location.href = url
+  document.location.href = url
   return true;
 }
