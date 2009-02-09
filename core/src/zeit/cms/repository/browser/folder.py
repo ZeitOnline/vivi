@@ -1,12 +1,10 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import zeit.cms.browser.form
+import zeit.cms.repository.folder
 import zope.component
 import zope.formlib.form
-
-import zeit.cms.repository.folder
-import zeit.cms.browser.form
 from zeit.cms.i18n import MessageFactory as _
 
 
