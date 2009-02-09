@@ -112,25 +112,6 @@
     />
 
 
-  <!-- Selenium Tests -->
-
-  <configure zcml:condition="have zeit.cms.selenium"
-    xmlns:zcml="http://namespaces.zope.org/zcml">
-    <adapter 
-      factory=".test_tree.Test" 
-      name="test_tree.html"
-      permission="zope.Public"
-      />
-
-    <adapter 
-      factory=".test_listing.Test" 
-      name="test_listing.html"
-      permission="zope.Public"
-      />
-
-  </configure>
-
-
   <!-- popup browser -->
 
   <browser:page
