@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jan 30 11:43:15 2009\n"
+"POT-Creation-Date: Mon Feb  9 09:54:49 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -351,15 +351,15 @@ msgstr ""
 msgid "misc."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:16
+#: src/zeit/cms/content/browser/keyword-tree.pt:15
 msgid "If you would like to suggest a keyword, send an e-mail to ${recipient}."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:30
+#: src/zeit/cms/content/browser/keyword-tree.pt:29
 msgid "Similar keywords:"
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:5
+#: src/zeit/cms/content/browser/keyword-tree.pt:4
 msgid "Taxonomy"
 msgstr ""
 
@@ -427,14 +427,14 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
-#: src/zeit/cms/content/browser/typechange.pt:10
+#: src/zeit/cms/content/browser/typechange.pt:12
 #. Default: ""
-#.  "You are about to change the type of an object. Be sure you know what you\n"
-#.  "      are doing."
+#.  "You are about to change the type of an object. Be sure you know what\n"
+#.  "        you are doing."
 msgid "change-type-warning"
 msgstr ""
 
-#: src/zeit/cms/content/browser/typechange.pt:36
+#: src/zeit/cms/content/browser/typechange.pt:38
 msgid "Type changed. Loading ..."
 msgstr ""
 
@@ -443,7 +443,7 @@ msgid "Change type of ${object-unique-id}"
 msgstr ""
 
 #: src/zeit/cms/content/browser/typechange.py:68
-#: src/zeit/cms/content/browser/typechange.pt:27
+#: src/zeit/cms/content/browser/typechange.pt:29
 msgid "Change type"
 msgstr ""
 
@@ -567,8 +567,8 @@ msgid "Authors"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:89
-#: src/zeit/cms/content/browser/keyword-tree.pt:12
-#: src/zeit/cms/content/browser/keyword-tree.pt:36
+#: src/zeit/cms/content/browser/keyword-tree.pt:11
+#: src/zeit/cms/content/browser/keyword-tree.pt:35
 msgid "Keywords"
 msgstr ""
 
@@ -1445,15 +1445,15 @@ msgstr ""
 msgid "Plain text"
 msgstr ""
 
-#: src/zeit/content/text/browser/form.py:23
+#: src/zeit/content/text/browser/form.py:24
 msgid "Add plain text"
 msgstr ""
 
-#: src/zeit/content/text/browser/form.py:31
+#: src/zeit/content/text/browser/form.py:32
 msgid "Edit plain text"
 msgstr ""
 
-#: src/zeit/content/text/browser/form.py:38
+#: src/zeit/content/text/browser/form.py:39
 msgid "View plain text"
 msgstr ""
 
@@ -1488,7 +1488,7 @@ msgid "search-status-no-images-added"
 msgstr ""
 
 #: src/zeit/search/browser/search.py:85
-#: src/zeit/cms/content/browser/keyword-tree.pt:24
+#: src/zeit/cms/content/browser/keyword-tree.pt:23
 #: src/zeit/search/browser/sidebar.pt:13
 #: src/zeit/search/browser/sidebar.pt:29
 msgid "Search"
@@ -1733,7 +1733,7 @@ msgid "small"
 msgstr ""
 
 #: src/zeit/wysiwyg/browser/resources/video/dialog.pt:45
-msgid "with links"
+msgid "with info"
 msgstr ""
 
 #: src/zeit/wysiwyg/browser/resources/video/dialog.pt:46

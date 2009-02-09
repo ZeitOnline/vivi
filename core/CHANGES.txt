@@ -9,6 +9,8 @@ zeit.cms changes
 - WYSIWYG-Editor: Es ist jetzt möglich auch nach der Video-Box Text einzugeben,
   wenn die Video-Box hinten an das Dokument angefügt wird.
 - Die Checkbox »Tages-NL« ist jetzt bei neuen Objekten automatisch aktiviert.
+- WYSIWYG-Editor: Beim Bearbeiten von Audio/Video steht jetzt »mit Info« statt
+  »mit Links« zur Auswahl (Bug #4650).
 
 1.10.2 (2009-02-05)
 -------------------
