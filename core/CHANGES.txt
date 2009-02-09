@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.10.3 (unreleased)
--------------------
+1.11 (2009-02-09)
+-----------------
 
 - WYSIWYG-Editor: Es ist nicht mehr möglich ein Video so einzufügen, dass es
   nach dem Speichern weg ist (Bug #4652).
