@@ -2,35 +2,27 @@
 # See also LICENSE.txt
 """Publish and retract actions."""
 
+import ZODB.POSException
 import datetime
 import logging
+import lovely.remotetask.interfaces
 import os.path
+import pytz
 import random
 import subprocess
 import time
-
-import pytz
-
-import ZODB.POSException
 import transaction
-
-import zope.component
-import zope.event
-import zope.interface
-import zope.security.management
-
-import zope.app.security.interfaces
-import zope.app.appsetup.product
-
-import lovely.remotetask.interfaces
-
-import zeit.objectlog.interfaces
-
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
-
+import zeit.objectlog.interfaces
+import zope.app.appsetup.product
+import zope.app.security.interfaces
+import zope.component
+import zope.event
+import zope.interface
+import zope.security.management
 from zeit.cms.i18n import MessageFactory as _
 
 
