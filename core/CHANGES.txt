@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.12 (unreleased)
+1.12 (2009-02-11)
 -----------------
 
 - Einchecken schneller: Automatisches aktualisieren der Dokumente, die sich auf
