@@ -1,17 +1,17 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.async
 import logging
 import lxml.etree
-import zope.component
-import zope.interface
-
-import zeit.cms.interfaces
-import zeit.cms.checkout.interfaces
 import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.relation.interfaces
+import zope.component
+import zope.interface
 
 
 @zope.component.adapter(
@@ -56,8 +56,12 @@ def update_relating_of_checked_out(checked_out):
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_relating(context, event):
+def update_relating_handler(context, event):
     """Update metadata in object which relates another."""
+    update_relating(context)
+
+@gocept.async.function('events')
+def update_relating(context):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context, 'related')

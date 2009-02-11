@@ -27,13 +27,24 @@ def installLocalUtility(root, factory, name, interface, utility_name=u''):
     return root[name]
 
 
-def installTaskService():
+def installGeneralTaskService():
     site_manager = zope.component.getSiteManager()
     tasks = installLocalUtility(
         site_manager, lovely.remotetask.TaskService, 'tasks.general',
         lovely.remotetask.interfaces.ITaskService, utility_name='general')
     # Use MultiProcessor for parallel processing.
     tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
+
+
+def installEventTaskService():
+    site_manager = zope.component.getSiteManager()
+    tasks = installLocalUtility(
+        site_manager, lovely.remotetask.TaskService, 'tasks.event',
+        lovely.remotetask.interfaces.ITaskService, utility_name='events')
+    # Use MultiProcessor with 1 Thread because it handles pulling from the
+    # queue differently than the SingleProcessor.
+    tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
+    tasks.processorArguments = {'maxThreads': 1}
 
 
 def installRelations():
@@ -58,7 +69,8 @@ def install(root):
     installLocalUtility(
         root, zeit.cms.content.template.TemplateManagerContainer,
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
-    installTaskService()
+    installGeneralTaskService()
+    installEventTaskService()
     installRelations()
 
 

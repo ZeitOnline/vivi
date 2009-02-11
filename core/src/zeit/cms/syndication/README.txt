@@ -200,6 +200,8 @@ Checkout content, change a teaser and check back in:
 >>> checked_out.teaserTitle = u'nice Teaser Title'
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+>>> import gocept.async.tests
+>>> gocept.async.tests.process('events')
 
 Now, the channel metadata has changed:
 
@@ -270,19 +272,6 @@ The feed was not updated:
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
-
-The fact that the feed was not updated is also noted to the user via a flash
-message:
-
->>> import zope.i18n
->>> import z3c.flashmessage.interfaces
->>> receiver = zope.component.getUtility(
-...     z3c.flashmessage.interfaces.IMessageReceiver)
->>> message = list(receiver.receive())[0]
->>> zope.i18n.translate(message.message)
-u'Could not checkout "http://xml.zeit.de/politik.feed" for automatic object update.'
->>> message.type
-'error'
 
 Check the feed back in:
 
@@ -432,7 +421,7 @@ Footnotes
 
     >>> import zope.publisher.browser
     >>> import zope.security.testing
-    >>> bob = zope.security.testing.Principal(u'bob')
+    >>> bob = zope.security.testing.Principal(u'zope.user')
     >>> request = zope.publisher.browser.TestRequest()
     >>> request.setPrincipal(bob)
     >>> import zope.security.management

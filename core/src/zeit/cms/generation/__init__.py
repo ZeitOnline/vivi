@@ -9,8 +9,8 @@ import zope.app.generations
 import zope.app.zopeappgenerations
 
 
-minimum_generation = 7
-generation = 7
+minimum_generation = 8
+generation = 8
 
 manager = zope.app.generations.generations.SchemaManager(
     minimum_generation, generation, "zeit.cms.generation")

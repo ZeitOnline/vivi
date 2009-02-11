@@ -20,6 +20,7 @@ setup(
         'ZODB3>=3.8.1',
         'transaction',
         'decorator',
+        'gocept.async>=0.1.1',
         'gocept.cache>=0.2',
         'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.5',

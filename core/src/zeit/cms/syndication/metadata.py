@@ -1,15 +1,14 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import gocept.async
 import logging
-
-import zope.component
-
-import zeit.cms.interfaces
-import zeit.cms.checkout.interfaces
-import zeit.cms.relation.interfaces
+import persistent
 import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
+import zope.component
 
 
 log = logging.getLogger(__name__)
@@ -20,6 +19,13 @@ log = logging.getLogger(__name__)
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def updateFeedOnCheckin(context, event):
     """Update metadata in feed on checkin of objects."""
+
+    update_feed(context)
+
+
+@gocept.async.function(service='events')
+def update_feed(context):
+
     auto = zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate(
         context, None)
     if auto is None:

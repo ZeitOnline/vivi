@@ -1,21 +1,19 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import gocept.async
 import lxml.etree
 import lxml.objectify
 import rwproperty
-
-import zope.component
-import zope.interface
-
-import zeit.cms.checkout.interfaces
 import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.relation.interfaces
 import zeit.content.image.interfaces
+import zope.component
+import zope.interface
 
 
 class ImagesAdapter(zeit.cms.related.related.RelatedBase):
@@ -116,7 +114,12 @@ def update_image_reference_of_checked_out(checked_out):
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_objects_referenced_by_images(context, event):
+def update_objects_referenced_by_images_handler(context, event):
+    update_objects_referenced_by_images(context)
+
+
+@gocept.async.function(service='events')
+def update_objects_referenced_by_images(context):
     """Update objects which are referenced by images."""
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)

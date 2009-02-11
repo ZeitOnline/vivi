@@ -52,8 +52,9 @@
 
   <include package="lovely.remotetask" />
 
-  <include package="gocept.lxml" />
+  <include package="gocept.async" />
   <include package="gocept.form" />
+  <include package="gocept.lxml" />
 
   <include package="zeit.connector" />
   <include package="zeit.objectlog" />

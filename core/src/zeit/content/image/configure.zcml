@@ -150,7 +150,8 @@
       permission="zeit.EditContent" />
   </class>
 
-  <subscriber handler=".imagereference.update_objects_referenced_by_images" />
+  <subscriber
+    handler=".imagereference.update_objects_referenced_by_images_handler" />
 
   <adapter factory=".imagereference.References"/>
   <adapter
