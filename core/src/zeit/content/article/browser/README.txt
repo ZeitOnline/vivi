@@ -443,6 +443,12 @@ the feeds automatically:
 >>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
+>>> import gocept.async.tests
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> gocept.async.tests.process('events')
+>>> zope.app.component.hooks.setSite(old_site)
 
 Now the feed has been changed. Verify this by checking out the feed and looking
 at its xml source:

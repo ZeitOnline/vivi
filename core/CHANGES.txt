@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.5.13 (2009-02-11)
+-------------------
+
+- Aktualisiert auf asynchrone Updates.
+
 1.5.12 (2009-02-09)
 -------------------
 
