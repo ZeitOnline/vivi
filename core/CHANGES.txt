@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.13 (unreleased)
+-----------------
+
+- Channel stehen nach dem Syndizieren nicht mehr unter den bearbeiteten
+  Dokumenten.
+
 1.12 (2009-02-11)
 -----------------
 

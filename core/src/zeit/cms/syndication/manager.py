@@ -56,7 +56,7 @@ class SyndicationManager(object):
         for target in targets:
             manager = zeit.cms.checkout.interfaces.ICheckoutManager(target)
             try:
-                checked_out.append(manager.checkout())
+                checked_out.append(manager.checkout(temporary=True))
             except zeit.cms.checkout.interfaces.CheckinCheckoutError:
                 for co in checked_out:
                     del co.__parent__[co.__name__]
