@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Feb  9 09:54:49 2009\n"
+"POT-Creation-Date: Sun Feb 15 16:32:23 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -130,7 +130,7 @@ msgstr ""
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
 #: src/zeit/cms/syndication/browser/feed.py:157
-#: src/zeit/cms/syndication/browser/manager.py:96
+#: src/zeit/cms/syndication/browser/manager.py:98
 #: src/zeit/cms/syndication/interfaces.py:51
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:32
 #: src/zeit/content/gallery/interfaces.py:80
@@ -259,11 +259,6 @@ msgstr ""
 
 #: src/zeit/cms/checkout/browser/manager.py:98
 msgid "Checkin"
-msgstr ""
-
-#: src/zeit/cms/checkout/helper.py:30
-#. Default: ""
-msgid "Could not checkout \"${id}\" for automatic object update."
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/clip.py:100
@@ -777,16 +772,16 @@ msgstr ""
 msgid "${size} bytes"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.py:17
+#: src/zeit/cms/repository/browser/folder.py:15
 msgid "Add folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.py:19
+#: src/zeit/cms/repository/browser/folder.py:17
 #: src/zeit/cms/repository/browser/folder.zcml:92
 msgid "Folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.py:27
+#: src/zeit/cms/repository/browser/folder.py:25
 msgid "Edit folder"
 msgstr ""
 
@@ -946,6 +941,11 @@ msgid "syndicate-wo-hp"
 msgstr ""
 
 #: src/zeit/cms/syndication/browser/manager.pt:20
+#. Default: "Synd. w/o relateds"
+msgid "syndicate-wo-relateds"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/manager.pt:22
 msgid "Publish"
 msgstr ""
 
@@ -957,38 +957,38 @@ msgstr ""
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:102
+#: src/zeit/cms/syndication/browser/manager.py:101
+msgid "Path"
+msgstr ""
+
+#: src/zeit/cms/syndication/browser/manager.py:104
 msgid "Position"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:109
+#: src/zeit/cms/syndication/browser/manager.py:111
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:351
 msgid "Preview"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:43
+#: src/zeit/cms/syndication/browser/manager.py:45
 #. Default: ""
 msgid "Could not syndicate because \"${name}\" could not be locked or checked out."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:49
+#: src/zeit/cms/syndication/browser/manager.py:51
 #. Default: ""
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:63
+#: src/zeit/cms/syndication/browser/manager.py:65
 #. Default: ""
 msgid "scheduled-for-publishing"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:66
+#: src/zeit/cms/syndication/browser/manager.py:68
 #. Default: ""
 msgid "Could not publish \"${name}\"."
-msgstr ""
-
-#: src/zeit/cms/syndication/browser/manager.py:99
-msgid "Path"
 msgstr ""
 
 #: src/zeit/cms/syndication/interfaces.py:193
@@ -1021,7 +1021,7 @@ msgstr ""
 
 #: src/zeit/cms/workflow/browser/indicator.py:31
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:299
+#: src/zeit/workflow/publish.py:291
 msgid "Published"
 msgstr ""
 
@@ -1646,24 +1646,24 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:123
+#: src/zeit/workflow/publish.py:115
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:262
+#: src/zeit/workflow/publish.py:254
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:324
+#: src/zeit/workflow/publish.py:316
 msgid "Retracted"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:69
+#: src/zeit/workflow/publish.py:61
 msgid "Publication scheduled"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:75
+#: src/zeit/workflow/publish.py:67
 msgid "Retracting scheduled"
 msgstr ""
 

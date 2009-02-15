@@ -17,6 +17,8 @@
       i18n:attributes="value" />
     <input name="syndicate-wo-hp" value="Synd. w/o HP" type="submit"
       i18n:attributes="value syndicate-wo-hp" />
+    <input name="syndicate-wo-relateds" value="Synd. w/o relateds" type="submit"
+      i18n:attributes="value syndicate-wo-relateds" />
     <input name="publish" value="Publish" type="submit"
       i18n:attributes="value" />
   </form>

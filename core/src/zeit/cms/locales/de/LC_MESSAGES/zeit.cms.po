@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Feb  9 09:54:49 2009\n"
-"PO-Revision-Date: 2009-02-09 09:55+0100\n"
+"POT-Creation-Date: Sun Feb 15 16:32:23 2009\n"
+"PO-Revision-Date: 2009-02-15 16:36+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -118,7 +118,7 @@ msgstr "Autoren"
 #: src/zeit/cms/content/interfaces.py:115
 #: src/zeit/cms/content/interfaces.py:275
 #: src/zeit/cms/syndication/browser/feed.py:157
-#: src/zeit/cms/syndication/browser/manager.py:96
+#: src/zeit/cms/syndication/browser/manager.py:98
 #: src/zeit/cms/syndication/interfaces.py:51
 #: src/zeit/cms/workingcopy/browser/workingcopy.py:32
 #: src/zeit/content/gallery/interfaces.py:80
@@ -248,11 +248,6 @@ msgstr "Auschecken"
 #: src/zeit/cms/checkout/browser/manager.py:98
 msgid "Checkin"
 msgstr "Einchecken"
-
-#. Default: ""
-#: src/zeit/cms/checkout/helper.py:30
-msgid "Could not checkout \"${id}\" for automatic object update."
-msgstr "Die Metadaten in »${id}« konnten nicht automatisch aktualisiert werden, weil das Auschecken nicht möglich war."
 
 #. Default: ""
 #: src/zeit/cms/clipboard/browser/clip.py:100
@@ -765,16 +760,16 @@ msgstr "Größe"
 msgid "${size} bytes"
 msgstr "${size} Byte"
 
-#: src/zeit/cms/repository/browser/folder.py:17
+#: src/zeit/cms/repository/browser/folder.py:15
 msgid "Add folder"
 msgstr "Ordner hinzufügen"
 
-#: src/zeit/cms/repository/browser/folder.py:19
+#: src/zeit/cms/repository/browser/folder.py:17
 #: src/zeit/cms/repository/browser/folder.zcml:92
 msgid "Folder"
 msgstr "Ordner"
 
-#: src/zeit/cms/repository/browser/folder.py:27
+#: src/zeit/cms/repository/browser/folder.py:25
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
@@ -933,7 +928,12 @@ msgstr "Channel bearbeiten"
 msgid "syndicate-wo-hp"
 msgstr "Syndizieren (ohne HP)"
 
+#. Default: "Synd. w/o relateds"
 #: src/zeit/cms/syndication/browser/manager.pt:20
+msgid "syndicate-wo-relateds"
+msgstr "Syndizieren (ohne Relateds)"
+
+#: src/zeit/cms/syndication/browser/manager.pt:22
 msgid "Publish"
 msgstr "Veröffentlichen"
 
@@ -945,39 +945,39 @@ msgstr "»${content-title}« syndizieren"
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
-#: src/zeit/cms/syndication/browser/manager.py:102
+#: src/zeit/cms/syndication/browser/manager.py:101
+msgid "Path"
+msgstr "Pfad"
+
+#: src/zeit/cms/syndication/browser/manager.py:104
 msgid "Position"
 msgstr "Position"
 
-#: src/zeit/cms/syndication/browser/manager.py:109
+#: src/zeit/cms/syndication/browser/manager.py:111
 #: src/zeit/cms/workingcopy/browser/configure.zcml:54
 #: src/zeit/cms/browser/configure.zcml:351
 msgid "Preview"
 msgstr "Vorschau"
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:43
+#: src/zeit/cms/syndication/browser/manager.py:45
 msgid "Could not syndicate because \"${name}\" could not be locked or checked out."
 msgstr "Konnte nicht syndizieren, weil »${name}« nicht gesperrt oder ausgecheckt werden konnte."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:49
+#: src/zeit/cms/syndication/browser/manager.py:51
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr "»${name}« wurde nach »${targets}« syndiziert."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:63
+#: src/zeit/cms/syndication/browser/manager.py:65
 msgid "scheduled-for-publishing"
 msgstr "»${id}« wird veröffentlicht."
 
 #. Default: ""
-#: src/zeit/cms/syndication/browser/manager.py:66
+#: src/zeit/cms/syndication/browser/manager.py:68
 msgid "Could not publish \"${name}\"."
 msgstr "»${name}« konnte nicht veröffentlicht werden."
-
-#: src/zeit/cms/syndication/browser/manager.py:99
-msgid "Path"
-msgstr "Pfad"
 
 #: src/zeit/cms/syndication/interfaces.py:193
 msgid "No automatic metadata update"
@@ -1009,7 +1009,7 @@ msgstr "limit-amount-description"
 
 #: src/zeit/cms/workflow/browser/indicator.py:31
 #: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:299
+#: src/zeit/workflow/publish.py:291
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1634,23 +1634,23 @@ msgid "Select for newsflashs or on a weekend to publish without setting correcte
 msgstr "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können ohne die anderen Status setzen zu müssen."
 
 #. Default: ""
-#: src/zeit/workflow/publish.py:123
+#: src/zeit/workflow/publish.py:115
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: src/zeit/workflow/publish.py:262
+#: src/zeit/workflow/publish.py:254
 msgid "Could not publish because conditions not satisifed."
 msgstr "Konnte nicht veröffentlichen, weil die Bedingungen nicht erfüllt sind."
 
-#: src/zeit/workflow/publish.py:324
+#: src/zeit/workflow/publish.py:316
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
-#: src/zeit/workflow/publish.py:69
+#: src/zeit/workflow/publish.py:61
 msgid "Publication scheduled"
 msgstr "Wird veröffentlicht"
 
-#: src/zeit/workflow/publish.py:75
+#: src/zeit/workflow/publish.py:67
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
@@ -1727,6 +1727,10 @@ msgstr "mit Info"
 msgid "large"
 msgstr "groß"
 
+#~ msgid "Could not checkout \"${id}\" for automatic object update."
+#~ msgstr ""
+#~ "Die Metadaten in »${id}« konnten nicht automatisch aktualisiert werden, "
+#~ "weil das Auschecken nicht möglich war."
 #~ msgid "Create and modify calendar entries"
 #~ msgstr "Kalendereinträge erstellen und bearbeiten"
 #~ msgid "All users have this role implicitly"

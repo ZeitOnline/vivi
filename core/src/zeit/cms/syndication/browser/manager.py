@@ -25,10 +25,12 @@ class Manager(zeit.cms.browser.view.Base):
             targets = self.select_column.getSelected(self.manager.targets,
                                                      self.request)
             if 'syndicate' in self.request.form:
-                self.syndicate(targets, hidden=False)
-            if 'syndicate-wo-hp' in self.request.form:
-                self.syndicate(targets, hidden=True)
-            if 'publish' in self.request.form:
+                self.syndicate(targets, hidden=False, hidden_relateds=False)
+            elif 'syndicate-wo-hp' in self.request.form:
+                self.syndicate(targets, hidden=True, hidden_relateds=False)
+            elif 'syndicate-wo-relateds' in self.request.form:
+                self.syndicate(targets, hidden=False, hidden_relateds=True)
+            elif 'publish' in self.request.form:
                 self.publish(targets)
         super(Manager, self).update()
 

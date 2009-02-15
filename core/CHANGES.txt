@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Channel stehen nach dem Syndizieren nicht mehr unter den bearbeiteten
   Dokumenten.
+- Neue Aktion beim Syndizieren: »Syndizieren ohne Relateds«.
 
 1.12 (2009-02-11)
 -----------------

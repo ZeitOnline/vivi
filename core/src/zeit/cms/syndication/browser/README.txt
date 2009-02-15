@@ -264,6 +264,44 @@ When we syndicate again *with* HP, the flag is set again:
 >>> hp_checkbox.value
 True
 
+
+Syndicating without relateds
+----------------------------
+
+A very common case is that a content should be syndicated without relateds.
+This is a separate action:
+
+>>> browser.open(bookmark)
+>>> politik_checkbox = browser.getControl(
+...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
+>>> politik_checkbox.value = True
+>>> browser.getControl('Synd. w/o relateds').click()
+>>> print browser.contents
+<?xml ...
+    ..."rauchen-verbessert-die-welt" has been syndicated to politik.feed...
+
+Go to politk.feed to see that it is w/o related:
+
+>>> browser.getLink('politik').click()
+>>> relateds_checkbox = browser.getControl(name='visible_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
+>>> relateds_checkbox.value
+False
+
+When we syndicate again *with* relateds, the flag is set again:
+
+>>> browser.open(bookmark)
+>>> politik_checkbox = browser.getControl(
+...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
+>>> politik_checkbox.value = True
+>>> browser.getControl('Syndicate').click()
+>>> print browser.contents
+<?xml ...
+    ..."rauchen-verbessert-die-welt" has been syndicated to politik.feed...
+>>> browser.getLink('politik').click()
+>>> relateds_checkbox = browser.getControl(name='visible_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
+>>> relateds_checkbox.value
+True
+
 Publishing
 ----------
 
@@ -479,9 +517,9 @@ Let's have a look at the source now:
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           hidden_relateds="false"
            hp_hide="true"
-           pinned="true"
-           hidden_relateds="false"/>
+           pinned="true"/>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
@@ -511,9 +549,9 @@ Its also indicated in the source:
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           hidden_relateds="false"
            hp_hide="true"
            pinned="true"
-           hidden_relateds="false"
            layout="big"/>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
@@ -543,9 +581,9 @@ Its also indicated in the source:
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           hidden_relateds="true"
            hp_hide="true"
            pinned="true"
-           hidden_relateds="true"
            layout="big"/>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
