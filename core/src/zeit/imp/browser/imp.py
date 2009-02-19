@@ -36,6 +36,9 @@ class Imp(object):
     def scales(self):
         return zeit.imp.source.ScaleSource()
 
+    def colors(self):
+        return zeit.imp.source.ColorSource()
+
 
 class ImageBar(zeit.cms.browser.view.Base):
 

@@ -1,6 +1,12 @@
 zeit.imp changes
 ================
 
+0.4 (unreleased)
+++++++++++++++++
+
+- Es stehen mehrere Rahmenfarben zur Auswahl, die per XML-Datei anpassbar sind
+  (colors.xml).
+
 0.3 (2009-02-05)
 ++++++++++++++++
 

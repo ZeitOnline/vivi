@@ -35,7 +35,7 @@ class Cropper(object):
             raise ValueError(name)
         self.filters.append((filter_class, factor))
 
-    def crop(self, w, h, x1, y1, x2, y2, border=False):
+    def crop(self, w, h, x1, y1, x2, y2, border=None):
         pil_image = PIL.Image.open(self.master_image.open())
 
         pil_image = pil_image.resize((w, h), self.downsample_filter)
@@ -45,8 +45,8 @@ class Cropper(object):
             filter = filter_class(pil_image)
             pil_image = filter.enhance(factor)
 
-        if border:
-            pil_image = self.add_border(pil_image)
+        if border is not None:
+            pil_image = self.add_border(pil_image, border)
 
         self.pil_image = pil_image
         return pil_image
@@ -60,11 +60,11 @@ class Cropper(object):
         self.context[image_name] = image
         return image
 
-    def add_border(self, pil_image):
+    def add_border(self, pil_image, border):
         draw = PIL.ImageDraw.ImageDraw(pil_image)
         w, h = pil_image.size
         draw.rectangle((0, 0, w-1, h-1),
-                       outline=(0, 0, 0, 255))
+                       outline=tuple(border) + (255,))
         return pil_image
 
     @property

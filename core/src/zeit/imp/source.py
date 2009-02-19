@@ -25,3 +25,22 @@ class ScaleSource(zeit.cms.content.sources.SimpleXMLSource):
             scale.title = scale_node.get('title')
             scale.name = scale_node.get('name')
             yield scale
+
+
+class Color(object):
+
+    zope.interface.implements(zeit.imp.interfaces.IColor)
+
+
+class ColorSource(zeit.cms.content.sources.SimpleXMLSource):
+
+    product_configuration = 'zeit.imp'
+    config_url = 'color-source'
+
+    def getValues(self):
+        xml = self._get_tree()
+        for node in xml.iterchildren():
+            color = Color()
+            color.title = node.get('title')
+            color.color = node.get('color')
+            yield color

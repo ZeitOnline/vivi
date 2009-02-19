@@ -16,7 +16,7 @@ zeit.imp.Imp = Class.extend({
         this.mask_dimensions = null;
         this.mask_image_dimensions = null;
         this.mask_variable = null;
-        this.border = false;
+        this.border = '';
         // Point for extensions to add arguments.
         this.crop_arguments = {}
 
@@ -186,7 +186,7 @@ zeit.imp.Imp = Class.extend({
              'w': this.current_dimensions.w,
              'h': this.current_dimensions.h,
              'name': this.name,
-             'border': this.border?'1':''});
+             'border': this.border});
         return args;
     },
 
@@ -228,7 +228,7 @@ zeit.imp.Imp = Class.extend({
         if (target.name == 'mask') {
             this.parse_mask_string(target.value);
         } else if (target.name == 'border') {
-            this.border = target.checked;
+            this.border = target.value;
         } else {
             return
         }
@@ -264,7 +264,7 @@ zeit.imp.Imp = Class.extend({
             'image_height': this.mask_image_dimensions.h,
             'mask_width': mask.w,
             'mask_height': mask.h,
-            'border': this.border?'yes':'',
+            'border': this.border,
             });
         var image_url = window.application_url + '/@@imp-cut-mask?' + query;
         if (this.mask_image === null) {

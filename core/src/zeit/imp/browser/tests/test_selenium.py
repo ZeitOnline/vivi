@@ -45,20 +45,20 @@ class SeleniumBasicTests(Selenium):
             '*&mask_width=450&mask_height=200&border=')
 
         s.comment('The border will be passed')
-        self.click_label("Rahmen")
+        self.click_label("grauer Rahmen")
         s.verifyAttribute(
             'id=imp-mask-image@src',
-            '*&mask_width=450&mask_height=200&border=yes')
+            '*&mask_width=450&mask_height=200&border=%23888888')
 
     def test_border_select_wo_selected_mask_does_not_fail(self):
         s = self.selenium
 
-        self.click_label("Schwarzer Rahmen")  # Assuming german browser
+        self.click_label("schwarzer Rahmen")  # Assuming german browser
         s.verifyElementNotPresent('id=imp-mask-image')
         self.click_label("450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
-            '*&mask_width=450&mask_height=200&border=yes')
+            '*&mask_width=450&mask_height=200&border=%23000000')
 
     def test_image_dragging(self):
         s = self.selenium

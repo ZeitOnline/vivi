@@ -113,7 +113,7 @@ class CropTest(TestBase):
             zope.app.file.image.getImageInfo(image_data))
 
     def test_crop_border(self):
-        image_data = self.get_image_data(border='1')
+        image_data = self.get_image_data(border='#000000')
         # A border does not change the image size, the border is *inside*
         self.assertEqual(
             ('image/jpeg', 400, 200),
@@ -128,7 +128,12 @@ class CropTest(TestBase):
         self.looks_black(image, 0, 199)
         self.looks_black(image, 399, 0)
 
+    def test_crop_no_border_for_invalid_colours(self):
+        # Basically makes only sure that we don't have an error.
+        image_data = self.get_image_data(border='#asdf')
+
     def looks_black(self, img, x, y):
+        # The pixels are not really black because we've got a jpeg.
         color = img.getpixel((x, y))
         self.assertTrue(
             sum(color) < 70, "fail %s, %s sum%s > 70" % (x, y, color))

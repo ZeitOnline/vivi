@@ -47,10 +47,13 @@
           name="mask-h" value="" />
       </div>
 
-      <div class="widget">
-        <label>
-          <input type="checkbox" name="border" value="true"/>
-          <span i18n:translate="" tal:omit-tag="">Black border (1px)</span>
+      <div class="widget radio-group">
+        <label tal:repeat="color view/colors">
+          <input type="radio" name="border"
+                 tal:attributes="
+                  value color/color;
+                  checked repeat/color/start" />
+          <span tal:replace="color/title" />
         </label>
 
       </div>

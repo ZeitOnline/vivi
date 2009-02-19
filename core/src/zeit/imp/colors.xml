@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<colors>
+    <color title="kein Rahmen"
+           color="" />
+    <color title="schwarzer Rahmen (1 Pixel)"
+           color="#000000" />
+    <color title="grauer Rahmen (1 Pixel)"
+           color="#888888" />
+</colors>

@@ -12,6 +12,7 @@ import zeit.imp.interfaces
 import zeit.imp.mask
 import zeit.imp.source
 import zope.app.testing.functional
+import zope.interface.verify
 
 
 imp_layer = zope.app.testing.functional.ZCMLLayer(
@@ -32,35 +33,51 @@ class TestLayerMask(unittest.TestCase):
 
     def test_mask_with_border(self):
         # Create a 20x30 mask in an 150x100 image
-        mask = zeit.imp.mask.Mask((150, 100), (20, 30), border=True)
+        mask = zeit.imp.mask.Mask((150, 100), (20, 30), border=(0, 0, 0))
         mask_data = mask.open('r').read()
         expected_data = pkg_resources.resource_string(
             __name__, 'test_mask_border.png')
         self.assertEquals(expected_data, mask_data,
                           "Mask doesn't match expected mask.")
 
+    def test_mask_color(self):
+        mask = zeit.imp.mask.Mask((100, 100), (100, 100), border=(255, 0, 0))
+        image = PIL.Image.open(mask.open('r'))
+        self.assertEquals((255, 0, 0, 255), image.getpixel((0, 0)))
+
     def test_rect_box(self):
         mask = zeit.imp.mask.Mask((150, 100), (20, 30))
         self.assertEquals(((65, 35), (85, 65)), mask._get_rect_box())
 
 
-class TestScaleSource(zope.app.testing.functional.BrowserTestCase):
+class TestSources(zope.app.testing.functional.BrowserTestCase):
 
     layer = imp_layer
 
     def setUp(self):
-        super(TestScaleSource, self).setUp()
+        super(TestSources, self).setUp()
         zeit.cms.testing.setup_product_config(product_config)
-        self.source = zeit.imp.source.ScaleSource()
 
     def test_scale_source(self):
-        scales = list(self.source)
+        source = zeit.imp.source.ScaleSource()
+        scales = list(source)
         self.assertEquals(7, len(scales))
         scale = scales[0]
+        zope.interface.verify.verifyObject(
+            zeit.imp.interfaces.IPossibleScale, scale)
         self.assertEquals('450x200', scale.name)
         self.assertEquals('450', scale.width)
         self.assertEquals('200', scale.height)
         self.assertEquals(u'Aufmacher groß (450×200)', scale.title)
+
+    def test_color_source(self):
+        source = zeit.imp.source.ColorSource()
+        values = list(source)
+        self.assertEquals(3, len(values))
+        value = values[1]
+        zope.interface.verify.verifyObject(zeit.imp.interfaces.IColor, value)
+        self.assertEquals('schwarzer Rahmen (1 Pixel)', value.title)
+        self.assertEquals('#000000', value.color)
 
 
 class TestCrop(zope.app.testing.functional.BrowserTestCase):
@@ -148,7 +165,7 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         # create an image with no contrast which is solid gray. The border adds
         # some black.
         self.crop.add_filter('contrast', 0)
-        image = self.crop.crop(200, 200, 0, 0, 200, 200, border=True)
+        image = self.crop.crop(200, 200, 0, 0, 200, 200, border=(0, 0, 0))
         r, g, b = self.get_histogram(image)
         self.assertNotEquals(40000, r[156])
         self.assertNotEquals(40000, g[156])
@@ -157,14 +174,23 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         self.assertNotEquals(0, g[0])
         self.assertNotEquals(0, b[0])
 
+    def test_border_color(self):
+        image = self.crop.crop(200, 200, 0, 0, 200, 200,
+                               border=(127, 127, 127))
+        self.assertEquals((127, 127, 127), image.getpixel((0,0)))
+
 
 scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
-product_config = {'zeit.imp': {'scale-source': 'file://%s' % scale_xml_path}}
+color_xml_path = pkg_resources.resource_filename(__name__, 'colors.xml')
+product_config = {'zeit.imp': {
+    'scale-source': 'file://%s' % scale_xml_path,
+    'color-source': 'file://%s' % color_xml_path,
+}}
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestLayerMask))
-    suite.addTest(unittest.makeSuite(TestScaleSource))
+    suite.addTest(unittest.makeSuite(TestSources))
     suite.addTest(unittest.makeSuite(TestCrop))
     return suite

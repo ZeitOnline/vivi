@@ -17,13 +17,13 @@ class Mask(object):
 
     """
 
-    def __init__(self, image_size, mask_size, border=False):
+    def __init__(self, image_size, mask_size, border=None):
         self.image_size, self.mask_size = image_size, mask_size
         image = PIL.Image.new('RGBA', image_size, (200, 200, 200, 220))
         draw = PIL.ImageDraw.ImageDraw(image)
         outline = None
-        if border:
-            outline=(0, 0, 0, 255)
+        if border is not None:
+            outline=tuple(border) + (255, )
         draw.rectangle(self._get_rect_box(),
                        fill=(255, 0, 0, 0), outline=outline)
         del draw

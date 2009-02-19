@@ -40,6 +40,38 @@ Content-Type: image/png
 >>> browser.contents[:10]
 '\x89PNG\r\n\x1a\n\x00\x00'
 
+The border can be coloured:
+
+>>> query = urllib.urlencode({
+...     'image_width:int': '100',
+...     'image_height:int': '200',
+...     'mask_width:int': '20',
+...     'mask_height:int': '10',
+...     'border': '#fde32b'})
+>>> browser.open('http://localhost/++skin++cms/@@imp-cut-mask?' + query)
+>>> print browser.headers
+Status: 200 Ok
+Cache-Control: public,max-age=86400
+Content-Length: ...
+Content-Type: image/png
+...
+
+If the colour doesn't parse there will not be a border:
+
+>>> query = urllib.urlencode({
+...     'image_width:int': '100',
+...     'image_height:int': '200',
+...     'mask_width:int': '20',
+...     'mask_height:int': '10',
+...     'border': '#xzy'})
+>>> browser.open('http://localhost/++skin++cms/@@imp-cut-mask?' + query)
+>>> print browser.headers
+Status: 200 Ok
+Cache-Control: public,max-age=86400
+Content-Length: ...
+Content-Type: image/png
+...
+
 
 Image manipulation view
 +++++++++++++++++++++++
@@ -88,4 +120,3 @@ It is possible to check out the group from here directly:
     >>> grp = zeit.content.image.test.create_image_group_with_master_image()
     >>> grp = zeit.content.image.test.create_image_group()
     >>> zope.app.component.hooks.setSite(old_site)
-

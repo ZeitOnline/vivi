@@ -22,13 +22,13 @@ class ICropper(zope.interface.Interface):
 
     """
 
-    def crop(w, h, x1, y1, x2, y2, border=False):
+    def crop(w, h, x1, y1, x2, y2, border=None):
         """Crop master image from image group.
 
         - The master image is first scaled to w, h.
         - From the resulting image the box x1, y2; x2, y2 is cropped.
-        - If border is true a 1px solid black border is painted inside the
-          cropped image.
+        - If border is not None, a border is put inside the cropped image.
+          border must be a tuple (r, g, b) indicating the border color then.
 
         returns the cropped image (PIL.Image.Image instance).
 
@@ -54,3 +54,10 @@ class IPossibleScale(zope.interface.Interface):
     height = zope.interface.Attribute(
         "height, leading ? indicates variable height.")
     title = zope.schema.TextLine(title=u'Title')
+
+
+class IColor(zope.interface.Interface):
+
+    title = zope.schema.TextLine(title=u'Title')
+    color = zope.interface.Attribute(
+        'Color definition in the form #RRGGBB (hex, like html)')
