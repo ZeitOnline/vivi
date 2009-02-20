@@ -7,6 +7,7 @@ zeit.imp changes
 - Es stehen mehrere Rahmenfarben zur Auswahl, die per XML-Datei anpassbar sind
   (colors.xml).
 - Markierung auf den Slidern entfernt.
+- Slider zeigen jetzt einen Wertebereich von -100 bis 100.
 
 0.3 (2009-02-05)
 ++++++++++++++++

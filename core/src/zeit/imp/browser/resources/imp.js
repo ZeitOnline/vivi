@@ -559,10 +559,10 @@ zeit.imp.ImageFilter = Class.extend({
             'label', null, this.container).setAttribute('for', input_id);
 
         this.slider = new UI.Slider(
-            this.slider_element, 1001,
+            this.slider_element, 2001,
             [this.to_value, this.to_step],
             this.input_element);
-        this.slider.setValue(1); // 1 is the noop.
+        this.slider.setValue(0);  // 0 is the noop.
 
         MochiKit.Signal.connect(
             this.slider, 'valueChanged', this, 'update_crop_arguments');
@@ -570,33 +570,37 @@ zeit.imp.ImageFilter = Class.extend({
     },
 
     update_crop_arguments: function(event) {
-        var othis = this;
-        document.imp.crop_arguments['filter.' + this.name] = this.slider.value;
-        if (!MochiKit.Base.isNull(this.signal_deferred)) {
-            this.signal_deferred.cancel();
+        var self = this;
+        document.imp.crop_arguments['filter.' + self.name] = self.to_filter(
+            self.slider.value);
+        if (!MochiKit.Base.isNull(self.signal_deferred)) {
+            self.signal_deferred.cancel();
         }
-        this.signal_deferred = MochiKit.Async.callLater(
+        self.signal_deferred = MochiKit.Async.callLater(
             0.25, function() {
                 MochiKit.Signal.signal(document.imp, 'configuration-change');
-                othis.signal_deferred = null;
+                self.signal_deferred = null;
             });
     },
 
     to_value: function(step) {
-        var value;
-        if (step <= 500) {
-            value = step / 500
-        } else {
-            value = Math.pow(step-500, 2) / 10000 + 1;
-        }
-        return new Number(value.toPrecision(3));
+        // [0; 2000] --> [-100; 100]
+        return new Number((step / 10 - 100).toPrecision(3));
     },
 
     to_step: function(value) {
-        if (value <= 1) {
-            return value * 500;
+        // [-100; 100] --> [0; 2000]
+        return (value + 100) * 10;
+    },
+
+    to_filter: function(value) {
+        if (value < 0) {
+            // scale to [0;1]
+            return (value + 100) / 100;
+        } else {
+            // scale to ]1;11]
+            return value / 10 + 1;
         }
-        return Math.sqrt((value-1) * 10000) + 500;
     },
 
 });

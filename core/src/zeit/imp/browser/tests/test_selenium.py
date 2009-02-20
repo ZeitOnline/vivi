@@ -350,7 +350,7 @@ class FilterTests(Selenium):
     def test_value_mapper(self):
         s = self.selenium
 
-        def verify_mappers(step, value):
+        def verify_mappers(step, value, filter):
             s.waitForNotEval(
                 'typeof(window.document.imp_color_filter)', 'undefined')
             s.verifyEval(
@@ -359,12 +359,15 @@ class FilterTests(Selenium):
             s.verifyEval(
                 'window.document.imp_color_filter.to_step(%s)' % value,
                 str(step))
+            s.verifyEval(
+                'window.document.imp_color_filter.to_filter(%s)' % value,
+                str(filter))
 
-        verify_mappers(0, 0)
-        verify_mappers(250, 0.5)
-        verify_mappers(500, 1)
-        verify_mappers(750, 7.25)
-        verify_mappers(1000, 26)
+        verify_mappers(0, -100, 0)
+        verify_mappers(250, -75, 0.25)
+        verify_mappers(1000, 0, 1)
+        verify_mappers(1750, 75, 8.5)
+        verify_mappers(2000, 100, 11)
 
     def test_brightness_slider(self):
         self.verify_slider('brightness')
@@ -386,7 +389,9 @@ class FilterTests(Selenium):
         # Clicking 0 yields 0 as value and changes the image url
         s.storeEval('window.document.imp.image.src', 'image_url')
         s.clickAt(selector, '0')
-        s.verifyValue('filter.%s.input' % name, '0')
+        s.verifyValue('filter.%s.input' % name, '-100')
+        s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
+                     '0');
         s.pause('300')
         s.verifyEval(
             "window.document.imp.image.src == storedVars['image_url']",
@@ -396,7 +401,7 @@ class FilterTests(Selenium):
         s.clickAt(selector, '100')
         s.verifyEval(
             "new Number(window.document.getElementById("
-            "   'filter.%s.input').value) > 0" % name,
+            "   'filter.%s.input').value) > -100" % name,
             'true')
 
     def test_slider_change_changes_crop_args(self):
