@@ -403,6 +403,14 @@ class FilterTests(Selenium):
             "new Number(window.document.getElementById("
             "   'filter.%s.input').value) > -100" % name,
             'true')
+        s.verifyEval(
+            "window.document.imp.crop_arguments['filter.%s'] != 0" % name,
+            'true');
+
+        # clicking reset sets the slider back to 0
+        s.click('reset')
+        s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
+                     '0');
 
     def test_slider_change_changes_crop_args(self):
         s = self.selenium

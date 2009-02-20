@@ -84,6 +84,8 @@
 
       <input type="button" id="imp-action-crop" name="crop" value="Crop"
         i18n:attributes="value" />
+      <input type="button" id="imp-action-reset" name="reset"
+        value="Reset sliders" i18n:attributes="value" />
 
     </form>
   </div>

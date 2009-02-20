@@ -8,6 +8,7 @@ zeit.imp changes
   (colors.xml).
 - Markierung auf den Slidern entfernt.
 - Slider zeigen jetzt einen Wertebereich von -100 bis 100.
+- Reset-Knopf für die Filter.
 
 0.3 (2009-02-05)
 ++++++++++++++++

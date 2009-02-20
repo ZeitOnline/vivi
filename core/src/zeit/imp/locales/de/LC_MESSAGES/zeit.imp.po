@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.imp\n"
-"POT-Creation-Date: Thu Jan 22 14:11:09 2009\n"
+"POT-Creation-Date: Fri Feb 20 09:18:31 2009\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
@@ -15,29 +15,29 @@ msgstr ""
 msgid "Transform"
 msgstr "Zuschneiden"
 
-#: src/zeit/imp/browser/imp.pt:53
-msgid "Black border (1px)"
-msgstr "Schwarzer Rahmen (1 Pixel)"
-
-#: src/zeit/imp/browser/imp.pt:60
+#: src/zeit/imp/browser/imp.pt:63
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: src/zeit/imp/browser/imp.pt:66
+#: src/zeit/imp/browser/imp.pt:69
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: src/zeit/imp/browser/imp.pt:72
+#: src/zeit/imp/browser/imp.pt:75
 msgid "Sharpness"
 msgstr "Schärfe"
 
-#: src/zeit/imp/browser/imp.pt:78
+#: src/zeit/imp/browser/imp.pt:81
 msgid "Color"
 msgstr "Farbe"
 
-#: src/zeit/imp/browser/imp.pt:82
+#: src/zeit/imp/browser/imp.pt:85
 msgid "Crop"
 msgstr "Zuschneiden"
+
+#: src/zeit/imp/browser/imp.pt:87
+msgid "Reset sliders"
+msgstr "Filter zurücksetzen"
 
 #: src/zeit/imp/browser/no-master-image-error.pt:5
 msgid "There is no master image"
@@ -57,4 +57,7 @@ msgstr "auschecken"
 #: src/zeit/imp/configure.zcml:6
 msgid "Use IMP"
 msgstr "IMP verwenden"
+
+#~ msgid "Black border (1px)"
+#~ msgstr "Schwarzer Rahmen (1 Pixel)"
 

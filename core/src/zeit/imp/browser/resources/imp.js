@@ -562,11 +562,17 @@ zeit.imp.ImageFilter = Class.extend({
             this.slider_element, 2001,
             [this.to_value, this.to_step],
             this.input_element);
-        this.slider.setValue(0);  // 0 is the noop.
+        this.reset();
 
         MochiKit.Signal.connect(
             this.slider, 'valueChanged', this, 'update_crop_arguments');
         this.signal_deferred = null;
+        MochiKit.Signal.connect(
+            'imp-action-reset', 'onclick', this, 'reset');
+    },
+
+    reset: function() {
+        this.slider.setValue(0);
     },
 
     update_crop_arguments: function(event) {
