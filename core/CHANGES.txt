@@ -10,7 +10,7 @@ zeit.cms changes
 - Access Keys für Checkin (^I) und Checkout (^O).
 
 - Property für letzte inhaltliche Änderung, die beim Checkin gesetzt wird. Dies
-  kann durch die Aktion »Checkin (Korrektur)« verhindert werden. (#4720)
+  kann durch die Aktion »Einchecken (Korrektur)« verhindert werden. (#4720)
 
 1.13 (2009-02-15)
 -----------------
