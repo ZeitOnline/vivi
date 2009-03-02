@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Mar  2 15:40:47 2009\n"
-"PO-Revision-Date: 2009-03-02 15:41+0100\n"
+"POT-Creation-Date: Mon Mar  2 18:38:39 2009\n"
+"PO-Revision-Date: 2009-03-02 18:40+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -230,6 +230,10 @@ msgstr "Die angegebene Id ist nicht gültig."
 #: src/zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
+
+#: src/zeit/cms/checkout/browser/manager.py:108
+msgid "Checkin (correction)"
+msgstr "Einchecken (Korrektur)"
 
 #. Default: ""
 #: src/zeit/cms/checkout/browser/manager.py:16

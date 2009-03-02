@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar  2 15:40:47 2009\n"
+"POT-Creation-Date: Mon Mar  2 18:38:39 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -241,6 +241,10 @@ msgstr ""
 
 #: src/zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
+msgstr ""
+
+#: src/zeit/cms/checkout/browser/manager.py:108
+msgid "Checkin (correction)"
 msgstr ""
 
 #: src/zeit/cms/checkout/browser/manager.py:16
