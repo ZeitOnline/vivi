@@ -21,7 +21,7 @@ but no checkin link:
 ...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
 >>> checkout = browser.getLink('Checkout')
 >>> checkout
-<Link text='[IMG] Checkout' ...>
+<Link text='[IMG] Checkout...>
 
 The url has information about the view where the link was generated from:
 
