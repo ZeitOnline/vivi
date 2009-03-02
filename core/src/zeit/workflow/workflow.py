@@ -93,7 +93,7 @@ def remove_from_channels_after_retract(context, event):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     syndicated_in = relations.get_relations(context, 'syndicated_in')
-    for feed in syndicated_in:
+    for feed in list(syndicated_in):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
         try:
             checked_out = manager.checkout(temporary=True)
