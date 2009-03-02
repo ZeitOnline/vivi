@@ -2,6 +2,7 @@
   <a title="Title"
     tal:attributes="
     href view/get_url;
+    accesskey view/accesskey | nothing;
     title view/title"
     i18n:attributes="title">
     <img tal:attributes="src view/icon" />

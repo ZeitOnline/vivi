@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Feb 15 16:32:23 2009\n"
+"POT-Creation-Date: Mon Mar  2 13:51:05 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -254,11 +254,11 @@ msgid "\"${name}\" has been checked in."
 msgstr ""
 
 #: src/zeit/cms/checkout/browser/manager.py:87
-msgid "Checkout"
+msgid "Checkout ^O"
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:98
-msgid "Checkin"
+#: src/zeit/cms/checkout/browser/manager.py:99
+msgid "Checkin ^I"
 msgstr ""
 
 #: src/zeit/cms/clipboard/browser/clip.py:100
@@ -1699,7 +1699,7 @@ msgstr ""
 msgid "scheduled-for-retracting-on"
 msgstr ""
 
-#: src/zeit/workflow/workflow.py:79
+#: src/zeit/workflow/workflow.py:73
 #. Default: ""
 msgid "${name}: ${new_value}"
 msgstr ""

@@ -7,6 +7,8 @@ zeit.cms changes
 - Entfernen aus Channeln beim Zurückzeiehen funktionierte nicht zuverlässig
   (bug #4722).
 
+- Access Keys für Checkin (^I) und Checkout (^O).
+
 1.13 (2009-02-15)
 -----------------
 

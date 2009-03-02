@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Sun Feb 15 16:32:23 2009\n"
-"PO-Revision-Date: 2009-02-15 16:36+0100\n"
+"POT-Creation-Date: Mon Mar  2 13:51:05 2009\n"
+"PO-Revision-Date: 2009-03-02 13:51+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -242,12 +242,12 @@ msgid "\"${name}\" has been checked in."
 msgstr "»${name}« wurde eingecheckt."
 
 #: src/zeit/cms/checkout/browser/manager.py:87
-msgid "Checkout"
-msgstr "Auschecken"
+msgid "Checkout ^O"
+msgstr "Auschecken ^O"
 
-#: src/zeit/cms/checkout/browser/manager.py:98
-msgid "Checkin"
-msgstr "Einchecken"
+#: src/zeit/cms/checkout/browser/manager.py:99
+msgid "Checkin ^I"
+msgstr "Einchecken ^I"
 
 #. Default: ""
 #: src/zeit/cms/clipboard/browser/clip.py:100
@@ -1687,7 +1687,7 @@ msgid "scheduled-for-retracting-on"
 msgstr "Automatisch zurückziehen am ${date} (job #${job})"
 
 #. Default: ""
-#: src/zeit/workflow/workflow.py:79
+#: src/zeit/workflow/workflow.py:73
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 

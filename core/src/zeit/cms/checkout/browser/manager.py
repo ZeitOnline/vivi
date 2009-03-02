@@ -84,8 +84,9 @@ class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 class CheckoutMenuItem(MenuItem):
     """MenuItem for checking out."""
 
-    title = _('Checkout')
+    title = _('Checkout ^O')
     base_action = 'checkout'
+    accesskey = 'o'
 
     def is_visible(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
@@ -95,8 +96,9 @@ class CheckoutMenuItem(MenuItem):
 class CheckinMenuItem(MenuItem):
     """MenuItem for checking in."""
 
-    title = _('Checkin')
+    title = _('Checkin ^I')
     base_action = 'checkin'
+    accesskey = 'i'
 
     def is_visible(self):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
