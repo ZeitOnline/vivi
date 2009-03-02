@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar  2 13:51:05 2009\n"
+"POT-Creation-Date: Mon Mar  2 15:40:47 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -243,21 +243,21 @@ msgstr ""
 msgid "The object could not be found."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:18
+#: src/zeit/cms/checkout/browser/manager.py:16
 #. Default: ""
 msgid "\"${name}\" has been checked out."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:46
+#: src/zeit/cms/checkout/browser/manager.py:44
 #. Default: ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:87
+#: src/zeit/cms/checkout/browser/manager.py:85
 msgid "Checkout ^O"
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:99
+#: src/zeit/cms/checkout/browser/manager.py:97
 msgid "Checkin ^I"
 msgstr ""
 
@@ -533,6 +533,10 @@ msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:33
 msgid "Keyword is contained in the taxonomy"
+msgstr ""
+
+#: src/zeit/cms/content/interfaces.py:335
+msgid "Last semantic change"
 msgstr ""
 
 #: src/zeit/cms/content/interfaces.py:44
@@ -1547,14 +1551,14 @@ msgstr ""
 msgid "Date the last hit was counted on"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:103
-#: src/zeit/workflow/browser/form.py:132
+#: src/zeit/workflow/browser/form.py:104
+#: src/zeit/workflow/browser/form.py:135
 msgid "Settings"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:105
-#: src/zeit/workflow/browser/form.py:134
-#: src/zeit/workflow/browser/form.py:159
+#: src/zeit/workflow/browser/form.py:106
+#: src/zeit/workflow/browser/form.py:137
+#: src/zeit/workflow/browser/form.py:163
 msgid "Log"
 msgstr ""
 
@@ -1595,8 +1599,8 @@ msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
 #: src/zeit/workflow/browser/form.py:97
-#: src/zeit/workflow/browser/form.py:127
-#: src/zeit/workflow/browser/form.py:155
+#: src/zeit/workflow/browser/form.py:130
+#: src/zeit/workflow/browser/form.py:159
 msgid "Status"
 msgstr ""
 

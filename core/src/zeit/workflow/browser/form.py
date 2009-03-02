@@ -95,7 +95,8 @@ class ContentWorkflow(WorkflowForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'date_last_modified', 'created',
+            ('last_modified_by', 'date_last_modified', 'last_semantic_change',
+             'created',
              'published', 'date_last_published', 'date_first_released',
              'edited', 'corrected', 'refined', 'images_added'),
             css_class='column-left'),
@@ -107,9 +108,11 @@ class ContentWorkflow(WorkflowForm):
     )
 
     form_fields = (
-        zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow,
-                                     zeit.objectlog.interfaces.ILog,
-                                     zeit.cms.workflow.interfaces.IModified) +
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IContentWorkflow,
+            zeit.objectlog.interfaces.ILog,
+            zeit.cms.workflow.interfaces.IModified,
+            zeit.cms.content.interfaces.ISemanticChange) +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
@@ -125,7 +128,7 @@ class AssetWorkflow(WorkflowForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'date_last_modified',
+            ('last_modified_by', 'date_last_modified', 'last_semantic_change',
              'published', 'date_last_published', 'date_first_released'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
@@ -139,7 +142,8 @@ class AssetWorkflow(WorkflowForm):
         zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IAssetWorkflow,
             zeit.objectlog.interfaces.ILog,
-            zeit.cms.workflow.interfaces.IModified))
+            zeit.cms.workflow.interfaces.IModified,
+            zeit.cms.content.interfaces.ISemanticChange))
 
 
 class NoWorkflow(zeit.cms.browser.form.EditForm):

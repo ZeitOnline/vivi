@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Mar  2 13:51:05 2009\n"
-"PO-Revision-Date: 2009-03-02 13:51+0100\n"
+"POT-Creation-Date: Mon Mar  2 15:40:47 2009\n"
+"PO-Revision-Date: 2009-03-02 15:41+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -232,20 +232,20 @@ msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
 #. Default: ""
-#: src/zeit/cms/checkout/browser/manager.py:18
+#: src/zeit/cms/checkout/browser/manager.py:16
 msgid "\"${name}\" has been checked out."
 msgstr "»${name}« wurde ausgecheckt."
 
 #. Default: ""
-#: src/zeit/cms/checkout/browser/manager.py:46
+#: src/zeit/cms/checkout/browser/manager.py:44
 msgid "\"${name}\" has been checked in."
 msgstr "»${name}« wurde eingecheckt."
 
-#: src/zeit/cms/checkout/browser/manager.py:87
+#: src/zeit/cms/checkout/browser/manager.py:85
 msgid "Checkout ^O"
 msgstr "Auschecken ^O"
 
-#: src/zeit/cms/checkout/browser/manager.py:99
+#: src/zeit/cms/checkout/browser/manager.py:97
 msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
@@ -522,6 +522,10 @@ msgstr "Gibt an wie oft die Seite insgesamt angezeigt wurde."
 #: src/zeit/cms/content/interfaces.py:33
 msgid "Keyword is contained in the taxonomy"
 msgstr "Schlagword aus der Taxonomie."
+
+#: src/zeit/cms/content/interfaces.py:335
+msgid "Last semantic change"
+msgstr "Letzte inhaltliche Änderung"
 
 #: src/zeit/cms/content/interfaces.py:44
 msgid "Root of ontology"
@@ -1534,14 +1538,14 @@ msgstr "Datum wann der erste Treffer gezählt wurde"
 msgid "Date the last hit was counted on"
 msgstr "Datum wann der letzte treffer gezählt wurde"
 
-#: src/zeit/workflow/browser/form.py:103
-#: src/zeit/workflow/browser/form.py:132
+#: src/zeit/workflow/browser/form.py:104
+#: src/zeit/workflow/browser/form.py:135
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/zeit/workflow/browser/form.py:105
-#: src/zeit/workflow/browser/form.py:134
-#: src/zeit/workflow/browser/form.py:159
+#: src/zeit/workflow/browser/form.py:106
+#: src/zeit/workflow/browser/form.py:137
+#: src/zeit/workflow/browser/form.py:163
 msgid "Log"
 msgstr "Log"
 
@@ -1582,8 +1586,8 @@ msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
 #: src/zeit/workflow/browser/form.py:97
-#: src/zeit/workflow/browser/form.py:127
-#: src/zeit/workflow/browser/form.py:155
+#: src/zeit/workflow/browser/form.py:130
+#: src/zeit/workflow/browser/form.py:159
 msgid "Status"
 msgstr "Status"
 

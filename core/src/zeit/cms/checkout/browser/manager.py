@@ -40,7 +40,7 @@ class Checkout(zeit.cms.browser.view.Base):
 class Checkin(zeit.cms.browser.view.Base):
 
     def __call__(self):
-        checked_in = self.manager.checkin()
+        checked_in = self.manager.checkin(semantic_change=True)
         self.send_message(_('"${name}" has been checked in.',
                             mapping=dict(name=checked_in.__name__)))
         new_view = None

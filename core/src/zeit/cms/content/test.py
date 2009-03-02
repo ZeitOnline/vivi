@@ -134,6 +134,7 @@ def test_suite():
         'dav.txt',
         'liveproperty.txt',
         'metadata.txt',
+        'semanticchange.txt',
         'sources.txt',
         'xmlsupport.txt',
     ))

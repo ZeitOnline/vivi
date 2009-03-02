@@ -70,6 +70,22 @@ The checkin link also indicates the ``came_from`` view:
     <li class="message">"rauchen-verbessert-die-welt" has been checked in.</li>
     ...
 
+The "last semantic change" has been set by the check in:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> import zeit.cms.content.interfaces
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(
+...     repository['online']['2007']['01']['rauchen-verbessert-die-welt'])
+>>> sc.last_semantic_change
+datetime.datetime(...)
+>>> zope.app.component.hooks.setSite(old_site)
+
 
 Getting the right tab after checkout and checkin
 ================================================

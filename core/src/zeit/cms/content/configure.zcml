@@ -127,4 +127,8 @@
   <!-- source cache cleaner -->
   <subscriber handler=".sources.collect_caches" />
 
+  <!-- semantic changes -->
+  <adapter factory=".semanticchange.SemanticChange" />
+  <adapter factory=".semanticchange.properties" />
+
 </configure>

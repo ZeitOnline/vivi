@@ -1,0 +1,24 @@
+Semantic change
+===============
+
+The SemanticChange adapter indicates the last semantic change [#functional]_:
+
+>>> import zeit.cms.content.interfaces
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(repository['testcontent'])
+>>> sc.last_semantic_change is None
+True
+
+
+Clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)

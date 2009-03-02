@@ -20,9 +20,10 @@ class ICheckoutManager(zope.interface.Interface):
 
         returns the checked out object.
 
-        Issues CheckOutEvent if `event` is True.
-        If temporary is True the object will be added to a temporary
-        workingcopy.
+        - Issues CheckOutEvent if ``event`` is True.
+
+        - If temporary is True the object will be added to a temporary
+          workingcopy.
 
         """
 
@@ -31,12 +32,16 @@ class ICheckinManager(zope.interface.Interface):
     canCheckin = zope.interface.Attribute(
         "True if the object can be checked in, False otherwise.")
 
-    def checkin(event=True):
+    def checkin(event=True, semantic_change=False):
         """Checkin the managed object and return the checked in object.
 
         Checking in effeectively removes the object from the working copy.
 
-        Issues CheckInEvent if `event` is True.
+        - Issues CheckInEvent if ``event`` is True.
+
+        - If the object's contents was changed in a semantic manner,
+          ``semantic_change`` must be True. The ``last_semantic_change``
+          property will be updated then.
 
         """
 

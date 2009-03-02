@@ -327,3 +327,12 @@ class ILivePropertyManager(zope.interface.Interface):
 
     def is_live_property(name, namespace):
         """Return (bool) whether the property is a live property."""
+
+
+class ISemanticChange(zope.interface.Interface):
+
+    last_semantic_change = zope.schema.Datetime(
+        title=_('Last semantic change'),
+        required=False,
+        readonly=True,
+        default=None)

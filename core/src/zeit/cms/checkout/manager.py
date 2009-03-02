@@ -1,6 +1,8 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import datetime
+import pytz
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -88,11 +90,15 @@ class CheckoutManager(object):
             return False
         return True
 
-    def checkin(self, event=True):
+    def checkin(self, event=True, semantic_change=False):
         if not self.canCheckin:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 "Cannot checkin.")
         workingcopy =  self.context.__parent__
+        if semantic_change:
+            zeit.cms.content.interfaces.ISemanticChange(
+                self.context).last_semantic_change = datetime.datetime.now(
+                    pytz.UTC)
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
