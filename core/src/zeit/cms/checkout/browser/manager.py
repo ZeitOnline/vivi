@@ -1,13 +1,11 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.cachedescriptors
-import zope.component
 
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
+import zope.cachedescriptors
+import zope.component
 from zeit.cms.i18n import MessageFactory as _
 
 
