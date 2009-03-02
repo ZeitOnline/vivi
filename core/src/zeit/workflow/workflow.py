@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
 import UserDict
 import datetime
 import logging
@@ -87,18 +88,11 @@ def remove_from_channels_after_retract(context, event):
         zeit.cms.relation.interfaces.IRelations)
     syndicated_in = relations.get_relations(context, 'syndicated_in')
     for feed in list(syndicated_in):
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
-        try:
-            checked_out = manager.checkout(temporary=True)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
-            logger.error(
-                "Could not remove %s from %s because channel locked." % (
-                    context.uniqueId, feed.uniqueId))
-            continue
-        try:
-            checked_out.remove(context)
-        except ValueError:
-            # Was not in the feed, i.e. the index wasn't up to date. Ignore.
-            pass
-        manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
-        manager.checkin()
+        with zeit.cms.checkout.helper.checked_out(feed) as checked_out:
+            if checked_out is not None:
+                try:
+                    checked_out.remove(context)
+                except ValueError:
+                    # Was not in the feed, i.e. the index wasn't up to date.
+                    # Ignore.
+                    pass
