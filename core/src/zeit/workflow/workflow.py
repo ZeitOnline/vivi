@@ -1,32 +1,25 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import UserDict
 import datetime
 import logging
-
 import pytz
-
+import z3c.flashmessage.interfaces
+import zeit.cms.checkout.interfaces
+import zeit.cms.content.dav
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.objectlog.interfaces
+import zeit.workflow.interfaces
+import zeit.workflow.timebased
 import zope.component
 import zope.event
 import zope.interface
 import zope.location.location
-
-import z3c.flashmessage.interfaces
-
-import zeit.objectlog.interfaces
-
-import zeit.cms.interfaces
-import zeit.cms.content.dav
-import zeit.cms.content.interfaces
-import zeit.cms.checkout.interfaces
-import zeit.cms.relation.interfaces
-import zeit.cms.workflow.interfaces
 from zeit.cms.i18n import MessageFactory as _
-
-import zeit.workflow.interfaces
-import zeit.workflow.timebased
 
 
 if 'all' not in globals():
