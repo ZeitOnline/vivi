@@ -47,7 +47,7 @@
     class=".manager.NonSemanticChangeCheckinMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.Checkin"
-    icon="/@@/zeit.cms/icons/checkin.png"
+    icon="/@@/zeit.cms/icons/checkin_correction.png"
     />
 
 </configure>
