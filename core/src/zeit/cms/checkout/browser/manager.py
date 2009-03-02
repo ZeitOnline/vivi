@@ -39,8 +39,8 @@ class Checkout(zeit.cms.browser.view.Base):
 
 class Checkin(zeit.cms.browser.view.Base):
 
-    def __call__(self):
-        checked_in = self.manager.checkin(semantic_change=True)
+    def __call__(self, semantic_change=True):
+        checked_in = self.manager.checkin(semantic_change=semantic_change)
         self.send_message(_('"${name}" has been checked in.',
                             mapping=dict(name=checked_in.__name__)))
         new_view = None
@@ -101,3 +101,14 @@ class CheckinMenuItem(MenuItem):
     def is_visible(self):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
         return manager.canCheckin
+
+
+class NonSemanticChangeCheckinMenuItem(CheckinMenuItem):
+
+    title = _('Checkin (correction)')
+    accesskey = None
+
+    @property
+    def action(self):
+        action = super(NonSemanticChangeCheckinMenuItem, self).action
+        return action+'&semantic_change='

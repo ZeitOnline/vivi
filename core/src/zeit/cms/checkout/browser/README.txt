@@ -82,8 +82,28 @@ The "last semantic change" has been set by the check in:
 >>> import zeit.cms.content.interfaces
 >>> sc = zeit.cms.content.interfaces.ISemanticChange(
 ...     repository['online']['2007']['01']['rauchen-verbessert-die-welt'])
->>> sc.last_semantic_change
+>>> last_change = sc.last_semantic_change
+>>> last_change
 datetime.datetime(...)
+>>> zope.app.component.hooks.setSite(old_site)
+
+There is also a checkin action for only minor changes, which does not update
+the last semantic change:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getLink('Checkin (correction').click()
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> import zeit.cms.content.interfaces
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(
+...     repository['online']['2007']['01']['rauchen-verbessert-die-welt'])
+>>> last_change == sc.last_semantic_change
+True
 >>> zope.app.component.hooks.setSite(old_site)
 
 

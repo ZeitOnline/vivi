@@ -40,4 +40,14 @@
     icon="/@@/zeit.cms/icons/checkin.png"
     />
 
+  <browser:viewlet
+    name="NonSemanticChangeCheckin"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".manager.NonSemanticChangeCheckinMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.Checkin"
+    icon="/@@/zeit.cms/icons/checkin.png"
+    />
+
 </configure>
