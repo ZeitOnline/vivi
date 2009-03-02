@@ -1,11 +1,12 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
+import contextlib
 import logging
 import z3c.flashmessage.interfaces
-import zope.component
-
 import zeit.cms.checkout.interfaces
+import zope.component
 from zeit.cms.i18n import MessageFactory as _
 
 log = logging.getLogger(__name__)
@@ -17,6 +18,15 @@ def with_checked_out(content, function, events=True):
     Function makes sure content is checked back in after the function ran.
 
     """
+    with checked_out(content, events) as checked_out_obj:
+        if checked_out_obj is not None:
+            changed = function(checked_out_obj)
+            if not changed:
+                raise zeit.cms.checkout.interfaces.NotChanged()
+
+
+@contextlib.contextmanager
+def checked_out(content, events=True):
     __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     try:
@@ -25,13 +35,13 @@ def with_checked_out(content, function, events=True):
         log.warning("Could not checkout %s for related update." %
                        content.uniqueId)
         log.exception(e)
-        return
-
-    changed = function(checked_out)
-
-    if changed:
-        manager = zeit.cms.checkout.interfaces.ICheckinManager(
-            checked_out)
-        manager.checkin(event=events)
+        yield None
     else:
-        del checked_out.__parent__[checked_out.__name__]
+        try:
+            yield checked_out
+        except zeit.cms.checkout.interfaces.NotChanged:
+            del checked_out.__parent__[checked_out.__name__]
+        else:
+            manager = zeit.cms.checkout.interfaces.ICheckinManager(
+                checked_out)
+            manager.checkin(event=events)

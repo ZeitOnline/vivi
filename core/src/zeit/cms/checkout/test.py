@@ -1,13 +1,67 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
 import unittest
+import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
-from zope.testing import doctest
+import zope.app.locking.interfaces
+import zope.app.testing.functional
+import zope.component
+import zope.security.management
+import zope.security.testing
+
+
+class TestHelper(zope.app.testing.functional.BrowserTestCase):
+
+    layer = zeit.cms.testing.cms_layer
+
+    def setUp(self):
+        super(TestHelper, self).setUp()
+        self.setSite(self.getRootFolder())
+        self.repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        principal = zope.security.testing.Principal(u'zope.user')
+        participation = zope.security.testing.Participation(principal)
+        zope.security.management.newInteraction(participation)
+
+    def tearDown(self):
+        zope.security.management.endInteraction()
+        zeit.cms.testing.tearDown(self)
+        self.setSite(None)
+        super(TestHelper, self).tearDown()
+
+    def test_changes(self):
+        content = self.repository['testcontent']
+        self.assertEqual(self.repository, content.__parent__)
+        self.assertTrue(self.repository['testcontent'].title is None)
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            self.assertNotEqual(self.repository, co.__parent__)
+            co.title = u'foo'
+        self.assertEqual(u'foo', self.repository['testcontent'].title)
+
+    def test_checkout_without_change(self):
+        content = self.repository['testcontent']
+        self.assertEqual(None, self.repository['testcontent'].title)
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.title = u'foo'
+            raise zeit.cms.checkout.interfaces.NotChanged
+        self.assertTrue(self.repository['testcontent'].title is None)
+
+    def test_checkout_helper_on_locked_doesnt_do_anyting(self):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        connector.lock('http://xml.zeit.de/testcontent', 'frodo', None)
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['testcontent']) as co:
+            self.assertTrue(co is None)
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt'))
+    suite.addTest(unittest.makeSuite(TestHelper))
     return suite

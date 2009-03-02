@@ -6,6 +6,10 @@ import zope.component.interfaces
 import zope.interface
 
 
+class NotChanged(Exception):
+    """Raise in "with checked_out" to indicate that nothing has changed."""
+
+
 class ICheckoutManager(zope.interface.Interface):
     """Manages workingcopy checkout"""
 
