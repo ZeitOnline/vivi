@@ -4,7 +4,7 @@
 import zeit.cms.selenium
 
 
-class Test(zeit.cms.selenium.Test):
+class TestPanels(zeit.cms.selenium.Test):
 
     def test_tablelisting_filter(self):
         s = self.selenium
