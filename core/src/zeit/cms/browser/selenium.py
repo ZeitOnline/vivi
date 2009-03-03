@@ -30,3 +30,16 @@ class TestPanels(zeit.cms.selenium.Test):
         s = self.selenium
         s.verifyElementPresent("//div[@id ='%s'][@class = 'panel %s']" %(
             id, state))
+
+
+class TestMenu(zeit.cms.selenium.Test):
+
+    def test_double_click_activates_once(self):
+        s = self.selenium
+
+        self.open('/repository/online/2007/01/Somalia')
+        s.click('link=Auschecken*')
+        s.clickAndWait('link=Auschecken*')
+        s.verifyTextPresent('wurde ausgecheckt')
+
+

@@ -75,3 +75,24 @@ zeit.cms.getCookie = function(name) {
 }
 
 
+    
+zeit.cms.ClickOnceAction = Class.extend({
+
+    construct: function(element) {
+        var self = this;
+        self.element = $(element);
+        
+        self.event_id = MochiKit.Signal.connect(
+            self.element, 'onclick', self, 'disable');
+    },
+
+    disable: function() {
+        var self = this;
+        MochiKit.Signal.disconnect(self.event_id);
+        MochiKit.Signal.connect(self.element, 'onclick', self, 'stop');
+    },
+
+    stop: function(event) {
+        event.stop();
+    },
+});

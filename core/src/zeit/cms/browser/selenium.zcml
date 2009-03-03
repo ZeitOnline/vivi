@@ -7,4 +7,10 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestMenu"
+    name="zeit.cms.browser.selenium.TestMenu"
+    permission="zope.Public"
+    />
+
 </configure>

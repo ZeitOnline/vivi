@@ -36,6 +36,10 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'action-menu-item.pt')
 
+    def update(self):
+        super(ActionMenuItem, self).update()
+        self.item_id = 'menuitem.%s' % time.time()
+
     def get_url(self):
         url = zope.component.getMultiAdapter(
             (self.context, self.request), name='absolute_url')
