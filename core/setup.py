@@ -16,7 +16,7 @@ setup(
     namespace_packages = ['zeit'],
     install_requires=[
         'setuptools',
-        'zeit.cms>1.13',
+        'zeit.cms>=1.14.1',
         'zc.selenium',
     ],
 )
