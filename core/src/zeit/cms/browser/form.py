@@ -140,7 +140,10 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
     def cancelNextURL(self):
         return self.url('@@' + self.cancel_next_view)
 
-    @zope.formlib.form.action(_("Cancel"), validator=lambda *a: ())
+    @zope.formlib.form.action(
+        _("Cancel"),
+        validator=lambda *a: (),
+        condition=lambda form, action: form.cancel_next_view is not None)
     def cancel(self, action, data):
         url = self.cancelNextURL()
         self.request.response.redirect(url)
