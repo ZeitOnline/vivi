@@ -3,9 +3,9 @@
 
 import PIL.Image
 import PIL.ImageDraw
+import PIL.ImageColor
 import StringIO
 import calendar
-import webcolors
 import zope.datetime
 import zope.dublincore.interfaces
 import zeit.cms.browser.view
@@ -72,7 +72,7 @@ def parse_border(border):
     border_color = None
     if border:
         try:
-            border_color = webcolors.hex_to_rgb(border)
+            border_color = PIL.ImageColor.getrgb(border)
         except ValueError:
             pass
     return border_color

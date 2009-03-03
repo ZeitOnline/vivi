@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import PIL.Image
+import PIL.ImageColor
 import PIL.ImageEnhance
 import zeit.content.image.interfaces
 import zeit.imp.interfaces
@@ -63,8 +64,13 @@ class Cropper(object):
     def add_border(self, pil_image, border):
         draw = PIL.ImageDraw.ImageDraw(pil_image)
         w, h = pil_image.size
+        if PIL.Image.getmodebase(pil_image.mode) == 'L':
+            r, g, b = border
+            border = r*299/1000 + g*587/1000 + b*114/1000
+        else:
+            border = tuple(border) + (255,)
         draw.rectangle((0, 0, w-1, h-1),
-                       outline=tuple(border) + (255,))
+                       outline=border)
         return pil_image
 
     @property

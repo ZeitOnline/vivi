@@ -179,6 +179,18 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
                                border=(127, 127, 127))
         self.assertEquals((127, 127, 127), image.getpixel((0,0)))
 
+    def test_border_on_grayscale_image(self):
+        self.group = (
+            zeit.content.image.test.create_image_group_with_master_image(
+                pkg_resources.resource_filename(
+                    __name__, 'testdata/grayscale.jpg')))
+        crop = zeit.imp.interfaces.ICropper(self.group)
+        # The following used to fail with TypeError: an integer is required
+        image = self.crop.crop(200, 200, 0, 0, 200, 200,
+                               border=(127, 127, 127))
+
+
+
 
 scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
 color_xml_path = pkg_resources.resource_filename(__name__, 'colors.xml')

@@ -1,6 +1,12 @@
 zeit.imp changes
 ================
 
+0.5 (2009-03-03)
+++++++++++++++++
+
+- Bei Grau-Bildern kann jetzt ein Rahmen eingefügt werden. Bei einem farbigen
+  Rahmen wird dieser in den entsprechenden Grauwert umgewandelt.
+
 0.4 (2009-02-20)
 ++++++++++++++++
 
