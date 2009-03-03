@@ -4,16 +4,12 @@
 
 import time
 import xml.sax.saxutils
-
-import zope.viewlet.interfaces
-import zope.viewlet.viewlet
-
+import z3c.menu.simple.menu
 import zope.app.pagetemplate
 import zope.app.publisher.browser.menu
 import zope.app.publisher.interfaces.browser
-
-import z3c.menu.simple.menu
-
+import zope.viewlet.interfaces
+import zope.viewlet.viewlet
 from zeit.cms.i18n import MessageFactory as _
 
 
