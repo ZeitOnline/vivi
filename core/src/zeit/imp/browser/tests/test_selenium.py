@@ -407,10 +407,10 @@ class FilterTests(Selenium):
             "window.document.imp.crop_arguments['filter.%s'] != 0" % name,
             'true');
 
-        # clicking reset sets the slider back to 0
+        # clicking reset sets the slider back to 0 (filter becomes 1 then)
         s.click('reset')
         s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
-                     '0');
+                     '1');
 
     def test_slider_change_changes_crop_args(self):
         s = self.selenium
