@@ -1,7 +1,12 @@
 zeit.cms changes
 ================
 
-1.14 (unreleased)
+1.14.1 (2009-03-03)
+-------------------
+
+- 1.14-Release repariert.
+
+1.14 (2009-03-03)
 -----------------
 
 - Entfernen aus Channeln beim Zurückzeiehen funktionierte nicht zuverlässig
