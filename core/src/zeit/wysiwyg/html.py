@@ -10,6 +10,9 @@ import rwproperty
 import time
 import xml.sax.saxutils
 import zc.iso8601.parse
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.wysiwyg.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -17,10 +20,6 @@ import zope.interface.common.idatetime
 import zope.security.management
 import zope.security.proxy
 import zope.traversing.interfaces
-
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.wysiwyg.interfaces
 
 
 class HTMLConverter(object):
