@@ -11,7 +11,7 @@ class TestKeywordWidget(zeit.cms.selenium.Test):
         s = self.selenium
 
         self.open('/repository/testcontent')
-        s.clickAndWait('link=Auschecken')
+        s.clickAndWait('link=Auschecken*')
         s.click('new_keyword')
         s.waitForElementPresent('css=.keyword-input')
         s.storeEval("this.browserbot.findElement('css=.keyword-input')",
