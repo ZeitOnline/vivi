@@ -700,7 +700,7 @@ class Connector(object):
         """invalidate cache (and refill)."""
 
         self._remove_from_caches(id, [self.property_cache,
-                                     self.child_name_cache])
+                                      self.child_name_cache])
 
         if added or deleted:
             parent, name = self._id_splitlast(id)
