@@ -90,7 +90,7 @@ def XMLReference(context):
         zeit.cms.content.interfaces.IXMLReference, name='image')
     image.set('base-id', context.uniqueId)
 
-    type = None
+    type = ''
     for sub_image_name in context:
         if '.' not in sub_image_name:
             continue
@@ -99,7 +99,7 @@ def XMLReference(context):
             # This is deciding
             type = ext
             break
-        if type is None:
+        if not type:
             # Just remember the first type
             type = ext
 

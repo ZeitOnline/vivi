@@ -7,6 +7,9 @@ zeit.cms changes
 - Doppelclick auf Checkout (und andere Aktionen) führt die Aktion nur noch
   einmal aus (Bug #4499).
 
+- Verlinkte Bildergruppe ohne Bild führt dazu, dass ein Artikel nicht
+  eingecheckt werden kann (Bug #4746).
+
 1.14.1 (2009-03-03)
 -------------------
 

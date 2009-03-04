@@ -287,6 +287,27 @@ Images whose names have no extension at all will be ignored:
 </image>
 <BLANKLINE>
 
+If there is no image in the image group the ``type`` will be an empty string:
+
+>>> for name in group:
+...     del group[name]
+>>> ref = zope.component.getAdapter(
+...     group,
+...     zeit.cms.content.interfaces.IXMLReference, name='image')
+>>> print lxml.etree.tostring(ref, pretty_print=True),
+<image
+    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    align="right"
+    href="http://www.asdf.com"
+    base-id="http://xml.zeit.de/image-group"
+    type="">
+  <bu>5 &lt; 7</bu>
+  <copyright py:pytype="str">Zeit online</copyright>
+  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+</image>
+
 
 There is also a view for the metadata:
 
