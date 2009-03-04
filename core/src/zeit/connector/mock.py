@@ -115,6 +115,8 @@ class Connector(object):
         self._paths.setdefault(path, set()).add(name)
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
+        resource.properties[('getlastmodified', 'DAV:')] = unicode(
+            datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT'))
         self._set_properties(id, resource.properties)
         self._content_types[id] = resource.contentType
         zope.event.notify(
@@ -146,7 +148,6 @@ class Connector(object):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
             self.copy(uid, urlparse.urljoin(new_id, name))
-
 
     def move(self, old_id, new_id):
         if new_id in self:
@@ -244,7 +245,7 @@ class Connector(object):
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
         for ((name, namespace), value) in properties.items():
-            if name.startswith('get'):
+            if name.startswith('get') and name != 'getlastmodified':
                 continue
             stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:

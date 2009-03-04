@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+1.6.5 (unreleased)
+------------------
+
+- Mock-Connector returns correct getlastmodified.
+
 1.6.4 (2009-01-19)
 ------------------
 
