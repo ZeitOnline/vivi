@@ -20,7 +20,7 @@ class NotPublishablePublishInfo(object):
         zeit.cms.workflow.interfaces.IPublishInfo,
         zeit.workflow.interfaces.WORKFLOW_NS,
         ('published', 'date_last_published'),
-        live=True)
+        use_default=True, live=True)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IPublishInfo,

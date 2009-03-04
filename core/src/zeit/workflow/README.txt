@@ -120,8 +120,8 @@ PublishingError: Publish pre-conditions not satisifed.
 If an object is publish is indicated by the `published` attribute. Also the
 date_last_published is set:
 
->>> workflow.published is None
-True
+>>> workflow.published
+False
 >>> workflow.date_last_published is None
 True
 
