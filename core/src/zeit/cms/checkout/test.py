@@ -5,6 +5,7 @@ from __future__ import with_statement
 import unittest
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zope.app.locking.interfaces
@@ -41,6 +42,8 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
             self.assertNotEqual(self.repository, co.__parent__)
             co.title = u'foo'
         self.assertEqual(u'foo', self.repository['testcontent'].title)
+        sc = zeit.cms.content.interfaces.ISemanticChange(content)
+        self.assertTrue(sc.last_semantic_change is None)
 
     def test_checkout_without_change(self):
         content = self.repository['testcontent']
@@ -57,6 +60,15 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
         with zeit.cms.checkout.helper.checked_out(
             self.repository['testcontent']) as co:
             self.assertTrue(co is None)
+
+    def test_semantic_change(self):
+        content = self.repository['testcontent']
+        sc = zeit.cms.content.interfaces.ISemanticChange(content)
+        self.assertTrue(sc.last_semantic_change is None)
+        with zeit.cms.checkout.helper.checked_out(content,
+                                                  semantic_change=True) as co:
+            pass
+        self.assertFalse(sc.last_semantic_change is None)
 
 
 def test_suite():

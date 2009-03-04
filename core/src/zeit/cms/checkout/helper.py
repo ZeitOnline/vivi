@@ -26,7 +26,7 @@ def with_checked_out(content, function, events=True):
 
 
 @contextlib.contextmanager
-def checked_out(content, events=True):
+def checked_out(content, events=True, semantic_change=False):
     __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     try:
@@ -42,6 +42,5 @@ def checked_out(content, events=True):
         except zeit.cms.checkout.interfaces.NotChanged:
             del checked_out.__parent__[checked_out.__name__]
         else:
-            manager = zeit.cms.checkout.interfaces.ICheckinManager(
-                checked_out)
-            manager.checkin(event=events)
+            manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
+            manager.checkin(event=events, semantic_change=semantic_change)
