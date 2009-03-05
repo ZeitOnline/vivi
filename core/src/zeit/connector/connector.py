@@ -99,11 +99,6 @@ RESOURCE_TYPE_PROPERTY = zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY
 TIME_ETERNITY = datetime.datetime(
     datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
 
-# Gaah. They stole print()
-# That's what I _hate_ about Python culture. They assume to know
-# what's good for you.
-def holler(txt):
-    sys.__stdout__.write(txt)
 
 class DAVUnexpectedResultError(DAVError):
     """Exception raised on unexpected HTTP return code.
@@ -146,13 +141,12 @@ class Connector(object):
     def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
         self._roots = roots # "extra" roots, a dict. ATM only xroots['search']
-        self._conns = {} # conn cache for above. Hrrgrr. WARNING: indexed by netloc!
         self._prefix = prefix
         self.connections = threading.local()
 
     def get_connection(self, root='default'):
         """Try to get a cached connection suitable for url"""
-        assert root == 'default'  # XXX disabled search for the Moment.
+        #assert root == 'default'  # XXX disabled search for the Moment.
         try:
             connection = getattr(self.connections, root)
         except AttributeError:
@@ -476,10 +470,6 @@ class Connector(object):
             expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
 
         logger.debug('Searching for %s' % (expr._render(),))
-
-        # Do we need a different conn for SEARCH?
-        # NOTE: this code may become obsolete.
-        #       We need it now to use a different netloc for different xconns.
         conn = self.get_connection('search')
 
         davres = davresource.DAVResult(

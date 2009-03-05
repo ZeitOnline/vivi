@@ -462,26 +462,6 @@ Clean up:
 
 >>> del connector[u'http://xml.zeit.de/testing/movedtree']
 
-Search (interface only):
-========================
-
-The building blocks are search vars:
-
->>> from zeit.connector.search import SearchVar
->>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
->>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
->>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
->>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
-
-Queries are built of basic terms involving search vars stitched together into
-expressions (note that we get dummy values at the moment):
-
-XXX not currently tested
-#>>> [res for res in connector.search([author, volume, ressort], (year == '2007') & (volume == '07') & (author == 'pm'))]
-#[(u'http://xml.zeit.de/2007/07/inderzeit', 'pm', '07', 'Inhaltsverzeichnis'),
-# (u'http://xml.zeit.de/zuender/quelltexte/index', 'pm', '07', None)]
-
-
 
 Internals
 =========

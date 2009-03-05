@@ -173,6 +173,7 @@ def test_suite():
         'connector.txt',
         'locking.txt',
         'mock.txt',
+        'search.txt',
         optionflags=optionflags))
     suite.addTest(unittest.makeSuite(ConnectorCache))
 

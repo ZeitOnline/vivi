@@ -98,14 +98,8 @@ class SearchVar(object):
     def __lt__(self, other):
         return SearchTerm('lt', self, other)
 
-    def __le__(self, other):
-        return SearchTerm('le', self, other)
-
     def __eq__(self, other):
         return SearchTerm('eq', self, other)
-
-    def __ge__(self, other):
-        return SearchTerm('ge', self, other)
 
     def __gt__(self, other):
         return SearchTerm('gt', self, other)
