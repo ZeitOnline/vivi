@@ -1,0 +1,168 @@
+Special dependencies
+====================
+
+Relateds
+++++++++
+
+When an object is published, its relateds are published along *iff* they have
+no semantic changes but have changed in a non semantic manner::
+
+    last-semantic-change < last-publish < last-non-semantic-change 
+    
+
+When we relate objects they're published together[#functionaltest]_:
+
+>>> content = repository['testcontent']
+>>> somalia = repository['online']['2007']['01']['Somalia']
+>>> import zeit.cms.related.interfaces
+>>> with zeit.cms.checkout.helper.checked_out(content) as checked_out:
+...     relateds = zeit.cms.related.interfaces.IRelatedContent(checked_out)
+...     relateds.related = (somalia,)
+
+Somalia is related by testcontent but has never been published. So when
+publishing testcontent Somalia will not be publishd[#somalia-semantic-change]_:
+
+>>> publish = zeit.cms.workflow.interfaces.IPublish(content)
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+>>> somalia_publish = zeit.cms.workflow.interfaces.IPublish(somalia)
+>>> somalia_workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+>>> workflow.urgent = True
+>>> workflow.published
+False
+>>> somalia_workflow.published
+False
+>>> publish.publish()
+>>> tasks.process()
+>>> workflow.published
+True
+>>> somalia_workflow.published
+False
+
+When somalia is published and changed by a related update it will be published
+again when publishing testcontent.
+
+>>> somalia_workflow.urgent = True
+>>> somalia_publish.publish()
+>>> tasks.process()
+>>> somalia_workflow.published
+True
+>>> somalia_published_on = somalia_workflow.date_last_published
+
+
+Update the teaser of testcontent, which will change Somalia implicitly:
+
+>>> with zeit.cms.checkout.helper.checked_out(
+...     content, semantic_change=True) as checked_out:
+...     checked_out.teaserTitle = u'Tease me'
+>>> content = repository['testcontent']
+>>> content.teaserTitle
+u'Tease me'
+>>> publish = zeit.cms.workflow.interfaces.IPublish(content)
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+
+>>> import zeit.cms.content.interfaces
+>>> import zope.dublincore.interfaces
+>>> somalia = repository['online']['2007']['01']['Somalia']
+>>> dc = zope.dublincore.interfaces.IDCTimes(somalia)
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(somalia)
+
+Now the relation between the dates satisfies the auto-publish constraint:
+
+>>> sc.last_semantic_change < somalia_published_on < dc.modified
+True
+
+Publishing testcontent will publish somalia now:
+
+>>> publish.publish()
+>>> tasks.process()
+>>> somalia_workflow.date_last_published > somalia_published_on
+True
+
+If Somalia is not published it will of couse not published automatically, even
+if the date relation constraint is satisfied:
+
+>>> somalia_publish.retract()
+>>> tasks.process()
+>>> somalia = repository['online']['2007']['01']['Somalia']
+>>> dc = zope.dublincore.interfaces.IDCTimes(somalia)
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(somalia)
+>>> somalia_published_on = somalia_workflow.date_last_published
+>>> sc.last_semantic_change < somalia_published_on < dc.modified
+True
+>>> publish.publish()
+>>> tasks.process()
+>>> somalia = repository['online']['2007']['01']['Somalia']
+>>> somalia_workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
+>>> somalia_workflow.published
+False
+
+
+The dependency publisher does not fail, if there is no last semantic change:
+
+>>> ford = repository['online']['2007']['01']['Ford-Beerdigung']
+>>> zeit.cms.content.interfaces.ISemanticChange(ford).last_semantic_change
+>>> with zeit.cms.checkout.helper.checked_out(content) as checked_out:
+...     relateds = zeit.cms.related.interfaces.IRelatedContent(checked_out)
+...     relateds.related = (ford,)
+>>> content = repository['testcontent']
+>>> import zeit.workflow.dependency
+>>> related_dependencies = zeit.workflow.dependency.Relateds(content)
+>>> related_dependencies.get_dependencies()
+[]
+
+Even if the related was published:
+
+>>> ford_workflow= zeit.cms.workflow.interfaces.IPublishInfo(ford)
+>>> ford_workflow.urgent = True
+>>> ford_publish = zeit.cms.workflow.interfaces.IPublish(ford)
+>>> ford_publish.publish()
+>>> tasks.process()
+>>> related_dependencies.get_dependencies()
+[]
+
+
+[#cleanup]_
+
+.. [#functionaltest] We need to set the site since we're a functional test:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    Do some imports and get the repository
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> import zeit.cms.workflow.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+
+    >>> import lovely.remotetask.interfaces
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')
+    
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
+
+    >>> with_statement
+    _Feature...
+    >>> import zeit.cms.checkout.helper
+
+.. [#somalia-semantic-change] Somalia needs a semantic change:
+
+    >>> with zeit.cms.checkout.helper.checked_out(
+    ...     somalia, semantic_change=True):
+    ...     pass
+    >>> somalia = repository['online']['2007']['01']['Somalia']
+    
+
+.. [#cleanup] Clean up
+
+    >>> zope.security.management.endInteraction()
+    >>> zope.app.component.hooks.setSite(old_site)
+

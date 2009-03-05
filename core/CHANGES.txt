@@ -10,6 +10,9 @@ zeit.cms changes
 - Verlinkte Bildergruppe ohne Bild führt dazu, dass ein Artikel nicht
   eingecheckt werden kann (Bug #4746).
 
+- Automatisches Veröffentlichen von Relateds, wenn diese veröffentlicht sind
+  und keine semantische Änderung haben.
+
 1.14.1 (2009-03-03)
 -------------------
 

@@ -1,15 +1,14 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import __future__
 import os
 import os.path
 import stat
 import tempfile
 import unittest
-
-import zope.app.testing.functional
-
 import zeit.cms.testing
+import zope.app.testing.functional
 
 
 class WorkflowLayerFactory(zope.app.testing.functional.ZCMLLayer):
@@ -55,7 +54,9 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'dependency.txt',
         'syndication.txt',
         layer=WorkflowLayer,
-        product_config={'zeit.workflow': product_config}))
+        product_config={'zeit.workflow': product_config},
+        globs={'with_statement': __future__.with_statement}))
     return suite

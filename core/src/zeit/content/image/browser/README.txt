@@ -612,13 +612,16 @@ Images are sent with correct-type, length and last-modified headers:
 Status: 200 Ok
 Content-Length: 2926
 Content-Type: image/jpeg
-Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
+Last-Modified: ...
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
 
 An if-modified-since header is also honoured:
 
->>> image.addHeader('If-Modified-Since', 'Fri, 07 Apr 2008 12:47:16 GMT')
+>>> import datetime
+>>> modified = datetime.datetime.now() + datetime.timedelta(seconds=360)
+>>> modified = modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
+>>> image.addHeader('If-Modified-Since', modified)
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
 Traceback (most recent call last):
@@ -628,7 +631,7 @@ HTTPError: HTTP Error 304: Not Modified
 Status: 304 Not Modified
 Content-Length: 0
 Content-Type: image/jpeg
-Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
+Last-Modified: ...
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
 
@@ -641,5 +644,5 @@ X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 Status: 200 Ok
 Content-Length: 2926
 Content-Type: image/jpeg
-Last-Modified: Fri, 07 Mar 2008 12:47:16 GMT
+Last-Modified: ...
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
