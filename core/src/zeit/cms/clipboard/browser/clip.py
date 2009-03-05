@@ -1,11 +1,5 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-"""Menu item delclarations."""
-
-import zope.component
-import zope.interface
-import zope.publisher.interfaces
-import zope.proxy
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.lightbox
@@ -13,6 +7,10 @@ import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
+import zope.component
+import zope.interface
+import zope.proxy
+import zope.publisher.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
