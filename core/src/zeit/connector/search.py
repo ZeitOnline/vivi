@@ -13,11 +13,14 @@ quotetable = { '\\\\': '\\\\', # Careful!
                # add others as necessary
 }
 
+
 quotepatt = re.compile('[' + ''.join(quotetable.keys()) + ']')
+
 
 def quotestring(str):
     "Returns escaped and double-quoted string"
     return '"' + re.sub(quotepatt, lambda(x): quotetable[x.group()], str) + '"'
+
 
 def render(x):
     "Kludge: render a string or some special object"
@@ -25,6 +28,7 @@ def render(x):
         return x._render()
     else: # assume string
         return quotestring(x)
+
 
 class SearchExpr(object):
     """SearchExpr is the most-general class.
@@ -52,7 +56,7 @@ class SearchExpr(object):
                 oo = oo + [o,]
         self.operands = oo
         return self
-    
+
     def _render(self):
         return '(:' + ' '.join( [self.operator,] + \
                                     [o._render() for o in self.operands] ) + ')'
@@ -60,6 +64,7 @@ class SearchExpr(object):
     def _pprint(self, prfix=''):
         return prfix + '(:' + self.operator + "\n" + \
             '\n'.join([o._pprint(prfix+'  ') for o in self.operands]) + ')'
+
 
 class SearchTerm(SearchExpr):
     """SearchTerm is the middle-tier.
@@ -80,6 +85,7 @@ class SearchTerm(SearchExpr):
     def _collect(self):
         # nothing to do
         return self
+
 
 class SearchVar(object):
     """SearchVar is the lowest being in the hierarchy.
@@ -116,6 +122,7 @@ class SearchVar(object):
     def _render(self):
         return '%s %s' % (quotestring(self.namespace), quotestring(self.name))
 
+
 class SearchSymbol(object):
     """SearchSymbol is a sibling of SearchVar, another atom
     """
@@ -124,5 +131,3 @@ class SearchSymbol(object):
 
     def _render(self):
         return self.name # plain, no quoting
-
-
