@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -16,7 +17,7 @@ class Editor(zeit.cms.selenium.Test):
         s.clickAndWait('id=form.actions.add')
         s.clickAndWait('name=form.contents.add')
 
-    def test_(self):
+    def test_enter(self):
         s = self.selenium
         s.selectFrame('id=form.contents.0..combination_01___Frame')
         s.selectFrame('index=0')
