@@ -25,4 +25,12 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="zope.app.component.interfaces.ISite"
+    name="zeit-fckeditor-link-browser.html"
+    template="filebrowser.pt"
+    class=".filebrowser.FileBrowser"
+    permission="zope.View"
+    />
+
 </configure>
