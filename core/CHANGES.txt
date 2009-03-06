@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.6.5 (unreleased)
+1.6.5 (2009-03-04)
 ------------------
 
 - Mock-Connector returns correct getlastmodified.
