@@ -27,24 +27,24 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
 
     title = 'Clipboard'
 
-    def addContent(self, reference_object, add_object, name=None):
+    def addContent(self, reference_object, add_object, name=None, insert=False):
         """Add unique_id to obj."""
-        if zeit.cms.clipboard.interfaces.IClip.providedBy(
+        if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(
             reference_object):
-            container = reference_object
-            position = 0
-        elif zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(
-            reference_object):
-            container = reference_object.__parent__
-            position = list(container.keys()).index(
-                reference_object.__name__) + 1
-        else:
             raise ValueError(
                 "`reference_object` does not provide IClipboardEntry (%r)" %
                 reference_object)
+        if insert:
+            container = reference_object
+            position = 0
+        else:
+            container = reference_object.__parent__
+            position = list(container.keys()).index(
+                reference_object.__name__) + 1
 
-        assert(zope.app.container.interfaces.IOrderedContainer.providedBy(
-            container))
+        if not zope.app.container.interfaces.IOrderedContainer.providedBy(
+            container):
+            raise ValueError('`reference_object` must be a Clip to insert.')
 
         entry = zeit.cms.clipboard.interfaces.IClipboardEntry(add_object)
         entry = zope.proxy.removeAllProxies(entry)
@@ -62,7 +62,7 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
         name = chooser.chooseName(title, clip)
         self[name] = clip
 
-    def moveObject(self, obj, new_container):
+    def moveObject(self, obj, new_container, insert=False):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(obj):
             raise TypeError("obj must provided IClipboardEntry. Got %r." % obj)
         if obj == new_container:
@@ -73,7 +73,7 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
         old_container = obj.__parent__
         old_name = obj.__name__
         del old_container[old_name]
-        self.addContent(new_container, obj, old_name)
+        self.addContent(new_container, obj, old_name, insert)
 
     def __setitem__(self, key, value):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(value):

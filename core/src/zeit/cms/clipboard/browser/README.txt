@@ -47,6 +47,7 @@ Open the drag pane of the wirtschaft.feed:
 
 We assume, that we drag the pane over the Clipboard:
 
+>>> ajax.handleErrors = False
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
 ...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
@@ -78,7 +79,7 @@ We assume, that we drag the pane over the Clipboard:
 
 
 Assume we drop the object `Queerdax` on the wirtschaft.feed. `Querdax` will be
-added *before* the feed:
+added *after* the feed:
 
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
@@ -114,10 +115,7 @@ added *before* the feed:
 
 Reload first the page, to get the test in sync with the "ajax":
 
->>> browser.url
-'http://localhost/++skin++cms/repository'
->>> browser.open(browser.url)
-
+>>> browser.reload()
 
 Let's click the link in the tree. We'll be redirect to the wirtschaft.feed
 view:
@@ -140,7 +138,7 @@ the referenced object:
 'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
 
 
-We can also get the unique id from an entry:
+We can also get the unique id from an entry:  XXX why do we need this?
 
 >>> ajax.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
@@ -246,8 +244,8 @@ Moving
 ======
 
 We can now move things around. This also works via ajax. Move the `Querdax`
-to `New Clip`. The tree node is currently collapsed so we won't see the
-`Querdax` entry after moving:
+to `New Clip`. This moves `Querdax` after `New Clip` since `New Clip` is not
+expanded:
 
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
@@ -269,6 +267,12 @@ to `New Clip`. The tree node is currently collapsed so we won't see the
           <a href="...">New Clip</a>
           ...
         </li>
+        <li class="NotRoot" uniqueid="Querdax">
+          <p>
+          <a href="...Querdax">Querdax</a>
+          <span class="URL">...Querdax</span>
+          ...
+        </li>
         <li action="expand" class="NotRoot" uniqueid="Second Clip">
           <p>
           <a href="...">Second Clip</a>
@@ -279,11 +283,45 @@ to `New Clip`. The tree node is currently collapsed so we won't see the
  </ul>
 
 
-Expand the `New Clip` node:
+To move `Querdax` *into* `New Clip` it needs to be expanded:
 
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/tree.html/'
 ...           '@@expandTree?uniqueId=New%20Clip')
+>>> print ajax.contents
+  <ul>
+    <li class="Root" uniqueid="">
+      <p>
+      <a href="...">Clipboard</a>
+      ...
+      <ul>
+        <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <p>
+          <a href="...wirtschaft.feed">Wirtschaft</a>
+          ...
+        </li>
+        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+          <p>
+          <a href="...">New Clip</a>
+          ...
+        </li>
+        <li class="NotRoot" uniqueid="Querdax">
+          <p>
+          <a href="...Querdax">Querdax</a>
+          ...
+        </li>
+        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+          <p>
+          <a href="...">Second Clip</a>
+          ...
+        </li>
+      </ul>
+   </li>
+ </ul>
+
+>>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
+...           'object_path=Querdax&add_to=New%20Clip')
 >>> print ajax.contents
   <ul>
     <li class="Root" uniqueid="">
@@ -317,6 +355,8 @@ Expand the `New Clip` node:
       </ul>
    </li>
  </ul>
+
+
 
 
 We can of course also move clips into clips:

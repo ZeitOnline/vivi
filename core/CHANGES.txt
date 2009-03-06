@@ -13,6 +13,11 @@ zeit.cms changes
 - Automatisches Veröffentlichen von Relateds, wenn diese veröffentlicht sind
   und keine semantische Änderung haben.
 
+- Besseres Verschieben von Clips und Clipboardeinträgen: Wird etwas auf einen
+  Clip gezogen der *geöffnet* ist, wird das gezogene Objekt *in* den Clip
+  eingefügt. Ist der Clip *geschlossen* wird das Objekt *hinter* dem Clip
+  eingefügt. Die Visualisierung ist entsprechend angepasst. (Bug #4757)
+
 1.14.1 (2009-03-03)
 -------------------
 

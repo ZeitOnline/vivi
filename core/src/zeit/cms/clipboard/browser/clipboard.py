@@ -50,9 +50,8 @@ class Tree(zeit.cms.browser.tree.Tree):
     def addContent(self, add_to, unique_id):
         container = self.getAddContext(add_to)
         add_object = self.repository.getContent(unique_id)
-        self.context.addContent(container, add_object, add_object.__name__)
-        if self.expandable(container) and not self.expanded(container):
-            self.expandNode(container.__name__)
+        self.context.addContent(container, add_object, add_object.__name__,
+                                insert=self.expanded(container))
         return self()
 
     def addContainer(self, title):
@@ -64,9 +63,10 @@ class Tree(zeit.cms.browser.tree.Tree):
         obj = zope.traversing.interfaces.ITraverser(
             self.context).traverse(object_path)
         try:
-            self.context.moveObject(obj, container)
+            self.context.moveObject(
+                obj, container, insert=self.expanded(container))
         except ValueError:
-            transaction.abort()
+            transaction.doom()
         return self()
 
     @zope.cachedescriptors.property.Lazy

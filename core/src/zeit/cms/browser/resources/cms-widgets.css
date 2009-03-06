@@ -164,7 +164,7 @@ table.properties textarea {
 
 
 /* 
- * Styles for xmltree (repository and clipbaord panel)
+ * Styles for xmltree (repository and clipboard panel)
  * 
  * */
 .Tree ul {
@@ -216,8 +216,9 @@ table.properties textarea {
   background-color: #ffdd11;
 }
 
-.TreeHover {
-  border-bottom: 2px solid red !important;
+.TreeHover > *:first-child {
+ border-bottom: 2px solid red !important; 
+    padding-bottom: 2em;
 }
 
 /* Hide the root node from repository and clipboard. Also move those trees a
