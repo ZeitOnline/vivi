@@ -17,15 +17,14 @@ connect(MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
         return;
     }
 
-    var div = getElement('drag-pane');
+    var div = $('drag-pane');
     if (div) {
         div.parentNode.removeChild(div);
     }
-    div = document.createElement('div');
-    div.id = 'drag-pane';
+    div = DIV({id: 'drag-pane'});
     div.dragged_element = draggable.element;
    
-    var content = getElement('body');
+    var content = $('body');
     
     content.appendChild(div);
     draggable.element = div;
