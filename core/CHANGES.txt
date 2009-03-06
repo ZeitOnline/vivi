@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.15 (unreleased)
+1.15 (2009-03-06)
 -----------------
 
 - Doppelclick auf Checkout (und andere Aktionen) führt die Aktion nur noch
