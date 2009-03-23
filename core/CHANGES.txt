@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.7 (unreleased)
+1.7 (2009-03-23)
 ----------------
 
 - CachedResource now returns a read-only property object (fixes #3869).
