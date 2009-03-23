@@ -16,6 +16,34 @@ class WebDAVProperties(persistent.mapping.PersistentMapping):
         return object.__repr__(self)
 
 
+class ReadOnlyWebDAVProperties(WebDAVProperties):
+
+    def __init__(self, adict=None):
+        super(ReadOnlyWebDAVProperties, self).__init__()
+        if adict is not None:
+            super(ReadOnlyWebDAVProperties, self).update(adict)
+
+    def __delitem__(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+    def __setitem__(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+    def clear(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+    def update(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+    def setdefault(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+    def pop(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+    def popitem(self, *args, **kwargs):
+        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
 
 class Resource(object):
     """Represents a resource in the webdav."""
@@ -54,4 +82,4 @@ class CachedResource(object):
 
     @property
     def properties(self):
-        return WebDAVProperties(self._propterty_getter())
+        return ReadOnlyWebDAVProperties(self._propterty_getter())
