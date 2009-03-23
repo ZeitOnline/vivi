@@ -5,6 +5,9 @@ zeit.cms changes
 -----------------
 
 - Stabile Sortierung der abhängigen Objekte im Workflow.
+  
+- Hit-Importer sperrt nur noch für max. 10 Sekunden.
+
 
 1.15.1 (2009-03-06)
 -------------------

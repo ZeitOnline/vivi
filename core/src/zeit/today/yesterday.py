@@ -78,7 +78,7 @@ class UpdateLifetimecounters(object):
 
         lockable = zope.app.locking.interfaces.ILockable(content)
         try:
-            lockable.lock()
+            lockable.lock(timeout=10)
         except zope.app.locking.interfaces.LockingError:
             log.warning("Could not update %s because it is locked." %
                         unique_id)
