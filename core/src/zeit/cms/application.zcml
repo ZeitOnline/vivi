@@ -41,6 +41,13 @@
       title="Actions"
       description="Menu for displaying actions to be performed"
       />
+  <browser:menu
+      id="zope.app.container.add"
+      title="Add"
+      description="Menu for objects to be added according to
+                   containment constraints"
+      interface="zope.app.publisher.interfaces.browser.AddMenu"
+      />
 
   <include package="zope.copypastemove" />
   <include package="zope.size" />
@@ -83,6 +90,7 @@
   <!-- Skins -->
 
   <include package="zope.app.basicskin" />
+  <include package="zope.app.rotterdam" />
 
   <!-- browser -->
   <browser:defaultView name="index.html" />

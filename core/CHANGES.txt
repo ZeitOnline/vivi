@@ -1,6 +1,15 @@
 zeit.cms changes
 ================
 
+1.16.1 (unreleased)
+-------------------
+
+Technische Änderungen
+~~~~~~~~~~~~~~~~~~~~~
+
+- ZMI-Add-Menu und Rotterdam-Skin wieder hinzugefügt.
+
+
 1.16 (2009-03-23)
 -----------------
 
