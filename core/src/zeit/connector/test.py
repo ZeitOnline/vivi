@@ -4,8 +4,10 @@
 
 import StringIO
 import os
+import random
 import thread
 import threading
+import time
 import traceback
 import transaction
 import unittest
@@ -84,17 +86,19 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
 
     def create_struct(self):
         transaction.abort()
-        base = 'http://xml.zeit.de/testing/%s' % (
-            str(thread.get_ident()).encode('base64')[:-3])
+        base = 'http://xml.zeit.de/testing/%s-%s' % (
+            str(thread.get_ident()).encode('base64')[:-3], time.time())
         zope.app.component.hooks.setSite(self.getRootFolder())
 
         def add_folder(id):
+            time.sleep(random.uniform(0, 0.2))
             id = u'%s/%s' % (base, id)
             res = zeit.connector.resource.Resource(
                 id, None, 'folder', StringIO.StringIO(''),
                 contentType = 'httpd/unix-directory')
             self.connector.add(res)
         def add_file(id):
+            time.sleep(random.uniform(0, 0.2))
             id = u'%s/%s' % (base, id)
             res = zeit.connector.resource.Resource(
                 id, None, 'text', StringIO.StringIO('Pop.'),
