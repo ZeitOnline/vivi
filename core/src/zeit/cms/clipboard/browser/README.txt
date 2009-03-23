@@ -130,13 +130,19 @@ The link Wirtschaft calls the default view of the clipboard entry:
 >>> browser.getLink('Wirtschaft').url
 'http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed'
 
-But there is also an @@edit.html for clipboard entries, which also redirects to
-the referenced object:
+The link in the listing pane, however, refers to @@view of the clipboard entry,
+which also redirects to the referenced object.
+
+>>> browser.open('%s/@@view.html' % browser.getLink('Wirtschaft').url)
+>>> browser.url
+'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
+
+And there also is an @@edit.html for clipboard entries, which redirects to
+the referenced object, too:
 
 >>> browser.open('%s/@@edit.html' % browser.getLink('Wirtschaft').url)
 >>> browser.url
 'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
-
 
 We can also get the unique id from an entry:  XXX why do we need this?
 
