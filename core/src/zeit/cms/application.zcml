@@ -1,15 +1,112 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:i18n="http://namespaces.zope.org/i18n">
 
-  <include package="zope.app.zcmlfiles" />
+  <!-- meta -->
+  <include package="zope.app.component" file="meta.zcml" />
+  <include package="zope.app.publisher" file="meta.zcml" />
+  <include package="zope.app.security" file="meta.zcml" />
+  <include package="zope.app.form.browser" file="meta.zcml" />
+  <include package="zope.i18n" file="meta.zcml" />
+  <include package="zope.app.pagetemplate" file="meta.zcml" />
+  <include package="zope.app.container.browser" file="meta.zcml" />
 
-  <include package="zope.i18n" file="meta.zcml"/>
-  <include package="zope.i18n.locales"/>
-  <include package="zope.publisher"/>
-  <include package="zope.security" file="meta.zcml"/>
-  <include package="zope.traversing"/>
-  <include package="zope.traversing.browser"/>
+
+  <!-- Note that we need to do this early, as later startup
+       subscribers may break without fixups -->
+
+  <include package="zope.app.component" />
+  <include package="zope.app.schema" />
+
+  <include package="zope.app.generations" file="subscriber.zcml" />
+
+  <!-- Ordinary Application (non-view) configuration) -->
+  <include package="zope.app.interface" />
+  <include package="zope.app.security" />
+  <include package="zope.component" />
+  <include package="zope.annotation" />
+  <include package="zope.app.dependable" />
+  <include package="zope.app.content" />
+  <include package="zope.publisher" />
+
+  <!-- default menus -->
+  <browser:menu
+      id="zmi_views"
+      title="Views"
+      description="Menu for displaying alternate representations of an object"
+      />
+  <browser:menu
+      id="zmi_actions"
+      title="Actions"
+      description="Menu for displaying actions to be performed"
+      />
+
+  <include package="zope.copypastemove" />
+  <include package="zope.size" />
+  <include package="zope.location" />
+  <include package="zope.app.container" />
+
+  <include package="zope.app.publisher" />
+
+  <include package="zope.app.publication" file="meta.zcml" />
+  <include package="zope.app.publication" />
+
+
+  <include package="zope.traversing" />
+  <include package="zope.app.pagetemplate" />
+  <include package="zope.app.generations" />
+
+  <!-- Views -->
+  <include package="zope.app.http" />
+
+  <!-- Translations -->
+  <configure package="zope.app.locales">
+    <i18n:registerTranslations directory="." />
+  </configure>
+
+  <include package="zope.app.i18n" />
+
+  <!-- Database boostrapping and maintanance -->
+  <include package="zope.app.appsetup" />
+  <include package="zope.app.zopeappgenerations" />
+
+  <!-- Services -->
+  <include package="zope.app.principalannotation" />
+
+  <!-- Utilities -->
+  <include package="zope.app.error" />
+
+  <!-- Broken-object support -->
+  <include package="zope.app.broken" />
+
+  <!-- Skins -->
+
+  <include package="zope.app.basicskin" />
+
+  <!-- browser -->
+  <browser:defaultView name="index.html" />
+
+  <include package="zope.app.exception.browser" />
+  <include package="zope.traversing.browser" />
+  <include package="zope.app.security.browser" />
+
+  <include package="zope.app.container.browser" />
+  <include package="zope.app.form.browser" />
+
+  <include package="zope.app.component.browser" />
+
+  <!-- Additional packages -->
+
+  <include package="zope.app.applicationcontrol" />
+  <include package="zope.dublincore" />
   <include package="zope.formlib" />
+  <include package="zope.app.wsgi" />
+
+
+  <include package="zope.i18n.locales"/>
+  <include package="zope.security" file="meta.zcml"/>
+  <include package="zope.traversing.browser"/>
   <include package="zope.viewlet" file="meta.zcml"/>
   <include package="zope.viewlet" />
   <include package="zope.contentprovider" />
@@ -29,11 +126,6 @@
 
   <include package="zope.app.locking"/>
   <include package="zope.app.keyreference"/>
-
-  <include package="zope.app.onlinehelp" file="meta.zcml"/>
-  <include package="zope.app.onlinehelp"/>
-  <include package="zope.app.apidoc" file="meta.zcml"/>
-  <include package="zope.app.apidoc"/>
 
   <include package="zc.resourcelibrary" file="meta.zcml"/>
   <include package="zc.resourcelibrary" />
@@ -60,4 +152,3 @@
   <include package="zeit.objectlog" />
 
 </configure>
-
