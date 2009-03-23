@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.16.1 (unreleased)
+1.16.1 (2009-03-23)
 -------------------
 
 Technische Änderungen
