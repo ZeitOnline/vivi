@@ -30,7 +30,7 @@ class Dependencies(object):
                 # This is actually this adapter
                 continue
             dependencies.update(this_deps.get_dependencies())
-        return list(dependencies)
+        return sorted(dependencies, key=lambda x: x.uniqueId)
 
 
 class Relateds(object):
