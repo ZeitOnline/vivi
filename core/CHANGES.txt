@@ -1,15 +1,19 @@
 zeit.cms changes
 ================
 
-1.16 (unreleased)
+1.16 (2009-03-23)
 -----------------
+
+- Doppelclick in der Clipboard-Liste führt jetzt zum referenzierten Dokument
+  (#4456).
+
+Technische Änderungen
+~~~~~~~~~~~~~~~~~~~~~
 
 - Stabile Sortierung der abhängigen Objekte im Workflow.
   
 - Hit-Importer sperrt nur noch für max. 10 Sekunden.
 
-- Doppelclick in der Clipboard-Liste führt jetzt zum referenzierten Dokument
-  (#4456).
 
 
 1.15.1 (2009-03-06)
