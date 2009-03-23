@@ -66,6 +66,8 @@ setup(
         'zope.file',
         'zope.i18n>3.4.0',
         'zope.location>=3.4.0b2',
+        'zope.password',
+        'zope.principalannotation',
         'zope.sendmail',
         'zope.site',
         'zope.xmlpickle',
