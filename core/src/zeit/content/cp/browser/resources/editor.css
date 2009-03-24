@@ -19,6 +19,10 @@
   height: 10em; 
 }
 
+#cp-content td {
+  vertical-align: top;
+}
+
 #cp-content .editable-area {
   border: 1px solid #eeeeee;
 }
@@ -50,6 +54,15 @@
 
 
 /* Teaser visualisations*/
+
+.box {
+  margin-top: 1em;
+  border-top: 1px solid #eeeeee;
+}
+
+.box:first-child {
+  border-top: none;
+}
 
 .teaser > img {
   display: none

@@ -1,12 +1,12 @@
 <tal:resource replace="resource_library:zeit.content.cp" />
-<div id="cp-content">
+<div id="cp-content" xmlns:cms="http://namespaces.gocept.com/zeit-cms">
   <table>
     <tbody>
       <tr>
-        <td id="cp-aufmacher" class="editable-area">
+        <td id="cp-aufmacher" class="editable-area" cms:cp-module="AddPanel">
           <!-- this will be generated -->
 
-          <div class="box topthema">
+          <div class="box topthema" cms:cp-module="teaser">
             <div class="teaser">
               <img src="http://images.zeit.de/bilder/2009/13/wirtschaft/hedge-fonds/hedge-fonds-450x200.jpg"
                    class="img_left img_210x210"/>

@@ -42,11 +42,22 @@
     <directory source="resources" include="editor.css editor.js" />
   </resourceLibrary>
 
+
+  <!-- editor -->
+
   <gocept:pagelet
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="cp-editor.html"
     template="editor.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="editor.add-panel"
+    template="add-panel.pt"
     permission="zope.View"
     />
 

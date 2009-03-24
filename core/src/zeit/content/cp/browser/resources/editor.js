@@ -16,16 +16,20 @@ zeit.content.cp.Editor = Class.extend({
 
     handleContentClick: function(event) {
         var self = this;
-        self.edit_pane.innerHTML = event.target().id;
-
+        var module_name = event.target().getAttribute('cms:cp-module')
+        log("Loading module " + module_name);
+        if (!module_name) {
+            return
+        }
+        var module = zeit.content.cp.modules[module_name]
+        new module();
     },
     
     connect_draggables: function() {
         var self = this;
         MochiKit.Sortable.create($('cp-content'), {
             constraint: null,
-            overlap: null,
-            only: ['box', 'editable-area'],
+            only: ['box'],
             tag: 'div',
             tree: true,
         });
@@ -53,3 +57,36 @@ MochiKit.Signal.connect(window, 'onload', function() {
     document.cpeditor = new zeit.content.cp.Editor();
     new zeit.content.cp.BoxHover();
 });
+
+
+/* modules */
+zeit.content.cp.modules = {}
+
+zeit.content.cp.modules.BaseModule = Class.extend({
+
+    panel_view: null,
+    
+    construct: function(context_element) {
+        var self = this;
+        self.context = MochiKit.DOM.getFirstParentByTagAndClassName(
+            context_element, null, 'editable-area');
+        self.load_panel()
+    },
+
+    load_panel: function() {
+        var self = this;
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(self.panel_view);
+        d.addCallback(function(result) {
+            document.cpeditor.edit_pane.innerHTML = result.responseText;
+        });
+    },
+
+});
+
+
+zeit.content.cp.modules.AddPanel = zeit.content.cp.modules.BaseModule.extend({
+
+    panel_view: 'editor.add-panel',    
+
+});
+
