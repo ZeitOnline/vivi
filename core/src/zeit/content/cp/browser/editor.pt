@@ -41,10 +41,19 @@
           </div>
         </td>
         <td id="cp-informatives" class="editable-area">
+          <div class="box">
+            foo
+          </div>
+          <div class="box">
+            bar
+          </div>
         </td>
       </tr>
       <tr>
         <td colspan="2" id="cp-teasermosaik" class="editable-area">
+          <div class="box">
+            bAZ
+          </div>
         </td>
       </tr>
     </tbody>
