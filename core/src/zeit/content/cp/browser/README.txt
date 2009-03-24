@@ -21,7 +21,6 @@ Centerpage
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/@@view.html'
 >>> print browser.contents
->>> print browser.contents
 <?xml...
 <!DOCTYPE...
 Title...Auf den Spuren der Elfen...
@@ -32,9 +31,16 @@ We can edit the metadata on the edit tab:
 >>> browser.getControl('Title').value
 'Auf den Spuren der Elfen'
 
+The view is only available after checkin:
+
+>>> browser.getLink('View metadata')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+>>> browser.getLink('Checkin').click()
 >>> browser.getLink('View metadata').click()
->>> print browser.contents
-<?xml...
-<!DOCTYPE...
-Title...Auf den Spuren der Elfen...
+>>> print browser.title.strip()
+island – View centerpage metadata
+
 

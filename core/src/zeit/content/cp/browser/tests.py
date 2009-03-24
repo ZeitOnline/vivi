@@ -3,12 +3,12 @@
 
 import unittest
 import zeit.cms.testing
-import zeit.content.cp.test
+import zeit.content.cp.tests
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.content.cp.test.layer))
+        layer=zeit.content.cp.tests.layer))
     return suite
