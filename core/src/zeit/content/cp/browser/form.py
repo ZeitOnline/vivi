@@ -1,12 +1,13 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.cp.centerpage
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.content.cp.centerpage
 import zope.formlib.form
+from zeit.content.cp.i18n import MessageFactory as _
 
 
 class FormBase(object):
