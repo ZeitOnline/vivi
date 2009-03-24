@@ -43,10 +43,11 @@
   </resourceLibrary>
 
   <gocept:pagelet
-    for="*"
+    for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="cp-editor.html"
     template="editor.pt"
     permission="zope.View"
     />
+
 </configure>
