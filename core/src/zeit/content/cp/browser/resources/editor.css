@@ -1,0 +1,47 @@
+#cp-content {
+  bottom: 1em;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 49%;
+}
+
+#cp-content > table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+#cp-content tr {
+  /* This is actually the min-height as per
+   * http://www.w3.org/TR/CSS21/tables.html#height-layout */
+  height: 10em; 
+}
+
+#cp-content .editable-area {
+  border: 1px solid #eeeeee;
+}
+
+#cp-content .editable-area:hover {
+  outline-style: solid;
+}
+
+#cp-aufmacher {
+  width: 60%;
+}
+
+#cp-informatives {
+  width: 36%;
+}
+
+#cp-teasermosaik {
+  width: 100%;
+}
+
+#cp-edit-pane {
+  bottom: 1em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 49%;
+  border: 1px solid black;
+}

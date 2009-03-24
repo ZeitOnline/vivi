@@ -1,0 +1,19 @@
+<tal:resource replace="resource_library:zeit.content.cp" />
+<div id="cp-content">
+  <table>
+    <tbody>
+    <tr>
+      <td id="cp-aufmacher" class="editable-area">
+      </td>
+      <td id="cp-informatives" class="editable-area">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" id="cp-teasermosaik" class="editable-area">
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div id="cp-edit-pane">
+</div>
