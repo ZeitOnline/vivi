@@ -16,6 +16,7 @@
   </class>
 
   <adapter factory=".centerpage.resourceFactory" />
+  <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
 
   <include package=".browser" />
 </configure>
