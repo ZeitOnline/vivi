@@ -14,7 +14,6 @@ class FormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.interfaces.ICMSContent,
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
         zeit.cms.content.interfaces.ICommonMetadata)
 
 
