@@ -1,9 +1,11 @@
 #cp-content {
   bottom: 1em;
   left: 0;
+  overflow: auto;
   position: absolute;
   top: 0;
   width: 49%;
+  font-size: 50%;
 }
 
 #cp-content > table {
@@ -21,7 +23,7 @@
   border: 1px solid #eeeeee;
 }
 
-#cp-content .editable-area:hover {
+#cp-content .hover {
   outline-style: solid;
 }
 
@@ -44,4 +46,37 @@
   top: 0;
   width: 49%;
   border: 1px solid black;
+}
+
+
+/* Teaser visualisations*/
+
+.teaser > img {
+  display: none
+}
+
+.teaser:first-child > img {
+  display: block;
+}
+
+
+.teaser > h2,
+.teaser > h3 {
+  display: inline;
+}
+
+.teaser:first-child > h2,
+.teaser:first-child > h3 {
+  display: block;
+}
+
+.topthema > .teaser:first-child > img {
+  width: 100%;
+}
+
+.knopf > .teaser:first-child > img {
+  width: 20%;
+  float: left;
+  margin-right: 1em;
+  margin-bottom: 1em;
 }
