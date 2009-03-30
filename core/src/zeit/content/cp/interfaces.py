@@ -2,16 +2,18 @@
 # See also LICENSE.txt
 
 import zeit.cms.content.interfaces
+import zope.container.interfaces
 import zope.interface
 from zeit.content.cp.i18n import MessageFactory as _
 
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
-                  zeit.cms.content.interfaces.IXMLContent):
+                  zeit.cms.content.interfaces.IXMLContent,
+                  zope.container.interfaces.IReadContainer):
     """XXX docme"""
 
     def __getitem__(area_key):
-        """Return IEditableArea for given key.
+        """Return IArea for given key.
 
         area_key references <foo area="area_key"
 
@@ -23,7 +25,8 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
         """
 
-class IEditableArea(zeit.cms.content.interfaces.IXMLRepresentation):
+class IArea(zeit.cms.content.interfaces.IXMLRepresentation,
+            zope.container.interfaces.IContained):
     """Area on the CP which can be edited.
 
     This references a <region> or <cluster>
@@ -45,16 +48,28 @@ class IEditableArea(zeit.cms.content.interfaces.IXMLRepresentation):
     # __iter__ ? __setitem__? Looks like we actually want an IOrderedContainer.
 
 
-class IModule(zope.interface.Interface):
-    """A module which can be instanciated an added to the page."""
+class IRegion(IArea):
+    """A region contains boxes."""
 
 
-class IWeather(IModule):
+class ICluster(IArea):
+    """A cluster contains regions."""
 
-    city= zope.schema.TextLine(title=_('City'))
+
+class IBox(zope.interface.Interface):
+    """XXX A module which can be instanciated an added to the page."""
 
 
-class IModuleFactory(zope.interface.Interface):
+class IBoxFactory(zope.interface.Interface):
 
-    def __call__(node):
-        """Create a module with"""
+    title = zope.schema.TextLine(
+        title=_('Box type'))
+
+    def __call__():
+        """Create box."""
+
+
+class ITeaserList(IBox):
+
+    test_attribute = zope.schema.Text(
+        title=_('Test attribute'))

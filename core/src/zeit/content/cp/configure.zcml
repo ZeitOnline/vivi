@@ -20,11 +20,37 @@
 
   <include package=".browser" />
 
-  <!-- Modules -->
-  <adapter factory=".region.Region" name="lead" />
-  <adapter factory=".region.Region" name="informatives" />
-  <adapter factory=".region.Region" name="teaser-mosaic" />
+  <!-- Areas -->
+  <class class=".region.Region">
+    <require
+      interface=".interfaces.IRegion"
+      permission="zope.View" />
+  </class>
+
+  <adapter
+    provides=".interfaces.IArea"
+    name="lead"
+    factory=".region.Region"
+    />
+  <adapter
+    provides=".interfaces.IArea"
+    name="informatives"
+    factory=".region.Region"
+    />
+  <adapter 
+    provides=".interfaces.IArea"
+    name="teaser-mosaic"
+    factory=".region.Region"
+    />
+
+  <!-- Boxes -->
 
   <adapter factory=".teaser.TeaserListFactory" name="teaser" />
+
+  <adapter
+    provides=".interfaces.IBox"
+    name="teaser"
+    factory=".teaser.TeaserList"
+    />
 
 </configure>

@@ -3,57 +3,17 @@
   <table>
     <tbody>
       <tr>
-        <td id="cp-aufmacher" class="editable-area" cms:cp-module="AddPanel">
-          <!-- this will be generated -->
-
-          <div class="box topthema" cms:cp-module="teaser">
-            <div class="teaser">
-              <img src="http://images.zeit.de/bilder/2009/13/wirtschaft/hedge-fonds/hedge-fonds-450x200.jpg"
-                   class="img_left img_210x210"/>
-              <h3>US-Finanzaufsicht</h3>
-              <h2>Obama will Vollmacht für umfassende Verstaatlichung</h2>
-              <div class="teasertext"><p>Die Finanzkrise nimmt immer größere Ausmaße an: Nach den Banken will die US-Regierung im Notfall auch große Versicherer, Investmentfirmen und Hedge-Fonds übernehmen</p></div>
-            </div>
-
-            <div class="teaser">
-              <h3>Weltfinanzgipfel</h3>
-              <h2>Obama fordert neue ökonomische Ära</h2>
-            </div>
-
-            <div class="teaser">
-              <h3>Bonus-Zahlungen</h3>
-              <h2>AIG-Manager beugen sich öffentlichem Druck</h2>
-            </div>
-          </div>
-
-          <div class="box knopf">
-            <div class="teaser">
-              <img src="http://images.zeit.de/bilder/2009/13/deutschland/voigt/voigt-140x140.jpg" />
-              <h3>Prozessauftakt</h3>
-              <h2>NPD-Chef Voigt wegen Volksverhetzung vor Gericht</h2>
-              <div class="teasertext"><p>Die Anklage lautet auf Volksverhetzung und Beleidigung: Zur Fußball-WM hatte die NPD eine "Überfremdung" der Nationalelf angeprangert und auf Patrick Owomoyela angespielt</p></div>
-            </div>
-
-            <div class="teaser">
-              <h3>Owomoyela gegen NPD</h3>
-              <h2>Nationalspieler klagt gegen rassistische Hetze</h2>
-            </div>
-          </div>
+        <td id="cp-aufmacher" class="editable-area" cms:cp-module="AddPanel"
+            tal:content="structure context/lead/@@editor.html">
         </td>
-        <td id="cp-informatives" class="editable-area">
-          <div class="box">
-            foo
-          </div>
-          <div class="box">
-            bar
-          </div>
+        <td id="cp-informatives" class="editable-area"
+            tal:content="context/informatives">
         </td>
       </tr>
       <tr>
-        <td colspan="2" id="cp-teasermosaik" class="editable-area">
-          <div class="box">
-            bAZ
-          </div>
+        <td colspan="2" id="cp-teasermosaik" class="editable-area"
+            tal:content="context/teaser-mosaic">
+
         </td>
       </tr>
     </tbody>

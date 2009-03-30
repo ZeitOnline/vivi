@@ -23,6 +23,10 @@ Traceback (most recent call last):
     ...
 KeyError: 'ugc-bar'
 
+The parent is also accessible:
+
+>>> cp['informatives'].__parent__
+<zeit.content.cp.centerpage.CenterPage object at 0x...>
 
 Modules
 +++++++
@@ -34,7 +38,7 @@ factory:
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> module_factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IModuleFactory, name='teaser')
+...     lead, zeit.content.cp.interfaces.IBoxFactory, name='teaser')
 >>> module_factory.title
 u'List of teasers'
 >>> module = module_factory()
@@ -48,7 +52,7 @@ After calling the factory a corresponding XML node has been created:
 <region ... 
   area="lead">
   <container
-    cp:class="zeit.content.cp.teaser.TeaserList"
+    cp:type="teaser"
     cp:__name__="..."/>
 </region>
 

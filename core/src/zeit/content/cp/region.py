@@ -6,31 +6,38 @@ import uuid
 import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
 import zope.component
+import zope.container.contained
 import zope.dottedname.resolve
 import zope.interface
 
 
-class Region(object):
+class Region(zope.container.contained.Contained):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IEditableArea)
+    zope.interface.implements(zeit.content.cp.interfaces.IRegion)
 
     zope.component.adapts(
         zeit.content.cp.interfaces.ICenterPage,
         gocept.lxml.interfaces.IObjectified)
 
     def __init__(self, context, xml):
-        self.context = context
+        self.__parent__ = context
         self.xml = xml
+
+    @property
+    def __name__(self):
+        return self.xml.get('area')
 
     def __getitem__(self, key):
         # XXX this is not very efficient
         for node in self.xml.iterchildren():
             if node.get('{http://namespaces.zeit.de/CMS/cp}__name__') != key:
                 continue
-            class_name = node.get(
-                '{http://namespaces.zeit.de/CMS/cp}class', 'teaser')
-            class_ = zope.dottedname.resolve.resolve(class_name)
-            return class_(self, node)
+            box_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
+            box = zope.component.getMultiAdapter(
+                (self, node),
+                zeit.content.cp.interfaces.IBox,
+                name=box_type)
+            return zope.container.contained.contained(box, self, key)
         raise KeyError(key)
 
     def __iter__(self):
