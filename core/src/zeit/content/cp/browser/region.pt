@@ -1,14 +1,27 @@
 <div class="landing-zone">
+  <!-- XXX nur im aufmacher. viewlets?! -->
   Landing Zone
 </div>
 <div>
-  <tal:block
-       tal:repeat="box context"
-       tal:replace="structure box/@@editor.html" />
+  <div class="box"
+       tal:repeat="box context">
+  
+    <tal:box  tal:replace="structure box/@@editor.html"/>
+    <div class="edit">
+      <a tal:attributes="href string:${box/@@absolute_url}/box.edit"
+         i18n:translate=""
+         cms:cp-module="LightBoxForm">
+        Edit
+  </a>
+
+    </div>
+  
+  </div>
 </div>
 <div class="edit">
   <a tal:attributes="href string:${context/@@absolute_url}/addables"
-     i18n:translate="">
+     i18n:translate=""
+     cms:cp-module="LightBoxForm">
     + Hinzufügen
   </a>
 </div>

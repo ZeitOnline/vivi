@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-#cp-edit-pane {
+#cp-search-pane {
   bottom: 1em;
   position: absolute;
   right: 0;
@@ -92,4 +92,11 @@
   float: left;
   margin-right: 1em;
   margin-bottom: 1em;
+}
+
+#cp-content #lightbox,
+#cp-content #lightbox-shade,
+#cp-content #lightbox-header {
+  font-size: 2em;
+  position: absolute;
 }

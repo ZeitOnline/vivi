@@ -3,7 +3,7 @@
   <table>
     <tbody>
       <tr>
-        <td id="cp-aufmacher" class="editable-area" cms:cp-module="AddPanel"
+        <td id="cp-aufmacher" class="editable-area"
             tal:content="structure context/lead/@@editor.html">
         </td>
         <td id="cp-informatives" class="editable-area"
@@ -19,5 +19,5 @@
     </tbody>
   </table>
 </div>
-<div id="cp-edit-pane">
+<div id="cp-search-pane">
 </div>

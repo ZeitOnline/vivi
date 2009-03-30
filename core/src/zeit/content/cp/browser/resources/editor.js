@@ -21,8 +21,9 @@ zeit.content.cp.Editor = Class.extend({
         if (!module_name) {
             return
         }
+        event.stop();
         var module = zeit.content.cp.modules[module_name]
-        new module();
+        new module(event.target());
     },
     
     connect_draggables: function() {
@@ -74,31 +75,12 @@ MochiKit.Signal.connect(window, 'onload', function() {
 /* modules */
 zeit.content.cp.modules = {}
 
-zeit.content.cp.modules.BaseModule = Class.extend({
+zeit.content.cp.modules.LightBoxForm = Class.extend({
 
-    panel_view: null,
-    
     construct: function(context_element) {
         var self = this;
-        self.context = MochiKit.DOM.getFirstParentByTagAndClassName(
-            context_element, null, 'editable-area');
-        self.load_panel()
-    },
-
-    load_panel: function() {
-        var self = this;
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(self.panel_view);
-        d.addCallback(function(result) {
-            document.cpeditor.edit_pane.innerHTML = result.responseText;
-        });
+        self.panel_view = context_element.getAttribute('href');
+        new zeit.cms.LightboxForm(self.panel_view, $('cp-content'));
     },
 
 });
-
-
-zeit.content.cp.modules.AddPanel = zeit.content.cp.modules.BaseModule.extend({
-
-    panel_view: 'editor.add-panel',    
-
-});
-

@@ -87,5 +87,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="box.edit"
+    class=".teaser.TeaserEdit"
+    permission="zeit.EditContent"
+    />
 
 </configure>

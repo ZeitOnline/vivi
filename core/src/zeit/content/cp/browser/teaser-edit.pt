@@ -1,0 +1,9 @@
+<div class="floating">
+
+  <h1>Teaser</h1>
+
+  <form id="lightbox.form" action="#"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form"/>
+
+</div>
