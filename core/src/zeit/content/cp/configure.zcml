@@ -19,4 +19,11 @@
   <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
 
   <include package=".browser" />
+
+  <!-- Modules -->
+  <adapter factory=".region.Region" name="lead" />
+  <adapter factory=".region.Region" name="informatives" />
+  <adapter factory=".region.Region" name="mosaik" />
+       
+
 </configure>

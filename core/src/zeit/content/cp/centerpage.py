@@ -1,6 +1,8 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lxml.etree
+import pkg_resources
 import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
@@ -9,18 +11,28 @@ import zeit.content.cp.interfaces
 import zope.interface
 
 
-CENTERPAGE_TEMPLATE = """\
-<centerpage xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-    <head/>
-    <body/>
-</centerpage>"""
-
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     """XXX docme"""
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage)
 
-    default_template = CENTERPAGE_TEMPLATE
+    default_template = pkg_resources.resource_string(__name__,
+                                                     'cp-template.xml')
+    editable_areas = {
+        'lead': lxml.etree.XPath('region[@area="lead"]'),
+        'informatives': lxml.etree.XPath('region[@area="informatives"]'),
+        'mosaic': lxml.etree.XPath('cluster[@area="teaser-mosaic"]'),
+    }
+
+
+    def __getitem__(self, key):
+        xml = self.editable_areas[key](self.xml['body'])[0]
+        area = zope.component.getMultiAdapter(
+            (self, xml),
+            zeit.content.cp.interfaces.IEditableArea,
+            name=key)
+        return area
+
 
 
 centerpageFactory = zeit.cms.content.adapter.xmlContentFactory(CenterPage)

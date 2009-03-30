@@ -19,7 +19,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
             - lead
             - informatives
-            - teaser-mosaik
+            - mosaik
 
         """
 
@@ -48,4 +48,4 @@ class IWeather(IModule):
 class IModuleFactory(zope.interface.Interface):
 
     def __call__(node):
-        """XXX"""
+        """Create a module with"""

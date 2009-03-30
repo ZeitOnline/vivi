@@ -1,0 +1,20 @@
+<centerpage 
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <region area="lead"/>
+    <region area="informatives"/>
+    <region area="ugc-bar">
+      <!-- per xi:include -->
+      <container module="ugc-line">
+      </container>
+    </region>
+    <cluster area="teaser-mosaic"/>
+    <region area="service">
+      <!-- per xi:include   sitemap.xml-->
+    </region>
+  </body>
+</centerpage>
+<?ZEIT-StyleGroup r09_centerpage?>
