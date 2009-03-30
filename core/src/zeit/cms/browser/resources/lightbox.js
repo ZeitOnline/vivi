@@ -6,11 +6,13 @@
 zeit.cms.LightboxForm = Class.extend({
     // Javascript support for forms in a light box
 
-    construct: function(url) {
+    construct: function(url, container) {
         // URL: URL of the form to load
-        //
+        if (isUndefinedOrNull(container)) {
+            container = $('body');
+        }
         var othis = this;
-        this.lightbox = new gocept.Lightbox($('body'));
+        this.lightbox = new gocept.Lightbox(container);
         this.content_box = this.lightbox.content_box;
         connect(this.content_box, 'onclick', this, 'handle_click');
         connect(window, 'zeit.cms.LightboxReload', function(event) {
