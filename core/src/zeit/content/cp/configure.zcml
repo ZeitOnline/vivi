@@ -23,7 +23,8 @@
   <!-- Modules -->
   <adapter factory=".region.Region" name="lead" />
   <adapter factory=".region.Region" name="informatives" />
-  <adapter factory=".region.Region" name="mosaik" />
-       
+  <adapter factory=".region.Region" name="teaser-mosaic" />
+
+  <adapter factory=".teaser.TeaserListFactory" name="teaser" />
 
 </configure>

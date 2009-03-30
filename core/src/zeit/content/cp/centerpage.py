@@ -21,9 +21,8 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     editable_areas = {
         'lead': lxml.etree.XPath('region[@area="lead"]'),
         'informatives': lxml.etree.XPath('region[@area="informatives"]'),
-        'mosaic': lxml.etree.XPath('cluster[@area="teaser-mosaic"]'),
+        'teaser-mosaic': lxml.etree.XPath('cluster[@area="teaser-mosaic"]'),
     }
-
 
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]
@@ -32,7 +31,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
             zeit.content.cp.interfaces.IEditableArea,
             name=key)
         return area
-
 
 
 centerpageFactory = zeit.cms.content.adapter.xmlContentFactory(CenterPage)

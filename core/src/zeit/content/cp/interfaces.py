@@ -33,6 +33,15 @@ class IEditableArea(zeit.cms.content.interfaces.IXMLRepresentation):
     def __getitem__(xxx):
         """XXX"""
 
+    def add(item):
+        """Add item to container.
+
+        XXX
+
+        """
+
+
+
     # __iter__ ? __setitem__? Looks like we actually want an IOrderedContainer.
 
 
