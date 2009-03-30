@@ -1,0 +1,12 @@
+<div class="landing-zone">
+  Landing Zone
+</div>
+<div>
+  block
+</div>
+<div class="edit">
+  <a tal:attributes="href string:${context/@@absolute_url}/addables"
+     i18n:translate="">
+    + Hinzufügen
+  </a>
+</div>
