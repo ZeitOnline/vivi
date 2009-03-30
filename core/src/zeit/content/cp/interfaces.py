@@ -26,16 +26,16 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         """
 
 class IArea(zeit.cms.content.interfaces.IXMLRepresentation,
-            zope.container.interfaces.IContained):
+            zope.container.interfaces.IContained,
+            zope.container.interfaces.IReadContainer):
     """Area on the CP which can be edited.
 
     This references a <region> or <cluster>
 
     """
 
-    def __getitem__(xxx):
-        """XXX"""
 
+    # XXX needs to go on a "write" interface
     def add(item):
         """Add item to container.
 
@@ -71,5 +71,5 @@ class IBoxFactory(zope.interface.Interface):
 
 class ITeaserList(IBox):
 
-    test_attribute = zope.schema.Text(
+    title = zope.schema.Text(
         title=_('Test attribute'))

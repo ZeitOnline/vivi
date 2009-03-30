@@ -35,6 +35,8 @@ class TeaserList(zope.container.contained.Contained):
         zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
+    title = zeit.cms.content.property.ObjectPathProperty('.title')
+
     def __init__(self, context, xml):
         self.__parent__ = context
         self.xml = xml

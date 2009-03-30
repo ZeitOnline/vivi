@@ -79,4 +79,13 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="editor.html"
+    template="teaser-list.pt"
+    permission="zope.View"
+    />
+
+
 </configure>

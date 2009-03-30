@@ -2,7 +2,9 @@
   Landing Zone
 </div>
 <div>
-  block
+  <tal:block
+       tal:repeat="box context"
+       tal:replace="structure box/@@editor.html" />
 </div>
 <div class="edit">
   <a tal:attributes="href string:${context/@@absolute_url}/addables"

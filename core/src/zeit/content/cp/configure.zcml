@@ -45,6 +45,11 @@
 
   <!-- Boxes -->
 
+  <class class=".teaser.TeaserList">
+    <require
+      interface=".interfaces.ITeaserList"
+      permission="zope.View"/>
+  </class>
   <adapter factory=".teaser.TeaserListFactory" name="teaser" />
 
   <adapter
