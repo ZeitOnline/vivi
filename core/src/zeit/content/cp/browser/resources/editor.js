@@ -46,7 +46,19 @@ zeit.content.cp.Editor = Class.extend({
 zeit.content.cp.BoxHover = Class.extend({
 
     construct: function() {
-        // add handlers which highlight hovered, editable elements
+        var self = this;
+        // doesn't look good, yet
+        return
+        MochiKit.Signal.connect('cp-content', 'onmouseover', self, 'over');
+        MochiKit.Signal.connect('cp-content', 'onmouseout', self, 'out');
+    },
+
+    over: function(event) {
+        MochiKit.DOM.addElementClass(event.target(), 'hover');
+    },
+
+    out: function(event) {
+        MochiKit.DOM.removeElementClass(event.target(), 'hover');
     },
 });
 
