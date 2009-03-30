@@ -4,7 +4,7 @@
   overflow: auto;
   position: absolute;
   top: 0;
-  width: 49%;
+  width: 66%;
   font-size: 50%;
 }
 
@@ -48,7 +48,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 49%;
+  width: 33%;
   border: 1px solid black;
 }
 
