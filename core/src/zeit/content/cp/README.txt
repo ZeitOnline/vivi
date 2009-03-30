@@ -23,26 +23,29 @@ Traceback (most recent call last):
     ...
 KeyError: 'ugc-bar'
 
-The parent is also accessible:
+The centerpage is reachable via ``__parent__`` or by adapting to it:
 
 >>> cp['informatives'].__parent__
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
+>>> zeit.content.cp.interfaces.ICenterPage(cp['informatives'])
+<zeit.content.cp.centerpage.CenterPage object at 0x...>
 
-Modules
-+++++++
+[#modified-handler]_
 
-A module is part of an editable area. Modules are created using a module
-factory:
+Boxes
++++++
+
+A box is part of an area. Boses are created using a box factory:
 
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
->>> module_factory = zope.component.getAdapter(
+>>> factory = zope.component.getAdapter(
 ...     lead, zeit.content.cp.interfaces.IBoxFactory, name='teaser')
->>> module_factory.title
+>>> factory .title
 u'List of teasers'
->>> module = module_factory()
->>> module
+>>> box = factory()
+>>> box 
 <zeit.content.cp.teaser.TeaserList object at 0x...>
 
 After calling the factory a corresponding XML node has been created:
@@ -59,14 +62,37 @@ After calling the factory a corresponding XML node has been created:
 
 Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
->>> lead[module.__name__]
+>>> lead[box.__name__]
 <zeit.content.cp.teaser.TeaserList object at 0x...>
 
-The lead can also be iterated:
+The area can also be iterated:
 
 >>> list(lead)
 [<zeit.content.cp.teaser.TeaserList object at 0x...>]
 
+It is possible to get the center page from the box by adapting to ICenterPage:
+
+>>> zeit.content.cp.interfaces.ICenterPage(box)
+<zeit.content.cp.centerpage.CenterPage object at 0x...>
+
+The ``__parent__`` of a box is the area:
+
+>>> box.__parent__
+<zeit.content.cp.region.Region for lead>
+
+
+
+.. [#modified-handler] The centerpages need to be nodified when sub location
+    change. When we modify an area the centerpage will be considered changed:
+
+    >>> import zope.event
+    >>> import zope.lifecycleevent
+    >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+    ...     cp['lead']))
+
+    #>>> cp._p_changed
+    # XXX currently broken
+    True
 
 .. [#invalid-raises-error]
 

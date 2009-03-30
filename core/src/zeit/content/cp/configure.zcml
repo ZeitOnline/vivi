@@ -17,10 +17,13 @@
 
   <adapter factory=".centerpage.resourceFactory" />
   <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
+  <subscriber handler=".centerpage.modified_propagator" />
 
   <include package=".browser" />
 
   <!-- Areas -->
+  <adapter factory=".region.area_to_centerpage" />
+
   <class class=".region.Region">
     <require
       interface=".interfaces.IRegion"
@@ -44,11 +47,15 @@
     />
 
   <!-- Boxes -->
+  <adapter factory=".centerpage.box_to_centerpage" />
 
   <class class=".teaser.TeaserList">
     <require
       interface=".interfaces.ITeaserList"
       permission="zope.View"/>
+    <require
+      set_schema=".interfaces.ITeaserList"
+      permission="zeit.EditContent"/>
   </class>
   <adapter factory=".teaser.TeaserListFactory" name="teaser" />
 
@@ -57,5 +64,6 @@
     name="teaser"
     factory=".teaser.TeaserList"
     />
+
 
 </configure>

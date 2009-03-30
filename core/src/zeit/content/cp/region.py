@@ -57,3 +57,9 @@ class Region(zope.container.contained.Contained):
     def __repr__(self):
         return '<%s.%s for %s>' % (self.__module__, self.__class__.__name__,
                                    self.xml.get('area'))
+
+
+@zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
+@zope.component.adapter(zeit.content.cp.interfaces.IArea)
+def area_to_centerpage(context):
+    return zeit.content.cp.interfaces.ICenterPage(context.__parent__)

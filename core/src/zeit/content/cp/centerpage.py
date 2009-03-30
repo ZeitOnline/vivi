@@ -11,6 +11,7 @@ import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
+import zope.lifecycleevent
 
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
@@ -46,3 +47,23 @@ resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
     'centerpage-2009')
 resourceFactory = zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage)(resourceFactory)
+
+
+@zope.component.adapter(
+    zope.interface.Interface,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def modified_propagator(context, event):
+    """Propagate a modified event to the center page for sublocation changes.
+    """
+    if zeit.content.cp.interfaces.ICenterPage.providedBy(context):
+        return
+    cp = zeit.content.cp.interfaces.ICenterPage(context, None)
+    if cp is None:
+        return
+    zope.security.proxy.removeSecurityProxy(cp)._p_changed = True
+
+
+@zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
+@zope.component.adapter(zeit.content.cp.interfaces.IBox)
+def box_to_centerpage(context):
+    return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
