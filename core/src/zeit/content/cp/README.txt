@@ -85,14 +85,16 @@ The ``__parent__`` of a box is the area:
 .. [#modified-handler] The centerpages need to be nodified when sub location
     change. When we modify an area the centerpage will be considered changed:
 
+    >>> import transaction
     >>> import zope.event
     >>> import zope.lifecycleevent
+    >>> getRootFolder()['cp'] = cp
+    >>> transaction.commit()  # Commit to actually be able to "change"
     >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
     ...     cp['lead']))
-
-    #>>> cp._p_changed
-    # XXX currently broken
+    >>> cp._p_changed
     True
+    
 
 .. [#invalid-raises-error]
 
