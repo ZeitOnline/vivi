@@ -14,7 +14,7 @@ A centerpage has three editable areas:
 >>> cp['informatives']
 <zeit.content.cp.area.Region for informatives>
 >>> cp['teaser-mosaic']
-<zeit.content.cp.area.Region for teaser-mosaic>
+<zeit.content.cp.area.Cluster for teaser-mosaic>
 
 Other areas are not accessible:
 
@@ -68,7 +68,7 @@ Teaser box
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
 ...     lead, zeit.content.cp.interfaces.IBoxFactory, name='teaser')
->>> factory .title
+>>> factory.title
 u'List of teasers'
 >>> box = factory()
 >>> box 
@@ -126,6 +126,44 @@ Boxes can be removed using __delitem__:
 >>> lead.values()
 [<zeit.content.cp.box.PlaceHolder object at 0x...>]
 
+
+Teaser mosaic
++++++++++++++
+
+The teaser mosaic contains teaser bars. Note that the term *teaser* mosaic is
+missleading as it may also contain a lot of other things (like information
+about the weather). 
+
+>>> mosaic = cp['teaser-mosaic']
+>>> factory = zope.component.getAdapter(
+...     mosaic, zeit.content.cp.interfaces.IBoxFactory, name='teaser-bar')
+>>> bar = factory()
+>>> bar
+<zeit.content.cp.area.TeaserBar object at 0x...>
+>>> mosaic.values()
+[<zeit.content.cp.area.TeaserBar object at 0x...>]
+
+
+The bar is alreay populated with four placeholders:
+
+>>> len(bar)
+4
+>>> bar.values()
+[<zeit.content.cp.box.PlaceHolder object at 0x...>,
+ <zeit.content.cp.box.PlaceHolder object at 0x...>,
+ <zeit.content.cp.box.PlaceHolder object at 0x...>,
+ <zeit.content.cp.box.PlaceHolder object at 0x...>]
+
+
+The xml of the teaser bar is actually a region:
+
+>>> print lxml.etree.tostring(bar.xml, pretty_print=True),
+<region ...>
+  <container cp:type="placeholder" cp:__name__="..."/>
+  <container cp:type="placeholder" cp:__name__="..."/>
+  <container cp:type="placeholder" cp:__name__="..."/>
+  <container cp:type="placeholder" cp:__name__="..."/>
+</region>
 
 
 .. [#modified-handler] The centerpages need to be nodified when sub location

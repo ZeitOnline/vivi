@@ -15,4 +15,5 @@ class TeaserList(zeit.content.cp.box.Box):
 
 
 TeaserListFactory = zeit.content.cp.box.boxFactoryFactory(
+    zeit.content.cp.interfaces.IRegion,
     TeaserList, 'teaser', _('List of teasers'))

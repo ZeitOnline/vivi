@@ -79,3 +79,12 @@ class ITeaserList(IBox):
 
     title = zope.schema.Text(
         title=_('Test attribute'))
+
+
+class ITeaserBar(IBox, IRegion):
+    """A teaser bar is a bar in the teaser mosaic.
+
+    The TeaserBar has a dual nature of being both a box and a region.
+
+    """
+

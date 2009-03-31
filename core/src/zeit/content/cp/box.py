@@ -12,26 +12,30 @@ class BoxFactory(object):
     """Base class for box factories."""
 
     zope.interface.implements(zeit.content.cp.interfaces.IBoxFactory)
-    zope.component.adapts(zeit.content.cp.interfaces.IArea)
 
     def __init__(self, context):
         self.context = context
 
-    def __call__(self):
+    def get_xml(self):
         container = lxml.objectify.E.container()
         container.set('{http://namespaces.zeit.de/CMS/cp}type', self.box_type)
+        return container
+
+    def __call__(self):
+        container = self.get_xml()
         box = self.box_class(self.context, container)
         self.context.add(box)
         return box
 
 
-def boxFactoryFactory(box_class, box_type, title=None):
+def boxFactoryFactory(adapts, box_class, box_type, title=None):
     """A factory which creates a box factory."""
     class_name = '%sFactory' % box_type.capitalize()
     factory = type(class_name, (BoxFactory,), dict(
         title=title,
         box_class=box_class,
         box_type=box_type))
+    factory = zope.component.adapter(adapts)(factory)
     return factory
 
 
@@ -69,4 +73,5 @@ class PlaceHolder(Box):
 
 
 PlaceHolderFactory = boxFactoryFactory(
+    zeit.content.cp.interfaces.IRegion,
     PlaceHolder, 'placeholder')
