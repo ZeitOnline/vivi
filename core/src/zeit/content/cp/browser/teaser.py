@@ -9,7 +9,8 @@ import zope.formlib.form
 
 class TeaserEdit(zope.formlib.form.SubPageEditForm):
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile('teaser-edit.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'form.teaser.edit.pt')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.ITeaserList)

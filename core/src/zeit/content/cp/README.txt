@@ -116,6 +116,16 @@ The ``__parent__`` of a box is the area:
 <zeit.content.cp.area.Region for lead>
 
 
+Boxes can be removed using __delitem__:
+
+>>> len(lead)
+2
+>>> del lead[box.__name__]
+>>> len(lead)
+1
+>>> lead.values()
+[<zeit.content.cp.box.PlaceHolder object at 0x...>]
+
 
 
 .. [#modified-handler] The centerpages need to be nodified when sub location

@@ -5,12 +5,12 @@
           tal:content="structure context/lead/@@editor.html">
       </td>
       <td id="cp-informatives" class="editable-area"
-          tal:content="context/informatives">
+          tal:content="structure context/informatives/@@editor.html">
       </td>
     </tr>
     <tr>
       <td colspan="2" id="cp-teasermosaik" class="editable-area"
-          tal:content="context/teaser-mosaic">
+          tal:content="structure context/teaser-mosaic/@@editor.html">
 
       </td>
     </tr>

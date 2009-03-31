@@ -156,6 +156,15 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="box.edit"
     class=".box.PlaceHolderEdit"
+    template="form.placeholder.edit.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IPlaceHolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="switch"
+    class=".box.PlaceHolderSwitchType"
     permission="zeit.EditContent"
     />
 

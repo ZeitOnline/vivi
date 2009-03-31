@@ -24,6 +24,9 @@ class Region(UserDict.DictMixin, zope.container.contained.Contained):
         self.__parent__ = context
         self.xml = xml
 
+    def __repr__(self):
+        return '<%s.%s for %s>' % (self.__module__, self.__class__.__name__,
+                                   self.xml.get('area'))
     @property
     def __name__(self):
         return self.xml.get('area')
@@ -47,6 +50,9 @@ class Region(UserDict.DictMixin, zope.container.contained.Contained):
             if key is not None:
                 yield key
 
+    def keys(self):
+        return list(self.__iter__())
+
     def add(self, item):
         name = item.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
         if name is not None:
@@ -55,9 +61,9 @@ class Region(UserDict.DictMixin, zope.container.contained.Contained):
         item.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
         self.xml.append(item.xml)
 
-    def __repr__(self):
-        return '<%s.%s for %s>' % (self.__module__, self.__class__.__name__,
-                                   self.xml.get('area'))
+    def __delitem__(self, key):
+        box = self[key]
+        box.xml.getparent().remove(box.xml)
 
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)

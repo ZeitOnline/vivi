@@ -25,27 +25,27 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
         """
 
-class IArea(zeit.cms.content.interfaces.IXMLRepresentation,
-            zope.container.interfaces.IContained,
-            zope.container.interfaces.IReadContainer):
+class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,
+                zope.container.interfaces.IContained,
+                zope.container.interfaces.IReadContainer):
     """Area on the CP which can be edited.
 
     This references a <region> or <cluster>
 
     """
 
+class IWriteArea(zope.interface.Interface):
+    """Modify area."""
 
-    # XXX needs to go on a "write" interface
     def add(item):
-        """Add item to container.
+        """Add item to container."""
 
-        XXX
-
-        """
-
+    def __delitem__(key):
+        """Remove item."""
 
 
-    # __iter__ ? __setitem__? Looks like we actually want an IOrderedContainer.
+class IArea(IReadArea, IWriteArea):
+    """Combined read/write interface to areas."""
 
 
 class IRegion(IArea):

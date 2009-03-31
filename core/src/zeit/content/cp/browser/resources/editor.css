@@ -5,7 +5,7 @@
   position: absolute;
   top: 0;
   width: 66%;
-  font-size: 50%;
+  font-size: 0.5em;
 }
 
 #cp-content > table {
@@ -76,6 +76,10 @@
   color: #00ee5e;
   margin-top: 1em;
   padding: 1em;
+}
+
+.editable-area > .landing-zone {
+  font-size: 2em;
 }
 
 .edit {
