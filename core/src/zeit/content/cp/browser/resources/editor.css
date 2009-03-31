@@ -52,12 +52,34 @@
   border: 1px solid black;
 }
 
+#cp-content #lightbox,
+#cp-content #lightbox-shade,
+#cp-content #lightbox-header {
+  font-size: 2em;
+  position: absolute;
+}
+
+
+
+/* Box layout */
+
+.box {
+  border: 1px solid black;
+  margin-top: 1em;
+  padding: 0 0.5em;
+}
+
 
 .landing-zone {
-  padding: 1em;
   background-color: #f2f2f2;
   border: 1px dashed #00ee5e;
   color: #00ee5e;
+  margin-top: 1em;
+  padding: 1em;
+}
+
+.edit {
+  font-size: 2em;
 }
 
 .editable-area > .edit {
@@ -69,12 +91,25 @@
   color: inherit;
 }
 
-/* Teaser visualisations*/
+/* placeholder */
 
-.box {
-  border: 1px solid black;
-  margin-top: 1em;
+.box.type-placeholder {
+  border-style: dashed;
+  font-size: 2em;
+  padding: 1em;
 }
+
+.box.type-placeholder > .choose-box {
+  display: block;
+  height: 10em;
+  background: #f2f2f2;
+  border: 1px solid black;
+  text-align: center;
+  line-height: 10em;
+}
+
+
+/* Teaser visualisations*/
 
 .teaser > img {
   display: none
@@ -106,9 +141,4 @@
   margin-bottom: 1em;
 }
 
-#cp-content #lightbox,
-#cp-content #lightbox-shade,
-#cp-content #lightbox-header {
-  font-size: 2em;
-  position: absolute;
-}
+

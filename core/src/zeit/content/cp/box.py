@@ -58,6 +58,10 @@ class Box(zope.container.contained.Contained):
     def __name__(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
 
+    @property
+    def type(self):
+        return self.xml.get('{http://namespaces.zeit.de/CMS/cp}type')
+
 
 class PlaceHolder(Box):
 

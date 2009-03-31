@@ -73,6 +73,8 @@ u'List of teasers'
 >>> box = factory()
 >>> box 
 <zeit.content.cp.teaser.TeaserList object at 0x...>
+>>> box.type
+'teaser'
 
 After calling the factory a corresponding XML node has been created:
 
@@ -96,7 +98,10 @@ Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
 The area can also be iterated:
 
->>> list(lead)
+>>> list(lead.itervalues())
+[<zeit.content.cp.box.PlaceHolder object at 0x...>,
+ <zeit.content.cp.teaser.TeaserList object at 0x...>]
+>>> lead.values()
 [<zeit.content.cp.box.PlaceHolder object at 0x...>,
  <zeit.content.cp.teaser.TeaserList object at 0x...>]
 

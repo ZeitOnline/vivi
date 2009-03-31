@@ -52,7 +52,7 @@
   </resourceLibrary>
 
 
-  <!-- editor -->
+  <!-- Editor -->
 
   <gocept:pagelet
     for="zeit.content.cp.interfaces.ICenterPage"
@@ -71,27 +71,46 @@
     permission="zeit.EditContent"
     />
 
-  <browser:page
-    for="zeit.content.cp.interfaces.ICenterPage"
+
+
+  <browser:viewletManager
+    provides=".interfaces.IBoxContentViewletManager"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="editor.add-panel"
-    template="add-panel.pt"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.content.cp.box-content"
     permission="zope.View"
+    />
+
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IBoxContentViewletManager"
+    name="edit"
+    template="layout.box.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+
+  <!-- teaser -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="content"
+    template="layout.teaser.content.pt"
+    permission="zeit.EditContent"
     />
 
   <browser:page
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="editor.html"
-    template="region.pt"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="editor.html"
-    template="teaser-list.pt"
+    class=".editor.Area"
+    template="area.pt"
     permission="zope.View"
     />
 
@@ -105,20 +124,31 @@
 
   <!-- place holder -->
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IPlaceHolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="content"
+    template="layout.placeholder.content.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IPlaceHolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IBoxContentViewletManager"
+    name="edit"
+    template="layout.placeholder.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="add-placeholder"
     class=".box.AddPlaceHolder"
     permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IPlaceHolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="editor.html"
-    template="placeholder.pt"
-    permission="zope.View"
     />
 
   <browser:page

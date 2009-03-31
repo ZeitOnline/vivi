@@ -1,0 +1,6 @@
+<a class="choose-box"
+   tal:attributes="href string:${context/@@absolute_url}/box.edit"
+   i18n:translate=""
+   cms:cp-module="LightBoxForm">
+  Click here to choose the box type.
+</a>

@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import UserDict
 import gocept.lxml.interfaces
 import uuid
 import zeit.cms.content.interfaces
@@ -11,7 +12,7 @@ import zope.dottedname.resolve
 import zope.interface
 
 
-class Region(zope.container.contained.Contained):
+class Region(UserDict.DictMixin, zope.container.contained.Contained):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRegion)
 
@@ -44,7 +45,7 @@ class Region(zope.container.contained.Contained):
         for node in self.xml.iterchildren():
             key = node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
             if key is not None:
-                yield self[key]
+                yield key
 
     def add(self, item):
         name = item.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')

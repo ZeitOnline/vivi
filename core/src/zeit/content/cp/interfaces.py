@@ -59,6 +59,8 @@ class ICluster(IArea):
 class IBox(zope.interface.Interface):
     """XXX A module which can be instanciated an added to the page."""
 
+    type = zope.interface.Attribute("Type identifier.")
+
 
 class IBoxFactory(zope.interface.Interface):
 
