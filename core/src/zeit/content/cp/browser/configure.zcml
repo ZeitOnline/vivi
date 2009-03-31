@@ -60,6 +60,7 @@
     name="cp-editor.html"
     template="editor.pt"
     permission="zope.View"
+    menu="zeit-context-views" title="Edit contents"
     />
 
   <browser:page
