@@ -2,13 +2,13 @@
      tal:condition="python:context.__name__ == 'lead'">
   Landing Zone (noop)
 </div>
+
 <div tal:repeat="box view/list_boxes"
      tal:attributes="class box/css_class"
      tal:content="structure box/contents" />
-  
 
 <div class="edit">
-  <a tal:attributes="href string:${context/@@absolute_url}/add-placeholder"
+  <a tal:attributes="href string:${context/@@absolute_url}/add?type=placeholder"
      i18n:translate=""
      cms:cp-module="LoadAndReload">
     + Hinzufügen

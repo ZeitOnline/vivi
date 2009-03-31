@@ -58,6 +58,7 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="cp-editor.html"
+    class=".editor.Editor"
     template="editor.pt"
     permission="zope.View"
     menu="zeit-context-views" title="Edit contents"
@@ -67,12 +68,9 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="editor-contents"
-    class=".editor.Editor"
     template="editor-contents.pt"
     permission="zeit.EditContent"
     />
-
-
 
   <browser:viewletManager
     provides=".interfaces.IBoxContentViewletManager"
@@ -147,8 +145,8 @@
   <browser:page
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="add-placeholder"
-    class=".box.AddPlaceHolder"
+    name="add"
+    class=".box.Add"
     permission="zeit.EditContent"
     />
 

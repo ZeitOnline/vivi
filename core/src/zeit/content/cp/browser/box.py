@@ -5,12 +5,12 @@ import zeit.content.cp.interfaces
 import zope.component
 
 
-class AddPlaceHolder(object):
+class Add(object):
 
-    def __call__(self):
+    def __call__(self, type):
         factory = zope.component.getAdapter(
             self.context, zeit.content.cp.interfaces.IBoxFactory,
-            name='placeholder')
+            name=type)
         factory()
 
 

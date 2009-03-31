@@ -3,10 +3,12 @@
 
 import zope.component
 import zope.viewlet.interfaces
+from zeit.content.cp.i18n import MessageFactory as _
 
 
 class Editor(object):
-    pass
+
+    title = _('Edit center page')
 
 
 class Area(object):
