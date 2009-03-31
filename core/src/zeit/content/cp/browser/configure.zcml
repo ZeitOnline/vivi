@@ -58,9 +58,17 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="cp-editor.html"
-    class=".editor.Editor"
     template="editor.pt"
     permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="editor-contents"
+    class=".editor.Editor"
+    template="editor-contents.pt"
+    permission="zeit.EditContent"
     />
 
   <browser:page

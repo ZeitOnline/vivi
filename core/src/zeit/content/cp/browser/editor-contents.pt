@@ -1,0 +1,18 @@
+<table>
+  <tbody>
+    <tr>
+      <td id="cp-aufmacher" class="editable-area"
+          tal:content="structure context/lead/@@editor.html">
+      </td>
+      <td id="cp-informatives" class="editable-area"
+          tal:content="context/informatives">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" id="cp-teasermosaik" class="editable-area"
+          tal:content="context/teaser-mosaic">
+
+      </td>
+    </tr>
+  </tbody>
+</table>

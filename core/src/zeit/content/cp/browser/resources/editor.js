@@ -7,11 +7,14 @@ zeit.content.cp.Editor = Class.extend({
     
     construct: function() {
         var self = this;
+        self.content = $('cp-content');
         MochiKit.Signal.connect(
             'cp-content', 'onclick',
             self, 'handleContentClick');
-        self.edit_pane = $('cp-edit-pane');
-        self.connect_draggables();
+        MochiKit.Signal.connect(
+            self, 'reload', self, 'reload');
+        MochiKit.Signal.signal(self, 'reload');
+        //self.connect_draggables();
     },
 
     handleContentClick: function(event) {
@@ -34,12 +37,27 @@ zeit.content.cp.Editor = Class.extend({
             tag: 'div',
             tree: true,
         });
+        MochiKig.Signal.connect(self, 'before-reload', function() {
+            MochiKit.Sortable.destroy($('cp-content'));
+        });
         /*var boxes = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'box', $('cp-content'));
         forEach(boxes, function(box) {
             new MochiKit.DragAndDrop.Draggable(box);
         });
         */
+    },
+
+    reload: function() {
+        var self = this;
+        MochiKit.Signal.signal(self, 'before-reload');
+        var url = context_url + '/editor-contents';
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        // XXX error handling
+        d.addCallback(function(result) {
+            self.content.innerHTML = result.responseText;
+            MochiKit.Signal.signal(self, 'after-reload');
+        });
     },
 });
 
@@ -75,12 +93,28 @@ MochiKit.Signal.connect(window, 'onload', function() {
 /* modules */
 zeit.content.cp.modules = {}
 
-zeit.content.cp.modules.LightBoxForm = Class.extend({
+zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     construct: function(context_element) {
         var self = this;
-        self.panel_view = context_element.getAttribute('href');
-        new zeit.cms.LightboxForm(self.panel_view, $('cp-content'));
+        var url = context_element.getAttribute('href');
+        arguments.callee.$.construct.call(self, url, $('cp-content'));
     },
 
+    handle_submit: function(action) {
+        var self = this;
+        var d = arguments.callee.$.handle_submit.call(self, action)
+        d.addCallback(function(result) {
+            if (isNull(result)) {
+                return null;
+            }
+            var summary = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'div', 'summary', self.form);
+            if (isNull(summary)) {
+                return result;
+            }
+            self.close();
+            MochiKit.Signal.signal(document.cpeditor, 'reload');
+        });
+    },
 });
