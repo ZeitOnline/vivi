@@ -69,6 +69,10 @@ class IBoxFactory(zope.interface.Interface):
         """Create box."""
 
 
+class IPlaceHolder(IBox):
+    """Placeholder."""
+
+
 class ITeaserList(IBox):
 
     title = zope.schema.Text(

@@ -118,3 +118,17 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
         });
     },
 });
+
+
+zeit.content.cp.modules.LoadAndReload = Class.extend({
+
+    construct: function(context_element) {
+        var url = context_element.getAttribute('href');
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        // XXX error handling
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(document.cpeditor, 'reload');
+        });
+    },
+
+});

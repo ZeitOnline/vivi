@@ -61,9 +61,3 @@ def modified_propagator(context, event):
     if cp is None:
         return
     zope.security.proxy.removeSecurityProxy(cp)._p_changed = True
-
-
-@zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
-@zope.component.adapter(zeit.content.cp.interfaces.IBox)
-def box_to_centerpage(context):
-    return zeit.content.cp.interfaces.ICenterPage(context.__parent__)

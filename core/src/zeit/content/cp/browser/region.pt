@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="edit">
-  <a tal:attributes="href string:${context/@@absolute_url}/addables"
+  <a tal:attributes="href string:${context/@@absolute_url}/add-placeholder"
      i18n:translate=""
-     cms:cp-module="LightBoxForm">
+     cms:cp-module="LoadAndReload">
     + Hinzufügen
   </a>
 </div>

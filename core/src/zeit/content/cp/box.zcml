@@ -1,0 +1,46 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".box.box_to_centerpage" />
+
+  <!-- Place holder -->
+
+  <class class=".box.PlaceHolder">
+    <require
+      interface=".interfaces.IPlaceHolder"
+      permission="zope.View" />
+  </class>
+
+  <adapter factory=".box.PlaceHolderFactory" name="placeholder" />
+  <adapter
+    provides=".interfaces.IBox"
+    name="placeholder"
+    factory=".box.PlaceHolder"
+    />
+
+  
+
+       
+
+  <!-- Teaser list -->
+
+  <class class=".teaser.TeaserList">
+    <require
+      interface=".interfaces.ITeaserList"
+      permission="zope.View"/>
+    <require
+      set_schema=".interfaces.ITeaserList"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".teaser.TeaserListFactory" name="teaser" />
+
+  <adapter
+    provides=".interfaces.IBox"
+    name="teaser"
+    factory=".teaser.TeaserList"
+    />
+
+
+
+</configure>
+

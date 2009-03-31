@@ -35,7 +35,33 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 Boxes
 +++++
 
-A box is part of an area. Boses are created using a box factory:
+A box is part of an area. 
+
+Placeholder box
+---------------
+
+There is a special box which can easily replaced by another box. It is a
+placeholder for other boxes. This allows removing of real boxes in the teaser
+mosaic without moving other boxes around. It also allows a generic "add" action
+in the other areas where a placeholder is just added to the boxes and
+afterwards configured.
+
+Boxes are created using a box factory:
+
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IBoxFactory, name='placeholder')
+>>> factory.title is None
+True
+>>> box = factory()
+>>> box 
+<zeit.content.cp.box.PlaceHolder object at 0x...>
+
+
+Teaser box
+----------
 
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
@@ -55,6 +81,9 @@ After calling the factory a corresponding XML node has been created:
 <region ... 
   area="lead">
   <container
+    cp:type="placeholder"
+    cp:__name__="..."/>
+  <container
     cp:type="teaser"
     cp:__name__="..."/>
 </region>
@@ -68,7 +97,8 @@ Modules are accessible via __getitem__ [#invalid-raises-error]_:
 The area can also be iterated:
 
 >>> list(lead)
-[<zeit.content.cp.teaser.TeaserList object at 0x...>]
+[<zeit.content.cp.box.PlaceHolder object at 0x...>,
+ <zeit.content.cp.teaser.TeaserList object at 0x...>]
 
 It is possible to get the center page from the box by adapting to ICenterPage:
 
@@ -79,6 +109,7 @@ The ``__parent__`` of a box is the area:
 
 >>> box.__parent__
 <zeit.content.cp.area.Region for lead>
+
 
 
 

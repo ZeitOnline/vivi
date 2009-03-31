@@ -47,23 +47,6 @@
     />
 
   <!-- Boxes -->
-  <adapter factory=".centerpage.box_to_centerpage" />
-
-  <class class=".teaser.TeaserList">
-    <require
-      interface=".interfaces.ITeaserList"
-      permission="zope.View"/>
-    <require
-      set_schema=".interfaces.ITeaserList"
-      permission="zeit.EditContent"/>
-  </class>
-  <adapter factory=".teaser.TeaserListFactory" name="teaser" />
-
-  <adapter
-    provides=".interfaces.IBox"
-    name="teaser"
-    factory=".teaser.TeaserList"
-    />
-
+  <include file="box.zcml" />
 
 </configure>

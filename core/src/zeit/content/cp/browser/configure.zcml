@@ -103,4 +103,30 @@
     permission="zeit.EditContent"
     />
 
+  <!-- place holder -->
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="add-placeholder"
+    class=".box.AddPlaceHolder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IPlaceHolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="editor.html"
+    template="placeholder.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IPlaceHolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="box.edit"
+    class=".box.PlaceHolderEdit"
+    permission="zeit.EditContent"
+    />
+
 </configure>
