@@ -1,0 +1,12 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zc.selenium" />
+
+  <adapter
+    factory=".selenium.TestGenericEditing"
+    name="zeit.content.cp.TestGenericEditing"
+    permission="zope.Public"
+    />
+
+</configure>
+
