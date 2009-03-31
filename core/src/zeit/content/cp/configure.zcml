@@ -22,9 +22,9 @@
   <include package=".browser" />
 
   <!-- Areas -->
-  <adapter factory=".region.area_to_centerpage" />
+  <adapter factory=".area.area_to_centerpage" />
 
-  <class class=".region.Region">
+  <class class=".area.Region">
     <require
       interface=".interfaces.IRegion"
       permission="zope.View" />
@@ -33,17 +33,17 @@
   <adapter
     provides=".interfaces.IArea"
     name="lead"
-    factory=".region.Region"
+    factory=".area.Region"
     />
   <adapter
     provides=".interfaces.IArea"
     name="informatives"
-    factory=".region.Region"
+    factory=".area.Region"
     />
   <adapter 
     provides=".interfaces.IArea"
     name="teaser-mosaic"
-    factory=".region.Region"
+    factory=".area.Region"
     />
 
   <!-- Boxes -->
