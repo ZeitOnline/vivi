@@ -53,15 +53,27 @@
 }
 
 
+.landing-zone {
+  padding: 1em;
+  background-color: #f2f2f2;
+  border: 1px dashed #00ee5e;
+  color: #00ee5e;
+}
+
+.editable-area > .edit {
+  padding: 1em;
+  color: #00ee5e;
+}
+
+.edit > a {
+  color: inherit;
+}
+
 /* Teaser visualisations*/
 
 .box {
+  border: 1px solid black;
   margin-top: 1em;
-  border-top: 1px solid #eeeeee;
-}
-
-.box:first-child {
-  border-top: none;
 }
 
 .teaser > img {
