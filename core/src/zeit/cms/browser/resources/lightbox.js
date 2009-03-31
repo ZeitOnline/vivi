@@ -12,12 +12,15 @@ zeit.cms.LightboxForm = Class.extend({
             container = $('body');
         }
         var othis = this;
+        this.events = []
         this.lightbox = new gocept.Lightbox(container);
         this.content_box = this.lightbox.content_box;
-        connect(this.content_box, 'onclick', this, 'handle_click');
-        connect(window, 'zeit.cms.LightboxReload', function(event) {
-            othis.loading();
-        });
+        this.events.push(
+            connect(this.content_box, 'onclick', this, 'handle_click'));
+        this.events.push(
+            connect(window, 'zeit.cms.LightboxReload', function(event) {
+                othis.loading();
+            }));
 
         var d = this.lightbox.load_url(url);
         d.addCallback(
@@ -26,6 +29,14 @@ zeit.cms.LightboxForm = Class.extend({
                 return result;
             });
 
+    },
+
+    close: function() {
+        // Close the lightbox and unregister everything.
+        this.lightbox.close();
+        forEach(this.events, function(ident) {
+            MochiKit.Signal.disconnect(ident);
+        });
     },
 
     handle_click: function(event) {
@@ -68,6 +79,7 @@ zeit.cms.LightboxForm = Class.extend({
             'sendContent': data});
         d.addCallbacks(
             function(result) {
+                MochiKit.Signal.disconnectAll(othis.form);
                 othis.content_box.innerHTML = result.responseText;
                 if (action.indexOf('form.actions.') != 0) {
                     // This was no action. No error could have been generated.
@@ -101,6 +113,7 @@ zeit.cms.LightboxForm = Class.extend({
             othis.post_process_html();
             return result;
         });
+        return d;
     },
 
     loading: function(message) {
@@ -124,10 +137,11 @@ zeit.cms.LightboxForm = Class.extend({
             });
         othis.form = $('lightbox.form');
         if (othis.form != null) {
-            connect(othis.form, 'onsubmit', function(event) {
+            othis.events.push(MochiKit.Signal.connect(
+                othis.form, 'onsubmit', function(event) {
                 // prevent accidential submit
                 event.stop()
-            });
+            }));
         }
         
         // check for javascript
