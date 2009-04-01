@@ -29,7 +29,7 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         s.waitForElementPresent('//div[@class="box-types"]')
         s.click('link=List of teasers')
         s.waitForElementPresent('//div[@class="box type-teaser"]')
-        s.click('//div[@class="box type-teaser"]/div[@class="edit"]/a')
+        s.click('//div[@class="box type-teaser"]/*/div[@class="edit"]/a')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.title', 'Holladrio')
         s.click('form.actions.apply')
