@@ -1,3 +1,0 @@
-<tal:box
-  repeat="box context/values"
-  replace="structure box/@@contents"/>

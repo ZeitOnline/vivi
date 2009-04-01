@@ -9,7 +9,7 @@
       </td>
     </tr>
     <tr>
-      <td colspan="2" id="cp-teasermosaik" class="editable-area"
+      <td colspan="2" id="cp-teasermosaic" class="editable-area"
           tal:content="structure context/teaser-mosaic/@@contents">
 
       </td>

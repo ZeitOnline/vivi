@@ -95,6 +95,12 @@
   color: inherit;
 }
 
+
+.type-teaser-bar > .box {
+  float: left;
+  width: 20%;
+}
+
 /* placeholder */
 
 .box.type-placeholder {
@@ -109,7 +115,6 @@
   background: #f2f2f2;
   border: 1px solid black;
   text-align: center;
-  line-height: 10em;
 }
 
 

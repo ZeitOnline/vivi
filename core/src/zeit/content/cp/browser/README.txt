@@ -73,7 +73,7 @@ The inital page doens't contain much:
 
 The contents of cp-content is loaded via javascript:
 
->>> browser.open('editor-contents')
+>>> browser.open('contents')
 >>> print browser.contents
 <table>
   <tbody>
