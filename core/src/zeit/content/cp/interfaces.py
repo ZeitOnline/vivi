@@ -52,6 +52,10 @@ class IRegion(IArea):
     """A region contains boxes."""
 
 
+class ILeadRegion(IRegion):
+    """The lead region."""
+
+
 class ICluster(IArea):
     """A cluster contains regions."""
 

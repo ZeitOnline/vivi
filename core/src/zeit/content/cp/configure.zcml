@@ -33,6 +33,15 @@
       permission="zeit.EditContent"
       />
   </class>
+  <class class=".area.LeadRegion">
+    <require
+      interface=".interfaces.IReadArea"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IWriteArea"
+      permission="zeit.EditContent"
+      />
+  </class>
   <class class=".area.Cluster">
     <require
       interface=".interfaces.IReadArea"
@@ -46,7 +55,7 @@
   <adapter
     provides=".interfaces.IArea"
     name="lead"
-    factory=".area.Region"
+    factory=".area.LeadRegion"
     />
   <adapter
     provides=".interfaces.IArea"

@@ -82,7 +82,7 @@ The contents of cp-content is loaded via javascript:
       <td id="cp-informatives" class="editable-area">...</td>
     </tr>
     <tr>
-      <td colspan="2" id="cp-teasermosaik" class="editable-area">...</td>
+      <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
     </tr>
   </tbody>
 </table>

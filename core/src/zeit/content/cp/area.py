@@ -70,6 +70,11 @@ class Region(Area):
         gocept.lxml.interfaces.IObjectified)
 
 
+class LeadRegion(Region):
+
+    zope.interface.implements(zeit.content.cp.interfaces.ILeadRegion)
+
+
 class Cluster(Area):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICluster)

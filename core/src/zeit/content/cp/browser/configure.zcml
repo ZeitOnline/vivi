@@ -92,7 +92,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IRegion"
+    for="zeit.content.cp.interfaces.ILeadRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"

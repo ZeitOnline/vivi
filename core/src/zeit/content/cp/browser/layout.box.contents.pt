@@ -1,4 +1,6 @@
 <div tal:attributes="class string:box type-${context/type}">
-  <tal:block tal:repeat="box options/viewlets"
-             tal:content="structure box/render" />
+  <div class="box-inner">
+    <tal:block tal:repeat="box options/viewlets"
+               tal:content="structure box/render" />
+  </div>
 </div>

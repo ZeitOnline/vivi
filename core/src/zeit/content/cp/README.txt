@@ -10,7 +10,7 @@ Centerpage
 A centerpage has three editable areas:
 
 >>> cp['lead']
-<zeit.content.cp.area.Region for lead>
+<zeit.content.cp.area.LeadRegion for lead>
 >>> cp['informatives']
 <zeit.content.cp.area.Region for informatives>
 >>> cp['teaser-mosaic']
@@ -113,7 +113,7 @@ It is possible to get the center page from the box by adapting to ICenterPage:
 The ``__parent__`` of a box is the area:
 
 >>> box.__parent__
-<zeit.content.cp.area.Region for lead>
+<zeit.content.cp.area.LeadRegion for lead>
 
 
 Boxes can be removed using __delitem__:
