@@ -1,0 +1,3 @@
+<div tal:repeat="box options/viewlets"
+     tal:attributes="class string:box type-${context/type}"
+     tal:content="structure box/render" />

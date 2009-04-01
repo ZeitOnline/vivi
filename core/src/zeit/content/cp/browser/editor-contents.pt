@@ -2,15 +2,15 @@
   <tbody>
     <tr>
       <td id="cp-aufmacher" class="editable-area"
-          tal:content="structure context/lead/@@editor.html">
+          tal:content="structure context/lead/@@contents">
       </td>
       <td id="cp-informatives" class="editable-area"
-          tal:content="structure context/informatives/@@editor.html">
+          tal:content="structure context/informatives/@@contents">
       </td>
     </tr>
     <tr>
       <td colspan="2" id="cp-teasermosaik" class="editable-area"
-          tal:content="structure context/teaser-mosaic/@@editor.html">
+          tal:content="structure context/teaser-mosaic/@@contents">
 
       </td>
     </tr>

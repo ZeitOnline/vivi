@@ -5,6 +5,8 @@ import zeit.content.cp.interfaces
 import zope.component
 
 
+
+
 class Add(object):
 
     def __call__(self, type):

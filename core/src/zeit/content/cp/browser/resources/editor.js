@@ -51,7 +51,7 @@ zeit.content.cp.Editor = Class.extend({
     reload: function() {
         var self = this;
         MochiKit.Signal.signal(self, 'before-reload');
-        var url = context_url + '/editor-contents';
+        var url = context_url + '/contents';
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {

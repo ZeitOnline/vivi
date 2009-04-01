@@ -67,17 +67,83 @@
   <browser:page
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="editor-contents"
+    name="contents"
     template="editor-contents.pt"
     permission="zeit.EditContent"
     />
 
+  <!-- Area -->
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.area.pt"
+    permission="zope.View"
+    />
+
+  <browser:viewletManager
+    provides=".interfaces.IAreaContentViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.content.cp.area-contents"
+    permission="zope.View"
+    />
+
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IAreaContentViewletManager"
+    name="landing-zone"
+    template="layout.lead.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IAreaContentViewletManager"
+    name="contents"
+    template="layout.area.boxes.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IAreaContentViewletManager"
+    name="edit"
+    template="layout.region.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+
+
+  <!-- Box -->
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.box.pt"
+    permission="zope.View"
+    />
+       
   <browser:viewletManager
     provides=".interfaces.IBoxContentViewletManager"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     class="zope.viewlet.manager.WeightOrderedViewletManager"
-    name="zeit.content.cp.box-content"
+    template="layout.box.contents.pt"
+    name="zeit.content.cp.box-contents"
     permission="zope.View"
     />
 
@@ -103,16 +169,6 @@
     template="layout.teaser.content.pt"
     permission="zeit.EditContent"
     />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="editor.html"
-    class=".editor.Area"
-    template="area.pt"
-    permission="zope.View"
-    />
-
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
