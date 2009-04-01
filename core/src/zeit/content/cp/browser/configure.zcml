@@ -125,6 +125,17 @@
     />
 
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ICluster"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="edit"
+    template="layout.cluster.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
 
   <!-- Box -->
 
