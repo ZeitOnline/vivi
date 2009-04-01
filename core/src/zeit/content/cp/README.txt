@@ -134,6 +134,7 @@ The teaser mosaic contains teaser bars. Note that the term *teaser* mosaic is
 missleading as it may also contain a lot of other things (like information
 about the weather). 
 
+>>> transaction.commit()
 >>> mosaic = cp['teaser-mosaic']
 >>> factory = zope.component.getAdapter(
 ...     mosaic, zeit.content.cp.interfaces.IBoxFactory, name='teaser-bar')
@@ -142,6 +143,8 @@ about the weather).
 <zeit.content.cp.area.TeaserBar object at 0x...>
 >>> mosaic.values()
 [<zeit.content.cp.area.TeaserBar object at 0x...>]
+>>> cp._p_changed
+True
 
 
 The bar is alreay populated with four placeholders:
@@ -176,6 +179,15 @@ The xml of the teaser bar is actually a region:
     >>> transaction.commit()  # Commit to actually be able to "change"
     >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
     ...     cp['lead']))
+    >>> cp._p_changed
+    True
+
+    There is also such a handler for IObjectMovedEvent:
+
+    >>> transaction.commit()
+    >>> import zope.container.contained
+    >>> zope.event.notify(zope.container.contained.ObjectMovedEvent(
+    ...     cp['lead'], None, None, None, None))
     >>> cp._p_changed
     True
     

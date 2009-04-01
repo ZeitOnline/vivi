@@ -18,6 +18,10 @@
   <adapter factory=".centerpage.resourceFactory" />
   <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
   <subscriber handler=".centerpage.modified_propagator" />
+  <subscriber
+    for="zope.interface.Interface
+         zope.container.interfaces.IObjectMovedEvent"
+    handler=".centerpage.modified_propagator" />
 
   <include package=".browser" />
 

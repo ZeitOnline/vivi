@@ -10,6 +10,7 @@ import zeit.content.cp.interfaces
 import zope.component
 import zope.container.contained
 import zope.dottedname.resolve
+import zope.event
 import zope.interface
 
 
@@ -52,10 +53,12 @@ class Area(UserDict.DictMixin,
     def add(self, item):
         name = item.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
         if name is not None:
-            raise this_is_not_tested_yet
+            raise NotImplementedError
         name = str(uuid.uuid4())
         item.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
         self.xml.append(item.xml)
+        zope.event.notify(zope.container.contained.ObjectAddedEvent(
+            item, self, name))
 
     def __delitem__(self, key):
         box = self[key]
