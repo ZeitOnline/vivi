@@ -9,7 +9,7 @@ zeit.content.cp.Editor = Class.extend({
         var self = this;
         self.content = $('cp-content');
         MochiKit.Signal.connect(
-            'cp-content', 'onclick',
+            'content', 'onclick',
             self, 'handleContentClick');
         MochiKit.Signal.connect(
             self, 'reload', self, 'reload');
@@ -99,6 +99,9 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
         var self = this;
         var url = context_element.getAttribute('href');
         arguments.callee.$.construct.call(self, url, $('content'));
+        self.events.push(MochiKit.Signal.connect(
+           document.cpeditor, 'before-reload',
+           self, 'close'));
     },
 
     handle_submit: function(action) {
