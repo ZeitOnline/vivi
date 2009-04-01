@@ -162,10 +162,10 @@ The xml of the teaser bar is actually a region:
 
 >>> print lxml.etree.tostring(bar.xml, pretty_print=True),
 <region ...>
-  <container cp:type="placeholder" cp:__name__="..."/>
-  <container cp:type="placeholder" cp:__name__="..."/>
-  <container cp:type="placeholder" cp:__name__="..."/>
-  <container cp:type="placeholder" cp:__name__="..."/>
+  <container cp:type="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" cp:__name__="<GUID>"/>
 </region>
 
 

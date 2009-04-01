@@ -74,6 +74,7 @@ The inital page doens't contain much:
 The contents of cp-content is loaded via javascript:
 
 >>> browser.open('contents')
+>>> bookmark = browser.url
 >>> print browser.contents
 <table>
   <tbody>
@@ -83,6 +84,111 @@ The contents of cp-content is loaded via javascript:
     </tr>
     <tr>
       <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
+    </tr>
+  </tbody>
+</table>
+
+
+Add a box in the lead area. This is called by the javascript; the method
+returns the URL of the freshly created box:
+
+>>> browser.getLink('Add box').click()
+>>> browser.contents
+'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/5841f03e-c41b-4239-9ac5-0b19e288cb90'
+
+The box is now contained in the contents:
+
+>>> browser.open(bookmark)
+>>> print browser.contents
+<table>
+  <tbody>
+    <tr>
+      <td id="cp-aufmacher" class="editable-area">...
+        <div class="box type-placeholder">...
+      </td>
+      <td id="cp-informatives" class="editable-area">...</td>
+    </tr>
+    <tr>
+      <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
+    </tr>
+  </tbody>
+</table>
+
+We've just created the placeholder box. Its edit view allows us to replace the
+contents:
+
+>>> browser.getLink('Click here to choose the box type.').click()
+>>> print browser.contents
+<div...
+   <h1>Choose box type</h1>
+   ...
+   <div class="box-types">
+     <a href="..." cms:cp-module="LoadAndReload">List of teasers</a>
+     ...
+
+
+The change links is again activated via javascript and returns the URL of the
+created object:
+
+>>> browser.getLink('List of teasers').click()
+>>> browser.contents
+'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/8681a368-ce91-4ae9-b40d-c59fa1dd3640'
+
+
+The placeholder is gone now and we've got the teaser list:
+
+>>> browser.open(bookmark)
+>>> print browser.contents
+<table>
+  <tbody>
+    <tr>
+      <td id="cp-aufmacher" class="editable-area">...
+        <div class="box type-teaser">...
+      </td>
+      <td id="cp-informatives" class="editable-area">...</td>
+    </tr>
+    <tr>
+      <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
+    </tr>
+  </tbody>
+</table>
+
+
+Teaser mosaic
++++++++++++++
+
+In the teaser mosaic contains teaser bars, add one. It is prefilled with four
+placeholders:
+
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(bookmark)
+>>> print browser.contents
+<table>
+  <tbody>
+    <tr>
+      <td id="cp-aufmacher" class="editable-area">...
+        <div class="box type-teaser">...
+      </td>
+      <td id="cp-informatives" class="editable-area">...</td>
+    </tr>
+    <tr>
+      <td colspan="2" id="cp-teasermosaic" class="editable-area"><div class="box type-teaser-bar">
+      ...
+      <div class="box type-placeholder">
+      ...
+      <div class="box type-placeholder">
+      ...
+      <div class="box type-placeholder">
+      ...
+      <div class="box type-placeholder">
+      ...
+        <div class="edit">
+          <a cms:cp-module="LoadAndReload"
+             href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
+            + Add teaser bar
+          </a>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>
