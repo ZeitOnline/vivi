@@ -1,9 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import pytz
-
 import zope.component
 import zope.interface
 import zope.interface.common.idatetime
