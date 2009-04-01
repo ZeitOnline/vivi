@@ -23,7 +23,7 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         self.open_centerpage()
         s = self.selenium
         s.verifyElementNotPresent('//a[@class="choose-box"]')
-        s.click('link=*Hinzufügen*')
+        s.click('link=*Add box*')
         s.waitForElementPresent('//a[@class="choose-box"]')
         s.click('//a[@class="choose-box"]')
         s.waitForElementPresent('//div[@class="box-types"]')
