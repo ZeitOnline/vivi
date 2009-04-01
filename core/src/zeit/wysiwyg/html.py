@@ -366,8 +366,7 @@ class HTMLConverter(object):
                 expires = ''
             else:
                 tz = zope.interface.common.idatetime.ITZInfo(self.request)
-                expires = expires.replace(tzinfo=tz)
-                expires = expires.isoformat()
+                expires = tz.localize(expires).isoformat()
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])

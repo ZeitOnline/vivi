@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.16.3 (2009-04-01)
+-------------------
+
+- Korrektes Verwenden der Zeitzone, so dass bei Sommerzeit auch Sommerzeit
+  angezeigt wird.
+
 1.16.2 (2009-03-31)
 -------------------
 
