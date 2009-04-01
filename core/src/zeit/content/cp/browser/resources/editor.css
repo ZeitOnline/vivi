@@ -4,7 +4,7 @@
   overflow: auto;
   position: absolute;
   top: 0;
-  width: 66%;
+  right: 35%;
   font-size: 0.5em;
 }
 
@@ -48,17 +48,27 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 33%;
+  left: 66%;
   border: 1px solid black;
 }
 
-#cp-content #lightbox,
-#cp-content #lightbox-shade,
-#cp-content #lightbox-header {
-  font-size: 2em;
+#content > #lightbox,
+#content > #lightbox-shade,
+#content > #lightbox-header {
   position: absolute;
+
 }
 
+#content > #lightbox-shade {
+  right: 35%;
+}
+
+#content > #lightbox,
+#content > #lightbox-header {
+  left: 5%;
+  right: 40%;
+
+}
 
 
 /* Box layout */

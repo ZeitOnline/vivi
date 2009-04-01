@@ -98,7 +98,7 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
     construct: function(context_element) {
         var self = this;
         var url = context_element.getAttribute('href');
-        arguments.callee.$.construct.call(self, url, $('cp-content'));
+        arguments.callee.$.construct.call(self, url, $('content'));
     },
 
     handle_submit: function(action) {
