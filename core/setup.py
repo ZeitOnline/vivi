@@ -19,7 +19,18 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'gocept.lxml',
+        'lxml',
         'setuptools',
         'zeit.cms>=1.16.2',
+        'zope.app.pagetemplate',
+        'zope.component',
+        'zope.container>=3.8.1',
+        'zope.event',
+        'zope.formlib',
+        'zope.i18n',
+        'zope.interface',
+        'zope.lifecycleevent',
+        'zope.viewlet',
     ]
 )
