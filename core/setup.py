@@ -9,7 +9,7 @@ setup(
     version='0.2dev',
     author='gocept',
     author_email='mail@gocept.com',
-    url='https://svn.gocept.com/repos/gocept-int/zeit.cms/zeit.content.cp',
+    url='https://intra.gocept.com/projects/projects/zeit-cms',
     description="""\
 """,
     packages=find_packages('src'),
