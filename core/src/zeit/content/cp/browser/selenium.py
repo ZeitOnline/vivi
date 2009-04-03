@@ -34,3 +34,21 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         s.type('form.title', 'Holladrio')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('id=lightbox')
+
+        # Open delete verification
+        s.pause(0.5)
+        s.click('css=a.delete-link')
+        s.waitForElementPresent('css=div.confirm-delete')
+        s.verifyElementPresent('css=div.box-inner.highlight')
+
+        # Clicking anywhere else but on the remove confirmer, does close the
+        # confirm but does not issue any action. Note that we've got to click
+        # on the #confirm-delete-overlay which overlays everything.
+        s.click("css=#confirm-delete-overlay")
+        s.waitForElementNotPresent('css=div.confirm-delete')
+        s.verifyElementNotPresent('css=div.box-inner.highlight')
+
+        # Now really delete
+        s.click('css=a.delete-link')
+        s.click('css=div.confirm-delete > a')
+        s.waitForElementNotPresent('css=a.delete-link')
