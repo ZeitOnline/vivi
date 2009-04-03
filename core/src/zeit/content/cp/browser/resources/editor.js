@@ -19,14 +19,16 @@ zeit.content.cp.Editor = Class.extend({
 
     handleContentClick: function(event) {
         var self = this;
+        log("Target " + event.target().nodeName);
         var module_name = event.target().getAttribute('cms:cp-module')
         log("Loading module " + module_name);
-        if (!module_name) {
-            return
+        if (module_name) {
+            event.stop();
+            var module = zeit.content.cp.modules[module_name]
+            new module(event.target());
+        } else  {
+            event.preventDefault();
         }
-        event.stop();
-        var module = zeit.content.cp.modules[module_name]
-        new module(event.target());
     },
     
     connect_draggables: function() {
@@ -143,15 +145,34 @@ zeit.content.cp.modules.ConfirmDelete = Class.extend({
         var self = this;
         var url = context_element.getAttribute('href');
         // XXX i18n
-        var confirm = DIV(
+        self.confirm = DIV(
             {'class': 'confirm-delete'},
             A({'href': url,
-               'cms:module': 'LoadAndReload'},
-               'Remove'));
-        context_element.appendChild(confirm);
-        var position = MochiKit.Style.getElementPosition(confirm);
-        //position.x -= 30;
-        MochiKit.Style.setElementPosition(confirm, position);
-        
+               'cms:cp-module': 'LoadAndReload'},
+               'Remove'))
+        context_element.appendChild(self.confirm);
+        MochiKit.Visual.fade(self.confirm, {'from': 0, 'to': 1});
+        self.box = MochiKit.DOM.getFirstParentByTagAndClassName(
+            context_element, 'div', 'box-inner')
+        MochiKit.DOM.addElementClass(self.box, 'highlight');
+
+        self.overlay = DIV({'id': 'confirm-delete-overlay'});
+        $('body').appendChild(self.overlay);
+        self.events = []
+        self.events.push(
+            MochiKit.Signal.connect(self.overlay, 'onclick', self, 'close'));
+        self.events.push(
+            MochiKit.Signal.connect(
+                document.cpeditor, 'before-reload', self, 'close'))
+
+    },
+
+    close: function(event) {
+        var self = this;
+        MochiKit.Base.map(
+            MochiKit.Signal.disconnect, self.events)
+        self.confirm.parentNode.removeChild(self.confirm);
+        self.overlay.parentNode.removeChild(self.overlay);
+        MochiKit.DOM.removeElementClass(self.box, 'highlight');
     },
 })

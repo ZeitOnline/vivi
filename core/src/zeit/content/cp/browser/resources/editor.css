@@ -64,6 +64,9 @@
 
 }
 
+#cp-content .highlight {
+  background-color: #fd1;
+}
 
 /* Box layout */
 
@@ -117,8 +120,38 @@
   display: block;
   float: right;
   height: 20px;
-  opacity: 0.7;
   width: 20px;
+}
+
+.edit > .delete-link > .confirm-delete {
+  background-color: white;
+  border: 3px solid red;
+  color: red;
+  opacity: 0;  /* will be blended in by JS */
+  position: relative;
+  right: 8em;
+  text-align: center;
+  top: -0.5em;
+  width: 6em;
+  z-index: 4;
+}
+
+#confirm-delete-overlay {
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.edit > .delete-link > .confirm-delete > a {
+  color: red;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+  margin: 0.5em;
+
 }
 
 .type-teaser-bar > .box-inner > .edit {
@@ -132,6 +165,14 @@
 
 .type-teaser-bar > .box-inner > .box > .box-inner {
   margin: 1em 0.5em;
+}
+
+.box-inner {
+  background-color: white;
+}
+
+.type-teaser-bar > .box-inner {
+  background-color: #eeeeee;
 }
 
 /* dragger */
