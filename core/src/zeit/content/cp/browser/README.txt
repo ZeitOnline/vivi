@@ -76,17 +76,12 @@ The contents of cp-content is loaded via javascript:
 >>> browser.open('contents')
 >>> bookmark = browser.url
 >>> print browser.contents
-<table>
-  <tbody>
-    <tr>
-      <td id="cp-aufmacher" class="editable-area">...</td>
-      <td id="cp-informatives" class="editable-area">...</td>
-    </tr>
-    <tr>
-      <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
-    </tr>
-  </tbody>
-</table>
+<div class="cp-editor-top">
+  <div id="cp-aufmacher">
+    <div class="editable-area">...
+  <div id="cp-informatives">
+    <div class="editable-area">...
+  <div id="cp-teasermosaic" class="editable-area">...
 
 
 Add a box in the lead area. This is called by the javascript; the method
@@ -100,19 +95,13 @@ The box is now contained in the contents:
 
 >>> browser.open(bookmark)
 >>> print browser.contents
-<table>
-  <tbody>
-    <tr>
-      <td id="cp-aufmacher" class="editable-area">...
-        <div class="box type-placeholder">...
-      </td>
-      <td id="cp-informatives" class="editable-area">...</td>
-    </tr>
-    <tr>
-      <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
-    </tr>
-  </tbody>
-</table>
+<div ...
+   <div id="cp-aufmacher">...
+    <div class="editable-area">...
+     <div class="box type-placeholder">...
+  <div id="cp-informatives">
+    <div class="editable-area">...
+  <div id="cp-teasermosaic" class="editable-area">...
 
 We've just created the placeholder box. Its edit view allows us to replace the
 contents:
@@ -139,19 +128,13 @@ The placeholder is gone now and we've got the teaser list:
 
 >>> browser.open(bookmark)
 >>> print browser.contents
-<table>
-  <tbody>
-    <tr>
-      <td id="cp-aufmacher" class="editable-area">...
+<div ...
+   <div id="cp-aufmacher">...
+    <div class="editable-area">...
         <div class="box type-teaser">...
-      </td>
-      <td id="cp-informatives" class="editable-area">...</td>
-    </tr>
-    <tr>
-      <td colspan="2" id="cp-teasermosaic" class="editable-area">...</td>
-    </tr>
-  </tbody>
-</table>
+  <div id="cp-informatives">
+    <div class="editable-area">...
+  <div id="cp-teasermosaic" class="editable-area">...
 
 
 Teaser mosaic
@@ -163,16 +146,13 @@ placeholders:
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(bookmark)
 >>> print browser.contents
-<table>
-  <tbody>
-    <tr>
-      <td id="cp-aufmacher" class="editable-area">...
+<div ...
+   <div id="cp-aufmacher">...
+    <div class="editable-area">...
         <div class="box type-teaser">...
-      </td>
-      <td id="cp-informatives" class="editable-area">...</td>
-    </tr>
-    <tr>
-      <td colspan="2" id="cp-teasermosaic" class="editable-area"><div class="box type-teaser-bar">
+  <div id="cp-informatives">
+    <div class="editable-area">...
+  <div id="cp-teasermosaic" class="editable-area">...
       ...
       <div class="box type-placeholder">
       ...
@@ -188,10 +168,7 @@ placeholders:
             + Add teaser bar
           </a>
         </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        ...
 
 
 Deleting boxes

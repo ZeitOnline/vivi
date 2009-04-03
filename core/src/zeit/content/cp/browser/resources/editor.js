@@ -135,3 +135,23 @@ zeit.content.cp.modules.LoadAndReload = Class.extend({
     },
 
 });
+
+
+zeit.content.cp.modules.ConfirmDelete = Class.extend({
+
+    construct: function(context_element) {
+        var self = this;
+        var url = context_element.getAttribute('href');
+        // XXX i18n
+        var confirm = DIV(
+            {'class': 'confirm-delete'},
+            A({'href': url,
+               'cms:module': 'LoadAndReload'},
+               'Remove'));
+        context_element.appendChild(confirm);
+        var position = MochiKit.Style.getElementPosition(confirm);
+        //position.x -= 30;
+        MochiKit.Style.setElementPosition(confirm, position);
+        
+    },
+})
