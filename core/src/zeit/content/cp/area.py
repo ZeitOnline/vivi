@@ -63,6 +63,8 @@ class Area(UserDict.DictMixin,
     def __delitem__(self, key):
         box = self[key]
         box.xml.getparent().remove(box.xml)
+        zope.event.notify(
+            zope.container.contained.ObjectRemovedEvent(box, self, key))
 
 
 class Region(Area):

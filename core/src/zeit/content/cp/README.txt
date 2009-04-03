@@ -118,6 +118,7 @@ The ``__parent__`` of a box is the area:
 
 Boxes can be removed using __delitem__:
 
+>>> transaction.commit()
 >>> len(lead)
 2
 >>> del lead[box.__name__]
@@ -125,6 +126,8 @@ Boxes can be removed using __delitem__:
 1
 >>> lead.values()
 [<zeit.content.cp.box.PlaceHolder object at 0x...>]
+>>> cp._p_changed
+True
 
 
 Teaser mosaic
