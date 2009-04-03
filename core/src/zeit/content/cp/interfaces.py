@@ -34,7 +34,7 @@ class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,
 
     """
 
-class IWriteArea(zope.interface.Interface):
+class IWriteArea(zope.container.interfaces.IOrdered):
     """Modify area."""
 
     def add(item):

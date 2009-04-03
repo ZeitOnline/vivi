@@ -91,6 +91,22 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".box.Delete"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".box.DeleteFromTeaserBar"
+    permission="zope.View"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.ILeadRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -146,15 +162,6 @@
     template="layout.contents.pt"
     permission="zope.View"
     />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IBox"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="delete"
-    class=".box.Delete"
-    permission="zope.View"
-    />
-
 
   <browser:viewletManager
     provides=".interfaces.IEditorContentViewletManager"
@@ -239,6 +246,13 @@
     class=".box.PlaceHolderEdit"
     template="form.placeholder.edit.pt"
     permission="zeit.EditContent"
+    />
+
+  <view
+    for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IBox"
+    type="zeit.cms.browser.interfaces.ICMSLayer"
+    name="type-switcher"
+    factory=".box.SwitchType"
     />
 
   <browser:page

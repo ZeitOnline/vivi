@@ -51,20 +51,46 @@ class Area(UserDict.DictMixin,
         return list(self.__iter__())
 
     def add(self, item):
-        name = item.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-        if name is not None:
-            raise NotImplementedError
-        name = str(uuid.uuid4())
-        item.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
-        self.xml.append(item.xml)
+        name = self._add(item)
         zope.event.notify(zope.container.contained.ObjectAddedEvent(
             item, self, name))
 
-    def __delitem__(self, key):
-        box = self[key]
-        box.xml.getparent().remove(box.xml)
+    def _add(self, item):
+        # XXX use item.__name__
+        name = item.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+        if name:
+            if name in self:
+                raise zope.container.interfaces.DuplicateIDError(name)
+        else:
+            name = str(uuid.uuid4())
+        # XXX use item.__name__ = ...
+        item.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
+        self.xml.append(item.xml)
+        return name
+
+    def updateOrder(self, order):
+        if not isinstance(order, (tuple, list)):
+            raise TypeError('order must be tuple or list, got %s.' %
+                            type(order))
+        if set(order) != set(self.keys()):
+            raise ValueError('order must have the same keys.')
+        objs = dict(self.items())
+        for key in order:
+            self._delete(key)
+        for key in order:
+            self._add(objs[key])
         zope.event.notify(
-            zope.container.contained.ObjectRemovedEvent(box, self, key))
+            zope.container.contained.ContainerModifiedEvent(self))
+
+    def __delitem__(self, key):
+        item = self._delete(key)
+        zope.event.notify(
+            zope.container.contained.ObjectRemovedEvent(item, self, key))
+
+    def _delete(self, key):
+        item = self[key]
+        item.xml.getparent().remove(item.xml)
+        return item
 
 
 class Region(Area):

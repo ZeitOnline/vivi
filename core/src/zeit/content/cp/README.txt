@@ -59,6 +59,20 @@ True
 >>> box 
 <zeit.content.cp.box.PlaceHolder object at 0x...>
 
+Creating the box automatically adds it to the container:
+
+>>> box.__name__ in lead
+True
+
+It is not possible to add the box again:
+
+>>> lead.add(box)
+Traceback (most recent call last):
+    ...
+DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
+
+
+
 
 Teaser box
 ----------
@@ -115,6 +129,26 @@ The ``__parent__`` of a box is the area:
 >>> box.__parent__
 <zeit.content.cp.area.LeadRegion for lead>
 
+
+Areas support ordering of their contents via the ``updateOrder`` method:
+
+>>> transaction.commit()
+>>> ph_key, box_key = lead.keys()
+>>> box.__name__ == box_key
+True
+>>> lead.updateOrder([box_key, ph_key])
+>>> lead.keys() == [box_key, ph_key]
+True
+>>> cp._p_changed
+True
+
+The keys have not changed:
+
+>>> box.__name__ == box_key
+True
+
+
+[#invalid-arguments-to-updateorder]_
 
 Boxes can be removed using __delitem__:
 
@@ -201,3 +235,19 @@ The xml of the teaser bar is actually a region:
     Traceback (most recent call last):
         ...
     KeyError: 'foo'
+
+.. [#invalid-arguments-to-updateorder] Invalid arguments to update order raise
+    errors as defined in the interface:
+
+    >>> lead.updateOrder(124)
+    Traceback (most recent call last):
+        ...
+    TypeError: order must be tuple or list, got <type 'int'>.
+
+    >>> lead.updateOrder(['abc', 'def'])
+    Traceback (most recent call last):
+        ...
+    ValueError: order must have the same keys.
+
+
+

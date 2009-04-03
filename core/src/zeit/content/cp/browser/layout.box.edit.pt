@@ -7,7 +7,7 @@
   </a>
 
   <a class="delete-link" title="Delete"
-     tal:attributes="href string:${context/@@absolute_url}/delete"
+     tal:attributes="href string:${context/__parent__/@@absolute_url}/delete?key=${context/__name__}"
      i18n:attributes="title"
      cms:cp-module="ConfirmDelete">
     <span class="action-title">Delete</span>

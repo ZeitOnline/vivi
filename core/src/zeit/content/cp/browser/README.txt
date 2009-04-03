@@ -170,6 +170,31 @@ placeholders:
         </div>
         ...
 
+Add a real box in the second place:
+
+>>> browser.getLink('Click here to choose the box type.', index=1).click()
+>>> browser.getLink('List of teasers').click()
+>>> browser.open(bookmark)
+>>> print browser.contents
+<div ...
+  <div id="cp-teasermosaic" class="editable-area">...
+      ...
+      <div class="box type-placeholder">
+      ...
+      <div class="box type-teaser">
+      ...
+      <div class="box type-placeholder">
+      ...
+      <div class="box type-placeholder">
+      ...
+        <div class="edit">
+          <a cms:cp-module="LoadAndReload"
+             href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
+            + Add teaser bar
+          </a>
+        </div>
+        ...
+
 
 Deleting boxes
 ++++++++++++++
@@ -177,14 +202,21 @@ Deleting boxes
 Boxes and teaser bars can be removed using the delete link:
 
 >>> browser.getLink('Delete').url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>/delete'
+'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/delete?key=<GUID>'
+>>> browser.getLink('Delete').click()
+
+Remove the teaser list inside the teaser bar:
+
+>>> browser.open(bookmark)
+>>> browser.getLink('Delete').url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/<GUID>/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
 
 Remove the teaser bar:
 
 >>> browser.open(bookmark)
 >>> browser.getLink('Delete').url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/<GUID>/delete'
+'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
 
 Nothing left to delete now:
