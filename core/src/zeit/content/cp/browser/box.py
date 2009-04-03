@@ -16,6 +16,12 @@ class Add(zeit.cms.browser.view.Base):
         return self.url(created)
 
 
+class Delete(object):
+
+    def __call__(self):
+        del self.context.__parent__[self.context.__name__]
+
+
 class PlaceHolderEdit(object):
 
     def list_box_types(self):

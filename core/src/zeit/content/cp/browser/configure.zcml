@@ -147,6 +147,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".box.Delete"
+    permission="zope.View"
+    />
+
+
   <browser:viewletManager
     provides=".interfaces.IEditorContentViewletManager"
     for="zeit.content.cp.interfaces.IBox"

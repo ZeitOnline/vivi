@@ -192,3 +192,29 @@ placeholders:
     </tr>
   </tbody>
 </table>
+
+
+Deleting boxes
+++++++++++++++
+
+Boxes and teaser bars can be removed using the delete link:
+
+>>> browser.getLink('Delete').url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>/delete'
+>>> browser.getLink('Delete').click()
+
+Remove the teaser bar:
+
+>>> browser.open(bookmark)
+>>> browser.getLink('Delete').url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/<GUID>/delete'
+>>> browser.getLink('Delete').click()
+
+Nothing left to delete now:
+
+>>> browser.open(bookmark)
+>>> browser.getLink('Delete')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
