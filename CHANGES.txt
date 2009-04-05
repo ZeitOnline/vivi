@@ -1,8 +1,10 @@
 zeit.objectlog changes
 ======================
 
-0.8 (unreleased)
+0.8 (2009-04-05)
 ----------------
+
+- Added missing import in interfaces.
 
 0.7 (2008-12-08)
 ----------------
