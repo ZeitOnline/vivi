@@ -8,7 +8,7 @@ optimisation.
 Browser Tests
 =============
 
->>> import zope.testbrowser
+>>> import zope.testbrowser.testing
 >>> browser = zope.testbrowser.testing.Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
