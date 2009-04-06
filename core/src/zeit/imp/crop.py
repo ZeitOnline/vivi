@@ -56,7 +56,7 @@ class Cropper(object):
         if self.pil_image is None:
             raise RuntimeError("crop() not called.")
         image = zeit.content.image.image.LocalImage()
-        self.pil_image.save(image.open('w'), 'JPEG')
+        self.pil_image.save(image.open('w'), 'JPEG', optimize=True, quality=80)
         image_name = '%s-%s.jpg' % (self.context.__name__, name)
         self.context[image_name] = image
         return image
