@@ -164,7 +164,7 @@
 }
 
 .type-teaser-bar > .box-inner > .box > .box-inner {
-  margin: 1em 0.5em;
+  margin: 1.5em 0.5em;
 }
 
 .box-inner {
@@ -193,8 +193,11 @@
 
 .box.type-placeholder > .box-inner {
   border-style: dashed;
+  padding: 2em;
+}
+
+.box.type-placeholder > .box-inner > * {
   font-size: 2em;
-  padding: 1em;
 }
 
 .box.type-placeholder > .box-inner > .choose-box {
@@ -209,8 +212,7 @@
 /* Teaser visualisations*/
 
 .teaser-list {
-  /*border-top: 2px solid #aaa;*/
-  height: 5em;
+  min-height: 5em;
 }
 
 .teaser > img {
@@ -222,14 +224,31 @@
 }
 
 
-.teaser > h2,
-.teaser > h3 {
+.teaser > .supertitle,
+.teaser > .teaserTitle,
+.teaser > .teaserText {
+  display: none;
+}
+
+.teaser > .shortTeaserTitle,
+.teaser > .shortTeaserText {
   display: inline;
 }
 
-.teaser:first-child > h2,
-.teaser:first-child > h3 {
+.teaser:first-child > .supertitle,
+.teaser:first-child > .teaserTitle,
+.teaser:first-child > .teaserText {
   display: block;
+}
+
+.teaser:first-child > .shortTeaserTitle,
+.teaser:first-child > .shortTeaserText {
+  display: none;
+}
+
+.teaser > .supertitle,
+.teaser > .shortTeaserTitle {
+  color: #990000;
 }
 
 .topthema > .teaser:first-child > img {

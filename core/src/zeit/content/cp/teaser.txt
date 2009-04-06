@@ -1,0 +1,54 @@
+Teaser box
+==========
+
+The teaser box contains a list of teasers[#functional]_.
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IBoxFactory, name='teaser')
+>>> teasers = factory()
+
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> teasers.insert(0, repository['testcontent'])
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ... 
+    cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5">
+  <block href="http://xml.zeit.de/testcontent">
+    <supertitle xsi:nil="true"/>
+    <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>
+    <short>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+    </short>
+    <homepage>
+      <title xsi:nil="true"/>
+      <text xsi:nil="true"/>
+    </homepage>
+    <references/>
+  </block>
+</container>
+
+
+
+
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional] 
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+

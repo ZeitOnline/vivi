@@ -1,3 +1,19 @@
-<div class="teaser-list topthema" cms:cp-module="teaser">
-  <h2 tal:content="context/title" />
+<div class="teaser-list topthema"
+     tal:attributes="cms:drop-url string:${context/@@absolute_url}/drop">
+
+  <div class="teaser"
+       tal:repeat="teaser view/teasers">
+
+    <!-- 
+    <img tal:condition="teaser/image"
+         tal:attributes="src teaser/image/@@absolute_url" />
+    -->
+
+    <div tal:repeat="item teaser/texts"
+         tal:attributes="class item/css_class"
+         tal:content="item/content">
+    </div>
+
+  </div>
+
 </div>

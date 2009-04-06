@@ -195,6 +195,7 @@
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="contents"
+    class=".teaser.TeaserList"
     template="layout.teaser.content.pt"
     permission="zeit.EditContent"
     weight="0"
@@ -205,6 +206,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="box.edit"
     class=".teaser.TeaserEdit"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".teaser.TeaserDrop"
     permission="zeit.EditContent"
     />
 

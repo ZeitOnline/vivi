@@ -29,7 +29,13 @@
       interface=".interfaces.ITeaserList"
       permission="zope.View"/>
     <require
+      interface="zeit.cms.syndication.interfaces.IReadFeed"
+      permission="zope.View"/>
+    <require
       set_schema=".interfaces.ITeaserList"
+      permission="zeit.EditContent"/>
+    <require
+      interface="zeit.cms.syndication.interfaces.IWriteFeed"
       permission="zeit.EditContent"/>
   </class>
   <adapter factory=".teaser.TeaserListFactory" name="teaser" />

@@ -63,7 +63,7 @@ The inital page doens't contain much:
 >>> print browser.contents
 <?xml ...
  <div id="content">
-     <div id="cp-content" xmlns:cms="http://namespaces.gocept.com/zeit-cms">
+     <div id="cp-content">
      </div>
      <div id="cp-search-pane">
      </div>
@@ -76,6 +76,7 @@ The contents of cp-content is loaded via javascript:
 >>> browser.open('contents')
 >>> bookmark = browser.url
 >>> print browser.contents
+<div...
 <div class="cp-editor-top">
   <div id="cp-aufmacher">
     <div class="editable-area">...

@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zope.container.interfaces
 import zope.interface
@@ -80,9 +81,7 @@ class IPlaceHolder(IBox):
 
 
 class ITeaserList(IBox):
-
-    title = zope.schema.Text(
-        title=_('Test attribute'))
+    """A list of teasers."""
 
 
 class ITeaserBar(IBox, IRegion):
@@ -91,4 +90,3 @@ class ITeaserBar(IBox, IRegion):
     The TeaserBar has a dual nature of being both a box and a region.
 
     """
-
