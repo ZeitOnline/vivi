@@ -21,6 +21,9 @@ zeit.cms.LightboxForm = Class.extend({
             connect(window, 'zeit.cms.LightboxReload', function(event) {
                 othis.loading();
             }));
+        this.events.push(
+            MochiKit.Signal.connect(
+                this.lightbox, 'before-close', this, 'close'));
 
         var d = this.lightbox.load_url(url);
         d.addCallback(
@@ -33,10 +36,10 @@ zeit.cms.LightboxForm = Class.extend({
 
     close: function() {
         // Close the lightbox and unregister everything.
-        this.lightbox.close();
         forEach(this.events, function(ident) {
             MochiKit.Signal.disconnect(ident);
         });
+        this.lightbox.close();
     },
 
     handle_click: function(event) {

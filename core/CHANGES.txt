@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.16.4 (2009-04-06)
+-------------------
+
+- Event-Handler des Lightboxforms deregistrieren, wenn Lightbox geschlossen
+  wird.
+
 1.16.3 (2009-04-01)
 -------------------
 
