@@ -52,3 +52,21 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         s.click('css=a.delete-link')
         s.click('css=div.confirm-delete > a')
         s.waitForElementNotPresent('css=a.delete-link')
+
+    def test_close_choose_type_lightbox_does_not_break_editor(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click('link=*Add box*')
+        s.waitForElementPresent('css=a.choose-box')
+        s.click('//a[@class="choose-box"]')
+        s.waitForElementPresent('css=div.box-types')
+        s.click('css=a.CloseButton')
+        s.waitForElementNotPresent('css=a.CloseButton')
+
+        # The following click used to do nothing. Make sure it does add a box.
+        s.click('link=*Add box*')
+        s.waitForXpathCount('//a[@class="choose-box"]', 2)
+
+
+
+
