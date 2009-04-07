@@ -29,6 +29,25 @@ LockingError: http://xml.zeit.de/testing/lt1 is already locked.
 u'opaquelocktoken:...'
 >>> del connector[res.id]
 
+Timeout of locks
+++++++++++++++++
+
+When a lock times out at the server, we don't concider a resource locked any
+more:
+
+>>> res.id = 'http://xml.zeit.de/lock-timeout'
+>>> import datetime
+>>> import pytz
+>>> until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=3)
+>>> connector.lock(res.id, 'gandalf', until)
+'opaquelocktoken:...'
+>>> connector.locked(res.id)
+(u'gandalf', datetime.datetime(..., tzinfo=<UTC>), True)
+>>> import time
+>>> time.sleep(3)
+>>> connector.locked(res.id)
+(None, None, False)
+
 
 Edge case 1: We think a resource is locked but it isn't
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++

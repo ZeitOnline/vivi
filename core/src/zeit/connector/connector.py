@@ -457,6 +457,10 @@ class Connector(object):
 
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
+        if timeout and timeout < datetime.datetime.now(pytz.UTC):
+            # The lock has timed out
+            self._invalidate_cache(id)
+            return self.locked(id)
 
         return (owner, timeout, mylock is not None)
 
@@ -548,7 +552,11 @@ class Connector(object):
 
         if hasattr(resource.data, 'seek'):
             resource.data.seek(0)
-        data = resource.data.read() # FIXME [17]: check possibility to pass data as IO object
+
+        # We should pass the data as IO object. This is not supported out of
+        # the box by httplib (which is used in DAV). We could override the send
+        # method though.
+        data = resource.data.read()
 
         added = False
 
