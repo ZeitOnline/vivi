@@ -35,6 +35,9 @@
       set_schema=".interfaces.ITeaserList"
       permission="zeit.EditContent"/>
     <require
+      set_schema="zeit.cms.syndication.interfaces.IReadFeed"
+      permission="zeit.EditContent"/>
+    <require
       interface="zeit.cms.syndication.interfaces.IWriteFeed"
       permission="zeit.EditContent"/>
   </class>

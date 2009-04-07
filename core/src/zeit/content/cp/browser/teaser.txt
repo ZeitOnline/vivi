@@ -4,8 +4,6 @@ Teaser box
 The teaser box contains a list of teasers. Let's first create a list of teasers
 in the lead area:
 
-XXX not documented enough.
-
 >>> import zeit.content.cp.browser.tests
 >>> browser = zeit.content.cp.browser.tests.open_cp()
 >>> browser.xml_strict = True
@@ -15,6 +13,16 @@ XXX not documented enough.
 >>> browser.open(contents_url)
 >>> browser.getLink('choose the box type').click()
 >>> browser.getLink('List of teasers').click()
+
+Set a title (although it's unclear if we really need this):
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('Title').value = 'Foo'
+>>> browser.getControl('Apply').click()
+
+"Drag" a teaser on the list:
+
 >>> browser.open(contents_url)
 >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
 >>> drop_url = browser.etree.xpath('//div/@cms:drop-url', namespaces=nsmap)[0]
