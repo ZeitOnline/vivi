@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.16.5 (unreleased)
+1.16.5 (2009-04-07)
 -------------------
 
 - Drag-Panes refaktoriert, so dass sie schon vor dem Laden der vollständigen
