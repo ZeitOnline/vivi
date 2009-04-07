@@ -10,7 +10,7 @@ import zope.annotation.factory
 import zope.security.interfaces
 import zope.publisher.browser
 
-import zope.app.pagetemplate.viewpagetemplatefile
+import zope.app.pagetemplate
 
 import zc.set
 
@@ -35,9 +35,7 @@ class Tree(zope.publisher.browser.BrowserView):
     root = None
     key = None
 
-    tree_template = (
-        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-            os.path.join(os.path.dirname(__file__), 'tree.pt')))
+    tree_template = zope.app.pagetemplate.ViewPageTemplateFile('tree.pt')
 
     def __call__(self):
         return self.tree_template()
@@ -86,15 +84,16 @@ class Tree(zope.publisher.browser.BrowserView):
             selected = None
 
         return {'title': self.getTitle(obj),
-               'id': self.getId(obj),
-               'action': action,
-               'uniqueId': uid,
-               'expanded': expanded,
-               'subfolders': expandable,
-               'isroot': root,
-               'url': url,
-               'delete_url': self.getDeleteUrl(obj),
-               'selected': selected}
+                'id': self.getId(obj),
+                'action': action,
+                'uniqueId': uid,
+                'displayedObjectUniqueId': self.getDisplayedUniqueId(obj),
+                'expanded': expanded,
+                'subfolders': expandable,
+                'isroot': root,
+                'url': url,
+                'delete_url': self.getDeleteUrl(obj),
+                'selected': selected}
 
     def getTitle(self, obj):
         if self.isRoot(obj):
@@ -148,6 +147,9 @@ class Tree(zope.publisher.browser.BrowserView):
 
     def getUniqueId(self, object):
         raise NotImplementedError
+
+    def getDisplayedUniqueId(self, object):
+        return self.getUniqueId(object)
 
     def selected(self, url):
         raise NotImplementedError

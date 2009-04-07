@@ -76,8 +76,9 @@ class MetadataColumn(zeit.cms.browser.listing.GetterColumn):
             if s)
 
         return ('<span class="SearchableText">%s</span>'
+                '<span class="uniqueId">%s</span>'
                 '<span class="URL">%s</span>' % (
-                    text, url))
+                    text, item.uniqueId, url))
 
 
 class Search(object):

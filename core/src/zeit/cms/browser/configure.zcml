@@ -379,6 +379,16 @@
     factory=".listing.listRepresentation_to_Lockable"
     />
 
+  <!-- dnd support -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer=".interfaces.ICMSLayer"
+    name="get-drag-pane"
+    class=".dnd.DragPane"
+    permission="zope.View"
+    />
+
+
   <!-- debugging support -->
   <browser:page
     for="zope.location.interfaces.ISite"

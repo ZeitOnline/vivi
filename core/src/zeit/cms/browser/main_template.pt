@@ -71,10 +71,11 @@
                 tal:content="item/title">
                 Directory foo
               </a>
-              <span tal:condition="item/uniqueId"
-                class="URL" tal:content="item/url" />
+              <span class="uniqueId"
+                    tal:condition="item/uniqueId"
+                    tal:content="item/uniqueId" />
               <span class="breadcrumb-separator"
-                tal:condition="not:repeat/item/end">
+                    tal:condition="not:repeat/item/end">
                 →
               </span> 
             </li>

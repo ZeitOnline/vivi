@@ -173,3 +173,18 @@ Clean up:
 ...     (zeit.cms.repository.interfaces.IUnknownResource, ),
 ...     zeit.cms.browser.interfaces.IPreviewObject)
 True
+
+
+Drag panes
+==========
+
+There is a view which dispatches to the actual drag pane:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/get-drag-pane?'
+...     'uniqueId=http://xml.zeit.de/testcontent')
+>>> print browser.contents
+  <div class="Text">
+    :
+  </div>
+  <div class="UniqueId">http://xml.zeit.de/testcontent</div>

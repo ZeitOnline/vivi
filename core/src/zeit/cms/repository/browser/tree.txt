@@ -122,7 +122,7 @@ between online/2007 and 2007:
           uniqueid="http://xml.zeit.de/online/2007">
           <p>
         <a href="http://localhost/++skin++cms/repository/online/2007">2007</a>
-        <span class="URL">http://localhost/++skin++cms/repository/online/2007</span>
+        <span class="uniqueId">http://xml.zeit.de/online/2007</span>
         </p>
       </li>
   </ul>
@@ -131,7 +131,7 @@ between online/2007 and 2007:
           uniqueid="http://xml.zeit.de/2007">
           <p>
         <a href="http://localhost/++skin++cms/repository/2007">2007</a>
-        <span class="URL">http://localhost/++skin++cms/repository/2007</span>
+        <span class="uniqueId">http://xml.zeit.de/2007</span>
         </p>
       </li>
   </ul>

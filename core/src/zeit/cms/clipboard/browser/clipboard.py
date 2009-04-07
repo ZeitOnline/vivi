@@ -47,6 +47,11 @@ class Tree(zeit.cms.browser.tree.Tree):
         relative = full_path[len(root_path) + 1:]
         return relative
 
+    def getDisplayedUniqueId(self, object):
+        if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(object):
+            return object.referenced_unique_id
+        return None
+
     def addContent(self, add_to, unique_id):
         container = self.getAddContext(add_to)
         add_object = self.repository.getContent(unique_id)

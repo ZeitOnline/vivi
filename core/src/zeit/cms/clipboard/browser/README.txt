@@ -24,7 +24,7 @@ The clipboard is displayed as a tree. Initially it's empty:
       <li class="Root" uniqueid="">
         <p>
           <a href="...">Clipboard</a>
-          <span class="URL">...</span>
+          <span class="uniqueId">...</span>
           <a title="Remove" class="deleteLink context-action"...>
              <img ... alt="Delete" />
              <span class="action-title">Remove</span>
@@ -56,7 +56,7 @@ We assume, that we drag the pane over the Clipboard:
     <li class="Root" uniqueid="">
     <p>
       <a href="...">Clipboard</a>
-      <span class="URL">...</span>
+      <span class="uniqueId">...</span>
       <a title="Remove" class="deleteLink context-action"...>
          <img ... alt="Delete" />
          <span class="action-title">Remove</span>
@@ -66,7 +66,7 @@ We assume, that we drag the pane over the Clipboard:
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <p>
             <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
-            <span class="URL">...wirtschaft.feed</span>
+            <span class="uniqueId">...wirtschaft.feed</span>
             <a title="Remove" class="deleteLink context-action"...>
                <img ... alt="Delete" />
                <span class="action-title">Remove</span>
@@ -90,21 +90,21 @@ added *after* the feed:
       <li class="Root" uniqueid="">
         <p>
           <a href="...">Clipboard</a>
-          <span class="URL">...</span>
+          <span class="uniqueId">...</span>
           <a title="Remove" ...
         </p>
         <ul>
           <li class="NotRoot" uniqueid="wirtschaft.feed">
             <p>
               <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="URL">...wirtschaft.feed</span>
+              <span class="uniqueId">...wirtschaft.feed</span>
               <a title="Remove" ...
             </p>
           </li>
           <li class="NotRoot" uniqueid="Querdax">
             <p>
               <a href="...Querdax">Querdax</a>
-              <span class="URL">...Querdax</span>
+              <span class="uniqueId">...Querdax</span>
               <a title="Remove" ...
             </p>
           </li>
@@ -177,25 +177,24 @@ element of the root node:
     <li class="Root" uniqueid="">
       <p>
       <a href="...">Clipboard</a>
-      <span class="URL">...</span>
+      <span class="uniqueId">...</span>
       ...
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
         <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="URL">...wirtschaft.feed</span>
+          <span class="uniqueId">...wirtschaft.feed</span>
           ...
         </li>
         <li class="NotRoot" uniqueid="Querdax">
         <p>
           <a href="...Querdax">Querdax</a>
-          <span class="URL">...Querdax</span>
+          <span class="uniqueId">...Querdax</span>
           ...
         </li>
         <li action="expand" class="NotRoot" uniqueid="New Clip">
         <p>
           <a href="...">New Clip</a>
-          <span class="URL">...New%20Clip</span>
           ...
         </li>
       </ul>
@@ -213,31 +212,29 @@ Let's add another clip:
     <li class="Root" uniqueid="">
     <p>
       <a href="...">Clipboard</a>
-      <span class="URL">...</span>
+      <span class="uniqueId">...</span>
       ...
       <ul>
         <li class="NotRoot" uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="URL">...wirtschaft.feed</span>
+          <span class="uniqueId">...wirtschaft.feed</span>
           ...
         </li>
         <li class="NotRoot" uniqueid="Querdax">
           <p>
           <a href="...Querdax">Querdax</a>
-          <span class="URL">...Querdax</span>
+          <span class="uniqueId">...Querdax</span>
           ...
         </li>
         <li action="expand" class="NotRoot" uniqueid="New Clip">
         <p>
           <a href="...">New Clip</a>
-          <span class="URL">...New%20Clip</span>
           ...
         </li>
         <li action="expand" class="NotRoot" uniqueid="Second Clip">
         <p>
           <a href="...">Second Clip</a>
-          <span class="URL">...Second%20Clip</span>
           ...
         </li>
       </ul>
@@ -276,7 +273,7 @@ expanded:
         <li class="NotRoot" uniqueid="Querdax">
           <p>
           <a href="...Querdax">Querdax</a>
-          <span class="URL">...Querdax</span>
+          <span class="uniqueId">...Querdax</span>
           ...
         </li>
         <li action="expand" class="NotRoot" uniqueid="Second Clip">
@@ -343,7 +340,7 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
         <li action="collapse" class="NotRoot" uniqueid="New Clip">
           <p>
           <a href="...">New Clip</a>
-          <span class="URL">...</span>
+          <span class="uniqueId">...</span>
           ...
           <ul>
             <li class="NotRoot" uniqueid="New Clip/Querdax">

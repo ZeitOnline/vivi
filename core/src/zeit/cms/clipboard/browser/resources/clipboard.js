@@ -42,7 +42,8 @@ zeit.cms.Clipboard = Class.extend({
             if (node.getAttribute('uniqueid')) {
                 new Draggable(node, {
                     starteffect: null,
-                    endeffect: null});
+                    endeffect: null,
+                    zindex: null});
             }
         });
 
@@ -58,20 +59,17 @@ zeit.cms.Clipboard = Class.extend({
         this.dragging = true;
         var url;
         var dnd = this;
-        var options = {'add_to': dropped_on};
+        var options = {}
 
         var dragged_element = element.dragged_element;
-        if (dragged_element == undefined) return;
+        if (isUndefinedOrNull(dragged_element)) {
+            return;
+        }
 
         var panel = null;
-        try {
-            panel = getFirstParentByTagAndClassName(
-                dragged_element, 'div', 'panel');
-        } catch(e) {
-            // bug in mochikit? getFirstParentByTagAndClassName raises
-            // exception when there is no such parent.
-        }
-        if (panel != null && panel.id == 'ClipboardPanel') {
+        panel = getFirstParentByTagAndClassName(
+            dragged_element, 'div', 'panel');
+        if (!isNull(panel) && panel.id == 'ClipboardPanel') {
             url = '/@@moveContent';
             options['object_path'] = dragged_element.getAttribute('uniqueid');
         } else {
@@ -79,16 +77,22 @@ zeit.cms.Clipboard = Class.extend({
             options['unique_id'] = element.uniqueId;
         }
 
-            if (!options) return;
+        if (isEmpty(items(options))) {
+            return
+        }
+        options['add_to'] = dropped_on;
 
-            var d = doSimpleXMLHttpRequest(this.base_url + url, options);
-            d.addCallbacks(
-                function(result) {
-                    dnd.dragging = false;
-                    dnd.tree.replaceTree(result.responseText);
+        var d = doSimpleXMLHttpRequest(this.base_url + url, options);
+        d.addCallbacks(
+            function(result) {
+                dnd.dragging = false;
+                dnd.tree.replaceTree(result.responseText);
             },
-            alert
-        );
+            function(error) {
+                alert("Could not finish drop: " + repr(items(error.req)))
+                return error
+            });
+        
     },
 
     handleBeforeTreeChange: function(event) {

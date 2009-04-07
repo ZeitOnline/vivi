@@ -1,43 +1,36 @@
 // Copyright (c) 2007-2009 gocept gmbh & co. kg
 // See also LICENSE.txt
 
-connect(MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
+MochiKit.Signal.connect(
+    MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
     // Generic handler for displaying the drag pane for draggables
     log("Dragging", draggable);
-    var drag_pane_url = draggable.element.drag_pane_url;
-    if (drag_pane_url == undefined) {
-        try {
-            var base_url = getFirstElementByTagAndClassName(
-             'span', 'URL', draggable.element).textContent;
-            drag_pane_url  = base_url + '/@@drag-pane.html';
-        } catch (e) {
-        }
-    }
-    if (drag_pane_url == undefined) {
+    var uniqueId = MochiKit.DOM.getFirstElementByTagAndClassName(
+             'span', 'uniqueId', draggable.element);
+    if (isNull(uniqueId)) {
         return;
     }
+    uniqueId = uniqueId.textContent;
 
     var div = $('drag-pane');
     if (div) {
         div.parentNode.removeChild(div);
     }
-    div = DIV({id: 'drag-pane'});
+    div = DIV({id: 'drag-pane', class: 'content-drag-pane'});
     div.dragged_element = draggable.element;
+    div.uniqueId = uniqueId;
    
     var content = $('body');
     
     content.appendChild(div);
     draggable.element = div;
-    draggable.offset = [0, 0];
+    draggable.offset = [-10, -10];
    
-    log("Requesting", drag_pane_url);
-    var d = doSimpleXMLHttpRequest(drag_pane_url);
+    var d = doSimpleXMLHttpRequest(
+        application_url + '/get-drag-pane', {uniqueId: uniqueId});
     d.addCallbacks(
         function(result) {
             div.innerHTML = result.responseText;
-            var unique_id = getElementsByTagAndClassName(
-                'div', 'UniqueId', div)[0].textContent;
-            div.uniqueId = unique_id;
             return result;
         });
 });
@@ -480,14 +473,15 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
 
 
 // Connect breadcrumbs
-connect(window, 'onload', function(event) {
+MochiKit.Signal.connect(window, 'onload', function(event) {
     var breadcrumbs = $('breadcrumbs')
     if (breadcrumbs == null) {
         return
     }
     var lis = breadcrumbs.getElementsByTagName('li');
     forEach(lis, function(li) {
-        if (getFirstElementByTagAndClassName('span', 'URL', li) != undefined) {
+        if (!isUndefinedOrNull(getFirstElementByTagAndClassName(
+            'span', 'uniqueId', li))) {
             new Draggable(li, {
                     starteffect: null,
                     endeffect: null});

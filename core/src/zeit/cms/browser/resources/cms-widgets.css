@@ -253,6 +253,8 @@ table.properties textarea {
   border: 1px solid black;
   padding: 5px;
   max-width: 18em;
+  cursor: move;
+  z-index: 1;
 }
 
 #tooltip .text,
@@ -264,6 +266,7 @@ table.properties textarea {
     display: none;
 }
 
+.uniqueId,
 .URL {
     display: none;
 }
