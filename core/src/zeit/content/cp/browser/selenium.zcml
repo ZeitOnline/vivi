@@ -8,5 +8,11 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestTeaserList"
+    name="zeit.content.cp.TestTeaserList"
+    permission="zope.Public"
+    />
+
 </configure>
 

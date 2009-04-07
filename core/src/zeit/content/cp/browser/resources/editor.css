@@ -24,6 +24,11 @@
   border-style: solid;
 }
 
+#cp-content .hover-content {
+  border-color: green;
+  outline: 2px solid green;
+}
+
 #cp-aufmacher {
   width: 64%;
   float: left;

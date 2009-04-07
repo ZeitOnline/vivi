@@ -4,6 +4,10 @@ zeit.content.cp changes
 0.2 (unreleased)
 ----------------
 
+- Teaser-Liste kann mit Teasern befüllt werden.
+
+- Highlight der Boxen bei Mouse-Over.
+
 0.1 (2009-04-03)
 ----------------
 

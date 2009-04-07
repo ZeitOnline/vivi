@@ -33,7 +33,7 @@ Set a title (although it's unclear if we really need this):
 <div ...
 <div class="box type-teaser">
   <div class="box-inner">
-    <div class="teaser-list topthema"
+    <div class="teaser-list topthema action-content-droppable"
      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
   <div class="teaser">
     ...

@@ -22,7 +22,7 @@ setup(
         'gocept.lxml',
         'lxml',
         'setuptools',
-        'zeit.cms>=1.16.4',
+        'zeit.cms>=1.16.5',
         'zope.app.pagetemplate',
         'zope.component',
         'zope.container>=3.8.1',

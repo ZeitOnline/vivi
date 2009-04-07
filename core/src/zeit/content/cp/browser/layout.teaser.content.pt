@@ -1,4 +1,4 @@
-<div class="teaser-list topthema"
+<div class="teaser-list topthema action-content-droppable"
      tal:attributes="cms:drop-url string:${context/@@absolute_url}/drop">
 
   <div class="teaser"

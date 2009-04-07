@@ -5,7 +5,7 @@
 import zeit.cms.selenium
 
 
-class TestGenericEditing(zeit.cms.selenium.Test):
+class Test(zeit.cms.selenium.Test):
 
     def open_centerpage(self):
         s = self.selenium
@@ -18,6 +18,9 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         s.clickAndWait('id=form.actions.add')
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('xpath=//div[@class="landing-zone"]')
+
+
+class TestGenericEditing(Test):
 
     def test_insert(self):
         self.open_centerpage()
@@ -86,3 +89,44 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         s.verifyElementPresent('css=div.box-inner.hover')
         s.mouseOut('css=div.teaser-list')
         s.verifyElementNotPresent('css=div.box-inner.hover')
+
+
+class TestTeaserList(Test):
+
+    def create_teaserlist(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click('link=*Add box*')
+        s.waitForElementPresent('css=a.choose-box')
+        s.click('//a[@class="choose-box"]')
+        s.waitForElementPresent('css=div.box-types')
+        s.click('link=List of teasers')
+        s.waitForElementPresent('css=div.type-teaser')
+
+    def test_adding_via_drag_and_drop(self):
+        self.open('/')
+        s = self.selenium
+
+        # First, we need to fill the clipboard.
+        # Creat clip
+        s.click('id=clip-add-folder-link')
+        s.type('id=clip-add-folder-title', 'Clip')
+        s.click('id=clip-add-folder-submit')
+        s.waitForElementPresent('link=Clip')
+        # Open clip
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+        s.clickAndWait('link=Dateiverwaltung')
+        s.click('xpath=//td[contains(string(.), "testcontent")]')
+        s.waitForElementPresent('css=div#bottomcontent > div')
+        s.dragAndDropToObject(
+            'xpath=//td[contains(string(.), "testcontent")]',
+            '//li[@uniqueid="Clip"]')
+
+        self.create_teaserlist()
+
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/testcontent"]',
+            'css=div.type-teaser')
+        s.waitForElementPresent('css=div.supertitle')

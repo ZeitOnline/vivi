@@ -3,7 +3,7 @@ if (isUndefinedOrNull(zeit.content)) {
 }
 zeit.content.cp = {}
 
-zeit.content.cp.Editor = Class.extend({
+zeit.content.cp.Editor = gocept.Class.extend({
     
     construct: function() {
         var self = this;
@@ -13,8 +13,11 @@ zeit.content.cp.Editor = Class.extend({
             self, 'handleContentClick');
         MochiKit.Signal.connect(
             self, 'reload', self, 'reload');
-        MochiKit.Signal.signal(self, 'reload');
         //self.connect_draggables();
+    },
+
+    reload: function() {
+        MochiKit.Signal.signal(self, 'reload');
     },
 
     handleContentClick: function(event) {
@@ -64,7 +67,7 @@ zeit.content.cp.Editor = Class.extend({
 });
 
 
-zeit.content.cp.BoxHover = Class.extend({
+zeit.content.cp.BoxHover = gocept.Class.extend({
 
     construct: function() {
         var self = this;
@@ -98,12 +101,70 @@ zeit.content.cp.BoxHover = Class.extend({
     },
 });
 
+zeit.content.cp.ContentDropper = gocept.Class.extend({
+
+    construct: function() {
+        var self = this;
+        self.editor = document.cpeditor;
+        MochiKit.Signal.connect(
+            document.cpeditor, 'before-reload', self, 'disconnect');
+        MochiKit.Signal.connect(
+            document.cpeditor, 'after-reload', self, 'connect');
+        self.droppables = []
+    },
+
+    connect: function() {
+        var self = this;
+        var elements = MochiKit.Selector.findChildElements(
+            self.editor.content,
+            ['div.action-content-droppable'])
+        forEach(elements, function(element) {
+            var box = MochiKit.DOM.getFirstParentByTagAndClassName(
+                element, null, 'box-inner'); 
+            var url = element.getAttribute('cms:drop-url');
+            self.droppables.push(
+                new MochiKit.DragAndDrop.Droppable(box, {
+                    hoverclass: 'hover-content',
+                    ondrop: function(draggable, droppable, event) {
+                        self.drop(draggable, droppable, event, url);
+                    },
+                }));
+        });
+    },
+
+    disconnect: function() {
+        var self = this;
+        while(self.droppables.length) {
+          self.droppables.pop().destroy();
+        }
+    },
+
+    drop: function(draggable, droppable, event, url) {
+        var self = this;
+        var uniqueId = draggable.uniqueId;
+        if (isUndefinedOrNull(uniqueId)) {
+            return
+        }
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            url, {'uniqueId': uniqueId});
+        // XXX error handling
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(self.editor, 'reload');
+        });
+        
+    },
+
+
+});
+
 MochiKit.Signal.connect(window, 'onload', function() {
     if (isNull($('cp-content'))) {
         return
     }
     document.cpeditor = new zeit.content.cp.Editor();
     new zeit.content.cp.BoxHover();
+    new zeit.content.cp.ContentDropper();
+    document.cpeditor.reload();
 });
 
 
@@ -140,7 +201,7 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
 });
 
 
-zeit.content.cp.modules.LoadAndReload = Class.extend({
+zeit.content.cp.modules.LoadAndReload = gocept.Class.extend({
 
     construct: function(context_element) {
         var url = context_element.getAttribute('href');
@@ -154,7 +215,7 @@ zeit.content.cp.modules.LoadAndReload = Class.extend({
 });
 
 
-zeit.content.cp.modules.ConfirmDelete = Class.extend({
+zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
 
     construct: function(context_element) {
         var self = this;
