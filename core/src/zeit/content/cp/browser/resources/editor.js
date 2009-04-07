@@ -68,18 +68,33 @@ zeit.content.cp.BoxHover = Class.extend({
 
     construct: function() {
         var self = this;
-        // doesn't look good, yet
-        return
         MochiKit.Signal.connect('cp-content', 'onmouseover', self, 'over');
         MochiKit.Signal.connect('cp-content', 'onmouseout', self, 'out');
     },
 
     over: function(event) {
-        MochiKit.DOM.addElementClass(event.target(), 'hover');
+        var self = this;
+        var box = self.get_box(event.target());
+        if (!isNull(box)) {
+            MochiKit.DOM.addElementClass(box, 'hover');
+        }
     },
 
     out: function(event) {
-        MochiKit.DOM.removeElementClass(event.target(), 'hover');
+        var self = this;
+        var box = self.get_box(event.target());
+        if (!isNull(box)) {
+            MochiKit.DOM.removeElementClass(box, 'hover');
+        }
+    },
+
+    get_box: function(element) {
+        var class = 'box-inner';
+        if (MochiKit.DOM.hasElementClass(element, class)) {
+            return element
+        }
+        return MochiKit.DOM.getFirstParentByTagAndClassName(
+            element, null, class);
     },
 });
 

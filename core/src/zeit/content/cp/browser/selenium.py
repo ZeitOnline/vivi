@@ -68,5 +68,21 @@ class TestGenericEditing(zeit.cms.selenium.Test):
         s.waitForXpathCount('//a[@class="choose-box"]', 2)
 
 
+    def test_hover(self):
+        self.open_centerpage()
+        s = self.selenium
 
+        # Create a box
+        s.click('link=*Add box*')
+        s.waitForElementPresent('css=a.choose-box')
+        s.click('//a[@class="choose-box"]')
+        s.waitForElementPresent('css=div.box-types')
+        s.click('link=List of teasers')
+        s.waitForElementPresent('css=div.type-teaser')
 
+        # Hover mouse over box
+        s.verifyElementNotPresent('css=div.box-inner.hover')
+        s.mouseOver('css=div.teaser-list')
+        s.verifyElementPresent('css=div.box-inner.hover')
+        s.mouseOut('css=div.teaser-list')
+        s.verifyElementNotPresent('css=div.box-inner.hover')

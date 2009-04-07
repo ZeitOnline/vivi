@@ -19,7 +19,9 @@
 }
 
 #cp-content .hover {
-  outline-style: solid;
+  /* 1px outline + 1px border (which we have anyway) results in 2px */
+  outline: 1px solid black;
+  border-style: solid;
 }
 
 #cp-aufmacher {
