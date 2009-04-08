@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.9 (unreleased)
+1.9 (2008-04-08)
 ----------------
 
 - Added conflict resolution for the PropertyCache and ChildIdCache. This
@@ -12,7 +12,7 @@ CHANGES
 1.8 (2009-04-07)
 ----------------
 
-- Connector nows of lock timeouts now (fixes #4914).
+- Connector knows of lock timeouts now (fixes #4914).
 
 1.7 (2009-03-23)
 ----------------
