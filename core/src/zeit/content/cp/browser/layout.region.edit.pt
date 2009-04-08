@@ -2,6 +2,6 @@
   <a tal:attributes="href string:${context/@@absolute_url}/add?type=placeholder"
      i18n:translate=""
      cms:cp-module="LoadAndReload">
-    + Add box
+    + Add block
   </a>
 </div>

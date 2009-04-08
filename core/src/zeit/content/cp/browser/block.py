@@ -10,7 +10,7 @@ class Add(zeit.cms.browser.view.Base):
 
     def __call__(self, type):
         factory = zope.component.getAdapter(
-            self.context, zeit.content.cp.interfaces.IBoxFactory,
+            self.context, zeit.content.cp.interfaces.IBlockFactory,
             name=type)
         created = factory()
         return self.url(created)
@@ -24,11 +24,11 @@ class Delete(object):
 
 class PlaceHolderEdit(object):
 
-    def list_box_types(self):
+    def list_block_types(self):
         result = []
         for name, adapter in zope.component.getAdapters(
             (self.context.__parent__,),
-            zeit.content.cp.interfaces.IBoxFactory):
+            zeit.content.cp.interfaces.IBlockFactory):
             if adapter.title is None:
                 continue
             result.append(dict(
@@ -49,7 +49,7 @@ class SwitchType(object):
         index = order.index(self.toswitch.__name__)
         del self.parent[self.toswitch.__name__]
         factory = zope.component.getAdapter(
-            self.parent, zeit.content.cp.interfaces.IBoxFactory, name=type)
+            self.parent, zeit.content.cp.interfaces.IBlockFactory, name=type)
         created = factory()
         order[index] = created.__name__
         self.parent.updateOrder(order)

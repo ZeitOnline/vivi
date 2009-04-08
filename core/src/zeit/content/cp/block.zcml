@@ -1,21 +1,21 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".box.box_to_centerpage" />
+  <adapter factory=".block.block_to_centerpage" />
 
   <!-- Place holder -->
 
-  <class class=".box.PlaceHolder">
+  <class class=".block.PlaceHolder">
     <require
       interface=".interfaces.IPlaceHolder"
       permission="zope.View" />
   </class>
 
-  <adapter factory=".box.PlaceHolderFactory" name="placeholder" />
+  <adapter factory=".block.PlaceHolderFactory" name="placeholder" />
   <adapter
-    provides=".interfaces.IBox"
+    provides=".interfaces.IBlock"
     name="placeholder"
-    factory=".box.PlaceHolder"
+    factory=".block.PlaceHolder"
     />
 
   
@@ -44,7 +44,7 @@
   <adapter factory=".teaser.TeaserListFactory" name="teaser" />
 
   <adapter
-    provides=".interfaces.IBox"
+    provides=".interfaces.IBlock"
     name="teaser"
     factory=".teaser.TeaserList"
     />

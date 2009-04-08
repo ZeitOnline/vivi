@@ -95,7 +95,7 @@
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
-    class=".box.Delete"
+    class=".block.Delete"
     permission="zope.View"
     />
 
@@ -103,7 +103,7 @@
     for="zeit.content.cp.interfaces.ITeaserBar"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
-    class=".box.DeleteFromTeaserBar"
+    class=".block.DeleteFromTeaserBar"
     permission="zope.View"
     />
 
@@ -153,10 +153,10 @@
     />
 
 
-  <!-- Box -->
+  <!-- Block -->
 
   <browser:page
-    for="zeit.content.cp.interfaces.IBox"
+    for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     template="layout.contents.pt"
@@ -165,23 +165,23 @@
 
   <browser:viewletManager
     provides=".interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.IBox"
+    for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     class="zope.viewlet.manager.WeightOrderedViewletManager"
-    template="layout.box.contents.pt"
+    template="layout.block.contents.pt"
     name="zeit.content.cp.editor-contents"
     permission="zope.View"
     />
 
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IBox"
+    for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="edit"
-    template="layout.box.edit.pt"
+    template="layout.block.edit.pt"
     permission="zeit.EditContent"
     weight="90"
     />
@@ -204,7 +204,7 @@
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="box.edit"
+    name="block.edit"
     class=".teaser.TeaserEdit"
     permission="zeit.EditContent"
     />
@@ -244,31 +244,31 @@
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="add"
-    class=".box.Add"
+    class=".block.Add"
     permission="zeit.EditContent"
     />
 
   <browser:page
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="box.edit"
-    class=".box.PlaceHolderEdit"
+    name="block.edit"
+    class=".block.PlaceHolderEdit"
     template="form.placeholder.edit.pt"
     permission="zeit.EditContent"
     />
 
   <view
-    for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IBox"
+    for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IBlock"
     type="zeit.cms.browser.interfaces.ICMSLayer"
     name="type-switcher"
-    factory=".box.SwitchType"
+    factory=".block.SwitchType"
     />
 
   <browser:page
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="switch"
-    class=".box.PlaceHolderSwitchType"
+    class=".block.PlaceHolderSwitchType"
     permission="zeit.EditContent"
     />
 

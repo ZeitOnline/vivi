@@ -1,7 +1,7 @@
-Teaser box
+Teaser block
 ==========
 
-The teaser box contains a list of teasers[#functional]_.
+The teaser block contains a list of teasers[#functional]_.
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
@@ -9,7 +9,7 @@ The teaser box contains a list of teasers[#functional]_.
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBoxFactory, name='teaser')
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
 >>> teasers = factory()
 
 >>> import zeit.cms.repository.interfaces

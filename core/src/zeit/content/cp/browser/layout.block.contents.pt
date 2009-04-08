@@ -1,0 +1,6 @@
+<div tal:attributes="class string:block type-${context/type}">
+  <div class="block-inner">
+    <tal:block tal:repeat="block options/viewlets"
+               tal:content="structure block/render" />
+  </div>
+</div>

@@ -75,9 +75,9 @@
   background-color: #fd1;
 }
 
-/* Box layout */
+/* Block layout */
 
-.box > .box-inner {
+.block > .block-inner {
   border: 1px solid black;
   margin-top: 1em;
   padding: 0 0.5em;
@@ -161,24 +161,24 @@
 
 }
 
-.type-teaser-bar > .box-inner > .edit {
+.type-teaser-bar > .block-inner > .edit {
   clear: both;
 }
 
-.type-teaser-bar > .box-inner > .box {
+.type-teaser-bar > .block-inner > .block {
   float: left;
   width: 25%;
 }
 
-.type-teaser-bar > .box-inner > .box > .box-inner {
+.type-teaser-bar > .block-inner > .block > .block-inner {
   margin: 1.5em 0.5em;
 }
 
-.box-inner {
+.block-inner {
   background-color: white;
 }
 
-.type-teaser-bar > .box-inner {
+.type-teaser-bar > .block-inner {
   background-color: #eeeeee;
 }
 
@@ -198,16 +198,16 @@
 
 /* placeholder */
 
-.box.type-placeholder > .box-inner {
+.block.type-placeholder > .block-inner {
   border-style: dashed;
   padding: 2em;
 }
 
-.box.type-placeholder > .box-inner > * {
+.block.type-placeholder > .block-inner > * {
   font-size: 2em;
 }
 
-.box.type-placeholder > .box-inner > .choose-box {
+.block.type-placeholder > .block-inner > .choose-block {
   background: #f2f2f2;
   border: 1px solid black;
   display: block;

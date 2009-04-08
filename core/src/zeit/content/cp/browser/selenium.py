@@ -25,14 +25,14 @@ class TestGenericEditing(Test):
     def test_insert(self):
         self.open_centerpage()
         s = self.selenium
-        s.verifyElementNotPresent('//a[@class="choose-box"]')
-        s.click('link=*Add box*')
-        s.waitForElementPresent('//a[@class="choose-box"]')
-        s.click('//a[@class="choose-box"]')
-        s.waitForElementPresent('//div[@class="box-types"]')
+        s.verifyElementNotPresent('//a[@class="choose-block"]')
+        s.click('link=*Add block*')
+        s.waitForElementPresent('//a[@class="choose-block"]')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('//div[@class="block-types"]')
         s.click('link=List of teasers')
-        s.waitForElementPresent('//div[@class="box type-teaser"]')
-        s.click('//div[@class="box type-teaser"]/*/div[@class="edit"]/a')
+        s.waitForElementPresent('//div[@class="block type-teaser"]')
+        s.click('//div[@class="block type-teaser"]/*/div[@class="edit"]/a')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.title', 'Holladrio')
         s.click('form.actions.apply')
@@ -42,14 +42,14 @@ class TestGenericEditing(Test):
         s.pause(0.5)
         s.click('css=a.delete-link')
         s.waitForElementPresent('css=div.confirm-delete')
-        s.verifyElementPresent('css=div.box-inner.highlight')
+        s.verifyElementPresent('css=div.block-inner.highlight')
 
         # Clicking anywhere else but on the remove confirmer, does close the
         # confirm but does not issue any action. Note that we've got to click
         # on the #confirm-delete-overlay which overlays everything.
         s.click("css=#confirm-delete-overlay")
         s.waitForElementNotPresent('css=div.confirm-delete')
-        s.verifyElementNotPresent('css=div.box-inner.highlight')
+        s.verifyElementNotPresent('css=div.block-inner.highlight')
 
         # Now really delete
         s.click('css=a.delete-link')
@@ -59,36 +59,36 @@ class TestGenericEditing(Test):
     def test_close_choose_type_lightbox_does_not_break_editor(self):
         self.open_centerpage()
         s = self.selenium
-        s.click('link=*Add box*')
-        s.waitForElementPresent('css=a.choose-box')
-        s.click('//a[@class="choose-box"]')
-        s.waitForElementPresent('css=div.box-types')
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
         s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=a.CloseButton')
 
-        # The following click used to do nothing. Make sure it does add a box.
-        s.click('link=*Add box*')
-        s.waitForXpathCount('//a[@class="choose-box"]', 2)
+        # The following click used to do nothing. Make sure it does add a block.
+        s.click('link=*Add block*')
+        s.waitForXpathCount('//a[@class="choose-block"]', 2)
 
 
     def test_hover(self):
         self.open_centerpage()
         s = self.selenium
 
-        # Create a box
-        s.click('link=*Add box*')
-        s.waitForElementPresent('css=a.choose-box')
-        s.click('//a[@class="choose-box"]')
-        s.waitForElementPresent('css=div.box-types')
+        # Create a block
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
         s.click('link=List of teasers')
         s.waitForElementPresent('css=div.type-teaser')
 
-        # Hover mouse over box
-        s.verifyElementNotPresent('css=div.box-inner.hover')
+        # Hover mouse over block
+        s.verifyElementNotPresent('css=div.block-inner.hover')
         s.mouseOver('css=div.teaser-list')
-        s.verifyElementPresent('css=div.box-inner.hover')
+        s.verifyElementPresent('css=div.block-inner.hover')
         s.mouseOut('css=div.teaser-list')
-        s.verifyElementNotPresent('css=div.box-inner.hover')
+        s.verifyElementNotPresent('css=div.block-inner.hover')
 
 
 class TestTeaserList(Test):
@@ -96,10 +96,10 @@ class TestTeaserList(Test):
     def create_teaserlist(self):
         self.open_centerpage()
         s = self.selenium
-        s.click('link=*Add box*')
-        s.waitForElementPresent('css=a.choose-box')
-        s.click('//a[@class="choose-box"]')
-        s.waitForElementPresent('css=div.box-types')
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
         s.click('link=List of teasers')
         s.waitForElementPresent('css=div.type-teaser')
 

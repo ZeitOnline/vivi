@@ -5,7 +5,7 @@ import UserDict
 import gocept.lxml.interfaces
 import uuid
 import zeit.cms.content.interfaces
-import zeit.content.cp.box
+import zeit.content.cp.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.contained
@@ -33,12 +33,12 @@ class Area(UserDict.DictMixin,
         for node in self.xml.iterchildren():
             if node.get('{http://namespaces.zeit.de/CMS/cp}__name__') != key:
                 continue
-            box_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
-            box = zope.component.getMultiAdapter(
+            block_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
+            block = zope.component.getMultiAdapter(
                 (self, node),
-                zeit.content.cp.interfaces.IBox,
-                name=box_type)
-            return zope.container.contained.contained(box, self, key)
+                zeit.content.cp.interfaces.IBlock,
+                name=block_type)
+            return zope.container.contained.contained(block, self, key)
         raise KeyError(key)
 
     def __iter__(self):
@@ -121,7 +121,7 @@ def area_to_centerpage(context):
 
 
 
-class TeaserBar(zeit.content.cp.box.Box, Area):
+class TeaserBar(zeit.content.cp.block.Block, Area):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
 
@@ -129,12 +129,12 @@ class TeaserBar(zeit.content.cp.box.Box, Area):
         return object.__repr__(self)
 
 
-class TeaserBarFactory(zeit.content.cp.box.BoxFactory):
+class TeaserBarFactory(zeit.content.cp.block.BlockFactory):
 
     zope.component.adapts(zeit.content.cp.interfaces.ICluster)
 
-    box_class = TeaserBar
-    box_type = 'teaser-bar'
+    block_class = TeaserBar
+    block_type = 'teaser-bar'
     title = None
 
     def get_xml(self):
@@ -147,7 +147,7 @@ class TeaserBarFactory(zeit.content.cp.box.BoxFactory):
         bar = super(TeaserBarFactory, self).__call__()
         # Prepopulate with placeholders
         factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IBoxFactory, name='placeholder')
+            bar, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
         for x in range(4):
             factory()
         return bar

@@ -1,17 +1,17 @@
 <div class="floating">
 
-  <h1 i18n:translate="">Choose box type</h1>
+  <h1 i18n:translate="">Choose block type</h1>
 
   <p>
-    Note: the selection of box types will be made graphically. That is there will
-    be large images indicating how such a box looks like.
+    Note: the selection of block types will be made graphically. That is there will
+    be large images indicating how such a block looks like.
   </p>
 
-  <div class="box-types"
-       tal:repeat="box_type view/list_box_types">
+  <div class="block-types"
+       tal:repeat="block_type view/list_block_types">
     <a href="#"
-       tal:attributes="href string:${context/@@absolute_url}/switch?type=${box_type/type}"
-       tal:content="box_type/title"
+       tal:attributes="href string:${context/@@absolute_url}/switch?type=${block_type/type}"
+       tal:content="block_type/title"
        cms:cp-module="LoadAndReload">
     </a>
   

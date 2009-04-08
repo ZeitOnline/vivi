@@ -50,7 +50,7 @@ class IArea(IReadArea, IWriteArea):
 
 
 class IRegion(IArea):
-    """A region contains boxes."""
+    """A region contains blocks."""
 
 
 class ILeadRegion(IRegion):
@@ -61,32 +61,32 @@ class ICluster(IArea):
     """A cluster contains regions."""
 
 
-class IBox(zope.interface.Interface):
+class IBlock(zope.interface.Interface):
     """XXX A module which can be instantiated and added to the page."""
 
     type = zope.interface.Attribute("Type identifier.")
 
 
-class IBoxFactory(zope.interface.Interface):
+class IBlockFactory(zope.interface.Interface):
 
     title = zope.schema.TextLine(
-        title=_('Box type'))
+        title=_('Block type'))
 
     def __call__():
-        """Create box."""
+        """Create block."""
 
 
-class IPlaceHolder(IBox):
+class IPlaceHolder(IBlock):
     """Placeholder."""
 
 
-class ITeaserList(IBox):
+class ITeaserList(IBlock):
     """A list of teasers."""
 
 
-class ITeaserBar(IBox, IRegion):
+class ITeaserBar(IBlock, IRegion):
     """A teaser bar is a bar in the teaser mosaic.
 
-    The TeaserBar has a dual nature of being both a box and a region.
+    The TeaserBar has a dual nature of being both a block and a region.
 
     """

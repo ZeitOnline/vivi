@@ -32,41 +32,41 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 
 [#modified-handler]_
 
-Boxes
+Blocks
 +++++
 
-A box is part of an area. 
+A block is part of an area.
 
-Placeholder box
----------------
+Placeholder block
+-----------------
 
-There is a special box which can easily replaced by another box. It is a
-placeholder for other boxes. This allows removing of real boxes in the teaser
-mosaic without moving other boxes around. It also allows a generic "add" action
-in the other areas where a placeholder is just added to the boxes and
+There is a special block which can easily replaced by another block. It is a
+placeholder for other blocks. This allows removing of real blocks in the teaser
+mosaic without moving other blocks around. It also allows a generic "add" action
+in the other areas where a placeholder is just added to the blocks and
 afterwards configured.
 
-Boxes are created using a box factory:
+Blocks are created using a block factory:
 
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBoxFactory, name='placeholder')
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
 >>> factory.title is None
 True
->>> box = factory()
->>> box 
-<zeit.content.cp.box.PlaceHolder object at 0x...>
+>>> block = factory()
+>>> block
+<zeit.content.cp.block.PlaceHolder object at 0x...>
 
-Creating the box automatically adds it to the container:
+Creating the block automatically adds it to the container:
 
->>> box.__name__ in lead
+>>> block.__name__ in lead
 True
 
-It is not possible to add the box again:
+It is not possible to add the block again:
 
->>> lead.add(box)
+>>> lead.add(block)
 Traceback (most recent call last):
     ...
 DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
@@ -74,20 +74,20 @@ DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
 
 
 
-Teaser box
-----------
+Teaser block
+------------
 
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBoxFactory, name='teaser')
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
 >>> factory.title
 u'List of teasers'
->>> box = factory()
->>> box 
+>>> block = factory()
+>>> block 
 <zeit.content.cp.teaser.TeaserList object at 0x...>
->>> box.type
+>>> block.type
 'teaser'
 
 After calling the factory a corresponding XML node has been created:
@@ -107,59 +107,59 @@ After calling the factory a corresponding XML node has been created:
 
 Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
->>> lead[box.__name__]
+>>> lead[block.__name__]
 <zeit.content.cp.teaser.TeaserList object at 0x...>
 
 The area can also be iterated:
 
 >>> list(lead.itervalues())
-[<zeit.content.cp.box.PlaceHolder object at 0x...>,
+[<zeit.content.cp.block.PlaceHolder object at 0x...>,
  <zeit.content.cp.teaser.TeaserList object at 0x...>]
 >>> lead.values()
-[<zeit.content.cp.box.PlaceHolder object at 0x...>,
+[<zeit.content.cp.block.PlaceHolder object at 0x...>,
  <zeit.content.cp.teaser.TeaserList object at 0x...>]
 
-It is possible to get the center page from the box by adapting to ICenterPage:
+It is possible to get the center page from the block by adapting to ICenterPage:
 
->>> zeit.content.cp.interfaces.ICenterPage(box)
+>>> zeit.content.cp.interfaces.ICenterPage(block)
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
 
-The ``__parent__`` of a box is the area:
+The ``__parent__`` of a block is the area:
 
->>> box.__parent__
+>>> block.__parent__
 <zeit.content.cp.area.LeadRegion for lead>
 
 
 Areas support ordering of their contents via the ``updateOrder`` method:
 
 >>> transaction.commit()
->>> ph_key, box_key = lead.keys()
->>> box.__name__ == box_key
+>>> ph_key, block_key = lead.keys()
+>>> block.__name__ == block_key
 True
->>> lead.updateOrder([box_key, ph_key])
->>> lead.keys() == [box_key, ph_key]
+>>> lead.updateOrder([block_key, ph_key])
+>>> lead.keys() == [block_key, ph_key]
 True
 >>> cp._p_changed
 True
 
 The keys have not changed:
 
->>> box.__name__ == box_key
+>>> block.__name__ == block_key
 True
 
 
 [#invalid-arguments-to-updateorder]_
 
-Boxes can be removed using __delitem__:
+Blocks can be removed using __delitem__:
 
 >>> transaction.commit()
 >>> len(lead)
 2
->>> del lead[box.__name__]
+>>> del lead[block.__name__]
 >>> len(lead)
 1
 >>> lead.values()
-[<zeit.content.cp.box.PlaceHolder object at 0x...>]
+[<zeit.content.cp.block.PlaceHolder object at 0x...>]
 >>> cp._p_changed
 True
 
@@ -174,7 +174,7 @@ about the weather).
 >>> transaction.commit()
 >>> mosaic = cp['teaser-mosaic']
 >>> factory = zope.component.getAdapter(
-...     mosaic, zeit.content.cp.interfaces.IBoxFactory, name='teaser-bar')
+...     mosaic, zeit.content.cp.interfaces.IBlockFactory, name='teaser-bar')
 >>> bar = factory()
 >>> bar
 <zeit.content.cp.area.TeaserBar object at 0x...>
@@ -189,10 +189,10 @@ The bar is alreay populated with four placeholders:
 >>> len(bar)
 4
 >>> bar.values()
-[<zeit.content.cp.box.PlaceHolder object at 0x...>,
- <zeit.content.cp.box.PlaceHolder object at 0x...>,
- <zeit.content.cp.box.PlaceHolder object at 0x...>,
- <zeit.content.cp.box.PlaceHolder object at 0x...>]
+[<zeit.content.cp.block.PlaceHolder object at 0x...>,
+ <zeit.content.cp.block.PlaceHolder object at 0x...>,
+ <zeit.content.cp.block.PlaceHolder object at 0x...>,
+ <zeit.content.cp.block.PlaceHolder object at 0x...>]
 
 
 The xml of the teaser bar is actually a region:

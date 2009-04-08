@@ -1,7 +1,7 @@
-Teaser box
-++++++++++
+Teaser block
+++++++++++++
 
-The teaser box contains a list of teasers. Let's first create a list of teasers
+The teaser block contains a list of teasers. Let's first create a list of teasers
 in the lead area:
 
 >>> import zeit.content.cp.browser.tests
@@ -9,9 +9,9 @@ in the lead area:
 >>> browser.xml_strict = True
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.getLink('Add box').click()
+>>> browser.getLink('Add block').click()
 >>> browser.open(contents_url)
->>> browser.getLink('choose the box type').click()
+>>> browser.getLink('choose the block type').click()
 >>> browser.getLink('List of teasers').click()
 
 Set a title (although it's unclear if we really need this):
@@ -31,8 +31,8 @@ Set a title (although it's unclear if we really need this):
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div class="box type-teaser">
-  <div class="box-inner">
+<div class="block type-teaser">
+  <div class="block-inner">
     <div class="teaser-list topthema action-content-droppable"
      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
   <div class="teaser">

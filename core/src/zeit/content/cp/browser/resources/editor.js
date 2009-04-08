@@ -38,17 +38,17 @@ zeit.content.cp.Editor = gocept.Class.extend({
         var self = this;
         MochiKit.Sortable.create($('cp-content'), {
             constraint: null,
-            only: ['box'],
+            only: ['block'],
             tag: 'div',
             tree: true,
         });
         MochiKig.Signal.connect(self, 'before-reload', function() {
             MochiKit.Sortable.destroy($('cp-content'));
         });
-        /*var boxes = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'box', $('cp-content'));
-        forEach(boxes, function(box) {
-            new MochiKit.DragAndDrop.Draggable(box);
+        /*var blockes = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'block', $('cp-content'));
+        forEach(blocks, function(block) {
+            new MochiKit.DragAndDrop.Draggable(block);
         });
         */
     },
@@ -67,7 +67,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
 });
 
 
-zeit.content.cp.BoxHover = gocept.Class.extend({
+zeit.content.cp.BlockHover = gocept.Class.extend({
 
     construct: function() {
         var self = this;
@@ -77,22 +77,22 @@ zeit.content.cp.BoxHover = gocept.Class.extend({
 
     over: function(event) {
         var self = this;
-        var box = self.get_box(event.target());
-        if (!isNull(box)) {
-            MochiKit.DOM.addElementClass(box, 'hover');
+        var block = self.get_block(event.target());
+        if (!isNull(block)) {
+            MochiKit.DOM.addElementClass(block, 'hover');
         }
     },
 
     out: function(event) {
         var self = this;
-        var box = self.get_box(event.target());
-        if (!isNull(box)) {
-            MochiKit.DOM.removeElementClass(box, 'hover');
+        var block = self.get_block(event.target());
+        if (!isNull(block)) {
+            MochiKit.DOM.removeElementClass(block, 'hover');
         }
     },
 
-    get_box: function(element) {
-        var class = 'box-inner';
+    get_block: function(element) {
+        var class = 'block-inner';
         if (MochiKit.DOM.hasElementClass(element, class)) {
             return element
         }
@@ -119,11 +119,11 @@ zeit.content.cp.ContentDropper = gocept.Class.extend({
             self.editor.content,
             ['div.action-content-droppable'])
         forEach(elements, function(element) {
-            var box = MochiKit.DOM.getFirstParentByTagAndClassName(
-                element, null, 'box-inner'); 
+            var block = MochiKit.DOM.getFirstParentByTagAndClassName(
+                element, null, 'block-inner'); 
             var url = element.getAttribute('cms:drop-url');
             self.droppables.push(
-                new MochiKit.DragAndDrop.Droppable(box, {
+                new MochiKit.DragAndDrop.Droppable(block, {
                     hoverclass: 'hover-content',
                     ondrop: function(draggable, droppable, event) {
                         self.drop(draggable, droppable, event, url);
@@ -162,7 +162,7 @@ MochiKit.Signal.connect(window, 'onload', function() {
         return
     }
     document.cpeditor = new zeit.content.cp.Editor();
-    new zeit.content.cp.BoxHover();
+    new zeit.content.cp.BlockHover();
     new zeit.content.cp.ContentDropper();
     document.cpeditor.reload();
 });
@@ -228,9 +228,9 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
                'Remove'))
         context_element.appendChild(self.confirm);
         MochiKit.Visual.fade(self.confirm, {'from': 0, 'to': 1});
-        self.box = MochiKit.DOM.getFirstParentByTagAndClassName(
-            context_element, 'div', 'box-inner')
-        MochiKit.DOM.addElementClass(self.box, 'highlight');
+        self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
+            context_element, 'div', 'block-inner')
+        MochiKit.DOM.addElementClass(self.block, 'highlight');
 
         self.overlay = DIV({'id': 'confirm-delete-overlay'});
         $('body').appendChild(self.overlay);
@@ -249,6 +249,6 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
             MochiKit.Signal.disconnect, self.events)
         self.confirm.parentNode.removeChild(self.confirm);
         self.overlay.parentNode.removeChild(self.overlay);
-        MochiKit.DOM.removeElementClass(self.box, 'highlight');
+        MochiKit.DOM.removeElementClass(self.block, 'highlight');
     },
 })

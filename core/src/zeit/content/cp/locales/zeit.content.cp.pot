@@ -56,7 +56,7 @@ msgid "View centerpage metadata"
 msgstr ""
 
 #: src/zeit/content/cp/interfaces.py:72
-msgid "Box type"
+msgid "Block type"
 msgstr ""
 
 #: src/zeit/content/cp/interfaces.py:85

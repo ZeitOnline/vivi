@@ -8,45 +8,45 @@ import zope.component
 import zope.interface
 
 
-class BoxFactory(object):
-    """Base class for box factories."""
+class BlockFactory(object):
+    """Base class for block factories."""
 
-    zope.interface.implements(zeit.content.cp.interfaces.IBoxFactory)
+    zope.interface.implements(zeit.content.cp.interfaces.IBlockFactory)
 
     def __init__(self, context):
         self.context = context
 
     def get_xml(self):
         container = lxml.objectify.E.container()
-        container.set('{http://namespaces.zeit.de/CMS/cp}type', self.box_type)
+        container.set('{http://namespaces.zeit.de/CMS/cp}type', self.block_type)
         return container
 
     def __call__(self):
         container = self.get_xml()
-        box = self.box_class(self.context, container)
-        self.context.add(box)
-        return box
+        block = self.block_class(self.context, container)
+        self.context.add(block)
+        return block
 
 
-def boxFactoryFactory(adapts, box_class, box_type, title=None):
-    """A factory which creates a box factory."""
-    class_name = '%sFactory' % box_type.capitalize()
-    factory = type(class_name, (BoxFactory,), dict(
+def blockFactoryFactory(adapts, block_class, block_type, title=None):
+    """A factory which creates a block factory."""
+    class_name = '%sFactory' % block_type.capitalize()
+    factory = type(class_name, (BlockFactory,), dict(
         title=title,
-        box_class=box_class,
-        box_type=box_type))
+        block_class=block_class,
+        block_type=block_type))
     factory = zope.component.adapter(adapts)(factory)
     return factory
 
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
-@zope.component.adapter(zeit.content.cp.interfaces.IBox)
-def box_to_centerpage(context):
+@zope.component.adapter(zeit.content.cp.interfaces.IBlock)
+def block_to_centerpage(context):
     return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
 
 
-class Box(zope.container.contained.Contained):
-    """Base class for boxes."""
+class Block(zope.container.contained.Contained):
+    """Base class for blocks."""
 
     zope.component.adapts(
         zeit.content.cp.interfaces.IArea,
@@ -67,11 +67,11 @@ class Box(zope.container.contained.Contained):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}type')
 
 
-class PlaceHolder(Box):
+class PlaceHolder(Block):
 
     zope.interface.implements(zeit.content.cp.interfaces.IPlaceHolder)
 
 
-PlaceHolderFactory = boxFactoryFactory(
+PlaceHolderFactory = blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
     PlaceHolder, 'placeholder')
