@@ -709,7 +709,7 @@ class Connector(object):
                 self._remove_from_caches(parent, [self.property_cache])
 
                 # Reload the invalidated resources immedeately. This should
-                # lead to less connflict potential as other threads see a valid
+                # lead to less conflict potential as other threads see a valid
                 # resource. 
                 try:
                     self[parent]
@@ -719,7 +719,7 @@ class Connector(object):
                 if deleted and id in children:
                     children.remove(id)
                 elif added:
-                    children.insert(unicode(id))
+                    children.add(unicode(id))
 
                 # Update the parent's properties:
                 davres = self._get_dav_resource(parent)

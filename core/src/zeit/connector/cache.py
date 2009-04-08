@@ -6,14 +6,15 @@ import ZODB.blob
 import cStringIO
 import logging
 import persistent
+import persistent.mapping
 import tempfile
 import time
 import transaction
+import zc.set
+import zeit.connector.interfaces
 import zope.component
 import zope.interface
 import zope.testing.cleanup
-
-import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)
@@ -221,6 +222,8 @@ class PersistentCache(persistent.Persistent):
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
             self._set_value(old_value, value)
         else:
+            # This is a code path to slowly move from one class to another.
+            log.info('Creating or replacing cache class for %s' % key)
             value = self.CACHE_VALUE_CLASS(value)
             self._storage[get_storage_key(key)] = value
 
@@ -272,12 +275,22 @@ class WebDAVPropertyKey(object):
 zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
 
 
+class Properties(persistent.mapping.PersistentMapping):
+
+    def _p_resolveConflict(self, old, commited, newstate):
+        old['_container'] = {zeit.connector.interfaces.DeleteProperty: None}
+        return old
+
+    def __repr__(self):
+        return object.__repr__(self)
+
+
 class PropertyCache(PersistentCache):
     """Property cache."""
 
     zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
 
-    CACHE_VALUE_CLASS = BTrees.family32.OO.BTree
+    CACHE_VALUE_CLASS = Properties
 
     def _mark_deleted(self, value):
         value.clear()
@@ -306,16 +319,29 @@ def invalidate_property_cache(event):
         pass
 
 
+class ChildNames(zc.set.Set):
+
+    def _p_resolveConflict(self, old, commited, newstate):
+        old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
+        return old
+
+    def __iter__(self):
+        return iter(sorted(super(ChildNames, self).__iter__()))
+
+    def __repr__(self):
+        return object.__repr__(self)
+
+
 class ChildNameCache(PersistentCache):
     """Cache for child names."""
 
     zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
 
-    CACHE_VALUE_CLASS = BTrees.family32.OO.TreeSet
+    CACHE_VALUE_CLASS = ChildNames
 
     def _mark_deleted(self, value):
         value.clear()
-        value.insert(zeit.connector.interfaces.DeleteProperty)
+        value.add(zeit.connector.interfaces.DeleteProperty)
 
     @staticmethod
     def _cache_values_equal(a, b):

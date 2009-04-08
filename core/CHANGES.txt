@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+1.9 (unreleased)
+----------------
+
+- Added conflict resolution for the PropertyCache and ChildIdCache. This
+  hopefully leads to less conflicts.
+
 1.8 (2009-04-07)
 ----------------
 
