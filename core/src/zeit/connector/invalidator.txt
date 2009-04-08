@@ -1,0 +1,122 @@
+Invalidator
+===========
+
+The invalidator invalidates the whole property and child id cache and rebuilds
+it at the same time [#functional]_:
+
+
+>>> import zeit.connector.invalidator
+>>> import zope.component
+>>> invalidator = zope.component.getUtility(
+...     zeit.connector.invalidator.IInvalidator)
+
+Currently the caches are empty. The invalidator will be finished immedeately:
+
+>>> invalidator()
+True
+
+Let's fill the cache by accessing the connector:
+
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[]
+
+There is one element in the cache now (/testing/). The invalidator requires two
+steps now:
+
+>>> invalidator()
+False
+>>> invalidator()
+True
+
+Let's see how the invalidation works. Add a file to /testing without letting
+the connector know it. Note that despite we've invalidated the cache above the
+following listCollection call does not yield any result. This happens because
+the invalidator does not only invalidate the cache but reloads it at the same
+time:
+
+>>> connector._add_collection('http://xml.zeit.de/testing/foo/')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[]
+
+>>> while not invalidator():
+...     pass
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'foo', u'http://xml.zeit.de/testing/foo/')]
+
+The updater works also for deleted resources. So delete w/o the connector
+knowing it:
+
+
+>>> connector._get_dav_resource('http://xml.zeit.de/testing/').delete('foo/')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'foo', u'http://xml.zeit.de/testing/foo/')]
+>>> while not invalidator():
+...     pass
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[]
+
+Let's see how this works with files:
+
+>>> import StringIO
+>>> import zeit.connector.resource
+>>> id = 'http://xml.zeit.de/testing/lt1'
+>>> res = zeit.connector.resource.Resource(
+...     id, 'lt1', 'text',
+...     StringIO.StringIO('Pop goes the weasel!'),
+...     contentType='text/plain')
+>>> connector.add(res)
+>>> res.id = 'http://xml.zeit.de/testing/lt2'
+>>> connector.add(res)
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'lt1', u'http://xml.zeit.de/testing/lt1'),
+ (u'lt2', u'http://xml.zeit.de/testing/lt2')]
+>>> connector[id]
+<zeit.connector.resource.CachedResource object at 0x...>
+>>> connector[res.id]
+<zeit.connector.resource.CachedResource object at 0x...>
+
+The file is completely cached now. Delete it without the connector knowing it:
+
+>>> connector._get_dav_resource('http://xml.zeit.de/testing/').delete('lt1')
+
+We can still list and retrieve it:
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'lt1', u'http://xml.zeit.de/testing/lt1'),
+ (u'lt2', u'http://xml.zeit.de/testing/lt2')]
+>>> connector[id]
+<zeit.connector.resource.CachedResource object at 0x...>
+
+After invalidation lt1 it is really gone, but lt2 isn't (not even from the
+cache!):
+
+>>> while not invalidator():
+...     pass
+
+>>> cache = zope.component.getUtility(
+...     zeit.connector.interfaces.IPropertyCache)
+>>> cache[res.id]
+{...}
+
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[(u'lt2', u'http://xml.zeit.de/testing/lt2')]
+>>> connector[id]
+Traceback (most recent call last):
+    ...
+KeyError: "The resource 'http://xml.zeit.de/testing/lt1' does not exist."
+>>> connector[res.id]
+<zeit.connector.resource.CachedResource object at 0x...>
+
+Clean up:
+
+>>> del connector[res.id]
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())

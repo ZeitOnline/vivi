@@ -192,6 +192,7 @@ def test_suite():
     functional = zope.file.testing.FunctionalBlobDocFileSuite(
         'cache.txt',
         'functional.txt',
+        'invalidator.txt',
         optionflags=optionflags)
     functional.layer = real_connector_layer
     suite.addTest(functional)

@@ -209,6 +209,9 @@ class PersistentCache(persistent.Persistent):
     def __contains__(self, key):
         return get_storage_key(key) in self._storage
 
+    def keys(self):
+        return self._storage.keys()
+
     def __delitem__(self, key):
         value = self._storage[get_storage_key(key)]
         if isinstance(value, self.CACHE_VALUE_CLASS):
@@ -222,8 +225,6 @@ class PersistentCache(persistent.Persistent):
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
             self._set_value(old_value, value)
         else:
-            # This is a code path to slowly move from one class to another.
-            log.info('Creating or replacing cache class for %s' % key)
             value = self.CACHE_VALUE_CLASS(value)
             self._storage[get_storage_key(key)] = value
 

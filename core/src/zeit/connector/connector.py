@@ -607,7 +607,7 @@ class Connector(object):
         url = self._id2loc(id)
         davres = davresource.DAVResult(conn.mkcol(url))
         if davres.has_errors():
-            raise DAVError, (davres,)
+            raise DAVError(davres,)
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.

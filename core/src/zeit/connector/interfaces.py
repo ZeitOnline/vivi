@@ -272,6 +272,9 @@ class IPersistentCache(ICache):
 class IPropertyCache(ICache):
     """A cache for properties."""
 
+    def keys():
+        """Return the keys."""
+
 
 class IChildNameCache(ICache):
     """A cache for child names of collections."""

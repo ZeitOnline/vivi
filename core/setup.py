@@ -18,6 +18,7 @@ setup(
         'ZODB3>=3.8b4',
         'gocept.cache>=0.2.2',
         'gocept.lxml',
+        'gocept.runner>0.1',
         'setuptools',
         'zc.queue',
         'zc.set',
@@ -34,4 +35,8 @@ setup(
         'zope.testing',
         'zope.thread',
         ],
+    entry_points = """
+        [console_scripts]
+        refresh-cache = zeit.connector.invalidator:invalidate_whole_cache
+        """
 )

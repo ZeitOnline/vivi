@@ -283,6 +283,8 @@ Test the methods:
 True
 >>> 'blafasel' in cache
 False
+>>> list(cache.keys())
+['id']
 
 >>> del cache['id']
 >>> cache['id']
