@@ -18,7 +18,7 @@
   padding: 0.5em;
 }
 
-#cp-content .hover {
+#cp-content .block.hover > * {
   /* 1px outline + 1px border (which we have anyway) results in 2px */
   outline: 1px solid black;
   border-style: solid;

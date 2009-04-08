@@ -13,7 +13,6 @@ zeit.content.cp.Editor = gocept.Class.extend({
             self, 'handleContentClick');
         MochiKit.Signal.connect(
             self, 'reload', self, 'reload');
-        //self.connect_draggables();
     },
 
     reload: function() {
@@ -24,33 +23,14 @@ zeit.content.cp.Editor = gocept.Class.extend({
         var self = this;
         log("Target " + event.target().nodeName);
         var module_name = event.target().getAttribute('cms:cp-module')
-        log("Loading module " + module_name);
         if (module_name) {
+            log("Loading module " + module_name);
             event.stop();
             var module = zeit.content.cp.modules[module_name]
             new module(event.target());
         } else  {
             event.preventDefault();
         }
-    },
-    
-    connect_draggables: function() {
-        var self = this;
-        MochiKit.Sortable.create($('cp-content'), {
-            constraint: null,
-            only: ['block'],
-            tag: 'div',
-            tree: true,
-        });
-        MochiKig.Signal.connect(self, 'before-reload', function() {
-            MochiKit.Sortable.destroy($('cp-content'));
-        });
-        /*var blockes = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'block', $('cp-content'));
-        forEach(blocks, function(block) {
-            new MochiKit.DragAndDrop.Draggable(block);
-        });
-        */
     },
 
     reload: function() {
@@ -92,7 +72,7 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     },
 
     get_block: function(element) {
-        var class = 'block-inner';
+        var class = 'block';
         if (MochiKit.DOM.hasElementClass(element, class)) {
             return element
         }
@@ -101,7 +81,7 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     },
 });
 
-zeit.content.cp.ContentDropper = gocept.Class.extend({
+zeit.content.cp.ContentActionBase = gocept.Class.extend({
 
     construct: function() {
         var self = this;
@@ -110,19 +90,32 @@ zeit.content.cp.ContentDropper = gocept.Class.extend({
             document.cpeditor, 'before-reload', self, 'disconnect');
         MochiKit.Signal.connect(
             document.cpeditor, 'after-reload', self, 'connect');
-        self.droppables = []
+        self.dnd_objects = []
     },
+
+    disconnect: function() {
+        var self = this;
+        while(self.dnd_objects.length) {
+          self.dnd_objects.pop().destroy();
+        }
+    },
+
+});
+
+
+zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
+    // Handle dropping of content objects.
 
     connect: function() {
         var self = this;
         var elements = MochiKit.Selector.findChildElements(
             self.editor.content,
-            ['div.action-content-droppable'])
+            ['div.action-content-droppable']);
         forEach(elements, function(element) {
             var block = MochiKit.DOM.getFirstParentByTagAndClassName(
                 element, null, 'block-inner'); 
             var url = element.getAttribute('cms:drop-url');
-            self.droppables.push(
+            self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Droppable(block, {
                     hoverclass: 'hover-content',
                     ondrop: function(draggable, droppable, event) {
@@ -130,13 +123,6 @@ zeit.content.cp.ContentDropper = gocept.Class.extend({
                     },
                 }));
         });
-    },
-
-    disconnect: function() {
-        var self = this;
-        while(self.droppables.length) {
-          self.droppables.pop().destroy();
-        }
     },
 
     drop: function(draggable, droppable, event, url) {
@@ -157,6 +143,45 @@ zeit.content.cp.ContentDropper = gocept.Class.extend({
 
 });
 
+
+zeit.content.cp.TeaserBarSorter = zeit.content.cp.ContentActionBase.extend({
+    // Sort the teaser bars.
+
+    connect: function() {
+        var self = this;
+        var handles = MochiKit.Selector.findChildElements(
+            self.editor.content,
+            ['div.block.type-teaser-bar > * > div.edit > div.dragger']);
+        var mosaic = $('cp-teasermosaic');
+        forEach(handles, function(handle) {
+            var bar = MochiKit.DOM.getFirstParentByTagAndClassName(
+                handle, 'div', 'block');
+            self.dnd_objects.push(
+                new MochiKit.DragAndDrop.Draggable(bar, {
+                    constraint: 'vertical',
+                    handle: handle,
+                    ghosting: false,
+                    revert: true,
+                    scroll: $('cp-content'),
+                    selectclass: 'hover',
+                    zindex: 10000,
+            }));
+            self.dnd_objects.push(
+                new MochiKit.DragAndDrop.Droppable(bar, {
+                    containment: [mosaic],
+                    onhover: MochiKit.Sortable.onHover,
+                    overlap: 'vertical',
+           }));
+        });
+        MochiKit.Sortable.sortables[mosaic.id] = {
+            onChange: MochiKit.Base.noop,
+            onUpdate: MochiKit.Base.noop,
+        }
+        
+    },
+
+});
+
 MochiKit.Signal.connect(window, 'onload', function() {
     if (isNull($('cp-content'))) {
         return
@@ -164,6 +189,7 @@ MochiKit.Signal.connect(window, 'onload', function() {
     document.cpeditor = new zeit.content.cp.Editor();
     new zeit.content.cp.BlockHover();
     new zeit.content.cp.ContentDropper();
+    new zeit.content.cp.TeaserBarSorter();
     document.cpeditor.reload();
 });
 
