@@ -719,7 +719,7 @@ class Connector(object):
                 if deleted and id in children:
                     children.remove(id)
                 elif added:
-                    children.add(unicode(id))
+                    children.insert(unicode(id))
 
                 # Update the parent's properties:
                 davres = self._get_dav_resource(parent)

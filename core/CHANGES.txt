@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+1.10 (unreleased)
+-----------------
+
+- Fixed »AttributeError: 'BTrees.OOBTree.OOTreeSet' object has no attribute
+  'add'« which occured on existing databases.
+
 1.9 (2008-04-08)
 ----------------
 

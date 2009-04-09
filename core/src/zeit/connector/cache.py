@@ -332,6 +332,10 @@ class ChildNames(zc.set.Set):
     def __repr__(self):
         return object.__repr__(self)
 
+    def insert(self, key):
+        # BTree sets have insert instead of add. Let's be greedy.
+        self.add(key)
+
 
 class ChildNameCache(PersistentCache):
     """Cache for child names."""
