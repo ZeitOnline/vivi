@@ -7,6 +7,8 @@ CHANGES
 - Fixed »AttributeError: 'BTrees.OOBTree.OOTreeSet' object has no attribute
   'add'« which occured on existing databases.
 
+- Fixed refresh-cache to not fail with a bogus property cache.
+
 1.9 (2008-04-08)
 ----------------
 

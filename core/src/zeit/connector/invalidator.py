@@ -56,12 +56,15 @@ class Invalidator(persistent.Persistent):
             zeit.connector.interfaces.ResourceInvaliatedEvent(collection))
         # Reload the folder's metadata (depth=1)
         try:
-            self.connector[collection]
+            resource = self.connector[collection]
         except KeyError:
             pass
         else:
-            self.got.update(
-                o[1] for o in self.connector.listCollection(collection))
+            if resource.contentType == 'httpd/unix-directory':
+                self.got.update(
+                    o[1] for o in self.connector.listCollection(collection))
+            else:
+                self.missed.insert(resource.id)
 
     def get_next_collection(self):
         while self.working_set:
@@ -74,9 +77,14 @@ class Invalidator(persistent.Persistent):
     def invalidate_missed(self):
         log.info("Invalidating deleted objects.")
         really_missed = BTrees.family32.OI.difference(self.missed, self.got)
+        property_cache = self.property_cache
         for id in really_missed:
             zope.event.notify(
                 zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+            try:
+                property_cache.remove(id)
+            except KeyError:
+                pass
 
     @property
     def connector(self):

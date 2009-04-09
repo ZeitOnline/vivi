@@ -294,14 +294,21 @@ KeyError: 'id'
 
 >>> cache.get('id') is None
 True
+>>> list(cache.keys())
+[]
 
 Note that there is actually still the entry in the cache, but marked as
 deleted:
 
->>> cache._storage['id']
-<zeit.connector.cache.Properties object at 0x...>
->>> list(cache._storage['id'])
-[DeleteProperty]
+>>> list(cache.keys(include_deleted=True))
+['id']
+
+To really remove there is the remove method, which also works for "deleted"
+keys:
+
+>>> cache.remove('id')
+>>> list(cache.keys(include_deleted=True))
+[]
 
 The property cache does some magic to prevent extensive memory consumption. The
 keys in the cache *values* are rather few, maybe 200. So it keeps track of the
@@ -362,12 +369,12 @@ does conflict resolution:
 Conflict resolution
 -------------------
 
-The child name cache resolves conflicts in a very brutal way as it considers
-the cache stale when ever there was a conflict. Since it is only a cache we do
-not loose any data here.
+The property cache resolves conflicts in a very brutal way as it considers the
+cache stale when ever there was a conflict. Since it is only a cache we do not
+loose any data here.
 
-Note that the most common conflicts are value changes *in* the cache. We do
-not change the conflict resolution of the underling btree.
+Note that the most common conflicts are value changes *in* the cache. We do not
+change the conflict resolution of the underling btree.
 
 
 >>> import transaction
@@ -403,6 +410,7 @@ KeyError: 'id'
 Traceback (most recent call last):
     ...
 KeyError: 'id'
+
 
 
 

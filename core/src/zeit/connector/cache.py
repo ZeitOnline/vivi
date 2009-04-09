@@ -207,17 +207,25 @@ class PersistentCache(persistent.Persistent):
             return default
 
     def __contains__(self, key):
-        return get_storage_key(key) in self._storage
+        key = get_storage_key(key)
+        value = self._storage.get(key, self)
+        return value is not self and not self._is_deleted(value)
 
-    def keys(self):
-        return self._storage.keys()
+    def keys(self, include_deleted=False):
+        keys = self._storage.keys()
+        if include_deleted:
+            return keys
+        return (key for key in keys if key in self)
 
     def __delitem__(self, key):
         value = self._storage[get_storage_key(key)]
         if isinstance(value, self.CACHE_VALUE_CLASS):
             self._mark_deleted(value)
         else:
-            del self._storage[get_storage_key(key)]
+            self.remove(key)
+
+    def remove(self, key):
+        del self._storage[get_storage_key(key)]
 
     def __setitem__(self, key, value):
         value = self._simplify(value)

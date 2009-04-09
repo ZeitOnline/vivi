@@ -264,15 +264,29 @@ class ICache(zope.interface.common.mapping.IReadMapping,
     """Generic cache interface."""
 
 
+    def keys(include_deleted=False):
+        """Return the keys.
+
+        If ``include_deleted`` is True entries marked as deleted are also
+        returned.
+
+        """
+
+    def remove(key):
+        """Really remove "key" from cache.
+
+        __delitem__ marks an entry as deleted so the cache behaves as if it was
+        deleted. ``remove`` really removes the entry.
+
+        """
+
+
 class IPersistentCache(ICache):
     """Cache that invaidates at server startup."""
 
 
 class IPropertyCache(ICache):
     """A cache for properties."""
-
-    def keys():
-        """Return the keys."""
 
 
 class IChildNameCache(ICache):
