@@ -9,6 +9,8 @@ CHANGES
 
 - Fixed refresh-cache to not fail with a bogus property cache.
 
+- Improved ConflictResolution so equal states are kept instead of thrown away.
+
 1.9 (2008-04-08)
 ----------------
 

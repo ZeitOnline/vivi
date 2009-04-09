@@ -412,6 +412,18 @@ Traceback (most recent call last):
 KeyError: 'id'
 
 
+When the conflicting state is *equal* it is kept, though:
+
+>>> c_1['id'] = {'foo': 'baz'}
+>>> c_2['id'] = {'foo': 'baz'}
+>>> transactionmanager_2.commit()
+>>> transactionmanager_1.commit()
+>>> connection_1.sync()
+>>> connection_2.sync()
+>>> c_1['id']
+{<WebDAVPropertyKey foo>: 'baz'}
+>>> c_2['id']
+{<WebDAVPropertyKey foo>: 'baz'}
 
 
 Child name cache
@@ -491,6 +503,18 @@ Traceback (most recent call last):
     ...
 KeyError: 'id'
 
+When the conflicting state is *equal* it is kept, though:
+
+>>> c_1['id'] = ('foo',)
+>>> c_2['id'] = ('foo',)
+>>> transactionmanager_2.commit()
+>>> transactionmanager_1.commit()
+>>> connection_1.sync()
+>>> connection_2.sync()
+>>> list(c_1['id'])
+['foo']
+>>> list(c_2['id'])
+['foo']
 
 .. [#cleanup] 
 

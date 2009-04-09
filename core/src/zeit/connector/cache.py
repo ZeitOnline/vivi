@@ -287,6 +287,8 @@ zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
 class Properties(persistent.mapping.PersistentMapping):
 
     def _p_resolveConflict(self, old, commited, newstate):
+        if commited == newstate:
+            return commited
         old['_container'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
@@ -331,6 +333,8 @@ def invalidate_property_cache(event):
 class ChildNames(zc.set.Set):
 
     def _p_resolveConflict(self, old, commited, newstate):
+        if commited == newstate:
+            return commited
         old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
         return old
 
