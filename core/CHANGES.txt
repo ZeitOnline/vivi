@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.10 (unreleased)
+1.10 (2008-04-09)
 -----------------
 
 - Fixed »AttributeError: 'BTrees.OOBTree.OOTreeSet' object has no attribute
