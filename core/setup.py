@@ -18,7 +18,7 @@ setup(
         'ZODB3>=3.8b4',
         'gocept.cache>=0.2.2',
         'gocept.lxml',
-        'gocept.runner>0.1',
+        'gocept.runner>=0.2',
         'setuptools',
         'zc.queue',
         'zc.set',
