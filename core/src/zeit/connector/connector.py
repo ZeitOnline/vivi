@@ -550,14 +550,6 @@ class Connector(object):
                                   datetime.datetime.now(pytz.UTC) +
                                   datetime.timedelta(seconds=60))
 
-        if hasattr(resource.data, 'seek'):
-            resource.data.seek(0)
-
-        # We should pass the data as IO object. This is not supported out of
-        # the box by httplib (which is used in DAV). We could override the send
-        # method though.
-        data = resource.data.read()
-
         added = False
 
         if iscoll:
@@ -572,6 +564,12 @@ class Connector(object):
                                       datetime.datetime.now(pytz.UTC) +
                                       datetime.timedelta(seconds=60))
         else: # We are a file resource:
+            if hasattr(resource.data, 'seek'):
+                resource.data.seek(0)
+            # We should pass the data as IO object. This is not supported out
+            # of the box by httplib (which is used in DAV). We could override
+            # the send method though.
+            data = resource.data.read()
             if(self._check_dav_resource(id) is None):
                 (parent, name) = self._id_splitlast(id)
                 parent = self._get_dav_resource(parent, ensure='collection')
