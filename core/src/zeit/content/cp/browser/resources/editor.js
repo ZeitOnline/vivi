@@ -146,16 +146,16 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
 
 zeit.content.cp.TeaserBarSorter = zeit.content.cp.ContentActionBase.extend({
     // Sort the teaser bars.
+    // This class is very specific right now. I hope to make it reusable for
+    // the other sort tasks.
 
     connect: function() {
         var self = this;
-        var handles = MochiKit.Selector.findChildElements(
-            self.editor.content,
-            ['div.block.type-teaser-bar > * > div.edit > div.dragger']);
-        var mosaic = $('cp-teasermosaic');
-        forEach(handles, function(handle) {
-            var bar = MochiKit.DOM.getFirstParentByTagAndClassName(
-                handle, 'div', 'block');
+        self.container = $('cp-teasermosaic');
+        var bars = self.get_sortable_nodes();
+        forEach(bars, function(bar) {
+            var handle = MochiKit.Selector.findChildElements(
+                bar, ['> .block-inner > .edit > .dragger'])[0];
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Draggable(bar, {
                     constraint: 'vertical',
@@ -168,16 +168,62 @@ zeit.content.cp.TeaserBarSorter = zeit.content.cp.ContentActionBase.extend({
             }));
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Droppable(bar, {
-                    containment: [mosaic],
+                    containment: [self.container],
                     onhover: MochiKit.Sortable.onHover,
                     overlap: 'vertical',
            }));
         });
-        MochiKit.Sortable.sortables[mosaic.id] = {
+        var options = {
             onChange: MochiKit.Base.noop,
-            onUpdate: MochiKit.Base.noop,
+            onUpdate: function(element) { self.on_update(element) },
         }
+        MochiKit.Sortable.sortables[self.container.id] = options;
         
+        options.lastValue = self.serialize(self.container);
+        options.startHandle = MochiKit.Signal.connect(
+            MochiKit.DragAndDrop.Draggables, 'start',
+            function(draggable) { self.on_start(self.container, draggable); });
+        options.endHandle = MochiKit.Signal.connect(
+            MochiKit.DragAndDrop.Draggables, 'end',
+            function(draggable) { self.on_end(self.container, draggable); });
+    },
+
+    get_sortable_nodes: function() {
+        var self = this;
+        return MochiKit.Selector.findChildElements(
+            self.editor.contents,
+            ['#cp-teasermosaic > div.block.type-teaser-bar']);
+    },
+
+    on_start: function(element, draggable) {
+        var self = this;
+        self.options().lastValue = self.serialize();
+    },
+
+    on_end: function(element, draggable) {
+        var self = this;
+        MochiKit.Sortable.unmark();
+        if (!MochiKit.Base.arrayEqual(self.options().lastValue,
+                                      self.serialize())) {
+            self.options().onUpdate(element);
+        }
+    },
+
+    on_update: function(element) {
+        var self = this;
+        log(self.serialize());
+        // XXX store ordering on server
+    },
+
+    serialize: function() {
+        var self = this;
+        return MochiKit.Base.map(
+            function(e) { return e.id }, self.get_sortable_nodes());
+    },
+
+    options: function() {
+        var self = this;
+        return MochiKit.Sortable.options(self.container.id)
     },
 
 });
