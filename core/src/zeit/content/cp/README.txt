@@ -85,7 +85,7 @@ Teaser block
 >>> factory.title
 u'List of teasers'
 >>> block = factory()
->>> block 
+>>> block
 <zeit.content.cp.teaser.TeaserList object at 0x...>
 >>> block.type
 'teaser'
@@ -94,7 +94,7 @@ After calling the factory a corresponding XML node has been created:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(lead.xml, pretty_print=True),
-<region ... 
+<region ...
   area="lead">
   <container
     cp:type="placeholder"
@@ -169,7 +169,7 @@ Teaser mosaic
 
 The teaser mosaic contains teaser bars. Note that the term *teaser* mosaic is
 missleading as it may also contain a lot of other things (like information
-about the weather). 
+about the weather).
 
 >>> transaction.commit()
 >>> mosaic = cp['teaser-mosaic']
@@ -227,7 +227,7 @@ The xml of the teaser bar is actually a region:
     ...     cp['lead'], None, None, None, None))
     >>> cp._p_changed
     True
-    
+
 
 .. [#invalid-raises-error]
 

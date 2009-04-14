@@ -83,6 +83,18 @@ class IPlaceHolder(IBlock):
 class ITeaserList(IBlock):
     """A list of teasers."""
 
+    referenced_cp = zope.schema.Choice(
+        title=_("Fetch teasers from"),
+        source=zeit.cms.content.contentsource.CMSContentSource())
+    autopilot = zope.schema.Bool(
+        title=_("On Autopilot")
+        )
+
+
+class ILeadTeasers(zope.interface.Interface):
+    """A list containing the UID of the first teaser of each block in the lead
+    area."""
+
 
 class ITeaserBar(IBlock, IRegion):
     """A teaser bar is a bar in the teaser mosaic.

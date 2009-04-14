@@ -17,10 +17,11 @@ The teaser block contains a list of teasers[#functional]_.
 ...     zeit.cms.repository.interfaces.IRepository)
 
 >>> teasers.insert(0, repository['testcontent'])
+>>> teasers.insert(1, repository['2007']['test'])
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
-<container ... 
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...
     cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5">
   <block href="http://xml.zeit.de/testcontent">
     <supertitle xsi:nil="true"/>
@@ -38,15 +39,61 @@ The teaser block contains a list of teasers[#functional]_.
     </homepage>
     <references/>
   </block>
+  <block href="http://xml.zeit.de/2007/test"/>
 </container>
 
 
+Autopilot
++++++++++
 
+A teaser block in autopilot mode fetches its contents from another CenterPage.
 
+>>> teasers = factory()
+>>> repository['cp'] = cp
+>>> teasers.referenced_cp = repository['cp']
+>>> teasers.autopilot = True
+>>> len(teasers)
+1
+>>> list(teasers)[0].uniqueId
+u'http://xml.zeit.de/testcontent'
+
+But its XML representation only contains an xi:include to the referenced page:
+
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...>
+  <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
+  <xi_include href="http://xml.zeit.de/cp"/>
+  <autopilot ...>true</autopilot>
+</container>
+
+While on autopilot, manipulation of the teaser block's contents is forbidden:
+
+>>> teasers.insert(0, repository['testcontent'])
+Traceback (most recent call last):
+RuntimeError: <zeit.content.cp.teaser.TeaserList object at 0x...>: 'insert' is forbidden while on autopilot
+
+When the teaser block is switched back to manual mode, the currently referenced
+teasers are copied into it:
+
+>>> teasers.autopilot = False
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...>
+  <block href="http://xml.zeit.de/testcontent">
+  ...
+  </block>
+  <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
+  <autopilot ...>false</autopilot>
+</container>
+
+In manual mode, the contents can be changed again:
+
+>>> teasers.remove(repository['testcontent'])
+>>> len(teasers)
+0
 
 >>> zope.app.component.hooks.setSite(old_site)
 
-.. [#functional] 
+.. [#functional]
 
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()

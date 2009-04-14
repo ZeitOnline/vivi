@@ -66,7 +66,7 @@
     name="informatives"
     factory=".area.Region"
     />
-  <adapter 
+  <adapter
     provides=".interfaces.IArea"
     name="teaser-mosaic"
     factory=".area.Cluster"
@@ -75,10 +75,10 @@
   <!-- teaser bar -->
 
   <adapter factory=".area.TeaserBarFactory" name="teaser-bar" />
-  <adapter 
+  <adapter
     provides=".interfaces.ITeaserBar"
     name="teaser-bar"
-    factory=".area.TeaserBar" 
+    factory=".area.TeaserBar"
     />
   <class class=".area.TeaserBar">
     <require
@@ -93,9 +93,10 @@
       permission="zope.View"
       />
   </class>
-  
 
-  <!-- Blockes -->
+
+  <!-- Blocks -->
   <include file="block.zcml" />
 
+  <adapter factory=".teaser.lead_teasers_for_centerpage" />
 </configure>
