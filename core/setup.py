@@ -21,6 +21,7 @@ setup(
     install_requires=[
         'gocept.lxml',
         'lxml',
+        'python-cjson',
         'setuptools',
         'zeit.cms>=1.16.5',
         'zope.app.pagetemplate',

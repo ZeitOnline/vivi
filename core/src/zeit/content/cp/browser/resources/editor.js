@@ -15,10 +15,6 @@ zeit.content.cp.Editor = gocept.Class.extend({
             self, 'reload', self, 'reload');
     },
 
-    reload: function() {
-        MochiKit.Signal.signal(self, 'reload');
-    },
-
     handleContentClick: function(event) {
         var self = this;
         log("Target " + event.target().nodeName);

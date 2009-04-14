@@ -2,8 +2,9 @@
 Centerpage
 ==========
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 
@@ -196,6 +197,52 @@ Add a real block in the second place:
         </div>
         ...
 
+Sorting
++++++++
+
+Blocks can be sorted. There is an ``updateOrder`` view doing this. Add another
+teaser bar:
+
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(bookmark)
+>>> bar_divs = browser.etree.xpath(
+...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
+>>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
+>>> bar_ids
+['92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
+ 'cc243e0c-5814-4180-a336-744ca140c3da']
+
+Reverse the bars:
+
+>>> reversed_ids = tuple(reversed(bar_ids))
+
+>>> import cjson
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(reversed_ids))
+
+The order has been updated now:
+
+>>> browser.open(bookmark)
+>>> bar_divs = browser.etree.xpath(
+...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
+>>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
+>>> bar_ids == reversed_ids
+True
+
+Restore the original order again:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(original_ids))
+>>> browser.open(bookmark)
+>>> bar_divs = browser.etree.xpath(
+...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
+>>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
+>>> bar_ids == tuple(original_ids)
+True
+
+
 
 Deleting blocks
 +++++++++++++++
@@ -213,18 +260,9 @@ Remove the teaser list inside the teaser bar:
 'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/<GUID>/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
 
-Remove the teaser bar:
+Remove a teaser bar:
 
 >>> browser.open(bookmark)
 >>> browser.getLink('Delete').url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
-
-Nothing left to delete now:
-
->>> browser.open(bookmark)
->>> browser.getLink('Delete')
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
-

@@ -104,7 +104,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
     class=".block.DeleteFromTeaserBar"
-    permission="zope.View"
+    permission="zeit.EditContent"
     />
 
   <browser:viewlet
@@ -150,6 +150,14 @@
     template="layout.cluster.edit.pt"
     permission="zeit.EditContent"
     weight="90"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".area.UpdateOrder"
+    permission="zeit.EditContent"
     />
 
 
