@@ -84,11 +84,11 @@ class TestGenericEditing(Test):
         s.waitForElementPresent('css=div.type-teaser')
 
         # Hover mouse over block
-        s.verifyElementNotPresent('css=div.block-inner.hover')
+        s.verifyElementNotPresent('css=div.block.hover')
         s.mouseOver('css=div.teaser-list')
-        s.verifyElementPresent('css=div.block-inner.hover')
+        s.verifyElementPresent('css=div.hover')
         s.mouseOut('css=div.teaser-list')
-        s.verifyElementNotPresent('css=div.block-inner.hover')
+        s.verifyElementNotPresent('css=div.block.hover')
 
 
 class TestTeaserList(Test):
@@ -123,6 +123,7 @@ class TestTeaserList(Test):
         s.dragAndDropToObject(
             'xpath=//td[contains(string(.), "testcontent")]',
             '//li[@uniqueid="Clip"]')
+        s.pause(500)
 
         self.create_teaserlist()
 
@@ -130,3 +131,64 @@ class TestTeaserList(Test):
             '//li[@uniqueid="Clip/testcontent"]',
             'css=div.type-teaser')
         s.waitForElementPresent('css=div.supertitle')
+
+
+class TestTeaserMosaic(Test):
+
+    def test_sorting(self):
+        self.open_centerpage()
+        s = self.selenium
+        # Create three teaser bars
+
+        s.click('link=*Add teaser bar*')
+        s.waitForXpathCount('//div[@class="block type-teaser-bar"]', 1)
+        s.click('link=*Add teaser bar*')
+        s.waitForXpathCount('//div[@class="block type-teaser-bar"]', 2)
+        s.click('link=*Add teaser bar*')
+        s.waitForXpathCount('//div[@class="block type-teaser-bar"]', 3)
+
+        # Get the ids of the bars
+        s.storeAttribute('//div[@class="block type-teaser-bar"][1]@id', 'bar1')
+        s.storeAttribute('//div[@class="block type-teaser-bar"][2]@id', 'bar2')
+        s.storeAttribute('//div[@class="block type-teaser-bar"][3]@id', 'bar3')
+
+        # All bars have an equal height, drag 0.75 of the height.
+        s.storeElementHeight('id=${bar1}', 'bar-height');
+        s.storeEval("new Number(storedVars['bar-height']) * 0.75", "delta_y")
+
+
+        # Drag bar1 below bar2
+        s.dragAndDrop('css=#${bar1} > .block-inner > .edit > .dragger',
+                      '0,${delta_y}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][1]@id', '${bar2}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][2]@id', '${bar1}')
+
+        # Drag bar3 above bar1. When we move up, we have to move farther
+        # because the drag handle is on the bottom of the bar.
+        s.storeEval("new Number(storedVars['bar-height']) * 1.75", "delta_y")
+        s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
+                      '0,-${delta_y}')
+        s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
+                      '0,-${delta_y}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][1]@id', '${bar3}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][2]@id', '${bar2}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][3]@id', '${bar1}')
+
+        # Make sure the drag survives page reloads. First wait a little after
+        # the last drag to let the server finish storing etc.
+        s.pause(500)
+        s.clickAndWait('link=Edit contents')
+        s.waitForElementPresent('xpath=//div[@class="landing-zone"]')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][1]@id', '${bar3}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][2]@id', '${bar2}')
+        s.verifyAttribute(
+            '//div[@class="block type-teaser-bar"][3]@id', '${bar1}')
+
+

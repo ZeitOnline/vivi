@@ -14,5 +14,12 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestTeaserMosaic"
+    name="zeit.content.cp.TestTeaserMosaic"
+    permission="zope.Public"
+    />
+
+
 </configure>
 

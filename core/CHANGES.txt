@@ -8,6 +8,8 @@ zeit.content.cp changes
 
 - Highlight der Boxen bei Mouse-Over.
 
+- Sortieren von Teaseen (#4776).
+
 0.1 (2009-04-03)
 ----------------
 
