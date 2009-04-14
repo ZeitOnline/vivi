@@ -31,7 +31,7 @@ Set a title (although it's unclear if we really need this):
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div class="block type-teaser">
+<div class="block type-teaser" id="<GUID>">
   <div class="block-inner">
     <div class="teaser-list topthema action-content-droppable"
      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
