@@ -58,9 +58,13 @@ class Block(zope.container.contained.Contained):
         self.__parent__ = context
         self.xml = xml
 
-    @property
-    def __name__(self):
+    def _get_name(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+
+    def _set_name(self, name):
+        return self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
+
+    __name__ = property(_get_name, _set_name)
 
     @property
     def type(self):

@@ -56,15 +56,13 @@ class Area(UserDict.DictMixin,
             item, self, name))
 
     def _add(self, item):
-        # XXX use item.__name__
-        name = item.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+        name = item.__name__
         if name:
             if name in self:
                 raise zope.container.interfaces.DuplicateIDError(name)
         else:
             name = str(uuid.uuid4())
-        # XXX use item.__name__ = ...
-        item.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
+        item.__name__ = name
         self.xml.append(item.xml)
         return name
 
