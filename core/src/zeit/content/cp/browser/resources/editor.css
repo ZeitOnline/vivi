@@ -97,6 +97,7 @@
 }
 
 .edit {
+  background-color: inherit;
   border-top: 3px solid #aaa;
   font-size: 2em;
   height: 1.5em;
@@ -112,23 +113,29 @@
 
 .edit > a {
   color: inherit;
+}
+
+.edit.contains-dragger > a {
+  background-attachment: top left;
+  background-color: inherit;
+  background-repeat: no-repeat;
   display: block;
   float: left;
   height: 20px;
   width: 22px;
 }
 
-.edit > .edit-link {
-  background: url('edit.png') no-repeat left;
+.edit.contains-dragger > .edit-link {
+  background-image: url('edit.png');
 }
 
-.edit > .delete-link {
-  background: url('delete.png') no-repeat top left;
+.edit.contains-dragger > .delete-link {
+  background-image: url('delete.png');
   float: right;
 }
 
-.edit > .edit-teaser-link {
-  background: url('edit-teaserlist-contents.png') no-repeat top left;
+.edit.contains-dragger > .edit-teaser-link {
+  background-image: url('edit-teaserlist-contents.png');
 }
 
 .edit > .delete-link > .confirm-delete {
@@ -186,7 +193,8 @@
 /* dragger */
 
 .dragger {
-  margin: 0 50px;
+  margin: 0 10px;
+  z-index: -1;
 }
 
 
