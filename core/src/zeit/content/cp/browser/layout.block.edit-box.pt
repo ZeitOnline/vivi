@@ -1,0 +1,6 @@
+<a class="edit-link" title="Edit"
+   tal:attributes="href string:${context/@@absolute_url}/block.edit"
+   i18n:attributes="title"
+   cms:cp-module="LightBoxForm">
+  <span class="action-title">Edit</span>
+</a>

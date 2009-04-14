@@ -6,3 +6,7 @@ import zope.viewlet.interfaces
 
 class IEditorContentViewletManager(zope.viewlet.interfaces.IViewletManager):
     """Viewlets which compose an area."""
+
+
+class IEditBarViewletManager(zope.viewlet.interfaces.IViewletManager):
+    """Vielets which compose an edit bar."""

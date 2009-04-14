@@ -112,22 +112,23 @@
 
 .edit > a {
   color: inherit;
-}
-
-.edit > .edit-link {
-  background: url('edit.png') no-repeat;
   display: block;
   float: left;
   height: 20px;
-  width: 20px;
+  width: 22px;
+}
+
+.edit > .edit-link {
+  background: url('edit.png') no-repeat left;
 }
 
 .edit > .delete-link {
-  background: url('delete.png') no-repeat top;
-  display: block;
+  background: url('delete.png') no-repeat top left;
   float: right;
-  height: 20px;
-  width: 20px;
+}
+
+.edit > .edit-teaser-link {
+  background: url('edit-teaserlist-contents.png') no-repeat top left;
 }
 
 .edit > .delete-link > .confirm-delete {
@@ -185,7 +186,7 @@
 /* dragger */
 
 .dragger {
-  margin: 0 30px;
+  margin: 0 50px;
 }
 
 

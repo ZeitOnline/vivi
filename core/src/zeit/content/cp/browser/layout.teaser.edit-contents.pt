@@ -1,0 +1,6 @@
+<a class="edit-teaser-link" title="Edit contents"
+   tal:attributes="href string:${context/@@absolute_url}/teaser.edit-contents"
+   i18n:attributes="title"
+   cms:cp-module="LightBoxForm">
+  <span class="action-title">Edit contents</span>
+</a>

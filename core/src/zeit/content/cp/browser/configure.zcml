@@ -182,7 +182,6 @@
     permission="zope.View"
     />
 
-
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -192,6 +191,48 @@
     template="layout.block.edit.pt"
     permission="zeit.EditContent"
     weight="90"
+    />
+
+  <browser:viewletManager
+    provides=".interfaces.IEditBarViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.content.cp.edit-bar"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="edit-box"
+    template="layout.block.edit-box.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.block.delete.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="drag"
+    template="layout.block.drag.pt"
+    permission="zeit.EditContent"
+    weight="100"
     />
 
 
@@ -224,6 +265,18 @@
     class=".teaser.TeaserDrop"
     permission="zeit.EditContent"
     />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="edit-contents"
+    template="layout.teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
 
   <!-- place holder -->
 
