@@ -86,13 +86,17 @@ zeit.content.cp.ContentActionBase = gocept.Class.extend({
             document.cpeditor, 'before-reload', self, 'disconnect');
         MochiKit.Signal.connect(
             document.cpeditor, 'after-reload', self, 'connect');
-        self.dnd_objects = []
+        self.dnd_objects = [];
+        self.events = [];
     },
 
     disconnect: function() {
         var self = this;
         while(self.dnd_objects.length) {
           self.dnd_objects.pop().destroy();
+        }
+        while(self.events.length) {
+          MochiKit.Signal.disconnect(self.events.pop());
         }
     },
 
@@ -176,12 +180,12 @@ zeit.content.cp.TeaserBarSorter = zeit.content.cp.ContentActionBase.extend({
         MochiKit.Sortable.sortables[self.container.id] = options;
         
         options.lastValue = self.serialize(self.container);
-        options.startHandle = MochiKit.Signal.connect(
+        this.events.push(MochiKit.Signal.connect(
             MochiKit.DragAndDrop.Draggables, 'start',
-            function(draggable) { self.on_start(self.container, draggable); });
-        options.endHandle = MochiKit.Signal.connect(
+            function(draggable) { self.on_start(self.container, draggable); }));
+        this.events.push(MochiKit.Signal.connect(
             MochiKit.DragAndDrop.Draggables, 'end',
-            function(draggable) { self.on_end(self.container, draggable); });
+            function(draggable) { self.on_end(self.container, draggable); }));
     },
 
     get_sortable_nodes: function() {
@@ -207,8 +211,12 @@ zeit.content.cp.TeaserBarSorter = zeit.content.cp.ContentActionBase.extend({
 
     on_update: function(element) {
         var self = this;
-        log(self.serialize());
-        // XXX store ordering on server
+        var keys = MochiKit.Base.serializeJSON(self.serialize());
+        var url = self.container.getAttribute('cms:url') + '/@@updateOrder';
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url, {keys:keys});
+        // We don't have do anything on success as the ordering is already
+        // applied in the HTML.
+        // XXX error handling!
     },
 
     serialize: function() {

@@ -13,7 +13,9 @@
   </div>
 
   <div id="cp-teasermosaic" class="editable-area"
-       tal:content="structure context/teaser-mosaic/@@contents">
+       tal:define="mosaic context/teaser-mosaic"
+       tal:attributes="cms:url mosaic/@@absolute_url"
+       tal:content="structure mosaic/@@contents">
   </div>
 
 </div>
