@@ -1,10 +1,13 @@
 zeit.cms changes
 ================
 
-1.16.6 (unreleased)
+1.17 (unreleased)
 -------------------
 
 - Adapter von UniqueId auf ICMSContent hinzugefügt (fixes #4979).
+
+- Es wird eine eindeutige ID als WebDAV-Property
+  ``{http://namespaces.zeit.de/CMS/workflow}id`` geschrieben (fixes #4977).
 
 1.16.5 (2009-04-07)
 -------------------
