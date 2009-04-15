@@ -1,14 +1,21 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import re
 import unittest
-import zope.component
-import zeit.cms.repository.unknown
 import zeit.cms.repository.interfaces
+import zeit.cms.repository.unknown
 import zeit.cms.testing
 import zope.app.testing.functional
+import zope.component
 import zope.interface
+import zope.testing.renormalizing
 from zope.testing import doctest
+
+
+checker = zope.testing.renormalizing.RENormalizing([
+    (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
+     "<GUID>"),])
 
 
 class ITestInterface(zope.interface.Interface):
@@ -137,6 +144,8 @@ def test_suite():
         'semanticchange.txt',
         'sources.txt',
         'xmlsupport.txt',
+        'contentuuid.txt',
+        checker=checker,
     ))
     suite.addTest(unittest.makeSuite(DAVTest))
     return suite

@@ -336,3 +336,14 @@ class ISemanticChange(zope.interface.Interface):
         required=False,
         readonly=True,
         default=None)
+
+
+class IUUID(zope.interface.Interface):
+    """Accessing the uuid of a content object."""
+
+    id = zope.schema.ASCIILine(
+            title=u"The uuid of the content object.",
+            default=None,
+            required=False)
+
+

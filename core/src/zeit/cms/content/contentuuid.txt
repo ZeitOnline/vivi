@@ -1,0 +1,94 @@
+===============================
+Adding a UID to content objects
+===============================
+
+When checking in objects, unique ids (UIDs) are added
+automatically[#functional]_.
+
+We need an interaction as checkout manager needs to get the principal:
+
+>>> import zope.security.testing
+>>> principal = zope.security.testing.Principal(u'zope.user')
+>>> participation = zope.security.testing.Participation(principal)
+>>> import zope.security.management
+>>> zope.security.management.newInteraction(participation)
+
+We checkout a test content object:
+
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['testcontent']
+
+It won't have a unique id yet:
+
+>>> import zeit.cms.content.interfaces
+>>> uuid = zeit.cms.content.interfaces.IUUID(content).id
+>>> uuid is None
+True
+
+We check out the test content object:
+
+>>> from zeit.cms.checkout.interfaces import (
+...     ICheckoutManager, ICheckinManager)
+>>> checkout_manager = ICheckoutManager(content)
+>>> checked_out = checkout_manager.checkout()
+
+It still won't have the unique id:
+
+>>> uuid = zeit.cms.content.interfaces.IUUID(checked_out).id
+>>> uuid is None
+True
+
+Now we check in:
+
+>>> checkin_manager = ICheckinManager(checked_out)
+>>> checked_in = checkin_manager.checkin()
+
+After the ckeckin, the unique id is added:
+
+>>> uuid = zeit.cms.content.interfaces.IUUID(checked_in).id
+>>> uuid
+'1029cf63-5823-456c-bbd4-1a98cdfa25c7'
+
+Let's verify, that when we check it out and then in again, the unique id has
+not changed:
+
+>>> checked_out = checkout_manager.checkout()
+>>> checkin_manager = ICheckinManager(checked_out)
+>>> checked_in = checkin_manager.checkin()
+>>> zeit.cms.content.interfaces.IUUID(checked_in).id == uuid
+True
+
+The XML content will contain the unique id:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(checked_in.xml, pretty_print=True)
+<testtype>
+  <head>
+    ...
+    <attribute
+        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str"
+        ns="http://namespaces.zeit.de/CMS/workflow"
+        name="id">1029cf63-5823-456c-bbd4-1a98cdfa25c7</attribute>
+    ...
+  </head>
+  <body/>
+</testtype>
+
+
+Cleanup
+=======
+
+After the test we restore the old site:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional] We need to set the site since we're a functional test:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
