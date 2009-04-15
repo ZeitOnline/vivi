@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.6 (unreleased)
+----------------
+
+- Möglichkeit, den Export zum Tagesspiegel auszulösen, hinzugefügt.
+
 1.5.13 (2009-02-11)
 -------------------
 
