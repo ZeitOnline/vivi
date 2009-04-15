@@ -11,7 +11,8 @@ zeit.cms.LightboxForm = Class.extend({
         if (isUndefinedOrNull(container)) {
             container = $('body');
         }
-        var othis = this;
+        var self = this;
+        self.url = url;
         this.events = []
         this.lightbox = new gocept.Lightbox(container);
         this.content_box = this.lightbox.content_box;
@@ -19,19 +20,23 @@ zeit.cms.LightboxForm = Class.extend({
             connect(this.content_box, 'onclick', this, 'handle_click'));
         this.events.push(
             connect(window, 'zeit.cms.LightboxReload', function(event) {
-                othis.loading();
+                self.loading();
             }));
         this.events.push(
             MochiKit.Signal.connect(
                 this.lightbox, 'before-close', this, 'close'));
+        self.reload();
+    },
 
-        var d = this.lightbox.load_url(url);
+    reload: function() {
+        var self = this;
+        var d = self.lightbox.load_url(self.url);
         d.addCallback(
             function(result) {
-                othis.post_process_html();
+                self.post_process_html();
                 return result;
             });
-
+        return d
     },
 
     close: function() {
@@ -53,7 +58,7 @@ zeit.cms.LightboxForm = Class.extend({
     },
 
     handle_submit: function(action) {
-        var othis = this;
+        var self = this;
 
         // collect data
         var elements = filter(
@@ -82,20 +87,20 @@ zeit.cms.LightboxForm = Class.extend({
             'sendContent': data});
         d.addCallbacks(
             function(result) {
-                MochiKit.Signal.disconnectAll(othis.form);
-                othis.content_box.innerHTML = result.responseText;
+                MochiKit.Signal.disconnectAll(self.form);
+                self.content_box.innerHTML = result.responseText;
                 if (action.indexOf('form.actions.') != 0) {
                     // This was no action. No error could have been generated.
                     // Also the form is not done, yet.
                     return result;
                 }
                 var errors = getFirstElementByTagAndClassName(
-                    'ul', 'errors', othis.content_box)
+                    'ul', 'errors', self.content_box)
                 if (errors != null) {
                     return result;
                 }
                 var next_url_node = getFirstElementByTagAndClassName(
-                    'span', 'nextUrl', othis.content_box);
+                    'span', 'nextUrl', self.content_box);
                 if (next_url_node == null) {
                     return result;
                 }
@@ -113,7 +118,7 @@ zeit.cms.LightboxForm = Class.extend({
             if (result === null) {
                 return null;
             }
-            othis.post_process_html();
+            self.post_process_html();
             return result;
         });
         return d;
@@ -127,21 +132,21 @@ zeit.cms.LightboxForm = Class.extend({
     },
 
     post_process_html: function() {
-        var othis = this;
+        var self = this;
         // Change all submits to buttons to be able to handle them in
         // java script
         forEach(
             getElementsByTagAndClassName(
-                'input', null, othis.content_box),
+                'input', null, self.content_box),
             function(button) {
                 if (button.type == 'submit') {
                     button.type = 'button';
                 }
             });
-        othis.form = $('lightbox.form');
-        if (othis.form != null) {
-            othis.events.push(MochiKit.Signal.connect(
-                othis.form, 'onsubmit', function(event) {
+        self.form = $('lightbox.form');
+        if (self.form != null) {
+            self.events.push(MochiKit.Signal.connect(
+                self.form, 'onsubmit', function(event) {
                 // prevent accidential submit
                 event.stop()
             }));
@@ -150,7 +155,7 @@ zeit.cms.LightboxForm = Class.extend({
         // check for javascript
         forEach(
             getElementsByTagAndClassName('SCRIPT', null,
-                                         othis.content_box),
+                                         self.content_box),
             function(script) {
                 eval(script.text);
             });
