@@ -65,7 +65,7 @@ class ArticleFormBase(object):
         gocept.form.grouped.Fields(
             _("Options"),
             ('dailyNewsletter', 'boxMostRead', 'commentsAllowed',
-             'banner', 'has_recensions', 'artbox_thema'),
+             'banner', 'has_recensions', 'artbox_thema', 'export_cds'),
             css_class='widgets-float column-left'))
 
 
