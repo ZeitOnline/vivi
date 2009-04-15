@@ -8,7 +8,9 @@ zeit.content.cp changes
 
 - Highlight der Boxen bei Mouse-Over.
 
-- Sortieren von Teaseen (#4776).
+- Sortieren von Teaserleisten (#4776).
+
+- Löschen von Teasern aus der Teaserliste (re #4805).
 
 0.1 (2009-04-03)
 ----------------

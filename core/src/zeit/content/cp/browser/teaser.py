@@ -8,7 +8,9 @@ import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
 import zope.component
+import zope.event
 import zope.formlib.form
+import zope.lifecycleevent
 
 
 class TeaserEdit(zope.formlib.form.SubPageEditForm):
@@ -55,10 +57,42 @@ class TeaserDrop(object):
     def __call__(self, uniqueId):
         # XXX error handling
         content = self.repository.getContent(uniqueId)
-        # XXX make sure the change is propagated to the cp
         self.context.insert(0, content)
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+            self.context))
+
 
     @property
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+class TeaserListEdit(TeaserList):
+    """Edit the teaser list."""
+
+    def teasers(self):
+        teasers = []
+        for content in self.context:
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                content, None)
+            if metadata is None:
+                # XXX warn? Actually such a content shouldn't be here in the
+                # first place. We'll see.
+                continue
+            teasers.append(dict(
+                metadata=metadata,
+                url=self.url(content),
+                uniqueId=content.uniqueId,
+            ))
+
+        return teasers
+
+
+class Delete(object):
+
+    def __call__(self, uniqueId):
+        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+        self.context.remove(content)
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+            self.context))

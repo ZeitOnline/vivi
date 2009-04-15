@@ -23,7 +23,7 @@ setup(
         'lxml',
         'python-cjson',
         'setuptools',
-        'zeit.cms>=1.16.5',
+        'zeit.cms>=1.17.1',
         'zope.app.pagetemplate',
         'zope.component',
         'zope.container>=3.8.1',

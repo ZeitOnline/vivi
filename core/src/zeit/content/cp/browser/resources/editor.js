@@ -244,18 +244,24 @@ MochiKit.Signal.connect(window, 'onload', function() {
 });
 
 
-/* modules */
+//
+// modules 
+//
 zeit.content.cp.modules = {}
 
 zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     construct: function(context_element) {
         var self = this;
+        document.cp_lightbox = self;
         var url = context_element.getAttribute('href');
         arguments.callee.$.construct.call(self, url, $('content'));
         self.events.push(MochiKit.Signal.connect(
            document.cpeditor, 'before-reload',
            self, 'close'));
+        self.close_event_handle = MochiKit.Signal.connect(
+            self.lightbox, 'before-close',
+            self, self.on_close);
     },
 
     handle_submit: function(action) {
@@ -271,8 +277,13 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
                 return result;
             }
             self.close();
-            MochiKit.Signal.signal(document.cpeditor, 'reload');
         });
+    },
+
+    on_close: function() {
+        MochiKit.Signal.disconnect(self.close_event_handle);
+        MochiKit.Signal.signal(document.cpeditor, 'reload');
+        document.cp_lightbox = null;
     },
 });
 
@@ -284,7 +295,7 @@ zeit.content.cp.modules.LoadAndReload = gocept.Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {
-            MochiKit.Signal.signal(document.cpeditor, 'reload');
+            document.cp_lightbox.reload();
         });
     },
 
@@ -297,10 +308,11 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
         var self = this;
         var url = context_element.getAttribute('href');
         // XXX i18n
+        var delete_module = context_element.getAttribute('cms:delete-module');
         self.confirm = DIV(
             {'class': 'confirm-delete'},
             A({'href': url,
-               'cms:cp-module': 'LoadAndReload'},
+               'cms:cp-module': delete_module},
                'Remove'))
         context_element.appendChild(self.confirm);
         MochiKit.Visual.fade(self.confirm, {'from': 0, 'to': 1});
@@ -328,3 +340,15 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
         MochiKit.DOM.removeElementClass(self.block, 'highlight');
     },
 })
+
+
+zeit.content.cp.modules.TeaserListDeleteEntry = gocept.Class.extend({
+    construct: function(context_element) {
+        var url = context_element.getAttribute('href');
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        // XXX error handling
+        d.addCallback(function(result) {
+            document.cp_lightbox.reload();
+        });
+    },
+});

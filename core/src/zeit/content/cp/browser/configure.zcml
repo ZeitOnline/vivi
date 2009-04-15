@@ -277,6 +277,23 @@
     weight="5"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="teaser.edit-contents"
+    class=".teaser.TeaserListEdit"
+    template="teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaser.Delete"
+    permission="zeit.EditContent"
+    />
+
 
   <!-- place holder -->
 

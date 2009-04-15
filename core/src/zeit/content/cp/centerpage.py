@@ -49,6 +49,9 @@ resourceFactory = zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage)(resourceFactory)
 
 
+_test_helper_cp_changed = False
+
+
 @zope.component.adapter(
     zope.interface.Interface,
     zope.lifecycleevent.IObjectModifiedEvent)
@@ -61,3 +64,5 @@ def modified_propagator(context, event):
     if cp is None:
         return
     zope.security.proxy.removeSecurityProxy(cp)._p_changed = True
+    global _test_helper_cp_changed
+    _test_helper_cp_changed = True

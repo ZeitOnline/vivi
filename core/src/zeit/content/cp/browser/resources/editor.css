@@ -115,7 +115,7 @@
   color: inherit;
 }
 
-.edit.contains-dragger > a {
+.edit-bar > a {
   background-attachment: top left;
   background-color: inherit;
   background-repeat: no-repeat;
@@ -125,20 +125,20 @@
   width: 22px;
 }
 
-.edit.contains-dragger > .edit-link {
+.edit-bar > .edit-link {
   background-image: url('edit.png');
 }
 
-.edit.contains-dragger > .delete-link {
+.edit-bar > .delete-link {
   background-image: url('delete.png');
   float: right;
 }
 
-.edit.contains-dragger > .edit-teaser-link {
+.edit-bar > .edit-teaser-link {
   background-image: url('edit-teaserlist-contents.png');
 }
 
-.edit > .delete-link > .confirm-delete {
+.edit-bar > .delete-link > .confirm-delete {
   background-color: white;
   border: 3px solid red;
   color: red;
@@ -225,7 +225,7 @@
 }
 
 
-/* Teaser visualisations*/
+/* Teaser visualisations */
 
 .teaser-list {
   min-height: 5em;
@@ -278,4 +278,15 @@
   margin-bottom: 1em;
 }
 
+/* Teaser list editing */
+
+.teaser-list-edit-box > ol {
+  list-style: none;
+  padding: 0;
+}
+
+.teaser-list-edit-box > ol > li{
+  display: block;
+  clear: both;
+}
 

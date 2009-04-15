@@ -21,12 +21,15 @@ Set a title (although it's unclear if we really need this):
 >>> browser.getControl('Title').value = 'Foo'
 >>> browser.getControl('Apply').click()
 
-"Drag" a teaser on the list:
+When a teaser is dragged on the teaser list, it is added as the first teaser.
+Drag the first one[#fill-dav-with-content]_:
 
 >>> browser.open(contents_url)
 >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
 >>> drop_url = browser.etree.xpath('//div/@cms:drop-url', namespaces=nsmap)[0]
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(url)
 >>> browser.open(contents_url)
 >>> print browser.contents
@@ -44,3 +47,153 @@ Set a title (although it's unclear if we really need this):
     <div class="shortTeaserText"></div>
   </div>
   ...
+
+Make sure the data is stored on the centerpage:
+
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+
+
+Drag c1 onto the list, it becomes the first entry:
+
+>>> url = '%s?uniqueId=http://xml.zeit.de/c1' % (drop_url,)
+>>> browser.open(url)
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+<div class="block type-teaser" ... id="<GUID>">
+  <div class="block-inner">
+    <div class="teaser-list topthema action-content-droppable"
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
+  <div class="teaser">
+    ...
+    <div class="supertitle"></div>
+    <div class="teaserTitle">c1 teaser</div>
+    <div class="teaserText"></div>
+    <div class="shortTeaserTitle">c1 teaser</div>
+    <div class="shortTeaserText"></div>
+  </div>
+  <div class="teaser">
+    ...
+    <div class="supertitle"></div>
+    <div class="teaserTitle"></div>
+    <div class="teaserText"></div>
+    <div class="shortTeaserTitle"></div>
+    <div class="shortTeaserText"></div>
+  </div>
+  ...
+
+
+Edit the teaser list
+++++++++++++++++++++
+
+The teaser list can be edited:
+
+>>> browser.getLink('Edit contents').click()
+>>> lightbox_url = browser.url
+>>> print browser.contents
+<h1>Foo</h1>
+<div class="lightbox-full teaser-list-edit-box">
+  <ol>
+    <li class="edit-bar">
+      <a class="edit-link"
+         href="http://localhost/++skin++cms/repository/c1/@@edit-foo-xxx">
+        <span class="action-title">Edit</span>
+      </a>
+      <a class="delete-link" title="Delete"
+         cms:cp-module="ConfirmDelete"
+         cms:delete-module="TeaserListDeleteEntry"
+         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
+        <span class="action-title">Delete</span>
+      </a>
+      <div>c1 teaser</div>
+    </li>
+    <li class="edit-bar">
+      <a class="edit-link"
+         href="http://localhost/++skin++cms/repository/testcontent/@@edit-foo-xxx">
+        <span class="action-title">Edit</span>
+      </a>
+      <a class="delete-link" title="Delete"
+         cms:cp-module="ConfirmDelete"
+         cms:delete-module="TeaserListDeleteEntry"
+         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/testcontent">
+        <span class="action-title">Delete</span>
+      </a>
+      <div></div>
+    </li>
+  </ol>
+</div>
+
+Deleting entries
+----------------
+
+Delete the second entry:
+
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.getLink('Delete', index=1).click()
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> browser.open(lightbox_url)
+>>> print browser.contents
+<h1>Foo</h1>
+<div class="lightbox-full teaser-list-edit-box">
+  <ol>
+    <li class="edit-bar">
+      <a class="edit-link"
+         href="http://localhost/++skin++cms/repository/c1/@@edit-foo-xxx">
+        <span class="action-title">Edit</span>
+      </a>
+      <a class="delete-link" title="Delete"
+         cms:cp-module="ConfirmDelete"
+         cms:delete-module="TeaserListDeleteEntry"
+         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
+        <span class="action-title">Delete</span>
+      </a>
+      <div>c1 teaser</div>
+    </li>
+  </ol>
+</div>
+
+The cp contents also has changed of course:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+<div class="block type-teaser" ... id="<GUID>">
+  <div class="block-inner">
+    <div class="teaser-list topthema action-content-droppable"
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
+  <div class="teaser">
+    ...
+    <div class="supertitle"></div>
+    <div class="teaserTitle">c1 teaser</div>
+    <div class="teaserText"></div>
+    <div class="shortTeaserTitle">c1 teaser</div>
+    <div class="shortTeaserText"></div>
+  </div>
+</div>
+...
+
+
+
+.. [#fill-dav-with-content] Create a few test objects to play with:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zope.component
+    >>> from zeit.cms.repository.interfaces import IRepository
+    >>> repository = zope.component.getUtility(IRepository)
+
+    >>> import zeit.cms.testcontenttype.testcontenttype
+    >>> c1 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    >>> c1.teaserTitle = c1.shortTeaserTitle = u'c1 teaser'
+    >>> repository['c1'] = c1
+    >>> c2 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    >>> c2.teaserTitle = c2.shortTeaserTitle = u'c2 teaser'
+    >>> repository['c2'] = c2
+    >>> c3 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    >>> c3.teaserTitle = c3.shortTeaserTitle = u'c3 teaser'
+    >>> repository['c3'] = c3
+
+    >>> zope.app.component.hooks.setSite(old_site)
