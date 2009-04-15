@@ -2,7 +2,8 @@
 <div class="lightbox-full teaser-list-edit-box">
   <ol>
     <li class="edit-bar"
-        tal:repeat="teaser view/teasers">
+        tal:repeat="teaser view/teasers"
+        tal:attributes="class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd'">
       <a class="edit-link"
          tal:attributes="href string:${teaser/url}/@@edit-foo-xxx">
         <span class="action-title">Edit</span>
@@ -11,7 +12,8 @@
          tal:attributes="href string:${context/@@absolute_url}/delete?uniqueId=${teaser/uniqueId}"
          i18n:attributes="title"
          cms:cp-module="ConfirmDelete"
-         cms:delete-module="TeaserListDeleteEntry">
+         cms:delete-module="TeaserListDeleteEntry"
+         cms:delete-highlight="edit-bar">
         <span class="action-title">Delete</span>
       </a>
 

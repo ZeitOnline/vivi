@@ -57,7 +57,7 @@
 #content > #lightbox-shade,
 #content > #lightbox-header {
   position: absolute;
-
+  z-index: auto;
 }
 
 #content > #lightbox-shade {
@@ -71,8 +71,8 @@
 
 }
 
-#cp-content .highlight {
-  background-color: #fd1;
+.highlight {
+  background-color: #fd1 !important;
 }
 
 /* Block layout */
@@ -148,7 +148,7 @@
   text-align: center;
   top: -0.5em;
   width: 6em;
-  z-index: 4;
+  z-index: 3;
 }
 
 #confirm-delete-overlay {
@@ -285,8 +285,12 @@
   padding: 0;
 }
 
-.teaser-list-edit-box > ol > li{
-  display: block;
+.teaser-list-edit-box > ol > li {
   clear: both;
+  display: block;
+  padding: 0.25em 0;
 }
 
+.teaser-list-edit-box > ol > li.even {
+  background-color: #f2f2f2;
+}

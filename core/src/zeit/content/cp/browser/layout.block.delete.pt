@@ -2,7 +2,8 @@
    tal:attributes="href string:${context/__parent__/@@absolute_url}/delete?key=${context/__name__}"
    i18n:attributes="title"
    cms:cp-module="ConfirmDelete"
-   cms:delete-module="LoadAndReload">
+   cms:delete-module="LoadAndReload"
+   cms:delete-highlight="block-inner">
   
   <span class="action-title">Delete</span>
 </a>

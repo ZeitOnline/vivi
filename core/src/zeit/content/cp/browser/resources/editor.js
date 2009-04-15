@@ -295,7 +295,7 @@ zeit.content.cp.modules.LoadAndReload = gocept.Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {
-            document.cp_lightbox.reload();
+            MochiKit.Signal.signal(document.cpeditor, 'reload');
         });
     },
 
@@ -309,6 +309,8 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
         var url = context_element.getAttribute('href');
         // XXX i18n
         var delete_module = context_element.getAttribute('cms:delete-module');
+        var highlight_class = context_element.getAttribute(
+            'cms:delete-highlight')
         self.confirm = DIV(
             {'class': 'confirm-delete'},
             A({'href': url,
@@ -317,7 +319,7 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
         context_element.appendChild(self.confirm);
         MochiKit.Visual.fade(self.confirm, {'from': 0, 'to': 1});
         self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            context_element, 'div', 'block-inner')
+            context_element, null, highlight_class);
         MochiKit.DOM.addElementClass(self.block, 'highlight');
 
         self.overlay = DIV({'id': 'confirm-delete-overlay'});
