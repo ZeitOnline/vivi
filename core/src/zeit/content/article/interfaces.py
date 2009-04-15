@@ -57,7 +57,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     export_cds = zope.schema.Bool(
         title=_("Export to Tagesspiegel"),
-        default=False)
+        default=True)
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
