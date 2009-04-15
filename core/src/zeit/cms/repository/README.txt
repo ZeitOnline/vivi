@@ -363,6 +363,12 @@ from the unique id:
 >>> content.__parent__.__name__
 u'01'
 
+An even easier way is adapting to ICMSContent:
+
+>>> zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+
 
 A TypeError is raised if anything but a string is passed:
 
@@ -385,6 +391,10 @@ Traceback (most recent call last):
     ...
 ValueError: The id 'foo' is invalid.
 
+>>> zeit.cms.interfaces.ICMSContent('foo')
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt', 'foo', <InterfaceClass zeit.cms.interfaces.ICMSContent>)
 
 A KeyError is raised if the unique_id does not reference to an existing object:
 
@@ -393,12 +403,21 @@ Traceback (most recent call last):
     ...
 KeyError: 'http://xml.zeit.de/online/foo'
 
+>>> zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/foo')
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt', 'http://xml.zeit.de/online/foo', <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+
+
 
 Old style paths are supported. When an Id starts with /cms/work it is
 considered as valid.
 
 >>> content = repository.getContent('/cms/work/online/2007/01/Somalia')
 >>> content.uniqueId
+u'http://xml.zeit.de/online/2007/01/Somalia'
+>>> zeit.cms.interfaces.ICMSContent(
+...     '/cms/work/online/2007/01/Somalia').uniqueId
 u'http://xml.zeit.de/online/2007/01/Somalia'
 
 

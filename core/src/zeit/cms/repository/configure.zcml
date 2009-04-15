@@ -35,6 +35,7 @@
   <adapter factory=".repository.cmscontentFactory" />
   <subscriber handler=".repository.invalidate_uncontained_content" />
 
+  <adapter factory=".repository.unique_id_to_content" />
   <!-- content object creation
 
   The adapters are registered with the identifying name. Note that those names

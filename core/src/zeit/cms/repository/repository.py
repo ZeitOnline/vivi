@@ -288,3 +288,15 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
     """Objectmover for ICMSContent."""
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+
+
+
+@zope.component.adapter(basestring)
+@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+def unique_id_to_content(uniqueId):
+    repository = zope.component.queryUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    try:
+        return repository.getContent(uniqueId)
+    except (ValueError, KeyError):
+        return None
