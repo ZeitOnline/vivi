@@ -1,6 +1,14 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
 
   <include package="zc.selenium" />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="create-cp-test-content"
+    class=".selenium.CreateTestContent"
+    permission="zope.Public"
+    />
 
   <adapter
     factory=".selenium.TestGenericEditing"
