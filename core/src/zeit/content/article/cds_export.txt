@@ -85,7 +85,7 @@ This article by the act of publication will have obtained a uuid:
 
   >>> import zeit.cms.content.interfaces
   >>> zeit.cms.content.interfaces.IUUID(content).id
-  '347b85e0-0740-4e52-8f62-3192430b0417'
+  'ZEDE-347b85e0-0740-4e52-8f62-3192430b0417'
   
 Since the ``export_cds`` flag wasn't set, the article does not show up
 in the cds filestore:
@@ -135,7 +135,7 @@ Since the ``export_cds`` flag was set for this article, a copy of the
 article can be found in the CDS filestore, ready for FTP-ing to the CDS:
 
   >>> fs.list('new')
-  ['.../347b85e0-0740-4e52-8f62-3192430b0417.xml']
+  ['.../ZEDE-347b85e0-0740-4e52-8f62-3192430b0417.xml']
 
 Cleanup
 =======
