@@ -100,7 +100,7 @@ namespace are *not* mapped:
         name="date-last-modified">...-...-...T...+00:00</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow"
-        name="id"><GUID></attribute>
+        name="id">ZEDE-<GUID></attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
         name="last_modified_by">bob</attribute>

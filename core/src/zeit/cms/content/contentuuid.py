@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -32,6 +31,7 @@ class ContentUUID(object):
 def properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
+
 @zope.component.adapter(
     zope.interface.Interface,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
@@ -39,4 +39,4 @@ def set_uuid(context, event):
     content_uuid = zeit.cms.content.interfaces.IUUID(context)
     if content_uuid.id is not None:
         return
-    content_uuid.id = uuid.uuid4()
+    content_uuid.id = 'ZEDE-%s' % uuid.uuid4()
