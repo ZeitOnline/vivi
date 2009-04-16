@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.app.appsetup
 import gocept.filestore
@@ -31,8 +30,6 @@ def export(object, event):
     if fs is None:
         return
     uuid = zeit.cms.content.interfaces.IUUID(object).id
-    if uuid is None:
-        return
     filename = '%s.xml' % uuid
     f = fs.create(filename)
     data = zeit.connector.interfaces.IResource(object)
