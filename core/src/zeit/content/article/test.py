@@ -53,6 +53,7 @@ def test_suite():
         layer=ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'cds_export.txt',
+        'cds_import.txt',
         layer=CDSLayer,
         checker=checker,
         product_config={'zeit.content.article': product_config,

@@ -2,21 +2,27 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.app.appsetup
+from __future__ import with_statement
 import gocept.filestore
-import zope.component
-import zeit.content.article.interfaces
-import zeit.cms.workflow.interfaces
-import zeit.cms.content.interfaces
-import zeit.connector.interfaces
 import logging
+import os.path
+import zeit.cms.content.interfaces
+import zeit.cms.settings.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.connector.interfaces
+import zeit.content.article.interfaces
+import zope.app.appsetup
+import zope.app.component.hooks
+import zope.component
+
 
 log = logging.getLogger(__name__)
 
-def get_cds_filestore():
+
+def get_cds_filestore(name):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.article')
-    store_dir = config.get('cds-export')
+    store_dir = config.get(name)
     log.debug('Filestore is set to %s.' % store_dir)
     if store_dir is None:
         return None
@@ -32,7 +38,7 @@ def export(object, event):
     if not object.export_cds:
         log.debug('Export flag is not set. Exiting.')
         return
-    fs = get_cds_filestore()
+    fs = get_cds_filestore('cds-export')
     if fs is None:
         log.debug('Filestore is not set. Exiting.')
         return
@@ -45,3 +51,24 @@ def export(object, event):
     f.close()
     fs.move(filename, 'tmp', 'new')
     log.debug('File %s was created. Leaving.' % filename)
+
+
+def import_one():
+    fs = get_cds_filestore('cds-import')
+    files = sorted(fs.list('new'))
+    if not files:
+        return False
+    path = files[0]
+    name = os.path.basename(path)
+    with open(path, 'rb') as f:
+        article = zeit.content.article.article.Article(f)
+
+    article.updateDAVFromXML()
+    site = zope.app.component.hooks.getSite()
+    settings = zeit.cms.settings.interfaces.IGlobalSettings(site)
+    directory = settings.get_online_working_directory()
+    directory[name] = article
+
+    fs.move(name, 'new', 'cur')
+
+    return True

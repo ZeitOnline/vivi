@@ -49,7 +49,7 @@ have no effect on the cds filestore.
 We start out with an empty cds filestore:
 
   >>> import zeit.content.article.cds
-  >>> fs = zeit.content.article.cds.get_cds_filestore()
+  >>> fs = zeit.content.article.cds.get_cds_filestore('cds-export')
   >>> fs.list('new')
   []
 
