@@ -12,6 +12,7 @@ import zope.security.proxy
 
 import zope.app.container.contained
 
+import zeit.connector.interfaces
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
@@ -61,6 +62,13 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     def paragraphs(self):
         return len(self.xml.body.findall('p'))
 
+    def updateDAVFromXML(self):
+        properties = zeit.connector.interfaces.IWebDAVProperties(self)        
+        for el in self.xml.head.attribute:
+            name = el.get('name')
+            ns = el.get('ns')
+            value = el.text
+            properties[(name, ns)] = value
 
 articleFactory = zeit.cms.content.adapter.xmlContentFactory(Article)
 

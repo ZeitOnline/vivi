@@ -63,6 +63,14 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
 
 
+    def updateDAVFromXML():
+        """Update the DAV properties based on the information in the XML.
+
+        This is useful when importing an article for instance from
+        the Content-Drehscheibe, where the only property information we have
+        is in the XML and there is no head section.
+        """
+
 class IBookRecensionReadContainer(zope.interface.Interface):
     """Read interface for book recensions."""
 

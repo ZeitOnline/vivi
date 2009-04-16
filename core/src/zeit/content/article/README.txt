@@ -155,6 +155,68 @@ but not the textLengh property. Create such an object:
 >>> updateTextLengthOnChange(NoChangeTextLength(), object())
 
 
+Reading the properties from the XML
+===================================
+
+Sometimes it is useful to actually instantiate the WebDAV from the
+information contained in the XML, for instance when importing from the
+Content-Drehscheibe. There is a method on ``Article`` that helps you do
+this.
+
+We first define some XML which contains some properties we want to be
+reflected in the WebDAV properties:
+
+>>> article_xml = StringIO.StringIO("""\
+... <?xml version="1.0" encoding="UTF-8"?>
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+...  <body>
+...    <supertitle>Neujahrsansprache</supertitle>
+...    <title>Jahr der Überraschungen</title>
+...    <subtitle>
+...      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
+...      selbst zu überra schen. Von einer Reformpause will sie nichts wissen
+...    </subtitle>
+...  </body>
+...  <head>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...      name="year">2007</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...      name="volume">2</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...      name="text-length">2000</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...     name="author">Dave Bowman</attribute>
+...  </head>
+... </article>
+... """)
+
+We then create an article from it:
+
+>>> article = Article(article_xml)
+
+At this point, the article won't have DAV properties yet:
+
+>>> import zeit.connector.interfaces
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(article)
+>>> list(properties.keys())
+[]
+>>> properties.get(('author', 'http://namespaces.zeit.de/CMS/document')) is None
+True
+
+We can import the data from the article:
+
+>>> article.updateDAVFromXML()
+
+Now the WebDAV properties are there::
+
+>>> sorted(properties.keys())
+[('author', 'http://namespaces.zeit.de/CMS/document'), 
+ ('text-length', 'http://namespaces.zeit.de/CMS/document'), 
+ ('volume', 'http://namespaces.zeit.de/CMS/document'), 
+ ('year', 'http://namespaces.zeit.de/CMS/document')]
+>>> properties.get(('author', 'http://namespaces.zeit.de/CMS/document'))
+'Dave Bowman'
+
 Article Factory
 ===============
 
