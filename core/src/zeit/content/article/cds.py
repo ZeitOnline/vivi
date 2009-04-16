@@ -12,8 +12,8 @@ import zeit.connector.interfaces
 
 def get_cds_filestore():
     config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.article') 
-    store_dir = config.get('cds_filestore')
+        'zeit.content.article')
+    store_dir = config.get('cds-export')
     if store_dir is None:
         return None
     result = gocept.filestore.FileStore(store_dir)

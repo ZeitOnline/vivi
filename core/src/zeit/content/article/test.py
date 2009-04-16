@@ -33,12 +33,12 @@ class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
 
     def setUp(self):
         zope.app.testing.functional.ZCMLLayer.setUp(self)
-        product_config['cds_filestore'] = tempfile.mkdtemp()
+        product_config['cds-export'] = tempfile.mkdtemp()
 
     def tearDown(self):
         zope.app.testing.functional.ZCMLLayer.tearDown(self)
-        shutil.rmtree(product_config['cds_filestore'])
-        del product_config['cds_filestore']
+        shutil.rmtree(product_config['cds-export'])
+        del product_config['cds-export']
 
 CDSLayer = CDSLayerFactory()
 
