@@ -10,7 +10,7 @@ Create a testbrowser and open the homepage:
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic producer:producerpw')
->>> browser.open('http://localhost/++skin++cms/' )
+>>> browser.open('http://localhost/++skin++cms/repository' )
 
 Open the template managment ui:
 

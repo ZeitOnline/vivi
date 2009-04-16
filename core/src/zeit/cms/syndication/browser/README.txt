@@ -212,7 +212,7 @@ Note that if there is an `index` object in the container the preview url is
 *not* the url of the feed itself, but the `index` of the container of the feed.
 Create an index:
 
->>> browser.open('http://localhost/++skin++cms')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Folder']
 >>> browser.open(menu.value[0])

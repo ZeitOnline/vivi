@@ -43,12 +43,8 @@ The user is redirected to the repository directory listing, if he hits
 the site root:
 
 >>> browser.open('http://localhost/++skin++cms/')
->>> print browser.contents
-<?xml version...
-<!DOCTYPE ...
-...online...
-...2007...
-...2006...
+>>> print browser.url
+http://localhost/++skin++cms/repository/online/2008/26
 
 
 Adding Folders
@@ -56,6 +52,7 @@ Adding Folders
 
 Folders can be added just like any other content:
 
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Folder']
 >>> url = menu.value[0]

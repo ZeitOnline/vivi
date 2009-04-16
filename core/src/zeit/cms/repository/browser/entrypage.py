@@ -1,14 +1,13 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.repository.interfaces
-import zope.component
+import zeit.cms.settings.interfaces
+import zeit.cms.browser.view
 
 
-class EntryPage(object):
+class EntryPage(zeit.cms.browser.view.Base):
 
     def __call__(self):
-        repository = self.context['repository']
-        url = zope.component.getMultiAdapter(
-            (repository, self.request), name='absolute_url')()
-        return self.request.response.redirect(url)
+        settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
+        return self.redirect(
+            self.url(settings.get_online_working_directory()))

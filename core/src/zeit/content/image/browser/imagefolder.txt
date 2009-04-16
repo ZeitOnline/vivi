@@ -20,7 +20,7 @@ Create the bilder structure:
 ...     browser.getControl('Add').click()
 ...     return browser.url
 ...
->>> browser.open('http://localhost/++skin++cms/')
+>>> browser.open('http://localhost/++skin++cms/repository')
 >>> add_folder('bilder')
 'http://localhost/++skin++cms/repository/bilder/@@view.html'
 >>> add_folder('2007')

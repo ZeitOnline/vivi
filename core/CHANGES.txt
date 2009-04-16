@@ -1,6 +1,13 @@
 zeit.cms changes
 ================
 
+1.18 (unreleased)
+----------------
+
+- Beim öffnen des CMS wird den aktuellen Online-Arbeitsordner weitergeleitet
+  (fixes #4995).
+
+
 1.17.1 (2009-04-15)
 -------------------
 
