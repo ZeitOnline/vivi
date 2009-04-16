@@ -88,6 +88,39 @@ All files have been imported now:
 [u'art1', u'art2', u'art3']
 
 
+
+Runner integration
+++++++++++++++++++
+
+For the integration with gocept.runner there is a helper returning different
+sleep times, depending on whether there was something imported or not. 
+
+Add a file to the filestore again:
+
+>>> with fs.create('art1') as f:
+...     f.write(article_xml)
+>>> fs.move('art1', 'tmp', 'new')
+
+When something was imported the sleep time is low:
+
+>>> zeit.content.article.cds.import_and_schedule()
+0.02
+
+When there was nothing imported the sleep time is higher:
+
+>>> zeit.content.article.cds.import_and_schedule()
+10
+
+
+The real appmain is:
+
+>>> zeit.content.article.cds.import_main
+<function import_main at 0x...>
+
+
+
+
+
 >>> zope.app.component.hooks.setSite(old_site)
 
 

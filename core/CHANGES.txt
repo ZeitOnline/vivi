@@ -4,7 +4,10 @@ zeit.content.article changes
 1.6 (unreleased)
 ----------------
 
-- Möglichkeit, den Export zum Tagesspiegel auszulösen, hinzugefügt.
+- Artikel in die Content-Drehscheibe (Tagesspiegel) exportieren (#4968)
+
+- Import von Artikeln aus der Content-Drehscheibe (#4967).
+
 
 1.5.13 (2009-02-11)
 -------------------

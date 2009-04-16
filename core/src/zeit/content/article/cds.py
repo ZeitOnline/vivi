@@ -4,6 +4,7 @@
 
 from __future__ import with_statement
 import gocept.filestore
+import gocept.runner
 import logging
 import os.path
 import zeit.cms.content.interfaces
@@ -72,3 +73,14 @@ def import_one():
     fs.move(name, 'new', 'cur')
 
     return True
+
+
+def import_and_schedule():
+    if import_one():
+        return 0.02
+    return 10
+
+
+@gocept.runner.appmain(ticks=360, principal='zope.cds')
+def import_main():
+    return import_and_schedule()

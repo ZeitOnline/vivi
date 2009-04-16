@@ -57,4 +57,8 @@ setup(
         'zope.i18n>3.4.0',
         'zope.location>=3.4.0b2',
     ],
+    entry_points = """
+        [console_scripts]
+        run-cds-import = zeit.content.article.cds:import_main
+        """
 )
