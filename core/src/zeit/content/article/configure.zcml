@@ -9,6 +9,8 @@
   <adapter factory=".article.articleFromTemplate" />
   <adapter factory=".article.resourceFactory" />
 
+  <subscriber handler=".cds.export" />
+
   <class class=".article.Article">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
