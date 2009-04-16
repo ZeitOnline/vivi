@@ -34,12 +34,15 @@ class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
     def setUp(self):
         zope.app.testing.functional.ZCMLLayer.setUp(self)
         product_config['cds-export'] = tempfile.mkdtemp()
-
+        product_config['cds-import'] = tempfile.mkdtemp()
+        
     def tearDown(self):
         zope.app.testing.functional.ZCMLLayer.tearDown(self)
         shutil.rmtree(product_config['cds-export'])
+        shutil.rmtree(product_config['cds-import'])
         del product_config['cds-export']
-
+        del product_config['cds-import']
+        
 CDSLayer = CDSLayerFactory()
 
 def test_suite():
@@ -51,7 +54,7 @@ def test_suite():
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
         layer=ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'cds.txt',
+        'cds_export.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
         layer=CDSLayer,
