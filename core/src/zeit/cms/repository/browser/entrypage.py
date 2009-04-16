@@ -1,11 +1,8 @@
-# vim:fileencoding=utf-8 encoding=utf8
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
 
 import zeit.cms.repository.interfaces
+import zope.component
 
 
 class EntryPage(object):
