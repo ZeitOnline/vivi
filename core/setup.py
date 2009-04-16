@@ -16,10 +16,10 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'gocept.form[formlib]>=0.7.2',
+        'gocept.filestore',
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.3.2',
         'gocept.pagelet',
-        'gocept.filestore',
         'iso8601>=0.1.2',
         'lovely.remotetask',
         'lxml>=2.0.2',
@@ -28,6 +28,7 @@ setup(
         'setuptools',
         'sprout',
         'z3c.conditionalviews',
+        'z3c.etestbrowser',
         'z3c.flashmessage',
         'z3c.menu.simple>=0.5.1',
         'z3c.traverser',
@@ -56,9 +57,4 @@ setup(
         'zope.i18n>3.4.0',
         'zope.location>=3.4.0b2',
     ],
-    extras_require={
-        'test': [
-            'z3c.etestbrowser',
-        ],
-    },
 )
