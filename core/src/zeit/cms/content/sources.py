@@ -2,22 +2,20 @@
 # See also LICENSE.txt
 # $Id$
 
+import gocept.cache.method
+import gocept.lxml.objectify
 import logging
 import operator
 import threading
 import urllib2
 import xml.sax.saxutils
-
-import zope.component
-import zope.testing.cleanup
-import zope.app.appsetup.product
-
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
-import gocept.lxml.objectify
-import gocept.cache.method
-
 import zeit.cms.interfaces
+import zope.app.appsetup.product
+import zope.app.publication.interfaces
+import zope.component
+import zope.testing.cleanup
 
 
 logger = logging.getLogger('zeit.cms.content.sources')
