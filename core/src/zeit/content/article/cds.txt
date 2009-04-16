@@ -84,12 +84,8 @@ Now, the publish process is finished and the article is published:
 Since the ``export_cds`` flag was set for this article, a copy of the
 article can be found in the CDS filestore, ready for FTP-ing to the CDS:
 
-  >>> import zope.app.appsetup
-  >>> config = zope.app.appsetup.product.getProductConfiguration(
-  ...     'zeit.content.article') 
-  >>> store_dir = config['cds_filestore']
-  >>> import gocept.filestore
-  >>> fs = gocept.filestore.FileStore(store_dir)
+  >>> import zeit.content.article.cds
+  >>> fs = zeit.content.article.cds.get_cds_filestore()
   >>> fs.list('new')
   ['.../347b85e0-0740-4e52-8f62-3192430b0417.xml']
 
