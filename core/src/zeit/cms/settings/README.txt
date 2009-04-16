@@ -5,7 +5,7 @@ Settings
 Global settings
 ---------------
 
-The global settings are stored in an annotation on the site:
+The global settings are stored in an annotation on the site[#functional]_:
 
 >>> import zeit.cms.settings.interfaces
 >>> settings = zeit.cms.settings.interfaces.IGlobalSettings(getRootFolder())
@@ -24,6 +24,19 @@ Set values:
 >>> settings.default_year = 2004
 >>> settings.default_volume = 21
 
+The current online working directory is accessible via a method. It is created
+on the fly, when it does not exist:
+
+>>> collection = settings.get_online_working_directory()
+>>> collection.uniqueId
+u'http://xml.zeit.de/online/2004/21'
+
+Make sure getting the collection does also work when it alreay exists of
+course:
+
+>>> collection = settings.get_online_working_directory()
+>>> collection.uniqueId
+u'http://xml.zeit.de/online/2004/21'
 
 It is possible to adapt every located object to the settings:
 
@@ -35,3 +48,12 @@ It is possible to adapt every located object to the settings:
 2004
 >>> settings.default_volume
 21
+
+
+>>> zope.app.component.hooks.setSite(old_site)
+
+.. [#functional]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())

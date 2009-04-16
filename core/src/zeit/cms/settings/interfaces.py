@@ -18,3 +18,11 @@ class IGlobalSettings(zope.interface.Interface):
         title=_("Default volume"),
         min=1,
         max=53)
+
+    def get_online_working_directory():
+        """Return the collection which is the main working directory.
+
+        This is /online/year/volume. If that collection does not exist, it will
+        be created before returning it.
+
+        """
