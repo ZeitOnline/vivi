@@ -12,6 +12,7 @@ import zeit.cms.settings.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
+import zeit.content.article.interfaces
 import zope.app.appsetup
 import zope.app.component.hooks
 import zope.component
@@ -65,6 +66,9 @@ def import_one():
         article = zeit.content.article.article.Article(f)
 
     article.updateDAVFromXML()
+    zope.interface.alsoProvides(
+        article,
+        zeit.content.article.interfaces.ITagesspiegelArticle)
     site = zope.app.component.hooks.getSite()
     settings = zeit.cms.settings.interfaces.IGlobalSettings(site)
     directory = settings.get_online_working_directory()

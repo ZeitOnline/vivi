@@ -66,6 +66,24 @@ to be 2008/26):
 >>> print article.title
 Jahr der Überraschungen
 
+The article is marked as being a tagesspiegel article:
+
+>>> zeit.content.article.interfaces.ITagesspiegelArticle.providedBy(article)
+True
+
+There is a different icon defined for tagesspiegel:
+
+
+>>> import zeit.cms.browser.interfaces
+>>> import zope.publisher.browser
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+>>> icon = zope.component.queryMultiAdapter(
+...     (article, request), name='zmi_icon')
+>>> print icon()
+<img src="http://127.0.0.1/@@/zeit-content-article-interfaces-ITagesspiegelArticle-zmi_icon.ico"...
+
+
 Looking at the filestore shows us that art1 was moved to cur:
 
 >>> sorted(fs.list('new'))

@@ -75,6 +75,15 @@
     file="resources/articleResource.png"
     />
 
+  <browser:icon
+    for="zeit.content.article.interfaces.ITagesspiegelArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/tagesspiegel.ico"
+    />
+
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     name="zeit.content.article.ChooseTemplate"

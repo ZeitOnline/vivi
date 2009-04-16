@@ -169,3 +169,7 @@ class IAggregatedComments(zope.interface.Interface):
         description=_('aggregate-comments-description'),
         required=False,
         source=zeit.cms.content.contentsource.cmsContentSource)
+
+
+class ITagesspiegelArticle(zope.interface.Interface):
+    """Marker for articles imported from Tagesspiegel."""
