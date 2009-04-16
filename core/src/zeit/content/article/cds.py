@@ -25,9 +25,13 @@ def get_cds_filestore():
     zeit.content.article.interfaces.IArticle,
     zeit.cms.workflow.interfaces.IPublishedEvent)
 def export(object, event):
+    if not object.export_cds:
+        return
     fs = get_cds_filestore()
+    if fs is None:
+        return
     uuid = zeit.cms.content.interfaces.IUUID(object).id
-    if fs is None or uuid is None:
+    if uuid is None:
         return
     filename = '%s.xml' % uuid
     f = fs.create(filename)
