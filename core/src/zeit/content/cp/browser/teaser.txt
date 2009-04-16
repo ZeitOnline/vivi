@@ -89,33 +89,31 @@ Edit the teaser list
 
 The teaser list can be edited:
 
->>> browser.getLink('Edit contents').click()
+>>> browser.getLink('Edit teaser list').click()
 >>> lightbox_url = browser.url
 >>> print browser.contents
 <h1>Foo</h1>
 <div class="lightbox-full teaser-list-edit-box">
   <ol>
-    <li class="edit-bar">
+    <li class="edit-bar even">
       <a class="edit-link"
          href="http://localhost/++skin++cms/repository/c1/@@edit-foo-xxx">
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
-         cms:cp-module="ConfirmDelete"
-         cms:delete-module="TeaserListDeleteEntry"
+        ...
          href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
         <span class="action-title">Delete</span>
       </a>
       <div>c1 teaser</div>
     </li>
-    <li class="edit-bar">
+    <li class="edit-bar odd">
       <a class="edit-link"
          href="http://localhost/++skin++cms/repository/testcontent/@@edit-foo-xxx">
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
-         cms:cp-module="ConfirmDelete"
-         cms:delete-module="TeaserListDeleteEntry"
+        ...
          href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/testcontent">
         <span class="action-title">Delete</span>
       </a>
@@ -138,14 +136,13 @@ True
 <h1>Foo</h1>
 <div class="lightbox-full teaser-list-edit-box">
   <ol>
-    <li class="edit-bar">
+    <li class="edit-bar even">
       <a class="edit-link"
          href="http://localhost/++skin++cms/repository/c1/@@edit-foo-xxx">
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
-         cms:cp-module="ConfirmDelete"
-         cms:delete-module="TeaserListDeleteEntry"
+        ...
          href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
         <span class="action-title">Delete</span>
       </a>
