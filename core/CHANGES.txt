@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-1.6 (unreleased)
+1.6 (2009-04-17)
 ----------------
 
 - Artikel in die Content-Drehscheibe (Tagesspiegel) exportieren (#4968)
