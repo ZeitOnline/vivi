@@ -81,7 +81,7 @@ There is a different icon defined for tagesspiegel:
 >>> icon = zope.component.queryMultiAdapter(
 ...     (article, request), name='zmi_icon')
 >>> print icon()
-<img src="http://127.0.0.1/@@/zeit-content-article-interfaces-ITagesspiegelArticle-zmi_icon.ico"...
+<img src="http://127.0.0.1/@@/zeit-content-article-interfaces-ITagesspiegelArticle-zmi_icon.png"...
 
 
 Looking at the filestore shows us that art1 was moved to cur:

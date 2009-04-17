@@ -81,7 +81,7 @@
     name="zmi_icon"
     width="20"
     height="20"
-    file="resources/tagesspiegel.ico"
+    file="resources/article-tagesspiegel.png"
     />
 
   <browser:page
