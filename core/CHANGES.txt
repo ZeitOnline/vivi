@@ -6,7 +6,8 @@ zeit.content.article changes
 
 - Artikel in die Content-Drehscheibe (Tagesspiegel) exportieren (#4968)
 
-- Import von Artikeln aus der Content-Drehscheibe (#4967).
+- Import von Artikeln aus der Content-Drehscheibe. Diese werden mit einem
+  Tagesspiegel-Icon versehen (#4967).
 
 
 1.5.13 (2009-02-11)
