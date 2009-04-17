@@ -1,0 +1,224 @@
+Search protocol
+===============
+
+This document defines a protocol that provides the information needed to
+build the search UI as defined here:
+
+http://cmsdev.zeit.de/node/343
+
+Queries
+-------
+
+Simple search:
+
+* fulltext (a text string)
+
+Expanded search is simple search and:
+
+* from_date
+
+* until_date
+
+* topics (allows AND and OR)
+
+* authors (allows AND and OR)
+
+* keywords (allows AND and OR)
+
+* publication_status (all (default), public, not_public,
+  public_new_version)
+
+* content_types (interpreted as OR)
+
+* sort_order (relevance (default), date)
+
+For this page:
+
+* construct a query based on the topic and keywords of this page
+
+Results
+-------
+
+The search results data structure is returned for the simple search,
+advanced search, and also for favorites and related.
+
+* UniqueId (for draggable)
+
+* icon url (or icon type?)
+
+* publication_status (public, not_public, public_new_version)
+
+* favorited (true/false)
+
+* teaser_title
+
+* teaser_text
+ 
+* preview_url
+
+* date (see also per item filters)
+
+* week (see also per item filters)
+
+* topics (see also per item filters)
+
+* authors (see also per item filters)
+
+* related query
+
+Search results can also open up related links through the related query.
+
+* UniqueId (for draggable)
+
+* publication_status
+
+* short_teaser_title
+
+* short_teaser_text
+
+* date
+
+Per item filters
+----------------
+
+Each item has filters associated with it. These are based on the item
+but restrict the whole query further.
+
+* day filter
+
+* week filter
+
+* topics (filter per topic)
+
+* authors (filter per author)
+
+Per search result filters
+-------------------------
+
+The whole search result also has filters associated with it. Each filter
+has also a number behind it which indicates how many results there are
+for that search:
+
+* Time filters (only give links if there are search results that match)
+
+  * today query
+
+  * yesterday query
+
+  * 7-day query
+
+  * last month
+
+  * last half year
+
+  * last year
+
+* author filters
+
+  * filter per individual author in this search result
+
+* topic filters
+
+  * filter per individual topic in this search result
+
+* content type filters
+
+  * filter per individualc content type in this search result
+
+* favorites filter
+
+  * filter this search result for only favorites (does not have a
+    number associated in UI, might give it anyway)
+
+Query choreography
+------------------
+
+The query in some cases needs to be human-readable (see tooltip for
+per-item filters). Human-writable does not seem to occur in the UI,
+except for the very limited case of ANd and OR in some fields.
+
+Queries are always constructed on the server. In many cases they
+are then immediately executed on the server. In many other cases they are 
+instead passed back to the user interface in some form (human-readability
+is also important here). In some cases the number of results when this
+query would be executed is passed back (for result set filters).
+
+These queries are generated and processed completely on the server:
+
+* simple search (the fulltext field in the form)
+
+* advanced search (fulltext field + extra fields)
+
+* favorites
+
+* related
+
+* looking up related links for an item
+
+There are queries passed from the server to the client in these cases:
+
+* for each set of search results we have filters for the whole results.
+
+* per found item in search results have 'further links' ('filter by
+  this author')
+
+URLs in system
+--------------
+
+GET search?<query>
+
+* simple search
+
+* advanced search
+
+* filter results
+
+* filter per item
+
+* favorites
+
+* for this page 
+
+GET <content>/related
+
+* related
+
+GET <content>/favorite
+
+Retrieve favorite status for a content object.
+
+(is this really needed as we usually get this in search results,
+ which is more efficient)
+
+PUT <content>/favorite
+
+* Change favorite status for a content object:
+
+Templates
+---------
+
+* tabs (suche, favoriten, fuer diese Seite) - static
+
+* simple search - static
+
+* advanced search - static
+
+* result set filters - dynamic: per search result filters data
+
+* search results - dynamic: result data
+
+  * individual search entry - dynamic
+
+  * related per item - dynamic: related data
+
+    * per related - dynamic
+
+* favorites (same as search results) - dynamic: result data
+
+* for this page (same as search results) - dynamic: result data
+
+
+
+
+ 
+
