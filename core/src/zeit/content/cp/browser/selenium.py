@@ -126,6 +126,16 @@ class TestTeaserList(Test):
         s.click('link=List of teasers')
         s.waitForElementPresent('css=div.type-teaser')
 
+    def create_content_and_fill_clipboard(self):
+        s = self.selenium
+        s.open('/@@create-cp-test-content')
+        self.open('/')
+        self.create_clip()
+        s.clickAndWait('link=Dateiverwaltung')
+        self.clip_object('c1')
+        self.clip_object('c2')
+        self.clip_object('c3')
+
     def test_adding_via_drag_and_drop_from_clipboard(self):
         self.open('/')
         s = self.selenium
@@ -143,15 +153,7 @@ class TestTeaserList(Test):
 
     def test_delete(self):
         s = self.selenium
-        # Create test content
-        s.open('/@@create-cp-test-content')
-        self.open('/')
-        self.create_clip()
-        s.clickAndWait('link=Dateiverwaltung')
-        self.clip_object('c1')
-        self.clip_object('c2')
-        self.clip_object('c3')
-
+        self.create_content_and_fill_clipboard()
         self.create_teaserlist()
 
         s.dragAndDropToObject(
@@ -183,6 +185,57 @@ class TestTeaserList(Test):
         # When closing the lightbox the c2 teaser goes away
         s.click('css=a.CloseButton')
         s.waitForTextNotPresent('c2 teaser')
+
+    def test_sorting(self):
+        s = self.selenium
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+
+        # Drag object to the teaser bar in "wrong order"
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c1 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c2 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c3 teaser')
+
+        # Edit the teaser list and reorder
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+
+        # Get the height of the first row and drag it 2.75 times the height so
+        # it overlaps the third row. The initial order is 3, 2, 1. After drag
+        # it is 2, 1, 3.
+        def li(text):
+            return '//div[@id="lightbox"]//li[contains(string(.), "%s")]' % (
+                text,)
+        s.storeElementHeight(li('c3'), 'height')
+
+        s.storeEval("new Number(storedVars['height']) * 2.75", 'delta_y')
+        s.dragAndDrop(li('c3'), '0,${delta_y}')
+
+        s.waitForTextPresent('Loading')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+        s.verifyOrdered(li('c2'), li('c1'))
+        s.verifyOrdered(li('c1'), li('c3'))
+
+        # Drag the c1 node .75 up; the resulting order is 1, 2, 3
+        s.storeEval("new Number(storedVars['height']) * 0.75", 'delta_y')
+        s.dragAndDrop(li('c1'), '0,-${delta_y}')
+
+        s.waitForTextPresent('Loading')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+        s.verifyOrdered(li('c1'), li('c2'))
+        s.verifyOrdered(li('c2'), li('c3'))
+
+
+
 
 
 class TestTeaserMosaic(Test):
