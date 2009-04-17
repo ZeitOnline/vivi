@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.18.1 (2009-04-17)
+-------------------
+
+- UUIDs leben jetzt in ``{http://namespaces.zeit.de/CMS/document}uuid`` und 
+  haben das Format ``{urn:uuid:3acb7948-9c83-439b-90ce-98426541ca80}``.
+
 1.18 (2009-04-16)
 ----------------
 

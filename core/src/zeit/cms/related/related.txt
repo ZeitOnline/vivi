@@ -333,8 +333,7 @@ After sending the event the metadata is updated:
         </homepage>
       </reference>
     </references>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">hans.wurst</attribute>
+    ...
   </head>
   <body/>
 </testtype>
@@ -346,9 +345,7 @@ When we remove the relateds they're of course removed from the XML:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <references/>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">hans.wurst</attribute>
+    <references/>...
   </head>
   <body/>
 </testtype>
