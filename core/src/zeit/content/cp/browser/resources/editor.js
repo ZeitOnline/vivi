@@ -42,6 +42,15 @@ zeit.content.cp.Editor = gocept.Class.extend({
     },
 });
 
+MochiKit.Signal.connect(window, 'onload', function() {
+    if (isNull($('cp-content'))) {
+        return
+    }
+    zeit.content.cp.editor = new zeit.content.cp.Editor();
+    MochiKit.Signal.signal(window, 'cp-editor-initialized');
+    zeit.content.cp.editor.reload();
+});
+
 
 zeit.content.cp.BlockHover = gocept.Class.extend({
 
@@ -77,15 +86,19 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     },
 });
 
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+    zeit.content.cp.block_hover = new zeit.content.cp.BlockHover();
+});
+
 zeit.content.cp.ContentActionBase = gocept.Class.extend({
 
     construct: function() {
         var self = this;
-        self.editor = document.cpeditor;
+        self.editor = zeit.content.cp.editor;
         MochiKit.Signal.connect(
-            document.cpeditor, 'before-reload', self, 'disconnect');
+            self.editor, 'before-reload', self, 'disconnect');
         MochiKit.Signal.connect(
-            document.cpeditor, 'after-reload', self, 'connect');
+            self.editor, 'after-reload', self, 'connect');
         self.dnd_objects = [];
         self.events = [];
     },
@@ -139,8 +152,10 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
         });
         
     },
+});
 
-
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+    zeit.content.cp.content_dropper = new zeit.content.cp.ContentDropper();
 });
 
 
@@ -232,15 +247,9 @@ zeit.content.cp.TeaserBarSorter = zeit.content.cp.ContentActionBase.extend({
 
 });
 
-MochiKit.Signal.connect(window, 'onload', function() {
-    if (isNull($('cp-content'))) {
-        return
-    }
-    document.cpeditor = new zeit.content.cp.Editor();
-    new zeit.content.cp.BlockHover();
-    new zeit.content.cp.ContentDropper();
-    new zeit.content.cp.TeaserBarSorter();
-    document.cpeditor.reload();
+
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+    zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.TeaserBarSorter();
 });
 
 
@@ -253,11 +262,11 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     construct: function(context_element) {
         var self = this;
-        document.cp_lightbox = self;
+        zeit.content.cp.lightbox = self;
         var url = context_element.getAttribute('href');
         arguments.callee.$.construct.call(self, url, $('content'));
         self.events.push(MochiKit.Signal.connect(
-           document.cpeditor, 'before-reload',
+           zeit.content.cp.editor, 'before-reload',
            self, 'close'));
         self.close_event_handle = MochiKit.Signal.connect(
             self.lightbox, 'before-close',
@@ -282,8 +291,8 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     on_close: function() {
         MochiKit.Signal.disconnect(self.close_event_handle);
-        MochiKit.Signal.signal(document.cpeditor, 'reload');
-        document.cp_lightbox = null;
+        MochiKit.Signal.signal(zeit.content.cp.editor, 'reload');
+        zeit.content.cp.lightbox = null;
     },
 });
 
@@ -295,7 +304,7 @@ zeit.content.cp.modules.LoadAndReload = gocept.Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {
-            MochiKit.Signal.signal(document.cpeditor, 'reload');
+            MochiKit.Signal.signal(zeit.content.cp.editor, 'reload');
         });
     },
 
@@ -329,7 +338,7 @@ zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
             MochiKit.Signal.connect(self.overlay, 'onclick', self, 'close'));
         self.events.push(
             MochiKit.Signal.connect(
-                document.cpeditor, 'before-reload', self, 'close'))
+                zeit.content.cp.editor, 'before-reload', self, 'close'))
 
     },
 
@@ -350,7 +359,7 @@ zeit.content.cp.modules.TeaserListDeleteEntry = gocept.Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {
-            document.cp_lightbox.reload();
+            zeit.content.cp.lightbox.reload();
         });
     },
 });
