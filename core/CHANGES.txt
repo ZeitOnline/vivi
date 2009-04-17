@@ -10,7 +10,9 @@ zeit.content.cp changes
 
 - Sortieren von Teaserleisten (#4776).
 
-- Löschen von Teasern aus der Teaserliste (re #4805).
+- Löschen von Teasern aus der Teaserliste (#4805).
+
+- Sortieren von Teasern im Bearbeiten-Dialog der Teaserliste (#4805).
 
 0.1 (2009-04-03)
 ----------------
