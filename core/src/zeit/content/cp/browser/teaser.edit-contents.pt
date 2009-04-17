@@ -1,9 +1,12 @@
 <h1 tal:content="context/title">Title</h1>
 <div class="lightbox-full teaser-list-edit-box">
-  <ol>
+  <ol id="teaser-list-edit-box-sorter"
+      tal:attributes="cms:url context/@@absolute_url">
     <li class="edit-bar"
         tal:repeat="teaser view/teasers"
-        tal:attributes="class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd'">
+        tal:attributes="
+        class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd';
+        cms:uniqueId teaser/uniqueId">
       <a class="edit-link"
          tal:attributes="href string:${teaser/url}/@@edit-foo-xxx">
         <span class="action-title">Edit</span>
@@ -22,3 +25,6 @@
     </li>
   </ol>
 </div>
+<script language="JavaScript">
+  new zeit.content.cp.teaser.Sortable();
+</script>

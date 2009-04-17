@@ -48,7 +48,7 @@
 
   <resourceLibrary name="zeit.content.cp"
                    require="zeit.cms">
-    <directory source="resources" include="editor.css editor.js" />
+    <directory source="resources" include="editor.css editor.js teaser.js" />
   </resourceLibrary>
 
 
@@ -294,6 +294,13 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".area.UpdateOrder"
+    permission="zeit.EditContent"
+    />
 
   <!-- place holder -->
 

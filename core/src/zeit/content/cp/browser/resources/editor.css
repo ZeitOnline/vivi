@@ -294,3 +294,7 @@
 .teaser-list-edit-box > ol > li.even {
   background-color: #f2f2f2;
 }
+
+.teaser-list-edit-box > ol > li > div {
+  cursor: move;
+}
