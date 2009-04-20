@@ -52,22 +52,33 @@
   border: 1px solid black;
 }
 
-#content > #lightbox,
-#content > #lightbox-shade,
-#content > #lightbox-header {
+#content .lightbox,
+#content .lightbox-shade,
+#content .lightbox-header {
   position: absolute;
   z-index: auto;
 }
 
-#content > #lightbox-shade {
-  right: 35%;
+#cp-content > .lightbox,
+#cp-content > .lightbox-header {
+  font-size: 2em;
+  left: 5%;
+  right: 5%;
 }
 
-#content > #lightbox,
-#content > #lightbox-header {
-  left: 5%;
-  right: 40%;
+#cp-forms > .lightbox,
+#cp-forms > .lightbox-header {
+  left: 0;
+  right: 0;
+}
 
+#cp-forms > .lightbox-header {
+  top: 0;
+}
+
+#cp-forms > .lightbox {
+  bottom: 0;
+  top: 2.5em;
 }
 
 .highlight {

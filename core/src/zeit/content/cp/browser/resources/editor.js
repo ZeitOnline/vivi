@@ -391,6 +391,7 @@ zeit.content.cp.TeaserBarSorter = zeit.content.cp.Sortable.extend({
     },
 });
 
+
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.TeaserBarSorter();
 });
@@ -402,8 +403,9 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
         var self = this;
         self.closed = false;
         zeit.content.cp.lightbox = self;
+        var container_id = context_element.getAttribute('cms:lightbox-in');
         var url = context_element.getAttribute('href');
-        arguments.callee.$.construct.call(self, url, $('content'));
+        arguments.callee.$.construct.call(self, url, $(container_id));
         self.events.push(MochiKit.Signal.connect(
            zeit.content.cp.editor, 'before-reload',
            self, 'close'));

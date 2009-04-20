@@ -8,7 +8,9 @@
         class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd';
         cms:uniqueId teaser/uniqueId">
       <a class="edit-link"
-         tal:attributes="href string:${teaser/url}/@@edit-foo-xxx">
+         tal:attributes="href string:${teaser/url}/@@edit-foo-xxx"
+         cms:cp-module="zeit.content.cp.LightBoxForm"
+         cms:lightbox-in="cp-forms">
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
