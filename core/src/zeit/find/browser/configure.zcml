@@ -1,0 +1,31 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.Find"
+    name="find"
+    permission="zope.View"
+  />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.TestFind"
+    template="testfind.pt"
+    name="testfind"
+    permission="zope.View"
+  />
+
+  <resourceLibrary
+    name="zeit.find"
+    require="mochikit
+             mochikit.DragAndDrop
+             gocept.mochikit.jsclass
+             gocept.mochikit.lightbox">
+    <directory source="resources" include="json-template.js find.js" />
+  </resourceLibrary>
+
+</configure>

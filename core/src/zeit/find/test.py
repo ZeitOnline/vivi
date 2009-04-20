@@ -1,14 +1,18 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-
+import os
 import unittest
-import doctest
+import zeit.cms.testing
+import zope.app.testing.functional
 
-from zope.testing import doctest
+SearchLayer = zope.app.testing.functional.ZCMLLayer(
+    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+    __name__, 'SearchLayer', allow_teardown=True)
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(doctest.DocFileSuite(
-        optionflags=doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE))
+    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'README.txt',
+        layer=SearchLayer))
     return suite
