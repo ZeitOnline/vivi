@@ -1,10 +1,10 @@
 /* Lightbox */
 
-#lightbox-header {
+.lightbox-header {
     z-index: 3;
 }
 
-#lightbox > div {
+.lightbox > div {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -12,7 +12,7 @@
     right: 0;
 }
 
-#lightbox .lightbox-full {
+.lightbox .lightbox-full {
   position: absolute;
   top: 1em;
   bottom: 1em;
@@ -21,15 +21,15 @@
   overflow: auto;
 }
 
-#lightbox .nextUrl {
+.lightbox .nextUrl {
   display: none;
 }
 
-#lightbox > .floating > * {
+.lightbox > .floating > * {
     padding: 0.4em;
 }
 
-#lightbox .keyword-tree {
+.lightbox .keyword-tree {
     position: absolute;
     top: 0;
     left: 0;
@@ -38,7 +38,7 @@
 }
 
 
-#lightbox .keyword-tree > .Tree {
+.lightbox .keyword-tree > .Tree {
     overflow: auto;
     position: absolute;
     top: 1em;
@@ -47,7 +47,7 @@
     right: 0;
 }
 
-#lightbox .keyword-input {
+.lightbox .keyword-input {
     position: absolute;
     top: 0;
     right: 0;
@@ -55,7 +55,7 @@
     height: 4em;
 }
 
-#lightbox .keyword-list {
+.lightbox .keyword-list {
     position: absolute;
     top: 18em;
     right: 0;
@@ -85,7 +85,7 @@
 }
 
 
-#lightbox #popup-navtree {
+.lightbox #popup-navtree {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -96,7 +96,7 @@
   overflow-y: auto;
 }
 
-#lightbox .objectbrowser-content {
+.lightbox .objectbrowser-content {
   position: absolute;
   bottom: 0;
   left: 20em;
@@ -107,15 +107,15 @@
   overflow-y: auto;
 }
 
-#lightbox .objectbrowser-content.no-content {
+.lightbox .objectbrowser-content.no-content {
   padding: 2em;
 }
 
-#lightbox .objectbrowser-content > .contentListing {
+.lightbox .objectbrowser-content > .contentListing {
   margin-top: 0;
 }
 
-#lightbox .tree-view-url {
+.lightbox .tree-view-url {
   display: none;
 }
 
@@ -123,7 +123,7 @@
     width: 10em;
 }
 
-#lightbox .typeahead-results {
+.lightbox .typeahead-results {
     position: absolute;
     top: 4em;
     width: 55%;
@@ -140,7 +140,7 @@
     padding: 0 2em 0 0;
 }
 
-#lightbox h1 {
+.lightbox h1 {
   font-size: 1.2em;
   font-weight: normal;
   margin-top: -2em;
@@ -148,7 +148,7 @@
   background-color: transparent;
 }
 
-#lightbox .suggest-keyword {
+.lightbox .suggest-keyword {
     width: 17em;
     float: right;
     margin-right: 1em;

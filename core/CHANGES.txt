@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.18.2 (unreleased)
+-------------------
+
+- Lightbox verwendet keine DIVs mit id mehr. Dies ermöglicht mehrere Lightboxen
+  auf der selben Seite.
+
 1.18.1 (2009-04-17)
 -------------------
 

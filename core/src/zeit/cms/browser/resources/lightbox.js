@@ -1,7 +1,5 @@
 // Copyright (c) 2007-2009 gocept gmbh & co. kg
 // See also LICENSE.txt
-// $Id$
-
 
 zeit.cms.LightboxForm = Class.extend({
     // Javascript support for forms in a light box
@@ -12,10 +10,11 @@ zeit.cms.LightboxForm = Class.extend({
             container = $('body');
         }
         var self = this;
+        self.container = container;
         self.url = url;
-        this.events = []
-        this.lightbox = new gocept.Lightbox(container);
-        this.content_box = this.lightbox.content_box;
+        self.events = [];
+        self.lightbox = this.create_lightbox();
+        self.content_box = this.lightbox.content_box;
         this.events.push(
             connect(this.content_box, 'onclick', this, 'handle_click'));
         this.events.push(
@@ -26,6 +25,12 @@ zeit.cms.LightboxForm = Class.extend({
             MochiKit.Signal.connect(
                 this.lightbox, 'before-close', this, 'close'));
         self.reload();
+    },
+
+    create_lightbox: function() {
+        return new gocept.Lightbox(this.container, {
+            use_ids: false
+        });
     },
 
     reload: function() {
