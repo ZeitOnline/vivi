@@ -1,0 +1,73 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.content.cp">
+
+  <!-- teaser -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    class=".teaser.TeaserList"
+    template="layout.teaser.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block.edit"
+    class=".teaser.TeaserEdit"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".teaser.TeaserDrop"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="edit-contents"
+    template="layout.teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="teaser.edit-contents"
+    class=".teaser.TeaserListEdit"
+    template="teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaser.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".area.UpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+</configure>
