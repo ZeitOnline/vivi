@@ -22,8 +22,7 @@ var expand_template = function(template, json, id) {
   $(id).innerHTML = s;
 };
 
-var json_callback = function(json) {
-  var id = 'search_result';
+var json_callback = function(id, json) {
   var template_url = json['template_url'];
   var template = template_cache[template_url];
   if (!isUndefinedOrNull(template)) {
@@ -33,13 +32,9 @@ var json_callback = function(json) {
   load_template(template_url, json, id);
 };
 
-var json_errback = function(error) {
-  log('error when getting find json');
-};
-
 var render = function() {
   var d = MochiKit.Async.loadJSONDoc('find');
-  d.addCallbacks(json_callback, json_errback);
+  d.addCallback(json_callback, 'search_result');
 };
 
 MochiKit.Signal.connect(window, 'onload', render);
