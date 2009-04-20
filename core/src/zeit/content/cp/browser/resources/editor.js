@@ -13,11 +13,24 @@ zeit.content.cp.resolveDottedName = function(name) {
     return obj;
 }
 
+
+zeit.content.cp.getParentComponent = function(context_element) {
+    var parent = null;
+    var parent_element = context_element.parentNode;
+    while (!isNull(parent_element) && isUndefinedOrNull(parent)) {
+        parent = parent_element.__handler__;
+        parent_element = parent_element.parentNode;
+    }
+    return parent;
+}
+
+
 zeit.content.cp.Editor = gocept.Class.extend({
     
     construct: function() {
         var self = this;
         self.content = $('cp-content');
+        self.content.__handler__ = self;
         MochiKit.Signal.connect(
             'content', 'onclick',
             self, 'handleContentClick');
@@ -176,10 +189,10 @@ zeit.content.cp.in_context.Lightbox = zeit.content.cp.in_context.Base.extend({
         MochiKit.Signal.signal(zeit.content.cp.editor, 'single-context-start');
         self.activate();
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.lightbox.lightbox, 'before-close',
+            self.context_aware, 'before-close',
             self, self.deactivate));
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.lightbox, 'before-reload',
+            self.context_aware, 'before-reload',
             self, self.deactivate));
     },
 
@@ -401,17 +414,21 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     construct: function(context_element) {
         var self = this;
-        self.closed = false;
-        zeit.content.cp.lightbox = self;
         var container_id = context_element.getAttribute('cms:lightbox-in');
+        self.parent = zeit.content.cp.getParentComponent(context_element);
         var url = context_element.getAttribute('href');
         arguments.callee.$.construct.call(self, url, $(container_id));
+        self.lightbox.content_box.__handler__ = self;
+
         self.events.push(MochiKit.Signal.connect(
            zeit.content.cp.editor, 'before-reload',
            self, 'close'));
         self.close_event_handle = MochiKit.Signal.connect(
             self.lightbox, 'before-close',
             self, self.on_close);
+        self.events.push(
+            MochiKit.Signal.connect(
+                self, 'reload', self, self.reload));
     },
 
     reload: function() {
@@ -437,9 +454,9 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
     },
 
     on_close: function() {
+        var self = this;
         MochiKit.Signal.disconnect(self.close_event_handle);
-        MochiKit.Signal.signal(zeit.content.cp.editor, 'reload');
-        zeit.content.cp.lightbox = null;
+        MochiKit.Signal.signal(self.parent, 'reload');
     },
 });
 

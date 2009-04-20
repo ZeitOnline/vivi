@@ -99,7 +99,8 @@ The teaser list can be edited:
     <li class="edit-bar even"
         cms:uniqueid="http://xml.zeit.de/c1">
       <a class="edit-link"
-         href="http://localhost/++skin++cms/repository/c1/@@edit-foo-xxx">
+         ...
+         href="http://localhost/++skin++cms/repository/c1/@@checkout...>
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
@@ -112,7 +113,8 @@ The teaser list can be edited:
     <li class="edit-bar odd"
         cms:uniqueid="http://xml.zeit.de/testcontent">
       <a class="edit-link"
-         href="http://localhost/++skin++cms/repository/testcontent/@@edit-foo-xxx">
+         ...
+         href="http://localhost/++skin++cms/repository/testcontent/@@checkout...>
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
@@ -152,6 +154,57 @@ Restore the original order:
 >>> browser.open(url + '?keys=' + cjson.encode(order))
 
 
+Editing teasers
+---------------
+
+Editing teasers in the CP editor is a rather complex task.
+
+* The lighbox opens another lightbox which contains the edit form.
+
+* For being editable a content objects needs to be checked out. So the first
+  request the lightbox does is actually only checking out the content object
+  and redirects to the real edit form.
+
+* When the lightbox is closed the checked out object will be deleted.
+
+* When the form in the lightbox is saved the data is saved, the object is
+  checked in and the lightbox will beclosed.
+
+* When an object cannot be checked out, the edit link is replaced by a lock.
+
+>>> browser.open(lightbox_url)
+>>> browser.getLink('Edit').click()
+>>> edit_url = browser.url
+>>> browser.getControl('Teaser title').value = 'Test content teaser title'
+>>> browser.getControl('Teaser text').value = 'Test content teaser text'
+>>> browser.getControl('Apply').click()
+
+On successful save, the object is checked in automatically. The lightbox is
+instructed to close itself:
+
+>>> print browser.contents
+<div...
+<script language="javascript">
+    self.close();
+</script>
+...
+
+>>> browser.open(edit_url)
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 404: Not Found
+
+The teasers of testcontent have been changed in the repository:
+
+>>> browser.open('http://localhost/++skin++cms/repository/c1')
+>>> print browser.contents
+<?xml ...
+ <span>Teaser title</span>
+ ...
+ <div class="widget">Test content teaser title</div>
+ ...
+
+
 Deleting entries
 ----------------
 
@@ -170,7 +223,8 @@ True
       cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>">
     <li class="edit-bar even" ...
       <a class="edit-link"
-         href="http://localhost/++skin++cms/repository/c1/@@edit-foo-xxx">
+         ...
+         href="http://localhost/++skin++cms/repository/c1/@@checkout...>
         <span class="action-title">Edit</span>
       </a>
       <a class="delete-link" title="Delete"
@@ -178,7 +232,7 @@ True
          href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
         <span class="action-title">Delete</span>
       </a>
-      <div>c1 teaser</div>
+      <div>Test content teaser title</div>
     </li>
   </ol>
 </div>
@@ -196,8 +250,8 @@ The cp contents also has changed of course:
   <div class="teaser">
     ...
     <div class="supertitle"></div>
-    <div class="teaserTitle">c1 teaser</div>
-    <div class="teaserText"></div>
+    <div class="teaserTitle">Test content teaser title</div>
+    <div class="teaserText">Test content teaser text</div>
     <div class="shortTeaserTitle">c1 teaser</div>
     <div class="shortTeaserText"></div>
   </div>

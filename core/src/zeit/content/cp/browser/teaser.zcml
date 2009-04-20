@@ -22,7 +22,7 @@
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block.edit"
-    class=".teaser.TeaserEdit"
+    class=".teaser.TeaserListBlockEdit"
     permission="zeit.EditContent"
     />
 
@@ -69,5 +69,15 @@
     class=".area.UpdateOrder"
     permission="zeit.EditContent"
     />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-teaser.html"
+    class=".teaser.EditTeaser"
+    permission="zeit.EditContent"
+    />
+
+  <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
 
 </configure>

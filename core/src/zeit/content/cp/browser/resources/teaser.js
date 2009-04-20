@@ -9,6 +9,7 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
         var self = this;
         arguments.callee.$.construct.call(
             self, 'teaser-list-edit-box-sorter');
+        self.parent = zeit.content.cp.getParentComponent($(self.container));
     },
 
     get_sortable_nodes: function() {
@@ -28,7 +29,7 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
         var self = this;
         var d = arguments.callee.$.on_update.call(self);
         d.addCallback(function(result) {
-            zeit.content.cp.lightbox.reload();
+            MochiKit.Signal.signal(self.parent, 'reload');
         });
         return d;
     },
@@ -42,7 +43,7 @@ zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {
-            zeit.content.cp.lightbox.reload();
+            MochiKit.Signal.signal(self.parent, 'reload');
         });
     },
 });
