@@ -66,7 +66,7 @@ The inital page doens't contain much:
  <div id="content">
      <div id="cp-content">
      </div>
-     <div id="cp-search-pane">
+     <div id="cp-forms">
      </div>
  </div>
  ...

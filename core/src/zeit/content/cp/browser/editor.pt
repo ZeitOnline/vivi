@@ -1,5 +1,5 @@
 <tal:resource replace="resource_library:zeit.content.cp" />
 <div id="cp-content" >
 </div>
-<div id="cp-search-pane">
+<div id="cp-forms">
 </div>
