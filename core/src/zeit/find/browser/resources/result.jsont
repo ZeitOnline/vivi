@@ -2,7 +2,7 @@
 <div>
   <span class="uniqueId">{uniqueId}</span>
   <div>
-    <img src="{icon_url}" />
+    <img src="{icon}" />
     <img src="{favorited}" />
     <img src="{publication_status}" />
   </div>
