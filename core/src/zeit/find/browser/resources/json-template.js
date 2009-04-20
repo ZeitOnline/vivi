@@ -20,7 +20,7 @@
 
 // This is predefined in tests, shouldn't be defined anywhere else.  TODO: Do
 // something nicer.
-var log = log || function() {};
+var log = function() {}; // log || function() {};
 var repr = repr || function() {};
 
 
