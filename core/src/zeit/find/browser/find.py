@@ -18,11 +18,13 @@ class Find(zeit.cms.browser.view.Base):
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'text/json')
         result = {
-            "template_url": resources(self.request)['foo.jsont'](),
+            "template_url": resources(self.request)['result.jsont'](),
             "results":
-                [{'teaser_title': 'Obama still alive',
+                [{'uniqueId': 'foo',
+                  'teaser_title': 'Obama still alive',
                   'teaser_text': 'Obama is still alive and well.'},
-                 {'teaser_title': 'Obama journalism too extreme',
+                 {'uniqueId': 'bar',
+                  'teaser_title': 'Obama journalism too extreme',
                   'teaser_text': 'Reporters report that there is too much news about Obama.'}]
                  }
         return cjson.encode(result)

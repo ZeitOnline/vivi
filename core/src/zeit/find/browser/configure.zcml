@@ -24,7 +24,8 @@
     require="mochikit
              mochikit.DragAndDrop
              gocept.mochikit.jsclass
-             gocept.mochikit.lightbox">
+             gocept.mochikit.lightbox
+             zeit.cms">
     <directory source="resources" include="json-template.js find.js" />
   </resourceLibrary>
 

@@ -20,7 +20,8 @@
 
 // This is predefined in tests, shouldn't be defined anywhere else.  TODO: Do
 // something nicer.
-var log = function() {}; // log || function() {};
+var log2 = function() {}; 
+//var log2 = log || function() {};
 var repr = repr || function() {};
 
 
@@ -93,7 +94,7 @@ function _ScopedContext(context, undefined_str) {
 
   return {
     PushSection: function(name) {
-      log('PushSection '+name);
+      log2('PushSection '+name);
       if (name === undefined || name === null) {
         return null;
       }
@@ -121,15 +122,15 @@ function _ScopedContext(context, undefined_str) {
       // We're already done
       if (stacktop.index == context_array.length) {
         stack.pop();
-        log('next: null');
+        log2('next: null');
         return null;  // sentinel to say that we're done
       }
 
-      log('next: ' + stacktop.index);
+      log2('next: ' + stacktop.index);
 
       stacktop.context = context_array[stacktop.index++];
 
-      log('next: true');
+      log2('next: true');
       return true;  // OK, we mutated the stack
     },
 
@@ -141,7 +142,7 @@ function _ScopedContext(context, undefined_str) {
       var i = stack.length - 1;
       while (true) {
         var context = stack[i].context;
-        log('context '+repr(context));
+        log2('context '+repr(context));
 
         if (typeof context !== 'object') {
           i--;
@@ -198,7 +199,7 @@ function _Execute(statements, context, callback) {
   for (i=0; i<statements.length; i++) {
     statement = statements[i];
 
-    //log('Executing ' + statement);
+    //log2('Executing ' + statement);
 
     if (typeof(statement) == 'string') {
       callback(statement);
@@ -212,7 +213,7 @@ function _Execute(statements, context, callback) {
 
 
 function _DoSubstitute(statement, context, callback) {
-  log('Substituting: '+ statement.name);
+  log2('Substituting: '+ statement.name);
   var value;
   if (statement.name == '@') {
     value = context.CursorValue();
@@ -272,7 +273,7 @@ function _DoRepeatedSection(args, context, callback) {
     pushed = true;
   }
 
-  //log('ITEMS: '+showArray(items));
+  //log2('ITEMS: '+showArray(items));
   if (items && items.length > 0) {
     // Execute the statements in the block for every item in the list.
     // Execute the alternate block on every iteration except the last.  Each
@@ -283,15 +284,15 @@ function _DoRepeatedSection(args, context, callback) {
     var alt_statements = block.Statements('alternate');
 
     for (var i=0; context.next() !== null; i++) {
-      log('_DoRepeatedSection i: ' +i);
+      log2('_DoRepeatedSection i: ' +i);
       _Execute(statements, context, callback);
       if (i != last_index) {
-        log('ALTERNATE');
+        log2('ALTERNATE');
         _Execute(alt_statements, context, callback);
       }
     }
   } else {
-    log('OR: '+block.Statements('or'));
+    log2('OR: '+block.Statements('or'));
     _Execute(block.Statements('or'), context, callback);
   }
 
@@ -360,8 +361,8 @@ function _Compile(template_str, options) {
     var token = tokens[i];
     var interpret_token = (i % 2 == 1);
 
-    log('i: '+i);
-    log('token0: "'+ token+'"');
+    log2('i: '+i);
+    log2('token0: "'+ token+'"');
 
     if (interpret_token) {
       var had_newline = false;
@@ -371,7 +372,7 @@ function _Compile(template_str, options) {
       }
 
       token = token.substr(0 + strip_num, token.length - 1 - strip_num);
-      log('token2: "'+ token+'"');
+      log2('token2: "'+ token+'"');
 
       if (token[0] == '#') {
         continue;  // comment
@@ -379,7 +380,7 @@ function _Compile(template_str, options) {
 
       if (token[0] == '.') {  // Keyword
         token = token.substring(1, token.length);
-        log('token3: "'+ token+'"');
+        log2('token3: "'+ token+'"');
 
         var literal = {
             'meta-left': meta_left,
@@ -398,7 +399,7 @@ function _Compile(template_str, options) {
           var repeated = match[1];
           var section_name = match[3];
           var func = repeated ? _DoRepeatedSection : _DoSection;
-          log('repeated ' + repeated + ' section_name ' + section_name);
+          log2('repeated ' + repeated + ' section_name ' + section_name);
 
           var new_block = _Section(section_name);
           current_block.Append([func, new_block]);
@@ -422,8 +423,8 @@ function _Compile(template_str, options) {
           stack.pop();
           if (stack.length > 0) {
             current_block = stack[stack.length-1];
-            //log('STACK '+showArray(stack));
-            //log('end BLOCK '+showArray(current_block.Statements()));
+            //log2('STACK '+showArray(stack));
+            //log2('end BLOCK '+showArray(current_block.Statements()));
           } else {
             throw {
               name: 'TemplateSyntaxError',
@@ -506,3 +507,4 @@ function Template(template_str, options) {
 return {Template: Template, HtmlEscape: HtmlEscape};
 
 }();
+

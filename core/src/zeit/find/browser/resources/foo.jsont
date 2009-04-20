@@ -1,6 +1,0 @@
-{.repeated section results}
-<div>
-  <span>{teaser_title}</span>
-  <span>{teaser_text}</span>
-</div>
-{.end}

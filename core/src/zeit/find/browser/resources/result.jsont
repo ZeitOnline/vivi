@@ -1,0 +1,19 @@
+{.repeated section results}
+<div>
+  <span class="uniqueId">{uniqueId}</span>
+  <div>
+    <img src="{icon_url}" />
+    <img src="{favorited}" />
+    <img src="{publication_status}" />
+  </div>
+  <div>{teaser_title}</div>
+  <div>{teaser_text}</div>
+  <div>
+    <a href="{preview_url}">Vorschau</a>
+    <a href="{date_filter}">{date}</a>
+    <a href="{week_filter}">{week}</a>
+    <a href="{topics_filter}">{topics}</a>
+    <a href="{author_filter}">{author}</a>
+  </div>
+</div>
+{.end}
