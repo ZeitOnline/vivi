@@ -12,7 +12,7 @@
     <a href="#"
        tal:attributes="href string:${context/@@absolute_url}/switch?type=${block_type/type}"
        tal:content="block_type/title"
-       cms:cp-module="LoadAndReload">
+       cms:cp-module="zeit.content.cp.LoadAndReload">
     </a>
   
   </div>

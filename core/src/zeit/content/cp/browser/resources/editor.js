@@ -3,6 +3,16 @@ if (isUndefinedOrNull(zeit.content)) {
 }
 zeit.content.cp = {}
 
+
+zeit.content.cp.resolveDottedName = function(name) {
+    // Resolve *absolute* dotted name
+    var obj = window;
+    forEach(name.split('.'), function(step) {
+        obj = obj[step]
+    });
+    return obj;
+}
+
 zeit.content.cp.Editor = gocept.Class.extend({
     
     construct: function() {
@@ -22,7 +32,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         if (module_name) {
             log("Loading module " + module_name);
             event.stop();
-            var module = zeit.content.cp.modules[module_name]
+            var module = zeit.content.cp.resolveDottedName(module_name);
             new module(event.target());
         } else  {
             event.preventDefault();
@@ -41,6 +51,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         });
     },
 });
+
 
 MochiKit.Signal.connect(window, 'onload', function() {
     if (isNull($('cp-content'))) {
@@ -385,12 +396,7 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 });
 
 
-//
-// modules 
-//
-zeit.content.cp.modules = {}
-
-zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
+zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     construct: function(context_element) {
         var self = this;
@@ -436,7 +442,7 @@ zeit.content.cp.modules.LightBoxForm = zeit.cms.LightboxForm.extend({
 });
 
 
-zeit.content.cp.modules.LoadAndReload = gocept.Class.extend({
+zeit.content.cp.LoadAndReload = gocept.Class.extend({
 
     construct: function(context_element) {
         var url = context_element.getAttribute('href');
@@ -450,7 +456,7 @@ zeit.content.cp.modules.LoadAndReload = gocept.Class.extend({
 });
 
 
-zeit.content.cp.modules.ConfirmDelete = gocept.Class.extend({
+zeit.content.cp.ConfirmDelete = gocept.Class.extend({
 
     construct: function(context_element) {
         var self = this;

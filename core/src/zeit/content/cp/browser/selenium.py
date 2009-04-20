@@ -23,6 +23,18 @@ class Test(zeit.cms.selenium.Test):
         s.waitForElementPresent('xpath=//div[@class="landing-zone"]')
 
 
+class TestDottedName(Test):
+
+    def test_lookup(self):
+        self.open_centerpage()
+        s = self.selenium
+
+        # Test a name that we know that exists
+        s.verifyEval(
+            'new (window.zeit.content.cp.resolveDottedName("zeit.content.cp.Editor"))',
+            '[object Object]')
+
+
 class TestGenericEditing(Test):
 
     def test_insert(self):

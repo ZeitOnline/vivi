@@ -10,3 +10,7 @@ class IEditorContentViewletManager(zope.viewlet.interfaces.IViewletManager):
 
 class IEditBarViewletManager(zope.viewlet.interfaces.IViewletManager):
     """Vielets which compose an edit bar."""
+
+
+class IFormTabsViewletManager(zope.viewlet.interfaces.IViewletManager):
+    """Viewlets for creating the tabs in the form area."""

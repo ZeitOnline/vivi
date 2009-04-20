@@ -36,7 +36,7 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
 });
 
 
-zeit.content.cp.modules.TeaserListDeleteEntry = gocept.Class.extend({
+zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
     construct: function(context_element) {
         var url = context_element.getAttribute('href');
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);

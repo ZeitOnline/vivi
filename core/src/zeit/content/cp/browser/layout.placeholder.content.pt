@@ -1,6 +1,6 @@
 <a class="choose-block"
    tal:attributes="href string:${context/@@absolute_url}/block.edit"
    i18n:translate=""
-   cms:cp-module="LightBoxForm">
+   cms:cp-module="zeit.content.cp.LightBoxForm">
   Click here to choose the block type.
 </a>

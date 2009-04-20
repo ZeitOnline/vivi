@@ -115,7 +115,7 @@ contents:
    <h1>Choose block type</h1>
    ...
    <div class="block-types">
-     <a href="..." cms:cp-module="LoadAndReload">List of teasers</a>
+     <a href="..." cms:cp-module="...LoadAndReload">List of teasers</a>
      ...
 
 
@@ -166,7 +166,7 @@ placeholders:
       <div class="block type-placeholder" ... id="<GUID>">
       ...
         <div class="edit">
-          <a cms:cp-module="LoadAndReload"
+          <a cms:cp-module="...LoadAndReload"
              href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
             + Add teaser bar
           </a>
@@ -191,7 +191,7 @@ Add a real block in the second place:
       <div class="block type-placeholder" ... id="<GUID>">
       ...
         <div class="edit">
-          <a cms:cp-module="LoadAndReload"
+          <a cms:cp-module="...LoadAndReload"
              href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
             + Add teaser bar
           </a>

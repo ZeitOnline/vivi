@@ -17,6 +17,12 @@
     />
 
   <adapter
+    factory=".selenium.TestDottedName"
+    name="zeit.content.cp.TestDottedName"
+    permission="zope.Public"
+    />
+
+  <adapter
     factory=".selenium.TestTeaserList"
     name="zeit.content.cp.TestTeaserList"
     permission="zope.Public"
