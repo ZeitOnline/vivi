@@ -217,8 +217,3 @@ Templates
 
 * for this page (same as search results) - dynamic: result data
 
-
-
-
- 
-
