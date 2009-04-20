@@ -34,3 +34,15 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
     },
     
 });
+
+
+zeit.content.cp.modules.TeaserListDeleteEntry = gocept.Class.extend({
+    construct: function(context_element) {
+        var url = context_element.getAttribute('href');
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        // XXX error handling
+        d.addCallback(function(result) {
+            zeit.content.cp.lightbox.reload();
+        });
+    },
+});
