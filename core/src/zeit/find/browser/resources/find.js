@@ -174,10 +174,10 @@ zeit.find.log_error = function(err) {
     }
    
     var init = function() {
-//        zeit.find.tabs = new zeit.find.Tabs();
-//        zeit.find.tabs.add(new zeit.find.Tab('search_form', 'Suche'));
-//        zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
-//       zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
+        zeit.find.tabs = new zeit.find.Tabs();
+        zeit.find.tabs.add(new zeit.find.Tab('search_form', 'Suche'));
+        zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
+        zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
         search_form.render();
     };
     
