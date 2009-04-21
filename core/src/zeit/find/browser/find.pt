@@ -6,6 +6,7 @@
     "></script>
   </head>
   <body>
-    <div id="search_form"></div>
+    <div id="cp-forms">
+    </div>
   </body>
 </html>

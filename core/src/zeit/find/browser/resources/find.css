@@ -56,3 +56,15 @@
 }
 
 
+#cp-forms {
+  padding-top: 3em;
+}
+
+#cp-forms > .context-views {
+  border-bottom: 1px solid black;
+  height: 2em;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}

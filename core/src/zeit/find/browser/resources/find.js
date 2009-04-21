@@ -1,3 +1,79 @@
+zeit.find = {};
+
+
+zeit.find.Tabs = gocept.Class.extend({
+    // Knows about all tabs
+
+    construct: function() {
+        log("initializing tabs");
+        var self = this;
+        self.container = $('cp-forms');
+        var div = self.container.appendChild(
+            DIV({'class': 'context-views'}))
+        self.tabs = [];
+        self.tabs_element = div.appendChild(UL());
+        MochiKit.Signal.connect(
+            self.tabs_element, 'onclick', self, self.switch_tab);
+    },
+
+    add: function(tab) {
+        // Create a tab inside $('cp-forms')
+        var self = this;
+        tab.tab_element = self.tabs_element.appendChild(
+            LI({},
+                A({href: tab.id}, tab.title)))
+        tab.container = self.container.appendChild(DIV({id: tab.id}));
+        MochiKit.DOM.hideElement(tab.container);
+        self.tabs.push(tab);
+        if (self.tabs.length == 1) {
+            self.activate(tab.id);
+        }
+    },
+
+    switch_tab: function(event) {
+        var self = this;
+        var target = event.target();
+        var id = target.getAttribute('href');
+        self.activate(id);
+        event.stop();
+    },
+
+    activate: function(id) {
+        var self = this;
+        forEach(self.tabs, function(tab) {
+            if (tab.id == id) {
+                MochiKit.DOM.showElement(tab.container);
+                MochiKit.DOM.addElementClass(tab.tab_element, 'selected');
+            } else {
+                MochiKit.DOM.hideElement(tab.container);
+                MochiKit.DOM.removeElementClass(tab.tab_element, 'selected');
+            }
+        });
+    },
+});
+
+
+zeit.find.Tab = gocept.Class.extend({
+
+    construct: function(id, title) {
+        var self = this;
+        self.id = id;
+        self.title = title;
+        self.selected = false;
+    },
+
+});
+
+
+(function() {
+
+    var ident = MochiKit.Signal.connect(window, 'onload', function() {
+        MochiKit.Signal.disconnect(ident);
+        zeit.find.tabs = new zeit.find.Tabs();
+    });
+})();
+
+
 (function() {
 
 var template_cache = {};
@@ -86,9 +162,11 @@ var init_search_form = function() {
 };
 
 var init = function() {
-  var d = MochiKit.Async.loadJSONDoc(application_url + '/search_form');
-  d.addCallback(json_callback, 'search_form', init_search_form);
-  d.addErrback(log_error);
+    var tab = new zeit.find.Tab('search_form', 'Suche');
+    zeit.find.tabs.add(tab);
+    var d = MochiKit.Async.loadJSONDoc(application_url + '/search_form');
+    d.addCallback(json_callback, 'search_form', init_search_form);
+    d.addErrback(log_error);
 };
 
 MochiKit.Signal.connect(window, 'onload', init);
@@ -130,5 +208,25 @@ MochiKit.Signal.connect(window, 'onload', init);
     var ident = MochiKit.Signal.connect(window, 'onload', function() {
         MochiKit.Signal.disconnect(ident);
         init();
+    });
+})();
+
+
+
+// Register empty tabs
+
+
+(function() {
+    var ident = MochiKit.Signal.connect(window, 'onload', function() {
+        MochiKit.Signal.disconnect(ident);
+        zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
+    });
+})();
+
+
+(function() {
+    var ident = MochiKit.Signal.connect(window, 'onload', function() {
+        MochiKit.Signal.disconnect(ident);
+        zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
     });
 })();
