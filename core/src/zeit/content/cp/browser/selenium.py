@@ -47,14 +47,15 @@ class TestGenericEditing(Test):
         s.waitForElementPresent('css=div.block-types')
         s.click('link=List of teasers')
         s.waitForElementPresent('css=div.block.type-teaser')
-        s.click('css=div.block.type-teaser > * > div.edit > a')
+        s.pause(300)
+        s.click('css=div.block.type-teaser > * > div.edit > a.edit-link')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.title', 'Holladrio')
         s.click('form.actions.apply')
-        s.waitForElementNotPresent('id=lightbox')
+        s.waitForElementNotPresent('css=.lightbox')
 
         # Open delete verification
-        s.pause(0.5)
+        s.pause(250)
         s.click('css=a.delete-link')
         s.waitForElementPresent('css=div.confirm-delete')
         s.verifyElementPresent('css=div.block-inner.highlight')
@@ -148,6 +149,24 @@ class TestTeaserList(Test):
         self.clip_object('c2')
         self.clip_object('c3')
 
+    def create_filled_teaserlist(self):
+        s = self.selenium
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c3 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c2 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c1 teaser')
+
+
     def test_adding_via_drag_and_drop_from_clipboard(self):
         self.open('/')
         s = self.selenium
@@ -165,34 +184,20 @@ class TestTeaserList(Test):
 
     def test_delete(self):
         s = self.selenium
-        self.create_content_and_fill_clipboard()
-        self.create_teaserlist()
-
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c3 teaser')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c2 teaser')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c1 teaser')
+        self.create_filled_teaserlist()
 
         s.click('link=Edit teaser list')
         s.waitForElementPresent('css=div.teaser-list-edit-box')
 
         s.verifyXpathCount(
-            '//div[@id="lightbox"]//a[@class="delete-link"]', 3)
+            '//div[@class="lightbox"]//a[@class="delete-link"]', 3)
         s.click(
-            '//div[@id="lightbox"]//li[contains(string(.), "c2 teaser")]/'
+            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
             'a[@class="delete-link"]')
-        s.waitForElementPresent('css=.confirm-delete')
+        s.waitForElementPresent('css=.confirm-delete > a')
         s.click('css=.confirm-delete > a')
         s.waitForXpathCount(
-            '//div[@id="lightbox"]//a[@class="delete-link"]', 2)
+            '//div[@class="lightbox"]//a[@class="delete-link"]', 2)
 
         # When closing the lightbox the c2 teaser goes away
         s.click('css=a.CloseButton')
@@ -225,14 +230,14 @@ class TestTeaserList(Test):
         # it overlaps the third row. The initial order is 3, 2, 1. After drag
         # it is 2, 1, 3.
         def li(text):
-            return '//div[@id="lightbox"]//li[contains(string(.), "%s")]' % (
+            return '//div[@class="lightbox"]//li[contains(string(.), "%s")]' % (
                 text,)
         s.storeElementHeight(li('c3'), 'height')
 
         s.storeEval("new Number(storedVars['height']) * 2.75", 'delta_y')
         s.dragAndDrop(li('c3'), '0,${delta_y}')
 
-        s.waitForTextPresent('Loading')
+        s.pause(100)
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.verifyOrdered(li('c2'), li('c1'))
         s.verifyOrdered(li('c1'), li('c3'))
@@ -241,12 +246,50 @@ class TestTeaserList(Test):
         s.storeEval("new Number(storedVars['height']) * 0.75", 'delta_y')
         s.dragAndDrop(li('c1'), '0,-${delta_y}')
 
-        s.waitForTextPresent('Loading')
+        s.pause(100)
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.verifyOrdered(li('c1'), li('c2'))
         s.verifyOrdered(li('c2'), li('c3'))
 
 
+    def test_inplace_teaser_editing_with_save(self):
+        s = self.selenium
+        self.create_filled_teaserlist()
+
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+
+        s.click(
+            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
+            'a[@class="edit-link"]')
+        s.waitForElementPresent('id=form.teaserTitle')
+
+        # Changing the value and submitting the form will reload the teaser
+        # list light box. The text will be in there then.
+        s.type('id=form.teaserTitle', 'A nice new teaser')
+        s.click('id=form.actions.apply')
+        s.waitForTextPresent('A nice new teaser')
+
+    def test_inplace_teaser_editing_with_abort(self):
+        s = self.selenium
+        self.create_filled_teaserlist()
+
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+
+        s.click(
+            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
+            'a[@class="edit-link"]')
+        s.waitForElementPresent('id=form.teaserTitle')
+
+        # Closing the lightbox will remove the checked out object, thus remove
+        # the lock. That means that we can edit again
+        s.click('css=#cp-forms a.CloseButton')
+        s.waitForElementNotPresent('css=#cp-forms a.CloseButton')
+        s.click(
+            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
+            'a[@class="edit-link"]')
+        s.waitForElementPresent('id=form.teaserTitle')
 
 
 

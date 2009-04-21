@@ -38,8 +38,12 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
 
 
 zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
+    // Delete entry from teaser list
+
     construct: function(context_element) {
+        var self = this;
         var url = context_element.getAttribute('href');
+        self.parent = zeit.content.cp.getParentComponent(context_element);
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {

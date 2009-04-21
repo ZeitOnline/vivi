@@ -478,6 +478,7 @@ zeit.content.cp.ConfirmDelete = gocept.Class.extend({
 
     construct: function(context_element) {
         var self = this;
+        self.parent = zeit.content.cp.getParentComponent(context_element);
         var url = context_element.getAttribute('href');
         // XXX i18n
         var delete_module = context_element.getAttribute('cms:delete-module');
@@ -489,7 +490,7 @@ zeit.content.cp.ConfirmDelete = gocept.Class.extend({
                'cms:cp-module': delete_module},
                'Remove'))
         context_element.appendChild(self.confirm);
-        MochiKit.Visual.fade(self.confirm, {'from': 0, 'to': 1});
+        MochiKit.Visual.appear(self.confirm)
         self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
             context_element, null, highlight_class);
         MochiKit.DOM.addElementClass(self.block, 'highlight');
@@ -501,7 +502,7 @@ zeit.content.cp.ConfirmDelete = gocept.Class.extend({
             MochiKit.Signal.connect(self.overlay, 'onclick', self, 'close'));
         self.events.push(
             MochiKit.Signal.connect(
-                zeit.content.cp.editor, 'before-reload', self, 'close'))
+                self.parent, 'before-reload', self, 'close'))
 
     },
 
