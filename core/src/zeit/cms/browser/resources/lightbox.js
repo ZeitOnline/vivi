@@ -141,14 +141,15 @@ zeit.cms.LightboxForm = Class.extend({
         // Change all submits to buttons to be able to handle them in
         // java script
         forEach(
-            getElementsByTagAndClassName(
+            MochiKit.DOM.getElementsByTagAndClassName(
                 'input', null, self.content_box),
             function(button) {
                 if (button.type == 'submit') {
                     button.type = 'button';
                 }
             });
-        self.form = $('lightbox.form');
+        self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'form', null, self.content_box);
         if (self.form != null) {
             self.events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
@@ -159,8 +160,8 @@ zeit.cms.LightboxForm = Class.extend({
         
         // check for javascript
         forEach(
-            getElementsByTagAndClassName('SCRIPT', null,
-                                         self.content_box),
+            MochiKit.DOM.getElementsByTagAndClassName(
+            'SCRIPT', null, self.content_box),
             function(script) {
                 eval(script.text);
             });
