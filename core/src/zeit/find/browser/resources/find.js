@@ -66,9 +66,22 @@ var init_search_form = function() {
     find(search_result_url);
   });
   MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
-    var d = MochiKit.Async.loadJSONDoc(application_url + '/extended_search_form');
-    d.addCallback(json_callback, 'extended_search_form');
-    d.addErrback(log_error);
+    if ($('extended_search')) {
+        $('extended_search_form').innerHTML = '';
+    } else {
+        var d = MochiKit.Async.loadJSONDoc(application_url + '/extended_search_form');
+        d.addCallback(json_callback, 'extended_search_form');
+        d.addErrback(log_error);
+    }
+  });
+  MochiKit.Signal.connect('result_filters_button', 'onclick', function(e) {
+    if ($('filter_Zeit')) {
+        $('result_filters').innerHTML = '';
+    } else {
+        var d = MochiKit.Async.loadJSONDoc('result_filters');
+        d.addCallback(json_callback, 'result_filters');
+        d.addErrback(log_error);
+    }
   });
 };
 

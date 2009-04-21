@@ -82,7 +82,7 @@ class SearchResult(JSONView):
                   'date_filter': '',
                   'week': '14/2009',
                   'week_filter': '',
-                  'topics': 'Newspapers',
+                  'topics': 'Kultur',
                   'topics_filter': '',
                   'author': 'Christian Zagrodnick',
                   'author_filter': ''}]
@@ -91,3 +91,28 @@ class SearchResult(JSONView):
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
 
+class ResultFilters(JSONView):
+    template = 'result_filters.jsont'
+
+    def time_entries(self):
+        return [{"title": "heute", "amount": "20", "query": ""},
+                {"title": "7 Tage", "amount": "1000+", "query": ""}]
+
+    def author_entries(self):
+        return [{"title": "Martijn Faassen", "amount": "45", "query": ""},
+                {"title": "Christian Zagrodnick", "amount": "124", "query": ""}]
+
+    def topic_entries(self):
+        return [{"title": "Politik", "amount": "10", "query": ""},
+                {"title": "Kultur", "amount": "7", "query": ""},
+                {"title": "Kultur", "amount": "7", "query": ""}]
+
+    def content_types_entries(self):
+        return [ {"title": "Artikel", "amount": "1000+", "query": ""}]
+
+    def json(self):
+        return {"results": [
+            {"row": [{"title": "Zeit", "entries": self.time_entries()},
+                     {"title": "Ressorts", "entries": self.topic_entries()}]},
+            {"row": [{"title": "Autoren", "entries": self.author_entries()},
+                     {"title": "Inhaltstyp", "entries": self.content_types_entries()}]}]}

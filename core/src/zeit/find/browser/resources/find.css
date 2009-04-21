@@ -34,18 +34,25 @@
   text-decoration: underline;
 }
 
+#result_filters div,
 #extended_search {
   display: inline-table;
   margin-bottom: 10px;
 }
 
+#result_filters div div,
 #extended_search div {
   display: table-row;
 }
 
+#result_filters #filter_Zeit,
+#result_filters #filter_Ressorts,
+#result_filters #filter_Autoren,
+#result_filters #filter_Inhaltstyp,
 #extended_search div label,
 #extended_search div select,
 #extended_search div input {
   display: table-cell;
 }
+
 

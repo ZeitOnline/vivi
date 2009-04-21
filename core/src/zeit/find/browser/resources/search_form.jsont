@@ -8,9 +8,9 @@
     erweiterte Suche</button>
   <div id="extended_search_form"></div>
 
-  <button id="filtered_results_button" type="button">
+  <button id="result_filters_button" type="button">
     gefilterte Ergebnisse</button>
-  <div id="filtered_results"></div>
+  <div id="result_filters"></div>
 
 </form>
 

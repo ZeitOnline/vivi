@@ -46,4 +46,12 @@
     permission="zope.View"
   />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.ResultFilters"
+    name="result_filters"
+    permission="zope.View"
+  />
+
 </configure>

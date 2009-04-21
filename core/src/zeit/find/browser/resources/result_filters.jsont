@@ -1,0 +1,16 @@
+<div>
+{.repeated section results}
+  <div>
+  {.repeated section row}
+    <div id="filter_{title}">
+        <div>{title}:</div>
+        <div>
+            {.repeated section entries}
+              <a href="{query}">{title} ({amount})</a></br>
+            {.end}
+        </div>
+    </div>
+  {.end}
+  </div>
+{.end}
+</div>
