@@ -78,7 +78,7 @@ var init_search_form = function() {
     if ($('filter_Zeit')) {
         $('result_filters').innerHTML = '';
     } else {
-        var d = MochiKit.Async.loadJSONDoc('result_filters');
+        var d = MochiKit.Async.loadJSONDoc(application_url + '/result_filters');
         d.addCallback(json_callback, 'result_filters');
         d.addErrback(log_error);
     }
