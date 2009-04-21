@@ -22,31 +22,37 @@ class Find(zeit.cms.browser.view.Base):
 
 
 class JSONView(zeit.cms.browser.view.Base):
-
+    template = None
+    
     def __init__(self, context, request):
         super(JSONView, self).__init__(context, request)
         self.resources = resources(request)
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'text/json')
-        return cjson.encode(self.json())
+        result = self.json()
+        url = self.template_url()
+        if url is not None:
+            result['template_url'] = url 
+        return cjson.encode(result)
 
     def json(self):
-        raise NotImplementedError
+        return {}
 
+    def template_url(self):
+        if self.template is None:
+            return None
+        return self.resources[self.template]()
 
 class SearchForm(JSONView):
-
-    def json(self):
-        return {"template_url": self.resources['search_form.jsont']()}
-
+    template = 'search_form.jsont'
 
 class SearchResult(JSONView):
-
+    template = 'search_result.jsont'
+    
     def json(self):
         r = self.resources
         return {
-            "template_url": r['search_result.jsont'](),
             "results":
                 [{'uniqueId': 'foo',
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -83,6 +89,5 @@ class SearchResult(JSONView):
                  }
 
 class ExtendedSearchForm(JSONView):
+    template = 'extended_search_form.jsont'
 
-    def json(self):
-        return {"template_url": self.resources['extended_search_form.jsont']()}
