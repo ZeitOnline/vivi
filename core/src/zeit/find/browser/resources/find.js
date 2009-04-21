@@ -1,6 +1,5 @@
 zeit.find = {};
 
-
 zeit.find.Tabs = gocept.Class.extend({
     // Knows about all tabs
 
@@ -52,7 +51,6 @@ zeit.find.Tabs = gocept.Class.extend({
     },
 });
 
-
 zeit.find.Tab = gocept.Class.extend({
 
     construct: function(id, title) {
@@ -64,59 +62,64 @@ zeit.find.Tab = gocept.Class.extend({
 
 });
 
+zeit.find.View = gocept.Class.extend({
+    construct: function(json_url, expansion_id, get_query_string) {
+        var self = this;
+        self.json_url = json_url;
+        self.expansion_id = expansion_id
+        self.get_query_string = get_query_string;
+        self.template = null;
+    },
 
-(function() {
+    render: function() {
+        var self = this;
+        // XXX dependency on application_url...
+        var url = application_url + '/' + self.json_url;
+        if (!isUndefinedOrNull(self.get_query_string)) {
+            url += "?" + self.get_query_string();
+        }
+        var d = MochiKit.Async.loadJSONDoc(url);
+        // XXX have to wrap in function to retain reference to self
+        // otherwise this gets messed up
+        d.addCallback(function(json) { self.callback_json(json) });
+        d.addErrback(zeit.find.log_error);
+    },
 
-    var ident = MochiKit.Signal.connect(window, 'onload', function() {
-        MochiKit.Signal.disconnect(ident);
-        zeit.find.tabs = new zeit.find.Tabs();
-    });
-})();
+    callback_json: function(json) {
+        var self = this;
+        var template_url = json['template_url'];
+        var template = self.template;
+        if (!isUndefinedOrNull(template)) {
+            self.expand_template(json);
+            return;
+        }
+        self.load_template(template_url, json);
+    },
+
+    load_template: function(template_url, json) {
+        var self = this;
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
+        d.addCallback(function(result) {
+            var t = jsontemplate.Template(result.responseText);
+            self.template = t;
+            self.expand_template(json);
+        });
+        d.addErrback(zeit.find.log_error);
+        return d;
+    },
+
+    expand_template: function(json) {
+        var self = this;
+        var s = self.template.expand(json);
+        MochiKit.Signal.signal(self, 'before-load')
+        $(self.expansion_id).innerHTML = s;
+        log('template expanded successfully');
+        MochiKit.Signal.signal(self, 'load')
+    },
+});
 
 
-(function() {
-
-var template_cache = {};
-
-var load_template = function(template_url, json, id, init) {
-  var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
-  d.addCallback(function(result) {
-    var t = jsontemplate.Template(result.responseText);
-    template_cache[template_url] = t;
-    expand_template(t, json, id, init);
-  });
-  d.addErrback(log_error);
-  return d;
-};
-
-var expand_template = function(template, json, id, init) {
-  var s = template.expand(json);
-  MochiKit.Signal.signal(id, 'before-template-expand')
-  $(id).innerHTML = s;
-  log('template expanded successfully');
-  if (!isUndefinedOrNull(init)) {
-      init();
-      log('initialization successful');
-  }
-  MochiKit.Signal.signal(id, 'after-template-expand')
-};
-
-var json_callback = function(id, init, json) {
-  if (isUndefinedOrNull(json)) {
-    // Allow the case, where init is not passed to this callback.
-    json = init;
-    init = null;
-  }
-  var template_url = json['template_url'];
-  var template = template_cache[template_url];
-  if (!isUndefinedOrNull(template)) {
-    expand_template(template, json, id, init);
-    return;
-  }
-  load_template(template_url, json, id, init);
-};
-
-var log_error = function(err) {
+zeit.find.log_error = function(err) {
     /* the error can be either a normal error or wrapped 
        by MochiKit in a GenericError in which case the message
        is the real error. We check whether the message is the real
@@ -130,51 +133,27 @@ var log_error = function(err) {
     console.error(real_error.name + ': ' + real_error.message);
 };
 
-var find = function(url) {
-  var d = MochiKit.Async.loadJSONDoc(url);
-  d.addCallback(json_callback, 'search_result');
-  d.addErrback(log_error);
-};
-
-var init_search_form = function() {
-  MochiKit.Signal.connect('search_button', 'onclick', function(e) {
-    var search_result_url = application_url + '/search_result?fulltext=' + $('fulltext').value;
-    find(search_result_url);
-  });
-  MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
-    if ($('extended_search')) {
-        $('extended_search_form').innerHTML = '';
-    } else {
-        var d = MochiKit.Async.loadJSONDoc(application_url + '/extended_search_form');
-        d.addCallback(json_callback, 'extended_search_form');
-        d.addErrback(log_error);
-    }
-  });
-  MochiKit.Signal.connect('result_filters_button', 'onclick', function(e) {
-    if ($('filter_Zeit')) {
-        $('result_filters').innerHTML = '';
-    } else {
-        var d = MochiKit.Async.loadJSONDoc(application_url + '/result_filters');
-        d.addCallback(json_callback, 'result_filters');
-        d.addErrback(log_error);
-    }
-  });
-};
-
-var init = function() {
-    var tab = new zeit.find.Tab('search_form', 'Suche');
-    zeit.find.tabs.add(tab);
-    var d = MochiKit.Async.loadJSONDoc(application_url + '/search_form');
-    d.addCallback(json_callback, 'search_form', init_search_form);
-    d.addErrback(log_error);
-};
-
-MochiKit.Signal.connect(window, 'onload', init);
-
-})();
-
-
 (function() {
+
+    var init_search_form = function() {
+        MochiKit.Signal.connect('search_button', 'onclick', function(e) {
+            search_result.render();
+        });
+        MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
+            if ($('extended_search')) {
+                $('extended_search_form').innerHTML = '';
+            } else {
+                extended_search_form.render();
+            }
+        });
+        MochiKit.Signal.connect('result_filters_button', 'onclick', function(e) {
+            if ($('filter_Zeit')) {
+                $('result_filters').innerHTML = '';
+            } else {
+                result_filters.render();
+            }
+        });
+    };
     
     var draggables = [];
 
@@ -193,40 +172,32 @@ MochiKit.Signal.connect(window, 'onload', init);
             draggables.pop().destroy();
         }
     }
-
+   
     var init = function() {
-        var ident = MochiKit.Signal.connect(
-            'search_form', 'after-template-expand', function() {
-            MochiKit.Signal.disconnect(ident);
-            MochiKit.Signal.connect(
-                'search_result', 'before-template-expand', disconnect_draggables);
-            MochiKit.Signal.connect(
-                'search_result', 'after-template-expand', connect_draggables);
-            });
-    }
-
-    var ident = MochiKit.Signal.connect(window, 'onload', function() {
-        MochiKit.Signal.disconnect(ident);
-        init();
-    });
-})();
-
-
-
-// Register empty tabs
-
-
-(function() {
-    var ident = MochiKit.Signal.connect(window, 'onload', function() {
-        MochiKit.Signal.disconnect(ident);
-        zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
-    });
-})();
-
-
-(function() {
-    var ident = MochiKit.Signal.connect(window, 'onload', function() {
-        MochiKit.Signal.disconnect(ident);
-        zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
-    });
+//        zeit.find.tabs = new zeit.find.Tabs();
+//        zeit.find.tabs.add(new zeit.find.Tab('search_form', 'Suche'));
+//        zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
+//       zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
+        search_form.render();
+    };
+    
+    search_form = new zeit.find.View(
+        'search_form', 'search_form');
+    search_result = new zeit.find.View(
+        'search_result', 'search_result', 
+        function() {
+            return 'fulltext=' + $('fulltext').value;
+        });
+    extended_search_form = new zeit.find.View(
+        'extended_search_form', 'extended_search_form');
+    result_filters = new zeit.find.View(
+        'result_filters', 'result_filters')
+    
+    MochiKit.Signal.connect(window, 'onload', init);
+    MochiKit.Signal.connect(search_form, 'load', init_search_form);
+    MochiKit.Signal.connect(search_result, 'before-load', 
+                            disconnect_draggables);
+    MochiKit.Signal.connect(search_result, 'load', 
+                            connect_draggables);
+     
 })();
