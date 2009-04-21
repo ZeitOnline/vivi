@@ -20,6 +20,7 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'gocept.lxml',
+        'gocept.mochikit>=1.4.2.2',
         'lxml',
         'python-cjson',
         'setuptools',
