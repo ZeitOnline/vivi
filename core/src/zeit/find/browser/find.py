@@ -54,7 +54,7 @@ class SearchResult(JSONView):
         r = self.resources
         return {
             "results":
-                [{'uniqueId': 'foo',
+                [{'uniqueId': 'http://xml.zeit.de/online/2007/01/Somalia',
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                   'favorited': r['favorite.png'](),
                   'publication_status': r['published.png'](),
@@ -70,7 +70,7 @@ class SearchResult(JSONView):
                   'topics_filter': '',
                   'author': 'Martijn Faassen',
                   'author_filter': ''},
-                 {'uniqueId': 'bar',
+                 {'uniqueId': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                   'favorited': r['not_favorite.png'](),
                   'publication_status': r['unpublished.png'](),

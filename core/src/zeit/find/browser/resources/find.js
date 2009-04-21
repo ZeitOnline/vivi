@@ -15,12 +15,14 @@ var load_template = function(template_url, json, id, init) {
 
 var expand_template = function(template, json, id, init) {
   var s = template.expand(json);
+  MochiKit.Signal.signal(id, 'before-template-expand')
   $(id).innerHTML = s;
   log('template expanded successfully');
   if (!isUndefinedOrNull(init)) {
       init();
       log('initialization successful');
   }
+  MochiKit.Signal.signal(id, 'after-template-expand')
 };
 
 var json_callback = function(id, init, json) {
@@ -68,4 +70,42 @@ var init = function() {
 
 MochiKit.Signal.connect(window, 'onload', init);
 
+})();
+
+
+(function() {
+    
+    var draggables = [];
+
+    var connect_draggables = function() {
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'search_entry', $('search_result'));
+        forEach(results, function(result) {
+            draggables.push(new MochiKit.DragAndDrop.Draggable(result, {
+                starteffect: null,
+                endeffect: null}));
+        });
+    }
+
+    var disconnect_draggables = function() {
+        while(draggables.length > 0) {
+            draggables.pop().destroy();
+        }
+    }
+
+    var init = function() {
+        var ident = MochiKit.Signal.connect(
+            'search_form', 'after-template-expand', function() {
+            MochiKit.Signal.disconnect(ident);
+            MochiKit.Signal.connect(
+                'search_result', 'before-template-expand', disconnect_draggables);
+            MochiKit.Signal.connect(
+                'search_result', 'after-template-expand', connect_draggables);
+            });
+    }
+
+    var ident = MochiKit.Signal.connect(window, 'onload', function() {
+        MochiKit.Signal.disconnect(ident);
+        init();
+    });
 })();
