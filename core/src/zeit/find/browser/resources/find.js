@@ -41,7 +41,17 @@ var json_callback = function(id, init, json) {
 };
 
 var log_error = function(err) {
-    console.error(err.name + ': ' + err.message);
+    /* the error can be either a normal error or wrapped 
+       by MochiKit in a GenericError in which case the message
+       is the real error. We check whether the message is the real
+       error first by checking whether its information is undefined.
+       If it is undefined, we fall back on the outer error and display
+       information about that */
+    var real_error = err.message;
+    if (isUndefinedOrNull(real_error.message)) {
+        real_error = err;
+    }
+    console.error(real_error.name + ': ' + real_error.message);
 };
 
 var find = function(url) {
