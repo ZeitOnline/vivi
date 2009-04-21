@@ -39,7 +39,7 @@ var json_callback = function(id, init, json) {
 };
 
 var log_error = function(err) {
-    console.error(err.message.name + ': ' + err.message.message);
+    console.error(err.name + ': ' + err.message);
 };
 
 var find = function(url) {
@@ -50,18 +50,18 @@ var find = function(url) {
 
 var init_search_form = function() {
   MochiKit.Signal.connect('search_button', 'onclick', function(e) {
-    var search_result_url = 'search_result?fulltext=' + $('fulltext').value;
+    var search_result_url = application_url + '/search_result?fulltext=' + $('fulltext').value;
     find(search_result_url);
   });
   MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
-    var d = MochiKit.Async.loadJSONDoc('extended_search_form');
+    var d = MochiKit.Async.loadJSONDoc(application_url + '/extended_search_form');
     d.addCallback(json_callback, 'extended_search_form');
     d.addErrback(log_error);
   });
 };
 
 var init = function() {
-  var d = MochiKit.Async.loadJSONDoc('search_form');
+  var d = MochiKit.Async.loadJSONDoc(application_url + '/search_form');
   d.addCallback(json_callback, 'search_form', init_search_form);
   d.addErrback(log_error);
 };
