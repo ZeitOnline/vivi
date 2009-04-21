@@ -216,7 +216,8 @@ teaser bar:
 Reverse the bars:
 
 >>> reversed_ids = tuple(reversed(bar_ids))
-
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> import cjson
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
@@ -224,6 +225,8 @@ Reverse the bars:
 
 The order has been updated now:
 
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 >>> browser.open(bookmark)
 >>> bar_divs = browser.etree.xpath(
 ...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
