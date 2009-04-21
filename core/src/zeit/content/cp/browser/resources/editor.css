@@ -125,7 +125,8 @@
   color: inherit;
 }
 
-.edit-bar > a {
+.edit-bar > a,
+.edit-bar > .locked-indicator {
   background-attachment: top left;
   background-color: inherit;
   background-repeat: no-repeat;

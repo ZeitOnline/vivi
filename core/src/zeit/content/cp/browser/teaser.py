@@ -84,10 +84,14 @@ class TeaserListEdit(TeaserList):
                 # XXX warn? Actually such a content shouldn't be here in the
                 # first place. We'll see.
                 continue
+            editable = zeit.cms.checkout.interfaces.ICheckoutManager(
+                content).canCheckout
             teasers.append(dict(
+                content=content,
+                editable=editable,
                 metadata=metadata,
-                url=self.url(content),
                 uniqueId=content.uniqueId,
+                url=self.url(content),
             ))
 
         return teasers
