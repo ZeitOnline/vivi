@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.3 (unreleased)
 ----------------
 
-- Bearbeiten von Teasern in der CP (not finished).
+- Bearbeiten von Teasern in der CP (#4806).
 
 0.2 (2009-04-17)
 ----------------
