@@ -1,34 +1,35 @@
 #fulltext {
   width: 300px;
 }
-#search_entry {
+
+.search_entry {
   width:350px;
   margin: 5px;
   margin-bottom: 20px;
 }
 
-#search_entry #teaser_title {
+.search_entry .teaser_title {
   font-size: 1.2em;
 }
 
-#search_entry #teaser_text {
+.search_entry .teaser_text {
   font-size: 0.9em;
 }
 
-#search_entry #recent_links {
+.search_entry .recent_links {
   float: left;
 }
 
-#search_entry #recent_links img {
+.search_entry .recent_links img {
   margin: 5px;
 }
 
-#search_entry #filters {
+.search_entry .filters {
   text-align: right;
   font-size: 0.7em;
 }
 
-#search_entry a {
+.search_entry a {
   color: blue;
   text-decoration: underline;
 }
