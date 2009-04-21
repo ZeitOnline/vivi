@@ -21,22 +21,31 @@ class Find(zeit.cms.browser.view.Base):
         return super(Find, self).__call__()
 
 
-class SearchForm(zeit.cms.browser.view.Base):
+class JSONView(zeit.cms.browser.view.Base):
+
+    def __init__(self, context, request):
+        super(JSONView, self).__init__(context, request)
+        self.resources = resources(request)
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'text/json')
-        r = resources(self.request)
-        result = {"template_url": r['search_form.jsont']()}
-        return cjson.encode(result)
+        return cjson.encode(self.json())
+
+    def json(self):
+        raise NotImplementedError
 
 
-class SearchResult(zeit.cms.browser.view.Base):
+class SearchForm(JSONView):
 
-    def __call__(self):
-        self.request.response.setHeader('Content-Type', 'text/json')
-        r = resources(self.request)
-        self.arrow_right_url = r['arrow_right.png']()
-        result = {
+    def json(self):
+        return {"template_url": self.resources['search_form.jsont']()}
+
+
+class SearchResult(JSONView):
+
+    def json(self):
+        r = self.resources
+        return {
             "template_url": r['search_result.jsont'](),
             "results":
                 [{'uniqueId': 'foo',
@@ -72,4 +81,6 @@ class SearchResult(zeit.cms.browser.view.Base):
                   'author': 'Christian Zagrodnick',
                   'author_filter': ''}]
                  }
-        return cjson.encode(result)
+
+class ExtendedSearchForm(JSONView):
+    pass

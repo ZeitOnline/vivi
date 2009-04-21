@@ -53,6 +53,11 @@ var init_search_form = function() {
     var search_result_url = 'search_result?fulltext=' + $('fulltext').value;
     find(search_result_url);
   });
+  MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
+    var d = MochiKit.Async.loadJSONDoc('extended_search_form');
+    d.addCallback(json_callback, 'extended_search_form');
+    d.addErrback(log_error);
+  });
 };
 
 var init = function() {
