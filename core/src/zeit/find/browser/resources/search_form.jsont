@@ -1,10 +1,13 @@
 <form method="GET">
   <input type="text" name="fulltext" id="fulltext" value="" />
   <input type="button" id="search_button" value=" OK " />
+
+  <br />
+
+  <button id="extended_search_button" type="button">erweiterte Suche</button>
+
+  <div id="extended_search_form" />
+
 </form>
-
-<button id="extended_search_button" type="button">erweiterte Suche</button>
-
-<div id="extended_search_form" />
 
 <div id="search_result" />

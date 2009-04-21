@@ -32,3 +32,19 @@
   color: blue;
   text-decoration: underline;
 }
+
+#extended_search {
+  display: inline-table;
+  margin-bottom: 10px;
+}
+
+#extended_search div {
+  display: table-row;
+}
+
+#extended_search div label,
+#extended_search div select,
+#extended_search div input {
+  display: table-cell;
+}
+

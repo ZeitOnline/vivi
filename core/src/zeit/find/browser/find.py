@@ -83,4 +83,6 @@ class SearchResult(JSONView):
                  }
 
 class ExtendedSearchForm(JSONView):
-    pass
+
+    def json(self):
+        return {"template_url": self.resources['extended_search_form.jsont']()}
