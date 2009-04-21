@@ -184,6 +184,7 @@ instructed to close itself:
 >>> print browser.contents
 <div...
 <script language="javascript">
+    self.clean = true;
     self.close();
 </script>
 ...
