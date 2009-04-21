@@ -1,15 +1,20 @@
 {.repeated section results}
-<div>
+<div id="search_entry">
   <span class="uniqueId">{uniqueId}</span>
   <div>
     <img src="{icon}" />
     <img src="{favorited}" />
     <img src="{publication_status}" />
+    <span id="teaser_title">{teaser_title}</span>
   </div>
-  <div>{teaser_title}</div>
-  <div>{teaser_text}</div>
-  <div>
-    <a href="{preview_url}">Vorschau</a>
+  <div id="teaser_text">
+    {teaser_text} 
+    <a href="{preview_url}">(Vorschau)</a>
+  </div>
+  <div id="recent_links">
+    <img src="{arrow}" />
+  </div>
+  <div id="filters">
     <a href="{date_filter}">{date}</a>
     <a href="{week_filter}">{week}</a>
     <a href="{topics_filter}">{topics}</a>
