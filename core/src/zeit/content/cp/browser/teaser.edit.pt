@@ -8,7 +8,15 @@
     tal:content="structure view/form"/>
 
   <script language="javascript"
+    tal:condition="not: view/close"
+    tal:content="string:
+      log(self.__name__);
+      self.cleanup_url = '${context/@@absolute_url}/@@delete.html?form.actions.delete=yes';
+    "></script>
+
+  <script language="javascript"
           tal:condition="view/close">
+    self.clean = true;
     self.close();
   </script>
 

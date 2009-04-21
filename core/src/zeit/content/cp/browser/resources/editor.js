@@ -282,9 +282,7 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 
 
 zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
-    // Sort the teaser bars.
-    // This class is very specific right now. I hope to make it reusable for
-    // the other sort tasks.
+    // Sorting support.
 
     __name__: 'zeit.content.cp.Sortable',
     default_options: {
@@ -414,6 +412,7 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     construct: function(context_element) {
         var self = this;
+        self.context_element = context_element;
         var container_id = context_element.getAttribute('cms:lightbox-in');
         self.parent = zeit.content.cp.getParentComponent(context_element);
         var url = context_element.getAttribute('href');

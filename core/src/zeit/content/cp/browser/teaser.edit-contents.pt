@@ -13,7 +13,7 @@
       <a class="edit-link"
          tal:condition="teaser/editable"
          tal:attributes="href string:${teaser/url}/@@checkout?came_from=cp-editor-lightbox"
-         cms:cp-module="zeit.content.cp.LightBoxForm"
+         cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
          cms:lightbox-in="cp-forms">
         <span class="action-title">Edit</span>
       </a>

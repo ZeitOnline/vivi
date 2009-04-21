@@ -214,12 +214,8 @@ When an object could not be checked out, the edit link is replaced by a lock:
         <span class="locked-indicator"><img src="...
 
 
-
-
-TODO: When the lightbox is closed the checked out object will be deleted. This
-is completely hooked up in javascript and cannot be tested here.
-
-
+When the lightbox is closed the checked out object will be deleted. This is
+completely hooked up in javascript and cannot be tested here.
 
 
 Deleting entries
