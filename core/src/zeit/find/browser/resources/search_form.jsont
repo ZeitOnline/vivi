@@ -4,9 +4,13 @@
 
   <br />
 
-  <button id="extended_search_button" type="button">erweiterte Suche</button>
+  <button id="extended_search_button" type="button">
+    erweiterte Suche</button>
+  <div id="extended_search_form"></div>
 
-  <div id="extended_search_form" />
+  <button id="filtered_results_button" type="button">
+    gefilterte Ergebnisse</button>
+  <div id="filtered_results"></div>
 
 </form>
 
