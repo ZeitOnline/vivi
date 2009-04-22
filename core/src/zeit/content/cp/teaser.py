@@ -74,8 +74,8 @@ class TeaserList(zeit.content.cp.block.Block,
         if autopilot == self._autopilot:
             return
 
-        # we need to manipulate self.entries, which is only allowed while not on
-        # autopilot. Thus we switch the autopilot mode at different times.
+        # we need to manipulate self.entries, which is only allowed while not
+        # on autopilot. Thus we switch the autopilot mode at different times.
         if not autopilot:
             self._autopilot = autopilot
             if hasattr(self.xml, 'xi_include'):
@@ -85,7 +85,8 @@ class TeaserList(zeit.content.cp.block.Block,
                 repository = zope.component.getUtility(
                     zeit.cms.repository.interfaces.IRepository)
                 for position, id in enumerate(
-                    zeit.content.cp.interfaces.ILeadTeasers(self.referenced_cp)):
+                    zeit.content.cp.interfaces.ILeadTeasers(
+                        self.referenced_cp)):
                     self.insert(position, repository.getContent(id))
         else:
             self.clear()
