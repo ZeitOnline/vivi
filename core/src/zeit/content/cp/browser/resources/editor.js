@@ -318,7 +318,7 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
                     ghosting: false,
                     revert: true,
                     scroll: self.options()['scroll'],
-                    selectclass: 'hover',
+                    //selectclass: 'hover',
                     zindex: 10000,
             }));
             self.dnd_objects.push(
