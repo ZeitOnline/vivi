@@ -367,3 +367,16 @@ lead region:
 True
 >>> 'Foreign teaser' in browser.contents
 True
+
+
+Layouts
++++++++
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> print browser.contents
+<...
+<a...class="selected"...>Großer Teaser mit Bild und Teaserliste</a>...

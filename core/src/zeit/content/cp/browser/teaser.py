@@ -29,6 +29,19 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
     def form(self):
         return super(EditProperties, self).template
 
+    @property
+    def layouts(self):
+        terms = zope.component.getMultiAdapter(
+            (zeit.content.cp.interfaces.ITeaserList['layout'].source,
+             self.request), zope.browser.interfaces.ITerms)
+
+        result = []
+        for layout in zeit.content.cp.interfaces.ITeaserList['layout'].source:
+            class_ = 'selected' if layout == self.context.layout else ''
+            result.append(dict(token=terms.getTerm(layout).token,
+                               title=layout.title, class_=class_))
+        return result
+
 
 class Display(zeit.cms.browser.view.Base):
 
@@ -130,6 +143,14 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
                 self.context)
             manager.checkin()
             self.close = True
+
+
+class ChangeLayout(object):
+    def __call__(self, id):
+        layout = zope.component.getMultiAdapter(
+            (zeit.content.cp.interfaces.ITeaserList['layout'].source,
+             self.request), zope.browser.interfaces.ITerms).getValue(id)
+        self.context.layout = layout
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)

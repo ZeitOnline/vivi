@@ -78,6 +78,15 @@
     permission="zeit.EditContent"
     />
 
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".teaser.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
 
 </configure>
