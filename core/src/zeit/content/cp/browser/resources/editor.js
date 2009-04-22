@@ -47,7 +47,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             event.stop();
             var module = zeit.content.cp.resolveDottedName(module_name);
             new module(event.target());
-        } else  {
+        } else if (event.target().nodeName != 'INPUT') {
             event.preventDefault();
         }
     },
