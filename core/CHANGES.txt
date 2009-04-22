@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.6.2 (2009-04-22)
+------------------
+
+- Default der paragraphsperpage von 6 auf 7 geaendert.
+
 1.6.1 (2009-04-17)
 ------------------
 

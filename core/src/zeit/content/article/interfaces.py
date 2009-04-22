@@ -35,7 +35,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_("Pagebreak"),
         description=_("Paragraphs per page until a pagebreak."),
         min=1,
-        default=6)
+        default=7)
 
     paragraphs = zope.schema.Int(
         title=_("Paragraphsamount"),
