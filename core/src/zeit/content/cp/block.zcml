@@ -23,19 +23,13 @@
 
   <class class=".teaser.TeaserList">
     <require
-      interface=".interfaces.ITeaserList"
+      interface=".interfaces.IReadTeaserList"
       permission="zope.View"/>
     <require
-      interface="zeit.cms.syndication.interfaces.IReadFeed"
-      permission="zope.View"/>
-    <require
-      set_schema=".interfaces.ITeaserList"
+      set_schema=".interfaces.IReadTeaserList"
       permission="zeit.EditContent"/>
     <require
-      set_schema="zeit.cms.syndication.interfaces.IReadFeed"
-      permission="zeit.EditContent"/>
-    <require
-      interface="zeit.cms.syndication.interfaces.IWriteFeed"
+      interface=".interfaces.IWriteTeaserList"
       permission="zeit.EditContent"/>
   </class>
   <adapter factory=".teaser.TeaserListFactory" name="teaser" />

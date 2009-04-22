@@ -35,8 +35,9 @@ class TeaserList(zeit.content.cp.block.Block,
 
     def iterentries(self):
         if self.autopilot:
-            return iter(
-                zeit.content.cp.interfaces.ILeadTeasers(self.referenced_cp))
+            repository = zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+            return [repository.getContent(id) for id in self.keys()]
         else:
             return super(TeaserList, self).iterentries()
 
@@ -76,11 +77,12 @@ class TeaserList(zeit.content.cp.block.Block,
             if hasattr(self.xml, 'xi_include'):
                 self.xml.remove(self.xml.xi_include)
 
-            repository = zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository)
-            for position, id in enumerate(
-                zeit.content.cp.interfaces.ILeadTeasers(self.referenced_cp)):
-                self.insert(position, repository.getContent(id))
+            if self.referenced_cp:
+                repository = zope.component.getUtility(
+                    zeit.cms.repository.interfaces.IRepository)
+                for position, id in enumerate(
+                    zeit.content.cp.interfaces.ILeadTeasers(self.referenced_cp)):
+                    self.insert(position, repository.getContent(id))
         else:
             self.clear()
             # XXX what is the actual syntax for xi:include needed here?

@@ -6,7 +6,6 @@ import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
@@ -23,7 +22,7 @@ class TeaserListBlockEdit(zope.formlib.form.SubPageEditForm):
         'teaser.block-edit.pt')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.syndication.interfaces.IFeed)
+        zeit.content.cp.interfaces.ITeaserList)
 
     @property
     def form(self):

@@ -1,6 +1,8 @@
 <div class="teaser-list topthema action-content-droppable"
      tal:attributes="cms:drop-url string:${context/@@absolute_url}/drop">
 
+  <div tal:condition="context/autopilot">[autopilot]</div>
+
   <div class="teaser"
        tal:repeat="teaser view/teasers">
 

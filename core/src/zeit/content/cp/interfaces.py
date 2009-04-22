@@ -3,6 +3,7 @@
 
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.syndication.interfaces
 import zope.container.interfaces
 import zope.interface
 from zeit.content.cp.i18n import MessageFactory as _
@@ -80,15 +81,22 @@ class IPlaceHolder(IBlock):
     """Placeholder."""
 
 
-class ITeaserList(IBlock):
-    """A list of teasers."""
+class IReadTeaserList(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     referenced_cp = zope.schema.Choice(
         title=_("Fetch teasers from"),
-        source=zeit.cms.content.contentsource.CMSContentSource())
+        source=zeit.cms.content.contentsource.CMSContentSource(),
+        required=False)
     autopilot = zope.schema.Bool(
         title=_("On Autopilot")
         )
+
+class IWriteTeaserList(zeit.cms.syndication.interfaces.IWriteFeed):
+    pass
+
+
+class ITeaserList(IReadTeaserList, IWriteTeaserList):
+    """A list of teasers."""
 
 
 class ILeadTeasers(zope.interface.Interface):
