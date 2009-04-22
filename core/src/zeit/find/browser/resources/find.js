@@ -161,9 +161,7 @@ zeit.find.log_error = function(err) {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', $('search_result'));
         forEach(results, function(result) {
-            draggables.push(new MochiKit.DragAndDrop.Draggable(result, {
-                starteffect: null,
-                endeffect: null}));
+            draggables.push(zeit.cms.createDraggableContentObject(result));
         });
     }
 
