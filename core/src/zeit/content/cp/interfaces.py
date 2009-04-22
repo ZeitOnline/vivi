@@ -4,6 +4,7 @@
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.content.cp.layout
 import zope.container.interfaces
 import zope.interface
 from zeit.content.cp.i18n import MessageFactory as _
@@ -90,6 +91,10 @@ class IReadTeaserList(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
     autopilot = zope.schema.Bool(
         title=_("On Autopilot")
         )
+    layout = zope.schema.Choice(
+        title=_("Layout"),
+        source=zeit.content.cp.layout.LayoutSource())
+
 
 class IWriteTeaserList(zeit.cms.syndication.interfaces.IWriteFeed):
     pass

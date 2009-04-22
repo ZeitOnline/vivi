@@ -91,6 +91,20 @@ In manual mode, the contents can be changed again:
 >>> len(teasers)
 0
 
+Layouts
++++++++
+
+A TeaserList can have different Layouts. Those correspond to different values
+for <container module="">.
+
+>>> import zeit.content.cp.layout
+>>> layout = zeit.content.cp.layout.Layout('leader',
+...     u'Großer Teaser mit Bild und Teaserliste')
+>>> teasers.layout = layout
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container...module="leader"...
+
+
 >>> zope.app.component.hooks.setSite(old_site)
 
 .. [#functional]

@@ -4,6 +4,7 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import lxml.etree
 import lxml.objectify
+import rwproperty
 import zeit.cms.content.property
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.feed
@@ -13,6 +14,7 @@ import zeit.content.cp.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.interface
+import zope.schema
 
 
 # TeaserList reuses Feed for its "list of ICMSContent" behaviour
@@ -63,10 +65,12 @@ class TeaserList(zeit.content.cp.block.Block,
         else:
             return getattr(super(TeaserList, self), method)(*args, **kw)
 
-    def _get_autopilot(self):
+    @rwproperty.getproperty
+    def autopilot(self):
         return self._autopilot
 
-    def _set_autopilot(self, autopilot):
+    @rwproperty.setproperty
+    def autopilot(self, autopilot):
         if autopilot == self._autopilot:
             return
 
@@ -90,13 +94,20 @@ class TeaserList(zeit.content.cp.block.Block,
                 href=self.referenced_cp.uniqueId))
             self._autopilot = autopilot
 
-    autopilot = property(_get_autopilot, _set_autopilot)
-
     def clear(self):
         if not self.autopilot:
             for entry in self:
                 self.remove(entry)
 
+    @rwproperty.getproperty
+    def layout(self):
+        for layout in zeit.content.cp.layout.LayoutSource():
+            if layout.id == self.xml.get('module'):
+                return layout
+
+    @rwproperty.setproperty
+    def layout(self, layout):
+        self.xml.set('module', layout.id)
 
 TeaserListFactory = zeit.content.cp.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,

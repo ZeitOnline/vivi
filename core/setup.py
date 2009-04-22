@@ -24,6 +24,7 @@ setup(
         'lxml',
         'python-cjson',
         'setuptools',
+        'zc.sourcefactory',
         'zeit.cms>=1.17.1',
         'zeit.find',
         'zope.app.pagetemplate',

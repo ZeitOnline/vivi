@@ -22,7 +22,8 @@ class TeaserListBlockEdit(zope.formlib.form.SubPageEditForm):
         'teaser.block-edit.pt')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.ITeaserList)
+        zeit.content.cp.interfaces.ITeaserList).select(
+        'title', 'referenced_cp', 'autopilot')
 
     @property
     def form(self):
