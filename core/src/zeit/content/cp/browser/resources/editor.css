@@ -25,8 +25,8 @@
 }
 
 #cp-content .hover-content > * {
-  border-color: green;
-  outline: 2px solid green;
+  border-color: #00ee5e;
+  outline: 4px solid #00ee5e;
 }
 
 #cp-aufmacher {
