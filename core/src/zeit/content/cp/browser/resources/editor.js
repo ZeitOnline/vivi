@@ -350,6 +350,7 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
                                       self.serialize())) {
             self.on_update(element);
         }
+        element.style.zIndex = null;  // see #4999
     },
 
     on_update: function(element) {
