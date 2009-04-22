@@ -12,7 +12,7 @@
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="contents"
-    class=".teaser.TeaserList"
+    class=".teaser.Display"
     template="layout.teaser.content.pt"
     permission="zeit.EditContent"
     weight="0"
@@ -21,8 +21,8 @@
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="block.edit"
-    class=".teaser.TeaserListBlockEdit"
+    name="edit-properties"
+    class=".teaser.EditProperties"
     permission="zeit.EditContent"
     />
 
@@ -30,7 +30,7 @@
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drop"
-    class=".teaser.TeaserDrop"
+    class=".teaser.Drop"
     permission="zeit.EditContent"
     />
 
@@ -49,7 +49,7 @@
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="teaser.edit-contents"
-    class=".teaser.TeaserListEdit"
+    class=".teaser.EditContents"
     template="teaser.edit-contents.pt"
     permission="zeit.EditContent"
     />

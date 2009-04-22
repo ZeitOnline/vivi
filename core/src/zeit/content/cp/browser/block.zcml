@@ -51,7 +51,7 @@
     view="zope.interface.Interface"
     manager=".interfaces.IEditBarViewletManager"
     name="edit-box"
-    template="layout.block.edit-box.pt"
+    template="layout.block.edit-properties.pt"
     permission="zeit.EditContent"
     weight="0"
     />
@@ -113,9 +113,9 @@
   <browser:page
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="block.edit"
-    class=".block.PlaceHolderEdit"
-    template="form.placeholder.edit.pt"
+    name="edit-properties"
+    class=".block.EditProperties"
+    template="placeholder.edit-properties.pt"
     permission="zeit.EditContent"
     />
 

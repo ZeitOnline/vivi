@@ -1,5 +1,5 @@
 <a class="choose-block"
-   tal:attributes="href string:${context/@@absolute_url}/block.edit"
+   tal:attributes="href string:${context/@@absolute_url}/edit-properties"
    i18n:translate=""
    cms:cp-module="zeit.content.cp.LightBoxForm"
    cms:lightbox-in="cp-content">

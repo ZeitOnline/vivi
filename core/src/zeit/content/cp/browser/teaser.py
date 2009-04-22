@@ -16,10 +16,10 @@ import zope.lifecycleevent
 from zeit.content.cp.i18n import MessageFactory as _
 
 
-class TeaserListBlockEdit(zope.formlib.form.SubPageEditForm):
+class EditProperties(zope.formlib.form.SubPageEditForm):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'teaser.block-edit.pt')
+        'teaser.edit-properties.pt')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.ITeaserList).select(
@@ -27,10 +27,10 @@ class TeaserListBlockEdit(zope.formlib.form.SubPageEditForm):
 
     @property
     def form(self):
-        return super(TeaserListBlockEdit, self).template
+        return super(EditProperties, self).template
 
 
-class TeaserList(zeit.cms.browser.view.Base):
+class Display(zeit.cms.browser.view.Base):
 
     def update(self):
         self.teasers = []
@@ -56,7 +56,7 @@ class TeaserList(zeit.cms.browser.view.Base):
                 texts=texts))
 
 
-class TeaserDrop(object):
+class Drop(object):
 
     def __call__(self, uniqueId):
         # XXX error handling
@@ -72,7 +72,7 @@ class TeaserDrop(object):
             zeit.cms.repository.interfaces.IRepository)
 
 
-class TeaserListEdit(TeaserList):
+class EditContents(Display):
     """Edit the teaser list."""
 
     def teasers(self):
@@ -109,7 +109,7 @@ class Delete(object):
 class EditTeaser(zope.formlib.form.SubPageEditForm):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'teaser.edit.pt')
+        'teaser.edit-teaser.pt')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(

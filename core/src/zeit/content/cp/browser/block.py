@@ -22,7 +22,7 @@ class Delete(object):
         del self.context[key]
 
 
-class PlaceHolderEdit(object):
+class EditProperties(object):
 
     def list_block_types(self):
         result = []
@@ -38,6 +38,7 @@ class PlaceHolderEdit(object):
 
 
 class SwitchType(object):
+    """A generic non-browser view that changes the type of a block"""
 
     def __init__(self, parent, toswitch, request):
         self.parent = parent
