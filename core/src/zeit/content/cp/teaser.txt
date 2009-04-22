@@ -50,6 +50,18 @@ A teaser block in autopilot mode fetches its contents from another CenterPage.
 
 >>> teasers = factory()
 >>> repository['cp'] = cp
+
+
+It is not possible to activate the autopilot when there is no cp referenced:
+
+>>> teasers.autopilot = True
+Traceback (most recent call last):
+    ...
+ValueError: Cannot activate autopilot without referenced centerpage.
+
+Once the cp has been assigned we can activate the autopilot:
+
+
 >>> teasers.referenced_cp = repository['cp']
 >>> teasers.autopilot = True
 >>> len(teasers)
@@ -90,6 +102,7 @@ In manual mode, the contents can be changed again:
 >>> teasers.remove(repository['testcontent'])
 >>> len(teasers)
 0
+
 
 Layouts
 +++++++

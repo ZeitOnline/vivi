@@ -95,6 +95,14 @@ class IReadTeaserList(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_("Layout"),
         source=zeit.content.cp.layout.LayoutSource())
 
+    @zope.interface.invariant
+    def autopilot_requires_referenced_cp(self):
+        if self.autopilot and not self.referenced_cp:
+            raise zope.schema.ValidationError(
+                _("Cannot activate autopilot without referenced centerpage"))
+        return True
+
+
 
 class IWriteTeaserList(zeit.cms.syndication.interfaces.IWriteFeed):
     pass

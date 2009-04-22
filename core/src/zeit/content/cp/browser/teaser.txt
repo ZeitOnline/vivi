@@ -361,14 +361,23 @@ other cp:
 >>> 'autopilot-not-possible' in browser.contents
 True
 
-Now we can switch our teaser block to autopilot when referencing the
-centerpage:
+It is not possible to switch on the autopilot when there is no centerpage
+referenced:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
->>> browser.getControl('Fetch teasers from').value = 'http://xml.zeit.de/online/2007/01/foreign'
 >>> browser.getControl('On Autopilot').selected = True
 >>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Cannot activate autopilot without referenced centerpage...
+
+Now we can switch our teaser block to autopilot when referencing the
+centerpage:
+
+>>> browser.getControl('Fetch teasers from').value = 'http://xml.zeit.de/online/2007/01/foreign'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Updated on...
 
 The teaser block displays a marker to show that it is on autopilot. It then
 pulls in the first teaser of each teaser block from the referenced CenterPage's

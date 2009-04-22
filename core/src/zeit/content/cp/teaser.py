@@ -71,6 +71,9 @@ class TeaserList(zeit.content.cp.block.Block,
 
     @rwproperty.setproperty
     def autopilot(self, autopilot):
+        if autopilot and self.referenced_cp is None:
+            raise ValueError(
+                'Cannot activate autopilot without referenced centerpage.')
         if autopilot == self._autopilot:
             return
 
