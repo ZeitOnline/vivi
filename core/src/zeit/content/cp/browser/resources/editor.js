@@ -66,22 +66,25 @@ zeit.content.cp.Editor = gocept.Class.extend({
 });
 
 
-MochiKit.Signal.connect(window, 'onload', function() {
-    if (isNull($('cp-content'))) {
-        return
-    }
-    zeit.content.cp.editor = new zeit.content.cp.Editor();
-    MochiKit.Signal.signal(window, 'cp-editor-initialized');
-    zeit.content.cp.editor.reload();
-});
+(function() {
+    var ident = MochiKit.Signal.connect(window, 'onload', function() {
+        MochiKit.Signal.disconnect(ident);
+        if (isNull($('cp-content'))) {
+            return
+        }
+        zeit.content.cp.editor = new zeit.content.cp.Editor();
+        MochiKit.Signal.signal(window, 'cp-editor-initialized');
+        zeit.content.cp.editor.reload();
+    });
+})();
 
 
 zeit.content.cp.BlockHover = gocept.Class.extend({
 
     construct: function() {
         var self = this;
-        MochiKit.Signal.connect('cp-content', 'onmouseover', self, 'over');
-        MochiKit.Signal.connect('cp-content', 'onmouseout', self, 'out');
+        MochiKit.Signal.connect('cp-content', 'onmouseover', self, self.over);
+        MochiKit.Signal.connect('cp-content', 'onmouseout', self, self.out);
     },
 
     over: function(event) {
@@ -247,7 +250,7 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
             ['div.action-content-droppable']);
         forEach(elements, function(element) {
             var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-                element, null, 'block-inner'); 
+                element, null, 'block'); 
             var url = element.getAttribute('cms:drop-url');
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Droppable(block, {
