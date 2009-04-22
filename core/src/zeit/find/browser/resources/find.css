@@ -72,3 +72,12 @@
 .related_url {
   display: none;
 }
+
+.related_links {
+  min-height: 1em;
+  background: url('arrow_right.png') no-repeat top left;
+}
+
+.related_links.expanded {
+  background: url('arrow_down.png') no-repeat top left;
+}

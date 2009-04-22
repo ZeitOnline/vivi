@@ -12,7 +12,6 @@
     <a href="{preview_url}">(Vorschau)</a>
   </div>
   <div class="related_links">
-    <img src="{arrow}" />
   </div>
   <div class="filters">
     <a href="{date_filter}">{date}</a>

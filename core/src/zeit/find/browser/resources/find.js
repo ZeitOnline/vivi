@@ -193,8 +193,10 @@ zeit.find.log_error = function(err) {
             MochiKit.Signal.connect(related_links, 'onclick', function(e) {
                 if (MochiKit.Selector.findChildElements(related_info,
                                                         ['.related_entry']).length > 0) {
+                    MochiKit.DOM.removeElementClass(related_links, 'expanded');
                     related_info.innerHTML = '';
                 } else {
+                    MochiKit.DOM.addElementClass(related_links, 'expanded');
                     expanded_search_result.render(related_info, related_url);
                 }
             });
