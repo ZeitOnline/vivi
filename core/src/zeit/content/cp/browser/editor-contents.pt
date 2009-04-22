@@ -1,4 +1,5 @@
-<div xmlns:cms="http://namespaces.gocept.com/zeit-cms">
+<div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
+      class="cp-content-inner">
 
   <div class="cp-editor-top">
     <div id="cp-aufmacher">

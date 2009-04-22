@@ -1,14 +1,23 @@
 #cp-content {
   bottom: 1em;
   left: 0;
-  overflow: auto;
   position: absolute;
   top: 0;
   right: 35%;
   font-size: 0.5em;
 }
 
-#cp-content > .cp-editor-top {
+#cp-content > .cp-content-inner {
+  bottom: 0em;
+  left: 0;
+  overflow: auto;
+  position: absolute;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#cp-content > .cp-content.inner > .cp-editor-top {
   width: 100%;
 }
 
