@@ -54,4 +54,12 @@
     permission="zope.View"
   />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.ExpandedSearchResult"
+    name="expanded_search_result"
+    permission="zope.View"
+  />
+
 </configure>

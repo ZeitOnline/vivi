@@ -11,7 +11,7 @@
     {teaser_text} 
     <a href="{preview_url}">(Vorschau)</a>
   </div>
-  <div class="recent_links">
+  <div class="related_links">
     <img src="{arrow}" />
   </div>
   <div class="filters">
@@ -20,5 +20,7 @@
     <a href="{topics_filter}">{topics}</a>
     <a href="{author_filter}">{author}</a>
   </div>
+  <span class="related_url">{related_url}</span>
+  <div class="related_info"></div>
 </div>
 {.end}

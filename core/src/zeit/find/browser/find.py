@@ -52,9 +52,11 @@ class SearchResult(JSONView):
     
     def json(self):
         r = self.resources
+        somalia_id = 'http://xml.zeit.de/online/2007/01/Somalia'
+        zapatero_id = 'http://xml.zeit.de/online/2007/01/eta-zapatero'
         return {
             "results":
-                [{'uniqueId': 'http://xml.zeit.de/online/2007/01/Somalia',
+                [{'uniqueId': somalia_id,
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                   'favorited': r['favorite.png'](),
                   'publication_status': r['published.png'](),
@@ -69,8 +71,12 @@ class SearchResult(JSONView):
                   'topics': 'Politik',
                   'topics_filter': '',
                   'author': 'Martijn Faassen',
-                  'author_filter': ''},
-                 {'uniqueId': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
+                  'author_filter': '',
+                  'related_url': self.url(
+                        self.context,
+                        'expanded_search_result?uniqueId=%s' % somalia_id),
+                  },
+                 {'uniqueId': zapatero_id,
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                   'favorited': r['not_favorite.png'](),
                   'publication_status': r['unpublished.png'](),
@@ -85,8 +91,13 @@ class SearchResult(JSONView):
                   'topics': 'Kultur',
                   'topics_filter': '',
                   'author': 'Christian Zagrodnick',
-                  'author_filter': ''}]
-                 }
+                  'author_filter': '',
+                  'related_url': self.url(
+                        self.context,
+                        'expanded_search_result?uniqueId=%s' % zapatero_id),
+                  },
+                 ]
+            }
 
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
@@ -116,3 +127,23 @@ class ResultFilters(JSONView):
                      {"title": "Ressort", "entries": self.topic_entries()}]},
             {"row": [{"title": "Autor", "entries": self.author_entries()},
                      {"title": "Inhaltstyp", "entries": self.content_types_entries()}]}]}
+
+class ExpandedSearchResult(JSONView):
+    template = 'expanded_search_result.jsont'
+
+    def json(self):
+        r = self.resources
+        return {
+            'results': [
+                {'uniqueId': 'http://xml.zeit.de/online/2007/01/Somalia',
+                 'publication_status': r['published.png'](),
+                 'short_teaser_title': 'Obama is a cat?',
+                 'short_teaser_text': 'Obama speculated to be a feline',
+                 },
+                {'uniqueId': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
+                 'publication_status': r['unpublished.png'](),
+                 'short_teaser_title': "Obama or O'Bama?",
+                 'short_teaser_text': "Evidence suggests Obama is Irish",
+                 },
+                ],
+            }

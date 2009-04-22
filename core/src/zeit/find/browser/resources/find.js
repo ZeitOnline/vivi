@@ -62,6 +62,12 @@ zeit.find.Tab = gocept.Class.extend({
 
 });
 
+// need control over which URL is loaded (pass to class)
+// how to retrieve which URL to load? often we'd get it from the JSON
+// somehow. But how do we access the JSON? Through the template?
+// need control over query string (pass to class)
+// need control over which element is expanded (optionally pass to render)
+
 zeit.find.View = gocept.Class.extend({
     construct: function(json_url, expansion_id, get_query_string) {
         var self = this;
@@ -71,48 +77,56 @@ zeit.find.View = gocept.Class.extend({
         self.template = null;
     },
 
-    render: function() {
+    render: function(expansion_element, json_url) {
         var self = this;
-        // XXX dependency on application_url...
-        var url = application_url + '/' + self.json_url;
+        var url;
+        if (isUndefinedOrNull(json_url)) {
+            // XXX dependency on application_url...
+            url = application_url + '/' + self.json_url;
+
+        } else {
+            url = application_url + '/' + json_url
+        }
+
         if (!isUndefinedOrNull(self.get_query_string)) {
             url += "?" + self.get_query_string();
         }
         var d = MochiKit.Async.loadJSONDoc(url);
         // XXX have to wrap in function to retain reference to self
         // otherwise this gets messed up
-        d.addCallback(function(json) { self.callback_json(json) });
+        d.addCallback(function(json) { self.callback_json(json, expansion_element) });
         d.addErrback(zeit.find.log_error);
     },
 
-    callback_json: function(json) {
+    callback_json: function(json, expansion_element) {
         var self = this;
         var template_url = json['template_url'];
         var template = self.template;
         if (!isUndefinedOrNull(template)) {
-            self.expand_template(json);
+            self.expand_template(json, expansion_element);
             return;
         }
-        self.load_template(template_url, json);
+        self.load_template(template_url, json, expansion_element);
     },
 
-    load_template: function(template_url, json) {
+    load_template: function(template_url, json, expansion_element) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
         d.addCallback(function(result) {
             var t = jsontemplate.Template(result.responseText);
             self.template = t;
-            self.expand_template(json);
+            self.expand_template(json, expansion_element);
         });
         d.addErrback(zeit.find.log_error);
         return d;
     },
 
-    expand_template: function(json) {
+    expand_template: function(json, expansion_element) {
         var self = this;
         var s = self.template.expand(json);
+        var expansion_element = expansion_element || $(self.expansion_id);
         MochiKit.Signal.signal(self, 'before-load')
-        $(self.expansion_id).innerHTML = s;
+        expansion_element.innerHTML = s;
         log('template expanded successfully');
         MochiKit.Signal.signal(self, 'load')
     },
@@ -165,6 +179,28 @@ zeit.find.log_error = function(err) {
         });
     }
 
+    var connect_related = function() {
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'search_entry', $('search_result'));
+        forEach(results, function(entry) {
+            var related_url = MochiKit.DOM.scrapeText(
+                MochiKit.Selector.findChildElements(
+                    entry, ['.related_url'])[0]);
+            var related_links = MochiKit.Selector.findChildElements(
+                entry, ['.related_links'])[0];
+            var related_info = MochiKit.Selector.findChildElements(
+                entry, ['.related_info'])[0];
+            MochiKit.Signal.connect(related_links, 'onclick', function(e) {
+                if (MochiKit.Selector.findChildElements(related_info,
+                                                        ['.related_entry']).length > 0) {
+                    related_info.innerHTML = '';
+                } else {
+                    expanded_search_result.render(related_info, related_url);
+                }
+            });
+        });
+    }
+
     var disconnect_draggables = function() {
         while(draggables.length > 0) {
             draggables.pop().destroy();
@@ -190,11 +226,15 @@ zeit.find.log_error = function(err) {
         'extended_search_form', 'extended_search_form');
     result_filters = new zeit.find.View(
         'result_filters', 'result_filters')
-    
+    expanded_search_result = new zeit.find.View(
+        'expanded_search_result')
+
     MochiKit.Signal.connect(window, 'onload', init);
     MochiKit.Signal.connect(search_form, 'load', init_search_form);
     MochiKit.Signal.connect(search_result, 'before-load', 
                             disconnect_draggables);
+    MochiKit.Signal.connect(search_result, 'load', 
+                            connect_related);
     MochiKit.Signal.connect(search_result, 'load', 
                             connect_draggables);
      
