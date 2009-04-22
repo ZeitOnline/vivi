@@ -7,7 +7,7 @@ if (typeof(zeit.cms) == 'undefined') {
 }
 
 
-zeit.cms.ScrollStateRestorer = Class.extend({
+zeit.cms.ScrollStateRestorer = gocept.Class.extend({
 
     construct: function(content_element) {
         this.content_element = $(content_element);
@@ -76,7 +76,7 @@ zeit.cms.getCookie = function(name) {
 
 
     
-zeit.cms.ClickOnceAction = Class.extend({
+zeit.cms.ClickOnceAction = gocept.Class.extend({
 
     construct: function(element) {
         var self = this;

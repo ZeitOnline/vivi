@@ -36,7 +36,8 @@ MochiKit.Signal.connect(
 });
 
 
-connect(MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
+MochiKit.Signal.connect(
+    MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
     // Generic handler for hiding the drag pane after dragging ended.
     var element = draggable.element;
     var dragged_element = element.dragged_element;
@@ -46,16 +47,25 @@ connect(MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
 });
 
 
-zeit.cms.TableSorter = Class.extend({
+zeit.cms.createDraggableContentObject = function(element) {
+    return new MochiKit.DragAndDrop.Draggable(element, {
+        starteffect: null,
+        endeffect: null,
+        zindex: null});
+}
+
+
+zeit.cms.TableSorter = gocept.Class.extend({
     // Infrastructure to sort tables
     // Reorders the table on the browser.
 
     construct: function(class_name) {
         var othis = this;
-        var table = getFirstElementByTagAndClassName('table', class_name);
+        var table = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'table', class_name);
         forEach(table.rows, function(row) {
             if (row.cells[0].nodeName == 'TD') {
-                new Draggable(row, {
+                new MochiKit.DragAndDrop.Draggable(row, {
                     ghosting: true
                 });
             }
@@ -480,12 +490,11 @@ MochiKit.Signal.connect(window, 'onload', function(event) {
     }
     var lis = breadcrumbs.getElementsByTagName('li');
     forEach(lis, function(li) {
-        if (!isUndefinedOrNull(getFirstElementByTagAndClassName(
+        if (!isUndefinedOrNull(MochiKit.DOM.getFirstElementByTagAndClassName(
             'span', 'uniqueId', li))) {
-            new Draggable(li, {
-                    starteffect: null,
-                    endeffect: null});
+            zeit.cms.createDraggableContentObject(li);
         }
     });
 
 });
+

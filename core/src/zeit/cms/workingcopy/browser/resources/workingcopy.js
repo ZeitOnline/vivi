@@ -9,9 +9,7 @@ zeit.cms.workingcopy.event_id = connect(
                 forEach(getElementsByTagAndClassName(
                     'tr', null, 'workingcopycontents'),
                         function(row) {
-                            new Draggable(row, {
-                                starteffect: null,
-                                endeffect: null});
+                            zeit.cms.createDraggableContentObject(row);
                       });
                 disconnect(event_id);
             });

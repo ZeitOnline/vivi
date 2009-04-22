@@ -40,10 +40,7 @@ zeit.cms.Clipboard = Class.extend({
                     },
             });
             if (node.getAttribute('uniqueid')) {
-                new Draggable(node, {
-                    starteffect: null,
-                    endeffect: null,
-                    zindex: null});
+                zeit.cms.createDraggableContentObject(node);
             }
         });
 

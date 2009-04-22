@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.18.3 (unreleased)
+-------------------
+
+- Hilfsfunktion zum korrekten "dragbar" machen von Boxen, die sich auf ein
+  Content-Objekt beziehen.
+
 1.18.2 (2009-04-21)
 -------------------
 

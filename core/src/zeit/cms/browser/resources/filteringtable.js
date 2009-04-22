@@ -130,10 +130,8 @@ zeit.cms.FilteringTable = Class.extend({
     enableDrag: function(event) {
         var row = MochiKit.DOM.getFirstParentByTagAndClassName(
             event.target(), 'TR')
-        if (typeof(row.draggble) == "undefined") {
-            row.draggable = new Draggable(row, {
-                starteffect: null,
-                endeffect: null});
+        if (isUndefinedOrNull(row.draggble) == "undefined") {
+            row.draggable = zeit.cms.createDraggableContentObject(row);
         }
     },
 
