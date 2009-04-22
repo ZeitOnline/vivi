@@ -11,6 +11,11 @@ zeit.content.cp changes
 - Löschen von Teaserleisten nach dem Verschieben funktioniert wieder (fixes
   #4999)
 
+- Autopilot
+
+- Layouts für Teaserblöcke
+
+
 0.2 (2009-04-17)
 ----------------
 
