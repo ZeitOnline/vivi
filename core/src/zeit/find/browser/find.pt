@@ -5,7 +5,7 @@
             var application_url = '${context/@@absolute_url}';
     "></script>
   </head>
-  <body>
+  <body id="body">
     <div id="cp-forms">
     </div>
   </body>
