@@ -6,6 +6,9 @@ zeit.content.cp changes
 
 - Bearbeiten von Teasern in der CP (#4806).
 
+- zeit.find integriert
+
+
 0.2 (2009-04-17)
 ----------------
 
