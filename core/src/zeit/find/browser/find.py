@@ -113,6 +113,6 @@ class ResultFilters(JSONView):
     def json(self):
         return {"results": [
             {"row": [{"title": "Zeit", "entries": self.time_entries()},
-                     {"title": "Ressorts", "entries": self.topic_entries()}]},
-            {"row": [{"title": "Autoren", "entries": self.author_entries()},
+                     {"title": "Ressort", "entries": self.topic_entries()}]},
+            {"row": [{"title": "Autor", "entries": self.author_entries()},
                      {"title": "Inhaltstyp", "entries": self.content_types_entries()}]}]}
