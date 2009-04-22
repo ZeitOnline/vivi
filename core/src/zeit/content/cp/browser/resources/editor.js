@@ -447,12 +447,12 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
             if (isNull(result)) {
                 return null;
             }
-            var summary = MochiKit.DOM.getFirstElementByTagAndClassName(
-                'div', 'summary', self.form);
-            if (isNull(summary)) {
-                return result;
+            var errors = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'ul', 'errors', self.form);
+            if (isNull(errors)) {
+                self.close();
             }
-            self.close();
+            return result;
         });
     },
 
