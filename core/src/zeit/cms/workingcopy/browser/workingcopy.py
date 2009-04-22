@@ -8,6 +8,7 @@ import zeit.cms.browser.column
 import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.cachedescriptors.property
@@ -84,6 +85,13 @@ def localcontent_default_browsing_location(context, schema):
             object_in_repository = repository.getContent(unique_id)
         except KeyError:
             unique_id = unique_id.rsplit('/', 1)[0]
+
+            # This is edge case number something-or-other. Steps to reproduce:
+            # - create an object in the repository root folder
+            # - check it out
+            # - delete the object from the repository
+            if unique_id + '/' == zeit.cms.interfaces.ID_NAMESPACE:
+                object_in_repository = repository
         else:
             break
 
