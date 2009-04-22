@@ -25,6 +25,7 @@ setup(
         'python-cjson',
         'setuptools',
         'zeit.cms>=1.17.1',
+        'zeit.find',
         'zope.app.pagetemplate',
         'zope.component',
         'zope.container>=3.8.1',

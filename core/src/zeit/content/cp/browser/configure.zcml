@@ -47,7 +47,7 @@
     />
 
   <resourceLibrary name="zeit.content.cp"
-                   require="zeit.cms">
+                   require="zeit.cms zeit.find">
     <directory source="resources" include="editor.css editor.js teaser.js" />
   </resourceLibrary>
 
