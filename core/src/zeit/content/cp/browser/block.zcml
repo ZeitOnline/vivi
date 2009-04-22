@@ -19,7 +19,7 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    class=".block.BlockViewletManager"
     template="layout.block.contents.pt"
     name="zeit.content.cp.editor-contents"
     permission="zope.View"

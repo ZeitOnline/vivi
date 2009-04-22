@@ -13,7 +13,22 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
+import zope.viewlet.manager
 from zeit.content.cp.i18n import MessageFactory as _
+
+
+class TeaserListViewletManager(
+    zope.viewlet.manager.WeightOrderedViewletManager):
+
+    @property
+    def css_class(self):
+        if self.context.referenced_cp is None:
+            autopilot = 'autopilot-not-possible'
+        elif self.context.autopilot:
+            autopilot = 'autopilot-on'
+        else:
+            autopilot = 'autopilot-off'
+        return ' '.join(['block', 'type-' + self.context.type, autopilot])
 
 
 class EditProperties(zope.formlib.form.SubPageEditForm):
@@ -44,6 +59,16 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
 
 class Display(zeit.cms.browser.view.Base):
+
+    @property
+    def css_class(self):
+        layout = 'topthema'  # XXX
+        return ' '.join(['teaser-list', layout, 'action-content-droppable'])
+
+    @property
+    def autopilot_toggle_url(self):
+        on_off = 'off' if self.context.autopilot else 'on'
+        return self.url('@@toggle-autopilot?to=' + on_off)
 
     def update(self):
         self.teasers = []
@@ -157,3 +182,9 @@ class ChangeLayout(object):
 @zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
 def teaserEditViewName(context):
     return 'edit-teaser.html'
+
+
+class ToggleAutopilot(object):
+
+    def __call__(self, to):
+        self.context.autopilot = (True if to == 'on' else False)

@@ -6,6 +6,17 @@
 
   <!-- teaser -->
 
+  <browser:viewletManager
+    provides=".interfaces.IEditorContentViewletManager"
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".teaser.TeaserListViewletManager"
+    template="layout.block.contents.pt"
+    name="zeit.content.cp.editor-contents"
+    permission="zope.View"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.ITeaserList"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -88,5 +99,13 @@
     />
 
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-autopilot"
+    class=".teaser.ToggleAutopilot"
+    permission="zeit.EditContent"
+    />
 
 </configure>

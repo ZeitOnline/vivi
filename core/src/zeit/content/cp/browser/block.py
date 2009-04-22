@@ -4,6 +4,14 @@
 import zeit.cms.browser.view
 import zeit.content.cp.interfaces
 import zope.component
+import zope.viewlet.manager
+
+
+class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
+
+    @property
+    def css_class(self):
+        return ' '.join(['block', 'type-' + self.context.type])
 
 
 class Add(zeit.cms.browser.view.Base):

@@ -1,5 +1,5 @@
 <div tal:attributes="
-     class string:block type-${context/type};
+     class python:view.css_class;
      id context/__name__;
      cms:url context/@@absolute_url">
   <div class="block-inner">

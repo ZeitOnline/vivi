@@ -37,10 +37,12 @@ Drag the first one[#fill-dav-with-content]_:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div class="block type-teaser" ... id="<GUID>">
+<div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
-    <div class="teaser-list topthema action-content-droppable"
-     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
+    <div
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+     class="teaser-list topthema action-content-droppable">
+     ...
   <div class="teaser">
     ...
     <div class="supertitle"></div>
@@ -64,10 +66,11 @@ Drag c1 onto the list, it becomes the first entry:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div class="block type-teaser" ... id="<GUID>">
+<div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
-    <div class="teaser-list topthema action-content-droppable"
-     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
+    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+         class="teaser-list topthema action-content-droppable">
+     ...
   <div class="teaser">
     ...
     <div class="supertitle"></div>
@@ -251,10 +254,11 @@ The cp contents also has changed of course:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div class="block type-teaser" ... id="<GUID>">
+<div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
-    <div class="teaser-list topthema action-content-droppable"
-     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop">
+    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+        class="teaser-list topthema action-content-droppable">
+     ...
   <div class="teaser">
     ...
     <div class="supertitle"></div>
@@ -344,12 +348,21 @@ inject the test article by writing raw XML:
 >>> 'testcontent' in browser.contents
 True
 
-We need to check in the CenterPage we want to reference so it gets a
-xml.zeit.de-URL:
+We need to check in the CenterPage we want to reference to actually see the
+teasers (of course):
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign/@@checkin')
 
-Now we can switch our teaser block to autopilot:
+
+Currently the autopilot is not possible, because we have not referenced the
+other cp:
+
+>>> browser.open(contents_url)
+>>> 'autopilot-not-possible' in browser.contents
+True
+
+Now we can switch our teaser block to autopilot when referencing the
+centerpage:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
@@ -361,13 +374,18 @@ The teaser block displays a marker to show that it is on autopilot. It then
 pulls in the first teaser of each teaser block from the referenced CenterPage's
 lead region:
 
->>> browser.handleErrors = False
 >>> browser.open(contents_url)
->>> '[autopilot]' in browser.contents
+>>> 'autopilot-on' in browser.contents
 True
 >>> 'Foreign teaser' in browser.contents
 True
 
+We can now switch it of again:
+
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(contents_url)
+>>> 'autopilot-off' in browser.contents
+True
 
 Layouts
 +++++++

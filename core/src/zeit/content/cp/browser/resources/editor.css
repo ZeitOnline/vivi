@@ -239,6 +239,36 @@
 }
 
 
+/* Teaser block */
+
+.autopilot-chooser {
+  border-bottom: 3px solid #aaa;
+  cursor: pointer;
+  display: block;
+  height: 3em;
+  margin-bottom: 0.5em;
+}
+
+.autopilot-on > * {
+  background-color: #d7ffda;
+}
+
+.autopilot-off > * {
+  background-color: #fff1d3;
+}
+
+.autopilot-not-possible .autopilot-chooser {
+  display: none;
+}
+
+.autopilot-on .autopilot-chooser {
+  background: url('autopilot-on.png') no-repeat right;
+}
+
+.autopilot-off .autopilot-chooser {
+  background: url('autopilot-off.png') no-repeat right;
+}
+
 /* Teaser visualisations */
 
 .teaser-list {

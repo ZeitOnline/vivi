@@ -1,8 +1,14 @@
-<div class="teaser-list topthema action-content-droppable"
-     tal:attributes="cms:drop-url string:${context/@@absolute_url}/drop">
+<div
+  tal:attributes="
+  cms:drop-url string:${context/@@absolute_url}/drop;
+  class view/css_class">
 
-  <div tal:condition="context/autopilot">[autopilot]</div>
-
+  <a class="autopilot-chooser"
+       tal:attributes="href view/autopilot_toggle_url"
+       cms:cp-module="zeit.content.cp.LoadAndReload">
+    <span class="action-title">Switch autopilot</span>
+  </a>
+    
   <div class="teaser"
        tal:repeat="teaser view/teasers">
 
