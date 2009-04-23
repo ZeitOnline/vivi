@@ -197,7 +197,6 @@ class PersistentCache(persistent.Persistent):
             raise KeyError(key)
         if self._is_deleted(value):
             raise KeyError(key)
-        value = self._simplify(value)
         return value
 
     def get(self, key, default=None):
@@ -228,7 +227,6 @@ class PersistentCache(persistent.Persistent):
         del self._storage[get_storage_key(key)]
 
     def __setitem__(self, key, value):
-        value = self._simplify(value)
         old_value = self._storage.get(get_storage_key(key))
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
             self._set_value(old_value, value)
@@ -244,9 +242,6 @@ class PersistentCache(persistent.Persistent):
             return
         old_value.clear()
         old_value.update(new_value)
-
-    def _simplify(self, value):
-        return value
 
 
 class WebDAVPropertyKey(object):
@@ -292,6 +287,19 @@ class Properties(persistent.mapping.PersistentMapping):
         old['_container'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
+    def __setitem__(self, key, value):
+        if (key is not zeit.connector.interfaces.DeleteProperty
+            and not isinstance(key, WebDAVPropertyKey)):
+            key = WebDAVPropertyKey(key)
+        super(type(self), self).__setitem__(key, value)
+
+    def update(self, dict=None, **kwargs):
+        if dict is None:
+            dict = {}
+        for key, value in dict.items() + kwargs.items():
+            self[key] = value
+        self._p_changed = True
+
     def __repr__(self):
         return object.__repr__(self)
 
@@ -306,14 +314,6 @@ class PropertyCache(PersistentCache):
     def _mark_deleted(self, value):
         value.clear()
         value[zeit.connector.interfaces.DeleteProperty] = None
-
-    def _simplify(self, old_dict):
-        new_dict = {}
-        for key, value in old_dict.items():
-            if not isinstance(key, WebDAVPropertyKey):
-                key = WebDAVPropertyKey(key)
-            new_dict[key] = value
-        return new_dict
 
     @staticmethod
     def _cache_values_equal(a, b):

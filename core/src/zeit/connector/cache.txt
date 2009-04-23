@@ -272,9 +272,9 @@ True
 Test the methods:
 
 >>> cache['id'] = {'foo': 'bar'}
->>> cache['id']
+>>> dict(cache['id'])
 {<WebDAVPropertyKey foo>: 'bar'}
->>> cache.get('id')
+>>> dict(cache.get('id'))
 {<WebDAVPropertyKey foo>: 'bar'}
 >>> cache.get('foo', "don't have that")
 "don't have that"
@@ -337,6 +337,23 @@ True
 >>> key2_back is key2
 False
 
+We can also directly set keys on the property dict:
+
+>>> cache['id']['foo'] = 'zoot'
+>>> cache['id']['foo']
+'zoot'
+
+Note that the key is also munged into a WebDAVPropertyKey:
+
+>>> cache['id'].keys()
+[<WebDAVPropertyKey foo>, <WebDAVPropertyKey ('ns', 'name')>]
+
+Removing also works directly:
+
+>>> del cache['id']['foo']
+
+The cache keeps track of the used keys:
+
 >>> import pprint
 >>> pprint.pprint(zeit.connector.cache.WebDAVPropertyKey._instances)
 {'foo': <WebDAVPropertyKey foo>,
@@ -347,14 +364,14 @@ When the a value is set to the cache which is equal to the value it alreay
 stores, the new value is not updated. We verify this by setting a new value
 which is equal but not the same:
 
->>> cache['id']
+>>> dict(cache['id'])
 {<WebDAVPropertyKey ('ns', 'name')>: 'somevalue'}
 >>> new_properties =  {('ns', 'name'): u'somevalue'}
 
 Setting ``new_properties`` does not update the ``somevalue`` to unicode:
 
 >>> cache['id'] = new_properties
->>> cache['id']
+>>> dict(cache['id'])
 {<WebDAVPropertyKey ('ns', 'name')>: 'somevalue'}
 
 
@@ -420,9 +437,9 @@ When the conflicting state is *equal* it is kept, though:
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
 >>> connection_2.sync()
->>> c_1['id']
+>>> dict(c_1['id'])
 {<WebDAVPropertyKey foo>: 'baz'}
->>> c_2['id']
+>>> dict(c_2['id'])
 {<WebDAVPropertyKey foo>: 'baz'}
 
 

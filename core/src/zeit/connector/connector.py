@@ -758,7 +758,7 @@ class Connector(object):
 
     @zope.cachedescriptors.property.Lazy
     def property_cache(self):
-        return {}
+        return zeit.connector.cache.PropertyCache()
 
     @zope.cachedescriptors.property.Lazy
     def child_name_cache(self):

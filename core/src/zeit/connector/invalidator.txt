@@ -98,7 +98,7 @@ cache!):
 
 >>> cache = zope.component.getUtility(
 ...     zeit.connector.interfaces.IPropertyCache)
->>> cache[res.id]
+>>> dict(cache[res.id])
 {...}
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))

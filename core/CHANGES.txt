@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+1.11 (2009-04-23)
+-----------------
+
+- The lock time out now works also with the property cache. Locks were just not
+  timing out when using the fully integrated connector (fixes #4997).
+
 1.10 (2009-04-09)
 -----------------
 
