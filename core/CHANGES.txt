@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.19 (unreleased)
+1.19 (2009-04-23)
 -----------------
 
 - zeit.today in ein extra Paket verschoben.
