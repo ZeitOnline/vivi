@@ -72,8 +72,4 @@ setup(
         'zope.site',
         'zope.xmlpickle',
     ],
-    entry_points = """
-        [console_scripts]
-        run-lifetime-hits-importer = zeit.today.yesterday:main
-        """
 )

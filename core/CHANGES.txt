@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-1.18.3 (unreleased)
--------------------
+1.19 (unreleased)
+-----------------
+
+- zeit.today in ein extra Paket verschoben.
 
 - Hilfsfunktion zum korrekten "dragbar" machen von Boxen, die sich auf ein
   Content-Objekt beziehen.
