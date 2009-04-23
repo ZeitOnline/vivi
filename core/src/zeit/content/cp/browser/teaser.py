@@ -5,7 +5,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.repository.interfaces
+import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
@@ -98,16 +98,13 @@ class Drop(object):
 
     def __call__(self, uniqueId):
         # XXX error handling
-        content = self.repository.getContent(uniqueId)
+        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+        if self.context.autopilot:
+            self.context.autopilot = False
         self.context.insert(0, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
 
-
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
 
 
 class EditContents(Display):
