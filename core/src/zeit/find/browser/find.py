@@ -23,7 +23,7 @@ class Find(zeit.cms.browser.view.Base):
 
 class JSONView(zeit.cms.browser.view.Base):
     template = None
-    
+
     def __init__(self, context, request):
         super(JSONView, self).__init__(context, request)
         self.resources = resources(request)
@@ -33,7 +33,7 @@ class JSONView(zeit.cms.browser.view.Base):
         result = self.json()
         url = self.template_url()
         if url is not None:
-            result['template_url'] = url 
+            result['template_url'] = url
         return cjson.encode(result)
 
     def json(self):
@@ -44,12 +44,14 @@ class JSONView(zeit.cms.browser.view.Base):
             return None
         return self.resources[self.template]()
 
+
 class SearchForm(JSONView):
     template = 'search_form.jsont'
 
+
 class SearchResult(JSONView):
     template = 'search_result.jsont'
-    
+
     def json(self):
         r = self.resources
         somalia_id = 'http://xml.zeit.de/online/2007/01/Somalia'
@@ -99,8 +101,10 @@ class SearchResult(JSONView):
                  ]
             }
 
+
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
+
 
 class ResultFilters(JSONView):
     template = 'result_filters.jsont'
@@ -127,6 +131,7 @@ class ResultFilters(JSONView):
                      {"title": "Ressort", "entries": self.topic_entries()}]},
             {"row": [{"title": "Autor", "entries": self.author_entries()},
                      {"title": "Inhaltstyp", "entries": self.content_types_entries()}]}]}
+
 
 class ExpandedSearchResult(JSONView):
     template = 'expanded_search_result.jsont'
