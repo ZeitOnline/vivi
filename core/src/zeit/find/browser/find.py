@@ -7,6 +7,8 @@ import zeit.cms.browser.view
 import zc.resourcelibrary
 import zope.component
 import zope.interface
+import zeit.cms.interfaces
+import zeit.cms.clipboard.interfaces
 
 
 def resources(request):
@@ -52,6 +54,10 @@ class SearchForm(JSONView):
 class SearchResult(JSONView):
     template = 'search_result.jsont'
 
+    def url(self, view, uniqueId):
+        return super(SearchResult, self).url(
+            self.context, '%s?uniqueId=%s' % (view, uniqueId))
+
     def json(self):
         r = self.resources
         somalia_id = 'http://xml.zeit.de/online/2007/01/Somalia'
@@ -60,7 +66,7 @@ class SearchResult(JSONView):
             "results":
                 [{'uniqueId': somalia_id,
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
-                  'favorited': r['favorite.png'](),
+                  'favorited': r['not_favorite.png'](),
                   'publication_status': r['published.png'](),
                   'arrow': r['arrow_right.png'](),
                   'teaser_title': 'Obama still alive',
@@ -75,8 +81,8 @@ class SearchResult(JSONView):
                   'author': 'Martijn Faassen',
                   'author_filter': '',
                   'related_url': self.url(
-                        self.context,
-                        'expanded_search_result?uniqueId=%s' % somalia_id),
+                      'expanded_search_result', somalia_id),
+                  'favorite_url': self.url('toggle_favorited', somalia_id),
                   },
                  {'uniqueId': zapatero_id,
                   'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -95,8 +101,8 @@ class SearchResult(JSONView):
                   'author': 'Christian Zagrodnick',
                   'author_filter': '',
                   'related_url': self.url(
-                        self.context,
-                        'expanded_search_result?uniqueId=%s' % zapatero_id),
+                      'expanded_search_result', zapatero_id),
+                  'favorite_url': self.url('toggle_favorited', zapatero_id),
                   },
                  ]
             }
@@ -152,3 +158,27 @@ class ExpandedSearchResult(JSONView):
                  },
                 ],
             }
+
+
+class ToggleFavorited(JSONView):
+    template = 'toggle_favorited.jsont'
+
+    clip_id = u'Favoriten'
+
+    def json(self):
+        r = self.resources
+        uid = self.request.get('uniqueId')
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
+            self.request.principal)
+        content = zeit.cms.interfaces.ICMSContent(uid)
+
+        if not self.clip_id in clipboard.keys():
+            clipboard.addClip(self.clip_id)
+        favorites = clipboard[self.clip_id]
+
+        if content.__name__ in favorites.keys():
+            del favorites[content.__name__]
+            return {'favorited': r['not_favorite.png']()}
+        favorites[content.__name__] = (zeit.cms.clipboard.
+                                       interfaces.IClipboardEntry(content))
+        return {'favorited': r['favorite.png']()}

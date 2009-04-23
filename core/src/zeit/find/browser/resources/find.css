@@ -91,6 +91,9 @@
   cursor: pointer;
 }
 
+.toggle_favorited {
+  cursor: pointer;
+}
 
 .related_info {
   margin-top: 7px;

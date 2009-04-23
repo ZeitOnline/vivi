@@ -203,6 +203,21 @@ zeit.find.log_error = function(err) {
         });
     }
 
+    var connect_toggle_favorited = function() {
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'search_entry', $('search_result'));
+        forEach(results, function(entry) {
+            var favorite_url = MochiKit.DOM.scrapeText(
+                MochiKit.Selector.findChildElements(
+                    entry, ['.favorite_url'])[0]);
+            var toggle_favorited = MochiKit.Selector.findChildElements(
+                entry, ['.toggle_favorited'])[0];
+            MochiKit.Signal.connect(toggle_favorited, 'onclick', function(e) {
+                favorites.render(toggle_favorited, favorite_url);
+            });
+        });
+    }
+
     var disconnect_draggables = function() {
         while(draggables.length > 0) {
             draggables.pop().destroy();
@@ -230,6 +245,8 @@ zeit.find.log_error = function(err) {
         'result_filters', 'result_filters')
     expanded_search_result = new zeit.find.View(
         'expanded_search_result')
+    favorites = new zeit.find.View(
+        'toggle_favorited')
 
     MochiKit.Signal.connect(window, 'onload', init);
     MochiKit.Signal.connect(search_form, 'load', init_search_form);
@@ -237,6 +254,8 @@ zeit.find.log_error = function(err) {
                             disconnect_draggables);
     MochiKit.Signal.connect(search_result, 'load', 
                             connect_related);
+    MochiKit.Signal.connect(search_result, 'load', 
+                            connect_toggle_favorited);
     MochiKit.Signal.connect(search_result, 'load', 
                             connect_draggables);
      

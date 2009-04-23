@@ -3,7 +3,9 @@
   <span class="uniqueId">{uniqueId}</span>
   <div>
     <img src="{icon}" />
-    <img src="{favorited}" />
+    <span class="toggle_favorited">
+      <img src="{favorited}" />
+    </span>
     <img src="{publication_status}" />
     <span class="teaser_title">{teaser_title}</span>
   </div>
@@ -19,6 +21,7 @@
     <a href="{topics_filter}">{topics}</a>
     <a href="{author_filter}">{author}</a>
   </div>
+  <span class="favorite_url">{favorite_url}</span>
   <span class="related_url">{related_url}</span>
   <div class="related_info"></div>
 </div>

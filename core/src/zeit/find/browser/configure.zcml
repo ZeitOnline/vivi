@@ -62,4 +62,11 @@
     permission="zope.View"
   />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.ToggleFavorited"
+    name="toggle_favorited"
+    permission="zope.View"
+  />
 </configure>

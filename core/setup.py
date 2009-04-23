@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'setuptools',
         'zeit.cms',
+        'zeit.cms.clipboard',
         'python-cjson',
     ],
 )
