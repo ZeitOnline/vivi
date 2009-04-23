@@ -69,6 +69,7 @@
   top: 0;
 }
 
+.favorite_url,
 .related_url {
   display: none;
 }
@@ -76,8 +77,21 @@
 .related_links {
   min-height: 1em;
   background: url('arrow_right.png') no-repeat top left;
+  cursor: pointer;
+  float:left;
+  right:0;
+  top:0;
+  width:12px;
+  height: 0.7em;
+
 }
 
 .related_links.expanded {
   background: url('arrow_down.png') no-repeat top left;
+  cursor: pointer;
+}
+
+
+.related_info {
+  margin-top: 7px;
 }
