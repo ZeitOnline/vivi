@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.10 (2008-04-09)
+1.10 (2009-04-09)
 -----------------
 
 - Fixed »AttributeError: 'BTrees.OOBTree.OOTreeSet' object has no attribute
@@ -11,7 +11,7 @@ CHANGES
 
 - Improved ConflictResolution so equal states are kept instead of thrown away.
 
-1.9 (2008-04-08)
+1.9 (2009-04-08)
 ----------------
 
 - Added conflict resolution for the PropertyCache and ChildIdCache. This
