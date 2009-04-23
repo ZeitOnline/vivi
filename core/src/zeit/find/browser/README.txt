@@ -2,25 +2,130 @@
 Search UI
 =========
 
-For UI-Tests we need a Testbrowser:
+For UI-Tests we need a Testbrowser and some setup[1]_:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+    >>> browser = ExtendedTestBrowser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
+HTML views
+==========
 
->>> browser.open('http://localhost:8080/++skin++cms/find')
+There is one main HTML view defined, which loads all the JavaScript and the
+JSON template to setup the search UI. See the selenium tests for more details
+on the UI itself:
 
-The content-type of a find-result is everytime `text/json`:
+    >>> browser.handleErrors = False
+    >>> browser.open('http://localhost:8080/++skin++cms/find')
+    >>> print browser.contents
+    <html>
+      <head>
+        ...
+        <script src="...json-template.js" type="text/javascript"> </script>
+        <script src="...find.js" type="text/javascript"> </script>
+        ...
+        <script language="javascript">
+                var application_url = 'http://localhost:8080/++skin++cms';
+        </script>
+      </head>
+      <body id="body">
+        <div id="cp-forms">
+        </div>
+      </body>
+    </html>
 
->>> browser.headers['Content-Type']
-'text/json'
 
-If the find-query is empty, we get an empty result as well:
+JSON views
+==========
 
->>> print browser.contents
-{}
+There are a number of views returning JSON data for the search UI.
 
->>> browser.open('http://localhost:8080/++skin++cms/testfind')
->>> print browser.contents
+Search form
+-----------
+
+The `search_form` view returns only the template URL for the search form:
+
+    >>> browser.open('http://localhost:8080/++skin++cms/search_form')
+    >>> browser.headers['Content-Type']
+    'text/json'
+    >>> print browser.contents
+    {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont"}
+
+Another search form view is the `extended_search_form` view, which returns the
+template for the extended search:
+
+    >>> browser.open('http://localhost:8080/++skin++cms/extended_search_form')
+    >>> print browser.contents
+    {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/extended_search_form.jsont"}
+
+
+Favorites
+---------
+
+There is a JSON which, which toggles the favorites status of a content object.
+
+The favorites are stored inside the clipboard in a special clip named
+"Favoriten". If the principal never added favorites before, the clip does not
+exist:
+
+    >>> import zeit.cms.clipboard.interfaces 
+    >>> clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+    >>> clipboard["Favoriten"]
+    Traceback (most recent call last):
+    ...
+    KeyError: 'Favoriten'
+
+Adding a content object as a favorite requires the call of the
+`toggle_favorited` view with the uniqueId of the object:
+
+    >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+
+It returns the location of the icon with the new status (favorite or not):
+
+    >>> print browser.contents
+    {"favorited": ".../favorite.png", ...}
+
+The clipboard now has a clip "Favoriten" with one entry:
+
+    >>> clipboard["Favoriten"].keys()
+    [u'Somalia']
+
+Calling the same view again removes the object from the favorites:
+
+    >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+    >>> print browser.contents
+    {"favorited": ".../not_favorite.png", ...}
+
+The clip persists, but is now empty:
+
+    >>> clipboard["Favoriten"].keys()
+    []
+
+ 
+Cleanup
+=======
+
+After the tests we clean up:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+    
+
+
+Footnotes
+=========
+
+.. [1] Setup
+
+    We need to set the site since we're a functional test:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    We also need an interaction as we needs to get the principal:
+
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> participation = zope.security.testing.Participation(principal)

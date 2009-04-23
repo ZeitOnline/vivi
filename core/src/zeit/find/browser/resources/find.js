@@ -173,7 +173,7 @@ zeit.find.log_error = function(err) {
 
     var connect_draggables = function() {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('search_result'));
+            'div', 'search_entry', $('cp-forms'));
         forEach(results, function(result) {
             draggables.push(zeit.cms.createDraggableContentObject(result));
         });
@@ -181,7 +181,7 @@ zeit.find.log_error = function(err) {
 
     var connect_related = function() {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('search_result'));
+            'div', 'search_entry', $('cp-forms'));
         forEach(results, function(entry) {
             var related_url = MochiKit.DOM.scrapeText(
                 MochiKit.Selector.findChildElements(
@@ -205,7 +205,7 @@ zeit.find.log_error = function(err) {
 
     var connect_toggle_favorited = function() {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('search_result'));
+            'div', 'search_entry', $('cp-forms'));
         forEach(results, function(entry) {
             var favorite_url = MochiKit.DOM.scrapeText(
                 MochiKit.Selector.findChildElements(
@@ -213,7 +213,7 @@ zeit.find.log_error = function(err) {
             var toggle_favorited = MochiKit.Selector.findChildElements(
                 entry, ['.toggle_favorited'])[0];
             MochiKit.Signal.connect(toggle_favorited, 'onclick', function(e) {
-                favorites.render(toggle_favorited, favorite_url);
+                favorited.render(toggle_favorited, favorite_url);
             });
         });
     }
@@ -230,6 +230,19 @@ zeit.find.log_error = function(err) {
         zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
         zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
         search_form.render();
+        MochiKit.Signal.connect(zeit.find.tabs.tabs_element, 'onclick', self,
+            function(event) {
+                var self = this;
+                var target = event.target();
+                var id = target.getAttribute('href');
+                if (id == 'search_form') {
+                    search_result.render();
+                }
+                if (id == 'favorites') {
+                    favorites.render();
+                }
+                event.stop();
+        });
     };
     
     search_form = new zeit.find.View(
@@ -245,11 +258,14 @@ zeit.find.log_error = function(err) {
         'result_filters', 'result_filters')
     expanded_search_result = new zeit.find.View(
         'expanded_search_result')
-    favorites = new zeit.find.View(
+    favorited = new zeit.find.View(
         'toggle_favorited')
+    favorites = new zeit.find.View(
+        'favorites', 'favorites');
 
     MochiKit.Signal.connect(window, 'onload', init);
     MochiKit.Signal.connect(search_form, 'load', init_search_form);
+
     MochiKit.Signal.connect(search_result, 'before-load', 
                             disconnect_draggables);
     MochiKit.Signal.connect(search_result, 'load', 
@@ -258,5 +274,19 @@ zeit.find.log_error = function(err) {
                             connect_toggle_favorited);
     MochiKit.Signal.connect(search_result, 'load', 
                             connect_draggables);
+
+    MochiKit.Signal.connect(favorites, 'before-load', 
+                            disconnect_draggables);
+    MochiKit.Signal.connect(favorites, 'load', 
+                            connect_related);
+    MochiKit.Signal.connect(favorites, 'load', 
+                            connect_toggle_favorited);
+    MochiKit.Signal.connect(favorites, 'load', 
+                            connect_draggables);
+
+    MochiKit.Signal.connect(favorited, 'load',
+                            function() {
+                                favorites.render();
+                            });
      
 })();

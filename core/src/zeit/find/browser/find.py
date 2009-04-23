@@ -41,10 +41,52 @@ class JSONView(zeit.cms.browser.view.Base):
     def json(self):
         return {}
 
+    @property
+    def favorites(self):
+        favorites_id = u'Favoriten'
+
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
+            self.request.principal)
+        if not favorites_id in clipboard.keys():
+            clipboard.addClip(favorites_id)
+        return clipboard[favorites_id]
+
+    def url(self, view, uniqueId):
+        return super(JSONView, self).url(
+            self.context, '%s?uniqueId=%s' % (view, uniqueId))
+
     def template_url(self):
         if self.template is None:
             return None
         return self.resources[self.template]()
+
+    def result_entry(self, article):
+        r = self.resources
+        uid = article.uniqueId
+        if article.__name__ in self.favorites.keys():
+            favorited_icon = r['favorite.png']()
+        else:
+            favorited_icon = r['not_favorite.png']()
+        return {
+            'uniqueId': uid,
+            'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
+            'favorited': favorited_icon,
+            'publication_status': r['published.png'](),
+            'arrow': r['arrow_right.png'](),
+            'teaser_title': article.teaserTitle,
+            'teaser_text': article.teaserText,
+            'preview_url': '',
+            'date': '13.02.2009',
+            'date_filter': '',
+            'week': '13/2009',
+            'week_filter': '',
+            'topics': 'Politik',
+            'topics_filter': '',
+            'author': article.authors[0],
+            'author_filter': '',
+            'related_url': self.url('expanded_search_result', uid),
+            'favorite_url': self.url('toggle_favorited', uid),
+        }
 
 
 class SearchForm(JSONView):
@@ -54,58 +96,20 @@ class SearchForm(JSONView):
 class SearchResult(JSONView):
     template = 'search_result.jsont'
 
-    def url(self, view, uniqueId):
-        return super(SearchResult, self).url(
-            self.context, '%s?uniqueId=%s' % (view, uniqueId))
-
     def json(self):
-        r = self.resources
-        somalia_id = 'http://xml.zeit.de/online/2007/01/Somalia'
-        zapatero_id = 'http://xml.zeit.de/online/2007/01/eta-zapatero'
+        if self.request.get('fulltext', '') == '':
+            return {"results": []}
+        articles = ['4schanzentournee-abgesang',
+                    'elterngeld-schlieben',
+                    'EU-Beitritt-rumaenien-bulgarien',
+                    'Somalia',
+                    'eta-zapatero']
         return {
-            "results":
-                [{'uniqueId': somalia_id,
-                  'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
-                  'favorited': r['not_favorite.png'](),
-                  'publication_status': r['published.png'](),
-                  'arrow': r['arrow_right.png'](),
-                  'teaser_title': 'Obama still alive',
-                  'teaser_text': 'Obama is still alive and well.',
-                  'preview_url': '',
-                  'date': '13.02.2009',
-                  'date_filter': '',
-                  'week': '13/2009',
-                  'week_filter': '',
-                  'topics': 'Politik',
-                  'topics_filter': '',
-                  'author': 'Martijn Faassen',
-                  'author_filter': '',
-                  'related_url': self.url(
-                      'expanded_search_result', somalia_id),
-                  'favorite_url': self.url('toggle_favorited', somalia_id),
-                  },
-                 {'uniqueId': zapatero_id,
-                  'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
-                  'favorited': r['not_favorite.png'](),
-                  'publication_status': r['unpublished.png'](),
-                  'arrow': r['arrow_right.png'](),
-                  'teaser_title': 'Obama journalism too extreme',
-                  'teaser_text': 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et',
-                  'preview_url': '',
-                  'date': '19.02.2009',
-                  'date_filter': '',
-                  'week': '14/2009',
-                  'week_filter': '',
-                  'topics': 'Kultur',
-                  'topics_filter': '',
-                  'author': 'Christian Zagrodnick',
-                  'author_filter': '',
-                  'related_url': self.url(
-                      'expanded_search_result', zapatero_id),
-                  'favorite_url': self.url('toggle_favorited', zapatero_id),
-                  },
-                 ]
-            }
+            "results": [
+                self.result_entry(zeit.cms.interfaces.ICMSContent(uid))
+                for uid in [
+                    'http://xml.zeit.de/online/2007/01/%s' % id_
+                    for id_ in articles]]}
 
 
 class ExtendedSearchForm(JSONView):
@@ -163,22 +167,24 @@ class ExpandedSearchResult(JSONView):
 class ToggleFavorited(JSONView):
     template = 'toggle_favorited.jsont'
 
-    clip_id = u'Favoriten'
-
     def json(self):
         r = self.resources
-        uid = self.request.get('uniqueId')
-        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
-            self.request.principal)
-        content = zeit.cms.interfaces.ICMSContent(uid)
+        content = zeit.cms.interfaces.ICMSContent(
+            self.request.get('uniqueId'))
 
-        if not self.clip_id in clipboard.keys():
-            clipboard.addClip(self.clip_id)
-        favorites = clipboard[self.clip_id]
-
-        if content.__name__ in favorites.keys():
-            del favorites[content.__name__]
+        if content.__name__ in self.favorites.keys():
+            del self.favorites[content.__name__]
             return {'favorited': r['not_favorite.png']()}
-        favorites[content.__name__] = (zeit.cms.clipboard.
+        self.favorites[content.__name__] = (zeit.cms.clipboard.
                                        interfaces.IClipboardEntry(content))
         return {'favorited': r['favorite.png']()}
+
+
+class Favorites(JSONView):
+    template = 'search_result.jsont'
+
+    def json(self):
+        return {"results": [
+            self.result_entry(a) for a in [
+                zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
+                for c in self.favorites.values()]]}
