@@ -189,3 +189,5 @@ class ToggleAutopilot(object):
 
     def __call__(self, to):
         self.context.autopilot = (True if to == 'on' else False)
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+            self.context))

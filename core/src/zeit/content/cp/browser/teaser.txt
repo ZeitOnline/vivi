@@ -400,13 +400,19 @@ True
 When the autopilot is on and content is dropped on the block, the autopilot is
 automatically switched off:
 
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getLink('Switch autopilot').click()
 >>> browser.open(contents_url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 >>> 'autopilot-on' in browser.contents
 True
 >>> drop_url = browser.etree.xpath('//div/@cms:drop-url', namespaces=nsmap)[0]
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 >>> browser.open(contents_url)
 >>> 'autopilot-on' in browser.contents
 False
