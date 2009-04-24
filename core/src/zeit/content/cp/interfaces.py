@@ -82,6 +82,11 @@ class IPlaceHolder(IBlock):
     """Placeholder."""
 
 
+#
+# Teaser block (aka teaser list)
+#
+
+
 class IReadTeaserList(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     referenced_cp = zope.schema.Choice(
@@ -112,6 +117,14 @@ class ITeaserList(IReadTeaserList, IWriteTeaserList):
     """A list of teasers."""
 
 
+class ITeaserBlockLayout(zope.interface.Interface):
+    """Layout of a teaser block."""
+
+    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
+    title = zope.schema.TextLine(title=u'Human readable title.')
+
+
+
 class ILeadTeasers(zope.interface.Interface):
     """A list containing the UID of the first teaser of each block in the lead
     area."""
@@ -123,3 +136,4 @@ class ITeaserBar(IBlock, IRegion):
     The TeaserBar has a dual nature of being both a block and a region.
 
     """
+
