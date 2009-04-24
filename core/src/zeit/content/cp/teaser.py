@@ -17,9 +17,10 @@ import zope.interface
 import zope.schema
 
 
-# TeaserList reuses Feed for its "list of ICMSContent" behaviour
 class TeaserList(zeit.content.cp.block.Block,
                  zeit.cms.syndication.feed.Feed):
+
+    # TeaserList reuses Feed for its "list of ICMSContent" behaviour
 
     zope.interface.implementsOnly(
         zeit.content.cp.interfaces.ITeaserList,
@@ -30,9 +31,9 @@ class TeaserList(zeit.content.cp.block.Block,
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
     referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
-    # overriden so that super.insert() and updateOrder() work
     @property
     def entries(self):
+        # overriden so that super.insert() and updateOrder() work
         return self.xml
 
     def iterentries(self):
@@ -112,6 +113,7 @@ class TeaserList(zeit.content.cp.block.Block,
     @rwproperty.setproperty
     def layout(self, layout):
         self.xml.set('module', layout.id)
+
 
 TeaserListFactory = zeit.content.cp.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
