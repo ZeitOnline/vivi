@@ -43,7 +43,9 @@ zeit.content.cp.Editor = gocept.Class.extend({
         var self = this;
         var target = event.target();
         log("Target " + target.nodeName);
-        while (!isNull(target) && target != self.content) {
+        while (!isNull(target) && target.id != 'content') {
+            // Target can be null when it was removed from the dom by a
+            // previous event handler (like the lightbox shade)
             var module_name = target.getAttribute('cms:cp-module')
             if (!isNull(module_name)) {
                 break;
