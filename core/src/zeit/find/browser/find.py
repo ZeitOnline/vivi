@@ -9,6 +9,7 @@ import zope.component
 import zope.interface
 import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
+import zeit.cms.browser.interfaces
 
 
 def resources(request):
@@ -63,6 +64,9 @@ class JSONView(zeit.cms.browser.view.Base):
     def result_entry(self, article):
         r = self.resources
         uid = article.uniqueId
+        listrepr = zope.component.queryMultiAdapter(
+            (article, self.request),
+            zeit.cms.browser.interfaces.IListRepresentation)
         if article.__name__ in self.favorites.keys():
             favorited_icon = r['favorite.png']()
         else:
@@ -73,8 +77,8 @@ class JSONView(zeit.cms.browser.view.Base):
             'favorited': favorited_icon,
             'publication_status': r['published.png'](),
             'arrow': r['arrow_right.png'](),
-            'teaser_title': article.teaserTitle,
-            'teaser_text': article.teaserText,
+            'teaser_title': listrepr.title,
+            'teaser_text': listrepr.searchableText,
             'preview_url': '',
             'date': '13.02.2009',
             'date_filter': '',
@@ -82,7 +86,7 @@ class JSONView(zeit.cms.browser.view.Base):
             'week_filter': '',
             'topics': 'Politik',
             'topics_filter': '',
-            'author': article.authors[0],
+            'author': listrepr.author,
             'author_filter': '',
             'related_url': self.url('expanded_search_result', uid),
             'favorite_url': self.url('toggle_favorited', uid),

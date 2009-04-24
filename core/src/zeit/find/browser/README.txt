@@ -91,6 +91,15 @@ The clipboard now has a clip "Favoriten" with one entry:
     >>> clipboard["Favoriten"].keys()
     [u'Somalia']
 
+The favorites tab now lists the favorited object:
+
+    >>> browser.open('http://localhost:8080/++skin++cms/favorites')
+    >>> print browser.contents
+    {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont",
+     "results": [{...
+        "favorited": "http://localhost:8080/++skin++cms/@@/zeit.find/favorite.png",...
+        "favorite_url": "http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia",...}]}
+
 Calling the same view again removes the object from the favorites:
 
     >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
