@@ -103,7 +103,6 @@
 
 
 .landing-zone {
-  background-color: #;
   border: 1px dashed #00ee5e;
   color: #00ee5e;
   margin-top: 1em;
@@ -320,15 +319,15 @@
   color: #990000;
 }
 
-.leader > .teaser:first-child > img {
+.leader .teaser:first-child > img {
+  margin: 0.5em 0;
   width: 100%;
 }
 
-.buttons > .teaser:first-child > img {
+.buttons .teaser:first-child > img {
   width: 20%;
   float: left;
-  margin-right: 1em;
-  margin-bottom: 1em;
+  margin: 0.5em 1em 0.5em 0;
 }
 
 /* Teaser list editing */

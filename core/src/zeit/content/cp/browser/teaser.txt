@@ -39,12 +39,10 @@ Drag the first one[#fill-dav-with-content]_:
 <div ...
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
-    <div
-     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
      class="teaser-list action-content-droppable">
      ...
-  <div class="teaser">
-    ...
+  <div class="teaser">...
     <div class="supertitle"></div>
     <div class="teaserTitle"></div>
     <div class="teaserText"></div>
@@ -71,16 +69,14 @@ Drag c1 onto the list, it becomes the first entry:
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
          class="teaser-list action-content-droppable">
      ...
-  <div class="teaser">
-    ...
+  <div class="teaser">...
     <div class="supertitle"></div>
     <div class="teaserTitle">c1 teaser</div>
     <div class="teaserText"></div>
     <div class="shortTeaserTitle">c1 teaser</div>
     <div class="shortTeaserText"></div>
   </div>
-  <div class="teaser">
-    ...
+  <div class="teaser">...
     <div class="supertitle"></div>
     <div class="teaserTitle"></div>
     <div class="teaserText"></div>
@@ -259,8 +255,7 @@ The cp contents also has changed of course:
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
         class="teaser-list action-content-droppable">
      ...
-  <div class="teaser">
-    ...
+  <div class="teaser">...
     <div class="supertitle"></div>
     <div class="teaserTitle">Test content teaser title</div>
     <div class="teaserText">Test content teaser text</div>
@@ -434,3 +429,51 @@ Layouts
 <a...class="selected"...>Großer Teaser mit Bild und Teaserliste</a>...
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
+
+Teasers often have an image which is displayed in the center page editor. The
+shown image depends on the chosen layout. Create an image group and assign it
+to the test-content:
+
+>>> dummy = with_statement
+>>> import zeit.cms.checkout.helper
+>>> import zeit.cms.interfaces
+>>> import zeit.content.cp.browser.tests
+>>> import zeit.content.image.interfaces
+>>> import zeit.content.image.test
+
+>>> with zeit.content.cp.browser.tests.site(getRootFolder()):
+...     group = zeit.content.image.test.create_image_group()
+...     test_content = zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/testcontent')
+...     with zeit.content.cp.browser.tests.interaction('zope.user'):
+...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
+...             zeit.content.image.interfaces.IImages(co).images = (group,)
+
+
+The 450x200 image is used now:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+       class="teaser-list action-content-droppable leader">
+       ...
+  <div class="teaser-list">
+    <div class="teaser">
+      <img src="http://localhost/++skin++cms/repository/image-group/new-hampshire-450x200.jpg" />
+      <div class="supertitle"></div>
+      ...
+
+
+When we change the layout to xxx the image will not be used any more:
+
+>>> browser.getLink('Edit').click()
+>>> browser.getLink('Kleiner Teaser').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+       class="teaser-list action-content-droppable buttons">
+       ...
+  <div class="teaser-list">
+    <div class="teaser">
+      <div class="supertitle"></div>
+      ...

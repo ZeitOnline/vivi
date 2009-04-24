@@ -62,9 +62,11 @@ class Display(zeit.cms.browser.view.Base):
 
     @property
     def css_class(self):
+        css = ['teaser-list', 'action-content-droppable']
         layout = self.context.layout
-        layout = ('' if layout is None else layout.id)
-        return ' '.join(['teaser-list', layout, 'action-content-droppable'])
+        if layout is not None:
+            css.append(layout.id)
+        return ' '.join(css)
 
     @property
     def autopilot_toggle_url(self):
@@ -73,7 +75,7 @@ class Display(zeit.cms.browser.view.Base):
 
     def update(self):
         self.teasers = []
-        for content in self.context:
+        for i, content in enumerate(self.context):
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
             if metadata is None:
@@ -85,15 +87,26 @@ class Display(zeit.cms.browser.view.Base):
                          'shortTeaserTitle', 'shortTeaserText'):
                 texts.append(dict(css_class=name,
                                   content=getattr(metadata, name)))
-            images = zeit.content.image.interfaces.IImages(content, None)
-            if images is None or not images.images:
-                image = None
-            else:
-                image = images.images[0]
+            image = None
+            if i == 0:
+                image = self.get_image(content)
             self.teasers.append(dict(
                 image=image,
                 texts=texts))
 
+    def get_image(self, content):
+        layout = self.context.layout
+        if layout is None:
+            return
+        images = zeit.content.image.interfaces.IImages(content, None)
+        if images is None:
+            return
+        if not images.images:
+            return
+        image_group = images.images[0]
+        for name in image_group:
+            if layout.image_pattern in name:
+                return image_group[name]
 
 class Drop(object):
 

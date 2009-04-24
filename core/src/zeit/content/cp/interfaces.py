@@ -123,6 +123,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
     id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
     title = zope.schema.TextLine(title=u'Human readable title.')
 
+    image_pattern = zope.schema.ASCIILine(
+        title=u'A match for the image to use in this layout');
 
 
 class ILeadTeasers(zope.interface.Interface):

@@ -9,14 +9,19 @@ import zope.schema.interfaces
 
 class Layout(object):
 
-    def __init__(self, id, title):
+    def __init__(self, id, title, image_pattern=None):
         self.id = id
         self.title = title
+        self.image_pattern = image_pattern
 
 
 LAYOUTS = [
-    Layout('leader', u'Großer Teaser mit Bild und Teaserliste'),
-    Layout('buttons', u'Kleiner Teaser mit kleinem Bild und Teaserliste'),
+    Layout('leader',
+           u'Großer Teaser mit Bild und Teaserliste',
+           image_pattern='450x200'),
+    Layout('buttons',
+           u'Kleiner Teaser mit kleinem Bild und Teaserliste',
+           '140x140'),
 ]
 
 
