@@ -30,6 +30,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
     construct: function() {
         var self = this;
         self.content = $('cp-content');
+        self.inner_content = null;
         self.content.__handler__ = self;
         MochiKit.Signal.connect(
             'content', 'onclick',
@@ -66,10 +67,23 @@ zeit.content.cp.Editor = gocept.Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         // XXX error handling
         d.addCallback(function(result) {
-            self.content.innerHTML = result.responseText;
+            if (isNull(self.inner_content)) {
+                self.content.innerHTML = result.responseText;
+                self.inner_content = (
+                    MochiKit.DOM.getFirstElementByTagAndClassName(
+                        'div', 'cp-content-inner', self.content));
+            } else {
+                var dom = DIV();
+                dom.innerHTML = result.responseText;
+                var new_inner = (
+                    MochiKit.DOM.getFirstElementByTagAndClassName(
+                        'div', 'cp-content-inner', dom));
+                self.inner_content.innerHTML = new_inner.innerHTML;
+            }
             MochiKit.Signal.signal(self, 'after-reload');
         });
     },
+
 });
 
 
