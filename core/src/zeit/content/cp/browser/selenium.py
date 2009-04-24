@@ -86,7 +86,6 @@ class TestGenericEditing(Test):
         s.click('link=*Add block*')
         s.waitForXpathCount('//a[@class="choose-block"]', 2)
 
-
     def test_hover(self):
         self.open_centerpage()
         s = self.selenium
