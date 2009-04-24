@@ -62,7 +62,8 @@ class Display(zeit.cms.browser.view.Base):
 
     @property
     def css_class(self):
-        layout = 'topthema'  # XXX
+        layout = self.context.layout
+        layout = ('' if layout is None else layout.id)
         return ' '.join(['teaser-list', layout, 'action-content-droppable'])
 
     @property
@@ -168,11 +169,14 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
 
 
 class ChangeLayout(object):
+
     def __call__(self, id):
         layout = zope.component.getMultiAdapter(
             (zeit.content.cp.interfaces.ITeaserList['layout'].source,
              self.request), zope.browser.interfaces.ITerms).getValue(id)
         self.context.layout = layout
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+            self.context))
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)

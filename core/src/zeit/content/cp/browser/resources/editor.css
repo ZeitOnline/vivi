@@ -320,11 +320,11 @@
   color: #990000;
 }
 
-.topthema > .teaser:first-child > img {
+.leader > .teaser:first-child > img {
   width: 100%;
 }
 
-.knopf > .teaser:first-child > img {
+.buttons > .teaser:first-child > img {
   width: 20%;
   float: left;
   margin-right: 1em;

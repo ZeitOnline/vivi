@@ -41,7 +41,7 @@ Drag the first one[#fill-dav-with-content]_:
   <div class="block-inner">
     <div
      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-     class="teaser-list topthema action-content-droppable">
+     class="teaser-list action-content-droppable">
      ...
   <div class="teaser">
     ...
@@ -69,7 +69,7 @@ Drag c1 onto the list, it becomes the first entry:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-         class="teaser-list topthema action-content-droppable">
+         class="teaser-list action-content-droppable">
      ...
   <div class="teaser">
     ...
@@ -257,7 +257,7 @@ The cp contents also has changed of course:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-        class="teaser-list topthema action-content-droppable">
+        class="teaser-list action-content-droppable">
      ...
   <div class="teaser">
     ...
@@ -417,6 +417,7 @@ True
 Layouts
 +++++++
 
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
@@ -425,3 +426,5 @@ Layouts
 >>> print browser.contents
 <...
 <a...class="selected"...>Großer Teaser mit Bild und Teaserliste</a>...
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True

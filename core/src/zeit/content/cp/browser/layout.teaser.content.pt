@@ -4,24 +4,27 @@
   class view/css_class">
 
   <a class="autopilot-chooser"
-       tal:attributes="href view/autopilot_toggle_url"
-       cms:cp-module="zeit.content.cp.LoadAndReload">
+     tal:attributes="href view/autopilot_toggle_url"
+     cms:cp-module="zeit.content.cp.LoadAndReload">
     <span class="action-title">Switch autopilot</span>
   </a>
-    
-  <div class="teaser"
-       tal:repeat="teaser view/teasers">
 
-    <!-- 
-    <img tal:condition="teaser/image"
-         tal:attributes="src teaser/image/@@absolute_url" />
-    -->
+  <div class="teaser-list">
 
-    <div tal:repeat="item teaser/texts"
-         tal:attributes="class item/css_class"
-         tal:content="item/content">
+    <div class="teaser"
+         tal:repeat="teaser view/teasers">
+
+      <!-- 
+           <img tal:condition="teaser/image"
+                tal:attributes="src teaser/image/@@absolute_url" />
+           -->
+
+      <div tal:repeat="item teaser/texts"
+           tal:attributes="class item/css_class"
+           tal:content="item/content">
+      </div>
+
     </div>
-
   </div>
 
 </div>
