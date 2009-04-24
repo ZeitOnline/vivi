@@ -3,15 +3,23 @@
   <h1>Teaser</h1>
 
   <form id="lightbox.form" action="#"
-    tal:attributes="action request/URL"
-    tal:content="structure view/form"/>
+        tal:attributes="action request/URL"
+        tal:content="structure view/form"/>
 
   <div class="layout-chooser">
-      <a tal:repeat="layout view/layouts"
-      tal:attributes="href string:${context/@@absolute_url}/change-layout?id=${layout/token};
-        class layout/class_"
-      i18n:translate=""
-      cms:cp-module="zeit.content.cp.LoadAndReload"
-      tal:content="layout/title"/>
+    <div class="layout-inner"
+         tal:repeat="layout view/layouts">
+      <a 
+        tal:attributes="href string:${context/@@absolute_url}/change-layout?id=${layout/token};
+        class layout/css_class"
+        i18n:translate=""
+        cms:cp-module="zeit.content.cp.LoadAndReload">
+        <img tal:attributes="src
+             string:${context/++resource++zeit.content.cp}/teaser-${layout/token}.png" />
+        <span tal:content="layout/title" />
+      </a>
+    </div>
+    <div class="visual-clear"></div>
   </div>
+
 </div>

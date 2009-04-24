@@ -1,3 +1,7 @@
+.visual-clear {
+  clear: both;
+}
+
 #cp-content {
   bottom: 1em;
   left: 0;
@@ -328,6 +332,41 @@
   width: 20%;
   float: left;
   margin: 0.5em 1em 0.5em 0;
+}
+
+/* layout chooser */
+
+.lightbox > .floating {
+  overflow-y: auto;
+}
+
+.layout-chooser {
+  border-top: 3px solid #aaa;
+  margin: 0.5em;
+}
+
+.layout-chooser > .layout-inner {
+  width: 25%;
+  float: left;
+}
+
+.layout-chooser > .layout-inner > a {
+  display: block;
+  margin: 1em;
+  opacity: 0.5;
+}
+
+.layout-chooser > .layout-inner > a.selected,
+.layout-chooser > .layout-inner > a:hover {
+  opacity: 1;
+  background-color: inherit;
+}
+
+
+.layout-chooser > .layout-inner > a > img {
+  border: none;
+  display: block;
+  width: 100%;
 }
 
 /* Teaser list editing */

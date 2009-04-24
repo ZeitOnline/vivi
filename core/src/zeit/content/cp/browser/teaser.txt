@@ -418,15 +418,20 @@ True
 Layouts
 +++++++
 
+The layout can be selected at the edit box:
+
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
+
+It is marked in the edit box now:
+
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> print browser.contents
-<...
-<a...class="selected"...>Großer Teaser mit Bild und Teaserliste</a>...
+<div...
+<a...class="leader selected"...>...Großer Teaser mit Bild und Teaserliste...
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 

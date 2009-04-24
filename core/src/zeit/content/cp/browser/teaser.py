@@ -52,9 +52,14 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
         result = []
         for layout in zeit.content.cp.interfaces.ITeaserList['layout'].source:
-            class_ = 'selected' if layout == self.context.layout else ''
-            result.append(dict(token=terms.getTerm(layout).token,
-                               title=layout.title, class_=class_))
+            css_class = [layout.id]
+            if layout == self.context.layout:
+                css_class.append('selected')
+            result.append(dict(
+                css_class=' '.join(css_class),
+                title=layout.title,
+                token=terms.getTerm(layout).token,
+            ))
         return result
 
 

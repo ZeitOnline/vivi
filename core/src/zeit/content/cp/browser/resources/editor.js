@@ -40,13 +40,20 @@ zeit.content.cp.Editor = gocept.Class.extend({
 
     handleContentClick: function(event) {
         var self = this;
-        log("Target " + event.target().nodeName);
-        var module_name = event.target().getAttribute('cms:cp-module')
+        var target = event.target();
+        log("Target " + target.nodeName);
+        while (!isNull(target) && target != self.content) {
+            var module_name = target.getAttribute('cms:cp-module')
+            if (!isNull(module_name)) {
+                break;
+            }
+            target = target.parentNode;
+        }
         if (module_name) {
             log("Loading module " + module_name);
             event.stop();
             var module = zeit.content.cp.resolveDottedName(module_name);
-            new module(event.target());
+            new module(target);
         } else if (event.target().nodeName != 'INPUT') {
             event.preventDefault();
         }
