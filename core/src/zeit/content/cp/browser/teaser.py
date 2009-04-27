@@ -67,7 +67,7 @@ class Display(zeit.cms.browser.view.Base):
 
     @property
     def css_class(self):
-        css = ['teaser-list', 'action-content-droppable']
+        css = ['action-content-droppable']
         layout = self.context.layout
         if layout is not None:
             css.append(layout.id)

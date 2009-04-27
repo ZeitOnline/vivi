@@ -83,6 +83,7 @@
 
   <include file="area.zcml" />
   <include file="block.zcml" />
+  <include file="landing.zcml" />
   <include file="teaser.zcml" />
 
 </configure>

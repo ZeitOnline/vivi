@@ -35,10 +35,10 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
-    name="landing-zone"
-    template="layout.lead.landing.pt"
+    name="contents"
+    template="layout.lead.contents-provider.pt"
     permission="zeit.EditContent"
-    weight="-10"
+    weight="0"
     />
 
   <browser:viewlet

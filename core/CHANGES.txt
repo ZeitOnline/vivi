@@ -10,7 +10,9 @@ New features
 - Wird ein Objekt auf einem Autopilot-Block fallgen gelassen wird der Autopilot
   automatisch ausgeschaltet.
 
-- Landefläche für Teaser im Aufmacherbereich (#4883).
+- Landefläche für Teaser in der Aufmacherfläche (#4883): Fallen lassen eines
+  Content-Objekts bewirkt das Anlegen eines Teaser-Blocks mit dem Objekt und
+  seinen Relateds.
 
 Bugs fixed
 ~~~~~~~~~~

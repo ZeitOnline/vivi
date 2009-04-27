@@ -272,11 +272,11 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
             self.editor.content,
             ['div.action-content-droppable']);
         forEach(elements, function(element) {
-            var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-                element, null, 'block'); 
+            var droppable_element = self.get_droppable_element_for(element);
             var url = element.getAttribute('cms:drop-url');
             self.dnd_objects.push(
-                new MochiKit.DragAndDrop.Droppable(block, {
+                new MochiKit.DragAndDrop.Droppable(droppable_element, {
+                    activeclass: 'droppable-active',
                     hoverclass: 'hover-content',
                     ondrop: function(draggable, droppable, event) {
                         self.drop(draggable, droppable, event, url);
@@ -299,6 +299,16 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
         });
         
     },
+
+    get_droppable_element_for: function(element) {
+        if (MochiKit.DOM.hasElementClass(element, 'landing-zone')) {
+            return element;
+        }
+        var block = MochiKit.DOM.getFirstParentByTagAndClassName(
+            element, null, 'block'); 
+        return block;
+    },
+
 });
 
 

@@ -27,9 +27,13 @@ Set a title (although it's unclear if we really need this):
 When a teaser is dragged on the teaser list, it is added as the first teaser.
 Drag the first one[#fill-dav-with-content]_:
 
+>>> import lxml.cssselect
 >>> browser.open(contents_url)
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.type-teaser div[cms|drop-url]')
 >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
->>> drop_url = browser.etree.xpath('//div/@cms:drop-url', namespaces=nsmap)[0]
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> import zeit.content.cp.centerpage
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
@@ -40,7 +44,7 @@ Drag the first one[#fill-dav-with-content]_:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-     class="teaser-list action-content-droppable">
+     class="action-content-droppable">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -67,7 +71,7 @@ Drag c1 onto the list, it becomes the first entry:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-         class="teaser-list action-content-droppable">
+         class="action-content-droppable">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -253,7 +257,7 @@ The cp contents also has changed of course:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-        class="teaser-list action-content-droppable">
+        class="action-content-droppable">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -402,7 +406,6 @@ automatically switched off:
 True
 >>> 'autopilot-on' in browser.contents
 True
->>> drop_url = browser.etree.xpath('//div/@cms:drop-url', namespaces=nsmap)[0]
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(url)
@@ -460,7 +463,7 @@ The 450x200 image is used now:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-       class="teaser-list action-content-droppable leader">
+       class="action-content-droppable leader">
        ...
   <div class="teaser-list">
     <div class="teaser">
@@ -476,7 +479,7 @@ When we change the layout to xxx the image will not be used any more:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-       class="teaser-list action-content-droppable buttons">
+       class="action-content-droppable buttons">
        ...
   <div class="teaser-list">
     <div class="teaser">
