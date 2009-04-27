@@ -4,8 +4,16 @@ zeit.content.cp changes
 0.4 (unreleased)
 ----------------
 
+New features
+~~~~~~~~~~~~
+
 - Wird ein Objekt auf einem Autopilot-Block fallgen gelassen wird der Autopilot
   automatisch ausgeschaltet.
+
+- Landefläche für Teaser im Aufmacherbereich (#4883).
+
+Bugs fixed
+~~~~~~~~~~
 
 - Editor scrollt nicht mehr nach oben, wenn man etwas getan hat (fixes #5018).
 
