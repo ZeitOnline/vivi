@@ -7,6 +7,9 @@ zeit.content.cp changes
 - Wird ein Objekt auf einem Autopilot-Block fallgen gelassen wird der Autopilot
   automatisch ausgeschaltet.
 
+- Editor scrollt nicht mehr nach oben, wenn man etwas getan hat (fixes #5018).
+
+- Nach geöffneter Lightbox ging Drag'n'Drop nicht mehr (fixes #5019).
 
 0.3 (2009-04-23)
 ----------------
