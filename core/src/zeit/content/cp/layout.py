@@ -35,3 +35,8 @@ class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getToken(self, value):
         return value.id
+
+def get_layout(id):
+    for layout in LAYOUTS:
+        if layout.id == id:
+            return layout
