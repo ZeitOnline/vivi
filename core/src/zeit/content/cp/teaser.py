@@ -13,6 +13,7 @@ import zeit.content.cp.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.interfaces
+import zope.container.contained
 import zope.interface
 import zope.schema
 
@@ -163,3 +164,32 @@ def metadata_to_teaser(content):
         setattr(teaser, name, getattr(content, name))
     teaser.original_content = content
     return teaser
+
+@zope.component.adapter(
+    zeit.content.cp.interfaces.IBlock,
+    zope.container.contained.IObjectAddedEvent)
+def apply_layout_for_added(context, event):
+    region = context.__parent__
+    # Are we leaders?
+    if zeit.content.cp.interfaces.ILeadRegion.providedBy(region):
+        apply_layout(region, None)
+
+@zope.component.adapter(
+    zeit.content.cp.interfaces.ILeadRegion,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def apply_layout(context, event):
+    """Apply the layout for elements in the teaser list.
+
+    The first one mustn't be small, all other have to be small.
+    """
+    # We are leaders!
+    content = [content for content in context.values()
+               if zeit.content.cp.interfaces.ITeaserList.providedBy(content)]
+    if len(content) == 0:
+        return
+    first = content[0]
+    buttons = zeit.content.cp.layout.get_layout('buttons')
+    if first.layout == buttons or first.layout is None:
+        first.layout = zeit.content.cp.layout.get_layout('leader')
+    for elem in content[1:]:
+        elem.layout = buttons

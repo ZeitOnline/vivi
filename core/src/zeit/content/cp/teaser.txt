@@ -1,5 +1,5 @@
 Teaser block
-==========
+============
 
 The teaser block contains a list of teasers[#functional]_.
 
@@ -22,7 +22,7 @@ The teaser block contains a list of teasers[#functional]_.
 >>> import lxml.etree
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...
-    cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5">
+    cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
   <block href="http://xml.zeit.de/testcontent">
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
@@ -111,12 +111,17 @@ A TeaserList can have different Layouts. Those correspond to different values
 for <container module="">.
 
 >>> import zeit.content.cp.layout
->>> layout = zeit.content.cp.layout.Layout('leader',
-...     u'Großer Teaser mit Bild und Teaserliste')
->>> teasers.layout = layout
+>>> teasers.layout = zeit.content.cp.layout.get_layout('leader')
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container...module="leader"...
 
+>>> lead.updateOrder(lead.keys())
+>>> [foo.layout.id for foo in lead.values()]
+['leader', 'buttons']
+
+>>> dummy = factory()
+>>> [teaser_list.layout.id for teaser_list in lead.values()]
+['leader', 'buttons', 'buttons']
 
 >>> zope.app.component.hooks.setSite(old_site)
 

@@ -44,7 +44,7 @@ Drag the first one[#fill-dav-with-content]_:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-     class="action-content-droppable">
+     class="action-content-droppable leader">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -71,7 +71,7 @@ Drag c1 onto the list, it becomes the first entry:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-         class="action-content-droppable">
+         class="action-content-droppable leader">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -316,7 +316,7 @@ The cp contents also has changed of course:
 <div class="block type-teaser... id="<GUID>">
   <div class="block-inner">
     <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
-        class="action-content-droppable">
+        class="action-content-droppable leader">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>

@@ -40,6 +40,11 @@
     factory=".teaser.TeaserList"
     />
 
+  <subscriber 
+    handler=".teaser.apply_layout_for_added" />
+
+  <subscriber 
+    handler=".teaser.apply_layout" />
 
   <class class=".layout.Layout">
     <require
