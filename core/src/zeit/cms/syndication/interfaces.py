@@ -67,9 +67,6 @@ class IReadFeed(zope.interface.Interface):
 
         """
 
-    def __getitem__(position):
-        """Return the item at the given position."""
-
     def __contains__(content):
         """Return if content is syndicated in this channel."""
 

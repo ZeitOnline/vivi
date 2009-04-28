@@ -64,6 +64,7 @@ Content is inserted in the right place:
 >>> list(feed.keys())
 ['art3', 'art2', 'art1']
 
+
 Entries can also be removed. Note that the actual identification is *only* by
 an objects Unique Id:
 
@@ -93,6 +94,7 @@ Let's also add an object from the repository:
  <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
  <zeit.cms.syndication.feed.FakeEntry object at 0x...>]
 
+
 When we remove the testcontent from the repository the testcontent in the feed
 will also become a fake entry:
 
@@ -106,25 +108,6 @@ Remove the testcontent from the feed:
 
 >>> feed.remove(list(feed)[0])
 
-
-Accessing entries
-+++++++++++++++++
-
-Entries can be accessed by index:
-
->>> feed[0]
-<zeit.cms.syndication.feed.FakeEntry object at 0x...>
->>> feed[2]
-Traceback (most recent call last):
-...
-IndexError: list index out of range
-
-The order is preserved:
-
->>> feed[0].uniqueId
-'art3'
->>> feed[1].uniqueId
-'art1'
 
 
 Size Limit
