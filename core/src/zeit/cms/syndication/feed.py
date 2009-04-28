@@ -94,19 +94,23 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         return len(list(self.keys()))
 
     def __iter__(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        for unique_id in self.keys():
-            try:
-                yield repository.getContent(unique_id)
-            except (KeyError, ValueError), e:
-                entry = self.entry_map[unique_id]
-                yield FakeEntry(unique_id, entry)
+        for position in range(len(self)):
+            yield self[position]
 
     def __contains__(self, obj):
         if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
             return False
         return obj.uniqueId in self.entry_map
+
+    def __getitem__(self, position):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        unique_id = list(self.keys())[position]
+        try:
+            return repository.getContent(unique_id)
+        except (KeyError, ValueError), e:
+            entry = self.entry_map[unique_id]
+            return FakeEntry(unique_id, entry)
 
     def getPosition(self, content):
         content_id = content.uniqueId
