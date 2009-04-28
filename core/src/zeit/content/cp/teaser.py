@@ -131,3 +131,35 @@ def lead_teasers_for_centerpage(cp):
             except StopIteration:
                 pass
     return result
+
+
+class Teaser(zeit.cms.content.metadata.CommonMetadata):
+
+    zope.interface.implements(
+        zeit.content.cp.interfaces.ITeaser)
+
+    original_content = zeit.cms.content.property.SingleResource(
+        '.original_content')
+
+    default_template = u"""\
+        <teaser
+          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+        </teaser>
+    """
+
+teaserFactory = zeit.cms.content.adapter.xmlContentFactory(Teaser)
+
+resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
+    'teaser')
+resourceFactory = zope.component.adapter(
+    zeit.content.cp.interfaces.ITeaser)(resourceFactory)
+
+
+@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.interface.implementer(zeit.content.cp.interfaces.ITeaser)
+def metadata_to_teaser(content):
+    teaser = Teaser()
+    for name in zeit.cms.content.interfaces.ICommonMetadata:
+        setattr(teaser, name, getattr(content, name))
+    teaser.original_content = content
+    return teaser

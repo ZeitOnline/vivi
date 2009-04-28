@@ -13,6 +13,7 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
+import zope.security.proxy
 import zope.viewlet.manager
 from zeit.content.cp.i18n import MessageFactory as _
 
@@ -160,6 +161,68 @@ class Delete(object):
             self.context))
 
 
+class CheckoutContent(object):
+
+    def __call__(self, uniqueId):
+        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+        checked_out = manager.checkout()
+        self.request.response.redirect(
+            '%s/++item++%s/edit-teaser.html' % (
+            zope.traversing.browser.absoluteURL(self.context, self.request),
+            checked_out.__name__))
+
+
+class TeaserListProxyItem(object):
+
+    zope.interface.implements(zeit.cms.content.interfaces.ICommonMetadata,
+                              zeit.cms.interfaces.ICMSContent)
+
+    def __init__(self, context):
+        self.context = context
+
+    def __getattr__(self, name):
+        return getattr(self.context, name)
+
+    def __setattr__(self, name, value):
+        if name in ['context', '__name__', '__parent__']:
+            object.__setattr__(self, name, value)
+        else:
+            setattr(self.context, name, value)
+
+    def get_proxied_object(self):
+        return self.context
+
+
+@zope.component.adapter(TeaserListProxyItem)
+@zope.interface.implementer(zeit.cms.checkout.interfaces.ICheckinManager)
+def checkout_manager_for_proxy(proxy):
+    return zeit.cms.checkout.interfaces.ICheckinManager(
+        proxy.get_proxied_object())
+
+
+class ItemTraverser(object):
+
+    zope.component.adapts(
+        zeit.content.cp.interfaces.ITeaserList,
+        zope.publisher.interfaces.browser.IDefaultBrowserLayer)
+    zope.interface.implements(zope.traversing.interfaces.ITraversable)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def traverse(self, name, furtherPath):
+        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
+
+        try:
+            return zope.location.location.located(
+                TeaserListProxyItem(wc[name]), self.context, name)
+        except KeyError:
+            raise zope.publisher.interfaces.NotFound(
+                self.context, name, self.request)
+
+
 class EditTeaser(zope.formlib.form.SubPageEditForm):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -171,11 +234,14 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
             'shortTeaserTitle', 'shortTeaserText')
     close = False
 
+    def __call__(self, *args, **kw):
+        return super(EditTeaser, self).__call__(*args, **kw)
+
     @property
     def form(self):
         return super(EditTeaser, self).template
 
-    @zope.formlib.form.action(_('Apply'))
+    @zope.formlib.form.action(_('Apply for article'))
     def apply(self, action, data):
         changed = zope.formlib.form.applyChanges(
             self.context, self.form_fields, data, self.adapters)
@@ -183,6 +249,32 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
             manager = zeit.cms.checkout.interfaces.ICheckinManager(
                 self.context)
             manager.checkin()
+            self.close = True
+
+    @zope.formlib.form.action(_('Apply only for this page'))
+    def apply_local(self, action, data):
+        teaser = zeit.content.cp.interfaces.ITeaser(self.context)
+
+        folder = zeit.cms.interfaces.ICMSContent(
+            self.context.uniqueId).__parent__
+        name = zope.container.interfaces.INameChooser(
+            folder).chooseName(self.context.__name__, teaser)
+
+        # Delete the original_content from the working copy.
+        del self.context.get_proxied_object().__parent__[self.context.__name__]
+
+        # Don't cache the adapter lookups because we want to apply changes to
+        # another object.
+        self.adapters.clear()
+        changed = zope.formlib.form.applyChanges(
+            teaser, self.form_fields, data, self.adapters)
+        if changed:
+            folder[name] = teaser
+            teaser_list = self.context.__parent__
+            teaser_list.insert(teaser_list.getPosition(self.context), teaser)
+            teaser_list.remove(self.context)
+            zope.event.notify(
+                zope.lifecycleevent.ObjectModifiedEvent(teaser_list))
             self.close = True
 
 

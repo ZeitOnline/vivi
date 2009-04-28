@@ -82,7 +82,15 @@
     />
 
   <browser:page
-    for="zeit.cms.content.interfaces.ICommonMetadata"
+    for="zeit.content.cp.interfaces.ITeaserList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="checkout-content"
+    class=".teaser.CheckoutContent"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.browser.teaser.TeaserListProxyItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-teaser.html"
     class=".teaser.EditTeaser"
@@ -108,4 +116,27 @@
     permission="zeit.EditContent"
     />
 
+  <adapter factory=".teaser.ItemTraverser" name="item" />
+
+  <class class=".teaser.TeaserListProxyItem">
+    <require
+      interface="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLContent"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLContent"
+      permission="zeit.EditContent" />
+
+    <require
+      attributes="get_proxied_object"
+      permission="zope.View" />
+  </class>
+
+  <adapter factory=".teaser.checkout_manager_for_proxy" trusted="true" />
 </configure>

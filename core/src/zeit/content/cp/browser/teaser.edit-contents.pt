@@ -12,7 +12,7 @@
             tal:content="structure teaser/content/@@get_locking_indicator" />
       <a class="edit-link"
          tal:condition="teaser/editable"
-         tal:attributes="href string:${teaser/url}/@@checkout?came_from=cp-editor-lightbox"
+         tal:attributes="href string:${context/@@absolute_url}/checkout-content?uniqueId=${teaser/uniqueId}"
          cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
          cms:lightbox-in="cp-forms">
         <span class="action-title">Edit</span>

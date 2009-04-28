@@ -96,9 +96,23 @@
       />
   </class>
 
+  <class class=".teaser.Teaser">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ITeaser"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ITeaser"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter factory=".teaser.resourceFactory" />
+  <adapter factory=".teaser.teaserFactory" name="teaser" />
 
   <!-- Blocks -->
   <include file="block.zcml" />
 
   <adapter factory=".teaser.lead_teasers_for_centerpage" />
+  <adapter factory=".teaser.metadata_to_teaser" />
 </configure>

@@ -127,6 +127,11 @@ class ITeaserBlockLayout(zope.interface.Interface):
         title=u'A match for the image to use in this layout');
 
 
+class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
+              zeit.cms.content.interfaces.IXMLContent):
+    """A standalone teaser object which references the article."""
+
+
 class ILeadTeasers(zope.interface.Interface):
     """A list containing the UID of the first teaser of each block in the lead
     area."""
