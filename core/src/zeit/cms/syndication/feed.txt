@@ -114,10 +114,17 @@ Entries can be accessed by index:
 
 >>> feed[0]
 <zeit.cms.syndication.feed.FakeEntry object at 0x...>
->>> feed[4]
+>>> feed[2]
 Traceback (most recent call last):
 ...
 IndexError: list index out of range
+
+The order is preserved:
+
+>>> feed[0].uniqueId
+'art3'
+>>> feed[1].uniqueId
+'art1'
 
 
 Size Limit

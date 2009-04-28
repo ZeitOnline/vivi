@@ -67,6 +67,9 @@ class IReadFeed(zope.interface.Interface):
 
         """
 
+    def __getitem__(position):
+        """Return the item at the given position."""
+
     def __contains__(content):
         """Return if content is syndicated in this channel."""
 
@@ -85,8 +88,8 @@ class IReadFeed(zope.interface.Interface):
 class IWriteFeed(zope.interface.Interface):
     """Feed write interface."""
 
-    def insert(index, content):
-        """Add `content` to self at position `index`."""
+    def insert(position, content):
+        """Add `content` to self at position `position`."""
 
     def remove(content):
         """Remove `content` from feed.
