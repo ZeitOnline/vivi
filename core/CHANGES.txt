@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.19.1 (unreleased)
+1.19.1 (2009-04-29)
 -------------------
 
 - DragAndDrop aus Dateilisten und der Suche funktioniert wieder (fixes #5057).
