@@ -269,28 +269,15 @@ When we now check in the centerpage, the changes in our article are propagated:
 <block href="http://xml.zeit.de/testcontent">...
   <title py:pytype="str">Foo</title>...
 
-
-Cleanup
-=======
-
-After tests we clean up:
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
-
-
 .. [#needsinteraction]
 
-    >>> import zeit.cms.testing
     >>> principal = zeit.cms.testing.create_interaction()
 
 
 .. [#functional]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
 .. [#modified-handler] The centerpages need to be nodified when sub location
     change. When we modify an area the centerpage will be considered changed:
