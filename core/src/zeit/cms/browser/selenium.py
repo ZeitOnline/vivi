@@ -6,7 +6,7 @@ import zeit.cms.selenium
 
 class TestPanels(zeit.cms.selenium.Test):
 
-    def test_tablelisting_filter(self):
+    def test_tree_folding(self):
         s = self.selenium
 
         s.comment("Open a folder with articles.")
@@ -41,5 +41,3 @@ class TestMenu(zeit.cms.selenium.Test):
         s.click('link=Auschecken*')
         s.clickAndWait('link=Auschecken*')
         s.verifyTextPresent('wurde ausgecheckt')
-
-

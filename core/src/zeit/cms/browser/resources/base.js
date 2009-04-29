@@ -26,7 +26,7 @@ zeit.cms.ScrollStateRestorer = gocept.Class.extend({
         });
     },
 
-    rememberScrollState: function(content_element) {
+    rememberScrollState: function() {
         var position = this.content_element.scrollTop;
         var id = this.content_element.id;
         if (!id) {
