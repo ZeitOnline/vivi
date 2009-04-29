@@ -16,7 +16,6 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 
 
@@ -94,11 +93,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         return len(list(self.keys()))
 
     def __iter__(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
         for unique_id in self.keys():
             try:
-                yield repository.getContent(unique_id)
+                yield zeit.cms.interfaces.ICMSContent(unique_id)
             except (KeyError, ValueError), e:
                 entry = self.entry_map[unique_id]
                 yield FakeEntry(unique_id, entry)
