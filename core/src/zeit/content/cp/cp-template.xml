@@ -6,8 +6,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
   <body>
-    <region area="lead"/>
-    <region area="informatives"/>
+    <cluster area="feature">
+      <region area="lead"/>
+      <region area="informatives"/>
+    </cluster>
     <region area="ugc-bar">
       <!-- per xi:include -->
       <container module="ugc-line">

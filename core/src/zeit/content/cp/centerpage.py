@@ -27,8 +27,8 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
     editable_areas = stabledict.StableDict(
-        [('lead', lxml.etree.XPath('region[@area="lead"]')),
-         ('informatives', lxml.etree.XPath('region[@area="informatives"]')),
+        [('lead', lxml.etree.XPath('cluster/region[@area="lead"]')),
+         ('informatives', lxml.etree.XPath('cluster/region[@area="informatives"]')),
          ('teaser-mosaic', lxml.etree.XPath('cluster[@area="teaser-mosaic"]')),
         ])
 

@@ -18,6 +18,30 @@ A centerpage has three editable areas:
 >>> cp['teaser-mosaic']
 <zeit.content.cp.area.Cluster for teaser-mosaic>
 
+They are represented in XML as:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...>
+  <head/>
+  <body>
+    <cluster area="feature">
+      <region area="lead"/>
+      <region area="informatives"/>
+    </cluster>
+    <region area="ugc-bar">
+      <!-- per xi:include -->
+      <container module="ugc-line">
+      </container>
+    </region>
+    <cluster area="teaser-mosaic"/>
+    <region area="service">
+      <!-- per xi:include   sitemap.xml-->
+    </region>
+  </body>
+</centerpage>
+
+
 Other areas are not accessible:
 
 >>> cp['ugc-bar']
@@ -93,7 +117,6 @@ u'List of teasers'
 
 After calling the factory a corresponding XML node has been created:
 
->>> import lxml.etree
 >>> print lxml.etree.tostring(lead.xml, pretty_print=True),
 <region ...
   area="lead">
