@@ -27,7 +27,6 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
         principal = zeit.cms.testing.create_interaction(u'zope.user')
 
     def tearDown(self):
-        zope.security.management.endInteraction()
         zeit.cms.testing.tearDown(self)
         self.setSite(None)
         super(TestHelper, self).tearDown()

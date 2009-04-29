@@ -34,9 +34,11 @@ def setUp(test):
 
 def tearDown(test):
     zope.security.management.endInteraction()
-    old_site = test.globs.get('old_site')
-    if old_site is not None:
-        zope.app.component.hooks.setSite(old_site)
+    # only for functional tests
+    if hasattr(test, 'globs'):
+        old_site = test.globs.get('old_site')
+        if old_site is not None:
+            zope.app.component.hooks.setSite(old_site)
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     connector._reset()
