@@ -192,10 +192,9 @@ working copy, the answer is relayed to the object in the repository.
 
 We need some setup:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>>
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())
+
 >>> import zope.component
 >>> import zeit.cms.workingcopy.interfaces
 >>> import zeit.cms.browser.interfaces
@@ -248,7 +247,6 @@ Cleanup:
 
 >>> import transaction
 >>> transaction.abort()
->>> zope.app.component.hooks.setSite(old_site)
 
 
 Preview

@@ -471,11 +471,10 @@ verify this is working:
 >>> browser.open(browser.url + '?sort_on%3Atokens=modified')
 
 When a referenced object is deleted, the clip will become an "invalid
-reference". Delete "wirtschaft.feed"[#setup-site]_:
+reference". Delete "wirtschaft.feed"[#functional]_:
 
 >>> del repository['wirtschaft.feed']
 >>> transaction.commit()
->>> zope.app.component.hooks.setSite(old_site)
 
 Let's have a look at the sidebar:
 
@@ -669,11 +668,10 @@ to online:
         ...
 
 
-.. [#setup-site]
+.. [#functional]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     >>> import zope.component
     >>> from zeit.cms.repository.interfaces import IRepository

@@ -385,22 +385,13 @@ When we remove the feed from the repository, the source is empty:
 []
 
 
-Cleanup
-=======
-
-After the test we restore the old site:
-
->>> zope.app.component.hooks.setSite(old_site)
-
-
 Footnotes
 =========
 
 .. [1] Initialization:
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     >>> def eventHandler(context, event):
     ...     print 'Event:', event

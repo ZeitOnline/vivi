@@ -3,13 +3,7 @@ Repository
 ==========
 
 Browsing the repository works by folder classes which on the fly fetch data
-from the backend. The interface to the backend is `os` like. 
-
-We need to set the site since we're a functional test:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+from the backend. The interface to the backend is `os` like [#functional]_.
 
 
 Repository Containers
@@ -421,9 +415,7 @@ u'http://xml.zeit.de/online/2007/01/Somalia'
 u'http://xml.zeit.de/online/2007/01/Somalia'
 
 
-Cleanup
-=======
+.. [#functional]:
 
-After tests we clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())

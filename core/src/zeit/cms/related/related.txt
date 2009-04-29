@@ -364,14 +364,10 @@ ValueError: Could not create xml reference 'related' for foo which is
     referenced in http://xml.zeit.de/content.
 
 
-Cleanup:
-
->>> zope.app.component.hooks.setSite(old_site)
-
 .. [#functionaltest] We need to set the site since we're a functional test: 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     Do some imports and get the repository
 

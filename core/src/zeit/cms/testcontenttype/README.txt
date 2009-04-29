@@ -8,12 +8,10 @@ otherwise.
 
 Setup ftest:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())
 
-
-Instanciate and verify the inital xml:
+Instantiate and verify the inital xml:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
@@ -78,9 +76,6 @@ Make sure we can get a browse location:
 ...     (content, zeit.cms.content.contentsource.cmsContentSource),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
-Clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
 
 Browser tests
 =============

@@ -6,7 +6,7 @@ same as live properties in the DAV sense. In DAV live properties are computed
 properties).
 
 When we get the properties of an object from the repository we'll get live
-properties[#functionaltest]_:
+properties[#functional]_:
 
 >>> import zeit.connector.interfaces
 >>> content = repository['testcontent']
@@ -89,13 +89,10 @@ The repository itself has live properties:
 
 Clean up:
 
->>> zope.app.component.hooks.setSite(old_site)
+.. [#functional] We need to set the site since we're a functional test:
 
-.. [#functionaltest] We need to set the site since we're a functional test:
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     Do some imports and get the repository
 

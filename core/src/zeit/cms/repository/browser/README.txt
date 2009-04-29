@@ -231,11 +231,8 @@ Within the object browser the tree is automatically expanded:
 To get the initial browsing location the IDefaultBrowsingLocation interface is
 used. Do some setup:
 
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>>
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.browser.interfaces
@@ -266,11 +263,6 @@ For a content object it will be the folder it is contained in:
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
 u'http://xml.zeit.de/online/2007/01'
-
-
-Cleanup:
-
->>> zope.app.component.hooks.setSite(old_site)
 
 
 There is a view all ICMSContent which redirects to the browsing location:

@@ -2,7 +2,7 @@ Modified
 ========
 
 When an object is checked in the person who modified the object last is
-noted[#functionaltest]_. 
+noted[#functional]_.
 
 Currently there was no one who modified:
 
@@ -31,26 +31,13 @@ The access time from IDCTimes can be accessed through IModified:
 datetime.datetime(..., tzinfo=<UTC>)
 
 
-Clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
-
-
-.. [#functionaltest] We need to set the site since we're a functional test:
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Create an interaction:
+.. [#functional]
 
     >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
     >>> principal = zeit.cms.testing.create_interaction()
-
-    Do some imports and get the repository
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces
-    >>> import zeit.cms.workflow.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)

@@ -12,7 +12,7 @@ Low level support
 +++++++++++++++++
 
 The `IRelations`-Utility handles all the magic of resolving
-references[#functionaltest]_:
+references[#functional]_:
 
 >>> import zeit.cms.relation.interfaces
 >>> relations = zope.component.getUtility(
@@ -352,14 +352,11 @@ Check out and in again:
 
 Clean up:
 
->>> zope.app.component.hooks.setSite(old_site)
 
+.. [#functional] Setup functional test and get some common utilities
 
-.. [#functionaltest] Setup functional test and get some common utilities
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces

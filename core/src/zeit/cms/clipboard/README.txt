@@ -12,8 +12,8 @@ logging out or removed automatically.
 Getting the clipbaord
 =====================
 
-After some setup[1]_ we can have the principal in the variable `principal`.
-We just get the clipboard for that principal via adaptation:
+After some setup[#functional]_ we can have the principal in the variable
+`principal`. We just get the clipboard for that principal via adaptation:
 
 >>> from zeit.cms.clipboard.interfaces import IClipboard, IClipboardEntry
 >>> clipboard = IClipboard(principal)
@@ -201,24 +201,12 @@ Traceback (most recent call last):
     ...
 ValueError: `obj` must not be an ancestor of `new_container`.
 
-Cleanup
-=======
-
-After the tests we clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
-
 
 Footnotes
 =========
 
-.. [1] Setup
-
-    We need to set the site since we're a functional test:
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+.. [#functional] Setup
 
     >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
     >>> principal = zeit.cms.testing.create_interaction()

@@ -131,15 +131,11 @@ Clean up:
 >>> zope.interface.classImplementsOnly(
 ...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
 ...     *old_implements)
->>> zope.app.component.hooks.setSite(old_site)
 
 .. [#functional]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
     >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
     >>> principal = zeit.cms.testing.create_interaction()
 
     Get the repository:

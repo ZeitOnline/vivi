@@ -10,7 +10,7 @@ body/container format
 
 The body container format has the structure of a center page. Construct a
 Resource which we inject directly to the connector and then load from the
-repository[#functionaltest]_
+repository[#functional]_
 
 >>> import os.path
 >>> xml = open(os.path.join(os.path.dirname(__file__), 'testdata',
@@ -124,15 +124,10 @@ Traceback (most recent call last):
 RuntimeError: Invalid channel XML format.
 
 
-Clean up:
+.. [#functional]
 
->>> zope.app.component.hooks.setSite(old_site)
-
-.. [#functionaltest] Do ftest setup:
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     >>> import zope.component
     >>> import zeit.connector.interfaces

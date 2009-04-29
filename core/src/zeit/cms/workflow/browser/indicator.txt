@@ -20,22 +20,17 @@ objects (note that the ``view`` argument is not really relevant)[#setup]_:
 # XXX move workflow tests from listing.txt to here.
 
 
->>> zope.app.component.hooks.setSite(old_site)
-
-
 .. [#setup]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
+    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
 
+    >>> import zope.component
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
     >>> content = repository['testcontent']
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
 
     >>> import zope.publisher.browser
     >>> import zeit.cms.browser.interfaces
