@@ -69,6 +69,13 @@ class IBlock(zope.interface.Interface):
     type = zope.interface.Attribute("Type identifier.")
 
 
+class ICMSContentIterable(zope.interface.Interface):
+    """An iterable object iterating over CMSContent."""
+
+    def __iter__():
+        pass
+
+
 class IBlockFactory(zope.interface.Interface):
 
     title = zope.schema.TextLine(

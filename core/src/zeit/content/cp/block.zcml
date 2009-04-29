@@ -2,6 +2,7 @@
   xmlns="http://namespaces.zope.org/zope">
 
   <adapter factory=".block.block_to_centerpage" />
+  <adapter factory=".block.CMSContentIterable" />
 
   <!-- Place holder -->
 
@@ -39,6 +40,7 @@
     name="teaser"
     factory=".teaser.TeaserList"
     />
+  <adapter factory=".teaser.CMSContentIterable" />
 
   <subscriber 
     handler=".teaser.apply_layout_for_added" />

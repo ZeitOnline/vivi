@@ -32,6 +32,8 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 
 [#modified-handler]_
 
+
+
 Blocks
 +++++
 
@@ -70,8 +72,6 @@ It is not possible to add the block again:
 Traceback (most recent call last):
     ...
 DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
-
-
 
 
 Teaser block

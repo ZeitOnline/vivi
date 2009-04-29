@@ -6,14 +6,15 @@ import lxml.etree
 import lxml.objectify
 import rwproperty
 import zeit.cms.content.property
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.block
 import zeit.content.cp.interfaces
 import zope.component
-import zope.container.interfaces
 import zope.container.contained
+import zope.container.interfaces
 import zope.interface
 import zope.schema
 
@@ -39,9 +40,7 @@ class TeaserList(zeit.content.cp.block.Block,
 
     def iterentries(self):
         if self.autopilot:
-            repository = zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository)
-            return [repository.getContent(id) for id in self.keys()]
+            return [zeit.cms.interfaces.ICMSContent(id) for id in self.keys()]
         else:
             return super(TeaserList, self).iterentries()
 
@@ -119,6 +118,19 @@ class TeaserList(zeit.content.cp.block.Block,
 TeaserListFactory = zeit.content.cp.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
     TeaserList, 'teaser', _('List of teasers'))
+
+
+class CMSContentIterable(object):
+
+    zope.component.adapts(zeit.content.cp.interfaces.ITeaserList)
+    zope.interface.implements(zeit.content.cp.interfaces.ICMSContentIterable)
+
+    def __init__(self, context):
+        self.context = context
+
+    def __iter__(self):
+        for teaser in self.context:
+            yield teaser
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)

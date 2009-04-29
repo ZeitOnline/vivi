@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 
 import UserDict
+import gocept.async
 import lxml.etree
 import pkg_resources
+import stabledict
 import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
@@ -22,11 +24,11 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
-    editable_areas = {
-        'lead': lxml.etree.XPath('region[@area="lead"]'),
-        'informatives': lxml.etree.XPath('region[@area="informatives"]'),
-        'teaser-mosaic': lxml.etree.XPath('cluster[@area="teaser-mosaic"]'),
-    }
+    editable_areas = stabledict.StableDict(
+        [('lead', lxml.etree.XPath('region[@area="lead"]')),
+         ('informatives', lxml.etree.XPath('region[@area="informatives"]')),
+         ('teaser-mosaic', lxml.etree.XPath('cluster[@area="teaser-mosaic"]')),
+        ])
 
     keys = editable_areas.keys
     __contains__ = editable_areas.__contains__
@@ -50,6 +52,20 @@ resourceFactory = zope.component.adapter(
 
 
 _test_helper_cp_changed = False
+
+
+class CMSContentIterable(object):
+
+    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
+    zope.interface.implements(zeit.content.cp.interfaces.ICMSContentIterable)
+
+    def __init__(self, context):
+        self.context = context
+
+    def __iter__(self):
+        for area in self.context.values():
+            for content in zeit.content.cp.interfaces.ICMSContentIterable(area):
+                yield content
 
 
 @zope.component.adapter(

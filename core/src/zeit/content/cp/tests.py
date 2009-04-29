@@ -26,6 +26,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'teaser.txt',
+        'cmscontentiterable.txt',
         checker=checker,
         layer=layer))
     return suite
