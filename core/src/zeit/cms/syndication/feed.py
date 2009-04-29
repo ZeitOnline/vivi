@@ -96,7 +96,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         for unique_id in self.keys():
             try:
                 yield zeit.cms.interfaces.ICMSContent(unique_id)
-            except (KeyError, ValueError), e:
+            except TypeError:
                 entry = self.entry_map[unique_id]
                 yield FakeEntry(unique_id, entry)
 
