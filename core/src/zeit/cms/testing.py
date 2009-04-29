@@ -7,6 +7,7 @@ import re
 import sys
 import zeit.connector.interfaces
 import zope.app.appsetup.product
+import zope.app.component.hooks
 import zope.app.testing.functional
 import zope.component
 import zope.file.testing
@@ -33,6 +34,9 @@ def setUp(test):
 
 def tearDown(test):
     zope.security.management.endInteraction()
+    old_site = test.globs.get('old_site')
+    if old_site is not None:
+        zope.app.component.hooks.setSite(old_site)
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     connector._reset()
@@ -98,6 +102,21 @@ def click_wo_redirect(browser, *args, **kwargs):
             print e.hdrs.get('location')
     finally:
         browser.mech_browser.set_handle_redirect(True)
+
+
+def set_site(globs, site=None):
+    """Encapsulation of the getSite/setSite-dance.
+
+    Sets the given site, preserves the old site in the globs,
+    where it will be reset by our FunctionalDocFileSuite's tearDown.
+
+    Call from a doctest like this: zeit.cms.testing.set_site(locals())
+    """
+
+    globs['old_site'] = zope.app.component.hooks.getSite()
+    if site is None:
+        site = globs['getRootFolder']()
+    zope.app.component.hooks.setSite(site)
 
 
 def create_interaction(name=u'zope.user'):
