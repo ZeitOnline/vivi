@@ -239,7 +239,7 @@ To create the local copy, press the `Apply only for this page` button:
 
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getControl('Apply only for this page').click()
->>> zeit.content.cp.centerpage._test_helper_cp_changed 
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 
 The original article is unchanged:
