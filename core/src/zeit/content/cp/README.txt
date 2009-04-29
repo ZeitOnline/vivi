@@ -258,20 +258,15 @@ After tests we clean up:
 
 .. [#needsinteraction]
 
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'hans')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()
+
 
 .. [#functional]
 
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
-
 
 
 .. [#modified-handler] The centerpages need to be nodified when sub location
