@@ -3,6 +3,7 @@
 
 import UserDict
 import gocept.async
+import itertools
 import lxml.etree
 import pkg_resources
 import stabledict
@@ -63,9 +64,9 @@ class CMSContentIterable(object):
         self.context = context
 
     def __iter__(self):
-        for area in self.context.values():
-            for content in zeit.content.cp.interfaces.ICMSContentIterable(area):
-                yield content
+        return itertools.chain(
+            *[zeit.content.cp.interfaces.ICMSContentIterable(area)
+              for area in self.context.values()])
 
 
 @zope.component.adapter(
