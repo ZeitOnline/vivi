@@ -1,7 +1,5 @@
 // Copyright (c) 2007-2009 gocept gmbh & co. kg
 // See also LICENSE.txt
-// $Id$
-//
 // General Javascript functions for filtering tables
 
 zeit.cms.FilteringTable = Class.extend({
