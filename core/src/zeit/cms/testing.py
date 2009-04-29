@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zope.testing import doctest
 import os
 import re
 import sys
@@ -9,8 +10,10 @@ import zope.app.appsetup.product
 import zope.app.testing.functional
 import zope.component
 import zope.file.testing
+import zope.publisher.browser
+import zope.security.management
+import zope.security.testing
 import zope.testing.renormalizing
-from zope.testing import doctest
 
 
 cms_layer = zope.app.testing.functional.ZCMLLayer(
@@ -29,6 +32,7 @@ def setUp(test):
 
 
 def tearDown(test):
+    zope.security.management.endInteraction()
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     connector._reset()
@@ -59,7 +63,6 @@ def setup_product_config(product_config={}):
     cms_config['suggest-keyword-real-name'] = 'Dr. No'
 
     zope.app.appsetup.product._configs.update(product_config)
-
 
 optionflags = (doctest.REPORT_NDIFF +
                doctest.INTERPRET_FOOTNOTES +
@@ -97,3 +100,8 @@ def click_wo_redirect(browser, *args, **kwargs):
         browser.mech_browser.set_handle_redirect(True)
 
 
+def create_interaction(name=u'zope.user'):
+    principal = zope.security.testing.Principal(name)
+    participation = zope.security.testing.Participation(principal)
+    zope.security.management.newInteraction(participation)
+    return principal

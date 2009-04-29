@@ -390,7 +390,6 @@ Cleanup
 
 After the test we restore the old site:
 
->>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
 
@@ -417,15 +416,8 @@ Footnotes
     ...     eventHandler,
     ...     (ICMSContent, IContentSyndicatedEvent))
 
-    Log in bob:
-
-    >>> import zope.publisher.browser
-    >>> import zope.security.testing
-    >>> bob = zope.security.testing.Principal(u'zope.user')
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(bob)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()
 
 
 .. [2] Get content from the repository:
@@ -447,7 +439,8 @@ Footnotes
     ...     zeit.cms.syndication.feed.Feed())
     >>> repository['hp_channels']['channel_magazin'] = (
     ...     zeit.cms.syndication.feed.Feed())
-    
+
+
 .. [#remove-event-handler]
 
     >>> site_manager.unregisterHandler(

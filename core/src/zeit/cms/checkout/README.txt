@@ -7,12 +7,8 @@ process[#functional]_.
 
 We need an interaction as checkout manager needs to get the principal:
 
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal(u'zope.user')
->>> participation = zope.security.testing.Participation(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(participation)
-
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction()
 
 We also subscribe a testing handler to the CheckoutEvent:
 
@@ -94,11 +90,7 @@ After checking out the resource is locked in the WebDAV. This means other users
 cannot check it out. Login another user called `bob`:
 
 >>> zope.security.management.endInteraction()
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal('bob')
->>> participation = zope.security.testing.Participation(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(participation)
+>>> principal = zeit.cms.testing.create_interaction(u'bob')
 
 Bob cannot check out:
 
@@ -109,11 +101,7 @@ False
 Let's log back in as the `zope.user`.
 
 >>> zope.security.management.endInteraction()
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal('zope.user')
->>> participation = zope.security.testing.Participation(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(participation)
+>>> principal = zeit.cms.testing.create_interaction(u'zope.user')
 
 We also cannot check it out because checking out is only possible once:
 
@@ -339,7 +327,6 @@ Cleanup
 
 After the test we restore the old site:
 
->>> zope.security.management.endInteraction()
 >>> site_manager.unregisterHandler(
 ...     checkoutEvent,
 ...     (ICMSContent, ICheckinCheckoutEvent))

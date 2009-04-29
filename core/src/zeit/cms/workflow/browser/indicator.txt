@@ -20,7 +20,6 @@ objects (note that the ``view`` argument is not really relevant)[#setup]_:
 # XXX move workflow tests from listing.txt to here.
 
 
->>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
 
@@ -35,12 +34,10 @@ objects (note that the ``view`` argument is not really relevant)[#setup]_:
     ...     zeit.cms.repository.interfaces.IRepository)
     >>> content = repository['testcontent']
 
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
+
     >>> import zope.publisher.browser
-    >>> import zope.security.testing
     >>> import zeit.cms.browser.interfaces
     >>> request = zope.publisher.browser.TestRequest(
     ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
-    >>> request.setPrincipal(
-    ...     zope.security.testing.Principal(u'zope.globalmgr'))
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)

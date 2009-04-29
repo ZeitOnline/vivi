@@ -107,7 +107,7 @@ Checkin
 
 Objects are indexed before checkin. We will check a out and back in and verify
 it is indexed[#cleancatalog]_. Let a relate checkout and relate
-c[#needs-interaction]_:
+c[#needsinteraction]_:
 
 >>> import zeit.cms.checkout.interfaces
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
@@ -353,7 +353,7 @@ Check out and in again:
 Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
->>> zope.security.management.endInteraction()
+
 
 .. [#functionaltest] Setup functional test and get some common utilities
 
@@ -365,6 +365,7 @@ Clean up:
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
+
 
 .. [#interface] Verify the interface:
 
@@ -383,17 +384,15 @@ Clean up:
     >>> repository['c'] = TestContentType()
     >>> repository['d'] = TestContentType()
 
+
 .. [#cleancatalog] Clean the catalog:
 
     >>> for name in ('a', 'b', 'c', 'd'):
     ...     relations._catalog.unindex_doc(
     ...         'http://xml.zeit.de/%s' % name)
 
-.. [#needs-interaction] 
 
-    >>> import zope.security.management
-    >>> import zope.security.testing
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(zope.security.testing.Principal(u'zope.user'))
-    >>> zope.security.management.newInteraction(request)
+.. [#needsinteraction]
+
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()

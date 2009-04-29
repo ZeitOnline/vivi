@@ -100,7 +100,7 @@ namespace are *not* mapped:
         name="date-last-modified">...-...-...T...+00:00</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
-        name="last_modified_by">bob</attribute>
+        name="last_modified_by">zope.user</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta"
         name="type">testcontenttype</attribute>
@@ -131,7 +131,6 @@ Clean up:
 >>> zope.interface.classImplementsOnly(
 ...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
 ...     *old_implements)
->>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
 .. [#functional]
@@ -139,11 +138,9 @@ Clean up:
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
-    >>> import zope.security.management
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'bob')
-    >>> participation = zope.security.testing.Participation(principal)
-    >>> zope.security.management.newInteraction(participation)
+
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()
 
     Get the repository:
 

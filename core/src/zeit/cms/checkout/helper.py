@@ -4,6 +4,8 @@
 from __future__ import with_statement
 import contextlib
 import logging
+# XXX z3c.flashmessage should import this, not us
+import zope.schema
 import z3c.flashmessage.interfaces
 import zeit.cms.checkout.interfaces
 import zope.component

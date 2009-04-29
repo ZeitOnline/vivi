@@ -86,13 +86,10 @@ Getting the Workingcopy of the Currently Logged in User
 
 Getting the Workingcopy of the currently logged in user is done by the
 `getWorkingCopy` method of `WorkingcopyLocation`. Log in `kurt` and get his
-workingcopy: 
+workingcopy:
 
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal('kurt')
->>> participation = zope.security.testing.Participation(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(participation)
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction(u'kurt')
 
 >>> workingcopy = location.getWorkingcopy()
 Granting zeit.EditContent to kurt
@@ -126,7 +123,7 @@ After marking as ILocalContent it can be added:
 >>> zope.interface.directlyProvides(content, ILocalContent)
 >>> workingcopy[u'mycontent'] = content
 >>> ILocalContent.providedBy(content)
-True 
+True
 
 Sorting
 =======

@@ -206,9 +206,7 @@ Cleanup
 
 After the tests we clean up:
 
->>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
-    
 
 
 Footnotes
@@ -222,10 +220,5 @@ Footnotes
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
 
-    We also need an interaction as we needs to get the principal:
-
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> participation = zope.security.testing.Participation(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(participation)
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()

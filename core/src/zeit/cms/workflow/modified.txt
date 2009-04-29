@@ -33,7 +33,6 @@ datetime.datetime(..., tzinfo=<UTC>)
 
 Clean up:
 
->>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 
 
@@ -45,13 +44,8 @@ Clean up:
 
     Create an interaction:
 
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()
 
     Do some imports and get the repository
 

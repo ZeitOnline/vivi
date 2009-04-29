@@ -3,17 +3,13 @@ User Preferences
 
 Users have different preferences regarding what to see and what not.
 Preferences regarding the repository are stored in an `IUserPreferences`
-objet. Login bob:
+objet. Login:
 
 >>> import zope.app.component.hooks
 >>> old_site = zope.app.component.hooks.getSite()
 >>> zope.app.component.hooks.setSite(getRootFolder())
->>> import zope.security.management
->>> import zope.security.testing
->>> zope.security.management.endInteraction()
->>> principal = zope.security.testing.Principal(u'bob')
->>> participation = zope.security.testing.Participation(principal)
->>> zope.security.management.newInteraction(participation)
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction(u'zope.user')
 
 ... and get his preferences:
 
@@ -91,8 +87,7 @@ Double hide dosn't harm as well:
 >>> preferences.is_hidden(repository['online']['2005'])
 True
 
-Logout bob again and clean up:
+Logout again and clean up:
 
->>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
 

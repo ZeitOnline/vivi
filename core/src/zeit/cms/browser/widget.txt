@@ -81,10 +81,10 @@ information:
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference.outerdiv">
-  <input type="hidden" value="1" 
+  <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
-         id="field.reference" value="http://content" 
+         id="field.reference" value="http://content"
          name="field.reference" />
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
@@ -121,7 +121,7 @@ Note that the invalid value is rendered:
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-widget" id="field.reference.outerdiv">
-  <input type="hidden" value="1" 
+  <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
          id="field.reference" value="http://exists/blubs"
@@ -141,7 +141,7 @@ Returning location for <Content object at 0x...>
 
 
 Test the validation. Set a non existent resource:
-  
+
 >>> request = zope.publisher.browser.TestRequest(
 ...     form={'field.reference': u'http://foo'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -223,8 +223,6 @@ True
 ...     repository, zeit.cms.repository.interfaces.IRepository)
 True
 
->>> zope.security.management.endInteraction()
-
 Datetime widget
 +++++++++++++++
 
@@ -255,7 +253,7 @@ in one month:
         $('field.').value = date.print('%Y-%m-%d %H:%M:%S');" />
 <input type="button" value="∞"
     onclick="javascript:$('field.').value = '';" />
-</div>        
+</div>
 
 
 
@@ -314,15 +312,7 @@ in one month:
     ...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
     ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
-    Setup interaction: 
+    Setup interaction:
 
-    >>> import zope.publisher.browser
-    >>> import zope.security.testing
-    >>> import zeit.cms.browser.interfaces
-    >>> request = zope.publisher.browser.TestRequest(
-    ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
-    >>> request.setPrincipal(
-    ...     zope.security.testing.Principal(u'zope.globalmgr'))
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
-
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
