@@ -14,6 +14,13 @@ New features
   Content-Objekts bewirkt das Anlegen eines Teaser-Blocks mit dem Objekt und
   seinen Relateds.
 
+- Beim Bearbeiten von Teasern können nun "freie Teaser" erzeugt werden. (#4788)
+
+- Regeln für Layouts von Teaserlisten (#5033):
+  Der erste Block bekommt das Layout mit dem großen Bild, alle anderen das
+  Layout mit dem kleinen Bild.
+  
+
 Bugs fixed
 ~~~~~~~~~~
 
