@@ -251,7 +251,12 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
             manager.checkin()
             self.close = True
 
-    @zope.formlib.form.action(_('Apply only for this page'))
+    def _is_not_teaser(self, action):
+        return not zeit.content.cp.interfaces.ITeaser.providedBy(
+            self.context.get_proxied_object())
+
+    @zope.formlib.form.action(
+        _('Apply only for this page'), condition=_is_not_teaser)
     def apply_local(self, action, data):
         teaser = zeit.content.cp.interfaces.ITeaser(self.context)
 
