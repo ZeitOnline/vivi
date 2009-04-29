@@ -1,6 +1,8 @@
 Centerpage
 ==========
 
+[#functional]_
+
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp
@@ -31,7 +33,6 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
 
 [#modified-handler]_
-
 
 
 Blocks
@@ -204,6 +205,73 @@ The xml of the teaser bar is actually a region:
   <container cp:type="placeholder" cp:__name__="<GUID>"/>
   <container cp:type="placeholder" cp:__name__="<GUID>"/>
 </region>
+
+
+Checkin handler
++++++++++++++++
+
+When the centerpage is checked in, the metadata of all its articles need to be
+updated [#needsinteraction]_.
+
+Before we can begin, we need to put our centerpage into the repository so that
+we can check it out:
+
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> repository['cp'] = cp
+>>> cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['cp']).checkout()
+
+Now we need some test objects we can edit later on:
+
+>>> factory = zope.component.getAdapter(
+...     cp['lead'], zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+>>> teasers = factory()
+>>> import zeit.cms.repository.interfaces
+>>> teasers.insert(0, repository['testcontent'])
+>>> teasers.insert(1, repository['2007']['test'])
+
+Edit the referenced article while the centerpage is checked out:
+
+>>> testcontent = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['testcontent']).checkout()
+>>> testcontent.teaserTitle = 'Foo'
+>>> dummy = zeit.cms.checkout.interfaces.ICheckinManager(testcontent).checkin()
+
+When we now check in the centerpage, the changes in our article are propagated:
+
+>>> cp = zeit.cms.checkout.interfaces.ICheckinManager(cp).checkin()
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage ...
+<block href="http://xml.zeit.de/testcontent">...
+  <title py:pytype="str">Foo</title>...
+
+
+Cleanup
+=======
+
+After tests we clean up:
+
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
+
+
+.. [#needsinteraction]
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'hans')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)
+
+.. [#functional]
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+
 
 
 .. [#modified-handler] The centerpages need to be nodified when sub location

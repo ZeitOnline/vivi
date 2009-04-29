@@ -19,7 +19,9 @@ New features
 - Regeln für Layouts von Teaserlisten (#5033):
   Der erste Block bekommt das Layout mit dem großen Bild, alle anderen das
   Layout mit dem kleinen Bild.
-  
+
+- Beim Einchecken der Centerpage werden die Metadaten der referenzierten
+  Artikel aktualisiert. (#4976)
 
 Bugs fixed
 ~~~~~~~~~~

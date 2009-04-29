@@ -28,6 +28,10 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
         """
 
+    def updateMetadata(content):
+        """Update the metadata of the given content object."""
+
+
 class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,
                 zope.container.interfaces.IContained,
                 zope.container.interfaces.IReadContainer):

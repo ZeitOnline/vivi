@@ -15,6 +15,7 @@ import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
+import zope.security.proxy
 
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
@@ -42,6 +43,12 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
             name=key)
         return zope.container.contained.contained(area, self, key)
 
+    def updateMetadata(self, content):
+        for entry in self.xml.xpath('//block[@href="%s"]' % content.uniqueId):
+            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
+            updater.update(entry)
+
+
 
 centerpageFactory = zeit.cms.content.adapter.xmlContentFactory(CenterPage)
 
@@ -68,6 +75,13 @@ class CMSContentIterable(object):
             *[zeit.content.cp.interfaces.ICMSContentIterable(area)
               for area in self.context.values()])
 
+
+@zope.component.adapter(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_centerpage_on_checkin(context, event):
+    for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
+        context.updateMetadata(content)
 
 @zope.component.adapter(
     zope.interface.Interface,
