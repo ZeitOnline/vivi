@@ -71,16 +71,10 @@ class Block(zope.container.contained.Contained):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}type')
 
 
-class CMSContentIterable(object):
-
-    zope.component.adapts(zeit.content.cp.interfaces.IBlock)
-    zope.interface.implements(zeit.content.cp.interfaces.ICMSContentIterable)
-
-    def __init__(self, context):
-        self.context = context
-
-    def __iter__(self):
-        return iter([])
+@zope.component.adapter(zeit.content.cp.interfaces.IBlock)
+@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    return iter([])
 
 
 class PlaceHolder(Block):

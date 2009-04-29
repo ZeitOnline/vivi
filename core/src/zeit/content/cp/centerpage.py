@@ -62,18 +62,12 @@ resourceFactory = zope.component.adapter(
 _test_helper_cp_changed = False
 
 
-class CMSContentIterable(object):
-
-    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
-    zope.interface.implements(zeit.content.cp.interfaces.ICMSContentIterable)
-
-    def __init__(self, context):
-        self.context = context
-
-    def __iter__(self):
-        return itertools.chain(
-            *[zeit.content.cp.interfaces.ICMSContentIterable(area)
-              for area in self.context.values()])
+@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
+@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    return itertools.chain(
+        *[zeit.content.cp.interfaces.ICMSContentIterable(area)
+          for area in context.values()])
 
 
 @zope.component.adapter(

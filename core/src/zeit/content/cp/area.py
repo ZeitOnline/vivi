@@ -3,6 +3,7 @@
 
 import UserDict
 import gocept.lxml.interfaces
+import itertools
 import uuid
 import zeit.cms.content.interfaces
 import zeit.content.cp.block
@@ -91,19 +92,12 @@ class Area(UserDict.DictMixin,
         return item
 
 
-class CMSContentIterable(object):
-
-    zope.component.adapts(zeit.content.cp.interfaces.IArea)
-    zope.interface.implements(zeit.content.cp.interfaces.ICMSContentIterable)
-
-    def __init__(self, context):
-        self.context = context
-
-    def __iter__(self):
-        for block in self.context.values():
-            for content in zeit.content.cp.interfaces.ICMSContentIterable(
-                    block):
-                yield content
+@zope.component.adapter(zeit.content.cp.interfaces.IArea)
+@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    return itertools.chain(*[
+        zeit.content.cp.interfaces.ICMSContentIterable(block)
+        for block in context.values()])
 
 
 class Region(Area):

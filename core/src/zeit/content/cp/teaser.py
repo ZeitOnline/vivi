@@ -120,17 +120,11 @@ TeaserListFactory = zeit.content.cp.block.blockFactoryFactory(
     TeaserList, 'teaser', _('List of teasers'))
 
 
-class CMSContentIterable(object):
-
-    zope.component.adapts(zeit.content.cp.interfaces.ITeaserList)
-    zope.interface.implements(zeit.content.cp.interfaces.ICMSContentIterable)
-
-    def __init__(self, context):
-        self.context = context
-
-    def __iter__(self):
-        for teaser in self.context:
-            yield teaser
+@zope.component.adapter(zeit.content.cp.interfaces.ITeaserList)
+@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    for teaser in context:
+        yield teaser
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)

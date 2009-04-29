@@ -19,7 +19,7 @@
 
   <adapter factory=".centerpage.resourceFactory" />
   <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
-  <adapter factory=".centerpage.CMSContentIterable" />
+  <adapter factory=".centerpage.cms_content_iter" />
   <subscriber handler=".centerpage.modified_propagator" />
   <subscriber handler=".centerpage.update_centerpage_on_checkin" />
   <subscriber
@@ -31,7 +31,7 @@
 
   <!-- Areas -->
   <adapter factory=".area.area_to_centerpage" />
-  <adapter factory=".area.CMSContentIterable" />
+  <adapter factory=".area.cms_content_iter" />
 
   <class class=".area.Region">
     <require
@@ -80,7 +80,7 @@
   <!-- teaser bar -->
 
   <adapter factory=".area.TeaserBarFactory" name="teaser-bar" />
-  <adapter factory=".area.CMSContentIterable" for=".interfaces.ITeaserBar" />
+  <adapter factory=".area.cms_content_iter" for=".interfaces.ITeaserBar" />
   <adapter
     provides=".interfaces.ITeaserBar"
     name="teaser-bar"
