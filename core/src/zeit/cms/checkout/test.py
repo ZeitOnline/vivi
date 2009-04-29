@@ -24,9 +24,7 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
         self.setSite(self.getRootFolder())
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        principal = zope.security.testing.Principal(u'zope.user')
-        participation = zope.security.testing.Participation(principal)
-        zope.security.management.newInteraction(participation)
+        principal = zeit.cms.testing.create_interaction(u'zope.user')
 
     def tearDown(self):
         zope.security.management.endInteraction()
