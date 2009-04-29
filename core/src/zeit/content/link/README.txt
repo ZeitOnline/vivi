@@ -148,14 +148,7 @@ representation of that object's related content includes the target URL:
 </references>
 
 
-Cleanup
-=======
-
->>> zope.app.component.hooks.setSite(old_site)
-
 .. [#functional] 
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())

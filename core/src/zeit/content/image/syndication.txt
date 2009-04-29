@@ -3,13 +3,7 @@ Syndication
 ===========
 
 If objects which are adaptable to IImages are syndicated, the first image will
-be added to the feed.
-
-Setup functional test:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+be added to the feed[#functional]_.
 
 Get a content from the repository:
 
@@ -218,19 +212,11 @@ objects:
 ...     repository['2006']['DSC00109_2.JPG']).references
 ()
 
+.. [#functional]
 
-Cleanup
-=======
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())
 
 .. [#needsinteraction] Create interaction
 
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
+    >>> principal = zeit.cms.testing.create_interaction()

@@ -113,14 +113,10 @@ u'Mary had a little lamb \u2014 and is happy.'
 'UTF-8'
 
 
-
->>> zope.app.component.hooks.setSite(old_site)
-
 .. [#functional] 
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces

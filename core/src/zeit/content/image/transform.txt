@@ -3,13 +3,7 @@ Image transforms
 ================
 
 The transforms create thumbnails and may later be extended for rotating images
-or alike.
-
-Setup functional test:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+or alike[#functional]_.
 
 
 Resizing
@@ -161,8 +155,7 @@ aspect ratio:
 >>> persistent_thumbnail.getImageSize()
 (266, 200)
 
+.. [#functional]
 
-Cleanup
-=======
-
->>> zope.app.component.hooks.setSite(old_site)
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())

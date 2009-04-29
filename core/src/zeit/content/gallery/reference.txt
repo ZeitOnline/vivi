@@ -1,19 +1,14 @@
 Gallery references
 ==================
 
-Functional test setup:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
-
-A gallery can be referenced within every ICMSContent. Create a gallery:
-
+A gallery can be referenced within every ICMSContent. Create a
+gallery[#functional]_:
 
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
 >>> gallery.uniqueId = u'gallery-id'
 >>> import zeit.cms.repository.interfaces
+>>> import zope.component
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> gallery.__parent__ = repository
@@ -52,7 +47,6 @@ The gallery is now noted in the webdav properties of `content`:
 The browse location of a gallery reference depends on the adapted object and
 yields the container the object is in:
 
->>> import zope.component
 >>> import zeit.cms.browser.interfaces
 >>> loc = zope.component.getMultiAdapter(
 ...     (gref,
@@ -74,3 +68,7 @@ The gallery source is a utility:
 ...     zeit.cms.content.interfaces.ICMSContentSource, name)
 <zeit.content.gallery.interfaces.GallerySource object at 0x...>
 
+.. [#functional]
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())

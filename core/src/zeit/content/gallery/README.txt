@@ -1,15 +1,8 @@
 Image Gallery
 =============
 
-Functional test setup:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
-
-
 A gallery behaves like a container, it contains images. When we create a
-gallery it is empty:
+gallery it is empty[#functional]_:
 
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
@@ -820,8 +813,7 @@ The keys also correct(ed) and the names are set:
   </body>
 </gallery>
 
+.. [#functional]
 
-Cleanup
-+++++++
-
->>> zope.app.component.hooks.setSite(old_site)
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())

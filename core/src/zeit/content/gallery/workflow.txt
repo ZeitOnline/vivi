@@ -2,7 +2,7 @@ Gallery Workflow
 ================
 
 The when a gallery is published the referenced image folder is published with
-it automatically[#functionaltest]_[#needsinteraction]_. 
+it automatically[#functional]_[#needsinteraction]_. 
 
 Create a gallery, an image folder, an image and associate the folder with the
 gallery:
@@ -133,11 +133,10 @@ Clean up:
 >>> logging.root.setLevel(old_log_level)
 
 
-.. [#functionaltest] We need to set the site since we're a functional test:
+.. [#functional] We need to set the site since we're a functional test:
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     Do some imports and get the repository
 

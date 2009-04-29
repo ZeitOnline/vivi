@@ -3,18 +3,8 @@ Images and image groups
 =======================
 
 Images contain the image data and some metadata. An image group contains
-several images.
+several images[#functional]_.
 
-Setup functional test:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal(u'zope.user')
->>> participation = zope.security.testing.Participation(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(participation)
 
 Image
 =====
@@ -314,8 +304,9 @@ There is also a view for the metadata:
 >>> zope.component.getMultiAdapter((group, object()), name='metadata')
 <zeit.content.image.metadata.ImageMetadata object at 0x...>
 
-Cleanup
-=======
 
->>> zope.app.component.hooks.setSite(old_site)
->>> zope.security.management.endInteraction()
+.. [#functional]
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site(locals())
+>>> principal = zeit.cms.testing.create_interaction()

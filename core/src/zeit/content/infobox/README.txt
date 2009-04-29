@@ -91,19 +91,10 @@ Of course we'll get the data back, in unicode:
  (u'Fehlende Versicherungszeiten',
   u'<p>Pruefen Sie, ob in <strong>Ihrer</strong> Renteninformation alle</p>\n\n<p>Fitze fitze fatze</p>\n'))
 
-Cleanup
-=======
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
-
 .. [#functional] Functional test setup:
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Setup an interaction:
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site(locals())
 
     >>> import zope.publisher.browser
     >>> import zope.security.testing
@@ -112,4 +103,4 @@ Cleanup
     >>> request.setPrincipal(principal)
     >>> import zope.security.management
     >>> zope.security.management.newInteraction(request)
-
+    
