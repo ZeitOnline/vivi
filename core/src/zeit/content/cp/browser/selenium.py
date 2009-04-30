@@ -20,7 +20,7 @@ class Test(zeit.cms.selenium.Test):
         s.select('form.ressort', 'Deutschland')
         s.clickAndWait('id=form.actions.add')
         s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent('xpath=//div[@class="landing-zone"]')
+        s.waitForElementPresent('css=div.landing-zone')
 
 
 class TestDottedName(Test):
@@ -342,7 +342,7 @@ class TestTeaserMosaic(Test):
         # the last drag to let the server finish storing etc.
         s.pause(500)
         s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent('xpath=//div[@class="landing-zone"]')
+        s.waitForElementPresent('css=div.landing-zone')
         s.verifyAttribute(
             '//div[@class="block type-teaser-bar"][1]@id', '${bar3}')
         s.verifyAttribute(

@@ -241,7 +241,7 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
     def form(self):
         return super(EditTeaser, self).template
 
-    @zope.formlib.form.action(_('Apply for article'))
+    @zope.formlib.form.action(_('Apply for article'), name='apply')
     def apply(self, action, data):
         changed = zope.formlib.form.applyChanges(
             self.context, self.form_fields, data, self.adapters)
