@@ -252,8 +252,8 @@ Now we need some test objects we can edit later on:
 >>> teasers = factory()
 >>> import zeit.cms.repository.interfaces
 >>> teaser = zeit.content.cp.teaser.Teaser()
->>> teaser.original_content = repository['2007']['test']
->>> teaser = repository['2007']['test-1'] = teaser
+>>> teaser.original_content = repository['testcontent']
+>>> teaser = repository['testcontent-1'] = teaser
 >>> teasers.insert(0, repository['testcontent'])
 >>> teasers.insert(1, teaser)
 
@@ -273,8 +273,8 @@ We also check that the teaser object contains a link to its original article:
 <block href="http://xml.zeit.de/testcontent">...
   <title py:pytype="str">Foo</title>...
 <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-       href="http://xml.zeit.de/2007/test-1"
-       ns0:href="http://xml.zeit.de/2007/test">...
+       href="http://xml.zeit.de/testcontent-1"
+       ns0:href="http://xml.zeit.de/testcontent">...
 
 
 .. [#needsinteraction]

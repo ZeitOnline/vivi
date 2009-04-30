@@ -124,7 +124,35 @@ for <container module="">.
 ['leader', 'buttons', 'buttons']
 
 
+Images
+++++++
+
+When retrieving the images for a teaser, we want to get the images of the
+referenced article.
+
+Create an article with images:
+
+>>> import zeit.content.image.interfaces
+>>> import zeit.content.image.test
+>>> import zeit.cms.checkout.interfaces
+>>> group = zeit.content.image.test.create_image_group()
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['testcontent']).checkout()
+>>> images = zeit.content.image.interfaces.IImages(checked_out)
+>>> images.images = (group, )
+>>> content = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
+
+Create a teaser object from the article and look at its images:
+
+>>> teaser = zeit.content.cp.interfaces.ITeaser(content)
+>>> images = zeit.content.image.interfaces.IImages(teaser)
+>>> images.images
+(<zeit.content.image.imagegroup.ImageGroup object at 0x...>,)
+
+
 .. [#functional]
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

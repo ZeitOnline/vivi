@@ -12,6 +12,7 @@ import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.block
 import zeit.content.cp.interfaces
+import zeit.content.image.interfaces
 import zope.component
 import zope.container.contained
 import zope.container.interfaces
@@ -211,3 +212,9 @@ class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         # to `ITeaser` which would create new teaser objects from articles.
         entry.set('{http://namespaces.zeit.de/CMS/link}href',
                   self.context.original_content.uniqueId)
+
+
+@zope.component.adapter(zeit.content.cp.interfaces.ITeaser)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
+def images_for_teaser(context):
+    return zeit.content.image.interfaces.IImages(context.original_content)
