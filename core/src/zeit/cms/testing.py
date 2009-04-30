@@ -106,15 +106,14 @@ def click_wo_redirect(browser, *args, **kwargs):
         browser.mech_browser.set_handle_redirect(True)
 
 
-def set_site(globs, site=None):
+def set_site(site=None):
     """Encapsulation of the getSite/setSite-dance.
 
     Sets the given site, preserves the old site in the globs,
     where it will be reset by our FunctionalDocFileSuite's tearDown.
-
-    Call from a doctest like this: zeit.cms.testing.set_site(locals())
     """
 
+    globs = sys._getframe(1).f_locals
     globs['old_site'] = zope.app.component.hooks.getSite()
     if site is None:
         site = globs['getRootFolder']()
