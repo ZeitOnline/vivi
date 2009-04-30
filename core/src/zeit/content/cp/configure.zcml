@@ -119,6 +119,6 @@
   <!-- Blocks -->
   <include file="block.zcml" />
 
-  <adapter factory=".teaser_block.lead_teasers_for_centerpage" />
+  <adapter factory=".teaserblock.lead_teasers_for_centerpage" />
   <adapter factory=".teaser.metadata_to_teaser" />
 </configure>

@@ -17,7 +17,6 @@ checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),
     (re.compile('0x[0-9a-f]+'), "0x..."),
-    
 ])
 
 
@@ -26,6 +25,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'teaser.txt',
+        'teaserblock.txt',
         'cmscontentiterable.txt',
         checker=checker,
         layer=layer))

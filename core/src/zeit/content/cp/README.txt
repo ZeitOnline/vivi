@@ -111,7 +111,7 @@ Teaser block
 u'List of teasers'
 >>> block = factory()
 >>> block
-<zeit.content.cp.teaser_block.TeaserBlock object at 0x...>
+<zeit.content.cp.teaserblock.TeaserBlock object at 0x...>
 >>> block.type
 'teaser'
 
@@ -132,16 +132,16 @@ After calling the factory a corresponding XML node has been created:
 Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
 >>> lead[block.__name__]
-<zeit.content.cp.teaser_block.TeaserBlock object at 0x...>
+<zeit.content.cp.teaserblock.TeaserBlock object at 0x...>
 
 The area can also be iterated:
 
 >>> list(lead.itervalues())
 [<zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.teaser_block.TeaserBlock object at 0x...>]
+ <zeit.content.cp.teaserblock.TeaserBlock object at 0x...>]
 >>> lead.values()
 [<zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.teaser_block.TeaserBlock object at 0x...>]
+ <zeit.content.cp.teaserblock.TeaserBlock object at 0x...>]
 
 It is possible to get the center page from the block by adapting to ICenterPage:
 

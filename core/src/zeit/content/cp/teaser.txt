@@ -1,127 +1,21 @@
-Teaser block
-============
+Teaser
+======
 
-The teaser block contains a list of teasers[#functional]_.
+Teaser objects contain the metadata of and a reference to an ICMSContent.
 
->>> import zeit.content.cp.centerpage
->>> cp = zeit.content.cp.centerpage.CenterPage()
->>> lead = cp['lead']
->>> import zeit.content.cp.interfaces
+You can generate a teaser by adapting to `ITeaser` [#functional]_:
+
 >>> import zope.component
->>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
->>> teasers = factory()
-
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
-
->>> teasers.insert(0, repository['testcontent'])
->>> teasers.insert(1, repository['2007']['test'])
-
->>> import lxml.etree
->>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
-<container ...
-    cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
-  <block href="http://xml.zeit.de/testcontent">
-    <supertitle xsi:nil="true"/>
-    <title xsi:nil="true"/>
-    <text xsi:nil="true"/>
-    <description xsi:nil="true"/>
-    <byline xsi:nil="true"/>
-    <short>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </short>
-    <homepage>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </homepage>
-    <references/>
-  </block>
-  <block href="http://xml.zeit.de/2007/test"/>
-</container>
-
-
-Autopilot
-+++++++++
-
-A teaser block in autopilot mode fetches its contents from another CenterPage.
-
->>> teasers = factory()
->>> repository['cp'] = cp
-
-
-It is not possible to activate the autopilot when there is no cp referenced:
-
->>> teasers.autopilot = True
-Traceback (most recent call last):
-    ...
-ValueError: Cannot activate autopilot without referenced centerpage.
-
-Once the cp has been assigned we can activate the autopilot:
-
-
->>> teasers.referenced_cp = repository['cp']
->>> teasers.autopilot = True
->>> len(teasers)
-1
->>> list(teasers)[0].uniqueId
-u'http://xml.zeit.de/testcontent'
-
-But its XML representation only contains an xi:include to the referenced page:
-
->>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
-<container ...>
-  <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
-  <xi_include href="http://xml.zeit.de/cp"/>
-  <autopilot ...>true</autopilot>
-</container>
-
-While on autopilot, manipulation of the teaser block's contents is forbidden:
-
->>> teasers.insert(0, repository['testcontent'])
-Traceback (most recent call last):
-RuntimeError: <zeit.content.cp.teaser_block.TeaserBlock object at 0x...>: 'insert' is forbidden while on autopilot
-
-When the teaser block is switched back to manual mode, the currently referenced
-teasers are copied into it:
-
->>> teasers.autopilot = False
->>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
-<container ...>
-  <block href="http://xml.zeit.de/testcontent">
-  ...
-  </block>
-  <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
-  <autopilot ...>false</autopilot>
-</container>
-
-In manual mode, the contents can be changed again:
-
->>> teasers.remove(repository['testcontent'])
->>> len(teasers)
-0
-
-
-Layouts
-+++++++
-
-A TeaserBlock can have different Layouts. Those correspond to different values
-for <container module="">.
-
->>> import zeit.content.cp.layout
->>> teasers.layout = zeit.content.cp.layout.get_layout('leader')
->>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
-<container...module="leader"...
-
->>> lead.updateOrder(lead.keys())
->>> [foo.layout.id for foo in lead.values()]
-['leader', 'buttons']
-
->>> dummy = factory()
->>> [teaser_list.layout.id for teaser_list in lead.values()]
-['leader', 'buttons', 'buttons']
+>>> content = repository['testcontent']
+>>> content.teaserTitle = 'Foo'
+>>> teaser = zeit.content.cp.interfaces.ITeaser(content)
+>>> teaser.teaserTitle
+u'Foo'
+>>> teaser.original_content
+<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x3b0c5b0>
 
 
 Images
@@ -137,7 +31,7 @@ Create an article with images:
 >>> import zeit.cms.checkout.interfaces
 >>> group = zeit.content.image.test.create_image_group()
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
-...     repository['testcontent']).checkout()
+...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
 >>> images.images = (group, )
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(

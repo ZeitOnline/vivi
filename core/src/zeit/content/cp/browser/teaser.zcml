@@ -4,14 +4,14 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.content.cp">
 
-  <!-- teaser -->
+  <!-- teaser block -->
 
   <browser:viewletManager
     provides=".interfaces.IEditorContentViewletManager"
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class=".teaser.TeaserBlockViewletManager"
+    class=".teaserblock.TeaserBlockViewletManager"
     template="layout.block.contents.pt"
     name="zeit.content.cp.editor-contents"
     permission="zope.View"
@@ -23,7 +23,7 @@
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="contents"
-    class=".teaser.Display"
+    class=".teaserblock.Display"
     template="layout.teaser.content.pt"
     permission="zeit.EditContent"
     weight="0"
@@ -33,7 +33,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-properties"
-    class=".teaser.EditProperties"
+    class=".teaserblock.EditProperties"
     permission="zeit.EditContent"
     />
 
@@ -41,7 +41,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drop"
-    class=".teaser.Drop"
+    class=".teaserblock.Drop"
     permission="zeit.EditContent"
     />
 
@@ -60,16 +60,8 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="teaser.edit-contents"
-    class=".teaser.EditContents"
+    class=".teaserblock.EditContents"
     template="teaser.edit-contents.pt"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="delete"
-    class=".teaser.Delete"
     permission="zeit.EditContent"
     />
 
@@ -80,6 +72,26 @@
     class=".area.UpdateOrder"
     permission="zeit.EditContent"
     />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".teaserblock.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
+  <adapter factory=".teaserblock.teaserEditViewName" name="cp-editor-lightbox" />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-autopilot"
+    class=".teaserblock.ToggleAutopilot"
+    permission="zeit.EditContent"
+    />
+
+  <!-- teaser items -->
 
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
@@ -97,22 +109,11 @@
     permission="zeit.EditContent"
     />
 
-
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="change-layout"
-    class=".teaser.ChangeLayout"
-    permission="zeit.EditContent"
-    />
-
-  <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="toggle-autopilot"
-    class=".teaser.ToggleAutopilot"
+    name="delete"
+    class=".teaser.Delete"
     permission="zeit.EditContent"
     />
 

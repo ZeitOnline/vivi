@@ -22,7 +22,7 @@
 
   <!-- Teaser list -->
 
-  <class class=".teaser_block.TeaserBlock">
+  <class class=".teaserblock.TeaserBlock">
     <require
       interface=".interfaces.IReadTeaserBlock"
       permission="zope.View"/>
@@ -33,20 +33,20 @@
       interface=".interfaces.IWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".teaser_block.TeaserBlockFactory" name="teaser" />
+  <adapter factory=".teaserblock.TeaserBlockFactory" name="teaser" />
 
   <adapter
     provides=".interfaces.IBlock"
     name="teaser"
-    factory=".teaser_block.TeaserBlock"
+    factory=".teaserblock.TeaserBlock"
     />
-  <adapter factory=".teaser_block.cms_content_iter" />
+  <adapter factory=".teaserblock.cms_content_iter" />
 
   <subscriber 
-    handler=".teaser_block.apply_layout_for_added" />
+    handler=".teaserblock.apply_layout_for_added" />
 
   <subscriber 
-    handler=".teaser_block.apply_layout" />
+    handler=".teaserblock.apply_layout" />
 
   <class class=".layout.Layout">
     <require
