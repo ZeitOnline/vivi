@@ -207,6 +207,8 @@ zeit.content.cp.in_context.Editor = zeit.content.cp.in_context.Base.extend({
 
 
 zeit.content.cp.in_context.Lightbox = zeit.content.cp.in_context.Base.extend({
+    // Context for a component running *in* a lightbox.
+    // The component needs to declare "parent".
 
     __name__: 'zeit.content.cp.in_context.Lightbox',
 
@@ -215,10 +217,10 @@ zeit.content.cp.in_context.Lightbox = zeit.content.cp.in_context.Base.extend({
         MochiKit.Signal.signal(zeit.content.cp.editor, 'single-context-start');
         self.activate();
         self.events.push(MochiKit.Signal.connect(
-            self.context_aware, 'before-close',
+            self.context_aware.parent, 'before-close',
             self, self.deactivate));
         self.events.push(MochiKit.Signal.connect(
-            self.context_aware, 'before-reload',
+            self.context_aware.parent, 'before-reload',
             self, self.deactivate));
     },
 
@@ -447,6 +449,8 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 
 zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
+    __name__: 'zeit.content.cp.LightBoxForm',
+
     construct: function(context_element) {
         var self = this;
         self.context_element = context_element;
@@ -491,7 +495,9 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     on_close: function() {
         var self = this;
+        log("closing lightbox");
         MochiKit.Signal.disconnect(self.close_event_handle);
+        MochiKit.Signal.signal(self, 'before-close');
         MochiKit.Signal.signal(self.parent, 'reload');
     },
 });

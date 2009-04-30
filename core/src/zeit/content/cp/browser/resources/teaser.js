@@ -7,9 +7,9 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
 
     construct: function() {
         var self = this;
-        arguments.callee.$.construct.call(
-            self, 'teaser-list-edit-box-sorter');
-        self.parent = zeit.content.cp.getParentComponent($(self.container));
+        var container_id = 'teaser-list-edit-box-sorter';
+        self.parent = zeit.content.cp.getParentComponent($(container_id));
+        arguments.callee.$.construct.call(self, container_id);
     },
 
     get_sortable_nodes: function() {
