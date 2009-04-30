@@ -53,4 +53,4 @@ It is possible to adapt every located object to the settings:
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()

@@ -391,7 +391,7 @@ Footnotes
 .. [1] Initialization:
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
     >>> def eventHandler(context, event):
     ...     print 'Event:', event

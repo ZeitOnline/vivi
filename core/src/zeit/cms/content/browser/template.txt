@@ -269,7 +269,7 @@ Get in sync with the browser test:
 The the site:
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
 
 Create a source for the templates:
 

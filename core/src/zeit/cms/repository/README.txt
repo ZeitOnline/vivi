@@ -418,4 +418,4 @@ u'http://xml.zeit.de/online/2007/01/Somalia'
 .. [#functional]:
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()

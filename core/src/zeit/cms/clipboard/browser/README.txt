@@ -671,7 +671,7 @@ to online:
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
     >>> import zope.component
     >>> from zeit.cms.repository.interfaces import IRepository

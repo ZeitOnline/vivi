@@ -260,7 +260,7 @@ u'http://xml.zeit.de/online'
 .. [#functional]_
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
 
 Principal source

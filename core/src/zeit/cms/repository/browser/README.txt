@@ -232,7 +232,7 @@ To get the initial browsing location the IDefaultBrowsingLocation interface is
 used. Do some setup:
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.browser.interfaces

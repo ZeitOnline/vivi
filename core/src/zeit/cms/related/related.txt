@@ -367,7 +367,7 @@ ValueError: Could not create xml reference 'related' for foo which is
 .. [#functionaltest] We need to set the site since we're a functional test: 
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
     Do some imports and get the repository
 

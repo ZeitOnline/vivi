@@ -335,4 +335,4 @@ True
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()

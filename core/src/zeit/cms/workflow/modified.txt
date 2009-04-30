@@ -34,7 +34,7 @@ datetime.datetime(..., tzinfo=<UTC>)
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
     >>> principal = zeit.cms.testing.create_interaction()
 
     >>> import zope.component

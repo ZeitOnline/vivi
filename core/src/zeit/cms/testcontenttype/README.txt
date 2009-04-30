@@ -9,7 +9,7 @@ otherwise.
 Setup ftest:
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
 
 Instantiate and verify the inital xml:
 

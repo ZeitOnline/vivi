@@ -356,7 +356,7 @@ Clean up:
 .. [#functional] Setup functional test and get some common utilities
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces

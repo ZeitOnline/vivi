@@ -193,7 +193,7 @@ working copy, the answer is relayed to the object in the repository.
 We need some setup:
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
 
 >>> import zope.component
 >>> import zeit.cms.workingcopy.interfaces
