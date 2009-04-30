@@ -199,3 +199,15 @@ def apply_layout(context, event):
         first.layout = zeit.content.cp.layout.get_layout('leader')
     for elem in content[1:]:
         elem.layout = buttons
+
+
+class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+    """Set the link to the original article."""
+
+    zope.component.adapts(zeit.content.cp.interfaces.ITeaser)
+
+    def update(self, entry):
+        # We don't override `update_with_context` since we don't want to adapt
+        # to `ITeaser` which would create new teaser objects from articles.
+        entry.set('{http://namespaces.zeit.de/CMS/link}href',
+                  self.context.original_content.uniqueId)

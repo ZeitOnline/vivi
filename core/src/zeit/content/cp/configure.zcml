@@ -113,6 +113,7 @@
 
   <adapter factory=".teaser.resourceFactory" />
   <adapter factory=".teaser.teaserFactory" name="teaser" />
+  <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
 
   <!-- Blocks -->
   <include file="block.zcml" />

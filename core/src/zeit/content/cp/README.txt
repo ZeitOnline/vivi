@@ -251,8 +251,11 @@ Now we need some test objects we can edit later on:
 ...     cp['lead'], zeit.content.cp.interfaces.IBlockFactory, name='teaser')
 >>> teasers = factory()
 >>> import zeit.cms.repository.interfaces
+>>> teaser = zeit.content.cp.teaser.Teaser()
+>>> teaser.original_content = repository['2007']['test']
+>>> teaser = repository['2007']['test-1'] = teaser
 >>> teasers.insert(0, repository['testcontent'])
->>> teasers.insert(1, repository['2007']['test'])
+>>> teasers.insert(1, teaser)
 
 Edit the referenced article while the centerpage is checked out:
 
@@ -261,13 +264,18 @@ Edit the referenced article while the centerpage is checked out:
 >>> testcontent.teaserTitle = 'Foo'
 >>> dummy = zeit.cms.checkout.interfaces.ICheckinManager(testcontent).checkin()
 
-When we now check in the centerpage, the changes in our article are propagated:
+When we now check in the centerpage, the changes in our article are propagated.
+We also check that the teaser object contains a link to its original article:
 
 >>> cp = zeit.cms.checkout.interfaces.ICheckinManager(cp).checkin()
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
 <centerpage ...
 <block href="http://xml.zeit.de/testcontent">...
   <title py:pytype="str">Foo</title>...
+<block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+       href="http://xml.zeit.de/2007/test-1"
+       ns0:href="http://xml.zeit.de/2007/test">...
+
 
 .. [#needsinteraction]
 
