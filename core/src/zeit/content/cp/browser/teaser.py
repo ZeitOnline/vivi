@@ -213,7 +213,8 @@ class ItemTraverser(object):
         self.request = request
 
     def traverse(self, name, furtherPath):
-        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
+        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(
+            self.request.principal)
 
         try:
             return zope.location.location.located(
