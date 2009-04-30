@@ -1,0 +1,14 @@
+zeit.find changes
+=================
+
+0.2 (2009-04-30)
+----------------
+
+- Suchergebnisse haben jetzt den »Favorite-Star«. Markierte Objekte tauchen im
+  Tab »Favoriten« und im Clipboard auf.
+
+
+0.1 (2009-04-23)
+---------------
+
+- Erstes Release: Such-UI mit statischen Daten
