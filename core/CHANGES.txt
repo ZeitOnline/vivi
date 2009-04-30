@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.19.2 (unreleased)
+-------------------
+
+- Test-Hilfsfunktionen zeit.cms.testing set_site() und create_interaction()
+  eingeführt.
+
 1.19.1 (2009-04-29)
 -------------------
 
