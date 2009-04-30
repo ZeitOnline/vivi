@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.19.2 (unreleased)
+1.19.2 (2009-04-30)
 -------------------
 
 - Test-Hilfsfunktionen zeit.cms.testing ``set_site()`` und
