@@ -131,6 +131,11 @@ class TeaserBar(zeit.content.cp.block.Block, Area):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
 
+    def __init__(self, context, xml):
+        super(TeaserBar, self).__init__(context, xml)
+        self.placeholder_factory = zope.component.getAdapter(
+            self, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
+
     @rwproperty.getproperty
     def layout(self):
         for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source:
@@ -139,7 +144,26 @@ class TeaserBar(zeit.content.cp.block.Block, Area):
 
     @rwproperty.setproperty
     def layout(self, layout):
+        content_blocks = len(
+            [x for x in self.values()
+             if not zeit.content.cp.interfaces.IPlaceHolder.providedBy(x)])
+        if content_blocks > layout.blocks:
+            raise ValueError(
+                "Cannot change layout to '%s': allows only %s blocks,"
+                " but have %s content blocks already"
+                % (layout.id, layout.blocks, content_blocks))
+
         self.xml.set('module', layout.id)
+
+        if len(self) < layout.blocks:
+            for x in range(layout.blocks - len(self)):
+                self.placeholder_factory()
+
+        for key, block in reversed(self.items()):
+            if len(self) == layout.blocks:
+                break
+            if zeit.content.cp.interfaces.IPlaceHolder.providedBy(block):
+                del self[key]
 
     def __repr__(self):
         return object.__repr__(self)

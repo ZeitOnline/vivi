@@ -8,10 +8,11 @@ import zope.interface
 
 class Layout(object):
 
-    def __init__(self, id, title, image_pattern=None):
+    def __init__(self, id, title, image_pattern=None, blocks=None):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
+        self.blocks = blocks
 
 
 TEASER_BLOCK = [
@@ -25,11 +26,11 @@ TEASER_BLOCK = [
 
 TEASER_BAR = [
     Layout('normal',
-           u'Ressort Teaser mit Teaserliste'),
+           u'Ressort Teaser mit Teaserliste', blocks=4),
     Layout('mr',
-           u'Ad-Medium Recangle'),
+           u'Ad-Medium Recangle', blocks=3),
     Layout('dmr',
-           u'Double Ad-Medium Recangle')
+           u'Double Ad-Medium Recangle', blocks=2)
 ]
 
 

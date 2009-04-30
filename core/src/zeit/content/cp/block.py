@@ -3,6 +3,7 @@
 
 import gocept.lxml.interfaces
 import lxml.objectify
+import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zope.component
 import zope.interface
