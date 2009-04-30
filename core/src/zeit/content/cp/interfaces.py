@@ -55,7 +55,18 @@ class IArea(IReadArea, IWriteArea):
     """Combined read/write interface to areas."""
 
 
-class IRegion(IArea):
+class IReadRegion(IReadArea):
+    pass
+
+
+class IWriteRegion(IWriteArea):
+    pass
+
+
+# IRegion wants to be an IArea, but also preserve the IReadArea/IWriteArea
+# split, so we inherit from IArea again. Absolutely no thanks to Zope for this
+# whole read/write business :-(
+class IRegion(IReadRegion, IWriteRegion, IArea):
     """A region contains blocks."""
 
 
@@ -109,7 +120,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         )
     layout = zope.schema.Choice(
         title=_("Layout"),
-        source=zeit.content.cp.layout.LayoutSource())
+        source=zeit.content.cp.layout.TeaserBlockLayoutSource())
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
@@ -128,7 +139,7 @@ class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
 
 
-class ITeaserBlockLayout(zope.interface.Interface):
+class IBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
 
     id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
@@ -148,10 +159,20 @@ class ILeadTeasers(zope.interface.Interface):
     area."""
 
 
-class ITeaserBar(IBlock, IRegion):
+class IReadTeaserBar(IBlock, IReadRegion):
+
+    layout = zope.schema.Choice(
+        title=_("Layout"),
+        source=zeit.content.cp.layout.TeaserBarLayoutSource())
+
+
+class IWriteTeaserBar(IWriteRegion):
+    pass
+
+
+class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IRegion):
     """A teaser bar is a bar in the teaser mosaic.
 
     The TeaserBar has a dual nature of being both a block and a region.
 
     """
-

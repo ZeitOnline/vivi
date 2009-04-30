@@ -241,12 +241,26 @@ Restore the original order again:
 True
 
 
+Changing the layout of a TeaserBar
+++++++++++++++++++++++++++++++++++
+
+>>> bar_url = ('http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     'teaser-mosaic/%s/edit-properties' % bar_ids[0])
+>>> browser.open(bar_url)
+>>> print browser.contents
+<...<a ... class="dmr"...
+>>> browser.getLink(index=2).click()
+>>> browser.open(bar_url)
+>>> print browser.contents
+<...<a ... class="dmr selected"...
+
 
 Deleting blocks
 +++++++++++++++
 
 Blocks and teaser bars can be removed using the delete link:
 
+>>> browser.open(bookmark)
 >>> browser.getLink('Delete').url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()

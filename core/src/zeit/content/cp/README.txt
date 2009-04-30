@@ -230,6 +230,17 @@ The xml of the teaser bar is actually a region:
 </region>
 
 
+Teaser mosaic layouts
++++++++++++++++++++++
+
+(analog to teaserblock.txt/Layouts)
+
+>>> import zeit.content.cp.layout
+>>> bar.layout = zeit.content.cp.layout.get_layout('dmr')
+>>> print lxml.etree.tostring(bar.xml, pretty_print=True)
+<region...module="dmr"...
+
+
 Checkin handler
 +++++++++++++++
 

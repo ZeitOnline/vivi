@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 import zc.sourcefactory.basic
+import zope.interface
 
 
 class Layout(object):
@@ -13,7 +14,7 @@ class Layout(object):
         self.image_pattern = image_pattern
 
 
-LAYOUTS = [
+TEASER_BLOCK = [
     Layout('leader',
            u'Großer Teaser mit Bild und Teaserliste',
            image_pattern='450x200'),
@@ -22,11 +23,17 @@ LAYOUTS = [
            '140x140'),
 ]
 
+TEASER_BAR = [
+    Layout('normal',
+           u'Ressort Teaser mit Teaserliste'),
+    Layout('mr',
+           u'Ad-Medium Recangle'),
+    Layout('dmr',
+           u'Double Ad-Medium Recangle')
+]
+
 
 class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    def getValues(self):
-        return LAYOUTS
 
     def getTitle(self, value):
         return value.title
@@ -34,7 +41,20 @@ class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
     def getToken(self, value):
         return value.id
 
+
+class TeaserBlockLayoutSource(LayoutSource):
+
+    def getValues(self):
+        return TEASER_BLOCK
+
+
+class TeaserBarLayoutSource(LayoutSource):
+
+    def getValues(self):
+        return TEASER_BAR
+
+
 def get_layout(id):
-    for layout in LAYOUTS:
+    for layout in TEASER_BLOCK + TEASER_BAR:
         if layout.id == id:
             return layout

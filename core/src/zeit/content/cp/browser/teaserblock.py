@@ -35,9 +35,12 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'teaser.edit-properties.pt')
 
+    interface = zeit.content.cp.interfaces.ITeaserBlock
+
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.ITeaserBlock).select(
         'title', 'referenced_cp', 'autopilot')
+
 
     @property
     def form(self):
@@ -46,11 +49,11 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
     @property
     def layouts(self):
         terms = zope.component.getMultiAdapter(
-            (zeit.content.cp.interfaces.ITeaserBlock['layout'].source,
+            (self.interface['layout'].source,
              self.request), zope.browser.interfaces.ITerms)
 
         result = []
-        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source:
+        for layout in self.interface['layout'].source:
             css_class = [layout.id]
             if layout == self.context.layout:
                 css_class.append('selected')
@@ -152,9 +155,11 @@ class EditContents(Display):
 
 class ChangeLayout(object):
 
+    interface = zeit.content.cp.interfaces.ITeaserBlock
+
     def __call__(self, id):
         layout = zope.component.getMultiAdapter(
-            (zeit.content.cp.interfaces.ITeaserBlock['layout'].source,
+            (self.interface['layout'].source,
              self.request), zope.browser.interfaces.ITerms).getValue(id)
         self.context.layout = layout
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(

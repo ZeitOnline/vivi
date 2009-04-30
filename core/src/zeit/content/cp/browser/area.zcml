@@ -30,6 +30,23 @@
     permission="zeit.EditContent"
     />
 
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".teaserbar.EditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".teaserbar.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.ILeadRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

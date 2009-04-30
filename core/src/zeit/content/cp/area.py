@@ -4,6 +4,7 @@
 import UserDict
 import gocept.lxml.interfaces
 import itertools
+import rwproperty
 import uuid
 import zeit.content.cp.block
 import zeit.content.cp.interfaces
@@ -129,6 +130,16 @@ def area_to_centerpage(context):
 class TeaserBar(zeit.content.cp.block.Block, Area):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
+
+    @rwproperty.getproperty
+    def layout(self):
+        for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source:
+            if layout.id == self.xml.get('module'):
+                return layout
+
+    @rwproperty.setproperty
+    def layout(self, layout):
+        self.xml.set('module', layout.id)
 
     def __repr__(self):
         return object.__repr__(self)

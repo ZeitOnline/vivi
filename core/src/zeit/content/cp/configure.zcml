@@ -88,15 +88,14 @@
     />
   <class class=".area.TeaserBar">
     <require
-      interface=".interfaces.IReadArea"
+      interface=".interfaces.IReadTeaserBar"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteArea"
-      permission="zeit.EditContent"
-      />
+      set_schema=".interfaces.IReadTeaserBar"
+      permission="zope.View" />
     <require
-      interface=".interfaces.IBlock"
-      permission="zope.View"
+      interface=".interfaces.IWriteTeaserBar"
+      permission="zeit.EditContent"
       />
   </class>
 
