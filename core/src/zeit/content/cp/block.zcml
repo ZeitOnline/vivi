@@ -22,31 +22,31 @@
 
   <!-- Teaser list -->
 
-  <class class=".teaser.TeaserList">
+  <class class=".teaser_block.TeaserBlock">
     <require
-      interface=".interfaces.IReadTeaserList"
+      interface=".interfaces.IReadTeaserBlock"
       permission="zope.View"/>
     <require
-      set_schema=".interfaces.IReadTeaserList"
+      set_schema=".interfaces.IReadTeaserBlock"
       permission="zeit.EditContent"/>
     <require
-      interface=".interfaces.IWriteTeaserList"
+      interface=".interfaces.IWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".teaser.TeaserListFactory" name="teaser" />
+  <adapter factory=".teaser_block.TeaserBlockFactory" name="teaser" />
 
   <adapter
     provides=".interfaces.IBlock"
     name="teaser"
-    factory=".teaser.TeaserList"
+    factory=".teaser_block.TeaserBlock"
     />
-  <adapter factory=".teaser.cms_content_iter" />
+  <adapter factory=".teaser_block.cms_content_iter" />
 
   <subscriber 
-    handler=".teaser.apply_layout_for_added" />
+    handler=".teaser_block.apply_layout_for_added" />
 
   <subscriber 
-    handler=".teaser.apply_layout" />
+    handler=".teaser_block.apply_layout" />
 
   <class class=".layout.Layout">
     <require

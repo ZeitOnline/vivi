@@ -23,8 +23,8 @@
     />
 
   <adapter
-    factory=".selenium.TestTeaserList"
-    name="zeit.content.cp.TestTeaserList"
+    factory=".selenium.TestTeaserBlock"
+    name="zeit.content.cp.TestTeaserBlock"
     permission="zope.Public"
     />
 

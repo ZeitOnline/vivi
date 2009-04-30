@@ -106,7 +106,7 @@ class TestGenericEditing(Test):
         s.verifyElementNotPresent('css=div.block.hover')
 
 
-class TestTeaserList(Test):
+class TestTeaserBlock(Test):
 
     def create_clip(self):
         # Creat clip

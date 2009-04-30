@@ -41,7 +41,7 @@ class LandingZone(zeit.cms.browser.view.Base):
     @property
     def layouts(self):
         return zope.component.getMultiAdapter(
-            (zeit.content.cp.interfaces.ITeaserList['layout'].source,
+            (zeit.content.cp.interfaces.ITeaserBlock['layout'].source,
              self.request),
             zope.browser.interfaces.ITerms)
 

@@ -98,7 +98,7 @@ class IPlaceHolder(IBlock):
 #
 
 
-class IReadTeaserList(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
+class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     referenced_cp = zope.schema.Choice(
         title=_("Fetch teasers from"),
@@ -120,11 +120,11 @@ class IReadTeaserList(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
 
 
-class IWriteTeaserList(zeit.cms.syndication.interfaces.IWriteFeed):
+class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
     pass
 
 
-class ITeaserList(IReadTeaserList, IWriteTeaserList):
+class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
 
 

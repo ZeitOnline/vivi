@@ -8,17 +8,17 @@
 
   <browser:viewletManager
     provides=".interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class=".teaser.TeaserListViewletManager"
+    class=".teaser.TeaserBlockViewletManager"
     template="layout.block.contents.pt"
     name="zeit.content.cp.editor-contents"
     permission="zope.View"
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
@@ -30,7 +30,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-properties"
     class=".teaser.EditProperties"
@@ -38,7 +38,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drop"
     class=".teaser.Drop"
@@ -46,7 +46,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditBarViewletManager"
@@ -57,7 +57,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="teaser.edit-contents"
     class=".teaser.EditContents"
@@ -66,7 +66,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
     class=".teaser.Delete"
@@ -74,7 +74,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="updateOrder"
     class=".area.UpdateOrder"
@@ -82,7 +82,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="checkout-content"
     class=".teaser.CheckoutContent"
@@ -90,7 +90,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.browser.teaser.TeaserListProxyItem"
+    for="zeit.content.cp.browser.teaser.TeaserBlockProxyItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-teaser.html"
     class=".teaser.EditTeaser"
@@ -99,7 +99,7 @@
 
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="change-layout"
     class=".teaser.ChangeLayout"
@@ -109,7 +109,7 @@
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserList"
+    for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="toggle-autopilot"
     class=".teaser.ToggleAutopilot"
@@ -118,7 +118,7 @@
 
   <adapter factory=".teaser.ItemTraverser" name="item" />
 
-  <class class=".teaser.TeaserListProxyItem">
+  <class class=".teaser.TeaserBlockProxyItem">
     <require
       interface="zeit.cms.content.interfaces.ICommonMetadata"
       permission="zope.View" />

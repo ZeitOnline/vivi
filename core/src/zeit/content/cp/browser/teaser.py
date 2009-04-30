@@ -18,7 +18,7 @@ import zope.viewlet.manager
 from zeit.content.cp.i18n import MessageFactory as _
 
 
-class TeaserListViewletManager(
+class TeaserBlockViewletManager(
     zope.viewlet.manager.WeightOrderedViewletManager):
 
     @property
@@ -38,7 +38,7 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
         'teaser.edit-properties.pt')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.ITeaserList).select(
+        zeit.content.cp.interfaces.ITeaserBlock).select(
         'title', 'referenced_cp', 'autopilot')
 
     @property
@@ -48,11 +48,11 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
     @property
     def layouts(self):
         terms = zope.component.getMultiAdapter(
-            (zeit.content.cp.interfaces.ITeaserList['layout'].source,
+            (zeit.content.cp.interfaces.ITeaserBlock['layout'].source,
              self.request), zope.browser.interfaces.ITerms)
 
         result = []
-        for layout in zeit.content.cp.interfaces.ITeaserList['layout'].source:
+        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source:
             css_class = [layout.id]
             if layout == self.context.layout:
                 css_class.append('selected')
@@ -173,7 +173,7 @@ class CheckoutContent(object):
             checked_out.__name__))
 
 
-class TeaserListProxyItem(object):
+class TeaserBlockProxyItem(object):
 
     zope.interface.implements(zeit.cms.content.interfaces.ICommonMetadata,
                               zeit.cms.interfaces.ICMSContent)
@@ -194,7 +194,7 @@ class TeaserListProxyItem(object):
         return self.context
 
 
-@zope.component.adapter(TeaserListProxyItem)
+@zope.component.adapter(TeaserBlockProxyItem)
 @zope.interface.implementer(zeit.cms.checkout.interfaces.ICheckinManager)
 def checkout_manager_for_proxy(proxy):
     return zeit.cms.checkout.interfaces.ICheckinManager(
@@ -204,7 +204,7 @@ def checkout_manager_for_proxy(proxy):
 class ItemTraverser(object):
 
     zope.component.adapts(
-        zeit.content.cp.interfaces.ITeaserList,
+        zeit.content.cp.interfaces.ITeaserBlock,
         zope.publisher.interfaces.browser.IDefaultBrowserLayer)
     zope.interface.implements(zope.traversing.interfaces.ITraversable)
 
@@ -218,7 +218,7 @@ class ItemTraverser(object):
 
         try:
             return zope.location.location.located(
-                TeaserListProxyItem(wc[name]), self.context, name)
+                TeaserBlockProxyItem(wc[name]), self.context, name)
         except KeyError:
             raise zope.publisher.interfaces.NotFound(
                 self.context, name, self.request)
@@ -288,7 +288,7 @@ class ChangeLayout(object):
 
     def __call__(self, id):
         layout = zope.component.getMultiAdapter(
-            (zeit.content.cp.interfaces.ITeaserList['layout'].source,
+            (zeit.content.cp.interfaces.ITeaserBlock['layout'].source,
              self.request), zope.browser.interfaces.ITerms).getValue(id)
         self.context.layout = layout
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(

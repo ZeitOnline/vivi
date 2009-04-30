@@ -82,7 +82,7 @@ While on autopilot, manipulation of the teaser block's contents is forbidden:
 
 >>> teasers.insert(0, repository['testcontent'])
 Traceback (most recent call last):
-RuntimeError: <zeit.content.cp.teaser.TeaserList object at 0x...>: 'insert' is forbidden while on autopilot
+RuntimeError: <zeit.content.cp.teaser_block.TeaserBlock object at 0x...>: 'insert' is forbidden while on autopilot
 
 When the teaser block is switched back to manual mode, the currently referenced
 teasers are copied into it:
@@ -107,7 +107,7 @@ In manual mode, the contents can be changed again:
 Layouts
 +++++++
 
-A TeaserList can have different Layouts. Those correspond to different values
+A TeaserBlock can have different Layouts. Those correspond to different values
 for <container module="">.
 
 >>> import zeit.content.cp.layout
