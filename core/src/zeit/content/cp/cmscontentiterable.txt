@@ -42,4 +42,4 @@ Now we can iterate over the centerpage and we get all contents in a flat list:
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()

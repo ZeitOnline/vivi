@@ -277,7 +277,8 @@ When we now check in the centerpage, the changes in our article are propagated:
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
+
 
 .. [#modified-handler] The centerpages need to be nodified when sub location
     change. When we modify an area the centerpage will be considered changed:
