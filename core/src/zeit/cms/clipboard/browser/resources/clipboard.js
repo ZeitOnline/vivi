@@ -32,11 +32,11 @@ zeit.cms.Clipboard = Class.extend({
         var elements = this.contentElement.getElementsByTagName('li');
         var dnd = this;
         forEach(elements, function(node) {
-            new Droppable(node, {
+            new MochiKit.DragAndDrop.Droppable(node, {
                 hoverclass: 'TreeHover',
                 ondrop: function(element, last_active_element, event) {
-                        dnd.handleDrop(node.getAttribute('uniqueid'),
-                        element);
+                            dnd.handleDrop(
+                                node.getAttribute('uniqueid'), element);
                     },
             });
             if (node.getAttribute('uniqueid')) {
@@ -45,10 +45,11 @@ zeit.cms.Clipboard = Class.extend({
         });
 
         // Disable click event while dragging.
-        connect(this.contentElement, 'onclick', function(event) {
-            if (event.target().nodeName == 'A' && dnd.dragging == true) {
-                event.stop();
-            }
+        MochiKit.Signal.connect(
+            this.contentElement, 'onclick', function(event) {
+                if (event.target().nodeName == 'A' && dnd.dragging == true) {
+                    event.stop();
+                }
         });
     },
 
@@ -64,11 +65,13 @@ zeit.cms.Clipboard = Class.extend({
         }
 
         var panel = null;
-        panel = getFirstParentByTagAndClassName(
+        panel = MochiKit.DOM.getFirstParentByTagAndClassName(
             dragged_element, 'div', 'panel');
         if (!isNull(panel) && panel.id == 'ClipboardPanel') {
             url = '/@@moveContent';
-            options['object_path'] = dragged_element.getAttribute('uniqueid');
+            var li = MochiKit.DOM.getFirstParentByTagAndClassName(
+                dragged_element, 'li', null);
+            options['object_path'] = li.getAttribute('uniqueid');
         } else {
             url = '/@@addContent';
             options['unique_id'] = element.uniqueId;

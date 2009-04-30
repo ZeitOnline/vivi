@@ -4,8 +4,11 @@ zeit.cms changes
 1.19.2 (unreleased)
 -------------------
 
-- Test-Hilfsfunktionen zeit.cms.testing set_site() und create_interaction()
-  eingeführt.
+- Test-Hilfsfunktionen zeit.cms.testing ``set_site()`` und
+  ``create_interaction()`` eingeführt.
+
+- DragAndDrop von Content-Objekten refaktoriert, so dass unterscheidbar ist, ob
+  ein Content-Objekt, oder etwas anderes gezogen wird.
 
 1.19.1 (2009-04-29)
 -------------------

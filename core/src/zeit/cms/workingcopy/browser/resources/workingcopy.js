@@ -1,17 +1,19 @@
-// $Id$
+(function() {
 
-zeit.cms.workingcopy = {}
+    var ident;
 
-zeit.cms.workingcopy.event_id = connect(
-    window, 'onload', function(event) {
-        var event_id = connect(
+    var make_draggable = function() {
+        MochiKit.Signal.disconnect(ident);
+        ident = MochiKit.Signal.connect(
             'workingcopycontents', 'onmouseover', function(event) {
-                forEach(getElementsByTagAndClassName(
-                    'tr', null, 'workingcopycontents'),
-                        function(row) {
-                            zeit.cms.createDraggableContentObject(row);
-                      });
-                disconnect(event_id);
-            });
-    disconnect(zeit.cms.workingcopy.event_id);
-});
+                var trs = $$('#workingcopycontents tbody > tr');
+                forEach(trs, function(row) {
+                    zeit.cms.createDraggableContentObject(row);
+                  });
+                MochiKit.Signal.disconnect(ident);
+        });
+    };
+
+    ident = MochiKit.Signal.connect(window, 'onload', make_draggable);
+
+})();

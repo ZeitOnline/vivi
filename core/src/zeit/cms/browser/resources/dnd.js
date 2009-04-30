@@ -5,12 +5,10 @@ MochiKit.Signal.connect(
     MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
     // Generic handler for displaying the drag pane for draggables
     log("Dragging", draggable);
-    var uniqueId = MochiKit.DOM.getFirstElementByTagAndClassName(
-             'span', 'uniqueId', draggable.element);
-    if (isNull(uniqueId)) {
+    if (!draggable.element.is_content_object) {
         return;
     }
-    uniqueId = uniqueId.textContent;
+    uniqueId = draggable.element.textContent;
 
     var div = $('drag-pane');
     if (div) {
@@ -48,10 +46,15 @@ MochiKit.Signal.connect(
 
 
 zeit.cms.createDraggableContentObject = function(element) {
-    return new MochiKit.DragAndDrop.Draggable(element, {
-        starteffect: null,
+    var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
+             'span', 'uniqueId', element);
+    unique_id_element.is_content_object = true;
+    return new MochiKit.DragAndDrop.Draggable(unique_id_element, {
         endeffect: null,
-        zindex: null});
+        handle: element,
+        starteffect: null,
+        zindex: null
+    });
 }
 
 
