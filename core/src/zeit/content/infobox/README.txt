@@ -94,7 +94,7 @@ Of course we'll get the data back, in unicode:
 .. [#functional] Functional test setup:
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
     >>> import zope.publisher.browser
     >>> import zope.security.testing

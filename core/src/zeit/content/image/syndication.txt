@@ -215,7 +215,7 @@ objects:
 .. [#functional]
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
 
 .. [#needsinteraction] Create interaction
 

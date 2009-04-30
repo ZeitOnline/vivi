@@ -151,4 +151,4 @@ representation of that object's related content includes the target URL:
 .. [#functional] 
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()

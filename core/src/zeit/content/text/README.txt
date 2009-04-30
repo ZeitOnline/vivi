@@ -116,7 +116,7 @@ u'Mary had a little lamb \u2014 and is happy.'
 .. [#functional] 
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site(locals())
+    >>> zeit.cms.testing.set_site()
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces

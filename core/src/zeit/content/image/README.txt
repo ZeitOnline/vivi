@@ -308,5 +308,5 @@ There is also a view for the metadata:
 .. [#functional]
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()

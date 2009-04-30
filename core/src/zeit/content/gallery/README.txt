@@ -816,4 +816,4 @@ The keys also correct(ed) and the names are set:
 .. [#functional]
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site(locals())
+>>> zeit.cms.testing.set_site()
