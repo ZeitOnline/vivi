@@ -13,9 +13,7 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
-import zope.security.proxy
 import zope.viewlet.manager
-from zeit.content.cp.i18n import MessageFactory as _
 
 
 class TeaserBlockViewletManager(

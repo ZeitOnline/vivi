@@ -1,23 +1,11 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.cp.i18n import MessageFactory as _
-import lxml.etree
-import lxml.objectify
-import rwproperty
 import zeit.cms.content.property
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.syndication.feed
-import zeit.cms.syndication.interfaces
-import zeit.content.cp.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.component
-import zope.container.contained
-import zope.container.interfaces
 import zope.interface
-import zope.schema
 
 
 class Teaser(zeit.cms.content.metadata.CommonMetadata):

@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import UserDict
-import gocept.async
 import itertools
 import lxml.etree
 import pkg_resources
@@ -10,12 +9,10 @@ import stabledict
 import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
-import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
-import zope.security.proxy
 
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,

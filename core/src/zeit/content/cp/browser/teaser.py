@@ -1,20 +1,15 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.interfaces
-import zeit.content.image.interfaces
 import zope.app.pagetemplate
 import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
-import zope.security.proxy
-import zope.viewlet.manager
 from zeit.content.cp.i18n import MessageFactory as _
 
 

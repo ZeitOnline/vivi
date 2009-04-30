@@ -5,12 +5,10 @@ import UserDict
 import gocept.lxml.interfaces
 import itertools
 import uuid
-import zeit.cms.content.interfaces
 import zeit.content.cp.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.contained
-import zope.dottedname.resolve
 import zope.event
 import zope.interface
 
