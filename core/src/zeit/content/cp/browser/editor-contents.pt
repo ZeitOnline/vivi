@@ -1,15 +1,21 @@
 <div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
+      id="cp-content-inner"
       class="cp-content-inner">
 
   <div class="cp-editor-top">
     <div id="cp-aufmacher">
-      <div class="editable-area"
-           tal:content="structure context/lead/@@contents"/>
+      <div id="cp-aufmacher-inner"
+           class="editable-area"
+           tal:define="lead context/lead"
+           tal:attributes="cms:url lead/@@absolute_url"
+           tal:content="structure lead/@@contents"/>
     </div>
 
     <div id="cp-informatives">
-      <div class="editable-area"
-           tal:content="structure context/informatives/@@contents"/>
+      <div id="cp-informatives-inner" class="editable-area"
+           tal:define="informatives context/informatives"
+           tal:attributes="cms:url informatives/@@absolute_url"
+           tal:content="structure informatives/@@contents"/>
     </div>
   </div>
 

@@ -22,6 +22,7 @@ Neue Funktionen
 - Beim Einchecken der Centerpage werden die Metadaten der referenzierten
   Artikel aktualisiert. (#4976)
 
+- Umsortieren von Blöcken in der Aufmacher- und Informatives-Fläche (#5046).
 
 Beseitigte Fehler
 ~~~~~~~~~~~~~~~~~

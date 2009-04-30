@@ -165,7 +165,6 @@ class TestTeaserBlock(Test):
             'css=div.type-teaser')
         s.waitForTextPresent('c1 teaser')
 
-
     def test_adding_via_drag_and_drop_from_clipboard(self):
         self.open('/')
         s = self.selenium
@@ -291,7 +290,6 @@ class TestTeaserBlock(Test):
         s.waitForElementPresent('id=form.teaserTitle')
 
 
-
 class TestTeaserMosaic(Test):
 
     def test_sorting(self):
@@ -319,6 +317,7 @@ class TestTeaserMosaic(Test):
         # Drag bar1 below bar2
         s.dragAndDrop('css=#${bar1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
+        s.pause(500)
         s.verifyAttribute(
             '//div[@class="block type-teaser-bar"][1]@id', '${bar2}')
         s.verifyAttribute(
@@ -329,8 +328,10 @@ class TestTeaserMosaic(Test):
         s.storeEval("new Number(storedVars['bar-height']) * 1.75", "delta_y")
         s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
                       '0,-${delta_y}')
+        s.pause(500)
         s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
                       '0,-${delta_y}')
+        s.pause(500)
         s.verifyAttribute(
             '//div[@class="block type-teaser-bar"][1]@id', '${bar3}')
         s.verifyAttribute(

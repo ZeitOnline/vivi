@@ -278,6 +278,7 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
             var url = element.getAttribute('cms:drop-url');
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Droppable(droppable_element, {
+                    accept: ['uniqueId', 'content-drag-pane'],
                     activeclass: 'droppable-active',
                     hoverclass: 'hover-content',
                     ondrop: function(draggable, droppable, event) {
@@ -325,7 +326,7 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
     __name__: 'zeit.content.cp.Sortable',
     default_options: {
         onChange: MochiKit.Base.noop,
-        scroll: 'cp-content',
+        scroll: 'cp-content-inner',
     },
 
     construct: function(container, passed_options) {
@@ -346,6 +347,7 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
             var handle = self.get_handle(node);
+            log('Createing draggable and droppable for ' + node.id);
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Draggable(node, {
                     constraint: 'vertical',
@@ -418,32 +420,44 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
 });
 
 
-zeit.content.cp.TeaserBarSorter = zeit.content.cp.Sortable.extend({
+zeit.content.cp.BlockSorter = zeit.content.cp.Sortable.extend({
 
-    __name__: 'zeit.content.cp.TeaserBarSorter',
+    __name__: 'zeit.content.cp.BlockSorter',
     context: zeit.content.cp.in_context.Editor,
 
-    construct: function() {
+    construct: function(container_id) {
         var self = this;
-        arguments.callee.$.construct.call(self, 'cp-teasermosaic');
+        arguments.callee.$.construct.call(self, container_id);
     },
 
     get_sortable_nodes: function() {
         var self = this;
-        return MochiKit.Selector.findChildElements(
-            self.editor.contents,
-            ['#cp-teasermosaic > div.block.type-teaser-bar']);
+        var selector = '#' + self.container + ' > div.block';
+        return $$(selector);
     },
 
     get_handle: function(element) {
         return MochiKit.Selector.findChildElements(
             element, ['> .block-inner > .edit > .dragger'])[0];
     },
+
+    on_update: function(element) {
+        var self = this;
+        var d = arguments.callee.$.on_update.call(self);
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(self.editor, 'reload');
+        });
+        return d;
+    },
 });
 
-
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.TeaserBarSorter();
+    zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.BlockSorter(
+        'cp-teasermosaic');
+    zeit.content.cp.lead_sorter = new zeit.content.cp.BlockSorter(
+        'cp-aufmacher-inner');
+    zeit.content.cp.informatives_sorter = new zeit.content.cp.BlockSorter(
+        'cp-informatives-inner');
 });
 
 
