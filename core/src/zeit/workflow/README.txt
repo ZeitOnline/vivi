@@ -6,7 +6,7 @@ XXX language mix
 
 Der Workflow ist statusorientiert. Ein Dokument hat allerdings mehrere den
 Workflow betreffende Status. Aus Nutzersicht ergeben sich quasi parallele
-Aktivitäten[#functionaltest]_.
+Aktivitäten[#functional]_.
 
 >>> somalia = repository['online']['2007']['01']['Somalia']
 >>> import zeit.workflow.interfaces
@@ -922,11 +922,11 @@ True
 
 [#cleanup]_
 
-.. [#functionaltest] We need to set the site since we're a functional test:
+.. [#functional]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
 
     Do some imports and get the repository
 
@@ -944,7 +944,6 @@ True
 .. [#cleanup] Clean up
 
     >>> zope.security.management.endInteraction()
-    >>> zope.app.component.hooks.setSite(old_site)
     >>> logging.root.removeHandler(log_handler)
     >>> logging.root.setLevel(old_log_level)
 

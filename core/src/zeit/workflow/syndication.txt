@@ -25,7 +25,7 @@ Create a feed:
 >>> feed = zeit.cms.syndication.feed.Feed()
 
 
-Insert an object in the feed[#functionaltest]_:
+Insert an object in the feed[#functional]_:
 
 >>> content = Content()
 >>> feed.insert(0, content)
@@ -148,12 +148,10 @@ Clean up:
 >>> zope.security.management.endInteraction()
 
 
-.. [#functionaltest] Setup functional test and get some common utilities
+.. [#functional] Setup functional test and get some common utilities
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(

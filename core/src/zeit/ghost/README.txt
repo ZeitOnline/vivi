@@ -7,23 +7,8 @@ an object has been checked in. The checked in object will be replaced by a
 ghost, allowing the user to easily access objects he recently edited.
 
 
-In fact we do have those ghosts already in the clipboard, so we just reuse it.
-
-Do some setup for the functional test:
-
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
-
-
-Login a user to have the full workingcopy context:
-
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal(u'zope.user')
->>> participation = zope.security.testing.Participation(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(participation)
-
+In fact we do have those ghosts already in the clipboard, so we just reuse
+it[#functional]_.
 
 Get the workingcopy, initially it's empty
 
@@ -35,6 +20,7 @@ Get the workingcopy, initially it's empty
 When we check out an object now, it'll populate the workingcopy:
 
 >>> from zeit.cms.repository.interfaces import IRepository
+>>> import zope.component
 >>> repository = zope.component.getUtility(IRepository)
 >>> collection = repository['online']['2007']['01']
 >>> content = list(collection.values())[0]
@@ -265,7 +251,8 @@ Content: EU-Beitritt-rumaenien-bulgarien
 Content: 4schanzentournee-abgesang-2
 
 
-Cleanup
-=======
+.. [#functional]
 
->>> zope.app.component.hooks.setSite(old_site)
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
