@@ -93,6 +93,20 @@ def FunctionalDocFileSuite(*paths, **kw):
     return test
 
 
+class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
+    layer = cms_layer
+
+    def setUp(self):
+        super(FunctionalTestCase, self).setUp()
+        zope.app.component.hooks.setSite(self.getRootFolder())
+        principal = zeit.cms.testing.create_interaction(u'zope.user')
+
+    def tearDown(self):
+        zeit.cms.testing.tearDown(self)
+        zope.app.component.hooks.setSite(None)
+        super(FunctionalTestCase, self).tearDown()
+
+
 def click_wo_redirect(browser, *args, **kwargs):
     import urllib2
     browser.mech_browser.set_handle_redirect(False)
