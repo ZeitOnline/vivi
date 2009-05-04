@@ -144,15 +144,6 @@ class TeaserBar(zeit.content.cp.block.Block, Area):
 
     @rwproperty.setproperty
     def layout(self, layout):
-        content_blocks = len(
-            [x for x in self.values()
-             if not zeit.content.cp.interfaces.IPlaceHolder.providedBy(x)])
-        if content_blocks > layout.blocks:
-            raise ValueError(
-                "Cannot change layout to '%s': allows only %s blocks,"
-                " but have %s content blocks already"
-                % (layout.id, layout.blocks, content_blocks))
-
         self.xml.set('module', layout.id)
 
         if len(self) < layout.blocks:

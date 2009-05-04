@@ -53,9 +53,9 @@ class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
         teaser_factory()
         teaser_factory()
         # [0, x, x, x]
-        def set_layout(layout):
-            self.bar.layout = get_layout(layout)
-        self.assertRaises(ValueError, set_layout, 'dmr')
+        bar.layout = get_layout('dmr')
+        # we delete as much placeholders as we can
+        self.assertEquals(3, len(bar))
 
     def test_placeholders_intermixed_are_deleted(self):
         bar = self.bar
