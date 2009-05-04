@@ -73,12 +73,3 @@ class PlaceHolderSwitchType(zeit.cms.browser.view.Base):
             (self.context.__parent__, self.context, self.request),
             name='type-switcher')
         return self.url(switcher(type))
-
-
-class DeleteFromTeaserBar(zeit.cms.browser.view.Base):
-
-    def __call__(self, key):
-        switcher = zope.component.getMultiAdapter(
-            (self.context, self.context[key], self.request),
-            name='type-switcher')
-        return self.url(switcher('placeholder'))

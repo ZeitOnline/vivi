@@ -50,7 +50,7 @@
 
   <class class=".layout.Layout">
     <require
-      interface=".interfaces.IBlockLayout"
+      interface=".interfaces.ITeaserBarLayout"
       permission="zope.View" />
     <!-- prevent circular import -->
     <implements interface=".interfaces.IBlockLayout" />

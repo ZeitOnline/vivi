@@ -8,6 +8,7 @@ import rwproperty
 import uuid
 import zeit.content.cp.block
 import zeit.content.cp.interfaces
+import zeit.content.cp.layout
 import zope.component
 import zope.container.contained
 import zope.event
@@ -141,6 +142,7 @@ class TeaserBar(zeit.content.cp.block.Block, Area):
         for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source:
             if layout.id == self.xml.get('module'):
                 return layout
+        return zeit.content.cp.interfaces.IReadTeaserBar['layout'].missing_value
 
     @rwproperty.setproperty
     def layout(self, layout):
@@ -179,6 +181,6 @@ class TeaserBarFactory(zeit.content.cp.block.BlockFactory):
         # Prepopulate with placeholders
         factory = zope.component.getAdapter(
             bar, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
-        for x in range(4):
+        for x in range(zeit.content.cp.layout.MAX_TEASER_BAR_BLOCKS):
             factory()
         return bar

@@ -24,6 +24,10 @@ TEASER_BLOCK = [
            '140x140'),
 ]
 
+
+MAX_TEASER_BAR_BLOCKS = 4
+
+
 TEASER_BAR = [
     Layout('normal',
            u'Ressort Teaser mit Teaserliste', blocks=4),

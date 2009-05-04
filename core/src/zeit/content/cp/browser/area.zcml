@@ -26,7 +26,7 @@
     for="zeit.content.cp.interfaces.ITeaserBar"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
-    class=".block.DeleteFromTeaserBar"
+    class=".teaserbar.Delete"
     permission="zeit.EditContent"
     />
 
@@ -68,6 +68,19 @@
     permission="zeit.EditContent"
     weight="0"
     />
+
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    class=".teaserbar.Advertisement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="advertisement"
+    template="layout.teaserbar.advertisement.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />  <!-- simulate z-index by document order -->
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.IRegion"

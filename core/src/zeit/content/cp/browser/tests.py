@@ -49,7 +49,8 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'teaser.txt',
+        'teaserbar.txt',
+        'teaserblock.txt',
         checker=zeit.content.cp.tests.checker,
         layer=zeit.content.cp.tests.layer,
         globs=dict(with_statement=__future__.with_statement)))

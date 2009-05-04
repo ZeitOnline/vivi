@@ -254,6 +254,25 @@
   background-color: #eeeeee;
 }
 
+.type-advertisement {
+    font-style: italic;
+    position: absolute;
+    right: 0;
+    /* XXX position: absolute does not seem to respect the parent's padding,
+       so we repeat it here (from .block > .block-inner)
+     */
+    padding: 0 0.5em;
+}
+
+.type-advertisement > .block-inner {
+  padding: 2em;
+  background-color: transparent;
+}
+
+.type-advertisement .edit {
+    border-top-style: none;
+}
+
 /* dragger */
 
 .dragger {

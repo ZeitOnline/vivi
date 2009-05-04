@@ -146,7 +146,14 @@ class IBlockLayout(zope.interface.Interface):
     title = zope.schema.TextLine(title=u'Human readable title.')
 
     image_pattern = zope.schema.ASCIILine(
-        title=u'A match for the image to use in this layout');
+        title=u'A match for the image to use in this layout.')
+
+
+class ITeaserBarLayout(IBlockLayout):
+    """Layout of a TeaserBar."""
+
+    blocks = zope.schema.Int(
+        title=u'The number of blocks allowed by this layout.')
 
 
 class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
@@ -163,7 +170,8 @@ class IReadTeaserBar(IBlock, IReadRegion):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBarLayoutSource())
+        source=zeit.content.cp.layout.TeaserBarLayoutSource(),
+        missing_value=zeit.content.cp.layout.get_layout('normal'))
 
 
 class IWriteTeaserBar(IWriteRegion):

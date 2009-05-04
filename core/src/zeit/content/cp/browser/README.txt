@@ -136,68 +136,15 @@ The placeholder is gone now and we've got the teaser list:
   <div id="cp-teasermosaic" class="editable-area"...
 
 
-Teaser mosaic
-+++++++++++++
-
-In the teaser mosaic contains teaser bars, add one. It is prefilled with four
-placeholders:
-
->>> browser.getLink('Add teaser bar').click()
->>> browser.open(bookmark)
->>> print browser.contents
-<div ...
-   <div id="cp-aufmacher">...
-        <div class="block type-teaser... id="<GUID>">...
-  <div id="cp-informatives">...
-  <div id="cp-teasermosaic" class="editable-area"...
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-        <div class="edit">
-          <a cms:cp-module="...LoadAndReload"
-             href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
-            + Add teaser bar
-          </a>
-        </div>
-        ...
-
-Add a real block in the second place:
-
->>> browser.getLink('Click here to choose the block type.', index=1).click()
->>> browser.getLink('List of teasers').click()
->>> browser.open(bookmark)
->>> print browser.contents
-<div ...
-  <div id="cp-teasermosaic" class="editable-area"...
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-      <div class="block type-teaser... id="<GUID>">
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-      <div class="block type-placeholder" ... id="<GUID>">
-      ...
-        <div class="edit">
-          <a cms:cp-module="...LoadAndReload"
-             href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
-            + Add teaser bar
-          </a>
-        </div>
-        ...
-
 Sorting
 +++++++
 
 Blocks can be sorted. There is an ``updateOrder`` view doing this. Add another
 teaser bar:
 
+>>> browser.open(bookmark)
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(bookmark)
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(bookmark)
 >>> bar_divs = browser.etree.xpath(
@@ -241,40 +188,18 @@ Restore the original order again:
 True
 
 
-Changing the layout of a TeaserBar
-++++++++++++++++++++++++++++++++++
-
->>> bar_url = ('http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'teaser-mosaic/%s/edit-properties' % bar_ids[0])
->>> browser.open(bar_url)
->>> print browser.contents
-<...<a ... class="dmr"...
->>> browser.getLink(index=2).click()
->>> browser.open(bar_url)
->>> print browser.contents
-<...<a ... class="dmr selected"...
-
-
 Deleting blocks
 +++++++++++++++
 
 Blocks and teaser bars can be removed using the delete link:
 
 >>> browser.open(bookmark)
+>>> len(browser.etree.xpath('//div[contains(@class, "leader")]'))
+1
 >>> browser.getLink('Delete').url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
-
-Remove the teaser list inside the teaser bar:
-
->>> browser.open(bookmark)
->>> browser.getLink('Delete').url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/<GUID>/delete?key=<GUID>'
->>> browser.getLink('Delete').click()
-
-Remove a teaser bar:
-
->>> browser.open(bookmark)
->>> browser.getLink('Delete').url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/delete?key=<GUID>'
->>> browser.getLink('Delete').click()
+>>> browser.etree.xpath('//div[contains(@class, "leader")]')
+Traceback (most recent call last):
+...
+XMLSyntaxError: None
