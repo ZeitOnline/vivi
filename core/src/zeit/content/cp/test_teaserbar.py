@@ -57,6 +57,31 @@ class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
             self.bar.layout = get_layout(layout)
         self.assertRaises(ValueError, set_layout, 'dmr')
 
+    def test_placeholders_intermixed_are_deleted(self):
+        bar = self.bar
+        for key in bar:
+            del bar[key]
+        teaser_factory = zope.component.getAdapter(
+            bar, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+        placeholder_factory = zope.component.getAdapter(
+            bar, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
+        placeholder_factory()
+        teaser_factory()
+        placeholder_factory()
+        teaser_factory()
+        # [0, x, 0, x]
+
+        bar.layout = get_layout('mr')
+        # expect: [0, x, x]
+        self.assert_(IPlaceHolder.providedBy(self.item(0)))
+        self.assert_(ITeaserBlock.providedBy(self.item(1)))
+        self.assert_(ITeaserBlock.providedBy(self.item(2)))
+
+        bar.layout = get_layout('dmr')
+        # expect: [x, x]
+        self.assert_(ITeaserBlock.providedBy(self.item(0)))
+        self.assert_(ITeaserBlock.providedBy(self.item(1)))
+
 
 def test_suite():
     return unittest.makeSuite(TeaserBarTest)
