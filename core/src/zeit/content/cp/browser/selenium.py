@@ -101,8 +101,10 @@ class TestGenericEditing(Test):
         # Hover mouse over block
         s.verifyElementNotPresent('css=div.block.hover')
         s.mouseOver('css=div.teaser-list')
-        s.verifyElementPresent('css=div.hover')
+        s.pause(100)
+        s.verifyElementPresent('css=div.block.hover')
         s.mouseOut('css=div.teaser-list')
+        s.pause(100)
         s.verifyElementNotPresent('css=div.block.hover')
 
 
