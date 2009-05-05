@@ -6,6 +6,7 @@ import unittest
 import zeit.cms.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.tests
+import zope.component
 
 
 class RuleTest(zeit.cms.testing.FunctionalTestCase):
@@ -13,36 +14,41 @@ class RuleTest(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(RuleTest, self).setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        factory = zope.component.getAdapter(
+            self.cp['lead'], zeit.content.cp.interfaces.IBlockFactory,
+            name='teaser')
+        self.teaser = factory()
 
     def test_not_applicable_should_raise(self):
         r = Rule("""
                  applicable(False)
                  invalid_name
                  """)
-        self.assertEquals(None, r.apply(None))
+        self.assertEquals(None, r.apply(self.teaser))
 
     def test_valid_rule_should_return_none(self):
         r = Rule("""
                  applicable(True)
                  """)
-        self.assertEquals(None, r.apply(None))
+        self.assertEquals(None, r.apply(self.teaser))
 
     def test_invalid_rule_should_return_code(self):
         r = Rule("""
                  error_if(True)
                  """)
-        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(None))
+        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
 
         r = Rule("""
                  error_unless(False)
                  """)
-        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(None))
+        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
 
     def test_message_is_stored(self):
         r = Rule("""
                  message("My test error message")
                  """)
-        r.apply(None)
+        r.apply(self.teaser)
         self.assertEquals('My test error message', r.message)
 
     def test_warning_with_message(self):
@@ -50,13 +56,27 @@ class RuleTest(zeit.cms.testing.FunctionalTestCase):
                  message("A dire warning")
                  warning_unless(False)
                  """)
-        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(None))
+        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
         self.assertEquals('A dire warning', r.message)
 
         r = Rule("""
                  warning_if(True)
                  """)
-        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(None))
+        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
+
+    def test_error_overrides_warning(self):
+        r = Rule("""
+                 error_if(True)
+                 warning_if(True)
+                 """)
+        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
+
+    def test_block_rule(self):
+        r = Rule("""
+                 warning_if(is_block)
+                 error_if(is_area)
+                 """)
+        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
 
 
 def test_suite():

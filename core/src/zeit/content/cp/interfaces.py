@@ -184,3 +184,8 @@ class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IRegion):
     The TeaserBar has a dual nature of being both a block and a region.
 
     """
+
+
+class IRuleGlobs(zope.interface.Interface):
+    """Adapt to this to convert the context to a dictionary of things of
+    interest to an IRule XXX docme"""

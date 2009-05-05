@@ -120,4 +120,7 @@
 
   <adapter factory=".teaserblock.lead_teasers_for_centerpage" />
   <adapter factory=".teaser.metadata_to_teaser" />
+
+  <adapter factory=".rule.globs_for_block" />
+  <adapter factory=".rule.globs_for_area" />
 </configure>
