@@ -289,9 +289,9 @@ class TestTeaserBlock(Test):
         s.waitForElementPresent('id=form.teaserTitle')
 
 
-class TestTeaserMosaic(Test):
+class TestSorting(Test):
 
-    def test_sorting(self):
+    def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
         # Create three teaser bars
@@ -349,6 +349,35 @@ class TestTeaserMosaic(Test):
             '//div[@class="block type-teaser-bar"][2]@id', '${bar2}')
         s.verifyAttribute(
             '//div[@class="block type-teaser-bar"][3]@id', '${bar1}')
+
+    def test_lead(self):
+        s = self.selenium
+
+        self.create_teaserlist()
+        s.storeAttribute('css=.block.type-teaser@id', 'block1')
+
+        # Add a second teaser list
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
+        s.click('link=List of teasers')
+        s.waitForElementPresent(
+            'css=.block.type-teaser + .landing-zone + .block.type-teaser')
+        s.storeAttribute(
+            'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
+            'block2')
+
+        s.storeElementHeight('id=${block2}', 'height');
+        s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
+
+        s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
+                      '0,${delta_y}')
+        s.waitForElementPresent(
+            'css=.block.type-teaser + .landing-zone + .block.type-teaser')
+        s.verifyAttribute(
+            'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
+            '${block1}')
 
 
 class TestLandingZone(Test):

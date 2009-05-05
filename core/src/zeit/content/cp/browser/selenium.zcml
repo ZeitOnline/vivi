@@ -36,8 +36,8 @@
     />
 
   <adapter
-    factory=".selenium.TestTeaserMosaic"
-    name="zeit.content.cp.TestTeaserMosaic"
+    factory=".selenium.TestSorting"
+    name="zeit.content.cp.TestSorting"
     permission="zope.Public"
     />
 
