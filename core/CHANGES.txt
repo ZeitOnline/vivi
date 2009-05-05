@@ -4,6 +4,14 @@ zeit.content.cp changes
 0.5 (unreleased)
 ----------------
 
+Neue Funktionen
+---------------
+
+- Für die Teaserleiste kann nun das Layout MR (einspaltiger Werbeblock),
+  DMR (zweispaltiger Werbeblock) und normal (keine Werbung) ausgewählt werden
+  (#5001).
+
+
 0.4 (2009-04-30)
 ----------------
 
