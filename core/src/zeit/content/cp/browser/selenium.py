@@ -2,9 +2,12 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.browser.view
+import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.content.cp.centerpage
 import zope.component
 
 
@@ -12,14 +15,8 @@ class Test(zeit.cms.selenium.Test):
 
     def open_centerpage(self):
         s = self.selenium
-        self.open('/repository')
-        s.selectAndWait('id=add_menu', 'label=CenterPage')
-        s.type('form.__name__', 'cp')
-        s.type('form.title', 'Deutschland')
-        s.type('form.authors.0.', 'Hans Wurst')
-        s.select('form.ressort', 'Deutschland')
-        s.clickAndWait('id=form.actions.add')
-        s.clickAndWait('link=Edit contents')
+        self.open('/@@create-test-cp')
+        self.open('/workingcopy/zope.user/cp/@@cp-editor.html')
         s.waitForElementPresent('css=div.landing-zone')
 
 
@@ -371,3 +368,12 @@ class CreateTestContent(object):
         return 'Done.'
 
 
+class CreateTestCP(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+            repository['cp']).checkout()
+        self.url(cp)

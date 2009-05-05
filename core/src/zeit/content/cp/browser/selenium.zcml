@@ -10,6 +10,13 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="create-test-cp"
+    class=".selenium.CreateTestCP"
+    permission="zope.View"
+    />
+
   <adapter
     factory=".selenium.TestGenericEditing"
     name="zeit.content.cp.TestGenericEditing"
