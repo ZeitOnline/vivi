@@ -22,7 +22,7 @@
     />
 
   <browser:view
-    for="zeit.content.cp.interfaces.ITeaserBlock"
+    for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop"
     class=".landing.TeaserLandingZoneInsertAfter" 

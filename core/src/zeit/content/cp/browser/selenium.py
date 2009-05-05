@@ -364,6 +364,26 @@ class TestLandingZone(Test):
             'css=.landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
 
+    def test_zones_after_blocks(self):
+        self.create_content_and_fill_clipboard()
+        self.open_centerpage()
+        s = self.selenium
+
+        # Create a block, there will be a landing zone after it:
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.verifyElementPresent('css=.block + .landing-zone')
+
+        # The "normal" landing zone is also there
+        s.verifyElementPresent('css=.landing-zone + .block')
+
+        # Drop something
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=.block + .landing-zone')
+        s.waitForElementPresent('css=.block.type-teaser')
+
+
 
 class CreateTestContent(object):
 
