@@ -264,6 +264,15 @@
     padding: 0 0.5em;
 }
 
+.type-teaser-bar > .block-inner > .adv-mr {
+  width: 25%;
+}
+
+.type-teaser-bar > .block-inner > .adv-dmr {
+  width: 50%;
+}
+
+
 .type-advertisement > .block-inner {
   padding: 2em;
   background-color: transparent;

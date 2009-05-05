@@ -1,7 +1,7 @@
 <div
-    tal:condition="view/width"
-    tal:attributes="style string:width: ${view/width}%"
-    class="block type-advertisement">
+    tal:condition="view/ad_class"
+    tal:attributes="class string:block type-advertisement ${view/ad_class}"
+    class="block type-advertisement mr">
   <div class="block-inner">
       <div>Werbung</div>
       <div class="edit edit-bar"></div>

@@ -42,6 +42,11 @@ class Delete(zeit.cms.browser.view.Base):
 
 class Advertisement(object):
 
-    def width(self):
-        return (zeit.content.cp.layout.MAX_TEASER_BAR_BLOCKS
-                - self.context.layout.blocks) * 25
+    classes = {0: None,
+               1: 'adv-mr',
+               2: 'adv-dmr'}
+
+    def ad_class(self):
+        blocks = (zeit.content.cp.layout.MAX_TEASER_BAR_BLOCKS
+            - self.context.layout.blocks)
+        return self.classes[blocks]
