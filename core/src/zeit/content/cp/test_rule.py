@@ -44,17 +44,9 @@ class RuleTest(zeit.cms.testing.FunctionalTestCase):
                  """)
         self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
 
-    def test_message_is_stored(self):
-        r = Rule("""
-                 message("My test error message")
-                 """)
-        r.apply(self.teaser)
-        self.assertEquals('My test error message', r.message)
-
     def test_warning_with_message(self):
         r = Rule("""
-                 message("A dire warning")
-                 warning_unless(False)
+                 warning_unless(False, "A dire warning")
                  """)
         self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
         self.assertEquals('A dire warning', r.message)
@@ -66,17 +58,11 @@ class RuleTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_error_overrides_warning(self):
         r = Rule("""
-                 error_if(True)
-                 warning_if(True)
+                 error_if(True, "An error message")
+                 warning_if(True, "A warning")
                  """)
         self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
-
-    def test_block_rule(self):
-        r = Rule("""
-                 warning_if(is_block)
-                 error_if(is_area)
-                 """)
-        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
+        self.assertEquals('An error message', r.message)
 
 
 def test_suite():

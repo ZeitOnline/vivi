@@ -24,7 +24,6 @@ class Rule(object):
     def apply(self, context):
         globs = dict(
             applicable=self.applicable,
-            message=self.set_message,
             error_if=self.error_if,
             error_unless=self.error_unless,
             warning_if=self.warning_if,
@@ -49,23 +48,22 @@ class Rule(object):
         if not condition:
             raise Break
 
-    def error_if(self, condition):
+    def error_if(self, condition, message=None):
         if condition:
             self.status = ERROR
+            self.message = message
         raise Break
 
-    def error_unless(self, condition):
-        self.error_if(not condition)
+    def error_unless(self, condition, message=None):
+        self.error_if(not condition, message)
 
-    def warning_if(self, condition):
+    def warning_if(self, condition, message=None):
         if condition:
             self.status = WARNING
+            self.message = message
 
-    def warning_unless(self, condition):
-        self.warning_if(not condition)
-
-    def set_message(self, message):
-        self.message = message
+    def warning_unless(self, condition, message=None):
+        self.warning_if(not condition, message)
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.IBlock)
