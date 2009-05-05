@@ -6,6 +6,7 @@ import itertools
 import lxml.etree
 import pkg_resources
 import stabledict
+import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
