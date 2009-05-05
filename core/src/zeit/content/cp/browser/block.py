@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import zeit.cms.browser.view
+import zeit.content.cp.browser.rule
 import zeit.content.cp.interfaces
 import zope.component
 import zope.viewlet.manager
@@ -11,7 +12,13 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
 
     @property
     def css_class(self):
-        return ' '.join(['block', 'type-' + self.context.type])
+        classes = ['block', 'type-' + self.context.type]
+
+        validate_class = zeit.content.cp.browser.rule.validate(self.context)
+        if validate_class:
+            classes.append(validate_class)
+
+        return ' '.join(classes)
 
 
 class Add(zeit.cms.browser.view.Base):

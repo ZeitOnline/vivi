@@ -80,7 +80,7 @@ The contents of cp-content is loaded via javascript:
 <div...
 <div class="cp-editor-top">
   <div id="cp-aufmacher">
-    <div id="cp-aufmacher-inner" class="editable-area"...
+    <div id="cp-aufmacher-inner" class="editable-area validation-error"...
   <div id="cp-informatives">
     <div id="cp-informatives-inner" class="editable-area"...
   <div id="cp-teasermosaic" class="editable-area"
@@ -148,7 +148,7 @@ teaser bar:
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(bookmark)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
+...     '//div[@id="cp-teasermosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
 ['92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
@@ -170,7 +170,7 @@ The order has been updated now:
 True
 >>> browser.open(bookmark)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
+...     '//div[@id="cp-teasermosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == reversed_ids
 True
@@ -182,7 +182,7 @@ Restore the original order again:
 ...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(original_ids))
 >>> browser.open(bookmark)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
+...     '//div[@id="cp-teasermosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == tuple(original_ids)
 True

@@ -68,6 +68,7 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
+    class=".editor.Editor"
     template="editor-contents.pt"
     permission="zeit.EditContent"
     />

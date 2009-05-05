@@ -120,7 +120,8 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         )
     layout = zope.schema.Choice(
         title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBlockLayoutSource())
+        source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
+        missing_value=zeit.content.cp.layout.get_layout('leader'))
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
@@ -189,3 +190,19 @@ class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IRegion):
 class IRuleGlobs(zope.interface.Interface):
     """Adapt to this to convert the context to a dictionary of things of
     interest to an IRule XXX docme"""
+
+
+class IRulesManager(zope.interface.Interface):
+    """Collects all validation rules."""
+
+    rules = zope.schema.List(title=u"A list of rules.")
+
+
+class IValidator(zope.interface.Interface):
+    """Validate a centerpage element."""
+
+    status = zope.schema.TextLine(
+        title=u"Validation status: {None, warning, error}")
+
+    messages = zope.schema.List(
+        title=u"List of error messages.")

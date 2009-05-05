@@ -108,6 +108,7 @@ class TeaserBlock(zeit.content.cp.block.Block,
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source:
             if layout.id == self.xml.get('module'):
                 return layout
+        return zeit.content.cp.interfaces.IReadTeaserBlock['layout'].missing_value
 
     @rwproperty.setproperty
     def layout(self, layout):

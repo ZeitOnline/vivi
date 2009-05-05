@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -73,12 +74,17 @@ def globs_for_block(context):
     area = context.__parent__
     globs = dict(
         is_block=True,
-        layout=context.layout.id,
         area=area.__name__,
         position=area.keys().index(context.__name__) + 1,
         )
     return globs
 
+
+@zope.interface.implementer(zeit.content.cp.interfaces.IRuleGlobs)
+def globs_for_teaser(context):
+    globs = globs_for_block(context)
+    globs['layout'] = context.layout.id
+    return globs
 
 @zope.component.adapter(zeit.content.cp.interfaces.IArea)
 @zope.interface.implementer(zeit.content.cp.interfaces.IRuleGlobs)
@@ -89,3 +95,46 @@ def globs_for_area(context):
         area=context.__name__
         )
     return globs
+
+
+class RulesManager(object):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IRulesManager)
+
+    rules = []
+
+
+    def __init__(self):
+        """XXX: Testing"""
+        self.rules.append(Rule("""
+            applicable(is_block and area == 'teaser-mosaic' and position == 2)
+            error_unless(layout == 'dmr',
+                         u'Die zweite Teaserleiste muss ein DMR sein')
+            """))
+        self.rules.append(Rule("""
+            applicable(is_area and area == 'lead')
+            warning_unless(count > 6,
+                           u'In der Aufmacherfläche sollen mehr als 6 Teaserblöcke stehen')
+            error_unless(count > 2,
+                         u'In der Aufmacherfläche müssen mehr als 2 Teaserblöcke stehen')
+            """))
+
+
+class Validator(object):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IValidator)
+
+    status = None
+    messages = []
+
+    def __init__(self, context):
+        self.context = context
+        rm = zope.component.getUtility(
+            zeit.content.cp.interfaces.IRulesManager)
+        for rule in rm.rules:
+            rule.apply(context)
+            if self.status != ERROR:
+                self.status = rule.status
+            if rule.message:
+                self.messages.append(rule.message)
+

@@ -6,6 +6,7 @@ import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.cp.browser.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
@@ -17,17 +18,18 @@ import zope.viewlet.manager
 
 
 class TeaserBlockViewletManager(
-    zope.viewlet.manager.WeightOrderedViewletManager):
+    zeit.content.cp.browser.block.BlockViewletManager):
 
     @property
     def css_class(self):
+        classes = super(TeaserBlockViewletManager, self).css_class
         if self.context.referenced_cp is None:
             autopilot = 'autopilot-not-possible'
         elif self.context.autopilot:
             autopilot = 'autopilot-on'
         else:
             autopilot = 'autopilot-off'
-        return ' '.join(['block', 'type-' + self.context.type, autopilot])
+        return '%s %s' % (classes, autopilot)
 
 
 class EditProperties(zope.formlib.form.SubPageEditForm):

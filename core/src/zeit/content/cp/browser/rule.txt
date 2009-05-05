@@ -1,0 +1,35 @@
+Validating a centerpage
+=======================
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+>>> import zeit.content.cp.browser.tests
+>>> zeit.content.cp.browser.tests.create_cp(browser)
+
+>>> browser.open('contents')
+>>> bookmark = browser.url
+
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.handleErrors = False
+>>> browser.open(bookmark)
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(bookmark)
+
+XXX: We should only get 1 result here, but we registered some static rules
+temporarily in rule.py, which change the behaviour and will go away soon:
+
+>>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
+2
+
+>>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink(index=2).click()
+>>> browser.open(bookmark)
+
+XXX: We should only get 0 results here, but we registered some static rules
+temporarily in rule.py, which change the behaviour and will go away soon:
+
+>>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
+1

@@ -50,6 +50,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'placeholder.txt',
+        'rule.txt',
         'teaserbar.txt',
         'teaserblock.txt',
         checker=zeit.content.cp.testing.checker,

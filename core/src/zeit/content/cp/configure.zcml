@@ -123,4 +123,17 @@
 
   <adapter factory=".rule.globs_for_block" />
   <adapter factory=".rule.globs_for_area" />
+  <adapter
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    factory=".rule.globs_for_teaser" />
+  <adapter
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    factory=".rule.globs_for_teaser" />
+  <utility factory=".rule.RulesManager" />
+  <adapter
+    for="zeit.content.cp.interfaces.IBlock"
+    factory=".rule.Validator" />
+  <adapter
+    for="zeit.content.cp.interfaces.IArea"
+    factory=".rule.Validator" />
 </configure>
