@@ -18,10 +18,11 @@ class Rule(object):
     def __init__(self, code):
         code = '\n'.join([line.strip() for line in code.split('\n')])
         self.code = compile(code, '<string>', 'exec')
+
+    def apply(self, context):
         self.status = None
         self.message = None
 
-    def apply(self, context):
         globs = dict(
             applicable=self.applicable,
             error_if=self.error_if,

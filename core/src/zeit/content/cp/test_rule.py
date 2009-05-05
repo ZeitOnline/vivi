@@ -64,6 +64,19 @@ class RuleTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
         self.assertEquals('An error message', r.message)
 
+    def test_block_rule(self):
+        r = Rule("""
+                 warning_if(is_block)
+                 error_if(is_area)
+                 """)
+        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
+
+    def test_area_rule(self):
+        r = Rule("""
+                 warning_if(is_block)
+                 error_if(is_area)
+                 """)
+        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.cp['lead']))
 
 def test_suite():
     return unittest.makeSuite(RuleTest)

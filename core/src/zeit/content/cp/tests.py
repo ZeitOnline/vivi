@@ -27,6 +27,7 @@ def test_suite():
         'teaser.txt',
         'teaserblock.txt',
         'cmscontentiterable.txt',
+        'rule.txt',
         checker=checker,
         layer=layer))
     return suite
