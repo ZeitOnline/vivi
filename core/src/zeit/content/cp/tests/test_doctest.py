@@ -14,10 +14,10 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'teaser.txt',
-        'teaserblock.txt',
         'cmscontentiterable.txt',
         'rule.txt',
+        'teaser.txt',
+        'teaserblock.txt',
         package=zeit.content.cp,
         checker=zeit.content.cp.testing.checker,
         layer=zeit.content.cp.testing.layer))
