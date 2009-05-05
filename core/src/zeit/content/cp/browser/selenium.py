@@ -19,6 +19,63 @@ class Test(zeit.cms.selenium.Test):
         self.open('/workingcopy/zope.user/cp/@@cp-editor.html')
         s.waitForElementPresent('css=div.landing-zone')
 
+    def create_clip(self):
+        # Creat clip
+        s = self.selenium
+        s.click('id=clip-add-folder-link')
+        s.type('id=clip-add-folder-title', 'Clip')
+        s.click('id=clip-add-folder-submit')
+        s.waitForElementPresent('link=Clip')
+        # Open clip
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+    def clip_object(self, match):
+        s = self.selenium
+        s.click('xpath=//td[contains(string(.), "%s")]' % match)
+        s.waitForElementPresent('css=div#bottomcontent > div')
+        s.dragAndDropToObject(
+            'xpath=//td[contains(string(.), "%s")]' % match,
+            '//li[@uniqueid="Clip"]')
+        s.pause(500)
+
+    def create_teaserlist(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
+        s.click('link=List of teasers')
+        s.waitForElementPresent('css=div.type-teaser')
+
+    def create_content_and_fill_clipboard(self):
+        s = self.selenium
+        s.open('/@@create-cp-test-content')
+        self.open('/')
+        self.create_clip()
+        s.clickAndWait('link=Dateiverwaltung')
+        self.clip_object('c1')
+        self.clip_object('c2')
+        self.clip_object('c3')
+
+    def create_filled_teaserlist(self):
+        s = self.selenium
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c3 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c2 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c1 teaser')
+
 
 class TestDottedName(Test):
 
@@ -106,63 +163,6 @@ class TestGenericEditing(Test):
 
 
 class TestTeaserBlock(Test):
-
-    def create_clip(self):
-        # Creat clip
-        s = self.selenium
-        s.click('id=clip-add-folder-link')
-        s.type('id=clip-add-folder-title', 'Clip')
-        s.click('id=clip-add-folder-submit')
-        s.waitForElementPresent('link=Clip')
-        # Open clip
-        s.click('//li[@uniqueid="Clip"]')
-        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
-
-    def clip_object(self, match):
-        s = self.selenium
-        s.click('xpath=//td[contains(string(.), "%s")]' % match)
-        s.waitForElementPresent('css=div#bottomcontent > div')
-        s.dragAndDropToObject(
-            'xpath=//td[contains(string(.), "%s")]' % match,
-            '//li[@uniqueid="Clip"]')
-        s.pause(500)
-
-    def create_teaserlist(self):
-        self.open_centerpage()
-        s = self.selenium
-        s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
-        s.waitForElementPresent('css=div.type-teaser')
-
-    def create_content_and_fill_clipboard(self):
-        s = self.selenium
-        s.open('/@@create-cp-test-content')
-        self.open('/')
-        self.create_clip()
-        s.clickAndWait('link=Dateiverwaltung')
-        self.clip_object('c1')
-        self.clip_object('c2')
-        self.clip_object('c3')
-
-    def create_filled_teaserlist(self):
-        s = self.selenium
-        self.create_content_and_fill_clipboard()
-        self.create_teaserlist()
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c3 teaser')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c2 teaser')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c1 teaser')
 
     def test_adding_via_drag_and_drop_from_clipboard(self):
         self.open('/')
@@ -349,6 +349,20 @@ class TestTeaserMosaic(Test):
             '//div[@class="block type-teaser-bar"][2]@id', '${bar2}')
         s.verifyAttribute(
             '//div[@class="block type-teaser-bar"][3]@id', '${bar1}')
+
+
+class TestLandingZone(Test):
+
+    def test_lead(self):
+        self.create_content_and_fill_clipboard()
+        self.open_centerpage()
+        s = self.selenium
+
+        s.verifyElementNotPresent('css=.block.type-teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=.landing-zone')
+        s.waitForElementPresent('css=.block.type-teaser')
 
 
 class CreateTestContent(object):

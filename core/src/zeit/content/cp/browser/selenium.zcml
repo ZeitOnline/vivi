@@ -41,6 +41,12 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestLandingZone"
+    name="zeit.content.cp.TestLandingZone"
+    permission="zope.Public"
+    />
+
 
 </configure>
 
