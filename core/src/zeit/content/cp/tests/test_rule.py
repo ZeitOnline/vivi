@@ -5,12 +5,13 @@ from zeit.content.cp.rule import Rule
 import unittest
 import zeit.cms.testing
 import zeit.content.cp.centerpage
-import zeit.content.cp.tests
+import zeit.content.cp.testing
 import zope.component
 
 
 class RuleTest(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.content.cp.tests.layer
+
+    layer = zeit.content.cp.testing.layer
 
     def setUp(self):
         super(RuleTest, self).setUp()

@@ -5,7 +5,7 @@ import __future__
 import contextlib
 import unittest
 import zeit.cms.testing
-import zeit.content.cp.tests
+import zeit.content.cp.testing
 import zope.app.component.hooks
 import zope.security.management
 import zope.security.testing
@@ -51,7 +51,7 @@ def test_suite():
         'README.txt',
         'teaserbar.txt',
         'teaserblock.txt',
-        checker=zeit.content.cp.tests.checker,
-        layer=zeit.content.cp.tests.layer,
+        checker=zeit.content.cp.testing.checker,
+        layer=zeit.content.cp.testing.layer,
         globs=dict(with_statement=__future__.with_statement)))
     return suite

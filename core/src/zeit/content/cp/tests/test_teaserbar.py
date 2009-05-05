@@ -7,13 +7,13 @@ import lxml.objectify
 import unittest
 import zeit.cms.testing
 import zeit.content.cp.area
-import zeit.content.cp.tests
+import zeit.content.cp.testing
 import zope.component
 
 
 class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.cp.tests.layer
+    layer = zeit.content.cp.testing.layer
 
     def setUp(self):
         super(TeaserBarTest, self).setUp()
