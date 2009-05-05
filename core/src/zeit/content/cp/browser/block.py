@@ -63,13 +63,3 @@ class SwitchType(object):
         order[index] = created.__name__
         self.parent.updateOrder(order)
         return created
-
-
-
-class PlaceHolderSwitchType(zeit.cms.browser.view.Base):
-
-    def __call__(self, type):
-        switcher = zope.component.getMultiAdapter(
-            (self.context.__parent__, self.context, self.request),
-            name='type-switcher')
-        return self.url(switcher(type))

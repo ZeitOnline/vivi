@@ -1,0 +1,44 @@
+Placeholder
+============
+
+
+Replacing placeholders with teaser blocks
++++++++++++++++++++++++++++++++++++++++++
+
+When there is a placeholder on the page it can be replaced with a teaser block
+by dropping content on it.
+
+Create a cp and add a place holder:
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.tests
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.getLink('Add block', index=0).click()
+>>> browser.open(contents_url)
+
+"Drop" the testcontent on the placeholder:
+
+>>> import lxml.cssselect
+>>> browser.open(contents_url)
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.type-placeholder div[cms|drop-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+>>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.handleErrors = False
+>>> browser.open(url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+ <div class="block type-teaser...
+  <div class="teaser">...

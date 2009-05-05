@@ -130,7 +130,16 @@
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="switch"
-    class=".block.PlaceHolderSwitchType"
+    class=".placeholder.SwitchType"
     permission="zeit.EditContent"
     />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IPlaceHolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".placeholder.Drop"
+    permission="zeit.EditContent"
+    />
+
 </configure>
