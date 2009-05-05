@@ -6,7 +6,7 @@
         tal:attributes="action request/URL"
         tal:content="structure view/form"/>
 
-  <div class="layout-chooser">
+  <div tal:attributes="class string:layout-chooser ${view/layout_prefix}">
     <div class="layout-inner"
          tal:repeat="layout view/layouts">
       <a 
@@ -15,7 +15,7 @@
         i18n:translate=""
         cms:cp-module="zeit.content.cp.LoadAndReload">
         <img tal:attributes="src
-             string:${context/++resource++zeit.content.cp}/teaser-${layout/token}.png" />
+             string:${context/++resource++zeit.content.cp}/${view/layout_prefix}-${layout/token}.png" />
         <span tal:content="layout/title" />
       </a>
     </div>

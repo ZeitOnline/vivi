@@ -1,9 +1,7 @@
 <div
-    tal:condition="view/ad_class"
-    tal:attributes="class string:block type-advertisement ${view/ad_class}"
-    class="block type-advertisement mr">
+  tal:condition="python:context.layout.id != 'normal'"
+  tal:attributes="class string:block type-blocked ${context/layout/id}">
   <div class="block-inner">
-      <div>Werbung</div>
-      <div class="edit edit-bar"></div>
+    <div>Werbung</div>
   </div>
 </div>

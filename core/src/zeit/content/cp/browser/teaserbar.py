@@ -11,6 +11,7 @@ import zope.component
 class EditProperties(zeit.content.cp.browser.teaserblock.EditProperties):
 
     interface = zeit.content.cp.interfaces.ITeaserBar
+    layout_prefix  = 'teaserbar'
 
     form_fields = []
 
@@ -38,15 +39,3 @@ class Delete(zeit.cms.browser.view.Base):
             (self.context, self.context[key], self.request),
             name='type-switcher')
         return self.url(switcher('placeholder'))
-
-
-class Advertisement(object):
-
-    classes = {0: None,
-               1: 'adv-mr',
-               2: 'adv-dmr'}
-
-    def ad_class(self):
-        blocks = (zeit.content.cp.layout.MAX_TEASER_BAR_BLOCKS
-            - self.context.layout.blocks)
-        return self.classes[blocks]

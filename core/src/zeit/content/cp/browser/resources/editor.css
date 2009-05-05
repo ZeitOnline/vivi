@@ -254,32 +254,25 @@
   background-color: #eeeeee;
 }
 
-.type-advertisement {
-    font-style: italic;
+.block.type-blocked {
     position: absolute;
     right: 0;
-    /* XXX position: absolute does not seem to respect the parent's padding,
-       so we repeat it here (from .block > .block-inner)
-     */
-    padding: 0 0.5em;
+    margin: 0.5em 0;  /* Container padding as absolute runs into paddings */
 }
 
-.type-teaser-bar > .block-inner > .adv-mr {
-  width: 25%;
+.block.type-blocked > .block-inner {
+  background-color: transparent;
+  padding: 3em 0;
+  text-align: center;
 }
 
-.type-teaser-bar > .block-inner > .adv-dmr {
+
+.block.type-blocked.mr {
   width: 50%;
 }
 
-
-.type-advertisement > .block-inner {
-  padding: 2em;
-  background-color: transparent;
-}
-
-.type-advertisement .edit {
-    border-top-style: none;
+.block.type-blocked.dmr {
+  width: 75%;
 }
 
 /* dragger */
@@ -406,14 +399,18 @@
   overflow-y: auto;
 }
 
-.layout-chooser {
+.layout-chooser.teser {
   border-top: 3px solid #aaa;
   margin: 0.5em;
 }
 
-.layout-chooser > .layout-inner {
+.layout-chooser.teaser > .layout-inner {
   width: 25%;
   float: left;
+}
+
+.layout-chooser.teaserbar > .layout-inner {
+  height: 30%;
 }
 
 .layout-chooser > .layout-inner > a {

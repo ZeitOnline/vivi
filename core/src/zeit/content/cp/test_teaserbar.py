@@ -12,6 +12,7 @@ import zope.component
 
 
 class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
+
     layer = zeit.content.cp.tests.layer
 
     def setUp(self):
@@ -33,7 +34,7 @@ class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_change_layout_to_advertisement(self):
         self.bar.layout = get_layout('dmr')
-        self.assertEquals(2, len(self.bar))
+        self.assertEquals(1, len(self.bar))
 
     def test_non_placeholder_blocks_are_preserved(self):
         bar = self.bar
@@ -45,14 +46,13 @@ class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
         # 0=placeholder, x=teaser
         # [0, 0, 0, x]
         bar.layout = get_layout('dmr')
-        self.assertEquals(2, len(bar))
-        # expect: [0, x]
-        self.assert_(IPlaceHolder.providedBy(self.item(0)))
-        self.assert_(ITeaserBlock.providedBy(self.item(1)))
+        self.assertEquals(1, len(bar))
+        # expect: [x]
+        self.assert_(ITeaserBlock.providedBy(self.item(0)))
 
         teaser_factory()
         teaser_factory()
-        # [0, x, x, x]
+        # [x, x, x]
         bar.layout = get_layout('dmr')
         # we delete as much placeholders as we can
         self.assertEquals(3, len(bar))
@@ -72,10 +72,9 @@ class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
         # [0, x, 0, x]
 
         bar.layout = get_layout('mr')
-        # expect: [0, x, x]
-        self.assert_(IPlaceHolder.providedBy(self.item(0)))
+        # expect: [x, x]
+        self.assert_(ITeaserBlock.providedBy(self.item(0)))
         self.assert_(ITeaserBlock.providedBy(self.item(1)))
-        self.assert_(ITeaserBlock.providedBy(self.item(2)))
 
         bar.layout = get_layout('dmr')
         # expect: [x, x]

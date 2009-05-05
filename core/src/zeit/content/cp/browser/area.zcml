@@ -30,7 +30,6 @@
     permission="zeit.EditContent"
     />
 
-
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBar"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -72,7 +71,6 @@
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.ITeaserBar"
-    class=".teaserbar.Advertisement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"

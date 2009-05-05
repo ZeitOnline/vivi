@@ -32,6 +32,7 @@ class TeaserBlockViewletManager(
 
 class EditProperties(zope.formlib.form.SubPageEditForm):
 
+    layout_prefix = 'teaser'
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'teaser.edit-properties.pt')
 

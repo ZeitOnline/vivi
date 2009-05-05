@@ -32,9 +32,9 @@ TEASER_BAR = [
     Layout('normal',
            u'Ressort Teaser mit Teaserliste', blocks=4),
     Layout('mr',
-           u'Ad-Medium Recangle', blocks=3),
+           u'Ad-Medium Recangle', blocks=2),
     Layout('dmr',
-           u'Double Ad-Medium Recangle', blocks=2)
+           u'Double Ad-Medium Recangle', blocks=1)
 ]
 
 

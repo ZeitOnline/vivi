@@ -136,4 +136,4 @@ When deleting another teaser block, a placeholder is created instead:
 >>> block_count('type-teaser')
 1
 >>> block_count('type-placeholder')
-1
+0
