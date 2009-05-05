@@ -379,6 +379,42 @@ class TestSorting(Test):
             'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
             '${block1}')
 
+    def test_informatives(self):
+        s = self.selenium
+        self.open_centerpage()
+
+        # Add a teaser list
+        s.click('css=#cp-informatives > * > .edit > a')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
+        s.click('link=List of teasers')
+        s.waitForElementPresent('css=.block.type-teaser')
+        s.storeAttribute('css=.block.type-teaser@id', 'block1')
+
+        # Add a second teaser list
+        s.click('css=#cp-informatives > * > .edit > a')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
+        s.click('link=List of teasers')
+        s.waitForElementPresent(
+            'css=.block.type-teaser + .block.type-teaser')
+        s.storeAttribute(
+            'css=.block.type-teaser + .block.type-teaser@id',
+            'block2')
+
+        s.storeElementHeight('id=${block2}', 'height');
+        s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
+
+        s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
+                      '0,${delta_y}')
+        s.waitForElementPresent(
+            'css=.block.type-teaser + .block.type-teaser')
+        s.verifyAttribute(
+            'css=.block.type-teaser + .block.type-teaser@id',
+            '${block1}')
+
 
 class TestLandingZone(Test):
 
