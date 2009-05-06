@@ -75,7 +75,6 @@ class HTMLConverter(object):
                     node, pretty_print=True, encoding=unicode))
         return '\n'.join(html)
 
-
     def from_html(self, tree, value):
         """set article html."""
         tree = zope.security.proxy.removeSecurityProxy(tree)
