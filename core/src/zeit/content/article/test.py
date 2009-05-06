@@ -13,7 +13,10 @@ import zope.app.testing.functional
 import zope.testing.renormalizing
 from zope.testing import doctest
 
-product_config = {}
+product_config = {
+    'cds-import-valid-path': 'online',
+    'cds-import-invalid-path': 'cds/invalid',
+}
 
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),

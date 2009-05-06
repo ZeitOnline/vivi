@@ -35,4 +35,11 @@
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 
+  <principal
+    id="zope.cds"
+    title="Content-Drehscheibe"
+    login="zope-cds"
+    password="zope-cdspw"
+    />
+
 </configure>

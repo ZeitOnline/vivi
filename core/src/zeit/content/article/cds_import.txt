@@ -1,10 +1,7 @@
 CDS import
 ==========
 
-Imporing content from the CDS XXX bla bla bala [#functional]_
-
-Let's create some test data in the filestore:
-
+CDS content is imported from a filestore[#functional]_:
 
 >>> import zeit.content.article.cds
 >>> fs = zeit.content.article.cds.get_cds_filestore('cds-import')
@@ -29,6 +26,8 @@ Let's create some test data in the filestore:
 ...      name="text-length">2000</attribute>
 ...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
 ...     name="author">Dave Bowman</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...     name="ressort">Wissen</attribute>
 ...  </head>
 ... </article>
 ... """
@@ -39,7 +38,7 @@ Let's create some test data in the filestore:
 >>> with fs.create('art2') as f:
 ...     f.write(article_xml.replace('2007', '2001'))
 >>> with fs.create('art3') as f:
-...     f.write(article_xml.replace('Kanzlerin', 'Bauerin'))
+...     f.write(article_xml.replace('Wissen', 'Unwissen'))
 
 Move the created files to 'new':
 
@@ -65,6 +64,15 @@ to be 2008/26):
 2007
 >>> print article.title
 Jahr der Überraschungen
+>>> print article.ressort
+Wissen
+
+It was last modified by the importer:
+
+>>> import zeit.cms.workflow.interfaces
+>>> print zeit.cms.workflow.interfaces.IModified(article).last_modified_by
+zope.cds
+
 
 The article is marked as being a tagesspiegel article:
 
@@ -99,11 +107,74 @@ True
 >>> zeit.content.article.cds.import_one()
 False
 
-All files have been imported now:
+All files have been imported now. art1 and art2 have been imported to the
+working area:
 
 >>> list(container)
-[u'art1', u'art2', u'art3']
+[u'art1', u'art2']
 
+art3 has an invalid ressort and thus was imported to /cds/invalid/year/volume:
+
+>>> invalid_ressort_container = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/cds/invalid/2008/26')
+>>> list(invalid_ressort_container)
+[u'art3']
+
+
+Colission detection
++++++++++++++++++++
+
+When an object is imported which is already in the system (determined by UUID),
+it will not be imported, *if* it was changed in the CMS.
+
+Import an article with a UUID[#patch-connector]_:
+
+>>> data = article_xml.replace('<head>', """\
+... <head><attribute
+...     xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+...     py:pytype="str"
+...     ns="http://namespaces.zeit.de/CMS/document"
+...     name="uuid">{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}</attribute>
+... """)    
+>>> with fs.create('art-uuid') as f:
+...     f.write(data)
+>>> fs.move('art-uuid', 'tmp', 'new')
+>>> zeit.content.article.cds.import_one()
+True
+>>> print container['art-uuid'].title
+Jahr der Überraschungen
+
+
+Without change the article will be overwritten:
+
+>>> search_returns = container['art-uuid'].uniqueId
+>>> with fs.create('art-uuid-2') as f:
+...     f.write(data.replace('Jahr', 'Monat'))
+>>> fs.move('art-uuid-2', 'tmp', 'new')
+>>> zeit.content.article.cds.import_one()
+True
+>>> print container['art-uuid'].title
+Monat der Überraschungen
+
+When we change the imported article, it is not overwritten:
+
+>>> p = zeit.cms.testing.create_interaction()
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(container['art-uuid']) as co:
+...     co.title = u'Tag der Ueberraschungen'
+>>> with fs.create('art-uuid-3') as f:
+...     f.write(data.replace('Jahr', 'Stunde'))
+>>> fs.move('art-uuid-3', 'tmp', 'new')
+>>> zeit.content.article.cds.import_one()
+True
+>>> print container['art-uuid'].title
+Tag der Ueberraschungen
+
+
+Same filenames
+++++++++++++++
+
+XXX to be done
 
 
 Runner integration
@@ -138,12 +209,24 @@ The real appmain is:
 
 
 
->>> zope.app.component.hooks.setSite(old_site)
+Clean up:
+
+>>> zeit.connector.mock.Connector.search = old_search
 
 
 .. [#functional]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
 
+.. [#patch-connector] We have to patch the connector, so the search for the
+    uuid gives us a useful result:
+
+    >>> import zeit.connector.mock
+    >>> search_returns = None
+    >>> def new_search(self, metadata, query):
+    ...     if search_returns and search_returns in self:
+    ...         return [(search_returns,)]
+    ...     return []
+    >>> old_search = zeit.connector.mock.Connector.search
+    >>> zeit.connector.mock.Connector.search = new_search
