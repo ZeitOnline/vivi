@@ -73,7 +73,6 @@ True
 
 There is a different icon defined for tagesspiegel:
 
-
 >>> import zeit.cms.browser.interfaces
 >>> import zope.publisher.browser
 >>> request = zope.publisher.browser.TestRequest(
