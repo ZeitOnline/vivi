@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.i18n import MessageFactory as _
 import UserDict
 import itertools
 import lxml.etree
@@ -20,7 +21,8 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                  UserDict.DictMixin):
     """XXX docme"""
 
-    zope.interface.implements(zeit.content.cp.interfaces.ICenterPage)
+    zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
+                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
@@ -74,6 +76,7 @@ def cms_content_iter(context):
 def update_centerpage_on_checkin(context, event):
     for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
         context.updateMetadata(content)
+
 
 @zope.component.adapter(
     zope.interface.Interface,
