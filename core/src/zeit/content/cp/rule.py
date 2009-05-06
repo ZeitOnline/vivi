@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
+import itertools
 import urllib2
 import zeit.content.cp.interfaces
 import zope.app.appsetup.product
@@ -168,3 +169,20 @@ class Validator(object):
             if status.message:
                 self.messages.append(status.message)
 
+
+class CenterPageValidator(object):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IValidator)
+
+    status = None
+
+    def __init__(self, context):
+        self.messages = []
+        self.context = context
+        areas = context.values()
+        for item in itertools.chain(areas, *[a.values() for a in areas]):
+            validator = zeit.content.cp.interfaces.IValidator(item)
+            if self.status != ERROR:
+                self.status = validator.status
+            if validator.messages:
+                self.messages.extend(validator.messages)

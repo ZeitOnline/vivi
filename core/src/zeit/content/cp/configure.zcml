@@ -136,4 +136,8 @@
   <adapter
     for="zeit.content.cp.interfaces.IArea"
     factory=".rule.Validator" />
+
+  <adapter
+    for="zeit.content.cp.interfaces.ICenterPage"
+    factory=".rule.CenterPageValidator" />
 </configure>
