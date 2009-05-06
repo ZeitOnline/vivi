@@ -95,9 +95,11 @@ def FunctionalDocFileSuite(*paths, **kw):
 
 class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
     layer = cms_layer
+    product_config = {}
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
+        setup_product_config(self.product_config)
         zope.app.component.hooks.setSite(self.getRootFolder())
         principal = zeit.cms.testing.create_interaction(u'zope.user')
 
