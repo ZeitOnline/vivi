@@ -3,15 +3,12 @@
 
 from zeit.content.cp.rule import Rule
 import unittest
-import zeit.cms.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
 import zope.component
 
 
-class RuleTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.layer
+class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         super(RuleTest, self).setUp()
@@ -88,6 +85,7 @@ error_if(is_area)
 """)
         s = r.apply(self.cp['lead'])
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+
 
 def test_suite():
     return unittest.makeSuite(RuleTest)

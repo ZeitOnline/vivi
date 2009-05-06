@@ -1,10 +1,9 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import __future__
 import contextlib
 import unittest
-import zeit.cms.testing
+import zeit.content.cp.browser
 import zeit.content.cp.testing
 import zope.app.component.hooks
 import zope.security.management
@@ -46,15 +45,10 @@ def site(root):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+    return zeit.content.cp.testing.FunctionalDocFileSuite(
         'README.txt',
         'placeholder.txt',
         'rule.txt',
         'teaserbar.txt',
         'teaserblock.txt',
-        checker=zeit.content.cp.testing.checker,
-        layer=zeit.content.cp.testing.layer,
-        product_config=zeit.content.cp.testing.product_config,
-        globs=dict(with_statement=__future__.with_statement)))
-    return suite
+        package=zeit.content.cp.browser)

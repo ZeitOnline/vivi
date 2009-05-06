@@ -1,13 +1,16 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import __future__
 import pkg_resources
 import re
+import zeit.cms.testing
 import zope.testing.renormalizing
 
 
 product_config = {'zeit.content.cp': {'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests', 'rule_testdata.py')}}
+
 
 layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
@@ -19,3 +22,16 @@ checker = zope.testing.renormalizing.RENormalizing([
      "<GUID>"),
     (re.compile('0x[0-9a-f]+'), "0x..."),
 ])
+
+
+def FunctionalDocFileSuite(*args, **kw):
+    kw.setdefault('checker', checker)
+    kw.setdefault('layer', layer)
+    kw.setdefault('product_config', product_config)
+    kw.setdefault('globs', dict(with_statement=__future__.with_statement))
+    return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
+
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+    layer = layer
+    product_config = product_config

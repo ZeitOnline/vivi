@@ -11,9 +11,7 @@ import zeit.content.cp.testing
 import zope.component
 
 
-class TeaserBarTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.layer
+class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TeaserBarTest, self).setUp()
