@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Test-Basisklasse zeit.cms.testing.FunctionalTestCase hinzugefügt.
 
+- Hilfsfunktion um beliebigen Ordner in Abhängigkeit von der aktuellen Ausgabe
+  zu bekommen.
+
 1.19.2 (2009-04-30)
 -------------------
 

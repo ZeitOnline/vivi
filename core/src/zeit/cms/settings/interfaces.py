@@ -19,10 +19,13 @@ class IGlobalSettings(zope.interface.Interface):
         min=1,
         max=53)
 
-    def get_online_working_directory():
+    def get_working_directory(prefix):
         """Return the collection which is the main working directory.
 
-        This is /online/year/volume. If that collection does not exist, it will
-        be created before returning it.
+        prefix: sequence of path elements to prefix. A prefix of ('online',)
+        results in /online/year/volume.
+
+        If the respective collection does not exist, it will be created before
+        returning it.
 
         """

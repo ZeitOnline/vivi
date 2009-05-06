@@ -27,14 +27,14 @@ Set values:
 The current online working directory is accessible via a method. It is created
 on the fly, when it does not exist:
 
->>> collection = settings.get_online_working_directory()
+>>> collection = settings.get_working_directory(('online',))
 >>> collection.uniqueId
 u'http://xml.zeit.de/online/2004/21'
 
 Make sure getting the collection does also work when it alreay exists of
 course:
 
->>> collection = settings.get_online_working_directory()
+>>> collection = settings.get_working_directory(('online',))
 >>> collection.uniqueId
 u'http://xml.zeit.de/online/2004/21'
 

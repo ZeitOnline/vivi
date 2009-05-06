@@ -19,11 +19,11 @@ class GlobalSettings(persistent.Persistent):
     default_year = 2008
     default_volume = 26
 
-    def get_online_working_directory(self):
+    def get_working_directory(self, prefix):
         target_folder = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/')
-        for next_name in ('online', str(self.default_year),
-                          str(self.default_volume)):
+        for next_name in tuple(prefix) + (str(self.default_year),
+                                          str(self.default_volume)):
             if next_name not in target_folder:
                 target_folder[next_name] = zeit.cms.repository.folder.Folder()
             target_folder = target_folder[next_name]
