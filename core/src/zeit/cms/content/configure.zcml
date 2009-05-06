@@ -35,6 +35,8 @@
   <adapter factory=".contentuuid.ContentUUID" />
   <adapter factory=".contentuuid.properties" />
   <subscriber handler=".contentuuid.set_uuid" />
+  <adapter factory=".contentuuid.SimpleUUID" />
+  <adapter factory=".contentuuid.uuid_to_content" />
 
   <!-- Keywords -->
 

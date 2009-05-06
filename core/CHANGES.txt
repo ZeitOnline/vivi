@@ -9,6 +9,8 @@ zeit.cms changes
 - Hilfsfunktion um beliebigen Ordner in Abhängigkeit von der aktuellen Ausgabe
   zu bekommen.
 
+- Adaptieren eines UUID-Objektes auf ICMSContent liefert das Objekt zur UUID.
+
 1.19.2 (2009-04-30)
 -------------------
 

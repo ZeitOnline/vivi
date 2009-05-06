@@ -12,11 +12,8 @@ We need an interaction as checkout manager needs to get the principal:
 
 We checkout a test content object:
 
->>> import zeit.cms.repository.interfaces
->>> import zope.component
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
->>> content = repository['testcontent']
+>>> import zeit.cms.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 
 It won't have a unique id yet:
 
@@ -73,6 +70,30 @@ The XML content will contain the unique id:
   </head>
   <body/>
 </testtype>
+
+
+Once a content has a unique id it can be retrieved using the UUID. Due to
+limited search capabilities in the tests we use the somalia article to show
+this:
+
+>>> co = ICheckoutManager(zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')).checkout()
+>>> somalia = ICheckinManager(co).checkin()
+
+Usually, when looking up an object via UUID one only has the UUID as string:
+
+>>> uuid = zeit.cms.content.interfaces.IUUID(somalia).id
+
+The UUID can be adapted to IUUID to get an object which represents the UUID:
+>>> uuid_obj = zeit.cms.content.interfaces.IUUID(uuid)
+
+This object can be adapted then:
+
+>>> content = zeit.cms.interfaces.ICMSContent(uuid_obj)
+Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a97ba-131d-4cd0-90b2-f52feecaabb0}")
+
+>>> print content.uniqueId
+http://xml.zeit.de/online/2007/01/Somalia
 
 
 Cleanup

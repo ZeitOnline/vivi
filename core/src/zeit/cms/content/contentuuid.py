@@ -1,14 +1,19 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import logging
 import uuid
-import zeit.cms.content.dav
-import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
-import zeit.connector.interfaces
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.connector.interfaces
+import zeit.connector.search
 import zope.component
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class ContentUUID(object):
@@ -38,3 +43,30 @@ def set_uuid(context, event):
     if content_uuid.id is not None:
         return
     content_uuid.id = '{urn:uuid:%s}' % uuid.uuid4()
+
+
+
+class SimpleUUID(object):
+
+    zope.component.adapts(basestring)
+    zope.interface.implements(zeit.cms.content.interfaces.IUUID)
+
+    def __init__(self, context):
+        self.id = context
+
+
+@zope.component.adapter(zeit.cms.content.interfaces.IUUID)
+@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+def uuid_to_content(uuid):
+    connector = zope.component.getUtility(
+        zeit.connector.interfaces.IConnector)
+    uuid_var = zeit.connector.search.SearchVar(
+        'uuid', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+    result = list(connector.search([], uuid_var == uuid.id))
+    if not result:
+        return None
+    if len(result) > 1:
+        log.critical('There %s objects for uuid %s. Using first one.' % (
+            len(result), uuid))
+    unique_id = result[0][0]
+    return zeit.cms.interfaces.ICMSContent(unique_id)
