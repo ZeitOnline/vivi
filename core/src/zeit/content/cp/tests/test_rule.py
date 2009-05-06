@@ -26,58 +26,68 @@ class RuleTest(zeit.cms.testing.FunctionalTestCase):
                  applicable(False)
                  invalid_name
                  """)
-        self.assertEquals(None, r.apply(self.teaser))
+        s = r.apply(self.teaser)
+        self.assertEquals(None, s.status)
 
     def test_valid_rule_should_return_none(self):
         r = Rule("""
                  applicable(True)
                  """)
-        self.assertEquals(None, r.apply(self.teaser))
+        s = r.apply(self.teaser)
+        self.assertEquals(None, s.status)
 
     def test_invalid_rule_should_return_code(self):
         r = Rule("""
                  error_if(True)
                  """)
-        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
+        s = r.apply(self.teaser)
+        self.assertEquals(
+            zeit.content.cp.rule.ERROR, s.status)
 
         r = Rule("""
                  error_unless(False)
                  """)
-        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 
     def test_warning_with_message(self):
         r = Rule("""
                  warning_unless(False, "A dire warning")
                  """)
-        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
-        self.assertEquals('A dire warning', r.message)
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.WARNING, s.status)
+        self.assertEquals('A dire warning', s.message)
 
         r = Rule("""
                  warning_if(True)
                  """)
-        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.WARNING, s.status)
 
     def test_error_overrides_warning(self):
         r = Rule("""
                  error_if(True, "An error message")
                  warning_if(True, "A warning")
                  """)
-        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.teaser))
-        self.assertEquals('An error message', r.message)
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+        self.assertEquals('An error message', s.message)
 
     def test_block_rule(self):
         r = Rule("""
                  warning_if(is_block)
                  error_if(is_area)
                  """)
-        self.assertEquals(zeit.content.cp.rule.WARNING, r.apply(self.teaser))
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.WARNING, s.status)
 
     def test_area_rule(self):
         r = Rule("""
                  warning_if(is_block)
                  error_if(is_area)
                  """)
-        self.assertEquals(zeit.content.cp.rule.ERROR, r.apply(self.cp['lead']))
+        s = r.apply(self.cp['lead'])
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 
 def test_suite():
     return unittest.makeSuite(RuleTest)

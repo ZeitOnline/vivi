@@ -1,13 +1,10 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import pkg_resources
-import re
 import unittest
 import zeit.cms.testing
 import zeit.content.cp
 import zeit.content.cp.testing
-import zope.app.testing.functional
 
 
 def test_suite():
@@ -20,5 +17,6 @@ def test_suite():
         'teaserblock.txt',
         package=zeit.content.cp,
         checker=zeit.content.cp.testing.checker,
+        product_config=zeit.content.cp.testing.product_config,
         layer=zeit.content.cp.testing.layer))
     return suite

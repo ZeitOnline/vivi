@@ -25,5 +25,4 @@
 
   <include package="zeit.cms.testcontenttype" />
 
-
 </configure>

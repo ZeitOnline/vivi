@@ -55,5 +55,6 @@ def test_suite():
         'teaserblock.txt',
         checker=zeit.content.cp.testing.checker,
         layer=zeit.content.cp.testing.layer,
+        product_config=zeit.content.cp.testing.product_config,
         globs=dict(with_statement=__future__.with_statement)))
     return suite

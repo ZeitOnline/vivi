@@ -3,10 +3,11 @@
 
 import pkg_resources
 import re
-import unittest
-import zeit.cms.testing
-import zope.app.testing.functional
+import zope.testing.renormalizing
 
+
+product_config = {'zeit.content.cp': {'rules-url': 'file://%s' % pkg_resources.resource_filename(
+            'zeit.content.cp.tests', 'rule_testdata.py')}}
 
 layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
@@ -18,16 +19,3 @@ checker = zope.testing.renormalizing.RENormalizing([
      "<GUID>"),
     (re.compile('0x[0-9a-f]+'), "0x..."),
 ])
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        'teaser.txt',
-        'teaserblock.txt',
-        'cmscontentiterable.txt',
-        'rule.txt',
-        checker=checker,
-        layer=layer))
-    return suite

@@ -13,7 +13,6 @@ Validating a centerpage
 >>> bookmark = browser.url
 
 >>> browser.getLink('Add teaser bar').click()
->>> browser.handleErrors = False
 >>> browser.open(bookmark)
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(bookmark)
