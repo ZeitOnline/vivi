@@ -27,7 +27,6 @@ class Status(object):
 
 class Rule(object):
     def __init__(self, code):
-        code = '\n'.join([line.strip() for line in code.split('\n')])
         self.code = compile(code, '<string>', 'exec')
 
     def apply(self, context):
