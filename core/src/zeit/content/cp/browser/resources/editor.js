@@ -26,7 +26,7 @@ zeit.content.cp.getParentComponent = function(context_element) {
 
 
 zeit.content.cp.Editor = gocept.Class.extend({
-    
+
     construct: function() {
         var self = this;
         self.content = $('cp-content');
@@ -156,7 +156,7 @@ zeit.content.cp.in_context.Base = gocept.Class.extend({
         log("Creating " + self.__name__ + " for " + context_aware.__name__)
         self.context_aware = context_aware;
         self.events = [];
-        
+
         self.init();
 
         self.events.push(MochiKit.Signal.connect(
@@ -300,7 +300,7 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
         d.addCallback(function(result) {
             MochiKit.Signal.signal(self.editor, 'reload');
         });
-        
+
     },
 
     get_droppable_element_for: function(element) {
@@ -308,7 +308,7 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
             return element;
         }
         var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            element, null, 'block'); 
+            element, null, 'block');
         return block;
     },
 
@@ -365,7 +365,7 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
                     overlap: 'vertical',
            }));
         });
-        
+
         self.options().lastValue = self.serialize();
         this.events.push(MochiKit.Signal.connect(
             MochiKit.DragAndDrop.Draggables, 'start',
