@@ -44,6 +44,13 @@ While a centerpage has validation errors, it can not be published:
 <...Could not publish http://xml.zeit.de/online/2007/01/island
 since it has validation errors...
 
+Technical detail: The centerpage's workflow form inherits from the default
+workflow form, but hides a few fields:
+
+>>> browser.getControl('Urgent')
+Traceback (most recent call last):
+LookupError: label 'Urgent'
+
 Get rid of the remaining error by adding enough teaser blocks:
 
 >>> browser.open('@@checkout')
