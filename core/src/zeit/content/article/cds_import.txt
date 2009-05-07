@@ -174,7 +174,20 @@ Tag der Ueberraschungen
 Same filenames
 ++++++++++++++
 
-XXX to be done
+When the same file is imported with a differend UUID (or no UID) articles are
+*not* overwritten:
+
+
+>>> 'art1' in container
+True
+>>> with fs.create('art1') as f:
+...     f.write(article_xml)
+>>> fs.move('art1', 'tmp', 'new')
+>>> zeit.content.article.cds.import_one()
+True
+>>> list(container)
+[u'art-uuid', u'art1', u'art1-2', u'art2']
+
 
 
 Runner integration

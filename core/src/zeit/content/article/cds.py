@@ -17,6 +17,7 @@ import zeit.content.article.interfaces
 import zope.app.appsetup
 import zope.app.component.hooks
 import zope.component
+import zope.container.interfaces
 
 
 log = logging.getLogger(__name__)
@@ -109,6 +110,8 @@ def import_one():
         prefix = (valid_path if article.ressort else invalid_path)
         container = settings.get_working_directory(prefix)
     if import_:
+        name = zope.container.interfaces.INameChooser(container).chooseName(
+            name, article)
         container[name] = article
 
     fs.move(filename, 'new', 'cur')
