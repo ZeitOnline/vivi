@@ -12,6 +12,7 @@ import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.content.cp.interfaces
+import zeit.workflow.timebased
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
@@ -92,3 +93,15 @@ def modified_propagator(context, event):
     zope.security.proxy.removeSecurityProxy(cp)._p_changed = True
     global _test_helper_cp_changed
     _test_helper_cp_changed = True
+
+
+class CenterPageWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
+
+    zope.interface.implements(zeit.content.cp.interfaces.ICenterPageWorkflow)
+    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
+
+    def can_publish(self):
+        validator = zeit.content.cp.interfaces.IValidator(self.context)
+        if validator.status == zeit.content.cp.rule.ERROR:
+            return False
+        return True

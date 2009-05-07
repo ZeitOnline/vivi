@@ -362,6 +362,7 @@ A teaser block can be set on 'autopilot'. In this mode, it will retrieve teasers
 from another CenterPage for display. To demonstrate this, we first create
 another CenterPage:
 
+>>> browser.handleErrors = False
 >>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
 >>> browser.open('contents')
 >>> foreign_url = browser.url

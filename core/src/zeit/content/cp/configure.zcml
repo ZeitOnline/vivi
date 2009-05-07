@@ -17,9 +17,24 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".centerpage.CenterPageWorkflow">
+    <require
+      permission="zope.View"
+      interface=".interfaces.ICenterPageWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.ICenterPageWorkflow"
+      />
+  </class>
+
   <adapter factory=".centerpage.resourceFactory" />
   <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
   <adapter factory=".centerpage.cms_content_iter" />
+  <adapter factory=".centerpage.CenterPageWorkflow" 
+    provides="zeit.content.cp.interfaces.ICenterPageWorkflow"
+    trusted="yes"
+    />
   <subscriber handler=".centerpage.modified_propagator" />
   <subscriber handler=".centerpage.update_centerpage_on_checkin" />
   <subscriber

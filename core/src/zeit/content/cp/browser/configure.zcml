@@ -87,4 +87,8 @@
   <include file="landing.zcml" />
   <include file="teaserblock.zcml" />
 
+  <adapter
+    factory=".workflow.CenterPageWorkflowForm"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    />
 </configure>

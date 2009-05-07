@@ -1,13 +1,14 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.workflow.interfaces
 import zeit.content.cp.layout
 import zope.container.interfaces
 import zope.interface
-from zeit.content.cp.i18n import MessageFactory as _
 
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
@@ -30,6 +31,10 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
     def updateMetadata(content):
         """Update the metadata of the given content object."""
+
+
+class ICenterPageWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
+    pass    
 
 
 class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,

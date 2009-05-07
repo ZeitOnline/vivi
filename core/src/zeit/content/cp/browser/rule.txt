@@ -1,27 +1,69 @@
 Validating a centerpage
 =======================
 
+If a centerpage has validation errors, the corresponding elements are
+highlighted.
+
 >>> import z3c.etestbrowser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.xml_strict = True
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
-
 >>> import zeit.content.cp.browser.tests
 >>> zeit.content.cp.browser.tests.create_cp(browser)
-
 >>> cp_url = browser.url
 >>> browser.open('contents')
 >>> bookmark = browser.url
 
+There are two example rules, see rule_testdata.py:
+
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(bookmark)
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(bookmark)
+
+After adding a second teaser bar, both rules are violated:
+
 >>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
 2
+
+Get rid of the second violation by setting the correct layout:
 
 >>> browser.getLink('Edit', index=1).click()
 >>> browser.getLink(index=2).click()
 >>> browser.open(bookmark)
 >>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
 1
+
+While a centerpage has validation errors, it can not be published:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@checkin')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Save state and publish now').click()
+>>> print browser.contents
+<...Could not publish http://xml.zeit.de/online/2007/01/island
+since it has validation errors...
+
+Get rid of the remaining error by adding enough teaser blocks:
+
+>>> browser.open('@@checkout')
+>>> browser.open(bookmark)
+>>> for i in range(3):
+...     browser.open(bookmark)
+...     browser.getLink('Add block').click()
+...     browser.open(bookmark)
+...     browser.getLink('Click here to choose the block type.').click()
+...     browser.getLink('List of teasers').click()
+>>> browser.open(bookmark)
+>>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
+0
+
+Now we can publish:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@checkin')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Save state and publish now').click()
+>>> print browser.contents
+<...http://xml.zeit.de/online/2007/01/island has been scheduled
+for publishing...

@@ -23,7 +23,7 @@ The teaser block contains a list of teasers[#functional]_.
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...
     cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
-  <block href="http://xml.zeit.de/testcontent">
+  <block href="http://xml.zeit.de/testcontent"...>
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
     <text xsi:nil="true"/>
@@ -39,7 +39,7 @@ The teaser block contains a list of teasers[#functional]_.
     </homepage>
     <references/>
   </block>
-  <block href="http://xml.zeit.de/2007/test"/>
+  <block href="http://xml.zeit.de/2007/test".../>
 </container>
 
 
@@ -90,7 +90,7 @@ teasers are copied into it:
 >>> teasers.autopilot = False
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
-  <block href="http://xml.zeit.de/testcontent">
+  <block href="http://xml.zeit.de/testcontent"...>
   ...
   </block>
   <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
