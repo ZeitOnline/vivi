@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+1.7.2 (unreleased)
+------------------
+
+- Wenn DAV-Propertys aus dem XML geladen werden, werden leere Propertys
+  ignoriert. Das löst das "None" bei Autoren.
+
 1.7.1 (2009-05-07)
 ------------------
 

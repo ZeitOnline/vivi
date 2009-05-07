@@ -63,12 +63,13 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         return len(self.xml.body.findall('p'))
 
     def updateDAVFromXML(self):
-        properties = zeit.connector.interfaces.IWebDAVProperties(self)        
+        properties = zeit.connector.interfaces.IWebDAVProperties(self)
         for el in self.xml.head.attribute:
             name = el.get('name')
             ns = el.get('ns')
             value = el.text
-            properties[(name, ns)] = value
+            if value:
+                properties[(name, ns)] = value
 
 articleFactory = zeit.cms.content.adapter.xmlContentFactory(Article)
 

@@ -186,6 +186,8 @@ reflected in the WebDAV properties:
 ...      name="text-length">2000</attribute>
 ...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
 ...     name="author">Dave Bowman</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...     name="empty"></attribute>
 ...  </head>
 ... </article>
 ... """)
@@ -207,7 +209,7 @@ We can import the data from the article:
 
 >>> article.updateDAVFromXML()
 
-Now the WebDAV properties are there::
+Now the WebDAV properties are there, besides the empty one:
 
 >>> sorted(properties.keys())
 [('author', 'http://namespaces.zeit.de/CMS/document'), 
