@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-1.7 (unreleased)
+1.7 (2009-05-07)
 ----------------
 
 - Content-Drehscheibe: Kommt ein veränderter Artikel mit der selben UUID noch
