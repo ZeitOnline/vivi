@@ -62,7 +62,7 @@ def uuid_to_content(uuid):
         zeit.connector.interfaces.IConnector)
     uuid_var = zeit.connector.search.SearchVar(
         'uuid', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
-    result = list(connector.search([], uuid_var == uuid.id))
+    result = list(connector.search([uuid_var], uuid_var == uuid.id))
     if not result:
         return None
     if len(result) > 1:
