@@ -46,7 +46,7 @@
 
 
   <subscriber handler=".article.updateTextLengthOnChange" />
-  
+
   <interface
     interface=".interfaces.IArticle"
     type="zeit.cms.interfaces.ICMSContentType"
@@ -91,46 +91,48 @@
     />
 
 
-    
-  <!-- traversing --> 
+
+  <!-- traversing -->
+
   <adapter 
     factory="z3c.traverser.traverser.PluggableTraverser"
     for="zeit.content.article.interfaces.IArticle
-         zeit.cms.browser.interfaces.ICMSLayer"
+    zeit.cms.browser.interfaces.ICMSLayer"
     />
-   <subscriber
-     factory=".recension.RecensionContainerTraverser"
-     for="zeit.content.article.interfaces.IArticle
-          zeit.cms.browser.interfaces.ICMSLayer"
-     provides="z3c.traverser.interfaces.ITraverserPlugin"
-     />
-  
+  <subscriber
+    factory=".recension.RecensionContainerTraverser"
+    for="zeit.content.article.interfaces.IArticle
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
 
   <adapter 
     factory="z3c.traverser.traverser.PluggableTraverser"
     for="zeit.content.article.interfaces.IBookRecensionContainer
-         zeit.cms.browser.interfaces.ICMSLayer"
+    zeit.cms.browser.interfaces.ICMSLayer"
     />
-   <subscriber
-     factory=".recension.RecensionTraverser"
-     for="zeit.content.article.interfaces.IBookRecensionContainer
-          zeit.cms.browser.interfaces.ICMSLayer"
-     provides="z3c.traverser.interfaces.ITraverserPlugin"
-     />
+  <subscriber
+    factory=".recension.RecensionTraverser"
+    for="zeit.content.article.interfaces.IBookRecensionContainer
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
 
-   <!-- comments -->
+  <!-- comments -->
 
-   <adapter factory=".comment.AggregatedComments" trusted="yes"/>
-   <class class=".comment.AggregatedComments">
-     <require
-       interface=".interfaces.IAggregatedComments"
-       permission="zope.View"
-       />
-     <require
-       set_schema=".interfaces.IAggregatedComments"
-       permission="zeit.EditContent"
-       />
-   </class>
-   <adapter factory=".comment.webdav_properties" />
+  <adapter factory=".comment.AggregatedComments" trusted="yes"/>
+  <class class=".comment.AggregatedComments">
+    <require
+      interface=".interfaces.IAggregatedComments"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAggregatedComments"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <adapter factory=".comment.webdav_properties" />
+
 
 </configure>
