@@ -37,6 +37,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             self, 'handleContentClick');
         MochiKit.Signal.connect(
             self, 'reload', self, 'reload');
+        new zeit.cms.ToolTipManager(self.content);
     },
 
     handleContentClick: function(event) {

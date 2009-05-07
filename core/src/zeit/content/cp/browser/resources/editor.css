@@ -186,11 +186,15 @@
 }
 
 #cp-content .validation-error {
-  border: 2px solid #DC143C;
+  background-color: #FAE9E6;
+  border: 2px solid #FF9280;
+  padding: 1em;
 }
 
 #cp-content .validation-warning {
-  border: 2px solid #FF8C00;
+  background-color: #FFF7C4;
+  border: 2px solid #FFEE88;
+  padding: 1em;
 }
 
 .edit-bar > .locked-indicator > img {
