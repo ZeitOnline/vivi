@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-1.7.2 (unreleased)
+1.7.2 (2009-05-07)
 ------------------
 
 - Wenn DAV-Propertys aus dem XML geladen werden, werden leere Propertys
