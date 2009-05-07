@@ -7,6 +7,7 @@ import gocept.filestore
 import gocept.runner
 import logging
 import lovely.remotetask.interfaces
+import lxml.etree
 import os.path
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -66,7 +67,7 @@ def export(object, event):
         return
     fs = get_cds_filestore('cds-export')
     if fs is None:
-        log.debug('Filestore is not set. Exiting.')
+        log.error('Filestore is not set. Exiting.')
         return
     uuid = zeit.cms.content.interfaces.IUUID(object).id
     filename = '%s.xml' % uuid
@@ -79,21 +80,19 @@ def export(object, event):
     log.debug('File %s was created. Leaving.' % filename)
 
 
-def import_one():
-    fs = get_cds_filestore('cds-import')
-    files = sorted(fs.list('new'))
-    if not files:
-        return False
-
+def import_file(path):
+    """Import single file from CDS."""
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.article')
     valid_path = config['cds-import-valid-path'].split('/')
     invalid_path = config['cds-import-invalid-path'].split('/')
-
-    path = files[0]
-    filename = os.path.basename(path)
     with open(path, 'rb') as f:
-        article = zeit.content.article.article.Article(f)
+        try:
+            article = zeit.content.article.article.Article(f)
+        except lxml.etree.XMLSyntaxError, e:
+            log.error('Error while importing %s: %s (%s)' % (
+                      path, type(e).__name__, e))
+            return
 
     article.updateDAVFromXML()
     zope.interface.alsoProvides(
@@ -102,9 +101,8 @@ def import_one():
     zeit.cms.workflow.interfaces.IModified(article).last_modified_by = (
         PRINCIPAL)
 
-    import_ = True
     container = None
-    name = filename
+    name = os.path.basename(path)
     uuid = zeit.cms.content.interfaces.IUUID(article)
     if uuid.id:
         existing_article = zeit.cms.interfaces.ICMSContent(uuid, None)
@@ -119,19 +117,19 @@ def import_one():
             else:
                 log.error(
                     'Error while importing %s: UUID already taken by %s' % (
-                        filename, existing_article.uniqueId))
-                import_ = False
+                        path, existing_article.uniqueId))
+                return
 
-    if import_ and container is None:
+    if container is None:
         site = zope.app.component.hooks.getSite()
         settings = zeit.cms.settings.interfaces.IGlobalSettings(site)
         prefix = (valid_path if article.ressort else invalid_path)
         container = settings.get_working_directory(prefix)
-    if import_:
-        name = zope.container.interfaces.INameChooser(container).chooseName(
-            name, article)
-        container[name] = article
-        article = container[name]
+
+    name = zope.container.interfaces.INameChooser(container).chooseName(
+        name, article)
+    container[name] = article
+    article = container[name]
 
     # Create removal job
     tasks = zope.component.getUtility(
@@ -142,8 +140,19 @@ def import_one():
         u'zeit.content.article.cds.remove_if_not_published',
         article.uniqueId, delay=delay)
 
-    fs.move(filename, 'new', 'cur')
+
+
+def import_one():
+    fs = get_cds_filestore('cds-import')
+    files = sorted(fs.list('new'))
+    if not files:
+        return False
+    path = files[0]
+    import_file(path)
+    fs.move(os.path.basename(path), 'new', 'cur')
     return True
+
+
 
 
 def import_and_schedule():

@@ -269,6 +269,23 @@ Reset the timeout to its original value:
 >>> zeit.content.article.cds.DELETE_TIMEOUT = old_timeout
 
 
+Broken XML
+++++++++++
+
+When the XML of an imported file xml doesn't parse, they're (obviously not
+imported), but no error is raises on the other hand. An error will be logged
+though:
+
+>>> with fs.create('invalid-xml') as f:
+...     f.write('snafu')
+>>> fs.move('invalid-xml', 'tmp', 'new')
+>>> zeit.content.article.cds.import_one()
+True
+>>> zeit.content.article.cds.import_one()
+False
+
+
+
 Runner integration
 ++++++++++++++++++
 

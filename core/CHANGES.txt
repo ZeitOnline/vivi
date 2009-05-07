@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.7.1 (2009-05-07)
+------------------
+
+- CDS importiert weiter, wenn eine Datei kein gültiges XML beinhaltet.
+
 1.7 (2009-05-07)
 ----------------
 
