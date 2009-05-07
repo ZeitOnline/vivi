@@ -1,8 +1,38 @@
 // Copyright (c) 2007-2009 gocept gmbh & co. kg
 // See also LICENSE.txt
 
+zeit.cms.showToolTip = function(context, text, where) {
+    var othis = this;
+    var body = $('body');
+    var div = DIV({'id': 'tooltip'});
+    div.innerHTML = text;
+    MochiKit.Style.setElementPosition(div, where);
+    body.appendChild(div);
+
+    var signals = [];
+    signals.push(
+        MochiKit.Signal.connect(
+            context, 'onmouseout', function(event) {
+                zeit.cms.hideToolTip(signals);
+    }));
+    signals.push(
+        MochiKit.Signal.connect(
+            'tooltip', 'onmousemove', function(event) {
+                zeit.cms.hideToolTip(signals);
+    }));
+};
+
+
+zeit.cms.hideToolTip = function(signals) {
+    forEach(signals, function(signal) {
+        MochiKit.Signal.disconnect(signal);
+    });
+    $('tooltip').parentNode.removeChild($('tooltip'));
+};
+
+
 zeit.cms.ToolTip = Class.extend({
-    
+
     construct: function(context, url_getter) {
         this.context = $(context);
         this.url_getter = url_getter;
@@ -30,7 +60,8 @@ zeit.cms.ToolTip = Class.extend({
                 MochiKit.Logging.log('Loading tooltip from ' + url);
                 var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
                 d.addCallback(function(result) {
-                    othis.showToolTip(
+                    zeit.cms.showToolTip(
+                        othis.context,
                         result.responseText, event.mouse().client);
                     return result;
                 });
@@ -45,35 +76,6 @@ zeit.cms.ToolTip = Class.extend({
         this.mouse_over_deferred.cancel();
         this.mouse_over_deferred = null;
     },
-
-    showToolTip: function(text, where) {
-        var othis = this;
-        var body = $('body');
-        var div = DIV({'id': 'tooltip'});
-        div.innerHTML = text;
-        MochiKit.Style.setElementPosition(div, where);
-        body.appendChild(div);
-
-        var signals = [];
-        signals.push(
-            MochiKit.Signal.connect(
-                this.context, 'onmousemove', function(event) {
-                    othis.hideToolTip(signals);
-        }));
-        signals.push(
-            MochiKit.Signal.connect(
-                'tooltip', 'onmousemove', function(event) {
-                    othis.hideToolTip(signals);
-        }));
-    },
-
-    hideToolTip: function(signals) {
-        forEach(signals, function(signal) {
-            MochiKit.Signal.disconnect(signal);
-        });
-        $('tooltip').parentNode.removeChild($('tooltip'));
-    },
-
 });
 
 
@@ -97,4 +99,19 @@ zeit.cms.LinkToolTip = zeit.cms.ToolTip.extend({
     },
 });
 
+zeit.cms.ToolTipManager = Class.extend({
+    construct: function(context) {
+        var othis = this;
+        othis.context = context;
+        connect(context, 'onmouseover', this, 'handleMouseOver');
+    },
 
+    handleMouseOver: function(event) {
+        var othis = this;
+        var target = event.target();
+        var tooltip = target.getAttribute('cms:tooltip');
+        if (tooltip) {
+            zeit.cms.showToolTip(target, tooltip, event.mouse().client);
+        }
+    },
+});

@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.19.5 (unreleased)
+-------------------
+
+- TooltipMangager hinzugefügt, der den Tooltip-Text vom jeweiligen DOM-Element holt.
+
 1.19.4 (2009-05-07)
 -------------------
 
