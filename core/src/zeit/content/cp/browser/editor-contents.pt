@@ -5,24 +5,31 @@
   <div class="cp-editor-top">
     <div id="cp-aufmacher">
       <div id="cp-aufmacher-inner"
-           class="editable-area"
-           tal:define="lead context/lead"
-           tal:attributes="cms:url lead/@@absolute_url; class python:view.css_class(lead)"
-           tal:content="structure lead/@@contents"/>
+           tal:define="area context/lead;
+                       validation python:view.validate(area)"
+           tal:attributes="cms:url area/@@absolute_url;
+                           class validation/class_;
+                           cms:tooltip validation/messages;"
+           tal:content="structure area/@@contents"/>
     </div>
 
     <div id="cp-informatives">
-      <div id="cp-informatives-inner" class="editable-area"
-           tal:define="informatives context/informatives"
-           tal:attributes="cms:url informatives/@@absolute_url; class python:view.css_class(informatives)"
-           tal:content="structure informatives/@@contents"/>
+      <div id="cp-informatives-inner"
+           tal:define="area context/informatives;
+                       validation python:view.validate(area)"
+           tal:attributes="cms:url area/@@absolute_url;
+                           class validation/class_;
+                           cms:tooltip validation/messages;"
+           tal:content="structure area/@@contents"/>
     </div>
   </div>
 
-  <div id="cp-teasermosaic" class="editable-area"
-       tal:define="mosaic context/teaser-mosaic"
-       tal:attributes="cms:url mosaic/@@absolute_url; class python:view.css_class(mosaic)"
-       tal:content="structure mosaic/@@contents">
-  </div>
+  <div id="cp-teasermosaic"
+       tal:define="area context/teaser-mosaic;
+                   validation python:view.validate(area)"
+       tal:attributes="cms:url area/@@absolute_url;
+                       class validation/class_;
+                       cms:tooltip validation/messages;"
+       tal:content="structure area/@@contents"/>
 
 </div>

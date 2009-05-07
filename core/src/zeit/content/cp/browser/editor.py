@@ -4,13 +4,18 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.content.cp.browser.rule
 
+
 class Editor(object):
 
     title = _('Edit center page')
 
-    def css_class(self, area):
-        valid_class = zeit.content.cp.browser.rule.validate(area)
-        if not valid_class:
-            return 'editable-area'
-        return ' '.join(['editable-area', valid_class])
+    def validate(self, area):
+        validation_class, validation_messages = \
+            zeit.content.cp.browser.rule.validate(area)
 
+        if not validation_class:
+            css_class = 'editable-area'
+        else:
+            css_class = ' '.join(['editable-area', validation_class])
+
+        return dict(class_=css_class, messages=validation_messages)
