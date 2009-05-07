@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.19.3 (unreleased)
+1.19.3 (2009-05-07)
 -------------------
 
 - Test-Basisklasse zeit.cms.testing.FunctionalTestCase hinzugefügt.
