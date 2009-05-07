@@ -35,6 +35,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
 
     title = _("Workflow")
+    error_message = 'publish-preconditions-not-met'
 
     @zope.formlib.form.action(_('Save state only'),
                               name='save')
@@ -55,7 +56,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
                   default=u"${id} has been scheduled for publishing.",
                   mapping=mapping))
         else:
-            self.send_message(_('publish-preconditions-not-met',
+            self.send_message(_(self.error_message,
                                 mapping=mapping),
                               type='error')
 
