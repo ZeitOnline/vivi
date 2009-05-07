@@ -10,6 +10,9 @@ zeit.content.article changes
 
 - Import-Pfade für die CDS sind konfigurierbar.
 
+- Artikel, die aus der CDS importiert wurden, werden nach 2 Tagen gelöscht,
+  wenn sie bis dahin nicht veröffentlich wurden.
+
 1.6.2 (2009-04-22)
 ------------------
 

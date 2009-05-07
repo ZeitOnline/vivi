@@ -2,17 +2,17 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
+import datetime
 import gocept.filestore
 import gocept.runner
 import logging
+import lovely.remotetask.interfaces
 import os.path
 import zeit.cms.content.interfaces
-import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
-import zeit.content.article.interfaces
 import zeit.content.article.interfaces
 import zope.app.appsetup
 import zope.app.component.hooks
@@ -24,6 +24,24 @@ log = logging.getLogger(__name__)
 
 
 PRINCIPAL =  'zope.cds'
+DELETE_TIMEOUT = datetime.timedelta(days=2)
+
+
+class RemoveIfNotPublishedTask(object):
+
+    zope.interface.implements(lovely.remotetask.interfaces.ITask)
+
+    def __call__(self, service, jobid, input):
+        article = zeit.cms.interfaces.ICMSContent(input, None)
+        if article is None:
+            # Was already deleted or moved. Do nothing.
+            return
+        if zeit.cms.workflow.interfaces.IPublishInfo(article).published:
+            # The article was published. Do nothing.
+            return
+        log.info("Removing %s because it was not published after %s" % (
+                 input, DELETE_TIMEOUT))
+        del article.__parent__[article.__name__]
 
 
 def get_cds_filestore(name):
@@ -113,9 +131,18 @@ def import_one():
         name = zope.container.interfaces.INameChooser(container).chooseName(
             name, article)
         container[name] = article
+        article = container[name]
+
+    # Create removal job
+    tasks = zope.component.getUtility(
+        lovely.remotetask.interfaces.ITaskService, 'general')
+    # Ignore microseconds:
+    delay = 60*60*24 * DELETE_TIMEOUT.days + DELETE_TIMEOUT.seconds
+    tasks.addCronJob(
+        u'zeit.content.article.cds.remove_if_not_published',
+        article.uniqueId, delay=delay)
 
     fs.move(filename, 'new', 'cur')
-
     return True
 
 

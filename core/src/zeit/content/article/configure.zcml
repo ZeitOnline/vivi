@@ -134,5 +134,10 @@
   </class>
   <adapter factory=".comment.webdav_properties" />
 
+  <!-- cds -->
+  <utility
+    factory=".cds.RemoveIfNotPublishedTask"
+    name="zeit.content.article.cds.remove_if_not_published"
+    />
 
 </configure>
