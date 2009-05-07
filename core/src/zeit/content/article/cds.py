@@ -82,6 +82,7 @@ def export(object, event):
 
 def import_file(path):
     """Import single file from CDS."""
+    log.info("Importing %s" % path)
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.article')
     valid_path = config['cds-import-valid-path'].split('/')
