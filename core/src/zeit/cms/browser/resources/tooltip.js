@@ -111,6 +111,9 @@ zeit.cms.ToolTipManager = Class.extend({
     handleMouseOver: function(event) {
         var othis = this;
         var target = event.target();
+        while (!target.hasAttribute('cms:tooltip') && target != othis.context) {
+            target = target.parentNode;
+        }
         var tooltip = target.getAttribute('cms:tooltip');
         if (tooltip) {
             zeit.cms.showToolTip(target, tooltip, event.mouse().client);
