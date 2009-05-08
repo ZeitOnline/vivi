@@ -7,6 +7,12 @@ zeit.content.cp changes
 Neue Funktionen
 ---------------
 
+- Validierungsregeln: Die unter
+  http://zip6.zeit.de:9000/cms/forms/centerpage-validation-rules.py abgelegten
+  Regeln werden auf die CenterPage angewandt. Fehler werden rot, Warnungen
+  gelb. Gibt es einen fehlerhaften Bereich, kann die CP nicht veröffentlicht
+  werden.
+
 - Für die Teaserleiste kann nun das Layout MR (einspaltiger Werbeblock),
   DMR (zweispaltiger Werbeblock) und normal (keine Werbung) ausgewählt werden
   (#5001).
