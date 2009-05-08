@@ -187,14 +187,18 @@
 
 #cp-content .validation-error {
   background-color: #FAE9E6;
-  border: 2px solid #FF9280;
-  padding: 1em;
 }
 
 #cp-content .validation-warning {
   background-color: #FFF7C4;
-  border: 2px solid #FFEE88;
-  padding: 1em;
+}
+
+.block.type-teaser-bar.validation-error > .block-inner {
+  background-color: #FAE9E6;
+}
+
+.block.type-teaser-bar.validation-warning > .block-inner {
+  background-color: #FFF7C4;
 }
 
 .edit-bar > .locked-indicator > img {
