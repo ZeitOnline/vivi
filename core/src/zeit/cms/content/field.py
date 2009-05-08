@@ -1,19 +1,19 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import xml.dom.minidom
-
+from zeit.cms.i18n import MessageFactory as _
 import lxml.etree
 import lxml.objectify
-
+import xml.dom.minidom
+import zeit.cms.content.cmssubset
 import zope.interface
+import zope.location.location
 import zope.proxy
 import zope.schema
 import zope.schema.interfaces
-
-import zeit.cms.content.cmssubset
-from zeit.cms.i18n import MessageFactory as _
+import zope.security._proxy
+import zope.security.checker
+import zope.security.proxy
 
 
 DEFAULT_MARKER = object()
@@ -54,7 +54,19 @@ class _XMLBase(zope.schema.Field):
             or current_value.getparent() is None):
             setattr(object, self.__name__, value)
         else:
+            # Locate current_value in object to get the parent pointer for
+            # the security checker
+            current_value = located(current_value, object, self.__name__)
             current_value[:] = [value]
+
+
+def located(obj, parent, name):
+    obj_ = zope.security.proxy.removeSecurityProxy(obj)
+    obj_ = zope.location.location.LocationProxy(
+        obj_, parent, name)
+    if type(obj) == zope.security._proxy._Proxy:
+        return zope.security.checker.ProxyFactory(obj_)
+    return obj_
 
 
 class XMLTree(_XMLBase):

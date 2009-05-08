@@ -79,7 +79,7 @@ Traceback (most recent call last):
 ConversionError: (ValidationError(XMLSyntaxError(u"Couldn't find end of Start Tag ed line 1, line 1, column 4",)), None)
 
 
-Dispaly field
+Display field
 +++++++++++++
 
 XMLTrees can also be displayed:

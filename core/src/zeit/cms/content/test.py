@@ -130,7 +130,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
         'adapter.txt',
-        'field.txt',
         'keyword.txt',
         'lxmlpickle.txt',
         'property.txt',
@@ -139,6 +138,7 @@ def test_suite():
         setUp=zeit.cms.testing.setUp))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'dav.txt',
+        'field.txt',
         'liveproperty.txt',
         'metadata.txt',
         'semanticchange.txt',

@@ -18,7 +18,6 @@ Create a field:
 >>> import zeit.cms.content.field
 >>> snippet = zeit.cms.content.field.XMLSnippet()
 
-
 Converting from unicode
 -----------------------
 
@@ -87,3 +86,29 @@ InvalidXML
 A valid structure passes:
 
 >>> snippet.validate(u'foo <em>b\xfcrf</em>')
+
+
+XML Tree
+========
+
+>>> from zeit.cms.content.field import XMLTree
+>>> field = XMLTree()
+>>> field.__name__ = 'xml'
+>>> class Content(object):
+...     pass
+>>> content = Content()
+>>> tree = field.fromUnicode('<container/>')
+>>> field.set(content, tree)
+>>> content.xml == tree
+True
+
+>>> content2 = Content()
+>>> content.xml['child'] = 'child'
+>>> content2.xml = content.xml['child']
+>>> tree2 = field.fromUnicode('<child>MyNewValue</child>')
+>>> field.set(content2, tree2)
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True),
+<container>
+  <child>MyNewValue</child>
+</container>
