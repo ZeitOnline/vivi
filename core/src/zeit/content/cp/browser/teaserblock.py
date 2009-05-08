@@ -51,12 +51,12 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
     @property
     def layouts(self):
+        source = self.interface['layout'].source(self.context)
         terms = zope.component.getMultiAdapter(
-            (self.interface['layout'].source,
-             self.request), zope.browser.interfaces.ITerms)
+            (source, self.request), zope.browser.interfaces.ITerms)
 
         result = []
-        for layout in self.interface['layout'].source:
+        for layout in source:
             css_class = [layout.id]
             if layout == self.context.layout:
                 css_class.append('selected')
@@ -162,7 +162,7 @@ class ChangeLayout(object):
 
     def __call__(self, id):
         layout = zope.component.getMultiAdapter(
-            (self.interface['layout'].source,
+            (self.interface['layout'].source(self.context),
              self.request), zope.browser.interfaces.ITerms).getValue(id)
         self.context.layout = layout
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(

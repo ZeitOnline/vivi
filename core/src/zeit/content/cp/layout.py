@@ -2,7 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zc.sourcefactory.basic
+import zc.sourcefactory.contextual
 import zope.interface
 
 
@@ -38,24 +38,24 @@ TEASER_BAR = [
 ]
 
 
-class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
+class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
-    def getTitle(self, value):
+    def getTitle(self, context, value):
         return value.title
 
-    def getToken(self, value):
+    def getToken(self, context, value):
         return value.id
 
 
 class TeaserBlockLayoutSource(LayoutSource):
 
-    def getValues(self):
+    def getValues(self, context):
         return TEASER_BLOCK
 
 
 class TeaserBarLayoutSource(LayoutSource):
 
-    def getValues(self):
+    def getValues(self, context):
         return TEASER_BAR
 
 

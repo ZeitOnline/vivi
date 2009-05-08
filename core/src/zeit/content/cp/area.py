@@ -139,7 +139,7 @@ class TeaserBar(zeit.content.cp.block.Block, Area):
 
     @rwproperty.getproperty
     def layout(self):
-        for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source:
+        for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source(self):
             if layout.id == self.xml.get('module'):
                 return layout
         return zeit.content.cp.interfaces.IReadTeaserBar['layout'].missing_value
