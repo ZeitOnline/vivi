@@ -50,6 +50,8 @@ class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 class TeaserBlockLayoutSource(LayoutSource):
 
     def getValues(self, context):
+        if context.__parent__.keys().index(context.__name__) != 0:
+            return [TEASER_BLOCK[1]]
         return TEASER_BLOCK
 
 
