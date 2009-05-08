@@ -340,27 +340,27 @@ textarea#form\.caption {
 
 
 
-#source-editor span.h_tag {
+span.h_tag {
   color: blue;
 }
 
-#source-editor span.h_attribute {
+span.h_attribute {
   color: purple;
 }
 
-#source-editor span.h_doublestring {
+span.h_doublestring {
   color: brown;
 }
 
-#source-editor span.h_singlestring {
+span.h_singlestring {
   color: brown;
 }
 
-#source-editor span.h_default {
+span.h_default {
   color: black;
 }
 
-#source-editor span.h_other {
+span.h_other {
   color: black;
 }
 
