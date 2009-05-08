@@ -51,4 +51,5 @@ def test_suite():
         'rule.txt',
         'teaserbar.txt',
         'teaserblock.txt',
+        'xmlblock.txt',
         package=zeit.content.cp.browser)

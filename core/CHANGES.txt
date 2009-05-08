@@ -7,6 +7,8 @@ zeit.content.cp changes
 Neue Funktionen
 ---------------
 
+- Ein neuer Content Block "XML" wurde hinzugefügt (#5277)
+
 - Validierungsregeln: Die unter
   http://zip6.zeit.de:9000/cms/forms/centerpage-validation-rules.py abgelegten
   Regeln werden auf die CenterPage angewandt. Fehler werden rot, Warnungen

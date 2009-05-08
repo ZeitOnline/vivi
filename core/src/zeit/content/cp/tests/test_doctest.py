@@ -12,4 +12,5 @@ def test_suite():
         'cmscontentiterable.txt',
         'rule.txt',
         'teaser.txt',
-        'teaserblock.txt')
+        'teaserblock.txt',
+        'xmlblock.txt')

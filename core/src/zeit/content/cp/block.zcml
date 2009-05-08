@@ -34,7 +34,6 @@
       permission="zeit.EditContent"/>
   </class>
   <adapter factory=".teaserblock.TeaserBlockFactory" name="teaser" />
-
   <adapter
     provides=".interfaces.IBlock"
     name="teaser"
@@ -55,6 +54,22 @@
     <!-- prevent circular import -->
     <implements interface=".interfaces.IBlockLayout" />
   </class>
+
+  <!-- XML block -->
+  <class class=".xmlblock.XMLBlock">
+    <require
+      interface=".interfaces.IXMLBlock"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IXMLBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".xmlblock.XMLBlockFactory" name="xmlblock" />
+  <adapter
+    provides=".interfaces.IBlock"
+    name="xmlblock"
+    factory=".xmlblock.XMLBlock"
+    />
 
 </configure>
 

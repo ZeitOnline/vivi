@@ -1,0 +1,40 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter factory=".xmlblock.form_template" name="xmledit_form"/> 
+
+  <browser:viewletManager
+    provides=".interfaces.IEditorContentViewletManager"
+    for="zeit.content.cp.interfaces.IXMLBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".xmlblock.XMLBlockViewletManager"
+    template="layout.block.contents.pt"
+    name="zeit.content.cp.editor-contents"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IXMLBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    class=".xmlblock.Display"
+    template="layout.xml.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IXMLBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".xmlblock.EditProperties"
+    permission="zeit.EditContent"
+    />
+
+
+</configure>
+

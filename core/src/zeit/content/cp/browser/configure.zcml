@@ -86,6 +86,7 @@
   <include file="block.zcml" />
   <include file="landing.zcml" />
   <include file="teaserblock.zcml" />
+  <include file="xmlblock.zcml" />
 
   <adapter
     factory=".workflow.CenterPageWorkflowForm"

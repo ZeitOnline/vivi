@@ -11,6 +11,12 @@ import zope.container.interfaces
 import zope.interface
 
 
+class ValidationError(zope.schema.ValidationError):
+
+    def doc(self):
+        return self.args[0]
+
+
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
@@ -144,6 +150,22 @@ class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
 
+
+def validate_xml_block(xml):
+    if xml.tag != 'container':
+        raise ValidationError(_("The root element must be <container>."))
+    if xml.get('{http://namespaces.zeit.de/CMS/cp}type') != 'xmlblock':
+        raise ValidationError(_("cp:type must be 'xmlblock'."))
+    if not xml.get('{http://namespaces.zeit.de/CMS/cp}__name__'):
+        raise ValidationError(_("No or empty cp:__name__ attribute."))
+    return True
+
+class IXMLBlock(IBlock):
+    """A block containing raw XML."""
+
+    xml = zeit.cms.content.field.XMLTree(
+        title=_("XML Source"),
+        constraint=validate_xml_block)
 
 class IBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
