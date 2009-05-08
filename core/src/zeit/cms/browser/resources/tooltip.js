@@ -6,6 +6,8 @@ zeit.cms.showToolTip = function(context, text, where) {
     var body = $('body');
     var div = DIV({'id': 'tooltip'});
     div.innerHTML = text;
+    where.x += 10;
+    where.y += 10;
     MochiKit.Style.setElementPosition(div, where);
     body.appendChild(div);
 
