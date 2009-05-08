@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.5 (unreleased)
+0.5 (2009-05-08)
 ----------------
 
 Neue Funktionen
