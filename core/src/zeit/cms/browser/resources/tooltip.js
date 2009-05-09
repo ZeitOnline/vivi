@@ -2,33 +2,36 @@
 // See also LICENSE.txt
 
 zeit.cms.showToolTip = function(context, text, where) {
-    var othis = this;
     var body = $('body');
-    var div = DIV({'id': 'tooltip'});
+    var div = $('tooltip');
+    if (!isNull(div)) {
+        zeit.cms.hideToolTip(div.signals);    
+    }
+    div = DIV({'id': 'tooltip'});
     div.innerHTML = text;
     where.x += 10;
     where.y += 10;
     MochiKit.Style.setElementPosition(div, where);
     body.appendChild(div);
 
-    var signals = [];
-    signals.push(
+    div.signals = [];
+    div.signals.push(
         MochiKit.Signal.connect(
             context, 'onmouseout', function(event) {
-                zeit.cms.hideToolTip(signals);
+                zeit.cms.hideToolTip(div.signals);
     }));
-    signals.push(
+    div.signals.push(
         MochiKit.Signal.connect(
             'tooltip', 'onmousemove', function(event) {
-                zeit.cms.hideToolTip(signals);
+                zeit.cms.hideToolTip(div.signals);
     }));
 };
 
 
 zeit.cms.hideToolTip = function(signals) {
-    forEach(signals, function(signal) {
-        MochiKit.Signal.disconnect(signal);
-    });
+    while (signals.length) {
+        MochiKit.Signal.disconnect(signals.pop());
+    }
     $('tooltip').parentNode.removeChild($('tooltip'));
 };
 
@@ -36,13 +39,17 @@ zeit.cms.hideToolTip = function(signals) {
 zeit.cms.ToolTip = Class.extend({
 
     construct: function(context, url_getter) {
-        this.context = $(context);
-        this.url_getter = url_getter;
+        var self = this;
+        self.context = $(context);
+        self.url_getter = url_getter;
 
-        this.mouse_over_deferred = null;
+        self.mouse_over_deferred = null;
 
-        connect(context, 'onmouseover', this, 'handleMouseOver');
-        connect(context, 'onmouseout', this, 'handleMouseOut');
+        MochiKit.Signal.connect(
+            context, 'onmouseover',
+            self, self.handleMouseOver);
+        MochiKit.Signal.connect(
+            context, 'onmouseout', self, self.handleMouseOut);
     },
 
     handleMouseOver: function(event) {
@@ -54,19 +61,26 @@ zeit.cms.ToolTip = Class.extend({
         this.mouse_over_deferred = MochiKit.Async.callLater(
             0.4, function(result) {
                 othis.mouse_over_deferred = null;
-                var url = othis.url_getter();
+                var url = othis.url_getter(event);
                 if (url === null) {
                     MochiKit.Logging.log('Not loading tooltip, got no URL');
                     return;
                 }
-                MochiKit.Logging.log('Loading tooltip from ' + url);
-                var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-                d.addCallback(function(result) {
+                if (url.indexOf('tooltip:') == 0) {
                     zeit.cms.showToolTip(
                         othis.context,
-                        result.responseText, event.mouse().client);
-                    return result;
-                });
+                        url.substring('tooltip:'.length),
+                        event.mouse().client);
+                } else {
+                    MochiKit.Logging.log('Loading tooltip from ' + url);
+                    var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+                    d.addCallback(function(result) {
+                        zeit.cms.showToolTip(
+                            othis.context,
+                            result.responseText, event.mouse().client);
+                        return result;
+                    });
+                }
         });
     },
 
@@ -101,22 +115,37 @@ zeit.cms.LinkToolTip = zeit.cms.ToolTip.extend({
     },
 });
 
-zeit.cms.ToolTipManager = Class.extend({
+
+zeit.cms.TextToolTip = zeit.cms.ToolTip.extend({
+
     construct: function(context) {
-        var othis = this;
-        othis.context = context;
-        connect(context, 'onmouseover', this, 'handleMouseOver');
+        var self = this;
     },
 
-    handleMouseOver: function(event) {
-        var othis = this;
+});
+
+
+zeit.cms.ToolTipManager = zeit.cms.ToolTip.extend({
+
+    construct: function(context) {
+        var self = this;
+        self.context = context;
+        url_getter = function(event) {
+            return self.getURL(event);
+        }
+        arguments.callee.$.construct.call(self, context, url_getter);
+    },
+
+    getURL: function(event) {
+        var self = this;
         var target = event.target();
-        while (!target.hasAttribute('cms:tooltip') && target != othis.context) {
+        while (!target.hasAttribute('cms:tooltip') && target != self.context) {
             target = target.parentNode;
         }
         var tooltip = target.getAttribute('cms:tooltip');
-        if (tooltip) {
-            zeit.cms.showToolTip(target, tooltip, event.mouse().client);
+        if (!tooltip) {
+            return null;
         }
+        return 'tooltip:' + tooltip;
     },
 });
