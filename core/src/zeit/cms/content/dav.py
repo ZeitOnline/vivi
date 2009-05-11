@@ -1,32 +1,27 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import lxml.etree
-
 import datetime
+import gocept.lxml.interfaces
 import logging
+import lxml.etree
+import pytz
 import re
 import sys
 import time
-
 import zc.iso8601.parse
-import gocept.lxml.interfaces
-import pytz
-
+import zeit.cms.content.interfaces
+import zeit.cms.content.liveproperty
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.workingcopy.interfaces
+import zeit.connector.interfaces
 import zope.app.security
 import zope.component
 import zope.event
 import zope.proxy
 import zope.schema.interfaces
 import zope.xmlpickle
-
-import zeit.connector.interfaces
-
-import zeit.cms.interfaces
-import zeit.cms.content.interfaces
-import zeit.cms.content.liveproperty
-import zeit.cms.repository.interfaces
-import zeit.cms.workingcopy.interfaces
 
 
 logger = logging.getLogger(__name__)
