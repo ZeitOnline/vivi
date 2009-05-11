@@ -15,7 +15,6 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
-import zope.viewlet.manager
 
 
 class TeaserBlockViewletManager(

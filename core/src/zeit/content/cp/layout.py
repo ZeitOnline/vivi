@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 
 import zc.sourcefactory.contextual
-import zope.interface
 
 
 class Layout(object):

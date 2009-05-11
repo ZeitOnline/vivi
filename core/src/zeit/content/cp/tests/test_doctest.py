@@ -1,7 +1,6 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
 import zeit.content.cp
 import zeit.content.cp.testing
 

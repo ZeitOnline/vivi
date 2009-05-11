@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import contextlib
-import unittest
 import zeit.content.cp.browser
 import zeit.content.cp.testing
 import zope.app.component.hooks

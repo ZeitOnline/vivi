@@ -4,11 +4,8 @@
 import UserDict
 import gocept.lxml.interfaces
 import itertools
-import rwproperty
 import uuid
-import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zeit.content.cp.layout
 import zope.component
 import zope.container.contained
 import zope.event

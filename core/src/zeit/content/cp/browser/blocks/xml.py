@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 
 import zeit.cms.browser.view
-import zeit.content.cp.browser
 import zope.proxy
 import lxml.etree
 import SilverCity.XML

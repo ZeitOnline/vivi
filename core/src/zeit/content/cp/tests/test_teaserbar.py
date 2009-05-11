@@ -1,11 +1,10 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.cp.interfaces import ITeaserBlock, IPlaceHolder
+from zeit.content.cp.interfaces import ITeaserBlock
 from zeit.content.cp.layout import get_layout
 import lxml.objectify
 import unittest
-import zeit.cms.testing
 import zeit.content.cp.blocks.teaserbar
 import zeit.content.cp.testing
 import zope.component

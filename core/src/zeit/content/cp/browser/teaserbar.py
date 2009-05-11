@@ -1,10 +1,8 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.browser.view
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.interfaces
-import zeit.content.cp.layout
 import zope.component
 
 

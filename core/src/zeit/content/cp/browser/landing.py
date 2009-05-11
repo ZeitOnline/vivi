@@ -7,7 +7,6 @@ See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-z
 
 """
 
-import zeit.cms.browser.view
 import zeit.cms.related.interfaces
 import zope.browser.interfaces
 import zeit.content.cp.browser.view
