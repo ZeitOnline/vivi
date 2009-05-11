@@ -22,7 +22,8 @@ class Display(zeit.cms.browser.view.Base):
 
     def update(self):
         content = zope.proxy.removeAllProxies(self.context.xml)
-        content = lxml.etree.tostring(content, pretty_print=True, encoding=unicode)
+        content = lxml.etree.tostring(content, pretty_print=True,
+                                      encoding=unicode)
         io = StringIO.StringIO()
         SilverCity.XML.XMLHTMLGenerator().generate_html(
             io, content.encode('UTF-8'))
