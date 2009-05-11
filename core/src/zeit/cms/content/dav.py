@@ -16,7 +16,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.connector.interfaces
-import zope.app.security
+import zope.app.security.interfaces
 import zope.component
 import zope.event
 import zope.proxy
