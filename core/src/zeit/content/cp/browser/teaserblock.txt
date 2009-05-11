@@ -548,3 +548,34 @@ When we change the layout to xxx the image will not be used any more:
     <div class="teaser">
       <div class="supertitle"></div>
       ...
+
+Available layout
+~~~~~~~~~~~~~~~~
+
+The avaliable layouts are different for the position of the teaser block in the
+leasers list. The first teaser block has all layouts avaliable for selection,
+all others only the one with the small image.
+
+We need to add a second teaser list:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Add block').click()
+>>> browser.open(contents_url)
+>>> browser.getLink('choose the block type').click()
+>>> browser.getLink('List of teasers').click()
+>>> browser.open(contents_url)
+
+>>> browser.getLink('Edit').click()
+>>> browser.getLink('Großer Teaser mit Bild und Teaserliste')
+<Link text='[IMG] Gro\xc3\x9fer Teaser mit Bild und Teaserliste' ...>
+>>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
+<Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit', index=2).click()
+>>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
+<Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
+>>> browser.getLink('Großer Teaser mit Bild und Teaserliste')
+Traceback (most recent call last):
+  ...
+LinkNotFoundError
