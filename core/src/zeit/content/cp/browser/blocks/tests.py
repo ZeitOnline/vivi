@@ -9,6 +9,7 @@ def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'placeholder.txt',
         'teaser.txt',
+        'teaserbar.txt',
         'xml.txt',
         package=zeit.content.cp.browser.blocks)
 

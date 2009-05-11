@@ -143,6 +143,7 @@
     />
 
   <include file="teaser.zcml" />
+  <include file="teaserbar.zcml" />
   <include file="xml.zcml" />
 
 </configure>
