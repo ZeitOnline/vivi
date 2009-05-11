@@ -363,41 +363,30 @@ class TestSorting(Test):
         s.storeEval("new Number(storedVars['bar-height']) * 0.75", "delta_y")
 
 
-        # Drag bar1 below bar2
+        # Drag bar1 below bar2: 1 2 3 -> 2 1 3
         s.dragAndDrop('css=#${bar1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
         s.pause(500)
         s.verifyAttribute(path + '[1]@id', '${bar2}')
-        s.verifyAttribute(
-            path + '[2]@id', '${bar1}')
+        s.verifyAttribute(path + '[2]@id', '${bar1}')
 
         # Drag bar3 above bar1. When we move up, we have to move farther
         # because the drag handle is on the bottom of the bar.
-        s.storeEval("new Number(storedVars['bar-height']) * 1.75", "delta_y")
+        # 2 1 3 -> 3 2 1
+        s.storeEval("new Number(storedVars['bar-height']) * 2.75", "delta_y")
         s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
                       '0,-${delta_y}')
         s.pause(500)
-        s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
-                      '0,-${delta_y}')
-        s.pause(500)
-        s.verifyAttribute(
-            path + '[1]@id', '${bar3}')
-        s.verifyAttribute(
-            path + '[2]@id', '${bar2}')
-        s.verifyAttribute(
-            path + '[3]@id', '${bar1}')
+        s.verifyAttribute(path + '[1]@id', '${bar3}')
+        s.verifyAttribute(path + '[2]@id', '${bar2}')
+        s.verifyAttribute(path + '[3]@id', '${bar1}')
 
-        # Make sure the drag survives page reloads. First wait a little after
-        # the last drag to let the server finish storing etc.
-        s.pause(500)
+        # Make sure the drag survives page reloads. 
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('css=div.landing-zone')
-        s.verifyAttribute(
-            path + '[1]@id', '${bar3}')
-        s.verifyAttribute(
-            path + '[2]@id', '${bar2}')
-        s.verifyAttribute(
-            path + '[3]@id', '${bar1}')
+        s.verifyAttribute(path + '[1]@id', '${bar3}')
+        s.verifyAttribute(path + '[2]@id', '${bar2}')
+        s.verifyAttribute(path + '[3]@id', '${bar1}')
 
     def test_lead(self):
         s = self.selenium

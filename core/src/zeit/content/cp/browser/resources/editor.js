@@ -403,7 +403,7 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
     default_options: {
         constraint: 'vertical',
         onChange: MochiKit.Base.noop,
-        overlap: 'vertial',
+        overlap: 'vertical',
         scroll: 'cp-content-inner',
     },
 
@@ -425,9 +425,6 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
             var handle = self.get_handle(node);
-            if (!node.id) {
-                return
-            }
             log('Creating draggable and droppable for ' + node.id);
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Draggable(node, {
