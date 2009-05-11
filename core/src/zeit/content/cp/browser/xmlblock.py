@@ -14,11 +14,6 @@ form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(
     zope.formlib.interfaces.IPageForm)
 
 
-class XMLBlockViewletManager(
-    zeit.content.cp.browser.block.BlockViewletManager):
-    pass
-
-
 class Display(zeit.cms.browser.view.Base):
 
     @property

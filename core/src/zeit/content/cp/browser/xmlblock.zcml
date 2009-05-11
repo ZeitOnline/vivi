@@ -4,17 +4,6 @@
 
   <adapter factory=".xmlblock.form_template" name="xmledit_form"/> 
 
-  <browser:viewletManager
-    provides=".interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.IXMLBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    class=".xmlblock.XMLBlockViewletManager"
-    template="layout.block.contents.pt"
-    name="zeit.content.cp.editor-contents"
-    permission="zope.View"
-    />
-
   <browser:viewlet
     for="zeit.content.cp.interfaces.IXMLBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
