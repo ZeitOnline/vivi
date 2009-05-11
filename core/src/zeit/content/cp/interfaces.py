@@ -167,6 +167,23 @@ class IXMLBlock(IBlock):
         title=_("XML Source"),
         constraint=validate_xml_block)
 
+
+class IAVBlock(IBlock):
+    """ An audio/video block."""
+
+    media_type = zope.schema.Choice(
+        title=_("The media type (one of audio or video)"))
+
+    id = zope.schema.TextLine(
+        title=_("The id of the audio/video."))
+    
+    expires = zope.schema.Date(
+        title=_("The date until the video is valid."))
+
+    format = zope.schema.Choice(
+        title=_("The format of the video."))
+
+
 class IBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
 
