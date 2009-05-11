@@ -17,8 +17,6 @@ class XMLBlock(zeit.content.cp.blocks.block.Block):
         zeit.content.cp.interfaces.IXMLBlock,
         zope.container.interfaces.IContained)
 
-    type = 'xmlblock'
-
 
 XMLBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
