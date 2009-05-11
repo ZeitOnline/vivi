@@ -7,6 +7,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.workflow.interfaces
 import zeit.content.cp.layout
+import zeit.content.cp.blocks.avsource
 import zope.container.interfaces
 import zope.interface
 
@@ -40,7 +41,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
 
 class ICenterPageWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
-    pass    
+    pass
 
 
 class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,
@@ -160,6 +161,7 @@ def validate_xml_block(xml):
         raise ValidationError(_("No or empty cp:__name__ attribute."))
     return True
 
+
 class IXMLBlock(IBlock):
     """A block containing raw XML."""
 
@@ -172,16 +174,18 @@ class IAVBlock(IBlock):
     """ An audio/video block."""
 
     media_type = zope.schema.Choice(
-        title=_("The media type (one of audio or video)"))
+        title=_("The media type (one of audio or video)"),
+        source=zeit.content.cp.blocks.avsource.MediaTypeSource())
 
     id = zope.schema.TextLine(
         title=_("The id of the audio/video."))
-    
-    expires = zope.schema.Date(
+
+    expires = zope.schema.Datetime(
         title=_("The date until the video is valid."))
 
     format = zope.schema.Choice(
-        title=_("The format of the video."))
+        title=_("The format of the video."),
+        source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
 class IBlockLayout(zope.interface.Interface):

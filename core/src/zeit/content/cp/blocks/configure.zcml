@@ -91,4 +91,20 @@
     factory=".xml.XMLBlock"
     />
 
+  <!-- Video block -->
+  <class class=".av.VideoBlock">
+    <require
+      interface="..interfaces.IAVBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IAVBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".av.VideoBlockFactory" name="videoblock" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="videoblock"
+    factory=".av.VideoBlock"
+    />
+
 </configure>

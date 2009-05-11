@@ -142,6 +142,7 @@
     permission="zeit.EditContent"
     />
 
+  <include file="av.zcml" />
   <include file="teaser.zcml" />
   <include file="teaserbar.zcml" />
   <include file="xml.zcml" />
