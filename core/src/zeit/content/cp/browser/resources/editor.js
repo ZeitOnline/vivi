@@ -230,6 +230,10 @@ zeit.content.cp.in_context.Base = gocept.Class.extend({
         var self = this;
         log("Creating " + self.__name__ + " for " + context_aware.__name__)
         self.context_aware = context_aware;
+        if (!isUndefinedOrNull(context_aware.__context__)) {
+            throw new Error("Trying to add new context.");
+        }
+        context_aware.__context__ = self;
         self.events = [];
 
         self.init();
@@ -247,6 +251,8 @@ zeit.content.cp.in_context.Base = gocept.Class.extend({
         while(self.events.length) {
           MochiKit.Signal.disconnect(self.events.pop());
         }
+        self.context_aware.__context__ = null;
+        self.context_aware = null;
     },
 
     activate: function() {
@@ -391,11 +397,13 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 
 
 zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
-    // Sorting support.
+    // General sorting support.
 
     __name__: 'zeit.content.cp.Sortable',
     default_options: {
+        constraint: 'vertical',
         onChange: MochiKit.Base.noop,
+        overlap: 'vertial',
         scroll: 'cp-content-inner',
     },
 
@@ -417,10 +425,13 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
             var handle = self.get_handle(node);
+            if (!node.id) {
+                return
+            }
             log('Creating draggable and droppable for ' + node.id);
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Draggable(node, {
-                    constraint: 'vertical',
+                    constraint: self.options()['constraint'],
                     handle: handle,
                     ghosting: false,
                     revert: true,
@@ -432,15 +443,15 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
                 new MochiKit.DragAndDrop.Droppable(node, {
                     containment: [container],
                     onhover: MochiKit.Sortable.onHover,
-                    overlap: 'vertical',
+                    overlap: self.options()['overlap'],
            }));
         });
 
         self.options().lastValue = self.serialize();
-        this.events.push(MochiKit.Signal.connect(
+        self.events.push(MochiKit.Signal.connect(
             MochiKit.DragAndDrop.Draggables, 'start',
             function(draggable) { self.on_start(container, draggable); }));
-        this.events.push(MochiKit.Signal.connect(
+        self.events.push(MochiKit.Signal.connect(
             MochiKit.DragAndDrop.Draggables, 'end',
             function(draggable) { self.on_end(container, draggable); }));
     },
@@ -463,7 +474,11 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
     on_update: function(element) {
         var self = this;
         var keys = MochiKit.Base.serializeJSON(self.serialize());
-        var url = $(self.container).getAttribute('cms:url') + '/@@updateOrder';
+        var url = self.options()['update_url'];
+        if (isUndefinedOrNull(url)) {
+            var url = $(self.container).getAttribute(
+                'cms:url') + '/@@updateOrder';
+        }
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url, {keys:keys});
         // We don't have do anything on success as the ordering is already
         // applied in the HTML.
@@ -491,13 +506,14 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
 
 
 zeit.content.cp.BlockSorter = zeit.content.cp.Sortable.extend({
+    // Specialized block sorting
 
     __name__: 'zeit.content.cp.BlockSorter',
     context: zeit.content.cp.in_context.Editor,
 
-    construct: function(container_id) {
+    construct: function(container_id, passed_options) {
         var self = this;
-        arguments.callee.$.construct.call(self, container_id);
+        arguments.callee.$.construct.call(self, container_id, passed_options);
     },
 
     get_sortable_nodes: function() {
@@ -521,13 +537,57 @@ zeit.content.cp.BlockSorter = zeit.content.cp.Sortable.extend({
     },
 });
 
+
+zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
+    
+    __name__: 'zeit.content.cp.TeaserBarSorter',
+
+    construct: function() {
+        var self = this;
+        new zeit.content.cp.in_context.Editor(self);
+        self.sorters = [];
+    },
+
+    connect: function() {
+        var self = this;
+        forEach($$('.block.type-teaser-bar > .block-inner'), function(bar) {
+            if (!bar.id) {
+                bar.id = bar.parentNode.id + '-inner';
+            }
+            var url = bar.parentNode.getAttribute(
+                'cms:url') + '/@@updateOrder';
+            var sorter = new zeit.content.cp.BlockSorter(
+                bar.id, {
+                constraint: 'horizontal',
+                overlap: 'horizontal',
+                update_url: url,
+            });
+            self.sorters.push(sorter);
+        });
+    },
+
+    disconnect: function() {
+        var self = this;
+        while (self.sorters.length) {
+            var sorter = self.sorters.pop()
+            log("Destroying sorter " + sorter.container);
+            sorter.__context__.deactivate();
+            sorter.__context__.destroy();
+        }
+    },
+    
+});
+
+
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.BlockSorter(
-        'cp-teasermosaic');
     zeit.content.cp.lead_sorter = new zeit.content.cp.BlockSorter(
         'cp-aufmacher-inner');
     zeit.content.cp.informatives_sorter = new zeit.content.cp.BlockSorter(
         'cp-informatives-inner');
+    zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.BlockSorter(
+        'cp-teasermosaic');
+    zeit.content.cp.teaser_bar_contents_sorter = 
+        new zeit.content.cp.TeaserBarContentsSorter();
 });
 
 

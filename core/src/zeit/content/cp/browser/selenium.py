@@ -304,6 +304,42 @@ class TestTeaserBlock(Test):
 
 class TestSorting(Test):
 
+    def test_blocks_in_mosaic(self):
+        self.open_centerpage()
+        s = self.selenium
+
+        s.click('link=*Add teaser bar*')
+
+        path = css_path('.block.type-teaser-bar .block.type-teaser')
+
+        for nr in range(4):
+            s.waitForElementPresent('css=a.choose-block')
+            s.click('//a[@class="choose-block"]')
+            s.waitForElementPresent('css=div.block-types')
+            s.click('link=List of teasers')
+            s.waitForXpathCount(path, nr+1)
+
+        # Get the ids of the blocks
+        s.storeAttribute(path + '[1]@id', 'block1')
+        s.storeAttribute(path + '[2]@id', 'block2')
+        s.storeAttribute(path + '[3]@id', 'block3')
+        s.storeAttribute(path + '[4]@id', 'block4')
+
+        # All blocks have an equal width
+        s.storeElementHeight('id=${block1}', 'width');
+
+        # Drop block3 over block1
+        s.storeEval("new Number(storedVars['width']) * -2.75", "delta_x")
+        s.dragAndDrop('css=#${block3} > .block-inner > .edit > .dragger',
+                      '${delta_x},0')
+        s.pause(500)
+
+        # 1 2 3 4 ->  3 1 2 4
+        s.verifyOrdered('${block3}', '${block1}')
+        s.verifyOrdered('${block1}', '${block2}')
+        s.verifyOrdered('${block2}', '${block4}')
+
+
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
