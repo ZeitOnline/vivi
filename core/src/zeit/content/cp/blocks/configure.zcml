@@ -1,0 +1,94 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".block.block_to_centerpage" />
+  <adapter factory=".block.cms_content_iter" />
+
+  <!-- Place holder -->
+
+  <class class=".placeholder.PlaceHolder">
+    <require
+      interface="..interfaces.IPlaceHolder"
+      permission="zope.View" />
+  </class>
+
+  <adapter factory=".placeholder.PlaceHolderFactory" name="placeholder" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="placeholder"
+    factory=".placeholder.PlaceHolder"
+    />
+
+
+  <!-- Teaser list -->
+
+  <class class=".teaser.TeaserBlock">
+    <require
+      interface="..interfaces.IReadTeaserBlock"
+      permission="zope.View"/>
+    <require
+      set_schema="..interfaces.IReadTeaserBlock"
+      permission="zeit.EditContent"/>
+    <require
+      interface="..interfaces.IWriteTeaserBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".teaser.lead_teasers_for_centerpage" />
+  <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="teaser"
+    factory=".teaser.TeaserBlock"
+    />
+  <adapter factory=".teaser.cms_content_iter" />
+
+  <subscriber 
+    handler=".teaser.apply_layout_for_added" />
+
+  <subscriber 
+    handler=".teaser.apply_layout" />
+
+  <!-- Teaser bar -->
+
+  <class class=".teaserbar.TeaserBar">
+    <require
+      interface="..interfaces.IReadTeaserBar"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IReadTeaserBar"
+      permission="zope.View" />
+    <require
+      interface="..interfaces.IWriteTeaserBar"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".teaserbar.TeaserBarFactory" 
+    name="teaser-bar" />
+  <adapter
+    factory="..area.cms_content_iter"
+    for="..interfaces.ITeaserBar" />
+  <adapter
+    provides="..interfaces.ITeaserBar"
+    name="teaser-bar"
+    factory=".teaserbar.TeaserBar"
+    />
+
+  <!-- XML block -->
+  <class class=".xml.XMLBlock">
+    <require
+      interface="..interfaces.IXMLBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IXMLBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".xml.XMLBlockFactory" name="xmlblock" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="xmlblock"
+    factory=".xml.XMLBlock"
+    />
+
+</configure>

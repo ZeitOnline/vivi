@@ -76,13 +76,3 @@ class Block(zope.container.contained.Contained):
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     return iter([])
-
-
-class PlaceHolder(Block):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IPlaceHolder)
-
-
-PlaceHolderFactory = blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    PlaceHolder, 'placeholder')

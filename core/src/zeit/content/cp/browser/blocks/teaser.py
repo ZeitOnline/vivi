@@ -6,7 +6,7 @@ import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.content.cp.browser.block
+import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
@@ -19,7 +19,7 @@ import zope.viewlet.manager
 
 
 class TeaserBlockViewletManager(
-    zeit.content.cp.browser.block.BlockViewletManager):
+    zeit.content.cp.browser.blocks.block.BlockViewletManager):
 
     @property
     def css_class(self):

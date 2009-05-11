@@ -10,12 +10,12 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
-    template="layout.contents.pt"
+    template="../layout.contents.pt"
     permission="zope.View"
     />
 
   <browser:viewletManager
-    provides=".interfaces.IEditorContentViewletManager"
+    provides="..interfaces.IEditorContentViewletManager"
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
@@ -29,7 +29,7 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
+    manager="..interfaces.IEditorContentViewletManager"
     name="edit"
     template="layout.block.edit.pt"
     permission="zeit.EditContent"
@@ -37,7 +37,7 @@
     />
 
   <browser:viewletManager
-    provides=".interfaces.IEditBarViewletManager"
+    provides="..interfaces.IEditBarViewletManager"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     class="zope.viewlet.manager.WeightOrderedViewletManager"
@@ -49,7 +49,7 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditBarViewletManager"
+    manager="..interfaces.IEditBarViewletManager"
     name="edit-box"
     template="layout.block.edit-properties.pt"
     permission="zeit.EditContent"
@@ -60,7 +60,7 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditBarViewletManager"
+    manager="..interfaces.IEditBarViewletManager"
     name="delete"
     template="layout.block.delete.pt"
     permission="zeit.EditContent"
@@ -71,7 +71,7 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditBarViewletManager"
+    manager="..interfaces.IEditBarViewletManager"
     name="drag"
     template="layout.block.drag.pt"
     permission="zeit.EditContent"
@@ -85,7 +85,7 @@
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
+    manager="..interfaces.IEditorContentViewletManager"
     name="content"
     template="layout.placeholder.content.pt"
     permission="zeit.EditContent"
@@ -95,7 +95,7 @@
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
+    manager="..interfaces.IEditorContentViewletManager"
     name="edit"
     template="layout.placeholder.edit.pt"
     permission="zeit.EditContent"
@@ -141,5 +141,8 @@
     class=".placeholder.Drop"
     permission="zeit.EditContent"
     />
+
+  <include file="teaser.zcml" />
+  <include file="xml.zcml" />
 
 </configure>

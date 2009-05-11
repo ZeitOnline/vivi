@@ -47,9 +47,6 @@ def site(root):
 def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'README.txt',
-        'placeholder.txt',
         'rule.txt',
         'teaserbar.txt',
-        'teaserblock.txt',
-        'xmlblock.txt',
         package=zeit.content.cp.browser)

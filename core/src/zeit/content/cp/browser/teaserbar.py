@@ -2,13 +2,13 @@
 # See also LICENSE.txt
 
 import zeit.cms.browser.view
-import zeit.content.cp.browser.teaserblock
+import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
 import zope.component
 
 
-class EditProperties(zeit.content.cp.browser.teaserblock.EditProperties):
+class EditProperties(zeit.content.cp.browser.blocks.teaser.EditProperties):
 
     interface = zeit.content.cp.interfaces.ITeaserBar
     layout_prefix  = 'teaserbar'
@@ -20,7 +20,7 @@ class EditProperties(zeit.content.cp.browser.teaserblock.EditProperties):
         return ''
 
 
-class ChangeLayout(zeit.content.cp.browser.teaserblock.ChangeLayout):
+class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
 
     interface = zeit.content.cp.interfaces.ITeaserBar
 

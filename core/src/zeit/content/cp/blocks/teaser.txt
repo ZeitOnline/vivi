@@ -82,7 +82,7 @@ While on autopilot, manipulation of the teaser block's contents is forbidden:
 
 >>> teasers.insert(0, repository['testcontent'])
 Traceback (most recent call last):
-RuntimeError: <zeit.content.cp.teaserblock.TeaserBlock object at 0x...>: 'insert' is forbidden while on autopilot
+RuntimeError: <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>: 'insert' is forbidden while on autopilot
 
 When the teaser block is switched back to manual mode, the currently referenced
 teasers are copied into it:

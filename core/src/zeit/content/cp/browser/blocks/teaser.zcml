@@ -7,11 +7,11 @@
   <!-- teaser block -->
 
   <browser:viewletManager
-    provides=".interfaces.IEditorContentViewletManager"
+    provides="..interfaces.IEditorContentViewletManager"
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class=".teaserblock.TeaserBlockViewletManager"
+    class=".teaser.TeaserBlockViewletManager"
     template="layout.block.contents.pt"
     name="zeit.content.cp.editor-contents"
     permission="zope.View"
@@ -21,9 +21,9 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
+    manager="..interfaces.IEditorContentViewletManager"
     name="contents"
-    class=".teaserblock.Display"
+    class=".teaser.Display"
     template="layout.teaser.content.pt"
     permission="zeit.EditContent"
     weight="0"
@@ -33,7 +33,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-properties"
-    class=".teaserblock.EditProperties"
+    class=".teaser.EditProperties"
     permission="zeit.EditContent"
     />
 
@@ -41,7 +41,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drop"
-    class=".teaserblock.Drop"
+    class=".teaser.Drop"
     permission="zeit.EditContent"
     />
 
@@ -49,7 +49,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager=".interfaces.IEditBarViewletManager"
+    manager="..interfaces.IEditBarViewletManager"
     name="edit-contents"
     template="layout.teaser.edit-contents.pt"
     permission="zeit.EditContent"
@@ -60,7 +60,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="teaser.edit-contents"
-    class=".teaserblock.EditContents"
+    class=".teaser.EditContents"
     template="teaser.edit-contents.pt"
     permission="zeit.EditContent"
     />
@@ -69,7 +69,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="updateOrder"
-    class=".area.UpdateOrder"
+    class="..area.UpdateOrder"
     permission="zeit.EditContent"
     />
 
@@ -77,67 +77,18 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="change-layout"
-    class=".teaserblock.ChangeLayout"
+    class=".teaser.ChangeLayout"
     permission="zeit.EditContent"
     />
 
-  <adapter factory=".teaserblock.teaserEditViewName" name="cp-editor-lightbox" />
+  <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
 
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="toggle-autopilot"
-    class=".teaserblock.ToggleAutopilot"
+    class=".teaser.ToggleAutopilot"
     permission="zeit.EditContent"
     />
 
-  <!-- teaser items -->
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="checkout-content"
-    class=".teaser.CheckoutContent"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.browser.teaser.TeaserBlockProxyItem"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-teaser.html"
-    class=".teaser.EditTeaser"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="delete"
-    class=".teaser.Delete"
-    permission="zeit.EditContent"
-    />
-
-  <adapter factory=".teaser.ItemTraverser" name="item" />
-
-  <class class=".teaser.TeaserBlockProxyItem">
-    <require
-      interface="zeit.cms.content.interfaces.ICommonMetadata"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.cms.content.interfaces.ICommonMetadata"
-      permission="zeit.EditContent"
-      />
-    <require
-      interface="zeit.cms.content.interfaces.IXMLContent"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.cms.content.interfaces.IXMLContent"
-      permission="zeit.EditContent" />
-
-    <require
-      attributes="get_proxied_object"
-      permission="zope.View" />
-  </class>
-
-  <adapter factory=".teaser.checkout_manager_for_proxy" trusted="true" />
 </configure>

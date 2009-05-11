@@ -83,13 +83,61 @@
     />
 
   <include file="area.zcml" />
-  <include file="block.zcml" />
+  <include package=".blocks" />
   <include file="landing.zcml" />
-  <include file="teaserblock.zcml" />
-  <include file="xmlblock.zcml" />
 
   <adapter
     factory=".workflow.CenterPageWorkflowForm"
     provides="zeit.workflow.browser.interfaces.IWorkflowForm"
     />
+
+  <!-- teaser items -->
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="checkout-content"
+    class=".teaser.CheckoutContent"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.browser.teaser.TeaserBlockProxyItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-teaser.html"
+    class=".teaser.EditTeaser"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaser.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <adapter factory=".teaser.ItemTraverser" name="item" />
+
+  <class class=".teaser.TeaserBlockProxyItem">
+    <require
+      interface="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.ICommonMetadata"
+      permission="zeit.EditContent"
+      />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLContent"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLContent"
+      permission="zeit.EditContent" />
+
+    <require
+      attributes="get_proxied_object"
+      permission="zope.View" />
+  </class>
+
+  <adapter factory=".teaser.checkout_manager_for_proxy" trusted="true" />
 </configure>

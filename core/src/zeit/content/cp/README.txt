@@ -84,7 +84,7 @@ Blocks are created using a block factory:
 True
 >>> block = factory()
 >>> block
-<zeit.content.cp.block.PlaceHolder object at 0x...>
+<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>
 
 Creating the block automatically adds it to the container:
 
@@ -111,7 +111,7 @@ Teaser block
 u'List of teasers'
 >>> block = factory()
 >>> block
-<zeit.content.cp.teaserblock.TeaserBlock object at 0x...>
+<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>
 >>> block.type
 'teaser'
 
@@ -132,16 +132,16 @@ After calling the factory a corresponding XML node has been created:
 Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
 >>> lead[block.__name__]
-<zeit.content.cp.teaserblock.TeaserBlock object at 0x...>
+<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>
 
 The area can also be iterated:
 
 >>> list(lead.itervalues())
-[<zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.teaserblock.TeaserBlock object at 0x...>]
+[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
+ <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>]
 >>> lead.values()
-[<zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.teaserblock.TeaserBlock object at 0x...>]
+[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
+ <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>]
 
 It is possible to get the center page from the block by adapting to ICenterPage:
 
@@ -183,7 +183,7 @@ Blocks can be removed using __delitem__:
 >>> len(lead)
 1
 >>> lead.values()
-[<zeit.content.cp.block.PlaceHolder object at 0x...>]
+[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>]
 >>> cp._p_changed
 True
 
@@ -201,9 +201,9 @@ about the weather).
 ...     mosaic, zeit.content.cp.interfaces.IBlockFactory, name='teaser-bar')
 >>> bar = factory()
 >>> bar
-<zeit.content.cp.area.TeaserBar object at 0x...>
+<zeit.content.cp.blocks.teaserbar.TeaserBar object at 0x...>
 >>> mosaic.values()
-[<zeit.content.cp.area.TeaserBar object at 0x...>]
+[<zeit.content.cp.blocks.teaserbar.TeaserBar object at 0x...>]
 >>> cp._p_changed
 True
 
@@ -213,10 +213,10 @@ The bar is alreay populated with four placeholders:
 >>> len(bar)
 4
 >>> bar.values()
-[<zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.block.PlaceHolder object at 0x...>,
- <zeit.content.cp.block.PlaceHolder object at 0x...>]
+[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
+ <zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
+ <zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
+ <zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>]
 
 
 The xml of the teaser bar is actually a region:
@@ -233,7 +233,7 @@ The xml of the teaser bar is actually a region:
 Teaser mosaic layouts
 +++++++++++++++++++++
 
-(analog to teaserblock.txt/Layouts)
+(analog to blocks/teaser.txt/Layouts)
 
 >>> import zeit.content.cp.layout
 >>> bar.layout = zeit.content.cp.layout.get_layout('dmr')

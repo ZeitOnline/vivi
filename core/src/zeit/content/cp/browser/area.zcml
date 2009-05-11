@@ -18,7 +18,7 @@
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
-    class=".block.Delete"
+    class=".blocks.block.Delete"
     permission="zope.View"
     />
 

@@ -89,7 +89,7 @@ class ItemTraverser(object):
 class EditTeaser(zope.formlib.form.SubPageEditForm):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'teaser.edit-teaser.pt')
+        'teaser.edit.pt')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(

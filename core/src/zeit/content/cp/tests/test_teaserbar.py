@@ -6,7 +6,7 @@ from zeit.content.cp.layout import get_layout
 import lxml.objectify
 import unittest
 import zeit.cms.testing
-import zeit.content.cp.area
+import zeit.content.cp.blocks.teaserbar
 import zeit.content.cp.testing
 import zope.component
 
@@ -16,7 +16,7 @@ class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super(TeaserBarTest, self).setUp()
         cp = zeit.content.cp.centerpage.CenterPage()
-        self.bar = zeit.content.cp.area.TeaserBar(cp['teaser-mosaic'],
+        self.bar = zeit.content.cp.blocks.teaserbar.TeaserBar(cp['teaser-mosaic'],
                                                   lxml.objectify.E.region())
         self.bar.layout = get_layout('normal')
 

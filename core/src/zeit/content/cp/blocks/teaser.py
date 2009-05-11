@@ -10,7 +10,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
-import zeit.content.cp.block
+import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.contained
@@ -18,7 +18,7 @@ import zope.container.interfaces
 import zope.interface
 
 
-class TeaserBlock(zeit.content.cp.block.Block,
+class TeaserBlock(zeit.content.cp.blocks.block.Block,
                  zeit.cms.syndication.feed.Feed):
 
     # TeaserBlock reuses Feed for its "list of ICMSContent" behaviour
@@ -115,7 +115,7 @@ class TeaserBlock(zeit.content.cp.block.Block,
         self.xml.set('module', layout.id)
 
 
-TeaserBlockFactory = zeit.content.cp.block.blockFactoryFactory(
+TeaserBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
     TeaserBlock, 'teaser', _('List of teasers'))
 

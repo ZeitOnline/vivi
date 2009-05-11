@@ -92,28 +92,6 @@
     factory=".area.Cluster"
     />
 
-  <!-- teaser bar -->
-
-  <adapter factory=".area.TeaserBarFactory" name="teaser-bar" />
-  <adapter factory=".area.cms_content_iter" for=".interfaces.ITeaserBar" />
-  <adapter
-    provides=".interfaces.ITeaserBar"
-    name="teaser-bar"
-    factory=".area.TeaserBar"
-    />
-  <class class=".area.TeaserBar">
-    <require
-      interface=".interfaces.IReadTeaserBar"
-      permission="zope.View" />
-    <require
-      set_schema=".interfaces.IReadTeaserBar"
-      permission="zope.View" />
-    <require
-      interface=".interfaces.IWriteTeaserBar"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <class class=".teaser.Teaser">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
@@ -131,9 +109,8 @@
   <adapter factory=".teaser.images_for_teaser" />
 
   <!-- Blocks -->
-  <include file="block.zcml" />
+  <include package=".blocks" />
 
-  <adapter factory=".teaserblock.lead_teasers_for_centerpage" />
   <adapter factory=".teaser.metadata_to_teaser" />
 
   <adapter factory=".rule.globs_for_block" />
@@ -155,4 +132,14 @@
   <adapter
     for="zeit.content.cp.interfaces.ICenterPage"
     factory=".rule.CenterPageValidator" />
+
+  <!-- Layout -->
+  <class class=".layout.Layout">
+    <require
+      interface=".interfaces.ITeaserBarLayout"
+      permission="zope.View" />
+    <!-- prevent circular import -->
+    <implements interface=".interfaces.IBlockLayout" />
+  </class>
+
 </configure>
