@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lxml.cssselect
 import pkg_resources
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -10,6 +11,10 @@ import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.centerpage
 import zope.component
+
+
+def css_path(css):
+    return 'xpath=' + lxml.cssselect.CSSSelector(css).path
 
 
 class Test(zeit.cms.selenium.Test):
@@ -146,7 +151,7 @@ class TestGenericEditing(Test):
 
         # The following click used to do nothing. Make sure it does add a block.
         s.click('link=*Add block*')
-        s.waitForXpathCount('//a[@class="choose-block"]', 2)
+        s.waitForXpathCount(css_path('a.choose-block'), 2)
 
     def test_hover(self):
         self.open_centerpage()
@@ -304,17 +309,18 @@ class TestSorting(Test):
         s = self.selenium
         # Create three teaser bars
 
+        path = css_path('div.block.type-teaser-bar')
         s.click('link=*Add teaser bar*')
-        s.waitForXpathCount('//div[@class="block type-teaser-bar"]', 1)
+        s.waitForXpathCount(path, 1)
         s.click('link=*Add teaser bar*')
-        s.waitForXpathCount('//div[@class="block type-teaser-bar"]', 2)
+        s.waitForXpathCount(path, 2)
         s.click('link=*Add teaser bar*')
-        s.waitForXpathCount('//div[@class="block type-teaser-bar"]', 3)
+        s.waitForXpathCount(path, 3)
 
         # Get the ids of the bars
-        s.storeAttribute('//div[@class="block type-teaser-bar"][1]@id', 'bar1')
-        s.storeAttribute('//div[@class="block type-teaser-bar"][2]@id', 'bar2')
-        s.storeAttribute('//div[@class="block type-teaser-bar"][3]@id', 'bar3')
+        s.storeAttribute(path + '[1]@id', 'bar1')
+        s.storeAttribute(path + '[2]@id', 'bar2')
+        s.storeAttribute(path + '[3]@id', 'bar3')
 
         # All bars have an equal height, drag 0.75 of the height.
         s.storeElementHeight('id=${bar1}', 'bar-height');
@@ -325,10 +331,9 @@ class TestSorting(Test):
         s.dragAndDrop('css=#${bar1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
         s.pause(500)
+        s.verifyAttribute(path + '[1]@id', '${bar2}')
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][1]@id', '${bar2}')
-        s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][2]@id', '${bar1}')
+            path + '[2]@id', '${bar1}')
 
         # Drag bar3 above bar1. When we move up, we have to move farther
         # because the drag handle is on the bottom of the bar.
@@ -340,11 +345,11 @@ class TestSorting(Test):
                       '0,-${delta_y}')
         s.pause(500)
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][1]@id', '${bar3}')
+            path + '[1]@id', '${bar3}')
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][2]@id', '${bar2}')
+            path + '[2]@id', '${bar2}')
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][3]@id', '${bar1}')
+            path + '[3]@id', '${bar1}')
 
         # Make sure the drag survives page reloads. First wait a little after
         # the last drag to let the server finish storing etc.
@@ -352,11 +357,11 @@ class TestSorting(Test):
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('css=div.landing-zone')
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][1]@id', '${bar3}')
+            path + '[1]@id', '${bar3}')
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][2]@id', '${bar2}')
+            path + '[2]@id', '${bar2}')
         s.verifyAttribute(
-            '//div[@class="block type-teaser-bar"][3]@id', '${bar1}')
+            path + '[3]@id', '${bar1}')
 
     def test_lead(self):
         s = self.selenium
