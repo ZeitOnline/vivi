@@ -14,6 +14,7 @@ from zeit.content.cp.i18n import MessageFactory as _
 
 
 class Delete(object):
+    """Delete item from TeaserBlock."""
 
     def __call__(self, uniqueId):
         content = zeit.cms.interfaces.ICMSContent(uniqueId)

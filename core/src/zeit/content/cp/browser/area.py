@@ -2,15 +2,16 @@
 # See also LICENSE.txt
 
 import cjson
+import zeit.content.cp.browser.view
 import zope.event
 import zope.lifecycleevent
 
 
-class UpdateOrder(object):
+class UpdateOrder(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, keys):
-        # XXX make a decorator
-        keys = cjson.decode(keys)
-        self.context.updateOrder(keys)
+    keys = zeit.content.cp.browser.view.Form('keys', json=True)
+
+    def update(self):
+        self.context.updateOrder(self.keys)
         zope.event.notify(
             zope.lifecycleevent.ObjectModifiedEvent(self.context))

@@ -87,11 +87,15 @@ The contents of cp-content is loaded via javascript:
 
 
 Add a block in the lead area. This is called by the javascript; the method
-returns the URL of the freshly created block:
+returns json which tells the editor what to do next:
 
 >>> browser.getLink('Add block').click()
->>> browser.contents
-'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/5841f03e-c41b-4239-9ac5-0b19e288cb90'
+>>> import cjson
+>>> import pprint
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['be0c6c38-b5de-4de2-8c99-d635ab537329'],
+              'name': 'added',
+              'when': 'after-reload'}]}
 
 The block is now contained in the contents:
 
@@ -116,12 +120,20 @@ contents:
      ...
 
 
-The change links is again activated via javascript and returns the URL of the
-created object:
+The change links is again activated via javascript and returns JSON:
 
 >>> browser.getLink('List of teasers').click()
->>> browser.contents
-'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/8681a368-ce91-4ae9-b40d-c59fa1dd3640'
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['8b109e80-f19e-4fa8-b41f-b41e40a5f7be'],
+              'name': 'deleted',
+              'when': 'before-reload'},
+             {'args': ['320f6471-cd82-47af-b1e2-6662345fec6a'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['8b109e80-f19e-4fa8-b41f-b41e40a5f7be',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/320f6471-cd82-47af-b1e2-6662345fec6a/contents'],
+              'name': 'reload',
+              'when': None}]}
 
 
 The placeholder is gone now and we've got the teaser list:
@@ -158,7 +170,6 @@ Reverse the bars:
 >>> reversed_ids = tuple(reversed(bar_ids))
 >>> import zeit.content.cp.centerpage
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> import cjson
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
 ...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(reversed_ids))
@@ -198,7 +209,6 @@ Blocks and teaser bars can be removed using the delete link:
 >>> browser.getLink('Delete').url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
+>>> browser.open(bookmark)
 >>> browser.etree.xpath('//div[contains(@class, "leader")]')
-Traceback (most recent call last):
-...
-XMLSyntaxError: None
+[]

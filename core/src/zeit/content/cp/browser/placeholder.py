@@ -3,13 +3,15 @@
 
 import zeit.cms.browser.view
 import zeit.cms.interfaces
+import zeit.content.cp.browser.view
 import zope.component
 import zope.event
 import zope.lifecycleevent
 
-class Drop(zeit.cms.browser.view.Base):
+class Drop(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, uniqueId):
+    def update(self):
+        uniqueId = self.request.form['uniqueId']
         switcher = zope.component.getMultiAdapter(
             (self.context.__parent__, self.context, self.request),
             name='type-switcher')
@@ -17,12 +19,19 @@ class Drop(zeit.cms.browser.view.Base):
         teaserlist.insert(0, zeit.cms.interfaces.ICMSContent(uniqueId))
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
+        self.signal('before-reload', 'deleted', self.context.__name__)
+        self.signal('after-reload', 'added', teaserlist.__name__)
 
 
-class SwitchType(zeit.cms.browser.view.Base):
+class SwitchType(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, type):
+    def update(self):
+        type = self.request.form['type']
         switcher = zope.component.getMultiAdapter(
             (self.context.__parent__, self.context, self.request),
             name='type-switcher')
-        return self.url(switcher(type))
+        new = switcher(type)
+        self.signal('before-reload', 'deleted', self.context.__name__)
+        self.signal('after-reload', 'added', new.__name__)
+        self.signal(None, 'reload',
+                    self.context.__name__, self.url(new, 'contents'))

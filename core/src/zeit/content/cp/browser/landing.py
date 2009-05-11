@@ -10,26 +10,28 @@ See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-z
 import zeit.cms.browser.view
 import zeit.cms.related.interfaces
 import zope.browser.interfaces
+import zeit.content.cp.browser.view
 import zope.component
 
 
-class LandingZone(zeit.cms.browser.view.Base):
+class LandingZone(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, uniqueId):
-        teaser_block = self.create_block(uniqueId)
+    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+
+    def update(self):
+        teaser_block = self.create_block()
         order = list(self.create_in)
         order.remove(teaser_block.__name__)
         order = self.get_order(order, teaser_block.__name__)
         self.create_in.updateOrder(order)
         # XXX notify event
-        return self.url(teaser_block)
 
-    def create_block(self, uniqueId):
+    def create_block(self):
         factory = zope.component.getAdapter(
             self.create_in, zeit.content.cp.interfaces.IBlockFactory,
             name='teaser')
         teaser_block = factory()
-        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         teaser_block.insert(0, content)
         related = zeit.cms.related.interfaces.IRelatedContent(content, None)
         if related is not None:
@@ -56,6 +58,7 @@ class LeaderLandingZoneDrop(LandingZone):
     @property
     def create_in(self):
         return self.context
+
 
 class TeaserLandingZoneInsertAfter(LandingZone):
 

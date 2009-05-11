@@ -7,6 +7,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.browser.block
+import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
@@ -118,17 +119,19 @@ class Display(zeit.cms.browser.view.Base):
             if layout.image_pattern in name:
                 return image_group[name]
 
-class Drop(object):
 
-    def __call__(self, uniqueId):
-        # XXX error handling
-        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+class Drop(zeit.content.cp.browser.view.Action):
+    """Drop a content object on a teaserblock."""
+
+    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+
+    def update(self):
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         if self.context.autopilot:
             self.context.autopilot = False
         self.context.insert(0, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
-
 
 
 class EditContents(Display):
@@ -156,17 +159,23 @@ class EditContents(Display):
         return teasers
 
 
-class ChangeLayout(object):
+class ChangeLayout(zeit.content.cp.browser.view.Action):
+    """Change the layout of a teaserblock."""
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
 
-    def __call__(self, id):
+    layout_id = zeit.content.cp.browser.view.Form('id')
+
+    def update(self):
         layout = zope.component.getMultiAdapter(
             (self.interface['layout'].source(self.context),
-             self.request), zope.browser.interfaces.ITerms).getValue(id)
+             self.request), zope.browser.interfaces.ITerms).getValue(
+                 self.layout_id)
         self.context.layout = layout
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
+        self.signal('before-reload', 'deleted', self.context.__name__)
+        self.signal('after-reload', 'added', self.context.__name__)
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
@@ -175,9 +184,11 @@ def teaserEditViewName(context):
     return 'edit-teaser.html'
 
 
-class ToggleAutopilot(object):
+class ToggleAutopilot(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, to):
-        self.context.autopilot = (True if to == 'on' else False)
+    to = zeit.content.cp.browser.view.Form('to')
+
+    def update(self):
+        self.context.autopilot = (True if self.to == 'on' else False)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))

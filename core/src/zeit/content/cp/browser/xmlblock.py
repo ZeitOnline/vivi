@@ -33,6 +33,7 @@ class Display(zeit.cms.browser.view.Base):
             io, content.encode('UTF-8'))
         self.xml = io.getvalue().decode('UTF-8')
 
+
 class EditProperties(zeit.cms.browser.sourceedit.XMLEditForm):
 
     template = zope.formlib.namedtemplate.NamedTemplate('xmledit_form')

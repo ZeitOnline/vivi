@@ -4,6 +4,53 @@ if (isUndefinedOrNull(zeit.content)) {
 zeit.content.cp = {}
 
 
+zeit.content.cp.makeJSONRequest = function(url, options) {
+    var d = MochiKit.Async.doSimpleXMLHttpRequest(url, options);
+    d.addCallbacks(function(result) {
+        var result_obj = null;
+        try {
+            var result_obj = MochiKit.Async.evalJSONRequest(result);
+        } catch (e if e instanceof SyntaxError) {
+        }
+        var immediate_actions = [];
+        if (!isNull(result_obj)) {
+            signals = result_obj['signals'] || [];
+            forEach(signals, function(signal) {
+                if (isNull(signal.when)) {
+                    immediate_actions.push(signal);
+                } else {
+                    var ident = MochiKit.Signal.connect(
+                        zeit.content.cp.editor, signal.when, function() {
+                        MochiKit.Signal.disconnect(ident);
+                        MochiKit.Signal.signal.apply(
+                            this,
+                            extend(
+                                [zeit.content.cp.editor, signal.name],
+                                signal.args));
+                    });
+                }
+            });
+        }
+        if (immediate_actions.length) {
+            immediate_actions.reverse();
+            while(immediate_actions.length) {
+                var signal = immediate_actions.pop();
+                MochiKit.Signal.signal.apply(
+                    this,
+                    extend([zeit.content.cp.editor, signal.name], signal.args));
+            }
+        } else {
+            MochiKit.Signal.signal(zeit.content.cp.editor, 'reload');
+        }
+        return result;
+    },
+    function(error) {
+        // XXX log_error should be part of zeit.cms
+        zeit.find.log_error(error);
+    });
+    return d;
+}
+
 zeit.content.cp.resolveDottedName = function(name) {
     // Resolve *absolute* dotted name
     var obj = window;
@@ -63,28 +110,55 @@ zeit.content.cp.Editor = gocept.Class.extend({
         }
     },
 
-    reload: function() {
+    reload: function(element_id, url) {
         var self = this;
+        var element = null;
+        if (!isUndefinedOrNull(element_id)) {
+             element = $(element);
+        }
         MochiKit.Signal.signal(self, 'before-reload');
-        var url = context_url + '/contents';
+        if (isUndefinedOrNull(url)) {
+            url = context_url + '/contents';
+        }
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-        // XXX error handling
+        if (isNull(element)) {
+            d.addCallback(function(result) {
+                self.replace_whole_editor(result);
+                return result;
+            });
+        } else {
+            d.addCallback(function(result) {
+                self.replace_element(element, result);
+                return d;
+            });
+        }
         d.addCallback(function(result) {
-            if (isNull(self.inner_content)) {
-                self.content.innerHTML = result.responseText;
-                self.inner_content = (
-                    MochiKit.DOM.getFirstElementByTagAndClassName(
-                        'div', 'cp-content-inner', self.content));
-            } else {
-                var dom = DIV();
-                dom.innerHTML = result.responseText;
-                var new_inner = (
-                    MochiKit.DOM.getFirstElementByTagAndClassName(
-                        'div', 'cp-content-inner', dom));
-                self.inner_content.innerHTML = new_inner.innerHTML;
-            }
             MochiKit.Signal.signal(self, 'after-reload');
         });
+    },
+
+    replace_whole_editor: function(result) {
+        var self = this;
+        if (isNull(self.inner_content)) {
+            self.content.innerHTML = result.responseText;
+            self.inner_content = (
+                MochiKit.DOM.getFirstElementByTagAndClassName(
+                    'div', 'cp-content-inner', self.content));
+        } else {
+            var dom = DIV();
+            dom.innerHTML = result.responseText;
+            var new_inner = (
+                MochiKit.DOM.getFirstElementByTagAndClassName(
+                    'div', 'cp-content-inner', dom));
+            self.inner_content.innerHTML = new_inner.innerHTML;
+        }
+    },
+
+    replace_element: function(element, result) {
+        var self = this;
+        var dom = DIV();
+        dom.inerHTML = result.responseText;
+        MochiKit.DOM.swapDOM(element, dom.firstChild);
     },
 
 });
@@ -295,13 +369,8 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
         if (isUndefinedOrNull(uniqueId)) {
             return
         }
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            url, {'uniqueId': uniqueId});
-        // XXX error handling
-        d.addCallback(function(result) {
-            MochiKit.Signal.signal(self.editor, 'reload');
-        });
-
+        var d = zeit.content.cp.makeJSONRequest(url, {'uniqueId': uniqueId});
+        return d;
     },
 
     get_droppable_element_for: function(element) {
@@ -521,15 +590,53 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 zeit.content.cp.LoadAndReload = gocept.Class.extend({
 
     construct: function(context_element) {
+        var self = this;
         var url = context_element.getAttribute('href');
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-        // XXX error handling
-        d.addCallback(function(result) {
-            MochiKit.Signal.signal(zeit.content.cp.editor, 'reload');
-        });
+        var d = zeit.content.cp.makeJSONRequest(url, {});
+        return d;
     },
 
 });
+
+
+zeit.content.cp.AddHighlight = gocept.Class.extend({
+
+    construct: function() {
+        var self = this;
+        MochiKit.Signal.connect(
+            zeit.content.cp.editor, 'added', self, self.added);
+    },
+
+});
+
+
+(function() {
+
+    var added = function(id) {
+        log('Added ' + id + $(id));
+        MochiKit.Style.setOpacity($(id), 0.0);
+        MochiKit.Visual.appear(id);
+        MochiKit.Async.callLater(2, function() {
+            $(id).style['opacity'] = 1;
+        });
+    };
+
+    var deleted  = function(id) {
+        log('Deleted ' + id + $(id));
+        MochiKit.Visual.fade(id, {duration: 0.5,
+                                  to: 0.01});
+    };
+
+    var ident = MochiKit.Signal.connect(
+        window, 'cp-editor-initialized',
+        function() {
+            MochiKit.Signal.disconnect(ident);
+            MochiKit.Signal.connect(
+                zeit.content.cp.editor, 'added', added);
+            MochiKit.Signal.connect(
+                zeit.content.cp.editor, 'deleted', deleted);
+    });
+})();
 
 
 zeit.content.cp.ConfirmDelete = gocept.Class.extend({

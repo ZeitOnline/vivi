@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import zeit.cms.browser.view
+import zeit.content.cp.browser.view
 import zeit.content.cp.browser.rule
 import zeit.content.cp.interfaces
 import zope.component
@@ -23,20 +24,25 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
         return ' '.join(classes)
 
 
-class Add(zeit.cms.browser.view.Base):
+class Add(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, type):
+    type = zeit.content.cp.browser.view.Form('type')
+
+    def update(self):
         factory = zope.component.getAdapter(
             self.context, zeit.content.cp.interfaces.IBlockFactory,
-            name=type)
+            name=self.type)
         created = factory()
-        return self.url(created)
+        self.signal('after-reload', 'added', created.__name__)
 
 
-class Delete(object):
+class Delete(zeit.content.cp.browser.view.Action):
 
-    def __call__(self, key):
-        del self.context[key]
+    key = zeit.content.cp.browser.view.Form('key')
+
+    def update(self):
+        del self.context[self.key]
+        self.signal('before-reload', 'deleted', self.key)
 
 
 class EditProperties(object):
