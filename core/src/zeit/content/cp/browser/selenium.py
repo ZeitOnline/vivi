@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import pkg_resources
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
@@ -12,6 +13,13 @@ import zope.component
 
 
 class Test(zeit.cms.selenium.Test):
+
+    product_config = {
+        'zeit.content.cp': {
+            'rules-url': 'file://' + pkg_resources.resource_filename(
+                'zeit.content.cp.tests', 'rule_testdata.py')
+        }
+    }
 
     def open_centerpage(self):
         s = self.selenium
