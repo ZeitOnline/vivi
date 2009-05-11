@@ -54,10 +54,12 @@ class _XMLBase(zope.schema.Field):
             or current_value.getparent() is None):
             setattr(object, self.__name__, value)
         else:
-            # Locate current_value in object to get the parent pointer for
-            # the security checker
-            current_value = located(current_value, object, self.__name__)
-            current_value[:] = [value]
+            # Locate the XML object into the workingcopy so that edit
+            # permissions can be found
+            parent = located(current_value.getparent(), object, self.__name__)
+            # Remove the security proxy cause lxml can't eat them
+            parent.replace(
+                zope.security.proxy.removeSecurityProxy(current_value), value)
 
 
 def located(obj, parent, name):
