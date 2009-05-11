@@ -17,6 +17,9 @@ from zeit.content.cp.i18n import MessageFactory as _
 
 
 class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
+    # same as zeit.workflow.browser.form.ContentWorkflow, except for the fields:
+    # we use only ICenterPageWorkflow (which doesn't add anything to
+    # ITimeBasedPublishing) instead of zeit.workflow.interfaces.IContentWorkflow
 
     error_message = 'Could not publish ${id} since it has validation '\
                     + 'errors.'
