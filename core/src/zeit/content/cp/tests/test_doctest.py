@@ -11,4 +11,4 @@ def test_suite():
         'cmscontentiterable.txt',
         'rule.txt',
         'teaser.txt',
-    )
+        package=zeit.content.cp)
