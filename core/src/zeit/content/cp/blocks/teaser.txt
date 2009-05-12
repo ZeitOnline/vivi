@@ -74,7 +74,9 @@ But its XML representation only contains an xi:include to the referenced page:
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
   <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
-  <xi_include href="http://xml.zeit.de/cp"/>
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1]" href="/var/cms/cp">
+    <xi:fallback>Channel nicht erreichbar.</xi:fallback>
+  </xi:include>
   <autopilot ...>true</autopilot>
 </container>
 
@@ -82,6 +84,7 @@ While on autopilot, manipulation of the teaser block's contents is forbidden:
 
 >>> teasers.insert(0, repository['testcontent'])
 Traceback (most recent call last):
+    ...
 RuntimeError: <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>: 'insert' is forbidden while on autopilot
 
 When the teaser block is switched back to manual mode, the currently referenced

@@ -28,7 +28,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.cms.syndication.interfaces.IFeed,
         zope.container.interfaces.IContained)
 
-    # XXX XSLT must drop these
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
     referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
@@ -81,8 +80,13 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         # on autopilot. Thus we switch the autopilot mode at different times.
         if not autopilot:
             self._autopilot = autopilot
-            if hasattr(self.xml, 'xi_include'):
-                self.xml.remove(self.xml.xi_include)
+            try:
+                include = self.xml[
+                    '{http://www.w3.org/2003/XInclude}include']
+            except AttributeError:
+                pass
+            else:
+                self.xml.remove(include)
 
             if self.referenced_cp:
                 repository = zope.component.getUtility(
@@ -93,9 +97,25 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
                     self.insert(position, repository.getContent(id))
         else:
             self.clear()
-            # XXX what is the actual syntax for xi:include needed here?
-            self.xml.append(lxml.objectify.E.xi_include(
-                href=self.referenced_cp.uniqueId))
+            include_maker = lxml.objectify.ElementMaker(
+                annotate=False,
+                namespace='http://www.w3.org/2003/XInclude',
+                nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
+            )
+
+            # We hardcode the path here as it is not going to change any time
+            # soon.
+            path = self.referenced_cp.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
+
+            # NOTE: The xpointer will change when a channel is included.
+            self.xml.append(include_maker.include(
+                include_maker.fallback('Channel nicht erreichbar.'),
+                href=path,
+                parse='xml',
+                xpointer=("xpointer(/centerpage/body/cluster[@area='feature']"
+                          "/region[@area='lead']/container/block[1]"),
+            ))
             self._autopilot = autopilot
 
     def clear(self):
