@@ -333,28 +333,6 @@ The cp contents also has changed of course:
 
 
 
-.. [#fill-dav-with-content] Create a few test objects to play with:
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-    >>> import zope.component
-    >>> from zeit.cms.repository.interfaces import IRepository
-    >>> repository = zope.component.getUtility(IRepository)
-
-    >>> import zeit.cms.testcontenttype.testcontenttype
-    >>> c1 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-    >>> c1.teaserTitle = c1.shortTeaserTitle = u'c1 teaser'
-    >>> repository['c1'] = c1
-    >>> c2 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-    >>> c2.teaserTitle = c2.shortTeaserTitle = u'c2 teaser'
-    >>> repository['c2'] = c2
-    >>> c3 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-    >>> c3.teaserTitle = c3.shortTeaserTitle = u'c3 teaser'
-    >>> repository['c3'] = c3
-
-    >>> zope.app.component.hooks.setSite(old_site)
-
 Autopilot
 +++++++++
 
@@ -578,3 +556,28 @@ We need to add a second teaser block:
 Traceback (most recent call last):
   ...
 LinkNotFoundError
+
+
+
+.. [#fill-dav-with-content] Create a few test objects to play with:
+
+    >>> import zope.app.component.hooks
+    >>> old_site = zope.app.component.hooks.getSite()
+    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zope.component
+    >>> from zeit.cms.repository.interfaces import IRepository
+    >>> repository = zope.component.getUtility(IRepository)
+
+    >>> import zeit.cms.testcontenttype.testcontenttype
+    >>> c1 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    >>> c1.teaserTitle = c1.shortTeaserTitle = u'c1 teaser'
+    >>> repository['c1'] = c1
+    >>> c2 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    >>> c2.teaserTitle = c2.shortTeaserTitle = u'c2 teaser'
+    >>> repository['c2'] = c2
+    >>> c3 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    >>> c3.teaserTitle = c3.shortTeaserTitle = u'c3 teaser'
+    >>> repository['c3'] = c3
+
+    >>> zope.app.component.hooks.setSite(old_site)
+
