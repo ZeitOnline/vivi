@@ -57,13 +57,15 @@ zeit.cms.ToolTip = Class.extend({
         if (this.mouse_over_deferred !== null) {
             return;
         }
-        MochiKit.Logging.log("Start waiting for tooltip");
+        if (!isUndefinedOrNull(
+            MochiKit.DragAndDrop.Draggables.activeDraggable)) {
+            return;
+        }
         this.mouse_over_deferred = MochiKit.Async.callLater(
             0.4, function(result) {
                 othis.mouse_over_deferred = null;
                 var url = othis.url_getter(event);
                 if (url === null) {
-                    MochiKit.Logging.log('Not loading tooltip, got no URL');
                     return;
                 }
                 if (url.indexOf('tooltip:') == 0) {
@@ -72,7 +74,6 @@ zeit.cms.ToolTip = Class.extend({
                         url.substring('tooltip:'.length),
                         event.mouse().client);
                 } else {
-                    MochiKit.Logging.log('Loading tooltip from ' + url);
                     var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
                     d.addCallback(function(result) {
                         zeit.cms.showToolTip(
@@ -88,7 +89,6 @@ zeit.cms.ToolTip = Class.extend({
         if (this.mouse_over_deferred === null) {
             return;
         }
-        MochiKit.Logging.log('Cancelled tooltip.');
         this.mouse_over_deferred.cancel();
         this.mouse_over_deferred = null;
     },
