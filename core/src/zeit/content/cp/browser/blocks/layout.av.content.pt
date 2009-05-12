@@ -1,4 +1,4 @@
 <div>
-Video:
+<span tal:replace="context/media_type" />:
 <tal:block replace="string: ${context/id} ${context/expires} ${context/format}"/>
 </div>

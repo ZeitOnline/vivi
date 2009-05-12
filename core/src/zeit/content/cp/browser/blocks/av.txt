@@ -20,9 +20,8 @@ Editing the block
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.getControl('The id of the audio/video.').value = '12345'
->>> browser.getControl('The format of the video.').displayValue = ['small']
->>> browser.getControl('The date until the video is valid.').value = '2009-05-05'
->>> browser.handleErrors = False
+>>> browser.getControl('The format of the audio/video.').displayValue = ['small']
+>>> browser.getControl('The date until the audio/video is valid.').value = '2009-05-05'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -31,17 +30,52 @@ Editing the block
 >>> browser.getLink('Edit').click()
 >>> browser.getControl('The id of the audio/video.').value
 '12345'
->>> browser.getControl('The format of the video.').displayValue
+>>> browser.getControl('The format of the audio/video.').displayValue
 ['small']
->>> browser.getControl('The date until the video is valid.').value
+>>> browser.getControl('The date until the audio/video is valid.').value
 '2009-05-05 00:00:00'
 
-XML format
-----------
+
+Audio blocks
+============
 
 >>> browser.open(contents_url)
->>> browser.open('@@xml_source_edit.html')
->>> print browser.getControl(name='form.xml').value
-<...<container cp:type="videoblock" module="video" cp:__name__="<GUID>"
-videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>...
+>>> browser.getLink('Add block', index=0).click()
+>>> browser.open(contents_url)
+>>> browser.getLink('choose the block type').click()
+>>> browser.getLink('Audioblock').click()
 
+Editing the block
+-----------------
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit', index=1).click()
+>>> browser.getControl('The id of the audio/video.').value = '98765'
+>>> browser.getControl('The format of the audio/video.').displayValue = ['large']
+>>> browser.getControl('The date until the audio/video is valid.').value = '2009-12-24'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+
+XML of an audio/video block
+===========================
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container
+  cp:type="videoblock"
+  module="video"
+  cp:__name__="72d87ec4-6082-4fc9-a563-313780e8a8de"
+  videoID="12345"
+  expires="2009-05-04T22:00:00+00:00"
+  format="small"/>...
+<container
+  cp:type="audioblock"
+  module="audio"
+  cp:__name__="72d87ec4-6082-4fc9-a563-313780e8a8de"
+  audioID="98765"
+  expires="2009-12-23T23:00:00+00:00"
+  format="large"/>...

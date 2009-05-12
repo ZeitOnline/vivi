@@ -181,10 +181,10 @@ class IAVBlock(IBlock):
         title=_("The id of the audio/video."))
 
     expires = zope.schema.Datetime(
-        title=_("The date until the video is valid."))
+        title=_("The date until the audio/video is valid."))
 
     format = zope.schema.Choice(
-        title=_("The format of the video."),
+        title=_("The format of the audio/video."),
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 

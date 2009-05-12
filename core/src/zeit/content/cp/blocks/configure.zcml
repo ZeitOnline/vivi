@@ -107,4 +107,20 @@
     factory=".av.VideoBlock"
     />
 
+  <!-- Audio block -->
+  <class class=".av.AudioBlock">
+    <require
+      interface="..interfaces.IAVBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IAVBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".av.AudioBlockFactory" name="audioblock" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="audioblock"
+    factory=".av.AudioBlock"
+    />
+
 </configure>

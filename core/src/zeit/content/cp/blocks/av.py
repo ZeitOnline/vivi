@@ -16,8 +16,6 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
 
     media_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'module')
-    id = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'videoID')
     format = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'format')
 
@@ -39,6 +37,9 @@ class VideoBlock(AVBlock):
 
     zope.interface.implements(zeit.content.cp.interfaces.IAVBlock)
 
+    id = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'videoID')
+
     def __init__(self, context, xml):
         super(VideoBlock, self).__init__(context, xml)
         self.media_type = 'video'
@@ -47,3 +48,20 @@ class VideoBlock(AVBlock):
 VideoBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
     VideoBlock, 'videoblock', _('Videoblock'))
+
+
+class AudioBlock(AVBlock):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IAVBlock)
+
+    id = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'audioID')
+
+    def __init__(self, context, xml):
+        super(AudioBlock, self).__init__(context, xml)
+        self.media_type = 'audio'
+
+
+AudioBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
+    zeit.content.cp.interfaces.IRegion,
+    AudioBlock, 'audioblock', _('Audioblock'))
