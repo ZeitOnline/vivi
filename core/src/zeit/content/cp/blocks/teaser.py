@@ -79,7 +79,15 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
 
         # we need to manipulate self.entries, which is only allowed while not
         # on autopilot. Thus we switch the autopilot mode at different times.
-        if not autopilot:
+        if autopilot:
+            self.clear()
+            self.xml.append(
+                zope.component.getAdapter(
+                    self.referenced_cp,
+                    zeit.cms.content.interfaces.IXMLReference,
+                    name='xi:include'))
+            self._autopilot = autopilot
+        else:
             self._autopilot = autopilot
             try:
                 include = self.xml[
@@ -93,14 +101,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
                     zeit.cms.syndication.interfaces.IReadFeed(
                         self.referenced_cp)):
                     self.insert(position, content)
-        else:
-            self.clear()
-            self.xml.append(
-                zope.component.getAdapter(
-                    self.referenced_cp,
-                    zeit.cms.content.interfaces.IXMLReference,
-                    name='xi:include'))
-            self._autopilot = autopilot
 
     def clear(self):
         if not self.autopilot:
