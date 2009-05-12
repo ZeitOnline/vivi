@@ -52,7 +52,10 @@ Editing the block
 >>> browser.getLink('Edit', index=1).click()
 >>> browser.getControl('The id of the audio/video.').value = '98765'
 >>> browser.getControl('The format of the audio/video.').displayValue = ['large']
->>> browser.getControl('The date until the audio/video is valid.').value = '2009-12-24'
+
+An empty value for the expireation date means no expiration:
+
+>>> browser.getControl('The date until the audio/video is valid.').value = ''
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -77,5 +80,4 @@ XML of an audio/video block
   module="audio"
   cp:__name__="72d87ec4-6082-4fc9-a563-313780e8a8de"
   audioID="98765"
-  expires="2009-12-23T23:00:00+00:00"
   format="large"/>...
