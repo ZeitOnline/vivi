@@ -11,7 +11,6 @@ def test_suite():
         'placeholder.txt',
         'teaser.txt',
         'teaserbar.txt',
-        'xml.txt',
-        package=zeit.content.cp.browser.blocks)
+        'xml.txt')
 
 
