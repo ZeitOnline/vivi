@@ -487,6 +487,35 @@ class TestLandingZone(Test):
         s.waitForElementPresent('css=.block.type-teaser')
 
 
+class TestVideoBlock(Test):
+    def create_videoblock(self):
+        s = self.selenium
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
+        s.click('link=Videoblock')
+        s.waitForElementPresent('css=div.type-videoblock')
+
+    def test_lightbox_should_close_after_editing(self):
+        self.open_centerpage()
+        self.create_videoblock()
+        s = self.selenium
+
+        s.pause(300)
+        s.click('css=div.block.type-videoblock > * > div.edit > a.edit-link')
+        s.waitForElementPresent('id=lightbox.form')
+        s.type('form.id', '12345')
+        s.type('form.expires', '2009-05-05')
+        s.select('form.format', 'small')
+        s.click('form.actions.apply')
+        s.waitForElementNotPresent('css=.lightbox')
+
+        s.click('css=div.block.type-videoblock > * > div.edit > a.edit-link')
+        s.waitForElementPresent('id=lightbox.form')
+        s.click('form.actions.apply')
+        s.waitForElementNotPresent('css=.lightbox')
+
 
 class CreateTestContent(object):
 

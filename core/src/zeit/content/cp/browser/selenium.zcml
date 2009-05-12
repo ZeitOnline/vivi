@@ -47,6 +47,11 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestVideoBlock"
+    name="zeit.content.cp.TestVideoBlock"
+    permission="zope.Public"
+    />
 
 </configure>
 

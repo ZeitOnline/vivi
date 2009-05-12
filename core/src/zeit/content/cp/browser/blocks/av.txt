@@ -25,7 +25,7 @@ Editing the block
 >>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
-<...<div class="summary">Updated on...
+<...self.close();...
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
