@@ -210,11 +210,6 @@ class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
     """A standalone teaser object which references the article."""
 
 
-class ILeadTeasers(zope.interface.Interface):
-    """A list containing the UID of the first teaser of each block in the lead
-    area."""
-
-
 class IReadTeaserBar(IBlock, IReadRegion):
 
     layout = zope.schema.Choice(

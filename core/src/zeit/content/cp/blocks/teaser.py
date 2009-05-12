@@ -7,7 +7,6 @@ import lxml.objectify
 import rwproperty
 import zeit.cms.content.property
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.block
@@ -38,13 +37,15 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
 
     def iterentries(self):
         if self.autopilot:
-            return [zeit.cms.interfaces.ICMSContent(id) for id in self.keys()]
+            feed = zeit.cms.syndication.interfaces.IReadFeed(
+                self.referenced_cp)
+            return iter(feed)
         else:
             return super(TeaserBlock, self).iterentries()
 
     def keys(self):
         if self.autopilot:
-            return zeit.content.cp.interfaces.ILeadTeasers(self.referenced_cp)
+            return [c.uniqueId for c in self.iterentries()]
         else:
             return super(TeaserBlock, self).keys()
 
@@ -87,35 +88,18 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
                 pass
             else:
                 self.xml.remove(include)
-
             if self.referenced_cp:
-                repository = zope.component.getUtility(
-                    zeit.cms.repository.interfaces.IRepository)
-                for position, id in enumerate(
-                    zeit.content.cp.interfaces.ILeadTeasers(
+                for position, content in enumerate(
+                    zeit.cms.syndication.interfaces.IReadFeed(
                         self.referenced_cp)):
-                    self.insert(position, repository.getContent(id))
+                    self.insert(position, content)
         else:
             self.clear()
-            include_maker = lxml.objectify.ElementMaker(
-                annotate=False,
-                namespace='http://www.w3.org/2003/XInclude',
-                nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
-            )
-
-            # We hardcode the path here as it is not going to change any time
-            # soon.
-            path = self.referenced_cp.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
-
-            # NOTE: The xpointer will change when a channel is included.
-            self.xml.append(include_maker.include(
-                include_maker.fallback('Channel nicht erreichbar.'),
-                href=path,
-                parse='xml',
-                xpointer=("xpointer(/centerpage/body/cluster[@area='feature']"
-                          "/region[@area='lead']/container/block[1]"),
-            ))
+            self.xml.append(
+                zope.component.getAdapter(
+                    self.referenced_cp,
+                    zeit.cms.content.interfaces.IXMLReference,
+                    name='xi:include'))
             self._autopilot = autopilot
 
     def clear(self):
@@ -147,17 +131,23 @@ def cms_content_iter(context):
         yield teaser
 
 
-@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
-@zope.interface.implementer(zeit.content.cp.interfaces.ILeadTeasers)
-def lead_teasers_for_centerpage(cp):
-    result = []
-    for block in cp['lead'].values():
-        if zeit.content.cp.interfaces.ITeaserBlock.providedBy(block):
-            try:
-                result.append(iter(block).next().uniqueId)
-            except StopIteration:
-                pass
-    return result
+
+class CenterpageFeed(zeit.cms.syndication.feed.Feed):
+    """A centerpage can be interpreted as a feed."""
+
+    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
+    zope.interface.implementsOnly(zeit.cms.syndication.interfaces.IReadFeed)
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def xml(self):
+        return self.context.xml
+
+    def iterentries(self):
+        return self.xml.xpath("/centerpage/body/cluster[@area='feature']"
+                              "/region[@area='lead']/container/block[1]")
 
 
 @zope.component.adapter(
@@ -190,3 +180,42 @@ def apply_layout(context, event):
     for elem in content[1:]:
         elem.layout = buttons
 
+
+def get_xi_include(context, xpath):
+    include_maker = lxml.objectify.ElementMaker(
+        annotate=False,
+        namespace='http://www.w3.org/2003/XInclude',
+        nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
+    )
+
+    # We hardcode the path here as it is not going to change any time
+    # soon.
+    path = context.uniqueId.replace(
+        zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
+
+    include = include_maker.include(
+        include_maker.fallback('Channel nicht erreichbar.'),
+        href=path,
+        parse='xml',
+        xpointer='xpointer(%s)' % xpath)
+    return include
+
+@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+def cp_xi_include(context):
+    """Reference a CP as xi:include."""
+    return get_xi_include(
+        context, ("/centerpage/body/cluster[@area='feature']"
+                  "/region[@area='lead']/container/block[1]"))
+
+
+@zope.component.adapter(zeit.cms.syndication.feed.Feed)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+def feed_xi_include(context):
+    """Reference a Feed as xi:include.
+
+    Note that this adapts the Feed class instead of the IFeed interface because
+    the interface does not guarantee any xml structure.
+
+    """
+    return get_xi_include(context, '/channel/container/block')

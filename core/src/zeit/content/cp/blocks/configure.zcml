@@ -33,8 +33,10 @@
       interface="..interfaces.IWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".teaser.lead_teasers_for_centerpage" />
+  <adapter factory=".teaser.CenterpageFeed" />
   <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
+  <adapter factory=".teaser.cp_xi_include" name="xi:include" />
+  <adapter factory=".teaser.feed_xi_include" name="xi:include" />
   <adapter
     provides="..interfaces.IBlock"
     name="teaser"
