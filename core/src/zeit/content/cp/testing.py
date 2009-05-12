@@ -5,8 +5,8 @@ import __future__
 import pkg_resources
 import re
 import zeit.cms.testing
+import zope.testing.doctest
 import zope.testing.renormalizing
-
 
 product_config = {'zeit.content.cp': {'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests', 'rule_testdata.py')}}
@@ -29,6 +29,7 @@ def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', layer)
     kw.setdefault('product_config', product_config)
     kw.setdefault('globs', dict(with_statement=__future__.with_statement))
+    kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 
