@@ -506,7 +506,7 @@ class TestVideoBlock(Test):
         s.click('css=div.block.type-videoblock > * > div.edit > a.edit-link')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.id', '12345')
-        s.type('form.expires', '2009-05-05')
+        s.click('//input[@value="1W"]')
         s.select('form.format', 'small')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')
