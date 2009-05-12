@@ -12,5 +12,3 @@ def test_suite():
         'teaser.txt',
         'teaserbar.txt',
         'xml.txt')
-
-
