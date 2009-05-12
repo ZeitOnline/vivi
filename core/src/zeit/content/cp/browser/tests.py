@@ -46,4 +46,5 @@ def site(root):
 def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'README.txt',
+        'landing.txt',
         'rule.txt')

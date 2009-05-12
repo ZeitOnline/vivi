@@ -36,16 +36,7 @@ class LandingZone(zeit.content.cp.browser.view.Action):
         if related is not None:
             for i, related in enumerate(related.related):
                 teaser_block.insert(i+1, related)
-        teaser_block.layout = self.layouts.getValue('leader')
         return teaser_block
-
-    @property
-    def layouts(self):
-        source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-            self.context)
-        return zope.component.getMultiAdapter(
-            (source, self.request),
-            zope.browser.interfaces.ITerms)
 
 
 class LeaderLandingZoneDrop(LandingZone):
