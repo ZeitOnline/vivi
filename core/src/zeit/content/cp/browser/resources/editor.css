@@ -355,6 +355,23 @@
   background: url('autopilot-off.png') no-repeat right;
 }
 
+.teaser-block-properties-form table.form-fields {
+  width: 100%;
+}
+
+.teaser-block-properties-form .form-fields td.label {
+  width: 25%;
+}
+
+.teaser-block-properties-form .form-fields td.field {
+  width: 75%;
+}
+
+
+.teaser-block-properties-form .object-reference {
+  width: 80%
+}
+
 /* Teaser visualisations */
 
 .teaser-list {

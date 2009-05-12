@@ -2,7 +2,7 @@
 
   <h1>Teaser</h1>
 
-  <form id="lightbox.form" action="#"
+  <form id="lightbox.form" class="teaser-block-properties-form" 
         tal:attributes="action request/URL"
         tal:content="structure view/form"/>
 
