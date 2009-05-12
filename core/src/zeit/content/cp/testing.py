@@ -8,8 +8,11 @@ import zeit.cms.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
 
-product_config = {'zeit.content.cp': {'rules-url': 'file://%s' % pkg_resources.resource_filename(
+product_config = {
+    'zeit.content.cp': {
+        'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests', 'rule_testdata.py')}}
+
 
 
 layer = zope.app.testing.functional.ZCMLLayer(
