@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.19.6 (unreleased)
+-------------------
+
+- Sichergestellt, dass immer nur genau ein Tooltip angezeigt wird. Tooltips
+  werden nicht angezeigt, wenn eine DragAndDrop-Operation durchgeführt wird.
+
 1.19.5 (2009-05-08)
 -------------------
 
