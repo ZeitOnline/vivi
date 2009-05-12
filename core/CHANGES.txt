@@ -1,6 +1,15 @@
 zeit.content.cp changes
 =======================
 
+0.6 (unreleased)
+----------------
+
+Neue Funktionen
+---------------
+
+- Neue Content Blöcke "Audio" (#5276) und "Video" (#5051) wurden hinzugefügt.
+
+
 0.5 (2009-05-08)
 ----------------
 
