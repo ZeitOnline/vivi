@@ -388,8 +388,7 @@ Then we need to create a test 'article' to be included in this CenterPage:
 >>> 'Foreign teaser' in browser.contents
 True
 
-XXX Since manual editing of teaser blocks is not implemented yet (#4805), we
-inject the test article by writing raw XML:
+We inject the test article by writing raw XML this time:
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign')
 >>> browser.getLink('Source').click()
