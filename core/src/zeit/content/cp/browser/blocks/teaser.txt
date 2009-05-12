@@ -580,4 +580,3 @@ LinkNotFoundError
     >>> repository['c3'] = c3
 
     >>> zope.app.component.hooks.setSite(old_site)
-
