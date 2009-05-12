@@ -9,6 +9,7 @@ def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'av.txt',
         'placeholder.txt',
+        'rss.txt',
         'teaser.txt',
         'teaserbar.txt',
         'xml.txt')

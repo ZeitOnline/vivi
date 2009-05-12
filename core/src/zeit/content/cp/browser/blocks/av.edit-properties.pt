@@ -1,6 +1,6 @@
 <div class="floating">
 
-  <h1 tal:content="context/media_type"></h1>
+  <h1 tal:content="context/media_type | nothing"></h1>
 
   <form id="lightbox.form" action="#"
         tal:condition="not: view/close"

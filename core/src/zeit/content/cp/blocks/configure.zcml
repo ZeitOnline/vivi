@@ -77,6 +77,22 @@
     factory=".teaserbar.TeaserBar"
     />
 
+  <!-- RSS block -->
+  <class class=".rss.RSSBlock">
+    <require
+      interface="..interfaces.IRSSBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IRSSBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".rss.RSSBlockFactory" name="rssblock" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="rssblock"
+    factory=".rss.RSSBlock"
+    />
+
   <!-- XML block -->
   <class class=".xml.XMLBlock">
     <require

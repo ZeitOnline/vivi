@@ -1,0 +1,51 @@
+RSS blocks
+==========
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.tests
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.getLink('Add block', index=0).click()
+>>> browser.open(contents_url)
+>>> browser.getLink('choose the block type').click()
+>>> browser.handleErrors = False
+>>> browser.getLink('RSS block').click()
+
+Editing the block
+-----------------
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('The URL to the RSS feed.').value = 'http://www.tagesschau.de/xml/rss2'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('The URL to the RSS feed.').value
+'http://www.tagesschau.de/xml/rss2'
+
+
+XML of a RSS block
+==================
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container
+    cp:type="rssblock"
+    cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
+    url="http://www.tagesschau.de/xml/rss2">
+  <xi:include
+      xmlns:xi="http://www.w3.org/2003/XInclude"
+      parse="xml"
+      href="/var/cms/foo">
+    <xi:fallback>Feed nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>...

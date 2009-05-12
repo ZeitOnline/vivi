@@ -146,5 +146,6 @@
   <include file="teaser.zcml" />
   <include file="teaserbar.zcml" />
   <include file="xml.zcml" />
+  <include file="rss.zcml" />
 
 </configure>

@@ -189,6 +189,13 @@ class IAVBlock(IBlock):
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
+class IRSSBlock(IBlock):
+    """ A RSS teaserblock."""
+
+    url = zope.schema.TextLine(
+        title=_("The URL to the RSS feed."""))
+
+
 class IBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
 
