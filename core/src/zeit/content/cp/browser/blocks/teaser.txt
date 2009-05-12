@@ -24,7 +24,7 @@ Set a title (although it's unclear if we really need this):
 >>> browser.getControl('Title').value = 'Foo'
 >>> browser.getControl('Apply').click()
 
-When a teaser is dragged on the teaser list, it is added as the first teaser.
+When a teaser is dragged on the teaser block, it is added as the first teaser.
 Drag the first one[#fill-dav-with-content]_:
 
 >>> import lxml.cssselect
@@ -90,10 +90,10 @@ Drag c1 onto the list, it becomes the first entry:
   ...
 
 
-Edit the teaser list
-++++++++++++++++++++
+Edit the teaser block
++++++++++++++++++++++
 
-The teaser list can be edited:
+The teaser block can be edited:
 
 >>> browser.getLink('Edit teaser list').click()
 >>> lightbox_url = browser.url
@@ -252,7 +252,7 @@ The original article is unchanged:
  <div class="widget">Test content teaser title</div>
  ...
 
-The teaser list now contains the local copy instead of the original article:
+The teaser block now contains the local copy instead of the original article:
 
 >>> browser.open(lightbox_url)
 >>> print browser.contents
@@ -281,7 +281,7 @@ The original article is still unchanged:
  <div class="widget">Test content teaser title</div>
  ...
 
-Again, the teaser list has been updated:
+Again, the teaser block has been updated:
 >>> browser.open(lightbox_url)
 >>> print browser.contents
 <...<div>Very local teaser title</div>...
@@ -556,7 +556,7 @@ The avaliable layouts are different for the position of the teaser block in the
 leasers list. The first teaser block has all layouts avaliable for selection,
 all others only the one with the small image.
 
-We need to add a second teaser list:
+We need to add a second teaser block:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Add block').click()
