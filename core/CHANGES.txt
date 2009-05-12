@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Sichergestellt, dass immer nur genau ein Tooltip angezeigt wird. Tooltips
   werden nicht angezeigt, wenn eine DragAndDrop-Operation durchgeführt wird.
+- Die Lightbox registriert den Submit-Eventhandler nur noch genau für die
+  Submit-Buttons, nicht für *alle* Buttons.
 
 1.19.5 (2009-05-08)
 -------------------

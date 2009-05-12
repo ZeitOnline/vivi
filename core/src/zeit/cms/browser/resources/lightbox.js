@@ -58,6 +58,8 @@ zeit.cms.LightboxForm = Class.extend({
             return
         if (target.type != 'button')
             return
+        if (! hasElementClass(target, 'submit'))
+            return
         this.handle_submit(target.name);
         event.stop();
     },
@@ -146,6 +148,7 @@ zeit.cms.LightboxForm = Class.extend({
             function(button) {
                 if (button.type == 'submit') {
                     button.type = 'button';
+                    addElementClass(button, 'submit');
                 }
             });
         self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
@@ -157,7 +160,7 @@ zeit.cms.LightboxForm = Class.extend({
                 event.stop()
             }));
         }
-        
+
         // check for javascript
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
