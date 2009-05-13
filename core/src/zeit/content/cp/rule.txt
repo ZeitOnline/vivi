@@ -22,6 +22,9 @@ Rules can be specified in a file which contains:
 ... applicable(is_area and area == 'lead')
 ... warning_unless(count > 6, u'In der Aufmacherfläche sollen mehr als 6 Teaserblöcke stehen')
 ... error_unless(count > 2, u'In der Aufmacherfläche müssen mehr als 2 Teaserblöcke stehen')
+... 
+... applicable(is_area and area == 'lead')
+... # always valid
 ... """)
 
 
@@ -81,7 +84,7 @@ Validating the layout of a teaser bar
 Edge cases
 ++++++++++
 
-Rules are seperated by blank lines and/or comments. That means wrinting your
+Rules are seperated by blank lines and/or comments. That means writing your
 file without those, the whole file is interpreted as one rule. However, every
 rule has to start with `applicable`:
 

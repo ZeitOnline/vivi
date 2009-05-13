@@ -3,13 +3,17 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
+import gocept.cache.method
 import itertools
+import logging
 import urllib2
 import zeit.content.cp.interfaces
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
-import gocept.cache.method
+
+
+log = logging.getLogger(__name__)
 
 
 ERROR = 'error'
@@ -117,6 +121,7 @@ class RulesManager(object):
             'zeit.content.cp')
         url = config['rules-url']
         file_rules = urllib2.urlopen(url)
+        log.info('Loading rules from %s' % url)
         noop = True
         rule = []
         for line in file_rules:
@@ -144,7 +149,8 @@ class RulesManager(object):
     def rules(self):
         try:
             rules = self.get_rules()
-        except SyntaxError:
+        except SyntaxError, e:
+            log.exception(e)
             return self.cached_rules
         else:
             self.cached_rules = rules
@@ -164,7 +170,7 @@ class Validator(object):
             zeit.content.cp.interfaces.IRulesManager)
         for rule in rm.rules:
             status = rule.apply(context)
-            if self.status != ERROR:
+            if status.status and self.status != ERROR:
                 self.status = status.status
             if status.message:
                 self.messages.append(status.message)
@@ -182,7 +188,10 @@ class CenterPageValidator(object):
         areas = context.values()
         for item in itertools.chain(areas, *[a.values() for a in areas]):
             validator = zeit.content.cp.interfaces.IValidator(item)
-            if self.status != ERROR:
+            if validator.status and self.status != ERROR:
+                # Set self status when there was an error or warning, but only
+                # if there was no error before. If there was an error the whole
+                # validation will stay in error state
                 self.status = validator.status
             if validator.messages:
                 self.messages.extend(validator.messages)
