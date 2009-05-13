@@ -497,3 +497,13 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+
+/* Top lists */
+
+.block.type-mostread > .block-inner > .mostread {
+  margin: 2em;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2em;
+}

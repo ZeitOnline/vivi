@@ -141,4 +141,21 @@
     factory=".av.AudioBlock"
     />
 
+  <!-- Most read block -->
+  <class class=".toplist.MostRead">
+    <require
+      interface="..interfaces.IMostReadBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IMostReadBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".toplist.MostReadFactory" name="mostread" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="mostread"
+    factory=".toplist.MostRead"
+    />
+  <subscriber handler=".toplist.add_mostread_to_newly_created_cp" />
+
 </configure>

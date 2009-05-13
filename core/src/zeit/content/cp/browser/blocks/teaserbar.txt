@@ -120,7 +120,7 @@ allows only two teaser blocks.
 
 We delete one teaser block, because it is the odd one out:
 
->>> browser.getLink('Delete', index=0).click()
+>>> browser.getLink('Delete', index=1).click()
 
 Now, we have one less teaser block, and no new placeholder is created:
 
@@ -132,7 +132,7 @@ Now, we have one less teaser block, and no new placeholder is created:
 When deleting another teaser block, a placeholder is created instead:
 
 >>> browser.open(bookmark)
->>> browser.getLink('Delete', index=0).click()
+>>> browser.getLink('Delete', index=1).click()
 >>> block_count('type-teaser')
 1
 >>> block_count('type-placeholder')

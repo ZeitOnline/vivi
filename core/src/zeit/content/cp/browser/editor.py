@@ -10,12 +10,11 @@ class Editor(object):
     title = _('Edit center page')
 
     def validate(self, area):
-        validation_class, validation_messages = \
-            zeit.content.cp.browser.rule.validate(area)
+        validation_class, validation_messages = (
+            zeit.content.cp.browser.rule.validate(area))
 
-        if not validation_class:
-            css_class = 'editable-area'
-        else:
-            css_class = ' '.join(['editable-area', validation_class])
-
+        css_class = ['editable-area']
+        if validation_class:
+            css_class.append(validation_class)
+        css_class = ' '.join(css_class)
         return dict(class_=css_class, messages=validation_messages)

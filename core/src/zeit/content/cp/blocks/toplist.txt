@@ -1,0 +1,43 @@
+Top lists
+=========
+
+The toplists are *very* simple blocks. It is not even possible to change them.
+
+MostRead
+++++++++
+
+The most read block shows the most read articles:
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostread')
+>>> block = factory()
+
+An empty XML block contains an ``cp_extra``:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(block.xml, pretty_print=True)
+<container...>
+  <cp_extra id="mostread"/>
+</container>
+
+
+When a centerpage is created the toplist is automatically added[#functional]_:
+
+>>> import zeit.cms.interfaces
+>>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
+>>> container['cp'] = zeit.content.cp.centerpage.CenterPage()
+>>> mr = container['cp']['informatives'].values()[0]
+>>> mr.type
+'mostread'
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

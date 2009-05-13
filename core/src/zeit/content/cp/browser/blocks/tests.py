@@ -12,4 +12,5 @@ def test_suite():
         'rss.txt',
         'teaser.txt',
         'teaserbar.txt',
+        'toplist.txt',
         'xml.txt')

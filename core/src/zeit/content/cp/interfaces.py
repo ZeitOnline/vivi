@@ -219,6 +219,10 @@ class IRSSBlock(IBlock):
         _("The corresponding Feed object."))
 
 
+class IMostReadBlock(IBlock):
+    """Block mostread."""
+
+
 class IBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
 
