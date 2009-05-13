@@ -276,23 +276,24 @@
 
 .block.type-blocked {
     position: absolute;
-    right: 0;
-    margin: 0.5em 0;  /* Container padding as absolute runs into paddings */
+    right: 0.5em;
 }
 
 .block.type-blocked > .block-inner {
   background-color: transparent;
-  padding: 3em 0;
   text-align: center;
 }
 
+.block.type-blocked > .block-inner > * {
+  margin: 3em;
+}
 
 .block.type-blocked.mr {
-  width: 50%;
+  width: 49%;
 }
 
 .block.type-blocked.dmr {
-  width: 75%;
+  width: 74%;
 }
 
 /* dragger */
@@ -314,11 +315,11 @@
 
 .block.type-placeholder > .block-inner {
   border-style: dashed;
-  padding: 2em;
 }
 
 .block.type-placeholder > .block-inner > * {
   font-size: 2em;
+  margin: 1.5em;
 }
 
 .block.type-placeholder > .block-inner > .choose-block {

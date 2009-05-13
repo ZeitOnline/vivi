@@ -764,7 +764,7 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     forEach($(container).childNodes, function(block) {
         if (block.nodeType != block.ELEMENT_NODE)
             return
-        if (MochiKit.Style.getStyle(block, 'position') == 'absolute')
+        if (!MochiKit.DOM.hasElementClass(block, 'block'))
             return
         var block = MochiKit.DOM.getFirstElementByTagAndClassName(
             'div', 'block-inner', block);
