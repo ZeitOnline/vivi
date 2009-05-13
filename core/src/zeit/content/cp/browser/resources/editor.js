@@ -752,7 +752,10 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         if (isNull(block))
             return
         blocks.push(block);
+        var height = MochiKit.Style.getStyle(block, 'height');
+        MochiKit.Style.setStyle(block, {'height': 'auto'});
         var dim = MochiKit.Style.getElementDimensions(block, true);
+        MochiKit.Style.setStyle(block, {'height': height});
         max_height = Math.max(max_height, dim.h);
     }); 
 
@@ -784,6 +787,9 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         function() {
             MochiKit.Signal.disconnect(ident);
             MochiKit.Signal.connect(
-                zeit.content.cp.editor, 'after-reload', fix_box_heights);
+                zeit.content.cp.editor, 'after-reload', function() {
+                    fix_box_heights();
+                    MochiKit.Async.callLater(0.25, fix_box_heights);
+                });
         });
 })();
