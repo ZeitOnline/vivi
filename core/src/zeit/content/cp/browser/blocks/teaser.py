@@ -191,3 +191,14 @@ class ToggleAutopilot(zeit.content.cp.browser.view.Action):
         self.context.autopilot = (True if self.to == 'on' else False)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
+
+
+class UpdateOrder(zeit.content.cp.browser.view.Action):
+
+    keys = zeit.content.cp.browser.view.Form('keys', json=True)
+
+    def update(self):
+        self.context.autopilot = False
+        self.context.updateOrder(self.keys)
+        zope.event.notify(
+            zope.lifecycleevent.ObjectModifiedEvent(self.context))

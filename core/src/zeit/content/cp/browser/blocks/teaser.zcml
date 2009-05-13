@@ -69,7 +69,7 @@
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="updateOrder"
-    class="..area.UpdateOrder"
+    class=".teaser.UpdateOrder"
     permission="zeit.EditContent"
     />
 

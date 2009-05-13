@@ -390,7 +390,8 @@ True
 We need to check in the CenterPage we want to reference to actually see the
 teasers (of course):
 
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign/@@checkin')
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/foreign/@@checkin')
 
 
 Currently the autopilot is not possible, because we have not referenced the
@@ -413,7 +414,8 @@ referenced:
 Now we can switch our teaser block to autopilot when referencing the
 centerpage:
 
->>> browser.getControl('Fetch teasers from').value = 'http://xml.zeit.de/online/2007/01/foreign'
+>>> browser.getControl('Fetch teasers from').value = (
+...     'http://xml.zeit.de/online/2007/01/foreign')
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...Updated on...
@@ -457,6 +459,21 @@ False
 >>> 'autopilot-off' in browser.contents
 True
 
+
+Updating the order als works when in autopilot mode. The autopilot is
+automatically disabled then:
+
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(contents_url)
+>>> update_order_url = browser.getLink('Edit teaser list').url.replace(
+...     'teaser.edit-contents', 'updateOrder')
+>>> order = ['http://xml.zeit.de/testcontent']
+>>> browser.open(update_order_url + '?keys=' + cjson.encode(order))
+>>> browser.open(contents_url)
+>>> 'autopilot-on' in browser.contents
+False
+>>> 'autopilot-off' in browser.contents
+True
 
 Layouts
 +++++++
