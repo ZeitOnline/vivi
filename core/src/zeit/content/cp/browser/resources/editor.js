@@ -740,6 +740,25 @@ zeit.content.cp.ConfirmDelete = gocept.Class.extend({
 
 
 zeit.content.cp.makeBoxesEquallyHigh = function(container) {
+    // check for unloaded images:
+    
+    var images = MochiKit.DOM.getElementsByTagAndClassName(
+        'img', null, container);
+    var exit = false;
+    forEach(images, function(image) {
+        if (!image.height) {
+            exit = true;
+            throw MochiKit.Iter.StopIteration;
+        }
+    });
+    if (exit) {
+        log("Unloaded image in container.id.");
+        MochiKit.Async.callLater(
+            0.25, zeit.content.cp.makeBoxesEquallyHigh, container);
+        return
+    }
+
+
     var max_height = 0;
     var blocks = [];
     forEach($(container).childNodes, function(block) {
@@ -787,9 +806,6 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         function() {
             MochiKit.Signal.disconnect(ident);
             MochiKit.Signal.connect(
-                zeit.content.cp.editor, 'after-reload', function() {
-                    fix_box_heights();
-                    MochiKit.Async.callLater(0.25, fix_box_heights);
-                });
+                zeit.content.cp.editor, 'after-reload', fix_box_heights);
         });
 })();
