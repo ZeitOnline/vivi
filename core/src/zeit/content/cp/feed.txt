@@ -1,0 +1,43 @@
+Feed
+====
+
+>>> import zeit.cms.testing
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> import unittest
+>>> import zeit.content.cp.testing
+>>> import pkg_resources
+
+>>> zeit.cms.testing.set_site()
+
+>>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
+>>> fm.get_feed('foobar') == fm.get_feed('foobar')
+True
+>>> fm.get_feed('foo') != fm.get_feed('foobar')
+True
+
+>>> url = pkg_resources.resource_filename(
+...     'zeit.content.cp.tests', 'heise.xml')
+>>> feed = fm.get_feed(url)
+>>> import lxml.etree
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<feed
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+  url=".../zeit.content.cp/src/zeit/content/cp/tests/heise.xml">
+  <rss version="2.0">
+    <channel>...
+      <item>
+        <link>...</link>
+        <description>...</description>
+        <title>...</title>
+      </item>...
+    </channel>
+  </rss>
+</feed>
+
+>>> feed = fm.get_feed('foobar')
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<feed
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+  url="foobar"
+  error="&lt;class 'xml.sax._exceptions.SAXParseException'&gt;: &lt;unknown&gt;:2:0: syntax error"/>

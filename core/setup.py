@@ -19,6 +19,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'FeedParser',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
         'lxml',
