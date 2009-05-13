@@ -4,6 +4,7 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.workflow.interfaces
 import zeit.content.cp.layout
@@ -189,6 +190,12 @@ class IAVBlock(IBlock):
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
+class IFeed(zeit.cms.interfaces.ICMSContent):
+
+    url = zope.schema.TextLine(
+        title=_("The URL to the RSS feed."""))
+
+
 class IRSSBlock(IBlock):
     """ A RSS teaserblock."""
 
@@ -257,3 +264,7 @@ class IValidator(zope.interface.Interface):
 
     messages = zope.schema.List(
         title=u"List of error messages.")
+
+
+class IRSSFolder(zeit.cms.repository.interfaces.IFolder):
+    """Marker interface for RSS folder."""

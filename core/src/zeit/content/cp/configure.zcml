@@ -142,4 +142,12 @@
     <implements interface=".interfaces.IBlockLayout" />
   </class>
 
+  <!-- RSS Feed -->
+  <class class=".feed.Feed">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+  </class>
+
+  <adapter factory=".feed.resourceFactory" />
+  <adapter factory=".feed.feedFactory" name="feed" />
+
 </configure>

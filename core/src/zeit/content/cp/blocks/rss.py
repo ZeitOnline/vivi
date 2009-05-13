@@ -3,19 +3,20 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
+import lxml.objectify
+import md5
+import rwproperty
+import zeit.cms.connector
+import zeit.cms.content.adapter
+import zeit.cms.content.xmlsupport
+import zeit.cms.repository.interfaces
 import zeit.content.cp.blocks.block
+import zeit.content.cp.feed
 import zeit.content.cp.interfaces
+import zope.app.appsetup.product
+import zope.component
 import zope.container.interfaces
 import zope.interface
-import rwproperty
-import lxml.objectify
-
-class DummyFeed(object):
-
-    uniqueId = '%sfoo' % zeit.cms.interfaces.ID_NAMESPACE
-
-    def __init__(self, url):
-        pass
 
 
 class RSSBlock(zeit.content.cp.blocks.block.Block):
@@ -36,7 +37,7 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
             nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
         )
 
-        feed = FeedFactory(url)
+        feed = zeit.content.cp.feed.Feed.get_feed(url)
 
         path = feed.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
@@ -60,4 +61,3 @@ RSSBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
     RSSBlock, 'rssblock', _('RSS block'))
 
-FeedFactory = DummyFeed

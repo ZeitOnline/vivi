@@ -11,7 +11,9 @@ import zope.testing.renormalizing
 product_config = {
     'zeit.content.cp': {
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
-            'zeit.content.cp.tests', 'rule_testdata.py')}}
+            'zeit.content.cp.tests', 'rule_testdata.py'),
+        'rss-folder': 'rss',
+    }}
 
 
 
@@ -24,6 +26,7 @@ checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),
     (re.compile('0x[0-9a-f]+'), "0x..."),
+    (re.compile('[0-9a-f]{32}'), "<MD5>"),
 ])
 
 
