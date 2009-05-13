@@ -737,3 +737,53 @@ zeit.content.cp.ConfirmDelete = gocept.Class.extend({
         MochiKit.DOM.removeElementClass(self.block, 'highlight');
     },
 })
+
+
+zeit.content.cp.makeBoxesEquallyHigh = function(container) {
+    var max_height = 0;
+    var blocks = [];
+    forEach($(container).childNodes, function(block) {
+        if (block.nodeType != block.ELEMENT_NODE)
+            return
+        if (MochiKit.Style.getStyle(block, 'position') == 'absolute')
+            return
+        var block = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'div', 'block-inner', block);
+        if (isNull(block))
+            return
+        blocks.push(block);
+        var dim = MochiKit.Style.getElementDimensions(block, true);
+        max_height = Math.max(max_height, dim.h);
+    }); 
+
+    log("Max height: " + max_height);
+    log("Nodes " + blocks);
+    forEach(blocks, function(block) {
+        var new_dim = new MochiKit.Style.Dimensions(null, max_height)
+        MochiKit.Style.setElementDimensions(block, new_dim);
+    });
+};
+
+
+(function() {
+    
+    var fix_box_heights = function() {
+        forEach($$('#cp-teasermosaic > .block.type-teaser-bar > .block-inner'),
+            function(bar) {
+                log("Setting heights for " + bar.parentNode.id);
+                try {
+                    zeit.content.cp.makeBoxesEquallyHigh(bar);
+                } catch (e) {
+                    log(e)
+                }
+        });
+    }
+
+    var ident = MochiKit.Signal.connect(
+        window, 'cp-editor-initialized',
+        function() {
+            MochiKit.Signal.disconnect(ident);
+            MochiKit.Signal.connect(
+                zeit.content.cp.editor, 'after-reload', fix_box_heights);
+        });
+})();

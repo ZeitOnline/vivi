@@ -158,6 +158,7 @@
 .edit {
   background-color: inherit;
   border-top: 3px solid #aaa;
+  clear: both;
   font-size: 2em;
   height: 1.5em;
   margin-top: 0.5em;
@@ -259,6 +260,14 @@
 
 .type-teaser-bar > .block-inner > .block > .block-inner {
   margin: 1.5em 0.5em;
+  padding-bottom: 3.5em;
+}
+
+.type-teaser-bar > .block-inner > .block > .block-inner > .edit {
+  bottom: 1.25em;
+  left: 1em;
+  position: absolute;
+  right: 1em;
 }
 
 .block-inner {
