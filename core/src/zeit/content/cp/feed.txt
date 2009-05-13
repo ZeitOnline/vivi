@@ -40,4 +40,4 @@ True
 <feed
   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
   url="foobar"
-  error="&lt;class 'xml.sax._exceptions.SAXParseException'&gt;: &lt;unknown&gt;:2:0: syntax error"/>
+  error="&lt;class 'xml.sax..."/>
