@@ -123,7 +123,7 @@ class TestGenericEditing(Test):
 
         # Open delete verification
         s.pause(250)
-        s.click('css=a.delete-link')
+        s.click('css=#cp-aufmacher a.delete-link')
         s.waitForElementPresent('css=div.confirm-delete')
         s.verifyElementPresent('css=div.block-inner.highlight')
 
@@ -135,9 +135,9 @@ class TestGenericEditing(Test):
         s.verifyElementNotPresent('css=div.block-inner.highlight')
 
         # Now really delete
-        s.click('css=a.delete-link')
+        s.click('css=#cp-aufmacher a.delete-link')
         s.click('css=div.confirm-delete > a')
-        s.waitForElementNotPresent('css=a.delete-link')
+        s.waitForElementNotPresent('css=#cp-aufmacher a.delete-link')
 
     def test_close_choose_type_lightbox_does_not_break_editor(self):
         self.open_centerpage()
