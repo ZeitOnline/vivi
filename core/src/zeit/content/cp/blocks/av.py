@@ -10,19 +10,27 @@ import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.interface
+import lxml.objectify
 
 
 class AVBlock(zeit.content.cp.blocks.block.Block):
 
-    media_type = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'module')
-    format = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'format')
+    @property
+    def first_child(self):
+        return self.xml.getchildren()[0]
+
+    @rwproperty.getproperty
+    def format(self):
+        return self.first_child.get('format')
+
+    @rwproperty.setproperty
+    def format(self, value):
+        return self.first_child.set('format', value)
 
     # XXX very abridged version of zeit.cms.content.dav.DatetimeProperty
     @rwproperty.getproperty
     def expires(self):
-        value = self.xml.get('expires')
+        value = self.first_child.get('expires')
         if value is None:
             return None
         else:
@@ -30,7 +38,7 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
 
     @rwproperty.setproperty
     def expires(self, value):
-        self.xml.set('expires', value.isoformat())
+        self.xml.getchildren()[0].set('expires', value.isoformat())
 
 
 class VideoBlock(AVBlock):
@@ -38,12 +46,14 @@ class VideoBlock(AVBlock):
     zope.interface.implements(zeit.content.cp.interfaces.IAVBlock)
 
     id = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'videoID')
+        '.video', 'videoID')
+
+    media_type = 'video'
 
     def __init__(self, context, xml):
         super(VideoBlock, self).__init__(context, xml)
-        self.media_type = 'video'
-
+        if len(self.xml.getchildren()) == 0:
+            self.xml.append(lxml.objectify.E.video())
 
 VideoBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion,
@@ -55,11 +65,14 @@ class AudioBlock(AVBlock):
     zope.interface.implements(zeit.content.cp.interfaces.IAVBlock)
 
     id = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'audioID')
+        '.audio', 'audioID')
+
+    media_type = 'audio'
 
     def __init__(self, context, xml):
         super(AudioBlock, self).__init__(context, xml)
-        self.media_type = 'audio'
+        if len(self.xml.getchildren()) == 0:
+            self.xml.append(lxml.objectify.E.audio())
 
 
 AudioBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(

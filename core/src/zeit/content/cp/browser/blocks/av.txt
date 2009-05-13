@@ -7,6 +7,7 @@ Video blocks
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
 >>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> browser.handleErrors = False
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.getLink('Add block', index=0).click()
@@ -68,16 +69,10 @@ XML of an audio/video block
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container
-  cp:type="videoblock"
-  module="video"
-  cp:__name__="72d87ec4-6082-4fc9-a563-313780e8a8de"
-  videoID="12345"
-  expires="2009-05-04T22:00:00+00:00"
-  format="small"/>...
-<container
-  cp:type="audioblock"
-  module="audio"
-  cp:__name__="72d87ec4-6082-4fc9-a563-313780e8a8de"
-  audioID="98765"
-  format="large"/>...
+<container cp:type="videoblock" cp:__name__="<GUID>">
+  <video videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>
+</container>
+<container cp:type="audioblock" cp:__name__="<GUID>">
+  <audio audioID="98765" format="large"/>
+</container>...
+
