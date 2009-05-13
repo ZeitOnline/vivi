@@ -145,6 +145,13 @@
   <!-- RSS Feed -->
   <class class=".feed.Feed">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IFeed"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IFeed"
+      permission="zeit.EditContent"
+      />
   </class>
 
   <adapter factory=".feed.resourceFactory" />

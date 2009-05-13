@@ -190,7 +190,7 @@ class IAVBlock(IBlock):
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
-class IFeed(zeit.cms.interfaces.ICMSContent):
+class IFeed(zeit.cms.content.interfaces.IXMLContent):
 
     url = zope.schema.TextLine(
         title=_("The URL to the RSS feed."""))
