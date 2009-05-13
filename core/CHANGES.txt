@@ -9,6 +9,13 @@ Neue Funktionen
 
 - Neue Content Blöcke "Audio" (#5276) und "Video" (#5051) wurden hinzugefügt.
 
+- Automatische Teaserblöcke (Autopilot) können auch Channel referenzieren
+  (#5290).
+
+- Automatische Teaserblöcke erstellen korrektes <xi:include>.
+
+- Blöcke in einer Teaserleiste sind alle gleich hoch.
+
 
 0.5 (2009-05-08)
 ----------------
