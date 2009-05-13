@@ -45,7 +45,8 @@ XML of a RSS block
   <xi:include
       xmlns:xi="http://www.w3.org/2003/XInclude"
       parse="xml"
+      xpointer="xpointer(/feed/rss)"
       href="/var/cms/rss/<MD5>">
-    <xi:fallback>Feed nicht erreichbar.</xi:fallback>
+    <xi:fallback>Ziel http://xml.zeit.de/rss/<MD5> nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>...

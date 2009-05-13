@@ -183,7 +183,7 @@ def apply_layout(context, event):
         elem.layout = buttons
 
 
-def get_xi_include(context, xpath):
+def create_xi_include(context, xpath):
     include_maker = lxml.objectify.ElementMaker(
         annotate=False,
         namespace='http://www.w3.org/2003/XInclude',
@@ -196,17 +196,18 @@ def get_xi_include(context, xpath):
         zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
 
     include = include_maker.include(
-        include_maker.fallback('Channel nicht erreichbar.'),
+        include_maker.fallback('Ziel %s nicht erreichbar.' % context.uniqueId),
         href=path,
         parse='xml',
         xpointer='xpointer(%s)' % xpath)
     return include
 
+
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def cp_xi_include(context):
     """Reference a CP as xi:include."""
-    return get_xi_include(
+    return create_xi_include(
         context, ("/centerpage/body/cluster[@area='feature']"
                   "/region[@area='lead']/container/block[1]"))
 
@@ -220,4 +221,4 @@ def feed_xi_include(context):
     the interface does not guarantee any xml structure.
 
     """
-    return get_xi_include(context, '/channel/container/block')
+    return create_xi_include(context, '/channel/container/block')

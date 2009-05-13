@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
 import md5
@@ -30,28 +31,13 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
         if len(self.xml.getchildren()) == 0:
             self.xml.append(lxml.objectify.E.dummy_include())
 
-    def create_include(self, url):
-        include_maker = lxml.objectify.ElementMaker(
-            annotate=False,
-            namespace='http://www.w3.org/2003/XInclude',
-            nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
-        )
-
-        feed = zope.component.getUtility(
-            zeit.content.cp.interfaces.IFeedManager).get_feed(url)
-
-        path = feed.uniqueId.replace(
-            zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
-
-        return include_maker.include(
-            include_maker.fallback('Feed nicht erreichbar.'),
-            parse='xml',
-            href=path)
-
     @rwproperty.setproperty
     def url(self, url):
         self.xml.set('url', url)
-        self.xml.replace(self.xml.getchildren()[0], self.create_include(url))
+        feed = zope.component.getUtility(
+            zeit.content.cp.interfaces.IFeedManager).get_feed(url)
+        self.xml.replace(self.xml.getchildren()[0],
+                         create_xi_include(feed, '/feed/rss'))
 
     @rwproperty.getproperty
     def url(self):

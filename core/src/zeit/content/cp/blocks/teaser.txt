@@ -75,7 +75,7 @@ But its XML representation only contains an xi:include to the referenced page:
 <container ...>
   <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])" href="/var/cms/cp">
-    <xi:fallback>Channel nicht erreichbar.</xi:fallback>
+    <xi:fallback>Ziel http://xml.zeit.de/cp nicht erreichbar.</xi:fallback>
   </xi:include>
   <autopilot ...>true</autopilot>
 </container>
@@ -125,7 +125,7 @@ The xi:include is set accordingly:
   <referenced_cp py:pytype="str">http://xml.zeit.de/wirtschaft.feed</referenced_cp>
   <autopilot py:pytype="bool">true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/wirtschaft.feed">
-    <xi:fallback>Channel nicht erreichbar.</xi:fallback>
+    <xi:fallback>Ziel http://xml.zeit.de/wirtschaft.feed nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
 
