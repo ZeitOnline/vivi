@@ -34,14 +34,17 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
     @rwproperty.setproperty
     def url(self, url):
         self.xml.set('url', url)
-        feed = zope.component.getUtility(
-            zeit.content.cp.interfaces.IFeedManager).get_feed(url)
         self.xml.replace(self.xml.getchildren()[0],
-                         create_xi_include(feed, '/feed/rss'))
+                         create_xi_include(self.feed, '/feed/rss'))
 
     @rwproperty.getproperty
     def url(self):
         return self.xml.get('url')
+
+    @property
+    def feed(self):
+        return zope.component.getUtility(
+            zeit.content.cp.interfaces.IFeedManager).get_feed(self.url)
 
 
 RSSBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(

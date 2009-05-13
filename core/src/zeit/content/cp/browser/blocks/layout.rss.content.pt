@@ -1,0 +1,4 @@
+<div>
+RSS Feed:
+<tal:block replace="string: ${context/feed/title}"/>
+</div>

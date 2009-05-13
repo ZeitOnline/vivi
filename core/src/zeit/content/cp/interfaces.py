@@ -195,6 +195,15 @@ class IFeed(zeit.cms.content.interfaces.IXMLContent):
     url = zope.schema.TextLine(
         title=_("The URL to the RSS feed."""))
 
+    title = zope.schema.TextLine(
+        title=_("The title of this feed."""))
+
+    entry_count = zope.schema.Int(
+        title=_("The number of entries of this feed."""))
+
+    last_update = zope.schema.Datetime(
+        title=_("The timestamp when this feed was last fetched."""))
+
 
 class IFeedManager(zope.interface.Interface):
     pass
@@ -204,7 +213,10 @@ class IRSSBlock(IBlock):
     """ A RSS teaserblock."""
 
     url = zope.schema.TextLine(
-        title=_("The URL to the RSS feed."""))
+        title=_("The URL to the RSS feed."))
+
+    feed = zope.interface.Attribute(
+        _("The corresponding Feed object."))
 
 
 class IBlockLayout(zope.interface.Interface):

@@ -18,9 +18,12 @@ RSS blocks
 Editing the block
 -----------------
 
+>>> import pkg_resources
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
->>> browser.getControl('The URL to the RSS feed.').value = 'http://www.tagesschau.de/xml/rss2'
+>>> url = pkg_resources.resource_filename(
+...     'zeit.content.cp.tests', 'tagesschau.xml')
+>>> browser.getControl('The URL to the RSS feed.').value = url
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -28,7 +31,11 @@ Editing the block
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.getControl('The URL to the RSS feed.').value
-'http://www.tagesschau.de/xml/rss2'
+'.../tagesschau.xml'
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...RSS Feed: 'tagesschau.de - Die Nachrichten der ARD' (x Einträge)
 
 
 XML of a RSS block
@@ -41,7 +48,7 @@ XML of a RSS block
 <container
     cp:type="rssblock"
     cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
-    url="http://www.tagesschau.de/xml/rss2">
+    url=".../tagesschau.xml">
   <xi:include
       xmlns:xi="http://www.w3.org/2003/XInclude"
       parse="xml"

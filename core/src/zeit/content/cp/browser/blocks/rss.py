@@ -9,4 +9,4 @@ import zope.formlib.form
 class EditProperties(zeit.content.cp.browser.blocks.av.EditProperties):
 
     form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IRSSBlock)
+        zeit.content.cp.interfaces.IRSSBlock).select('url')

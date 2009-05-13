@@ -19,7 +19,8 @@ stores it.
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
 <feed
   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-  url=".../zeit.content.cp/src/zeit/content/cp/tests/heise.xml">
+  url=".../zeit.content.cp/src/zeit/content/cp/tests/heise.xml"
+  entry_count="3">
   <rss version="2.0">
     <channel>
       <pubDate>2009-05-13T11:36:47+02:00</pubDate>

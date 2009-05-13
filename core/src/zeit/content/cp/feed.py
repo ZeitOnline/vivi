@@ -39,6 +39,10 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'url')
+    entry_count = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'entry_count')
+    last_update = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'last_update')
 
     def fetch_and_convert(self):
         if self.xml.get('error'):
@@ -71,11 +75,18 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         # objectified doesn't allow manipulating element.text
         self.xml.append(rss)
 
+        self.entry_count = len(self.parsed.entries)
+        # XXX need date-aware ObjectPath(Attribute)Property
+        #self.last_update = datetime.datetime.now()
+
     def _append(self, parent, name, data, key):
         if not key in data:
             return
         elem = lxml.etree.SubElement(parent, name)
         elem.text = unicode(data[key])
+
+    def title(self):
+        return self.xml.xpath('/feed/rss/channel/title')
 
 
 feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)
@@ -103,6 +114,8 @@ class FeedManager(object):
             return repository[rss_folder_name]
 
     def get_feed(self, url):
+        if url is None:
+            url = ''
         hash_ = md5.new(url).hexdigest()
         try:
             return self.folder[hash_]
