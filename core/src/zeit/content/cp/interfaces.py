@@ -196,6 +196,10 @@ class IFeed(zeit.cms.interfaces.ICMSContent):
         title=_("The URL to the RSS feed."""))
 
 
+class IFeedManager(zope.interface.Interface):
+    pass
+
+
 class IRSSBlock(IBlock):
     """ A RSS teaserblock."""
 

@@ -150,4 +150,5 @@
   <adapter factory=".feed.resourceFactory" />
   <adapter factory=".feed.feedFactory" name="feed" />
 
+  <utility factory=".feed.FeedManager" />
 </configure>

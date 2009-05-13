@@ -37,7 +37,8 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
             nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
         )
 
-        feed = zeit.content.cp.feed.Feed.get_feed(url)
+        feed = zope.component.getUtility(
+            zeit.content.cp.interfaces.IFeedManager).get_feed(url)
 
         path = feed.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
