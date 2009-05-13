@@ -16,12 +16,18 @@ import zeit.cms.content.property
 import feedparser
 import lxml.etree
 
-CHANNEL_MAPPING = {'title': 'title',
-                   'subtitle': 'description',
-                   'link': 'link'}
-ITEM_MAPPING = {'title': 'title',
-                'description': 'description',
-                'link': 'link'}
+
+def identity(mapping, items):
+    mapping.update([(x, x) for x in items])
+
+CHANNEL_MAPPING = {'subtitle': 'description', 'updated': 'pubDate'}
+identity(CHANNEL_MAPPING, ['title', 'link', 'language', 'copyright'])
+
+IMAGE_MAPPING = {'href': 'url'}
+identity(IMAGE_MAPPING, ['title', 'link', 'width', 'height', 'description'])
+
+ITEM_MAPPING = {'id': 'guid', 'updated': 'pubDate'}
+identity(ITEM_MAPPING, ['title', 'description', 'link', 'author'])
 
 
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -37,30 +43,39 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
     def fetch_and_convert(self):
         if self.xml.get('error'):
             del self.xml.attrib['error']
-        if self.xml.getchildren():
-            self.xml.remove(self.xml.rss)
-        rss = lxml.etree.Element('rss')
-        rss.set('version', '2.0')
-        src = feedparser.parse(self.url)
-        if src.bozo:
-            exc = src.bozo_exception
+        self.parsed = feedparser.parse(self.url)
+        if self.parsed.bozo:
+            exc = self.parsed.bozo_exception
             self.xml.set('error', '%s: %s' % (type(exc), str(exc)))
             return
-        channel = lxml.etree.Element('channel')
-        for src_key, rss_key in CHANNEL_MAPPING.items():
-            elem = lxml.etree.Element(rss_key)
-            elem.text = src.feed[src_key]
-            channel.append(elem)
-        for entry in src.entries:
-            item = lxml.etree.Element('item')
-            for src_key, rss_key in ITEM_MAPPING.items():
-                elem = lxml.etree.Element(rss_key)
-                elem.text = entry[src_key]
-                item.append(elem)
-            channel.append(item)
-        rss.append(channel)
+
+        if self.xml.getchildren():
+            self.xml.remove(self.xml.rss)
+        rss = lxml.etree.Element('rss', version='2.0')
+        channel = lxml.etree.SubElement(rss, 'channel')
+
+        for src, dest in CHANNEL_MAPPING.items():
+            self._append(channel, dest, self.parsed.feed, src)
+
+        if 'image' in self.parsed.feed:
+            image = lxml.etree.SubElement(channel, 'image')
+            for src, dest in IMAGE_MAPPING.items():
+                self._append(image, dest, self.parsed.feed.image, src)
+
+        for entry in self.parsed.entries:
+            item = lxml.etree.SubElement(channel, 'item')
+            for src, dest in ITEM_MAPPING.items():
+                self._append(item, dest, entry, src)
+
+        # append this last, since self.xml is objectified, and
+        # objectified doesn't allow manipulating element.text
         self.xml.append(rss)
 
+    def _append(self, parent, name, data, key):
+        if not key in data:
+            return
+        elem = lxml.etree.SubElement(parent, name)
+        elem.text = unicode(data[key])
 
 
 feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)

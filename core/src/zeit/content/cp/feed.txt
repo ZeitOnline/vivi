@@ -1,39 +1,44 @@
-Feed
-====
+Feed objects
+============
 
->>> import zeit.cms.testing
->>> import zeit.content.cp.interfaces
->>> import zope.component
->>> import unittest
->>> import zeit.content.cp.testing
+A Feed object encapsulates an RSS (or Atom, ...) feed[#functional]_.
+It parses the remote feed (at the given URL), converts it to RSS 2.0 and
+stores it.
+
+>>> import lxml.etree
 >>> import pkg_resources
-
->>> zeit.cms.testing.set_site()
+>>> import unittest
+>>> import zeit.content.cp.interfaces
+>>> import zeit.content.cp.testing
+>>> import zope.component
 
 >>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
->>> fm.get_feed('foobar') == fm.get_feed('foobar')
-True
->>> fm.get_feed('foo') != fm.get_feed('foobar')
-True
-
 >>> url = pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'heise.xml')
 >>> feed = fm.get_feed(url)
->>> import lxml.etree
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
 <feed
   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
   url=".../zeit.content.cp/src/zeit/content/cp/tests/heise.xml">
   <rss version="2.0">
-    <channel>...
+    <channel>
+      <pubDate>2009-05-13T11:36:47+02:00</pubDate>
+      <description>Nachrichten nicht nur aus der Welt der Computer</description>
+      <title>heise online News</title>
+      <link>http://www.heise.de/newsticker/</link>
       <item>
-        <link>...</link>
-        <description>...</description>
-        <title>...</title>
-      </item>...
+        <pubDate>2009-05-13T11:36:47+02:00</pubDate>
+        <description>QSC kann Umsatz und Ergebnis deutlich verbessern</description>
+        <title>QSC kann Umsatz und Ergebnis deutlich verbessern</title>
+        <link>http://www.heise.de/newsticker/QSC-kann-Umsatz-und-Ergebnis-deutlich-verbessern--/meldung/137729/from/atom10</link>
+        <guid>http://www.heise.de/newsticker/meldung/137729</guid>
+      </item>
+      ...
     </channel>
   </rss>
 </feed>
+
+If an error occurs during parsing, it is stored in the `error` attribute:
 
 >>> feed = fm.get_feed('foobar')
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
@@ -41,3 +46,36 @@ True
   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
   url="foobar"
   error="&lt;class 'xml.sax..."/>
+
+
+Creating feeds
+--------------
+
+There exists only one Feed object for each feed URL:
+
+>>> fm.get_feed('foobar') == fm.get_feed('foobar')
+True
+>>> fm.get_feed('foo') != fm.get_feed('foobar')
+True
+
+
+Images
+------
+
+This is a test that the RSS2.0 <image> element is mapped correctly:
+
+>>> url = pkg_resources.resource_filename(
+...     'zeit.content.cp.tests', 'tagesschau.xml')
+>>> feed = fm.get_feed(url)
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<...
+<image>
+  <title>Foo</title>
+  <width>200</width>
+  <url>http://www.tagesschau.de/image.png</url>
+</image>...
+
+
+.. [#functional]
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
