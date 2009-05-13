@@ -15,6 +15,7 @@ import zope.interface
 import zeit.cms.content.property
 import feedparser
 import lxml.etree
+import datetime
 
 
 def identity(mapping, items):
@@ -77,7 +78,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
         self.entry_count = len(self.parsed.entries)
         # XXX need date-aware ObjectPath(Attribute)Property
-        #self.last_update = datetime.datetime.now()
+        self.last_update = datetime.datetime.now()
 
     def _append(self, parent, name, data, key):
         if not key in data:
@@ -86,7 +87,10 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         elem.text = unicode(data[key])
 
     def title(self):
-        return self.xml.xpath('/feed/rss/channel/title')
+        title = self.xml.xpath('/feed/rss/channel/title')
+        if title:
+            return str(title[0])
+        return ''
 
 
 feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)

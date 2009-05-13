@@ -1,4 +1,7 @@
 <div>
 RSS Feed:
-<tal:block replace="string: ${context/feed/title}"/>
+"<tal:block replace="string:${context/feed/title}"/>" 
+(<span tal:replace="string:${context/feed/entry_count}" /> Einträge)
+<div>Zuletzt aktualisiert:
+  <span tal:replace="string:${context/feed/last_update}" /></div>
 </div>
