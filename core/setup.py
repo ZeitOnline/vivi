@@ -18,5 +18,7 @@ setup(
         'setuptools',
         'zeit.cms',
         'python-cjson',
+        'pysolr >= 2.0',
+        'simplejson', # for pysolr
     ],
 )

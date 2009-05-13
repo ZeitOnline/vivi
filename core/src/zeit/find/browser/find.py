@@ -3,19 +3,24 @@
 # See also LICENSE.txt
 
 import cjson
+import pysolr
 import zeit.cms.browser.view
 import zc.resourcelibrary
 import zope.component
 import zope.interface
+import zope.app.appsetup.product
 import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.browser.interfaces
-
 
 def resources(request):
     return zope.component.getAdapter(
         request, zope.interface.Interface, name='zeit.find')
 
+def get_solr():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.find')
+    solr_url = config.get('solr_url')
+    return pysolr.Solr(solr_url)
 
 class Find(zeit.cms.browser.view.Base):
 
@@ -45,10 +50,9 @@ class JSONView(zeit.cms.browser.view.Base):
     @property
     def favorites(self):
         favorites_id = u'Favoriten'
-
         clipboard = zeit.cms.clipboard.interfaces.IClipboard(
             self.request.principal)
-        if not favorites_id in clipboard.keys():
+        if not favorites_id in clipboard:
             clipboard.addClip(favorites_id)
         return clipboard[favorites_id]
 
@@ -64,13 +68,13 @@ class JSONView(zeit.cms.browser.view.Base):
     def result_entry(self, article):
         r = self.resources
         uid = article.uniqueId
-        listrepr = zope.component.queryMultiAdapter(
-            (article, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
-        if article.__name__ in self.favorites.keys():
+        if article.__name__ in self.favorites:
             favorited_icon = r['favorite.png']()
         else:
             favorited_icon = r['not_favorite.png']()
+        listrepr = zope.component.queryMultiAdapter(
+            (article, self.request),
+            zeit.cms.browser.interfaces.IListRepresentation)
         return {
             'uniqueId': uid,
             'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -101,20 +105,40 @@ class SearchResult(JSONView):
     template = 'search_result.jsont'
 
     def json(self):
-        if self.request.get('fulltext', '') == '':
+        fulltext = self.request.get('fulltext', '')
+        fulltext = fulltext.strip()
+        if fulltext == '':
             return {"results": []}
-        articles = ['4schanzentournee-abgesang',
-                    'elterngeld-schlieben',
-                    'EU-Beitritt-rumaenien-bulgarien',
-                    'Somalia',
-                    'eta-zapatero']
-        return {
-            "results": [
-                self.result_entry(zeit.cms.interfaces.ICMSContent(uid))
-                for uid in [
-                    'http://xml.zeit.de/online/2007/01/%s' % id_
-                    for id_ in articles]]}
-
+        r = self.resources
+        results = []
+        for result in get_solr().search(fulltext):
+            #if article.__name__ in self.favorites:
+            #    favorited_icon = r['favorite.png']()
+            #else:
+            favorited_icon = r['not_favorite.png']()
+            uid = 'testuid'
+            #print result.get('published', 'unknown')
+            results.append({
+                    'uniqueId': '',
+                    'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
+                    'favorited': favorited_icon,
+                    'publication_status': r['published.png'](),
+                    'arrow': r['arrow_right.png'](),
+                    'teaser_title': result['teaser_title'],
+                    'teaser_text': result['teaser_text'],
+                    'preview_url': '',
+                    'date': '13.02.2009',
+                    'date_filter': '',
+                    'week': '13/2009',
+                    'week_filter': '',
+                    'topics': result.get('ressort', ''),
+                    'topics_filter': '',
+                    'author': result.get('authors', ''),
+                    'author_filter': '',
+                    'related_url': self.url('expanded_search_result', uid),
+                    'favorite_url': self.url('toggle_favorited', uid),
+                    })
+        return {'results': results}
 
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
@@ -176,7 +200,7 @@ class ToggleFavorited(JSONView):
         content = zeit.cms.interfaces.ICMSContent(
             self.request.get('uniqueId'))
 
-        if content.__name__ in self.favorites.keys():
+        if content.__name__ in self.favorites:
             del self.favorites[content.__name__]
             return {'favorited': r['not_favorite.png']()}
         self.favorites[content.__name__] = (zeit.cms.clipboard.
