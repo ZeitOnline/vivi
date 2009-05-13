@@ -26,8 +26,8 @@ identity(CHANNEL_MAPPING, ['title', 'link', 'language', 'copyright'])
 IMAGE_MAPPING = {'href': 'url'}
 identity(IMAGE_MAPPING, ['title', 'link', 'width', 'height', 'description'])
 
-ITEM_MAPPING = {'id': 'guid', 'updated': 'pubDate'}
-identity(ITEM_MAPPING, ['title', 'description', 'link', 'author'])
+ITEM_MAPPING = {'id': 'guid', 'updated': 'pubDate', 'summary': 'description'}
+identity(ITEM_MAPPING, ['title', 'link', 'author'])
 
 
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):

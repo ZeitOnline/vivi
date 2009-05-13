@@ -28,8 +28,8 @@ stores it.
       <link>http://www.heise.de/newsticker/</link>
       <item>
         <pubDate>2009-05-13T11:36:47+02:00</pubDate>
-        <description>QSC kann Umsatz und Ergebnis deutlich verbessern</description>
         <title>QSC kann Umsatz und Ergebnis deutlich verbessern</title>
+        <description>QSC kann Umsatz und Ergebnis deutlich verbessern</description>
         <link>http://www.heise.de/newsticker/QSC-kann-Umsatz-und-Ergebnis-deutlich-verbessern--/meldung/137729/from/atom10</link>
         <guid>http://www.heise.de/newsticker/meldung/137729</guid>
       </item>
@@ -59,10 +59,11 @@ True
 True
 
 
-Images
-------
+Edge cases
+----------
 
-This is a test that the RSS2.0 <image> element is mapped correctly:
+This is a test that the RSS2.0 <image> element is mapped correctly, and that
+HTML-content is preserved properly:
 
 >>> url = pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'tagesschau.xml')
@@ -74,6 +75,8 @@ This is a test that the RSS2.0 <image> element is mapped correctly:
   <width>200</width>
   <url>http://www.tagesschau.de/image.png</url>
 </image>...
+<description>Sri Lankas Regierung und tamilische Rebellen...</description>...
+
 
 
 .. [#functional]
