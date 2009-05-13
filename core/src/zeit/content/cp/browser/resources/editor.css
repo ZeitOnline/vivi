@@ -249,10 +249,6 @@
 
 }
 
-.type-teaser-bar > .block-inner > .edit {
-  clear: both;
-}
-
 .type-teaser-bar > .block-inner > .block {
   float: left;
   width: 25%;
