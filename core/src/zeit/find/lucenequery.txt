@@ -40,17 +40,17 @@ name:["abc" TO *]
 Let's look at date ranges:
 
 >>> from datetime import datetime
->>> print lq.date_range('name', 
+>>> print lq.datetime_range('name', 
 ...   datetime(2008, 1, 1), datetime(2009, 1, 1))
 name:[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]
 
 Open date ranges:
 
->>> print lq.date_range('name', 
+>>> print lq.datetime_range('name', 
 ...   None, datetime(2009, 1, 1))
 name:[* TO 2009-01-01T00:00:00Z]
 
->>> print lq.date_range('name', 
+>>> print lq.datetime_range('name', 
 ...   datetime(2008, 1, 1), None)
 name:[2008-01-01T00:00:00Z TO *]
 

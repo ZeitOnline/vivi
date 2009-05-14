@@ -26,7 +26,7 @@ def _star_or_isoformat(dt):
         return '*'
     return dt.isoformat() + 'Z'
 
-def date_range(name, start, end):
+def datetime_range(name, start, end):
     return _range(name, _star_or_isoformat(start), _star_or_isoformat(end))
 
 def and_(*args):
