@@ -14,6 +14,7 @@ import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.browser.interfaces
 import zc.iso8601.parse
+from zeit.find import lucenequery as lq
 
 def resources(request):
     return zope.component.getAdapter(
@@ -106,14 +107,74 @@ class SearchForm(JSONView):
 class SearchResult(JSONView):
     template = 'search_result.jsont'
 
-    def json(self):
-        fulltext = self.request.get('fulltext', '')
+    def form(self):
+        """Given the request, create search form contents.
+        """
+        g = self.request.get
+        fulltext = g('fulltext', '')
         fulltext = fulltext.strip()
         if fulltext == '':
-            return {"results": []}
+            return None
+        from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
+        until = parse_input_date(g('until', 'TT.MM.JJJJ'))
+        topic = g('topic', None)
+        authors = g('author', None)
+        keywords = g('keywords', None)
+        # three states: want all published, want all unpublished, don't care
+        published = g('published', None)
+        types = set()
+        for t in ['article', 'gallery', 'video', 'teaser', 'centerpage']:
+            if g(t, '') == 'on':
+                types.add(t)
+        return dict(
+            fulltext=fulltext,
+            from_=from_,
+            until=until,
+            topic=topic,
+            authors=authors,
+            keywords=keywords,
+            published=published,
+            types=types)
+
+    def sort_order(self):
+        return self.request.get('sort_order', 'relevance')    
+
+    def query(self, fulltext, from_, until, topic, authors, keywords,
+                   published, types):
+        """Given parameters, create solr query string.
+        """
+        terms = []
+        terms.append(lq.field('text', fulltext))
+        if from_ is not None or until is not None:
+            terms.append(
+                lq.datetime_range('last-semantic-change', from_, until))
+        if topic:
+            terms.append(lq.field('ressort', topic))
+        if authors:
+            terms.append(lq.multi_field('authors', authors))
+        if keywords:
+            terms.append(lq.multi_field('keywords', keywords))
+        if published:
+            terms.append(lq.bool_field('published', published))
+        return lq.and_(*terms)
+    
+    def form_query(self):
+        """Create solr query for request.
+        """
+        form = self.form()
+        if form is None:
+            return None
+        return self.query(**form)
+    
+    def json(self):
+        q = self.form_query()
+        if q is None:
+            return {"results":[]}
+        #print q
         r = self.resources
         results = []
-        for result in get_solr().search(fulltext):
+        conn = get_solr()
+        for result in conn.search(q):
             #if article.__name__ in self.favorites:
             #    favorited_icon = r['favorite.png']()
             #else:
@@ -227,4 +288,34 @@ def format_week(dt):
     iso_year, iso_week, iso_weekday = dt.isocalendar()
     return '%s/%s' % (iso_week, iso_year)
 
+class InputDateParseError(Exception):
+    pass
 
+def parse_input_date(s):
+    """Given a date input string, return datetime.datetime object
+
+    Date is of format DD.MM.YYYY. Special value 'TT.MM.JJJJ' is
+    equivalent to no date at all.
+    """
+    s = s.strip()
+    if not s:
+        return None
+    if s == 'TT.MM.JJJJ':
+        return None
+    try:
+        day, month, year = s.split('.')
+    except ValueError:
+        raise InputDateParseError("Missing periods in date")
+    try:
+        day = int(day)
+    except ValueError:
+        raise InputDateParseError("Day is not a proper number")
+    try:
+        month = int(month)
+    except ValueError:
+        raise InputDateParseError("Month is not a proper number")
+    try:
+        year = int(year)
+    except ValueError:
+        raise InputDateParseError("Year is not a proper number")    
+    return datetime.datetime(year, month, day)
