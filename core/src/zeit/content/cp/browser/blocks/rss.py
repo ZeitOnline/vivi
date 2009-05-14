@@ -9,17 +9,6 @@ import zope.security.proxy
 import zeit.cms.content
 import zeit.cms.checkout.helper
 
-class Display(object):
-
-    def css_class(self):
-        if self.error():
-            return 'validation-error'
-        return ''
-
-    def error(self):
-        fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
-        return fm.get_feed(self.context.url).error
-
 
 class Refresh(object):
 

@@ -6,7 +6,6 @@
     for="zeit.content.cp.interfaces.IRSSBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class="zeit.content.cp.browser.blocks.rss.Display"
     manager="..interfaces.IEditorContentViewletManager"
     name="contents"
     template="layout.rss.content.pt"

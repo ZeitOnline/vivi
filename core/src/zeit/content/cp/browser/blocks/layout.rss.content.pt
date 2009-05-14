@@ -1,13 +1,9 @@
-<div tal:attributes="class view/css_class">
-RSS Feed:
-
-<tal:error condition="view/error" replace="view/error" />
-
-<tal:default condition="not: view/error">
-  "<span tal:replace="string:${context/feed/title}"/>" 
-  (<span tal:replace="string:${context/feed/entry_count}" /> Einträge)
-  <div>Zuletzt aktualisiert:
-    <span tal:replace="string:${context/feed/last_update}" />
-  </div>
-</tal:default>
+<div>RSS Feed:
+  <tal:block condition="not: context/feed/error">
+    "<span tal:replace="string:${context/feed/title}"/>"
+     (<span tal:replace="string:${context/feed/entry_count}" /> Einträge)
+     <div>Zuletzt aktualisiert:
+       <span tal:replace="string:${context/feed/last_update}" />
+     </div>
+  </tal:block>
 </div>

@@ -88,6 +88,7 @@ def globs_for_block(context):
     area = context.__parent__
     globs = dict(
         is_block=True,
+        type=context.type,
         area=area.__name__,
         position=area.keys().index(context.__name__) + 1,
         )
