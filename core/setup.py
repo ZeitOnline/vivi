@@ -18,7 +18,7 @@ setup(
         'setuptools',
         'xlrd',
         'zeit.calendar',
-        'zeit.cms>=1.16.1',
+        'zeit.cms>=1.19.6',
         'zeit.content.article',
         'zeit.content.quiz',
         'zeit.content.rawxml',
