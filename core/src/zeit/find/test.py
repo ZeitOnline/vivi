@@ -1,9 +1,9 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import os
 import unittest
-import zeit.cms.testing
+import doctest
+import os
 import zope.app.testing.functional
 
 SearchLayer = zope.app.testing.functional.ZCMLLayer(
@@ -12,7 +12,5 @@ SearchLayer = zope.app.testing.functional.ZCMLLayer(
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        layer=SearchLayer))
+    suite.addTest(doctest.DocFileSuite('lucenequery.txt'))
     return suite
