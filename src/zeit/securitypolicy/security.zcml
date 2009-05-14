@@ -112,6 +112,10 @@
   <!-- Producer grants -->
   <grant
     role="zeit.Producer"
+    permission="zeit.RenameFolder"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.DeleteFolder"
     />
   <grant
