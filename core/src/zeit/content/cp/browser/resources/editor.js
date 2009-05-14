@@ -5,6 +5,7 @@ zeit.content.cp = {}
 
 
 zeit.content.cp.makeJSONRequest = function(url, options) {
+    zeit.content.cp.editor.busy_until_reload();
     var d = MochiKit.Async.doSimpleXMLHttpRequest(url, options);
     d.addCallbacks(function(result) {
         var result_obj = null;
@@ -33,6 +34,10 @@ zeit.content.cp.makeJSONRequest = function(url, options) {
         }
         if (immediate_actions.length) {
             immediate_actions.reverse();
+            if (!immediate_actions.length) {
+                // No actions. We're done.
+                seit.content.cp.editor.idle();
+            }
             while(immediate_actions.length) {
                 var signal = immediate_actions.pop();
                 MochiKit.Signal.signal.apply(
@@ -79,6 +84,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         self.content = $('cp-content');
         self.inner_content = null;
         self.content.__handler__ = self;
+        self.busy = false;
         MochiKit.Signal.connect(
             'content', 'onclick',
             self, 'handleContentClick');
@@ -161,6 +167,27 @@ zeit.content.cp.Editor = gocept.Class.extend({
         MochiKit.DOM.swapDOM(element, dom.firstChild);
     },
 
+    busy_until_reload: function() {
+        var self = this;
+        if (self.busy) {
+            // Already busy
+            return;
+        }
+        self.busy = true;
+        MochiKit.Signal.signal(self, 'busy');
+        var ident = MochiKit.Signal.connect(self, 'after-reload', function() {
+            MochiKit.Signal.disconnect(ident);
+            self.idle();
+        });
+    },
+
+    idle: function() {
+        var self = this;
+        if (self.busy) {
+            self.busy = false;
+            MochiKit.Signal.signal(self, 'idle');
+        }
+    },
 });
 
 
@@ -809,3 +836,59 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
                 zeit.content.cp.editor, 'after-reload', fix_box_heights);
         });
 })();
+
+
+zeit.content.cp.BusyIndicator = gocept.Class.extend({
+
+    construct: function() {
+        var self = this;
+        MochiKit.Signal.connect(
+            zeit.content.cp.editor, 'busy', self, self.busy_after_a_while)
+        MochiKit.Signal.connect(
+            zeit.content.cp.editor, 'idle', self, self.idle)
+        self.delayer = null; 
+        self.indicator = DIV({
+            class: 'hidden',
+            id: 'busy-indicator'},
+            DIV({class: 'shade'}),
+            IMG({src: application_url + '/@@/zeit.imp/loading.gif'})
+            );
+        $('content').appendChild(self.indicator);
+    },
+
+    busy_after_a_while: function() {
+        var self = this;
+        self.delayer = MochiKit.Async.callLater(1, function() {
+            self.busy();
+        });
+    },
+
+    busy: function() {
+        var self = this;
+        MochiKit.Style.setOpacity(self.indicator, 0);
+        MochiKit.DOM.removeElementClass(self.indicator, 'hidden');
+        MochiKit.Visual.appear(self.indicator);
+    },
+
+    idle: function() {
+        var self = this;
+        if (!isNull(self.delayer)) {
+            self.delayer.cancel();
+            self.delayer = null;
+        }
+        MochiKit.DOM.addElementClass(self.indicator, 'hidden');
+    },
+
+});
+
+
+(function() {
+    var ident = MochiKit.Signal.connect(
+        window, 'cp-editor-initialized',
+        function() {
+            MochiKit.Signal.disconnect(ident);
+            zeit.content.cp.busy_indicator =
+                new zeit.content.cp.BusyIndicator();
+        });
+})();
+
