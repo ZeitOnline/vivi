@@ -5,7 +5,6 @@ RSS blocks
 >>> import zeit.content.cp.browser.tests
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> browser.xml_strict = True
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
@@ -60,6 +59,19 @@ XML of a RSS block
     <xi:fallback>Ziel http://xml.zeit.de/rss/<MD5> nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>...
+
+Feed object display
+===================
+
+The feed object displays the feed's title in the repository listing:
+
+>>> browser.open('/++skin++cms/repository/rss/')
+>>> print browser.contents
+<...tagesschau.de - Die Nachrichten der ARD...
+>>> hash_ = browser.etree.xpath('//span[@class="filename"]/text()')[0]
+>>> browser.open(hash_ + '/@@view.html')
+>>> print browser.contents
+<...tagesschau.de - Die Nachrichten der ARD...
 
 
 Displaying error messages

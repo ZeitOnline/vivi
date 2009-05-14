@@ -140,4 +140,13 @@
   </class>
 
   <adapter factory=".teaser.checkout_manager_for_proxy" trusted="true" />
+
+  <adapter factory=".feed.ListRepresentation" />
+  <browser:page
+    for="zeit.content.cp.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class="zeit.cms.browser.sourceedit.XMLDisplayForm"
+    permission="zope.View"
+    />
 </configure>
