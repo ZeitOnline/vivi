@@ -22,6 +22,7 @@ setup(
         'FeedParser',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
+        'gocept.runner',
         'lxml',
         'python-cjson',
         'setuptools',
@@ -38,5 +39,8 @@ setup(
         'zope.interface',
         'zope.lifecycleevent',
         'zope.viewlet',
-    ]
+    ],
+    entry_points = dict(
+        console_scripts =
+        ['refresh-feeds = zeit.content.cp.feed:refresh_all',])
 )

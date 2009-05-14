@@ -5,6 +5,8 @@
 from __future__ import with_statement
 import datetime
 import feedparser
+import gocept.runner
+import logging
 import lxml.etree
 import md5
 import pytz
@@ -163,3 +165,23 @@ class FeedManager(object):
             zeit.cms.workflow.interfaces.IPublish(feed).publish()
         except zeit.cms.workflow.interfaces.PublishingError:
             pass
+
+
+def _refresh_all():
+    logger = logging.getLogger('zeit.content.cp.feed')
+    logger.info('refresh_all() started')
+    fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
+    now = datetime.datetime.now(pytz.UTC)
+    interval = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.cp')['feed-update-minimum-age']
+    for feed in fm.folder.values():
+        if now > feed.last_update + datetime.timedelta(minutes=interval):
+            logger.info('Refreshing feed for <%s>' % feed.url)
+            fm.refresh_feed(feed.url)
+        else:
+            logger.info('Not refreshing feed for <%s>, last_update=%s'
+                        % (feed.url, feed.last_update))
+
+    logger.info('refresh_all() done')
+
+refresh_all = gocept.runner.once()(_refresh_all)

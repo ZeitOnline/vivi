@@ -13,6 +13,7 @@ product_config = {
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests', 'rule_testdata.py'),
         'rss-folder': 'rss',
+        'feed-update-minimum-age': 30,
     }}
 
 

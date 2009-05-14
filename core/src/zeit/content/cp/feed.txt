@@ -47,8 +47,29 @@ Refreshing feeds
 
 >>> last_update = feed.last_update
 >>> fm.refresh_feed(url)
->>> fm.get_feed(url).last_update > last_update
+>>> feed = fm.get_feed(url)
+>>> manual_update = feed.last_update
+>>> manual_update > last_update
 True
+
+Feeds can be refreshed automatically (via a cron job), too. Refreshing only
+happens if the feed has not been updated since a certain time (configurable).
+
+>>> zeit.content.cp.feed._refresh_all()
+>>> feed = fm.get_feed(url)
+>>> feed.last_update > manual_update
+False
+
+>>> import datetime
+>>> dummy = with_statement
+>>> with zeit.cms.checkout.helper.checked_out(
+...         feed, semantic_change=True) as co_feed:
+...     co_feed.last_update -= datetime.timedelta(minutes=31)
+>>> zeit.content.cp.feed._refresh_all()
+>>> feed = fm.get_feed(url)
+>>> feed.last_update > manual_update
+True
+
 
 
 Errors in feeds
@@ -64,7 +85,7 @@ If an error occurs during parsing, it is stored in the `error` attribute:
 Publishing feeds
 ----------------
 
-Feeds are published after refresh, if no errors occured:
+Feeds are published after a refresh, if no errors occurred:
 
 >>> import zeit.cms.workflow.interfaces
 >>> feed = fm.get_feed(url)
