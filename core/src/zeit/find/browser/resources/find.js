@@ -250,7 +250,7 @@ zeit.find.log_error = function(err) {
     search_result = new zeit.find.View(
         'search_result', 'search_result', 
         function() {
-            return 'fulltext=' + $('fulltext').value;
+            return MochiKit.Base.queryString($('search_form'));
         });
     extended_search_form = new zeit.find.View(
         'extended_search_form', 'extended_search_form');
