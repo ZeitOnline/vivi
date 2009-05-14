@@ -73,7 +73,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".rename.MenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zeit.RenameFolders"
+    permission="zeit.RenameFolder"
     icon="/@@/zeit.cms/icons/rename.png"
     lightbox="@@rename-box"
     sort="100"
@@ -84,7 +84,7 @@
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".rename.Rename"
-    permission="zeit.RenameFolders"
+    permission="zeit.RenameFolder"
     />
 
   <!-- Delete view -->

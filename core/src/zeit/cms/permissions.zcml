@@ -9,7 +9,7 @@
     />
   
   <permission
-    id="zeit.RenameFolders"
+    id="zeit.RenameFolder"
     title="Rename folders"
     />
   
