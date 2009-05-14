@@ -119,15 +119,8 @@ HTML-content is preserved properly:
 .. [#functional]
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()
     >>> import lovely.remotetask.interfaces
     >>> import zope.component
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
-
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
