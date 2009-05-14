@@ -68,3 +68,13 @@ We can also combine a query with OR:
 >>> print lq.or_(lq.field('name1', 'value1'),
 ...              lq.field('name2', 'value2'))
 (name1:"value1" OR name2:"value2")
+
+Multi fields
+-------------
+
+In some fields you can put in a number of words, and this gets
+turned into a ``AND`` query. Let's take a look:
+
+>>> print lq.multifield('name', 'foo bar qux')
+(name:"foo" AND name:"bar" AND name:"qux")
+
