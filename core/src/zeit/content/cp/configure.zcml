@@ -17,22 +17,23 @@
       permission="zeit.EditContent" />
   </class>
 
-  <class class=".centerpage.CenterPageWorkflow">
+  <class class=".rule.ValidatingWorkflow">
     <require
       permission="zope.View"
-      interface=".interfaces.ICenterPageWorkflow"
+      interface=".interfaces.IValidatingWorkflow"
       />
     <require
       permission="zeit.workflow.Publish"
-      set_schema=".interfaces.ICenterPageWorkflow"
+      set_schema=".interfaces.IValidatingWorkflow"
       />
   </class>
 
   <adapter factory=".centerpage.resourceFactory" />
   <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
   <adapter factory=".centerpage.cms_content_iter" />
-  <adapter factory=".centerpage.CenterPageWorkflow" 
-    provides="zeit.content.cp.interfaces.ICenterPageWorkflow"
+  <adapter factory=".rule.ValidatingWorkflow" 
+    provides=".interfaces.IValidatingWorkflow"
+    for=".interfaces.ICenterPage"
     trusted="yes"
     />
   <subscriber handler=".centerpage.modified_propagator" />
@@ -153,6 +154,17 @@
       permission="zeit.EditContent"
       />
   </class>
+
+  <adapter factory=".rule.ValidatingWorkflow" 
+    provides=".interfaces.IValidatingWorkflow"
+    for=".interfaces.IFeed"
+    trusted="yes"
+    />
+
+  <adapter
+    for="zeit.content.cp.interfaces.IFeed"
+    factory=".feed.FeedValidator" />
+
 
   <adapter factory=".feed.resourceFactory" />
   <adapter factory=".feed.feedFactory" name="feed" />

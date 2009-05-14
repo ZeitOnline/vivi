@@ -16,6 +16,7 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zope.app.appsetup.product
 import zope.component
@@ -105,6 +106,20 @@ resourceFactory = zope.component.adapter(
     zeit.content.cp.interfaces.IFeed)(resourceFactory)
 
 
+class FeedValidator(object):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IValidator)
+
+    status = None
+
+    def __init__(self, context):
+        self.messages = []
+        self.context = context
+        if self.context.error:
+            self.status = zeit.content.cp.rule.ERROR
+            self.messages.append(self.context.error)
+
+
 class FeedManager(object):
 
     zope.interface.implements(
@@ -140,4 +155,7 @@ class FeedManager(object):
         with zeit.cms.checkout.helper.checked_out(
                 feed, semantic_change=True) as co_feed:
             co_feed.fetch_and_convert()
-        #XXX: publish
+        try:
+            zeit.cms.workflow.interfaces.IPublish(feed).publish()
+        except zeit.cms.workflow.interfaces.PublishingError:
+            pass

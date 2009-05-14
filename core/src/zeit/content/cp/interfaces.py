@@ -41,7 +41,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         """Update the metadata of the given content object."""
 
 
-class ICenterPageWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
+class IValidatingWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
     pass
 
 

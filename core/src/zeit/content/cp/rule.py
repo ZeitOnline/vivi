@@ -8,6 +8,7 @@ import itertools
 import logging
 import urllib2
 import zeit.content.cp.interfaces
+import zeit.workflow.timebased
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -195,3 +196,12 @@ class CenterPageValidator(object):
                 self.status = validator.status
             if validator.messages:
                 self.messages.extend(validator.messages)
+
+
+class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
+
+    def can_publish(self):
+        validator = zeit.content.cp.interfaces.IValidator(self.context)
+        if validator.status == zeit.content.cp.rule.ERROR:
+            return False
+        return True

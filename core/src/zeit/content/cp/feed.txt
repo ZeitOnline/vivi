@@ -61,6 +61,30 @@ If an error occurs during parsing, it is stored in the `error` attribute:
 <class 'xml.sax...
 
 
+Publishing feeds
+----------------
+
+Feeds are published after refresh, if no errors occured:
+
+>>> import zeit.cms.workflow.interfaces
+>>> feed = fm.get_feed(url)
+>>> fm.refresh_feed(url)
+>>> tasks.process()
+>>> feed = fm.get_feed(url)
+>>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
+True
+
+When creating a new feed with an invalid url, it won't be published because of
+existing errors:
+
+>>> feed = fm.get_feed('bar')
+>>> tasks.process()
+>>> feed = fm.get_feed('bar')
+>>> feed.error
+u"<class 'xml.sax._exceptions..."
+>>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
+False
+
 Feed features
 -------------
 
@@ -95,4 +119,15 @@ HTML-content is preserved properly:
 .. [#functional]
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
+    >>> import lovely.remotetask.interfaces
+    >>> import zope.component
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')
+
+    >>> import zope.publisher.browser
+    >>> request = zope.publisher.browser.TestRequest()
+    >>> import zope.security.testing
+    >>> principal = zope.security.testing.Principal(u'zope.user')
+    >>> request.setPrincipal(principal)
+    >>> import zope.security.management
+    >>> zope.security.management.newInteraction(request)

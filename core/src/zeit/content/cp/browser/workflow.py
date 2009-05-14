@@ -44,7 +44,7 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
 
     form_fields = (
         zope.formlib.form.FormFields(
-            zeit.content.cp.interfaces.ICenterPageWorkflow,
+            zeit.content.cp.interfaces.IValidatingWorkflow,
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange) +
