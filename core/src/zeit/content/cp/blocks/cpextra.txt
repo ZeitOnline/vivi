@@ -18,7 +18,7 @@ The most read block shows the most read articles:
 ...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostread')
 >>> block = factory()
 
-An empty XML block contains an ``cp_extra``:
+The block contains an ``cp_extra``:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(block.xml, pretty_print=True)
@@ -50,7 +50,7 @@ The most read block shows the most read articles:
 ...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')
 >>> block = factory()
 
-An empty XML block contains an ``cp_extra``:
+The block contains an ``cp_extra``:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(block.xml, pretty_print=True)
@@ -66,6 +66,36 @@ cp created above:
 >>> mc = container['cp']['informatives'].values()[1]
 >>> mc.type
 'mostcommented'
+
+
+Weather
++++++++
+
+Shows the weather ...
+
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='weather')
+>>> block = factory()
+>>> import lxml.etree
+>>> print lxml.etree.tostring(block.xml, pretty_print=True)
+<container...>
+  <cp_extra id="weather"/>
+</container>
+
+
+Stocks
+++++++
+
+Shows stock info
+
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='stocks')
+>>> block = factory()
+>>> import lxml.etree
+>>> print lxml.etree.tostring(block.xml, pretty_print=True)
+<container...>
+  <cp_extra id="stocks"/>
+</container>
 
 
 

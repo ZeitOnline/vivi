@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -66,3 +67,5 @@ def add_blocks_to_newly_created_cp(context, event):
 
 factor('mostread', u'Meistgelesen')
 factor('mostcommented', u'Meistkommentiert')
+factor('weather', u'Wetter')
+factor('stocks', u'Börse')
