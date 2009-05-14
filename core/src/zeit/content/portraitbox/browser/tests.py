@@ -1,23 +1,17 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import re
+from zope.testing import doctest
 import os
 import unittest
-
-import zope.testing.renormalizing
-from zope.testing import doctest
-
-import zope.app.testing.functional
-
 import zeit.cms.testing
-import zeit.wysiwyg.test
+import zeit.content.portraitbox.tests
+import zope.app.testing.functional
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'filebrowser.txt',
-        layer=zeit.wysiwyg.test.WYSIWYGLayer))
+        'README.txt',
+        layer=zeit.content.portraitbox.tests.PortraitboxLayer))
     return suite

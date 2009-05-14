@@ -97,6 +97,7 @@ There is also a view for the metadata:
 >>> zope.component.getMultiAdapter((image, object()), name='metadata')
 <zeit.content.image.metadata.ImageMetadata object at 0x...>
 
+
 Image group
 ===========
 
@@ -106,8 +107,8 @@ XML reference
 Create an image group first:
 
 >>> import zeit.cms.checkout.interfaces
->>> import zeit.content.image.test
->>> group = zeit.content.image.test.create_image_group()
+>>> import zeit.content.image.tests
+>>> group = zeit.content.image.tests.create_image_group()
 
 Reference the image via XML:
 

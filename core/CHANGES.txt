@@ -13,6 +13,8 @@ zeit.cms changes
 - Die Lightbox registriert den Submit-Eventhandler nur noch genau für die
   Submit-Buttons, nicht für *alle* Buttons.
 
+- Alle `test.py` nach `tests.py` umbenannt.
+
 1.19.5 (2009-05-08)
 -------------------
 

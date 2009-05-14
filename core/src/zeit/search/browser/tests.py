@@ -1,22 +1,16 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zope.testing import doctest
 import os
 import unittest
-
-import zope.app.testing.functional
-
-import zeit.cms.testing
-
-import zeit.workflow.test
+import zeit.search.tests
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'indicator.txt',
-        product_config={'zeit.workflow': zeit.workflow.test.product_config},
-        layer=zeit.workflow.test.WorkflowLayer))
+        layer=zeit.search.tests.SearchLayer,
+        product_config=zeit.search.tests.product_config))
     return suite

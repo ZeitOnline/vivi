@@ -1,16 +1,15 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zope.testing import doctest
 import datetime
 import os
 import re
 import unittest
-
-from zope.testing import doctest
+import zeit.cms.testing
+import zeit.content.image.tests
 import zope.testing.renormalizing
 
-import zeit.cms.testing
-import zeit.content.image.test
 
 now_plus_7_days = datetime.date.today() + datetime.timedelta(days=7)
 
@@ -28,5 +27,5 @@ def test_suite():
         'imagefolder.txt',
         'master-image.txt',
         checker=checker,
-        layer=zeit.content.image.test.ImageLayer))
+        layer=zeit.content.image.tests.ImageLayer))
     return suite
