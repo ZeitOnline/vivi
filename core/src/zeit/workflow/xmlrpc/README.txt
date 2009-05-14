@@ -57,9 +57,8 @@ Clean up:
 
 .. [#functionaltest] We need to set the site since we're a functional test:
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
 
     Do some imports and get the repository
 
@@ -79,8 +78,5 @@ Clean up:
     >>> import zope.security.testing
     >>> import zope.security.management
     >>> def new_interaction():
-    ...     request = zope.publisher.browser.TestRequest()
-    ...     principal = zope.security.testing.Principal(u'zope.user')
-    ...     request.setPrincipal(principal)
-    ...     zope.security.management.newInteraction(request)
+    ...     principal = zeit.cms.testing.create_interaction()
     >>> new_interaction()

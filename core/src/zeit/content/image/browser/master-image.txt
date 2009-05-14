@@ -68,7 +68,6 @@ False
 Clean up:
 
 >>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
 
 
 Selecting the master image
@@ -126,13 +125,8 @@ It is possible to select the master image of an image group:
 
 .. [#functional]
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> participation = zope.security.testing.Participation(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(participation)
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()
     >>> import zeit.content.image.test
     >>> group = zeit.content.image.test.create_image_group()

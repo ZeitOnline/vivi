@@ -12,9 +12,7 @@ We need the functional test setup and an interaction:
 >>> import zope.app.component.hooks
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
->>> request = zope.publisher.browser.TestRequest()
->>> request.setPrincipal(zope.security.testing.Principal(u'hans'))
->>> zope.security.management.newInteraction(request)
+>>> principal = zeit.cms.testing.create_interaction()
 
 Create an XML structure containing a body:
 

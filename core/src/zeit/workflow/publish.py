@@ -22,6 +22,7 @@ import zope.app.security.interfaces
 import zope.component
 import zope.event
 import zope.interface
+import zope.publisher.interfaces
 import zope.security.management
 from zeit.cms.i18n import MessageFactory as _
 
@@ -196,6 +197,8 @@ class PublishRetractTask(object):
     def login(principal):
         interaction = zope.security.management.getInteraction()
         participation = interaction.participations[0]
+        assert(zope.publisher.interfaces.IPublicationRequest.providedBy(
+            participation))
         auth = zope.component.getUtility(
             zope.app.security.interfaces.IAuthentication)
         participation.setPrincipal(auth.getPrincipal(principal))

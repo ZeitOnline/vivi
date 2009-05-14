@@ -138,6 +138,7 @@ def set_site(site=None):
 
 def create_interaction(name=u'zope.user'):
     principal = zope.security.testing.Principal(name)
-    participation = zope.security.testing.Participation(principal)
-    zope.security.management.newInteraction(participation)
+    request = zope.publisher.browser.TestRequest()
+    request.setPrincipal(principal)
+    zope.security.management.newInteraction(request)
     return principal

@@ -95,12 +95,4 @@ Of course we'll get the data back, in unicode:
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
-
-    >>> import zope.publisher.browser
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
-    
+    >>> principal = zeit.cms.testing.create_interaction()

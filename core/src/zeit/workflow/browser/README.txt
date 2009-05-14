@@ -429,12 +429,6 @@ other information
           ...
 
 
-Clean up
-========
-
->>> zope.app.component.hooks.setSite(old_site)
-
-
 .. [#browser] For UI-Tests we need a Testbrowser:
 
     >>> from zope.testbrowser.testing import Browser
@@ -444,9 +438,8 @@ Clean up
 
 .. [#tasks] Start processing of remote tasks
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
     >>> import transaction
 
     >>> import zope.publisher.browser
@@ -456,8 +449,7 @@ Clean up
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
     >>> def run_tasks():
-    ...     request = lovely.remotetask.processor.ProcessorRequest()
-    ...     zope.security.management.newInteraction(request)
+    ...     principal = zeit.cms.testing.create_interaction()
     ...     transaction.abort()
     ...     tasks.process()
     ...     zope.security.management.endInteraction()

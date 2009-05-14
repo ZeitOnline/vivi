@@ -949,13 +949,8 @@ True
 
 .. [#needsinteraction] For publising we need an interacion, i.e. a request
 
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()
 
 .. [#loghandler] We need a log handler
 

@@ -142,11 +142,6 @@ Now retract:
 >>> len(repository['politik.feed'])
 0
 
-Clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
->>> zope.security.management.endInteraction()
-
 
 .. [#functional] Setup functional test and get some common utilities
 
@@ -163,9 +158,5 @@ Clean up:
 
 .. [#needs-interaction] 
 
-    >>> import zope.security.management
-    >>> import zope.security.testing
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(zope.security.testing.Principal(u'zope.user'))
-    >>> zope.security.management.newInteraction(request)
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()
