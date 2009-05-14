@@ -190,7 +190,8 @@ class IAVBlock(IBlock):
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
-class IFeed(zeit.cms.content.interfaces.IXMLContent):
+class IFeed(zeit.cms.content.interfaces.IXMLContent,
+            zeit.cms.interfaces.IAsset):
 
     url = zope.schema.TextLine(
         title=_("The URL to the RSS feed."""))
@@ -203,6 +204,12 @@ class IFeed(zeit.cms.content.interfaces.IXMLContent):
 
     last_update = zope.schema.Datetime(
         title=_("The timestamp when this feed was last fetched."""))
+
+    error = zope.schema.TextLine(
+        title=_("If parsing the feed fails, the error message is stored here."))
+
+    def fetch_and_convert():
+        pass
 
 
 class IFeedManager(zope.interface.Interface):

@@ -12,16 +12,17 @@ stores it.
 >>> import zeit.content.cp.testing
 >>> import zope.component
 
+
+Creating feeds
+--------------
+
 >>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
 >>> url = pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'heise.xml')
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
 <feed
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-  url=".../zeit.content.cp/src/zeit/content/cp/tests/heise.xml"
-  entry_count="3"
-  last_update="<ISO DATE>">
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <rss version="2.0">
     <channel>
       <pubDate>2009-05-13T11:36:47+02:00</pubDate>
@@ -40,18 +41,28 @@ stores it.
   </rss>
 </feed>
 
+
+Refreshing feeds
+----------------
+
+>>> last_update = feed.last_update
+>>> fm.refresh_feed(url)
+>>> fm.get_feed(url).last_update > last_update
+True
+
+
+Errors in feeds
+---------------
+
 If an error occurs during parsing, it is stored in the `error` attribute:
 
 >>> feed = fm.get_feed('foobar')
->>> print lxml.etree.tostring(feed.xml, pretty_print=True)
-<feed
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-  url="foobar"
-  error="&lt;class 'xml.sax..."/>
+>>> print feed.error
+<class 'xml.sax...
 
 
-Creating feeds
---------------
+Feed features
+-------------
 
 There exists only one Feed object for each feed URL:
 
@@ -84,3 +95,4 @@ HTML-content is preserved properly:
 .. [#functional]
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

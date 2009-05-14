@@ -14,6 +14,17 @@
     weight="0"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRSSBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="refresh"
+    template="layout.rss.refresh.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.IRSSBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -21,6 +32,15 @@
     class=".rss.EditProperties"
     permission="zeit.EditContent"
     />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IRSSBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="rss.refresh"
+    class=".rss.Refresh"
+    permission="zeit.EditContent"
+    />
+
 
 </configure>
 

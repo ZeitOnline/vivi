@@ -2,20 +2,24 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
+import datetime
+import feedparser
+import lxml.etree
 import md5
+import pytz
 import zeit.cms.connector
 import zeit.cms.content.adapter
+import zeit.cms.content.dav
+import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
+import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.content.cp.interfaces
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
-import zeit.cms.content.property
-import feedparser
-import lxml.etree
-import datetime
 
 
 def identity(mapping, items):
@@ -38,22 +42,25 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
     default_template = """\
 <feed xmlns:py="http://codespeak.net/lxml/objectify/pytype" />"""
 
-    url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'url')
-    entry_count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'entry_count')
-    last_update = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'last_update')
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.cp.interfaces.IFeed,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('url', 'entry_count', 'last_update', 'error'))
 
     def fetch_and_convert(self):
-        if self.xml.get('error'):
-            del self.xml.attrib['error']
+        """Load and reconvert the feed into RSS 2.
+
+        You should not call `fetch_and_convert` directly. Use the FeedManager
+        instead."""
+
+        self.last_update = datetime.datetime.now(pytz.UTC)
         self.parsed = feedparser.parse(self.url)
         if self.parsed.bozo:
             exc = self.parsed.bozo_exception
-            self.xml.set('error', '%s: %s' % (type(exc), str(exc)))
+            self.error = '%s: %s' % (type(exc), str(exc))
             return
 
+        self.error = None
         if self.xml.getchildren():
             self.xml.remove(self.xml.rss)
         rss = lxml.etree.Element('rss', version='2.0')
@@ -77,8 +84,6 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         self.xml.append(rss)
 
         self.entry_count = len(self.parsed.entries)
-        # XXX need date-aware ObjectPath(Attribute)Property
-        self.last_update = datetime.datetime.now()
 
     def _append(self, parent, name, data, key):
         if not key in data:
@@ -126,6 +131,13 @@ class FeedManager(object):
         except KeyError:
             feed = Feed()
             feed.url = url
-            feed.fetch_and_convert() # XXX async?!
             feed = self.folder[hash_] = feed
-            return feed
+            self.refresh_feed(url)
+            return self.folder[hash_]
+
+    def refresh_feed(self, url):
+        feed = self.get_feed(url)
+        with zeit.cms.checkout.helper.checked_out(
+                feed, semantic_change=True) as co_feed:
+            co_feed.fetch_and_convert()
+        #XXX: publish

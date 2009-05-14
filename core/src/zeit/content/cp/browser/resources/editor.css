@@ -218,6 +218,10 @@
   background-image: url('edit-teaserlist-contents.png');
 }
 
+.edit-bar > .rss-refresh-link {
+  background-image: url('reload.png');
+}
+
 .edit-bar > .delete-link > .confirm-delete {
   background-color: white;
   border: 3px solid red;
