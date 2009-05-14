@@ -1,7 +1,8 @@
-Top lists
-=========
+CP-Extra bases blocks
+======================
 
-The toplists are *very* simple blocks. It is not even possible to change them.
+``cp_extra`` based blocks are *very* simple blocks. It is not even possible to
+change them.
 
 MostRead
 ++++++++
@@ -34,6 +35,38 @@ When a centerpage is created the toplist is automatically added[#functional]_:
 >>> mr = container['cp']['informatives'].values()[0]
 >>> mr.type
 'mostread'
+
+MostCommented
++++++++++++++
+
+The most read block shows the most read articles:
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')
+>>> block = factory()
+
+An empty XML block contains an ``cp_extra``:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(block.xml, pretty_print=True)
+<container...>
+  <cp_extra id="mostcommented"/>
+</container>
+
+
+When a centerpage is created the toplist is automatically added. We look at the
+cp created above:
+
+>>> import zeit.cms.interfaces
+>>> mc = container['cp']['informatives'].values()[1]
+>>> mc.type
+'mostcommented'
+
 
 
 .. [#functional]

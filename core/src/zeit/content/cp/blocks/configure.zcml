@@ -1,5 +1,6 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zeit="http://namespaces.zeit.de/zcml">
 
   <adapter factory=".block.block_to_centerpage" />
   <adapter factory=".block.cms_content_iter" />
@@ -142,21 +143,7 @@
     />
 
   <!-- cp_extra based blocks -->
-
-  <class class=".cpextra.MostRead">
-    <require
-      interface="..interfaces.IMostReadBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IMostReadBlock"
-      permission="zeit.EditContent"/>
-  </class>
-  <adapter factory=".cpextra.MostReadFactory" name="mostread" />
-  <adapter
-    provides="..interfaces.IBlock"
-    name="mostread"
-    factory=".cpextra.MostRead"
-    />
-  <subscriber handler=".cpextra.add_mostread_to_newly_created_cp" />
+  <zeit:cp_extras module=".cpextra" />
+  <subscriber handler=".cpextra.add_blocks_to_newly_created_cp" />
 
 </configure>

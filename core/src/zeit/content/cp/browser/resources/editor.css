@@ -505,9 +505,27 @@
 
 /* Top lists */
 
-.block.type-mostread > .block-inner > .mostread {
-  margin: 2em;
+.cpextra-id,
+.cpextra-title {
   text-align: center;
+}
+
+.cpextra-title { 
+  margin: 2em 2em 0.5em 2em;
   text-transform: uppercase;
   font-size: 2em;
 }
+
+.cpextra-id {
+  margin: 0 0 2em 0;
+}
+
+.cpextra-id:before {
+  content: '<cp_extra extra_id="';
+}
+
+.cpextra-id:after {
+  content: '"/>';
+}
+
+

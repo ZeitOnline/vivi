@@ -110,6 +110,7 @@
   <adapter factory=".teaser.images_for_teaser" />
 
   <!-- Blocks -->
+  <include package=".blocks" file="meta.zcml" />
   <include package=".blocks" />
 
   <adapter factory=".teaser.metadata_to_teaser" />

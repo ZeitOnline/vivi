@@ -10,39 +10,59 @@ import zope.container.interfaces
 import zope.interface
 
 
-class MostRead(zeit.content.cp.blocks.block.Block):
-
-    zope.interface.implements(
-        zeit.content.cp.interfaces.IMostReadBlock,
-        zope.container.interfaces.IContained)
+class CPExtraBlock(zeit.content.cp.blocks.block.Block):
 
 
+    zope.interface.implements(zope.container.interfaces.IContained,
+                              zeit.content.cp.interfaces.ICPExtraBlock)
 
-class MostReadFactory(zeit.content.cp.blocks.block.BlockFactory):
 
+class CPExtraBlockFactory(zeit.content.cp.blocks.block.BlockFactory):
 
-    zope.component.adapts(zeit.content.cp.interfaces.IRegion)
-
-    block_class = MostRead
-    block_type = 'mostread'
-    title = _('Most read block')
 
     def get_xml(self):
-        xml = super(type(self), self).get_xml()
-        xml.append(lxml.objectify.E.cp_extra(id='mostread'))
+        xml = super(CPExtraBlockFactory, self).get_xml()
+        xml.append(lxml.objectify.E.cp_extra(id=self.block_type))
         return xml
+
+
+cp_extras = []
+
+def factor(extra_id, title):
+    """A factory which creates a cpextra block and a corresponding factory."""
+    class_name = '%sBlock' % extra_id.capitalize()
+    class_ = type(class_name, (CPExtraBlock,), dict(
+        title=title))
+
+    factory_name = '%sFactory' % extra_id.capitalize()
+    factory = type(factory_name, (CPExtraBlockFactory,), dict(
+        title=title,
+        block_class=class_,
+        block_type=extra_id))
+    factory = zope.component.adapter(
+        zeit.content.cp.interfaces.IRegion)(factory)
+
+    globals()[class_name] = class_
+    globals()[factory_name] = factory
+    cp_extras.append((class_, factory, extra_id))
 
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
-def add_mostread_to_newly_created_cp(context, event):
+def add_blocks_to_newly_created_cp(context, event):
     # The BeforeObjectAddEvent is sent whenever an object is added or changed.
     # We need to check if this is the first add or not.
     if zeit.cms.interfaces.ICMSContent(context.uniqueId, None) is not None:
         # It's already in the repository, do nothing
         return
-    factory = zope.component.getAdapter(
+    zope.component.getAdapter(
         context['informatives'],
-        zeit.content.cp.interfaces.IBlockFactory, name='mostread')
-    factory()
+        zeit.content.cp.interfaces.IBlockFactory, name='mostread')()
+    zope.component.getAdapter(
+        context['informatives'],
+        zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')()
+
+
+factor('mostread', u'Meistgelesen')
+factor('mostcommented', u'Meistkommentiert')

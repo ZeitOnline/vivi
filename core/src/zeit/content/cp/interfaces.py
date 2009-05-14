@@ -226,9 +226,11 @@ class IRSSBlock(IBlock):
         _("The corresponding Feed object."))
 
 
-class IMostReadBlock(IBlock):
-    """Block mostread."""
+class ICPExtraBlock(IBlock):
+    """Block which contains a cp_extra."""
 
+    title = zope.schema.TextLine(
+        title=u'Title of the cp_extra.')
 
 class IBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""

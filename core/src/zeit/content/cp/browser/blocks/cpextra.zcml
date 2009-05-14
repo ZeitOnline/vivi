@@ -3,24 +3,24 @@
   xmlns:browser="http://namespaces.zope.org/browser">
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IMostReadBlock"
+    for="zeit.content.cp.interfaces.ICPExtraBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditorContentViewletManager"
     name="contents"
-    template="layout.mostread.content.pt"
+    template="layout.cpextra.content.pt"
     permission="zeit.EditContent"
     weight="0"
     />
 
   <!-- not editable, empty template -->
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IMostReadBlock"
+    for="zeit.content.cp.interfaces.ICPExtraBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
     name="edit-box"
-    template="layout.mostread.edit-properties.pt"
+    template="layout.cpextra.edit-properties.pt"
     permission="zeit.EditContent"
     weight="0"
     />

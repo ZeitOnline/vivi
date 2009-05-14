@@ -9,9 +9,14 @@ Toplits are automatically created when the CP is created.
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
 >>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> browser.handleErrors = False
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> print browser.contents
 <div...
-  <div class="mostread">Meistgelesen</div>
+<div class="cpextra-title">Meistgelesen</div>
+<div class="cpextra-id">mostread</div>
   ...
+<div class="cpextra-title">Meistkommentiert</div>
+<div class="cpextra-id">mostcommented</div>
+...
