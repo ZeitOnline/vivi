@@ -58,3 +58,17 @@ XML of a RSS block
     <xi:fallback>Ziel http://xml.zeit.de/rss/<MD5> nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>...
+
+
+Displaying error messages
+=========================
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('The URL to the RSS feed.').value = 'foo'
+>>> browser.getControl('Apply').click()
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...<div class="validation-error">...
+RSS Feed: &lt;class 'xml.sax._exceptions...
