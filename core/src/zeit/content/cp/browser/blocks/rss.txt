@@ -60,6 +60,7 @@ XML of a RSS block
   </xi:include>
 </container>...
 
+
 Feed object display
 ===================
 
@@ -72,6 +73,11 @@ The feed object displays the feed's title in the repository listing:
 >>> browser.open(hash_ + '/@@view.html')
 >>> print browser.contents
 <...tagesschau.de - Die Nachrichten der ARD...
+
+Feed objects do not display a 'checkout' button:
+
+>>> 'Checkout' not in browser.contents
+True
 
 
 Displaying error messages

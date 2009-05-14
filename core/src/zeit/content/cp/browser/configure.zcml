@@ -149,4 +149,13 @@
     class="zeit.cms.browser.sourceedit.XMLDisplayForm"
     permission="zope.View"
     />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IFeed"
+    name="Checkout"
+    class=".feed.CheckoutMenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.Checkout"
+    />
 </configure>

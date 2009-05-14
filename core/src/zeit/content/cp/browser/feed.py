@@ -16,3 +16,13 @@ class ListRepresentation(
     @property
     def title(self):
         return self.context.title
+
+
+class CheckoutMenuItem(zeit.cms.browser.menu.ActionMenuItem):
+
+    sort = -1
+
+    def render(self):
+        # this menu item intentionally left blank:
+        # checking out a Feed object is not a sensible operation
+        return ''
