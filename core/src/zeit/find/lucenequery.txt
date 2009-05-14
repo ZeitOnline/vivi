@@ -24,6 +24,13 @@ We can also use nasty characters safely, as they will be escaped:
 >>> print lq.field('text', 'bar ||')
 text:"bar \|\|"
 
+We can query boolean fields:
+
+>>> print lq.bool_field('name', True)
+name:true
+>>> print lq.bool_field('name', False)
+name:false
+
 We can also do a text range query:
 
 >>> print lq.text_range('name', 'abc', 'xyz')
@@ -75,6 +82,6 @@ Multi fields
 In some fields you can put in a number of words, and this gets
 turned into a ``AND`` query. Let's take a look:
 
->>> print lq.multifield('name', 'foo bar qux')
+>>> print lq.multi_field('name', 'foo bar qux')
 (name:"foo" AND name:"bar" AND name:"qux")
 

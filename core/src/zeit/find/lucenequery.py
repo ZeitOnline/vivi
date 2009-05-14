@@ -10,6 +10,12 @@ def _field(name, value):
 def field(name, value):
     return _field(name, quoted(value))
 
+def bool_field(name, value):
+    if value:
+        return _field(name, 'true')
+    else:
+        return _field(name, 'false')
+
 def _range(name, start, end):
     return _field(name, '[%s TO %s]' % (start, end))
 
@@ -35,7 +41,7 @@ def and_(*args):
 def or_(*args):
     return '(%s)' % ' OR '.join(args)
 
-def multifield(name, value):
+def multi_field(name, value):
     words = value.split()
     return and_(*[field(name, word) for word in words])
     
