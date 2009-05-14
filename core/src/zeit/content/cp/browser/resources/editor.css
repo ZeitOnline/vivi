@@ -186,19 +186,19 @@
   width: 22px;
 }
 
-#cp-content .validation-error {
+.editable-area.validation-error {
   background-color: #FAE9E6;
 }
 
-#cp-content .validation-warning {
+.editable-area.validation-warning {
   background-color: #FFF7C4;
 }
 
-.block.type-teaser-bar.validation-error > .block-inner {
+.block.validation-error > .block-inner {
   background-color: #FAE9E6;
 }
 
-.block.type-teaser-bar.validation-warning > .block-inner {
+.block.validation-warning > .block-inner {
   background-color: #FFF7C4;
 }
 
