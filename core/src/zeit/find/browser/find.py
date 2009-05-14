@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import datetime
 import cjson
 import pysolr
 import zeit.cms.browser.view
@@ -12,6 +13,7 @@ import zope.app.appsetup.product
 import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.browser.interfaces
+import zc.iso8601.parse
 
 def resources(request):
     return zope.component.getAdapter(
@@ -117,6 +119,7 @@ class SearchResult(JSONView):
             #else:
             favorited_icon = r['not_favorite.png']()
             uid = 'testuid'
+            dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
             #print result.get('published', 'unknown')
             results.append({
                     'uniqueId': '',
@@ -127,9 +130,9 @@ class SearchResult(JSONView):
                     'teaser_title': result['teaser_title'],
                     'teaser_text': result['teaser_text'],
                     'preview_url': '',
-                    'date': '13.02.2009',
+                    'date': format_date(dt),
                     'date_filter': '',
-                    'week': '13/2009',
+                    'week': format_week(dt),
                     'week_filter': '',
                     'topics': result.get('ressort', ''),
                     'topics_filter': '',
@@ -216,3 +219,12 @@ class Favorites(JSONView):
             self.result_entry(a) for a in [
                 zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
                 for c in self.favorites.values()]]}
+
+def format_date(dt):
+    return dt.strftime('%d.%m.%Y')
+
+def format_week(dt):
+    iso_year, iso_week, iso_weekday = dt.isocalendar()
+    return '%s/%s' % (iso_week, iso_year)
+
+
