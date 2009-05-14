@@ -66,7 +66,7 @@ class BaseListRepresentation(object):
 
 
 class CommonListRepresentation(BaseListRepresentation):
-    """Common porperties of list representotions."""
+    """Common porperties of list representations."""
 
     @zope.cachedescriptors.property.Lazy
     def author(self):
