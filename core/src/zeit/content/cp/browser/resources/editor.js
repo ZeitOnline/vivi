@@ -114,7 +114,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         var self = this;
         var element = null;
         if (!isUndefinedOrNull(element_id)) {
-             element = $(element);
+             element = $(element_id);
         }
         MochiKit.Signal.signal(self, 'before-reload');
         if (isUndefinedOrNull(url)) {
@@ -129,7 +129,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         } else {
             d.addCallback(function(result) {
                 self.replace_element(element, result);
-                return d;
+                return result;
             });
         }
         d.addCallback(function(result) {
@@ -157,7 +157,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
     replace_element: function(element, result) {
         var self = this;
         var dom = DIV();
-        dom.inerHTML = result.responseText;
+        dom.innerHTML = result.responseText;
         MochiKit.DOM.swapDOM(element, dom.firstChild);
     },
 
