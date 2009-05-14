@@ -1,18 +1,14 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.i18n import MessageFactory as _
 import inspect
-
+import z3c.flashmessage.interfaces
+import zeit.cms.browser.lightbox
 import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
 import zope.schema
-
-import z3c.flashmessage.interfaces
-
-import zeit.cms.browser.lightbox
-from zeit.cms.i18n import MessageFactory as _
 
 
 class AlreadyExists(zope.schema.ValidationError):
