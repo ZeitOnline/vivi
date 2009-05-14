@@ -1,0 +1,6 @@
+<a class="rss-refresh-link" title="Refresh RSS feed"
+   tal:attributes="href string:${context/@@absolute_url}/rss.refresh"
+   i18n:attributes="title"
+   cms:cp-module="zeit.content.cp.LoadAndReload">
+   <span class="action-title">Refresh RSS feed</span>
+</a>
