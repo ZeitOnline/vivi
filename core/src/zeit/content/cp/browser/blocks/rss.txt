@@ -35,8 +35,10 @@ Editing the block
 
 >>> browser.open(contents_url)
 >>> print browser.contents
-<...RSS Feed: "tagesschau.de - Die Nachrichten der ARD" (1 Einträge)
-<div>Zuletzt aktualisiert: 2009-05-13 16:32:39.873224...
+<...RSS Feed: tagesschau.de - Die Nachrichten der ARD
+<ul>
+    <li>Sri Lanka: Zivilisten unter Dauerbeschuss</li>
+</ul>...
 
 
 XML of a RSS block

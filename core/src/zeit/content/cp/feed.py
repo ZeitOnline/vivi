@@ -92,11 +92,15 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         elem = lxml.etree.SubElement(parent, name)
         elem.text = unicode(data[key])
 
+    @property
     def title(self):
         title = self.xml.xpath('/feed/rss/channel/title')
-        if title:
-            return str(title[0])
-        return ''
+        return unicode(title[0]) if title else ''
+
+    @property
+    def entries(self):
+        return [unicode(x.text) for x in self.xml.xpath(
+            '/feed/rss/channel/item[position() <= 15]/title')]
 
 
 feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)

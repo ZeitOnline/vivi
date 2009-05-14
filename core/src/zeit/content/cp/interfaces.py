@@ -208,6 +208,9 @@ class IFeed(zeit.cms.content.interfaces.IXMLContent,
     error = zope.schema.TextLine(
         title=_("If parsing the feed fails, the error message is stored here."))
 
+    entries = zope.schema.List(
+        title=_("The titles of the first 15 entries contained in this feed."))
+
     def fetch_and_convert():
         pass
 
