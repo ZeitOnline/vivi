@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import inspect
 import z3c.flashmessage.interfaces
 import zeit.cms.browser.lightbox
+import zeit.cms.browser.menu
 import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
@@ -58,3 +59,15 @@ class Rename(zeit.cms.browser.lightbox.Form):
         self.send_message(_('Renamed "${old_name}" to "${new_name}"',
                             mapping=dict(old_name=old_name,
                                          new_name=new_name)))
+
+
+class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+    """Rename menu item."""
+
+    title = _('Rename')
+
+    def render(self):
+        if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
+            self.context):
+            return super(MenuItem, self).render()
+        return ''

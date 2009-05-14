@@ -4,8 +4,12 @@ zeit.cms changes
 1.19.6 (unreleased)
 -------------------
 
+- Views zum Umbenennen von Ordnern mit einer extra Permission abgesichert
+  (#5319).
+
 - Sichergestellt, dass immer nur genau ein Tooltip angezeigt wird. Tooltips
   werden nicht angezeigt, wenn eine DragAndDrop-Operation durchgeführt wird.
+
 - Die Lightbox registriert den Submit-Eventhandler nur noch genau für die
   Submit-Buttons, nicht für *alle* Buttons.
 

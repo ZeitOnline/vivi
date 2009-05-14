@@ -80,3 +80,33 @@ was renamed:
               ...
 
 
+Renaming folders
+++++++++++++++++
+
+Folders cannot be renamed by normal users:
+
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'online/2007/01/')
+>>> browser.getLink('Rename')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'online/2007/01/@@rename-box')
+Traceback (most recent call last):
+  ...
+HTTPError: HTTP Error 403: Forbidden
+
+
+A manager could rename:
+
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic zmgr:mgrpw')
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'online/2007/01/')
+>>> browser.getLink('Rename')
+<Link text='[IMG] Rename' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/@@rename-box')">
+>>> browser.open('http://localhost/++skin++cms/repository/'
+...              'online/2007/01/@@rename-box')
+>>> print browser.contents
+<div id="rename-box"...

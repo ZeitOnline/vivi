@@ -49,9 +49,9 @@
 
   <browser:viewlet
     name="Rename"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".menu.Rename"
+    class=".rename.MenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.RenameContent"
     icon="/@@/zeit.cms/icons/rename.png"
@@ -61,10 +61,30 @@
 
   <browser:page
     name="rename-box"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".rename.Rename"
     permission="zeit.RenameContent"
+    />
+
+  <browser:viewlet
+    name="Rename"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.RenameFolders"
+    icon="/@@/zeit.cms/icons/rename.png"
+    lightbox="@@rename-box"
+    sort="100"
+    />
+
+  <browser:page
+    name="rename-box"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.Rename"
+    permission="zeit.RenameFolders"
     />
 
   <!-- Delete view -->
