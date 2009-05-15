@@ -107,13 +107,21 @@ class SearchForm(JSONView):
 class SearchResult(JSONView):
     template = 'search_result.jsont'
 
+    def _get(self, name, default=None):
+        value = self.request.get(name, default)
+        if value is default:
+            return value
+        value = value.strip()
+        if value:
+            return value
+        return default
+    
     def form(self):
         """Given the request, create search form contents.
         """
-        g = self.request.get
-        fulltext = g('fulltext', '')
-        fulltext = fulltext.strip()
-        if fulltext == '':
+        g = self._get
+        fulltext = g('fulltext')
+        if fulltext is None:
             return None
         from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
         until = parse_input_date(g('until', 'TT.MM.JJJJ'))
@@ -122,6 +130,12 @@ class SearchResult(JSONView):
         keywords = g('keywords', None)
         # three states: want all published, want all unpublished, don't care
         published = g('published', None)
+        if published == 'published':
+            published = True
+        elif published == 'unpublished':
+            published = False
+        else:
+            published = None
         types = set()
         for t in ['article', 'gallery', 'video', 'teaser', 'centerpage']:
             if g(t, '') == 'on':
@@ -148,13 +162,13 @@ class SearchResult(JSONView):
         if from_ is not None or until is not None:
             terms.append(
                 lq.datetime_range('last-semantic-change', from_, until))
-        if topic:
+        if topic is not None:
             terms.append(lq.field('ressort', topic))
-        if authors:
+        if authors is not None:
             terms.append(lq.multi_field('authors', authors))
-        if keywords:
+        if keywords is not None:
             terms.append(lq.multi_field('keywords', keywords))
-        if published:
+        if published is not None:
             terms.append(lq.bool_field('published', published))
         return lq.and_(*terms)
     
@@ -180,7 +194,12 @@ class SearchResult(JSONView):
             #else:
             favorited_icon = r['not_favorite.png']()
             uid = 'testuid'
-            dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
+
+            last_semantic_change = result.get('last-semantic-change')
+            if last_semantic_change is not None:
+                dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
+            else:
+                dt = None
             #print result.get('published', 'unknown')
             results.append({
                     'uniqueId': '',
@@ -282,9 +301,13 @@ class Favorites(JSONView):
                 for c in self.favorites.values()]]}
 
 def format_date(dt):
+    if dt is None:
+        return ''
     return dt.strftime('%d.%m.%Y')
 
 def format_week(dt):
+    if dt is None:
+        return ''
     iso_year, iso_week, iso_weekday = dt.isocalendar()
     return '%s/%s' % (iso_week, iso_year)
 
