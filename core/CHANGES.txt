@@ -1,6 +1,13 @@
 zeit.objectlog changes
 ======================
 
+0.8.1 (2009-05-15)
+------------------
+
+- No `extras_require` for tests any more.
+
+- Renamed all ``test.py`` to ``tests.py``
+
 0.8 (2009-04-05)
 ----------------
 

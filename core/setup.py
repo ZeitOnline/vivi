@@ -23,18 +23,15 @@ setup(
         'zope.app.generations',
         'zope.app.keyreference',
         'zope.app.security',
+        'zope.app.securitypolicy',
+        'zope.app.testing',
+        'zope.app.zcmlfiles',
         'zope.app.zopeappgenerations',
         'zope.component',
         'zope.i18n>3.4.0',
         'zope.interface',
         'zope.security',
+        'zope.securitypolicy',
+        'zope.testing',
     ],
-    extras_require={
-        'test': [
-            'zope.securitypolicy',
-            'zope.testing',
-            'zope.app.zcmlfiles',
-            'zope.app.securitypolicy',
-        ],
-    },
 )
