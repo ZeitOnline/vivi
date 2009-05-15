@@ -41,8 +41,6 @@
     component=".generation.manager"
     />
 
-  <i18n:registerTranslations directory="locales" />
-
   <interface
     interface=".interfaces.ICMSContent"
     type=".interfaces.ICMSContentType"
