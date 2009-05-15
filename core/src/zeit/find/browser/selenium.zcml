@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="zc.selenium" />
+
+  <adapter
+    factory=".selenium.TestTabs"
+    name="zeit.content.cp.TestTabs"
+    permission="zope.Public"
+    />
+</configure>
