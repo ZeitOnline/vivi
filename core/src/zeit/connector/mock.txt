@@ -287,8 +287,8 @@ folders though. So we implement a special method for moving:
  (u'online', u'http://xml.zeit.de/online'),
  (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
->>> import zeit.connector.test
->>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006')
+>>> import zeit.connector.tests
+>>> zeit.connector.tests.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
 http://xml.zeit.de/2006/49 collection
 http://xml.zeit.de/2006/52 collection
@@ -301,7 +301,7 @@ http://xml.zeit.de/2006/DSC00109_2.JPG image
  (u'online', u'http://xml.zeit.de/online'),
  (u'testcontent', u'http://xml.zeit.de/testcontent'),
  (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
->>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006-27')
+>>> zeit.connector.tests.print_tree(connector, 'http://xml.zeit.de/2006-27')
 http://xml.zeit.de/2006-27
 http://xml.zeit.de/2006-27/49 collection
 http://xml.zeit.de/2006-27/52 collection
@@ -319,7 +319,7 @@ MoveError: Could not move http://xml.zeit.de/2006-27 to http://xml.zeit.de/2007,
 Let's move 2006-27 back:
 
 >>> connector.move('http://xml.zeit.de/2006-27', 'http://xml.zeit.de/2006')
->>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006')
+>>> zeit.connector.tests.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
 http://xml.zeit.de/2006/49 collection
 http://xml.zeit.de/2006/52 collection
@@ -330,14 +330,14 @@ http://xml.zeit.de/2006/DSC00109_2.JPG image
 Copying
 =======
 
->>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006')
+>>> zeit.connector.tests.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
 http://xml.zeit.de/2006/49 collection
 http://xml.zeit.de/2006/52 collection
 http://xml.zeit.de/2006/DSC00109_2.JPG image
 
 >>> connector.copy('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-copy')
->>> zeit.connector.test.print_tree(connector, 'http://xml.zeit.de/2006-copy')
+>>> zeit.connector.tests.print_tree(connector, 'http://xml.zeit.de/2006-copy')
 http://xml.zeit.de/2006-copy
 http://xml.zeit.de/2006-copy/49 collection
 http://xml.zeit.de/2006-copy/52 collection

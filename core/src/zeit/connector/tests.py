@@ -136,18 +136,22 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
         transaction.commit()
 
 
-class ConnectorCache(unittest.TestCase):
+class ConnectorTest(unittest.TestCase):
 
     def setUp(self):
-        super(ConnectorCache, self).setUp()
+        super(ConnectorTest, self).setUp()
         self.connector = zeit.connector.connector.Connector(
             roots={"default": os.environ['connector-url']})
-        self.rid = 'http://xml.zeit.de/testing/cache_test'
 
     def tearDown(self):
         for name, uid in self.connector.listCollection(
             'http://xml.zeit.de/testing/'):
             del self.connector[uid]
+
+
+class ConnectorCache(ConnectorTest):
+
+    rid = 'http://xml.zeit.de/testing/cache_test'
 
     def test_deleting_non_existing_resource_does_not_create_cache_entry(self):
         self.connector[self.rid] = zeit.connector.resource.Resource(

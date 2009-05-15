@@ -344,7 +344,7 @@ Now make sure we can copy folders[#create-folder-structure]_:
 
 Verify the whole copied tree:
 
->>> zeit.connector.test.print_tree(
+>>> zeit.connector.tests.print_tree(
 ...     connector, 'http://xml.zeit.de/testing/copiedtree')
 http://xml.zeit.de/testing/copiedtree
 http://xml.zeit.de/testing/copiedtree/a/ folder
@@ -441,7 +441,7 @@ Make sure we can also move collections[#create-folder-structure]_:
 
 Verify the whole structure:
 
->>> zeit.connector.test.print_tree(
+>>> zeit.connector.tests.print_tree(
 ...     connector, 'http://xml.zeit.de/testing/movedtree')
 http://xml.zeit.de/testing/movedtree
 http://xml.zeit.de/testing/movedtree/a/ folder
@@ -551,8 +551,8 @@ inconsistent/wrong state:
     >>> add_file('testroot/a/b/c/foo')
     >>> add_file('testroot/b/b/foo')
 
-    >>> import zeit.connector.test
-    >>> zeit.connector.test.print_tree(
+    >>> import zeit.connector.tests
+    >>> zeit.connector.tests.print_tree(
     ...     connector, 'http://xml.zeit.de/testing/testroot')
     http://xml.zeit.de/testing/testroot
     http://xml.zeit.de/testing/testroot/a/ folder
