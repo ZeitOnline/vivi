@@ -2,13 +2,12 @@
 # See also LICENSE.txt
 """Workflow indicators."""
 
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.workflow
 import zope.component
 import zope.dublincore.interfaces
 import zope.i18n
 import zope.viewlet.viewlet
-
-import zeit.cms.workflow
-from zeit.cms.i18n import MessageFactory as _
 
 
 class Published(zope.viewlet.viewlet.ViewletBase):
