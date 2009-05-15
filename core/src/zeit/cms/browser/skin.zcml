@@ -76,6 +76,9 @@
       lightbox.js
       cms-widgets.css
       cms.css
+      json-template.js
+      view.js
+      tab.js
       "/>
   </resourceLibrary>
 
