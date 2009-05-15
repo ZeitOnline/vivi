@@ -541,3 +541,8 @@ pre {
   white-space: nowrap;
   letter-spacing: -0.15em;
 }
+
+.tab-content {
+    position: absolute;
+    top: 3em;
+}

@@ -55,7 +55,8 @@ zeit.cms.Tab = gocept.Class.extend({
         self.tab_element = parent.tabs_element.appendChild(
             LI({},
                 A({href: self.id}, self.title)))
-        self.container = parent.container.appendChild(DIV({id: self.id}));
+        self.container = parent.container.appendChild(
+            DIV({id: self.id, 'class': 'tab-content'}));
         self.deactivate();
     },
 
