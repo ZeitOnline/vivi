@@ -107,9 +107,7 @@ This failed because only `edited` was set to 'yes':
 
 >>> print browser.contents
 <?xml ...
-        <li class="error">Could not publish "testcontent" because the publishing
-        pre-conditions are not met. Check the states and/or the urgent-flag.
-        Your state changes were saved.</li>
+        <li class="error">publish-preconditions-not-met</li>
     ...
 
 Use the urgent flag to override:
@@ -359,10 +357,10 @@ The workflow logs various changes in an objectlog. Verify this:
 <?xml...
         <div class="widget"><FORMATTED DATE>  [User]: Retracted<br />...
 <FORMATTED DATE>  [User]: Urgent: yes<br />
-<FORMATTED DATE>  [User]: Images added: no<br />
-<FORMATTED DATE>  [User]: Refined: no<br />
-<FORMATTED DATE>  [User]: Corrected: no<br />
-<FORMATTED DATE>  [User]: Edited: no</div>
+<FORMATTED DATE>  [User]: status-images-added: no<br />
+<FORMATTED DATE>  [User]: status-refined: no<br />
+<FORMATTED DATE>  [User]: status-corrected: no<br />
+<FORMATTED DATE>  [User]: status-edited: no</div>
 ...
 
 If the object log is very long, only the latest 20 entries will be

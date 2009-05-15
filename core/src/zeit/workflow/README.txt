@@ -170,23 +170,23 @@ We did quite some stuff now. Verify the object log:
 ...         print '    ', zope.i18n.translate(e.message)
 >>> print_log(result)
 http://xml.zeit.de/online/2007/01/Somalia
-     Edited: yes
+     status-edited: yes
 http://xml.zeit.de/online/2007/01/Somalia
-     Corrected: yes
+     status-corrected: yes
 http://xml.zeit.de/online/2007/01/Somalia
-     Refined: yes
+     status-refined: yes
 http://xml.zeit.de/online/2007/01/Somalia
-     Images added: yes
+     status-images-added: yes
 http://xml.zeit.de/online/2007/01/Somalia
-     Edited: notnecessary
+     status-edited: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
-     Corrected: notnecessary
+     status-corrected: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
-     Refined: notnecessary
+     status-refined: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
-     Images added: notnecessary
+     status-images-added: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
-     Edited: no
+     status-edited: no
 http://xml.zeit.de/online/2007/01/Somalia
      Urgent: yes
 http://xml.zeit.de/online/2007/01/Somalia

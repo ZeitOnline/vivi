@@ -58,22 +58,22 @@ class IContentWorkflow(ITimeBasedPublishing):
     """
 
     edited = zope.schema.Choice(
-        title=_('status-edited'),
+        title=_('status-edited', default=u'Edited'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     corrected = zope.schema.Choice(
-        title=_('status-corrected'),
+        title=_('status-corrected', default=u'Corrected'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     refined = zope.schema.Choice(
-        title=_('status-refined'),
+        title=_('status-refined', default=u'Refined'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     images_added = zope.schema.Choice(
-        title=_('status-images-added'),
+        title=_('status-images-added', default=u'Images added'),
         default=False,
         source=zeit.workflow.source.TriState())
 
