@@ -1,6 +1,11 @@
 zeit.content.rawxml changes
 ===========================
 
+0.3.2 (2009-05-15)
+------------------
+
+- Reigistrierung des locale-Verzeichnisses entfernt.
+
 0.3.1 (2009-05-15)
 ------------------
 
