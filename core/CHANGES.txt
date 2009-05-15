@@ -8,6 +8,7 @@ zeit.content.article changes
 
 - Alle ``test.py`` nach ``tests.py`` umbenannt.
 
+- Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
 
 1.7.2 (2009-05-07)
 ------------------

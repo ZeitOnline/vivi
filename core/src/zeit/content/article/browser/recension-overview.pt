@@ -1,4 +1,4 @@
-<div class="recensions" i18n:domain="zeit.content.article"
+<div class="recensions" i18n:domain="zeit.cms"
   tal:define="can_edit python:request.interaction.checkPermission(
     'zeit.EditContent', context)">
   <tal:replace replace="resource_library:zeit.cms.recension" />
