@@ -504,10 +504,10 @@ to the test-content:
 >>> import zeit.cms.interfaces
 >>> import zeit.content.cp.browser.tests
 >>> import zeit.content.image.interfaces
->>> import zeit.content.image.test
+>>> import zeit.content.image.tests
 
 >>> with zeit.content.cp.browser.tests.site(getRootFolder()):
-...     group = zeit.content.image.test.create_image_group()
+...     group = zeit.content.image.tests.create_image_group()
 ...     test_content = zeit.cms.interfaces.ICMSContent(
 ...         'http://xml.zeit.de/testcontent')
 ...     with zeit.content.cp.browser.tests.interaction('zope.user'):

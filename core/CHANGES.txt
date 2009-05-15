@@ -16,7 +16,11 @@ Neue Funktionen
 
 - Blöcke in einer Teaserleiste sind alle gleich hoch.
 
+- ``cp_extra`` Blöcke: Wetter, Börse, Meistgelesen, Meistkommentiert
+
 - RSS-Block (für externe Feeds) hinzugefügt (#5273).
+
+- Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
 
 0.5 (2009-05-08)
 ----------------
