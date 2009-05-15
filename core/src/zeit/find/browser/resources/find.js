@@ -161,7 +161,7 @@ zeit.find.View = gocept.Class.extend({
 
 
 zeit.find.log_error = function(err) {
-    /* the error can be either a normal error or wrapped 
+    /* the error can be either a normal error or wrapped
        by MochiKit in a GenericError in which case the message
        is the real error. We check whether the message is the real
        error first by checking whether its information is undefined.
@@ -195,7 +195,7 @@ zeit.find.log_error = function(err) {
             }
         });
     };
-    
+
     var draggables = [];
 
     var connect_draggables = function() {
@@ -250,7 +250,7 @@ zeit.find.log_error = function(err) {
             draggables.pop().destroy();
         }
     }
-   
+
     var init = function() {
         zeit.find.tabs = new zeit.find.Tabs();
         zeit.find.tabs.add(new zeit.find.ViewTab('search_form', 'Suche', search_result));
@@ -258,11 +258,11 @@ zeit.find.log_error = function(err) {
         zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
         search_form.render();
     };
-    
+
     search_form = new zeit.find.View(
         'search_form', 'search_form');
     search_result = new zeit.find.View(
-        'search_result', 'search_result', 
+        'search_result', 'search_result',
         function() {
             return MochiKit.Base.queryString($('search_form'));
         });
@@ -280,27 +280,27 @@ zeit.find.log_error = function(err) {
     MochiKit.Signal.connect(window, 'onload', init);
     MochiKit.Signal.connect(search_form, 'load', init_search_form);
 
-    MochiKit.Signal.connect(search_result, 'before-load', 
+    MochiKit.Signal.connect(search_result, 'before-load',
                             disconnect_draggables);
-    MochiKit.Signal.connect(search_result, 'load', 
+    MochiKit.Signal.connect(search_result, 'load',
                             connect_related);
-    MochiKit.Signal.connect(search_result, 'load', 
+    MochiKit.Signal.connect(search_result, 'load',
                             connect_toggle_favorited);
-    MochiKit.Signal.connect(search_result, 'load', 
+    MochiKit.Signal.connect(search_result, 'load',
                             connect_draggables);
 
-    MochiKit.Signal.connect(favorites, 'before-load', 
+    MochiKit.Signal.connect(favorites, 'before-load',
                             disconnect_draggables);
-    MochiKit.Signal.connect(favorites, 'load', 
+    MochiKit.Signal.connect(favorites, 'load',
                             connect_related);
-    MochiKit.Signal.connect(favorites, 'load', 
+    MochiKit.Signal.connect(favorites, 'load',
                             connect_toggle_favorited);
-    MochiKit.Signal.connect(favorites, 'load', 
+    MochiKit.Signal.connect(favorites, 'load',
                             connect_draggables);
 
     MochiKit.Signal.connect(favorited, 'load',
                             function() {
                                 favorites.render();
                             });
-     
+
 })();
