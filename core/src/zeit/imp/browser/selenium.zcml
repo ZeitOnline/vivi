@@ -7,31 +7,31 @@
   <include package="zc.selenium" />
 
   <adapter
-    factory=".selenium_selenium.SeleniumBasicTests"
+    factory=".selenium.SeleniumBasicTests"
     name="zeit.imp.browser.BasicTests"
     permission="zope.Public"
     />
 
   <adapter
-    factory=".selenium_selenium.SeleniumCropTests"
+    factory=".selenium.SeleniumCropTests"
     name="zeit.imp.browser.CropTests"
     permission="zope.Public"
     />
 
   <adapter
-    factory=".selenium_selenium.SeleniumMaskTests"
+    factory=".selenium.SeleniumMaskTests"
     name="zeit.imp.browser.MaskTests"
     permission="zope.Public"
     />
 
   <adapter
-    factory=".selenium_selenium.ResizeTests"
+    factory=".selenium.ResizeTests"
     name="zeit.imp.browser.ResizeTests"
     permission="zope.Public"
     />
 
   <adapter
-    factory=".selenium_selenium.FilterTests"
+    factory=".selenium.FilterTests"
     name="zeit.imp.browser.FilterTests"
     permission="zope.Public"
     />
@@ -39,7 +39,7 @@
   <browser:page
     for="zope.location.interfaces.ISite"
     name="create-image-group"
-    class=".selenium_selenium.CreateImageGroup"
+    class=".selenium.CreateImageGroup"
     permission="zope.Public"
     />
 

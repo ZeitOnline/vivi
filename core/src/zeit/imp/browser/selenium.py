@@ -53,7 +53,7 @@ class SeleniumBasicTests(Selenium):
     def test_border_select_wo_selected_mask_does_not_fail(self):
         s = self.selenium
 
-        self.click_label("schwarzer Rahmen")  # Assuming german browser
+        self.click_label("schwarzer Rahmen")
         s.verifyElementNotPresent('id=imp-mask-image')
         self.click_label("450×200")
         s.verifyAttribute(

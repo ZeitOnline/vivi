@@ -1,5 +1,5 @@
 <tal:block 
-  i18n:domain="zeit.imp"
+  i18n:domain="zeit.cms"
   tal:define="metadata context/@@metadata">
   <tal:lib replace="resource_library:zeit.imp" />
 
