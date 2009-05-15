@@ -58,6 +58,26 @@ class EditProperties(object):
                 title=adapter.title))
         return result
 
+class EditCommon(zope.formlib.form.SubPageEditForm):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'block.edit-common.pt')
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.cp.interfaces.IBlock).omit('type')
+
+    close = False
+
+    @property
+    def form(self):
+        return super(EditCommon, self).template
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.close = True
+        # XXX: dear zope.formlib, are you serious?!
+        return super(EditCommon, self).handle_edit_action.success(data)
+
 
 class SwitchType(object):
     """A generic non-browser view that changes the type of a block"""

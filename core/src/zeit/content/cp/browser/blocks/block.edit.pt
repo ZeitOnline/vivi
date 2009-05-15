@@ -10,11 +10,18 @@ zeit.content.cp.block_url = '${context/@@absolute_url}';
 var edit_properties = new zeit.cms.View(
         zeit.content.cp.block_url + '/edit-properties',
         'cp-edit-properties');
+var edit_common = new zeit.cms.View(
+        zeit.content.cp.block_url + '/edit-common',
+        'cp-edit-common');
 
 var tabs = new zeit.cms.Tabs('cp-block-edit');
 tabs.add(new zeit.cms.ViewTab('cp-edit-properties',
     'Edit', edit_properties));
+tabs.add(new zeit.cms.ViewTab('cp-edit-common',
+    'Common', edit_common));
 
 MochiKit.Signal.connect(edit_properties, 'load', function() {
+    zeit.content.cp.editor.current_module.rewire_submit_buttons(); });
+MochiKit.Signal.connect(edit_common, 'load', function() {
     zeit.content.cp.editor.current_module.rewire_submit_buttons(); });
 </script>

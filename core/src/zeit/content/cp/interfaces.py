@@ -101,24 +101,24 @@ class IBlock(zope.interface.Interface):
         required=False)
 
     publisher  = zope.schema.TextLine(
-        title=_("Verlagsmarke"),
+        title=_("Publisher"),
         required=False)
     publisher_url = zope.schema.TextLine(
-        title=_("Verlagsmarke URL"),
+        title=_("Publisher URL"),
         required=False)
 
     supertitle  = zope.schema.TextLine(
-        title=_("Spitzmarke"),
+        title=_("Supertitle"),
         required=False)
     supertitle_url = zope.schema.TextLine(
-        title=_("Spitzmarke URL"),
+        title=_("Supertitle URL"),
         required=False)
 
     read_more = zope.schema.TextLine(
-        title=_("Weiterlesen Titel"),
+        title=_("Read more"),
         required=False)
     read_more_url = zope.schema.TextLine(
-        title=_("Weiterlesen URL"),
+        title=_("Read more URL"),
         required=False)
 
 
