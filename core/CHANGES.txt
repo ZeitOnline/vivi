@@ -16,6 +16,7 @@ Neue Funktionen
 
 - Blöcke in einer Teaserleiste sind alle gleich hoch.
 
+- RSS-Block (für externe Feeds) hinzugefügt (#5273).
 
 0.5 (2009-05-08)
 ----------------
