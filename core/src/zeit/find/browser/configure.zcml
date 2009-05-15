@@ -9,7 +9,7 @@
              gocept.mochikit.jsclass
              gocept.mochikit.lightbox
              zeit.cms">
-    <directory source="resources" include="json-template.js find.js find.css" />
+    <directory source="resources" include="find.js find.css" />
   </resourceLibrary>
 
   <browser:page
