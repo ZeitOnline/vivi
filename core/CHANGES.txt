@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.19.6 (unreleased)
--------------------
+1.20 (2009-05-15)
+-----------------
 
 - Adapter für den Publikationsstatus (veröffentlich, mit Änderungen, nicht
   veröffentlicht) hinzugefügt (#5320).
@@ -17,6 +17,9 @@ zeit.cms changes
   Submit-Buttons, nicht für *alle* Buttons.
 
 - Alle `test.py` nach `tests.py` umbenannt.
+
+- Lokalisierung herausgelöst und nach ``zeit.locales`` verschoben. Dort werden
+  Übersetzungen mit anderen Paketen zusammengefasst.
 
 1.19.5 (2009-05-08)
 -------------------
