@@ -32,7 +32,6 @@ class Find(zeit.cms.browser.view.Base):
         zc.resourcelibrary.need('zeit.find')
         return super(Find, self).__call__()
 
-
 class JSONView(zeit.cms.browser.view.Base):
     template = None
 
@@ -56,50 +55,9 @@ class JSONView(zeit.cms.browser.view.Base):
     def json(self):
         return {}
 
-    @property
-    def favorites(self):
-        favorites_id = u'Favoriten'
-        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
-            self.request.principal)
-        if not favorites_id in clipboard:
-            clipboard.addClip(favorites_id)
-        return clipboard[favorites_id]
-
     def url(self, view, uniqueId):
         return super(JSONView, self).url(
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
-
-    def result_entry(self, article):
-        r = self.resources
-        uid = article.uniqueId
-        if article.__name__ in self.favorites:
-            favorited_icon = r['favorite.png']()
-        else:
-            favorited_icon = r['not_favorite.png']()
-        listrepr = zope.component.queryMultiAdapter(
-            (article, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
-        return {
-            'uniqueId': uid,
-            'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
-            'favorited': favorited_icon,
-            'publication_status': r['published.png'](),
-            'arrow': r['arrow_right.png'](),
-            'teaser_title': listrepr.title,
-            'teaser_text': listrepr.searchableText,
-            'preview_url': '',
-            'date': '13.02.2009',
-            'date_filter': '',
-            'week': '13/2009',
-            'week_filter': '',
-            'topics': 'Politik',
-            'topics_filter': '',
-            'author': listrepr.author,
-            'author_filter': '',
-            'related_url': self.url('expanded_search_result', uid),
-            'favorite_url': self.url('toggle_favorited', uid),
-        }
-
 
 class SearchForm(JSONView):
     template = 'search_form.jsont'
@@ -189,13 +147,24 @@ class SearchResult(JSONView):
         r = self.resources
         results = []
         conn = get_solr()
-        for result in conn.search(q):
-            #if article.__name__ in self.favorites:
-            #    favorited_icon = r['favorite.png']()
-            #else:
-            favorited_icon = r['not_favorite.png']()
 
+        # record any known favorites
+        # XXX this isn't that pleasant to do every search,
+        # but we need to match the uniqueIds quickly during
+        # the search results
+        favorite_uniqueIds = set()
+        for favorite in get_favorites(self.request).values():
+            uniqueId = favorite.references.uniqueId
+            if not uniqueId:
+                continue
+            favorite_uniqueIds.add(uniqueId)
+            
+        for result in conn.search(q):
             uniqueId = result.get('uniqueId', '')
+            if uniqueId in favorite_uniqueIds:
+                favorited_icon = r['favorite.png']()
+            else:
+                favorited_icon = r['not_favorite.png']()
             
             last_semantic_change = result.get('last-semantic-change')
             if last_semantic_change is not None:
@@ -205,7 +174,7 @@ class SearchResult(JSONView):
 
             results.append({
                     'uniqueId': uniqueId,
-                    'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
+                    'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                     'favorited': favorited_icon,
                     'publication_status': r['published.png'](),
                     'arrow': r['arrow_right.png'](),
@@ -293,10 +262,11 @@ class ToggleFavorited(JSONView):
         content = zeit.cms.interfaces.ICMSContent(
             self.request.get('uniqueId'))
 
-        if content.__name__ in self.favorites:
-            del self.favorites[content.__name__]
+        favorites = get_favorites(self.request)
+        if content.__name__ in favorites:
+            del favorites[content.__name__]
             return {'favorited': r['not_favorite.png']()}
-        self.favorites[content.__name__] = (zeit.cms.clipboard.
+        favorites[content.__name__] = (zeit.cms.clipboard.
                                        interfaces.IClipboardEntry(content))
         return {'favorited': r['favorite.png']()}
 
@@ -304,11 +274,47 @@ class ToggleFavorited(JSONView):
 class Favorites(JSONView):
     template = 'search_result.jsont'
 
+    def result_entry(self, content):
+        r = self.resources
+        uniqueId = content.uniqueId
+        favorited_icon = r['favorite.png']()
+
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(content)
+
+        return {
+            'uniqueId': uniqueId,
+            'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
+            'favorited': favorited_icon,
+            'publication_status': r['published.png'](),
+            'arrow': r['arrow_right.png'](),
+            'teaser_title': metadata.teaserTitle or '',
+            'teaser_text': metadata.teaserText or '',
+            'preview_url': '',
+            'date': '13.02.2009',
+            'date_filter': '',
+            'week': '13/2009',
+            'week_filter': '',
+            'topics': 'Politik',
+            'topics_filter': '',
+            'author': metadata.authors or '',
+            'author_filter': '',
+            'related_url': self.url('expanded_search_result', uniqueId),
+            'favorite_url': self.url('toggle_favorited', uniqueId),
+            }
+    
     def json(self):
+        favorites = get_favorites(self.request)
         return {"results": [
             self.result_entry(a) for a in [
                 zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
-                for c in self.favorites.values()]]}
+                for c in favorites.values()]]}
+
+def get_favorites(request):
+    favorites_id = u'Favoriten'
+    clipboard = zeit.cms.clipboard.interfaces.IClipboard(request.principal)
+    if not favorites_id in clipboard:
+        clipboard.addClip(favorites_id)
+    return clipboard[favorites_id]
 
 def format_date(dt):
     if dt is None:
