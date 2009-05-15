@@ -63,7 +63,8 @@ zeit.cms.JSONView = zeit.cms.View.extend({
     callback_json: function(json, target_element) {
         var self = this;
         var template_url = json['template_url'];
-        if (!isUndefinedOrNull(self.template)) {
+        if (template_url == self.last_template_url && 
+            !isUndefinedOrNull(self.template)) {
             self.expand_template(json, target_element);
             return;
         }
@@ -75,6 +76,7 @@ zeit.cms.JSONView = zeit.cms.View.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
         d.addCallback(function(result) {
             self.template = jsontemplate.Template(result.responseText);
+            self.last_template_url = template_url;
             self.expand_template(json, target_element);
         });
         d.addErrback(zeit.cms.log_error);
