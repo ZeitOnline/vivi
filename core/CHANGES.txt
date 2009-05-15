@@ -4,6 +4,9 @@ zeit.cms changes
 1.19.6 (unreleased)
 -------------------
 
+- Adapter für den Publikationsstatus (veröffentlich, mit Änderungen, nicht
+  veröffentlicht) hinzugefügt (#5320).
+
 - Views zum Umbenennen von Ordnern mit einer extra Permission abgesichert
   (#5319).
 

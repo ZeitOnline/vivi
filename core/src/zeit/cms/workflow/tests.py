@@ -17,6 +17,5 @@ def test_suite():
                      doctest.ELLIPSIS)))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'modified.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)))
+        'status.txt'))
     return suite

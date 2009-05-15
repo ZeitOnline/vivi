@@ -57,6 +57,15 @@ class IPublishInfo(zope.interface.Interface):
         """
 
 
+class IPublicationStatus(zope.interface.Interface):
+
+    published = zope.schema.Choice(
+        title=_('Publication state'),
+        readonly=True,
+        default='published',
+        values=('published', 'not-published', 'published-with-changes'))
+
+
 class IPublish(zope.interface.Interface):
     """Interface for publishing/unpublishing objects."""
 

@@ -1,0 +1,53 @@
+Publication Status
+===================
+
+An object can generally be published or not. But when it's published there may
+be local changes, which have not been published[#functional]_
+
+Initially content is not published:
+
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.workflow.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/testcontent')
+>>> status = zeit.cms.workflow.interfaces.IPublicationStatus(content)
+>>> status.published
+'not-published'
+
+The content was modified last at the following time:
+
+>>> import zope.dublincore.interfaces
+>>> times = zope.dublincore.interfaces.IDCTimes(content)
+>>> times.modified
+datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+
+When we publish the object after that time, the publication status indicates
+that accordingly:
+
+>>> import datetime
+>>> zeit.cms.workflow.mock._published[content.uniqueId] = True
+>>> zeit.cms.workflow.mock._publish_times[content.uniqueId] = (
+...     times.modified + datetime.timedelta(seconds=5))
+>>> status.published
+'published'
+
+
+When the publication date is before the last modification, this will be
+indicated as well:
+
+>>> zeit.cms.workflow.mock._publish_times[content.uniqueId] = (
+...     times.modified + datetime.timedelta(seconds=-5))
+>>> status.published
+'published-with-changes'
+
+
+Clean up:
+
+>>> zeit.cms.workflow.mock._published.clear()
+>>> zeit.cms.workflow.mock._publish_times.clear()
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()
