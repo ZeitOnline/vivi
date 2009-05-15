@@ -193,16 +193,17 @@ class SearchResult(JSONView):
             #    favorited_icon = r['favorite.png']()
             #else:
             favorited_icon = r['not_favorite.png']()
-            uid = 'testuid'
 
+            uniqueId = result.get('uniqueId', '')
+            
             last_semantic_change = result.get('last-semantic-change')
             if last_semantic_change is not None:
                 dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
             else:
                 dt = None
-            #print result.get('published', 'unknown')
+
             results.append({
-                    'uniqueId': '',
+                    'uniqueId': uniqueId,
                     'icon': 'http://localhost:8080/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                     'favorited': favorited_icon,
                     'publication_status': r['published.png'](),
@@ -218,8 +219,8 @@ class SearchResult(JSONView):
                     'topics_filter': '',
                     'author': result.get('authors', ''),
                     'author_filter': '',
-                    'related_url': self.url('expanded_search_result', uid),
-                    'favorite_url': self.url('toggle_favorited', uid),
+                    'related_url': self.url('expanded_search_result', uniqueId),
+                    'favorite_url': self.url('toggle_favorited', uniqueId),
                     })
         return {'results': results}
 
