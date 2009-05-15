@@ -16,7 +16,7 @@ setup(
     namespace_packages = ['zeit'],
     install_requires=[
         'setuptools',
-        'zeit.cms',
+        'zeit.cms>1.19',
         'python-cjson',
         'pysolr >= 2.0.1',
         'simplejson', # for pysolr

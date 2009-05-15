@@ -1,3 +1,5 @@
+zeit.find = {};
+
 (function() {
 
     var init_search_form = function() {
@@ -77,10 +79,10 @@
 
     var init = function() {
         search_form.render();
-        zeit.cms.tabs = new zeit.cms.Tabs();
-        zeit.cms.tabs.add(new zeit.cms.ViewTab('search_form', 'Suche', search_result));
-        zeit.cms.tabs.add(new zeit.cms.ViewTab('favorites', 'Favoriten', favorites));
-        zeit.cms.tabs.add(new zeit.cms.Tab('for-this-page', 'Für diese Seite'));
+        zeit.find.tabs = new zeit.cms.Tabs('cp-forms');
+        zeit.find.tabs.add(new zeit.cms.ViewTab('search_form', 'Suche', search_result));
+        zeit.find.tabs.add(new zeit.cms.ViewTab('favorites', 'Favoriten', favorites));
+        zeit.find.tabs.add(new zeit.cms.Tab('for-this-page', 'Für diese Seite'));
     };
 
     search_form = new zeit.cms.JSONView(
