@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar  2 18:38:39 2009\n"
+"POT-Creation-Date: Fri May 15 12:09:04 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -23,1728 +23,3333 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/zeit/cms/browser/configure.zcml:17
-#: src/zeit/cms/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
+msgid "Broken object"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:105
+msgid "Add Site Management Folder"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:124
+msgid "Registrations"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:132
+msgid "Registration"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:35
+msgid "Site-Management Folder"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: zeit/content/infobox/interfaces.py:19
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:97
+#: zeit/cms/syndication/browser/configure.zcml:57
+msgid "Contents"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:78
+msgid "Make a site"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:87
+msgid "Manage Site"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.container-3.7.2-py2.5.egg/zope/app/container/browser/configure.zcml:5
+msgid "Find"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:24
+msgid "Configure"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+msgid "Error Reporting Utility for Logging Errors"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:31
+msgid "Error Logging Utility"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:5
+#: /Users/zagy/development/eggs/zope.app.error-3.5.2-py2.5.egg/zope/app/error/browser/configure.zcml:22
+msgid "Errors"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/zagy/development/eggs/zope.app.generations-3.5.0-py2.5.egg/zope/app/generations/browser/configure.zcml:6
+msgid "Database Schemas"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:10
+msgid "Translate"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:28
+msgid "Import/Export"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:41
+msgid "Synchronize"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+msgid "Translation Domain"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/zagy/development/eggs/zope.app.i18n-3.6.0-py2.5.egg/zope/app/i18n/browser/configure.zcml:54
+msgid "A Persistent Translation Domain"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+msgid "Permission"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:15
+msgid "A Security Permission"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+msgid "Edit Permission"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:6
+msgid "Add Permission"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+msgid "Stores Annotations for Principals"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/zagy/development/eggs/zope.app.principalannotation-3.6.1-py2.5.egg/zope/app/principalannotation/browser.zcml:6
+msgid "Principal Annotation Utility"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/browser/configure.zcml:10
+#: zeit/cms/syndication/browser/configure.zcml:30
+msgid "Metadata"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:3
+#. Default: "View Dublin-Core Meta Data"
+msgid "zope.app.dublincore.view-permission"
+msgstr ""
+
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#: /Users/zagy/development/eggs/zope.dublincore-3.4.2-py2.5.egg/zope/dublincore/configure.zcml:9
+#. Default: "Change Dublin-Core Meta Data"
+msgid "zope.app.dublincore.change-permission"
+msgstr ""
+
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+msgid "Views"
+msgstr ""
+
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+#: zeit/cms/application.zcml:34
+msgid "Menu for displaying alternate representations of an object"
+msgstr ""
+
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+msgid "Actions"
+msgstr ""
+
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+#: zeit/cms/application.zcml:39
+msgid "Menu for displaying actions to be performed"
+msgstr ""
+
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+#: zeit/cms/application.zcml:44
+msgid "Menu for objects to be added according to                    containment constraints"
+msgstr ""
+
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
+#: zeit/cms/browser/configure.zcml:17
+#: zeit/cms/browser/configure.zcml:22
 msgid "context sensitive actions"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:197
-#: src/zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:197
+#: zeit/cms/browser/configure.zcml:205
 msgid "Source"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:222
 msgid "View source"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
+#: zeit/cms/browser/configure.zcml:306
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
+#: zeit/cms/browser/configure.zcml:360
 msgid "Live"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
+#: zeit/cms/browser/configure.zcml:369
 msgid "Development"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
+#: zeit/cms/browser/configure.zcml:51
 msgid "context sensitive views"
 msgstr ""
 
-#: src/zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
+#: zeit/cms/browser/configure.zcml:56
 msgid "folder specific actions"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:116
+#: zeit/cms/browser/form.py:116
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: zeit/cms/application.zcml:44
+#: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
 msgid "Add"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:143
+#: zeit/cms/browser/form.py:144
 msgid "Cancel"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:164
-#: src/zeit/cms/repository/browser/file.zcml:34
-#: src/zeit/cms/content/browser/template.zcml:41
-#: src/zeit/content/image/browser/configure.zcml:110
-#: src/zeit/content/gallery/browser/configure.zcml:108
-#: src/zeit/content/text/browser/configure.zcml:14
-#: src/zeit/content/gallery/browser/overview.pt:22
+#: zeit/cms/browser/form.py:167
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: zeit/content/gallery/browser/overview.pt:22
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zope.app.localpermission-3.7.0-py2.5.egg/zope/app/localpermission/browser.zcml:23
+#: zeit/cms/repository/browser/file.zcml:34
+#: zeit/cms/content/browser/template.zcml:41
+#: zeit/content/image/browser/configure.zcml:110
+#: zeit/content/gallery/browser/configure.zcml:108
+#: zeit/content/text/browser/configure.zcml:14
 msgid "Edit"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:203
+#: zeit/cms/browser/form.py:206
 msgid "No changes"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:206
-#: src/zeit/cms/repository/browser/file.py:109
+#: zeit/cms/browser/form.py:209
+#: zeit/cms/repository/browser/file.py:109
 msgid "Apply"
 msgstr ""
 
-#: src/zeit/cms/browser/form.py:214
-#: src/zeit/cms/repository/browser/unknown.zcml:25
-#: src/zeit/cms/repository/browser/folder.zcml:15
-#: src/zeit/cms/repository/browser/file.zcml:24
-#: src/zeit/content/image/browser/configure.zcml:37
-#: src/zeit/content/image/browser/configure.zcml:179
-#: src/zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/browser/form.py:217
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
+#: zeit/cms/repository/browser/unknown.zcml:25
+#: zeit/cms/repository/browser/folder.zcml:15
+#: zeit/cms/repository/browser/file.zcml:24
+#: zeit/content/image/browser/configure.zcml:37
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/text/browser/configure.zcml:24
 msgid "View"
 msgstr ""
 
-#: src/zeit/cms/browser/globalmenuitem.pt:3
-#: src/zeit/cms/browser/grouped-form-macros.pt:24
-#: src/zeit/cms/browser/lightbox.pt:3
-#: src/zeit/cms/browser/sourceedit.pt:16
-#: src/zeit/cms/browser/sourceedit.pt:39
-#: src/zeit/cms/content/browser/combinationwidget.pt:14
-#: src/zeit/cms/content/browser/combinationwidget.pt:36
-#: src/zeit/xmleditor/browser/form.pt:15
-#: src/zeit/xmleditor/browser/form.pt:36
+#: zeit/cms/browser/globalmenuitem.pt:3
+#: zeit/cms/browser/grouped-form-macros.pt:24
+#: zeit/cms/browser/lightbox.pt:3
+#: zeit/cms/browser/sourceedit.pt:16
+#: zeit/cms/browser/sourceedit.pt:39
+#: zeit/cms/content/browser/combinationwidget.pt:14
+#: zeit/cms/content/browser/combinationwidget.pt:36
+#: zeit/search/browser/sidebar.pt:135
+#: zeit/workflow/browser/workflow-preview.pt:5
+#: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/zeit/cms/browser/lightbox.py:18
+#: zeit/cms/browser/lightbox.py:18
 msgid "Form"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:250
+#: zeit/cms/browser/listing.py:250
 msgid "Directory listing"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:254
+#: zeit/cms/browser/listing.py:254
 msgid "There are no objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:261
-#: src/zeit/cms/syndication/browser/feed.py:153
-#: src/zeit/search/browser/search.py:99
-#: src/zeit/search/interfaces.py:19
+#: zeit/cms/browser/listing.py:261
+#: zeit/cms/syndication/browser/feed.py:153
+#: zeit/search/browser/search.py:100
+#: zeit/search/interfaces.py:19
 msgid "Author"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:265
-#: src/zeit/cms/content/browser/template.py:48
-#: src/zeit/cms/content/interfaces.py:115
-#: src/zeit/cms/content/interfaces.py:275
-#: src/zeit/cms/syndication/browser/feed.py:157
-#: src/zeit/cms/syndication/browser/manager.py:98
-#: src/zeit/cms/syndication/interfaces.py:51
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:32
-#: src/zeit/content/gallery/interfaces.py:80
-#: src/zeit/content/infobox/interfaces.py:22
-#: src/zeit/search/browser/search.py:102
-#: src/zeit/search/interfaces.py:18
+#: zeit/cms/browser/listing.py:265
+#: zeit/cms/content/browser/template.py:48
+#: zeit/cms/content/interfaces.py:115
+#: zeit/cms/content/interfaces.py:275
+#: zeit/cms/syndication/browser/feed.py:157
+#: zeit/cms/syndication/browser/manager.py:98
+#: zeit/cms/syndication/interfaces.py:51
+#: zeit/cms/workingcopy/browser/workingcopy.py:33
+#: zeit/search/browser/search.py:103
+#: zeit/search/interfaces.py:18
+#: zeit/content/gallery/interfaces.py:80
+#: zeit/content/infobox/interfaces.py:22
 msgid "Title"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:269
-#: src/zeit/cms/interfaces.py:49
-#: src/zeit/cms/repository/browser/file.py:42
-#: src/zeit/content/image/browser/imagegroup.py:106
-#: src/zeit/content/image/browser/interfaces.py:32
-#: src/zeit/search/browser/search.py:105
-#: src/zeit/search/interfaces.py:16
-#: src/zeit/cms/repository/browser/file_details.pt:2
+#: zeit/cms/browser/listing.py:269
+#: zeit/cms/interfaces.py:49
+#: zeit/cms/repository/browser/file.py:42
+#: zeit/cms/repository/browser/file_details.pt:2
+#: zeit/search/browser/search.py:106
+#: zeit/search/interfaces.py:16
+#: zeit/content/image/browser/imagegroup.py:106
+#: zeit/content/image/browser/interfaces.py:32
 msgid "File name"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:273
+#: zeit/cms/browser/listing.py:273
 msgid "Modified"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:276
-#: src/zeit/cms/syndication/browser/feed.py:160
+#: zeit/cms/browser/listing.py:276
+#: zeit/cms/syndication/browser/feed.py:160
 msgid "Hits"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:278
-#: src/zeit/cms/content/interfaces.py:74
-#: src/zeit/search/browser/sidebar.pt:81
+#: zeit/cms/browser/listing.py:278
+#: zeit/cms/content/interfaces.py:74
+#: zeit/search/browser/sidebar.pt:81
 msgid "Ressort"
 msgstr ""
 
-#: src/zeit/cms/browser/listing.py:282
-#: src/zeit/cms/content/interfaces.py:69
-#: src/zeit/search/browser/search.py:113
-#: src/zeit/search/interfaces.py:23
-#: src/zeit/search/browser/sidebar.pt:73
+#: zeit/cms/browser/listing.py:282
+#: zeit/cms/content/interfaces.py:69
+#: zeit/search/browser/search.py:114
+#: zeit/search/interfaces.py:23
+#: zeit/search/browser/sidebar.pt:73
 msgid "Page"
 msgstr ""
 
-#: src/zeit/cms/browser/locking-error.pt:10
+#: zeit/cms/browser/locking-error.pt:10
 msgid "The action you were trying to do could not be finished because the resource ${resource-id} was locked."
 msgstr ""
 
-#: src/zeit/cms/browser/locking-error.pt:5
+#: zeit/cms/browser/locking-error.pt:5
 msgid "An error is occoured"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:10
+#: zeit/cms/browser/main_template.pt:10
 msgid "Error"
 msgstr ""
 
-#: src/zeit/cms/browser/main_template.pt:205
+#: zeit/cms/browser/main_template.pt:206
 msgid "Add..."
 msgstr ""
 
-#: src/zeit/cms/browser/menu.py:85
+#: zeit/cms/browser/menu.py:85
 msgid "CMS"
 msgstr ""
 
-#: src/zeit/cms/browser/notices.pt:22
+#: zeit/cms/browser/notices.pt:22
 msgid "Hides automatically"
 msgstr ""
 
-#: src/zeit/cms/browser/notices.pt:25
+#: zeit/cms/browser/notices.pt:25
 msgid "hide"
 msgstr ""
 
-#: src/zeit/cms/browser/notices.pt:5
+#: zeit/cms/browser/notices.pt:5
 #. Default: "Notices"
 msgid "notices_label"
 msgstr ""
 
-#: src/zeit/cms/browser/object-reference-widget.pt:11
+#: zeit/cms/browser/object-reference-widget.pt:11
 msgid "Choose object"
 msgstr ""
 
-#: src/zeit/cms/browser/object-reference-widget.pt:14
+#: zeit/cms/browser/object-reference-widget.pt:14
 msgid "Show object"
 msgstr ""
 
-#: src/zeit/cms/browser/secondary_context_actions.pt:5
+#: zeit/cms/browser/secondary_context_actions.pt:5
 msgid "Additional actions"
 msgstr ""
 
-#: src/zeit/cms/browser/sourceedit.py:37
+#: zeit/cms/browser/sourceedit.py:37
 msgid "Edit source code"
 msgstr ""
 
-#: src/zeit/cms/browser/sourceedit.py:42
+#: zeit/cms/browser/sourceedit.py:42
 msgid "View source code"
 msgstr ""
 
-#: src/zeit/cms/browser/system-error.pt:8
+#: zeit/cms/browser/system-error.pt:8
 msgid "The action you were trying to do could not be finished."
 msgstr ""
 
-#: src/zeit/cms/browser/tree.pt:18
+#: zeit/cms/browser/tree.pt:19
 msgid "Remove"
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:50
+#: zeit/cms/browser/widget.py:50
 msgid "The given id is invalid."
 msgstr ""
 
-#: src/zeit/cms/browser/widget.py:53
+#: zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:108
+#: zeit/cms/checkout/browser/manager.py:108
 msgid "Checkin (correction)"
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:16
+#: zeit/cms/checkout/browser/manager.py:16
 #. Default: ""
 msgid "\"${name}\" has been checked out."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:44
+#: zeit/cms/checkout/browser/manager.py:44
 #. Default: ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:85
+#: zeit/cms/checkout/browser/manager.py:85
 msgid "Checkout ^O"
 msgstr ""
 
-#: src/zeit/cms/checkout/browser/manager.py:97
+#: zeit/cms/checkout/browser/manager.py:97
 msgid "Checkin ^I"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/clip.py:100
-#. Default: ""
-msgid "\"${old_name}\" was renamed to \"${new_name}\"."
-msgstr ""
-
-#: src/zeit/cms/clipboard/browser/clip.py:52
+#: zeit/cms/clipboard/browser/clip.py:50
 #. Default: ""
 msgid "\"${name}\" was removed from the clipboard."
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/clip.py:80
+#: zeit/cms/clipboard/browser/clip.py:78
 msgid "New clip name"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/clip.py:85
-#: src/zeit/cms/clipboard/browser/clip.py:94
-#: src/zeit/cms/repository/browser/menu.py:12
-#: src/zeit/cms/repository/browser/rename.py:51
+#: zeit/cms/clipboard/browser/clip.py:83
+#: zeit/cms/clipboard/browser/clip.py:92
+#: zeit/cms/repository/browser/menu.py:12
+#: zeit/cms/repository/browser/rename.py:51
 msgid "Rename"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/copypastemove.py:18
+#: zeit/cms/clipboard/browser/clip.py:98
+#. Default: ""
+msgid "\"${old_name}\" was renamed to \"${new_name}\"."
+msgstr ""
+
+#: zeit/cms/clipboard/browser/copypastemove.py:18
 msgid "Copy from clipboard"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/copypastemove.py:43
+#: zeit/cms/clipboard/browser/copypastemove.py:43
 #. Default: ""
 msgid "${source} was copied to ${target}."
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/entry.py:85
+#: zeit/cms/clipboard/browser/entry.py:85
 #. Default: ""
 msgid "Broken reference to ${uniqueId}"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:12
+#: zeit/cms/clipboard/browser/insert_from_clipboard.pt:12
 msgid "Copy content into ${paste-into-id}"
 msgstr ""
 
-#: src/zeit/cms/clipboard/browser/insert_from_clipboard.pt:22
+#: zeit/cms/clipboard/browser/insert_from_clipboard.pt:22
 #. Default: ""
 #.  "Choose an entry from your clipboard which you would like to copy to \n"
 #.  "    ${paste-into-id}."
 msgid "clipboard-paste-explain"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:138
+#: zeit/cms/content/browser/form.py:138
 msgid "Assets and related"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:154
-#: src/zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/form.py:154
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
+#: zeit/cms/content/browser/configure.zcml:149
 msgid "Edit assets"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:158
-#: src/zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/form.py:158
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
+#: zeit/cms/content/browser/configure.zcml:166
 msgid "Assets"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:44
+#: zeit/cms/content/browser/form.py:44
 msgid "Navigation"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:48
-#: src/zeit/content/infobox/browser/form.py:36
-#: src/zeit/content/portraitbox/browser/form.py:31
+#: zeit/cms/content/browser/form.py:48
+#: zeit/content/infobox/browser/form.py:36
+#: zeit/content/portraitbox/browser/form.py:31
 msgid "Head"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:52
-#: src/zeit/content/image/browser/form.py:30
-#: src/zeit/content/infobox/browser/form.py:32
-#: src/zeit/content/infobox/browser/form.py:87
+#: zeit/cms/content/browser/form.py:52
+#: zeit/content/image/browser/form.py:30
+#: zeit/content/infobox/browser/form.py:32
+#: zeit/content/infobox/browser/form.py:87
 msgid "Texts"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:59
+#: zeit/cms/content/browser/form.py:59
 msgid "Options"
 msgstr ""
 
-#: src/zeit/cms/content/browser/form.py:69
+#: zeit/cms/content/browser/form.py:69
 msgid "misc."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:15
+#: zeit/cms/content/browser/keyword-tree.pt:15
 msgid "If you would like to suggest a keyword, send an e-mail to ${recipient}."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:29
+#: zeit/cms/content/browser/keyword-tree.pt:23
+#: zeit/search/browser/search.py:86
+#: zeit/search/browser/sidebar.pt:13
+#: zeit/search/browser/sidebar.pt:29
+msgid "Search"
+msgstr ""
+
+#: zeit/cms/content/browser/keyword-tree.pt:29
 msgid "Similar keywords:"
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-tree.pt:4
+#: zeit/cms/content/browser/keyword-tree.pt:4
 msgid "Taxonomy"
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-typeahead.pt:12
+#: zeit/cms/content/browser/keyword-typeahead.pt:12
 msgid "No Keywords match your search criteria."
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword-widget.pt:30
+#: zeit/cms/content/browser/keyword-widget.pt:30
 msgid "Edit keywords"
 msgstr ""
 
-#: src/zeit/cms/content/browser/keyword.py:58
+#: zeit/cms/content/browser/keyword.py:58
 msgid "New keyword"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template-properties.pt:10
+#: zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template-properties.pt:48
-#: src/zeit/cms/syndication/browser/feed_sorting.pt:8
+#: zeit/cms/content/browser/template-properties.pt:48
+#: zeit/cms/syndication/browser/feed_sorting.pt:8
 msgid "Save"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template-properties.pt:8
+#: zeit/cms/content/browser/template-properties.pt:8
 msgid "Namespace"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template-properties.pt:9
+#: zeit/cms/content/browser/template-properties.pt:9
 msgid "Name"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:110
+#: zeit/cms/content/browser/template.py:110
 msgid "Choose template"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:113
+#: zeit/cms/content/browser/template.py:113
 msgid "Continue"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:129
-#: src/zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.py:129
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
+#: zeit/cms/content/browser/template.zcml:33
 msgid "Template"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:25
-#: src/zeit/cms/content/browser/template.py:40
-#: src/zeit/cms/content/browser/template.py:176
+#: zeit/cms/content/browser/template.py:25
+#: zeit/cms/content/browser/template.py:40
+#: zeit/cms/content/browser/template.py:176
 msgid "Templates"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:65
+#: zeit/cms/content/browser/template.py:65
 msgid "Add template"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:75
+#: zeit/cms/content/browser/template.py:75
 msgid "Edit template"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.py:80
+#: zeit/cms/content/browser/template.py:80
 msgid "Edit webdav properties"
 msgstr ""
 
-#: src/zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
+#: zeit/cms/content/browser/template.zcml:49
 msgid "Properties"
 msgstr ""
 
-#: src/zeit/cms/content/browser/typechange.pt:12
+#: zeit/cms/content/browser/typechange.pt:12
 #. Default: ""
 #.  "You are about to change the type of an object. Be sure you know what\n"
 #.  "        you are doing."
 msgid "change-type-warning"
 msgstr ""
 
-#: src/zeit/cms/content/browser/typechange.pt:38
+#: zeit/cms/content/browser/typechange.pt:38
 msgid "Type changed. Loading ..."
 msgstr ""
 
-#: src/zeit/cms/content/browser/typechange.pt:5
+#: zeit/cms/content/browser/typechange.pt:5
 msgid "Change type of ${object-unique-id}"
 msgstr ""
 
-#: src/zeit/cms/content/browser/typechange.py:68
-#: src/zeit/cms/content/browser/typechange.pt:29
+#: zeit/cms/content/browser/typechange.py:68
+#: zeit/cms/content/browser/typechange.pt:29
 msgid "Change type"
 msgstr ""
 
-#: src/zeit/cms/content/field.py:32
+#: zeit/cms/content/field.py:32
 msgid "Invalid structure."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:101
+#: zeit/cms/content/interfaces.py:101
 msgid "Copyright (c)"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:102
+#: zeit/cms/content/interfaces.py:102
 msgid "Do not enter (c)."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:106
+#: zeit/cms/content/interfaces.py:106
 msgid "Kicker"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:107
+#: zeit/cms/content/interfaces.py:107
 msgid "Please take care of capitalisation."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:111
+#: zeit/cms/content/interfaces.py:111
 msgid "By line"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:118
+#: zeit/cms/content/interfaces.py:118
 msgid "Subtitle"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:122
+#: zeit/cms/content/interfaces.py:122
 msgid "Teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:126
+#: zeit/cms/content/interfaces.py:126
 msgid "Teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:131
+#: zeit/cms/content/interfaces.py:131
 msgid "Index teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:136
+#: zeit/cms/content/interfaces.py:136
 msgid "Index teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:141
+#: zeit/cms/content/interfaces.py:141
 msgid "Homepage teaser title"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:145
+#: zeit/cms/content/interfaces.py:145
 msgid "Homepage teaser text"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:150
+#: zeit/cms/content/interfaces.py:150
 msgid "VG Wort Id"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:154
+#: zeit/cms/content/interfaces.py:154
 msgid "Daily newsletter"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:155
+#: zeit/cms/content/interfaces.py:155
 msgid "Should this article be listed in the daily newsletter?"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:160
+#: zeit/cms/content/interfaces.py:160
 msgid "Comments allowed"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:232
+#: zeit/cms/content/interfaces.py:232
 msgid "XML Source"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:301
+#: zeit/cms/content/interfaces.py:301
 msgid "Hits today"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:302
+#: zeit/cms/content/interfaces.py:302
 msgid "Indicates how many times a page viewed today."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:307
-#: src/zeit/today/interfaces.py:40
+#: zeit/cms/content/interfaces.py:307
 msgid "Total hits"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:308
+#: zeit/cms/content/interfaces.py:308
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:33
+#: zeit/cms/content/interfaces.py:33
 msgid "Keyword is contained in the taxonomy"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:335
+#: zeit/cms/content/interfaces.py:335
 msgid "Last semantic change"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:44
+#: zeit/cms/content/interfaces.py:44
 msgid "Root of ontology"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:58
-#: src/zeit/content/image/interfaces.py:53
-#: src/zeit/search/interfaces.py:21
-#: src/zeit/search/browser/sidebar.pt:47
+#: zeit/cms/content/interfaces.py:58
+#: zeit/search/interfaces.py:21
+#: zeit/search/browser/sidebar.pt:47
+#: zeit/content/image/interfaces.py:53
 msgid "Year"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:63
-#: src/zeit/content/image/interfaces.py:59
-#: src/zeit/search/interfaces.py:22
-#: src/zeit/search/browser/sidebar.pt:56
+#: zeit/cms/content/interfaces.py:63
+#: zeit/search/interfaces.py:22
+#: zeit/search/browser/sidebar.pt:56
+#: zeit/content/image/interfaces.py:59
 msgid "Volume"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:78
+#: zeit/cms/content/interfaces.py:78
 msgid "Sub ressort"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:83
+#: zeit/cms/content/interfaces.py:83
 msgid "Authors"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:89
-#: src/zeit/cms/content/browser/keyword-tree.pt:11
-#: src/zeit/cms/content/browser/keyword-tree.pt:35
+#: zeit/cms/content/interfaces.py:89
+#: zeit/cms/content/browser/keyword-tree.pt:11
+#: zeit/cms/content/browser/keyword-tree.pt:35
 msgid "Keywords"
 msgstr ""
 
-#: src/zeit/cms/content/interfaces.py:96
+#: zeit/cms/content/interfaces.py:96
 msgid "Serie"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/interfaces.py:16
+#: zeit/cms/locking/browser/interfaces.py:16
 msgid "Locked"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/interfaces.py:20
+#: zeit/cms/locking/browser/interfaces.py:20
 msgid "Locker"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/interfaces.py:25
+#: zeit/cms/locking/browser/interfaces.py:25
 msgid "Locked until"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:107
+#: zeit/cms/locking/browser/lock.py:107
 msgid "Locked by you"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:117
+#: zeit/cms/locking/browser/lock.py:117
 #. Default: ""
 msgid "Locked by ${user}"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:121
+#: zeit/cms/locking/browser/lock.py:121
 msgid "Not locked"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:26
+#: zeit/cms/locking/browser/lock.py:26
 msgid "Locks"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:46
+#: zeit/cms/locking/browser/lock.py:46
 msgid "Steal lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:53
+#: zeit/cms/locking/browser/lock.py:53
 #. Default: ""
 msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:58
+#: zeit/cms/locking/browser/lock.py:58
 msgid "Lock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:63
+#: zeit/cms/locking/browser/lock.py:63
 #. Default: ""
 msgid "\"${name}\" has been locked."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:66
+#: zeit/cms/locking/browser/lock.py:66
 msgid "Unlock"
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:71
+#: zeit/cms/locking/browser/lock.py:71
 #. Default: ""
 msgid "\"${name}\" has been unlocked."
 msgstr ""
 
-#: src/zeit/cms/locking/browser/lock.py:87
+#: zeit/cms/locking/browser/lock.py:87
 msgid "Manage lock"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
+#: zeit/cms/permissions.zcml:11
 msgid "Copy content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
+#: zeit/cms/permissions.zcml:16
 msgid "Edit ZEIT content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
+#: zeit/cms/permissions.zcml:21
 msgid "Change objects in the repository"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
+#: zeit/cms/permissions.zcml:26
 msgid "Add ZEIT content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
+#: zeit/cms/permissions.zcml:31
 msgid "Delete ZEIT content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
+#: zeit/cms/permissions.zcml:36
 msgid "Delete folders"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
+#: zeit/cms/permissions.zcml:41
 msgid "Checkout content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
+#: zeit/cms/permissions.zcml:46
 msgid "Checkin content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
+#: zeit/cms/permissions.zcml:51
 msgid "Syndicate content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
+#: zeit/cms/permissions.zcml:56
 msgid "Publish objects"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
+#: zeit/cms/permissions.zcml:6
 msgid "Rename content"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
+#: zeit/cms/permissions.zcml:61
 msgid "Lock and unlock objects"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:66
 msgid "Manage WebDAV locks"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
+#: zeit/cms/permissions.zcml:72
 msgid "View global settings"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
+#: zeit/cms/permissions.zcml:77
 msgid "Change global settings"
 msgstr ""
 
-#: src/zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:82
 msgid "Edit templates"
 msgstr ""
 
-#: src/zeit/cms/related/interfaces.py:16
+#: zeit/cms/related/interfaces.py:16
 msgid "Related content"
 msgstr ""
 
-#: src/zeit/cms/related/interfaces.py:17
+#: zeit/cms/related/interfaces.py:17
 msgid "Objects that are related to this object."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/collection_metadata.pt:4
+#: zeit/cms/repository/browser/collection_metadata.pt:4
 msgid "${amount} Entries"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
 msgid "Menu for adding content."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
+#: zeit/cms/repository/browser/configure.zcml:17
 msgid "Add ..."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:11
+#: zeit/cms/repository/browser/delete.pt:11
 #. Default: ""
 #.  "Do you really want to delete the object from the folder\n"
 #.  "      \"${container-title}\"?"
 msgid "delete_content_text"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:21
+#: zeit/cms/repository/browser/delete.pt:21
 #. Default: "You're about to delete a folder with content!"
 msgid "delete_content_folder_warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/delete.pt:4
+#: zeit/cms/repository/browser/delete.pt:4
 #. Default: "Delete content"
 msgid "delete_content_header"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.py:105
+#: zeit/cms/repository/browser/file.py:105
 msgid "Edit file"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.py:112
+#: zeit/cms/repository/browser/file.py:112
 msgid "Your changes have been saved."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.py:35
+#: zeit/cms/repository/browser/file.py:35
 msgid "View file"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.py:47
+#: zeit/cms/repository/browser/file.py:47
 msgid "Upload new file"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.py:59
+#: zeit/cms/repository/browser/file.py:59
 msgid "Form input is not a file object"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.py:87
+#: zeit/cms/repository/browser/file.py:87
 msgid "Add file"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
+#: zeit/cms/repository/browser/file.zcml:72
 msgid "File"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file_details.pt:10
+#: zeit/cms/repository/browser/file_details.pt:10
 msgid "Content type"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file_details.pt:12
+#: zeit/cms/repository/browser/file_details.pt:12
 msgid "Size"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/file_details.pt:14
+#: zeit/cms/repository/browser/file_details.pt:14
 msgid "${size} bytes"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.py:15
+#: zeit/cms/repository/browser/folder.py:15
 msgid "Add folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.py:17
-#: src/zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.py:17
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
+#: zeit/cms/repository/browser/folder.zcml:92
 msgid "Folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.py:25
+#: zeit/cms/repository/browser/folder.py:25
 msgid "Edit folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
+#: zeit/cms/repository/browser/folder.zcml:54
 msgid "Hide"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
+#: zeit/cms/repository/browser/folder.zcml:73
 msgid "Show"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/menu.py:18
-#: src/zeit/cms/content/browser/template.zcml:58
-#: src/zeit/cms/repository/browser/delete.pt:29
+#: zeit/cms/repository/browser/menu.py:18
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/repository/browser/delete.pt:29
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
+#: zeit/cms/content/browser/template.zcml:58
 msgid "Delete"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/objectbrowser.pt:22
+#: zeit/cms/repository/browser/objectbrowser.pt:22
 msgid "There are no selectable objects in this folder."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/reload.py:26
+#: zeit/cms/repository/browser/reload.py:26
 msgid "Reload folder"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename-box.pt:5
+#: zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename-box.pt:8
+#: zeit/cms/repository/browser/rename-box.pt:8
 #. Default: "Note: Renaming destroys links."
 msgid "rename-box-warning"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:30
+#: zeit/cms/repository/browser/rename.py:30
 #. Default: ""
 msgid "\"${name}\" already exists."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:37
+#: zeit/cms/repository/browser/rename.py:37
 msgid "New file name"
 msgstr ""
 
-#: src/zeit/cms/repository/browser/rename.py:62
+#: zeit/cms/repository/browser/rename.py:62
 #. Default: ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:106
+#: zeit/cms/repository/browser/repository.py:106
 #. Default: ""
 msgid "\"${name}\" is now hidden from the navigation tree."
 msgstr ""
 
-#: src/zeit/cms/repository/browser/repository.py:113
+#: zeit/cms/repository/browser/repository.py:113
 #. Default: ""
 msgid "\"${name}\" is now shown in the navigation tree."
 msgstr ""
 
-#: src/zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
+#: zeit/cms/securitypolicy.zcml:7
 msgid "Owner"
 msgstr ""
 
-#: src/zeit/cms/settings/browser/menu.py:11
+#: zeit/cms/settings/browser/menu.py:11
 msgid "Global settings"
 msgstr ""
 
-#: src/zeit/cms/settings/interfaces.py:13
+#: zeit/cms/settings/interfaces.py:13
 msgid "Default year"
 msgstr ""
 
-#: src/zeit/cms/settings/interfaces.py:18
+#: zeit/cms/settings/interfaces.py:18
 msgid "Default volume"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/configure.zcml:147
-#: src/zeit/cms/syndication/browser/manager.pt:16
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/manager.pt:16
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
+#: zeit/cms/syndication/browser/configure.zcml:147
 msgid "Syndicate"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
+#: zeit/cms/syndication/browser/configure.zcml:20
 msgid "Feed"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/configure.zcml:30
-msgid "Metadata"
-msgstr ""
-
-#: src/zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
+#: zeit/cms/syndication/browser/configure.zcml:38
 msgid "Edit contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:144
+#: zeit/cms/syndication/browser/feed.py:144
 #. Default: "#"
 msgid "title-position-in-feed"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:167
-#: src/zeit/cms/syndication/interfaces.py:36
+#: zeit/cms/syndication/browser/feed.py:167
+#: zeit/cms/syndication/interfaces.py:36
 msgid "Pinned"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:175
+#: zeit/cms/syndication/browser/feed.py:175
 #. Default: "HP"
 msgid "title-visible-on-hp"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:183
+#: zeit/cms/syndication/browser/feed.py:183
 msgid "Big"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:191
+#: zeit/cms/syndication/browser/feed.py:191
 msgid "Relateds"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:202
+#: zeit/cms/syndication/browser/feed.py:202
 msgid "Edit feed contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:221
+#: zeit/cms/syndication/browser/feed.py:221
 #. Default: "Remove"
 msgid "title-remove"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:254
+#: zeit/cms/syndication/browser/feed.py:254
 #. Default: ""
 msgid "\"${name}\" has been added to your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:262
+#: zeit/cms/syndication/browser/feed.py:262
 #. Default: ""
 msgid "\"${name}\" has been removed from your syndication targets."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:289
+#: zeit/cms/syndication/browser/feed.py:289
 msgid "Remember as syndication target"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:304
+#: zeit/cms/syndication/browser/feed.py:304
 msgid "Remove from my syndication targets"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/feed.py:92
+#: zeit/cms/syndication/browser/feed.py:92
 msgid "Feed contents"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/form.py:20
+#: zeit/cms/syndication/browser/form.py:20
 msgid "Add Channel"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/form.py:33
+#: zeit/cms/syndication/browser/form.py:33
 msgid "Edit Channel"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.pt:18
+#: zeit/cms/syndication/browser/manager.pt:18
 #. Default: "Synd. w/o HP"
 msgid "syndicate-wo-hp"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.pt:20
+#: zeit/cms/syndication/browser/manager.pt:20
 #. Default: "Synd. w/o relateds"
 msgid "syndicate-wo-relateds"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.pt:22
+#: zeit/cms/syndication/browser/manager.pt:22
 msgid "Publish"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.pt:5
+#: zeit/cms/syndication/browser/manager.pt:5
 msgid "Syndicate \"${content-title}\""
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.pt:8
+#: zeit/cms/syndication/browser/manager.pt:8
 msgid "You need to select a feed as a syndication target first, before you can syndicate this article."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:101
+#: zeit/cms/syndication/browser/manager.py:101
 msgid "Path"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:104
+#: zeit/cms/syndication/browser/manager.py:104
 msgid "Position"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:111
-#: src/zeit/cms/workingcopy/browser/configure.zcml:54
-#: src/zeit/cms/browser/configure.zcml:351
+#: zeit/cms/syndication/browser/manager.py:111
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
+#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/browser/configure.zcml:351
 msgid "Preview"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:45
+#: zeit/cms/syndication/browser/manager.py:45
 #. Default: ""
 msgid "Could not syndicate because \"${name}\" could not be locked or checked out."
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:51
+#: zeit/cms/syndication/browser/manager.py:51
 #. Default: ""
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:65
+#: zeit/cms/syndication/browser/manager.py:65
 #. Default: ""
 msgid "scheduled-for-publishing"
 msgstr ""
 
-#: src/zeit/cms/syndication/browser/manager.py:68
+#: zeit/cms/syndication/browser/manager.py:68
 #. Default: ""
 msgid "Could not publish \"${name}\"."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:193
+#: zeit/cms/syndication/interfaces.py:193
 msgid "No automatic metadata update"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:194
+#: zeit/cms/syndication/interfaces.py:194
 msgid "When this object is checked in, its metata will not automatically updated in the selected channels."
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:39
+#: zeit/cms/syndication/interfaces.py:39
 msgid "Hidden on HP"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:42
+#: zeit/cms/syndication/interfaces.py:42
 msgid "Big layout"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:45
+#: zeit/cms/syndication/interfaces.py:45
 msgid "Hidden relateds"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:53
+#: zeit/cms/syndication/interfaces.py:53
 msgid "Limit amount"
 msgstr ""
 
-#: src/zeit/cms/syndication/interfaces.py:54
+#: zeit/cms/syndication/interfaces.py:54
 msgid "limit-amount-description"
 msgstr ""
 
-#: src/zeit/cms/workflow/browser/indicator.py:31
-#: src/zeit/cms/workflow/interfaces.py:37
-#: src/zeit/workflow/publish.py:291
+#: zeit/cms/workflow/browser/indicator.py:31
+#: zeit/cms/workflow/interfaces.py:37
+#: zeit/workflow/publish.py:291
 msgid "Published"
 msgstr ""
 
-#: src/zeit/cms/workflow/browser/indicator.py:34
+#: zeit/cms/workflow/browser/indicator.py:34
 msgid "Published but has changes"
 msgstr ""
 
-#: src/zeit/cms/workflow/browser/indicator.py:37
+#: zeit/cms/workflow/browser/indicator.py:37
 msgid "Not published"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:22
+#: zeit/cms/workflow/interfaces.py:22
 msgid "Last modified by"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:28
+#: zeit/cms/workflow/interfaces.py:28
 msgid "Date last modified"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:42
+#: zeit/cms/workflow/interfaces.py:42
 msgid "Date last published"
 msgstr ""
 
-#: src/zeit/cms/workflow/interfaces.py:48
+#: zeit/cms/workflow/interfaces.py:48
 msgid "Date first released"
 msgstr ""
 
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:13
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/content/text/interfaces.py:34
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+msgid "Content"
+msgstr ""
+
+#: zeit/cms/workingcopy/browser/sidebar.pt:13
 msgid "Edited documents"
 msgstr ""
 
-#: src/zeit/cms/workingcopy/browser/sidebar.pt:24
+#: zeit/cms/workingcopy/browser/sidebar.pt:24
 msgid "No edited documents."
 msgstr ""
 
-#: src/zeit/cms/workingcopy/browser/workingcopy.py:97
+#: zeit/cms/workingcopy/browser/workingcopy.py:105
 msgid "Show original"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:27
-#: src/zeit/content/image/browser/configure.zcml:209
-#: src/zeit/content/gallery/browser/configure.zcml:33
-#: src/zeit/content/link/browser/configure.zcml:17
-#: src/zeit/content/infobox/browser/configure.zcml:19
-#: src/zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/centerpage/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:209
+#: zeit/content/gallery/browser/configure.zcml:33
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/infobox/browser/configure.zcml:19
+#: zeit/content/portraitbox/browser/configure.zcml:21
 msgid "Edit metadata"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:43
-#: src/zeit/content/image/browser/configure.zcml:193
-#: src/zeit/content/gallery/browser/configure.zcml:50
-#: src/zeit/content/link/browser/configure.zcml:32
-#: src/zeit/content/infobox/browser/configure.zcml:37
-#: src/zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/centerpage/browser/configure.zcml:43
+#: zeit/content/image/browser/configure.zcml:193
+#: zeit/content/gallery/browser/configure.zcml:50
+#: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/infobox/browser/configure.zcml:37
+#: zeit/content/portraitbox/browser/configure.zcml:39
 msgid "View metadata"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
+#: zeit/content/centerpage/browser/configure.zcml:68
 msgid "Center-Page"
 msgstr ""
 
-#: src/zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
+#: zeit/content/centerpage/browser/configure.zcml:85
 msgid "Edit content"
 msgstr ""
 
-#: src/zeit/content/centerpage/interfaces.py:34
+#: zeit/content/centerpage/interfaces.py:34
 msgid "Label"
 msgstr ""
 
-#: src/zeit/content/centerpage/interfaces.py:37
+#: zeit/content/centerpage/interfaces.py:37
 msgid "Style"
 msgstr ""
 
-#: src/zeit/content/centerpage/interfaces.py:40
-#: src/zeit/content/centerpage/interfaces.py:48
-#: src/zeit/content/gallery/interfaces.py:88
+#: zeit/content/centerpage/interfaces.py:40
+#: zeit/content/centerpage/interfaces.py:48
+#: zeit/content/gallery/interfaces.py:88
 msgid "Layout"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
+#: zeit/content/gallery/browser/configure.zcml:71
 msgid "Gallery"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
+#: zeit/content/gallery/browser/configure.zcml:97
 msgid "Synchronise with image folder"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/form.py:34
+#: zeit/content/gallery/browser/form.py:34
 msgid "Add gallery"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/form.py:44
+#: zeit/content/gallery/browser/form.py:44
 msgid "Edit gallery"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/form.py:50
+#: zeit/content/gallery/browser/form.py:50
 msgid "View gallery metadata"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/form.py:70
+#: zeit/content/gallery/browser/form.py:70
 msgid "Edit gallery entry"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:29
-#: src/zeit/content/gallery/browser/overview.pt:29
+#: zeit/content/gallery/browser/overview.pt:29
+#: zeit/content/gallery/browser/overview.pt:29
 msgid "Show image"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.pt:54
+#: zeit/content/gallery/browser/overview.pt:54
 msgid "Save sorting"
 msgstr ""
 
-#: src/zeit/content/gallery/browser/overview.py:53
+#: zeit/content/gallery/browser/overview.py:53
 msgid "Image folder was synchronised."
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:111
+#: zeit/content/gallery/interfaces.py:111
 msgid "Image gallery as box"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:116
+#: zeit/content/gallery/interfaces.py:116
 msgid "Embedded image gallery"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:34
+#: zeit/content/gallery/interfaces.py:34
 msgid "Image folder"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:35
+#: zeit/content/gallery/interfaces.py:35
 msgid "Folder containing images to display in the gallery."
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:84
-#: src/zeit/content/infobox/interfaces.py:23
-#: src/zeit/content/portraitbox/interfaces.py:21
-#: src/zeit/wysiwyg/interfaces.py:15
-msgid "Text"
-msgstr ""
-
-#: src/zeit/content/gallery/interfaces.py:93
+#: zeit/content/gallery/interfaces.py:93
 msgid "Image caption"
 msgstr ""
 
-#: src/zeit/content/gallery/interfaces.py:94
+#: zeit/content/gallery/interfaces.py:94
 msgid "gallery-image-caption-description"
 msgstr ""
 
-#: src/zeit/content/gallery/source.py:12
+#: zeit/content/gallery/source.py:12
 msgid "Image only"
 msgstr ""
 
-#: src/zeit/content/gallery/source.py:13
+#: zeit/content/gallery/source.py:13
 msgid "Hidden"
 msgstr ""
 
-#: src/zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
+#: zeit/content/image/browser/configure.zcml:131
 msgid "Image (single)"
 msgstr ""
 
-#: src/zeit/content/image/browser/copyright.pt:5
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/imagebrowser.py:12
+#: zeit/content/image/interfaces.py:184
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+#: zeit/content/image/browser/configure.zcml:142
+#: zeit/content/gallery/browser/configure.zcml:80
+msgid "Images"
+msgstr ""
+
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/imagegroup.py:100
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+#: zeit/content/image/browser/configure.zcml:171
+msgid "Image group"
+msgstr ""
+
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/wysiwyg/browser/resources/image/dialog.pt:20
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/imagegroup.py:112
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/portraitbox/interfaces.py:24
+#: zeit/content/image/browser/configure.zcml:201
+#: zeit/content/image/browser/configure.zcml:201
+msgid "Image"
+msgstr ""
+
+#: zeit/content/image/browser/copyright.pt:5
 msgid "Set copyright for all images in ${object-unique-id}"
 msgstr ""
 
-#: src/zeit/content/image/browser/copyright.py:15
+#: zeit/content/image/browser/copyright.py:15
 msgid "Bulk change image copyright"
 msgstr ""
 
-#: src/zeit/content/image/browser/copyright.py:30
+#: zeit/content/image/browser/copyright.py:30
 msgid "Set copyrights"
 msgstr ""
 
-#: src/zeit/content/image/browser/copyright.py:44
+#: zeit/content/image/browser/copyright.py:44
 #. Default: ""
 msgid "Copyright changed for: ${changes}"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:26
-#: src/zeit/content/image/browser/imagegroup.py:122
+#: zeit/content/image/browser/form.py:26
+#: zeit/content/image/browser/imagegroup.py:122
 msgid "Image data"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:46
+#: zeit/content/image/browser/form.py:46
 msgid "Add image"
 msgstr ""
 
-#: src/zeit/content/image/browser/form.py:63
+#: zeit/content/image/browser/form.py:63
 msgid "Edit image"
 msgstr ""
 
-#: src/zeit/content/image/browser/image.py:44
+#: zeit/content/image/browser/image.py:44
 msgid "View image"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:16
+#: zeit/content/image/browser/image_view.pt:16
 msgid "Volume/Year"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:43
+#: zeit/content/image/browser/image_view.pt:43
 msgid "Image title: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:46
+#: zeit/content/image/browser/image_view.pt:46
 msgid "ALT: ${alt}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:49
+#: zeit/content/image/browser/image_view.pt:49
 msgid "Image sub text: ${caption}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:53
+#: zeit/content/image/browser/image_view.pt:53
 msgid "Links to: ${link}"
 msgstr ""
 
-#: src/zeit/content/image/browser/image_view.pt:6
+#: zeit/content/image/browser/image_view.pt:6
 msgid "Type"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagebrowser.py:12
-#: src/zeit/content/image/interfaces.py:184
-#: src/zeit/content/image/browser/configure.zcml:142
-#: src/zeit/content/gallery/browser/configure.zcml:80
-msgid "Images"
-msgstr ""
-
-#: src/zeit/content/image/browser/imagegroup.py:100
-#: src/zeit/content/image/browser/configure.zcml:171
-msgid "Image group"
-msgstr ""
-
-#: src/zeit/content/image/browser/imagegroup.py:109
-#: src/zeit/content/image/browser/image_view.pt:10
+#: zeit/content/image/browser/imagegroup.py:109
+#: zeit/content/image/browser/image_view.pt:10
 msgid "Dimensions"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:112
-#: src/zeit/content/portraitbox/interfaces.py:24
-#: src/zeit/content/image/browser/configure.zcml:201
-#: src/zeit/wysiwyg/browser/resources/image/dialog.pt:20
-msgid "Image"
-msgstr ""
-
-#: src/zeit/content/image/browser/imagegroup.py:32
+#: zeit/content/image/browser/imagegroup.py:32
 msgid "Add image group"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:72
+#: zeit/content/image/browser/imagegroup.py:72
 msgid "Edit image group"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:78
+#: zeit/content/image/browser/imagegroup.py:78
 msgid "Image group metadata"
 msgstr ""
 
-#: src/zeit/content/image/browser/imagegroup.py:93
-#: src/zeit/content/image/interfaces.py:147
+#: zeit/content/image/browser/imagegroup.py:93
+#: zeit/content/image/interfaces.py:147
 msgid "Master image"
 msgstr ""
 
-#: src/zeit/content/image/browser/interfaces.py:15
+#: zeit/content/image/browser/interfaces.py:15
 msgid "The uploaded image could not be identified."
 msgstr ""
 
-#: src/zeit/content/image/browser/interfaces.py:37
+#: zeit/content/image/browser/interfaces.py:37
 msgid "Upload new image"
 msgstr ""
 
-#: src/zeit/content/image/browser/interfaces.py:46
+#: zeit/content/image/browser/interfaces.py:46
 msgid "Upload master image"
 msgstr ""
 
-#: src/zeit/content/image/browser/interfaces.py:47
+#: zeit/content/image/browser/interfaces.py:47
 msgid "upload-master-image-description"
 msgstr ""
 
-#: src/zeit/content/image/browser/processingerror.pt:5
+#: zeit/content/image/browser/processingerror.pt:5
 msgid "An error occured"
 msgstr ""
 
-#: src/zeit/content/image/browser/processingerror.pt:6
+#: zeit/content/image/browser/processingerror.pt:6
 msgid "The action you were trying to do could not be finished because the resource has no valid content."
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:194
+#: zeit/content/image/interfaces.py:194
 msgid "Objects using this image"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:30
+#: zeit/content/image/interfaces.py:30
 msgid "left"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:31
+#: zeit/content/image/interfaces.py:31
 msgid "center"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:32
+#: zeit/content/image/interfaces.py:32
 msgid "right"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:48
+#: zeit/content/image/interfaces.py:48
 msgid "Image title"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:65
+#: zeit/content/image/interfaces.py:65
 msgid "Copyrights"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:71
+#: zeit/content/image/interfaces.py:71
 msgid "Copyright"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:75
-#: src/zeit/content/link/browser/configure.zcml:8
-msgid "Link"
-msgstr ""
-
-#: src/zeit/content/image/interfaces.py:76
+#: zeit/content/image/interfaces.py:76
 msgid "Link to copyright holder"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:80
+#: zeit/content/image/interfaces.py:80
 msgid "Alternative text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:81
+#: zeit/content/image/interfaces.py:81
 msgid "Enter a textual description of the image"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:86
+#: zeit/content/image/interfaces.py:86
 msgid "Image sub text"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:91
+#: zeit/content/image/interfaces.py:91
 msgid "Links to"
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:92
+#: zeit/content/image/interfaces.py:92
 msgid "Enter a URL this image should link to."
 msgstr ""
 
-#: src/zeit/content/image/interfaces.py:96
-#: src/zeit/content/image/browser/image_view.pt:24
+#: zeit/content/image/interfaces.py:96
+#: zeit/content/image/browser/image_view.pt:24
 msgid "Alignment"
 msgstr ""
 
-#: src/zeit/content/infobox/browser/form.py:79
-msgid "Add infobox"
-msgstr ""
-
-#: src/zeit/content/infobox/browser/form.py:84
-msgid "Edit infobox"
-msgstr ""
-
-#: src/zeit/content/infobox/browser/form.py:95
-msgid "View infobox"
-msgstr ""
-
-#: src/zeit/content/infobox/interfaces.py:16
-msgid "Supertitle"
-msgstr ""
-
-#: src/zeit/content/infobox/interfaces.py:19
-#: src/zeit/cms/syndication/browser/configure.zcml:57
-msgid "Contents"
-msgstr ""
-
-#: src/zeit/content/infobox/interfaces.py:41
-#: src/zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/interfaces.py:41
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
+#: zeit/content/infobox/browser/configure.zcml:10
 msgid "Infobox"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:27
+#: zeit/content/infobox/browser/form.py:79
+msgid "Add infobox"
+msgstr ""
+
+#: zeit/content/infobox/browser/form.py:84
+msgid "Edit infobox"
+msgstr ""
+
+#: zeit/content/infobox/browser/form.py:95
+msgid "View infobox"
+msgstr ""
+
+#: zeit/content/infobox/interfaces.py:16
+msgid "Supertitle"
+msgstr ""
+
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/image/interfaces.py:75
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+#: zeit/content/link/browser/configure.zcml:8
+msgid "Link"
+msgstr ""
+
+#: zeit/content/link/browser/form.py:27
 msgid "Add link"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:35
+#: zeit/content/link/browser/form.py:35
 msgid "Edit link"
 msgstr ""
 
-#: src/zeit/content/link/browser/form.py:40
+#: zeit/content/link/browser/form.py:40
 msgid "View link metadata"
 msgstr ""
 
-#: src/zeit/content/link/interfaces.py:16
+#: zeit/content/link/interfaces.py:16
 msgid "New window"
 msgstr ""
 
-#: src/zeit/content/link/interfaces.py:28
+#: zeit/content/link/interfaces.py:28
 msgid "Link address"
 msgstr ""
 
-#: src/zeit/content/link/interfaces.py:31
+#: zeit/content/link/interfaces.py:31
 msgid "Target"
 msgstr ""
 
-#: src/zeit/content/portraitbox/browser/form.py:34
-msgid "Portrait"
-msgstr ""
-
-#: src/zeit/content/portraitbox/browser/form.py:43
-msgid "Add portraitbox"
-msgstr ""
-
-#: src/zeit/content/portraitbox/browser/form.py:48
-msgid "Edit portraitbox"
-msgstr ""
-
-#: src/zeit/content/portraitbox/browser/form.py:54
-msgid "View portraitbox"
-msgstr ""
-
-#: src/zeit/content/portraitbox/interfaces.py:18
-msgid "First and last name"
-msgstr ""
-
-#: src/zeit/content/portraitbox/interfaces.py:42
-#: src/zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/interfaces.py:42
+#: zeit/content/portraitbox/browser/configure.zcml:12
+#: zeit/content/portraitbox/browser/configure.zcml:12
 msgid "Portraitbox"
 msgstr ""
 
-#: src/zeit/content/text/browser/configure.zcml:6
+#: zeit/content/portraitbox/browser/form.py:34
+msgid "Portrait"
+msgstr ""
+
+#: zeit/content/portraitbox/browser/form.py:43
+msgid "Add portraitbox"
+msgstr ""
+
+#: zeit/content/portraitbox/browser/form.py:48
+msgid "Edit portraitbox"
+msgstr ""
+
+#: zeit/content/portraitbox/browser/form.py:54
+msgid "View portraitbox"
+msgstr ""
+
+#: zeit/content/portraitbox/interfaces.py:18
+msgid "First and last name"
+msgstr ""
+
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:6
 msgid "Plain text"
 msgstr ""
 
-#: src/zeit/content/text/browser/form.py:24
+#: zeit/content/text/browser/form.py:24
 msgid "Add plain text"
 msgstr ""
 
-#: src/zeit/content/text/browser/form.py:32
+#: zeit/content/text/browser/form.py:32
 msgid "Edit plain text"
 msgstr ""
 
-#: src/zeit/content/text/browser/form.py:39
+#: zeit/content/text/browser/form.py:39
 msgid "View plain text"
 msgstr ""
 
-#: src/zeit/content/text/interfaces.py:17
+#: zeit/content/text/interfaces.py:17
 #. Default: ""
 msgid "Could not encode charachters ${start}-${end} to ${encoding} (${characters}): ${reason}"
 msgstr ""
 
-#: src/zeit/content/text/interfaces.py:34
-#: src/zeit/cms/workingcopy/browser/configure.zcml:22
-msgid "Content"
-msgstr ""
-
-#: src/zeit/content/text/interfaces.py:37
+#: zeit/content/text/interfaces.py:37
 msgid "Encoding"
 msgstr ""
 
-#: src/zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
+#: zeit/search/browser/configure.zcml:39
 msgid "Zeit CMS Search Preferences"
 msgstr ""
 
-#: src/zeit/search/browser/search.py:108
+#: zeit/search/browser/search.py:109
 msgid "Year/Vol."
 msgstr ""
 
-#: src/zeit/search/browser/search.py:28
+#: zeit/search/browser/search.py:28
 msgid "search-status-not-corrected"
 msgstr ""
 
-#: src/zeit/search/browser/search.py:30
+#: zeit/search/browser/search.py:30
 msgid "search-status-no-images-added"
 msgstr ""
 
-#: src/zeit/search/browser/search.py:85
-#: src/zeit/cms/content/browser/keyword-tree.pt:23
-#: src/zeit/search/browser/sidebar.pt:13
-#: src/zeit/search/browser/sidebar.pt:29
-msgid "Search"
-msgstr ""
-
-#: src/zeit/search/browser/search.py:87
+#: zeit/search/browser/search.py:88
 msgid "The search had no results."
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:129
+#: zeit/search/browser/sidebar.pt:129
 #. Default: "Status"
 msgid "workflow-state"
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:145
+#: zeit/search/browser/sidebar.pt:145
 msgid "Sort order"
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:34
+#: zeit/search/browser/sidebar.pt:34
 msgid "Extended ..."
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:40
+#: zeit/search/browser/sidebar.pt:40
 msgid "Extended"
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:43
+#: zeit/search/browser/sidebar.pt:43
 msgid "Hide ..."
 msgstr ""
 
-#: src/zeit/search/browser/sidebar.pt:97
+#: zeit/search/browser/sidebar.pt:97
 msgid "Print ressort"
 msgstr ""
 
-#: src/zeit/search/interfaces.py:15
+#: zeit/search/interfaces.py:15
 msgid "Unique Id"
 msgstr ""
 
-#: src/zeit/search/interfaces.py:25
+#: zeit/search/interfaces.py:25
 msgid "Realive weight of metadata freshness."
 msgstr ""
 
-#: src/zeit/search/interfaces.py:29
+#: zeit/search/interfaces.py:29
 msgid "Relevance of result"
 msgstr ""
 
-#: src/zeit/today/interfaces.py:41
-msgid "Total hits between first and last count."
-msgstr ""
-
-#: src/zeit/today/interfaces.py:44
-msgid "Date the first hit was counted on"
-msgstr ""
-
-#: src/zeit/today/interfaces.py:47
-msgid "Date the last hit was counted on"
-msgstr ""
-
-#: src/zeit/workflow/browser/form.py:104
-#: src/zeit/workflow/browser/form.py:135
-msgid "Settings"
-msgstr ""
-
-#: src/zeit/workflow/browser/form.py:106
-#: src/zeit/workflow/browser/form.py:137
-#: src/zeit/workflow/browser/form.py:163
-msgid "Log"
-msgstr ""
-
-#: src/zeit/workflow/browser/form.py:37
-#: src/zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/form.py:37
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
+#: zeit/workflow/browser/configure.zcml:21
 msgid "Workflow"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:39
+#: zeit/workflow/browser/form.py:105
+#: zeit/workflow/browser/form.py:136
+msgid "Settings"
+msgstr ""
+
+#: zeit/workflow/browser/form.py:107
+#: zeit/workflow/browser/form.py:138
+#: zeit/workflow/browser/form.py:164
+msgid "Log"
+msgstr ""
+
+#: zeit/workflow/browser/form.py:40
 msgid "Save state only"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:44
+#: zeit/workflow/browser/form.py:45
 msgid "Save state and publish now"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:54
+#: zeit/workflow/browser/form.py:55
 #. Default: "${id} has been scheduled for publishing."
 msgid "scheduled-for-immediate-publishing"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:58
-#. Default: ""
-msgid "publish-preconditions-not-met"
-msgstr ""
-
-#: src/zeit/workflow/browser/form.py:63
+#: zeit/workflow/browser/form.py:64
 msgid "Save state and retract now"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:65
+#: zeit/workflow/browser/form.py:66
 msgid "Really retract? This will remove the object from all channels it is syndicated in and make it unavailable to the public!"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:76
+#: zeit/workflow/browser/form.py:77
 #. Default: "${id} has been scheduled for retracting."
 msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
-#: src/zeit/workflow/browser/form.py:97
-#: src/zeit/workflow/browser/form.py:130
-#: src/zeit/workflow/browser/form.py:159
+#: zeit/workflow/browser/form.py:98
+#: zeit/workflow/browser/form.py:131
+#: zeit/workflow/browser/form.py:160
 msgid "Status"
 msgstr ""
 
-#: src/zeit/workflow/browser/indicator.py:44
+#: zeit/workflow/browser/indicator.py:44
 #. Default: ""
 msgid "${title}: ${state}"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:37
+#: zeit/workflow/interfaces.py:37
 msgid "From"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:39
+#: zeit/workflow/interfaces.py:39
 msgid "To"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:41
+#: zeit/workflow/interfaces.py:41
 msgid "Publication period"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:42
+#: zeit/workflow/interfaces.py:42
 #. Default: "Leave empty for no constraint."
 msgid "workflow-publication-period-description"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:61
+#: zeit/workflow/interfaces.py:61
 msgid "status-edited"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:66
+#: zeit/workflow/interfaces.py:66
 msgid "status-corrected"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:71
+#: zeit/workflow/interfaces.py:71
 msgid "status-refined"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:76
+#: zeit/workflow/interfaces.py:76
 msgid "status-images-added"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:81
+#: zeit/workflow/interfaces.py:81
 msgid "Urgent"
 msgstr ""
 
-#: src/zeit/workflow/interfaces.py:82
+#: zeit/workflow/interfaces.py:82
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:115
+#: zeit/workflow/publish.py:115
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:254
+#: zeit/workflow/publish.py:254
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: src/zeit/workflow/publish.py:316
+#: zeit/workflow/publish.py:316
 msgid "Retracted"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:61
+#: zeit/workflow/publish.py:61
 msgid "Publication scheduled"
 msgstr ""
 
-#: src/zeit/workflow/publish.py:67
+#: zeit/workflow/publish.py:67
 msgid "Retracting scheduled"
 msgstr ""
 
-#: src/zeit/workflow/source.py:46
+#: zeit/workflow/source.py:46
 msgid "yes"
 msgstr ""
 
-#: src/zeit/workflow/source.py:47
+#: zeit/workflow/source.py:47
 msgid "no"
 msgstr ""
 
-#: src/zeit/workflow/source.py:48
+#: zeit/workflow/source.py:48
 msgid "not necessary"
 msgstr ""
 
-#: src/zeit/workflow/timebased.py:68
+#: zeit/workflow/timebased.py:68
 #. Default: "Scheduled publication cancelled (job #${job})."
 msgid "scheduled-publishing-cancelled"
 msgstr ""
 
-#: src/zeit/workflow/timebased.py:76
+#: zeit/workflow/timebased.py:76
 #. Default: "To be published on ${date} (job #${job})"
 msgid "scheduled-for-publishing-on"
 msgstr ""
 
-#: src/zeit/workflow/timebased.py:86
+#: zeit/workflow/timebased.py:86
 #. Default: "Scheduled retracting cancelled (job #${job})."
 msgid "scheduled-retracting-cancelled"
 msgstr ""
 
-#: src/zeit/workflow/timebased.py:94
+#: zeit/workflow/timebased.py:94
 #. Default: "To be retracted on ${date} (job #${job})"
 msgid "scheduled-for-retracting-on"
 msgstr ""
 
-#: src/zeit/workflow/workflow.py:73
+#: zeit/workflow/workflow.py:73
 #. Default: ""
 msgid "${name}: ${new_value}"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
 msgid "Edit WYSIWYG"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/raw/dialog.pt:20
+#: zeit/wysiwyg/browser/resources/raw/dialog.pt:20
 msgid "RAW HTML"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:25
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:25
 msgid "Video Id"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:27
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:27
 msgid "Audio Id"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:32
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:32
 msgid "Expires"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:39
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:39
 msgid "Format"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:44
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:44
 msgid "small"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:45
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:45
 msgid "with info"
 msgstr ""
 
-#: src/zeit/wysiwyg/browser/resources/video/dialog.pt:46
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:46
 msgid "large"
+msgstr ""
+
+#: zeit/wysiwyg/interfaces.py:15
+#: zeit/content/gallery/interfaces.py:84
+#: zeit/content/infobox/interfaces.py:23
+#: zeit/content/portraitbox/interfaces.py:21
+msgid "Text"
 msgstr ""
 
