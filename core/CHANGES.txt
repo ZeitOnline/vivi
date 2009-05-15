@@ -1,8 +1,12 @@
-zeit.cms changes
+zeit.seo changes
 ================
 
-1.3 (unreleased)
-----------------
+1.2.7 (2009-05-15)
+------------------
+
+- Alle ``test.py`` nach ``tests.py`` umbenannt.
+
+- Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
 
 1.2.6 (2008-11-20)
 ------------------

@@ -1,9 +1,8 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:i18n="http://namespaces.zope.org/i18n"
   xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
-  i18n_domain="zeit.seo">
+  i18n_domain="zeit.cms">
 
   <permission
     id="zeit.seo.View"
@@ -13,8 +12,6 @@
     id="zeit.seo.Edit"
     title="Edit SEO data"
     />
-
-  <i18n:registerTranslations directory="locales" />
 
   <adapter factory=".seo.SEO" />
   <adapter factory=".seo.seo_dav_properties" />
