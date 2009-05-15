@@ -21,6 +21,8 @@ zeit.cms changes
 - Lokalisierung herausgelöst und nach ``zeit.locales`` verschoben. Dort werden
   Übersetzungen mit anderen Paketen zusammengefasst.
 
+- JS Tab- und View-Klassen aus zeit.find extrahiert und generalisiert.
+
 1.19.5 (2009-05-08)
 -------------------
 
