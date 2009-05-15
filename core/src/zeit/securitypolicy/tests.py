@@ -4,12 +4,11 @@
 import os.path
 import unittest
 import xlrd
-import zope.app.testing.functional
-import zope.component
-
 import zeit.cms.testing
 import zeit.connector.interfaces
-import zeit.imp.test
+import zeit.imp.tests
+import zope.app.testing.functional
+import zope.component
 
 
 SecurityPolicyLayer = zope.app.testing.functional.ZCMLLayer(
@@ -37,7 +36,7 @@ class TestSecurityPolicyXLSSheet(
     def setUp(self):
         super(TestSecurityPolicyXLSSheet, self).setUp()
         zeit.cms.testing.setup_product_config(
-            zeit.imp.test.product_config)
+            zeit.imp.tests.product_config)
 
     def tearDown(self):
         self.connector._reset()
