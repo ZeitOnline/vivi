@@ -1,14 +1,10 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import unittest
 
 from zope.testing import doctest
-
+import unittest
 import zeit.cms.testing
-
-import zeit.content.article.test
+import zeit.content.article.tests
 
 
 def test_suite():
@@ -16,7 +12,5 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'recension.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
-        layer=zeit.content.article.test.ArticleLayer))
+        layer=zeit.content.article.tests.ArticleLayer))
     return suite

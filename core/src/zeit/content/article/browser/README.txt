@@ -716,8 +716,8 @@ prevent entering more than the allowed length. Makre sure the widget is used:
 
     Create the group:
 
-    >>> import zeit.content.image.test
-    >>> group = zeit.content.image.test.create_image_group()
+    >>> import zeit.content.image.tests
+    >>> group = zeit.content.image.tests.create_image_group()
 
     Commit the transaction so our browser sees the change. Also unset the site
     again:
