@@ -23,15 +23,6 @@ import zope.location.location
 from zeit.cms.i18n import MessageFactory as _
 
 
-if 'all' not in globals():
-    # Python 2.4 doesn't have `all` :(
-    def all(iterable):
-        for element in iterable:
-            if not element:
-                return False
-        return True
-
-
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 logger = logging.getLogger(__name__)
 
