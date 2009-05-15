@@ -1,8 +1,12 @@
 zeit.content.rawxml changes
 ===========================
 
-0.4 (unreleased)
-----------------
+0.3.1 (2009-05-15)
+------------------
+
+- Alle ``test.py`` nach ``tests.py`` umbenannt.
+
+- Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
 
 0.3 (2008-11-25)
 ----------------

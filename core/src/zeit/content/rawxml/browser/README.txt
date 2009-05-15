@@ -5,7 +5,7 @@ Raw XML browser access
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
->>> browser.open('http://localhost/++skin++cms')
+>>> browser.open('http://localhost/++skin++cms/repository')
 
 Add a raw xml:
 
