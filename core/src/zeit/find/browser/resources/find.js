@@ -18,14 +18,10 @@ zeit.find.Tabs = gocept.Class.extend({
     add: function(tab) {
         // Create a tab inside $('cp-forms')
         var self = this;
-        tab.tab_element = self.tabs_element.appendChild(
-            LI({},
-                A({href: tab.id}, tab.title)))
-        tab.container = self.container.appendChild(DIV({id: tab.id}));
-        MochiKit.DOM.hideElement(tab.container);
+        tab.after_add(self);
         self.tabs.push(tab);
         if (self.tabs.length == 1) {
-            self.activate(tab.id);
+            tab.activate();
         }
     },
 
@@ -41,11 +37,9 @@ zeit.find.Tabs = gocept.Class.extend({
         var self = this;
         forEach(self.tabs, function(tab) {
             if (tab.id == id) {
-                MochiKit.DOM.showElement(tab.container);
-                MochiKit.DOM.addElementClass(tab.tab_element, 'selected');
+                tab.activate();
             } else {
-                MochiKit.DOM.hideElement(tab.container);
-                MochiKit.DOM.removeElementClass(tab.tab_element, 'selected');
+                tab.deactivate();
             }
         });
     },
@@ -57,9 +51,28 @@ zeit.find.Tab = gocept.Class.extend({
         var self = this;
         self.id = id;
         self.title = title;
-        self.selected = false;
     },
 
+    after_add: function(parent) {
+        var self = this;
+        self.tab_element = parent.tabs_element.appendChild(
+            LI({},
+                A({href: self.id}, self.title)))
+        self.container = parent.container.appendChild(DIV({id: self.id}));
+        self.deactivate();
+    },
+
+    activate: function() {
+        var self = this;
+        MochiKit.DOM.showElement(self.container);
+        MochiKit.DOM.addElementClass(self.tab_element, 'selected');
+    },
+
+    deactivate: function() {
+        var self = this;
+        MochiKit.DOM.hideElement(self.container);
+        MochiKit.DOM.removeElementClass(self.tab_element, 'selected');
+    },
 });
 
 // need control over which URL is loaded (pass to class)
