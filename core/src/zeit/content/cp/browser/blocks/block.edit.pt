@@ -1,0 +1,20 @@
+<div id="cp-block-edit">
+
+</div>
+
+<script type="text/javascript" tal:content="string:
+zeit.content.cp.block_url = '${context/@@absolute_url}';
+"></script>
+
+<script type="text/javascript">
+var edit_properties = new zeit.cms.View(
+        zeit.content.cp.block_url + '/edit-properties',
+        'cp-edit-properties');
+
+var tabs = new zeit.cms.Tabs('cp-block-edit');
+tabs.add(new zeit.cms.ViewTab('cp-edit-properties',
+    'Edit', edit_properties));
+
+MochiKit.Signal.connect(edit_properties, 'load', function() {
+    zeit.content.cp.editor.current_module.rewire_submit_buttons(); });
+</script>

@@ -31,6 +31,7 @@ You can edit the XML content by clicking the Edit button:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> xml = browser.getControl(name="form.xml").value
 >>> print xml
 <container...  cp:type="xmlblock" cp:__name__="..."/>
@@ -77,6 +78,7 @@ And, last but not least, the <container> must have a name:
     >>> def update_xml(m, r):
     ...     browser.open(contents_url)
     ...     browser.getLink('Edit').click()
+    ...     browser.open('edit-properties')
     ...     xml = browser.getControl(name="form.xml").value
     ...     browser.getControl(name="form.xml").value = xml.replace(m, r)
     ...     browser.getControl('Apply').click()

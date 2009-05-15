@@ -1,5 +1,5 @@
 <a class="edit-link" title="Edit"
-   tal:attributes="href string:${context/@@absolute_url}/edit-properties"
+   tal:attributes="href string:${context/@@absolute_url}/edit"
    i18n:attributes="title"
    cms:cp-module="zeit.content.cp.LightBoxForm"
    cms:lightbox-in="cp-content">

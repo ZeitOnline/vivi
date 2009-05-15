@@ -20,6 +20,7 @@ Editing the block
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('The id of the audio/video.').value = '12345'
 >>> browser.getControl('The format of the audio/video.').displayValue = ['small']
 >>> browser.getControl('The date until the audio/video is valid.').value = '2009-05-05'
@@ -29,6 +30,7 @@ Editing the block
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('The id of the audio/video.').value
 '12345'
 >>> browser.getControl('The format of the audio/video.').displayValue
@@ -51,6 +53,7 @@ Editing the block
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit', index=1).click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('The id of the audio/video.').value = '98765'
 >>> browser.getControl('The format of the audio/video.').displayValue = ['large']
 

@@ -21,6 +21,7 @@ Set a title (although it's unclear if we really need this):
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('Title').value = 'Foo'
 >>> browser.getControl('Apply').click()
 
@@ -406,6 +407,7 @@ referenced:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('On Autopilot').selected = True
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
@@ -483,12 +485,14 @@ The layout can be selected at the edit box:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
 
 It is marked in the edit box now:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> print browser.contents
 <div...
 <a...class="leader selected"...>...Großer Teaser mit Bild und Teaserliste...
@@ -532,6 +536,7 @@ The 450x200 image is used now:
 When we change the layout to xxx the image will not be used any more:
 
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getLink('Kleiner Teaser').click()
 >>> browser.open(contents_url)
 >>> print browser.contents
@@ -560,6 +565,7 @@ We need to add a second teaser block:
 >>> browser.open(contents_url)
 
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste')
 <Link text='[IMG] Gro\xc3\x9fer Teaser mit Bild und Teaserliste' ...>
 >>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
@@ -567,6 +573,7 @@ We need to add a second teaser block:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit', index=2).click()
+>>> browser.open('edit-properties')
 >>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
 <Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste')

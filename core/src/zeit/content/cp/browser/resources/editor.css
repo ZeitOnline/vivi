@@ -76,6 +76,7 @@
   font-size: 2em;
   left: 5%;
   right: 5%;
+  overflow-y: auto;
 }
 
 #cp-forms > .lightbox,
@@ -437,11 +438,7 @@
 
 /* layout chooser */
 
-.lightbox > .floating {
-  overflow-y: auto;
-}
-
-.layout-chooser.teser {
+.layout-chooser.teaser {
   border-top: 3px solid #aaa;
   margin: 0.5em;
 }

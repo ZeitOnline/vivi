@@ -110,7 +110,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             log("Loading module " + module_name);
             event.stop();
             var module = zeit.content.cp.resolveDottedName(module_name);
-            new module(target);
+            self.current_module = new module(target);
         } else if (event.target().nodeName != 'INPUT') {
             event.preventDefault();
         }

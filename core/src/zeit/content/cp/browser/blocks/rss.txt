@@ -20,6 +20,7 @@ Editing the block
 >>> import pkg_resources
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> url = pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'tagesschau.xml')
 >>> browser.getControl('The URL to the RSS feed.').value = url
@@ -29,6 +30,7 @@ Editing the block
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('The URL to the RSS feed.').value
 '.../tagesschau.xml'
 
@@ -85,6 +87,7 @@ Displaying error messages
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
 >>> browser.getControl('The URL to the RSS feed.').value = 'foo'
 >>> browser.getControl('Apply').click()
 
