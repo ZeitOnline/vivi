@@ -6,6 +6,13 @@ CHANGES
 
 - Nur noch Producer dürfen Ordner umbenennen (#5319).
 
+- Anpassungen für zeit.cms 1.20
+
+- Alle ``test.py`` nach ``tests.py`` umbenannt.
+
+- Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
+
+
 0.4 (2009-03-23)
 ----------------
 
