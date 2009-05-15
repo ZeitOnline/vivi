@@ -1,10 +1,10 @@
 zeit.cms.Tabs = gocept.Class.extend({
     // Knows about all tabs
 
-    construct: function() {
+    construct: function(container) {
         log("initializing tabs");
         var self = this;
-        self.container = $('cp-forms');
+        self.container = $(container);
         var div = self.container.appendChild(
             DIV({'class': 'context-views'}))
         self.tabs = [];
