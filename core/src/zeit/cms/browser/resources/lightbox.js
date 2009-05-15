@@ -140,8 +140,14 @@ zeit.cms.LightboxForm = Class.extend({
 
     post_process_html: function() {
         var self = this;
+        self.rewire_submit_buttons();
+        self.eval_javascript_tags();
+    },
+
+    rewire_submit_buttons: function() {
         // Change all submits to buttons to be able to handle them in
         // java script
+        var self = this;
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
                 'input', null, self.content_box),
@@ -156,12 +162,14 @@ zeit.cms.LightboxForm = Class.extend({
         if (self.form != null) {
             self.events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
-                // prevent accidential submit
+                // prevent accidental submit
                 event.stop()
             }));
         }
+    },
 
-        // check for javascript
+    eval_javascript_tags: function() {
+        var self = this;
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
             'SCRIPT', null, self.content_box),
@@ -169,7 +177,6 @@ zeit.cms.LightboxForm = Class.extend({
                 eval(script.text);
             });
     },
-
 });
 
 zeit.cms.lightbox_form = function(url) {
