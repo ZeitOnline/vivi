@@ -105,27 +105,25 @@ zeit.find = {};
     MochiKit.Signal.connect(window, 'onload', init);
     MochiKit.Signal.connect(search_form, 'load', init_search_form);
 
+    MochiKit.Signal.connect(search_result, 'load',
+                            connect_related);
+    
+    MochiKit.Signal.connect(search_result, 'load',
+                            connect_toggle_favorited);
+
+    MochiKit.Signal.connect(search_result, 'load',
+                            connect_draggables);
     MochiKit.Signal.connect(search_result, 'before-load',
                             disconnect_draggables);
-    MochiKit.Signal.connect(search_result, 'load',
+  
+    MochiKit.Signal.connect(favorites, 'load',
                             connect_related);
-    MochiKit.Signal.connect(search_result, 'load',
+    MochiKit.Signal.connect(favorites, 'load',
                             connect_toggle_favorited);
-    MochiKit.Signal.connect(search_result, 'load',
-                            connect_draggables);
 
+    MochiKit.Signal.connect(favorites, 'load',
+                            connect_draggables);
     MochiKit.Signal.connect(favorites, 'before-load',
                             disconnect_draggables);
-    MochiKit.Signal.connect(favorites, 'load',
-                            connect_related);
-    MochiKit.Signal.connect(favorites, 'load',
-                            connect_toggle_favorited);
-    MochiKit.Signal.connect(favorites, 'load',
-                            connect_draggables);
-
-    MochiKit.Signal.connect(favorited, 'load',
-                            function() {
-                                favorites.render();
-                            });
 
 })();
