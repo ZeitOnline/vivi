@@ -53,7 +53,23 @@ class Block(zope.container.contained.Contained):
         zeit.content.cp.interfaces.IArea,
         gocept.lxml.interfaces.IObjectified)
 
-    title = zeit.cms.content.property.ObjectPathProperty('.title')
+    title = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'title')
+
+    publisher  = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'publisher')
+    publisher_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'publisher_url')
+
+    supertitle  = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'supertitle')
+    supertitle_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'supertitle_url')
+
+    read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'read_more')
+    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'read_more_url')
 
     def __init__(self, context, xml):
         self.__parent__ = context

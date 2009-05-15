@@ -96,6 +96,31 @@ class IBlock(zope.interface.Interface):
 
     type = zope.interface.Attribute("Type identifier.")
 
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        required=False)
+
+    publisher  = zope.schema.TextLine(
+        title=_("Verlagsmarke"),
+        required=False)
+    publisher_url = zope.schema.TextLine(
+        title=_("Verlagsmarke URL"),
+        required=False)
+
+    supertitle  = zope.schema.TextLine(
+        title=_("Spitzmarke"),
+        required=False)
+    supertitle_url = zope.schema.TextLine(
+        title=_("Spitzmarke URL"),
+        required=False)
+
+    read_more = zope.schema.TextLine(
+        title=_("Weiterlesen Titel"),
+        required=False)
+    read_more_url = zope.schema.TextLine(
+        title=_("Weiterlesen URL"),
+        required=False)
+
 
 class ICMSContentIterable(zope.interface.Interface):
     """An iterable object iterating over CMSContent."""

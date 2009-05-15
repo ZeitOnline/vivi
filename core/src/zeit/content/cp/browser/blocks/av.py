@@ -13,7 +13,8 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
         'av.edit-properties.pt')
 
     form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IAVBlock).omit('media_type')
+        zeit.content.cp.interfaces.IAVBlock).omit(
+            'media_type', *list(zeit.content.cp.interfaces.IBlock))
 
     close = False
 
