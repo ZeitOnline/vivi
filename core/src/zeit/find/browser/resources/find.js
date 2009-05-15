@@ -44,8 +44,7 @@ zeit.find = {};
             var related_info = MochiKit.Selector.findChildElements(
                 entry, ['.related_info'])[0];
             MochiKit.Signal.connect(related_links, 'onclick', function(e) {
-                if (MochiKit.Selector.findChildElements(related_info,
-                                                        ['.related_entry']).length > 0) {
+                if (MochiKit.DOM.hasElementClass(related_links, 'expanded')) {
                     MochiKit.DOM.removeElementClass(related_links, 'expanded');
                     related_info.innerHTML = '';
                 } else {

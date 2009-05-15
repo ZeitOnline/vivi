@@ -12,6 +12,7 @@ import zope.interface
 import zope.app.appsetup.product
 import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.browser.interfaces
 import zc.iso8601.parse
 from zeit.find import lucenequery as lq
@@ -42,9 +43,14 @@ class JSONView(zeit.cms.browser.view.Base):
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'text/json')
         result = self.json()
-        url = self.template_url()
-        if url is not None:
-            result['template_url'] = url
+
+        # use template indicated in JSON if it's there,
+        # otherwise use class template
+        template = result.pop('template', None)
+        if template is None:
+            template = self.template
+        if template is not None:
+            result['template_url'] = self.resources[template]()
         return cjson.encode(result)
 
     def json(self):
@@ -62,11 +68,6 @@ class JSONView(zeit.cms.browser.view.Base):
     def url(self, view, uniqueId):
         return super(JSONView, self).url(
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
-
-    def template_url(self):
-        if self.template is None:
-            return None
-        return self.resources[self.template]()
 
     def result_entry(self, article):
         r = self.resources
@@ -259,22 +260,30 @@ class ExpandedSearchResult(JSONView):
     template = 'expanded_search_result.jsont'
 
     def json(self):
-        r = self.resources
-        return {
-            'results': [
-                {'uniqueId': 'http://xml.zeit.de/online/2007/01/Somalia',
-                 'publication_status': r['published.png'](),
-                 'short_teaser_title': 'Obama is a cat?',
-                 'short_teaser_text': 'Obama speculated to be a feline',
-                 },
-                {'uniqueId': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
-                 'publication_status': r['unpublished.png'](),
-                 'short_teaser_title': "Obama or O'Bama?",
-                 'short_teaser_text': "Evidence suggests Obama is Irish",
-                 },
-                ],
-            }
+        uniqueId = self.request.get('uniqueId')
+        if not uniqueId:
+            return {'template': 'no_expanded_search_result.jsont'}
+        
+        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+        related = zeit.cms.related.interfaces.IRelatedContent(content).related
 
+        r = self.resources
+        results = []
+        for content in related:
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                content, None)
+            if metadata is None:
+                continue
+            results.append({
+                    'uniqueId': content.uniqueId,
+                    'publication_status': r['published.png'](),
+                    'short_teaser_title': metadata.shortTeaserTitle or '',
+                    'short_teaser_text': metadata.shortTeaserText or '',
+                    })
+        if not results:
+            return {'template': 'no_expanded_search_result.jsont'}
+
+        return {'results': results}
 
 class ToggleFavorited(JSONView):
     template = 'toggle_favorited.jsont'
