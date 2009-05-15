@@ -75,6 +75,20 @@ zeit.find.Tab = gocept.Class.extend({
     },
 });
 
+zeit.find.ViewTab = zeit.find.Tab.extend({
+    construct: function(id, title, view) {
+        var self = this;
+        arguments.callee.$.construct.call(self, id, title);
+        self.view = view;
+    },
+
+    activate: function() {
+        var self = this;
+        self.view.render();
+        arguments.callee.$.activate.call(self);
+    },
+});
+
 // need control over which URL is loaded (pass to class)
 // how to retrieve which URL to load? often we'd get it from the JSON
 // somehow. But how do we access the JSON? Through the template?
@@ -239,23 +253,10 @@ zeit.find.log_error = function(err) {
    
     var init = function() {
         zeit.find.tabs = new zeit.find.Tabs();
-        zeit.find.tabs.add(new zeit.find.Tab('search_form', 'Suche'));
-        zeit.find.tabs.add(new zeit.find.Tab('favorites', 'Favoriten'));
+        zeit.find.tabs.add(new zeit.find.ViewTab('search_form', 'Suche', search_result));
+        zeit.find.tabs.add(new zeit.find.ViewTab('favorites', 'Favoriten', favorites));
         zeit.find.tabs.add(new zeit.find.Tab('for-this-page', 'Für diese Seite'));
         search_form.render();
-        MochiKit.Signal.connect(zeit.find.tabs.tabs_element, 'onclick', self,
-            function(event) {
-                var self = this;
-                var target = event.target();
-                var id = target.getAttribute('href');
-                if (id == 'search_form') {
-                    search_result.render();
-                }
-                if (id == 'favorites') {
-                    favorites.render();
-                }
-                event.stop();
-        });
     };
     
     search_form = new zeit.find.View(
