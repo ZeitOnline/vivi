@@ -4,15 +4,15 @@
 
 
 import zeit.connector.interfaces
-import zeit.content.image.test
+import zeit.content.image.tests
 import zope.component
 import zeit.cms.selenium
-import zeit.imp.test
+import zeit.imp.tests
 
 
 class Selenium(zeit.cms.selenium.Test):
 
-    product_config = zeit.imp.test.product_config
+    product_config = zeit.imp.tests.product_config
 
     def setUp(self):
         super(Selenium, self).setUp()
@@ -424,4 +424,4 @@ class FilterTests(Selenium):
 class CreateImageGroup(object):
 
     def __call__(self):
-        zeit.content.image.test.create_image_group_with_master_image()
+        zeit.content.image.tests.create_image_group_with_master_image()

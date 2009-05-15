@@ -12,8 +12,8 @@ import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
-import zeit.content.image.test
-import zeit.imp.test
+import zeit.content.image.tests
+import zeit.imp.tests
 import zope.app.file.image
 import zope.app.testing.functional
 import zope.component
@@ -21,7 +21,7 @@ import zope.component
 
 class TestBase(zope.app.testing.functional.BrowserTestCase):
 
-    layer=zeit.imp.test.imp_layer
+    layer=zeit.imp.tests.imp_layer
     image_path = '/++skin++cms/repository/group'
     auth = 'user:userpw'
 
@@ -30,7 +30,7 @@ class TestBase(zope.app.testing.functional.BrowserTestCase):
         self.setSite(self.getRootFolder())
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        zeit.content.image.test.create_image_group_with_master_image()
+        zeit.content.image.tests.create_image_group_with_master_image()
 
     def tearDown(self):
         del self.repository
@@ -149,8 +149,8 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.imp.test.imp_layer,
-        product_config=zeit.imp.test.product_config))
+        layer=zeit.imp.tests.imp_layer,
+        product_config=zeit.imp.tests.product_config))
     suite.addTest(unittest.makeSuite(ImageBarTest))
     suite.addTest(unittest.makeSuite(CropTest))
     return suite
