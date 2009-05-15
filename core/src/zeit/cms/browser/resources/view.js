@@ -1,3 +1,48 @@
+zeit.cms.View = gocept.Class.extend({
+    construct: function(url, target_id, get_query_string) {
+        var self = this;
+        self.url = url;
+        self.target_id = target_id
+        self.get_query_string = get_query_string;
+    },
+
+    render: function(target_element, url) {
+        var self = this;
+        if (isUndefinedOrNull(url)) {
+            // XXX dependency on application_url...
+            url = application_url + '/' + self.url;
+
+        } else {
+            url = application_url + '/' + url;
+        }
+
+        if (!isUndefinedOrNull(self.get_query_string)) {
+            url += "?" + self.get_query_string();
+        }
+
+        self.load(target_element, url);
+    },
+
+    load: function(target_element, url) {
+        var self = this;
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        // XXX have to wrap in function to retain reference to self
+        // otherwise this gets messed up
+        d.addCallback(function(result) {
+            self.do_render(result.responseText, target_element) });
+        d.addErrback(zeit.cms.log_error);
+    },
+
+    do_render: function(data, target_element) {
+        var self = this;
+        var target_element = target_element || $(self.target_id);
+        MochiKit.Signal.signal(self, 'before-load');
+        target_element.innerHTML = data;
+        log('template expanded successfully');
+        MochiKit.Signal.signal(self, 'load');
+    },
+});
+
 
 // need control over which URL is loaded (pass to class)
 // how to retrieve which URL to load? often we'd get it from the JSON
@@ -5,67 +50,40 @@
 // need control over query string (pass to class)
 // need control over which element is expanded (optionally pass to render)
 
-zeit.cms.JSONView = gocept.Class.extend({
-    construct: function(json_url, expansion_id, get_query_string) {
+zeit.cms.JSONView = zeit.cms.View.extend({
+    load: function(target_element, url) {
         var self = this;
-        self.json_url = json_url;
-        self.expansion_id = expansion_id
-        self.get_query_string = get_query_string;
-        self.template = null;
-    },
-
-    render: function(expansion_element, json_url) {
-        var self = this;
-        var url;
-        if (isUndefinedOrNull(json_url)) {
-            // XXX dependency on application_url...
-            url = application_url + '/' + self.json_url;
-
-        } else {
-            url = application_url + '/' + json_url
-        }
-
-        if (!isUndefinedOrNull(self.get_query_string)) {
-            url += "?" + self.get_query_string();
-        }
         var d = MochiKit.Async.loadJSONDoc(url);
         // XXX have to wrap in function to retain reference to self
         // otherwise this gets messed up
-        d.addCallback(function(json) { self.callback_json(json, expansion_element) });
+        d.addCallback(function(json) { self.callback_json(json, target_element) });
         d.addErrback(zeit.cms.log_error);
     },
 
-    callback_json: function(json, expansion_element) {
+    callback_json: function(json, target_element) {
         var self = this;
         var template_url = json['template_url'];
-        var template = self.template;
-        if (!isUndefinedOrNull(template)) {
-            self.expand_template(json, expansion_element);
+        if (!isUndefinedOrNull(self.template)) {
+            self.expand_template(json, target_element);
             return;
         }
-        self.load_template(template_url, json, expansion_element);
+        self.load_template(template_url, json, target_element);
     },
 
-    load_template: function(template_url, json, expansion_element) {
+    load_template: function(template_url, json, target_element) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
         d.addCallback(function(result) {
-            var t = jsontemplate.Template(result.responseText);
-            self.template = t;
-            self.expand_template(json, expansion_element);
+            self.template = jsontemplate.Template(result.responseText);
+            self.expand_template(json, target_element);
         });
         d.addErrback(zeit.cms.log_error);
         return d;
     },
 
-    expand_template: function(json, expansion_element) {
+    expand_template: function(json, target_element) {
         var self = this;
-        var s = self.template.expand(json);
-        var expansion_element = expansion_element || $(self.expansion_id);
-        MochiKit.Signal.signal(self, 'before-load')
-        expansion_element.innerHTML = s;
-        log('template expanded successfully');
-        MochiKit.Signal.signal(self, 'load')
+        self.do_render(self.template.expand(json), target_element);
     },
 });
 
