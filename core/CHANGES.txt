@@ -1,6 +1,11 @@
 zeit.find changes
 =================
 
+0.3 (unreleased)
+-----------------
+
+- Alle ``test.py`` nach ``tests.py`` umbenannt.
+
 0.2 (2009-04-30)
 ----------------
 
