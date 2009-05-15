@@ -76,6 +76,13 @@
       lightbox.js
       cms-widgets.css
       cms.css
+      "/>
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.cms.tabs"
+    require="mochikit gocept.mochikit.jsclass">
+    <directory source="resources" include="
       json-template.js
       view.js
       tab.js
