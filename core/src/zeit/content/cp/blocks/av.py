@@ -13,6 +13,9 @@ import zope.interface
 import lxml.objectify
 
 
+# XXX too much duplication between VideoBlock and AudioBlock.
+# wants to be refactored, probably factory-style like cpextra.py
+
 class AVBlock(zeit.content.cp.blocks.block.Block):
 
     @property
