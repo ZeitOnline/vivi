@@ -7,7 +7,7 @@ import zeit.content.cp.browser.rule
 
 class Editor(object):
 
-    title = _('Edit center page')
+    title = _('Edit centerpage')
 
     def validate(self, area):
         validation_class, validation_messages = (

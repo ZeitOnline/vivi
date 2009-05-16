@@ -56,7 +56,7 @@ Check the CP out again, and go to the edit view:
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Edit contents').click()
 >>> print browser.title.strip()
-island – Edit center page
+island – Edit centerpage
 
 
 The inital page doens't contain much:
