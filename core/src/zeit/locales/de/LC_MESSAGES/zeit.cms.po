@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri May 15 16:44:21 2009\n"
-"PO-Revision-Date: 2009-05-15 17:00+0100\n"
+"POT-Creation-Date: Sat May 16 10:34:18 2009\n"
+"PO-Revision-Date: 2009-05-16 10:35+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,8 +33,10 @@ msgstr "Menu for displaying actions to be performed"
 
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/cms/application.zcml:44
 #: /Users/zagy/development/eggs/zope.app.component-3.7.0-py2.5.egg/zope/app/component/browser/configure.zcml:57
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:134
 #: zeit/cms/browser/form.py:116
 #: zeit/cms/application.zcml:44
+#: zeit/content/article/browser/configure.zcml:134
 msgid "Add"
 msgstr "Hinzufügen …"
 
@@ -240,6 +242,7 @@ msgstr "Ordner"
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/image/browser/configure.zcml:37
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/image/browser/configure.zcml:179
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/text/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zeit.content.rawxml-0.3.2-py2.5.egg/zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/cms/browser/form.py:217
 #: zeit/cms/repository/browser/unknown.zcml:25
 #: zeit/cms/repository/browser/folder.zcml:15
@@ -247,6 +250,7 @@ msgstr "Ordner"
 #: zeit/content/image/browser/configure.zcml:37
 #: zeit/content/image/browser/configure.zcml:179
 #: zeit/content/text/browser/configure.zcml:24
+#: zeit/content/rawxml/browser/configure.zcml:32
 msgid "View"
 msgstr "Anzeigen"
 
@@ -292,12 +296,16 @@ msgstr "Vorschau"
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/link/browser/configure.zcml:17
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/infobox/browser/configure.zcml:19
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/portraitbox/browser/configure.zcml:21
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:18
+#: /Users/zagy/development/eggs/zeit.content.quiz-0.4.1-py2.5.egg/zeit/content/quiz/browser/configure.zcml:29
 #: zeit/content/centerpage/browser/configure.zcml:27
 #: zeit/content/image/browser/configure.zcml:209
 #: zeit/content/gallery/browser/configure.zcml:33
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/infobox/browser/configure.zcml:19
 #: zeit/content/portraitbox/browser/configure.zcml:21
+#: zeit/content/article/browser/configure.zcml:18
+#: zeit/content/quiz/browser/configure.zcml:29
 msgid "Edit metadata"
 msgstr "Metadaten"
 
@@ -307,12 +315,16 @@ msgstr "Metadaten"
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/link/browser/configure.zcml:32
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/infobox/browser/configure.zcml:37
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/portraitbox/browser/configure.zcml:39
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:36
+#: /Users/zagy/development/eggs/zeit.content.quiz-0.4.1-py2.5.egg/zeit/content/quiz/browser/configure.zcml:46
 #: zeit/content/centerpage/browser/configure.zcml:43
 #: zeit/content/image/browser/configure.zcml:193
 #: zeit/content/gallery/browser/configure.zcml:50
 #: zeit/content/link/browser/configure.zcml:32
 #: zeit/content/infobox/browser/configure.zcml:37
 #: zeit/content/portraitbox/browser/configure.zcml:39
+#: zeit/content/article/browser/configure.zcml:36
+#: zeit/content/quiz/browser/configure.zcml:46
 msgid "View metadata"
 msgstr "Metadaten"
 
@@ -399,9 +411,110 @@ msgid "Workflow"
 msgstr "Workflow"
 
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/wysiwyg/browser/configure.zcml:8
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:53
 #: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/content/article/browser/configure.zcml:53
 msgid "Edit WYSIWYG"
 msgstr "Bearbeiten"
+
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:116
+#: zeit/content/article/browser/recension.py:21
+#: zeit/content/article/browser/configure.zcml:116
+msgid "Recensions"
+msgstr "Rezensionsinformationen"
+
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:87
+#: zeit/content/article/browser/configure.zcml:87
+msgid "Article"
+msgstr "Artikel"
+
+#: /Users/zagy/development/eggs/zeit.content.quiz-0.4.1-py2.5.egg/zeit/content/quiz/browser/configure.zcml:21
+#: zeit/content/quiz/browser/configure.zcml:21
+msgid "Quiz"
+msgstr "Quiz"
+
+#: /Users/zagy/development/eggs/zeit.content.quiz-0.4.1-py2.5.egg/zeit/content/quiz/browser/configure.zcml:62
+#: zeit/content/quiz/browser/configure.zcml:62
+msgid "Questions"
+msgstr "Fragen"
+
+#: /Users/zagy/development/eggs/zeit.content.rawxml-0.3.2-py2.5.egg/zeit/content/rawxml/browser/configure.zcml:6
+#: zeit/content/rawxml/browser/form.py:18
+#: zeit/content/rawxml/browser/configure.zcml:6
+msgid "Raw XML"
+msgstr "Rohes XML"
+
+#: /Users/zagy/development/eggs/zeit.imp-0.6.1-py2.5.egg/zeit/imp/browser/configure.zcml:17
+#: zeit/imp/browser/configure.zcml:17
+msgid "Transform"
+msgstr "Zuschneiden"
+
+#: /Users/zagy/development/eggs/zeit.imp-0.6.1-py2.5.egg/zeit/imp/configure.zcml:5
+#: zeit/imp/configure.zcml:5
+msgid "Use IMP"
+msgstr "IMP verwenden"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:11
+#: zeit/securitypolicy/security.zcml:11
+msgid "All users have this role implicitly"
+msgstr "All users have this role implicitly"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:11
+#: zeit/securitypolicy/security.zcml:11
+msgid "Everybody"
+msgstr "Everybody"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:13
+#: zeit/securitypolicy/security.zcml:13
+msgid "Site Manager"
+msgstr "Site Manager"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:14
+#: zeit/securitypolicy/security.zcml:14
+msgid "Site Member"
+msgstr "Site Member"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:16
+#: zeit/securitypolicy/security.zcml:16
+msgid "Editor"
+msgstr "Redakteur"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:17
+#: zeit/securitypolicy/security.zcml:17
+msgid "Producer"
+msgstr "Producer"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:18
+#: zeit/securitypolicy/security.zcml:18
+msgid "Chef vom Dienst"
+msgstr "Chef vom Dienst"
+
+#: /Users/zagy/development/eggs/zeit.securitypolicy-0.5-py2.5.egg/zeit/securitypolicy/security.zcml:19
+#: zeit/securitypolicy/security.zcml:19
+msgid "Search engine optimiser"
+msgstr "Search engine optimiser"
+
+#: /Users/zagy/development/eggs/zeit.seo-1.2.7.-py2.5.egg/zeit/seo/configure.zcml:11
+#: zeit/seo/browser.py:36
+#: zeit/seo/configure.zcml:11
+msgid "Edit SEO data"
+msgstr "SEO-Daten bearbeiten"
+
+#: /Users/zagy/development/eggs/zeit.seo-1.2.7.-py2.5.egg/zeit/seo/configure.zcml:28
+#: zeit/seo/configure.zcml:28
+msgid "View SEO"
+msgstr "SEO"
+
+#: /Users/zagy/development/eggs/zeit.seo-1.2.7.-py2.5.egg/zeit/seo/configure.zcml:38
+#: zeit/seo/configure.zcml:38
+msgid "Edit SEO"
+msgstr "SEO"
+
+#: /Users/zagy/development/eggs/zeit.seo-1.2.7.-py2.5.egg/zeit/seo/configure.zcml:7
+#: zeit/seo/browser.py:41
+#: zeit/seo/configure.zcml:7
+msgid "View SEO data"
+msgstr "SEO-Daten"
 
 #: /Users/zagy/development/eggs/zope.app.broken-3.5.0-py2.5.egg/zope/app/broken/browser.zcml:6
 msgid "Broken object"
@@ -499,15 +612,23 @@ msgstr "A Security Permission"
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/image/browser/configure.zcml:110
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/gallery/browser/configure.zcml:108
 #: /Users/zagy/development/eggs/zeit.cms-1.20-py2.5.egg/zeit/content/text/browser/configure.zcml:14
+#: /Users/zagy/development/eggs/zeit.content.article-1.7.3-py2.5.egg/zeit/content/article/browser/configure.zcml:143
+#: /Users/zagy/development/eggs/zeit.content.quiz-0.4.1-py2.5.egg/zeit/content/quiz/browser/configure.zcml:87
+#: /Users/zagy/development/eggs/zeit.content.quiz-0.4.1-py2.5.egg/zeit/content/quiz/browser/configure.zcml:105
+#: /Users/zagy/development/eggs/zeit.content.rawxml-0.3.2-py2.5.egg/zeit/content/rawxml/browser/configure.zcml:15
 #: zeit/cms/browser/form.py:167
 #: zeit/cms/repository/browser/file.zcml:34
 #: zeit/cms/content/browser/template.zcml:41
 #: zeit/content/image/browser/configure.zcml:110
 #: zeit/content/gallery/browser/configure.zcml:108
 #: zeit/content/text/browser/configure.zcml:14
+#: zeit/content/article/browser/configure.zcml:143
 #: zeit/content/article/browser/recension-overview.pt:9
 #: zeit/content/article/browser/recension-overview.pt:59
 #: zeit/content/gallery/browser/overview.pt:22
+#: zeit/content/quiz/browser/configure.zcml:87
+#: zeit/content/quiz/browser/configure.zcml:105
+#: zeit/content/rawxml/browser/configure.zcml:15
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -592,6 +713,31 @@ msgstr "Termine für ${start} – ${end}"
 #: zeit/calendar/browser/calendar_view.py:34
 msgid "Calendar"
 msgstr "Kalender"
+
+#: zeit/calendar/browser/configure.zcml:24
+#: /Users/zagy/development/eggs/zeit.calendar-1.4.5-py2.5.egg/zeit/calendar/browser/configure.zcml:24
+msgid "Day"
+msgstr "Tag"
+
+#: zeit/calendar/browser/configure.zcml:33
+#: /Users/zagy/development/eggs/zeit.calendar-1.4.5-py2.5.egg/zeit/calendar/browser/configure.zcml:33
+msgid "Month"
+msgstr "Monat"
+
+#: zeit/calendar/browser/configure.zcml:42
+#: /Users/zagy/development/eggs/zeit.calendar-1.4.5-py2.5.egg/zeit/calendar/browser/configure.zcml:42
+msgid "Week"
+msgstr "Woche"
+
+#: zeit/calendar/browser/configure.zcml:51
+#: /Users/zagy/development/eggs/zeit.calendar-1.4.5-py2.5.egg/zeit/calendar/browser/configure.zcml:51
+msgid "Next week"
+msgstr "Nächste Woche"
+
+#: zeit/calendar/browser/configure.zcml:60
+#: /Users/zagy/development/eggs/zeit.calendar-1.4.5-py2.5.egg/zeit/calendar/browser/configure.zcml:60
+msgid "Next four weeks"
+msgstr "Nächste vier Wochen"
 
 #: zeit/calendar/browser/event.py:135
 msgid "Event completed."
@@ -1604,10 +1750,6 @@ msgstr "Es gibt noch keine Einträge mit Buchinformationen"
 msgid "Raw data"
 msgstr "Roh-Daten"
 
-#: zeit/content/article/browser/recension.py:21
-msgid "Recensions"
-msgstr "Rezensionsinformationen"
-
 #: zeit/content/article/browser/recension.py:63
 msgid "Book details"
 msgstr "Buchdetails"
@@ -2123,10 +2265,6 @@ msgstr "Verwenden Sie den Titel, wenn die eigentliche Frage oder Antwort zu lang
 msgid "Only one answer may be correct."
 msgstr "Es darf nur eine Antwort (innerhalb der Frage) richtig sein."
 
-#: zeit/content/rawxml/browser/form.py:18
-msgid "Raw XML"
-msgstr "Rohes XML"
-
 #: zeit/content/rawxml/browser/form.py:27
 msgid "Add Raw XML"
 msgstr "Rohes XML hinzufügen"
@@ -2273,14 +2411,6 @@ msgstr "SEO-Daten"
 #: zeit/seo/browser.py:29
 msgid "Standard metadata"
 msgstr "Standard-Metadaten"
-
-#: zeit/seo/browser.py:36
-msgid "Edit SEO data"
-msgstr "SEO-Daten bearbeiten"
-
-#: zeit/seo/browser.py:41
-msgid "View SEO data"
-msgstr "SEO-Daten"
 
 #: zeit/seo/interfaces.py:13
 msgid "HTML title"
@@ -2496,26 +2626,4 @@ msgstr "groß"
 #~ "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
 #~ "Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das "
 #~ "»Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
-#~ msgid "Day"
-#~ msgstr "Tag"
-#~ msgid "Month"
-#~ msgstr "Monat"
-#~ msgid "Week"
-#~ msgstr "Woche"
-#~ msgid "Next week"
-#~ msgstr "Nächste Woche"
-#~ msgid "Next four weeks"
-#~ msgstr "Nächste vier Wochen"
-#~ msgid "Quiz"
-#~ msgstr "Quiz"
-#~ msgid "Article"
-#~ msgstr "Artikel"
-#~ msgid "Transform"
-#~ msgstr "Zuschneiden"
-#~ msgid "Use IMP"
-#~ msgstr "IMP verwenden"
-#~ msgid "View SEO"
-#~ msgstr "SEO"
-#~ msgid "Edit SEO"
-#~ msgstr "SEO"
 
