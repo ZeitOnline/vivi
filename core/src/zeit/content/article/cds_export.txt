@@ -14,31 +14,31 @@ Setup
 In order to be able to check out and in articles and go through the workflow,
 we need to set up an interaction based on the request: [#functional]_
 
-  >>> import zope.security.testing
-  >>> principal = zope.security.testing.Principal(u'zope.user')
-  >>> import zope.publisher.browser
-  >>> request = zope.publisher.browser.TestRequest()
-  >>> request.setPrincipal(principal)
-  >>> import zope.security.management
-  >>> zope.security.management.newInteraction(request)
+>>> import zope.security.testing
+>>> principal = zope.security.testing.Principal(u'zope.user')
+>>> import zope.publisher.browser
+>>> request = zope.publisher.browser.TestRequest()
+>>> request.setPrincipal(principal)
+>>> import zope.security.management
+>>> zope.security.management.newInteraction(request)
 
 Below we want to use the ``with`` statement, which in Python 2.5 has
 to be imported from ``__future__`` to make function. We've done most
 of the setup in the test setup already, but we still need to do this
 here to enable it:
 
-  >>> dummy = with_statement
+>>> dummy = with_statement
 
 Now we can check out a test content object that we'll aim to export upon
 publication:
 
-  >>> import zeit.cms.repository.interfaces
-  >>> import zope.component
-  >>> repository = zope.component.getUtility(
-  ...     zeit.cms.repository.interfaces.IRepository)
-  >>> content = repository['online']['2007']['01']['Somalia']
-  >>> content
-  <zeit.content.article.article.Article object at 0x...>
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['online']['2007']['01']['Somalia']
+>>> content
+<zeit.content.article.article.Article object at 0x...>
 
 export_cds flag not set
 -----------------------
@@ -48,50 +48,50 @@ have no effect on the cds filestore.
 
 We start out with an empty cds filestore:
 
-  >>> import zeit.content.article.cds
-  >>> fs = zeit.content.article.cds.get_cds_filestore('cds-export')
-  >>> fs.list('new')
-  []
+>>> import zeit.content.article.cds
+>>> fs = zeit.content.article.cds.get_cds_filestore('cds-export')
+>>> fs.list('new')
+[]
 
 For existing documents `export_cds` is not yet set (this will only be
 set for documents newly created in the UI):
 
-  >>> print content.export_cds 
-  None
+>>> print content.export_cds 
+None
 
 We want to publish the article. The first step is to set it to
 ``urgent`` (this is the easiest way to publish within the workflow
 system):
 
-  >>> import zeit.workflow.interfaces
-  >>> import zeit.cms.workflow.interfaces
-  >>> workflow = zeit.workflow.interfaces.IContentWorkflow(content)
-  >>> workflow.urgent = True
+>>> import zeit.workflow.interfaces
+>>> import zeit.cms.workflow.interfaces
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(content)
+>>> workflow.urgent = True
 
 Now we can proceed to publish the article:
 
-  >>> publish = zeit.cms.workflow.interfaces.IPublish(content)
-  >>> publish.publish()
+>>> publish = zeit.cms.workflow.interfaces.IPublish(content)
+>>> publish.publish()
 
 At this point the article is not yet published. We need to run an
 asynchronous task which takes care of that:
 
-  >>> import lovely.remotetask.interfaces
-  >>> tasks = zope.component.getUtility(
-  ...     lovely.remotetask.interfaces.ITaskService, 'general')
-  >>> tasks.process()
+>>> import lovely.remotetask.interfaces
+>>> tasks = zope.component.getUtility(
+...     lovely.remotetask.interfaces.ITaskService, 'general')
+>>> tasks.process()
 
 This article by the act of publication will have obtained a uuid:
 
-  >>> import zeit.cms.content.interfaces
-  >>> zeit.cms.content.interfaces.IUUID(content).id
-  '{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}'
-  
+>>> import zeit.cms.content.interfaces
+>>> zeit.cms.content.interfaces.IUUID(content).id
+'{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}'
+
 Since the ``export_cds`` flag wasn't set, the article does not show up
 in the cds filestore:
 
-  >>> fs.list('new')
-  []
+>>> fs.list('new')
+[]
 
 export_cds flag set to true
 ---------------------------
@@ -99,54 +99,54 @@ export_cds flag set to true
 We will now check out the article, set the ``export_cds`` flag to ``True``,
 and check in again:
 
-  >>> import zeit.cms.checkout.helper
-  >>> with zeit.cms.checkout.helper.checked_out(content) as co: 
-  ...     co.export_cds = True
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(content) as co: 
+...     co.export_cds = True
 
 Let's verify it's really set::
 
-  >>> print content.export_cds
-  True
+>>> print content.export_cds
+True
 
 We now publish the article. The first step is to set it to ``urgent`` (this
 is the easiest way to publish within the workflow system):
 
-  >>> workflow = zeit.workflow.interfaces.IContentWorkflow(content)
-  >>> workflow.urgent = True
+>>> workflow = zeit.workflow.interfaces.IContentWorkflow(content)
+>>> workflow.urgent = True
 
 Now we can proceed to publish the article:
 
-  >>> publish = zeit.cms.workflow.interfaces.IPublish(content)
-  >>> publish.publish()
+>>> publish = zeit.cms.workflow.interfaces.IPublish(content)
+>>> publish.publish()
 
 At this point the article is not yet published. We need to run an asynchronous
 task which takes care of that:
 
-  >>> tasks = zope.component.getUtility(
-  ...     lovely.remotetask.interfaces.ITaskService, 'general')
-  >>> tasks.process()
+>>> tasks = zope.component.getUtility(
+...     lovely.remotetask.interfaces.ITaskService, 'general')
+>>> tasks.process()
 
 Now, the publish process is finished and the article is published:
 
-  >>> workflow.published
-  True
+>>> workflow.published
+True
 
 Since the ``export_cds`` flag was set for this article, a copy of the
 article can be found in the CDS filestore, ready for FTP-ing to the CDS:
 
-  >>> fs.list('new')
-  ['.../{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}.xml']
+>>> fs.list('new')
+['.../{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}.xml']
 
 Cleanup
 =======
 
 After the test we restore the old site:
 
-  >>> zope.security.management.endInteraction()
-  >>> zope.app.component.hooks.setSite(old_site)
+>>> zope.security.management.endInteraction()
+>>> zope.app.component.hooks.setSite(old_site)
 
 .. [#functional] We need to set the site since we're a functional test:
 
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
