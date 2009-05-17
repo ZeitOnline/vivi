@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import persistent
+import string
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.settings.interfaces
@@ -19,11 +20,15 @@ class GlobalSettings(persistent.Persistent):
     default_year = 2008
     default_volume = 26
 
-    def get_working_directory(self, prefix):
+    def get_working_directory(self, template):
+        path = string.Template(template).substitute(dict(
+            year=self.default_year,
+            volume=self.default_volume))
+        path = path.split('/')
+
         target_folder = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/')
-        for next_name in tuple(prefix) + (str(self.default_year),
-                                          str(self.default_volume)):
+        for next_name in path:
             if next_name not in target_folder:
                 target_folder[next_name] = zeit.cms.repository.folder.Folder()
             target_folder = target_folder[next_name]

@@ -7,6 +7,10 @@ zeit.cms changes
 - Nach dem Umbenennen eines Objekts befindet man sich auf dem Ordner, nicht auf
   dem umbenannten Objekt.
 
+- Hilfsfunktion um beliebigen Ordner in Abhängigkeit von der aktuellen Ausgabe
+  zu bekommen um Vorlagen erweitert. Dies ermöglicht z.B.
+  'online/$year/$volume/berlin'
+
 1.20 (2009-05-15)
 -----------------
 

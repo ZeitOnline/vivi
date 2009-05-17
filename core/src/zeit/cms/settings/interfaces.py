@@ -19,11 +19,13 @@ class IGlobalSettings(zope.interface.Interface):
         min=1,
         max=53)
 
-    def get_working_directory(prefix):
+    def get_working_directory(template):
         """Return the collection which is the main working directory.
 
-        prefix: sequence of path elements to prefix. A prefix of ('online',)
-        results in /online/year/volume.
+        template:
+            Template which will be filled with year and volume. In
+            ``template`` the placeholders $year and $volume will be replaced.
+            Example: 'online/$year/$volume/foo'
 
         If the respective collection does not exist, it will be created before
         returning it.
