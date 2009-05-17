@@ -279,7 +279,7 @@ class Favorites(JSONView):
         uniqueId = content.uniqueId
         favorited_icon = r['favorite.png']()
 
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(content)
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
 
         return {
             'uniqueId': uniqueId,
@@ -287,8 +287,8 @@ class Favorites(JSONView):
             'favorited': favorited_icon,
             'publication_status': r['published.png'](),
             'arrow': r['arrow_right.png'](),
-            'teaser_title': metadata.teaserTitle or '',
-            'teaser_text': metadata.teaserText or '',
+            'teaser_title': (metadata.teaserTitle or '') if metadata else '',
+            'teaser_text': (metadata.teaserText or '') if metadata else '',
             'preview_url': '',
             'date': '13.02.2009',
             'date_filter': '',
@@ -296,12 +296,12 @@ class Favorites(JSONView):
             'week_filter': '',
             'topics': 'Politik',
             'topics_filter': '',
-            'author': metadata.authors or '',
+            'author': (metadata.authors or '') if metadata else '',
             'author_filter': '',
             'related_url': self.url('expanded_search_result', uniqueId),
             'favorite_url': self.url('toggle_favorited', uniqueId),
             }
-    
+
     def json(self):
         favorites = get_favorites(self.request)
         return {"results": [
