@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.20.2 (2009-05-17)
+-------------------
+
+- Übersetzung einer Fehlemeldung im Workflow repariert.
+
 1.20.1 (2009-05-17)
 -------------------
 
