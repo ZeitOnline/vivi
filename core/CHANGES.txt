@@ -4,6 +4,8 @@ zeit.find changes
 0.3 (unreleased)
 -----------------
 
+- Kommunikation mit Solr, d.h. es werden echte Daten angezeigt.
+
 - Alle ``test.py`` nach ``tests.py`` umbenannt.
 
 0.2 (2009-04-30)
