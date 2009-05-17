@@ -11,7 +11,7 @@
   </div>
 
   <span class="nextUrl"
-        tal:content="string:${context/@@absolute_url}/@@view.html" />
+        tal:content="string:${context/__parent__/@@absolute_url}/@@view.html" />
 
   <form id="lightbox.form" action="#"
         tal:attributes="action request/URL"
