@@ -22,6 +22,8 @@ Neue Funktionen
 
 - Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
 
+- Umsortieren von Blöcken in Teaserleisten.
+
 0.5 (2009-05-08)
 ----------------
 
