@@ -38,6 +38,6 @@ class TestMenu(zeit.cms.selenium.Test):
         s = self.selenium
 
         self.open('/repository/online/2007/01/Somalia')
-        s.click('link=Auschecken*')
-        s.clickAndWait('link=Auschecken*')
-        s.verifyTextPresent('wurde ausgecheckt')
+        s.click('link=Checkout*')
+        s.clickAndWait('link=Checkout*')
+        s.verifyTextPresent('checked out')

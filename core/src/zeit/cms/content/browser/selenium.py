@@ -11,7 +11,7 @@ class TestKeywordWidget(zeit.cms.selenium.Test):
         s = self.selenium
 
         self.open('/repository/testcontent')
-        s.clickAndWait('link=Auschecken*')
+        s.clickAndWait('link=Checkout*')
         s.click('new_keyword')
         s.waitForElementPresent('css=.keyword-input')
         s.storeEval("this.browserbot.findElement('css=.keyword-input')",
@@ -24,7 +24,7 @@ class TestTypeChangeBox(zeit.cms.selenium.Test):
     def test_box_scrolls(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia')
-        s.click('link=Typ ändern')
+        s.click('link=Change type')
         s.waitForElementPresent('css=.lightbox-full')
         s.storeEval("this.browserbot.findElement('css=.lightbox-full')",
                     'contents')

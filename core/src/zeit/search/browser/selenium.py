@@ -32,10 +32,10 @@ class Selenium(zeit.cms.selenium.Test):
         s.type('id=search.year', '2008')
         # When we collapse the extended search there'll be an indicator:
         s.click('id=search-extended-hide')
-        s.verifyText('id=search-extended-indicator', '+ Jahr: 2008')
+        s.verifyText('id=search-extended-indicator', '+ Year : 2008')
         s.click('id=search-extended-show')
         s.select('id=search.navigation', 'label=Deutschland')
         s.click('id=search-extended-hide')
         s.verifyText(
             'id=search-extended-indicator',
-            '+ Jahr: 2008 + Ressort: Deutschland')
+            '+ Year : 2008 + Ressort : Deutschland')
