@@ -5,15 +5,13 @@
 import unittest
 from zope.testing import doctest
 import zeit.cms.testing
-import zeit.find.test
+import zeit.find.tests
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES),
-        layer=zeit.find.test.SearchLayer))
+        layer=zeit.find.tests.SearchLayer))
     return suite
 
