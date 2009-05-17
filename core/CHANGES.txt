@@ -1,0 +1,8 @@
+zeit.locales CHANGES
+====================
+
+0.1 (2009-05-17)
+++++++++++++++++
+
+- Erstes Release. Übersetzungen aus allen anderen zeit-Paketen hierher
+  verschoben.
