@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
@@ -12,8 +13,6 @@ import zeit.workflow.browser.form
 import zope.component
 import zope.dublincore.interfaces
 import zope.formlib.form
-import zope.formlib.form
-from zeit.content.cp.i18n import MessageFactory as _
 
 
 class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
