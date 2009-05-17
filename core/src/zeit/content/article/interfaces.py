@@ -55,9 +55,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('First related as box'),
         default=False)
 
-    export_cds = zope.schema.Bool(
-        title=_("Export to Tagesspiegel"),
-        default=True)
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
@@ -173,3 +170,11 @@ class IAggregatedComments(zope.interface.Interface):
 
 class ITagesspiegelArticle(zope.interface.Interface):
     """Marker for articles imported from Tagesspiegel."""
+
+
+class ICDSWorkflow(zope.interface.Interface):
+    """Special workflow "extension" for CDS."""
+
+    export_cds = zope.schema.Bool(
+        title=_("Export to Tagesspiegel"),
+        default=True)

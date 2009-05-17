@@ -1,6 +1,13 @@
 zeit.content.article changes
 ============================
 
+1.7.4 (2009-05-17)
+------------------
+
+- »Zum Tagesspiegel exportieren« jetzt im Workflowtab.
+
+- Unterstützung für Änderungen aus zeit.cms 1.20.1.
+
 1.7.3 (2009-05-15)
 ------------------
 

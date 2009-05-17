@@ -9,6 +9,7 @@ import logging
 import lovely.remotetask.interfaces
 import lxml.etree
 import os.path
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
@@ -62,7 +63,10 @@ def get_cds_filestore(name):
     zeit.cms.workflow.interfaces.IPublishedEvent)
 def export(object, event):
     log.debug('Start export to Content-Drehscheibe')
-    if not object.export_cds:
+    wf = zeit.content.article.interfaces.ICDSWorkflow(object, None)
+    if wf is None:
+        return
+    if not wf.export_cds:
         log.debug('Export flag is not set. Exiting.')
         return
     fs = get_cds_filestore('cds-export')
@@ -85,8 +89,8 @@ def import_file(path):
     log.info("Importing %s" % path)
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.article')
-    valid_path = config['cds-import-valid-path'].split('/')
-    invalid_path = config['cds-import-invalid-path'].split('/')
+    valid_path = config['cds-import-valid-path']
+    invalid_path = config['cds-import-invalid-path']
     with open(path, 'rb') as f:
         try:
             article = zeit.content.article.article.Article(f)
@@ -165,3 +169,25 @@ def import_and_schedule():
 @gocept.runner.appmain(ticks=360, principal=PRINCIPAL)
 def import_main():
     return import_and_schedule()
+
+
+class CDSWorkflow(object):
+    """Workflow extension for the CDS."""
+
+    zope.interface.implements(zeit.content.article.interfaces.ICDSWorkflow)
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.article.interfaces.ICDSWorkflow,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('export_cds',),
+        live=True)
+
+    def __init__(self, context):
+        self.context = context
+
+
+@zope.component.adapter(CDSWorkflow)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def cdsworkflow_properties(context):
+    return zeit.connector.interfaces.IWebDAVProperties(context.context)

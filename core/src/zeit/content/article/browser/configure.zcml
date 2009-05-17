@@ -156,4 +156,10 @@
   <adapter factory=".recension.edit_view_name" name="recensions.html" />
   <adapter factory=".recension.display_view_name" name="recensions.html" />
 
+  <!-- workflow -->
+  <adapter
+    factory=".workflow.ArticleWorkflowForm"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    />
+
 </configure>

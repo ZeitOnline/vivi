@@ -14,8 +14,8 @@ import zope.testing.renormalizing
 from zope.testing import doctest
 
 product_config = {
-    'cds-import-valid-path': 'online',
-    'cds-import-invalid-path': 'cds/invalid',
+    'cds-import-valid-path': 'online/$year/$volume',
+    'cds-import-invalid-path': 'cds/invalid/$year/$volume',
 }
 
 checker = zope.testing.renormalizing.RENormalizing([

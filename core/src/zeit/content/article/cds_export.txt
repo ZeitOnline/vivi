@@ -14,13 +14,7 @@ Setup
 In order to be able to check out and in articles and go through the workflow,
 we need to set up an interaction based on the request: [#functional]_
 
->>> import zope.security.testing
->>> principal = zope.security.testing.Principal(u'zope.user')
->>> import zope.publisher.browser
->>> request = zope.publisher.browser.TestRequest()
->>> request.setPrincipal(principal)
->>> import zope.security.management
->>> zope.security.management.newInteraction(request)
+>>> p = zeit.cms.testing.create_interaction(u'zope.user')
 
 Below we want to use the ``with`` statement, which in Python 2.5 has
 to be imported from ``__future__`` to make function. We've done most
@@ -56,7 +50,9 @@ We start out with an empty cds filestore:
 For existing documents `export_cds` is not yet set (this will only be
 set for documents newly created in the UI):
 
->>> print content.export_cds 
+>>> import zeit.content.article.interfaces
+>>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
+>>> print cdswf.export_cds 
 None
 
 We want to publish the article. The first step is to set it to
@@ -96,16 +92,14 @@ in the cds filestore:
 export_cds flag set to true
 ---------------------------
 
-We will now check out the article, set the ``export_cds`` flag to ``True``,
-and check in again:
+We will now set the ``export_cds`` flag to ``True``:
 
->>> import zeit.cms.checkout.helper
->>> with zeit.cms.checkout.helper.checked_out(content) as co: 
-...     co.export_cds = True
+>>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
+>>> cdswf.export_cds = True
 
-Let's verify it's really set::
+Let's verify it's really set:
 
->>> print content.export_cds
+>>> print cdswf.export_cds
 True
 
 We now publish the article. The first step is to set it to ``urgent`` (this
@@ -137,16 +131,8 @@ article can be found in the CDS filestore, ready for FTP-ing to the CDS:
 >>> fs.list('new')
 ['.../{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}.xml']
 
-Cleanup
-=======
-
-After the test we restore the old site:
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
 
 .. [#functional] We need to set the site since we're a functional test:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
