@@ -6,14 +6,15 @@ import zeit.content.cp.browser.rule
 import zeit.content.cp.interfaces
 import zope.component
 import zope.viewlet.manager
+from zeit.content.cp.i18n import MessageFactory as _
 
 
 class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
 
     def __init__(self, context, request, view):
         super(BlockViewletManager, self).__init__(context, request, view)
-        self.validation_class, self.validation_messages = \
-            zeit.content.cp.browser.rule.validate(self.context)
+        self.validation_class, self.validation_messages = (
+            zeit.content.cp.browser.rule.validate(self.context))
 
     @property
     def css_class(self):
