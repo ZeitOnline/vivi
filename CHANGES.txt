@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.5 (unreleased)
+0.5 (2009-05-17)
 ----------------
 
 - Nur noch Producer dürfen Ordner umbenennen (#5319).
