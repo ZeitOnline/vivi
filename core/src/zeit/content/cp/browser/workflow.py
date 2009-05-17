@@ -21,9 +21,6 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
     # ITimeBasedPublishing) instead of
     # zeit.workflow.interfaces.IContentWorkflow
 
-    error_message = _(
-        'Could not publish ${id} since it has validation errors.')
-
     zope.component.adapts(
         zeit.content.cp.interfaces.ICenterPage,
         zeit.cms.browser.interfaces.ICMSLayer)
@@ -51,4 +48,8 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
+
+    def get_error_message(self, mapping):
+        return _('Could not publish ${id} since it has validation errors.',
+                 mapping=mapping)
 

@@ -28,7 +28,7 @@ setup(
         'setuptools',
         'stabledict',
         'zc.sourcefactory',
-        'zeit.cms>1.20',
+        'zeit.cms>=1.20.2',
         'zeit.find',
         'zope.app.pagetemplate',
         'zope.component',
