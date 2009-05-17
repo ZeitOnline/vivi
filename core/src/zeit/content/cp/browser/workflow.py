@@ -16,12 +16,13 @@ import zope.formlib.form
 
 
 class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
-    # same as zeit.workflow.browser.form.ContentWorkflow, except for the fields:
-    # we use only ICenterPageWorkflow (which doesn't add anything to
-    # ITimeBasedPublishing) instead of zeit.workflow.interfaces.IContentWorkflow
+    # same as zeit.workflow.browser.form.ContentWorkflow, except for the
+    # fields: we use only ICenterPageWorkflow (which doesn't add anything to
+    # ITimeBasedPublishing) instead of
+    # zeit.workflow.interfaces.IContentWorkflow
 
-    error_message = 'Could not publish ${id} since it has validation '\
-                    + 'errors.'
+    error_message = _(
+        'Could not publish ${id} since it has validation errors.')
 
     zope.component.adapts(
         zeit.content.cp.interfaces.ICenterPage,
