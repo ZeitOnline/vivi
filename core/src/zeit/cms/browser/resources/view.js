@@ -75,7 +75,8 @@ zeit.cms.JSONView = zeit.cms.View.extend({
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
         d.addCallback(function(result) {
-            self.template = jsontemplate.Template(result.responseText);
+            self.template = jsontemplate.Template(result.responseText, 
+                                                  {default_formatter: 'html'});
             self.last_template_url = template_url;
             self.expand_template(json, target_element);
         });
