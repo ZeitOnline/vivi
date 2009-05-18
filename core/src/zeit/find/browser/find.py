@@ -185,14 +185,20 @@ class SearchResult(JSONView):
             else:
                 dt = None
 
+            published = self.request.get('published', True)
+            if published:
+                publication_status = r['published.png']()
+            else:
+                publication_status = r['unpublished.png']()
+                
             results.append({
                     'uniqueId': uniqueId,
                     'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
                     'favorited': favorited_icon,
-                    'publication_status': r['published.png'](),
+                    'publication_status': publication_status,
                     'arrow': r['arrow_right.png'](),
-                    'teaser_title': result['teaser_title'],
-                    'teaser_text': result['teaser_text'],
+                    'teaser_title': result.get('teaser_title', ''),
+                    'teaser_text': result.get('teaser_text', ''),
                     'preview_url': '',
                     'date': format_date(dt),
                     'date_filter': '',
