@@ -61,6 +61,17 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
+    name="common-box"
+    template="layout.block.edit-commons.pt"
+    permission="zeit.EditContent"
+    weight="1"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
     name="delete"
     template="layout.block.delete.pt"
     permission="zeit.EditContent"
@@ -76,14 +87,6 @@
     template="layout.block.drag.pt"
     permission="zeit.EditContent"
     weight="100"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit"
-    template="block.edit.pt"
-    permission="zeit.EditContent"
     />
 
   <browser:page

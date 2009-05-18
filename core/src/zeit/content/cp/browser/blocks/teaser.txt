@@ -99,7 +99,6 @@ The teaser block can be edited:
 >>> browser.getLink('Edit teaser list').click()
 >>> lightbox_url = browser.url
 >>> print browser.contents
-<h1>Foo</h1>
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
       cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>">
@@ -151,7 +150,7 @@ updateOrder view:
 True
 >>> browser.open(lightbox_url)
 >>> print browser.contents
-<h1>...
+<div...
     <li ... cms:uniqueid="http://xml.zeit.de/testcontent">
         ...
     <li ... cms:uniqueid="http://xml.zeit.de/c1">
@@ -216,7 +215,7 @@ When an object could not be checked out, the edit link is replaced by a lock:
 >>> browser.getLink('Edit').click()
 >>> browser.open(lightbox_url)
 >>> print browser.contents
-<h1>...
+<...
     <li class="edit-bar even" cms:uniqueid="http://xml.zeit.de/c1">
         <span class="locked-indicator"><img src="...
 
@@ -300,7 +299,6 @@ Delete the second entry:
 True
 >>> browser.open(lightbox_url)
 >>> print browser.contents
-<h1>Foo</h1>
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
       cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>">

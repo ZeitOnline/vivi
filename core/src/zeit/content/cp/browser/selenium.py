@@ -173,17 +173,17 @@ class TestGenericEditing(Test):
         self.create_teaserlist()
         s = self.selenium
 
-        s.click('//a[@class="edit-link"]')
-        s.waitForElementPresent('id=cp-edit-properties')
-        s.click('//a[@href="cp-edit-common"]')
+        s.click('//a[contains(@class, "edit-link")]')
+        s.waitForElementPresent('id=tab-1')
+        s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('id=form.publisher')
         s.type('form.publisher', 'FooPublisher')
-        s.click('//div[@id="cp-edit-common"]//input[@id="form.actions.apply"]')
-        s.pause(100)
+        s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
+        s.waitForElementNotPresent('css=a.CloseButton')
 
-        s.click('//a[@class="edit-link"]')
-        s.waitForElementPresent('id=cp-edit-properties')
-        s.click('//a[@href="cp-edit-common"]')
+        s.click('//a[contains(@class, "edit-link")]')
+        s.waitForElementPresent('id=tab-1')
+        s.click('//a[@href="tab-1"]')
         s.pause(100)
         s.waitForElementPresent('id=form.publisher')
         s.verifyValue('form.publisher', 'FooPublisher')
@@ -285,13 +285,13 @@ class TestTeaserBlock(Test):
 
         s.click(
             '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[@class="edit-link"]')
+            'a[contains(@class, "edit-link")]')
         s.waitForElementPresent('id=form.teaserTitle')
 
         # Changing the value and submitting the form will reload the teaser
         # list light box. The text will be in there then.
         s.type('id=form.teaserTitle', 'A nice new teaser')
-        s.click('id=form.actions.apply')
+        s.click('//form[contains(@action, "edit-teaser.html")]//input[@id="form.actions.apply"]')
         s.waitForTextPresent('A nice new teaser')
 
     def test_inplace_teaser_editing_with_abort(self):
@@ -303,7 +303,7 @@ class TestTeaserBlock(Test):
 
         s.click(
             '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[@class="edit-link"]')
+            'a[contains(@class, "edit-link")]')
         s.waitForElementPresent('id=form.teaserTitle')
 
         # Closing the lightbox will remove the checked out object, thus remove
@@ -312,7 +312,7 @@ class TestTeaserBlock(Test):
         s.waitForElementNotPresent('css=#cp-forms a.CloseButton')
         s.click(
             '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[@class="edit-link"]')
+            'a[contains(@class, "edit-link")]')
         s.waitForElementPresent('id=form.teaserTitle')
 
 

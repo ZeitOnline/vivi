@@ -1,4 +1,3 @@
-<h1 tal:content="context/title">Title</h1>
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
       tal:attributes="cms:url context/@@absolute_url">

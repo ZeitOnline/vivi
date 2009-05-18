@@ -1,7 +1,7 @@
-<a class="edit-link" title="Edit"
-   tal:attributes="href string:${context/@@absolute_url}/edit"
+<a class="edit-link lightbox-tab-data" title="Edit"
+   tal:attributes="href string:${context/@@absolute_url}/edit-properties"
    i18n:attributes="title"
-   cms:cp-module="zeit.content.cp.LightBoxForm"
+   cms:cp-module="zeit.content.cp.TabbedLightBoxForm"
    cms:lightbox-in="cp-content">
   <span class="action-title">Edit</span>
 </a>

@@ -1,7 +1,7 @@
-<a class="edit-teaser-link" title="Edit teaser list"
+<a class="edit-teaser-link lightbox-tab-data" title="Edit teaser list"
    tal:attributes="href string:${context/@@absolute_url}/teaser.edit-contents"
    i18n:attributes="title"
-   cms:cp-module="zeit.content.cp.LightBoxForm"
+   cms:cp-module="zeit.content.cp.TabbedLightBoxForm"
    cms:lightbox-in="cp-content">
   <span class="action-title">Edit teaser list</span>
 </a>

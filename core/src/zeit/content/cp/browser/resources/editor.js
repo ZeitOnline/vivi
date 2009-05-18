@@ -671,6 +671,46 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 });
 
 
+zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
+
+    reload: function() {
+        var self = this;
+        MochiKit.Signal.signal(self, 'before-reload');
+        if (!isUndefinedOrNull(self.tabs)) {
+            self.tabs.active_tab.reload();
+            return
+        }
+        var tab_definitions = MochiKit.DOM.getElementsByTagAndClassName(
+                null, 'lightbox-tab-data', self.context_element.parentNode);
+        var i = 0;
+        self.tabs = new zeit.cms.Tabs(
+                MochiKit.DOM.getFirstElementByTagAndClassName(
+                    null, 'lightbox'));
+        forEach(tab_definitions, function(tab_definition) {
+            var tab_id = 'tab-'+i;
+            var tab_view = new zeit.cms.View(
+                    tab_definition.href, tab_id);
+            var tab = new zeit.cms.ViewTab(
+                tab_id, tab_definition.title, tab_view);
+            self.tabs.add(tab);
+            MochiKit.Signal.connect(tab_view, 'load', function() {
+                form = MochiKit.DOM.getFirstElementByTagAndClassName(
+                    'form', null, $(tab_view.target_id));
+                zeit.content.cp.editor.current_module.rewire_submit_buttons(
+                    form);
+                $(tab_view.target_id).__handler__ = self;
+                self.eval_javascript_tags();
+            });
+            if (self.context_element == tab_definition) {
+                self.tabs.activate(tab_id);
+            }
+            i = i + 1;
+        });
+    },
+
+});
+
+
 zeit.content.cp.LoadAndReload = gocept.Class.extend({
 
     construct: function(context_element) {

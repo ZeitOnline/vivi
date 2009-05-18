@@ -71,13 +71,19 @@
   z-index: auto;
 }
 
+
 #cp-content > .lightbox,
 #cp-content > .lightbox-header {
   font-size: 2em;
   left: 5%;
   right: 5%;
-  overflow-y: auto;
 }
+
+#cp-content .context-views {
+  margin-top:-2.1em;
+  right: 20px;
+}
+
 
 #cp-forms > .lightbox,
 #cp-forms > .lightbox-header {
@@ -87,6 +93,9 @@
 
 #cp-forms > .lightbox-header {
   top: 0;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
 }
 
 #cp-forms > .lightbox {
@@ -121,6 +130,18 @@
   visibility: hidden;
 }
 
+.lightbox > div.tab-content {
+  top: 2em;
+  overflow-y: auto;
+}
+
+.lightbox h1 {
+  margin-top: 0px;
+}
+
+.edit-bar > a.common-link {
+  display: None;
+}
 
 .editable-area > .landing-zone + .block {
   margin-top: 0;
