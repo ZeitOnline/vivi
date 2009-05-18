@@ -265,12 +265,16 @@ class ExpandedSearchResult(JSONView):
                 content, None)
             if metadata is None:
                 continue
+
+            date = zeit.cms.content.interfaces.ISemanticChange(
+                content).last_semantic_change
             publication_status = self.render_publication_status(content)
             results.append({
                     'uniqueId': content.uniqueId,
                     'publication_status': publication_status,
                     'short_teaser_title': metadata.shortTeaserTitle or '',
                     'short_teaser_text': metadata.shortTeaserText or '',
+                    'date': format_date(date),
                     })
         if not results:
             return {'template': 'no_expanded_search_result.jsont'}

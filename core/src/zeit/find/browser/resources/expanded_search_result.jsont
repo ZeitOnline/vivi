@@ -5,6 +5,7 @@
     {publication_status|raw}
     <span class="short_teaser_title">{short_teaser_title}</span> -
     <span class="short_teaser_text">{short_teaser_text}</span>
+    <span class="date">({date})</span>
   </div>
 </div>
 {.end}
