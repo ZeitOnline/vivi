@@ -163,8 +163,16 @@ class SearchResult(JSONView):
                          'teaser_title', 'teaser_text',
                          'last-semantic-change', 'ressort',
                          'authors']
+
+        sort_order = self.request.get('sort_order', 'score desc')
+        if sort_order == 'relevance':
+            sort_order = 'score desc'
+        elif sort_order == 'date':
+            sort_order = 'last-semantic-change desc'
         
-        for result in conn.search(q, fl=' '.join(result_fields)):
+        for result in conn.search(q,
+                                  sort=sort_order,
+                                  fl=' '.join(result_fields)):
             uniqueId = result.get('uniqueId', '')
             if uniqueId in favorite_uniqueIds:
                 favorited_icon = r['favorite.png']()
