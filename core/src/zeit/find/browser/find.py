@@ -158,8 +158,13 @@ class SearchResult(JSONView):
             if not uniqueId:
                 continue
             favorite_uniqueIds.add(uniqueId)
-            
-        for result in conn.search(q):
+
+        result_fields = ['uniqueId', 'published',
+                         'teaser_title', 'teaser_text',
+                         'last-semantic-change', 'ressort',
+                         'authors']
+        
+        for result in conn.search(q, fl=' '.join(result_fields)):
             uniqueId = result.get('uniqueId', '')
             if uniqueId in favorite_uniqueIds:
                 favorited_icon = r['favorite.png']()
