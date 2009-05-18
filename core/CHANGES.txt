@@ -1,8 +1,10 @@
 zeit.locales CHANGES
 ====================
 
-0.2 (unreleased)
+0.2 (2009-05-18)
 ++++++++++++++++
+
+- Übersetzungen für zeit.content.article nachgezogen.
 
 0.1 (2009-05-17)
 ++++++++++++++++
