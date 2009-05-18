@@ -181,6 +181,7 @@ class CDSWorkflow(object):
         zeit.content.article.interfaces.ICDSWorkflow,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('export_cds',),
+        use_default=True, 
         live=True)
 
     def __init__(self, context):

@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.7.5 (2009-05-18)
+------------------
+
+- »Zum Tagesspiegel exportieren« im Workflowtab ist jetzt initial »an«.
+
 1.7.4 (2009-05-17)
 ------------------
 

@@ -47,13 +47,13 @@ We start out with an empty cds filestore:
 >>> fs.list('new')
 []
 
-For existing documents `export_cds` is not yet set (this will only be
-set for documents newly created in the UI):
+Unset `export_cds`. The inital value is True:
 
 >>> import zeit.content.article.interfaces
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
->>> print cdswf.export_cds 
-None
+>>> cdswf.export_cds
+True
+>>> cdswf.export_cds = False
 
 We want to publish the article. The first step is to set it to
 ``urgent`` (this is the easiest way to publish within the workflow
