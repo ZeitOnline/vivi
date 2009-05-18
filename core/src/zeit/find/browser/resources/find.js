@@ -91,22 +91,23 @@ zeit.find = {};
         zeit.find.tabs.add(new zeit.cms.Tab('for-this-page', 'Für diese Seite'));
     };
 
-    search_form = new zeit.cms.JSONView(
+    var search_form_parameters = function() {
+        return MochiKit.Base.queryString($('search_form'));
+    };
+
+    var search_form = new zeit.cms.JSONView(
         'search_form', 'search_form');
-    search_result = new zeit.cms.JSONView(
-        'search_result', 'search_result',
-        function() {
-            return MochiKit.Base.queryString($('search_form'));
-        });
-    extended_search_form = new zeit.cms.JSONView(
+    var search_result = new zeit.cms.JSONView(
+        'search_result', 'search_result', search_form_parameters);
+    var extended_search_form = new zeit.cms.JSONView(
         'extended_search_form', 'extended_search_form');
-    result_filters = new zeit.cms.JSONView(
-        'result_filters', 'result_filters')
-    expanded_search_result = new zeit.cms.JSONView(
+    var result_filters = new zeit.cms.JSONView(
+        'result_filters', 'result_filters', search_form_parameters);
+    var expanded_search_result = new zeit.cms.JSONView(
         'expanded_search_result')
-    favorited = new zeit.cms.JSONView(
+    var favorited = new zeit.cms.JSONView(
         'toggle_favorited')
-    favorites = new zeit.cms.JSONView(
+    var favorites = new zeit.cms.JSONView(
         'favorites', 'favorites');
 
     MochiKit.Signal.connect(window, 'onload', init);
