@@ -11,6 +11,7 @@ The serie source returns the possible "serie" values:
 >>> serie = zeit.cms.content.sources.SerieSource()
 >>> pprint(list(serie))
 [u'-',
+ u'News',
  u'Bildung & Beruf',
  u'anzeigenfrei',
  u'arbeit',

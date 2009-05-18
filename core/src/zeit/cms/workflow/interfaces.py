@@ -129,4 +129,3 @@ class RetractedEvent(zope.component.interfaces.ObjectEvent):
     """Issued after an object has been retracted."""
 
     zope.interface.implements(IRetractedEvent)
-

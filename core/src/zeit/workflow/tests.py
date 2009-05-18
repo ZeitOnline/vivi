@@ -48,12 +48,14 @@ WorkflowLayer = WorkflowLayerFactory(
 
 product_config = {
     'path-prefix': 'work',
+    'news-channel': 'http://xml.zeit.de/politik.feed',
 }
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'autosynd.txt',
         'dependency.txt',
         'syndication.txt',
         layer=WorkflowLayer,

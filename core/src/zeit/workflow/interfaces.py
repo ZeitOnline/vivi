@@ -2,18 +2,17 @@
 # See also LICENSE.txt
 """Workflow interfaces."""
 
+from zeit.cms.i18n import MessageFactory as _
 import datetime
-
 import pytz
 import zc.form.field
+import zeit.cms.content.contentsource
+import zeit.cms.workflow.interfaces
+import zeit.workflow.source
 import zope.app.security.vocabulary
 import zope.interface
 import zope.interface.common.sequence
 import zope.schema
-
-import zeit.cms.workflow.interfaces
-import zeit.workflow.source
-from zeit.cms.i18n import MessageFactory as _
 
 
 # The not necessary singleton of a TriState
@@ -110,3 +109,21 @@ class IPublicationDependencies(zope.interface.Interface):
     adapted object. Dependent containers will be published recursively.
 
     """
+
+class IAutoSyndicationWorkflow(zope.interface.Interface):
+    """A workflow "extension" which allows automatic syndication."""
+    # XXX the sources are actually not correct, because they should be limited
+    # to IFeed.
+
+    automatically_syndicate_into = zope.schema.Tuple(
+        title=_('Automatically syndicate into'),
+        description=_('automatically-syndicate-description'),
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource))
+
+    was_automatically_syndicated_into = zope.schema.Tuple(
+        title=_('The object was automatically syndicated into'),
+        readonly=True,
+        missing_value=(),
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource))
