@@ -12,7 +12,6 @@ import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
-import zope.container.contained
 import zope.container.interfaces
 import zope.interface
 
@@ -154,7 +153,7 @@ class CenterpageFeed(zeit.cms.syndication.feed.Feed):
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.IBlock,
-    zope.container.contained.IObjectAddedEvent)
+    zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     region = context.__parent__
     # Are we leaders?
