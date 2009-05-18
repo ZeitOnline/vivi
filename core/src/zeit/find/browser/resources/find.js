@@ -6,6 +6,13 @@ zeit.find = {};
         MochiKit.Signal.connect('search_button', 'onclick', function(e) {
             search_result.render();
         });
+        MochiKit.Signal.connect('fulltext', 'onkeydown', function(e) {
+            if (e.key()['string'] == 'KEY_ENTER') {
+                search_result.render();
+                e.stop();
+            };
+        });
+
         MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
             if ($('extended_search')) {
                 $('extended_search_form').innerHTML = '';
