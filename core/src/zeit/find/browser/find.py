@@ -185,7 +185,7 @@ class SearchResult(JSONView):
             else:
                 dt = None
 
-            published = self.request.get('published', True)
+            published = result.get('published', True)
             if published:
                 publication_status = r['published.png']()
             else:
