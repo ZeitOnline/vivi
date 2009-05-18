@@ -211,6 +211,8 @@ class SearchResult(JSONView):
                     'related_url': self.url('expanded_search_result', uniqueId),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
                     })
+        if not results:
+            return {'template': 'no_search_result.jsont'}
         return {'results': results}
 
 class ExtendedSearchForm(JSONView):
