@@ -21,7 +21,11 @@ tabs.add(new zeit.cms.ViewTab('cp-edit-common',
     'Common', edit_common));
 
 MochiKit.Signal.connect(edit_properties, 'load', function() {
-    zeit.content.cp.editor.current_module.rewire_submit_buttons(); });
+    form = MochiKit.DOM.getFirstElementByTagAndClassName(
+        'form', null, $('cp-edit-properties'));
+    zeit.content.cp.editor.current_module.rewire_submit_buttons(form); });
 MochiKit.Signal.connect(edit_common, 'load', function() {
-    zeit.content.cp.editor.current_module.rewire_submit_buttons(); });
+    form = MochiKit.DOM.getFirstElementByTagAndClassName(
+        'form', null, $('cp-edit-common'));
+  zeit.content.cp.editor.current_module.rewire_submit_buttons(form); });
 </script>

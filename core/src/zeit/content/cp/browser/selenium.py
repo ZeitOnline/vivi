@@ -155,15 +155,8 @@ class TestGenericEditing(Test):
 
     def test_hover(self):
         self.open_centerpage()
+        self.create_teaserlist()
         s = self.selenium
-
-        # Create a block
-        s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
-        s.waitForElementPresent('css=div.type-teaser')
 
         # Hover mouse over block
         s.verifyElementNotPresent('css=div.block.hover')
@@ -173,6 +166,27 @@ class TestGenericEditing(Test):
         s.mouseOut('css=div.teaser-list')
         s.pause(100)
         s.verifyElementNotPresent('css=div.block.hover')
+
+
+    def test_common_data_edit_form(self):
+        self.open_centerpage()
+        self.create_teaserlist()
+        s = self.selenium
+
+        s.click('//a[@class="edit-link"]')
+        s.waitForElementPresent('id=cp-edit-properties')
+        s.click('//a[@href="cp-edit-common"]')
+        s.waitForElementPresent('id=form.publisher')
+        s.type('form.publisher', 'FooPublisher')
+        s.click('//div[@id="cp-edit-common"]//input[@id="form.actions.apply"]')
+        s.pause(100)
+
+        s.click('//a[@class="edit-link"]')
+        s.waitForElementPresent('id=cp-edit-properties')
+        s.click('//a[@href="cp-edit-common"]')
+        s.pause(100)
+        s.waitForElementPresent('id=form.publisher')
+        s.verifyValue('form.publisher', 'FooPublisher')
 
 
 class TestTeaserBlock(Test):
