@@ -2,7 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import datetime
+from datetime import datetime, timedelta
 import cjson
 import pysolr
 import zeit.cms.browser.view
@@ -63,92 +63,17 @@ class JSONView(zeit.cms.browser.view.Base):
 
 class SearchForm(JSONView):
     template = 'search_form.jsont'
-
-
+    
 class SearchResult(JSONView):
     template = 'search_result.jsont'
-
-    def _get(self, name, default=None):
-        value = self.request.get(name, default)
-        if value is default:
-            return value
-        value = value.strip()
-        if value:
-            return value
-        return default
     
-    def form(self):
-        """Given the request, create search form contents.
-        """
-        g = self._get
-        fulltext = g('fulltext')
-        if fulltext is None:
-            return None
-        from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
-        until = parse_input_date(g('until', 'TT.MM.JJJJ'))
-        topic = g('topic', None)
-        authors = g('author', None)
-        keywords = g('keywords', None)
-        # three states: want all published, want all unpublished, don't care
-        published = g('published', None)
-        if published == 'published':
-            published = True
-        elif published == 'unpublished':
-            published = False
-        else:
-            published = None
-        types = set()
-        for t in ['article', 'gallery', 'video', 'teaser', 'centerpage']:
-            if g(t, '') == 'on':
-                types.add(t)
-        return dict(
-            fulltext=fulltext,
-            from_=from_,
-            until=until,
-            topic=topic,
-            authors=authors,
-            keywords=keywords,
-            published=published,
-            types=types)
-
     def sort_order(self):
         return self.request.get('sort_order', 'relevance')    
-
-    def query(self, fulltext, from_, until, topic, authors, keywords,
-                   published, types):
-        """Given parameters, create solr query string.
-        """
-        terms = []
-        terms.append(lq.field('text', fulltext))
-        if from_ is not None or until is not None:
-            terms.append(
-                lq.datetime_range('last-semantic-change', from_, until))
-        if topic is not None:
-            terms.append(lq.field('ressort', topic))
-        if authors is not None:
-            terms.append(lq.multi_field('authors', authors))
-        if keywords is not None:
-            terms.append(lq.multi_field('keywords', keywords))
-        if published is not None:
-            terms.append(lq.bool_field('published', published))
-        return lq.and_(*terms)
-    
-    def form_query(self):
-        """Create solr query for request.
-        """
-        form = self.form()
-        if form is None:
-            return None
-        return self.query(**form)
     
     def json(self):
-        q = self.form_query()
+        q = search_form_query(self.request)
         if q is None:
             return {"results":[]}
-        #print q
-        r = self.resources
-        results = []
-        conn = get_solr()
 
         # record any known favorites
         # XXX this isn't that pleasant to do every search,
@@ -171,7 +96,11 @@ class SearchResult(JSONView):
             sort_order = 'score desc'
         elif sort_order == 'date':
             sort_order = 'last-semantic-change desc'
-        
+
+        r = self.resources
+        results = []
+        conn = get_solr()
+
         for result in conn.search(q,
                                   sort=sort_order,
                                   fl=' '.join(result_fields)):
@@ -220,36 +149,155 @@ class SearchResult(JSONView):
             return {'template': 'no_search_result.jsont'}
         return {'results': results}
 
+def _get(request, name, default=None):
+    value = request.get(name, default)
+    if value is default:
+        return value
+    value = value.strip()
+    if value:
+        return value
+    return default
+
+def search_form(request):
+    g = lambda name, default=None: _get(request, name, default)
+    fulltext = g('fulltext')
+    if fulltext is None:
+        return None
+    from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
+    until = parse_input_date(g('until', 'TT.MM.JJJJ'))
+    topic = g('topic', None)
+    authors = g('author', None)
+    keywords = g('keywords', None)
+    # three states: want all published, want all unpublished, don't care
+    published = g('published', None)
+    if published == 'published':
+        published = True
+    elif published == 'unpublished':
+        published = False
+    else:
+        published = None
+    types = set()
+    for t in ['article', 'gallery', 'video', 'teaser', 'centerpage']:
+        if g(t, '') == 'on':
+            types.add(t)
+    return dict(
+        fulltext=fulltext,
+        from_=from_,
+        until=until,
+        topic=topic,
+        authors=authors,
+        keywords=keywords,
+        published=published,
+        types=types)
+
+def search_query(fulltext, from_, until, topic, authors, keywords,
+                 published, types, filter_terms=None):
+    """Given parameters, create solr query string.
+    """
+    filter_terms = filter_terms or []
+    
+    terms = []
+    terms.append(lq.field('text', fulltext))
+    if from_ is not None or until is not None:
+        terms.append(
+            lq.datetime_range('last-semantic-change', from_, until))
+    if topic is not None:
+        terms.append(lq.field('ressort', topic))
+    if authors is not None:
+        terms.append(lq.multi_field('authors', authors))
+    if keywords is not None:
+        terms.append(lq.multi_field('keywords', keywords))
+    if published is not None:
+        terms.append(lq.bool_field('published', published))
+
+    terms.extend(filter_terms)
+    return lq.and_(*terms)
+
+def search_form_query(request, filter_terms=None):
+    form = search_form(request)
+    if form is None:
+        return None
+    form['filter_terms'] = filter_terms
+    return search_query(**form)
+
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
 
-
 class ResultFilters(JSONView):
     template = 'result_filters.jsont'
-
-    def time_entries(self):
-        return [{"title": "heute", "amount": "20", "query": ""},
-                {"title": "7 Tage", "amount": "1000+", "query": ""}]
-
-    def author_entries(self):
-        return [{"title": "Martijn Faassen", "amount": "45", "query": ""},
-                {"title": "Christian Zagrodnick", "amount": "124", "query": ""}]
 
     def topic_entries(self):
         return [{"title": "Politik", "amount": "10", "query": ""},
                 {"title": "Kultur", "amount": "7", "query": ""},
                 {"title": "Kultur", "amount": "7", "query": ""}]
 
+    def time_entries(self):
+        conn = get_solr()
+        result = []
+        for name, filter in [("heute", today_filter),
+                             ("gestern", yesterday_filter),
+                             ("7 Tage",  seven_day_filter),
+                             ("letzter Monat", month_filter),
+                             ("letztes halbes Jahr", half_year_filter),
+                             ("letztes Jahr", year_filter)]:
+            q = search_form_query(self.request, filter_terms=[filter()])
+            amount = conn.search(q, rows=0).hits
+            if amount > 0:
+                result.append(dict(title=name,
+                                   amount=format_amount(amount),
+                                   query=""))
+        return result
+
     def content_types_entries(self):
         return [ {"title": "Artikel", "amount": "1000+", "query": ""}]
+    
+    def author_entries(self):
+        return [{"title": "Martijn Faassen", "amount": "45", "query": ""},
+                {"title": "Christian Zagrodnick", "amount": "124", "query": ""}]
 
     def json(self):
         return {"results": [
-            {"row": [{"title": "Zeit", "entries": self.time_entries()},
-                     {"title": "Ressort", "entries": self.topic_entries()}]},
-            {"row": [{"title": "Autor", "entries": self.author_entries()},
-                     {"title": "Inhaltstyp", "entries": self.content_types_entries()}]}]}
+                {"row": [{"title": "Ressort", "entries": self.topic_entries()},
+                         {"title": "Zeit", "entries": self.time_entries()},
+                         ]},
+                {"row": [{"title": "Inhaltstyp", "entries": self.content_types_entries()},
+                         {"title": "Autor", "entries": self.author_entries()},
+                         ]}]}
 
+def today_filter():
+    start = datetime.now().replace(
+        hour=0, minute=0, second=0, microsecond=0)
+    end = start + timedelta(days=1)
+    return lq.datetime_range('last-semantic-change', start, end)
+
+def yesterday_filter():
+    start = datetime.now().replace(
+        hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
+    end = start + timedelta(days=1)
+    return lq.datetime_range('last-semantic-change', start, end)
+
+def seven_day_filter():
+    end = datetime.now()
+    start = end - timedelta(days=7)
+    return lq.datetime_range('last-semantic-change', start, end)
+
+def month_filter():
+    end = datetime.now()
+    # XXX last month period if 31 days?
+    start = end - timedelta(days=31)
+    return lq.datetime_range('last-semantic-change', start, end)
+
+def half_year_filter():
+    end = datetime.now()
+    # last half year, about 183 days
+    start = end - timedelta(days=183)
+    return lq.datetime_range('last-semantic-change', start, end)
+
+def year_filter():
+    end = datetime.now()
+    # last year, about 366 days (to be on the safe side)
+    start = end - timedelta(days=366)
+    return lq.datetime_range('last-semantic-change', start, end)
 
 class ExpandedSearchResult(JSONView):
     template = 'expanded_search_result.jsont'
@@ -366,6 +414,12 @@ def format_week(dt):
     iso_year, iso_week, iso_weekday = dt.isocalendar()
     return '%s/%s' % (iso_week, iso_year)
 
+def format_amount(amount):
+    if amount >= 1000:
+        return "1000+"
+    else:
+        return str(amount)
+
 class InputDateParseError(Exception):
     pass
 
@@ -396,4 +450,4 @@ def parse_input_date(s):
         year = int(year)
     except ValueError:
         raise InputDateParseError("Year is not a proper number")    
-    return datetime.datetime(year, month, day)
+    return datetime(year, month, day)
