@@ -15,6 +15,7 @@ import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.preview
 import zc.iso8601.parse
 from zeit.find import lucenequery as lq
 
@@ -191,7 +192,10 @@ class SearchResult(JSONView):
                 publication_status = r['published.png']()
             else:
                 publication_status = r['unpublished.png']()
-                
+
+            preview_url = zeit.cms.browser.preview.get_preview_url(
+                'preview-prefix', uniqueId)
+            
             results.append({
                     'uniqueId': uniqueId,
                     'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -200,7 +204,7 @@ class SearchResult(JSONView):
                     'arrow': r['arrow_right.png'](),
                     'teaser_title': result.get('teaser_title', ''),
                     'teaser_text': result.get('teaser_text', ''),
-                    'preview_url': '',
+                    'preview_url': preview_url,
                     'date': format_date(dt),
                     'date_filter': '',
                     'week': format_week(dt),
