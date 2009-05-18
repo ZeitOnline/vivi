@@ -173,7 +173,7 @@ class TestGenericEditing(Test):
         self.create_teaserlist()
         s = self.selenium
 
-        s.click('//a[contains(@class, "edit-link")]')
+        s.click('css=a.edit-link')
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('id=form.publisher')
@@ -181,12 +181,10 @@ class TestGenericEditing(Test):
         s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
         s.waitForElementNotPresent('css=a.CloseButton')
 
-        s.click('//a[contains(@class, "edit-link")]')
+        s.click('css=a.edit-link')
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
-        s.pause(100)
-        s.waitForElementPresent('id=form.publisher')
-        s.verifyValue('form.publisher', 'FooPublisher')
+        s.waitForValue('form.publisher', 'FooPublisher')
 
 
 class TestTeaserBlock(Test):
