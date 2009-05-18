@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.7.6 (2009-05-18)
+------------------
+
+- Jetzt wirklich keine eigenen Translationdomain mehr.
+
 1.7.5 (2009-05-18)
 ------------------
 
