@@ -2,7 +2,7 @@
 <div class="related_entry">
   <span class="uniqueId">{uniqueId}</span>
   <div>
-    <img src="{publication_status}" />
+    {publication_status|raw}
     <span class="short_teaser_title">{short_teaser_title}</span> -
     <span class="short_teaser_text">{short_teaser_text}</span>
   </div>

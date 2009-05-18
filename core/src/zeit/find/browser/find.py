@@ -10,6 +10,7 @@ import zc.resourcelibrary
 import zope.component
 import zope.interface
 import zope.app.appsetup.product
+import zope.viewlet.interfaces
 import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
@@ -264,9 +265,10 @@ class ExpandedSearchResult(JSONView):
                 content, None)
             if metadata is None:
                 continue
+            publication_status = self.render_publication_status(content)
             results.append({
                     'uniqueId': content.uniqueId,
-                    'publication_status': r['published.png'](),
+                    'publication_status': publication_status,
                     'short_teaser_title': metadata.shortTeaserTitle or '',
                     'short_teaser_text': metadata.shortTeaserText or '',
                     })
@@ -274,6 +276,14 @@ class ExpandedSearchResult(JSONView):
             return {'template': 'no_expanded_search_result.jsont'}
 
         return {'results': results}
+
+    def render_publication_status(self, content):
+        viewlet_manager = zope.component.getMultiAdapter(
+            (content, self.request, self),
+            zope.viewlet.interfaces.IViewletManager,
+            name='zeit.cms.workflow-indicator')
+        viewlet_manager.update()
+        return viewlet_manager.render()
 
 class ToggleFavorited(JSONView):
     template = 'toggle_favorited.jsont'
