@@ -17,6 +17,16 @@ from zeit.cms.i18n import MessageFactory as _
 # XXX There is too much, too unordered in here, clean this up.
 
 
+class ICMSContentSource(zope.schema.interfaces.ISource):
+    """A source for CMS content types."""
+
+
+class INamedCMSContentSource(ICMSContentSource):
+    """A source for CMS content which is registered as utility."""
+
+    name = zope.interface.Attribute("Utility name of the source")
+
+
 class IKeywordInterface(zope.interface.interfaces.IInterface):
     """The interface of the keyword interface."""
 

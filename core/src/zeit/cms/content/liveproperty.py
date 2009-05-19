@@ -11,7 +11,7 @@ import zope.security.interfaces
 import zeit.connector.interfaces
 
 import zeit.cms.checkout.interfaces
-
+import zeit.cms.repository.interfaces
 
 class LiveProperties(object, UserDict.DictMixin):
     """Webdav properties which are updated upon change."""

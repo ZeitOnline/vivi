@@ -7,14 +7,14 @@ import zope.interface
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.content._bootstrapinterfaces
+import zeit.cms.content.interfaces
 
 
 class CMSContentSource(object):
     """A source for all cms content."""
 
     zope.interface.implements(
-        zeit.cms.content._bootstrapinterfaces.INamedCMSContentSource)
+        zeit.cms.content.interfaces.INamedCMSContentSource)
 
     name = 'all-types'
     check_interfaces = zeit.cms.interfaces.ICMSContentType
@@ -61,7 +61,7 @@ class ChoicePropertyWithCMSContentSource(object):
 
     zope.component.adapts(
         zope.schema.interfaces.IChoice,
-        zeit.cms.content._bootstrapinterfaces.ICMSContentSource)
+        zeit.cms.content.interfaces.ICMSContentSource)
 
     def __init__(self, context, source):
         self.context = context
