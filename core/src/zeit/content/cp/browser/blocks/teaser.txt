@@ -17,14 +17,6 @@ in the lead area:
 >>> browser.getLink('choose the block type').click()
 >>> browser.getLink('List of teasers').click()
 
-Set a title (although it's unclear if we really need this):
-
->>> browser.open(contents_url)
->>> browser.getLink('Edit').click()
->>> browser.open('edit-properties')
->>> browser.getControl('Title').value = 'Foo'
->>> browser.getControl('Apply').click()
-
 When a teaser is dragged on the teaser block, it is added as the first teaser.
 Drag the first one[#fill-dav-with-content]_:
 
