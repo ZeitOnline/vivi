@@ -64,6 +64,13 @@
   left: 66%;
 }
 
+#cp-forms > .tab-content {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
 #content .lightbox,
 #content .lightbox-shade,
 #content .lightbox-header {

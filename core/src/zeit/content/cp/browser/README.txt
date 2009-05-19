@@ -68,6 +68,7 @@ The inital page doens't contain much:
      </div>
      <div id="cp-forms">
      </div>
+     ...
  </div>
  ...
 
