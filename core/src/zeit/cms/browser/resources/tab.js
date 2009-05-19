@@ -35,11 +35,13 @@ zeit.cms.Tabs = gocept.Class.extend({
         forEach(self.tabs, function(tab) {
             if (tab.id == id) {
                 tab.activate();
+                self.active_tab = tab;
             } else {
                 tab.deactivate();
             }
         });
     },
+
 });
 
 zeit.cms.Tab = gocept.Class.extend({
