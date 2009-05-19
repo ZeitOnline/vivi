@@ -11,9 +11,6 @@ import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 
-import zeit.cms.content.contentsource
-from zeit.cms.content._bootstrapinterfaces import ICMSContentSource
-
 from zeit.cms.i18n import MessageFactory as _
 
 
