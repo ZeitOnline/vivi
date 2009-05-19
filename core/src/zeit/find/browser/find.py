@@ -384,6 +384,14 @@ class Favorites(JSONView):
 
         metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
 
+        if metadata:
+            if metadata.authors:
+                authors = ' '.join(metadata.authors)
+            else:
+                authors = ''
+        else:
+            authors = ''
+            
         return {
             'uniqueId': uniqueId,
             'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -399,7 +407,7 @@ class Favorites(JSONView):
             'week_filter': '',
             'topics': 'Politik',
             'topics_filter': '',
-            'author': (metadata.authors or '') if metadata else '',
+            'author': authors,
             'author_filter': '',
             'related_url': self.url('expanded_search_result', uniqueId),
             'favorite_url': self.url('toggle_favorited', uniqueId),
