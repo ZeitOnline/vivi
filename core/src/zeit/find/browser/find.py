@@ -20,6 +20,8 @@ import zeit.cms.browser.preview
 import zc.iso8601.parse
 from zeit.find import lucenequery as lq
 
+TYPES = ['article', 'gallery', 'video', 'teaser', 'centerpage']
+
 def resources(request):
     return zope.component.getAdapter(
         request, zope.interface.Interface, name='zeit.find')
@@ -164,6 +166,8 @@ def search_form(request):
     fulltext = g('fulltext')
     if fulltext is None:
         return None
+    # detect whether we are looking for expanded results or not
+    expanded = g('from', None) is not None
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
     topic = g('topic', None)
@@ -178,11 +182,12 @@ def search_form(request):
     else:
         published = None
     types = set()
-    for t in ['article', 'gallery', 'video', 'teaser', 'centerpage']:
+    for t in TYPES:
         if g(t, '') == 'on':
             types.add(t)
     return dict(
         fulltext=fulltext,
+        expanded=expanded,
         from_=from_,
         until=until,
         topic=topic,
@@ -191,7 +196,7 @@ def search_form(request):
         published=published,
         types=types)
 
-def search_query(fulltext, from_, until, topic, authors, keywords,
+def search_query(fulltext, expanded, from_, until, topic, authors, keywords,
                  published, types, filter_terms=None):
     """Given parameters, create solr query string.
     """
@@ -210,7 +215,19 @@ def search_query(fulltext, from_, until, topic, authors, keywords,
         terms.append(lq.multi_field('keywords', keywords))
     if published is not None:
         terms.append(lq.bool_field('published', published))
-
+    # if we haven't expanded the search form, look for all types
+    if not expanded:
+        types = TYPES
+    type_terms = []
+    for type in types:
+        type_terms.append(lq.field('type', type))
+    if type_terms:
+        terms.append(lq.or_(*type_terms))
+    else:
+        # XXX we find absolutely nothing as there isn't any
+        # __neverfound type around
+        terms.append(lq.field('type', '__neverfound'))
+    
     terms.extend(filter_terms)
     return lq.and_(*terms)
 
