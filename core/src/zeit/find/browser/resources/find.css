@@ -56,7 +56,7 @@
 }
 
 
-#cp-forms > div[id] {
+#cp-search > div[id] {
   bottom: 0;
   left: 0;
   overflow-y: auto;
@@ -65,7 +65,7 @@
   top: 3em;
 }
 
-#cp-forms > .context-views {
+#cp-search> .context-views {
   border-bottom: 1px solid black;
   height: 2em;
   left: 0;
@@ -104,6 +104,6 @@
   margin-top: 7px;
 }
 
-#cp-forms #search_form {
+#cp-search #search_form {
   overflow-y: auto;
 }

@@ -33,7 +33,7 @@ zeit.find = {};
 
     var connect_draggables = function() {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('cp-forms'));
+            'div', 'search_entry', $('cp-search'));
         forEach(results, function(result) {
             draggables.push(zeit.cms.createDraggableContentObject(result));
         });
@@ -41,7 +41,7 @@ zeit.find = {};
 
     var connect_related = function() {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('cp-forms'));
+            'div', 'search_entry', $('cp-search'));
         forEach(results, function(entry) {
             var related_url = MochiKit.DOM.scrapeText(
                 MochiKit.Selector.findChildElements(
@@ -64,7 +64,7 @@ zeit.find = {};
 
     var connect_toggle_favorited = function() {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('cp-forms'));
+            'div', 'search_entry', $('cp-search'));
         forEach(results, function(entry) {
             var favorite_url = MochiKit.DOM.scrapeText(
                 MochiKit.Selector.findChildElements(
@@ -85,7 +85,7 @@ zeit.find = {};
 
     var init = function() {
         search_form.render();
-        zeit.find.tabs = new zeit.cms.Tabs('cp-forms');
+        zeit.find.tabs = new zeit.cms.Tabs('cp-search');
         zeit.find.tabs.add(new zeit.cms.ViewTab('search_form', 'Suche', search_result));
         zeit.find.tabs.add(new zeit.cms.ViewTab('favorites', 'Favoriten', favorites));
         zeit.find.tabs.add(new zeit.cms.Tab('for-this-page', 'Für diese Seite'));
