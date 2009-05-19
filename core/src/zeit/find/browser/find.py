@@ -227,25 +227,6 @@ class ExtendedSearchForm(JSONView):
 class ResultFilters(JSONView):
     template = 'result_filters.jsont'
 
-    def topic_entries(self):
-        conn = get_solr()
-        q = search_form_query(self.request)
-        facets = {
-            'facet': 'true',
-            'facet.field': 'ressort',
-            }
-        query_result = conn.search(q, rows=0, **facets)
-        topic_counts = sorted(grouper(2, 
-            query_result.facets['facet_fields']['ressort']))
-        result = []
-        for topic, amount in topic_counts:
-            if amount == 0:
-                continue
-            result.append(
-                dict(title=topic,
-                     amount=format_amount(amount),
-                     query=''))
-        return result
     
     def time_entries(self):
         conn = get_solr()
@@ -263,22 +244,44 @@ class ResultFilters(JSONView):
                                    amount=format_amount(amount),
                                    query=""))
         return result
-
-    def content_types_entries(self):
-        return [ {"title": "Artikel", "amount": "1000+", "query": ""}]
     
     def author_entries(self):
         return [{"title": "Martijn Faassen", "amount": "45", "query": ""},
                 {"title": "Christian Zagrodnick", "amount": "124", "query": ""}]
 
     def json(self):
+        conn = get_solr()
+        q = search_form_query(self.request)
+        facets = {
+            'facet': 'true',
+            'facet.field': ['ressort', 'type'],
+            }
+        facet_data = conn.search(q, rows=0, **facets).facets
+        facet_fields = facet_data['facet_fields']
         return {"results": [
-                {"row": [{"title": "Ressort", "entries": self.topic_entries()},
-                         {"title": "Zeit", "entries": self.time_entries()},
+                {"row": [{"title": "Ressort",
+                          "entries": _entries(facet_fields['ressort'])},
+                         {"title": "Zeit",
+                          "entries": self.time_entries()},
                          ]},
-                {"row": [{"title": "Inhaltstyp", "entries": self.content_types_entries()},
-                         {"title": "Autor", "entries": self.author_entries()},
-                         ]}]}
+                {"row": [{"title": "Inhaltstyp",
+                          "entries": _entries(facet_fields['type'])},
+                         {"title": "Autor",
+                          "entries": self.author_entries()},
+                 ]}]}
+    
+
+def _entries(counts):
+    counts = sorted(grouper(2, counts))
+    result = []
+    for title, amount in counts:
+        if amount == 0:
+            continue
+        result.append(
+            dict(title=title,
+                 amount=format_amount(amount),
+                 query=''))
+    return result
 
 def today_filter():
     start = datetime.now().replace(
