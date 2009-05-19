@@ -8,9 +8,11 @@ import zeit.content.cp.testing
 def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'av.txt',
+        'cpextra.txt',
         'placeholder.txt',
+        'quiz.txt',
         'rss.txt',
         'teaser.txt',
         'teaserbar.txt',
-        'cpextra.txt',
-        'xml.txt')
+        'xml.txt',
+        )

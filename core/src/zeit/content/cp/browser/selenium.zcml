@@ -53,5 +53,11 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestQuizBlock"
+    name="zeit.content.cp.TestQuizBlock"
+    permission="zope.Public"
+    />
+
 </configure>
 

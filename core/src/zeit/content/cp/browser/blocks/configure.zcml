@@ -167,5 +167,6 @@
   <include file="xml.zcml" />
   <include file="rss.zcml" />
   <include file="cpextra.zcml" />
+  <include file="quiz.zcml" />
 
 </configure>

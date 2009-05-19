@@ -6,9 +6,10 @@ import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
-import zeit.workflow.interfaces
-import zeit.content.cp.layout
 import zeit.content.cp.blocks.avsource
+import zeit.content.cp.layout
+import zeit.content.quiz.source
+import zeit.workflow.interfaces
 import zope.container.interfaces
 import zope.interface
 
@@ -321,6 +322,14 @@ class IValidator(zope.interface.Interface):
 
     messages = zope.schema.List(
         title=u"List of error messages.")
+
+
+class IQuizBlock(IBlock):
+    """The Quiz block with a reference to a quiz."""
+
+    referenced_quiz = zope.schema.Choice(
+        title=_("Fetch quiz from"),
+        source=zeit.content.quiz.source.QuizSource())
 
 
 class IRSSFolder(zeit.cms.repository.interfaces.IFolder):

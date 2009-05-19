@@ -142,6 +142,22 @@
     factory=".av.AudioBlock"
     />
 
+  <!-- Quiz block -->
+  <class class=".quiz.QuizBlock">
+    <require
+      interface="..interfaces.IQuizBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IQuizBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".quiz.QuizBlockFactory" name="quizblock" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="quizblock"
+    factory=".quiz.QuizBlock"
+    />
+
   <!-- cp_extra based blocks -->
   <zeit:cp_extras module=".cpextra" />
   <subscriber handler=".cpextra.add_blocks_to_newly_created_cp" />

@@ -11,6 +11,7 @@ import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.centerpage
 import zope.component
+import zeit.content.quiz.quiz
 
 
 def css_path(css):
@@ -525,6 +526,45 @@ class TestVideoBlock(Test):
         s.waitForElementNotPresent('css=.lightbox')
 
 
+class TestQuizBlock(Test):
+
+    def create_quizblock(self):
+        s = self.selenium
+        s.click('link=*Add block*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('//a[@class="choose-block"]')
+        s.waitForElementPresent('css=div.block-types')
+        s.click('link=Quizblock')
+        s.waitForElementPresent('css=div.type-quizblock')
+
+    def add_quiz(self):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        quiz = zeit.content.quiz.quiz.Quiz()
+        repository['my_quiz'] = quiz
+
+    def test_add_quiz(self):
+        self.open_centerpage()
+        self.create_quizblock()
+        self.add_quiz()
+
+        s = self.selenium
+        s.pause(300)
+        s.click('css=div.type-quizblock > * > div.edit > a.edit-link')
+        s.waitForElementPresent('id=lightbox.form')
+        s.pause(100)
+        s.type('css=input.object-reference', 'http://xml.zeit.de/my_quiz')
+        s.click('form.actions.apply')
+        s.waitForElementNotPresent('css=.lightbox')
+
+        s.click('css=div.type-quizblock > * > div.edit > a.edit-link')
+        s.waitForElementPresent('id=lightbox.form')
+        s.waitForValue('css=input.object-reference',
+                       'http://xml.zeit.de/my_quiz')
+        s.click('form.actions.apply')
+        s.waitForElementNotPresent('css=.lightbox')
+
+
 class CreateTestContent(object):
 
     def __call__(self):
@@ -539,6 +579,9 @@ class CreateTestContent(object):
         c3 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         c3.teaserTitle = c3.shortTeaserTitle = u'c3 teaser'
         repository['c3'] = c3
+        quiz = zeit.content.quiz.quiz.Quiz()
+        quiz.teaserTitle = quiz.shortTeaserTitle = u'MyQuiz'
+        repository['my_quiz'] = quiz
         return 'Done.'
 
 

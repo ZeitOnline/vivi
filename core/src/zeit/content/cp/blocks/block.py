@@ -20,6 +20,8 @@ class BlockFactory(object):
     def get_xml(self):
         container = lxml.objectify.E.container()
         container.set('{http://namespaces.zeit.de/CMS/cp}type', self.block_type)
+        if getattr(self, 'module', None):
+            container.set('module', self.module)
         return container
 
     def __call__(self):
@@ -29,13 +31,15 @@ class BlockFactory(object):
         return block
 
 
-def blockFactoryFactory(adapts, block_class, block_type, title=None):
+def blockFactoryFactory(adapts, block_class, block_type,
+                        title=None, module=None):
     """A factory which creates a block factory."""
     class_name = '%sFactory' % block_type.capitalize()
     factory = type(class_name, (BlockFactory,), dict(
         title=title,
         block_class=block_class,
-        block_type=block_type))
+        block_type=block_type,
+        module=module))
     factory = zope.component.adapter(adapts)(factory)
     return factory
 
