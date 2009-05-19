@@ -115,11 +115,6 @@ class TestGenericEditing(Test):
         s.click('link=List of teasers')
         s.waitForElementPresent('css=div.block.type-teaser')
         s.pause(300)
-        s.click('css=div.block.type-teaser > * > div.edit > a.edit-link')
-        s.waitForElementPresent('id=lightbox.form')
-        s.type('form.title', 'Holladrio')
-        s.click('form.actions.apply')
-        s.waitForElementNotPresent('css=.lightbox')
 
         # Open delete verification
         s.pause(250)
@@ -517,6 +512,7 @@ class TestVideoBlock(Test):
         s.pause(300)
         s.click('css=div.block.type-videoblock > * > div.edit > a.edit-link')
         s.waitForElementPresent('id=lightbox.form')
+        s.pause(300)
         s.type('form.id', '12345')
         s.click('//input[@value="1W"]')
         s.select('form.format', 'small')
