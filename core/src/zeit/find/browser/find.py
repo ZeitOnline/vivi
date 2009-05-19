@@ -143,7 +143,7 @@ class SearchResult(JSONView):
                     'week_filter': '',
                     'topics': result.get('ressort', ''),
                     'topics_filter': '',
-                    'author': result.get('authors', ''),
+                    'author': ' '.join(result.get('authors', [])),
                     'author_filter': '',
                     'related_url': self.url('expanded_search_result', uniqueId),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
@@ -210,7 +210,7 @@ def search_query(fulltext, expanded, from_, until, topic, authors, keywords,
     if topic is not None:
         terms.append(lq.field('ressort', topic))
     if authors is not None:
-        terms.append(lq.multi_field('authors', authors))
+        terms.append(lq.multi_field('authors_fulltext', authors))
     if keywords is not None:
         terms.append(lq.multi_field('keywords', keywords))
     if published is not None:
