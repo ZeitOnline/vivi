@@ -11,6 +11,7 @@ import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
+import zope.cachedescriptors.property
 import zope.component
 import zope.event
 import zope.formlib.form
@@ -123,12 +124,13 @@ class Drop(zeit.content.cp.browser.view.Action):
     """Drop a content object on a teaserblock."""
 
     uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+    index = zeit.content.cp.browser.view.Form('index', json=True, default=0)
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         if self.context.autopilot:
             self.context.autopilot = False
-        self.context.insert(0, content)
+        self.context.insert(self.index, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
 
@@ -136,6 +138,7 @@ class Drop(zeit.content.cp.browser.view.Action):
 class EditContents(Display):
     """Edit the teaser list."""
 
+    @zope.cachedescriptors.property.Lazy
     def teasers(self):
         teasers = []
         for content in self.context:

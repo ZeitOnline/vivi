@@ -1,32 +1,43 @@
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
-      tal:attributes="cms:url context/@@absolute_url">
-    <li class="edit-bar"
-        tal:repeat="teaser view/teasers"
-        tal:attributes="
-        class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd';
-        cms:uniqueId teaser/uniqueId">
-      <span class="locked-indicator"
-            tal:condition="not: teaser/editable"
-            tal:content="structure teaser/content/@@get_locking_indicator" />
-      <a class="edit-link"
-         tal:condition="teaser/editable"
-         tal:attributes="href string:${context/@@absolute_url}/checkout-content?uniqueId=${teaser/uniqueId}"
-         cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
-         cms:lightbox-in="cp-forms">
-        <span class="action-title">Edit</span>
-      </a>
-      <a class="delete-link" title="Delete"
-         tal:attributes="href string:${context/@@absolute_url}/delete?uniqueId=${teaser/uniqueId}"
-         i18n:attributes="title"
-         cms:cp-module="zeit.content.cp.ConfirmDelete"
-         cms:delete-module="zeit.content.cp.teaser.TeaserListDeleteEntry"
-         cms:delete-highlight="edit-bar">
-        <span class="action-title">Delete</span>
-      </a>
+      tal:define="context_url context/@@absolute_url"
+      tal:attributes="cms:url context_url">
+    <tal:repeat tal:repeat="teaser view/teasers">
+      <li class="action-content-droppable landing-zone"
+          tal:attributes="cms:drop-url string:$context_url/@@drop?index=${repeat/teaser/index}">
+      </li>
+      <li class="edit-bar"
+          tal:attributes="
+          class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd';
+          cms:uniqueId teaser/uniqueId">
+        <span class="locked-indicator"
+              tal:condition="not: teaser/editable"
+              tal:content="structure teaser/content/@@get_locking_indicator" />
+        <a class="edit-link"
+           tal:condition="teaser/editable"
+           tal:attributes="href string:${context/@@absolute_url}/checkout-content?uniqueId=${teaser/uniqueId}"
+           cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
+           cms:lightbox-in="cp-forms">
+          <span class="action-title">Edit</span>
+        </a>
+        <a class="delete-link" title="Delete"
+           tal:attributes="href string:${context/@@absolute_url}/delete?uniqueId=${teaser/uniqueId}"
+           i18n:attributes="title"
+           cms:cp-module="zeit.content.cp.ConfirmDelete"
+           cms:delete-module="zeit.content.cp.teaser.TeaserListDeleteEntry"
+           cms:delete-highlight="edit-bar">
+          <span class="action-title">Delete</span>
+        </a>
 
-      <div tal:content="teaser/metadata/teaserTitle" />
+        <div tal:content="teaser/metadata/teaserTitle" />
 
+      </li>
+    </tal:repeat>
+    <li class="action-content-droppable landing-zone visible"
+        tal:define="teasers python:len(view.teasers)"
+          tal:attributes="cms:drop-url string:$context_url/@@drop?index=${teasers}"
+        i18n:translate="">
+      To add content drop it here.
     </li>
   </ol>
 </div>

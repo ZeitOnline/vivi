@@ -5,6 +5,9 @@ zeit.content.cp changes
 0.7 (unreleased)
 ----------------
 
+- Beim Bearbeiten eines Teaserblocks können jetzt Teaser direkt in die Liste
+  gezogen werden.
+
 0.6 (2009-05-17)
 ----------------
 

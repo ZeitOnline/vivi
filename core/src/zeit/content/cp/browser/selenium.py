@@ -115,7 +115,12 @@ class TestGenericEditing(Test):
         s.waitForElementPresent('css=div.block-types')
         s.click('link=List of teasers')
         s.waitForElementPresent('css=div.block.type-teaser')
-        s.pause(300)
+        link = 'css=div.block.type-teaser > * > div.edit > a.edit-link'
+        s.waitForElementPresent(link)
+        s.click(link)
+        s.waitForElementPresent('form.actions.apply')
+        s.click('form.actions.apply')
+        s.waitForElementNotPresent('css=.lightbox')
 
         # Open delete verification
         s.pause(250)
@@ -150,7 +155,6 @@ class TestGenericEditing(Test):
         s.waitForXpathCount(css_path('a.choose-block'), 2)
 
     def test_hover(self):
-        self.open_centerpage()
         self.create_teaserlist()
         s = self.selenium
 
@@ -165,7 +169,6 @@ class TestGenericEditing(Test):
 
 
     def test_common_data_edit_form(self):
-        self.open_centerpage()
         self.create_teaserlist()
         s = self.selenium
 
@@ -247,27 +250,33 @@ class TestTeaserBlock(Test):
         # Get the height of the first row and drag it 2.75 times the height so
         # it overlaps the third row. The initial order is 3, 2, 1. After drag
         # it is 2, 1, 3.
-        def li(text):
-            return '//div[@class="lightbox"]//li[contains(string(.), "%s")]' % (
+        def li(text, following_sibling=False):
+            path = '//div[@class="lightbox"]//li[contains(string(.), "%s")]' % (
                 text,)
+            if following_sibling:
+                path += '/following-sibling::li[1]'
+            return path
         s.storeElementHeight(li('c3'), 'height')
+        s.storeElementHeight(li('c3', True), 'height-landing')
 
-        s.storeEval("new Number(storedVars['height']) * 2.75", 'delta_y')
+        s.storeEval("(new Number(storedVars['height']) + "
+                    "new Number(storedVars['height-landing'])) * 2.75",
+                    'delta_y')
         s.dragAndDrop(li('c3'), '0,${delta_y}')
 
-        s.pause(100)
         s.waitForElementPresent('css=div.teaser-list-edit-box')
-        s.verifyOrdered(li('c2'), li('c1'))
-        s.verifyOrdered(li('c1'), li('c3'))
+        s.waitForOrdered(li('c2', True), li('c1'))
+        s.verifyOrdered(li('c1', True), li('c3'))
 
         # Drag the c1 node .75 up; the resulting order is 1, 2, 3
-        s.storeEval("new Number(storedVars['height']) * 0.75", 'delta_y')
-        s.dragAndDrop(li('c1'), '0,-${delta_y}')
+        s.storeEval("(new Number(storedVars['height']) + "
+                    "new Number(storedVars['height-landing'])) * -0.75",
+                    'delta_y')
+        s.dragAndDrop(li('c1'), '0,${delta_y}')
 
-        s.pause(100)
         s.waitForElementPresent('css=div.teaser-list-edit-box')
-        s.verifyOrdered(li('c1'), li('c2'))
-        s.verifyOrdered(li('c2'), li('c3'))
+        s.waitForOrdered(li('c1', True), li('c2'))
+        s.verifyOrdered(li('c2', True), li('c3'))
 
 
     def test_inplace_teaser_editing_with_save(self):
@@ -308,6 +317,29 @@ class TestTeaserBlock(Test):
             '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
             'a[contains(@class, "edit-link")]')
         s.waitForElementPresent('id=form.teaserTitle')
+
+    def test_edit_box_drop_of_content(self):
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+        s = self.selenium
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=.lightbox .landing-zone')
+
+        # There is a landing zone
+        s.verifyElementNotPresent('css=.lightbox li.edit-bar')
+        s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 1)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=.lightbox .landing-zone')
+        s.waitForElementPresent('css=.lightbox li.edit-bar')
+
+        # Now, there are two landing zones
+        s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 2)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=.lightbox .landing-zone:first-child')
+        s.waitForXpathCount(css_path('.lightbox li.edit-bar'), 2)
+        s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
 
 
 class TestSorting(Test):
@@ -496,6 +528,7 @@ class TestLandingZone(Test):
 
 
 class TestVideoBlock(Test):
+
     def create_videoblock(self):
         s = self.selenium
         s.click('link=*Add block*')
@@ -510,8 +543,9 @@ class TestVideoBlock(Test):
         self.create_videoblock()
         s = self.selenium
 
-        s.pause(300)
-        s.click('css=div.block.type-videoblock > * > div.edit > a.edit-link')
+        edit_link = 'css=div.block.type-videoblock > * > div.edit > a.edit-link'
+        s.waitForElementPresent(edit_link)
+        s.click(edit_link)
         s.waitForElementPresent('id=lightbox.form')
         s.pause(300)
         s.type('form.id', '12345')

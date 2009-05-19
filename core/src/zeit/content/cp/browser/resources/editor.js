@@ -4,9 +4,19 @@ if (isUndefinedOrNull(zeit.content)) {
 zeit.content.cp = {}
 
 
-zeit.content.cp.makeJSONRequest = function(url, options) {
-    zeit.content.cp.editor.busy_until_reload();
-    var d = MochiKit.Async.doSimpleXMLHttpRequest(url, options);
+zeit.content.cp.makeJSONRequest = function(url, options, target_component) {
+    var query_string = MochiKit.Base.queryString(options);
+    if (url.indexOf('?') == -1) {
+        var conjunctor = '?';
+    } else {
+        var conjunctor = '&';
+    }
+    var url = url + conjunctor + query_string;
+    if (isUndefinedOrNull(target_component)) {
+        target_component = zeit.content.cp.editor;
+    }
+    zeit.content.cp.editor.busy_until_reload_of(target_component);
+    var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
     d.addCallbacks(function(result) {
         var result_obj = null;
         try {
@@ -21,12 +31,12 @@ zeit.content.cp.makeJSONRequest = function(url, options) {
                     immediate_actions.push(signal);
                 } else {
                     var ident = MochiKit.Signal.connect(
-                        zeit.content.cp.editor, signal.when, function() {
+                        target_component, signal.when, function() {
                         MochiKit.Signal.disconnect(ident);
                         MochiKit.Signal.signal.apply(
                             this,
                             extend(
-                                [zeit.content.cp.editor, signal.name],
+                                [target_component, signal.name],
                                 signal.args));
                     });
                 }
@@ -42,16 +52,17 @@ zeit.content.cp.makeJSONRequest = function(url, options) {
                 var signal = immediate_actions.pop();
                 MochiKit.Signal.signal.apply(
                     this,
-                    extend([zeit.content.cp.editor, signal.name], signal.args));
+                    extend([target_component, signal.name], signal.args));
             }
         } else {
-            MochiKit.Signal.signal(zeit.content.cp.editor, 'reload');
+            MochiKit.Signal.signal(target_component, 'reload');
         }
         return result;
     },
     function(error) {
         // XXX log_error should be part of zeit.cms
         zeit.find.log_error(error);
+        return error;
     });
     return d;
 }
@@ -110,7 +121,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             log("Loading module " + module_name);
             event.stop();
             var module = zeit.content.cp.resolveDottedName(module_name);
-            self.current_module = new module(target);
+            new module(target);
         } else if (event.target().nodeName != 'INPUT') {
             event.preventDefault();
         }
@@ -167,22 +178,25 @@ zeit.content.cp.Editor = gocept.Class.extend({
         MochiKit.DOM.swapDOM(element, dom.firstChild);
     },
 
-    busy_until_reload: function() {
+    busy_until_reload_of: function(component) {
         var self = this;
         if (self.busy) {
             // Already busy
             return;
         }
+        log("Entering BUSY state " + component.__name__);
         self.busy = true;
         MochiKit.Signal.signal(self, 'busy');
-        var ident = MochiKit.Signal.connect(self, 'after-reload', function() {
-            MochiKit.Signal.disconnect(ident);
-            self.idle();
+        var ident = MochiKit.Signal.connect(
+            component, 'after-reload', function() {
+                MochiKit.Signal.disconnect(ident);
+                self.idle();
         });
     },
 
     idle: function() {
         var self = this;
+        log("Entering IDLE state");
         if (self.busy) {
             self.busy = false;
             MochiKit.Signal.signal(self, 'idle');
@@ -370,10 +384,48 @@ zeit.content.cp.ContentActionBase = gocept.Class.extend({
 });
 
 
-zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
+zeit.content.cp.ContentDropper = gocept.Class.extend({
     // Handle dropping of content objects.
 
     __name__: 'zeit.content.cp.ContentDropper',
+
+    construct: function(element, url, parent) {
+        var self = this;
+        self.droppable = new MochiKit.DragAndDrop.Droppable(element, {
+            accept: ['uniqueId', 'content-drag-pane'],
+            activeclass: 'droppable-active',
+            hoverclass: 'hover-content',
+            ondrop: function(draggable, droppable, event) {
+                self.drop(draggable, droppable, event, url);
+            },
+        });
+        self.parent = parent;
+    },
+
+    destroy: function() {
+        var self = this;
+        self.droppable.destroy();
+        delete self.droppable;
+    },
+
+    drop: function(draggable, droppable, event, url) {
+        var self = this;
+        var uniqueId = draggable.uniqueId;
+        if (isUndefinedOrNull(uniqueId)) {
+            return
+        }
+        var d = zeit.content.cp.makeJSONRequest(
+            url, {'uniqueId': uniqueId}, self.parent);
+        return d;
+    },
+
+});
+
+
+zeit.content.cp.EditorContentDroppers = 
+    zeit.content.cp.ContentActionBase.extend({
+
+    __name__: 'zeit.content.cp.EditorContentDroppers',
     context: zeit.content.cp.in_context.Editor,
 
     connect: function() {
@@ -385,25 +437,9 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
             var droppable_element = self.get_droppable_element_for(element);
             var url = element.getAttribute('cms:drop-url');
             self.dnd_objects.push(
-                new MochiKit.DragAndDrop.Droppable(droppable_element, {
-                    accept: ['uniqueId', 'content-drag-pane'],
-                    activeclass: 'droppable-active',
-                    hoverclass: 'hover-content',
-                    ondrop: function(draggable, droppable, event) {
-                        self.drop(draggable, droppable, event, url);
-                    },
-                }));
+                new zeit.content.cp.ContentDropper(
+                    droppable_element, url, zeit.content.cp.editor));
         });
-    },
-
-    drop: function(draggable, droppable, event, url) {
-        var self = this;
-        var uniqueId = draggable.uniqueId;
-        if (isUndefinedOrNull(uniqueId)) {
-            return
-        }
-        var d = zeit.content.cp.makeJSONRequest(url, {'uniqueId': uniqueId});
-        return d;
     },
 
     get_droppable_element_for: function(element) {
@@ -418,8 +454,10 @@ zeit.content.cp.ContentDropper = zeit.content.cp.ContentActionBase.extend({
 });
 
 
+
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    zeit.content.cp.content_dropper = new zeit.content.cp.ContentDropper();
+    zeit.content.cp.content_dropper = 
+        new zeit.content.cp.EditorContentDroppers();
 });
 
 
@@ -642,7 +680,12 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
     reload: function() {
         var self = this;
         MochiKit.Signal.signal(self, 'before-reload');
-        arguments.callee.$.reload.call(self);
+        var d = arguments.callee.$.reload.call(self);
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(self, 'after-reload');
+            return result;
+        });
+        return d;
     },
 
     handle_submit: function(action) {
@@ -673,6 +716,8 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
 zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
 
+    __name__: 'zeit.content.cp.TabbedLightBoxForm',
+
     reload: function() {
         var self = this;
         MochiKit.Signal.signal(self, 'before-reload');
@@ -684,8 +729,7 @@ zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
                 null, 'lightbox-tab-data', self.context_element.parentNode);
         var i = 0;
         self.tabs = new zeit.cms.Tabs(
-                MochiKit.DOM.getFirstElementByTagAndClassName(
-                    null, 'lightbox'));
+                self.lightbox.content_box);
         forEach(tab_definitions, function(tab_definition) {
             var tab_id = 'tab-'+i;
             var tab_view = new zeit.cms.View(
@@ -693,14 +737,18 @@ zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
             var tab = new zeit.cms.ViewTab(
                 tab_id, tab_definition.title, tab_view);
             self.tabs.add(tab);
-            MochiKit.Signal.connect(tab_view, 'load', function() {
-                form = MochiKit.DOM.getFirstElementByTagAndClassName(
-                    'form', null, $(tab_view.target_id));
-                zeit.content.cp.editor.current_module.rewire_submit_buttons(
-                    form);
-                $(tab_view.target_id).__handler__ = self;
-                self.eval_javascript_tags();
-            });
+            self.events.push(
+                MochiKit.Signal.connect(
+                    tab_view, 'load', function() {
+                    var form = MochiKit.DOM.getFirstElementByTagAndClassName(
+                        'form', null, $(tab_view.target_id));
+                    if (!isNull(form)) {
+                        self.rewire_submit_buttons(form);
+                    }
+                    $(tab_view.target_id).__handler__ = self;
+                    self.eval_javascript_tags();
+                    MochiKit.Signal.signal(self, 'after-reload')
+            }));
             if (self.context_element == tab_definition) {
                 self.tabs.activate(tab_id);
             }

@@ -12,10 +12,16 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
         arguments.callee.$.construct.call(self, container_id);
     },
 
+    connect: function() {
+        var self = this;
+        arguments.callee.$.connect.call(self);
+        self.activate_content_droppers();
+    },
+
     get_sortable_nodes: function() {
         var self = this;
-        return MochiKit.Sortable.findChildren(
-            $(self.container), null, false, 'li');
+        return elements = MochiKit.Selector.findChildElements(
+            $(self.container), ['li.edit-bar'])
     },
 
     serialize: function() {
@@ -32,6 +38,19 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
             MochiKit.Signal.signal(self.parent, 'reload');
         });
         return d;
+    },
+
+    activate_content_droppers: function() {
+        var self = this;
+        var elements = MochiKit.Selector.findChildElements(
+            $(self.container),
+            ['li.action-content-droppable']);
+        forEach(elements, function(element) {
+            var url = element.getAttribute('cms:drop-url');
+            self.dnd_objects.push(
+                new zeit.content.cp.ContentDropper(
+                    element, url, self.parent));
+        });
     },
     
 });
