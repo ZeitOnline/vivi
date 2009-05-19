@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import itertools
 from datetime import datetime, timedelta
 import cjson
 import pysolr
@@ -227,10 +228,25 @@ class ResultFilters(JSONView):
     template = 'result_filters.jsont'
 
     def topic_entries(self):
-        return [{"title": "Politik", "amount": "10", "query": ""},
-                {"title": "Kultur", "amount": "7", "query": ""},
-                {"title": "Kultur", "amount": "7", "query": ""}]
-
+        conn = get_solr()
+        q = search_form_query(self.request)
+        facets = {
+            'facet': 'true',
+            'facet.field': 'ressort',
+            }
+        query_result = conn.search(q, rows=0, **facets)
+        topic_counts = sorted(grouper(2, 
+            query_result.facets['facet_fields']['ressort']))
+        result = []
+        for topic, amount in topic_counts:
+            if amount == 0:
+                continue
+            result.append(
+                dict(title=topic,
+                     amount=format_amount(amount),
+                     query=''))
+        return result
+    
     def time_entries(self):
         conn = get_solr()
         result = []
@@ -451,3 +467,7 @@ def parse_input_date(s):
     except ValueError:
         raise InputDateParseError("Year is not a proper number")    
     return datetime(year, month, day)
+
+def grouper(n, iterable, padvalue=None):
+    return itertools.izip(
+        *[itertools.chain(iterable, itertools.repeat(padvalue, n-1))]*n)
