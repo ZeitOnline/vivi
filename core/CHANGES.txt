@@ -5,6 +5,11 @@ zeit.content.cp changes
 0.7 (unreleased)
 ----------------
 
+Neue Funktionen
+---------------
+
+- Neuer Content Block "Quiz" (#5279) wurde hinzugefügt.
+
 - Beim Bearbeiten eines Teaserblocks können jetzt Teaser direkt in die Liste
   gezogen werden.
 
