@@ -89,6 +89,10 @@ class ILeadRegion(IRegion):
     """The lead region."""
 
 
+class IInformativesRegion(IRegion):
+    """The informatives region."""
+
+
 class ICluster(IArea):
     """A cluster contains regions."""
 

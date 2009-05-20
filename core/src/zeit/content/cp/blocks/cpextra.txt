@@ -7,7 +7,8 @@ change them.
 MostRead
 ++++++++
 
-The most read block shows the most read articles:
+The most read block shows the most read articles. It is only valid in the
+Informatives area:
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
@@ -16,15 +17,13 @@ The most read block shows the most read articles:
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
 ...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostread')
->>> block = factory()
-
-The block contains an ``cp_extra``:
-
->>> import lxml.etree
->>> print lxml.etree.tostring(block.xml, pretty_print=True)
-<container...>
-  <cp_extra id="mostread"/>
-</container>
+Traceback (most recent call last):
+    ...
+ComponentLookupError: (<zeit.content.cp.area.LeadRegion for lead>, <InterfaceClass zeit.content.cp.interfaces.IBlockFactory>, 'mostread')
+>>> zope.component.getAdapter(
+...     cp['informatives'],
+...     zeit.content.cp.interfaces.IBlockFactory, name='mostread')
+<zeit.content.cp.blocks.cpextra.MostreadFactory object at 0x...>
 
 
 When a centerpage is created the toplist is automatically added[#functional]_:
@@ -35,29 +34,33 @@ When a centerpage is created the toplist is automatically added[#functional]_:
 >>> mr = container['cp']['informatives'].values()[0]
 >>> mr.type
 'mostread'
+>>> import lxml.etree
+>>> print lxml.etree.tostring(mr.xml, pretty_print=True)
+<container...>
+  <cp_extra id="mostread"/>
+</container>
+
 
 MostCommented
 +++++++++++++
 
-The most read block shows the most read articles:
+The most read block shows the most read articles. It is only addable in the
+informatives area:
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
->>> factory = zope.component.getAdapter(
+>>> zope.component.getAdapter(
 ...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')
->>> block = factory()
-
-The block contains an ``cp_extra``:
-
->>> import lxml.etree
->>> print lxml.etree.tostring(block.xml, pretty_print=True)
-<container...>
-  <cp_extra id="mostcommented"/>
-</container>
-
+Traceback (most recent call last):
+    ...
+ComponentLookupError: (<zeit.content.cp.area.LeadRegion for lead>, <InterfaceClass zeit.content.cp.interfaces.IBlockFactory>, 'mostcommented')
+>>> zope.component.getAdapter(
+...     cp['informatives'],
+...     zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')
+<zeit.content.cp.blocks.cpextra.MostcommentedFactory object at 0x...>
 
 When a centerpage is created the toplist is automatically added. We look at the
 cp created above:
@@ -66,6 +69,12 @@ cp created above:
 >>> mc = container['cp']['informatives'].values()[1]
 >>> mc.type
 'mostcommented'
+>>> import lxml.etree
+>>> print lxml.etree.tostring(mc.xml, pretty_print=True)
+<container...>
+  <cp_extra id="mostcommented"/>
+</container>
+
 
 
 Weather

@@ -1,0 +1,5 @@
+{.repeated section factories}
+<div>
+{title}
+</div>
+{.end}

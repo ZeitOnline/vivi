@@ -14,7 +14,7 @@ A centerpage has three editable areas:
 >>> cp['lead']
 <zeit.content.cp.area.LeadRegion for lead>
 >>> cp['informatives']
-<zeit.content.cp.area.Region for informatives>
+<zeit.content.cp.area.InformativesRegion for informatives>
 >>> cp['teaser-mosaic']
 <zeit.content.cp.area.Cluster for teaser-mosaic>
 

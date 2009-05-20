@@ -29,7 +29,7 @@ class CPExtraBlockFactory(zeit.content.cp.blocks.block.BlockFactory):
 
 cp_extras = []
 
-def factor(extra_id, title):
+def factor(extra_id, title, interface=zeit.content.cp.interfaces.IRegion):
     """A factory which creates a cpextra block and a corresponding factory."""
     class_name = '%sBlock' % extra_id.capitalize()
     class_ = type(class_name, (CPExtraBlock,), dict(
@@ -40,8 +40,7 @@ def factor(extra_id, title):
         title=title,
         block_class=class_,
         block_type=extra_id))
-    factory = zope.component.adapter(
-        zeit.content.cp.interfaces.IRegion)(factory)
+    factory = zope.component.adapter(interface)(factory)
 
     globals()[class_name] = class_
     globals()[factory_name] = factory
@@ -65,7 +64,9 @@ def add_blocks_to_newly_created_cp(context, event):
         zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')()
 
 
-factor('mostread', u'Meistgelesen')
-factor('mostcommented', u'Meistkommentiert')
+factor('mostread', u'Meistgelesen',
+       zeit.content.cp.interfaces.IInformativesRegion)
+factor('mostcommented', u'Meistkommentiert',
+       zeit.content.cp.interfaces.IInformativesRegion)
 factor('weather', u'Wetter')
 factor('stocks', u'Börse')

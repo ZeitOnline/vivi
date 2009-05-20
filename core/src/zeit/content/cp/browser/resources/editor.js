@@ -151,7 +151,9 @@ zeit.content.cp.Editor = gocept.Class.extend({
         }
         d.addCallback(function(result) {
             MochiKit.Signal.signal(self, 'after-reload');
+            return result;
         });
+        return d;
     },
 
     replace_whole_editor: function(result) {
@@ -213,7 +215,11 @@ zeit.content.cp.Editor = gocept.Class.extend({
         }
         zeit.content.cp.editor = new zeit.content.cp.Editor();
         MochiKit.Signal.signal(window, 'cp-editor-initialized');
-        zeit.content.cp.editor.reload();
+        var d = zeit.content.cp.editor.reload();
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(window, 'cp-editor-loaded');
+            return result;
+        });
     });
 })();
 

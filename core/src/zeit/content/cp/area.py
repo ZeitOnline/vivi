@@ -110,6 +110,11 @@ class LeadRegion(Region):
     zope.interface.implements(zeit.content.cp.interfaces.ILeadRegion)
 
 
+class InformativesRegion(Region):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IInformativesRegion)
+
+
 class Cluster(Area):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICluster)

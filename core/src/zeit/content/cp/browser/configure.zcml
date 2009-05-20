@@ -53,7 +53,9 @@
              zeit.find
              zc.datetimewidget
     ">
-    <directory source="resources" include="editor.css editor.js teaser.js" />
+    <directory
+      source="resources"
+      include="editor.css editor.js teaser.js library.js"/>
   </resourceLibrary>
 
 
@@ -186,4 +188,24 @@
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.Checkout"
     />
+
+  <!-- Module library -->
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.BlockFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ICluster"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.ClusterBlockFactories"
+    permission="zeit.EditContent"
+    />
+
+
 </configure>

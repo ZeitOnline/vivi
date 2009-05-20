@@ -46,7 +46,7 @@
   <adapter factory=".area.area_to_centerpage" />
   <adapter factory=".area.cms_content_iter" />
 
-  <class class=".area.Region">
+  <class class=".area.LeadRegion">
     <require
       interface=".interfaces.IReadArea"
       permission="zope.View" />
@@ -55,7 +55,7 @@
       permission="zeit.EditContent"
       />
   </class>
-  <class class=".area.LeadRegion">
+  <class class=".area.InformativesRegion">
     <require
       interface=".interfaces.IReadArea"
       permission="zope.View" />
@@ -82,7 +82,7 @@
   <adapter
     provides=".interfaces.IArea"
     name="informatives"
-    factory=".area.Region"
+    factory=".area.InformativesRegion"
     />
   <adapter
     provides=".interfaces.IArea"
