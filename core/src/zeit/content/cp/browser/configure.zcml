@@ -122,6 +122,28 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".teaser.DisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".teaser.EditForm"
+    permission="zope.View"
+    />
+
   <adapter factory=".teaser.ItemTraverser" name="item" />
   <adapter factory=".teaser.ListRepresentation" />
 

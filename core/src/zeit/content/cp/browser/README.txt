@@ -42,7 +42,7 @@ LinkNotFoundError
 >>> browser.getLink('Checkin').click()
 >>> browser.getLink('View metadata').click()
 >>> print browser.title.strip()
-island – View centerpage metadata
+Auf den Spuren der Elfen – View centerpage metadata
 
 
 Editor
@@ -56,7 +56,7 @@ Check the CP out again, and go to the edit view:
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Edit contents').click()
 >>> print browser.title.strip()
-island – Edit centerpage
+Auf den Spuren der Elfen – Edit centerpage
 
 
 The inital page doens't contain much:

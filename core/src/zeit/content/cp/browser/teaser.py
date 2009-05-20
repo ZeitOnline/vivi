@@ -1,7 +1,10 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.browser.commonmetadata
+import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.interfaces
@@ -10,7 +13,6 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
-from zeit.content.cp.i18n import MessageFactory as _
 
 
 class Delete(object):
@@ -147,7 +149,7 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
 
 
 class ListRepresentation(
-    zeit.cms.repository.browser.adapter.CMSContentListRepresentation):
+    zeit.cms.content.browser.commonmetadata.CommonMetadataListRepresentation):
 
     zope.component.adapts(zeit.content.cp.interfaces.ITeaser,
                           zope.publisher.interfaces.IPublicationRequest)
@@ -156,3 +158,23 @@ class ListRepresentation(
     def title(self):
         return self.context.teaserTitle
 
+
+class FormBase(object):
+
+    form_fields = (
+        zeit.cms.content.browser.form.CommonMetadataFormBase.form_fields.omit(
+            'automaticMetadataUpdateDisabled')
+        + zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaser).select('original_content'))
+
+
+class EditForm(FormBase,
+               zeit.cms.content.browser.form.CommonMetadataEditForm):
+
+    title = _("Edit teaser")
+
+
+class DisplayForm(FormBase,
+                  zeit.cms.content.browser.form.CommonMetadataDisplayForm):
+
+    title = _("View teaser")
