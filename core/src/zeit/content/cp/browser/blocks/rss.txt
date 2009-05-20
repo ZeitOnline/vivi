@@ -36,8 +36,8 @@ Editing the block
 
 >>> browser.open(contents_url)
 >>> print browser.contents
-<...RSS Feed: tagesschau.de - Die Nachrichten der ARD
-<ul>
+<...RSS Feed...tagesschau.de - Die Nachrichten der ARD...
+<ul class="feed-items">
     <li>Sri Lanka: Zivilisten unter Dauerbeschuss</li>
 </ul>...
 
@@ -96,5 +96,4 @@ Displaying error messages
 <...<div
   cms:tooltip="...xml.sax._exceptions...
   class="block type-rssblock validation-error"...>
-<div class="block-inner">
-<div>RSS Feed:...An error occurred...
+<div class="block-item">An error occurred...
