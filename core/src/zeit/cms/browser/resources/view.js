@@ -1,4 +1,5 @@
 zeit.cms.View = gocept.Class.extend({
+
     construct: function(url, target_id, get_query_string) {
         var self = this;
         self.url = url;
@@ -9,11 +10,7 @@ zeit.cms.View = gocept.Class.extend({
     render: function(target_element, url) {
         var self = this;
         if (isUndefinedOrNull(url)) {
-            // XXX dependency on application_url...
-            url = application_url + '/' + self.url;
-
-        } else {
-            url = application_url + '/' + url;
+            url = self.url;
         }
 
         if (!isUndefinedOrNull(self.get_query_string)) {
@@ -51,6 +48,7 @@ zeit.cms.View = gocept.Class.extend({
 // need control over which element is expanded (optionally pass to render)
 
 zeit.cms.JSONView = zeit.cms.View.extend({
+
     load: function(target_element, url) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(url);
@@ -101,5 +99,6 @@ zeit.cms.log_error = function(err) {
     if (isUndefinedOrNull(real_error.message)) {
         real_error = err;
     }
+    console.trace();
     console.error(real_error.name + ': ' + real_error.message);
 };
