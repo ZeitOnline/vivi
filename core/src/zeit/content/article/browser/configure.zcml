@@ -64,8 +64,6 @@
     <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
   </class>
 
-  <adapter factory=".article.ArticleListRepresentation" />
-
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
