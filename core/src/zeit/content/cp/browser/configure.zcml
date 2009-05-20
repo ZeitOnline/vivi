@@ -123,6 +123,7 @@
     />
 
   <adapter factory=".teaser.ItemTraverser" name="item" />
+  <adapter factory=".teaser.ListRepresentation" />
 
   <class class=".teaser.TeaserBlockProxyItem">
     <require

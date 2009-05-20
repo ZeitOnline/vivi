@@ -144,3 +144,15 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
             zope.event.notify(
                 zope.lifecycleevent.ObjectModifiedEvent(teaser_list))
             self.close = True
+
+
+class ListRepresentation(
+    zeit.cms.repository.browser.adapter.CMSContentListRepresentation):
+
+    zope.component.adapts(zeit.content.cp.interfaces.ITeaser,
+                          zope.publisher.interfaces.IPublicationRequest)
+
+    @property
+    def title(self):
+        return self.context.teaserTitle
+
