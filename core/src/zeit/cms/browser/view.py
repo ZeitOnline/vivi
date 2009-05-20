@@ -1,13 +1,12 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """View baseclass. Greatly inspired and copied from grok.
 
 """
 
-import zope.component
-
+import cjson
 import z3c.flashmessage.interfaces
+import zope.component
 
 
 class Base(object):
@@ -42,3 +41,38 @@ class Base(object):
         source = zope.component.getUtility(
             z3c.flashmessage.interfaces.IMessageSource, name='session')
         source.send(message, type)
+
+
+class JSON(Base):
+
+    resource_library = None
+    template = None
+
+    def __init__(self, context, request):
+        super(JSON, self).__init__(context, request)
+
+    def __call__(self):
+        self.request.response.setHeader('Content-Type', 'text/json')
+        result = self.json()
+
+        # use template indicated in JSON if it's there,
+        # otherwise use class template
+        template = result.pop('template', None)
+        if template is None:
+            template = self.template
+        if template is not None:
+            result['template_url'] = self.resources[template]()
+        return cjson.encode(result)
+
+    def json(self):
+        return {}
+
+    def url(self, view, uniqueId):
+        return super(JSON, self).url(
+            self.context, '%s?uniqueId=%s' % (view, uniqueId))
+
+    @property
+    def resources(self):
+        return zope.component.getAdapter(
+            self.request, zope.interface.Interface,
+            name=self.resource_library)
