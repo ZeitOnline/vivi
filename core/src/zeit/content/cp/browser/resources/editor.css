@@ -606,3 +606,11 @@
   top: 0;
   width: 220px;
 }
+
+/* Fullgraphical block */
+
+.fullgraphical-image {
+  width: 100%;
+  margin-top: 3px;
+  margin-bottom: 13px;
+}

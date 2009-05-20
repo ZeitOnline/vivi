@@ -1,0 +1,2 @@
+<img class="fullgraphical-image"
+     tal:attributes='src context/image/@@absolute_url' />

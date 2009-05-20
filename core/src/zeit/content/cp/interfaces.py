@@ -8,6 +8,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.avsource
 import zeit.content.cp.layout
+import zeit.content.image.interfaces
 import zeit.content.quiz.source
 import zeit.workflow.interfaces
 import zope.container.interfaces
@@ -330,6 +331,18 @@ class IQuizBlock(IBlock):
     referenced_quiz = zope.schema.Choice(
         title=_("Fetch quiz from"),
         source=zeit.content.quiz.source.QuizSource())
+
+
+class IFullGraphicalBlock(IBlock):
+    """The Fullgraphical block with a reference to an object and an image."""
+
+    referenced_object = zope.schema.Choice(
+        title=_("Fetch content from"),
+        source=zeit.cms.content.contentsource.CMSContentSource())
+
+    image = zope.schema.Choice(
+        title=_("Fetch image from"),
+        source=zeit.content.image.interfaces.ImageSource())
 
 
 class IRSSFolder(zeit.cms.repository.interfaces.IFolder):

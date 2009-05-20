@@ -8,7 +8,7 @@ zeit.content.cp changes
 Neue Funktionen
 ---------------
 
-- Neuer Content Block "Quiz" (#5279) wurde hinzugefügt.
+- Neue Content Blöcke "Quiz" (#5279) und "Vollgraphisch" (#5278) wurden hinzugefügt.
 
 - Beim Bearbeiten eines Teaserblocks können jetzt Teaser direkt in die Liste
   gezogen werden.

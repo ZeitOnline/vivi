@@ -158,6 +158,22 @@
     factory=".quiz.QuizBlock"
     />
 
+  <!-- Fullgraphical block -->
+  <class class=".fullgraphical.FullGraphicalBlock">
+    <require
+      interface="..interfaces.IFullGraphicalBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IFullGraphicalBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".fullgraphical.FullGraphicalFactory" name="fullgraphicalblock" />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="fullgraphicalblock"
+    factory=".fullgraphical.FullGraphicalBlock"
+    />
+
   <!-- cp_extra based blocks -->
   <zeit:cp_extras module=".cpextra" />
   <subscriber handler=".cpextra.add_blocks_to_newly_created_cp" />
