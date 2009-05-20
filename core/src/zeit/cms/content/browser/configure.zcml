@@ -122,6 +122,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <adapter factory=".commonmetadata.CommonMetadataListRepresentation" />
   
   <!-- Type change -->
   <browser:page

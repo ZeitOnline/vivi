@@ -4,6 +4,8 @@ zeit.cms changes
 1.21 (2009-05-18)
 -----------------
 
+- ListRepresentation für CommonMetadata hinzugefügt.
+
 - Objekte mit der Serie »News« werden automatisch in den News-Channel
   syndiziert. Der News-Channel wird automatisch veröffentlicht (#5270).
 
