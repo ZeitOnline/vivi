@@ -585,6 +585,7 @@
 
 .feed-items {
   margin-left: -5em;
+  list-style: none;
 }
 
 /* Busy indicator */
