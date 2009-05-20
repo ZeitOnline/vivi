@@ -121,8 +121,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    TeaserBlock, 'teaser', _('List of teasers'))
+    zeit.content.cp.interfaces.IRegion, 'teaser', _('List of teasers'))
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)

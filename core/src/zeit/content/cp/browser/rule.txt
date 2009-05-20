@@ -28,6 +28,7 @@ After adding a second teaser bar, both rules are violated:
 
 Get rid of the second violation by setting the correct layout:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink(index=2).click()

@@ -16,5 +16,4 @@ class XMLBlock(zeit.content.cp.blocks.block.Block):
 
 
 XMLBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    XMLBlock, 'xmlblock', _('Raw XML block'))
+    zeit.content.cp.interfaces.IRegion, 'xmlblock', _('Raw XML block'))

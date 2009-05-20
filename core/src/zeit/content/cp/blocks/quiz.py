@@ -19,5 +19,5 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
         '.block', xml_reference_name='related', attributes=('href',))
 
 QuizBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    QuizBlock, 'quizblock', _('Quizblock'), module='quiz')
+    zeit.content.cp.interfaces.IRegion, 'quizblock',
+    _('Quizblock'), module='quiz')

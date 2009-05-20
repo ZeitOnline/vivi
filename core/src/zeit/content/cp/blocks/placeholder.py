@@ -14,5 +14,4 @@ class PlaceHolder(zeit.content.cp.blocks.block.Block):
 
 
 PlaceHolderFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    PlaceHolder, 'placeholder')
+    zeit.content.cp.interfaces.IRegion, 'placeholder')

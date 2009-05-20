@@ -48,6 +48,5 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
 
 
 RSSBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    RSSBlock, 'rssblock', _('RSS block'))
+    zeit.content.cp.interfaces.IRegion, 'rssblock', _('RSS block'))
 

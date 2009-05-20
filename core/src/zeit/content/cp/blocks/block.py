@@ -26,18 +26,19 @@ class BlockFactory(object):
 
     def __call__(self):
         container = self.get_xml()
-        block = self.block_class(self.context, container)
+        block = zope.component.getMultiAdapter(
+            (self.context, container),
+            zeit.content.cp.interfaces.IBlock,
+            name=self.block_type)
         self.context.add(block)
         return block
 
 
-def blockFactoryFactory(adapts, block_class, block_type,
-                        title=None, module=None):
+def blockFactoryFactory(adapts, block_type, title=None, module=None):
     """A factory which creates a block factory."""
     class_name = '%sFactory' % block_type.capitalize()
     factory = type(class_name, (BlockFactory,), dict(
         title=title,
-        block_class=block_class,
         block_type=block_type,
         module=module))
     factory = zope.component.adapter(adapts)(factory)

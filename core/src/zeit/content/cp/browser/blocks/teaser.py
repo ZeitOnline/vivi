@@ -43,8 +43,7 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.ITeaserBlock).select(
-        'referenced_cp', 'autopilot')
-
+            'referenced_cp', 'autopilot')
 
     @property
     def form(self):
