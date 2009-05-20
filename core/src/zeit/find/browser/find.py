@@ -29,7 +29,7 @@ class JSONView(zeit.cms.browser.view.JSON):
     resource_library = 'zeit.find'
 
     def url(self, view, uniqueId):
-        return super(JSON, self).url(
+        return super(JSONView, self).url(
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
 
 
