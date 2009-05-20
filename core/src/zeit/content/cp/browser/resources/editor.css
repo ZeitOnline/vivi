@@ -614,3 +614,8 @@
   margin-top: 3px;
   margin-bottom: 13px;
 }
+
+.object-widget .object-reference {
+  width:30em;
+}
+
