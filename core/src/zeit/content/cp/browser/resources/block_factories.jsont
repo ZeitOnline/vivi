@@ -1,5 +1,7 @@
 {.repeated section factories}
-<div>
-{title}
+<div class="module">
+  <div class="module-inner">
+    {title}
+  </div>
 </div>
 {.end}

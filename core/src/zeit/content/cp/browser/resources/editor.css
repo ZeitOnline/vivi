@@ -634,3 +634,18 @@
 .object-widget .object-reference {
   width:30em;
 }
+
+
+/* Module library */
+.module {
+  float: left;
+  width: 33%;
+}
+.module-inner {
+  background-color: white;
+  border: 1px solid black;
+  margin: 0.25em;
+  overflow: hidden;
+  padding: 1em;
+  text-align: center;
+}
