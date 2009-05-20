@@ -1,4 +1,10 @@
 <div class="cpextra-title">
   Quiz
 </div>
+<div>
+  Titel: <span tal:content="context/title">mein Quiz</span>
+</div>
+<div tal:condition="python: str(context.referenced_quiz) != 'None'">
+  UniqueId: <span tal:content="context/referenced_quiz/uniqueId">Id</span>
+</div>
 
