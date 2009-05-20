@@ -45,10 +45,10 @@
   display: table-row;
 }
 
-#result_filters #filter_Zeit,
-#result_filters #filter_Ressorts,
-#result_filters #filter_Autoren,
-#result_filters #filter_Inhaltstyp,
+#result_filters #filter_time,
+#result_filters #filter_topic,
+#result_filters #filter_author,
+#result_filters #filter_type,
 #extended_search div label,
 #extended_search div select,
 #extended_search div input {

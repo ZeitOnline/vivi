@@ -1,16 +1,38 @@
 <div>
-{.repeated section results}
   <div>
-  {.repeated section row}
-    <div id="filter_{title}">
-        <div>{title}:</div>
-        <div>
-            {.repeated section entries}
-              <a href="{query}">{title} ({amount})</a></br>
-            {.end}
-        </div>
+    <div id="filter_topic">
+      <div>Ressort:</div>
+      <div>
+        {.repeated section topic_entries}
+        <a class="filter_link">{title} ({amount})</a></br>
+        {.end}
+      </div>
     </div>
-  {.end}
+    <div id="filter_time">
+      <div>Zeit:</div>
+      <div>
+        {.repeated section time_entries}
+        <a class="filter_link">{title} ({amount})</a></br>
+        {.end}
+      </div>
+    </div>
   </div>
-{.end}
+  <div>
+    <div id="filter_type">
+      <div>Inhaltstyp:</div>
+      <div>
+        {.repeated section type_entries}
+        <a class="filter_link">{title} ({amount})</a></br>
+        {.end}
+      </div>
+    </div>
+    <div id="filter_author">
+      <div>Autor:</div>
+      <div>
+        {.repeated section author_entries}
+        <a class="filter_link">{title} ({amount})</a></br>
+        {.end}
+      </div>
+    </div>
+  </div>
 </div>

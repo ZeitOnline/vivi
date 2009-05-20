@@ -124,18 +124,12 @@ class ResultFilters(JSONView):
         (time_counts, topic_counts,
          author_counts, type_counts) = zeit.find.search.counts(q)
 
-        return {"results": [
-                {"row": [{"title": "Ressort",
-                          "entries": _entries(topic_counts)},
-                         {"title": "Zeit",
-                          "entries": _entries(time_counts)}
-                         ]},
-                {"row": [{"title": "Inhaltstyp",
-                          "entries": _entries(type_counts)},
-                         {"title": "Autor",
-                          "entries": _entries(author_counts)},
-                         ]},
-                ]}
+        return {
+            'topic_entries': _entries(topic_counts),
+            'time_entries': _entries(time_counts),
+            'type_entries': _entries(type_counts),
+            'author_entries': _entries(author_counts),
+            }
 
 def _entries(counts):
     result = []
