@@ -548,19 +548,31 @@
 
 /* Top lists */
 
+.block-title,
+.block-item,
 .cpextra-id,
 .cpextra-title {
   text-align: center;
 }
 
+.block-title,
 .cpextra-title { 
   margin: 2em 2em 0.5em 2em;
   text-transform: uppercase;
   font-size: 2em;
 }
 
+.block-item,
 .cpextra-id {
   margin: 0 0 2em 0;
+}
+
+.block-item {
+  font-weight: bold;
+}
+
+.block-item > *{
+  font-weight: normal;
 }
 
 .cpextra-id:before {
@@ -571,6 +583,9 @@
   content: '"/>';
 }
 
+.feed-items {
+  margin-left: -5em;
+}
 
 /* Busy indicator */
 
@@ -618,4 +633,3 @@
 .object-widget .object-reference {
   width:30em;
 }
-

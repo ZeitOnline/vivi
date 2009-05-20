@@ -1,10 +1,10 @@
-<div>RSS Feed:
-  <tal:block condition="not: context/feed/error">
-    <span tal:replace="string:${context/feed/title}"/>
-    <ul>
-        <li tal:repeat="entry context/feed/entries"
-            tal:content="entry"/>
-    </ul>
-  </tal:block>
-  <span tal:condition="context/feed/error" i18n:translate="">An error occurred.</span>
-</div>
+<div class="block-title">RSS Feed</div>
+
+<div class="block-item" condition="not: context/feed/error"
+  tal:content="string:${context/feed/title}">Titel</div>
+<ul tal:condition="context/feed" class="feed-items">
+  <li tal:repeat="entry context/feed/entries" tal:content="entry"/>
+</ul>
+<div class="block-item"
+     tal:condition="context/feed/error"
+     i18n:translate="">An error occurred.</div>
