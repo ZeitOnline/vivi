@@ -67,10 +67,6 @@ class JSON(Base):
     def json(self):
         return {}
 
-    def url(self, view, uniqueId):
-        return super(JSON, self).url(
-            self.context, '%s?uniqueId=%s' % (view, uniqueId))
-
     @property
     def resources(self):
         return zope.component.getAdapter(
