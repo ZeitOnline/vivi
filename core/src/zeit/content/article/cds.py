@@ -136,6 +136,9 @@ def import_file(path):
     container[name] = article
     article = container[name]
 
+    # Disable automatic export to CDS.
+    zeit.content.article.interfaces.ICDSWorkflow(article).export_cds = False
+
     # Create removal job
     tasks = zope.component.getUtility(
         lovely.remotetask.interfaces.ITaskService, 'general')

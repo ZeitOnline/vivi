@@ -90,6 +90,11 @@ There is a different icon defined for tagesspiegel:
 >>> print icon()
 <img src="http://127.0.0.1/@@/zeit-content-article-interfaces-ITagesspiegelArticle-zmi_icon.png"...
 
+Also, imported articles will not be exported automatically:
+
+>>> zeit.content.article.interfaces.ICDSWorkflow(article).export_cds
+False
+
 
 Looking at the filestore shows us that art1 was moved to cur:
 
