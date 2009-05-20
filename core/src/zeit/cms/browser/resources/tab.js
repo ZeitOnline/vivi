@@ -75,6 +75,7 @@ zeit.cms.Tab = gocept.Class.extend({
     },
 });
 
+
 zeit.cms.ViewTab = zeit.cms.Tab.extend({
     construct: function(id, title, view) {
         var self = this;
