@@ -2,15 +2,12 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import itertools
-from datetime import datetime, timedelta
+from datetime import datetime
 import cjson
-import pysolr
 import zeit.cms.browser.view
 import zc.resourcelibrary
 import zope.component
 import zope.interface
-import zope.app.appsetup.product
 import zope.viewlet.interfaces
 import zeit.cms.interfaces
 import zeit.cms.clipboard.interfaces
@@ -18,21 +15,13 @@ import zeit.cms.content.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.preview
 import zc.iso8601.parse
-from zeit.find import lucenequery as lq
-
-TYPES = ['article', 'gallery', 'video', 'teaser', 'centerpage']
+import zeit.find.search
 
 def resources(request):
     return zope.component.getAdapter(
         request, zope.interface.Interface, name='zeit.find')
 
-def get_solr():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.find')
-    solr_url = config.get('solr_url')
-    return pysolr.Solr(solr_url)
-
 class Find(zeit.cms.browser.view.Base):
-
     def __call__(self):
         zc.resourcelibrary.need('zeit.find')
         return super(Find, self).__call__()
@@ -74,7 +63,7 @@ class SearchResult(JSONView):
         return self.request.get('sort_order', 'relevance')    
     
     def json(self):
-        q = search_form_query(self.request)
+        q = form_query(self.request)
         if q is None:
             return {"results":[]}
 
@@ -89,24 +78,9 @@ class SearchResult(JSONView):
                 continue
             favorite_uniqueIds.add(uniqueId)
 
-        result_fields = ['uniqueId', 'published',
-                         'teaser_title', 'teaser_text',
-                         'last-semantic-change', 'ressort',
-                         'authors']
-
-        sort_order = self.request.get('sort_order', 'score desc')
-        if sort_order == 'relevance':
-            sort_order = 'score desc'
-        elif sort_order == 'date':
-            sort_order = 'last-semantic-change desc'
-
         r = self.resources
-        results = []
-        conn = get_solr()
-
-        for result in conn.search(q,
-                                  sort=sort_order,
-                                  fl=' '.join(result_fields)):
+        results = []        
+        for result in zeit.find.search.search(q, self.sort_order()):
             uniqueId = result.get('uniqueId', '')
             if uniqueId in favorite_uniqueIds:
                 favorited_icon = r['favorite.png']()
@@ -119,12 +93,17 @@ class SearchResult(JSONView):
             else:
                 dt = None
 
-            published = result.get('published', True)
-            if published:
+            published = result.get('published', 'published')
+            if published == 'published':
                 publication_status = r['published.png']()
-            else:
+            elif published == 'not-published':
                 publication_status = r['unpublished.png']()
-
+            elif published == 'published-with-changes':
+                publication_status = r['published_new.png']()
+            else:
+                # XXX fallback status is always published
+                publication_status = r['published.png']()
+    
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
             
@@ -152,188 +131,37 @@ class SearchResult(JSONView):
             return {'template': 'no_search_result.jsont'}
         return {'results': results}
 
-def _get(request, name, default=None):
-    value = request.get(name, default)
-    if value is default:
-        return value
-    value = value.strip()
-    if value:
-        return value
-    return default
-
-def search_form(request):
-    g = lambda name, default=None: _get(request, name, default)
-    fulltext = g('fulltext')
-    if fulltext is None:
-        return None
-    # detect whether we are looking for expanded results or not
-    expanded = g('from', None) is not None
-    from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
-    until = parse_input_date(g('until', 'TT.MM.JJJJ'))
-    topic = g('topic', None)
-    authors = g('author', None)
-    keywords = g('keywords', None)
-    # three states: want all published, want all unpublished, don't care
-    published = g('published', None)
-    if published == 'published':
-        published = True
-    elif published == 'unpublished':
-        published = False
-    else:
-        published = None
-    types = set()
-    for t in TYPES:
-        if g(t, '') == 'on':
-            types.add(t)
-    return dict(
-        fulltext=fulltext,
-        expanded=expanded,
-        from_=from_,
-        until=until,
-        topic=topic,
-        authors=authors,
-        keywords=keywords,
-        published=published,
-        types=types)
-
-def search_query(fulltext, expanded, from_, until, topic, authors, keywords,
-                 published, types, filter_terms=None):
-    """Given parameters, create solr query string.
-    """
-    filter_terms = filter_terms or []
-    
-    terms = []
-    terms.append(lq.field('text', fulltext))
-    if from_ is not None or until is not None:
-        terms.append(
-            lq.datetime_range('last-semantic-change', from_, until))
-    if topic is not None:
-        terms.append(lq.field('ressort', topic))
-    if authors is not None:
-        terms.append(lq.multi_field('authors_fulltext', authors))
-    if keywords is not None:
-        terms.append(lq.multi_field('keywords', keywords))
-    if published is not None:
-        terms.append(lq.bool_field('published', published))
-    # if we haven't expanded the search form, look for all types
-    if not expanded:
-        types = TYPES
-    type_terms = []
-    for type in types:
-        type_terms.append(lq.field('type', type))
-    if type_terms:
-        terms.append(lq.or_(*type_terms))
-    else:
-        # XXX we find absolutely nothing as there isn't any
-        # __neverfound type around
-        terms.append(lq.field('type', '__neverfound'))
-    
-    terms.extend(filter_terms)
-    return lq.and_(*terms)
-
-def search_form_query(request, filter_terms=None):
-    form = search_form(request)
-    if form is None:
-        return None
-    form['filter_terms'] = filter_terms
-    return search_query(**form)
-
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
 
 class ResultFilters(JSONView):
     template = 'result_filters.jsont'
 
-    
-    def time_entries(self):
-        conn = get_solr()
-        result = []
-        for name, filter in [("heute", today_filter),
-                             ("gestern", yesterday_filter),
-                             ("7 Tage",  seven_day_filter),
-                             ("letzter Monat", month_filter),
-                             ("letztes halbes Jahr", half_year_filter),
-                             ("letztes Jahr", year_filter)]:
-            q = search_form_query(self.request, filter_terms=[filter()])
-            amount = conn.search(q, rows=0).hits
-            if amount > 0:
-                result.append(dict(title=name,
-                                   amount=format_amount(amount),
-                                   query=""))
-        return result
-    
-    def author_entries(self):
-        return [{"title": "Martijn Faassen", "amount": "45", "query": ""},
-                {"title": "Christian Zagrodnick", "amount": "124", "query": ""}]
-
     def json(self):
-        conn = get_solr()
-        q = search_form_query(self.request)
-        facets = {
-            'facet': 'true',
-            'facet.field': ['ressort', 'type'],
-            }
-        facet_data = conn.search(q, rows=0, **facets).facets
-        facet_fields = facet_data['facet_fields']
+        q = form_query(self.request)
+        (time_counts, topic_counts,
+         author_counts, type_counts) = zeit.find.search.counts(q)
+
         return {"results": [
                 {"row": [{"title": "Ressort",
-                          "entries": _entries(facet_fields['ressort'])},
+                          "entries": _entries(topic_counts)},
                          {"title": "Zeit",
-                          "entries": self.time_entries()},
+                          "entries": _entries(time_counts)}
                          ]},
                 {"row": [{"title": "Inhaltstyp",
-                          "entries": _entries(facet_fields['type'])},
+                          "entries": _entries(type_counts)},
                          {"title": "Autor",
-                          "entries": self.author_entries()},
-                 ]}]}
-    
+                          "entries": _entries(author_counts)},
+                         ]},
+                ]}
 
 def _entries(counts):
-    counts = sorted(grouper(2, counts))
     result = []
-    for title, amount in counts:
-        if amount == 0:
-            continue
-        result.append(
-            dict(title=title,
-                 amount=format_amount(amount),
-                 query=''))
+    for name, count in counts:
+        result.append(dict(title=name,
+                           amount=format_amount(count),
+                           query=''))
     return result
-
-def today_filter():
-    start = datetime.now().replace(
-        hour=0, minute=0, second=0, microsecond=0)
-    end = start + timedelta(days=1)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def yesterday_filter():
-    start = datetime.now().replace(
-        hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
-    end = start + timedelta(days=1)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def seven_day_filter():
-    end = datetime.now()
-    start = end - timedelta(days=7)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def month_filter():
-    end = datetime.now()
-    # XXX last month period if 31 days?
-    start = end - timedelta(days=31)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def half_year_filter():
-    end = datetime.now()
-    # last half year, about 183 days
-    start = end - timedelta(days=183)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def year_filter():
-    end = datetime.now()
-    # last year, about 366 days (to be on the safe side)
-    start = end - timedelta(days=366)
-    return lq.datetime_range('last-semantic-change', start, end)
 
 class ExpandedSearchResult(JSONView):
     template = 'expanded_search_result.jsont'
@@ -393,7 +221,6 @@ class ToggleFavorited(JSONView):
                                        interfaces.IClipboardEntry(content))
         return {'favorited': r['favorite.png']()}
 
-
 class Favorites(JSONView):
     template = 'search_result.jsont'
 
@@ -439,6 +266,56 @@ class Favorites(JSONView):
             self.result_entry(a) for a in [
                 zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
                 for c in favorites.values()]]}
+    
+def _get(request, name, default=None):
+    value = request.get(name, default)
+    if value is default:
+        return value
+    value = value.strip()
+    if value:
+        return value
+    return default
+
+def search_form(request):
+    g = lambda name, default=None: _get(request, name, default)
+    fulltext = g('fulltext')
+    if fulltext is None:
+        return None
+    from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
+    until = parse_input_date(g('until', 'TT.MM.JJJJ'))
+    topic = g('topic', None)
+    authors = g('author', None)
+    keywords = g('keywords', None)
+    # four states: published, not-published, published-with-changes,
+    # don't care (None)
+    published = g('published', None)
+    if not published:
+        published = None
+    # detect whether we are looking for expanded results or not
+    expanded = g('from', None) is not None
+    if not expanded:
+        types = zeit.find.search.TYPES
+    else:
+        types = set()
+        for t in zeit.find.search.TYPES:
+            if g(t, '') == 'on':
+                types.add(t)
+    return dict(
+        fulltext=fulltext,
+        from_=from_,
+        until=until,
+        topic=topic,
+        authors=authors,
+        keywords=keywords,
+        published=published,
+        types=types)
+
+def form_query(request, filter_terms=None):
+    form = search_form(request)
+    if form is None:
+        return None
+    form['filter_terms'] = filter_terms
+    return zeit.find.search.query(**form)
 
 def get_favorites(request):
     favorites_id = u'Favoriten'
@@ -446,23 +323,6 @@ def get_favorites(request):
     if not favorites_id in clipboard:
         clipboard.addClip(favorites_id)
     return clipboard[favorites_id]
-
-def format_date(dt):
-    if dt is None:
-        return ''
-    return dt.strftime('%d.%m.%Y')
-
-def format_week(dt):
-    if dt is None:
-        return ''
-    iso_year, iso_week, iso_weekday = dt.isocalendar()
-    return '%s/%s' % (iso_week, iso_year)
-
-def format_amount(amount):
-    if amount >= 1000:
-        return "1000+"
-    else:
-        return str(amount)
 
 class InputDateParseError(Exception):
     pass
@@ -496,6 +356,19 @@ def parse_input_date(s):
         raise InputDateParseError("Year is not a proper number")    
     return datetime(year, month, day)
 
-def grouper(n, iterable, padvalue=None):
-    return itertools.izip(
-        *[itertools.chain(iterable, itertools.repeat(padvalue, n-1))]*n)
+def format_date(dt):
+    if dt is None:
+        return ''
+    return dt.strftime('%d.%m.%Y')
+
+def format_week(dt):
+    if dt is None:
+        return ''
+    iso_year, iso_week, iso_weekday = dt.isocalendar()
+    return '%s/%s' % (iso_week, iso_year)
+
+def format_amount(amount):
+    if amount >= 1000:
+        return "1000+"
+    else:
+        return str(amount)

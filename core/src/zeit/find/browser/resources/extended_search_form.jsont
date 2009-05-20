@@ -22,8 +22,8 @@
     <select name="published">
       <option value=""></option>
       <option value="published">ja</option>
-      <option value="unpublished">nein</option>
-      <option value="published_new">liegt verändert vor</option>
+      <option value="not-published">nein</option>
+      <option value="published-with-changes">liegt verändert vor</option>
     </select>
   </div>
   <div>
