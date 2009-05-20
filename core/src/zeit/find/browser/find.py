@@ -122,6 +122,9 @@ class ResultFilters(JSONView):
 
     def json(self):
         q = form_query(self.request)
+        if q is None:
+            return {'template': 'no_result_filters.jsont'}
+
         (time_counts, topic_counts,
          author_counts, type_counts) = zeit.find.search.counts(q)
 
