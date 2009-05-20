@@ -113,10 +113,6 @@ class SearchResult(JSONView):
         return {'results': results}
 
 
-class ExtendedSearchForm(JSONView):
-    template = 'extended_search_form.jsont'
-
-
 class ResultFilters(JSONView):
     template = 'result_filters.jsont'
 

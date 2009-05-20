@@ -35,14 +35,6 @@
   <browser:page
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".find.ExtendedSearchForm"
-    name="extended_search_form"
-    permission="zope.View"
-  />
-
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".find.SearchResult"
     name="search_result"
     permission="zope.View"

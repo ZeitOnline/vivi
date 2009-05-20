@@ -14,10 +14,10 @@ zeit.find = {};
         });
 
         MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
-            if ($('extended_search')) {
-                $('extended_search_form').innerHTML = '';
+            if (MochiKit.Style.getStyle($('extended_search'), 'display') == 'none') {
+                MochiKit.Style.showElement($('extended_search'));
             } else {
-                zeit.find.extended_search_form.render();
+                MochiKit.Style.hideElement($('extended_search'));
             }
         });
         MochiKit.Signal.connect('result_filters_button', 'onclick', function(e) {
@@ -93,8 +93,6 @@ zeit.find = {};
         zeit.find.search_result = new zeit.cms.JSONView(
             base_url + 'search_result', 'search_result',
             search_form_parameters);
-        zeit.find.extended_search_form = new zeit.cms.JSONView(
-            base_url + 'extended_search_form', 'extended_search_form');
         zeit.find.result_filters = new zeit.cms.JSONView(
             base_url + 'result_filters', 'result_filters',
             search_form_parameters);
