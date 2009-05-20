@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 
 from datetime import datetime
-import cjson
 import zeit.cms.browser.view
 import zc.resourcelibrary
 import zope.component
@@ -17,43 +16,21 @@ import zeit.cms.browser.preview
 import zc.iso8601.parse
 import zeit.find.search
 
-def resources(request):
-    return zope.component.getAdapter(
-        request, zope.interface.Interface, name='zeit.find')
+
 
 class Find(zeit.cms.browser.view.Base):
     def __call__(self):
         zc.resourcelibrary.need('zeit.find')
         return super(Find, self).__call__()
 
-class JSONView(zeit.cms.browser.view.Base):
-    template = None
 
-    def __init__(self, context, request):
-        super(JSONView, self).__init__(context, request)
-        self.resources = resources(request)
+class JSONView(zeit.cms.browser.view.JSON):
 
-    def __call__(self):
-        self.request.response.setHeader('Content-Type', 'text/json')
-        result = self.json()
+    resource_library = 'zeit.find'
 
-        # use template indicated in JSON if it's there,
-        # otherwise use class template
-        template = result.pop('template', None)
-        if template is None:
-            template = self.template
-        if template is not None:
-            result['template_url'] = self.resources[template]()
-        return cjson.encode(result)
-
-    def json(self):
-        return {}
-
-    def url(self, view, uniqueId):
-        return super(JSONView, self).url(
-            self.context, '%s?uniqueId=%s' % (view, uniqueId))
 
 class SearchForm(JSONView):
+
     template = 'search_form.jsont'
     
 class SearchResult(JSONView):
@@ -131,8 +108,10 @@ class SearchResult(JSONView):
             return {'template': 'no_search_result.jsont'}
         return {'results': results}
 
+
 class ExtendedSearchForm(JSONView):
     template = 'extended_search_form.jsont'
+
 
 class ResultFilters(JSONView):
     template = 'result_filters.jsont'
@@ -162,6 +141,7 @@ def _entries(counts):
                            amount=format_amount(count),
                            query=''))
     return result
+
 
 class ExpandedSearchResult(JSONView):
     template = 'expanded_search_result.jsont'

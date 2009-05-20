@@ -30,7 +30,7 @@ on the UI itself:
         </script>
       </head>
       <body id="body">
-        <div id="cp-forms">
+        <div id="cp-search">
         </div>
       </body>
     </html>
