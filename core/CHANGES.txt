@@ -1,10 +1,15 @@
 zeit.cms changes
 ================
 
-1.21 (2009-05-18)
------------------
+1.21.1 (unreleased)
+-------------------
 
 - ListRepresentation für CommonMetadata hinzugefügt.
+
+- Basisklasse für JSON-Views aus zeit.find in den Kern verschoben.
+
+1.21 (2009-05-18)
+-----------------
 
 - Objekte mit der Serie »News« werden automatisch in den News-Channel
   syndiziert. Der News-Channel wird automatisch veröffentlicht (#5270).
