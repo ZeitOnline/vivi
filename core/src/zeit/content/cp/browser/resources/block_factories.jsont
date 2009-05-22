@@ -1,5 +1,5 @@
 {.repeated section factories}
-<div class="module">
+<div class="module" cms:block_type="{type}">
   <div class="module-inner">
     {title}
   </div>

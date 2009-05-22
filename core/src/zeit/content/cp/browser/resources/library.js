@@ -47,6 +47,8 @@ MochiKit.Signal.connect(
             }
             var dim = MochiKit.Style.getElementDimensions(draggable.element);
             draggable.element = draggable.element.cloneNode(true);
+            MochiKit.DOM.addElementClass(
+                draggable.element, 'module-drag-pane');
             MochiKit.Style.setElementDimensions(draggable.element, dim);
             draggable.offset = [-10, -10];
             $('body').appendChild(draggable.element);
@@ -54,7 +56,10 @@ MochiKit.Signal.connect(
 
     MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'end',
         function(draggable) {
-            MochiKit.DOM.removeElement(draggable.element);
+            if (MochiKit.DOM.hasElementClass(
+                draggable.element, 'module-drag-pane')) {
+                MochiKit.DOM.removeElement(draggable.element);
+            }
     });
 
 });

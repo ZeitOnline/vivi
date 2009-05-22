@@ -1,3 +1,47 @@
+
+/** patch mochikit ***/
+
+(function() {
+
+    var signal = function (src, sig) {
+        var self = MochiKit.Signal;
+        var observers = self._observers;
+        src = MochiKit.DOM.getElement(src);
+        var args = MochiKit.Base.extend(null, arguments, 2);
+        var errors = [];
+        self._lock += 1;
+        for (var i = 0; i < observers.length; i++) {
+            var ident = observers[i];
+            if (ident.source === src && ident.signal === sig &&
+                    ident.connected) {
+                try {
+                    ident.listener.apply(src, args);
+                } catch (e) {
+                    errors.push(e);
+                }
+            }
+        }
+        self._lock -= 1;
+        if (self._dirty && !self._lock) {
+            self._dirty = false;
+            for (var i = observers.length - 1; i >= 0; i--) {
+                if (!observers[i].connected) {
+                    observers.splice(i, 1);
+                }
+            }
+        }
+        if (errors.length == 1) {
+            throw errors[0];
+        } else if (errors.length > 1) {
+            var e = new Error("Multiple errors thrown in handling 'sig', see errors property");
+            e.errors = errors;
+            throw e;
+        }
+    }
+
+    MochiKit.Signal.signal = signal;
+})();
+
 if (isUndefinedOrNull(zeit.content)) {
     zeit.content = {}
 }
@@ -30,24 +74,24 @@ zeit.content.cp.makeJSONRequest = function(url, options, target_component) {
                 if (isNull(signal.when)) {
                     immediate_actions.push(signal);
                 } else {
-                    var ident = MochiKit.Signal.connect(
-                        target_component, signal.when, function() {
-                        MochiKit.Signal.disconnect(ident);
-                        MochiKit.Signal.signal.apply(
-                            this,
-                            extend(
-                                [target_component, signal.name],
-                                signal.args));
-                    });
+                    log("Connecting "+ [target_component.__name__, signal.when, signal.name]);
+                    (function() {
+                        var ident = MochiKit.Signal.connect(
+                            target_component, signal.when, function() {
+                            log("Signalling "+ [target_component.__name__, signal.when, signal.name]);
+                            MochiKit.Signal.disconnect(ident);
+                            MochiKit.Signal.signal.apply(
+                                this,
+                                extend(
+                                    [target_component, signal.name],
+                                    signal.args));
+                        });
+                    })();
                 }
             });
         }
         if (immediate_actions.length) {
             immediate_actions.reverse();
-            if (!immediate_actions.length) {
-                // No actions. We're done.
-                seit.content.cp.editor.idle();
-            }
             while(immediate_actions.length) {
                 var signal = immediate_actions.pop();
                 MochiKit.Signal.signal.apply(
@@ -60,8 +104,7 @@ zeit.content.cp.makeJSONRequest = function(url, options, target_component) {
         return result;
     },
     function(error) {
-        // XXX log_error should be part of zeit.cms
-        zeit.find.log_error(error);
+        zeit.cms.log_error(error);
         return error;
     });
     return d;
@@ -89,6 +132,8 @@ zeit.content.cp.getParentComponent = function(context_element) {
 
 
 zeit.content.cp.Editor = gocept.Class.extend({
+
+    __name__: 'zeit.content.cp.Editor',
 
     construct: function() {
         var self = this;
@@ -129,6 +174,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
 
     reload: function(element_id, url) {
         var self = this;
+        log("Reloading");
         var element = null;
         if (!isUndefinedOrNull(element_id)) {
              element = $(element_id);
@@ -153,6 +199,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             MochiKit.Signal.signal(self, 'after-reload');
             return result;
         });
+        d.addErrback(zeit.cms.log_error);
         return d;
     },
 
@@ -390,83 +437,6 @@ zeit.content.cp.ContentActionBase = gocept.Class.extend({
 });
 
 
-zeit.content.cp.ContentDropper = gocept.Class.extend({
-    // Handle dropping of content objects.
-
-    __name__: 'zeit.content.cp.ContentDropper',
-
-    construct: function(element, url, parent) {
-        var self = this;
-        self.droppable = new MochiKit.DragAndDrop.Droppable(element, {
-            accept: ['uniqueId', 'content-drag-pane'],
-            activeclass: 'droppable-active',
-            hoverclass: 'hover-content',
-            ondrop: function(draggable, droppable, event) {
-                self.drop(draggable, droppable, event, url);
-            },
-        });
-        self.parent = parent;
-    },
-
-    destroy: function() {
-        var self = this;
-        self.droppable.destroy();
-        delete self.droppable;
-    },
-
-    drop: function(draggable, droppable, event, url) {
-        var self = this;
-        var uniqueId = draggable.uniqueId;
-        if (isUndefinedOrNull(uniqueId)) {
-            return
-        }
-        var d = zeit.content.cp.makeJSONRequest(
-            url, {'uniqueId': uniqueId}, self.parent);
-        return d;
-    },
-
-});
-
-
-zeit.content.cp.EditorContentDroppers = 
-    zeit.content.cp.ContentActionBase.extend({
-
-    __name__: 'zeit.content.cp.EditorContentDroppers',
-    context: zeit.content.cp.in_context.Editor,
-
-    connect: function() {
-        var self = this;
-        var elements = MochiKit.Selector.findChildElements(
-            self.editor.content,
-            ['div.action-content-droppable']);
-        forEach(elements, function(element) {
-            var droppable_element = self.get_droppable_element_for(element);
-            var url = element.getAttribute('cms:drop-url');
-            self.dnd_objects.push(
-                new zeit.content.cp.ContentDropper(
-                    droppable_element, url, zeit.content.cp.editor));
-        });
-    },
-
-    get_droppable_element_for: function(element) {
-        if (MochiKit.DOM.hasElementClass(element, 'landing-zone')) {
-            return element;
-        }
-        var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            element, null, 'block');
-        return block;
-    },
-
-});
-
-
-
-MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    zeit.content.cp.content_dropper = 
-        new zeit.content.cp.EditorContentDroppers();
-});
-
-
 zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
     // General sorting support.
 
@@ -496,7 +466,6 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
             var handle = self.get_handle(node);
-            log('Creating draggable and droppable for ' + node.id);
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Draggable(node, {
                     constraint: self.options()['constraint'],
@@ -777,20 +746,15 @@ zeit.content.cp.LoadAndReload = gocept.Class.extend({
 });
 
 
-zeit.content.cp.AddHighlight = gocept.Class.extend({
-
-    construct: function() {
-        var self = this;
-        MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'added', self, self.added);
-    },
-
-});
-
-
 (function() {
 
     var added = function(id) {
+        log('added');
+        log('added ' + id);
+        if (isNull($(id))) {
+            log("Added but not found: " + id);
+            return
+        }
         log('Added ' + id + $(id));
         MochiKit.Style.setOpacity($(id), 0.0);
         MochiKit.Visual.appear(id);
@@ -873,7 +837,6 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         }
     });
     if (exit) {
-        log("Unloaded image in container.id.");
         MochiKit.Async.callLater(
             0.25, zeit.content.cp.makeBoxesEquallyHigh, container);
         return
@@ -899,8 +862,6 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         max_height = Math.max(max_height, dim.h);
     }); 
 
-    log("Max height: " + max_height);
-    log("Nodes " + blocks);
     forEach(blocks, function(block) {
         var new_dim = new MochiKit.Style.Dimensions(null, max_height)
         MochiKit.Style.setElementDimensions(block, new_dim);
@@ -913,7 +874,6 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     var fix_box_heights = function() {
         forEach($$('#cp-teasermosaic > .block.type-teaser-bar > .block-inner'),
             function(bar) {
-                log("Setting heights for " + bar.parentNode.id);
                 try {
                     zeit.content.cp.makeBoxesEquallyHigh(bar);
                 } catch (e) {
@@ -985,4 +945,3 @@ zeit.content.cp.BusyIndicator = gocept.Class.extend({
                 new zeit.content.cp.BusyIndicator();
         });
 })();
-

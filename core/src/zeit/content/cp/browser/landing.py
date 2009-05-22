@@ -1,7 +1,7 @@
 # coding: utf8
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-"""Landing zone view.
+"""Landing zone views.
 
 See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-ziehen-eines-content-objekts
 
@@ -15,49 +15,65 @@ import zope.component
 
 class LandingZone(zeit.content.cp.browser.view.Action):
 
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
-
     def update(self):
-        teaser_block = self.create_block()
-        order = list(self.create_in)
-        order.remove(teaser_block.__name__)
-        order = self.get_order(order, teaser_block.__name__)
-        self.create_in.updateOrder(order)
-        # XXX notify event
+        self.create_block()
+        self.initialize_block()
+        self.update_order()
+        self.signal('after-reload', 'added', self.block.__name__)
 
     def create_block(self):
         factory = zope.component.getAdapter(
             self.create_in, zeit.content.cp.interfaces.IBlockFactory,
-            name='teaser')
-        teaser_block = factory()
+            name=self.block_type)
+        self.block = factory()
+
+    def initialize_block(self):
+        pass
+
+    def update_order(self):
+        order = list(self.create_in)
+        order.remove(self.block.__name__)
+        order = self.get_order(order, self.block.__name__)
+        self.create_in.updateOrder(order)
+
+    @property
+    def create_in(self):
+        if self.order == 'after-context':
+            return self.context.__parent__
+        return self.context
+
+    def get_order(self, order, new_name):
+        if isinstance(self.order, int):
+            order.insert(self.order, new_name)
+        elif self.order == 'after-context':
+            after = order.index(self.context.__name__)
+            order.insert(after + 1, new_name)
+        else:
+            raise NotImplementedError
+        return order
+
+
+class TeaserBlockLandingZone(LandingZone):
+
+    block_type = 'teaser'
+    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+
+    def initialize_block(self):
+        pass
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        teaser_block.insert(0, content)
+        self.block.insert(0, content)
         related = zeit.cms.related.interfaces.IRelatedContent(content, None)
         if related is not None:
             for i, related in enumerate(related.related):
-                teaser_block.insert(i+1, related)
-        return teaser_block
+                self.block.insert(i+1, related)
 
 
-class LeaderLandingZoneDrop(LandingZone):
+class LeaderLandingZoneDrop(TeaserBlockLandingZone):
     """Handler to drop articles on the lead landing zone."""
 
-    def get_order(self, order, new_name):
-        order.insert(0, new_name)
-        return order
-
-    @property
-    def create_in(self):
-        return self.context
+    order = 0
 
 
-class TeaserLandingZoneInsertAfter(LandingZone):
+class TeaserLandingZoneInsertAfter(TeaserBlockLandingZone):
 
-    def get_order(self, order, new_name):
-        after = order.index(self.context.__name__)
-        order.insert(after + 1, new_name)
-        return order
-
-    @property
-    def create_in(self):
-        return self.context.__parent__
+    order = 'after-context'

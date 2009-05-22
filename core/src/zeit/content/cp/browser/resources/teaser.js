@@ -46,10 +46,9 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
             $(self.container),
             ['li.action-content-droppable']);
         forEach(elements, function(element) {
-            var url = element.getAttribute('cms:drop-url');
             self.dnd_objects.push(
-                new zeit.content.cp.ContentDropper(
-                    element, url, self.parent));
+                new zeit.content.cp.drop.Droppable(
+                    element, element, self.parent));
         });
     },
     

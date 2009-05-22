@@ -55,7 +55,7 @@
     ">
     <directory
       source="resources"
-      include="editor.css editor.js teaser.js library.js"/>
+      include="editor.css editor.js drop.js teaser.js library.js"/>
   </resourceLibrary>
 
 
@@ -206,6 +206,15 @@
     class=".library.ClusterBlockFactories"
     permission="zeit.EditContent"
     />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.LandingZone"
+    permission="zeit.EditContent"
+    />
+
 
 
 </configure>

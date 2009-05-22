@@ -27,8 +27,12 @@ There currently is one landing zone, which is indicated by a cms:drop-url:
 
 Drop testcontent on the landing zone:
 
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> browser.open(url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
@@ -43,7 +47,10 @@ There is another landing zone after the created block now:
 >>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
 ...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...

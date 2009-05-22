@@ -1,6 +1,6 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-"""Module library.
+"""Module library and landing zones.
 
 The module library allows users to create new blocks.
 
@@ -9,6 +9,7 @@ See http://cmsdev.zeit.de/node/362
 """
 
 import zeit.cms.browser.view
+import zeit.content.cp.browser.landing
 import zope.component
 
 
@@ -50,3 +51,9 @@ class ClusterBlockFactories(BlockFactories):
             return None
         key = self.context.keys()[0]
         return self.context[key]
+
+
+class LandingZone(zeit.content.cp.browser.landing.LandingZone):
+
+    block_type = zeit.content.cp.browser.view.Form('block_type')
+    order = 'after-context'
