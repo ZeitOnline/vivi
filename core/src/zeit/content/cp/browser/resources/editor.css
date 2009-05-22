@@ -584,8 +584,14 @@
 }
 
 .feed-items {
-  margin-left: -5em;
   list-style: none;
+  padding: 0;
+}
+
+.feed-items > li {
+  display: block;
+  height: 1.2em;
+  overflow: hidden;
 }
 
 /* Busy indicator */
