@@ -14,6 +14,7 @@ import zeit.content.cp.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.interface
+import gocept.lxml.interfaces
 
 
 class TeaserBlock(zeit.content.cp.blocks.block.Block,
@@ -26,13 +27,46 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.cms.syndication.interfaces.IFeed,
         zope.container.interfaces.IContained)
 
-    _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
-    referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
+    zope.component.adapts(
+        zeit.content.cp.interfaces.ILeadRegion,
+        gocept.lxml.interfaces.IObjectified)
 
     @property
     def entries(self):
         # overriden so that super.insert() and updateOrder() work
         return self.xml
+
+    def clear(self):
+        for entry in self:
+            self.remove(entry)
+
+    @rwproperty.getproperty
+    def layout(self):
+        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
+            self):
+            if layout.id == self.xml.get('module'):
+                return layout
+        return zeit.content.cp.interfaces.IReadTeaserBlock[
+            'layout'].missing_value
+
+    @rwproperty.setproperty
+    def layout(self, layout):
+        self.xml.set('module', layout.id)
+
+
+class AutoPilotTeaserBlock(TeaserBlock):
+
+    zope.interface.implementsOnly(
+        zeit.content.cp.interfaces.IAutoPilotTeaserBlock,
+        zeit.cms.syndication.interfaces.IFeed,
+        zope.container.interfaces.IContained)
+
+    zope.component.adapts(
+        zeit.content.cp.interfaces.IArea,
+        gocept.lxml.interfaces.IObjectified)
+
+    _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
+    referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     def iterentries(self):
         if self.autopilot:
@@ -40,13 +74,13 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
                 self.referenced_cp)
             return iter(feed)
         else:
-            return super(TeaserBlock, self).iterentries()
+            return super(AutoPilotTeaserBlock, self).iterentries()
 
     def keys(self):
         if self.autopilot:
             return [c.uniqueId for c in self.iterentries()]
         else:
-            return super(TeaserBlock, self).keys()
+            return super(AutoPilotTeaserBlock, self).keys()
 
     def insert(self, *args, **kw):
         self._forbidden_on_autopilot('insert', *args, **kw)
@@ -62,7 +96,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
             raise RuntimeError("%s: '%s' is forbidden while on autopilot"
                                % (self, method))
         else:
-            return getattr(super(TeaserBlock, self), method)(*args, **kw)
+            return getattr(super(AutoPilotTeaserBlock, self), method)(*args, **kw)
 
     @rwproperty.getproperty
     def autopilot(self):
@@ -106,30 +140,15 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
             for entry in self:
                 self.remove(entry)
 
-    @rwproperty.getproperty
-    def layout(self):
-        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-            self):
-            if layout.id == self.xml.get('module'):
-                return layout
-        return zeit.content.cp.interfaces.IReadTeaserBlock[
-            'layout'].missing_value
-
-    @rwproperty.setproperty
-    def layout(self, layout):
-        self.xml.set('module', layout.id)
-
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
     zeit.content.cp.interfaces.IRegion, 'teaser', _('List of teasers'))
-
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     for teaser in context:
         yield teaser
-
 
 
 class CenterpageFeed(zeit.cms.syndication.feed.Feed):

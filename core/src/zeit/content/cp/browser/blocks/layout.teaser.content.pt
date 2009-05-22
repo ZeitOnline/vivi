@@ -3,12 +3,6 @@
   cms:drop-url string:${context/@@absolute_url}/drop;
   class view/css_class">
 
-  <a class="autopilot-chooser"
-     tal:attributes="href view/autopilot_toggle_url"
-     cms:cp-module="zeit.content.cp.LoadAndReload">
-    <span class="action-title">Switch autopilot</span>
-  </a>
-
   <div class="teaser-list">
 
     <div class="teaser"

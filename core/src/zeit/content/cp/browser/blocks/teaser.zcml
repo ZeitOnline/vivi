@@ -8,7 +8,7 @@
 
   <browser:viewletManager
     provides="..interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.ITeaserBlock"
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     class=".teaser.TeaserBlockViewletManager"
@@ -29,6 +29,18 @@
     weight="0"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="autopilot"
+    class=".teaser.AutoPilotDisplay"
+    template="layout.autopilotteaser.content.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -38,10 +50,26 @@
     />
 
   <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".teaser.AutoPilotEditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drop"
     class=".teaser.Drop"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".teaser.AutoPilotDrop"
     permission="zeit.EditContent"
     />
 
@@ -74,6 +102,14 @@
     />
 
   <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".teaser.AutoPilotUpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="change-layout"
@@ -84,7 +120,7 @@
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="toggle-autopilot"
     class=".teaser.ToggleAutopilot"

@@ -48,7 +48,12 @@ Autopilot
 
 A teaser block in autopilot mode fetches its contents from another CenterPage.
 
->>> teasers = factory()
+>>> teaserbar = zope.component.getAdapter(
+...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IBlockFactory,
+...     name="teaser-bar")()
+>>> teasers = zope.component.getAdapter(
+...     teaserbar, zeit.content.cp.interfaces.IBlockFactory,
+...     name='teaser')()
 >>> repository['cp'] = cp
 
 
@@ -85,7 +90,7 @@ While on autopilot, manipulation of the teaser block's contents is forbidden:
 >>> teasers.insert(0, repository['testcontent'])
 Traceback (most recent call last):
     ...
-RuntimeError: <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>:
+RuntimeError: <...TeaserBlock object at 0x...>:
     'insert' is forbidden while on autopilot
 
 When the teaser block is switched back to manual mode, the currently referenced
@@ -121,7 +126,7 @@ Channels can also be used for the autopilot:
 The xi:include is set accordingly:
 
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
-<container xmlns:cp="http://namespaces.zeit.de/CMS/cp" xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" cp:type="teaser" cp:__name__="efea89c6-a02e-49af-a43d-799d43f69575" module="buttons">
+<container xmlns:cp="http://namespaces.zeit.de/CMS/cp" xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" cp:type="teaser" cp:__name__="efea89c6-a02e-49af-a43d-799d43f69575">
   <referenced_cp py:pytype="str">http://xml.zeit.de/wirtschaft.feed</referenced_cp>
   <autopilot py:pytype="bool">true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/wirtschaft.feed">
@@ -137,6 +142,7 @@ Layouts
 A TeaserBlock can have different Layouts. Those correspond to different values
 for <container module="">.
 
+>>> dummy = factory()
 >>> import zeit.content.cp.layout
 >>> teasers.layout = zeit.content.cp.layout.get_layout('leader')
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)

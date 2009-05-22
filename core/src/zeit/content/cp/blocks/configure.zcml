@@ -34,15 +34,33 @@
       interface="..interfaces.IWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
+  <class class=".teaser.AutoPilotTeaserBlock">
+    <require
+      interface="..interfaces.IAutoPilotReadTeaserBlock"
+      permission="zope.View"/>
+    <require
+      set_schema="..interfaces.IAutoPilotReadTeaserBlock"
+      permission="zeit.EditContent"/>
+    <require
+      interface="..interfaces.IWriteTeaserBlock"
+      permission="zeit.EditContent"/>
+  </class>
+
   <adapter factory=".teaser.CenterpageFeed" />
-  <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
   <adapter factory=".teaser.cp_xi_include" name="xi:include" />
   <adapter factory=".teaser.feed_xi_include" name="xi:include" />
+  <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
   <adapter
     provides="..interfaces.IBlock"
     name="teaser"
     factory=".teaser.TeaserBlock"
     />
+  <adapter
+    provides="..interfaces.IBlock"
+    name="teaser"
+    factory=".teaser.AutoPilotTeaserBlock"
+    />
+
   <adapter factory=".teaser.cms_content_iter" />
 
   <subscriber 

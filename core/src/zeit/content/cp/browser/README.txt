@@ -123,6 +123,7 @@ contents:
 
 The change links is again activated via javascript and returns JSON:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('List of teasers').click()
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'signals': [{'args': ['8b109e80-f19e-4fa8-b41f-b41e40a5f7be'],

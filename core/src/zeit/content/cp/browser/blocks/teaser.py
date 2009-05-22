@@ -41,9 +41,7 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.ITeaserBlock).select(
-            'referenced_cp', 'autopilot')
+    form_fields = ()
 
     @property
     def form(self):
@@ -68,6 +66,15 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
         return result
 
 
+class AutoPilotEditProperties(EditProperties):
+
+    interface = zeit.content.cp.interfaces.IAutoPilotTeaserBlock
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
+            'referenced_cp', 'autopilot')
+
+
 class Display(zeit.cms.browser.view.Base):
 
     @property
@@ -77,11 +84,6 @@ class Display(zeit.cms.browser.view.Base):
         if layout is not None:
             css.append(layout.id)
         return ' '.join(css)
-
-    @property
-    def autopilot_toggle_url(self):
-        on_off = 'off' if self.context.autopilot else 'on'
-        return self.url('@@toggle-autopilot?to=' + on_off)
 
     def update(self):
         self.teasers = []
@@ -119,6 +121,14 @@ class Display(zeit.cms.browser.view.Base):
                 return image_group[name]
 
 
+class AutoPilotDisplay(Display):
+
+    @property
+    def autopilot_toggle_url(self):
+        on_off = 'off' if self.context.autopilot else 'on'
+        return self.url('@@toggle-autopilot?to=' + on_off)
+
+
 class Drop(zeit.content.cp.browser.view.Action):
     """Drop a content object on a teaserblock."""
 
@@ -127,11 +137,18 @@ class Drop(zeit.content.cp.browser.view.Action):
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        if self.context.autopilot:
-            self.context.autopilot = False
         self.context.insert(self.index, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
+
+
+class AutoPilotDrop(Drop):
+    """Drop a content object on a teaserblock."""
+
+    def update(self):
+        if self.context.autopilot:
+            self.context.autopilot = False
+        super(AutoPilotDrop, self).update()
 
 
 class EditContents(Display):
@@ -200,7 +217,14 @@ class UpdateOrder(zeit.content.cp.browser.view.Action):
     keys = zeit.content.cp.browser.view.Form('keys', json=True)
 
     def update(self):
-        self.context.autopilot = False
         self.context.updateOrder(self.keys)
         zope.event.notify(
             zope.lifecycleevent.ObjectModifiedEvent(self.context))
+
+
+class AutoPilotUpdateOrder(UpdateOrder):
+
+    def update(self):
+        self.context.autopilot = False
+        super(AutoPilotUpdateOrder, self).update()
+

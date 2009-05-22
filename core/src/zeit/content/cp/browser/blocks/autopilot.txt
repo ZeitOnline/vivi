@@ -1,0 +1,179 @@
+Autopilot
++++++++++
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.content.cp.browser.tests
+>>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> browser.open('contents')
+>>> bookmark = browser.url
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(bookmark)
+>>> browser.getLink('Click here to choose the block type.').click()
+>>> browser.getLink('List of teasers').click()
+
+A teaser block can be set on 'autopilot'. In this mode, it will retrieve teasers
+from another CenterPage for display. To demonstrate this, we first create
+another CenterPage:
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.content.cp.browser.tests
+>>> import zeit.content.cp.browser.tests
+>>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
+>>> browser.open('contents')
+>>> foreign_url = browser.url
+>>> browser.getLink('Add block').click()
+>>> browser.open(foreign_url)
+>>> browser.getLink('choose the block type').click()
+>>> browser.getLink('List of teasers').click()
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign/')
+
+Then we need to create a test 'article' to be included in this CenterPage:
+
+>>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@checkout')
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@edit.html')
+>>> browser.getControl('Teaser title').value = u'Foreign teaser'
+>>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Year').value = '2007'
+>>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Apply').click()
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin')
+>>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@view.html')
+>>> 'Foreign teaser' in browser.contents
+True
+
+We inject the test article by writing raw XML this time:
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign')
+>>> browser.getLink('Source').click()
+>>> xml = browser.getControl('XML Source').value
+>>> import re
+>>> xml = re.sub('<container (cp:type="teaser"[^>]*)/>',
+... """<container \\1>
+... <block href="http://xml.zeit.de/testcontent">
+...   <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+...     <title/>
+...     <text/>
+...   </teaser>
+... </block>
+... </container>
+... """, xml)
+>>> browser.getControl('XML Source').value = xml
+>>> browser.getControl('Apply').click()
+>>> 'testcontent' in browser.contents
+True
+
+We need to check in the CenterPage we want to reference to actually see the
+teasers (of course):
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/foreign/@@checkin')
+
+
+Currently the autopilot is not possible, because we have not referenced the
+other cp:
+
+>>> browser.open(bookmark)
+>>> 'autopilot-not-possible' in browser.contents
+True
+
+It is not possible to switch on the autopilot when there is no centerpage
+referenced:
+
+>>> browser.open(bookmark)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('On Autopilot').selected = True
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Cannot activate autopilot without referenced centerpage...
+
+Now we can switch our teaser block to autopilot when referencing the
+centerpage:
+
+>>> browser.getControl('Fetch teasers from').value = (
+...     'http://xml.zeit.de/online/2007/01/foreign')
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Updated on...
+
+The teaser block displays a marker to show that it is on autopilot. It then
+pulls in the first teaser of each teaser block from the referenced CenterPage's
+lead region:
+
+>>> browser.open(bookmark)
+>>> 'autopilot-on' in browser.contents
+True
+>>> 'Foreign teaser' in browser.contents
+True
+
+We can now switch it of again:
+
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(bookmark)
+>>> 'autopilot-off' in browser.contents
+True
+
+
+When the autopilot is on and content is dropped on the block, the autopilot is
+automatically switched off[#calculate_drop_url]_:
+
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(bookmark)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> 'autopilot-on' in browser.contents
+True
+>>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.open(url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> browser.open(bookmark)
+>>> 'autopilot-on' in browser.contents
+False
+>>> 'autopilot-off' in browser.contents
+True
+
+
+Updating the order also works when in autopilot mode. The autopilot is
+automatically disabled then:
+
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(bookmark)
+>>> update_order_url = browser.getLink('Edit teaser list').url.replace(
+...     'teaser.edit-contents', 'updateOrder')
+>>> order = ['http://xml.zeit.de/testcontent']
+>>> import cjson
+>>> browser.open(update_order_url + '?keys=' + cjson.encode(order))
+>>> browser.open(bookmark)
+>>> 'autopilot-on' in browser.contents
+False
+>>> 'autopilot-off' in browser.contents
+True
+
+Delete the newly created teaser block:
+
+>>> browser.getLink('Delete', index=2).click()
+>>> browser.open(bookmark)
+>>> 'foreign' in browser.contents
+False
+
+.. [#calculate_drop_url]
+
+
+    >>> import lxml.cssselect
+    >>> browser.open(bookmark)
+    >>> select = lxml.cssselect.CSSSelector(
+    ...     'div.type-teaser div[cms|drop-url]')
+    >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+    >>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+    ...     '{http://namespaces.gocept.com/zeit-cms}drop-url')

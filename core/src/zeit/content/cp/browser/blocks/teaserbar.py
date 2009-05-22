@@ -25,18 +25,20 @@ class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
 
 class Delete(zeit.content.cp.browser.view.Action):
 
+    key = zeit.content.cp.browser.view.Form('key')
+
     def update(self):
-        key = self.request.form['key']
-        teasers = [obj for obj in self.context.values()
-                   if zeit.content.cp.interfaces.ITeaserBlock.providedBy(obj)]
+        teasers = [
+            obj for obj in self.context.values()
+            if not zeit.content.cp.interfaces.IPlaceHolder.providedBy(obj)]
         if len(teasers) > self.context.layout.blocks:
             # Delete the teaser block
-            del self.context[key]
+            del self.context[self.key]
         else:
             # Switch the teaser block into a placeholder
             switcher = zope.component.getMultiAdapter(
-                (self.context, self.context[key], self.request),
+                (self.context, self.context[self.key], self.request),
                 name='type-switcher')
             new = switcher('placeholder')
             self.signal('after-reload', 'added', new.__name__)
-        self.signal('before-reload', 'deleted', key)
+        self.signal('before-reload', 'deleted', self.key)

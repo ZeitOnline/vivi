@@ -388,7 +388,8 @@
   cursor: pointer;
   display: block;
   height: 3em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.8em;
+  padding:0.3em;
 }
 
 .autopilot-on > * {

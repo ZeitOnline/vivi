@@ -118,6 +118,8 @@ class TestGenericEditing(Test):
         link = 'css=div.block.type-teaser > * > div.edit > a.edit-link'
         s.waitForElementPresent(link)
         s.click(link)
+        s.waitForElementPresent('id=tab-1')
+        s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('form.actions.apply')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')

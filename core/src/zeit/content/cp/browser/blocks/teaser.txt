@@ -328,151 +328,10 @@ The cp contents also has changed of course:
 ...
 
 
-
-Autopilot
-+++++++++
-
-A teaser block can be set on 'autopilot'. In this mode, it will retrieve teasers
-from another CenterPage for display. To demonstrate this, we first create
-another CenterPage:
-
->>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
->>> browser.open('contents')
->>> foreign_url = browser.url
->>> browser.getLink('Add block').click()
->>> browser.open(foreign_url)
->>> browser.getLink('choose the block type').click()
->>> browser.getLink('List of teasers').click()
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign/')
-
-Then we need to create a test 'article' to be included in this CenterPage:
-
->>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@checkout')
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@edit.html')
->>> browser.getControl('Teaser title').value = u'Foreign teaser'
->>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
->>> browser.getControl('Year').value = '2007'
->>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
->>> browser.getControl('Ressort').displayValue = ['Reisen']
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.getControl('Apply').click()
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin')
->>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@view.html')
->>> 'Foreign teaser' in browser.contents
-True
-
-We inject the test article by writing raw XML this time:
-
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign')
->>> browser.getLink('Source').click()
->>> xml = browser.getControl('XML Source').value
->>> import re
->>> xml = re.sub('<container (cp:type="teaser"[^>]*)/>',
-... """<container \\1>
-... <block href="http://xml.zeit.de/testcontent">
-...   <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-...     <title/>
-...     <text/>
-...   </teaser>
-... </block>
-... </container>
-... """, xml)
->>> browser.getControl('XML Source').value = xml
->>> browser.getControl('Apply').click()
->>> 'testcontent' in browser.contents
-True
-
-We need to check in the CenterPage we want to reference to actually see the
-teasers (of course):
-
->>> browser.open(
-...     'http://localhost/++skin++cms/workingcopy/zope.user/foreign/@@checkin')
-
-
-Currently the autopilot is not possible, because we have not referenced the
-other cp:
-
->>> browser.open(contents_url)
->>> 'autopilot-not-possible' in browser.contents
-True
-
-It is not possible to switch on the autopilot when there is no centerpage
-referenced:
-
->>> browser.open(contents_url)
->>> browser.getLink('Edit').click()
->>> browser.open('edit-properties')
->>> browser.getControl('On Autopilot').selected = True
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<...Cannot activate autopilot without referenced centerpage...
-
-Now we can switch our teaser block to autopilot when referencing the
-centerpage:
-
->>> browser.getControl('Fetch teasers from').value = (
-...     'http://xml.zeit.de/online/2007/01/foreign')
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<...Updated on...
-
-The teaser block displays a marker to show that it is on autopilot. It then
-pulls in the first teaser of each teaser block from the referenced CenterPage's
-lead region:
-
->>> browser.open(contents_url)
->>> 'autopilot-on' in browser.contents
-True
->>> 'Foreign teaser' in browser.contents
-True
-
-We can now switch it of again:
-
->>> browser.getLink('Switch autopilot').click()
->>> browser.open(contents_url)
->>> 'autopilot-off' in browser.contents
-True
-
-
-When the autopilot is on and content is dropped on the block, the autopilot is
-automatically switched off:
-
->>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> browser.getLink('Switch autopilot').click()
->>> browser.open(contents_url)
->>> zeit.content.cp.centerpage._test_helper_cp_changed
-True
->>> 'autopilot-on' in browser.contents
-True
->>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
->>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> browser.open(url)
->>> zeit.content.cp.centerpage._test_helper_cp_changed
-True
->>> browser.open(contents_url)
->>> 'autopilot-on' in browser.contents
-False
->>> 'autopilot-off' in browser.contents
-True
-
-
-Updating the order als works when in autopilot mode. The autopilot is
-automatically disabled then:
-
->>> browser.getLink('Switch autopilot').click()
->>> browser.open(contents_url)
->>> update_order_url = browser.getLink('Edit teaser list').url.replace(
-...     'teaser.edit-contents', 'updateOrder')
->>> order = ['http://xml.zeit.de/testcontent']
->>> browser.open(update_order_url + '?keys=' + cjson.encode(order))
->>> browser.open(contents_url)
->>> 'autopilot-on' in browser.contents
-False
->>> 'autopilot-off' in browser.contents
-True
-
 Layouts
 +++++++
+
+[#setup-layout-test-needs-real-content-type-with-image]_
 
 The layout can be selected at the edit box:
 
@@ -504,6 +363,7 @@ to the test-content:
 >>> import zeit.content.image.interfaces
 >>> import zeit.content.image.tests
 
+
 >>> with zeit.content.cp.browser.tests.site(getRootFolder()):
 ...     group = zeit.content.image.tests.create_image_group()
 ...     test_content = zeit.cms.interfaces.ICMSContent(
@@ -519,7 +379,6 @@ The 450x200 image is used now:
 >>> print browser.contents
 <div ...
        class="action-content-droppable leader">
-       ...
   <div class="teaser-list">
     <div class="teaser">
       <img src="http://localhost/++skin++cms/repository/image-group/new-hampshire-450x200.jpg" />
@@ -536,7 +395,6 @@ When we change the layout to xxx the image will not be used any more:
 >>> print browser.contents
 <div ...
        class="action-content-droppable buttons">
-       ...
   <div class="teaser-list">
     <div class="teaser">
       <div class="supertitle"></div>
@@ -598,3 +456,53 @@ LinkNotFoundError
     >>> repository['c3'] = c3
 
     >>> zope.app.component.hooks.setSite(old_site)
+
+.. [#setup-layout-test-needs-real-content-type-with-image]:
+
+    We create a new centerpage with a content type from the repository:
+
+    >>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
+    >>> browser.open('contents')
+    >>> contents_url = browser.url
+    >>> browser.getLink('Add block').click()
+    >>> browser.open(contents_url)
+    >>> browser.getLink('choose the block type').click()
+    >>> browser.getLink('List of teasers').click()
+    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign/')
+
+    Then we need to create a test 'article' to be included in this CenterPage:
+
+    >>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@checkout')
+    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@edit.html')
+    >>> browser.getControl('Teaser title').value = u'Foreign teaser'
+    >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+    >>> browser.getControl('Year').value = '2007'
+    >>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
+    >>> browser.getControl('Ressort').displayValue = ['Reisen']
+    >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+    >>> browser.getControl('Apply').click()
+    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin')
+    >>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@view.html')
+    >>> 'Foreign teaser' in browser.contents
+    True
+
+    We inject the test article by writing raw XML this time:
+
+    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign')
+    >>> browser.getLink('Source').click()
+    >>> xml = browser.getControl('XML Source').value
+    >>> import re
+    >>> xml = re.sub('<container (cp:type="teaser"[^>]*)/>',
+    ... """<container \\1>
+    ... <block href="http://xml.zeit.de/testcontent">
+    ...   <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
+    ...     <title/>
+    ...     <text/>
+    ...   </teaser>
+    ... </block>
+    ... </container>
+    ... """, xml)
+    >>> browser.getControl('XML Source').value = xml
+    >>> browser.getControl('Apply').click()
+    >>> 'testcontent' in browser.contents
+    True

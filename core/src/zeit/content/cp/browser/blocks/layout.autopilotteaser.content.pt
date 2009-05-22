@@ -1,0 +1,6 @@
+<a class="autopilot-chooser"
+   tal:attributes="href view/autopilot_toggle_url"
+   cms:cp-module="zeit.content.cp.LoadAndReload">
+  <span class="action-title">Switch autopilot</span>
+</a>
+

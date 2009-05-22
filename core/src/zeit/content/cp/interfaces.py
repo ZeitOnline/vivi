@@ -155,6 +155,14 @@ class IPlaceHolder(IBlock):
 
 class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
+    layout = zope.schema.Choice(
+        title=_("Layout"),
+        source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
+        missing_value=zeit.content.cp.layout.get_layout('leader'))
+
+
+class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
+
     referenced_cp = zope.schema.Choice(
         title=_("Fetch teasers from"),
         source=zeit.cms.content.contentsource.CMSContentSource(),
@@ -162,10 +170,6 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
     autopilot = zope.schema.Bool(
         title=_("On Autopilot")
         )
-    layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
-        missing_value=zeit.content.cp.layout.get_layout('leader'))
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
@@ -175,12 +179,15 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         return True
 
 
-
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
     pass
 
 
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
+    """A list of teasers."""
+
+
+class IAutoPilotTeaserBlock(IAutoPilotReadTeaserBlock, ITeaserBlock):
     """A list of teasers."""
 
 

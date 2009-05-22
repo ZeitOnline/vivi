@@ -1,7 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.cp.interfaces import ITeaserBlock
+from zeit.content.cp.interfaces import IAutoPilotTeaserBlock
 from zeit.content.cp.layout import get_layout
 import lxml.objectify
 import unittest
@@ -45,7 +45,7 @@ class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
         bar.layout = get_layout('dmr')
         self.assertEquals(1, len(bar))
         # expect: [x]
-        self.assert_(ITeaserBlock.providedBy(self.item(0)))
+        self.assert_(IAutoPilotTeaserBlock.providedBy(self.item(0)))
 
         teaser_factory()
         teaser_factory()
@@ -70,13 +70,13 @@ class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
 
         bar.layout = get_layout('mr')
         # expect: [x, x]
-        self.assert_(ITeaserBlock.providedBy(self.item(0)))
-        self.assert_(ITeaserBlock.providedBy(self.item(1)))
+        self.assert_(IAutoPilotTeaserBlock.providedBy(self.item(0)))
+        self.assert_(IAutoPilotTeaserBlock.providedBy(self.item(1)))
 
         bar.layout = get_layout('dmr')
         # expect: [x, x]
-        self.assert_(ITeaserBlock.providedBy(self.item(0)))
-        self.assert_(ITeaserBlock.providedBy(self.item(1)))
+        self.assert_(IAutoPilotTeaserBlock.providedBy(self.item(0)))
+        self.assert_(IAutoPilotTeaserBlock.providedBy(self.item(1)))
 
 
 def test_suite():
