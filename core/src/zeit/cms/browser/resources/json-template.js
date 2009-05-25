@@ -86,7 +86,16 @@ function _ScopedContext(context, options) {
   var stack = [{context: context, index: -1}];
   var undefined_str = options.undefined_str;
 
+  if (options.log === undefined) { 
+    options.log = function(s) {};
+  }
+  if (options.repr === undefined) {
+    options.repr = function(o) { return o; };
+  }
+
   return {
+    hooks: options.hooks,
+
     log: options.log,
 
     repr: options.repr,
@@ -264,7 +273,9 @@ function _DoSection(args, context, callback) {
   }
 
   if (do_section) {
+    context.hooks.beforeSection(function(name) { return context.Lookup(name) } , callback, block.section_name);
     _Execute(block.Statements(), context, callback);
+    context.hooks.afterSection(context.Lookup, callback, block.section_name);
     context.Pop();
   } else {  // Empty list, None, False, etc.
     context.Pop();
@@ -302,7 +313,9 @@ function _DoRepeatedSection(args, context, callback) {
 
     for (var i=0; context.next() !== null; i++) {
       context.log('_DoRepeatedSection i: ' +i);
+      context.hooks.beforeRepeatedSection(function(name) { return context.Lookup(name) }, callback, block.section_name, i);
       _Execute(statements, context, callback);
+      context.hooks.afterRepeatedSection(context.Lookup, callback, block.section_name, i);
       if (i != last_index) {
         context.log('ALTERNATE');
         _Execute(alt_statements, context, callback);
@@ -507,9 +520,190 @@ function _Compile(template_str, options) {
 }
 
 
+// hooks that don't do a thing; these are passed in by default
+var EmptyHooks = function() {
+  return {
+    transformData: function(data_dict) {
+      return data_dict;
+    },
+    beforeSection: function(lookup, write, name) {     
+    },
+    afterSection: function(lookup, write, name) {
+    },  
+    beforeRepeatedSection: function(lookup, write, name, index) {
+
+    },
+    afterRepeatedSection: function(lookup, write, name, index) {
+
+    }
+  };
+};
+
+var emptyHooks = EmptyHooks()
+
+var LoggingHooks = function(log) {
+  return {
+    transformData: function(data_dict) {
+      return data_dict;
+    },
+    beforeSection: function(lookup, write, name) {
+      log("Before section: " + name);
+    },
+    afterSection: function(lookup, write, name) {
+      log("After section: " + name);
+    },  
+    beforeRepeatedSection: function(lookup, write, name, index) {
+      log("Before repeated section: " + name + "[" + index + "]");
+    },
+    afterRepeatedSection: function(lookup, write, name, index) {
+      log("After repeated section: " + name + "[" + index + "]");
+    }
+  };
+};
+
+var HtmlIdHooks = function() {
+  return {
+     transformData: function(data_dict) {
+        _transform_paths_dict_helper(data_dict, '');
+        return data_dict;
+     },
+     beforeSection: function(lookup, write, name) {
+       write('<div class="json-template-path" style="display:none" id="' + lookup('_path') + '"></div>');
+     },
+     afterSection: function(lookup, write, name) {
+     },
+     beforeRepeatedSection: function(lookup, write, name, index) { 
+       write('<div class="json-template-path" style="display:none" id="' + lookup('_path') + '"></div>');
+     },
+     afterRepeatedSection: function(lookup, write, name, index) {
+     }
+  };
+};
+
+var _transform_paths_dict_helper = function(data_dict, path) {
+  var key;
+  var value;
+
+  data_dict['_path'] = path; 
+  
+  for (key in data_dict) {
+    value = data_dict[key];
+    if (_is_array(value)) {
+      _transform_paths_array_helper(value, path + '.' + key); 
+    } else if (typeof value === 'object') {
+      _transform_paths_dict_helper(value, path + '.' + key);
+    }
+  }
+};
+
+var _transform_paths_array_helper = function(data_array, path) {
+  var i;
+  var value;
+  for (i = 0; i < data_array.length; i++) {
+    value = data_array[i];
+    if (_is_array(value)) {
+      _transform_paths_array_helper(value, path + '|' + i);
+    } else if (typeof value === 'object') {
+      _transform_paths_dict_helper(value, path + '|' + i);
+    }
+  }
+};
+
+var _is_array = function(obj) {
+  return Object.prototype.toString.apply(obj) === '[object Array]';
+};
+
+// given a data_dict, a path and (optionally) an undefined_str,
+// create a lookup function that looks up names in this context
+var get_lookup = function(data_dict, path, undefined_str) {
+  var steps = path.split('.');
+  var context = _ScopedContext(data_dict, {'undefined_str': undefined_str});
+  for (var i = 0; i < steps.length; i++) {
+    var parts = steps[i].split('|');
+    if (parts.length >= 2) {
+      var key = parts[0];
+      var indexes = parts.slice(1); 
+    } else {
+      var key = parts[0];
+      var indexes = [];
+    }
+    if (key == '') {
+      continue;
+    }
+    context.PushSection(key);
+    for (var j = 0; j < indexes.length; j++) {
+      for (var x = 0; x < parseInt(indexes[j]) + 1; x++) {
+        context.next();
+      }
+    }
+  }
+  return function(name) {
+    return context.Lookup(name);
+  };
+};
+ 
+var get_node_lookup = function(data_dict, node, undefined_str) {
+  var parent = node;
+  while (parent !== null) {
+    var sibling = parent;
+    while (sibling !== null) {
+      if (sibling.getAttribute('class') == 'json-template-path') {
+        var path = sibling.getAttribute('id');
+        return get_lookup(data_dict, path, undefined_str);
+      }
+      sibling = sibling.previousSibling;
+    }
+    parent = parent.parentNode;
+  }
+  return undefined_str;
+};
+
+// a way to execute multiple hooks in a particular order for a single
+// expansion. Could be used to combine logging with something else.
+var MultiHooks = function(hooks_objects) {
+  return {
+    transformData: function(data_dict) {
+       var i;
+       for (i = 0; i < hooks_objects.length; i++) {
+           data_dict = hooks_objects[i].transformData(data_dict);
+       }
+       return data_dict;
+    },
+    beforeSection: function(lookup, write, name) {
+       var i;
+       for (i = 0; i < hooks_objects.length; i++) { 
+          hooks_objects[i].beforeSection(lookup, write, name);
+       }
+    },
+    afterSection: function(lookup, write, name) {
+       var i;
+       for (i = 0; i < hooks_objects.length; i++) { 
+          hooks_objects[i].afterSection(lookup, write, name);
+       }
+    },
+    beforeRepeatedSection: function(lookup, write, name, index) {
+       var i;
+       for (i = 0; i < hooks_objects.length; i++) { 
+          hooks_objects[i].beforeRepeatedSection(lookup, write, name, index);
+       }
+    },
+    afterRepeatedSection: function(lookup, write, name, index) {
+       var i;
+       for (i = 0; i < hooks_objects.length; i++) { 
+          hooks_objects[i].afterRepeatedSection(lookup, write, name, index);
+       }
+    },
+
+  };
+};
+
 function Template(template_str, options) {
   // options.undefined_str can either be a string or undefined
   options = options || {};
+
+  if (options.hooks === undefined) {
+     options.hooks = emptyHooks;
+  }
 
   if (options.log === undefined) {
      options.log = log;
@@ -524,6 +718,7 @@ function Template(template_str, options) {
 
   return  {
     render: function(data_dict, callback) {
+      data_dict = options.hooks.transformData(data_dict); 
       var context = _ScopedContext(data_dict, options);
       _Execute(program.Statements(), context, callback);
     },
@@ -540,6 +735,6 @@ function Template(template_str, options) {
 // We just export one name for now, the Template "class".
 // We need HtmlEscape in the browser tests, so might as well export it.
 
-return {Template: Template, HtmlEscape: HtmlEscape};
+return {Template: Template, HtmlEscape: HtmlEscape, HtmlIdHooks:HtmlIdHooks, get_node_lookup: get_node_lookup};
 
 }();
