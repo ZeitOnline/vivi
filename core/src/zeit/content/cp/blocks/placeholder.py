@@ -13,5 +13,5 @@ class PlaceHolder(zeit.content.cp.blocks.block.Block):
     zope.interface.implements(zeit.content.cp.interfaces.IPlaceHolder)
 
 
-PlaceHolderFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
+PlaceHolderFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
     zeit.content.cp.interfaces.IRegion, 'placeholder')

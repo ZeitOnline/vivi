@@ -1,7 +1,9 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zeit="http://namespaces.zeit.de/zcml">
 
-  <include package="zeit.find" />
+  <include package="zeit.content.cp" file="meta.zcml" />
+  <include package="zeit.find" /> <!-- XXX why?! -->
 
   <class class=".centerpage.CenterPage">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
@@ -43,33 +45,33 @@
   <include package=".browser" />
 
   <!-- Areas -->
-  <adapter factory=".area.area_to_centerpage" />
+  <adapter factory=".area.container_to_centerpage" />
   <adapter factory=".area.cms_content_iter" />
 
-  <class class=".area.LeadRegion">
+  <class class=".area.Lead">
     <require
-      interface=".interfaces.IReadArea"
+      interface=".interfaces.IReadContainer"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteArea"
+      interface=".interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
   </class>
-  <class class=".area.InformativesRegion">
+  <class class=".area.Informatives">
     <require
-      interface=".interfaces.IReadArea"
+      interface=".interfaces.IReadContainer"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteArea"
+      interface=".interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
   </class>
-  <class class=".area.Cluster">
+  <class class=".area.Mosaic">
     <require
-      interface=".interfaces.IReadArea"
+      interface=".interfaces.IReadContainer"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteArea"
+      interface=".interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
   </class>
@@ -77,17 +79,17 @@
   <adapter
     provides=".interfaces.IArea"
     name="lead"
-    factory=".area.LeadRegion"
+    factory=".area.Lead"
     />
   <adapter
     provides=".interfaces.IArea"
     name="informatives"
-    factory=".area.InformativesRegion"
+    factory=".area.Informatives"
     />
   <adapter
     provides=".interfaces.IArea"
     name="teaser-mosaic"
-    factory=".area.Cluster"
+    factory=".area.Mosaic"
     />
 
   <class class=".teaser.Teaser">
@@ -112,14 +114,9 @@
 
   <adapter factory=".teaser.metadata_to_teaser" />
 
-  <adapter factory=".rule.globs_for_block" />
-  <adapter factory=".rule.globs_for_area" />
-  <adapter
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    factory=".rule.globs_for_teaser" />
-  <adapter
-    for="zeit.content.cp.interfaces.ITeaserBar"
-    factory=".rule.globs_for_teaser" />
+  <zeit:globs module=".rule" />
+  <adapter factory=".rule.globs" />
+
   <utility factory=".rule.RulesManager" />
   <adapter
     for="zeit.content.cp.interfaces.IBlock"

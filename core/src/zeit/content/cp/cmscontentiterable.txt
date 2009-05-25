@@ -13,14 +13,14 @@ Some setup to fill a centerpage:
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
 
 >>> bar_factory = zope.component.getAdapter(
-...     tm, zeit.content.cp.interfaces.IBlockFactory, name='teaser-bar')
+...     tm, zeit.content.cp.interfaces.IElementFactory, name='teaser-bar')
 >>> teaser_bars = bar_factory()
 >>> teaser_bar_factory = zope.component.getAdapter(
-...     teaser_bars, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+...     teaser_bars, zeit.content.cp.interfaces.IElementFactory, name='teaser')
 >>> mosaic = teaser_bar_factory()
 
 >>> import zeit.cms.repository.interfaces

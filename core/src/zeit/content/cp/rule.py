@@ -38,7 +38,8 @@ class Rule(object):
     def apply(self, context):
         status = Status()
 
-        globs = dict(
+        globs = zeit.content.cp.interfaces.IRuleGlobs(context)
+        globs.update(
             applicable=self.applicable,
             error_if=lambda *args: self.error_if(status, *args),
             error_unless=lambda *args: self.error_unless(status, *args),
@@ -46,12 +47,6 @@ class Rule(object):
             warning_unless=lambda *args: self.warning_unless(status, *args),
             context=context,
         )
-
-        defaults = ['area', 'layout', 'position', 'count',
-                    'is_block', 'is_area']
-        for key in defaults:
-            globs[key] = None
-        globs.update(zeit.content.cp.interfaces.IRuleGlobs(context))
 
         try:
             eval(self.code, globs)
@@ -82,34 +77,94 @@ class Rule(object):
         self.warning_if(status, not condition, message)
 
 
-@zope.component.adapter(zeit.content.cp.interfaces.IBlock)
+@zope.component.adapter(zope.interface.Interface)
 @zope.interface.implementer(zeit.content.cp.interfaces.IRuleGlobs)
-def globs_for_block(context):
-    area = context.__parent__
-    globs = dict(
-        is_block=True,
-        type=context.type,
-        area=area.__name__,
-        position=area.keys().index(context.__name__) + 1,
-        )
+def globs(context):
+    globs = {}
+    for name, adapter in zope.component.getAdapters(
+        (context,), zeit.content.cp.interfaces.IRuleGlob):
+        if not name:
+            continue
+        globs[name] = adapter
     return globs
 
 
-@zope.interface.implementer(zeit.content.cp.interfaces.IRuleGlobs)
-def globs_for_teaser(context):
-    globs = globs_for_block(context)
-    globs['layout'] = context.layout.id
-    return globs
+_globs = []
 
-@zope.component.adapter(zeit.content.cp.interfaces.IArea)
-@zope.interface.implementer(zeit.content.cp.interfaces.IRuleGlobs)
-def globs_for_area(context):
-    globs = dict(
-        is_area=True,
-        count=len(context),
-        area=context.__name__
-        )
-    return globs
+
+def glob(adapts):
+    """Decorator that creates an entry in the rule globs.
+
+    The name for the glob is the decorated function's name.
+    The glob applies for objects with the interface given in `adapts`.
+
+    The globs created here can be registered by the <globs/>-Directive in
+    zcml.py
+    """
+    def decorate(func):
+        _globs.append((func, adapts))
+        return func
+    return decorate
+
+
+@glob(zeit.content.cp.interfaces.IElement)
+def position(context):
+    return context.__parent__.keys().index(context.__name__) + 1
+
+
+@glob(zeit.content.cp.interfaces.IElement)
+def area(context):
+    return zeit.content.cp.interfaces.IArea(context).__name__
+
+
+@glob(zeit.content.cp.interfaces.IBlock)
+def type(context):
+    return context.type
+
+
+@glob(zeit.content.cp.interfaces.IBlock)
+def is_block(context):
+    return True
+
+
+@glob(zope.interface.Interface)
+def is_block(context):
+    return False
+
+
+@glob(zeit.content.cp.interfaces.IArea)
+def is_area(context):
+    return True
+
+
+@glob(zope.interface.Interface)
+def is_area(context):
+    return False
+
+
+@glob(zope.interface.Interface)
+def is_region(context):
+    return False
+
+
+@glob(zeit.content.cp.interfaces.IRegion)
+def is_region(context):
+    return True
+
+
+@glob(zeit.content.cp.interfaces.IContainer)
+def count(context):
+    return len(context)
+
+
+@glob(zeit.content.cp.interfaces.ITeaserBlock)
+def layout(context):
+    return context.layout.id
+
+
+@glob(zeit.content.cp.interfaces.ITeaserBar)
+def layout(context):
+    return context.layout.id
 
 
 class RulesManager(object):

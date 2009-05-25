@@ -23,7 +23,7 @@ class LandingZone(zeit.content.cp.browser.view.Action):
 
     def create_block(self):
         factory = zope.component.getAdapter(
-            self.create_in, zeit.content.cp.interfaces.IBlockFactory,
+            self.create_in, zeit.content.cp.interfaces.IElementFactory,
             name=self.block_type)
         self.block = factory()
 

@@ -11,15 +11,14 @@ import zope.component
 import zope.interface
 
 
-class TeaserBar(zeit.content.cp.blocks.block.Block,
-                zeit.content.cp.area.Area):
+class TeaserBar(zeit.content.cp.area.Container):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
 
     def __init__(self, context, xml):
         super(TeaserBar, self).__init__(context, xml)
         self.placeholder_factory = zope.component.getAdapter(
-            self, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
+            self, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
 
     @rwproperty.getproperty
     def layout(self):
@@ -46,12 +45,12 @@ class TeaserBar(zeit.content.cp.blocks.block.Block,
         return object.__repr__(self)
 
 
-class TeaserBarFactory(zeit.content.cp.blocks.block.BlockFactory):
+class TeaserBarFactory(zeit.content.cp.blocks.block.ElementFactory):
 
-    zope.component.adapts(zeit.content.cp.interfaces.ICluster)
+    zope.component.adapts(zeit.content.cp.interfaces.IMosaic)
 
-    block_class = TeaserBar
-    block_type = 'teaser-bar'
+    element_class = TeaserBar
+    element_type = 'teaser-bar'
     title = None
 
     def get_xml(self):
@@ -64,7 +63,7 @@ class TeaserBarFactory(zeit.content.cp.blocks.block.BlockFactory):
         bar = super(TeaserBarFactory, self).__call__()
         # Prepopulate with placeholders
         factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
+            bar, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
         for x in range(zeit.content.cp.layout.MAX_TEASER_BAR_BLOCKS):
             factory()
         return bar

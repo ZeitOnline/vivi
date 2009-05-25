@@ -16,13 +16,13 @@ Informatives area:
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostread')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='mostread')
 Traceback (most recent call last):
     ...
-ComponentLookupError: (<zeit.content.cp.area.LeadRegion for lead>, <InterfaceClass zeit.content.cp.interfaces.IBlockFactory>, 'mostread')
+ComponentLookupError: (<zeit.content.cp.area.Lead object at 0x...>, <InterfaceClass zeit.content.cp.interfaces.IElementFactory>, 'mostread')
 >>> zope.component.getAdapter(
 ...     cp['informatives'],
-...     zeit.content.cp.interfaces.IBlockFactory, name='mostread')
+...     zeit.content.cp.interfaces.IElementFactory, name='mostread')
 <zeit.content.cp.blocks.cpextra.MostreadFactory object at 0x...>
 
 
@@ -53,13 +53,13 @@ informatives area:
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='mostcommented')
 Traceback (most recent call last):
     ...
-ComponentLookupError: (<zeit.content.cp.area.LeadRegion for lead>, <InterfaceClass zeit.content.cp.interfaces.IBlockFactory>, 'mostcommented')
+ComponentLookupError: (<zeit.content.cp.area.Lead object at 0x...>, <InterfaceClass zeit.content.cp.interfaces.IElementFactory>, 'mostcommented')
 >>> zope.component.getAdapter(
 ...     cp['informatives'],
-...     zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')
+...     zeit.content.cp.interfaces.IElementFactory, name='mostcommented')
 <zeit.content.cp.blocks.cpextra.MostcommentedFactory object at 0x...>
 
 When a centerpage is created the toplist is automatically added. We look at the
@@ -83,7 +83,7 @@ Weather
 Shows the weather ...
 
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='weather')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='weather')
 >>> block = factory()
 >>> import lxml.etree
 >>> print lxml.etree.tostring(block.xml, pretty_print=True)
@@ -98,7 +98,7 @@ Stocks
 Shows stock info
 
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='stocks')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='stocks')
 >>> block = factory()
 >>> import lxml.etree
 >>> print lxml.etree.tostring(block.xml, pretty_print=True)

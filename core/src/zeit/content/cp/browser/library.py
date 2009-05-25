@@ -28,7 +28,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         result = []
         for name, adapter in zope.component.getAdapters(
             (context,),
-            zeit.content.cp.interfaces.IBlockFactory):
+            zeit.content.cp.interfaces.IElementFactory):
             if adapter.title is None:
                 continue
             image = self.resources.get('module-%s.png' % name, None)

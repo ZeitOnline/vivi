@@ -14,14 +14,16 @@ highlighted.
 >>> browser.open('contents')
 >>> contents_url = browser.url
 
-There are two example rules, see rule_testdata.py:
+There are some example rules, see rule_testdata.py. The lead region must contain
+more than two blocks, and the second teaserbar in the mosaic must have layout
+DMR.
 
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(contents_url)
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(contents_url)
 
-After adding a second teaser bar, both rules are violated:
+Both rules are violated now:
 
 >>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
 2

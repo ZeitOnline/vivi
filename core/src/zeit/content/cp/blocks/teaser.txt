@@ -9,7 +9,7 @@ The teaser block contains a list of teasers[#functional]_.
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
 
 >>> import zeit.cms.repository.interfaces
@@ -49,10 +49,10 @@ Autopilot
 A teaser block in autopilot mode fetches its contents from another CenterPage.
 
 >>> teaserbar = zope.component.getAdapter(
-...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IBlockFactory,
+...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
 ...     name="teaser-bar")()
 >>> teasers = zope.component.getAdapter(
-...     teaserbar, zeit.content.cp.interfaces.IBlockFactory,
+...     teaserbar, zeit.content.cp.interfaces.IElementFactory,
 ...     name='teaser')()
 >>> repository['cp'] = cp
 

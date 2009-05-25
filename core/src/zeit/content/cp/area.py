@@ -10,33 +10,28 @@ import zope.component
 import zope.container.contained
 import zope.event
 import zope.interface
+import zeit.content.cp.blocks.block
 
 
-class Area(UserDict.DictMixin,
-           zope.container.contained.Contained):
+class Container(UserDict.DictMixin,
+                zeit.content.cp.blocks.block.Element,
+                zope.container.contained.Contained):
 
     def __init__(self, context, xml):
         self.__parent__ = context
         self.xml = xml
-
-    def __repr__(self):
-        return '<%s.%s for %s>' % (self.__module__, self.__class__.__name__,
-                                   self.xml.get('area'))
-    @property
-    def __name__(self):
-        return self.xml.get('area')
 
     def __getitem__(self, key):
         # XXX this is not very efficient
         for node in self.xml.iterchildren():
             if node.get('{http://namespaces.zeit.de/CMS/cp}__name__') != key:
                 continue
-            block_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
-            block = zope.component.getMultiAdapter(
+            element_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
+            element = zope.component.getMultiAdapter(
                 (self, node),
-                zeit.content.cp.interfaces.IBlock,
-                name=block_type)
-            return zope.container.contained.contained(block, self, key)
+                zeit.content.cp.interfaces.IElement,
+                name=element_type)
+            return zope.container.contained.contained(element, self, key)
         raise KeyError(key)
 
     def __iter__(self):
@@ -88,6 +83,9 @@ class Area(UserDict.DictMixin,
         item.xml.getparent().remove(item.xml)
         return item
 
+    def __repr__(self):
+        return object.__repr__(self)
+
 
 @zope.component.adapter(zeit.content.cp.interfaces.IArea)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
@@ -97,7 +95,7 @@ def cms_content_iter(context):
         for block in context.values()])
 
 
-class Region(Area):
+class Region(Container):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRegion)
     zope.component.adapts(
@@ -105,27 +103,34 @@ class Region(Area):
         gocept.lxml.interfaces.IObjectified)
 
 
-class LeadRegion(Region):
+class Lead(Region):
 
-    zope.interface.implements(zeit.content.cp.interfaces.ILeadRegion)
+    zope.interface.implements(zeit.content.cp.interfaces.ILead,
+                              zeit.content.cp.interfaces.IArea)
 
-
-class InformativesRegion(Region):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IInformativesRegion)
+    __name__ = 'lead'
 
 
-class Cluster(Area):
+class Informatives(Region):
 
-    zope.interface.implements(zeit.content.cp.interfaces.ICluster)
+    zope.interface.implements(zeit.content.cp.interfaces.IInformatives,
+                              zeit.content.cp.interfaces.IArea)
+
+    __name__ = 'informatives'
+
+
+class Mosaic(Container):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IMosaic,
+                              zeit.content.cp.interfaces.IArea)
     zope.component.adapts(
         zeit.content.cp.interfaces.ICenterPage,
         gocept.lxml.interfaces.IObjectified)
 
+    __name__ = 'teaser-mosaic'
+
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
-@zope.component.adapter(zeit.content.cp.interfaces.IArea)
-def area_to_centerpage(context):
+@zope.component.adapter(zeit.content.cp.interfaces.IContainer)
+def container_to_centerpage(context):
     return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
-
-

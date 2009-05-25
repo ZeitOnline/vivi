@@ -18,12 +18,12 @@ class CPExtraBlock(zeit.content.cp.blocks.block.Block):
                               zeit.content.cp.interfaces.ICPExtraBlock)
 
 
-class CPExtraBlockFactory(zeit.content.cp.blocks.block.BlockFactory):
+class CPExtraBlockFactory(zeit.content.cp.blocks.block.ElementFactory):
 
 
     def get_xml(self):
         xml = super(CPExtraBlockFactory, self).get_xml()
-        xml.append(lxml.objectify.E.cp_extra(id=self.block_type))
+        xml.append(lxml.objectify.E.cp_extra(id=self.element_type))
         return xml
 
 
@@ -38,8 +38,8 @@ def factor(extra_id, title, interface=zeit.content.cp.interfaces.IRegion):
     factory_name = '%sFactory' % extra_id.capitalize()
     factory = type(factory_name, (CPExtraBlockFactory,), dict(
         title=title,
-        block_class=class_,
-        block_type=extra_id))
+        element_class=class_,
+        element_type=extra_id))
     factory = zope.component.adapter(interface)(factory)
 
     globals()[class_name] = class_
@@ -58,15 +58,15 @@ def add_blocks_to_newly_created_cp(context, event):
         return
     zope.component.getAdapter(
         context['informatives'],
-        zeit.content.cp.interfaces.IBlockFactory, name='mostread')()
+        zeit.content.cp.interfaces.IElementFactory, name='mostread')()
     zope.component.getAdapter(
         context['informatives'],
-        zeit.content.cp.interfaces.IBlockFactory, name='mostcommented')()
+        zeit.content.cp.interfaces.IElementFactory, name='mostcommented')()
 
 
 factor('mostread', u'Meistgelesen',
-       zeit.content.cp.interfaces.IInformativesRegion)
+       zeit.content.cp.interfaces.IInformatives)
 factor('mostcommented', u'Meistkommentiert',
-       zeit.content.cp.interfaces.IInformativesRegion)
+       zeit.content.cp.interfaces.IInformatives)
 factor('weather', u'Wetter')
 factor('stocks', u'Börse')

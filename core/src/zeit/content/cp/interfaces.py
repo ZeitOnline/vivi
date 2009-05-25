@@ -35,7 +35,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
             - lead
             - informatives
-            - mosaik
+            - mosaic
 
         """
 
@@ -47,7 +47,7 @@ class IValidatingWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
     pass
 
 
-class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,
+class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
                 zope.container.interfaces.IContained,
                 zope.container.interfaces.IReadContainer):
     """Area on the CP which can be edited.
@@ -56,7 +56,7 @@ class IReadArea(zeit.cms.content.interfaces.IXMLRepresentation,
 
     """
 
-class IWriteArea(zope.container.interfaces.IOrdered):
+class IWriteContainer(zope.container.interfaces.IOrdered):
     """Modify area."""
 
     def add(item):
@@ -66,41 +66,63 @@ class IWriteArea(zope.container.interfaces.IOrdered):
         """Remove item."""
 
 
-class IArea(IReadArea, IWriteArea):
-    """Combined read/write interface to areas."""
-
-
-class IReadRegion(IReadArea):
+class IContainer(IReadContainer, IWriteContainer):
     pass
 
 
-class IWriteRegion(IWriteArea):
+class IArea(IContainer):
+    """Combined read/write interface to areas."""
+
+
+class IReadRegion(IReadContainer):
+    pass
+
+
+class IWriteRegion(IWriteContainer):
     pass
 
 
 # IRegion wants to be an IArea, but also preserve the IReadArea/IWriteArea
 # split, so we inherit from IArea again. Absolutely no thanks to Zope for this
 # whole read/write business :-(
-class IRegion(IReadRegion, IWriteRegion, IArea):
+class IRegion(IReadRegion, IWriteRegion, IContainer):
     """A region contains blocks."""
 
 
-class ILeadRegion(IRegion):
+class ILead(IRegion):
     """The lead region."""
 
 
-class IInformativesRegion(IRegion):
+class IInformatives(IRegion):
     """The informatives region."""
 
 
-class ICluster(IArea):
-    """A cluster contains regions."""
+class IMosaic(IContainer):
+    pass
 
-
-class IBlock(zope.interface.Interface):
+class IElement(zope.interface.Interface):
     """XXX A module which can be instantiated and added to the page."""
 
     type = zope.interface.Attribute("Type identifier.")
+
+
+class ICMSContentIterable(zope.interface.Interface):
+    """An iterable object iterating over CMSContent."""
+
+    def __iter__():
+        pass
+
+
+class IElementFactory(zope.interface.Interface):
+
+    title = zope.schema.TextLine(
+        title=_('Block type'))
+
+    def __call__():
+        """Create block."""
+
+
+class IBlock(IElement):
 
     title = zope.schema.TextLine(
         title=_("Title"),
@@ -126,22 +148,6 @@ class IBlock(zope.interface.Interface):
     read_more_url = zope.schema.TextLine(
         title=_("Read more URL"),
         required=False)
-
-
-class ICMSContentIterable(zope.interface.Interface):
-    """An iterable object iterating over CMSContent."""
-
-    def __iter__():
-        pass
-
-
-class IBlockFactory(zope.interface.Interface):
-
-    title = zope.schema.TextLine(
-        title=_('Block type'))
-
-    def __call__():
-        """Create block."""
 
 
 class IPlaceHolder(IBlock):
@@ -322,6 +328,10 @@ class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IRegion):
 class IRuleGlobs(zope.interface.Interface):
     """Adapt to this to convert the context to a dictionary of things of
     interest to an IRule XXX docme"""
+
+
+class IRuleGlob(zope.interface.Interface):
+    """XXX docme"""
 
 
 class IRulesManager(zope.interface.Interface):

@@ -3,7 +3,7 @@
   xmlns:browser="http://namespaces.zope.org/browser">
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ILeadRegion"
+    for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
@@ -14,10 +14,10 @@
     />
 
   <browser:view
-    for="zeit.content.cp.interfaces.ILeadRegion"
+    for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop"
-    class=".landing.LeaderLandingZoneDrop" 
+    class=".landing.LeaderLandingZoneDrop"
     permission="zeit.EditContent"
     />
 
@@ -25,12 +25,12 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop"
-    class=".landing.TeaserLandingZoneInsertAfter" 
+    class=".landing.TeaserLandingZoneInsertAfter"
     permission="zeit.EditContent"
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IInformativesRegion"
+    for="zeit.content.cp.interfaces.IInformatives"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"

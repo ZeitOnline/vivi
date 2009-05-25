@@ -2,8 +2,9 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:zeit="http://namespaces.zeit.de/zcml">
 
-  <adapter factory=".block.block_to_centerpage" />
+  <adapter factory=".block.cms_content_to_centerpage" />
   <adapter factory=".block.cms_content_iter" />
+  <adapter factory=".block.area_for_element" />
 
   <!-- Place holder -->
 
@@ -15,7 +16,7 @@
 
   <adapter factory=".placeholder.PlaceHolderFactory" name="placeholder" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="placeholder"
     factory=".placeholder.PlaceHolder"
     />
@@ -51,12 +52,12 @@
   <adapter factory=".teaser.feed_xi_include" name="xi:include" />
   <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="teaser"
     factory=".teaser.TeaserBlock"
     />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="teaser"
     factory=".teaser.AutoPilotTeaserBlock"
     />

@@ -20,7 +20,7 @@ import gocept.lxml.interfaces
 class TeaserBlock(zeit.content.cp.blocks.block.Block,
                  zeit.cms.syndication.feed.Feed):
 
-    # TeaserBlock reuses Feed for its "list of ICMSContent" behaviour
+    # TeaserBlock reuses Feed for its "list of IElement" behaviour
 
     zope.interface.implementsOnly(
         zeit.content.cp.interfaces.ITeaserBlock,
@@ -28,7 +28,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zope.container.interfaces.IContained)
 
     zope.component.adapts(
-        zeit.content.cp.interfaces.ILeadRegion,
+        zeit.content.cp.interfaces.ILead,
         gocept.lxml.interfaces.IObjectified)
 
     @property
@@ -62,7 +62,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
         zope.container.interfaces.IContained)
 
     zope.component.adapts(
-        zeit.content.cp.interfaces.IArea,
+        zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
@@ -141,8 +141,8 @@ class AutoPilotTeaserBlock(TeaserBlock):
                 self.remove(entry)
 
 
-TeaserBlockFactory = zeit.content.cp.blocks.block.blockFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'teaser', _('List of teasers'))
+TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
+    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'))
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
@@ -170,17 +170,17 @@ class CenterpageFeed(zeit.cms.syndication.feed.Feed):
 
 
 @zope.component.adapter(
-    zeit.content.cp.interfaces.IBlock,
+    zeit.content.cp.interfaces.IElement,
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     region = context.__parent__
     # Are we leaders?
-    if zeit.content.cp.interfaces.ILeadRegion.providedBy(region):
+    if zeit.content.cp.interfaces.ILead.providedBy(region):
         apply_layout(region, None)
 
 
 @zope.component.adapter(
-    zeit.content.cp.interfaces.ILeadRegion,
+    zeit.content.cp.interfaces.ILead,
     zope.lifecycleevent.IObjectModifiedEvent)
 def apply_layout(context, event):
     """Apply the layout for elements in the teaser list.

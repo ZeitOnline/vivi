@@ -9,7 +9,7 @@ The xml block contains raw xml[#functional]_.
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='xmlblock')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='xmlblock')
 >>> xmlblock = factory()
 
 An empty XML block contains an empty <container> element:

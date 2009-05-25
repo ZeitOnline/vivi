@@ -12,11 +12,11 @@ Centerpage
 A centerpage has three editable areas:
 
 >>> cp['lead']
-<zeit.content.cp.area.LeadRegion for lead>
+<zeit.content.cp.area.Lead object at 0x...>
 >>> cp['informatives']
-<zeit.content.cp.area.InformativesRegion for informatives>
+<zeit.content.cp.area.Informatives object at 0x...>
 >>> cp['teaser-mosaic']
-<zeit.content.cp.area.Cluster for teaser-mosaic>
+<zeit.content.cp.area.Mosaic object at 0x...>
 
 They are represented in XML as:
 
@@ -79,7 +79,7 @@ Blocks are created using a block factory:
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='placeholder')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
 >>> factory.title is None
 True
 >>> block = factory()
@@ -106,7 +106,7 @@ Teaser block
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
 >>> factory.title
 u'List of teasers'
 >>> block = factory()
@@ -151,7 +151,7 @@ It is possible to get the center page from the block by adapting to ICenterPage:
 The ``__parent__`` of a block is the area:
 
 >>> block.__parent__
-<zeit.content.cp.area.LeadRegion for lead>
+<zeit.content.cp.area.Lead object at 0x...>
 
 
 Areas support ordering of their contents via the ``updateOrder`` method:
@@ -198,7 +198,7 @@ about the weather).
 >>> transaction.commit()
 >>> mosaic = cp['teaser-mosaic']
 >>> factory = zope.component.getAdapter(
-...     mosaic, zeit.content.cp.interfaces.IBlockFactory, name='teaser-bar')
+...     mosaic, zeit.content.cp.interfaces.IElementFactory, name='teaser-bar')
 >>> bar = factory()
 >>> bar
 <zeit.content.cp.blocks.teaserbar.TeaserBar object at 0x...>
@@ -259,7 +259,7 @@ we can check it out:
 Now we need some test objects we can edit later on:
 
 >>> factory = zope.component.getAdapter(
-...     cp['lead'], zeit.content.cp.interfaces.IBlockFactory, name='teaser')
+...     cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
 >>> import zeit.cms.repository.interfaces
 >>> teaser = zeit.content.cp.teaser.Teaser()

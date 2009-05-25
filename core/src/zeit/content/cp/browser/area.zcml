@@ -23,7 +23,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ILeadRegion"
+    for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
@@ -34,7 +34,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IInformativesRegion"
+    for="zeit.content.cp.interfaces.IInformatives"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
@@ -56,7 +56,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IInformativesRegion"
+    for="zeit.content.cp.interfaces.IInformatives"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
@@ -68,7 +68,7 @@
 
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ICluster"
+    for="zeit.content.cp.interfaces.IMosaic"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"

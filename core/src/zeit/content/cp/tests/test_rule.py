@@ -14,7 +14,7 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
         super(RuleTest, self).setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         factory = zope.component.getAdapter(
-            self.cp['lead'], zeit.content.cp.interfaces.IBlockFactory,
+            self.cp['lead'], zeit.content.cp.interfaces.IElementFactory,
             name='teaser')
         self.teaser = factory()
 
@@ -70,7 +70,7 @@ warning_if(True, "A warning")
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
         self.assertEquals('An error message', s.message)
 
-    def test_block_rule(self):
+    def test_is_block(self):
         r = Rule("""
 warning_if(is_block)
 error_if(is_area)
@@ -78,12 +78,42 @@ error_if(is_area)
         s = r.apply(self.teaser)
         self.assertEquals(zeit.content.cp.rule.WARNING, s.status)
 
-    def test_area_rule(self):
+    def test_is_area(self):
         r = Rule("""
 warning_if(is_block)
 error_if(is_area)
 """)
         s = r.apply(self.cp['lead'])
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+
+    def test_is_block_in_teasermosaic_should_apply_to_block(self):
+        factory = zope.component.getAdapter(
+            self.cp['teaser-mosaic'],
+            zeit.content.cp.interfaces.IElementFactory,
+            name='teaser-bar')
+        bar = factory()
+        factory = zope.component.getAdapter(
+            bar, zeit.content.cp.interfaces.IElementFactory,
+            name='teaser')
+        teaser = factory()
+        r = Rule("""
+applicable(is_block and area == 'teaser-mosaic')
+error_if(True, u'Block in teasermosaic.')
+""")
+        s = r.apply(teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+
+    def test_is_region_in_teasermosaic_should_apply_to_teaserbar(self):
+        factory = zope.component.getAdapter(
+            self.cp['teaser-mosaic'],
+            zeit.content.cp.interfaces.IElementFactory,
+            name='teaser-bar')
+        bar = factory()
+        r = Rule("""
+applicable(is_region)
+error_if(True, u'Region in teasermosaic.')
+""")
+        s = r.apply(bar)
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 
 

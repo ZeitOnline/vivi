@@ -200,7 +200,7 @@
     />
 
   <browser:view
-    for="zeit.content.cp.interfaces.ICluster"
+    for="zeit.content.cp.interfaces.IMosaic"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block-factories.json"
     class=".library.ClusterBlockFactories"

@@ -1,4 +1,4 @@
-applicable(is_block and area == 'teaser-mosaic' and position == 2)
+applicable(is_region and area == 'teaser-mosaic' and position == 2)
 error_unless(layout == 'dmr', u'Die zweite Teaserleiste muss ein DMR sein')
 
 applicable(is_area and area == 'lead')
