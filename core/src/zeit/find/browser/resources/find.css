@@ -74,8 +74,7 @@
   top: 0;
 }
 
-.favorite_url,
-.related_url {
+.favorite_url {
   display: none;
 }
 

@@ -39,13 +39,11 @@ zeit.find = {};
         });
     }
 
-    var connect_related = function() {
+    var connect_related = function(element, data) {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('cp-search'));
+            'div', 'search_entry', element);
         forEach(results, function(entry) {
-            var related_url = MochiKit.DOM.scrapeText(
-                MochiKit.Selector.findChildElements(
-                    entry, ['.related_url'])[0]);
+            var related_url = jsontemplate.get_node_lookup(data, entry)('related_url');
             var related_links = MochiKit.Selector.findChildElements(
                 entry, ['.related_links'])[0];
             var related_info = MochiKit.Selector.findChildElements(

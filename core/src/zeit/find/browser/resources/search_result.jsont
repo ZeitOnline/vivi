@@ -22,7 +22,6 @@
     <a href="{author_filter}">{author}</a>
   </div>
   <span class="favorite_url">{favorite_url}</span>
-  <span class="related_url">{related_url}</span>
   <div class="related_info"></div>
 </div>
 {.end}
