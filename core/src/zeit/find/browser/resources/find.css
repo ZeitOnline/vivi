@@ -74,10 +74,6 @@
   top: 0;
 }
 
-.favorite_url {
-  display: none;
-}
-
 .related_links {
   min-height: 1em;
   background: url('arrow_right.png') no-repeat top left;

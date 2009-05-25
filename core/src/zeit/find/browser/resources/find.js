@@ -61,13 +61,11 @@ zeit.find = {};
         });
     }
 
-    var connect_toggle_favorited = function() {
+    var connect_toggle_favorited = function(element, data) {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('cp-search'));
+            'div', 'search_entry', element);
         forEach(results, function(entry) {
-            var favorite_url = MochiKit.DOM.scrapeText(
-                MochiKit.Selector.findChildElements(
-                    entry, ['.favorite_url'])[0]);
+            var favorite_url = jsontemplate.get_node_lookup(data, entry)('favorite_url');
             var toggle_favorited = MochiKit.Selector.findChildElements(
                 entry, ['.toggle_favorited'])[0];
             MochiKit.Signal.connect(toggle_favorited, 'onclick', function(e) {
