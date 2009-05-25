@@ -12,18 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// $Id$
+// $Id: json-template.js 262 2009-05-25 13:25:22Z martijn.faassen $
 
 //
 // JavaScript implementation of json-template.
 //
-
-// This is predefined in tests, shouldn't be defined anywhere else.  TODO: Do
-// something nicer.
-var log2 = function() {}; 
-//var log2 = log || function() {};
-var repr = repr || function() {};
-
 
 // The "module" exported by this script is called "jsontemplate":
 
@@ -48,7 +41,7 @@ function _MakeTokenRegex(meta_left, meta_right) {
       META_ESCAPE[meta_left] +
       '.+?' +
       META_ESCAPE[meta_right] +
-      '\n?)');
+      '\n?)', 'g');  // global for use with .exec()
 }
 
 // 
@@ -56,8 +49,8 @@ function _MakeTokenRegex(meta_left, meta_right) {
 //
 
 function HtmlEscape(s) {
-  return s.replace(/&/g,'&amp;').                                         
-           replace(/>/g,'&gt;').                                           
+  return s.replace(/&/g,'&amp;').
+           replace(/>/g,'&gt;').
            replace(/</g,'&lt;');
 }
 
@@ -86,15 +79,20 @@ var DEFAULT_FORMATTERS = {
 // Template implementation
 //
 
-function _ScopedContext(context, undefined_str) {
+function _ScopedContext(context, options) {
   // The stack contains:
   //   The current context (an object).
   //   An iteration index.  -1 means we're NOT iterating.
   var stack = [{context: context, index: -1}];
+  var undefined_str = options.undefined_str;
 
   return {
+    log: options.log,
+
+    repr: options.repr,
+
     PushSection: function(name) {
-      log2('PushSection '+name);
+      options.log('PushSection '+name);
       if (name === undefined || name === null) {
         return null;
       }
@@ -122,15 +120,15 @@ function _ScopedContext(context, undefined_str) {
       // We're already done
       if (stacktop.index == context_array.length) {
         stack.pop();
-        log2('next: null');
+        options.log('next: null');
         return null;  // sentinel to say that we're done
       }
 
-      log2('next: ' + stacktop.index);
+      options.log('next: ' + stacktop.index);
 
       stacktop.context = context_array[stacktop.index++];
 
-      log2('next: true');
+      options.log('next: true');
       return true;  // OK, we mutated the stack
     },
 
@@ -138,11 +136,21 @@ function _ScopedContext(context, undefined_str) {
       return stack[stack.length - 1].context;
     },
 
-    Lookup: function(name) {
+    _Undefined: function(name) {
+      if (undefined_str === undefined) {
+        throw {
+          name: 'UndefinedVariable', message: name + ' is not defined'
+        };
+      } else {
+        return undefined_str;
+      }
+    },
+
+    _LookUpStack: function(name) {
       var i = stack.length - 1;
       while (true) {
         var context = stack[i].context;
-        log2('context '+repr(context));
+        options.log('context '+ options.repr(context));
 
         if (typeof context !== 'object') {
           i--;
@@ -155,16 +163,25 @@ function _ScopedContext(context, undefined_str) {
           }
         }
         if (i <= -1) {
-          if (undefined_str === undefined) {
-            throw {
-              name: 'UndefinedVariable', message: name + ' is not defined'
-            };
-          } else {
-            return undefined_str;
+          return this._Undefined(name);
+        }
+      }
+    },
+
+    Lookup: function(name) {
+      var parts = name.split('.');
+      var value = this._LookUpStack(parts[0]);
+      if (parts.length > 1) {
+        for (var i=1; i<parts.length; i++) {
+          value = value[parts[i]];
+          if (value === undefined) {
+            return this._Undefined(parts[i]);
           }
         }
       }
+      return value;
     }
+
   };
 }
 
@@ -199,7 +216,7 @@ function _Execute(statements, context, callback) {
   for (i=0; i<statements.length; i++) {
     statement = statements[i];
 
-    //log2('Executing ' + statement);
+    //context.log('Executing ' + statement);
 
     if (typeof(statement) == 'string') {
       callback(statement);
@@ -213,7 +230,7 @@ function _Execute(statements, context, callback) {
 
 
 function _DoSubstitute(statement, context, callback) {
-  log2('Substituting: '+ statement.name);
+  context.log('Substituting: '+ statement.name);
   var value;
   if (statement.name == '@') {
     value = context.CursorValue();
@@ -273,7 +290,7 @@ function _DoRepeatedSection(args, context, callback) {
     pushed = true;
   }
 
-  //log2('ITEMS: '+showArray(items));
+  //context.log('ITEMS: '+showArray(items));
   if (items && items.length > 0) {
     // Execute the statements in the block for every item in the list.
     // Execute the alternate block on every iteration except the last.  Each
@@ -284,15 +301,15 @@ function _DoRepeatedSection(args, context, callback) {
     var alt_statements = block.Statements('alternate');
 
     for (var i=0; context.next() !== null; i++) {
-      log2('_DoRepeatedSection i: ' +i);
+      context.log('_DoRepeatedSection i: ' +i);
       _Execute(statements, context, callback);
       if (i != last_index) {
-        log2('ALTERNATE');
+        context.log('ALTERNATE');
         _Execute(alt_statements, context, callback);
       }
     }
   } else {
-    log2('OR: '+block.Statements('or'));
+    context.log('OR: '+block.Statements('or'));
     _Execute(block.Statements('or'), context, callback);
   }
 
@@ -351,124 +368,134 @@ function _Compile(template_str, options) {
   var meta_right = meta.substring(n/2, n);
 
   var token_re = _MakeTokenRegex(meta_left, meta_right);
-  var tokens = template_str.split(token_re);
   var current_block = _Section();
   var stack = [current_block];
 
   var strip_num = meta_left.length;  // assume they're the same length
 
-  for (var i = 0; i < tokens.length; i++) {
-    var token = tokens[i];
-    var interpret_token = (i % 2 == 1);
+  var token_match;
+  var last_index = 0;
 
-    log2('i: '+i);
-    log2('token0: "'+ token+'"');
-
-    if (interpret_token) {
-      var had_newline = false;
-      if (token.slice(-1) == '\n') {
-        token = token.slice(null, -1);
-        had_newline = true;
-      }
-
-      token = token.substr(0 + strip_num, token.length - 1 - strip_num);
-      log2('token2: "'+ token+'"');
-
-      if (token[0] == '#') {
-        continue;  // comment
-      }
-
-      if (token[0] == '.') {  // Keyword
-        token = token.substring(1, token.length);
-        log2('token3: "'+ token+'"');
-
-        var literal = {
-            'meta-left': meta_left,
-            'meta-right': meta_right,
-            'space': ' '
-            }[token];
-
-        if (literal !== undefined) {
-          current_block.Append(literal);
-          continue;
-        }
-
-        var match = token.match(_SECTION_RE);
-
-        if (match) {
-          var repeated = match[1];
-          var section_name = match[3];
-          var func = repeated ? _DoRepeatedSection : _DoSection;
-          log2('repeated ' + repeated + ' section_name ' + section_name);
-
-          var new_block = _Section(section_name);
-          current_block.Append([func, new_block]);
-          stack.push(new_block);
-          current_block = new_block;
-          continue;
-        }
-
-        if (token == 'alternates with') {
-          current_block.NewClause('alternate');
-          continue;
-        }
-
-        if (token == 'or') {
-          current_block.NewClause('or');
-          continue;
-        }
-
-        if (token == 'end') {
-          // End the block
-          stack.pop();
-          if (stack.length > 0) {
-            current_block = stack[stack.length-1];
-            //log2('STACK '+showArray(stack));
-            //log2('end BLOCK '+showArray(current_block.Statements()));
-          } else {
-            throw {
-              name: 'TemplateSyntaxError',
-              message: 'Got too many {end} statements'
-            };
-          }
-          continue;
-        }
-      }
-
-      // A variable substitution
-      var parts = token.split(format_char);
-      var formatters;
-      var name;
-      if (parts.length == 1) {
-        if (default_formatter === null) {
-            throw {
-              name: 'MissingFormatter',
-              message: 'This template requires explicit formatters.'
-            };
-        }
-        // If no formatter is specified, the default is the 'str' formatter,
-        // which the user can define however they desire.
-        formatters = [GetFormatter(default_formatter)];
-        name = token;
-      } else {
-        formatters = [];
-        for (var j=1; j<parts.length; j++) {
-          formatters.push(GetFormatter(parts[j]));
-        }
-        name = parts[0];
-      }
-      current_block.Append(
-          [_DoSubstitute, { name: name, formatters: formatters}]);
-      if (had_newline) {
-        current_block.Append('\n');
-      }
-
+  while (true) {
+    token_match = token_re.exec(template_str);
+    options.log('match:', token_match);
+    if (token_match === null) {
+      break;
     } else {
-      if (token) {
-        current_block.Append(token);
+      var token = token_match[0];
+    }
+    options.log('last_index: '+ last_index);
+    options.log('token_match.index: '+ token_match.index);
+
+    // Add the previous literal to the program
+    if (token_match.index > last_index) {
+      var tok = template_str.slice(last_index, token_match.index);
+      current_block.Append(tok);
+      options.log('tok: "'+ tok+'"');
+    }
+    last_index = token_re.lastIndex;
+
+    options.log('token0: "'+ token+'"');
+
+    var had_newline = false;
+    if (token.slice(-1) == '\n') {
+      token = token.slice(null, -1);
+      had_newline = true;
+    }
+
+    token = token.slice(strip_num, -strip_num);
+
+    if (token.charAt(0) == '#') {
+      continue;  // comment
+    }
+
+    if (token.charAt(0) == '.') {  // Keyword
+      token = token.substring(1, token.length);
+
+      var literal = {
+          'meta-left': meta_left,
+          'meta-right': meta_right,
+          'space': ' ',
+          'tab': '\t',
+          'newline': '\n'
+          }[token];
+
+      if (literal !== undefined) {
+        current_block.Append(literal);
+        continue;
+      }
+
+      var section_match = token.match(_SECTION_RE);
+
+      if (section_match) {
+        var repeated = section_match[1];
+        var section_name = section_match[3];
+        var func = repeated ? _DoRepeatedSection : _DoSection;
+        options.log('repeated ' + repeated + ' section_name ' + section_name);
+
+        var new_block = _Section(section_name);
+        current_block.Append([func, new_block]);
+        stack.push(new_block);
+        current_block = new_block;
+        continue;
+      }
+
+      if (token == 'alternates with') {
+        current_block.NewClause('alternate');
+        continue;
+      }
+
+      if (token == 'or') {
+        current_block.NewClause('or');
+        continue;
+      }
+
+      if (token == 'end') {
+        // End the block
+        stack.pop();
+        if (stack.length > 0) {
+          current_block = stack[stack.length-1];
+        } else {
+          throw {
+            name: 'TemplateSyntaxError',
+            message: 'Got too many {end} statements'
+          };
+        }
+        continue;
       }
     }
+
+    // A variable substitution
+    var parts = token.split(format_char);
+    var formatters;
+    var name;
+    if (parts.length == 1) {
+      if (default_formatter === null) {
+          throw {
+            name: 'MissingFormatter',
+            message: 'This template requires explicit formatters.'
+          };
+      }
+      // If no formatter is specified, the default is the 'str' formatter,
+      // which the user can define however they desire.
+      formatters = [GetFormatter(default_formatter)];
+      name = token;
+    } else {
+      formatters = [];
+      for (var j=1; j<parts.length; j++) {
+        formatters.push(GetFormatter(parts[j]));
+      }
+      name = parts[0];
+    }
+    current_block.Append(
+        [_DoSubstitute, { name: name, formatters: formatters}]);
+    if (had_newline) {
+      current_block.Append('\n');
+    }
   }
+
+  // Add the trailing literal
+  current_block.Append(template_str.slice(last_index));
 
   if (stack.length !== 1) {
     throw {
@@ -484,11 +511,20 @@ function Template(template_str, options) {
   // options.undefined_str can either be a string or undefined
   options = options || {};
 
+  if (options.log === undefined) {
+     options.log = log;
+     options.log = function(s) {};
+  }
+
+  if (options.repr === undefined) {
+     options.repr = function(o) { return o };
+  }
+
   var program = _Compile(template_str, options);
 
   return  {
     render: function(data_dict, callback) {
-      var context = _ScopedContext(data_dict, options.undefined_str);
+      var context = _ScopedContext(data_dict, options);
       _Execute(program.Statements(), context, callback);
     },
 
@@ -507,4 +543,3 @@ function Template(template_str, options) {
 return {Template: Template, HtmlEscape: HtmlEscape};
 
 }();
-
