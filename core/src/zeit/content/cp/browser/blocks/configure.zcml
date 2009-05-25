@@ -129,15 +129,6 @@
     permission="zeit.EditContent"
     />
 
-  <browser:page
-    for="zeit.content.cp.interfaces.IPlaceHolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-properties"
-    class=".block.EditProperties"
-    template="placeholder.edit-properties.pt"
-    permission="zeit.EditContent"
-    />
-
   <view
     for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IBlock"
     type="zeit.cms.browser.interfaces.ICMSLayer"
@@ -148,16 +139,16 @@
   <browser:page
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="switch"
-    class=".placeholder.SwitchType"
+    name="drop-module"
+    class=".placeholder.DropModule"
     permission="zeit.EditContent"
     />
 
   <browser:page
     for="zeit.content.cp.interfaces.IPlaceHolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="drop"
-    class=".placeholder.Drop"
+    name="drop-content"
+    class=".placeholder.DropContent"
     permission="zeit.EditContent"
     />
 

@@ -95,7 +95,7 @@ zeit.content.cp.drop.EditorDroppers =
         var self = this;
         var selectors = MochiKit.Base.map(
             function(h) {
-                return 'div.' + h.activated_by;
+                return '.' + h.activated_by;
             }, zeit.content.cp.drop.handlers);
 
         var elements = MochiKit.Selector.findChildElements(
@@ -135,13 +135,5 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
         query_arguments: function(draggable) {
             return {'uniqueId': draggable.uniqueId};
         }
-    });
-    zeit.content.cp.drop.registerHandler({ 
-        accept: ['module', 'module-drag-pane'],
-        activated_by: 'action-module-droppable',
-        url_attribute: 'cms:create-block-url',
-        query_arguments: function(draggable) {
-            return {'block_type': draggable.getAttribute('cms:block_type')};
-        },
     });
 })();

@@ -34,14 +34,13 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
     @rwproperty.getproperty
     def expires(self):
         value = self.first_child.get('expires')
-        if value is None:
-            return None
-        else:
+        if value:
             return zc.iso8601.parse.datetimetz(value)
 
     @rwproperty.setproperty
     def expires(self, value):
-        self.xml.getchildren()[0].set('expires', value.isoformat())
+        value = value.isoformat() if value else ''
+        self.xml.getchildren()[0].set('expires', value)
 
 
 class VideoBlock(AVBlock):

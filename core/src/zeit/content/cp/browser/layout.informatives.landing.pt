@@ -1,0 +1,5 @@
+
+<div class="landing-zone action-informatives-module-droppable"
+     tal:attributes="cms:create-block-url string:${context/@@absolute_url}/@@landing-zone-drop-module"
+     i18n:translate="">
+</div>

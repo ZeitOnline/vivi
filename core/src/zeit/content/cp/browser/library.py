@@ -31,10 +31,17 @@ class BlockFactories(zeit.cms.browser.view.JSON):
             zeit.content.cp.interfaces.IBlockFactory):
             if adapter.title is None:
                 continue
+            image = self.resources.get('module-%s.png' % name, None)
+            if image is None:
+                image = self.resources['module-default-image.png']
+            image = image()
             result.append(dict(
+                area=self.context.__name__,
+                title=adapter.title,
                 type=name,
-                title=adapter.title))
-        return result
+                image=image,
+            ))
+        return sorted(result, key=lambda r: r['title'])
 
     @property
     def factory_context(self):
@@ -53,7 +60,13 @@ class ClusterBlockFactories(BlockFactories):
         return self.context[key]
 
 
-class LandingZone(zeit.content.cp.browser.landing.LandingZone):
+class BlockLandingZone(zeit.content.cp.browser.landing.LandingZone):
 
     block_type = zeit.content.cp.browser.view.Form('block_type')
     order = 'after-context'
+
+
+class RegionLandingZone(zeit.content.cp.browser.landing.LandingZone):
+
+    block_type = zeit.content.cp.browser.view.Form('block_type')
+    order = 0

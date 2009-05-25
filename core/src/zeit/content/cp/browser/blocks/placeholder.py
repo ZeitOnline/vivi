@@ -7,7 +7,7 @@ import zope.component
 import zope.event
 import zope.lifecycleevent
 
-class Drop(zeit.content.cp.browser.view.Action):
+class DropContent(zeit.content.cp.browser.view.Action):
 
     def update(self):
         uniqueId = self.request.form['uniqueId']
@@ -22,14 +22,15 @@ class Drop(zeit.content.cp.browser.view.Action):
         self.signal('after-reload', 'added', teaserlist.__name__)
 
 
-class SwitchType(zeit.content.cp.browser.view.Action):
+class DropModule(zeit.content.cp.browser.view.Action):
+
+    block_type = zeit.content.cp.browser.view.Form('block_type')
 
     def update(self):
-        type = self.request.form['type']
         switcher = zope.component.getMultiAdapter(
             (self.context.__parent__, self.context, self.request),
             name='type-switcher')
-        new = switcher(type)
+        new = switcher(self.block_type)
         self.signal('before-reload', 'deleted', self.context.__name__)
         self.signal('after-reload', 'added', new.__name__)
         self.signal(None, 'reload',

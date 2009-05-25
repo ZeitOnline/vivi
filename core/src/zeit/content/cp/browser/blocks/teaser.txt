@@ -2,7 +2,7 @@ Teaser block
 ++++++++++++
 
 The teaser block contains a list of teasers. Let's first create a list of teasers
-in the lead area:
+in the lead area[#fill-dav-with-content]_:
 
 >>> import z3c.etestbrowser.testing
 >>> import zeit.content.cp.browser.tests
@@ -12,25 +12,8 @@ in the lead area:
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.getLink('Add block', index=0).click()
->>> browser.open(contents_url)
->>> browser.getLink('choose the block type').click()
->>> browser.getLink('List of teasers').click()
-
-When a teaser is dragged on the teaser block, it is added as the first teaser.
-Drag the first one[#fill-dav-with-content]_:
-
->>> import lxml.cssselect
->>> browser.open(contents_url)
->>> select = lxml.cssselect.CSSSelector(
-...     'div.type-teaser div[cms|drop-url]')
->>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
->>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
-...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
->>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
->>> import zeit.content.cp.centerpage
->>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> browser.open(url)
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
@@ -48,14 +31,17 @@ Drag the first one[#fill-dav-with-content]_:
   </div>
   ...
 
-Make sure the data is stored on the centerpage:
+When a teaser is dragged on the teaser block, it is added as the first teaser:
 
->>> zeit.content.cp.centerpage._test_helper_cp_changed
-True
-
-
-Drag c1 onto the list, it becomes the first entry:
-
+>>> import lxml.cssselect
+>>> browser.open(contents_url)
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.type-teaser div[cms|drop-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> url = '%s?uniqueId=http://xml.zeit.de/c1' % (drop_url,)
 >>> browser.open(url)
 >>> browser.open(contents_url)
@@ -81,6 +67,9 @@ Drag c1 onto the list, it becomes the first entry:
     <div class="shortTeaserText"></div>
   </div>
   ...
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+
 
 
 Edit the teaser block
@@ -404,16 +393,14 @@ Available layout
 ~~~~~~~~~~~~~~~~
 
 The avaliable layouts are different for the position of the teaser block in the
-leasers list. The first teaser block has all layouts avaliable for selection,
+lead area. The first teaser block has all layouts avaliable for selection,
 all others only the one with the small image.
 
 We need to add a second teaser block:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Add block').click()
->>> browser.open(contents_url)
->>> browser.getLink('choose the block type').click()
->>> browser.getLink('List of teasers').click()
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
 >>> browser.open(contents_url)
 
 >>> browser.getLink('Edit').click()
@@ -464,16 +451,13 @@ LinkNotFoundError
     >>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
     >>> browser.open('contents')
     >>> contents_url = browser.url
-    >>> browser.getLink('Add block').click()
-    >>> browser.open(contents_url)
-    >>> browser.getLink('choose the block type').click()
-    >>> browser.getLink('List of teasers').click()
-    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign/')
+    >>> browser.open(
+    ...     'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
 
     Then we need to create a test 'article' to be included in this CenterPage:
 
-    >>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@checkout')
-    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@edit.html')
+    >>> browser.open('/++skin++cms/repository/testcontent')
+    >>> browser.getLink('Checkout').click()
     >>> browser.getControl('Teaser title').value = u'Foreign teaser'
     >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
     >>> browser.getControl('Year').value = '2007'
@@ -481,28 +465,6 @@ LinkNotFoundError
     >>> browser.getControl('Ressort').displayValue = ['Reisen']
     >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
     >>> browser.getControl('Apply').click()
-    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin')
-    >>> browser.open('http://localhost/++skin++cms/repository/testcontent/@@view.html')
+    >>> browser.getLink('Checkin').click()
     >>> 'Foreign teaser' in browser.contents
-    True
-
-    We inject the test article by writing raw XML this time:
-
-    >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/foreign')
-    >>> browser.getLink('Source').click()
-    >>> xml = browser.getControl('XML Source').value
-    >>> import re
-    >>> xml = re.sub('<container (cp:type="teaser"[^>]*)/>',
-    ... """<container \\1>
-    ... <block href="http://xml.zeit.de/testcontent">
-    ...   <teaser xmlns="http://xml.zeit.de/CMS/Teaser">
-    ...     <title/>
-    ...     <text/>
-    ...   </teaser>
-    ... </block>
-    ... </container>
-    ... """, xml)
-    >>> browser.getControl('XML Source').value = xml
-    >>> browser.getControl('Apply').click()
-    >>> 'testcontent' in browser.contents
     True

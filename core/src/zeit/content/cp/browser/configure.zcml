@@ -211,7 +211,15 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop-module"
-    class=".library.LandingZone"
+    class=".library.BlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.RegionLandingZone"
     permission="zeit.EditContent"
     />
 

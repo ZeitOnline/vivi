@@ -8,11 +8,8 @@ RSS blocks
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.getLink('Add block', index=0).click()
->>> browser.open(contents_url)
->>> browser.getLink('choose the block type').click()
->>> browser.handleErrors = False
->>> browser.getLink('RSS block').click()
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=rssblock')
 
 Editing the block
 -----------------

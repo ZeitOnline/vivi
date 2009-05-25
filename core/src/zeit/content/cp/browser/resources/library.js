@@ -45,11 +45,10 @@ MochiKit.Signal.connect(
             if (!MochiKit.DOM.hasElementClass(draggable.element, 'module')) {
                 return
             }
-            var dim = MochiKit.Style.getElementDimensions(draggable.element);
+            var area = draggable.element.getAttribute('cms:area');
             draggable.element = draggable.element.cloneNode(true);
             MochiKit.DOM.addElementClass(
                 draggable.element, 'module-drag-pane');
-            MochiKit.Style.setElementDimensions(draggable.element, dim);
             draggable.offset = [-10, -10];
             $('body').appendChild(draggable.element);
     });
@@ -63,3 +62,22 @@ MochiKit.Signal.connect(
     });
 
 });
+
+(function()  {
+    zeit.content.cp.drop.registerHandler({ 
+        accept: ['informatives-module'],
+        activated_by: 'action-informatives-module-droppable',
+        url_attribute: 'cms:create-block-url',
+        query_arguments: function(draggable) {
+            return {'block_type': draggable.getAttribute('cms:block_type')};
+        },
+    });
+    zeit.content.cp.drop.registerHandler({ 
+        accept: ['teaser-mosaic-module'],
+        activated_by: 'action-teaser-mosaic-module-droppable',
+        url_attribute: 'cms:create-block-url',
+        query_arguments: function(draggable) {
+            return {'block_type': draggable.getAttribute('cms:block_type')};
+        },
+    });
+})();

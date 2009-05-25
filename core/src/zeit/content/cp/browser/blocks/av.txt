@@ -7,13 +7,10 @@ Video blocks
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
 >>> zeit.content.cp.browser.tests.create_cp(browser)
->>> browser.handleErrors = False
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.getLink('Add block', index=0).click()
->>> browser.open(contents_url)
->>> browser.getLink('choose the block type').click()
->>> browser.getLink('Videoblock').click()
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=videoblock')
 
 Editing the block
 -----------------
@@ -43,19 +40,18 @@ Audio blocks
 ============
 
 >>> browser.open(contents_url)
->>> browser.getLink('Add block', index=0).click()
->>> browser.open(contents_url)
->>> browser.getLink('choose the block type').click()
->>> browser.getLink('Audioblock').click()
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=audioblock')
 
 Editing the block
 -----------------
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('The id of the audio/video.').value = '98765'
->>> browser.getControl('The format of the audio/video.').displayValue = ['large']
+>>> browser.getControl('The format of the audio/video.').displayValue = [
+...     'large']
 
 An empty value for the expireation date means no expiration:
 
@@ -72,10 +68,10 @@ XML of an audio/video block
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="videoblock" cp:__name__="<GUID>">
-  <video videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>
-</container>
 <container cp:type="audioblock" cp:__name__="<GUID>">
   <audio audioID="98765" format="large"/>
+</container>
+<container cp:type="videoblock" cp:__name__="<GUID>">
+  <video videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>
 </container>...
 

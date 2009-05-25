@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import contextlib
+import lxml.cssselect
 import zeit.content.cp.browser
 import zeit.content.cp.testing
 import zope.app.component.hooks
@@ -22,6 +23,17 @@ def create_cp(browser, filename='island'):
     browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
     browser.getControl(name="form.actions.add").click()
 
+
+def create_block_in_mosaic(browser, block_type, index=0):
+    old_strict = browser.xml_strict
+    browser.xml_strict = True
+    select = lxml.cssselect.CSSSelector(
+        '.action-teaser-mosaic-module-droppable[cms|create-block-url]')
+    nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+    drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[index].get(
+        '{http://namespaces.gocept.com/zeit-cms}create-block-url')
+    browser.open(drop_url + '?block_type=' + block_type)
+    browser.xml_strict = old_strict
 
 
 # TODO: move context managers to zeit.cms.testing
@@ -47,4 +59,5 @@ def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'README.txt',
         'landing.txt',
+        'library.txt',
         'rule.txt')

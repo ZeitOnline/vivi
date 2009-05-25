@@ -8,7 +8,7 @@ Teaser bars in the teaser mosaic
 >>> import zeit.content.cp.browser.tests
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
->>> bookmark = browser.url
+>>> contents_url = browser.url
 
 Teaser mosaic
 +++++++++++++
@@ -17,8 +17,7 @@ In the teaser mosaic contains teaser bars, add one. It is prefilled with four
 placeholders:
 
 >>> browser.getLink('Add teaser bar').click()
->>> browser.handleErrors = False
->>> browser.open(bookmark)
+>>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
   <div id="cp-aufmacher">...
@@ -43,9 +42,8 @@ placeholders:
 
 Add a real block in the second place:
 
->>> browser.getLink('Click here to choose the block type.', index=1).click()
->>> browser.getLink('List of teasers').click()
->>> browser.open(bookmark)
+>>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser', 1)
+>>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
   <div id="cp-teasermosaic"...class="editable-area"...
@@ -70,13 +68,12 @@ Add a real block in the second place:
 Changing the layout of a TeaserBar
 ++++++++++++++++++++++++++++++++++
 
->>> browser.getLink('Click here to choose the block type.', index=0).click()
->>> browser.getLink('List of teasers').click()
->>> browser.open(bookmark)
->>> browser.getLink('Click here to choose the block type.', index=0).click()
->>> browser.getLink('List of teasers').click()
 
->>> browser.open(bookmark)
+>>> browser.open(contents_url)
+>>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser', 0)
+>>> browser.open(contents_url)
+>>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser', 0)
+>>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
 ...     '//div[@id="cp-teasermosaic"]/div[@class="block type-teaser-bar"]')
 >>> bar_id = bar_divs[0].get('id')
@@ -103,7 +100,7 @@ First we need a helper function, which counts the number of elements with a
 given CSS class:
 
 >>> def block_count(type_):
-...     browser.open(bookmark)
+...     browser.open(contents_url)
 ...     blocks = browser.etree.xpath(
 ...     '//div[contains(@class, "%s")]' % type_)
 ...     # filter false positives (such as type-teaserbar when looking for type-teaser)
@@ -114,7 +111,7 @@ given CSS class:
 Our teaser bar contains 3 teaser blocks, although it has the "DMR" Layout which
 allows only two teaser blocks.
 
->>> browser.open(bookmark)
+>>> browser.open(contents_url)
 >>> block_count('type-teaser')
 3
 
@@ -131,7 +128,7 @@ Now, we have one less teaser block, and no new placeholder is created:
 
 When deleting another teaser block, a placeholder is created instead:
 
->>> browser.open(bookmark)
+>>> browser.open(contents_url)
 >>> browser.getLink('Delete', index=2).click()
 >>> block_count('type-teaser')
 1

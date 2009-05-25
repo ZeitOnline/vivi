@@ -45,20 +45,6 @@ class Delete(zeit.content.cp.browser.view.Action):
         self.signal('before-reload', 'deleted', self.key)
 
 
-class EditProperties(object):
-
-    def list_block_types(self):
-        result = []
-        for name, adapter in zope.component.getAdapters(
-            (self.context.__parent__,),
-            zeit.content.cp.interfaces.IBlockFactory):
-            if adapter.title is None:
-                continue
-            result.append(dict(
-                type=name,
-                title=adapter.title))
-        return result
-
 class EditCommon(zope.formlib.form.SubPageEditForm):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(

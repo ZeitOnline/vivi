@@ -11,7 +11,6 @@ def test_suite():
         'autopilot.txt',
         'cpextra.txt',
         'fullgraphical.txt',
-        'placeholder.txt',
         'quiz.txt',
         'rss.txt',
         'teaser.txt',

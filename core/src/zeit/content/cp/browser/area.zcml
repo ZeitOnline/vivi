@@ -56,12 +56,12 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IRegion"
+    for="zeit.content.cp.interfaces.IInformativesRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="edit"
-    template="layout.region.edit.pt"
+    template="layout.informatives.edit.pt"
     permission="zeit.EditContent"
     weight="90"
     />

@@ -10,10 +10,8 @@ Quiz block
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.getLink('Add block', index=0).click()
->>> browser.open(contents_url)
->>> browser.getLink('choose the block type').click()
->>> browser.getLink('Quizblock').click()
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=quizblock')
 
 Add a quiz to the repository:[#functional]_
 

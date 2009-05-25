@@ -157,6 +157,7 @@
 .landing-zone.visible {
   border: 1px dashed #00ee5e;
   color: #00ee5e;
+  cursor: default;
   display: block;
   height: auto;
   margin: 1em 0;
@@ -644,15 +645,18 @@
 
 
 /* Module library */
+
 .module {
   float: left;
-  width: 33%;
-}
-.module-inner {
-  background-color: white;
+  height: 80px;
+  width: 80px;
   border: 1px solid black;
   margin: 0.25em;
   overflow: hidden;
+  background-color: white;
+}
+
+.module-inner {
   padding: 1em;
   text-align: center;
 }

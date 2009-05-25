@@ -1,0 +1,8 @@
+<div class="edit"
+     i18n:domain="zeit.cms">
+  <a i18n:translate=""
+     cms:cp-module="zeit.content.cp.ActivateTab"
+     href="tab://library-cp-informatives-inner">
+    + Add block
+  </a>
+</div>
