@@ -1,7 +1,6 @@
 <a class="choose-block action-teaser-mosaic-module-droppable"
    href="tab://library-cp-teasermosaic"
    cms:tooltip=""
-   cms:cp-module="zeit.content.cp.ActivateTab"
    i18n:domain="zeit.cms"
    i18n:translate=""
    tal:attributes="cms:create-block-url string:${context/@@absolute_url}/drop-module">
