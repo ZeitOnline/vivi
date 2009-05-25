@@ -69,7 +69,7 @@ Validating the layout of a teaser bar
 >>> teaserbar_2 = bar_factory()
 
 >>> create_rules("""\
-... applicable(is_block and area == 'teaser-mosaic' and position == 2)
+... applicable(is_region and area == 'teaser-mosaic' and position == 2)
 ... error_unless(layout == 'dmr', u'Die zweite Teserleiste muss ein DMR sein')
 ... """)
 

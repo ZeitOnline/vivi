@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from __future__ import with_statement
+import ZODB.POSException
 import gocept.cache.method
 import itertools
 import logging
@@ -32,8 +32,10 @@ class Status(object):
 
 
 class Rule(object):
-    def __init__(self, code):
+
+    def __init__(self, code, line=None):
         self.code = compile(code, '<string>', 'exec')
+        self.line = line
 
     def apply(self, context):
         status = Status()
@@ -52,6 +54,11 @@ class Rule(object):
             eval(self.code, globs)
         except Break:
             pass
+        except ZODB.POSException.ConflictError:
+            raise
+        except:
+            log.error('Error while evaluating rule starting line %d' %
+                      self.line, exc_info=True)
 
         return status
 
@@ -181,25 +188,27 @@ class RulesManager(object):
         log.info('Loading rules from %s' % url)
         noop = True
         rule = []
-        for line in file_rules:
+        start_line = 0
+        for line_no, line in enumerate(file_rules):
             line = unicode(line, 'utf-8')
             if line.startswith('applicable') and noop:
                 # start a new rule
                 if rule:
-                    rules.append(self.create_rule(rule))
+                    rules.append(self.create_rule(rule, start_line))
                 rule = []
+                start_line = line_no
             noop = line.strip().startswith('#') or not line.strip()
             if not noop:
                 rule.append(line)
         if rule:
-            rules.append(self.create_rule(rule))
+            rules.append(self.create_rule(rule, start_line))
         file_rules.close()
         return rules
 
-    def create_rule(self, commands):
+    def create_rule(self, commands, line_no):
         code = '\n'.join(commands)
         compile(code, '<string>', 'exec') # syntax check
-        rule = Rule(code)
+        rule = Rule(code, line_no + 1)
         return rule
 
     @property
@@ -217,6 +226,7 @@ class RulesManager(object):
 class Validator(object):
 
     zope.interface.implements(zeit.content.cp.interfaces.IValidator)
+    zope.component.adapts(zeit.content.cp.interfaces.IElement)
 
     status = None
 
@@ -236,6 +246,7 @@ class Validator(object):
 class CenterPageValidator(object):
 
     zope.interface.implements(zeit.content.cp.interfaces.IValidator)
+    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
 
     status = None
 

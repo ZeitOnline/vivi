@@ -305,7 +305,7 @@ class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 
-class IReadTeaserBar(IBlock, IReadRegion):
+class IReadTeaserBar(IReadRegion, IElement):
 
     layout = zope.schema.Choice(
         title=_("Layout"),

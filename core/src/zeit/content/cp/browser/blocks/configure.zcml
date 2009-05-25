@@ -7,7 +7,7 @@
   <!-- Block -->
 
   <browser:page
-    for="zeit.content.cp.interfaces.IBlock"
+    for="zeit.content.cp.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     template="../layout.contents.pt"
@@ -25,8 +25,30 @@
     permission="zope.View"
     />
 
+  <browser:viewletManager
+    provides="..interfaces.IEditorContentViewletManager"
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".block.BlockViewletManager"
+    template="layout.block.contents.pt"
+    name="zeit.content.cp.editor-contents"
+    permission="zope.View"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="edit"
+    template="layout.block.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditorContentViewletManager"
@@ -47,6 +69,17 @@
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="edit-box"
+    template="layout.block.edit-properties.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
@@ -79,7 +112,29 @@
     />
 
   <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.block.delete.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="drag"
+    template="layout.block.drag.pt"
+    permission="zeit.EditContent"
+    weight="100"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
@@ -130,7 +185,7 @@
     />
 
   <view
-    for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IBlock"
+    for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IElement"
     type="zeit.cms.browser.interfaces.ICMSLayer"
     name="type-switcher"
     factory=".block.SwitchType"

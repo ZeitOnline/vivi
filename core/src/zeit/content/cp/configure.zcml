@@ -118,16 +118,8 @@
   <adapter factory=".rule.globs" />
 
   <utility factory=".rule.RulesManager" />
-  <adapter
-    for="zeit.content.cp.interfaces.IBlock"
-    factory=".rule.Validator" />
-  <adapter
-    for="zeit.content.cp.interfaces.IArea"
-    factory=".rule.Validator" />
-
-  <adapter
-    for="zeit.content.cp.interfaces.ICenterPage"
-    factory=".rule.CenterPageValidator" />
+  <adapter factory=".rule.Validator" />
+  <adapter factory=".rule.CenterPageValidator" />
 
   <!-- Layout -->
   <class class=".layout.Layout">

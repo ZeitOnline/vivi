@@ -92,7 +92,7 @@
     factory="..area.cms_content_iter"
     for="..interfaces.ITeaserBar" />
   <adapter
-    provides="..interfaces.ITeaserBar"
+    provides="..interfaces.IElement"
     name="teaser-bar"
     factory=".teaserbar.TeaserBar"
     />
@@ -108,7 +108,7 @@
   </class>
   <adapter factory=".rss.RSSBlockFactory" name="rssblock" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="rssblock"
     factory=".rss.RSSBlock"
     />
@@ -124,7 +124,7 @@
   </class>
   <adapter factory=".xml.XMLBlockFactory" name="xmlblock" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="xmlblock"
     factory=".xml.XMLBlock"
     />
@@ -140,7 +140,7 @@
   </class>
   <adapter factory=".av.VideoBlockFactory" name="videoblock" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="videoblock"
     factory=".av.VideoBlock"
     />
@@ -156,7 +156,7 @@
   </class>
   <adapter factory=".av.AudioBlockFactory" name="audioblock" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="audioblock"
     factory=".av.AudioBlock"
     />
@@ -172,7 +172,7 @@
   </class>
   <adapter factory=".quiz.QuizBlockFactory" name="quizblock" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="quizblock"
     factory=".quiz.QuizBlock"
     />
@@ -188,7 +188,7 @@
   </class>
   <adapter factory=".fullgraphical.FullGraphicalFactory" name="fullgraphicalblock" />
   <adapter
-    provides="..interfaces.IBlock"
+    provides="..interfaces.IElement"
     name="fullgraphicalblock"
     factory=".fullgraphical.FullGraphicalBlock"
     />

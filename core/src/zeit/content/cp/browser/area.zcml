@@ -79,7 +79,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.content.cp.interfaces.IContainer"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="updateOrder"
     class=".area.UpdateOrder"

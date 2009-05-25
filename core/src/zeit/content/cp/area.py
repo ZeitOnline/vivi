@@ -17,6 +17,8 @@ class Container(UserDict.DictMixin,
                 zeit.content.cp.blocks.block.Element,
                 zope.container.contained.Contained):
 
+    zope.interface.implements(zeit.content.cp.interfaces.IContainer)
+
     def __init__(self, context, xml):
         self.__parent__ = context
         self.xml = xml

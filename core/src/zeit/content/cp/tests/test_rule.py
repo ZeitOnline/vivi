@@ -110,11 +110,24 @@ error_if(True, u'Block in teasermosaic.')
             name='teaser-bar')
         bar = factory()
         r = Rule("""
-applicable(is_region)
+applicable(is_region and area == 'teaser-mosaic' and position)
 error_if(True, u'Region in teasermosaic.')
 """)
         s = r.apply(bar)
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+
+    def test_is_tesaerbar_is_no_block(self):
+        factory = zope.component.getAdapter(
+            self.cp['teaser-mosaic'],
+            zeit.content.cp.interfaces.IElementFactory,
+            name='teaser-bar')
+        bar = factory()
+        r = Rule("""
+applicable(is_block and area == 'teaser-mosaic')
+error_if(True)
+""")
+        s = r.apply(bar)
+        self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
 
 
 def test_suite():
