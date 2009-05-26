@@ -3,10 +3,10 @@
 # See also LICENSE.txt
 
 import itertools
-from datetime import datetime, timedelta
 import pysolr
 import zope.app.appsetup.product
 from zeit.find import lucenequery as lq
+from zeit.find.daterange import DATE_FILTERS
 
 TYPES = ['article', 'gallery', 'video', 'teaser', 'centerpage']
 
@@ -55,15 +55,8 @@ def counts(q):
     Each counts is a list of (name, count) tuples. Counts of zero are
     not returned.
     """
-    date_filters = [("heute", today_filter()),
-                    ("gestern", yesterday_filter()),
-                    ("7 Tage",  seven_day_filter()),
-                    ("letzter Monat", month_filter()),
-                    ("letztes halbes Jahr", half_year_filter()),
-                    ("letztes Jahr", year_filter())]
-    
-    date_queries = [filter for (name, filter) in date_filters]
-    
+    date_queries = [filter for (name, filter) in DATE_FILTERS]
+
     facets = {
         'facet': 'true',
         'facet.field': ['ressort', 'type', 'authors'],
@@ -76,7 +69,7 @@ def counts(q):
 
     facet_queries = facet_data['facet_queries']
     time_counts = []
-    for name, filter in date_filters:
+    for name, filter in DATE_FILTERS:
         time_counts.append((name, facet_queries[filter]))
     
     facet_fields = facet_data['facet_fields']
@@ -135,40 +128,6 @@ def query(fulltext, from_, until, topic, authors, keywords,
     terms.extend(filter_terms)
     return lq.and_(*terms)
 
-def today_filter():
-    start = datetime.now().replace(
-        hour=0, minute=0, second=0, microsecond=0)
-    end = start + timedelta(days=1)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def yesterday_filter():
-    start = datetime.now().replace(
-        hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
-    end = start + timedelta(days=1)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def seven_day_filter():
-    end = datetime.now()
-    start = end - timedelta(days=7)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def month_filter():
-    end = datetime.now()
-    # XXX last month period if 31 days?
-    start = end - timedelta(days=31)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def half_year_filter():
-    end = datetime.now()
-    # last half year, about 183 days
-    start = end - timedelta(days=183)
-    return lq.datetime_range('last-semantic-change', start, end)
-
-def year_filter():
-    end = datetime.now()
-    # last year, about 366 days (to be on the safe side)
-    start = end - timedelta(days=366)
-    return lq.datetime_range('last-semantic-change', start, end)
 
 def grouper(n, iterable, padvalue=None):
     return itertools.izip(

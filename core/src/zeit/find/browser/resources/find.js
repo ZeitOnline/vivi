@@ -21,7 +21,7 @@ zeit.find = {};
             }
         });
         MochiKit.Signal.connect('result_filters_button', 'onclick', function(e) {
-            if ($('filter_Zeit')) {
+            if ($('filter_time')) {
                 $('result_filters').innerHTML = '';
             } else {
                 zeit.find.result_filters.render();
@@ -37,6 +37,12 @@ zeit.find = {};
         forEach(results, function(result) {
             draggables.push(zeit.cms.createDraggableContentObject(result));
         });
+    }
+
+    var disconnect_draggables = function() {
+        while(draggables.length > 0) {
+            draggables.pop().destroy();
+        }
     }
 
     var connect_related = function(element, data) {
@@ -75,11 +81,6 @@ zeit.find = {};
         });
     }
 
-    var disconnect_draggables = function() {
-        while(draggables.length > 0) {
-            draggables.pop().destroy();
-        }
-    }
 
     var init = function() {
 
