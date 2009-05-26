@@ -1,6 +1,8 @@
+zeit.cms.all_tabs = {}
+
 zeit.cms.Tabs = gocept.Class.extend({
     // Knows about all tabs
-
+    
     construct: function(container) {
         log("initializing tabs");
         var self = this;
@@ -20,6 +22,7 @@ zeit.cms.Tabs = gocept.Class.extend({
         if (self.tabs.length == 1) {
             tab.activate();
         }
+        zeit.cms.all_tabs[tab.id] = tab;
     },
 
     switch_tab: function(event) {
@@ -40,6 +43,10 @@ zeit.cms.Tabs = gocept.Class.extend({
                 tab.deactivate();
             }
         });
+        var parent_tab = zeit.cms.all_tabs[self.container.id];
+        if (!isUndefinedOrNull(parent_tab)) {
+            parent_tab.tabs.activate(self.container.id);
+        }
     },
 
 });
@@ -54,10 +61,11 @@ zeit.cms.Tab = gocept.Class.extend({
 
     after_add: function(parent) {
         var self = this;
-        self.tab_element = parent.tabs_element.appendChild(
+        self.tabs = parent;
+        self.tab_element = self.tabs.tabs_element.appendChild(
             LI({},
                 A({href: self.id}, self.title)))
-        self.container = parent.container.appendChild(
+        self.container = self.tabs.container.appendChild(
             DIV({id: self.id, 'class': 'tab-content'}));
         self.deactivate();
     },
@@ -77,6 +85,7 @@ zeit.cms.Tab = gocept.Class.extend({
 
 
 zeit.cms.ViewTab = zeit.cms.Tab.extend({
+
     construct: function(id, title, view) {
         var self = this;
         arguments.callee.$.construct.call(self, id, title);
@@ -88,4 +97,20 @@ zeit.cms.ViewTab = zeit.cms.Tab.extend({
         self.view.render();
         arguments.callee.$.activate.call(self);
     },
+
 });
+
+
+(function() {
+    
+    var tab_check = function(element) {
+        return element.nodeName == 'A' && element.href.indexOf('tab://') == 0
+    };
+
+    var tab_activate = function(element) {
+        var tab_id = element.href.substring(6);
+        zeit.cms.all_tabs[tab_id].tabs.activate(tab_id);
+    }
+
+    zeit.cms.url_handlers.register('tab', tab_check, tab_activate)
+})();

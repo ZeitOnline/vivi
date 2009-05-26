@@ -103,3 +103,20 @@ zeit.cms.log_error = function(err) {
     console.trace();
     console.error(real_error.name + ': ' + real_error.message);
 };
+
+
+(function() {
+
+    zeit.cms.url_handlers = new MochiKit.Base.AdapterRegistry();
+
+    var click_handler = function(event) {
+        try {
+            zeit.cms.url_handlers.match(event.target())
+            event.preventDefault();
+        } catch (e if e == MochiKit.Base.NotFound) {
+        }
+    };
+    MochiKit.Signal.connect(window, 'onclick', click_handler);
+
+
+})();

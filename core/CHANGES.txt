@@ -8,6 +8,12 @@ zeit.cms changes
 
 - Basisklasse für JSON-Views aus zeit.find in den Kern verschoben.
 
+- JSONTemplate aktualisiert
+
+- Generischer Handler für Links (z.B. tab://foo)
+
+- Glboale TAB-Registry, um Tabs mit ihrer Id finden (und aktivieren) zu können.
+
 1.21 (2009-05-18)
 -----------------
 
