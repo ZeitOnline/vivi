@@ -145,8 +145,7 @@ def _entries(counts):
     result = []
     for name, count in counts:
         result.append(dict(title=name,
-                           amount=format_amount(count),
-                           query=''))
+                           amount=format_amount(count)))
     return result
 
 
