@@ -30,20 +30,41 @@ class BlockLayout(object):
 
     zope.interface.implements(ITeaserBlockLayout)
 
-    def __init__(self, id, title, image_pattern=None):
+    def __init__(self, id, title, image_pattern=None,
+                 area=None):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
+        self.area = area
 
 
+# XXX the image formats need to be set correctly, but we don't know them, yet.
 TEASER_BLOCK = [
     BlockLayout('leader',
                 u'Großer Teaser mit Bild und Teaserliste',
-                image_pattern='450x200'),
+                '450x200', area='lead-1'),
+    BlockLayout('leader-upright',
+                u'Großer Teaser mit Hochkant-Bild und Teaserliste'
+                '450x200', area='lead-1'),
     BlockLayout('buttons',
                 u'Kleiner Teaser mit kleinem Bild und Teaserliste',
-                '140x140'),
+                '140x140', area='lead'),
+    BlockLayout('two-side-by-side',
+                u'Zwei kleine Teaser mit Bild',
+                '140x140', area='informatives'),
+    BlockLayout('large',
+                u'Großer Teaser mit Bild und Teaserliste',
+                '140x140', area='informatives'),
+    BlockLayout('ressort',
+                u'Ressort Teaser mit Teaserliste',
+                '140x140', area='teaser-mosaic'),
 ]
+
+
+# Aufmacher:Block:Großer Teaser mit 2 Spalten
+# Aufmacher:Block:Großer Teaser mit Bildergalerie und Teaserliste
+# Aufmacher:Block:Großer Teaser mit Video statt Bild und Teaserliste
+
 
 
 
@@ -83,9 +104,18 @@ class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 class TeaserBlockLayoutSource(LayoutSource):
 
     def getValues(self, context):
-        if context.__parent__.keys().index(context.__name__) != 0:
-            return [TEASER_BLOCK[1]]
-        return TEASER_BLOCK
+        # Avoid circular import
+        from zeit.content.cp.interfaces import IArea, ILead
+        area = IArea(context)
+        areas = [area.__name__]
+        if ILead.providedBy(area):
+            position = area.keys().index(context.__name__)
+            if position == 0:
+                areas.append('lead-1')
+            else:
+                areas.append('lead-x')
+        return [layout for layout in TEASER_BLOCK
+                if layout.area in areas]
 
 
 class TeaserBarLayoutSource(LayoutSource):

@@ -157,6 +157,50 @@ for <container module="">.
 ['leader', 'buttons', 'buttons']
 
 
+The available layouts are dependent on the area and potentially on the
+position.
+
+A block in the first position of the lead has different layout than in the
+other positions:
+
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> factory = zope.component.getAdapter(
+...     cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> teaser_1 = factory()
+>>> teaser_2 = factory()
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_1))
+['buttons', 'leader', 'leader-upright']
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_2))
+['buttons']
+
+There are different layouts in the informatives:
+
+>>> factory = zope.component.getAdapter(
+...     cp['informatives'], zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')
+>>> teaser_i = factory()
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_i))
+['large', 'two-side-by-side']
+
+
+And yet other ones in the mosic:
+
+>>> factory = zope.component.getAdapter(
+...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser-bar')
+>>> bar = factory()
+>>> factory = zope.component.getAdapter(
+...     bar, zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')
+>>> teaser_m = factory()
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
+['ressort']
+
+
 .. [#functional]
 
     >>> import zeit.cms.testing

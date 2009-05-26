@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - ``type``-Attribut auf ``<centerpage>`` (#5030).
 
+- Contextabhängige Layouts (#5034).
+
 0.7 (2009-05-26)
 ----------------
 
