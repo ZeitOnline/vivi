@@ -10,10 +10,12 @@ import zope.testing.renormalizing
 
 product_config = {
     'zeit.content.cp': {
+        'cp-types-url': 'file://%s' % pkg_resources.resource_filename(
+            'zeit.content.cp', 'cp-types.xml'),
+        'feed-update-minimum-age': 30,
+        'rss-folder': 'rss',
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests', 'rule_testdata.py'),
-        'rss-folder': 'rss',
-        'feed-update-minimum-age': 30,
     }}
 
 

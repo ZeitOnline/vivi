@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<centerpage-types>
+    <type name="homepage">Homepage</type>
+    <type name="ressort">Themenseite</type>
+</centerpage-types>

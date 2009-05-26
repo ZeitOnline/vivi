@@ -4,6 +4,8 @@ zeit.content.cp changes
 0.8 (unreleased)
 ----------------
 
+- ``type``-Attribut auf ``<centerpage>`` (#5030).
+
 0.7 (2009-05-26)
 ----------------
 

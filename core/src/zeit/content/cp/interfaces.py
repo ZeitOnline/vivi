@@ -4,6 +4,7 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.avsource
@@ -21,10 +22,32 @@ class ValidationError(zope.schema.ValidationError):
         return self.args[0]
 
 
+class CPTypeSource(zeit.cms.content.sources.SimpleXMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'cp-types-url'
+
+    def getValues(self):
+        tree = self._get_tree()
+        return [unicode(item.get('name'))
+                for item in tree.iterchildren()]
+
+    def getTitle(self, value):
+        __traceback_info__ = (value, )
+        tree = self._get_tree()
+        return unicode(tree.xpath('/centerpage-types/type[@name = "%s"]' %
+                                  value)[0])
+
+
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
     """XXX docme"""
+
+    type = zope.schema.Choice(
+        title=_('CP type'),
+        required=False,
+        source=CPTypeSource())
 
     def __getitem__(area_key):
         """Return IArea for given key.

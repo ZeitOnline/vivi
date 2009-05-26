@@ -10,6 +10,7 @@ import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
+import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
@@ -33,6 +34,8 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     keys = editable_areas.keys
     __contains__ = editable_areas.__contains__
+    type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
 
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]

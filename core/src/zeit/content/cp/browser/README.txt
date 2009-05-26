@@ -10,6 +10,7 @@ Centerpage
 
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['CenterPage']
+>>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 >>> browser.getControl('File name').value = 'island'
@@ -17,6 +18,9 @@ Centerpage
 >>> browser.getControl('Ressort').displayValue = ['Reisen']
 >>> browser.getControl('Daily newsletter').selected = True
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('CP type').displayOptions
+['(no value)', 'Homepage', 'Themenseite']
+>>> browser.getControl('CP type').displayValue = ['Themenseite']
 >>> browser.getControl(name="form.actions.add").click()
 
 >>> browser.url

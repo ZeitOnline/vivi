@@ -7,6 +7,9 @@ Centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
+>>> cp.type is None
+True
+>>> cp.type = u'homepage'
 
 
 A centerpage has three editable areas:
@@ -22,7 +25,7 @@ They are represented in XML as:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
-<centerpage...>
+<centerpage... type="homepage"...>
   <head/>
   <body>
     <cluster area="feature">

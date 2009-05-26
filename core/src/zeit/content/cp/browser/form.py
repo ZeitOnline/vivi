@@ -11,9 +11,12 @@ from zeit.content.cp.i18n import MessageFactory as _
 
 class FormBase(object):
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.content.interfaces.ICommonMetadata)
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.cms.interfaces.ICMSContent,
+            zeit.cms.content.interfaces.ICommonMetadata)
+        + zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ICenterPage).select('type'))
 
 
 class AddForm(FormBase,
