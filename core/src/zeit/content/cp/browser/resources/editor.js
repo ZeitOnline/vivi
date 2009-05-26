@@ -167,6 +167,8 @@ zeit.content.cp.Editor = gocept.Class.extend({
             event.stop();
             var module = zeit.content.cp.resolveDottedName(module_name);
             new module(target);
+        } else if (event.target().nodeName == 'A' && event.target().target) {
+            // pass
         } else if (event.target().nodeName != 'INPUT') {
             event.preventDefault();
         }
