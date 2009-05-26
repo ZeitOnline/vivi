@@ -27,6 +27,10 @@ class Test(zeit.cms.selenium.Test):
         }
     }
 
+    def get_module(self, area, text):
+        return ('xpath=//div[@class="module %s-module"]'
+                '[contains(string(.), "%s")]' % (area, text))
+
     def open_centerpage(self):
         s = self.selenium
         self.open('/@@create-test-cp')
@@ -57,10 +61,11 @@ class Test(zeit.cms.selenium.Test):
         self.open_centerpage()
         s = self.selenium
         s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
+        teaser_module = self.get_module('informatives', 'List of teasers')
+        s.waitForElementPresent(teaser_module)
+        s.dragAndDropToObject(
+            teaser_module,
+            'css=.landing-zone.action-informatives-module-droppable')
         s.waitForElementPresent('css=div.type-teaser')
 
     def create_content_and_fill_clipboard(self):
@@ -105,16 +110,9 @@ class TestDottedName(Test):
 
 class TestGenericEditing(Test):
 
-    def test_insert(self):
-        self.open_centerpage()
+    def test_add_and_delete(self):
+        self.create_teaserlist()
         s = self.selenium
-        s.verifyElementNotPresent('css=a.choose-block')
-        s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('css=a.choose-block')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
-        s.waitForElementPresent('css=div.block.type-teaser')
         link = 'css=div.block.type-teaser > * > div.edit > a.edit-link'
         s.waitForElementPresent(link)
         s.click(link)
@@ -126,7 +124,7 @@ class TestGenericEditing(Test):
 
         # Open delete verification
         s.pause(250)
-        s.click('css=#cp-aufmacher a.delete-link')
+        s.click('css=#cp-informatives a.delete-link')
         s.waitForElementPresent('css=div.confirm-delete')
         s.verifyElementPresent('css=div.block-inner.highlight')
 
@@ -138,23 +136,12 @@ class TestGenericEditing(Test):
         s.verifyElementNotPresent('css=div.block-inner.highlight')
 
         # Now really delete
-        s.click('css=#cp-aufmacher a.delete-link')
+        s.verifyXpathCount(css_path('#cp-informatives a.delete-link'), 3)
+        s.click('css=#cp-informatives a.delete-link')
         s.click('css=div.confirm-delete > a')
-        s.waitForElementNotPresent('css=#cp-aufmacher a.delete-link')
-
-    def test_close_choose_type_lightbox_does_not_break_editor(self):
-        self.open_centerpage()
-        s = self.selenium
-        s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('css=a.CloseButton')
-        s.waitForElementNotPresent('css=a.CloseButton')
-
-        # The following click used to do nothing. Make sure it does add a block.
-        s.click('link=*Add block*')
-        s.waitForXpathCount(css_path('a.choose-block'), 2)
+        # mostread/mostcommented are still there
+        s.waitForXpathCount(
+            css_path('#cp-informatives a.delete-link'), 2)
 
     def test_hover(self):
         self.create_teaserlist()
@@ -354,11 +341,13 @@ class TestSorting(Test):
 
         path = css_path('.block.type-teaser-bar .block.type-teaser')
 
+        teaser_module = self.get_module('teaser-mosaic', 'List of teasers')
+
         for nr in range(4):
             s.waitForElementPresent('css=a.choose-block')
-            s.click('//a[@class="choose-block"]')
-            s.waitForElementPresent('css=div.block-types')
-            s.click('link=List of teasers')
+            s.click('css=a.choose-block')
+            s.waitForElementPresent(teaser_module)
+            s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
             s.waitForXpathCount(path, nr+1)
 
         # Get the ids of the blocks
@@ -408,8 +397,7 @@ class TestSorting(Test):
         # Drag bar1 below bar2: 1 2 3 -> 2 1 3
         s.dragAndDrop('css=#${bar1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
-        s.pause(500)
-        s.verifyAttribute(path + '[1]@id', '${bar2}')
+        s.waitForAttribute(path + '[1]@id', '${bar2}')
         s.verifyAttribute(path + '[2]@id', '${bar1}')
 
         # Drag bar3 above bar1. When we move up, we have to move farther
@@ -418,8 +406,7 @@ class TestSorting(Test):
         s.storeEval("new Number(storedVars['bar-height']) * 2.75", "delta_y")
         s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
                       '0,-${delta_y}')
-        s.pause(500)
-        s.verifyAttribute(path + '[1]@id', '${bar3}')
+        s.waitForAttribute(path + '[1]@id', '${bar3}')
         s.verifyAttribute(path + '[2]@id', '${bar2}')
         s.verifyAttribute(path + '[3]@id', '${bar1}')
 
@@ -433,24 +420,27 @@ class TestSorting(Test):
     def test_lead(self):
         s = self.selenium
 
-        self.create_teaserlist()
-        s.storeAttribute('css=.block.type-teaser@id', 'block1')
+        self.create_content_and_fill_clipboard()
+        self.open_centerpage()
+
+        # Create a teaser list
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]', 'css=#cp-aufmacher .landing-zone')
+        s.waitForElementPresent('css=.block.type-teaser')
+        s.storeAttribute('css=.block.type-teaser@id', 'block2')
+
 
         # Add a second teaser list
-        s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]', 'css=#cp-aufmacher .landing-zone')
         s.waitForElementPresent(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser')
-        s.storeAttribute(
-            'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
-            'block2')
+        s.storeAttribute('css=.block.type-teaser@id', 'block1')
 
         s.storeElementHeight('id=${block2}', 'height');
         s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
 
+        # 1 2 -> 2 1
         s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
         s.waitForElementPresent(
@@ -462,27 +452,14 @@ class TestSorting(Test):
     def test_informatives(self):
         s = self.selenium
         self.open_centerpage()
+        # There are two modules in the informatives anyway, don't create any
+        teaser_module = self.get_module('informatives', 'List of teasers')
 
-        # Add a teaser list
-        s.click('css=#cp-informatives > * > .edit > a')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
-        s.waitForElementPresent('css=.block.type-teaser')
-        s.storeAttribute('css=.block.type-teaser@id', 'block1')
+        s.storeAttribute('css=.block.type-mostread@id', 'block1')
 
         # Add a second teaser list
-        s.click('css=#cp-informatives > * > .edit > a')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=List of teasers')
-        s.waitForElementPresent(
-            'css=.block.type-teaser + .block.type-teaser')
         s.storeAttribute(
-            'css=.block.type-teaser + .block.type-teaser@id',
-            'block2')
+            'css=.block.type-mostcommented@id', 'block2')
 
         s.storeElementHeight('id=${block2}', 'height');
         s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
@@ -490,10 +467,8 @@ class TestSorting(Test):
         s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
         s.waitForElementPresent(
-            'css=.block.type-teaser + .block.type-teaser')
-        s.verifyAttribute(
-            'css=.block.type-teaser + .block.type-teaser@id',
-            '${block1}')
+            'css=.block.type-mostcommented + .landing-zone '
+            '+ .block.type-mostread')
 
 
 class TestLandingZone(Test):
@@ -515,14 +490,14 @@ class TestLandingZone(Test):
         s = self.selenium
 
         # Create a block, there will be a landing zone after it:
-        s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]', 'css=#cp-aufmacher .landing-zone')
         s.verifyElementPresent('css=.block + .landing-zone')
 
         # The "normal" landing zone is also there
         s.verifyElementPresent('css=.landing-zone + .block')
 
-        # Drop something
+        # Drop something on the after-block landing zone
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
             'css=.block + .landing-zone')
@@ -534,10 +509,11 @@ class TestVideoBlock(Test):
     def create_videoblock(self):
         s = self.selenium
         s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=Videoblock')
+        module = self.get_module('informatives', 'Video')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module,
+            'css=.landing-zone.action-informatives-module-droppable')
         s.waitForElementPresent('css=div.type-videoblock')
 
     def test_lightbox_should_close_after_editing(self):
@@ -567,10 +543,11 @@ class TestQuizBlock(Test):
     def create_quizblock(self):
         s = self.selenium
         s.click('link=*Add block*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('//a[@class="choose-block"]')
-        s.waitForElementPresent('css=div.block-types')
-        s.click('link=Quizblock')
+        module = self.get_module('informatives', 'Quiz')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module,
+            'css=.landing-zone.action-informatives-module-droppable')
         s.waitForElementPresent('css=div.type-quizblock')
 
     def add_quiz(self):
