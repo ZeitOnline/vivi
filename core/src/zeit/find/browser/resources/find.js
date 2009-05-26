@@ -107,7 +107,21 @@ zeit.find = {};
             var lookup = jsontemplate.get_node_lookup(data, entry);
             var author = lookup('title');
             MochiKit.Signal.connect(entry, 'onclick', function(e) {
-                author_field.value = author
+                author_field.value = author;
+                zeit.find.search_result.render();
+            });
+        });
+    };
+
+    var connect_topic_filters = function(element, data) {;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_topic'));
+        var topic_field = $('topic');
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var topic = lookup('title');
+            MochiKit.Signal.connect(entry, 'onclick', function(e) {
+                topic_field.value = topic;
                 zeit.find.search_result.render();
             });
         });
@@ -158,6 +172,8 @@ zeit.find = {};
                                 connect_time_filters);
         MochiKit.Signal.connect(zeit.find.result_filters, 'load',
                                 connect_author_filters);
+        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
+                                connect_topic_filters);
 
         zeit.find.search_form.render();
         zeit.find.tabs = new zeit.cms.Tabs('cp-search');
