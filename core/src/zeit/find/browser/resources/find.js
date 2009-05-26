@@ -81,6 +81,23 @@ zeit.find = {};
         });
     }
 
+    var connect_time_filters = function(element, data) {;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_time'));
+        var from_field = $('from');
+        var until_field = $('until');
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var start_date = lookup('start_date');
+            var end_date = lookup('end_date');
+            MochiKit.Signal.connect(entry, 'onclick', function(e) {
+                from_field.value = start_date;
+                until_field.value = end_date;
+                zeit.find.search_result.render();
+            });
+        });
+    };
+
 
     var init = function() {
 
@@ -122,6 +139,9 @@ zeit.find = {};
                                 connect_draggables);
         MochiKit.Signal.connect(zeit.find.favorites, 'before-load',
                                 disconnect_draggables);
+        
+        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
+                                connect_time_filters);
 
         zeit.find.search_form.render();
         zeit.find.tabs = new zeit.cms.Tabs('cp-search');

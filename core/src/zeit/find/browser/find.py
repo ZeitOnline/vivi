@@ -15,7 +15,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.preview
 import zc.iso8601.parse
 import zeit.find.search
-
+from zeit.find.daterange import DATE_RANGES
 
 
 class Find(zeit.cms.browser.view.Base):
@@ -126,11 +126,21 @@ class ResultFilters(JSONView):
 
         return {
             'topic_entries': _entries(topic_counts),
-            'time_entries': _entries(time_counts),
+            'time_entries': time_entries(time_counts),
             'type_entries': _entries(type_counts),
             'author_entries': _entries(author_counts),
             }
 
+def time_entries(counts):
+    result = []
+    for ((name, count),
+         (name2, (start_date, end_date)))  in zip(counts, DATE_RANGES):
+        result.append(dict(title=name,
+                           amount=format_amount(count),
+                           start_date=format_date(start_date),
+                           end_date=format_date(end_date)))
+    return result
+        
 def _entries(counts):
     result = []
     for name, count in counts:
