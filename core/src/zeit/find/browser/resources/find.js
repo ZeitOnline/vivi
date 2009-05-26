@@ -99,6 +99,20 @@ zeit.find = {};
     };
 
 
+    var connect_author_filters = function(element, data) {;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_author'));
+        var author_field = $('author');
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var author = lookup('title');
+            MochiKit.Signal.connect(entry, 'onclick', function(e) {
+                author_field.value = author
+                zeit.find.search_result.render();
+            });
+        });
+    };
+
     var init = function() {
 
         var base_url = application_url + '/@@';
@@ -142,6 +156,8 @@ zeit.find = {};
         
         MochiKit.Signal.connect(zeit.find.result_filters, 'load',
                                 connect_time_filters);
+        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
+                                connect_author_filters);
 
         zeit.find.search_form.render();
         zeit.find.tabs = new zeit.cms.Tabs('cp-search');
