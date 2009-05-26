@@ -37,8 +37,12 @@
   border-style: solid;
 }
 
+#cp-content .block.droppable-active > *,
 #cp-content .block.hover-content > * {
-  border-color: #00ee5e;
+  border: 1px solid #00ee5e;
+}
+
+#cp-content .block.hover-content > * {
   outline: 4px solid #00ee5e;
 }
 
