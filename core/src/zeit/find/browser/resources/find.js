@@ -31,9 +31,9 @@ zeit.find = {};
 
     var draggables = [];
 
-    var connect_draggables = function() {
+    var connect_draggables = function(element, data) {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', $('cp-search'));
+            'div', 'search_entry', element);
         forEach(results, function(result) {
             draggables.push(zeit.cms.createDraggableContentObject(result));
         });
