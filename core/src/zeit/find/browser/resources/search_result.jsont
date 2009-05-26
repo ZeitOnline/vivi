@@ -16,10 +16,10 @@
   <div class="related_links">
   </div>
   <div class="filters">
-    <a href="{date_filter}">{date}</a>
-    <a href="{week_filter}">{week}</a>
-    <a href="{topics_filter}">{topics}</a>
-    <a href="{author_filter}">{author}</a>
+    <a class="date_filter">{date}</a>
+    <a class="week_filter">{week}</a>
+    <a class="topic_filter">{topic}</a>
+    <a class="author_filter">{authors}</a>
   </div>
   <div class="related_info"></div>
 </div>

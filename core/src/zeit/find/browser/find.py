@@ -98,13 +98,9 @@ class SearchResult(JSONView):
                     'teaser_text': result.get('teaser_text', ''),
                     'preview_url': preview_url,
                     'date': format_date(dt),
-                    'date_filter': '',
                     'week': format_week(dt),
-                    'week_filter': '',
-                    'topics': result.get('ressort', ''),
-                    'topics_filter': '',
-                    'author': ' '.join(result.get('authors', [])),
-                    'author_filter': '',
+                    'topic': result.get('ressort', ''),
+                    'authors': ' '.join(result.get('authors', [])),
                     'related_url': self.url('expanded_search_result', uniqueId),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
                     })
@@ -224,7 +220,10 @@ class Favorites(JSONView):
                 authors = ''
         else:
             authors = ''
-            
+
+        preview_url = zeit.cms.browser.preview.get_preview_url(
+            'preview-prefix', uniqueId)
+
         return {
             'uniqueId': uniqueId,
             'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -233,15 +232,11 @@ class Favorites(JSONView):
             'arrow': r['arrow_right.png'](),
             'teaser_title': (metadata.teaserTitle or '') if metadata else '',
             'teaser_text': (metadata.teaserText or '') if metadata else '',
-            'preview_url': '',
+            'preview_url': preview_url,
             'date': '13.02.2009',
-            'date_filter': '',
             'week': '13/2009',
-            'week_filter': '',
-            'topics': 'Politik',
-            'topics_filter': '',
-            'author': authors,
-            'author_filter': '',
+            'topic': 'Politik',
+            'authors': authors,
             'related_url': self.url('expanded_search_result', uniqueId),
             'favorite_url': self.url('toggle_favorited', uniqueId),
             }
