@@ -127,6 +127,28 @@ zeit.find = {};
         });
     };
 
+    var connect_type_filters = function(element, data) {
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_type'));
+        var checkbox_ids = ['article', 'gallery', 'video', 'teaser', 'centerpage'];
+        var checkbox_fields = {};
+        for (var i = 0; i < checkbox_ids.length; i++) {
+            var checkbox_id = checkbox_ids[i];
+            checkbox_fields[checkbox_id] = $(checkbox_id);
+        }
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var checkbox_id = lookup('title');
+            MochiKit.Signal.connect(entry, 'onclick', function(e) {
+                for (var i = 0; i < checkbox_ids.length; i++) {
+                    checkbox_fields[checkbox_ids[i]].checked = false;
+                }
+                checkbox_fields[checkbox_id].checked = true;
+                zeit.find.search_result.render();
+            });
+        });
+    };
+
     var init = function() {
 
         var base_url = application_url + '/@@';
@@ -174,6 +196,8 @@ zeit.find = {};
                                 connect_author_filters);
         MochiKit.Signal.connect(zeit.find.result_filters, 'load',
                                 connect_topic_filters);
+        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
+                                connect_type_filters);
 
         zeit.find.search_form.render();
         zeit.find.tabs = new zeit.cms.Tabs('cp-search');

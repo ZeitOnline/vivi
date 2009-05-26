@@ -39,23 +39,23 @@
         <label>Typen:</label>
         <div>
           <div>
-            <input type="checkbox" checked="checked" name="article" />
+            <input type="checkbox" checked="checked" id="article" name="article" />
             <label>Artikel</label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" name="gallery" />
+            <input type="checkbox" checked="checked" id="gallery" name="gallery" />
             <label>BiGa</label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" name="video" />
+            <input type="checkbox" checked="checked" id="video" name="video" />
             <label>Video</label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" name="teaser" />
+            <input type="checkbox" checked="checked" id="teaser" name="teaser" />
             <label>Freier Teaser</label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" name="centerpage" />
+            <input type="checkbox" checked="checked" id="centerpage" name="centerpage" />
             <label>Center-Page</label>
           </div>
         </div>
