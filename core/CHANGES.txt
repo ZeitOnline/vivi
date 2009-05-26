@@ -2,22 +2,39 @@ zeit.content.cp changes
 =======================
 
 
-0.7 (unreleased)
+0.7 (2009-05-26)
 ----------------
 
 Neue Funktionen
----------------
+~~~~~~~~~~~~~~~
 
-- Neue Content Blöcke "Quiz" (#5279) und "Vollgraphisch" (#5278) wurden hinzugefügt.
+- Neue Content Blöcke "Quiz" (#5279) und "Vollgraphisch" (#5278) wurden
+  hinzugefügt.
 
 - Beim Bearbeiten eines Teaserblocks können jetzt Teaser direkt in die Liste
   gezogen werden.
+
+- Blockblibliothek
+
+- Tabs im Block-Bearbeiten (#5323)
+ 
+- Freie Teaser können im CMS direkt bearbeitet werden (#5059).
+
+- Autopilot in der Aufmacherfläche nicht mehr möglich (verhindert Kreise,
+  #5031).
+
+Technische Änderungen
+~~~~~~~~~~~~~~~~~~~~~
+
+- Interface-Umstrukturierung um genauer zwischen Fläche, Region und Block
+  unterscheiden zu können.
+
 
 0.6 (2009-05-17)
 ----------------
 
 Neue Funktionen
----------------
+~~~~~~~~~~~~~~~
 
 - Neue Content Blöcke "Audio" (#5276) und "Video" (#5051) wurden hinzugefügt.
 
@@ -40,7 +57,7 @@ Neue Funktionen
 ----------------
 
 Neue Funktionen
----------------
+~~~~~~~~~~~~~~~
 
 - Ein neuer Content Block "XML" wurde hinzugefügt (#5277)
 
