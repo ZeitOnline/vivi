@@ -52,13 +52,6 @@ The `search_form` view returns only the template URL for the search form:
     >>> print browser.contents
     {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont"}
 
-Another search form view is the `extended_search_form` view, which returns the
-template for the extended search:
-
-    >>> browser.open('http://localhost:8080/++skin++cms/extended_search_form')
-    >>> print browser.contents
-    {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/extended_search_form.jsont"}
-
 
 Favorites
 ---------
