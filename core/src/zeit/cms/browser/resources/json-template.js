@@ -647,7 +647,8 @@ var get_node_lookup = function(data_dict, node, undefined_str) {
   while (parent !== null) {
     var sibling = parent;
     while (sibling !== null) {
-      if (sibling.getAttribute('class') == 'json-template-path') {
+      if (sibling.getAttribute !== undefined && 
+          sibling.getAttribute('class') == 'json-template-path') {
         var path = sibling.getAttribute('id');
         return get_lookup(data_dict, path, undefined_str);
       }
