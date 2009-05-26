@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
+from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -301,22 +302,6 @@ class ICPExtraBlock(IBlock):
 
     title = zope.schema.TextLine(
         title=u'Title of the cp_extra.')
-
-class IBlockLayout(zope.interface.Interface):
-    """Layout of a teaser block."""
-
-    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
-    title = zope.schema.TextLine(title=u'Human readable title.')
-
-    image_pattern = zope.schema.ASCIILine(
-        title=u'A match for the image to use in this layout.')
-
-
-class ITeaserBarLayout(IBlockLayout):
-    """Layout of a TeaserBar."""
-
-    blocks = zope.schema.Int(
-        title=u'The number of blocks allowed by this layout.')
 
 
 class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,

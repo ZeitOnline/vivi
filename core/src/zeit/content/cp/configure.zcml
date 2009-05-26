@@ -122,12 +122,15 @@
   <adapter factory=".rule.CenterPageValidator" />
 
   <!-- Layout -->
-  <class class=".layout.Layout">
+  <class class=".layout.BlockLayout">
+    <require
+      interface=".interfaces.ITeaserBlockLayout"
+      permission="zope.View" />
+  </class>
+  <class class=".layout.BarLayout">
     <require
       interface=".interfaces.ITeaserBarLayout"
       permission="zope.View" />
-    <!-- prevent circular import -->
-    <implements interface=".interfaces.IBlockLayout" />
   </class>
 
   <!-- RSS Feed -->
