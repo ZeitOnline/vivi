@@ -59,6 +59,7 @@
 .filter_link {
   display: block;
   float: left;
+  cursor: pointer;
   padding: 0 1em 0 0;
   white-space: nowrap;
 }
