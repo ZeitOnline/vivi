@@ -1,10 +1,22 @@
 zeit.find changes
 =================
 
-0.4 (unreleased)
+0.4 (2009-05-26)
 ----------------
 
-0.3 (2009-04-17)
+- Anzeige der Anzahl für die facetierte Suche.
+
+- Enter-Taste startet die Suche.
+
+- Relateds in Suchergebnissen
+
+- Veröffentlichungs-Status anzeigen
+
+- Vorschau-Links
+
+- Erweiterte Suche
+
+0.3 (2009-05-17)
 -----------------
 
 - Kommunikation mit Solr, d.h. es werden echte Daten angezeigt.
