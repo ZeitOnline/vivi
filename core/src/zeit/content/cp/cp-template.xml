@@ -10,15 +10,7 @@
       <region area="lead"/>
       <region area="informatives"/>
     </cluster>
-    <region area="ugc-bar">
-      <!-- per xi:include -->
-      <container module="ugc-line">
-      </container>
-    </region>
     <cluster area="teaser-mosaic"/>
-    <region area="service">
-      <!-- per xi:include   sitemap.xml-->
-    </region>
   </body>
 </centerpage>
 <?ZEIT-StyleGroup r09_centerpage?>

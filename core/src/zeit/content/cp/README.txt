@@ -32,15 +32,7 @@ They are represented in XML as:
       <region area="lead"/>
       <region area="informatives"/>
     </cluster>
-    <region area="ugc-bar">
-      <!-- per xi:include -->
-      <container module="ugc-line">
-      </container>
-    </region>
     <cluster area="teaser-mosaic"/>
-    <region area="service">
-      <!-- per xi:include   sitemap.xml-->
-    </region>
   </body>
 </centerpage>
 
