@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+1.7.8 (2009-05-27)
+------------------
+
+- CDS: Wird ein Artikel ein weiteres mal geliefert, und wurde er im CMS
+  geändert, ist dies jetzt eine Warnung und kein Fehler mehr.
 
 1.7.7 (2009-05-20)
 ------------------

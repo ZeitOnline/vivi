@@ -120,8 +120,8 @@ def import_file(path):
                 name = existing_article.__name__
                 del container[name]
             else:
-                log.error(
-                    'Error while importing %s: UUID already taken by %s' % (
+                log.warning(
+                    'While importing %s: UUID already taken by %s' % (
                         path, existing_article.uniqueId))
                 return
 
