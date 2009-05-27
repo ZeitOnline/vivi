@@ -1,16 +1,19 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
+from zope.testing import doctest
 import re
 import unittest
+import zeit.cms.checkout.helper
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.unknown
 import zeit.cms.testing
 import zope.app.testing.functional
 import zope.component
 import zope.interface
+import zope.security.management
 import zope.testing.renormalizing
-from zope.testing import doctest
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -31,8 +34,10 @@ class DAVTest(zope.app.testing.functional.BrowserTestCase):
         self.setSite(self.getRootFolder())
         self.content = zeit.cms.repository.unknown.PersistentUnknownResource(
             u'data')
+        zeit.cms.testing.create_interaction()
 
     def tearDown(self):
+        zope.security.management.endInteraction()
         self.setSite(None)
         super(DAVTest, self).tearDown()
 
@@ -114,6 +119,15 @@ class DAVTest(zope.app.testing.functional.BrowserTestCase):
             f_remote, resource)
         zeit.cms.content.dav.restore_provides_from_dav(f_remote, event)
         self.assertEquals(f_remote.__class__, f_remote.__provides__._cls)
+
+    def test_checkout_checkin_keeps_provides(self):
+        zope.interface.alsoProvides(self.content, ITestInterface)
+        self.repository['foo'] = self.content
+        content = self.repository['foo']
+        self.assertTrue(ITestInterface.providedBy(self.repository['foo']))
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            self.assertTrue(ITestInterface.providedBy(co))
+        self.assertTrue(ITestInterface.providedBy(self.repository['foo']))
 
     @property
     def repository(self):

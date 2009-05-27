@@ -22,8 +22,10 @@ def default_local_content_adapter(context):
     content = repository.getCopyOf(context.uniqueId)
     repository_properties = zeit.connector.interfaces.IWebDAVProperties(
         context)
-    zope.interface.directlyProvides(
+    zope.interface.alsoProvides(
         content, zeit.cms.workingcopy.interfaces.ILocalContent)
+    assert not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
+        content)
     new_properties = zeit.connector.interfaces.IWebDAVProperties(content)
     new_properties.update(repository_properties)
     return content
