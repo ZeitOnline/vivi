@@ -2,6 +2,11 @@
   width: 300px;
 }
 
+#search_result {
+  clear: both;
+  padding: 1em 0 0 0;
+}
+
 .search_entry {
   margin: 0 0.5em 1em 0;
 }
@@ -32,40 +37,88 @@
 
 .search_entry a {
   color: blue;
+  cursor: pointer;
   text-decoration: underline;
 }
 
-#result_filters div,
+
+#cp-search .button{
+  border-top: 1px solid #ddd;
+  cursor: pointer;
+  margin: 1em 0;
+}
+
 #extended_search {
-  display: inline-table;
-  margin-bottom: 10px;
+  margin-bottom: 1em;
 }
 
-#result_filters div div,
 #extended_search div {
-  display: table-row;
 }
 
-#result_filters #filter_time,
-#result_filters #filter_topic,
-#result_filters #filter_author,
-#result_filters #filter_type,
-#extended_search div label,
-#extended_search div select,
-#extended_search div input {
-  display: table-cell;
-}
-
-.filter_link {
-  display: block;
+#extended_search > div >  label {
   float: left;
-  cursor: pointer;
-  padding: 0 1em 0 0;
-  white-space: nowrap;
+  margin: 0 1em 0 2em;
 }
 
-.date_filter, .week_filter, .topic_filter, .author_filter {
+
+#extended_search > div > label:first-child {
+  margin: auto;
+  width: 8em;
+}
+
+#extended_search .types > div 
+
+#extended_search > div > select,
+#extended_search > div > input {
+  float: left;
+}
+
+#extended_search > div {
+  clear: both;
+}
+
+#extended_search .types > div {
+  float: left;
+}
+
+#from,
+#until {
+  width: 8em;
+}
+
+.search-filter > .title {
+  font-size: 1em;
+}
+
+#filter_topic,
+#filter_time,
+#filter_type {
+  width: 33%;
+  float: left;
+}
+
+#filter_author {
+  clear:both;
+}
+
+.search-filter .filter_link {
   cursor: pointer;
+  display: block;
+  font-size: 0.75em;
+  overflow: hidden;
+  color: blue;
+  white-space: nowrap;
+  width: 100%;
+}
+
+#filter_author .filter_link_outer {
+  width: 33%;
+  float: left;
+
+}
+
+#filter_author .filter_link {
+  white-space: normal;
 }
 
 #cp-search > div[id] {

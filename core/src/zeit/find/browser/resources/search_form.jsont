@@ -4,8 +4,9 @@
 
   <br />
 
-  <button id="extended_search_button" type="button">
-    erweiterte Suche</button>
+  <div id="extended_search_button" class="button">
+    Erweiterte Suche
+  </div>
   <div id="extended_search_form">
     <div id="extended_search" style="display:none">
       <div>
@@ -35,28 +36,38 @@
           <option value="published-with-changes">liegt verändert vor</option>
         </select>
       </div>
-      <div>
+      <div class="types">
         <label>Typen:</label>
         <div>
           <div>
-            <input type="checkbox" checked="checked" id="article" name="article" />
-            <label>Artikel</label>
+            <label>
+              <input type="checkbox" checked="checked" id="article" name="article" />
+              Artikel
+            </label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" id="gallery" name="gallery" />
-            <label>BiGa</label>
+            <label>
+              <input type="checkbox" checked="checked" id="gallery" name="gallery" />
+              BiGa
+            </label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" id="video" name="video" />
-            <label>Video</label>
+            <label>
+              <input type="checkbox" checked="checked" id="video" name="video" />
+              Video
+            </label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" id="teaser" name="teaser" />
-            <label>Freier Teaser</label>
+            <label>
+              <input type="checkbox" checked="checked" id="teaser" name="teaser" />
+              Freier Teaser
+            </label>
           </div>
           <div>
-            <input type="checkbox" checked="checked" id="centerpage" name="centerpage" />
-            <label>Center-Page</label>
+            <label>
+              <input type="checkbox" checked="checked" id="centerpage" name="centerpage" />
+              Center-Page
+            </label>
           </div>
         </div>
       </div>
@@ -70,8 +81,9 @@
     </div>
   </div>
 
-  <button id="result_filters_button" type="button">
-    gefilterte Ergebnisse</button>
+  <div id="result_filters_button" class="button">
+    Gefilterte Ergebnisse
+  </div>
   <div id="result_filters"></div>
 
 </form>
