@@ -1,0 +1,27 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html i18n:domain="zeit.cms">
+  <head>
+    <script src="image.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      // Set the Skin CSS.
+      if (FCKTools.GetStyleHtml)
+      document.write(FCKTools.GetStyleHtml( GetCommonDialogCss( FCKConfig.FullBasePath + 'dialog/' ) ) ) ;
+      else
+      document.write( '<link href="' +oEditor.FCKConfig.SkinPath + 'fck_dialog.css" type="text/css" rel="stylesheet">' ) ;
+    </script>
+    <tal:cms replace="resource_library:zeit.cms" />
+    <tal:cms replace="resource_library:zeit.cms.tree" />
+    <link href="image.css" type="text/css" rel="stylesheet">
+  </head>
+  <body id="body">
+    <div id="select-image">
+      <label for="image" i18n:translate="">Image</label>
+      <input id="image" type="text" class="object-reference"
+        style="width: 60em" />
+      <input name="browseObjects" type="button" value="…" />
+    </div>
+    <div id="preview"></div>
+  </body>
+</html>
