@@ -20,12 +20,7 @@ def css_path(css):
 
 class Test(zeit.cms.selenium.Test):
 
-    product_config = {
-        'zeit.content.cp': {
-            'rules-url': 'file://' + pkg_resources.resource_filename(
-                'zeit.content.cp.tests', 'rule_testdata.py')
-        }
-    }
+    product_config = zeit.content.cp.testing.product_config
 
     def get_module(self, area, text):
         return ('xpath=//div[@class="module %s-module"]'

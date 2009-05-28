@@ -15,7 +15,7 @@ product_config = {
         'feed-update-minimum-age': 30,
         'rss-folder': 'rss',
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
-            'zeit.content.cp.tests', 'rule_testdata.py'),
+            'zeit.content.cp.tests.fixtures', 'example_rules.py'),
     }}
 
 
