@@ -98,7 +98,7 @@ class SearchResult(JSONView):
                     'teaser_text': result.get('teaser_text', ''),
                     'preview_url': preview_url,
                     'date': format_date(dt),
-                    'week': format_week(dt),
+                    'volume_year': '',
                     'topic': result.get('ressort', ''),
                     'authors': ' '.join(result.get('authors', [])),
                     'related_url': self.url('expanded_search_result', uniqueId),
@@ -154,8 +154,13 @@ class ExpandedSearchResult(JSONView):
             return {'template': 'no_expanded_search_result.jsont'}
         
         content = zeit.cms.interfaces.ICMSContent(uniqueId)
-        related = zeit.cms.related.interfaces.IRelatedContent(content).related
-
+        related_content = zeit.cms.related.interfaces.IRelatedContent(content,
+                                                                      None)
+        if related_content is None:
+            return {'template': 'no_expanded_search_result.jsont'}
+        
+        related = related_content.related
+        
         r = self.resources
         results = []
         for content in related:
@@ -218,8 +223,24 @@ class Favorites(JSONView):
                 authors = ' '.join(metadata.authors)
             else:
                 authors = ''
+            teaser_title = metadata.teaserTitle or ''
+            teaser_text = metadata.teaserText or ''
+            year = metadata.year or ''
+            volume = metadata.volume or ''
+            if year and volume:
+                volume_year = '%s/%s' % (volume, year)
+            else:
+                volume_year = ''
+            topic = metadata.ressort or ''
         else:
             authors = ''
+            teaser_title = ''
+            teaser_text = ''
+            volume_year = ''
+            topic = ''
+
+        date = zeit.cms.content.interfaces.ISemanticChange(
+            content).last_semantic_change
 
         preview_url = zeit.cms.browser.preview.get_preview_url(
             'preview-prefix', uniqueId)
@@ -230,12 +251,14 @@ class Favorites(JSONView):
             'favorited': favorited_icon,
             'publication_status': r['published.png'](),
             'arrow': r['arrow_right.png'](),
-            'teaser_title': (metadata.teaserTitle or '') if metadata else '',
-            'teaser_text': (metadata.teaserText or '') if metadata else '',
+            'teaser_title': teaser_title,
+            'teaser_text': teaser_text,
             'preview_url': preview_url,
-            'date': '13.02.2009',
-            'week': '13/2009',
-            'topic': 'Politik',
+            'date': format_date(date),
+            'volume_year': volume_year,
+            'year': year,
+            'volume': volume,
+            'topic': topic,
             'authors': authors,
             'related_url': self.url('expanded_search_result', uniqueId),
             'favorite_url': self.url('toggle_favorited', uniqueId),
@@ -341,12 +364,6 @@ def format_date(dt):
     if dt is None:
         return ''
     return dt.strftime('%d.%m.%Y')
-
-def format_week(dt):
-    if dt is None:
-        return ''
-    iso_year, iso_week, iso_weekday = dt.isocalendar()
-    return '%s/%s' % (iso_week, iso_year)
 
 def format_amount(amount):
     if amount >= 1000:
