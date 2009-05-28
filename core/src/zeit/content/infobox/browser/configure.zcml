@@ -1,0 +1,70 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <adapter factory=".infobox.ListRepresentation" />
+  <adapter factory=".infobox.infoboxreference_browse_location" />
+  <subscriber handler=".form.register_asset_interface" />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.infobox.Add"
+    permission="zeit.AddContent"
+    class=".form.Add"
+    menu="zeit-add-menu" title="Infobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Display"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="zeit.content.infobox.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    for="..interfaces.IInfobox"
+    permission="zope.View"
+    template="metadata.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:icon
+    for="zeit.content.infobox.interfaces.IInfobox"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/infoboxResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+</configure>
+
