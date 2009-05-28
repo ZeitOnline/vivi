@@ -142,7 +142,9 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'))
+    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'),
+    module=zeit.content.cp.interfaces.IReadTeaserBlock[
+            'layout'].missing_value.id)
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)

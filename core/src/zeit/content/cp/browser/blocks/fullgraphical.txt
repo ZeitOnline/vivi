@@ -46,7 +46,8 @@ The source of a fullgraphical block:
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="fullgraphical" cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
+<container cp:type="fullgraphical" module="fullgraphical"
+           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
   <block type="intern" href="http://xml.zeit.de/my_quiz" publication-date="" expires="">
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>

@@ -39,7 +39,8 @@ def factor(extra_id, title, interface=zeit.content.cp.interfaces.IRegion):
     factory = type(factory_name, (CPExtraBlockFactory,), dict(
         title=title,
         element_class=class_,
-        element_type=extra_id))
+        element_type=extra_id,
+        module=extra_id))
     factory = zope.component.adapter(interface)(factory)
 
     globals()[class_name] = class_

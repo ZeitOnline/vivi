@@ -52,6 +52,8 @@ class TeaserBarFactory(zeit.content.cp.blocks.block.ElementFactory):
     element_class = TeaserBar
     element_type = 'teaser-bar'
     title = None
+    module = zeit.content.cp.interfaces.IReadTeaserBar[
+            'layout'].missing_value.id
 
     def get_xml(self):
         region = super(TeaserBarFactory, self).get_xml()

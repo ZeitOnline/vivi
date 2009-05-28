@@ -68,10 +68,10 @@ XML of an audio/video block
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="audio" cp:__name__="<GUID>">
+<container cp:type="audio" module="audio" cp:__name__="<GUID>">
   <audio audioID="98765" format="large"/>
 </container>
-<container cp:type="video" cp:__name__="<GUID>">
+<container cp:type="video" module="video" cp:__name__="<GUID>">
   <video videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>
 </container>...
 

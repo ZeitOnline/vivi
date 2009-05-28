@@ -22,7 +22,8 @@ The teaser block contains a list of teasers[#functional]_.
 >>> import lxml.etree
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...
-    cp:type="teaser" cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
+    cp:type="teaser" module="leader"
+    cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
   <block href="http://xml.zeit.de/testcontent"...>
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
@@ -126,7 +127,7 @@ Channels can also be used for the autopilot:
 The xi:include is set accordingly:
 
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
-<container xmlns:cp="http://namespaces.zeit.de/CMS/cp" xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" cp:type="teaser" cp:__name__="efea89c6-a02e-49af-a43d-799d43f69575">
+<container ...>
   <referenced_cp py:pytype="str">http://xml.zeit.de/wirtschaft.feed</referenced_cp>
   <autopilot py:pytype="bool">true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/wirtschaft.feed">

@@ -21,8 +21,7 @@ class ElementFactory(object):
         container = lxml.objectify.E.container()
         container.set(
             '{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
-        if getattr(self, 'module', None):
-            container.set('module', self.module)
+        container.set('module', self.module)
         return container
 
     def __call__(self):
@@ -37,6 +36,8 @@ class ElementFactory(object):
 
 def elementFactoryFactory(adapts, element_type, title=None, module=None):
     """A factory which creates a content factory."""
+    if module is None:
+        module = element_type
     class_name = '%sFactory' % element_type.capitalize()
     factory = type(class_name, (ElementFactory,), dict(
         title=title,

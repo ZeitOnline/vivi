@@ -48,6 +48,7 @@ XML of a RSS block
 <...
 <container
     cp:type="rss"
+    module="rss"
     cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
     url=".../tagesschau.xml">
   <xi:include

@@ -20,5 +20,4 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
 
 
 QuizBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'quiz',
-    _('Quizblock'), module='quiz')
+    zeit.content.cp.interfaces.IRegion, 'quiz', _('Quizblock'))

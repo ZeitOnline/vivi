@@ -113,14 +113,9 @@ u'List of teasers'
 After calling the factory a corresponding XML node has been created:
 
 >>> print lxml.etree.tostring(lead.xml, pretty_print=True),
-<region ...
-  area="lead">
-  <container
-    cp:type="placeholder"
-    cp:__name__="..."/>
-  <container
-    cp:type="teaser"
-    cp:__name__="..."/>
+<region ... area="lead">
+  <container cp:type="placeholder" module="placeholder" cp:__name__="..."/>
+  <container cp:type="teaser" module="leader" cp:__name__="..."/>
 </region>
 
 
@@ -218,10 +213,10 @@ The xml of the teaser bar is actually a region:
 
 >>> print lxml.etree.tostring(bar.xml, pretty_print=True),
 <region ...>
-  <container cp:type="placeholder" cp:__name__="<GUID>"/>
-  <container cp:type="placeholder" cp:__name__="<GUID>"/>
-  <container cp:type="placeholder" cp:__name__="<GUID>"/>
-  <container cp:type="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
 </region>
 
 

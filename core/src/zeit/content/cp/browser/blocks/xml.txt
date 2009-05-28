@@ -32,7 +32,7 @@ You can edit the XML content by clicking the Edit button:
 >>> browser.open('edit-properties')
 >>> xml = browser.getControl(name="form.xml").value
 >>> print xml
-<container...  cp:type="xml" cp:__name__="..."/>
+<container...  cp:type="xml" module="xml" cp:__name__="..."/>
 
 >>> print update_xml('/>', '><foo/></container>')
 <...
