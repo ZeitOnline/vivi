@@ -88,13 +88,17 @@ zeit.cms.ViewTab = zeit.cms.Tab.extend({
 
     construct: function(id, title, view) {
         var self = this;
+        self.rendered = false;
         arguments.callee.$.construct.call(self, id, title);
         self.view = view;
     },
 
     activate: function() {
         var self = this;
-        self.view.render();
+        if (!self.rendered) {
+            self.view.render();
+            self.rendered = true;
+        }
         arguments.callee.$.activate.call(self);
     },
 
