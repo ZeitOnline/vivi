@@ -32,22 +32,6 @@ zeit.find = {};
         });
     };
 
-    var draggables = [];
-
-    var connect_draggables = function(element, data) {
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', element);
-        forEach(results, function(result) {
-            draggables.push(zeit.cms.createDraggableContentObject(result));
-        });
-    }
-
-    var disconnect_draggables = function() {
-        while(draggables.length > 0) {
-            draggables.pop().destroy();
-        }
-    }
-
     var connect_toggle_favorited = function(element, data) {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', element);
@@ -154,19 +138,13 @@ zeit.find = {};
         MochiKit.Signal.connect(zeit.find.search_result, 'load',
                                 connect_toggle_favorited);
 
-        MochiKit.Signal.connect(zeit.find.search_result, 'load',
-                                connect_draggables);
-        MochiKit.Signal.connect(zeit.find.search_result, 'before-load',
-                                disconnect_draggables);
+        new zeit.find.SearchResultsDraggable(zeit.find.search_result)
       
         new zeit.find.Relateds(zeit.find.favorites);
         MochiKit.Signal.connect(zeit.find.favorites, 'load',
                                 connect_toggle_favorited);
 
-        MochiKit.Signal.connect(zeit.find.favorites, 'load',
-                                connect_draggables);
-        MochiKit.Signal.connect(zeit.find.favorites, 'before-load',
-                                disconnect_draggables);
+        new zeit.find.SearchResultsDraggable(zeit.find.favorites)
         
         MochiKit.Signal.connect(zeit.find.result_filters, 'load',
                                 connect_time_filters);
@@ -196,21 +174,39 @@ zeit.find = {};
 })();
 
 
-
-zeit.find.Relateds = gocept.Class.extend({
-    // Handles relateds of *one* search result entry.
+zeit.find.Component = gocept.Class.extend({
 
     construct: function(view) {
         var self = this;
         self.view = view;
-        MochiKit.Signal.connect(view, 'load', self, self.connect);
+        MochiKit.Signal.connect(view, 'load', self, self.on_load);
         self.events = []
         self.draggables = [];
     },
 
-    connect: function(element, data) {
+    on_load: function(element, data) {
         var self = this;
         self.disconnect(); 
+        self.connect(element, data);
+    },
+
+    disconnect: function() {
+        var self = this;
+        while(self.events.length) {
+            MochiKit.Signal.disconnect(self.events.pop())
+        }
+        while(self.draggables.length) {
+            self.draggables.pop().destroy();
+        }
+    },
+
+});
+
+zeit.find.Relateds = zeit.find.Component.extend({
+    // Handles relateds of *one* search result entry.
+
+    connect: function(element, data) {
+        var self = this;
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', element);
         forEach(results, function(entry) {
@@ -238,16 +234,6 @@ zeit.find.Relateds = gocept.Class.extend({
         });
     },
 
-    disconnect: function() {
-        var self = this;
-        while(self.events.length) {
-            MochiKit.Signal.disconnect(self.events.pop())
-        }
-        while(self.draggables.length) {
-            self.draggables.pop().destroy();
-        }
-    },
-
     toggle: function(related_links, related_info, related_url) {
         var self = this;
         if (MochiKit.DOM.hasElementClass(related_links, 'expanded')) {
@@ -264,4 +250,19 @@ zeit.find.Relateds = gocept.Class.extend({
             });
         }
     },
+});
+
+
+zeit.find.SearchResultsDraggable = zeit.find.Component.extend({
+
+    connect: function(element, data) {
+        var self = this;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'search_entry', element);
+        forEach(results, function(result) {
+            self.draggables.push(zeit.cms.createDraggableContentObject(result));
+        });
+    },
+
+
 });
