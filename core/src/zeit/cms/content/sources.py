@@ -158,15 +158,16 @@ def collect_caches(event):
     """
     global _collect_counter
     _collect_counter += 1
+    if _collect_counter < 100:
+        return
     locked = _collect_lock.acquire(False)
     if not locked:
         return
     try:
-        if _collect_counter >= 100:
-            logger.debug("Collecting caches.")
-            # collect every 100 requests
-            gocept.cache.method.collect()
-            _collect_counter = 0
+        logger.debug("Collecting caches.")
+        # collect every 100 requests
+        gocept.cache.method.collect()
+        _collect_counter = 0
     finally:
         _collect_lock.release()
 
