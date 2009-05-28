@@ -178,6 +178,9 @@ class RulesManager(object):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRulesManager)
 
+    def __init__(self):
+        self._rules = []
+
     @gocept.cache.method.Memoize(360)
     def get_rules(self):
         rules = []
@@ -214,13 +217,11 @@ class RulesManager(object):
     @property
     def rules(self):
         try:
-            rules = self.get_rules()
+            self._rules = self.get_rules()
         except SyntaxError, e:
+            # return the previously cached rules unmodified
             log.exception(e)
-            return self.cached_rules
-        else:
-            self.cached_rules = rules
-            return rules
+        return self._rules
 
 
 class Validator(object):

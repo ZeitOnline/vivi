@@ -2,9 +2,12 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.rule import Rule
+import gocept.cache
+import pkg_resources
 import unittest
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
+import zope.app.appsetup.product
 import zope.component
 
 
@@ -130,5 +133,33 @@ error_if(True)
         self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
 
 
+class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
+    def setUp(self):
+        super(RulesManagerTest, self).setUp()
+        gocept.cache.method.clear()
+        self.rm = zope.component.getUtility(
+            zeit.content.cp.interfaces.IRulesManager)
+
+    def tearDown(self):
+        self._set_rules('example_rules.py')
+        super(RulesManagerTest, self).tearDown()
+
+    def _set_rules(self, filename):
+        zope.app.appsetup.product._configs['zeit.content.cp']['rules-url'] = \
+            'file://' + pkg_resources.resource_filename(
+            'zeit.content.cp.tests.fixtures', filename)
+
+    def test_valid_rules_file_should_be_loaded(self):
+        self._set_rules('example_rules.py')
+        self.assertEqual(3, len(self.rm.rules))
+
+    def test_invalid_rules_file_should_yield_empty_ruleset(self):
+        self._set_rules('syntax_error.py')
+        self.assertEqual(0, len(self.rm.rules))
+
+
 def test_suite():
-    return unittest.makeSuite(RuleTest)
+    suite = unittest.TestSuite()
+    suite.addTests(unittest.makeSuite(RuleTest))
+    suite.addTests(unittest.makeSuite(RulesManagerTest))
+    return suite
