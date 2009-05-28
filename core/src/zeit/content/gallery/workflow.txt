@@ -55,7 +55,7 @@ True
 The publis script also got all the folders and files:
 
 >>> print logfile.getvalue(),
-Running job 1
+Running job ...
 Publishing http://xml.zeit.de/online/gallery
 Could not checkout http://xml.zeit.de/image-folder
 Could not checkout http://xml.zeit.de/image-folder/thumbnails
@@ -82,7 +82,7 @@ False
 Note that the script gets the reverse order for removing:
 
 >>> print logfile.getvalue(),
-Running job 2
+Running job ...
 Retracting http://xml.zeit.de/online/gallery
 ...retract.sh:
 Retracting test script
@@ -114,7 +114,7 @@ Delete the folder and try to publish:
 >>> gallery_info.published
 True
 >>> print logfile.getvalue(),
-Running job 3
+Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:
 Publishing test script
