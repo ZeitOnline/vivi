@@ -13,14 +13,17 @@ zeit.find = {};
             };
         });
 
-        MochiKit.Signal.connect('extended_search_button', 'onclick', function(e) {
-            if (MochiKit.Style.getStyle($('extended_search'), 'display') == 'none') {
+        MochiKit.Signal.connect(
+            'extended_search_button', 'onclick', function(e) {
+            if (MochiKit.Style.getStyle($('extended_search'), 'display')
+                == 'none') {
                 MochiKit.Style.showElement($('extended_search'));
             } else {
                 MochiKit.Style.hideElement($('extended_search'));
             }
         });
-        MochiKit.Signal.connect('result_filters_button', 'onclick', function(e) {
+        MochiKit.Signal.connect(
+            'result_filters_button', 'onclick', function(e) {
             if ($('filter_time')) {
                 $('result_filters').innerHTML = '';
             } else {
@@ -45,25 +48,34 @@ zeit.find = {};
         }
     }
 
+    var related_events = []
     var connect_related = function(element, data) {
+        while(related_events.length) {
+            MochiKit.Signal.disconnect(related.events.pop())
+        }
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', element);
         forEach(results, function(entry) {
-            var related_url = jsontemplate.get_node_lookup(data, entry)('related_url');
+            var related_url = jsontemplate.get_node_lookup(data, entry)(
+                'related_url');
             var related_links = MochiKit.Selector.findChildElements(
                 entry, ['.related_links'])[0];
             var related_info = MochiKit.Selector.findChildElements(
                 entry, ['.related_info'])[0];
-            MochiKit.Signal.connect(related_links, 'onclick', function(e) {
-                if (MochiKit.DOM.hasElementClass(related_links, 'expanded')) {
-                    MochiKit.DOM.removeElementClass(related_links, 'expanded');
-                    related_info.innerHTML = '';
-                } else {
-                    MochiKit.DOM.addElementClass(related_links, 'expanded');
-                    zeit.find.expanded_search_result.render(
-                        related_info, related_url);
-                }
-            });
+            related_events.push(
+                MochiKit.Signal.connect(related_links, 'onclick', function(e) {
+                    if (MochiKit.DOM.hasElementClass(
+                        related_links, 'expanded')) {
+                        MochiKit.DOM.removeElementClass(
+                            related_links, 'expanded');
+                        related_info.innerHTML = '';
+                    } else {
+                        MochiKit.DOM.addElementClass(
+                            related_links, 'expanded');
+                        zeit.find.expanded_search_result.render(
+                            related_info, related_url);
+                    }
+            }));
         });
     }
 
