@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.21.3 (unreleased)
+1.21.3 (2009-05-28)
 -------------------
 
 - Cache-Collector lockt nicht mehr bei jedem Request.
