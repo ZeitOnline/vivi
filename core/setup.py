@@ -20,6 +20,7 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'FeedParser',
+        'gocept.cache',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
         'gocept.runner',
