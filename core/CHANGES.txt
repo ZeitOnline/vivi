@@ -1,0 +1,7 @@
+zeit.content.infobox changes
+============================
+
+1.22 (2009-05-28)
+-----------------
+
+- Aus zeit.cms extrahiert.
