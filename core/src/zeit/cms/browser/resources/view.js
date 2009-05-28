@@ -12,22 +12,21 @@ zeit.cms.View = gocept.Class.extend({
         if (isUndefinedOrNull(url)) {
             url = self.url;
         }
-
         if (!isUndefinedOrNull(self.get_query_string)) {
             url += "?" + self.get_query_string();
         }
-
-        self.load(target_element, url);
+        return self.load(target_element, url);
     },
 
     load: function(target_element, url) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-        // XXX have to wrap in function to retain reference to self
-        // otherwise this gets messed up
         d.addCallback(function(result) {
-            self.do_render(result.responseText, target_element) });
+            self.do_render(result.responseText, target_element)
+            return result;
+        });
         d.addErrback(zeit.cms.log_error);
+        return d;
     },
 
     do_render: function(html, target_element, data) {
@@ -52,10 +51,11 @@ zeit.cms.JSONView = zeit.cms.View.extend({
     load: function(target_element, url) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(url);
-        // XXX have to wrap in function to retain reference to self
-        // otherwise this gets messed up
-        d.addCallback(function(json) { self.callback_json(json, target_element) });
+        d.addCallback(function(json) {
+            return self.callback_json(json, target_element);
+        });
         d.addErrback(zeit.cms.log_error);
+        return d;
     },
 
     callback_json: function(json, target_element) {
@@ -66,18 +66,20 @@ zeit.cms.JSONView = zeit.cms.View.extend({
             self.expand_template(json, target_element);
             return;
         }
-        self.load_template(template_url, json, target_element);
+        return self.load_template(template_url, json, target_element);
     },
 
     load_template: function(template_url, json, target_element) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
         d.addCallback(function(result) {
-            self.template = jsontemplate.Template(result.responseText, 
-                                                  {default_formatter: 'html',
-                                                   hooks: jsontemplate.HtmlIdHooks()});
+            self.template = jsontemplate.Template(
+                result.responseText, {
+                default_formatter: 'html',
+                hooks: jsontemplate.HtmlIdHooks()});
             self.last_template_url = template_url;
             self.expand_template(json, target_element);
+            return result;
         });
         d.addErrback(zeit.cms.log_error);
         return d;
@@ -102,6 +104,7 @@ zeit.cms.log_error = function(err) {
     }
     console.trace();
     console.error(real_error.name + ': ' + real_error.message);
+    return err;
 };
 
 
