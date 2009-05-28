@@ -48,37 +48,6 @@ zeit.find = {};
         }
     }
 
-    var related_events = []
-    var connect_related = function(element, data) {
-        while(related_events.length) {
-            MochiKit.Signal.disconnect(related.events.pop())
-        }
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', element);
-        forEach(results, function(entry) {
-            var related_url = jsontemplate.get_node_lookup(data, entry)(
-                'related_url');
-            var related_links = MochiKit.Selector.findChildElements(
-                entry, ['.related_links'])[0];
-            var related_info = MochiKit.Selector.findChildElements(
-                entry, ['.related_info'])[0];
-            related_events.push(
-                MochiKit.Signal.connect(related_links, 'onclick', function(e) {
-                    if (MochiKit.DOM.hasElementClass(
-                        related_links, 'expanded')) {
-                        MochiKit.DOM.removeElementClass(
-                            related_links, 'expanded');
-                        related_info.innerHTML = '';
-                    } else {
-                        MochiKit.DOM.addElementClass(
-                            related_links, 'expanded');
-                        zeit.find.expanded_search_result.render(
-                            related_info, related_url);
-                    }
-            }));
-        });
-    }
-
     var connect_toggle_favorited = function(element, data) {
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', element);
@@ -181,9 +150,7 @@ zeit.find = {};
 
         MochiKit.Signal.connect(zeit.find.search_form, 'load', init_search_form);
 
-        MochiKit.Signal.connect(zeit.find.search_result, 'load',
-                                connect_related);
-        
+        new zeit.find.Relateds(zeit.find.search_result);
         MochiKit.Signal.connect(zeit.find.search_result, 'load',
                                 connect_toggle_favorited);
 
@@ -192,8 +159,7 @@ zeit.find = {};
         MochiKit.Signal.connect(zeit.find.search_result, 'before-load',
                                 disconnect_draggables);
       
-        MochiKit.Signal.connect(zeit.find.favorites, 'load',
-                                connect_related);
+        new zeit.find.Relateds(zeit.find.favorites);
         MochiKit.Signal.connect(zeit.find.favorites, 'load',
                                 connect_toggle_favorited);
 
@@ -228,3 +194,56 @@ zeit.find = {};
     MochiKit.Signal.connect(window, 'onload', init);
 
 })();
+
+
+
+zeit.find.Relateds = gocept.Class.extend({
+    // Handles relateds of *one* search result entry.
+
+    construct: function(view) {
+        var self = this;
+        self.view = view;
+        MochiKit.Signal.connect(view, 'load', self, self.connect);
+        self.events = []
+    },
+
+    connect: function(element, data) {
+        var self = this;
+        self.disconnect(); 
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'search_entry', element);
+        forEach(results, function(entry) {
+            var related_url = jsontemplate.get_node_lookup(data, entry)(
+                'related_url');
+            var related_links = MochiKit.Selector.findChildElements(
+                entry, ['.related_links'])[0];
+            var related_info = MochiKit.Selector.findChildElements(
+                entry, ['.related_info'])[0];
+            self.events.push(
+                MochiKit.Signal.connect(related_links, 'onclick', function() {
+                    self.toggle(related_links, related_info, related_url);
+            
+            }));
+        });
+    },
+
+
+    disconnect: function() {
+        var self = this;
+        while(self.events.length) {
+            MochiKit.Signal.disconnect(self.events.pop())
+        }
+    },
+
+    toggle: function(related_links, related_info, related_url) {
+        var self = this;
+        if (MochiKit.DOM.hasElementClass(related_links, 'expanded')) {
+            MochiKit.DOM.removeElementClass(
+                related_links, 'expanded');
+            related_info.innerHTML = '';
+        } else {
+            MochiKit.DOM.addElementClass(related_links, 'expanded');
+            zeit.find.expanded_search_result.render(related_info, related_url);
+        }
+    },
+});
