@@ -32,6 +32,7 @@ setup(
         'zeit.cms>1.21',
         'zeit.content.quiz>=0.4.2',
         'zeit.find >= 0.4',
+        'zope.app.appsetup',
         'zope.app.pagetemplate',
         'zope.component',
         'zope.container>=3.8.1',
