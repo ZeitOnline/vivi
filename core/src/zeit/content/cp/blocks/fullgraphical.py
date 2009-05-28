@@ -22,5 +22,5 @@ class FullGraphicalBlock(zeit.content.cp.blocks.block.Block):
         '.image', xml_reference_name='related', attributes=('href',))
 
 FullGraphicalFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'fullgraphicalblock',
+    zeit.content.cp.interfaces.IRegion, 'fullgraphical',
     _('Fullgraphical Block'))

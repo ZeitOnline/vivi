@@ -11,7 +11,7 @@ Quiz block
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
-...              '?block_type=quizblock')
+...              '?block_type=quiz')
 
 Add a quiz to the repository:[#functional]_
 
@@ -45,7 +45,7 @@ The source of a quiz block:
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="quizblock" module="quiz" cp:__name__="03299ac7-949a-42ee-ae9c-9defe891fff1">
+<container cp:type="quiz" module="quiz" cp:__name__="03299ac7-949a-42ee-ae9c-9defe891fff1">
   <block type="intern" href="http://xml.zeit.de/my_quiz" publication-date="" expires="">
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>

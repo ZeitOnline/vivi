@@ -13,7 +13,7 @@ lead area:[#helper_functions]_
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
-...              '?block_type=xmlblock')
+...              '?block_type=xml')
 
 A new block with an XML <container> element is created:
 
@@ -32,7 +32,7 @@ You can edit the XML content by clicking the Edit button:
 >>> browser.open('edit-properties')
 >>> xml = browser.getControl(name="form.xml").value
 >>> print xml
-<container...  cp:type="xmlblock" cp:__name__="..."/>
+<container...  cp:type="xml" cp:__name__="..."/>
 
 >>> print update_xml('/>', '><foo/></container>')
 <...
@@ -63,7 +63,7 @@ Second, the <container> element must have a cp:type:
 
 >>> print update_xml('cp:type', 'cp:bar')
 <...
-<span class="error">cp:type must be 'xmlblock'.</span>...
+<span class="error">cp:type must be 'xml'.</span>...
 
 And, last but not least, the <container> must have a name:
 

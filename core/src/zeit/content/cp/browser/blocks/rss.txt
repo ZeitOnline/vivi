@@ -9,7 +9,7 @@ RSS blocks
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
-...              '?block_type=rssblock')
+...              '?block_type=rss')
 
 Editing the block
 -----------------
@@ -47,7 +47,7 @@ XML of a RSS block
 >>> print browser.getControl('XML Source').value
 <...
 <container
-    cp:type="rssblock"
+    cp:type="rss"
     cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
     url=".../tagesschau.xml">
   <xi:include
@@ -92,5 +92,5 @@ Displaying error messages
 >>> print browser.contents
 <...<div
   cms:tooltip="...xml.sax._exceptions...
-  class="block type-rssblock validation-error"...>
+  class="block type-rss validation-error"...>
 <div class="block-item">An error occurred...

@@ -514,14 +514,14 @@ class TestVideoBlock(Test):
         s.dragAndDropToObject(
             module,
             'css=.landing-zone.action-informatives-module-droppable')
-        s.waitForElementPresent('css=div.type-videoblock')
+        s.waitForElementPresent('css=div.type-video')
 
     def test_lightbox_should_close_after_editing(self):
         self.open_centerpage()
         self.create_videoblock()
         s = self.selenium
 
-        edit_link = 'css=div.block.type-videoblock > * > div.edit > a.edit-link'
+        edit_link = 'css=div.block.type-video > * > div.edit > a.edit-link'
         s.waitForElementPresent(edit_link)
         s.click(edit_link)
         s.waitForElementPresent('id=lightbox.form')
@@ -532,7 +532,7 @@ class TestVideoBlock(Test):
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')
 
-        s.click('css=div.block.type-videoblock > * > div.edit > a.edit-link')
+        s.click('css=div.block.type-video > * > div.edit > a.edit-link')
         s.waitForElementPresent('id=lightbox.form')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')
@@ -548,7 +548,7 @@ class TestQuizBlock(Test):
         s.dragAndDropToObject(
             module,
             'css=.landing-zone.action-informatives-module-droppable')
-        s.waitForElementPresent('css=div.type-quizblock')
+        s.waitForElementPresent('css=div.type-quiz')
 
     def add_quiz(self):
         repository = zope.component.getUtility(
@@ -563,14 +563,14 @@ class TestQuizBlock(Test):
 
         s = self.selenium
         s.pause(300)
-        s.click('css=div.type-quizblock > * > div.edit > a.edit-link')
+        s.click('css=div.type-quiz > * > div.edit > a.edit-link')
         s.waitForElementPresent('id=lightbox.form')
         s.pause(100)
         s.type('css=input.object-reference', 'http://xml.zeit.de/my_quiz')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')
 
-        s.click('css=div.type-quizblock > * > div.edit > a.edit-link')
+        s.click('css=div.type-quiz > * > div.edit > a.edit-link')
         s.waitForElementPresent('id=lightbox.form')
         s.waitForValue('css=input.object-reference',
                        'http://xml.zeit.de/my_quiz')

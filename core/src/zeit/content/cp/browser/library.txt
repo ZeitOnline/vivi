@@ -12,7 +12,7 @@ are transmitted in JSON[#setup]_:
 {'factories': [{'area': 'informatives',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
                 'title': 'Audioblock',
-                'type': 'audioblock'},
+                'type': 'audio'},
                 ...
                {'area': 'informatives',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
@@ -43,7 +43,7 @@ After creating a teaser bar, blocks are offered:
 {'factories': [{'area': 'teaser-mosaic',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
                 'title': 'Audioblock',
-                'type': 'audioblock'},
+                'type': 'audio'},
                 ...
                {'area': 'teaser-mosaic',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
@@ -96,7 +96,7 @@ Add an audio block after the just created weather block now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'informatives/%s/@@landing-zone-drop-module?block_type=audioblock' % 
+...     'informatives/%s/@@landing-zone-drop-module?block_type=audio' % 
 ...     created_block_id)
 
 >>> browser.open(contents_url)
@@ -110,7 +110,7 @@ Add an audio block after the just created weather block now:
   <div class="landing-zone action-informatives-module-droppable"
        cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
-  ...<div...class="block type-audioblock"...
+  ...<div...class="block type-audio"...
 
 
 Creating blocks is also possible in the teaser bar:
@@ -123,9 +123,9 @@ Creating blocks is also possible in the teaser bar:
 >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
 >>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
 ...     '{http://namespaces.gocept.com/zeit-cms}create-block-url')
->>> browser.open(drop_url + '?block_type=quizblock')
+>>> browser.open(drop_url + '?block_type=quiz')
 >>> browser.open(contents_url)
->>> 'quizblock' in browser.contents
+>>> 'quiz' in browser.contents
 True
 
 

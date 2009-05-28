@@ -9,7 +9,7 @@ Fullgraphical block
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
-...              '?block_type=fullgraphicalblock')
+...              '?block_type=fullgraphical')
 
 Add an object (e.g. a quiz) to the repository:[#functional]_
 
@@ -46,7 +46,7 @@ The source of a fullgraphical block:
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="fullgraphicalblock" cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
+<container cp:type="fullgraphical" cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
   <block type="intern" href="http://xml.zeit.de/my_quiz" publication-date="" expires="">
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>

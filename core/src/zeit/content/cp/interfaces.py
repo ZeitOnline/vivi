@@ -224,8 +224,8 @@ class IAutoPilotTeaserBlock(IAutoPilotReadTeaserBlock, ITeaserBlock):
 def validate_xml_block(xml):
     if xml.tag != 'container':
         raise ValidationError(_("The root element must be <container>."))
-    if xml.get('{http://namespaces.zeit.de/CMS/cp}type') != 'xmlblock':
-        raise ValidationError(_("cp:type must be 'xmlblock'."))
+    if xml.get('{http://namespaces.zeit.de/CMS/cp}type') != 'xml':
+        raise ValidationError(_("cp:type must be 'xml'."))
     if not xml.get('{http://namespaces.zeit.de/CMS/cp}__name__'):
         raise ValidationError(_("No or empty cp:__name__ attribute."))
     return True

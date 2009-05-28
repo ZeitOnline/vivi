@@ -106,10 +106,10 @@
       set_schema="..interfaces.IRSSBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".rss.RSSBlockFactory" name="rssblock" />
+  <adapter factory=".rss.RSSBlockFactory" name="rss" />
   <adapter
     provides="..interfaces.IElement"
-    name="rssblock"
+    name="rss"
     factory=".rss.RSSBlock"
     />
 
@@ -122,10 +122,10 @@
       set_schema="..interfaces.IXMLBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".xml.XMLBlockFactory" name="xmlblock" />
+  <adapter factory=".xml.XMLBlockFactory" name="xml" />
   <adapter
     provides="..interfaces.IElement"
-    name="xmlblock"
+    name="xml"
     factory=".xml.XMLBlock"
     />
 
@@ -138,10 +138,10 @@
       set_schema="..interfaces.IAVBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".av.VideoBlockFactory" name="videoblock" />
+  <adapter factory=".av.VideoBlockFactory" name="video" />
   <adapter
     provides="..interfaces.IElement"
-    name="videoblock"
+    name="video"
     factory=".av.VideoBlock"
     />
 
@@ -154,10 +154,10 @@
       set_schema="..interfaces.IAVBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".av.AudioBlockFactory" name="audioblock" />
+  <adapter factory=".av.AudioBlockFactory" name="audio" />
   <adapter
     provides="..interfaces.IElement"
-    name="audioblock"
+    name="audio"
     factory=".av.AudioBlock"
     />
 
@@ -170,10 +170,10 @@
       set_schema="..interfaces.IQuizBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".quiz.QuizBlockFactory" name="quizblock" />
+  <adapter factory=".quiz.QuizBlockFactory" name="quiz" />
   <adapter
     provides="..interfaces.IElement"
-    name="quizblock"
+    name="quiz"
     factory=".quiz.QuizBlock"
     />
 
@@ -186,10 +186,10 @@
       set_schema="..interfaces.IFullGraphicalBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".fullgraphical.FullGraphicalFactory" name="fullgraphicalblock" />
+  <adapter factory=".fullgraphical.FullGraphicalFactory" name="fullgraphical" />
   <adapter
     provides="..interfaces.IElement"
-    name="fullgraphicalblock"
+    name="fullgraphical"
     factory=".fullgraphical.FullGraphicalBlock"
     />
 

@@ -18,6 +18,7 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
     referenced_quiz = zeit.cms.content.property.SingleResource(
         '.block', xml_reference_name='related', attributes=('href',))
 
+
 QuizBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'quizblock',
+    zeit.content.cp.interfaces.IRegion, 'quiz',
     _('Quizblock'), module='quiz')

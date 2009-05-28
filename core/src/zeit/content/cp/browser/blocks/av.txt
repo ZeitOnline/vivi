@@ -10,7 +10,7 @@ Video blocks
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
-...              '?block_type=videoblock')
+...              '?block_type=video')
 
 Editing the block
 -----------------
@@ -41,7 +41,7 @@ Audio blocks
 
 >>> browser.open(contents_url)
 >>> browser.open('informatives/@@landing-zone-drop-module'
-...              '?block_type=audioblock')
+...              '?block_type=audio')
 
 Editing the block
 -----------------
@@ -68,10 +68,10 @@ XML of an audio/video block
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="audioblock" cp:__name__="<GUID>">
+<container cp:type="audio" cp:__name__="<GUID>">
   <audio audioID="98765" format="large"/>
 </container>
-<container cp:type="videoblock" cp:__name__="<GUID>">
+<container cp:type="video" cp:__name__="<GUID>">
   <video videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>
 </container>...
 
