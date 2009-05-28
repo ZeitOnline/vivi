@@ -7,8 +7,13 @@
   padding: 1em 0 0 0;
 }
 
+.search_entry:hover {
+  background: #ddd;
+}
+
 .search_entry {
-  margin: 0 0.5em 1em 0;
+  padding: 0.5em;
+  cursor: move;
 }
 
 .search_entry .teaser_title {
@@ -166,6 +171,14 @@
 
 #cp-search #search_form {
   overflow-y: auto;
+}
+
+#cp-search .search_entry .related_entry {
+  padding: 0.5em;
+}
+
+#cp-search .search_entry .related_entry:hover {
+  background-color: white;
 }
 
 #cp-search .search_entry .related_entry > div {
