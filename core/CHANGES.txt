@@ -10,6 +10,8 @@ zeit.cms changes
 
 - Methoden in JS-Views geben Deferreds zurück.
 
+- zeit.wysiwyg, zeit.content.infobox, zeit.content.portraitbox und
+  zeit.content.gallery in extra eggs verschoben.
 
 1.21.2 (2009-05-27)
 -------------------

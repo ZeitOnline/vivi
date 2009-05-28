@@ -21,17 +21,8 @@
   <include package="zeit.search" />
   <include package="zeit.search.browser" />
 
-  <include package="zeit.content.gallery" />
-  <include package="zeit.content.gallery.browser" />
-
   <include package="zeit.content.link" />
   <include package="zeit.content.link.browser" />
-
-  <include package="zeit.content.infobox" />
-  <include package="zeit.content.infobox.browser" />
-
-  <include package="zeit.content.portraitbox" />
-  <include package="zeit.content.portraitbox.browser" />
 
   <include package="zeit.content.text" />
   <include package="zeit.content.text.browser" />
