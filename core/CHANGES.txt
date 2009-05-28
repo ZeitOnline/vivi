@@ -1,6 +1,16 @@
 zeit.cms changes
 ================
 
+1.21.3 (unreleased)
+-------------------
+
+- Cache-Collector lockt nicht mehr bei jedem Request.
+
+- ViewTabs (JS) laden jetzt nur noch bei der ersten Aktivierung den View.
+
+- Methoden in JS-Views geben Deferreds zurück.
+
+
 1.21.2 (2009-05-27)
 -------------------
 
