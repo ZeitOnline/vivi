@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+1.7.9 (2009-05-28)
+------------------
+
+- Abhängigkeiten zu zeit.wysiwyg, zeit.content.infobox,
+  zeit.content.portraitbox und zeit.content.gallery hinzugefügt.
+
 1.7.8 (2009-05-27)
 ------------------
 
