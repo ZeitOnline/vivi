@@ -1,0 +1,33 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='zeit.wysiwyg',
+    version='1.22dev',
+    author='gocept',
+    author_email='mail@gocept.com',
+    url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
+    description="ZEIT WYSIWYG Editor integration",
+    packages=find_packages('src'),
+    package_dir = {'': 'src'},
+    include_package_data = True,
+    zip_safe=False,
+    license='gocept proprietary',
+    namespace_packages = ['zeit'],
+    install_requires=[
+        'gocept.fckeditor',
+        'lxml',
+        'rwproperty',
+        'setuptools',
+        'zc.iso8601',
+        'zeit.cms>=1.21.3',
+        'zope.app.pagetemplate',
+        'zope.app.testing',
+        'zope.cachedescriptors',
+        'zope.component',
+        'zope.formlib',
+        'zope.interface',
+        'zope.security',
+        'zope.testing',
+        'zope.traversing',
+    ],
+)
