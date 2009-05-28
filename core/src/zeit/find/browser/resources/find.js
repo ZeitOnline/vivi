@@ -205,6 +205,7 @@ zeit.find.Relateds = gocept.Class.extend({
         self.view = view;
         MochiKit.Signal.connect(view, 'load', self, self.connect);
         self.events = []
+        self.draggables = [];
     },
 
     connect: function(element, data) {
@@ -227,11 +228,23 @@ zeit.find.Relateds = gocept.Class.extend({
         });
     },
 
+    connect_draggables: function(related_info) {
+        var self = this;
+        var related_entries = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'related_entry', related_info);
+        forEach(related_entries, function(related) {
+            self.draggables.push(
+                zeit.cms.createDraggableContentObject(related));
+        });
+    },
 
     disconnect: function() {
         var self = this;
         while(self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop())
+        }
+        while(self.draggables.length) {
+            self.draggables.pop().destroy();
         }
     },
 
@@ -243,7 +256,12 @@ zeit.find.Relateds = gocept.Class.extend({
             related_info.innerHTML = '';
         } else {
             MochiKit.DOM.addElementClass(related_links, 'expanded');
-            zeit.find.expanded_search_result.render(related_info, related_url);
+            var d = zeit.find.expanded_search_result.render(
+                related_info, related_url);
+            d.addCallback(function(result) {
+                self.connect_draggables(related_info)
+                return result;
+            });
         }
     },
 });
