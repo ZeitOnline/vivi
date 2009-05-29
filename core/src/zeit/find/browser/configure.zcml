@@ -71,4 +71,13 @@
     name="favorites"
     permission="zope.View"
   />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.ForThisPage"
+    name="for-this-page-search"
+    permission="zope.View"
+    />
+
 </configure>

@@ -88,4 +88,4 @@
 
 </form>
 
-<div id="search_result" ></div>
+<div id="search_result" class="search_result"></div>

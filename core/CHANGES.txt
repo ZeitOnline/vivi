@@ -4,6 +4,8 @@ zeit.find changes
 0.5 (unreleased)
 ----------------
 
+- »Für diese Seite«
+
 0.4 (2009-05-26)
 ----------------
 

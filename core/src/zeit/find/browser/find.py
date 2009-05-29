@@ -37,7 +37,9 @@ class SearchForm(JSONView):
 
     template = 'search_form.jsont'
 
+
 class SearchResult(JSONView):
+
     template = 'search_result.jsont'
 
     def sort_order(self):
@@ -146,6 +148,7 @@ def _entries(counts):
 
 
 class ExpandedSearchResult(JSONView):
+
     template = 'expanded_search_result.jsont'
 
     def json(self):
@@ -192,6 +195,7 @@ class ExpandedSearchResult(JSONView):
         viewlet_manager.update()
         return viewlet_manager.render()
 
+
 class ToggleFavorited(JSONView):
     template = 'toggle_favorited.jsont'
 
@@ -207,6 +211,7 @@ class ToggleFavorited(JSONView):
         favorites[content.__name__] = (zeit.cms.clipboard.
                                        interfaces.IClipboardEntry(content))
         return {'favorited': r['favorite.png']()}
+
 
 class Favorites(JSONView):
     template = 'search_result.jsont'
@@ -271,6 +276,29 @@ class Favorites(JSONView):
                 zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
                 for c in favorites.values()]]}
 
+
+class ForThisPage(JSONView):
+
+    template = 'for-this-page.jsont'
+
+    def json(self):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(self.context,
+                                                               None)
+        if not metadata:
+            return {}
+
+        keywords = metadata.keywords
+        if keywords:
+            keywords = ' '.join(k.code for k in keywords)
+        else:
+            keywords = ''
+
+        return dict(search={
+            'topic': metadata.ressort,
+            'keywords': keywords,
+        })
+
+
 def _get(request, name, default=None):
     value = request.get(name, default)
     if value is default:
@@ -283,8 +311,6 @@ def _get(request, name, default=None):
 def search_form(request):
     g = lambda name, default=None: _get(request, name, default)
     fulltext = g('fulltext')
-    if fulltext is None:
-        return None
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
     topic = g('topic', None)

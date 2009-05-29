@@ -103,7 +103,8 @@ def query(fulltext, from_, until, topic, authors, keywords,
     filter_terms = filter_terms or []
     
     terms = []
-    terms.append(lq.field('text', fulltext))
+    if fulltext:
+        terms.append(lq.field('text', fulltext))
     if from_ is not None or until is not None:
         terms.append(
             lq.datetime_range('last-semantic-change', from_, until))
