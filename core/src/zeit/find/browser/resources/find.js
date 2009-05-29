@@ -6,8 +6,8 @@ zeit.find = {};
         MochiKit.Signal.connect('search_button', 'onclick', function(e) {
             zeit.find.search_result.render();
         });
-        MochiKit.Signal.connect('fulltext', 'onkeydown', function(e) {
-            if (e.key()['string'] == 'KEY_ENTER') {
+        MochiKit.Signal.connect('cp-search', 'onkeydown', function(e) {
+            if (e.key().string == 'KEY_ENTER') {
                 zeit.find.search_result.render();
                 e.stop();
             };
@@ -32,73 +32,6 @@ zeit.find = {};
         });
     };
 
-    var connect_time_filters = function(element, data) {;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_time'));
-        var from_field = $('from');
-        var until_field = $('until');
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var start_date = lookup('start_date');
-            var end_date = lookup('end_date');
-            MochiKit.Signal.connect(entry, 'onclick', function(e) {
-                from_field.value = start_date;
-                until_field.value = end_date;
-                zeit.find.search_result.render();
-            });
-        });
-    };
-
-
-    var connect_author_filters = function(element, data) {;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_author'));
-        var author_field = $('author');
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var author = lookup('title');
-            MochiKit.Signal.connect(entry, 'onclick', function(e) {
-                author_field.value = author;
-                zeit.find.search_result.render();
-            });
-        });
-    };
-
-    var connect_topic_filters = function(element, data) {;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_topic'));
-        var topic_field = $('topic');
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var topic = lookup('title');
-            MochiKit.Signal.connect(entry, 'onclick', function(e) {
-                topic_field.value = topic;
-                zeit.find.search_result.render();
-            });
-        });
-    };
-
-    var connect_type_filters = function(element, data) {
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_type'));
-        var checkbox_ids = ['article', 'gallery', 'video', 'teaser', 'centerpage'];
-        var checkbox_fields = {};
-        for (var i = 0; i < checkbox_ids.length; i++) {
-            var checkbox_id = checkbox_ids[i];
-            checkbox_fields[checkbox_id] = $(checkbox_id);
-        }
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var checkbox_id = lookup('title');
-            MochiKit.Signal.connect(entry, 'onclick', function(e) {
-                for (var i = 0; i < checkbox_ids.length; i++) {
-                    checkbox_fields[checkbox_ids[i]].checked = false;
-                }
-                checkbox_fields[checkbox_id].checked = true;
-                zeit.find.search_result.render();
-            });
-        });
-    };
 
     var init = function() {
 
@@ -128,14 +61,10 @@ zeit.find = {};
         new zeit.find.Relateds(zeit.find.favorites);
         new zeit.find.ToggleFavorited(zeit.find.favorites);
         
-        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
-                                connect_time_filters);
-        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
-                                connect_author_filters);
-        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
-                                connect_topic_filters);
-        MochiKit.Signal.connect(zeit.find.result_filters, 'load',
-                                connect_type_filters);
+        new zeit.find.TimeFilters(zeit.find.result_filters);
+        new zeit.find.AuthorFilters(zeit.find.result_filters);
+        new zeit.find.TopicFilters(zeit.find.result_filters);
+        new zeit.find.TypeFilters(zeit.find.result_filters);
 
         zeit.find.search_form.render();
         zeit.find.tabs = new zeit.cms.Tabs('cp-search');
@@ -276,4 +205,99 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
         });
 
     },
+});
+
+
+zeit.find.TimeFilters = zeit.find.Component.extend({
+
+    connect: function(element, data) {
+        var self = this;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_time'));
+        var from_field = $('from');
+        var until_field = $('until');
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var start_date = lookup('start_date');
+            var end_date = lookup('end_date');
+            self.events.push(MochiKit.Signal.connect(
+                entry, 'onclick', function(e) {
+                    from_field.value = start_date;
+                    until_field.value = end_date;
+                    zeit.find.search_result.render();
+            }));
+        });
+    },
+
+});
+
+
+zeit.find.AuthorFilters = zeit.find.Component.extend({
+
+    connect: function(element, data) {
+        var self = this;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_author'));
+        var author_field = $('author');
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var author = lookup('title');
+            self.events.push( MochiKit.Signal.connect(
+                entry, 'onclick', function(e) {
+                    author_field.value = author;
+                    zeit.find.search_result.render();
+            }));
+        });
+    },
+
+});
+
+
+zeit.find.TopicFilters = zeit.find.Component.extend({
+
+    connect: function(element, data) {
+        var self = this;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_topic'));
+        var topic_field = $('topic');
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var topic = lookup('title');
+            self.events.push(MochiKit.Signal.connect(
+                entry, 'onclick', function(e) {
+                    topic_field.value = topic;
+                    zeit.find.search_result.render();
+            }));
+        });
+    },
+
+});
+
+
+zeit.find.TypeFilters = zeit.find.Component.extend({
+
+    connect: function(element, data) {
+        var self = this;
+        var results = MochiKit.DOM.getElementsByTagAndClassName(
+            'a', 'filter_link', $('filter_type'));
+        var checkbox_ids = ['article', 'gallery', 'video', 'teaser', 'centerpage'];
+        var checkbox_fields = {};
+        for (var i = 0; i < checkbox_ids.length; i++) {
+            var checkbox_id = checkbox_ids[i];
+            checkbox_fields[checkbox_id] = $(checkbox_id);
+        }
+        forEach(results, function(entry) {
+            var lookup = jsontemplate.get_node_lookup(data, entry);
+            var checkbox_id = lookup('title');
+            self.events.push(MochiKit.Signal.connect(
+                entry, 'onclick', function(e) {
+                    for (var i = 0; i < checkbox_ids.length; i++) {
+                        checkbox_fields[checkbox_ids[i]].checked = false;
+                    }
+                    checkbox_fields[checkbox_id].checked = true;
+                    zeit.find.search_result.render();
+            }));
+        });
+    },
+
 });
