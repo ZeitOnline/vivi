@@ -7,13 +7,20 @@ zeit.cms.View = gocept.Class.extend({
         self.get_query_string = get_query_string;
     },
 
-    render: function(target_element, url) {
+    render: function(target_element, url, query_string) {
         var self = this;
         if (isUndefinedOrNull(url)) {
             url = self.url;
         }
-        if (!isUndefinedOrNull(self.get_query_string)) {
-            url += "?" + self.get_query_string();
+        if (isUndefinedOrNull(query_string) &&
+            !isUndefinedOrNull(self.get_query_string)) {
+            query_string = self.get_query_string();
+        }
+        if (!isUndefinedOrNull(query_string)) {
+            if (typeof query_string != "string") {
+                query_string = MochiKit.Base.queryString(query_string);
+            }
+            url += "?" + query_string;
         }
         return self.load(target_element, url);
     },
@@ -50,6 +57,10 @@ zeit.cms.JSONView = zeit.cms.View.extend({
 
     load: function(target_element, url) {
         var self = this;
+        var target_element = target_element || $(self.target_id);
+        if(!isNull(target_element)) {
+            target_element.innerHTML = 'Loading …';
+        }
         var d = MochiKit.Async.loadJSONDoc(url);
         d.addCallback(function(json) {
             return self.callback_json(json, target_element);
