@@ -36,13 +36,13 @@ class JSONView(zeit.cms.browser.view.JSON):
 class SearchForm(JSONView):
 
     template = 'search_form.jsont'
-    
+
 class SearchResult(JSONView):
     template = 'search_result.jsont'
-    
+
     def sort_order(self):
-        return self.request.get('sort_order', 'relevance')    
-    
+        return self.request.get('sort_order', 'relevance')
+
     def json(self):
         q = form_query(self.request)
         if q is None:
@@ -60,14 +60,14 @@ class SearchResult(JSONView):
             favorite_uniqueIds.add(uniqueId)
 
         r = self.resources
-        results = []        
+        results = []
         for result in zeit.find.search.search(q, self.sort_order()):
             uniqueId = result.get('uniqueId', '')
             if uniqueId in favorite_uniqueIds:
                 favorited_icon = r['favorite.png']()
             else:
                 favorited_icon = r['not_favorite.png']()
-            
+
             last_semantic_change = result.get('last-semantic-change')
             if last_semantic_change is not None:
                 dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
@@ -84,10 +84,10 @@ class SearchResult(JSONView):
             else:
                 # XXX fallback status is always published
                 publication_status = r['published.png']()
-    
+
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
-            
+
             results.append({
                     'uniqueId': uniqueId,
                     'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -136,7 +136,7 @@ def time_entries(counts):
                            start_date=format_date(start_date),
                            end_date=format_date(end_date)))
     return result
-        
+
 def _entries(counts):
     result = []
     for name, count in counts:
@@ -152,15 +152,15 @@ class ExpandedSearchResult(JSONView):
         uniqueId = self.request.get('uniqueId')
         if not uniqueId:
             return {'template': 'no_expanded_search_result.jsont'}
-        
+
         content = zeit.cms.interfaces.ICMSContent(uniqueId)
         related_content = zeit.cms.related.interfaces.IRelatedContent(content,
                                                                       None)
         if related_content is None:
             return {'template': 'no_expanded_search_result.jsont'}
-        
+
         related = related_content.related
-        
+
         r = self.resources
         results = []
         for content in related:
@@ -270,7 +270,7 @@ class Favorites(JSONView):
             self.result_entry(a) for a in [
                 zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
                 for c in favorites.values()]]}
-    
+
 def _get(request, name, default=None):
     value = request.get(name, default)
     if value is default:
@@ -357,7 +357,7 @@ def parse_input_date(s):
     try:
         year = int(year)
     except ValueError:
-        raise InputDateParseError("Year is not a proper number")    
+        raise InputDateParseError("Year is not a proper number")
     return datetime(year, month, day)
 
 def format_date(dt):
