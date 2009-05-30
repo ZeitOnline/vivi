@@ -4,11 +4,11 @@ zeit.find = {};
 
     var init_search_form = function() {
         MochiKit.Signal.connect('search_button', 'onclick', function(e) {
-            zeit.find.search_result.render();
+            zeit.find.update_search_result();
         });
         MochiKit.Signal.connect('cp-search', 'onkeydown', function(e) {
             if (e.key().string == 'KEY_ENTER') {
-                zeit.find.search_result.render();
+                zeit.find.update_search_result();
                 e.stop();
             };
         });
@@ -24,7 +24,7 @@ zeit.find = {};
         });
         MochiKit.Signal.connect(
             'result_filters_button', 'onclick', function(e) {
-            if ($('filter_time')) {
+            if ($('result_filters_data')) {
                 $('result_filters').innerHTML = '';
             } else {
                 zeit.find.result_filters.render();
@@ -104,6 +104,12 @@ zeit.find = {};
 
 })();
 
+zeit.find.update_search_result = function() {
+        zeit.find.search_result.render();
+        if ($('result_filters_data')) {
+            zeit.find.result_filters.render();
+        }
+};
 
 zeit.find.Component = gocept.Class.extend({
 
@@ -243,7 +249,7 @@ zeit.find.TimeFilters = zeit.find.Component.extend({
                 entry, 'onclick', function(e) {
                     from_field.value = start_date;
                     until_field.value = end_date;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
             }));
         });
     },
@@ -264,7 +270,7 @@ zeit.find.AuthorFilters = zeit.find.Component.extend({
             self.events.push( MochiKit.Signal.connect(
                 entry, 'onclick', function(e) {
                     author_field.value = author;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
             }));
         });
     },
@@ -285,7 +291,7 @@ zeit.find.TopicFilters = zeit.find.Component.extend({
             self.events.push(MochiKit.Signal.connect(
                 entry, 'onclick', function(e) {
                     topic_field.value = topic;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
             }));
         });
     },
@@ -314,7 +320,7 @@ zeit.find.TypeFilters = zeit.find.Component.extend({
                         checkbox_fields[checkbox_ids[i]].checked = false;
                     }
                     checkbox_fields[checkbox_id].checked = true;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
             }));
         });
     },
@@ -345,7 +351,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                 date_filter, 'onclick', function(e) {
                     from_field.value = start_date;
                     until_field.value = end_date;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
                 }));
            
             var volume_year = lookup('volume_year');
@@ -354,7 +360,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
             self.events.push(MochiKit.Signal.connect(
                 volume_year_filter, 'onclick', function(e) {
                     volume_year_field.value = volume_year;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
                 }));
 
             var topic = lookup('topic');
@@ -363,7 +369,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
             self.events.push(MochiKit.Signal.connect(
                 topic_filter, 'onclick', function(e) {
                     topic_field.value = topic;
-                    zeit.find.search_result.render();
+                    zeit.find.update_search_result();
                 }));
             
             var author_filters = MochiKit.Selector.findChildElements(
@@ -375,7 +381,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                 self.events.push(MochiKit.Signal.connect(
                     author_filter, 'onclick', function(e) {
                         author_field.value = author;
-                        zeit.find.search_result.render();
+                        zeit.find.update_search_result();
                 }));
             });
             

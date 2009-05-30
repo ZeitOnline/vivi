@@ -1,34 +1,36 @@
-<div id="filter_topic" class="search-filter">
-  <div class="title">Ressort:</div>
-  <div clas="filter">
-    {.repeated section topic_entries}
-    <a class="filter_link">{title} ({amount})</a></br>
-    {.end}
-  </div>
-</div>
-<div id="filter_time" class="search-filter">
-  <div class="title">Zeit:</div>
-  <div clas="filter">
-    {.repeated section time_entries}
-    <a class="filter_link">{title} ({amount})</a></br>
-    {.end}
-  </div>
-</div>
-<div id="filter_type" class="search-filter">
-  <div class="title">Inhaltstyp:</div>
-  <div clas="filter">
-    {.repeated section type_entries}
-    <a class="filter_link">{title} ({amount})</a></br>
-    {.end}
-  </div>
-</div>
-<div id="filter_author" class="search-filter">
-  <div class="title">Autor:</div>
-  <div clas="filter">
-    {.repeated section author_entries}
-    <div class="filter_link_outer">
+<div class="result_filters" id="result_filters_data">
+  <div id="filter_topic" class="search-filter">
+    <div class="title">Ressort:</div>
+    <div clas="filter">
+      {.repeated section topic_entries}
       <a class="filter_link">{title} ({amount})</a></br>
+      {.end}
     </div>
-    {.end}
+  </div>
+  <div id="filter_time" class="search-filter">
+    <div class="title">Zeit:</div>
+    <div clas="filter">
+      {.repeated section time_entries}
+      <a class="filter_link">{title} ({amount})</a></br>
+      {.end}
+    </div>
+  </div>
+  <div id="filter_type" class="search-filter">
+    <div class="title">Inhaltstyp:</div>
+    <div clas="filter">
+      {.repeated section type_entries}
+      <a class="filter_link">{title} ({amount})</a></br>
+      {.end}
+    </div>
+  </div>
+  <div id="filter_author" class="search-filter">
+    <div class="title">Autor:</div>
+    <div clas="filter">
+      {.repeated section author_entries}
+      <div class="filter_link_outer">
+        <a class="filter_link">{title} ({amount})</a></br>
+      </div>
+      {.end}
+    </div>
   </div>
 </div>
