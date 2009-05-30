@@ -46,9 +46,13 @@ class SearchResult(JSONView):
         return self.request.get('sort_order', 'relevance')
 
     def json(self):
-        q = form_query(self.request)
+        try:
+            q = form_query(self.request)
+        except InputError, e:
+            error = unicode(e)
+            return {'template': 'no_search_result.jsont', "error": error}
         if q is None:
-            return {"results":[]}
+            return {'template': 'no_search_result.jsont'}
 
         # record any known favorites
         # XXX this isn't that pleasant to do every search,
@@ -130,7 +134,13 @@ class ResultFilters(JSONView):
     template = 'result_filters.jsont'
 
     def json(self):
-        q = form_query(self.request)
+        try:
+            q = form_query(self.request)
+        except InputError:
+            # the real input errors are handled by the main form; by itself
+            # this should never receive broken input
+            q = None
+            
         if q is None:
             return {'template': 'no_result_filters.jsont'}
 
@@ -387,7 +397,10 @@ def get_favorites(request):
         clipboard.addClip(favorites_id)
     return clipboard[favorites_id]
 
-class InputDateParseError(Exception):
+class InputError(Exception):
+    pass
+
+class InputDateParseError(InputError):
     pass
 
 def parse_input_date(s):
@@ -419,7 +432,7 @@ def parse_input_date(s):
         raise InputDateParseError("Year is not a proper number")
     return datetime(year, month, day)
 
-class VolumeYearError(Exception):
+class VolumeYearError(InputError):
     pass
 
 def parse_volume_year(s):

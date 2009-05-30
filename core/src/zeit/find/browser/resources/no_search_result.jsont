@@ -1,3 +1,7 @@
 <div class="no_search_result">
-Nothing could be found.
+{.section error}
+<div>There was an error in the input: {@}</div>
+{.or}
+<div>Nothing could be found.</div>
+{.end}
 </div>
