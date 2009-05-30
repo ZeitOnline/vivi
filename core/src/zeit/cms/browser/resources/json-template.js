@@ -271,6 +271,15 @@ function _DoSubstitute(statement, context, callback) {
 }
 
 
+var _lookup_helper = function(context, name) {
+  if (name == '@') { 
+    return context.CursorValue();
+  } else {
+    return context.Lookup(name);
+  }
+}
+
+
 // for [section foo]
 function _DoSection(args, context, callback) {
 
@@ -288,7 +297,7 @@ function _DoSection(args, context, callback) {
   }
 
   if (do_section) {
-    context.hooks.beforeSection(context.Path(), function(name) { return context.Lookup(name) } , callback, block.section_name);
+    context.hooks.beforeSection(context.Path(), function(name) { return _lookup_helper(context, name); } , callback, block.section_name);
     _Execute(block.Statements(), context, callback);
     context.Pop();
   } else {  // Empty list, None, False, etc.
@@ -296,7 +305,6 @@ function _DoSection(args, context, callback) {
     _Execute(block.Statements('or'), context, callback);
   }
 }
-
 
 function _DoRepeatedSection(args, context, callback) {
   var block = args;
@@ -327,7 +335,7 @@ function _DoRepeatedSection(args, context, callback) {
 
     for (var i=0; context.next() !== null; i++) {
       context.log('_DoRepeatedSection i: ' +i);
-      context.hooks.beforeRepeatedSection(context.Path(), function(name) { return context.Lookup(name) }, callback, block.section_name, i);
+      context.hooks.beforeRepeatedSection(context.Path(), function(name) { return _lookup_helper(context, name) }, callback, block.section_name, i);
       _Execute(statements, context, callback);
       if (i != last_index) {
         context.log('ALTERNATE');
@@ -616,7 +624,7 @@ var get_lookup = function(data_dict, path, undefined_str) {
     }
   }
   return function(name) {
-    return context.Lookup(name);
+    return _lookup_helper(context, name);
   };
 };
  
