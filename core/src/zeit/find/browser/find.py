@@ -311,6 +311,8 @@ def _get(request, name, default=None):
 def search_form(request):
     g = lambda name, default=None: _get(request, name, default)
     fulltext = g('fulltext')
+    if fulltext is None:
+        return None
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
     topic = g('topic', None)
