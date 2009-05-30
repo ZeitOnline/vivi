@@ -137,17 +137,23 @@ class ResultFilters(JSONView):
         (time_counts, topic_counts,
          author_counts, type_counts) = zeit.find.search.counts(q)
 
-        return {
+        result = {
             'topic_entries': _entries(topic_counts),
             'time_entries': time_entries(time_counts),
             'type_entries': _entries(type_counts),
             'author_entries': _entries(author_counts),
             }
+        if not (result['topic_entries'] or result['time_entries'] or
+                result['type_entries'] or result['author_entries']):
+            return {'template': 'no_result_filters.jsont'}
+        return result
 
 def time_entries(counts):
     result = []
     for ((name, count),
          (name2, (start_date, end_date)))  in zip(counts, DATE_RANGES):
+        if count == 0:
+            continue
         result.append(dict(title=name,
                            amount=format_amount(count),
                            start_date=format_date(start_date),
