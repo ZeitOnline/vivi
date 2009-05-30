@@ -117,7 +117,7 @@ class SearchResult(JSONView):
                     'end_date': format_date(end_date),
                     'volume_year': volume_year,
                     'topic': result.get('ressort', ''),
-                    'authors': ' '.join(result.get('authors', [])),
+                    'authors': result.get('authors', []),
                     'related_url': self.url('expanded_search_result', uniqueId),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
                     })
@@ -240,9 +240,9 @@ class Favorites(JSONView):
 
         if metadata:
             if metadata.authors:
-                authors = ' '.join(metadata.authors)
+                authors = list(metadata.authors)
             else:
-                authors = ''
+                authors = []
             teaser_title = metadata.teaserTitle or ''
             teaser_text = metadata.teaserText or ''
             year = metadata.year or ''
@@ -253,7 +253,7 @@ class Favorites(JSONView):
                 volume_year = ''
             topic = metadata.ressort or ''
         else:
-            authors = ''
+            authors = []
             teaser_title = ''
             teaser_text = ''
             volume_year = ''
@@ -262,6 +262,13 @@ class Favorites(JSONView):
         date = zeit.cms.content.interfaces.ISemanticChange(
             content).last_semantic_change
 
+        if date:
+            start_date = date.date()
+            end_date = start_date + timedelta(1)
+        else:
+            start_date = None
+            end_date = None
+ 
         preview_url = zeit.cms.browser.preview.get_preview_url(
             'preview-prefix', uniqueId)
 
@@ -275,6 +282,8 @@ class Favorites(JSONView):
             'teaser_text': teaser_text,
             'preview_url': preview_url,
             'date': format_date(date),
+            'start_date': format_date(start_date),
+            'end_date': format_date(end_date),
             'volume_year': volume_year,
             'topic': topic,
             'authors': authors,

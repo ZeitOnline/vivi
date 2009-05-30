@@ -329,6 +329,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
         var until_field = $('until');
         var volume_year_field = $('volume_year');
         var topic_field = $('topic');
+        var author_field = $('author');
 
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', element);
@@ -338,41 +339,45 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
 
             var start_date = lookup('start_date');
             var end_date = lookup('end_date');
-            var volume_year = lookup('volume_year');
-            var topic = lookup('topic');
-
             var date_filter = MochiKit.Selector.findChildElements(
                 entry, ['.date_filter'])[0];
+            self.events.push(MochiKit.Signal.connect(
+                date_filter, 'onclick', function(e) {
+                    from_field.value = start_date;
+                    until_field.value = end_date;
+                    zeit.find.search_result.render();
+                }));
+           
+            var volume_year = lookup('volume_year');
             var volume_year_filter = MochiKit.Selector.findChildElements(
                 entry, ['.volume_year_filter'])[0];
+            self.events.push(MochiKit.Signal.connect(
+                volume_year_filter, 'onclick', function(e) {
+                    volume_year_field.value = volume_year;
+                    zeit.find.search_result.render();
+                }));
+
+            var topic = lookup('topic');
             var topic_filter = MochiKit.Selector.findChildElements(
                 entry, ['.topic_filter'])[0];
+            self.events.push(MochiKit.Signal.connect(
+                topic_filter, 'onclick', function(e) {
+                    topic_field.value = topic;
+                    zeit.find.search_result.render();
+                }));
             
-            MochiKit.Signal.connect(date_filter, 'onclick', function(e) {
+            var author_filters = MochiKit.Selector.findChildElements(
+                entry, ['.author_filter']);
+            forEach(author_filters, function(author_filter) {
+                var author_lookup = jsontemplate.get_node_lookup(
+                    data, author_filter);
+                var author = author_lookup('@');
                 self.events.push(MochiKit.Signal.connect(
-                    entry, 'onclick', function(e) {
-                        from_field.value = start_date;
-                        until_field.value = end_date;
+                    author_filter, 'onclick', function(e) {
+                        author_field.value = author;
                         zeit.find.search_result.render();
-                    }));
+                }));
             });
-
-            MochiKit.Signal.connect(volume_year_filter, 'onclick', function(e) {
-                self.events.push(MochiKit.Signal.connect(
-                    entry, 'onclick', function(e) {
-                        volume_year_field.value = volume_year;
-                        zeit.find.search_result.render();
-                    }));
-            });
-
-            MochiKit.Signal.connect(topic_filter, 'onclick', function(e) {
-                self.events.push(MochiKit.Signal.connect(
-                    entry, 'onclick', function(e) {
-                        topic_field.value = topic;
-                        zeit.find.search_result.render();
-                    }));
-            });
-
             
         });
     }

@@ -19,7 +19,9 @@
     <a class="date_filter">{date}</a>
     <a class="volume_year_filter">{volume_year}</a>
     <a class="topic_filter">{topic}</a>
-    <a class="author_filter">{authors}</a>
+    {.repeated section authors}
+    <a class="author_filter">{@}</a>
+    {.end}
   </div>
   <div class="related_info"></div>
 </div>
