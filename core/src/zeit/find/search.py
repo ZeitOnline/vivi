@@ -40,7 +40,7 @@ def search(q, sort_order=None):
     result_fields = ['uniqueId', 'published',
                      'teaser_title', 'teaser_text',
                      'last-semantic-change', 'ressort',
-                     'authors']
+                     'authors', 'volume', 'year']
     
     conn = get_solr()
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields))

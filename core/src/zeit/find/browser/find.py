@@ -2,7 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import zeit.cms.browser.view
 import zc.resourcelibrary
 import zope.component
@@ -76,6 +76,13 @@ class SearchResult(JSONView):
             else:
                 dt = None
 
+            volume = result.get('volume')
+            year = result.get('year')
+            if volume and year:
+                volume_year = '%s/%s' % (volume, year)
+            else:
+                volume_year = ''
+        
             published = result.get('published', 'published')
             if published == 'published':
                 publication_status = r['published.png']()
@@ -87,9 +94,15 @@ class SearchResult(JSONView):
                 # XXX fallback status is always published
                 publication_status = r['published.png']()
 
+            if dt:
+                start_date = dt.date()
+                end_date = start_date + timedelta(1)
+            else:
+                start_date = None
+                end_date = None
+                
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
-
             results.append({
                     'uniqueId': uniqueId,
                     'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
@@ -100,7 +113,9 @@ class SearchResult(JSONView):
                     'teaser_text': result.get('teaser_text', ''),
                     'preview_url': preview_url,
                     'date': format_date(dt),
-                    'volume_year': '',
+                    'start_date': format_date(start_date),
+                    'end_date': format_date(end_date),
+                    'volume_year': volume_year,
                     'topic': result.get('ressort', ''),
                     'authors': ' '.join(result.get('authors', [])),
                     'related_url': self.url('expanded_search_result', uniqueId),
@@ -261,8 +276,6 @@ class Favorites(JSONView):
             'preview_url': preview_url,
             'date': format_date(date),
             'volume_year': volume_year,
-            'year': year,
-            'volume': volume,
             'topic': topic,
             'authors': authors,
             'related_url': self.url('expanded_search_result', uniqueId),
