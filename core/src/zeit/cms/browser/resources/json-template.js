@@ -83,7 +83,7 @@ function _ScopedContext(context, options) {
   // The stack contains:
   //   The current context (an object).
   //   An iteration index.  -1 means we're NOT iterating.
-  var stack = [{context: context, index: -1}];
+  var stack = [{context: context, name: null, index: -1}];
   var undefined_str = options.undefined_str;
 
   if (options.log === undefined) { 
@@ -106,7 +106,7 @@ function _ScopedContext(context, options) {
         return null;
       }
       var new_context = stack[stack.length-1].context[name] || null;
-      stack.push({context: new_context, index: -1});
+      stack.push({context: new_context, name: name, index: -1});
       return new_context;
     },
 
@@ -119,7 +119,7 @@ function _ScopedContext(context, options) {
 
       // Now we're iterating -- push a new mutable object onto the stack
       if (stacktop.index == -1) {
-        stacktop = {context: null, index: 0};
+        stacktop = {context: null, name: null, index: 0};
         stack.push(stacktop);
       }
 
@@ -143,6 +143,21 @@ function _ScopedContext(context, options) {
 
     CursorValue: function() {
       return stack[stack.length - 1].context;
+    },
+
+    Path: function() {
+      var result = [];
+      var i;
+      var entry;
+      for (i = 1; i < stack.length; i++) {
+        entry = stack[i];
+        if (entry.index == -1) {
+          result.push({name: entry.name, index: -1});
+        } else {
+          result.push({name: null, index: entry.index - 1});
+        } 
+      }
+      return result;
     },
 
     _Undefined: function(name) {
@@ -273,9 +288,8 @@ function _DoSection(args, context, callback) {
   }
 
   if (do_section) {
-    context.hooks.beforeSection(function(name) { return context.Lookup(name) } , callback, block.section_name);
+    context.hooks.beforeSection(context.Path(), function(name) { return context.Lookup(name) } , callback, block.section_name);
     _Execute(block.Statements(), context, callback);
-    context.hooks.afterSection(context.Lookup, callback, block.section_name);
     context.Pop();
   } else {  // Empty list, None, False, etc.
     context.Pop();
@@ -313,9 +327,8 @@ function _DoRepeatedSection(args, context, callback) {
 
     for (var i=0; context.next() !== null; i++) {
       context.log('_DoRepeatedSection i: ' +i);
-      context.hooks.beforeRepeatedSection(function(name) { return context.Lookup(name) }, callback, block.section_name, i);
+      context.hooks.beforeRepeatedSection(context.Path(), function(name) { return context.Lookup(name) }, callback, block.section_name, i);
       _Execute(statements, context, callback);
-      context.hooks.afterRepeatedSection(context.Lookup, callback, block.section_name, i);
       if (i != last_index) {
         context.log('ALTERNATE');
         _Execute(alt_statements, context, callback);
@@ -526,15 +539,9 @@ var EmptyHooks = function() {
     transformData: function(data_dict) {
       return data_dict;
     },
-    beforeSection: function(lookup, write, name) {     
+    beforeSection: function(path, lookup, write, name) {     
     },
-    afterSection: function(lookup, write, name) {
-    },  
-    beforeRepeatedSection: function(lookup, write, name, index) {
-
-    },
-    afterRepeatedSection: function(lookup, write, name, index) {
-
+    beforeRepeatedSection: function(path ,lookup, write, name, index) {
     }
   };
 };
@@ -546,17 +553,11 @@ var LoggingHooks = function(log) {
     transformData: function(data_dict) {
       return data_dict;
     },
-    beforeSection: function(lookup, write, name) {
+    beforeSection: function(path, lookup, write, name) {
       log("Before section: " + name);
     },
-    afterSection: function(lookup, write, name) {
-      log("After section: " + name);
-    },  
-    beforeRepeatedSection: function(lookup, write, name, index) {
+    beforeRepeatedSection: function(path, lookup, write, name, index) {
       log("Before repeated section: " + name + "[" + index + "]");
-    },
-    afterRepeatedSection: function(lookup, write, name, index) {
-      log("After repeated section: " + name + "[" + index + "]");
     }
   };
 };
@@ -564,53 +565,30 @@ var LoggingHooks = function(log) {
 var HtmlIdHooks = function() {
   return {
      transformData: function(data_dict) {
-        _transform_paths_dict_helper(data_dict, '');
         return data_dict;
      },
-     beforeSection: function(lookup, write, name) {
-       write('<div class="json-template-path" style="display:none" id="' + lookup('_path') + '"></div>');
+     beforeSection: function(path, lookup, write, name) {
+       path = serialize_path(path);
+       write('<div class="json-template-path" style="display:none" id="' + path + '"></div>');
      },
-     afterSection: function(lookup, write, name) {
-     },
-     beforeRepeatedSection: function(lookup, write, name, index) { 
-       write('<div class="json-template-path" style="display:none" id="' + lookup('_path') + '"></div>');
-     },
-     afterRepeatedSection: function(lookup, write, name, index) {
+     beforeRepeatedSection: function(path, lookup, write, name, index) {
+       path = serialize_path(path); 
+       write('<div class="json-template-path" style="display:none" id="' + path + '"></div>');
      }
   };
 };
 
-var _transform_paths_dict_helper = function(data_dict, path) {
-  var key;
-  var value;
-
-  data_dict['_path'] = path; 
-  
-  for (key in data_dict) {
-    value = data_dict[key];
-    if (_is_array(value)) {
-      _transform_paths_array_helper(value, path + '.' + key); 
-    } else if (typeof value === 'object') {
-      _transform_paths_dict_helper(value, path + '.' + key);
-    }
+var serialize_path = function(path) {
+  var result = [];
+  for (var i = 0; i < path.length; i++) {
+     var entry = path[i];
+     if (entry.index != -1) {
+        result.push('|' + entry.index);
+     } else {
+        result.push('.' + entry.name);
+     }
   }
-};
-
-var _transform_paths_array_helper = function(data_array, path) {
-  var i;
-  var value;
-  for (i = 0; i < data_array.length; i++) {
-    value = data_array[i];
-    if (_is_array(value)) {
-      _transform_paths_array_helper(value, path + '|' + i);
-    } else if (typeof value === 'object') {
-      _transform_paths_dict_helper(value, path + '|' + i);
-    }
-  }
-};
-
-var _is_array = function(obj) {
-  return Object.prototype.toString.apply(obj) === '[object Array]';
+  return result.join('');
 };
 
 // given a data_dict, a path and (optionally) an undefined_str,
@@ -670,31 +648,18 @@ var MultiHooks = function(hooks_objects) {
        }
        return data_dict;
     },
-    beforeSection: function(lookup, write, name) {
+    beforeSection: function(path, lookup, write, name) {
        var i;
        for (i = 0; i < hooks_objects.length; i++) { 
-          hooks_objects[i].beforeSection(lookup, write, name);
+          hooks_objects[i].beforeSection(path, lookup, write, name);
        }
     },
-    afterSection: function(lookup, write, name) {
+    beforeRepeatedSection: function(path, lookup, write, name, index) {
        var i;
        for (i = 0; i < hooks_objects.length; i++) { 
-          hooks_objects[i].afterSection(lookup, write, name);
+          hooks_objects[i].beforeRepeatedSection(path, lookup, write, name, index);
        }
-    },
-    beforeRepeatedSection: function(lookup, write, name, index) {
-       var i;
-       for (i = 0; i < hooks_objects.length; i++) { 
-          hooks_objects[i].beforeRepeatedSection(lookup, write, name, index);
-       }
-    },
-    afterRepeatedSection: function(lookup, write, name, index) {
-       var i;
-       for (i = 0; i < hooks_objects.length; i++) { 
-          hooks_objects[i].afterRepeatedSection(lookup, write, name, index);
-       }
-    },
-
+    }
   };
 };
 
