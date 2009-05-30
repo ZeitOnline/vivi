@@ -16,6 +16,10 @@
         <input type="text" name="until" id="until" value="TT.MM.JJJJ" />
       </div>
       <div>
+        <label>Ausgabe:</label>
+        <input type="text" name="volume_year" id="volume_year" value="WW/JJJJ" />
+      </div>
+      <div>
         <label>Ressort:</label>
         <input type="text" name="topic" id="topic" value="" />
       </div>

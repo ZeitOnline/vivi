@@ -327,8 +327,8 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
         var self = this;
         var from_field = $('from');
         var until_field = $('until');
+        var volume_year_field = $('volume_year');
         var topic_field = $('topic');
-//        var volume_year_field = $('volume_year');
 
         var results = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'search_entry', element);
@@ -338,8 +338,8 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
 
             var start_date = lookup('start_date');
             var end_date = lookup('end_date');
-            var topic = lookup('topic');
             var volume_year = lookup('volume_year');
+            var topic = lookup('topic');
 
             var date_filter = MochiKit.Selector.findChildElements(
                 entry, ['.date_filter'])[0];
@@ -357,6 +357,14 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                     }));
             });
 
+            MochiKit.Signal.connect(volume_year_filter, 'onclick', function(e) {
+                self.events.push(MochiKit.Signal.connect(
+                    entry, 'onclick', function(e) {
+                        volume_year_field.value = volume_year;
+                        zeit.find.search_result.render();
+                    }));
+            });
+
             MochiKit.Signal.connect(topic_filter, 'onclick', function(e) {
                 self.events.push(MochiKit.Signal.connect(
                     entry, 'onclick', function(e) {
@@ -364,6 +372,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                         zeit.find.search_result.render();
                     }));
             });
+
             
         });
     }

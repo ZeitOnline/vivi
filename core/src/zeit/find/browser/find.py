@@ -328,6 +328,7 @@ def search_form(request):
         return None
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
+    volume, year = parse_volume_year(g('volume_year', 'WW/JJJJ'))
     topic = g('topic', None)
     authors = g('author', None)
     keywords = g('keywords', None)
@@ -349,6 +350,8 @@ def search_form(request):
         fulltext=fulltext,
         from_=from_,
         until=until,
+        volume=volume,
+        year=year,
         topic=topic,
         authors=authors,
         keywords=keywords,
@@ -400,6 +403,34 @@ def parse_input_date(s):
     except ValueError:
         raise InputDateParseError("Year is not a proper number")
     return datetime(year, month, day)
+
+class VolumeYearError(Exception):
+    pass
+
+def parse_volume_year(s):
+    """Parse volume/year indicator.
+    
+    Date is of format WW/JJJJ. Special value 'WW/JJJJ' is
+    equivalent to no volume/year.
+    """
+    s = s.strip()
+    if not s:
+        return None, None
+    if s == 'WW/JJJJ':
+        return None, None
+    try:
+        volume, year = s.split('/')
+    except ValueError:
+        raise VolumeYearError("Missing / in volume.year")
+    try:
+        int(volume)
+    except ValueError:
+        raise VolumeYearError("Volume is not a proper number")
+    try:
+        int(year)
+    except ValueError:
+        raise VolumeYearError("Year is not a proper number")
+    return volume, year
 
 def format_date(dt):
     if dt is None:

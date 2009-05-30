@@ -82,13 +82,16 @@ def counts(q):
 
     return time_counts, topic_counts, author_counts, type_counts
 
-def query(fulltext, from_, until, topic, authors, keywords,
+def query(fulltext, from_, until, volume, year, topic, authors, keywords,
           published, types, filter_terms=None):
     """Create lucene query string for search.
 
     fulltext - fulltext to search for
     from_ - search only after from_ datetime. If None, no start to range.
     until - search only until until_ datetime. If None, no end to range.
+    volume - volume in which to search. If None, no restriction.
+    year - year in which to search (related to volume). If None,
+           no restriction.
     topic - the topic to look for. If None, no topic restriction.
     authors - parts of the author's name to look for, whitespace separated.
               If None, no author restriction.
@@ -108,6 +111,12 @@ def query(fulltext, from_, until, topic, authors, keywords,
     if from_ is not None or until is not None:
         terms.append(
             lq.datetime_range('last-semantic-change', from_, until))
+    if volume is not None:
+        terms.append(
+            lq.field('volume', volume))
+    if year is not None:
+        terms.append(
+            lq.field('year', year))
     if topic is not None:
         terms.append(lq.field('ressort', topic))
     if authors is not None:
