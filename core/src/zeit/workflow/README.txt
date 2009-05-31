@@ -323,28 +323,27 @@ The actions are logged:
 http://xml.zeit.de/online/2007/01/studiVZ
      Urgent: yes
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2008 6 13  07:38:48  (job #4)
+     To be published on 2008 6 13  07:38:48  (job #...)
 http://xml.zeit.de/online/2007/01/studiVZ
-     Scheduled publication cancelled (job #4).
+     Scheduled publication cancelled (job #...).
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2008 6 13  07:38:49  (job #5)
-http://xml.zeit.de/online/2007/01/studiVZ
-     Published
-http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2000 2 3  01:00:00  (job #6)
+     To be published on 2008 6 13  07:38:49  (job #...)
 http://xml.zeit.de/online/2007/01/studiVZ
      Published
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be retracted on 2008 6 13  07:38:50  (job #7)
+     To be published on 2000 2 3  01:00:00  (job #...)
+http://xml.zeit.de/online/2007/01/studiVZ
+     Published
+http://xml.zeit.de/online/2007/01/studiVZ
+     To be retracted on 2008 6 13  07:38:50  (job #...)
 http://xml.zeit.de/online/2007/01/studiVZ
      Retracted
 
-The date is actually logged in t he Europe/Belin time zone. Explicitly
+The date is actually logged in the Europe/Belin time zone. Explicitly
 compare this and (preventing normalizer):
 
 >>> entry = list(log.get_log(studivz))[5]
->>> u'To be published on 2000 2 3  01:00:00  (job #6)' == (
-...    zope.i18n.translate(entry.message))
+>>> u'2000 2 3  01:00:00' in zope.i18n.translate(entry.message)
 True
 
 Date first released
@@ -817,7 +816,7 @@ False
 Make sure the file would actually have been removed:
 
 >>> print logfile.getvalue(),
-Running job 19
+Running job ...
 Retracting http://xml.zeit.de/online/2007/01/Somalia
 ...retract.sh:
 Retracting test script
@@ -867,7 +866,7 @@ When somalia is published, the folder and its content is also published:
 >>> publish.publish()
 >>> tasks.process()
 >>> print logfile.getvalue(),
-Running job 20
+Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
 Could not checkout http://xml.zeit.de/2007
 Could not checkout http://xml.zeit.de/2007/01

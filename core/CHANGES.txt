@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.21.4 (2009-05-31)
+-------------------
+
+- Fehler beim aktualisieren von Metadaten beim Veröffentlichen behoben.
+
 1.21.3 (2009-05-28)
 -------------------
 
