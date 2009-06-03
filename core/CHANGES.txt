@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.12 (unreleased)
+1.12 (2009-06-03)
 -----------------
 
 - Relatexed othersystem locks: If there is a lock the connector doesn't know
