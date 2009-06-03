@@ -96,13 +96,20 @@ zeit.find = {};
             'for-this-page', 'Für diese Seite', zeit.find.for_this_page));
     };
 
+    var search_form_first_query = false;
     var search_form_parameters = function() {
-        return MochiKit.Base.queryString($('search_form'));
+        var qs = MochiKit.Base.queryString($('search_form'));
+        if (!qs) {
+            // initial query
+            qs = "sort_order=date";
+        }
+        return qs
     };
 
     MochiKit.Signal.connect(window, 'onload', init);
 
 })();
+
 
 zeit.find.update_search_result = function() {
         zeit.find.search_result.render();
@@ -110,6 +117,7 @@ zeit.find.update_search_result = function() {
             zeit.find.result_filters.render();
         }
 };
+
 
 zeit.find.Component = gocept.Class.extend({
 
