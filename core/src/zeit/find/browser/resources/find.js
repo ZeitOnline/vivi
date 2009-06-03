@@ -59,11 +59,11 @@ zeit.find = {};
         zeit.find.favorites = new zeit.cms.JSONView(
             base_url + 'favorites', 'favorites');
 
-        //zeit.find.for_this_page = new zeit.cms.JSONView(
-        //    context_url + '/@@for-this-page-search',
-        //    'for-this-page')
-        //zeit.find.for_this_page_results = new zeit.cms.JSONView(
-        //     base_url + 'search_result');
+        zeit.find.for_this_page = new zeit.cms.JSONView(
+            context_url + '/@@for-this-page-search',
+            'for-this-page')
+        zeit.find.for_this_page_results = new zeit.cms.JSONView(
+             base_url + 'search_result');
 
         MochiKit.Signal.connect(zeit.find.search_form, 'load', init_search_form);
 
@@ -71,20 +71,20 @@ zeit.find = {};
             new zeit.find.SearchResultsDraggable(view);
             new zeit.find.Relateds(view);
             new zeit.find.ToggleFavorited(view);
-            new zeit.find.ResultsFilters(view);
         }
 
         search_results(zeit.find.search_result);
+        new zeit.find.ResultsFilters(zeit.find.search_result);
         search_results(zeit.find.favorites);
-        //search_results(zeit.find.for_this_page_results);
+        search_results(zeit.find.for_this_page_results);
 
         new zeit.find.TimeFilters(zeit.find.result_filters);
         new zeit.find.AuthorFilters(zeit.find.result_filters);
         new zeit.find.TopicFilters(zeit.find.result_filters);
         new zeit.find.TypeFilters(zeit.find.result_filters);
 
-        //MochiKit.Signal.connect(
-        //     zeit.find.for_this_page, 'load', for_this_page_loader);
+        MochiKit.Signal.connect(
+             zeit.find.for_this_page, 'load', for_this_page_loader);
 
         zeit.find.search_form.render();
         zeit.find.tabs = new zeit.cms.Tabs('cp-search');
@@ -92,8 +92,8 @@ zeit.find = {};
             'search_form', 'Suche', zeit.find.search_result));
         zeit.find.tabs.add(new zeit.cms.ViewTab(
             'favorites', 'Favoriten', zeit.find.favorites));
-        //zeit.find.tabs.add(new zeit.cms.ViewTab(
-        //    'for-this-page', 'Für diese Seite', zeit.find.for_this_page));
+        zeit.find.tabs.add(new zeit.cms.ViewTab(
+            'for-this-page', 'Für diese Seite', zeit.find.for_this_page));
     };
 
     var search_form_parameters = function() {
