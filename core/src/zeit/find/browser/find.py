@@ -69,6 +69,12 @@ class SearchResult(JSONView):
         results = []
         for result in zeit.find.search.search(q, self.sort_order()):
             uniqueId = result.get('uniqueId', '')
+            title = result.get('teaser_title')
+            if not title:
+                title = result.get('title')
+            if not title:
+                title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE,
+                                         '', 1)
             if uniqueId in favorite_uniqueIds:
                 favorited_icon = r['favorite.png']()
             else:
@@ -86,7 +92,7 @@ class SearchResult(JSONView):
                 volume_year = '%s/%s' % (volume, year)
             else:
                 volume_year = ''
-        
+
             published = result.get('published', 'published')
             if published == 'published':
                 publication_status = r['published.png']()
@@ -113,7 +119,7 @@ class SearchResult(JSONView):
                     'favorited': favorited_icon,
                     'publication_status': publication_status,
                     'arrow': r['arrow_right.png'](),
-                    'teaser_title': result.get('teaser_title', ''),
+                    'teaser_title': title,
                     'teaser_text': result.get('teaser_text', ''),
                     'preview_url': preview_url,
                     'date': format_date(dt),
@@ -349,8 +355,6 @@ def _get(request, name, default=None):
 def search_form(request):
     g = lambda name, default=None: _get(request, name, default)
     fulltext = g('fulltext')
-    if fulltext is None:
-        return None
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
     volume, year = parse_volume_year(g('volume_year', 'WW/JJJJ'))
