@@ -73,7 +73,7 @@
   />
 
   <browser:page
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zope.interface.Interface"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".find.ForThisPage"
     name="for-this-page-search"

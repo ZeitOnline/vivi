@@ -3,6 +3,7 @@
     <script language="javascript"
             tal:content="string:
             var application_url = '${context/@@absolute_url}';
+            var context_url = application_url;
     "></script>
   </head>
   <body id="body">
