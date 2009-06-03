@@ -1,13 +1,10 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.formlib.form
-
-import zope.app.pagetemplate.viewpagetemplatefile
 
 import zeit.cms.browser.form
 import zeit.wysiwyg.interfaces
+import zope.app.pagetemplate.viewpagetemplatefile
+import zope.formlib.form
 
 
 class EditForm(zeit.cms.browser.form.EditForm):

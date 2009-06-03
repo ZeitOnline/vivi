@@ -1,17 +1,14 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.cachedescriptors.property
-import zope.component
-import zope.traversing.interfaces
 
 import gocept.fckeditor.connector
-
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.repository.interfaces
+import zope.cachedescriptors.property
+import zope.component
+import zope.traversing.interfaces
 
 
 class FileBrowser(zeit.cms.browser.view.Base,

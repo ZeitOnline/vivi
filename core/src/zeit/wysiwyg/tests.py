@@ -1,17 +1,13 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import re
-import os
-import unittest
-
-import zope.testing.renormalizing
 from zope.testing import doctest
-
-import zope.app.testing.functional
-
+import os
+import re
+import unittest
 import zeit.cms.testing
+import zope.app.testing.functional
+import zope.testing.renormalizing
 
 
 WYSIWYGLayer = zope.app.testing.functional.ZCMLLayer(
