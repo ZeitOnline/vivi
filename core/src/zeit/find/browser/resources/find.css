@@ -32,8 +32,13 @@
 }
 
 .search_entry .filters {
-  text-align: right;
+  display: none;
   font-size: 0.7em;
+  text-align: right;
+}
+
+#search_form .search_entry .filters {
+  display: block;
 }
 
 .search_entry .filters > a {
