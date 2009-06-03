@@ -28,6 +28,7 @@ setup(
         'zope.app.file',
         'zope.app.testing',
         'zope.app.zcmlfiles',
+        'zope.authentication',
         'zope.component',
         'zope.file',
         'zope.interface',

@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+1.12 (unreleased)
+-----------------
+
+- Relatexed othersystem locks: If there is a lock the connector doesn't know
+  about, but knows about the locking user id (principal), it considers the lock
+  as if it was the connectors lock (#4996).
+
 1.11.1 (2009-05-15)
 -------------------
 

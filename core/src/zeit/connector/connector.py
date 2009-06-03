@@ -415,8 +415,8 @@ class Connector(object):
                 id, "%s is already locked." % id)
         # Just pass-on other exceptions. It's more informative
 
-        # FIXME [11] returning locktoken (DAV resources keep one...)
-        if token: self._put_my_lockinfo(id, token, principal, until)
+        if token:
+            self._put_my_lockinfo(id, token, principal, until)
         self._invalidate_cache(id)
         return token
 
@@ -443,17 +443,30 @@ class Connector(object):
             # The resource does not exist on the server. This means it *cannot*
             # be locked. 
             davlock = {}
+        owner = davlock.get('owner')
+        timeout = davlock.get('timeout')
+        token = davlock.get('locktoken')
 
         mylock = self._get_my_lockinfo(id)
-
-        if mylock and mylock[0] != davlock.get('locktoken'): # Uh, oh
+        if mylock is None and davlock and owner:
+            # We have no information about the lock. Let's see if the principal
+            # is one we know. It's most likely that it actually was our lock
+            # but we just forgot about it.
+            authentication = zope.component.queryUtility(
+                zope.authentication.interfaces.IAuthentication)
+            if authentication is not None:
+                try:
+                    authentication.getPrincipal(owner)
+                except zope.authentication.interfaces.PrincipalLookupError:
+                    pass
+                else:
+                    mylock = (token, owner, timeout)
+                    self._put_my_lockinfo(id, *mylock)
+        elif mylock and mylock[0] != token:
             # We know something about a locktoken, but it is no longer valid.
             # Forget about it.
             self._put_my_lockinfo(id, None)
             mylock = None
-
-        owner = davlock.get('owner', None)
-        timeout = davlock.get('timeout', None)
 
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
@@ -488,7 +501,8 @@ class Connector(object):
             props = resp.get_all_properties()
             yield tuple([id] + [props[(a.name, a.namespace)] for a in attrlist])
 
-    def _get_my_lockinfo(self, id): # => (token, principal, time)
+    def _get_my_lockinfo(self, id):
+        # returns (token, principal, time)
         return self.locktokens.get(id)
 
     def _put_my_lockinfo(self, id, token, principal=None, time=None):

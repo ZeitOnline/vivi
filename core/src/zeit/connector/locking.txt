@@ -252,3 +252,58 @@ True
 
 >>> connector.unlock(res.id)
 u'opaquelocktoken:...'
+
+
+Edge case 7: Getting the lock information when the lockinfo got lost
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+When the principal is known to the system, the lock will still appear to be
+ours. To make this happen, we register an IAuthentication utility:
+
+
+>>> import zope.authentication.interfaces
+>>> class Principal(object):
+...     pass
+>>> class Auth(object):
+...     zope.interface.implements(
+...         zope.authentication.interfaces.IAuthentication)
+...     def getPrincipal(self, id):
+...         if id == 'gimli':
+...             p = Principal()
+...             p.id = id
+...             return p
+...         raise zope.authentication.interfaces.PrincipalLookupError()
+...
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> auth = Auth()
+>>> gsm.registerUtility(auth)
+
+
+When we don't know the principal, the resource will be "LockedByOtherSystem":
+
+>>> res.id = 'http://xml.zeit.de/testing/edge7.1'
+>>> connector.add(res)
+>>> token = connector.lock(res.id, 'frodo', until=None)
+>>> connector.locktokens.remove(res.id)
+>>> connector.locked(res.id)
+(u'frodo', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+ False)
+>>> del connector[res.id]
+Traceback (most recent call last):
+    ...
+LockedByOtherSystemError: (u'frodo', datetime.datetime(...))
+>>> token = connector.unlock(res.id, token)
+>>> del connector[res.id]
+
+When we know the principal, it is "our" lock:
+
+>>> res.id = 'http://xml.zeit.de/testing/edge7.2'
+>>> connector.add(res)
+>>> token = connector.lock(res.id, 'gimli', until=None)
+>>> connector.locktokens.remove(res.id)
+>>> connector.locked(res.id)
+(u'gimli', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+ True)
+>>> del connector[res.id]
+>>> gsm.unregisterUtility(auth)
+True
