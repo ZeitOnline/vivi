@@ -189,7 +189,7 @@ True
 
 We can get the data also via `getData` which returns an open file handle:
 
->>> cache.getData('some-id', properties).__class__
+>>> type(cache.getData('some-id', properties))
 <type 'file'>
 >>> cache.getData('some-id', properties)
 <open file '...', mode 'rb' at 0x...>
@@ -203,8 +203,8 @@ Internally a blob is created in this case:
 When the transaction is commited we'll get a file directly from the blob
 storage. Make the blob commited:
 
->>> blob._p_blob_committed = blob._p_blob_uncommitted
->>> blob._p_blob_uncommitted = None
+>>> import transaction
+>>> transaction.commit()
 
 We get the commited data now:
 
@@ -223,7 +223,6 @@ Create a new cache and attach it to the database root:
 
 >>> cache = zeit.connector.cache.ResourceCache()
 >>> getRootFolder()['cache'] = cache
->>> import transaction
 >>> transaction.commit()
 
 Add an object to the cache and commit:
@@ -393,8 +392,6 @@ loose any data here.
 Note that the most common conflicts are value changes *in* the cache. We do not
 change the conflict resolution of the underling btree.
 
-
->>> import transaction
 
 >>> from zc.queue.tests import ConflictResolvingMappingStorage
 >>> from ZODB import DB

@@ -19,7 +19,6 @@ import zope.app.appsetup.product
 import zope.app.component.hooks
 import zope.app.testing.functional
 import zope.component
-import zope.file.testing
 from zope.testing import doctest
 
 
@@ -40,7 +39,6 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
     def setUp(self):
         """Prepares for a functional test case."""
         super(ThreadingTest, self).setUp()
-        zope.file.testing.FunctionalBlobTestSetup().setUp()
         self.old_site = zope.app.component.hooks.getSite()
         zope.app.component.hooks.setSite(self.getRootFolder())
         self.connector = zope.component.getUtility(
@@ -49,7 +47,6 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
     def tearDown(self):
         """Cleans up after a functional test case."""
         transaction.abort()
-        zope.file.testing.FunctionalBlobTestSetup().tearDown()
         super(ThreadingTest, self).tearDown()
         zope.app.component.hooks.setSite(self.old_site)
 
@@ -193,7 +190,7 @@ def test_suite():
     long_running.level = 3
     suite.addTest(long_running)
 
-    functional = zope.file.testing.FunctionalBlobDocFileSuite(
+    functional = zope.app.testing.functional.FunctionalDocFileSuite(
         'cache.txt',
         'functional.txt',
         'invalidator.txt',
