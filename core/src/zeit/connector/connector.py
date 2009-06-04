@@ -385,12 +385,16 @@ class Connector(object):
         id = self._get_cannonical_id(id)
         locktoken = self._get_my_locktoken(id)
         davres = self._get_dav_resource(id)
+        properties = dict(properties)
+        properties[('cached-time', 'INTERNAL')] = (
+            zeit.connector.interfaces.DeleteProperty)
         davres.change_properties(
             properties,
             delmark=zeit.connector.interfaces.DeleteProperty,
             locktoken=locktoken)
 
         # Update property cache
+        del properties[('cached-time', 'INTERNAL')]
         try:
             cached_properties = self.property_cache[id]
         except KeyError:

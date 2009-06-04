@@ -139,6 +139,10 @@ class ConnectorTest(unittest.TestCase):
         super(ConnectorTest, self).setUp()
         self.connector = zeit.connector.connector.Connector(
             roots={"default": os.environ['connector-url']})
+        self.connector[self.rid] = zeit.connector.resource.Resource(
+            self.rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
 
     def tearDown(self):
         for name, uid in self.connector.listCollection(
@@ -151,10 +155,6 @@ class ConnectorCache(ConnectorTest):
     rid = 'http://xml.zeit.de/testing/cache_test'
 
     def test_deleting_non_existing_resource_does_not_create_cache_entry(self):
-        self.connector[self.rid] = zeit.connector.resource.Resource(
-            self.rid, None, 'text',
-            StringIO.StringIO('Pop.'),
-            contentType='text/plain')
         children = self.connector.child_name_cache[
             'http://xml.zeit.de/testing/']
         children.remove(self.rid)
@@ -162,14 +162,22 @@ class ConnectorCache(ConnectorTest):
         self.assertEquals([], list(children))
 
     def test_delete_updates_cache(self):
-        self.connector[self.rid] = zeit.connector.resource.Resource(
-            self.rid, None, 'text',
-            StringIO.StringIO('Pop.'),
-            contentType='text/plain')
         del self.connector[self.rid]
         children = self.connector.child_name_cache[
             'http://xml.zeit.de/testing/']
         self.assertEquals([], list(children))
+
+    def test_cache_time_is_not_stored_on_dav(self):
+        self.connector.changeProperties(self.rid, {
+            ('cached-time', 'INTERNAL'): 'foo'})
+        properties = self.connector[self.rid].properties
+        self.assertNotEqual(
+            'foo', properties[('cached-time', 'INTERNAL')])
+        davres = self.connector._get_dav_resource(self.rid)
+        davres.update()
+        self.assertTrue(
+            ('cached-time', 'INTERNAL') not in davres.get_all_properties())
+
 
 
 def test_suite():

@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+1.13 (unreleased)
+-----------------
+
+- Made sure the {INTERNAL}cached-time is not stored on the DAV.
+
 1.12 (2009-06-03)
 -----------------
 
