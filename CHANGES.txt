@@ -1,6 +1,12 @@
 zeit.wysiwyg changes
 ====================
 
+1.23 (unreleased)
+-----------------
+
+- Intern grundlegend umstrukturiert: Die Konvertierungsphasen sind jetzt
+  einzelne Adapter.
+
 1.22 (2009-05-28)
 -----------------
 
