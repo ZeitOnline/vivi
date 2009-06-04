@@ -26,6 +26,8 @@ class IHTMLConverter(zope.interface.Interface):
 
 
 class IConversionStep(zope.interface.Interface):
+    """Encapsulates one step of XML<-->HTML conversion.
+    see zeit.wysiwyg.html.ConversionStep for details."""
 
     weight = zope.interface.Attribute(
         "determines the ordering of all ConversionSteps.")
