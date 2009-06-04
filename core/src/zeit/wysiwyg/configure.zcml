@@ -2,4 +2,16 @@
 
   <adapter factory=".html.HTMLConverter" />
 
+  <!-- sorted alphabetically, see the weights on the classes
+  for execution order -->
+  <adapter factory=".html.ArticleExtraStep" name="ArticleExtraStep" />
+  <adapter factory=".html.DropEmptyStep" name="DropEmptyStep" />
+  <adapter factory=".html.ImageStep" name="ImageStep" />
+  <adapter factory=".html.NestedParagraphsStep" name="NestedParagraphsStep" />
+  <adapter factory=".html.NormalizeToplevelStep" name="NormalizeToplevelStep" />
+  <adapter factory=".html.PassThroughStep" name="PassThroughStep" />
+  <adapter factory=".html.RawXMLStep" name="RawXMLStep" />
+  <adapter factory=".html.TagReplaceStep" name="TagReplaceStep" />
+  <adapter factory=".html.URLStep" name="URLStep" />
+  <adapter factory=".html.VideoAudioStep" name="VideoAudioStep" />
 </configure>
