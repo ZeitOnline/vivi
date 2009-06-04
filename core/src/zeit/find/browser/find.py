@@ -76,6 +76,7 @@ class SearchResult(JSONView):
 
         r = self.resources
         results = []
+        application_url = self.request.getApplicationURL()
         for result in zeit.find.search.search(q, self.sort_order()):
             uniqueId = result.get('uniqueId', '')
             title = result.get('teaser_title')
@@ -120,11 +121,14 @@ class SearchResult(JSONView):
                 start_date = None
                 end_date = None
 
+            icon = result.get('icon')
+            if icon:
+                icon = application_url + icon
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
             results.append({
                     'uniqueId': uniqueId,
-                    'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
+                    'icon': icon,
                     'favorited': favorited_icon,
                     'publication_status': publication_status,
                     'arrow': r['arrow_right.png'](),
