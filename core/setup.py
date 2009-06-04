@@ -47,7 +47,7 @@ setup(
         'zeit.content.gallery',
         'zeit.content.portraitbox',
         'zeit.objectlog>=0.2',
-        'zeit.wysiwyg',
+        'zeit.wysiwyg>1.22',
         'zope.app.apidoc',
         'zope.app.catalog',
         'zope.app.component>=3.4.0b3',
