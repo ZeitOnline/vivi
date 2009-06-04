@@ -55,7 +55,10 @@ class HTMLConverter(object):
         # "all but the root node"?
         result = lxml.etree.tostring(
             tree, pretty_print=True, encoding=unicode)
-        return '\n'.join(result.split('\n')[1:-2])
+        # chop off first ant last line
+        result = '\n'.join(result.split('\n')[1:-2])
+        # chop off leading indentation of 2 spaces
+        return result[2:]
 
     def from_html(self, tree, value):
         """converts the HTML `value` to XML and sets it on `tree`."""
