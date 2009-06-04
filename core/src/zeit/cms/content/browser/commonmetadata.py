@@ -10,7 +10,6 @@ import zeit.cms.content.interfaces
 
 class CommonMetadataListRepresentation(
     zeit.cms.browser.listing.CommonListRepresentation):
-    """Adapter for listing article content resources"""
 
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
     zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata,
