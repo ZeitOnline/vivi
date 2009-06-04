@@ -37,6 +37,15 @@ class SearchForm(JSONView):
 
     template = 'search_form.jsont'
 
+    def json(self):
+        return dict(ressorts=self.ressorts)
+
+    @property
+    def ressorts(self):
+        return [
+            dict(ressort=ressort)
+            for ressort in zeit.cms.content.sources.NavigationSource()]
+
 
 class SearchResult(JSONView):
 
@@ -110,7 +119,7 @@ class SearchResult(JSONView):
             else:
                 start_date = None
                 end_date = None
-                
+
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
             results.append({

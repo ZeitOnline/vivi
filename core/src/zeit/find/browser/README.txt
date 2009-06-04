@@ -45,13 +45,19 @@ There are a number of views returning JSON data for the search UI.
 Search form
 -----------
 
-The `search_form` view returns only the template URL for the search form:
+The `search_form` view returns the template URL for the search form and the
+data for dropdowns/selects:
 
 >>> browser.open('http://localhost:8080/++skin++cms/search_form')
 >>> browser.headers['Content-Type']
 'text/json'
->>> print browser.contents
-{"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont"}
+>>> import cjson
+>>> import pprint
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'ressorts': [{'ressort': 'Deutschland'},...
+ 'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont'}
+
+    
 
 
 Favorites
@@ -87,8 +93,6 @@ The clipboard now has a clip "Favoriten" with one entry:
 
 The favorites tab now lists the favorited object:
 
->>> import cjson
->>> import pprint
 >>> browser.open('http://localhost:8080/++skin++cms/favorites')
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'results': [{...

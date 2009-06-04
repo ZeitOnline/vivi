@@ -2,11 +2,10 @@
   <input type="text" name="fulltext" id="fulltext" value="" />
   <input type="button" id="search_button" value=" OK " />
 
-  <br />
-
   <div id="extended_search_button" class="button">
     Erweiterte Suche
   </div>
+
   <div id="extended_search_form">
     <div id="extended_search" style="display:none">
       <div>
@@ -21,7 +20,12 @@
       </div>
       <div>
         <label>Ressort:</label>
-        <input type="text" name="topic" id="topic" value="" />
+        <select name="topic">
+        <option value=""></option>
+        {.repeated section ressorts}
+        <option value="{ressort}">{ressort}</option>
+        {.end}
+        </select>
       </div>
       <div>
         <label>Autor:</label>
