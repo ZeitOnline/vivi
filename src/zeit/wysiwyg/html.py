@@ -202,7 +202,7 @@ class TagReplaceStep(ConversionStep):
     """Convert between XML tag names and HTML ones."""
 
     weight = 0.9
-    xpath_html = '//*'
+    xpath_html = './/*'
 
     xml_html_tags = {
         'intertitle': 'h3',
@@ -212,7 +212,7 @@ class TagReplaceStep(ConversionStep):
 
     def __init__(self, context):
         super(TagReplaceStep, self).__init__(context)
-        self.xpath_xml = '|'.join(['//%s' % tag for tag
+        self.xpath_xml = '|'.join(['.//%s' % tag for tag
                                    in self.xml_html_tags.keys()])
 
     def to_html(self, node):
@@ -237,7 +237,7 @@ class PassThroughStep(ConversionStep):
 
     def __init__(self, context):
         super(PassThroughStep, self).__init__(context)
-        self.xpath_xml = '|'.join(['//%s' % tag for tag in self.allow_tags])
+        self.xpath_xml = '|'.join(['.//%s' % tag for tag in self.allow_tags])
 
     def to_html(self, node):
         pass
@@ -277,8 +277,8 @@ class NestedParagraphsStep(ConversionStep):
 class ImageStep(ConversionStep):
     """Replace XML <image/> by HTML <img/> and vice versa."""
 
-    xpath_xml = '//image'
-    xpath_html = '//img'
+    xpath_xml = './/image'
+    xpath_html = './/img'
 
     def to_html(self, node):
         unique_id = node.get('src')
@@ -322,8 +322,8 @@ class ImageStep(ConversionStep):
 class URLStep(ConversionStep):
     """Convert uniqueIds to clickable CMS-URLs and vice versa."""
 
-    xpath_xml = '//a'
-    xpath_html = '//a'
+    xpath_xml = './/a'
+    xpath_html = './/a'
 
     def _id_to_url(self, id):
         try:
@@ -358,8 +358,8 @@ class URLStep(ConversionStep):
 class ArticleExtraStep(ConversionStep):
     """Make <article_extra> editable."""
 
-    xpath_xml = '//article_extra'
-    xpath_html = '//p'
+    xpath_xml = './/article_extra'
+    xpath_html = './/p'
 
     def to_html(self, node):
         # Check for videoID and replace by video tag. This is handled then by
@@ -431,8 +431,8 @@ class ArticleExtraStep(ConversionStep):
 class VideoAudioStep(ConversionStep):
     """Make <video> and <audio> editable."""
 
-    xpath_xml = '//video|//audio'
-    xpath_html = '//*[@class="video" or @class="audio"]'
+    xpath_xml = './/video|.//audio'
+    xpath_html = './/*[@class="video" or @class="audio"]'
 
     def to_html(self, node):
         if node.tag == 'video':
@@ -505,8 +505,8 @@ class RawXMLStep(ConversionStep):
     # XXX RawXMLStep and VideoAudioStep are structurally quite similar,
     # can this be refactored/abstracted?
 
-    xpath_xml = '//raw'
-    xpath_html = '//*[@class="raw"]'
+    xpath_xml = './/raw'
+    xpath_html = './/*[@class="raw"]'
 
     def to_html(self, node):
         result = []
