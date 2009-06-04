@@ -4,9 +4,9 @@ Search UI
 
 For UI-Tests we need a Testbrowser and some setup[1]_:
 
-    >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
-    >>> browser = ExtendedTestBrowser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
 HTML views
@@ -16,25 +16,25 @@ There is one main HTML view defined, which loads all the JavaScript and the
 JSON template to setup the search UI. See the selenium tests for more details
 on the UI itself:
 
-    >>> browser.handleErrors = False
-    >>> browser.open('http://localhost:8080/++skin++cms/find')
-    >>> print browser.contents
-    <html>
-      <head>
-        ...
-        <script src="...json-template.js" type="text/javascript"> </script>
-        <script src="...find.js" type="text/javascript"> </script>
-        ...
-        <script language="javascript">
-                var application_url = 'http://localhost:8080/++skin++cms';
-                var context_url = application_url;
-        </script>
-      </head>
-      <body id="body">
-        <div id="cp-search">
-        </div>
-      </body>
-    </html>
+>>> browser.handleErrors = False
+>>> browser.open('http://localhost:8080/++skin++cms/find')
+>>> print browser.contents
+<html>
+  <head>
+    ...
+    <script src="...json-template.js" type="text/javascript"> </script>
+    <script src="...find.js" type="text/javascript"> </script>
+    ...
+    <script language="javascript">
+            var application_url = 'http://localhost:8080/++skin++cms';
+            var context_url = application_url;
+    </script>
+  </head>
+  <body id="body">
+    <div id="cp-search">
+    </div>
+  </body>
+</html>
 
 
 JSON views
@@ -47,11 +47,11 @@ Search form
 
 The `search_form` view returns only the template URL for the search form:
 
-    >>> browser.open('http://localhost:8080/++skin++cms/search_form')
-    >>> browser.headers['Content-Type']
-    'text/json'
-    >>> print browser.contents
-    {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont"}
+>>> browser.open('http://localhost:8080/++skin++cms/search_form')
+>>> browser.headers['Content-Type']
+'text/json'
+>>> print browser.contents
+{"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont"}
 
 
 Favorites
@@ -63,50 +63,50 @@ The favorites are stored inside the clipboard in a special clip named
 "Favoriten". If the principal never added favorites before, the clip does not
 exist:
 
-    >>> import zeit.cms.clipboard.interfaces 
-    >>> clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-    >>> clipboard["Favoriten"]
-    Traceback (most recent call last):
-    ...
-    KeyError: 'Favoriten'
+>>> import zeit.cms.clipboard.interfaces 
+>>> clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+>>> clipboard["Favoriten"]
+Traceback (most recent call last):
+...
+KeyError: 'Favoriten'
 
 Adding a content object as a favorite requires the call of the
 `toggle_favorited` view with the uniqueId of the object:
 
-    >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+>>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
 
 It returns the location of the icon with the new status (favorite or not):
 
-    >>> print browser.contents
-    {"favorited": ".../favorite.png", ...}
+>>> print browser.contents
+{"favorited": ".../favorite.png", ...}
 
 The clipboard now has a clip "Favoriten" with one entry:
 
-    >>> clipboard["Favoriten"].keys()
-    [u'Somalia']
+>>> clipboard["Favoriten"].keys()
+[u'Somalia']
 
 The favorites tab now lists the favorited object:
 
-    >>> import cjson
-    >>> import pprint
-    >>> browser.open('http://localhost:8080/++skin++cms/favorites')
-    >>> pprint.pprint(cjson.decode(browser.contents))
-    {'results': [{...
-        'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',...
-        'favorited': 'http://localhost:8080/++skin++cms/@@/zeit.find/favorite.png',...
-     'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
+>>> import cjson
+>>> import pprint
+>>> browser.open('http://localhost:8080/++skin++cms/favorites')
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'results': [{...
+    'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',...
+    'favorited': 'http://localhost:8080/++skin++cms/@@/zeit.find/favorite.png',...
+ 'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
 
 
 Calling the same view again removes the object from the favorites:
 
-    >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
-    >>> print browser.contents
-    {"favorited": ".../not_favorite.png", ...}
+>>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+>>> print browser.contents
+{"favorited": ".../not_favorite.png", ...}
 
 The clip persists, but is now empty:
 
-    >>> clipboard["Favoriten"].keys()
-    []
+>>> clipboard["Favoriten"].keys()
+[]
 
  
 Cleanup
@@ -116,7 +116,7 @@ After the tests we clean up:
 
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
-    
+
 
 
 Footnotes
