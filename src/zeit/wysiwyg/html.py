@@ -55,7 +55,7 @@ class HTMLConverter(object):
         # "all but the root node"?
         result = lxml.etree.tostring(
             tree, pretty_print=True, encoding=unicode)
-        # chop off first ant last line
+        # chop off first and last line
         result = '\n'.join(result.split('\n')[1:-2])
         # chop off leading indentation of 2 spaces
         return result[2:]
