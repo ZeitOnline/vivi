@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.21.5 (unreleased)
+-------------------
+
+- FunctionalDocFileSuite statt der FunctionalBlobDocFileSuite aus zope.file
+  benutzen, was mit ZODB 3.9 möglich wird und anders nicht funktioniert.
+
 1.21.4 (2009-05-31)
 -------------------
 

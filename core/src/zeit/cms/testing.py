@@ -10,7 +10,6 @@ import zope.app.appsetup.product
 import zope.app.component.hooks
 import zope.app.testing.functional
 import zope.component
-import zope.file.testing
 import zope.publisher.browser
 import zope.security.management
 import zope.security.testing
@@ -86,7 +85,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
 
-    test = zope.file.testing.FunctionalBlobDocFileSuite(
+    test = zope.app.testing.functional.FunctionalDocFileSuite(
         *paths, **kw)
     test.layer = layer
 
