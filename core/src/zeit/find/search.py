@@ -27,7 +27,7 @@ def search(q, sort_order=None):
     sort_order - sort by either either 'relevance' or 'date'.
 
     Returns the pysolr Result object.
-    """    
+    """
     if q is None:
         return []
 
@@ -41,7 +41,7 @@ def search(q, sort_order=None):
                      'teaser_title', 'teaser_text',
                      'last-semantic-change', 'ressort',
                      'authors', 'volume', 'year', 'title', 'icon']
-    
+
     conn = get_solr()
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields))
 
@@ -51,7 +51,7 @@ def counts(q):
     q - the lucene query
 
     Returns tuple of time counts, topic counts, author counts, type counts.
-    
+
     Each counts is a list of (name, count) tuples. Counts of zero are
     not returned.
     """
@@ -63,7 +63,7 @@ def counts(q):
         'facet.mincount': 1,
         'facet.query': date_queries,
         }
-    
+
     conn = get_solr()
     facet_data = conn.search(q, rows=0, **facets).facets
 
@@ -71,7 +71,7 @@ def counts(q):
     time_counts = []
     for name, filter in DATE_FILTERS:
         time_counts.append((name, facet_queries[filter]))
-    
+
     facet_fields = facet_data['facet_fields']
 
     _counts = lambda counts: sorted(grouper(2, counts))
@@ -104,7 +104,7 @@ def query(fulltext, from_, until, volume, year, topic, authors, keywords,
     Returns lucene query string that can be passed to solr.
     """
     filter_terms = filter_terms or []
-    
+
     terms = []
     if fulltext:
         terms.append(lq.field('text', fulltext))
@@ -134,7 +134,7 @@ def query(fulltext, from_, until, volume, year, topic, authors, keywords,
         # we find absolutely nothing as there isn't any
         # __neverfound type around
         terms.append(lq.field('type', '__neverfound'))
-    
+
     terms.extend(filter_terms)
     return lq.and_(*terms)
 
