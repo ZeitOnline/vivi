@@ -6,6 +6,9 @@ CHANGES
 
 - Made sure the {INTERNAL}cached-time is not stored on the DAV.
 
+- Fixed a bug in the property cache conflict resolver which took the
+  cached-time into account.
+
 1.12 (2009-06-03)
 -----------------
 

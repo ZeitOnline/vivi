@@ -440,6 +440,48 @@ When the conflicting state is *equal* it is kept, though:
 {<WebDAVPropertyKey foo>: 'baz'}
 
 
+The conflict resolution ignores the property {INTERNAL}cached-time when
+determining if two property sets are equal. This is fairly save because:
+
+1. The cached-time is only relevant when the resource is locked.
+
+2. When the resource is locked, the lock timeout is indicated in seconds from
+   the cached time. When the cached times differ much, the lock timeout will
+   differ. Thus the properties are not equal.
+
+Note that the cached time of the transaction wins which is commited last:
+
+>>> import datetime
+>>> import pytz
+>>> c_1['id'][('cached-time', 'INTERNAL')] = datetime.datetime(
+...     2008, 1, 1, tzinfo=pytz.UTC).isoformat()
+>>> c_2['id'][('cached-time', 'INTERNAL')] = datetime.datetime(
+...     2009, 4, 7, tzinfo=pytz.UTC).isoformat()
+>>> transactionmanager_2.commit()
+>>> transactionmanager_1.commit()
+>>> connection_1.sync()
+>>> connection_2.sync()
+>>> dict(c_1['id'])
+{<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
+ <WebDAVPropertyKey foo>: 'baz'}
+>>> dict(c_2['id'])
+{<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
+ <WebDAVPropertyKey foo>: 'baz'}
+
+
+When there was an attribute set on the cache entry, it cannot be resolved any
+longer:
+
+>>> c_1['id'].foo = 'bar'
+>>> c_2['id'][('hick', 'hack')] = 'huck'
+>>> transactionmanager_2.commit()
+>>> transactionmanager_1.commit()  # doctest: +IGNORE_EXCEPTION_DETAIL
+Traceback (most recent call last):
+    ...
+ConflictError: database conflict error
+
+>>> transactionmanager_1.abort()
+
 Child name cache
 ++++++++++++++++
 

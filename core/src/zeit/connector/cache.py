@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import BTrees
+import ZODB.POSException
 import ZODB.blob
 import cStringIO
 import logging
@@ -281,9 +282,23 @@ zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
 
 class Properties(persistent.mapping.PersistentMapping):
 
+    cached_time = None
+
     def _p_resolveConflict(self, old, commited, newstate):
-        if commited == newstate:
-            return commited
+        if not (old.keys()
+                == commited.keys()
+                == newstate.keys()
+                == ['_container']):
+            # We can only resolve _container.
+            raise ZODB.POSException.ConflictError
+        commited_data = commited['_container']
+        newstate_data = newstate['_container'].copy()
+
+        commited_data.pop(('cached-time', 'INTERNAL'), None)
+        newstate_data.pop(('cached-time', 'INTERNAL'), None)
+        if newstate_data == commited_data:
+            return newstate
+        # Completely invalidate cache entry when we cannot resolve.
         old['_container'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
