@@ -115,11 +115,13 @@ class Display(zeit.cms.browser.view.Base):
             return
         if not images.images:
             return
-        image_group = images.images[0]
-        for name in image_group:
-            if layout.image_pattern in name:
-                return image_group[name]
-
+        image = images.images[0]
+        if zeit.content.image.interfaces.IImageGroup.providedBy(image):
+            for name in image:
+                if layout.image_pattern in name:
+                    return image[name]
+        else:
+            return image
 
 class AutoPilotDisplay(Display):
 

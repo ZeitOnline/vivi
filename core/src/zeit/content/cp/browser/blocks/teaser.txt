@@ -374,8 +374,8 @@ The 450x200 image is used now:
       <div class="supertitle"></div>
       ...
 
-
-When we change the layout to xxx the image will not be used any more:
+When we change the layout to "Kleiner Teaser" the image will not be used any
+more:
 
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
@@ -386,6 +386,27 @@ When we change the layout to xxx the image will not be used any more:
        class="action-content-droppable buttons">
   <div class="teaser-list">
     <div class="teaser">
+      <div class="supertitle"></div>
+      ...
+
+
+When the image is not an image group, it will be just used:
+
+>>> with zeit.content.cp.browser.tests.site(getRootFolder()):
+...     with zeit.content.cp.browser.tests.interaction('zope.user'):
+...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
+...             zeit.content.image.interfaces.IImages(co).images = (
+...                 group['obama-clinton-120x120.jpg'],)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getLink('Großer Teaser').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+       class="action-content-droppable leader">
+  <div class="teaser-list">
+    <div class="teaser">
+      <img src="http://localhost/++skin++cms/repository/image-group/obama-clinton-120x120.jpg" />
       <div class="supertitle"></div>
       ...
 
