@@ -27,6 +27,7 @@ on the UI itself:
         ...
         <script language="javascript">
                 var application_url = 'http://localhost:8080/++skin++cms';
+                var context_url = application_url;
         </script>
       </head>
       <body id="body">
@@ -86,12 +87,15 @@ The clipboard now has a clip "Favoriten" with one entry:
 
 The favorites tab now lists the favorited object:
 
+    >>> import cjson
+    >>> import pprint
     >>> browser.open('http://localhost:8080/++skin++cms/favorites')
-    >>> print browser.contents
-    {"template_url": "http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont",
-     "results": [{...
-        "favorited": "http://localhost:8080/++skin++cms/@@/zeit.find/favorite.png",...
-        "favorite_url": "http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia",...}]}
+    >>> pprint.pprint(cjson.decode(browser.contents))
+    {'results': [{...
+        'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',...
+        'favorited': 'http://localhost:8080/++skin++cms/@@/zeit.find/favorite.png',...
+     'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
+
 
 Calling the same view again removes the object from the favorites:
 
