@@ -23,3 +23,15 @@ class IHTMLConverter(zope.interface.Interface):
 
     def from_html(tree, value):
         """Convert `value` to xml replacing data in `tree`."""
+
+
+class IConversionStep(zope.interface.Interface):
+
+    weight = zope.interface.Attribute(
+        "determines the ordering of all ConversionSteps.")
+
+    def to_html(node):
+        pass
+
+    def from_html(node):
+        pass

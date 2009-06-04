@@ -1,7 +1,7 @@
 Converting to HTML
 ==================
 
-The HTML representation ... 
+The HTML representation ...
 
 
 We need the functional test setup and an interaction:
@@ -71,7 +71,7 @@ Now for something more complex, the intertitle:
 ...   <body>
 ...     <title>Title</title>
 ...     <p>A paragraph</p>
-...     <intertitle>Paragraphs are nice</intertitle>  
+...     <intertitle>Paragraphs are nice</intertitle>
 ...     <p>Another <em>paragraph</em></p>
 ...     <teaser/>
 ...   </body>
@@ -250,42 +250,44 @@ Mapping of cms urls to unique id and vice versa
 The converter has a helper method to convert urls which point to the cms to a
 unique id:
 
->>> converter._url_to_id('http://127.0.0.1/repository/wirtschaft.feed')
+>>> step = zeit.wysiwyg.html.URLStep(article)
+
+>>> step._url_to_id('http://127.0.0.1/repository/wirtschaft.feed')
 u'http://xml.zeit.de/wirtschaft.feed'
->>> converter._url_to_id('http://127.0.0.1/repository/online/2007/01/Somalia')
+>>> step._url_to_id('http://127.0.0.1/repository/online/2007/01/Somalia')
 u'http://xml.zeit.de/online/2007/01/Somalia'
 
 When the url doesn't point to an existing object in the repository, the url is
 returned:
 
->>> converter._url_to_id('http://127.0.0.1/repository/online/2020/hamwanich')
+>>> step._url_to_id('http://127.0.0.1/repository/online/2020/hamwanich')
 'http://127.0.0.1/repository/online/2020/hamwanich'
->>> converter._url_to_id('http://127.0.0.1/flubber')
+>>> step._url_to_id('http://127.0.0.1/flubber')
 'http://127.0.0.1/flubber'
 
 The url is also just returned if it is completely unrelated:
->>> converter._url_to_id('http://gocept.com')
+>>> step._url_to_id('http://gocept.com')
 'http://gocept.com'
 
 
 The method `_id_to_url` handles the other way round:
 
->>> converter._id_to_url('http://xml.zeit.de/wirtschaft.feed')
+>>> step._id_to_url('http://xml.zeit.de/wirtschaft.feed')
 'http://127.0.0.1/repository/wirtschaft.feed'
->>> converter._id_to_url('http://xml.zeit.de/online/2007/01/Somalia')
+>>> step._id_to_url('http://xml.zeit.de/online/2007/01/Somalia')
 'http://127.0.0.1/repository/online/2007/01/Somalia'
 
 When the id doesn't point to an existing object in the repository, the id is
 returned:
 
->>> converter._id_to_url('http://xml.zeit.de/online/2020/hamwanich')
+>>> step._id_to_url('http://xml.zeit.de/online/2020/hamwanich')
 'http://xml.zeit.de/online/2020/hamwanich'
->>> converter._id_to_url('http://xml.zeit.de/flubber')
+>>> step._id_to_url('http://xml.zeit.de/flubber')
 'http://xml.zeit.de/flubber'
 
 The url is also just returned if it is completely unrelated:
 
->>> converter._id_to_url('http://gocept.com')
+>>> step._id_to_url('http://gocept.com')
 'http://gocept.com'
 
 
@@ -362,10 +364,16 @@ tag:
 >>> print converter.to_html(article.xml['body'])
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche
- <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+ <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
   Zellen ist das toll.</p>
 <p>Selbst wenn </p>
 
+The conversion operates in-place but on a copy, so the article's XML is
+unchanged (even for nested tags, so it's not only a shallow copy).
+Thus, we can still see the <image> tag in the original XML:
+
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<...<p>...<image...>...
 
 Setting an img in html creates an image tag. This copies the data from the
 image:
@@ -392,8 +400,8 @@ image:
 Just re-check the conversion to HTML:
 
 >>> print converter.to_html(article.xml['body'])
-<p xmlns:py="http://codespeak.net/lxml/objectify/pytype">Fuer menschliche
- <img xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+<p>Fuer menschliche
+ <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
   Zellen ist das toll.</p>
 <BLANKLINE>
 <p>Aus winzigen embryonalen ...</p>
@@ -422,7 +430,7 @@ We are greedy against old paths in the XML:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche
- <img ... src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
+ <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
 <p>Selbst wenn </p>
 
 
@@ -446,7 +454,7 @@ If the image does not longer exists, we render an img-tag with the unique id:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche
- <img ... src="http://xml.zeit.de/bilder/asdf.jpg"/></p>
+ <img src="http://xml.zeit.de/bilder/asdf.jpg"/></p>
 <p>Selbst wenn </p>
 
 
@@ -470,7 +478,7 @@ When the url doesn't belong to the CMS it is put out directly, as well:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche
- <img ... src="http://images.gocept.com/bilder/asdf.jpg"/></p>
+ <img src="http://images.gocept.com/bilder/asdf.jpg"/></p>
 <p>Selbst wenn </p>
 
 
@@ -547,7 +555,7 @@ Bug: ``<p><strong><img`` was not recognised correctly:
 Recheck the conversion to HTML:
 
 >>> print converter.to_html(article.xml['body'])
-<p xmlns:py="http://codespeak.net/lxml/objectify/pytype"><strong><img xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+<p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
            Hurz</strong> foobar </p>
 <p>Selbst wenn </p>
 
@@ -576,13 +584,12 @@ information:
 
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div ... class="video">
+<div class="video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires">2000-11-30 13:00</div>
   <div class="format">large</div>
 </div>
 <p>Foo bar</p>
-
 
 When there is no expires or format, or empty ones, empty divs are rendered:
 
@@ -600,7 +607,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div ... class="video">
+<div class="video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires"></div>
   <div class="format"></div>
@@ -653,7 +660,7 @@ information:
 
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div ... class="audio">
+<div class="audio">
   <div class="audioId">20080402334ddf</div>
   <div class="expires">2000-11-30 13:00</div>
   <div class="format">large</div>
@@ -677,7 +684,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div ... class="audio">
+<div class="audio">
   <div class="audioId">20080402334ddf</div>
   <div class="expires"></div>
   <div class="format"></div>
@@ -734,7 +741,7 @@ after saving there is no more ``article_extra`` for a video:
 
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div ... class="video">
+<div class="video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires"></div>
   <div class="format"></div>
