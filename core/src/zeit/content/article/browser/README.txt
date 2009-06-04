@@ -38,7 +38,7 @@ We have to publish another url to see if articles are listed:
 <?xml version...
 <!DOCTYPE ...
 ...
-    <td> 
+    <td>
       <img...IArticle-zmi_icon.png...
     </td>
     <td>
@@ -73,7 +73,7 @@ arbitrary url and add an article then:
 >>> browser.open(menu.value[0])
 
 We now need to choose a template. Since we haven't created one there is only
-the (no value) to be choosen. 
+the (no value) to be choosen.
 
 >>> browser.getControl('Template').displayOptions
 ['(no value)']
@@ -124,7 +124,7 @@ edit screen should be displayed:
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
-    <title> 
+    <title>
        EU &lt;em&gt;unterstuetzt&lt;/em&gt; Stinker-Steuer – Edit article
    </title>
     ...
@@ -256,7 +256,7 @@ Some important fields can be edited here as well:
 >>> browser.getControl('By line').value = 'by Dr. Who'
 >>> browser.getControl('Subtitle').value = 'Bla blub blarf'
 
-Initially the document is empty: 
+Initially the document is empty:
 
 >>> browser.getControl('Text').value
 ''
@@ -281,7 +281,7 @@ Let's have a look at the source:
     <intertitle>blub</intertitle>
   </body>
 </article>
-    
+
 
 Try to add some xml characters to the WYSIWYG editor as entities but make sure
 other entities will be replaced (this is to make sure bug #3900 is fixed):
@@ -291,7 +291,7 @@ other entities will be replaced (this is to make sure bug #3900 is fixed):
 ...     '<p>Foo</p><h3>blub &mdash;</h3><p>&gt;&amp;&lt;</p>')
 >>> browser.getControl('Apply').click()
 >>> browser.getControl('Text').value
-'<p>Foo</p>\r\n\r\n<h3>blub \xe2\x80\x94</h3>\r\n\r\n<p>&gt;&amp;&lt;</p>\r\n'
+'<p>Foo</p>\r\n<h3>blub \xe2\x80\x94</h3>\r\n<p>&gt;&amp;&lt;</p>'
 
 
 Empty tags will be removed on saving:
@@ -306,10 +306,10 @@ Empty tags will be removed on saving:
 </p>
 
 
-Checking in 
+Checking in
 ===========
 
-We check in the document. We look a the document in the repository then:
+We check in the document. We look at the document in the repository then:
 
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
@@ -320,7 +320,7 @@ We check in the document. We look a the document in the repository then:
 Let's make sure the image is linked:
 
 >>> browser.getLink('Assets').click()
->>> print browser.contents 
+>>> print browser.contents
 <?xml ...
 <li><a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"...>http://xml.zeit.de/2006/DSC00109_2.JPG</a>...
 <li><a href="http://localhost/++skin++cms/repository/image-group"...>http://xml.zeit.de/image-group</a>...
@@ -668,7 +668,7 @@ prevent entering more than the allowed length. Makre sure the widget is used:
         <div class="widget"><div class="show-input-limit" maxlength="20"></div><textarea cols="60" id="form.shortTeaserTitle" name="form.shortTeaserTitle" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserTitle");</script></div>
         ...
         <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
-        ... 
+        ...
 
 
 
@@ -743,7 +743,7 @@ prevent entering more than the allowed length. Makre sure the widget is used:
 
 
 .. [#portraitbox] Create a portraitbox
-    
+
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
