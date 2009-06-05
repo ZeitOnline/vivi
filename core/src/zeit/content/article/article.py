@@ -1,7 +1,6 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.article.interfaces import IArticleMetadata
 import StringIO
 import copy
 import lxml.etree
@@ -143,8 +142,10 @@ class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
                 else:
                     division.append(node)
         else:
-            per_page = (self.context.pageBreak
-                        or IArticleMetadata['pageBreak'].default)
+            per_page = (
+                self.context.pageBreak
+                or zeit.content.article.interfaces.IArticleMetadata[
+                    'pageBreak'].default)
             # one division must always exist
             i = per_page + 1
             for node in root.iterchildren():
