@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.21.5 (unreleased)
+1.21.5 (2009-06-05)
 -------------------
 
 - FunctionalDocFileSuite statt der FunctionalBlobDocFileSuite aus zope.file
