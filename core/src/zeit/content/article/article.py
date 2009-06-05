@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import copy
 import lxml.etree
@@ -14,6 +15,7 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.interfaces
+import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.wysiwyg.html
@@ -68,7 +70,14 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             if value:
                 properties[(name, ns)] = value
 
-articleFactory = zeit.cms.content.adapter.xmlContentFactory(Article)
+
+
+class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
+
+    factory = Article
+    interface = zeit.content.article.interfaces.IArticle
+    type = 'article'
+    title = _('Article')
 
 
 @zope.interface.implementer(zeit.content.article.interfaces.IArticle)
@@ -80,12 +89,6 @@ def articleFromTemplate(context):
     zeit.cms.interfaces.IWebDAVWriteProperties(article).update(
         zeit.cms.interfaces.IWebDAVReadProperties(context))
     return article
-
-
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'article')
-resourceFactory = zope.component.adapter(
-    zeit.content.article.interfaces.IArticle)(resourceFactory)
 
 
 @zope.component.adapter(

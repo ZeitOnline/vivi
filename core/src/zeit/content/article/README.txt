@@ -226,10 +226,10 @@ The article factory parses a Resource's XML and applies the data to the new
 article:
 
 >>> from zeit.cms.connector import Resource
->>> from zeit.content.article.article import articleFactory
+>>> from zeit.content.article.article import ArticleType
 >>> resource = Resource('/2006/gelsenkirchen', 'gelsenkirchen', 'article',
 ...                     article_xml)
->>> article = articleFactory(resource)
+>>> article = ArticleType().content(resource)
 >>> article
 <zeit.content.article.article.Article object at 0x...>
 >>> article.title
@@ -243,10 +243,9 @@ Resource Factory
 
 The resource factory creates Resource objects from articles:
 
->>> from zeit.content.article.article import resourceFactory
 >>> article = Article()
 >>> article.authors = ('Tom', 'Jerry')
->>> resource = resourceFactory(article)
+>>> resource = ArticleType().resource(article)
 >>> resource.type
 'article'
 >>> print resource.data.read()

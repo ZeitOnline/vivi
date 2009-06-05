@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Divisions/Seitenumbrüche (#4707).
 
+- TypeGrokker zum registrieren des Artikels verwendet.
+
 1.7.9 (2009-05-28)
 ------------------
 
