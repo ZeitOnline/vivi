@@ -163,6 +163,22 @@ rule is applied after that:
 </article>
 
 
+Make sure the adapter also works with very short texts:
+
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <p>foo</p>bar
+...   </body>
+... </article>'''
+>>> small = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> small_c = zeit.wysiwyg.html.HTMLConverter(small)
+>>> print small_c.to_html(small.xml['body']),
+<p>foo</p>bar
+
+
 Nested paragraphs
 -----------------
 
