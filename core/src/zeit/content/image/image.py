@@ -1,24 +1,24 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
-
 import gocept.lxml.interfaces
-import zope.app.container.contained
-import zope.app.container.interfaces
-import zope.app.file.image
-import zope.component
-import zope.interface
-import zope.security.proxy
-
 import zeit.cms.connector
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.util
 import zeit.cms.interfaces
 import zeit.cms.repository.file
+import zeit.cms.type
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.interfaces
+import zope.app.container.contained
+import zope.app.container.interfaces
+import zope.app.file.image
+import zope.component
+import zope.interface
+import zope.security.proxy
 
 
 class Image(zope.app.file.image.Image,
@@ -45,19 +45,6 @@ class RepositoryImage(BaseImage,
         zope.app.container.interfaces.IContained)
 
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def repositoryimage_factory(context):
-    try:
-        pil_image = PIL.Image.open(context.data)
-    except IOError:
-        return None
-    content_type = context.contentType
-    if not content_type:
-        content_type = 'image/' + pil_image.format.lower()
-    return RepositoryImage(context.id, content_type)
-
-
 class LocalImage(BaseImage,
                  zeit.cms.repository.file.LocalFile):
 
@@ -81,16 +68,6 @@ def localimage_factory(context):
     return local
 
 
-@zope.interface.implementer(zeit.cms.interfaces.IResource)
-@zope.component.adapter(zeit.content.image.interfaces.IImage)
-def resource_factory(context):
-    return zeit.cms.connector.Resource(
-        context.uniqueId, context.__name__, 'image',
-        zope.security.proxy.removeSecurityProxy(context.open('r')),
-        contentType=context.mimeType,
-        properties=zeit.cms.interfaces.IWebDAVProperties(context))
-
-
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
@@ -107,3 +84,26 @@ def XMLReference(context):
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(image)
     return image
+
+
+class ImageType(zeit.cms.type.TypeDeclaration):
+
+    interface = zeit.content.image.interfaces.IImage
+    type = 'image'
+    title = _('Image')
+
+    def content(self, resource):
+        try:
+            pil_image = PIL.Image.open(resource.data)
+        except IOError:
+            return None
+        content_type = resource.contentType
+        if not content_type:
+            content_type = 'image/' + pil_image.format.lower()
+        return RepositoryImage(resource.id, content_type)
+
+    def resource_body(self, content):
+        return zope.security.proxy.removeSecurityProxy(content.open('r'))
+
+    def resource_content_type(self, content):
+        return content.mimeType

@@ -168,7 +168,7 @@ Feeds are cms content. So we also need to create them from resources:
 
 >>> import StringIO
 >>> from zeit.cms.connector import Resource
->>> from zeit.cms.syndication.feed import feedFactory
+>>> from zeit.cms.syndication.feed import FeedType
 >>> resource = Resource(
 ...    '/wirtschaft', 'wirtschaft', 'feed', 
 ...     StringIO.StringIO('''\
@@ -177,7 +177,7 @@ Feeds are cms content. So we also need to create them from resources:
 ...         <block href="/2006/siemens" />
 ...       </container>
 ...     </channel>'''))
->>> feed = feedFactory(resource)
+>>> feed = FeedType().content(resource)
 >>> feed 
 <zeit.cms.syndication.feed.Feed object at 0x...>
 >>> list(feed.keys())

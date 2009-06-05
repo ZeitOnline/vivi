@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import urlparse
 import z3c.conditionalviews
@@ -11,12 +12,12 @@ import zeit.cms.content.property
 import zeit.cms.repository.interfaces
 import zeit.cms.settings.interfaces
 import zeit.connector.interfaces
+import zeit.content.image.imagereference
 import zeit.content.image.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.file.download
 import zope.publisher.interfaces
-from zeit.cms.i18n import MessageFactory as _
 
 
 def get_img_tag(image, request):

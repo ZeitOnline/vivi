@@ -1,4 +1,8 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
 
   <class class=".text.Text">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
@@ -12,8 +16,4 @@
       />
   </class>
 
-  <adapter factory=".text.text_factory" name="text" />
-  <adapter factory=".text.resource_factory"/>
-
 </configure>
-

@@ -1,46 +1,40 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.i18n import MessageFactory as _
 import StringIO
-
-import zope.interface
-
-import zeit.connector.interfaces
-import zeit.connector.resource
-
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
+import zeit.cms.type
+import zeit.connector.interfaces
+import zeit.connector.resource
+import zope.interface
 
 
 class Folder(zeit.cms.repository.repository.Container):
-    """The Folder structrues content in the repository."""
+    """The Folder structures content in the repository."""
 
     zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
 
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def folderFactory(context):
-    folder = Folder()
-    folder.uniqueId = context.id
-    return folder
 
+class FolderType(zeit.cms.type.TypeDeclaration):
 
-@zope.interface.implementer(zeit.connector.interfaces.IResource)
-@zope.component.adapter(zeit.cms.repository.interfaces.IFolder)
-def folderToResource(context):
-    try:
-        properties = zeit.connector.interfaces.IWebDAVReadProperties(
-            context)
-    except TypeError:
-        properties = zeit.connector.resource.WebDAVProperties()
-    return zeit.connector.resource.Resource(
-        context.uniqueId, context.__name__, 'collection',
-        data=StringIO.StringIO(),
-        contentType='httpd/unix-directory',
-        properties=properties)
+    interface = zeit.cms.repository.interfaces.IFolder
+    type = 'collection'
+    title = _('Folder')
+
+    def content(self, resource):
+        folder = Folder()
+        folder.uniqueId = resource.id
+        return folder
+
+    def resource_body(self, content):
+        return StringIO.StringIO()
+
+    def resource_content_type(self, content):
+        return 'httpd/unix-directory'
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentSortKey)

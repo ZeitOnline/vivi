@@ -1,22 +1,18 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import datetime
-
 import persistent
-
+import zeit.cms.connector
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.type
+import zope.app.container.contained
 import zope.component
 import zope.interface
-
-import zope.app.container.contained
-
-import zeit.cms.connector
-import zeit.cms.interfaces
-import zeit.cms.content.interfaces
-
-import zeit.cms.repository.interfaces
 
 
 class UnknownResource(zope.app.container.contained.Contained):
@@ -50,19 +46,15 @@ class PersistentUnknownResource(UnknownResource,
     """
 
 
+class UnknownResourceType(zeit.cms.type.TypeDeclaration):
 
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def unknownResourceFactory(context):
-    res = PersistentUnknownResource(
-        unicode(context.data.read(), 'latin1'), context.type)
-    return res
+    type = 'unknown'
+    title = _('Unknown Resource')
+    interface = zeit.cms.repository.interfaces.IUnknownResource
 
+    def content(self, resource):
+        return PersistentUnknownResource(
+            unicode(resource.data.read(), 'latin1'), resource.type)
 
-@zope.interface.implementer(zeit.cms.interfaces.IResource)
-@zope.component.adapter(zeit.cms.repository.interfaces.IUnknownResource)
-def resourceFactory(context):
-    return zeit.cms.connector.Resource(
-        context.uniqueId, context.__name__, 'unknown',
-        StringIO.StringIO(context.data.encode('latin1')),
-        properties=zeit.cms.interfaces.IWebDAVProperties(context))
+    def resource_body(self, content):
+        return StringIO.StringIO(content.data.encode('latin1'))

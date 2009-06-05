@@ -1,23 +1,21 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.cachedescriptors.property
-import zope.component
-import zope.interface
-import zope.publisher.interfaces.browser
-
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import z3c.menu.simple.menu
 import zc.table.column
 import zc.table.table
-import z3c.menu.simple.menu
-
 import zeit.cms.browser.column
 import zeit.cms.browser.form
 import zeit.cms.browser.listing
 import zeit.cms.content.browser.interfaces
 import zeit.cms.content.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.template
+import zope.cachedescriptors.property
+import zope.component
+import zope.interface
+import zope.publisher.interfaces.browser
 
 
 class Manager(object):

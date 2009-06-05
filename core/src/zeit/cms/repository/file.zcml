@@ -1,8 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".file.repositoryfile_factory" name="file" />
   <adapter factory=".file.localfile_factory" />
-  <adapter factory=".file.resource_factory" />
 
   <class class=".file.RepositoryFile">
     <require

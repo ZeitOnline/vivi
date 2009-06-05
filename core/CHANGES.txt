@@ -7,6 +7,9 @@ zeit.cms changes
 - FunctionalDocFileSuite statt der FunctionalBlobDocFileSuite aus zope.file
   benutzen, was mit ZODB 3.9 möglich wird und anders nicht funktioniert.
 
+- Registrieren von Content-Type via Typdeklaration und Martian statt diverser
+  ZCML-Statements.
+
 1.21.4 (2009-05-31)
 -------------------
 

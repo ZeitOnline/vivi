@@ -1,25 +1,21 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.i18n import MessageFactory as _
 import StringIO
-
-import lxml.etree
 import gocept.lxml.objectify
-
+import lxml.etree
 import persistent
-
+import zeit.cms.connector
+import zeit.cms.content.adapter
+import zeit.cms.content.interfaces
+import zeit.cms.content.metadata
+import zeit.cms.interfaces
+import zeit.cms.type
+import zeit.content.centerpage.interfaces
+import zope.app.container.contained
 import zope.component
 import zope.interface
-
-import zope.app.container.contained
-
-import zeit.cms.connector
-import zeit.cms.interfaces
-import zeit.cms.content.adapter
-import zeit.cms.content.metadata
-import zeit.cms.content.interfaces
-import zeit.content.centerpage.interfaces
 
 
 CP_TEMPLATE = """\
@@ -40,13 +36,12 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     default_template = CP_TEMPLATE
 
 
-centerpageFactory = zeit.cms.content.adapter.xmlContentFactory(CenterPage)
+class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'centerpage')
-resourceFactory = zope.component.adapter(
-    zeit.content.centerpage.interfaces.ICenterPage)(resourceFactory)
+    factory = CenterPage
+    interface = zeit.content.centerpage.interfaces.ICenterPage
+    title = _('Centerpage')
+    type = 'centerpage'
 
 
 @zope.interface.implementer(zeit.content.centerpage.interfaces.ICenterPage)

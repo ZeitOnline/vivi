@@ -1,14 +1,12 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
-import zope.interface
-
-import zeit.connector.interfaces
 
 import zeit.cms.content.adapter
 import zeit.cms.syndication.feed
+import zeit.cms.type
+import zeit.connector.interfaces
+import zope.component
+import zope.interface
 
 
 class BodyContainer(zeit.cms.syndication.feed.Feed):
@@ -19,11 +17,10 @@ class BodyContainer(zeit.cms.syndication.feed.Feed):
         return self.xml.body.container
 
 
-bodyContainerFactory = zeit.cms.content.adapter.xmlContentFactory(
-    BodyContainer)
 
+class BodyContainerType(zeit.cms.type.XMLContentTypeDeclaration):
 
-bodyContainerResourceFactory = (
-    zeit.cms.content.adapter.xmlContentToResourceAdapterFactory('channel_cp'))
-bodyContainerResourceFactory = zope.component.adapter(
-    BodyContainer)(bodyContainerResourceFactory)
+    type = 'channel_cp'
+    factory = BodyContainer
+    interface = BodyContainer  # Only register for class
+    register_as_type = False

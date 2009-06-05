@@ -28,8 +28,6 @@
     type="zeit.cms.interfaces.ICMSContentType"
     />
 
-  <adapter factory=".folder.folderFactory" name="collection" />
-  <adapter factory=".folder.folderToResource" />
   <adapter factory=".folder.folder_sort_key" />
 
   <adapter factory=".repository.cmscontentFactory" />
@@ -48,8 +46,6 @@
   
   <adapter factory=".preference.preferenceFactory" />
 
-  <adapter factory=".unknown.unknownResourceFactory" name="unknown" />
-  <adapter factory=".unknown.resourceFactory" />
   <class class=".unknown.PersistentUnknownResource">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require interface=".interfaces.IUnknownResource"

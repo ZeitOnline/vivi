@@ -1,20 +1,16 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:i18n="http://namespaces.zope.org/i18n"
+  xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
+  <include package="grokcore.component" file="meta.zcml" />
   <include file="meta.zcml" />
+  <grok:grok package="zeit.cms" />
 
   <!-- Include requirements -->
   <include file="application.zcml" />
   <include package="zeit.cms" file="securitypolicy.zcml" />
-
-  <!-- selenium will only be included in `selenium mode' -->
-  <configure
-    zcml:condition="have zeit.cms.selenium"
-    xmlns:zcml="http://namespaces.zope.org/zcml">
-    <include package="zc.selenium" />
-  </configure>
 
   <!-- local includes -->
 
@@ -39,11 +35,6 @@
     name="zeit.cms"
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"
-    />
-
-  <interface
-    interface=".interfaces.ICMSContent"
-    type=".interfaces.ICMSContentType"
     />
 
   <!-- cleanup -->

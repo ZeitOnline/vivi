@@ -1,4 +1,8 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
 
   <utility 
     name="zeit.content.image"
@@ -6,9 +10,7 @@
     component=".generation.manager"
     />
 
-  <adapter factory=".image.repositoryimage_factory" name="image" />
   <adapter factory=".image.localimage_factory" />
-  <adapter factory=".image.resource_factory" />
   <adapter factory=".image.XMLReference" name="image" />
   <adapter factory=".transform.ImageTransform" />
   <adapter factory=".transform.persistent_thumbnail_factory" />
@@ -54,13 +56,7 @@
       permission="zeit.EditContent" />
   </class>
 
-  <interface
-    interface=".interfaces.IImageGroup"
-    type=".interfaces.IImageType"
-    />
 
-  <adapter factory=".imagegroup.imageGroupToResource" />
-  <adapter factory=".imagegroup.imageGroupFactory" name="image-group" />
   <adapter factory=".imagegroup.XMLReference" name="image" />
 
   <class class=".imagegroup.LocalImageGroup">
@@ -74,10 +70,6 @@
   </class>
   
   <adapter factory=".imagegroup.local_image_group_factory" />
-  <adapter
-    for=".interfaces.ILocalImageGroup"
-    factory=".imagegroup.imageGroupToResource"
-    />
 
   <!-- metadata -->
 

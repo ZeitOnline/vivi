@@ -1,22 +1,22 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import logging
 import lxml.etree
 import rwproperty
-import zope.component
-import zope.interface
-import zope.location.location
-import zope.proxy
-import zope.security.proxy
-
 import zeit.cms.connector
-import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.cms.type
+import zope.component
+import zope.interface
+import zope.location.location
+import zope.proxy
+import zope.security.proxy
 
 
 log = logging.getLogger(__name__)
@@ -171,13 +171,12 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             raise ValueError("'%s' not in feed." % unique_id)
 
 
-feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)
+class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'channel')
-resourceFactory = zope.component.adapter(
-    zeit.cms.syndication.interfaces.IFeed)(resourceFactory)
+    interface = zeit.cms.syndication.interfaces.IFeed
+    factory = Feed
+    type = 'channel'
+    title = _('Channel')
 
 
 def syndicated_in(content, catalog):

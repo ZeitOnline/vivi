@@ -1,12 +1,14 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import persistent
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
+import zeit.cms.type
 import zeit.connector.resource
 import zeit.content.image.interfaces
 import zope.app.container.contained
@@ -39,27 +41,22 @@ class ImageGroup(ImageGroupBase,
         return item
 
 
-@zope.interface.implementer(zeit.content.image.interfaces.IImageGroup)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def imageGroupFactory(context):
-    ig = ImageGroup()
-    ig.uniqueId = context.id
-    return ig
+class ImageGroupType(zeit.cms.type.TypeDeclaration):
 
+    interface = zeit.content.image.interfaces.IImageGroup
+    type = 'image-group'
+    title = _('Image Group')
 
-@zope.interface.implementer(zeit.connector.interfaces.IResource)
-@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
-def imageGroupToResource(context):
-    try:
-        properties = zeit.connector.interfaces.IWebDAVReadProperties(
-            context)
-    except TypeError:
-        properties = zeit.connector.resource.WebDAVProperties()
-    return zeit.connector.resource.Resource(
-        context.uniqueId, context.__name__, 'image-group',
-        data=StringIO.StringIO(),
-        contentType='httpd/unix-directory',
-        properties=properties)
+    def content(self, resource):
+        ig = ImageGroup()
+        ig.uniqueId = resource.id
+        return ig
+
+    def resource_body(self, content):
+        return StringIO.StringIO()
+
+    def resource_content_type(self, content):
+        return 'httpd/unix-directory'
 
 
 class LocalImageGroup(ImageGroupBase,

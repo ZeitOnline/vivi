@@ -2,17 +2,18 @@
 # See also LICENSE.txt
 """File objects."""
 
+from zeit.cms.i18n import MessageFactory as _
 import ZODB.blob
 import persistent
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.type
+import zeit.cms.workingcopy.interfaces
+import zeit.connector.interfaces
 import zope.app.container.contained
 import zope.component
 import zope.interface
 import zope.security.proxy
-
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.workingcopy.interfaces
-import zeit.connector.interfaces
 
 
 class RepositoryFile(zope.app.container.contained.Contained):
@@ -44,12 +45,6 @@ class RepositoryFile(zope.app.container.contained.Contained):
     @property
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
-
-
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-@zope.component.adapter(zeit.cms.interfaces.IResource)
-def repositoryfile_factory(context):
-    return RepositoryFile(context.id, context.contentType)
 
 
 class LocalFile(persistent.Persistent, RepositoryFile):
@@ -88,11 +83,17 @@ def localfile_factory(context):
     return f
 
 
-@zope.component.adapter(zeit.cms.repository.interfaces.IFile)
-@zope.interface.implementer(zeit.connector.interfaces.IResource)
-def resource_factory(context):
-    return zeit.cms.connector.Resource(
-        context.uniqueId, context.__name__, 'file',
-        zope.security.proxy.removeSecurityProxy(context.open('r')),
-        contentType=context.mimeType,
-        properties=zeit.cms.interfaces.IWebDAVProperties(context))
+class FileType(zeit.cms.type.TypeDeclaration):
+
+    interface = zeit.cms.repository.interfaces.IFile
+    type = 'file'
+    title = _('File')
+
+    def content(self, resource):
+        return RepositoryFile(resource.id, resource.contentType)
+
+    def resource_body(self, content):
+        return zope.security.proxy.removeSecurityProxy(content.open('r'))
+
+    def resource_content_type(self, content):
+        return content.mimeType

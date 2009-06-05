@@ -222,6 +222,10 @@ True
 >>> gsm.unregisterUtility(
 ...     repository, zeit.cms.repository.interfaces.IRepository)
 True
+>>> gsm.unregisterUtility(
+...     zeit.cms.interfaces.ICMSContent,
+...     zeit.cms.interfaces.ICMSContentType, 'cmscontent')
+True
 
 Datetime widget
 +++++++++++++++
@@ -297,6 +301,12 @@ in one month:
     ...     __parent__ = repository
     ...     __name__ = u'content'
     ...     uniqueId = 'http://content'
+
+    Make ICMSContent generally a contenttype:
+
+    >>> gsm.registerUtility(
+    ...     zeit.cms.interfaces.ICMSContent,
+    ...     zeit.cms.interfaces.ICMSContentType, 'cmscontent')
 
     To browse the repository the widget needs to look up the default browsing
     location. Create a mock adapter which returns the repository:

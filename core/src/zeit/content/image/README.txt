@@ -88,7 +88,7 @@ The repository image factory returns None when the image cannot be identified:
 
 >>> import zeit.content.image.image
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> zeit.content.image.image.repositoryimage_factory(
+>>> zeit.content.image.image.ImageType().content(
 ...     connector['http://xml.zeit.de/online/2007/01/Somalia']) is None
 True
 

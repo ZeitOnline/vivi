@@ -2,15 +2,15 @@
 # See also LICENSE.txt
 """Implementation of the link content type."""
 
-import zope.component
-import zope.interface
-
-import zeit.cms.content.adapter
+import zeit.cms.type
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.content.link.interfaces
+import zope.component
+import zope.interface
 
 
 class Link(zeit.cms.content.metadata.CommonMetadata):
@@ -28,12 +28,12 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
 
 
 
-linkFactory = zeit.cms.content.adapter.xmlContentFactory(Link)
+class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 
-resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
-    'link')
-resourceFactory = zope.component.adapter(
-    zeit.content.link.interfaces.ILink)(resourceFactory)
+    factory =  Link
+    interface = zeit.content.link.interfaces.ILink
+    title = _('Link')
+    type = 'link'
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):

@@ -1,5 +1,6 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:meta="http://namespaces.zope.org/meta">
 
   <meta:directive
@@ -8,6 +9,8 @@
     schema=".zcml.IEditPermissionDirective"
     handler=".zcml.edit_permission"
     />
+
+  <grok:grok package=".typegrokker" />
 
 </configure>
 
