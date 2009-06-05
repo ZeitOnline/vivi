@@ -1,17 +1,16 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import copy
-
 import lxml.objectify
 import rwproperty
-
-import zope.interface
-
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.type
 import zeit.content.infobox.interfaces
+import zope.interface
 
 
 class Infobox(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -62,10 +61,9 @@ class Infobox(zeit.cms.content.xmlsupport.XMLContentBase):
         return zeit.wysiwyg.interfaces.IHTMLConverter(self)
 
 
-resource_factory = zope.component.adapter(
-    zeit.content.infobox.interfaces.IInfobox)(
-        zeit.cms.content.adapter.xmlContentToResourceAdapterFactory('infobox'))
+class InfoboxType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-# Adapt resource to CMSContent
-infobox_factory = zeit.cms.content.adapter.xmlContentFactory(Infobox)
+    factory = Infobox
+    interface = zeit.content.infobox.interfaces.IInfobox
+    type = 'infobox'
+    title = _('Infobox')

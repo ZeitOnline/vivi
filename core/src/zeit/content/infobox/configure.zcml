@@ -1,4 +1,8 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
 
   <class class=".infobox.Infobox">
     <implements
@@ -17,14 +21,6 @@
       set_schema="zeit.cms.content.interfaces.IXMLContent"
       permission="zeit.EditContent" />
   </class>
-
-  <interface
-    interface=".interfaces.IInfobox"
-    type="zeit.cms.interfaces.ICMSContentType"
-    />
-
-  <adapter factory=".infobox.resource_factory" />
-  <adapter factory=".infobox.infobox_factory" name="infobox"/>
 
   <!-- reference -->
   <utility 
