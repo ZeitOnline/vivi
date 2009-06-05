@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.article.interfaces import IArticleMetadata
 import StringIO
 import copy
 import lxml.etree
@@ -131,15 +132,31 @@ class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
             root.remove(divisions[0])
 
     def to_xml(self, root):
-        # one division must always exist
-        division = lxml.etree.Element('division', **{'type': 'page'})
-        root.insert(0, division)
+        if root.xpath('division[@type="page"]'):
+            # one division must always exist
+            division = lxml.etree.Element('division', **{'type': 'page'})
+            root.insert(0, division)
 
-        for node in root.iterchildren():
-            if node.tag == 'division' and node.get('type') == 'page':
-                division = node
-            else:
+            for node in root.iterchildren():
+                if node.tag == 'division' and node.get('type') == 'page':
+                    division = node
+                else:
+                    division.append(node)
+        else:
+            per_page = (self.context.pageBreak
+                        or IArticleMetadata['pageBreak'].default)
+            # one division must always exist
+            i = per_page + 1
+            for node in root.iterchildren():
+                if i > per_page:
+                    division = lxml.etree.Element(
+                        'division', **{'type': 'page'})
+                    root.insert(root.index(node), division)
+                    i = 1
+
                 division.append(node)
+                if node.tag == 'p':
+                    i += 1
 
 
 class DivisionStep(zeit.wysiwyg.html.ConversionStep):

@@ -115,6 +115,78 @@ Page breaking only applies to Articles, not to other content types:
   <p>2</p>
 </body>
 
+If the HTML does not supply any page breaks, an appropriate amount is inserted
+according to IArticleMetadata.pageBreak:
+
+>>> article = zeit.content.article.article.Article()
+>>> article.pageBreak = 2
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <p>2</p>
+...   <p>3</p>
+...   <p>4</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <division type="page">
+    <p>1</p>
+    <p>2</p>
+  </division>
+  <division type="page">
+    <p>3</p>
+    <p>4</p>
+  </division>
+</body>
+
+Only <p> tags count toward the page break:
+
+>>> article = zeit.content.article.article.Article()
+>>> article.pageBreak = 2
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <h3>Heading</h3>
+...   <p>2</p>
+...   <p>3</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <division type="page">
+    <p>1</p>
+    <intertitle>Heading</intertitle>
+    <p>2</p>
+  </division>
+  <division type="page">
+    <p>3</p>
+  </division>
+</body>
+
+If the HTML contains page breaks, those are preserved and no additional ones
+are added:
+
+>>> article = zeit.content.article.article.Article()
+>>> article.pageBreak = 2
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <div class="page-break">foo</div>
+...   <p>2</p>
+...   <p>3</p>
+...   <p>4</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <division type="page">
+    <p>1</p>
+  </division>
+  <division type="page">
+    <p>2</p>
+    <p>3</p>
+    <p>4</p>
+  </division>
+</body>
+
 
 .. [#needsinteraction]
     >>> import zeit.cms.testing
