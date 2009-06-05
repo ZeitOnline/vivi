@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.23 (unreleased)
+1.23 (2009-06-05)
 -----------------
 
 - Intern grundlegend umstrukturiert: Die Konvertierungsphasen sind jetzt
