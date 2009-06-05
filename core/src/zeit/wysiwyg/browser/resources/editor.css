@@ -64,15 +64,17 @@ intertitle {
 }
 
 
-.raw, 
-.audio, 
-.video {
+.raw,
+.audio,
+.video,
+.page-break {
     border: 1px solid black;
     padding: 0.5em;
 }
 
 .audio:after,
-.video:after {
+.video:after,
+.page-break:after {
     background-color: black;
     color: white;
     display: block;
@@ -86,6 +88,10 @@ intertitle {
 
 .video:after {
     content: "Video";
+}
+
+.page-break:after {
+    content: "Seitenumbruch";
 }
 
 .audio > .audioId:before {
@@ -120,6 +126,11 @@ intertitle {
 .audio > .format,
 .video > .videoId,
 .video > .expires,
-.video > .format {
+.video > .format,
+.page-break > .page-break-teaser {
     padding: 0.5em;
+}
+
+.page-break > .page-break-teaser:before {
+    content: "Teaser:";
 }

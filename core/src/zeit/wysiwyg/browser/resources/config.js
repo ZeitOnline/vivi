@@ -6,7 +6,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
         ['OrderedList','UnorderedList', 'Table'],
         ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio', 'Zeit_MailForm',
-         'Zeit_RAW'],
+         'Zeit_RAW', 'Zeit_Pagebreak'],
         ['Link','Unlink','Anchor'],
 ];
 
@@ -31,6 +31,7 @@ FCKConfig.Plugins.Add('video', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('mailform', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('image', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('raw', '', FCKConfig.PageConfig.ZeitResources + '/');
+FCKConfig.Plugins.Add('pagebreak', '', FCKConfig.PageConfig.ZeitResources + '/');
 
 
 FCK.CustomCleanWord = function( oNode, bIgnoreFont, bRemoveStyles )
