@@ -212,9 +212,9 @@ We can import the data from the article:
 Now the WebDAV properties are there, besides the empty one:
 
 >>> sorted(properties.keys())
-[('author', 'http://namespaces.zeit.de/CMS/document'), 
- ('text-length', 'http://namespaces.zeit.de/CMS/document'), 
- ('volume', 'http://namespaces.zeit.de/CMS/document'), 
+[('author', 'http://namespaces.zeit.de/CMS/document'),
+ ('text-length', 'http://namespaces.zeit.de/CMS/document'),
+ ('volume', 'http://namespaces.zeit.de/CMS/document'),
  ('year', 'http://namespaces.zeit.de/CMS/document')]
 >>> properties.get(('author', 'http://namespaces.zeit.de/CMS/document'))
 'Dave Bowman'
@@ -297,7 +297,7 @@ And the image is referenced in the XML structure:
   <head>...
     <image
       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
       type="JPG">
       <bu xsi:nil="true"/>
