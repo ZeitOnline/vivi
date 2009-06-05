@@ -2,27 +2,23 @@
 # See also LICENSE.txt
 
 import copy
-import xml.sax.saxutils
-
+import gocept.lxml.interfaces
 import lxml.etree
 import lxml.objectify
-import gocept.lxml.interfaces
 import rwproperty
-
+import xml.sax.saxutils
+import zeit.cms.connector
+import zeit.cms.content.adapter
+import zeit.cms.content.metadata
+import zeit.cms.content.util
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.content.gallery.interfaces
+import zeit.wysiwyg.html
 import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.location.location
-
-import zeit.cms.connector
-import zeit.cms.interfaces
-import zeit.cms.content.adapter
-import zeit.cms.content.metadata
-import zeit.cms.content.util
-import zeit.cms.repository.interfaces
-import zeit.wysiwyg.html
-
-import zeit.content.gallery.interfaces
 
 
 # A gallery used to be a center page, that's why we initialize it with such a
