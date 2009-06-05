@@ -1,0 +1,121 @@
+Page breaks
+===========
+
+[#needsinteraction]_
+
+>>> import StringIO
+>>> import lxml.etree
+>>> import zeit.content.article.article
+>>> import zeit.wysiwyg.interfaces
+
+
+XML->HTML
+---------
+
+The division appears *between* the paragraphs, so one divsion is invisible:
+
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <division type="page">
+...       <p>1</p>
+...       <p>2</p>
+...     </division>
+...   </body>
+... </article>'''
+>>> article = zeit.content.article.article.Article(StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>1</p>
+<p>2</p>
+
+but from two on, <division> is converted to a <div class="page-break">:
+
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <division type="page">
+...       <p>1</p>
+...       <p>2</p>
+...     </division>
+...     <division type="page">
+...       <p>3</p>
+...       <p>4</p>
+...     </division>
+...   </body>
+... </article>'''
+>>> article = zeit.content.article.article.Article(StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>1</p>
+<p>2</p>
+<div class="page-break">XXX</div>
+<p>3</p>
+<p>4</p>
+
+
+HTML->XML
+---------
+
+One division should always exist:
+
+>>> article = zeit.content.article.article.Article()
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <p>2</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <division type="page">
+    <p>1</p>
+    <p>2</p>
+  </division>
+</body>
+
+and multiple ones are converted accordingly:
+
+>>> article = zeit.content.article.article.Article()
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <p>2</p>
+...   <div class="page-break">foo</div>
+...   <p>3</p>
+...   <p>4</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <division type="page">
+    <p>1</p>
+    <p>2</p>
+  </division>
+  <division type="page">
+    <p>3</p>
+    <p>4</p>
+  </division>
+</body>
+
+Page breaking only applies to Articles, not to other content types:
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <p>2</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <p>1</p>
+  <p>2</p>
+</body>
+
+
+.. [#needsinteraction]
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction()

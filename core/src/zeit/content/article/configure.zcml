@@ -39,6 +39,9 @@
       permission="zeit.EditContent" />
   </class>
 
+  <adapter factory=".article.PageBreakStep" name="PageBreakStep"/>
+  <adapter factory=".article.DivisionStep" name="DivisionStep"/>
+
 
   <subscriber handler=".article.updateTextLengthOnChange" />
 

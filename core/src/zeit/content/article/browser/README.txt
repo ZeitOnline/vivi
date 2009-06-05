@@ -277,8 +277,10 @@ Let's have a look at the source:
     <supertitle py:pytype="str">Halle</supertitle>
     <byline py:pytype="str">by Dr. Who</byline>
     <subtitle>Bla blub blarf</subtitle>
-    <p>Foo</p>
-    <intertitle>blub</intertitle>
+    <division type="page">
+      <p>Foo</p>
+      <intertitle>blub</intertitle>
+    </division>
   </body>
 </article>
 

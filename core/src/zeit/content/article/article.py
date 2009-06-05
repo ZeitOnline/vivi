@@ -1,30 +1,27 @@
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import StringIO
-
+import copy
+import lxml.etree
+import lxml.objectify
 import persistent
-
-import zope.component
-import zope.interface
-import zope.security.proxy
-
-import zope.app.container.contained
-
-import zeit.connector.interfaces
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
-import zeit.cms.content.metadata
 import zeit.cms.content.interfaces
+import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.interfaces
+import zeit.connector.interfaces
+import zeit.content.article.interfaces
 import zeit.wysiwyg.html
 import zeit.wysiwyg.interfaces
-
-import zeit.content.article.interfaces
+import zope.app.container.contained
+import zope.component
+import zope.interface
+import zope.security.proxy
 
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
@@ -111,3 +108,52 @@ class ArticleHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
     def get_tree(self):
         return self.context.xml['body']
+
+
+class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
+
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+
+    weight = -1.1
+    xpath_xml = '.'
+    xpath_html = '.'
+
+    def to_html(self, root):
+        # pull up children behind their divisions
+        for division in root.xpath('division[@type="page"]'):
+            for i, child in enumerate(division.iterchildren()):
+                root.insert(root.index(division) + 1 + i, child)
+
+        # page-breaks shall be only *between* pages, so the first one
+        # is superfluous
+        divisions = root.xpath('division[@type="page"]')
+        if divisions:
+            root.remove(divisions[0])
+
+    def to_xml(self, root):
+        # one division must always exist
+        division = lxml.etree.Element('division', **{'type': 'page'})
+        root.insert(0, division)
+
+        for node in root.iterchildren():
+            if node.tag == 'division' and node.get('type') == 'page':
+                division = node
+            else:
+                division.append(node)
+
+
+class DivisionStep(zeit.wysiwyg.html.ConversionStep):
+
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+
+    xpath_xml = './/division[@type="page"]'
+    xpath_html = './/*[@class="page-break"]'
+
+    def to_html(self, node):
+        new_node = lxml.objectify.E.div('XXX', **{'class': 'page-break'})
+        lxml.objectify.deannotate(new_node)
+        return new_node
+
+    def to_xml(self, node):
+        new_node = lxml.etree.Element('division', **{'type': 'page'})
+        return new_node
