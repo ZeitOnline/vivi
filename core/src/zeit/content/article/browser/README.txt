@@ -291,7 +291,7 @@ other entities will be replaced (this is to make sure bug #3900 is fixed):
 ...     '<p>Foo</p><h3>blub &mdash;</h3><p>&gt;&amp;&lt;</p>')
 >>> browser.getControl('Apply').click()
 >>> browser.getControl('Text').value
-'  <p>Foo</p>\r\n  <h3>blub \xe2\x80\x94</h3>\r\n  <p>&gt;&amp;&lt;</p>'
+'<p>Foo</p>\r\n  <h3>blub \xe2\x80\x94</h3>\r\n  <p>&gt;&amp;&lt;</p>'
 
 
 Empty tags will be removed on saving:
