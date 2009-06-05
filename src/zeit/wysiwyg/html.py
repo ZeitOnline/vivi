@@ -51,14 +51,11 @@ class HTMLConverter(object):
         tree = self._copy(tree)
         self._apply_steps(tree, 'xpath_xml', 'to_html', reverse=False)
 
-        # XXX this is ugly. Is there a better way to serialize
-        # "all but the root node"?
-        result = lxml.etree.tostring(
-            tree, pretty_print=True, encoding=unicode)
-        # chop off first and last line
-        result = '\n'.join(result.split('\n')[1:-2])
-        # chop off leading indentation of 2 spaces
-        return result[2:]
+        result = []
+        for child in tree.iterchildren():
+            result.append(lxml.etree.tostring(
+                copy.copy(child), pretty_print=True, encoding=unicode))
+        return ''.join(result)
 
     def from_html(self, tree, value):
         """converts the HTML `value` to XML and sets it on `tree`."""
