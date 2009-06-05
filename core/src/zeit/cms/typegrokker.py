@@ -46,7 +46,7 @@ class TypeGrokker(martian.ClassGrokker):
                 callable=annotate_interface,
                 args=(context.interface, 'zeit.cms.title', context.title))
             zope.component.zcml.interface(
-                config, context.interface, zeit.cms.interfaces.ICMSContentType)
+                config, context.interface, context.interface_type)
 
         return True
 

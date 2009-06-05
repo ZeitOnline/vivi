@@ -37,11 +37,6 @@
       interface=".interfaces.ITransform"
       permission="zope.View" />
   </class>
-  
-  <interface
-    interface=".interfaces.IImage"
-    type=".interfaces.IImageType"
-    />
 
   <!-- Image group -->
 

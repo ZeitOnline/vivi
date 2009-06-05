@@ -1,6 +1,13 @@
 zeit.cms changes
 ================
 
+1.21.6 (unreleased)
+-------------------
+
+- Bilder sind wieder IImageTypes
+
+- Logging-Fehler im XMLTypeGrokker behoben.
+
 1.21.5 (2009-06-05)
 -------------------
 

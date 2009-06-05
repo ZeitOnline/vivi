@@ -44,6 +44,7 @@ class ImageGroup(ImageGroupBase,
 class ImageGroupType(zeit.cms.type.TypeDeclaration):
 
     interface = zeit.content.image.interfaces.IImageGroup
+    interface_type = zeit.content.image.interfaces.IImageType
     type = 'image-group'
     title = _('Image Group')
 

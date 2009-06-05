@@ -2,14 +2,20 @@
 # See also LICENSE.txt
 
 import StringIO
+import logging
 import lxml.etree
+import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
+
+
+log = logging.getLogger(__name__)
 
 
 class TypeDeclaration(object):
 
     interface = None
+    interface_type = zeit.cms.interfaces.ICMSContentType
     type = None
     title = None
     register_as_type = True
@@ -45,7 +51,7 @@ class XMLContentTypeDeclaration(TypeDeclaration):
         try:
             return self.factory(xml_source=resource.data)
         except lxml.etree.XMLSyntaxError, e:
-            logger.warning("Could not parse XML of %s: %s (%s)" % (
+            log.warning("Could not parse XML of %s: %s (%s)" % (
                 resource.id, e.__class__.__name__, e))
             return None
 

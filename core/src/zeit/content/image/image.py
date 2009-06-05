@@ -89,6 +89,7 @@ def XMLReference(context):
 class ImageType(zeit.cms.type.TypeDeclaration):
 
     interface = zeit.content.image.interfaces.IImage
+    interface_type = zeit.content.image.interfaces.IImageType
     type = 'image'
     title = _('Image')
 
