@@ -57,7 +57,7 @@ automatically:
 
 >>> pb.text = u'ist <strong>ein Hans</strong> und wurstet.'
 >>> print html.html
-<p xmlns...>ist <strong>ein Hans</strong> und wurstet.</p>
+<p>ist <strong>ein Hans</strong> und wurstet.</p>
 
 
 Verify the interface:
