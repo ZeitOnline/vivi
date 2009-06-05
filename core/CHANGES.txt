@@ -1,6 +1,11 @@
 zeit.content.gallery changes
 ============================
 
+1.22.1 (2009-06-05)
+-------------------
+
+- Registrierung via TypeDeclaration
+
 1.22 (2009-05-28)
 -----------------
 

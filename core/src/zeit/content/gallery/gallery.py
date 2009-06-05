@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import copy
 import gocept.lxml.interfaces
 import lxml.etree
@@ -13,6 +14,7 @@ import zeit.cms.content.metadata
 import zeit.cms.content.util
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.type
 import zeit.content.gallery.interfaces
 import zeit.wysiwyg.html
 import zope.component
@@ -252,13 +254,12 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return image.__parent__
 
 
-galleryFactory = zeit.cms.content.adapter.xmlContentFactory(Gallery)
+class GalleryType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'gallery')
-resourceFactory = zope.component.adapter(
-    zeit.content.gallery.interfaces.IGallery)(resourceFactory)
+    factory = Gallery
+    interface = zeit.content.gallery.interfaces.IGallery
+    type = 'gallery'
+    title = _('Gallery')
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)

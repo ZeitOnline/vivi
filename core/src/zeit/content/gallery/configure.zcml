@@ -1,7 +1,9 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
 
-  <adapter factory=".gallery.galleryFactory" name="gallery" />
-  <adapter factory=".gallery.resourceFactory" />
+  <grok:grok package="." />
+
   <adapter factory=".gallery.galleryentry_factory" />
   <adapter factory=".gallery.EntryXMLRepresentation" />
   <subscriber handler=".gallery.update_gallery_on_entry_change" />
