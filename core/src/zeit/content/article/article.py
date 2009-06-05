@@ -161,16 +161,23 @@ class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
 
 class DivisionStep(zeit.wysiwyg.html.ConversionStep):
 
+    # XXX structurally similar to zeit.wysiwyg.html.RawXMLStep
+
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     xpath_xml = './/division[@type="page"]'
     xpath_html = './/*[@class="page-break"]'
 
     def to_html(self, node):
-        new_node = lxml.objectify.E.div('XXX', **{'class': 'page-break'})
+        new_node = lxml.objectify.E.div(
+            lxml.objectify.E.div(node.get('teaser'), **{'class': 'page-break-teaser'}),
+            **{'class': 'page-break'})
         lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
-        new_node = lxml.etree.Element('division', **{'type': 'page'})
+        match = node.xpath('div[@class="page-break-teaser"]')
+        teaser = unicode(match[0]) if match else ''
+        new_node = lxml.etree.Element('division', **{'type': 'page',
+                                                     'teaser': teaser})
         return new_node
