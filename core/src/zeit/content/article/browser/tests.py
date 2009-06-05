@@ -4,7 +4,7 @@
 from zope.testing import doctest
 import unittest
 import zeit.cms.testing
-import zeit.content.article.testing
+import zeit.content.article.tests
 
 
 def test_suite():
@@ -12,5 +12,5 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'recension.txt',
-        layer=zeit.content.article.testing.ArticleLayer))
+        layer=zeit.content.article.tests.ArticleLayer))
     return suite
