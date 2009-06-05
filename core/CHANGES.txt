@@ -1,6 +1,11 @@
 zeit.content.article changes
 ============================
 
+2.0 (unreleased)
+----------------
+
+- Divisions/Seitenumbrüche (#4707).
+
 1.7.9 (2009-05-28)
 ------------------
 
