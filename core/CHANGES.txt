@@ -1,6 +1,12 @@
 zeit.content.gallery changes
 ============================
 
+1.22.2 (2009-06-08)
+-------------------
+
+- Text aus Captions wurde bei der Verarbeitung nicht immer richtig XML-escaped.
+  Eine Galerie konnte hierduch teilweise unbearbeitbar werden.
+
 1.22.1 (2009-06-05)
 -------------------
 

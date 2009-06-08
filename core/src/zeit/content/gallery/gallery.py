@@ -123,7 +123,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
             text = gallery_caption.text
             if text is None:
                 text = ''
-            entry.caption = text + u''.join(
+            entry.caption = xml.sax.saxutils.escape(text) + u''.join(
                 lxml.etree.tostring(copy.copy(node), encoding=unicode)
                 for node in gallery_caption.iterchildren())
 

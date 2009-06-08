@@ -170,7 +170,7 @@ xml:
 
 >>> entry.text = lxml.objectify.E.text(
 ...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
->>> entry.caption = u'Gallery<br/>caption'
+>>> entry.caption = u'Gallery &amp; <br/>caption'
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
@@ -236,7 +236,7 @@ When we assign the entry the change will be reflected:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery<br/>caption</caption>
+          <caption>Gallery &amp; <br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
             <bu>Nice <em>01</em> image</bu>
             <copyright ...>...</copyright>
@@ -284,7 +284,7 @@ well:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery<br/>caption</caption>
+          <caption>Gallery &amp; <br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
             <bu>Nice <em>01</em> image</bu>
             <copyright ...>...</copyright>
@@ -310,7 +310,7 @@ u'Der Wecker klingelt'
 >>> entry.text['p']
 u'Seit zwei Uhr in der Fr\xc3\xbch'
 >>> entry.caption
-u'Gallery<br/>caption'
+u'Gallery &amp; <br/>caption'
 
 
 Entry layout
@@ -354,7 +354,7 @@ True
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery<br/>caption</caption>
+          <caption>Gallery &amp; <br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
             <bu>Nice <em>01</em> image</bu>
             <copyright ...>...</copyright>
@@ -402,7 +402,7 @@ u'image-only'
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery<br/>caption</caption>
+          <caption>Gallery &amp; <br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
             <bu>Nice <em>01</em> image</bu>
             <copyright ...>...</copyright>
@@ -449,7 +449,7 @@ This is of course reflected int he XML:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery<br/>caption</caption>
+          <caption>Gallery &amp; <br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
             <bu>Nice <em>01</em> image</bu>
             <copyright ...>...</copyright>
@@ -578,7 +578,7 @@ Note that his has *not* changed the xml so far:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery<br/>caption</caption>
+          <caption>Gallery &amp; <br/>caption</caption>
           <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/01.jpg" type="jpg">
             <bu>Nice <em>01</em> image</bu>
             <copyright ...>...</copyright>
