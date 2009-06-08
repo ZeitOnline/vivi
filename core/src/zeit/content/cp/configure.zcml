@@ -1,7 +1,9 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:zeit="http://namespaces.zeit.de/zcml">
 
+  <grok:grok package="." />
   <include package="zeit.content.cp" file="meta.zcml" />
   <include package="zeit.find" /> <!-- XXX why?! -->
 
@@ -27,8 +29,6 @@
       />
   </class>
 
-  <adapter factory=".centerpage.resourceFactory" />
-  <adapter factory=".centerpage.centerpageFactory" name="centerpage-2009" />
   <adapter factory=".centerpage.cms_content_iter" />
   <adapter factory=".rule.ValidatingWorkflow" 
     provides=".interfaces.IValidatingWorkflow"

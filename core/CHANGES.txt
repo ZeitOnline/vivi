@@ -8,6 +8,8 @@ zeit.content.cp changes
 
 - Contextabhängige Layouts (#5034).
 
+- Registrierung via Martian.
+
 0.7 (2009-05-26)
 ----------------
 

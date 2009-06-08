@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import UserDict
 import itertools
 import lxml.etree
@@ -11,6 +12,7 @@ import zeit.cms.content.adapter
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
+import zeit.cms.type
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
@@ -19,7 +21,6 @@ import zope.lifecycleevent
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                  UserDict.DictMixin):
-    """XXX docme"""
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
                               zeit.cms.interfaces.IEditorialContent)
@@ -52,13 +53,12 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
 
 
-centerpageFactory = zeit.cms.content.adapter.xmlContentFactory(CenterPage)
+class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'centerpage-2009')
-resourceFactory = zope.component.adapter(
-    zeit.content.cp.interfaces.ICenterPage)(resourceFactory)
+    factory = CenterPage
+    interface = zeit.content.cp.interfaces.ICenterPage
+    title = _('Centerpage 2009')
+    type = 'centerpage-2009'
 
 
 _test_helper_cp_changed = False
