@@ -1,6 +1,12 @@
 zeit.locales CHANGES
 ====================
 
+0.3 (unreleased)
+++++++++++++++++
+
+- zeit.wysiwyg, zeit.content.infobox, zeit.content.portraitbox und
+  zeit.content.gallery hinzugefügt.
+
 0.2 (2009-05-18)
 ++++++++++++++++
 
