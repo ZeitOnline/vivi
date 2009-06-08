@@ -41,7 +41,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.cms>1.21.6',
+        'zeit.cms>=1.21.6',
         'zeit.connector>=0.14',
         'zeit.content.infobox',
         'zeit.content.gallery',
