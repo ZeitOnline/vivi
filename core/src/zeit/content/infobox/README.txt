@@ -87,9 +87,9 @@ Of course we'll get the data back, in unicode:
 
 >>> import pprint
 >>> pprint.pprint(ib.contents)
-((u'Informationen', u'<p>Nutzen Sie die Renteninformation, etc</p>'),
- (u'Fehlende Versicherungszeiten',
-  u'<p>Pruefen Sie, ob in <strong>Ihrer</strong> Renteninformation alle</p>\n  <p>Fitze fitze fatze</p>'))
+((u'Infor...
+ (u'Fehle...
+  u'<p>Prue...
 
 .. [#functional] Functional test setup:
 
