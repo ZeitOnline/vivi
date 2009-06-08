@@ -85,6 +85,13 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
 >>> list(workingcopy.values())
 [<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...]
 
+The resource is locked in DAV for about an hour:
+
+>>> lockable = zope.app.locking.interfaces.ILockable(content)
+>>> lockable.locked()
+True
+>>> round(lockable.getLockInfo().timeout)
+3600.0
 
 After checking out the resource is locked in the WebDAV. This means other users
 cannot check it out. Login another user called `bob`:
@@ -165,6 +172,7 @@ True
 >>> manager = ICheckinManager(content)
 >>> manager.canCheckin
 False 
+>>> import zope.app.locking.interfaces
 >>> lockable = zope.app.locking.interfaces.ILockable(content)
 >>> lockable.locked()
 False
@@ -227,6 +235,15 @@ The checked out content is stored in a temporary workingcopy:
 True
 >>> list(checked_out.__parent__.keys())
 [u'4schanzentournee-abgesang']
+
+
+The lock timeout is small for temporary checkouts (around 30 seconds):
+
+>>> lockable = zope.app.locking.interfaces.ILockable(content)
+>>> lockable.locked()
+True
+>>> round(lockable.getLockInfo().timeout)
+30.0
 
 We can also check in the temporary checkout:
 
@@ -294,13 +311,11 @@ raised.
 We provide a special LockStorage to simulate the behaviour:
 
 >>> import zeit.cms.locking.locking
->>> import zope.app.locking.interfaces
 >>> class LockStorage(zeit.cms.locking.locking.LockStorage):
 ...     def setLock(self, object, lock):
 ...         raise zope.app.locking.interfaces.LockingError(object.uniqueId)
 ...
 >>> lock_storage = LockStorage()
->>> import zope.app.locking.interfaces
 >>> site_manager.registerUtility(
 ...     lock_storage, zope.app.locking.interfaces.ILockStorage)
 

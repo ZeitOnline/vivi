@@ -50,8 +50,9 @@ class CheckoutManager(object):
                 "Cannot checkout.")
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if not lockable.locked():
+            timeout = 30 if temporary else 3600
             try:
-                lockable.lock(timeout=3600)
+                lockable.lock(timeout=timeout)
             except zope.app.locking.interfaces.LockingError, e:
                 # This is to catch a race condition when the object is locked
                 # by another process/thread between the lock check above and
