@@ -2,16 +2,16 @@
 # See also LICENSE.txt
 """Portraitbox."""
 
+from zeit.cms.i18n import MessageFactory as _
 import lxml.objectify
 import rwproperty
-
-import zope.interface
-
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.type
 import zeit.content.portraitbox.interfaces
 import zeit.wysiwyg.html
+import zope.interface
 
 
 class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -30,15 +30,12 @@ class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
         attributes=('base_id', 'src'))
 
 
-resource_factory = zope.component.adapter(
-    zeit.content.portraitbox.interfaces.IPortraitbox)(
-        zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
-            'portraitbox'))
+class PortraiboxType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-# Adapt resource to CMSContent
-portraitbox_factory = zeit.cms.content.adapter.xmlContentFactory(Portraitbox)
-
+    interface = zeit.content.portraitbox.interfaces.IPortraitbox
+    type = 'portraitbox'
+    factory = Portraitbox
+    title = _('Portraitbox')
 
 
 class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):

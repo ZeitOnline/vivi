@@ -1,5 +1,8 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
 
+  <grok:grok package="." />
   <class class=".portraitbox.Portraitbox">
     <implements
       interface="zope.annotation.interfaces.IAttributeAnnotatable" />
@@ -18,13 +21,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <interface
-    interface=".interfaces.IPortraitbox"
-    type="zeit.cms.interfaces.ICMSContentType"
-    />
-
-  <adapter factory=".portraitbox.resource_factory" />
-  <adapter factory=".portraitbox.portraitbox_factory" name="portraitbox"/>
   <adapter factory=".portraitbox.PortraitboxHTMLContent" />
 
   <!-- reference -->
