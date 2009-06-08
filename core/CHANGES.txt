@@ -1,6 +1,11 @@
 zeit.content.infobox changes
 ============================
 
+1.22.2 (2009-06-08)
+-------------------
+
+- Tests für neuen WYSIWYG-Konverter angepasst.
+
 1.22.1 (2009-06-05)
 -------------------
 
