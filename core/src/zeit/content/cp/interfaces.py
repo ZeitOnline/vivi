@@ -43,7 +43,7 @@ class CPTypeSource(zeit.cms.content.sources.SimpleXMLSource):
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
-    """XXX docme"""
+    """A relaunch 09 centerpage."""
 
     type = zope.schema.Choice(
         title=_('CP type'),
