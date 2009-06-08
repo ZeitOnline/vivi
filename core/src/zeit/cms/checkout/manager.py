@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import datetime
 import pytz
 import zeit.cms.checkout.interfaces
@@ -29,25 +30,37 @@ class CheckoutManager(object):
 
     @property
     def canCheckout(self):
+        try:
+            self._guard_checkout()
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
+            return False
+        return True
+
+    def _guard_checkout(self):
         if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
             self.context):
-            return False
+            raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                "Can only checkout IRepositoryContent")
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if lockable.locked() and not lockable.ownLock():
-            return False
+            raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                _('The content object is locked by ${name}.', mapping=dict(
+                name=lockable.locker())))
         if zeit.cms.workingcopy.interfaces.ILocalContent(
             self.context, None) is None:
-            return False
+            raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                'Could not adapt content to ILocalContent')
         for obj in self.workingcopy.values():
             if (zeit.cms.interfaces.ICMSContent.providedBy(obj)
                 and obj.uniqueId == self.context.uniqueId):
-                return False
+                raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                    _('The content you tried to check out is already in your '
+                      'working copy.'))
         return True
 
+
     def checkout(self, event=True, temporary=False):
-        if not self.canCheckout:
-            raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                "Cannot checkout.")
+        self._guard_checkout()
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if not lockable.locked():
             timeout = 30 if temporary else 3600

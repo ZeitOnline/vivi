@@ -104,6 +104,12 @@ Bob cannot check out:
 >>> manager = ICheckoutManager(content)
 >>> manager.canCheckout
 False
+>>> manager.checkout()
+Traceback (most recent call last):
+    ...
+CheckinCheckoutError: The content object is locked by ${name}.
+
+
 
 Let's log back in as the `zope.user`.
 

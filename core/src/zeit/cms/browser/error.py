@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import zope.i18n
 
 class ErrorView(object):
 
@@ -10,4 +10,11 @@ class ErrorView(object):
         return self.index()
 
     def message(self):
-        return '%s: %s' % (self.context.__class__.__name__, self.context)
+        args = getattr(self.context, 'args', None)
+        if args:
+            message = zope.i18n.translate(
+                args[0], context=self.request)
+        else:
+            message = self.context
+
+        return '%s: %s' % (self.context.__class__.__name__, message)
