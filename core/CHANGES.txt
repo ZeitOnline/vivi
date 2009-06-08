@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.22 (unreleased)
+1.22 (2009-06-08)
 -----------------
 
 - WebDAV-Sperren von Hintergrundprozessen dauern nur noch maximal 30 Sekunden.
