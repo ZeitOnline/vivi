@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.21.6 (unreleased)
+1.21.6 (2009-06-08)
 -------------------
 
 - Bilder sind wieder IImageTypes
