@@ -2,9 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-import datetime
 import rwproperty
-import time
 import zc.iso8601.parse
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block

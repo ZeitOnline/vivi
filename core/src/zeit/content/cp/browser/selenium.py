@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 
 import lxml.cssselect
-import pkg_resources
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces

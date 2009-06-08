@@ -2,7 +2,6 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces

@@ -5,7 +5,6 @@
 from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
-import md5
 import rwproperty
 import zeit.cms.connector
 import zeit.cms.content.adapter
