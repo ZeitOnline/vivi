@@ -159,7 +159,7 @@ After saving we're back at the overview:
     <td>
       <div class="caption">Mann/Stein</div>
       <div class="title">The man man</div>
-      <div class="text"><p> <strong>Der Mann am Stein</strong> </p></div>
+      <div class="text"><p> <strong>Der Mann am Stein</strong> </p> </div>
     </td>
   </tr>
   ...
