@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.23.1 (unreleased)
+1.23.1 (2009-06-08)
 -------------------
 
 - Sehr kleine Texte wurden nicht korrekt nach HTML konvertiert.
