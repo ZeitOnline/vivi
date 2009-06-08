@@ -47,37 +47,17 @@
       <div class="types">
         <label>Typen:</label>
         <div>
-          <div>
-            <label>
-              <input type="checkbox" checked="checked" id="article" name="article" />
-              Artikel
-            </label>
+          {.repeated section types}
+          <div class="type-outer">
+             <div class="type-inner">
+              <input type="checkbox" checked="checked" id="{type}" name="{type}" />
+              <label for="{type}">
+                {title}
+              </label>
+            </div>
           </div>
-          <div>
-            <label>
-              <input type="checkbox" checked="checked" id="gallery" name="gallery" />
-              BiGa
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="checkbox" checked="checked" id="video" name="video" />
-              Video
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="checkbox" checked="checked" id="teaser" name="teaser" />
-              Freier Teaser
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="checkbox" checked="checked" id="centerpage" name="centerpage" />
-              Center-Page
-            </label>
-          </div>
-        </div>
+          {.end}
+        </div>  
       </div>
       <div>
         <label>Sortierung:</label>

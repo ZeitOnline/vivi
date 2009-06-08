@@ -3,19 +3,20 @@
 # See also LICENSE.txt
 
 from datetime import datetime, timedelta
-import zeit.cms.browser.view
+from zeit.find.daterange import DATE_RANGES
+import zc.iso8601.parse
 import zc.resourcelibrary
-import zope.component
-import zope.interface
-import zope.viewlet.interfaces
-import zeit.cms.interfaces
-import zeit.cms.clipboard.interfaces
-import zeit.cms.content.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.preview
-import zc.iso8601.parse
+import zeit.cms.browser.view
+import zeit.cms.clipboard.interfaces
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.find.search
-from zeit.find.daterange import DATE_RANGES
+import zope.component
+import zope.i18n
+import zope.interface
+import zope.viewlet.interfaces
 
 
 class Find(zeit.cms.browser.view.Base):
@@ -38,13 +39,30 @@ class SearchForm(JSONView):
     template = 'search_form.jsont'
 
     def json(self):
-        return dict(ressorts=self.ressorts)
+        return dict(
+            ressorts=self.ressorts,
+            types=self.types)
 
     @property
     def ressorts(self):
         return [
             dict(ressort=ressort)
             for ressort in zeit.cms.content.sources.NavigationSource()]
+
+    @property
+    def types(self):
+        result = []
+        for name, interface in zope.component.getUtilitiesFor(
+            zeit.cms.interfaces.ICMSContentType):
+            type_ = interface.queryTaggedValue('zeit.cms.type') or name
+            title = zope.i18n.translate(
+                interface.queryTaggedValue('zeit.cms.title') or type_,
+                context=self.request)
+            result.append(dict(
+                title=title,
+                type=type_,
+            ))
+        return sorted(result, key=lambda r:r['title'])
 
 
 class SearchResult(JSONView):
@@ -150,6 +168,7 @@ class SearchResult(JSONView):
 
 
 class ResultFilters(JSONView):
+
     template = 'result_filters.jsont'
 
     def json(self):
@@ -159,7 +178,7 @@ class ResultFilters(JSONView):
             # the real input errors are handled by the main form; by itself
             # this should never receive broken input
             q = None
-            
+
         if q is None:
             return {'template': 'no_result_filters.jsont'}
 
@@ -176,6 +195,7 @@ class ResultFilters(JSONView):
                 result['type_entries'] or result['author_entries']):
             return {'template': 'no_result_filters.jsont'}
         return result
+
 
 def time_entries(counts):
     result = []

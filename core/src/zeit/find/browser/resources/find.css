@@ -88,8 +88,23 @@
 }
 
 #extended_search .types > div {
+  clear: both;
+}
+
+#extended_search .types > div > .type-outer {
   float: left;
 }
+
+#extended_search .types > div > .type-outer {
+  float: left;
+  width: 50%;
+}
+
+#extended_search .types > .type-outer > .type-inner {
+  overflow: hidden;
+ 
+}
+
 
 #from,
 #until {
