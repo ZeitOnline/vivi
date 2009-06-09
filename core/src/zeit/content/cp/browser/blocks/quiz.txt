@@ -28,7 +28,7 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('Fetch quiz from').value = 'http://xml.zeit.de/my_quiz'
+>>> browser.getControl('Quiz').value = 'http://xml.zeit.de/my_quiz'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -36,7 +36,7 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('Fetch quiz from').value
+>>> browser.getControl('Quiz').value
 'http://xml.zeit.de/my_quiz'
 
 The source of a quiz block:

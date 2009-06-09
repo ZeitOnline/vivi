@@ -10,4 +10,4 @@ class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IAVBlock).omit(
-            'media_type', *list(zeit.content.cp.interfaces.IBlock))
+            *list(zeit.content.cp.interfaces.IBlock))

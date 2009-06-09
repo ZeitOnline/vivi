@@ -26,8 +26,8 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('Fetch content from').value = 'http://xml.zeit.de/my_quiz'
->>> browser.getControl('Fetch image from').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> browser.getControl('Link to').value = 'http://xml.zeit.de/my_quiz'
+>>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -35,9 +35,9 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('Fetch content from').value
+>>> browser.getControl('Link to').value
 'http://xml.zeit.de/my_quiz'
->>> browser.getControl('Fetch image from').value
+>>> browser.getControl('Image').value
 'http://xml.zeit.de/2006/DSC00109_2.JPG' 
 
 The source of a fullgraphical block:

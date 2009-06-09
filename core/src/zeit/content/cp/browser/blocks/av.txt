@@ -18,9 +18,9 @@ Editing the block
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('The id of the audio/video.').value = '12345'
->>> browser.getControl('The format of the audio/video.').displayValue = ['small']
->>> browser.getControl('The date until the audio/video is valid.').value = '2009-05-05'
+>>> browser.getControl('Media Id').value = '12345'
+>>> browser.getControl('Format').displayValue = ['small']
+>>> browser.getControl('Expiration date').value = '2009-05-05'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -28,11 +28,11 @@ Editing the block
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('The id of the audio/video.').value
+>>> browser.getControl('Media Id').value
 '12345'
->>> browser.getControl('The format of the audio/video.').displayValue
+>>> browser.getControl('Format').displayValue
 ['small']
->>> browser.getControl('The date until the audio/video is valid.').value
+>>> browser.getControl('Expiration date').value
 '2009-05-05 00:00:00'
 
 
@@ -49,13 +49,13 @@ Editing the block
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('The id of the audio/video.').value = '98765'
->>> browser.getControl('The format of the audio/video.').displayValue = [
+>>> browser.getControl('Media Id').value = '98765'
+>>> browser.getControl('Format').displayValue = [
 ...     'large']
 
 An empty value for the expireation date means no expiration:
 
->>> browser.getControl('The date until the audio/video is valid.').value = ''
+>>> browser.getControl('Expiration date').value = ''
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...

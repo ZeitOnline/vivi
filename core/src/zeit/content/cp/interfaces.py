@@ -194,11 +194,11 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
 
     referenced_cp = zope.schema.Choice(
-        title=_("Fetch teasers from"),
+        title=_("Get teasers from (autopilot)"),
         source=zeit.cms.content.contentsource.CMSContentSource(),
         required=False)
     autopilot = zope.schema.Bool(
-        title=_("On Autopilot")
+        title=_("Autopilot active")
         )
 
     @zope.interface.invariant
@@ -243,18 +243,19 @@ class IAVBlock(IBlock):
     """ An audio/video block."""
 
     media_type = zope.schema.Choice(
-        title=_("The media type (one of audio or video)"),
+        title=_("Media type"),
+        readonly=True,
         source=zeit.content.cp.blocks.avsource.MediaTypeSource())
 
     id = zope.schema.TextLine(
-        title=_("The id of the audio/video."))
+        title=_("Media Id"))
 
     expires = zope.schema.Datetime(
-        title=_("The date until the audio/video is valid."),
+        title=_("Expiration date"),
         required=False)
 
     format = zope.schema.Choice(
-        title=_("The format of the audio/video."),
+        title=_("Format"),
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
@@ -262,39 +263,58 @@ class IFeed(zeit.cms.content.interfaces.IXMLContent,
             zeit.cms.interfaces.IAsset):
 
     url = zope.schema.TextLine(
-        title=_("The URL to the RSS feed."""))
+        title=_("RSS feed URL (http://...)"))
 
     title = zope.schema.TextLine(
-        title=_("The title of this feed."""))
+        title=_("Feed title"),
+        readonly=True)
 
     entry_count = zope.schema.Int(
-        title=_("The number of entries of this feed."""))
+        title=_("Number of entries in feed."""),
+        required=False,
+        readonly=True)
 
     last_update = zope.schema.Datetime(
-        title=_("The timestamp when this feed was last fetched."""))
+        readonly=True,
+        required=False,
+        title=_("Last update"""))
 
     error = zope.schema.TextLine(
+        required=False,
+        readonly=True,
         title=_("If parsing the feed fails, the error message is stored here."))
 
     entries = zope.schema.List(
-        title=_("The titles of the first 15 entries contained in this feed."))
+        title=_("Titles of first 15 entries"),
+        value_type=zope.schema.Text(),
+        readonly=True,
+        required=False)
 
     def fetch_and_convert():
-        pass
+        """Retrieve the feed and convert it to RSS 2.0."""
 
 
 class IFeedManager(zope.interface.Interface):
-    pass
+    """Global utility providing RSS functionality."""
+
+    def get_feed(url):
+        """Get IFeed object for given URL."""
+
+    def refresh_feed(url):
+        """Reload the feed object identified by URL."""
+
+
+class IRSSFolder(zeit.cms.repository.interfaces.IFolder):
+    """Marker interface for RSS folder."""
 
 
 class IRSSBlock(IBlock):
     """ A RSS teaserblock."""
 
     url = zope.schema.TextLine(
-        title=_("The URL to the RSS feed."))
+        title=_("URL to RSS feed (http://...)."))
 
-    feed = zope.interface.Attribute(
-        _("The corresponding Feed object."))
+    feed = zope.interface.Attribute("The corresponding IFeed object.")
 
 
 class ICPExtraBlock(IBlock):
@@ -362,7 +382,7 @@ class IQuizBlock(IBlock):
     """The Quiz block with a reference to a quiz."""
 
     referenced_quiz = zope.schema.Choice(
-        title=_("Fetch quiz from"),
+        title=_("Quiz"),
         source=zeit.content.quiz.source.QuizSource())
 
 
@@ -370,13 +390,9 @@ class IFullGraphicalBlock(IBlock):
     """The Fullgraphical block with a reference to an object and an image."""
 
     referenced_object = zope.schema.Choice(
-        title=_("Fetch content from"),
+        title=_("Link to"),
         source=zeit.cms.content.contentsource.CMSContentSource())
 
     image = zope.schema.Choice(
-        title=_("Fetch image from"),
+        title=_("Image"),
         source=zeit.content.image.interfaces.ImageSource())
-
-
-class IRSSFolder(zeit.cms.repository.interfaces.IFolder):
-    """Marker interface for RSS folder."""
