@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zope.testing import doctest
+import __future__
 import os
 import re
 import sys
@@ -82,6 +83,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw['tearDown'] = tearDown
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
+    kw['globs']['with_statement'] = __future__.with_statement
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
 
