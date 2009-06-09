@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.22.1 (unreleased)
+1.22.1 (2009-06-09)
 -------------------
 
 - ``with_staement`` wird durch die FunctionalDocFileSuite bereitgestellt.
