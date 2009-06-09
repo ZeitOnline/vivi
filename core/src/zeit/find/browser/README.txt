@@ -55,7 +55,10 @@ data for dropdowns/selects:
 >>> import pprint
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'ressorts': [{'ressort': 'Deutschland'},...
- 'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont'}
+ 'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont',
+ 'types': [{'title': 'Channel', 'type': 'channel'},
+           {'title': 'File', 'type': 'file'},
+           {'title': 'Folder', 'type': 'collection'}...
 
     
 
