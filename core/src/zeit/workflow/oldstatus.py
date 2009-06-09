@@ -36,11 +36,13 @@ def properties(context):
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def set_status(context, event):
     old_status = zeit.workflow.interfaces.IOldCMSStatus(context)
-    old_status.status = 'OK'
+    if old_status.status != 'OK':
+        old_status.status = 'OK'
 
 @zope.component.adapter(
     zope.interface.Interface,
     zeit.cms.workflow.interfaces.IRetractedEvent)
 def remove_status(context, event):
     old_status = zeit.workflow.interfaces.IOldCMSStatus(context)
-    old_status.status = None
+    if old_status.status is not None:
+        old_status.status = None

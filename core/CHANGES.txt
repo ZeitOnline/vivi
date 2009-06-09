@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.22.2 (unreleased)
+-------------------
+
+- Beim veröffentlichen "oldstatus" nur setzen, wenn sich der Wert auch geändert
+  hat.
+
 1.22.1 (2009-06-09)
 -------------------
 
