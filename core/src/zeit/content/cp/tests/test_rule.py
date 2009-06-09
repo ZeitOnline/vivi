@@ -134,9 +134,9 @@ error_if(True)
 
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
+
     def setUp(self):
         super(RulesManagerTest, self).setUp()
-        gocept.cache.method.clear()
         self.rm = zope.component.getUtility(
             zeit.content.cp.interfaces.IRulesManager)
 
@@ -145,9 +145,11 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
         super(RulesManagerTest, self).tearDown()
 
     def _set_rules(self, filename):
-        zope.app.appsetup.product._configs['zeit.content.cp']['rules-url'] = \
+        zope.app.appsetup.product._configs['zeit.content.cp']['rules-url'] = (
             'file://' + pkg_resources.resource_filename(
-            'zeit.content.cp.tests.fixtures', filename)
+                'zeit.content.cp.tests.fixtures', filename))
+        gocept.cache.method.clear()
+        self.rm._rules[:] = []
 
     def test_valid_rules_file_should_be_loaded(self):
         self._set_rules('example_rules.py')
