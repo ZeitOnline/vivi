@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.8 (unreleased)
+0.8 (2009-06-09)
 ----------------
 
 - ``type``-Attribut auf ``<centerpage>`` (#5030).
@@ -9,6 +9,8 @@ zeit.content.cp changes
 - Contextabhängige Layouts (#5034).
 
 - Registrierung via Martian.
+
+- Bessere Texte
 
 0.7 (2009-05-26)
 ----------------
