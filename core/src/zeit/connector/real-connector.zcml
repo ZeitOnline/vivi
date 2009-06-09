@@ -5,8 +5,7 @@
     factory=".zopeconnector.connectorFactory"
     />
 
-  <subscriber handler=".cache.invalidate_property_cache" />
-  <subscriber handler=".cache.invalidate_child_name_cache" />
+  <subscriber handler=".zopeconnector.invalidate_cache" />
 
 </configure>
 

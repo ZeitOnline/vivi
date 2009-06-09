@@ -335,16 +335,6 @@ class PropertyCache(PersistentCache):
         return dict(a.items()) == dict(b.items())
 
 
-@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
-def invalidate_property_cache(event):
-    cache = zope.component.getUtility(
-        zeit.connector.interfaces.IPropertyCache)
-    try:
-        del cache[event.id]
-    except KeyError:
-        pass
-
-
 class ChildNames(zc.set.Set):
 
     def _p_resolveConflict(self, old, commited, newstate):
@@ -378,13 +368,3 @@ class ChildNameCache(PersistentCache):
     @staticmethod
     def _cache_values_equal(a, b):
         return set(a) == set(b)
-
-
-@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
-def invalidate_child_name_cache(event):
-    cache = zope.component.getUtility(
-        zeit.connector.interfaces.IChildNameCache)
-    try:
-        del cache[event.id]
-    except KeyError:
-        pass

@@ -84,8 +84,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
         return zope.component.getUtility(
             zeit.connector.interfaces.ILockInfoStorage)
 
-    @staticmethod
-    def _remove_from_caches(id, caches):
+    def _invalidate_cache(self, id, added=False, deleted=False):
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
@@ -173,3 +172,8 @@ class ConnectorSavepoint(object):
         raise Exception("Can't roll back connector savepoints.")
 
 
+@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+def invalidate_cache(event):
+    connector = zope.component.getUtility(
+        zeit.connector.interfaces.IConnector)
+    connector.invalidate_cache(event.id)

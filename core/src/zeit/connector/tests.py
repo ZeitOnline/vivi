@@ -143,6 +143,7 @@ class ConnectorTest(unittest.TestCase):
             self.rid, None, 'text',
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
+        list(self.connector.listCollection('http://xml.zeit.de/testing/'))
 
     def tearDown(self):
         for name, uid in self.connector.listCollection(
@@ -179,7 +180,6 @@ class ConnectorCache(ConnectorTest):
             ('cached-time', 'INTERNAL') not in davres.get_all_properties())
 
 
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
@@ -202,6 +202,7 @@ def test_suite():
         'cache.txt',
         'functional.txt',
         'invalidator.txt',
+        'invalidation-events.txt',
         optionflags=optionflags)
     functional.layer = real_connector_layer
     suite.addTest(functional)

@@ -185,6 +185,15 @@ class IConnector(zope.interface.Interface):
 
         """
 
+
+class ICachingConnector(IConnector):
+    """A connector that caches."""
+
+    def invalidateCache(id):
+        """Invalidate (and reload) the cache for the given id."""
+
+
+
 class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
     """Mapping for WebDAV properties.
 

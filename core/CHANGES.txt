@@ -1,7 +1,14 @@
 CHANGES
 =======
 
-1.13 (unreleased)
+1.14 (unreleased)
+-----------------
+
+- Cache invalidaion is smarter now. This allows processing larger amounts of
+  invalidation events without the knowledge about the kind of the change
+  (delete, add, ...).
+
+1.13 (2009-06-04)
 -----------------
 
 - Made sure the {INTERNAL}cached-time is not stored on the DAV.

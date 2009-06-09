@@ -136,7 +136,7 @@ class Connector(object):
        WebDAV implementation based on pydavclient
     """
 
-    zope.interface.implements(zeit.connector.interfaces.IConnector)
+    zope.interface.implements(zeit.connector.interfaces.ICachingConnector)
 
     def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
@@ -146,7 +146,6 @@ class Connector(object):
 
     def get_connection(self, root='default'):
         """Try to get a cached connection suitable for url"""
-        #assert root == 'default'  # XXX disabled search for the Moment.
         try:
             connection = getattr(self.connections, root)
         except AttributeError:
@@ -310,7 +309,7 @@ class Connector(object):
         token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
 
         self._get_dav_resource(parent).delete(name, token)
-        self._invalidate_cache(id, deleted=True)
+        self._invalidate_cache(id)
 
     def __contains__(self, id):
         # Because we cache a lot it will be ok to just grab the object:
@@ -366,7 +365,7 @@ class Connector(object):
         else:
             response = conn.copy(old_loc, new_loc)
             response.read()
-        self._invalidate_cache(new_id, added=True)
+        self._invalidate_cache(new_id)
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`.
@@ -567,13 +566,9 @@ class Connector(object):
             locktoken = self.lock(id, "AUTOLOCK",
                                   datetime.datetime.now(pytz.UTC) +
                                   datetime.timedelta(seconds=60))
-
-        added = False
-
         if iscoll:
             if not self._check_dav_resource(id):
                 self._add_collection(id)
-                added = True
             davres = self._get_dav_resource(id, ensure='collection')
             # NOTE: here be race condition. Lock-null trick doesn't work,
             #       so we lock _after_ creation
@@ -593,7 +588,6 @@ class Connector(object):
                 parent = self._get_dav_resource(parent, ensure='collection')
                 davres = parent.create_file(name, data, resource.contentType,
                                             locktoken=locktoken)
-                added = True
             else:
                 davres = self._get_dav_resource(id, ensure='file')
                 davres.upload(data, resource.contentType,
@@ -611,7 +605,7 @@ class Connector(object):
 
         if autolock and locktoken: # This was _our_ lock. Cleanup:
             self.unlock(id, locktoken=locktoken)
-        self._invalidate_cache(id, added=added)
+        self._invalidate_cache(id)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.
@@ -710,37 +704,48 @@ class Connector(object):
             except KeyError:
                 logger.debug("%s not in %s" % (id, cache))
 
-    def _invalidate_cache(self, id, added=False, deleted=False):
-        """invalidate cache (and refill)."""
+    def _invalidate_cache(self, id):
+        # Make an indirection here to allow zopeconnector to use events.
+        self.invalidate_cache(id)
 
+    def invalidate_cache(self, id):
+        """invalidate cache (and refill)."""
         self._remove_from_caches(id, [self.property_cache,
                                       self.child_name_cache])
+        try:
+            res = self[id]
+            if id != res.id:
+                # This happens when the cache is stale and there are entries
+                # for "foo/" *and* "foo" in the cache. We remove (for instance)
+                # "foo/" from the cache, and get "foo" with self['foo/'].
+                raise KeyError
+        except KeyError:
+            exists = False
+        else:
+            exists = True
 
-        if added or deleted:
-            parent, name = self._id_splitlast(id)
+        parent, name = self._id_splitlast(id)
+        try:
+            children = self.child_name_cache[parent]
+        except KeyError:
+            # We don't know the parent's child ids. Be sure we don't know the
+            # parent's properties eitehr
+            self._remove_from_caches(parent, [self.property_cache])
+        else:
+            if exists and id not in children:
+                children.insert(unicode(id))
+            elif not exists and id in children:
+                children.remove(id)
+
+            # Update the parent's properties:
             try:
-                children = self.child_name_cache[parent]
-            except KeyError:
-                # Hunk. Nothing. Let's do the full update.
-                self._remove_from_caches(parent, [self.property_cache])
-
-                # Reload the invalidated resources immedeately. This should
-                # lead to less conflict potential as other threads see a valid
-                # resource. 
-                try:
-                    self[parent]
-                except KeyError:
-                    pass
-            else:
-                if deleted and id in children:
-                    children.remove(id)
-                elif added:
-                    children.insert(unicode(id))
-
-                # Update the parent's properties:
                 davres = self._get_dav_resource(parent)
                 if davres._result is None:
                     davres.update(depth=0)
+            except davresource.DAVNotFoundError:
+                # Apparently the parent dissapeared somehow.
+                self._invalidate_cache(parent)
+            else:
                 self._update_property_cache(davres)
 
     def _get_cannonical_id(self, id):

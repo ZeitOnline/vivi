@@ -65,59 +65,6 @@ u'gr\xfcn'
 []
 
 
-Invalidation events
-===================
-
-When an `IResourceInvalidatedEvent` is issued the caches remove their
-information about the event's resource. Let's fill the property-cache:
-
->>> property_cache = zope.component.getUtility(
-...     zeit.connector.interfaces.IPropertyCache)
->>> property_cache['resource-id'] = {'foo': 'bar'}
->>> property_cache['another-id'] = {'bar': 'baz'}
->>> property_cache['yet-another-id'] = {'nu': 'jazz'}
-
-Let's also fill the childname cache:
-
->>> child_name_cache = zope.component.getUtility(
-...     zeit.connector.interfaces.IChildNameCache)
->>> child_name_cache['resource-id'] = ['abc']
->>> child_name_cache['another-id'] = ['def']
->>> child_name_cache['yet-another-id'] = ['ghi']
-
-
-Invalidate `another-id` via an event:
-
->>> import zope.event
->>> zope.event.notify(
-...     zeit.connector.interfaces.ResourceInvaliatedEvent('another-id'))
-
-The data is gone now:
-
->>> import pprint
->>> from zeit.connector.cache import get_storage_key
->>> pprint.pprint(sorted(
-...     get_storage_key(k) for k in property_cache._storage.keys()
-...     if property_cache.get(k)))
-['http://xml.zeit.de/index',
- 'http://xml.zeit.de/testing/',
- 'resource-id',
- 'yet-another-id']
->>> pprint.pprint(
-...     sorted(get_storage_key(k) for k in child_name_cache._storage.keys()
-...     if property_cache.get(k)))
-['http://xml.zeit.de/testing/',
- 'resource-id',
- 'yet-another-id']
-
-Nothing special happens when the caches do not know anything about the resource
-anyway:
-
->>> zope.event.notify(
-...     zeit.connector.interfaces.ResourceInvaliatedEvent('another-id'))
-
-
-
 
 Transaction integration
 =======================
@@ -182,11 +129,7 @@ Enable debugging of the http data:
 >>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
 
 >>> connector._invalidate_cache('http://xml.zeit.de/testing/')
->>> list(connector.listCollection('http://xml.zeit.de/testing/'))
-connect: (zip6.zeit.de, 9000)
-send: 'HEAD ...\r\nReferer: http://127.0.0.1\r\n...
-...
-[]
+connect...'HEAD ...\r\nReferer: http://127.0.0.1\r\n...
 
 Reset:
 

@@ -54,7 +54,7 @@ class Invalidator(persistent.Persistent):
         log.info("Refreshing %s" % collection)
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(collection))
-        # Reload the folder's metadata (depth=1)
+        # When the resource exists, we remember what we have updated.
         try:
             resource = self.connector[collection]
         except KeyError:
