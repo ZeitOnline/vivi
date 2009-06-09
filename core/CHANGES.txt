@@ -1,10 +1,22 @@
 zeit.find changes
 =================
 
-0.5 (unreleased)
+0.5 (2009-05-09)
 ----------------
 
 - »Für diese Seite«
+
+- Facetierte Suche
+
+- Filter am Suchergebnis
+
+- Korrekte Typ-Icons.
+
+- Sytling
+
+- Dropdown für Ressort-Auswahl
+
+- Vollständige Typliste in der erweiterten Suche
 
 0.4 (2009-05-26)
 ----------------
