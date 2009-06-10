@@ -1063,6 +1063,77 @@ Portraitbox
   </body>
 </article>
 
+Infobox
+-------
+
+>>> import zeit.content.infobox.infobox
+>>> repository['2006']['ib'] = zeit.content.infobox.infobox.Infobox()
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <infobox href="http://xml.zeit.de/2006/ib"/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<div class="infobox">
+  <div class="href">http://127.0.0.1/repository/2006/ib</div>
+</div>
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="infobox">
+...   <div class="href">http://127.0.0.1/repository/2006/ib</div>
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <infobox href="http://xml.zeit.de/2006/ib" publication-date="" expires="">
+      <references/>
+    </infobox>
+  </body>
+</article>
+
+Gallery
+-------
+
+>>> import zeit.content.gallery.gallery
+>>> repository['2006']['gal'] = zeit.content.gallery.gallery.Gallery()
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <gallery href="http://xml.zeit.de/2006/gal"/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<div class="gallery">
+  <div class="href">http://127.0.0.1/repository/2006/gal</div>
+</div>
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="gallery">
+...   <div class="href">http://127.0.0.1/repository/2006/gal</div>
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <gallery href="http://xml.zeit.de/2006/gal" publication-date="" expires="">
+      <supertitle...
+      <references/>
+    </gallery>
+  </body>
+</article>
+
 
 .. [#copyright-and-bu] Set a copyright and a BU for the image
 

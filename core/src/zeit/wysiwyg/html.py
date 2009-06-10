@@ -374,6 +374,8 @@ class URLStep(ConversionStep):
 class ArticleExtraStep(ConversionStep):
     """Make <article_extra> editable."""
 
+    weight = -0.1 # before VideoAudio
+
     xpath_xml = './/article_extra'
     xpath_html = './/p'
 
@@ -540,16 +542,20 @@ class RawXMLStep(ConversionStep):
         return new_node
 
 
-class PortraitboxStep(ConversionStep):
+class ReferenceStep(ConversionStep):
 
-    xpath_xml = './/portraitbox'
-    xpath_html = './/*[@class="portraitbox"]'
+    content_type = None # override in subclass
+
+    def __init__(self, context):
+        super(ReferenceStep, self).__init__(context)
+        self.xpath_xml = './/%s' % self.content_type
+        self.xpath_html = './/*[@class="%s"]' % self.content_type
 
     def to_html(self, node):
         content = zeit.cms.interfaces.ICMSContent(node.get('href'))
         new_node = lxml.objectify.E.div(
             lxml.objectify.E.div(self.url(content), **{'class': 'href'}),
-            **{'class': 'portraitbox'})
+            **{'class': self.content_type})
         lxml.objectify.deannotate(new_node)
         return new_node
 
@@ -559,11 +565,27 @@ class PortraitboxStep(ConversionStep):
         unique_id = url.replace(
             repository_url, zeit.cms.interfaces.ID_NAMESPACE)
 
-        new_node = lxml.objectify.E.portraitbox(href=unique_id)
+        factory = getattr(lxml.objectify.E, self.content_type)
+        new_node = factory(href=unique_id)
         content = zeit.cms.interfaces.ICMSContent(unique_id)
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
         updater.update(new_node)
         return new_node
+
+
+class PortraitboxStep(ReferenceStep):
+
+    content_type = 'portraitbox'
+
+
+class InfoboxStep(ReferenceStep):
+
+    content_type = 'infobox'
+
+
+class GalleryStep(ReferenceStep):
+
+    content_type = 'gallery'
 
 
 class HTMLContentBase(object):
