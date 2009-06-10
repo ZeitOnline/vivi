@@ -30,4 +30,7 @@ setup(
         'zope.testing',
         'zope.traversing',
     ],
+    extras_require=dict(test=[
+        'zeit.content.portraitbox',
+    ]),
 )

@@ -10,6 +10,7 @@
   <adapter factory=".html.NestedParagraphsStep" name="NestedParagraphsStep" />
   <adapter factory=".html.NormalizeToplevelStep" name="NormalizeToplevelStep" />
   <adapter factory=".html.PassThroughStep" name="PassThroughStep" />
+  <adapter factory=".html.PortraitboxStep" name="PortraitboxStep" />
   <adapter factory=".html.RawXMLStep" name="RawXMLStep" />
   <adapter factory=".html.TableStep" name="TableStep" />
   <adapter factory=".html.TagReplaceStep" name="TagReplaceStep" />
