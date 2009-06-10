@@ -243,6 +243,21 @@ class PassThroughStep(ConversionStep):
         pass
 
 
+class TableStep(ConversionStep):
+    """Clean up <table>s.
+    """
+
+    xpath_xml = './/table'
+    xpath_html = './/table'
+
+    def to_html(self, node):
+        pass
+
+    def to_xml(self, node):
+        for name in node.attrib:
+            del node.attrib[name]
+
+
 class NormalizeToplevelStep(ConversionStep):
     """Normalize any toplevel tag we don't have a ConversionStep for to <p>."""
 
