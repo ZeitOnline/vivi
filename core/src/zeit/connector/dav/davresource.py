@@ -3,16 +3,16 @@
 DAVResource is the class to use; it points to a location (URL) and offers
 some methods to retrieve informations about the refered to resource.
 """
-import urllib
+
 from urlparse import urlparse, urlunparse, urljoin
 import httplib
+import lxml.etree
 import pprint
 import re
-
-import lxml.etree
-
-import davbase, davconnection
-from davxml import xml_from_file
+import urllib
+import zeit.connector.dav.davbase
+import zeit.connector.dav.davxml
+import zeit.connector.dav.interfaces
 
 
 _DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
@@ -42,97 +42,6 @@ def _find_child ( node, name ):
     res = node.xpath("D:%s" % (name,), namespaces={'D' : 'DAV:'})
     return res
 
-class DAVError ( Exception ):
-    """Generic DAV exception
-    """
-    pass
-
-
-class DAVNoFileError ( DAVError ):
-    """Exception raised if a DAVFile specific method is invoked on a collection.
-    """
-    pass
-
-
-class DAVNoCollectionError ( DAVError ):
-    """Exception raised if a collection specific method is invoked on a non-collection.
-    """
-    pass
-
-
-class DAVNotFoundError ( DAVError ):
-    """Exception raised if a resource or a property was not found.
-    """
-    pass
-
-
-class DAVNotConnectedError ( DAVError ):
-    """Exception raised if there is no connection to the server.
-    """
-    pass
-
-
-class DAVLockFailedError ( DAVError ):
-    """Exception raised if an attempt to lock a resource failed.
-    """
-    pass
-
-
-class DAVUnlockFailedError ( DAVError ):
-    """Exception raised if an attempt to lock a resource failed.
-    """
-    pass
-
-
-#:fixme: Maybe we should report information about the lock status as well ...
-class DAVLockedError ( DAVError ):
-    """Exception raised if an atempt to modify or lock a locked resource was
-    made.
-    """
-
-
-#:fixme: Maybe we should report information about the lock status as well ...
-class DAVNotLockedError ( DAVError ):
-    """Exception raised if an atempt to unlock a not locked resource was made.
-    """
-    pass
-
-
-#:fixme: Maybe we should report information about the lock status as well ...
-class DAVNotOwnerError ( DAVError ):
-    """Exception raised if an atempt to unlock a resource not owned was made.
-    """
-    pass
-
-
-class DAVInvalidLocktokenError ( DAVError ):
-    """Exception raised if an attempt to unlock a not locked resource was made.
-    """
-    pass
-
-
-class DAVCreationFailedError ( DAVError ):
-    """Exception raised if an atempt to create a resource failed.
-    """
-    pass
-
-
-class DAVUploadFailedError ( DAVError ):
-    """Exception raised if an atempt to create a resource failed.
-    """
-    pass
-
-
-class DAVDeleteFailedError ( DAVError ):
-    """Exception raised if an atempt to create a resource failed.
-    """
-    pass
-
-class DAVBadStatusLineError ( DAVError ):
-    """Exception raised when we don't grok a status line
-       (that's one of those "HTTP/1.1 200 OK" thingies around there)
-    """
-    pass
 
 # As of rfc2616: 6.1 Status Line
 _stat_patt = re.compile("^(HTTP/\d+\.\d+)\s+(\d\d\d)(?:\s+(.*))?$")
@@ -151,7 +60,8 @@ def _parse_status_line(line):
         else:
             return stat, reason
 
-    raise DAVBadStatusLineError("Can't grok status line %r" % line)
+    raise zeit.connector.dav.interfaces.DAVBadStatusLineError(
+        "Can't grok status line %r" % line)
 
 #:fixme: I don't like this setup: why group properties by their status code
 # at all. Does a read operation on a property need to check in all DAVPropstat
@@ -221,7 +131,8 @@ class DAVPropstat:
             'D:prop/D:lockdiscovery/D:activelock',
             namespaces={'D' : 'DAV:'})
         if len(lockinfo_nodes) > 1:
-            raise "Malformed PROPSTAT respones: more than one activlock found!"
+            raise zeit.connector.dav.interfaces.DAVError(
+                "Malformed PROPSTAT respones: more than one activlock found!")
         if lockinfo_nodes:
             context = lockinfo_nodes[0]
            #:fixme: the following would be prominent calls for 
@@ -266,7 +177,9 @@ class DAVResponse:
     def _parse_res ( self, doc, res_node ):
         href_nodes = _find_child(res_node, 'href')
         if not href_nodes:
-            raise DAVNotFoundError, ('No href found in node %s!' % res_node.nodePath())  #:fixme: nodePath() is libxml2
+            #:fixme: nodePath() is libxml2, this is porbably not tested
+            raise zeit.connector.dav.interfaces.DAVNotFoundError(
+                'No href found in node %s!' % res_node.nodePath())
         url_node = href_nodes[0]
         # self.url = urllib.unquote(url_node.text.strip()).decode('utf8')
         self.url = url_node.text.strip()
@@ -341,7 +254,7 @@ class DAVResult:
         self.parse_data(http_response)
 
     def parse_data ( self, data ):
-        doc = xml_from_file(data)
+        doc = zeit.connector.dav.davxml.xml_from_file(data)
         self._parse_response(doc)
 
     def _parse_response ( self, doc ):
@@ -393,30 +306,29 @@ class DAVResult:
                "\n  ".join([r.__repr__() for r in self.responses.values()]) + \
                "\n=================\n"
 
-class DAVResource:
+class DAVResource(object):
     """Basic class describing an arbitrary DAV resource (file or collection)
     """
+
+    collection = None
+    size = None
+    locktoken = None
+    _result = None
 
     def __init__ ( self, url, conn=None, auto_request=False ):
         """Setup a fresh instance.
         """
         self._set_url(url)
         self.auto_request = auto_request
-        self.collection = None
-        self.size       = None
-        self.locktoken  = None
-        self._conn      = conn
-        self._result    = None
-        return
+        self._conn = conn
 
     def _set_url ( self, url ):
         # extract server/port from url, needed for DAV
-        self.url    = url
-        url_tuple   = urlparse(url, 'http', 0)
+        self.url = url
+        url_tuple = urlparse(url, 'http', 0)
         self.scheme = url_tuple[0]
-        self.host   = url_tuple[1]
-        self.path   = url_tuple[2]
-        return
+        self.host = url_tuple[1]
+        self.path = url_tuple[2]
 
     def _make_url_for ( self, path ):
         t = (self.scheme, self.host, path) + ('','','')
@@ -457,11 +369,10 @@ class DAVResource:
             # With tuples like the original code or in Clark notation?
             v = self.get_property_value( ('resourcetype', 'DAV:') )
             self.collection = (v is not None) and (v.find('collection') >= 0)
-        except DAVError, ex:
+        except zeit.connector.dav.interfaces.DAVError, ex:
             if ex.args[0] == 404:
-                raise DAVNotFoundError(ex.args)
-            else:
-                raise
+                raise zeit.connector.dav.interfaces.DAVNotFoundError(ex.args)
+            raise
         return self._result
 
     def is_connected ( self ):
@@ -481,6 +392,7 @@ class DAVResource:
     def connect ( self ):
         """Create a connection for this resource.
         """
+        raise NotImplementedError
         netloc = self.host
         host   = netloc.split(':')
         try:
@@ -488,7 +400,7 @@ class DAVResource:
         except (ValueError, IndexError):
             port = None
             pass
-        con = davconnection.DAVConnection(host[0], port)
+        con = zeit.connector.dav.davbase.DAVConnection(host[0], port)
         self.set_connection(con)
         return
 
@@ -716,9 +628,9 @@ class DAVResource:
             self.locktoken = davres.lock_token
             return self.locktoken
         if davres.status == 423:
-            raise DAVLockedError, (davres,)
+            raise zeit.connector.dav.interfaces.DAVLockedError, (davres,)
         else:
-            raise DAVLockFailedError, (davres,)
+            raise zeit.connector.dav.interfaces.DAVLockFailedError, (davres,)
 
     def unlock ( self, locktoken=None, owner=None ):
         """Unlock this resource, if it is locked and the right locktoken is passed.
@@ -732,7 +644,7 @@ class DAVResource:
         if locktoken is None: # no locktoken given, try ours
             locktoken = self.locktoken
         if not locktoken: # no locktoken available
-            raise DAVInvalidLocktokenError
+            raise zeit.connector.dav.interfaces.DAVInvalidLocktokenError
         # check if our locktoken matches the required one
         davres = self._unlock_path(self.url, locktoken)
         if not davres.has_errors():
@@ -741,7 +653,7 @@ class DAVResource:
                 self.locktoken = None
             return
         # FIXME Other exceptions here?
-        raise DAVUnlockFailedError(davres)
+        raise zeit.connector.dav.interfaces.DAVUnlockFailedError(davres)
 
     def _propfind ( self, depth=0 ):
         """Query all properties for this resource and return a DAVResult instance.
@@ -759,19 +671,11 @@ class DAVResource:
         xml.append(lxml.etree.Element('{DAV:}allprop'))
         xmlstr = lxml.etree.tostring(xml, encoding='UTF-8',
                                      xml_declaration=True)
-        try:
-            response = self._conn.propfind(self.url, body=xmlstr,
-                                           depth=depth, extra_hdrs=hdrs)
-        except davbase.RedirectError, err:
-            new_url = err.args[0]
-            self._set_url(new_url)
-            # re-issue request
-            response = self._conn.propfind(self.url, body=xmlstr,
-                                           depth=depth, extra_hdrs=hdrs)
-            pass
-        davres = DAVResult(response)
+        davres = self._conn.propfind(self.url, body=xmlstr,
+                                     depth=depth, extra_hdrs=hdrs)
         if davres.status >= 300: # or davres.status in (404,200):
-            raise DAVError(davres.status, davres.reason, davres)
+            raise zeit.connector.dav.interfaces.DAVError(
+                davres.status, davres.reason, davres)
         return davres
 
     def _proppatch ( self, body, locktoken ):
@@ -793,7 +697,7 @@ class DAVResource:
         response = self._conn.proppatch(self.url, body=body, extra_hdrs=hdrs)
         davres = DAVResult(response)
         if davres.status in (200,404) or davres.status >= 300:
-            raise DAVError, (davres.status, davres.reason, davres)
+            raise zeit.connector.dav.interfaces.DAVError, (davres.status, davres.reason, davres)
         return davres
 #
 
@@ -803,7 +707,7 @@ class DAVFile ( DAVResource ):
         DAVResource.__init__(self, url, conn, auto_request)
         self.update()
         if self.is_collection():
-            raise DAVNoFileError
+            raise zeit.connector.dav.interfaces.DAVNoFileError()
         return
 
     def file_size ( self ):
@@ -834,7 +738,7 @@ class DAVFile ( DAVResource ):
         if self.is_locked():
             linfo = self.get_locking_info()
             if not (mytoken and mytoken == linfo['locktoken']): # FIXME check this!
-                raise DAVLockedError
+                raise zeit.connector.dav.interfaces.DAVLockedError()
         hdrs = {}
         if mytoken:
             hdrs['Lock-Token'] = '<' + mytoken + '>' # FIXME cf. _proppatch. Which is right?
@@ -854,7 +758,8 @@ class DAVFile ( DAVResource ):
                              extra_hdrs=hdrs)
         res = DAVResult(res)
         if res.status not in (200, 201, 204):
-            raise DAVUploadFailedError, (res.status, res.reason)
+            raise zeit.connector.dav.interfaces.DAVUploadFailedError(
+                res.status, res.reason)
         self.invalidate()
 
 
@@ -871,7 +776,7 @@ class DAVCollection ( DAVResource ):
             url += '/'
         DAVResource.__init__(self, url, conn, auto_request)
         if not self.is_collection():
-            raise DAVNoCollectionError
+            raise zeit.connector.dav.interfaces.DAVNoCollectionError()
         return
 
     def update ( self, conn=None, depth=1 ):
@@ -911,7 +816,7 @@ class DAVCollection ( DAVResource ):
             except DAVNoFileError:
                 fo = DAVCollection(furl, self._conn, self.auto_request)
                 pass
-            except DAVError, ex:
+            except zeit.connector.dav.interfaces.DAVError, ex:
                 if ex.args[0] in (403, 404, 405): # forbidden, not found, mehtod not allowed
                     # ignore files one does not have access to
                     continue
@@ -932,40 +837,28 @@ class DAVCollection ( DAVResource ):
             res = DAVResult(res)
         return (res, url)
 
-    def _do_create_file ( self, name, data='', content_type=None, encoding=None, locktoken=None ):
+    def _do_create_file(self, name, data='', content_type=None,
+                        encoding=None, locktoken=None):
         conn = self._conn
-        # construct path
-        url  = urljoin(self.url, name)
-        # lock resource, should be ok even if the resource does not exist
-        # but use provided lock token if given
-        if locktoken is None:
-            res = self._lock_path(url, owner=_DEFAULT_OWNER2, depth='0')
-            if res.status not in (200, 201):
-                raise DAVLockedError, (res.status, res.reason, url)
-        mytoken = locktoken or res.lock_token
-        try:
-            # check if there is a resource with that name
-            r = conn.head(url)
-            r.read()
-            if r.status != 404:
-                # resource exists!
-                raise DAVCreationFailedError, (r.status, r.reason, url)
-            # resource does not exist, create file
-            # headers needed to honor the lock
-            hdr = { 'If': '<%s>(<%s>)' % (url, mytoken),
-                    'Lock-Token': '<%s>' % mytoken }
-            res = None
-            res = conn.put(url, data,
-                           content_type=content_type,
-                           content_enc=encoding,
-                           extra_hdrs=hdr)
-            if res:
-                res = DAVResult(res)
-        finally:
-            # unlock resource, even in case of exception
-            # but only if we provided lock token
-            if locktoken is None:
-                self._unlock_path(url, mytoken)
+        url = urljoin(self.url, name)
+        # check if there is a resource with that name
+        r = conn.head(url)
+        r.read()
+        if r.status != 404:
+            # resource exists!
+            raise zeit.connector.dav.interfaces.DAVCreationFailedError(
+                r.status, r.reason, url)
+        # resource does not exist, create file
+        # headers needed to honor the lock
+        hdr = {}
+        if locktoken:
+            hdr['If'] = '<%s>(<%s>)' % (url, locktoken)
+            hdr['Lock-Token'] = '<%s>' % locktoken
+        res = None
+        res = conn.put(url, data, content_type=content_type,
+                       content_enc=encoding, extra_hdrs=hdr)
+        if res:
+            res = DAVResult(res)
         return (res, url)
 
     def create_collection ( self, name, locktoken=None ):
@@ -979,7 +872,8 @@ class DAVCollection ( DAVResource ):
         if res.status in (200, 201):
             # created, return collection
             return DAVCollection(url, self._conn)
-        raise DAVCreationFailedError(res.status, res.reason, url)
+        raise zeit.connector.dav.interfaces.DAVCreationFailedError(
+            res.status, res.reason, url)
 
     def create_file ( self, name, data='', content_type=None, locktoken=None ):
         """Create a new file as direct child of this collection.
@@ -993,7 +887,8 @@ class DAVCollection ( DAVResource ):
             # created, return file
             self.invalidate()
             return DAVFile(url, self._conn)
-        raise DAVCreationFailedError, (res.status, res.reason, url)
+        raise DAVCreationFailedError(
+            res.status, res.reason, url)
 
     def _do_del ( self, url, locktoken=None ):
         # issue del request and hold result
@@ -1014,7 +909,9 @@ class DAVCollection ( DAVResource ):
         res = self._do_del(url, locktoken=locktoken)
         res.read()
         if res.status == 423:
-            raise DAVLockedError(res.status, res.reason, url)
+            raise zeit.connector.dav.interfaces.DAVLockedError(
+                res.status, res.reason, url)
         if res.status >= 300:
-            raise DAVDeleteFailedError(res.status, res.reason, url)
+            raise zeit.connector.dav.interfaces.DAVDeleteFailedError(
+                res.status, res.reason, url)
         self.invalidate()

@@ -21,9 +21,6 @@ logger = logging.getLogger(__name__)
 class BadAuthTypeError ( Exception ):
     pass
 
-class RedirectError ( Exception ):
-    pass
-
 
 class HTTPBasicAuthCon(object):
     """Connection which authenticates.

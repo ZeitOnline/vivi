@@ -60,32 +60,26 @@
 
 import cStringIO
 import datetime
+import gocept.lxml.objectify
 import httplib
 import logging
 import os
+import pytz
 import random
 import re
 import sys
 import threading
 import time
 import urlparse
-
-import pytz
-import gocept.lxml.objectify
-
-import zope.cachedescriptors.property
-import zope.interface
-
-from zeit.connector.dav import (davresource, davconnection)
-from zeit.connector.dav.davconnection import DAVConnection
-from zeit.connector.dav.davresource import (
-    DAVResource, DAVCollection, DAVFile, DAVError, DAVLockedError, DAVLockFailedError)
-
 import zeit.connector.cache
+import zeit.connector.dav.davconnection
+import zeit.connector.dav.davresource
 import zeit.connector.interfaces
 import zeit.connector.lockinfo
 import zeit.connector.resource
 import zeit.connector.search
+import zope.cachedescriptors.property
+import zope.interface
 
 
 logger = logging.getLogger(__name__)
@@ -100,7 +94,7 @@ TIME_ETERNITY = datetime.datetime(
     datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
 
 
-class DAVUnexpectedResultError(DAVError):
+class DAVUnexpectedResultError(zeit.connector.dav.interfaces.DAVError):
     """Exception raised on unexpected HTTP return code.
     """
     pass
@@ -165,7 +159,8 @@ class Connector(object):
         except ValueError:
             host, port = netloc, None
         # FIXME: Argh. DAVConnection should take schema as well!!!
-        return DAVConnection(host, port)
+
+        return zeit.connector.dav.davconnection.DAVConnection(host, port)
 
     def disconnect(self):
         connections = self.connections
@@ -282,7 +277,7 @@ class Connector(object):
         try:
             content_type = self._get_resource_properties(id).get(
                 ('getcontenttype', 'DAV:'))
-        except davresource.DAVNotFoundError:
+        except zeit.connector.dav.interfaces.DAVNotFoundError:
             raise KeyError("The resource %r does not exist." % id)
         return zeit.connector.resource.CachedResource(
             id, self._id_splitlast(id)[1].rstrip('/'),
@@ -409,11 +404,11 @@ class Connector(object):
         try:
             # NOTE: _timeout() returns None for timeouts too long. This blends
             #       with DAVConnection, which converts None to 'Infinite'.
-            token = self.get_connection().do_lock(url,
+            token = self.get_connection().lock(url,
                                          owner=principal,
                                          depth=0,
                                          timeout=_abs2timeout(until))
-        except davresource.DAVLockedError:
+        except zeit.connector.dav.interfaces.DAVLockedError:
             raise zeit.connector.interfaces.LockingError(
                 id, "%s is already locked." % id)
         # Just pass-on other exceptions. It's more informative
@@ -430,7 +425,7 @@ class Connector(object):
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
         if locktoken:
             try:
-                self.get_connection().do_unlock(url, locktoken)
+                self.get_connection().unlock(url, locktoken)
             finally:
                 if invalidate:
                     self._put_my_lockinfo(id, None)
@@ -492,7 +487,7 @@ class Connector(object):
         logger.debug('Searching for %s' % (expr._render(),))
         conn = self.get_connection('search')
 
-        davres = davresource.DAVResult(
+        davres = zeit.connector.dav.davresource.DAVResult(
                conn.search(self._roots.get('search', self._roots['default']),
                             body=expr._collect()._render()))
         for url, resp in davres.responses.items():
@@ -615,9 +610,9 @@ class Connector(object):
             id += '/'
         conn = self.get_connection()
         url = self._id2loc(id)
-        davres = davresource.DAVResult(conn.mkcol(url))
+        davres = zeit.connector.dav.davresource.DAVResult(conn.mkcol(url))
         if davres.has_errors():
-            raise DAVError(davres,)
+            raise zeit.connector.dav.interfaces.DAVError(davres,)
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
@@ -625,7 +620,8 @@ class Connector(object):
            (Actually return the ETag, but don't rely on that yet)
         """
         url = self._id2loc(id)
-        hresp = DAVResource(url, conn=self.get_connection()).head()
+        hresp = zeit.connector.dav.davresource.DAVResource(
+            url, conn=self.get_connection()).head()
         if not hresp:
             return None # FIXME throw exception?
         hresp.read()
@@ -647,12 +643,13 @@ class Connector(object):
         # be collections. This ain't strictly right
         wantcoll = (ensure == 'collection' or url.endswith('/'))
         if wantcoll:
-            res = DAVCollection(url, conn=self.get_connection())
+            klass = res = zeit.connector.dav.davresource.DAVCollection
         elif ensure == 'file':
-            res = DAVFile(url, conn=self.get_connection())
-        else: # Tis one to disappear when [14] fixed
-            res = DAVResource(url, conn=self.get_connection())
-        return res
+            klass = zeit.connector.dav.davresource.DAVFile
+        else:
+            # This one to disappear when [14] fixed
+            klass = zeit.connector.dav.davresource.DAVResource
+        return klass(url, conn=self.get_connection())
 
     def _get_dav_lock(self, id):
         lockdiscovery = self[id].properties[('lockdiscovery', 'DAV:')]
@@ -742,7 +739,7 @@ class Connector(object):
                 davres = self._get_dav_resource(parent)
                 if davres._result is None:
                     davres.update(depth=0)
-            except davresource.DAVNotFoundError:
+            except zeit.connector.dav.interfaces.DAVNotFoundError:
                 # Apparently the parent dissapeared somehow.
                 self._invalidate_cache(parent)
             else:
@@ -758,7 +755,8 @@ class Connector(object):
             return id + '/'
         if self.property_cache.get(id) is not None:
             return id
-        dav_resource = DAVResource(self._id2loc(id), conn=self.get_connection())
+        dav_resource = zeit.connector.dav.davresource.DAVResource(
+            self._id2loc(id), conn=self.get_connection())
         response = dav_resource.head()
         response.read()
         if response.status == 301:

@@ -3,13 +3,8 @@
 
 __all__ = ('xml_from_string', 'xml_from_file' )
 
-import lxml
-from StringIO import StringIO
-
-
-class DavXmlParseError ( Exception ):
-    pass
-
+import lxml.etree
+import zeit.connector.dav.interfaces
 
 class DavXmlDoc:
 
@@ -30,8 +25,9 @@ class DavXmlDoc:
         try:
             self.doc = method(arg)
         except lxml.etree.XMLSyntaxError, e:
-            raise DavXmlParseError(e.error_log.filter_levels(
-                lxml.etree.ErrorLevels.FATAL))
+            raise zeit.connector.dav.interfaces.DavXmlParseError(
+                e.error_log.filter_levels(
+                    lxml.etree.ErrorLevels.FATAL))
 
     def xpathEval(self, expr):
         return self.doc.xpath(expr, namespaces=self.nsmap);
