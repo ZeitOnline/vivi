@@ -8,6 +8,8 @@ CHANGES
   invalidation events without the knowledge about the kind of the change
   (delete, add, ...).
 
+- Do not operate on paths and URLs but only pass URLs to the WebDAV server.
+
 1.13 (2009-06-04)
 -----------------
 

@@ -929,8 +929,7 @@ class DAVCollection ( DAVResource ):
         if name[-1] != '/':
             name += '/'
         url  = urljoin(self.url, name )
-        path = urlparse(url, 'http', 0)[2]
-        res  = conn.mkcol(path)
+        res  = conn.mkcol(url)
         if res:
             res = DAVResult(res)
         return (res, url)
@@ -938,14 +937,11 @@ class DAVCollection ( DAVResource ):
     def _do_create_file ( self, name, data='', content_type=None, encoding=None, locktoken=None ):
         conn = self._conn
         # construct path
-        while name and name[0] == '/':
-            name = name[1:]
         url  = urljoin(self.url, name)
-        path = urlparse(url, 'http', 0)[2]
         # lock resource, should be ok even if the resource does not exist
         # but use provided lock token if given
         if locktoken is None:
-            res = self._lock_path(path, owner=_DEFAULT_OWNER2, depth='0')
+            res = self._lock_path(url, owner=_DEFAULT_OWNER2, depth='0')
             if res.status not in (200, 201):
                 raise DAVLockedError, (res.status, res.reason, url)
         mytoken = locktoken or res.lock_token
@@ -961,7 +957,7 @@ class DAVCollection ( DAVResource ):
             hdr = { 'If': '<%s>(<%s>)' % (url, mytoken),
                     'Lock-Token': '<%s>' % mytoken }
             res = None
-            res = conn.put(path, data,
+            res = conn.put(url, data,
                            content_type=content_type,
                            content_enc=encoding,
                            extra_hdrs=hdr)
@@ -971,7 +967,7 @@ class DAVCollection ( DAVResource ):
             # unlock resource, even in case of exception
             # but only if we provided lock token
             if locktoken is None:
-                self._unlock_path(path, mytoken)
+                self._unlock_path(url, mytoken)
         return (res, url)
 
     def create_collection ( self, name, locktoken=None ):
@@ -1001,24 +997,23 @@ class DAVCollection ( DAVResource ):
             return DAVFile(url, self._conn)
         raise DAVCreationFailedError, (res.status, res.reason, url)
 
-    def _do_del ( self, url, path, locktoken=None ):
+    def _do_del ( self, url, locktoken=None ):
         # issue del request and hold result
         if locktoken:
             hdr = {'If': _mk_if_data(url, locktoken)}
         else:
             hdr = {}
-        return self._conn.delete(path, hdr)
+        return self._conn.delete(url, hdr)
 
     def delete ( self, name, locktoken=None ):
         """Delete a resource from this collection
         """
         # construct path
-        while name and name[0] == '/':
+        while name.startswith('/'):
             name = name[1:]
         url = urljoin(self.url, name)
-        path = urlparse(url, 'http', 0)[2]
         # do delete
-        res = self._do_del(url, path, locktoken=locktoken)
+        res = self._do_del(url, locktoken=locktoken)
         res.read()
         if res.status == 423:
             raise DAVLockedError(res.status, res.reason, url)
