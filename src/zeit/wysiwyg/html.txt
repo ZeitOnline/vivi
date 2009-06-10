@@ -959,9 +959,75 @@ discarded:
     </body>
 </article>
 
-Clean up:
+Tables
+------
 
->>> zope.security.management.endInteraction()
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <table>
+...       <tbody>
+...         <tr><td>foo</td><td>bar</td></tr>
+...       </tbody>
+...     </table>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<table>
+  <tbody>
+    <tr>
+      <td>foo</td>
+      <td>bar</td>
+    </tr>
+  </tbody>
+</table>
+
+>>> converter.from_html(article.xml['body'], """\
+... <table width="200" cellspacing="1" cellpadding="1" border="1">
+... <tbody>
+...     <tr>
+...         <td>asdf <strong>asdf</strong> asdf</td>
+...         <td>
+...         <ul>
+...             <li>poiu</li>
+...             <li>poiu</li>
+...         </ul>
+...         </td>
+...     </tr>
+...     <tr>
+...         <td>c</td>
+...         <td>d</td>
+...     </tr>
+... </tbody>
+... </table>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <table>
+      <tbody>
+        <tr>
+          <td>asdf <strong>asdf</strong> asdf</td>
+          <td>
+            <ul>
+              <li>poiu</li>
+              <li>poiu</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>c</td>
+          <td>d</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</article>
+
 
 
 .. [#copyright-and-bu] Set a copyright and a BU for the image
