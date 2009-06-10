@@ -27,6 +27,8 @@
   <include package="zeit.workflow" />
 
   <!-- content types we need for testing -->
+  <include package="zeit.content.gallery" />
+  <include package="zeit.content.infobox" />
   <include package="zeit.content.portraitbox" />
 
 </configure>

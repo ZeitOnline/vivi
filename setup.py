@@ -31,6 +31,8 @@ setup(
         'zope.traversing',
     ],
     extras_require=dict(test=[
+        'zeit.content.gallery',
+        'zeit.content.infobox',
         'zeit.content.portraitbox',
     ]),
 )

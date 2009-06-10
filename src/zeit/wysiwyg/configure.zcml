@@ -6,7 +6,9 @@
   for execution order -->
   <adapter factory=".html.ArticleExtraStep" name="ArticleExtraStep" />
   <adapter factory=".html.DropEmptyStep" name="DropEmptyStep" />
+  <adapter factory=".html.GalleryStep" name="GalleryStep" />
   <adapter factory=".html.ImageStep" name="ImageStep" />
+  <adapter factory=".html.InfoboxStep" name="InfoboxStep" />
   <adapter factory=".html.NestedParagraphsStep" name="NestedParagraphsStep" />
   <adapter factory=".html.NormalizeToplevelStep" name="NormalizeToplevelStep" />
   <adapter factory=".html.PassThroughStep" name="PassThroughStep" />
