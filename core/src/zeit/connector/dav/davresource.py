@@ -12,7 +12,7 @@ import re
 import lxml.etree
 
 import davbase, davconnection
-from davxml import xml_from_string
+from davxml import xml_from_file
 
 
 _DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
@@ -330,7 +330,6 @@ class DAVResult:
         self.etag = self.status = self.reason = None
         if http_response is None:
             return
-        data = http_response.read()
         self.status = int(http_response.status)
         self.reason = http_response.reason
         self.etag   = http_response.getheader('ETag', None)
@@ -339,11 +338,10 @@ class DAVResult:
             self.lock_token = self.lock_token[1:-1]
         if self.status != 207:
             return
-        self.parse_data(data)
-        return
+        self.parse_data(http_response)
 
     def parse_data ( self, data ):
-        doc = xml_from_string(data)
+        doc = xml_from_file(data)
         self._parse_response(doc)
 
     def _parse_response ( self, doc ):
