@@ -233,7 +233,7 @@ class DAVResponse:
         "\n  ".join([p.__repr__() for p in self.propstats])
 
 
-class DAVResult:
+class DAVResult(object):
 
     def __init__ ( self, http_response=None ):
         """Initialize a DAVResult instance.
@@ -257,6 +257,7 @@ class DAVResult:
         if self.status != 207:
             return
         self.parse_data(http_response)
+        http_response.close()
 
     def parse_data ( self, data ):
         doc = zeit.connector.dav.davxml.xml_from_file(data)
