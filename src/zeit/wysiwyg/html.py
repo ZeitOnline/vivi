@@ -10,6 +10,7 @@ import rwproperty
 import time
 import xml.sax.saxutils
 import zc.iso8601.parse
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.wysiwyg.interfaces
@@ -517,9 +518,6 @@ class VideoAudioStep(ConversionStep):
 class RawXMLStep(ConversionStep):
     """Make <raw> editable."""
 
-    # XXX RawXMLStep and VideoAudioStep are structurally quite similar,
-    # can this be refactored/abstracted?
-
     xpath_xml = './/raw'
     xpath_html = './/*[@class="raw"]'
 
@@ -539,6 +537,32 @@ class RawXMLStep(ConversionStep):
         # must only contain text, everything else will be discarded
         text = xml.sax.saxutils.unescape(node.text)
         new_node = lxml.objectify.fromstring('<raw>%s</raw>' % node.text)
+        return new_node
+
+
+class PortraitboxStep(ConversionStep):
+
+    xpath_xml = './/portraitbox'
+    xpath_html = './/*[@class="portraitbox"]'
+
+    def to_html(self, node):
+        content = zeit.cms.interfaces.ICMSContent(node.get('href'))
+        new_node = lxml.objectify.E.div(
+            lxml.objectify.E.div(self.url(content), **{'class': 'href'}),
+            **{'class': 'portraitbox'})
+        lxml.objectify.deannotate(new_node)
+        return new_node
+
+    def to_xml(self, node):
+        url = node.xpath('*[@class="href"]')[0].text
+        repository_url = self.url(self.repository) + '/'
+        unique_id = url.replace(
+            repository_url, zeit.cms.interfaces.ID_NAMESPACE)
+
+        new_node = lxml.objectify.E.portraitbox(href=unique_id)
+        content = zeit.cms.interfaces.ICMSContent(unique_id)
+        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
+        updater.update(new_node)
         return new_node
 
 

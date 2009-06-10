@@ -19,11 +19,14 @@
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
-  
+
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 
   <!-- I don't like this depdendency here but it makes testing much easier -->
   <include package="zeit.workflow" />
+
+  <!-- content types we need for testing -->
+  <include package="zeit.content.portraitbox" />
 
 </configure>
