@@ -13,6 +13,8 @@ CHANGES
 - When a PROPFIND is not finished by Apache because of an error, the connector
   waits a bit and retries the request.
 
+- Refactored code to make it cleaner. Also do less HEAD requests.
+
 1.13 (2009-06-04)
 -----------------
 

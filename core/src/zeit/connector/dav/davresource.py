@@ -20,6 +20,11 @@ _DEFAULT_OWNER2 = u'<DAV:href>pydav-client-2</DAV:href>'
 
 XML_PREFIX_MARKER = u'||ESCAPE||'
 
+xml = lxml.etree.Element('{DAV:}propfind')
+xml.append(lxml.etree.Element('{DAV:}allprop'))
+PROPFIND_BODY = lxml.etree.tostring(
+    xml, encoding='UTF-8', xml_declaration=True)
+del xml
 
 #:note: Used to generate an 'If' header
 def _mk_if_data ( url, locktoken ):
@@ -667,12 +672,8 @@ class DAVResource(object):
                 lt =  '<' + self.locktoken + '>'
             hdrs['Lock-Token'] = self.locktoken
             hdrs['If'] = '<%s>(%s)' % (self.url, lt)
-        xml = lxml.etree.Element('{DAV:}propfind')
-        xml.append(lxml.etree.Element('{DAV:}allprop'))
-        xmlstr = lxml.etree.tostring(xml, encoding='UTF-8',
-                                     xml_declaration=True)
-        davres = self._conn.propfind(self.url, body=xmlstr,
-                                     depth=depth, extra_hdrs=hdrs)
+        davres = self._conn.propfind(
+            self.url, body=PROPFIND_BODY, depth=depth, extra_hdrs=hdrs)
         if davres.status >= 300: # or davres.status in (404,200):
             raise zeit.connector.dav.interfaces.DAVError(
                 davres.status, davres.reason, davres)
@@ -699,7 +700,7 @@ class DAVResource(object):
         if davres.status in (200,404) or davres.status >= 300:
             raise zeit.connector.dav.interfaces.DAVError, (davres.status, davres.reason, davres)
         return davres
-#
+
 
 class DAVFile ( DAVResource ):
 
@@ -841,15 +842,6 @@ class DAVCollection ( DAVResource ):
                         encoding=None, locktoken=None):
         conn = self._conn
         url = urljoin(self.url, name)
-        # check if there is a resource with that name
-        r = conn.head(url)
-        r.read()
-        if r.status != 404:
-            # resource exists!
-            raise zeit.connector.dav.interfaces.DAVCreationFailedError(
-                r.status, r.reason, url)
-        # resource does not exist, create file
-        # headers needed to honor the lock
         hdr = {}
         if locktoken:
             hdr['If'] = '<%s>(<%s>)' % (url, locktoken)
@@ -887,7 +879,7 @@ class DAVCollection ( DAVResource ):
             # created, return file
             self.invalidate()
             return DAVFile(url, self._conn)
-        raise DAVCreationFailedError(
+        raise zeit.connector.dav.interfaces.DAVCreationFailedError(
             res.status, res.reason, url)
 
     def _do_del ( self, url, locktoken=None ):
