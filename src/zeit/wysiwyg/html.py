@@ -543,6 +543,7 @@ class RawXMLStep(ConversionStep):
 
 
 class ReferenceStep(ConversionStep):
+    """"""
 
     content_type = None # override in subclass
 
@@ -576,6 +577,19 @@ class ReferenceStep(ConversionStep):
 class PortraitboxStep(ReferenceStep):
 
     content_type = 'portraitbox'
+
+    def to_html(self, node):
+        new_node = super(PortraitboxStep, self).to_html(node)
+        layout = lxml.objectify.E.div(node.get('layout'), **{'class': 'layout'})
+        lxml.objectify.deannotate(layout)
+        new_node.append(layout)
+        return new_node
+
+    def to_xml(self, node):
+        new_node = super(PortraitboxStep, self).to_xml(node)
+        layout = node.xpath('*[@class="layout"]')[0].text
+        new_node.set('layout', layout)
+        return new_node
 
 
 class InfoboxStep(ReferenceStep):

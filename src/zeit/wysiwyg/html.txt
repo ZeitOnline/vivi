@@ -1038,7 +1038,7 @@ Portraitbox
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ...   <head/>
 ...   <body>
-...     <portraitbox href="http://xml.zeit.de/2006/pb"/>
+...     <portraitbox href="http://xml.zeit.de/2006/pb" layout="short"/>
 ...   </body>
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
@@ -1047,17 +1047,20 @@ Portraitbox
 >>> print converter.to_html(article.xml['body'])
 <div class="portraitbox">
   <div class="href">http://127.0.0.1/repository/2006/pb</div>
+  <div class="layout">short</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="portraitbox">
 ...   <div class="href">http://127.0.0.1/repository/2006/pb</div>
+...   <div class="layout">short</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article...>
   <head/>
   <body>
-    <portraitbox href="http://xml.zeit.de/2006/pb" publication-date="" expires="">
+    <portraitbox href="http://xml.zeit.de/2006/pb"
+      publication-date="" expires="" layout="short">
       <references/>
     </portraitbox>
   </body>
