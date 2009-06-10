@@ -21,23 +21,19 @@ class DavXmlDoc:
             'DAV:': 'DAV:'}
 
     def from_string( self, string):
-        try:
-            self.doc = lxml.etree.fromstring(string)
-        except lxml.etree.XMLSyntaxError, e:
-            open('/tmp/error.xml', 'w').write(string)
-            raise DavXmlParseError, e.error_log.filter_levels(
-                lxml.etree.ErrorLevels.FATAL)
+        self.parse(lxml.etree.fromstring, string)
 
-    def from_file ( self, fname ):
-        try:
-            doc = lxml.etree.parse(fname)
-        except lxml.etree.XMLSyntaxError, e:
-            raise DavXmlParseError, e.error_log.filter_levels(
-                lxml.etree.ErrorLevels.FATAL)
-        self.doc = doc
-        return
+    def from_file(self, f):
+        self.parse(lxml.etree.parse, f)
 
-    def xpathEval (self, expr):
+    def parse(self, method, arg):
+        try:
+            self.doc = method(arg)
+        except lxml.etree.XMLSyntaxError, e:
+            raise DavXmlParseError(e.error_log.filter_levels(
+                lxml.etree.ErrorLevels.FATAL))
+
+    def xpathEval(self, expr):
         return self.doc.xpath(expr, namespaces=self.nsmap);
 
     #:note: why is this here? Or better, iff this is here,
