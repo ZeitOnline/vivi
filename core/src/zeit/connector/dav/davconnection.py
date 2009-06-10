@@ -1,3 +1,5 @@
+import random
+import time
 import zeit.connector.dav.davbase
 import zeit.connector.dav.davresource
 import zeit.connector.dav.interfaces
@@ -30,7 +32,20 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             raise zeit.connector.dav.interfaces.DAVUnlockFailedError(r)
 
     def propfind(self, *args, **kwargs):
-        return self.get_rsult('propfind', *args, **kwargs)
+        tries = 0
+        while True:
+            tries += 1
+            try:
+                return self.get_result('propfind', *args, **kwargs)
+            except zeit.connector.dav.interfaces.DavXmlParseError, e:
+                last_error = e.args[0].last_error
+                if (last_error
+                    and last_error.type_name == 'ERR_TAG_NOT_FINISHED'
+                    and tries < 3):
+                    # When we got incomplete data, wait a bit and try again.
+                    time.sleep(random.uniform(0, 2**tries))
+                    continue
+                raise
 
     def get_result(self, method_name, *args, **kwargs):
         method = getattr(super(DAVConnection, self), method_name)

@@ -10,6 +10,9 @@ CHANGES
 
 - Do not operate on paths and URLs but only pass URLs to the WebDAV server.
 
+- When a PROPFIND is not finished by Apache because of an error, the connector
+  waits a bit and retries the request.
+
 1.13 (2009-06-04)
 -----------------
 
