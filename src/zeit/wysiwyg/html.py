@@ -456,12 +456,11 @@ class VideoAudioStep(ConversionStep):
     def to_html(self, node):
         if node.tag == 'video':
             id_ = node.get('videoID')
-            id2 = node.get('videoID2')
+            id2 = node.get('videoID2', '')
             id_class = 'videoId'
             div_class = 'video'
         elif node.tag == 'audio':
             id_ = node.get('audioID')
-            id2 = None
             id_class = 'audioId'
             div_class = 'audio'
 
@@ -478,8 +477,10 @@ class VideoAudioStep(ConversionStep):
         else:
             expires = ''
 
-        if id2:
+        if node.tag == 'video':
             id2 =  lxml.objectify.E.div(id2, **{'class': id_class + '2'})
+        else:
+            id2 = None
         new_node = lxml.objectify.E.div(
             lxml.objectify.E.div(id_, **{'class': id_class}),
             id2,
@@ -497,13 +498,11 @@ class VideoAudioStep(ConversionStep):
             id_nodes = node.xpath('div[@class="audioId"]')
             video = False
 
-        id_ = expires = format = ''
+        id_ = id2 = expires = format = ''
         if id_nodes:
             id_ = unicode(id_nodes[0])
             if len(id_nodes) > 1:
                 id2 = unicode(id_nodes[1])
-            else:
-                id2 = None
 
         nodes = node.xpath('div[@class="expires"]')
         if nodes:
@@ -520,12 +519,8 @@ class VideoAudioStep(ConversionStep):
         if nodes:
             format = unicode(nodes[0])
         if video:
-            if id2:
-                new_node = lxml.objectify.E.video(
-                    videoID=id_, videoID2=id2, expires=expires, format=format)
-            else:
-                new_node = lxml.objectify.E.video(
-                    videoID=id_, expires=expires, format=format)
+            new_node = lxml.objectify.E.video(
+                videoID=id_, videoID2=id2, expires=expires, format=format)
         else:
             new_node = lxml.objectify.E.audio(audioID=id_, expires=expires,
                                               format=format)
