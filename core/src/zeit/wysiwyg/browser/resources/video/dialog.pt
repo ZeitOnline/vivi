@@ -1,6 +1,6 @@
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html i18n:domain="zeit.cms"
   tal:define="kind request/form/kind|string:video;
   video python:kind=='video';
@@ -16,14 +16,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   </head>
   <body>
     <form>
-      <input type="hidden" id="kind" name="kind" value="" 
+      <input type="hidden" id="kind" name="kind" value=""
         tal:attributes="value kind"/>
       <div class="widget">
-        <label for="avid" tal:condition="video" 
+        <label for="avid" tal:condition="video"
           i18n:translate="">Video Id</label>
         <label for="avid" tal:condition="audio"
           i18n:translate="">Audio Id</label>
         <input id="avid" type="text" />
+      </div>
+      <div class="widget" tal:condition="video">
+        <label for="id2" i18n:translate="">Second Video Id</label>
+        <input id="id2" type="text" />
       </div>
       <div class="widget">
         <label for="expires" i18n:translate="">Expires</label>
@@ -41,6 +45,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
           <option value="small" i18n:translate="">small</option>
           <option value="with-links" i18n:translate="">with info</option>
           <option value="large" i18n:translate="">large</option>
+          <option value="large" i18n:translate="">double</option>
         </select>
       </div>
     </form>

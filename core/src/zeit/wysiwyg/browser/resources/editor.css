@@ -117,6 +117,10 @@ intertitle {
     content: "Video-Id:";
 }
 
+.video > .videoId2:before {
+    content: "Video-Id2:";
+}
+
 .audio > .expires:before,
 .video > .expires:before {
     content: "Expires:";
