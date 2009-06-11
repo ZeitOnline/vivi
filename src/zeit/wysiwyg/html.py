@@ -456,10 +456,12 @@ class VideoAudioStep(ConversionStep):
     def to_html(self, node):
         if node.tag == 'video':
             id_ = node.get('videoID')
+            id2 = node.get('videoID2')
             id_class = 'videoId'
             div_class = 'video'
         elif node.tag == 'audio':
             id_ = node.get('audioID')
+            id2 = None
             id_class = 'audioId'
             div_class = 'audio'
 
@@ -476,8 +478,11 @@ class VideoAudioStep(ConversionStep):
         else:
             expires = ''
 
+        if id2:
+            id2 =  lxml.objectify.E.div(id2, **{'class': id_class + '2'})
         new_node = lxml.objectify.E.div(
             lxml.objectify.E.div(id_, **{'class': id_class}),
+            id2,
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
             lxml.objectify.E.div(format, **{'class': 'format'}),
             **{'class': 'inline-element %s' % div_class})
@@ -486,7 +491,7 @@ class VideoAudioStep(ConversionStep):
 
     def to_xml(self, node):
         if 'video' in node.get('class', None):
-            id_nodes = node.xpath('div[@class="videoId"]')
+            id_nodes = node.xpath('div[contains(@class, "videoId")]')
             video = True
         elif 'audio' in node.get('class', None):
             id_nodes = node.xpath('div[@class="audioId"]')
@@ -495,6 +500,11 @@ class VideoAudioStep(ConversionStep):
         id_ = expires = format = ''
         if id_nodes:
             id_ = unicode(id_nodes[0])
+            if len(id_nodes) > 1:
+                id2 = unicode(id_nodes[1])
+            else:
+                id2 = None
+
         nodes = node.xpath('div[@class="expires"]')
         if nodes:
             expires = unicode(nodes[0])
@@ -510,8 +520,12 @@ class VideoAudioStep(ConversionStep):
         if nodes:
             format = unicode(nodes[0])
         if video:
-            new_node = lxml.objectify.E.video(videoID=id_, expires=expires,
-                                              format=format)
+            if id2:
+                new_node = lxml.objectify.E.video(
+                    videoID=id_, videoID2=id2, expires=expires, format=format)
+            else:
+                new_node = lxml.objectify.E.video(
+                    videoID=id_, expires=expires, format=format)
         else:
             new_node = lxml.objectify.E.audio(audioID=id_, expires=expires,
                                               format=format)
