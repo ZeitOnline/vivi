@@ -699,7 +699,7 @@ zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
         var self = this;
         MochiKit.Signal.signal(self, 'before-reload');
         if (!isUndefinedOrNull(self.tabs)) {
-            self.tabs.active_tab.activate();
+            self.tabs.active_tab.view.render();
             return
         }
         var tab_definitions = MochiKit.DOM.getElementsByTagAndClassName(
