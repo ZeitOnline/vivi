@@ -630,7 +630,6 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 </div>
 <p>Foo bar</p>
 
-
 On the way back the divs become a video node:
 
 >>> converter.from_html(article.xml['body'], '''\
@@ -651,6 +650,44 @@ On the way back the divs become a video node:
     <p>Foo bar</p>
   </body>
 </article>
+
+Double video
+~~~~~~~~~~~~
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <video videoID="20080402334ddf" videoID2="2009second"/>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<div class="inline-element video">
+  <div class="videoId">20080402334ddf</div>
+  <div class="videoId2">2009second</div>
+  <div class="expires"></div>
+  <div class="format"></div>
+</div>
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <div class="inline-element video">
+...       <div class="videoId">my-fine-videoid</div>
+...       <div class="videoId2">second</div>
+...       <div class="expires">2009-01-01 00:00</div>
+...     </div>''')
+
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article ...>
+  <head/>
+  <body>
+    <video expires="2009-01-01T00:00:00+01:00"
+        videoID2="second" videoID="my-fine-videoid" format=""/>
+  </body>
+</article>
+
 
 Embedding audio
 ---------------
