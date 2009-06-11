@@ -19,11 +19,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       <input type="hidden" id="kind" name="kind" value="" 
         tal:attributes="value kind"/>
       <div class="widget">
-        <label for="videoId" tal:condition="video" 
+        <label for="avid" tal:condition="video" 
           i18n:translate="">Video Id</label>
-        <label for="videoId" tal:condition="audio"
+        <label for="avid" tal:condition="audio"
           i18n:translate="">Audio Id</label>
-        <input id="videoId" type="text" />
+        <input id="avid" type="text" />
       </div>
       <div class="widget">
         <label for="expires" i18n:translate="">Expires</label>

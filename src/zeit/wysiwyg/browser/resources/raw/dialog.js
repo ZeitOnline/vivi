@@ -1,51 +1,26 @@
-// Raw
+zeit.wysiwyg.RawDialog = zeit.wysiwyg.Dialog.extend({
 
-MochiKit.Signal.connect(window, 'onload', function(event) {
-    dialog.SetOkButton(true);
+    construct: function() {
+        var self = this;
+        self.container_class = 'raw';
+        arguments.callee.$.construct.call(self);
+        if (self.container === null)
+            return;
+        $('raw').value = self.container.textContent;
+    },
 
-    if (get_raw_area() !== null) {
-        var raw = get_raw_area().textContent;
-        $('raw').value = raw;
-    }
+    update: function() {
+        var self = this;
+        self.container.textContent = $('raw').value;
+    },
+
+    create: function() {
+        var self = this;
+        var div = DIV({'class': self.container_class});
+        self.create_element(div);
+        return div;
+    },
 });
 
 
-function get_raw_area() {
-    var selected_element = oEditor.FCKSelection.GetSelectedElement();
-    if (selected_element === null) {
-        selected_element = oEditor.FCKSelection.GetParentElement();
-    }
-
-    if (selected_element !== null) {
-        if (selected_element.nodeName != 'DIV' ||
-            !MochiKit.DOM.hasElementClass(selected_element, 'raw')) {
-            try {
-                selected_element = MochiKit.DOM.getFirstParentByTagAndClassName(
-                    selected_element, 'div', 'raw');
-            } catch (e) {
-                selected_element = null;
-            }
-        }
-    }
-    return selected_element;
-}
-
-
-function Ok() {
-    var content = $('raw').value;
-
-    oEditor.FCKUndo.SaveUndoStep();
-
-    var raw_area = get_raw_area();
-    if (raw_area === null) {
-        var raw_area = DIV({'class': 'raw'}, content);
-        var selected_element = oEditor.FCKSelection.GetBoundaryParentElement();
-        selected_element.parentNode.insertBefore(
-            raw_area,
-            selected_element.nextSibling);
-    } else {
-        raw_area.textContent = content;
-    }
-
-    return true;
-}
+zeit.wysiwyg.dialog_class = zeit.wysiwyg.RawDialog;
