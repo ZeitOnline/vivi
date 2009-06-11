@@ -1,21 +1,14 @@
-// Plugin for adding images.
-
 FCKCommands.RegisterCommand(
     'Zeit_Image' ,
     new FCKDialogCommand(
         'Image', 'ZEIT: Bild',
         FCKConfig.PageConfig.ZeitResources + '/image/dialog.pt',
         800, 600));
+var button = new FCKToolbarButton('Zeit_Image', 'Image');
+button.IconPath = FCKConfig.PageConfig.ZeitResources + '/image/image.gif'
+FCKToolbarItems.RegisterItem('Zeit_Image', button);
 
 
-// Create the toolbar button.
-var oImageItem = new FCKToolbarButton(
-    'Zeit_Image', 'Image');
-oImageItem.IconPath = FCKConfig.PageConfig.ZeitResources + '/image/image.gif'
-
-FCKToolbarItems.RegisterItem('Zeit_Image', oImageItem);
-        
-    
 // Register context menu item
 FCK.ContextMenu.RegisterListener({
     AddItems : function(menu, element, tagName) {
