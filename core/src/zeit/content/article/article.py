@@ -170,17 +170,17 @@ class DivisionStep(zeit.wysiwyg.html.ConversionStep):
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     xpath_xml = './/division[@type="page"]'
-    xpath_html = './/*[@class="page-break"]'
+    xpath_html = './/*[contains(@class, "page-break")]'
 
     def to_html(self, node):
         new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(node.get('teaser'), **{'class': 'page-break-teaser'}),
-            **{'class': 'page-break'})
+            lxml.objectify.E.div(node.get('teaser'), **{'class': 'teaser'}),
+            **{'class': 'inline-element page-break'})
         lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
-        match = node.xpath('div[@class="page-break-teaser"]')
+        match = node.xpath('div[@class="teaser"]')
         teaser = unicode(match[0]) if match else ''
         new_node = lxml.etree.Element('division', **{'type': 'page',
                                                      'teaser': teaser})
