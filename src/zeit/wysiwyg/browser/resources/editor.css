@@ -67,14 +67,20 @@ intertitle {
 .raw,
 .audio,
 .video,
-.page-break {
+.page-break,
+.infobox,
+.portraitbox,
+.gallery {
     border: 1px solid black;
     padding: 0.5em;
 }
 
 .audio:after,
 .video:after,
-.page-break:after {
+.page-break:after,
+.infobox:after,
+.portraitbox:after,
+.gallery:after {
     background-color: black;
     color: white;
     display: block;
@@ -92,6 +98,18 @@ intertitle {
 
 .page-break:after {
     content: "Seitenumbruch";
+}
+
+.infobox:after {
+    content: "Infobox";
+}
+
+.portraitbox:after {
+    content: "Portraitbox";
+}
+
+.gallery:after {
+    content: "Bildergallerie";
 }
 
 .audio > .audioId:before {
@@ -127,10 +145,24 @@ intertitle {
 .video > .videoId,
 .video > .expires,
 .video > .format,
-.page-break > .page-break-teaser {
+.page-break > .page-break-teaser,
+.infobox > .href,
+.portraitbox > .href,
+.portraitbox > .layout,
+.gallery > .href {
     padding: 0.5em;
 }
 
 .page-break > .page-break-teaser:before {
     content: "Teaser:";
+}
+
+.infobox > .href:before,
+.portraitbox > .href:before,
+.gallery > .href:before {
+    content: "URL:";
+}
+
+.portraitbox > .layout:before {
+    content: "URL:";
 }

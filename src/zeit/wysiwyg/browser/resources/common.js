@@ -69,7 +69,7 @@ zeit.wysiwyg.Dialog = gocept.Class.extend({
         var self = this;
         var div = self.get_div(class_);
         if (div === null) {
-            return null
+            return '';
         } else {
             return div.textContent;
         }
@@ -126,9 +126,7 @@ zeit.wysiwyg.Dialog = gocept.Class.extend({
 
 MochiKit.Signal.connect(window, 'onload', function(event) {
     dialog.SetOkButton(true);
-    if (zeit.wysiwyg.dialog_class) {
-        zeit.wysiwyg.dialog = new zeit.wysiwyg.dialog_class();
-    }
+    zeit.wysiwyg.dialog = new zeit.wysiwyg.dialog_class();
 });
 
 
