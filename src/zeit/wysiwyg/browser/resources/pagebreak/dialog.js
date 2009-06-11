@@ -4,18 +4,18 @@ zeit.wysiwyg.PageBreakDialog = zeit.wysiwyg.Dialog.extend({
         var self = this;
         self.container_class = 'page-break';
         arguments.callee.$.construct.call(self);
-        $('teaser').value = self.get_value('page-break-teaser');
+        $('teaser').value = self.get_value('teaser');
     },
 
     update: function() {
         var self = this;
-        self.set_value('page-break-teaser', $('teaser').value);
+        self.set_value('teaser', $('teaser').value);
     },
 
     create: function() {
         var self = this;
-        var div = DIV({'class': self.container_class},
-            DIV({'class': 'page-break-teaser'}));
+        var div = DIV({'class': 'inline-element ' + self.container_class},
+            DIV({'class': 'teaser'}));
         self.create_element(div);
         return div;
     },

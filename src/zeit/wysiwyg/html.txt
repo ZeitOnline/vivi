@@ -600,7 +600,7 @@ information:
 
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div class="video">
+<div class="inline-element video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires">2000-11-30 13:00</div>
   <div class="format">large</div>
@@ -623,7 +623,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div class="video">
+<div class="inline-element video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires"></div>
   <div class="format"></div>
@@ -635,7 +635,7 @@ On the way back the divs become a video node:
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <p>No bo po co to.</p>
-...     <div class="video">
+...     <div class="inline-element video">
 ...       <div class="videoId">my-fine-videoid</div>
 ...       <div class="expires">2009-01-01 00:00</div>
 ...     </div>
@@ -676,7 +676,7 @@ information:
 
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div class="audio">
+<div class="inline-element audio">
   <div class="audioId">20080402334ddf</div>
   <div class="expires">2000-11-30 13:00</div>
   <div class="format">large</div>
@@ -700,7 +700,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div class="audio">
+<div class="inline-element audio">
   <div class="audioId">20080402334ddf</div>
   <div class="expires"></div>
   <div class="format"></div>
@@ -712,7 +712,7 @@ On the way back the divs become an audio node:
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <p>No bo po co to.</p>
-...     <div class="audio">
+...     <div class="inline-element audio">
 ...       <div class="audioId">my-fine-audioid</div>
 ...       <div class="expires">2009-01-01 00:00</div>
 ...     </div>
@@ -757,7 +757,7 @@ after saving there is no more ``article_extra`` for a video:
 
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div class="video">
+<div class="inline-element video">
   <div class="videoId">20080402334ddf</div>
   <div class="expires"></div>
   <div class="format"></div>
@@ -912,7 +912,7 @@ source contains entities:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>No bo po co to.</p>
-<div ...class="raw">&lt;embed foo="bar"/&gt;
+<div ...class="inline-element raw">&lt;embed foo="bar"/&gt;
 &lt;b&gt;booh&lt;/b&gt;
 </div>
 <p>Foo bar</p>
@@ -921,7 +921,7 @@ The other way round converts a ``<div class="raw">`` to a ``<raw>`` tag:
 
 >>> converter.from_html(article.xml['body'], """\
 ... <p>No bo po co to.</p>
-... <div class="raw">&lt;embed baz="bar"/&gt;
+... <div class="inline-element raw">&lt;embed baz="bar"/&gt;
 ... &lt;strong&gt;booh&lt;/strong&gt;
 ... </div>
 ... <p>Foo bar</p>""")
@@ -943,7 +943,7 @@ discarded:
 
 >>> converter.from_html(article.xml['body'], """\
 ... <p>No bo po co to.</p>
-... <div class="raw">&lt;embed baz="bar"/&gt;<foo/>
+... <div class="raw inline-element">&lt;embed baz="bar"/&gt;<foo/>
 ... &lt;strong&gt;booh&lt;/strong&gt;
 ... </div>
 ... <p>Foo bar</p>""")
@@ -1045,13 +1045,13 @@ Portraitbox
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
-<div class="portraitbox">
+<div class="inline-element portraitbox">
   <div class="href">http://127.0.0.1/repository/2006/pb</div>
   <div class="layout">short</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
-... <div class="portraitbox">
+... <div class="inline-element portraitbox">
 ...   <div class="href">http://127.0.0.1/repository/2006/pb</div>
 ...   <div class="layout">short</div>
 ... </div>""")
@@ -1083,12 +1083,12 @@ Infobox
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
-<div class="infobox">
+<div class="inline-element infobox">
   <div class="href">http://127.0.0.1/repository/2006/ib</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
-... <div class="infobox">
+... <div class="inline-element infobox">
 ...   <div class="href">http://127.0.0.1/repository/2006/ib</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -1118,12 +1118,12 @@ Gallery
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
-<div class="gallery">
+<div class="inline-element gallery">
   <div class="href">http://127.0.0.1/repository/2006/gal</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
-... <div class="gallery">
+... <div class="inline-element gallery">
 ...   <div class="href">http://127.0.0.1/repository/2006/gal</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)

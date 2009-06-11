@@ -64,28 +64,25 @@ intertitle {
 }
 
 
-.raw,
-.audio,
-.video,
-.page-break,
-.infobox,
-.portraitbox,
-.gallery {
+.inline-element {
     border: 1px solid black;
     padding: 0.5em;
 }
 
-.audio:after,
-.video:after,
-.page-break:after,
-.infobox:after,
-.portraitbox:after,
-.gallery:after {
+.inline-element:after {
     background-color: black;
     color: white;
     display: block;
     text-transform: uppercase;
     padding: 0.25em;
+}
+
+.inline-element > div:before {
+    padding-right: 0.5em;
+}
+
+.inline-element > div {
+    padding: 0.5em;
 }
 
 .audio:after {
@@ -130,30 +127,7 @@ intertitle {
     content: "Format:";
 }
 
-.audio > .audioId:before,
-.audio > .expires:before,
-.audio > .format:before,
-.video > .videoId:before,
-.video > .expires:before,
-.video > .format:before {
-    padding-right: 0.5em;
-}
-
-.audio > .audioId,
-.audio > .expires,
-.audio > .format,
-.video > .videoId,
-.video > .expires,
-.video > .format,
-.page-break > .page-break-teaser,
-.infobox > .href,
-.portraitbox > .href,
-.portraitbox > .layout,
-.gallery > .href {
-    padding: 0.5em;
-}
-
-.page-break > .page-break-teaser:before {
+.page-break > .teaser:before {
     content: "Teaser:";
 }
 
@@ -164,5 +138,5 @@ intertitle {
 }
 
 .portraitbox > .layout:before {
-    content: "URL:";
+    content: "Layout:";
 }

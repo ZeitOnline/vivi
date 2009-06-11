@@ -16,7 +16,7 @@ zeit.wysiwyg.RawDialog = zeit.wysiwyg.Dialog.extend({
 
     create: function() {
         var self = this;
-        var div = DIV({'class': self.container_class});
+        var div = DIV({'class': 'inline-element ' + self.container_class});
         self.create_element(div);
         return div;
     },

@@ -450,7 +450,8 @@ class VideoAudioStep(ConversionStep):
     """Make <video> and <audio> editable."""
 
     xpath_xml = './/video|.//audio'
-    xpath_html = './/*[@class="video" or @class="audio"]'
+    xpath_html = ('.//*[contains(@class, "inline-element") and '
+                  '(contains(@class, "video") or contains(@class, "audio"))]')
 
     def to_html(self, node):
         if node.tag == 'video':
@@ -479,15 +480,15 @@ class VideoAudioStep(ConversionStep):
             lxml.objectify.E.div(id_, **{'class': id_class}),
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
             lxml.objectify.E.div(format, **{'class': 'format'}),
-            **{'class': div_class})
+            **{'class': 'inline-element %s' % div_class})
         lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
-        if node.get('class') == 'video':
+        if 'video' in node.get('class', None):
             id_nodes = node.xpath('div[@class="videoId"]')
             video = True
-        elif node.get('class') == 'audio':
+        elif 'audio' in node.get('class', None):
             id_nodes = node.xpath('div[@class="audioId"]')
             video = False
 
@@ -521,7 +522,7 @@ class RawXMLStep(ConversionStep):
     """Make <raw> editable."""
 
     xpath_xml = './/raw'
-    xpath_html = './/*[@class="raw"]'
+    xpath_html = './/*[contains(@class, "raw")]'
 
     def to_html(self, node):
         result = []
@@ -531,7 +532,7 @@ class RawXMLStep(ConversionStep):
             result.append(
                 lxml.etree.tostring(child, pretty_print=True, encoding=unicode))
         text = '\n'.join(result)
-        new_node = lxml.objectify.E.div(text, **{'class': 'raw'})
+        new_node = lxml.objectify.E.div(text, **{'class': 'inline-element raw'})
         lxml.objectify.deannotate(new_node)
         return new_node
 
@@ -550,18 +551,18 @@ class ReferenceStep(ConversionStep):
     def __init__(self, context):
         super(ReferenceStep, self).__init__(context)
         self.xpath_xml = './/%s' % self.content_type
-        self.xpath_html = './/*[@class="%s"]' % self.content_type
+        self.xpath_html = './/*[contains(@class, "%s")]' % self.content_type
 
     def to_html(self, node):
         content = zeit.cms.interfaces.ICMSContent(node.get('href'))
         new_node = lxml.objectify.E.div(
             lxml.objectify.E.div(self.url(content), **{'class': 'href'}),
-            **{'class': self.content_type})
+            **{'class': 'inline-element %s' % self.content_type})
         lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
-        url = node.xpath('*[@class="href"]')[0].text
+        url = node.xpath('*[contains(@class, "href")]')[0].text
         repository_url = self.url(self.repository) + '/'
         unique_id = url.replace(
             repository_url, zeit.cms.interfaces.ID_NAMESPACE)
