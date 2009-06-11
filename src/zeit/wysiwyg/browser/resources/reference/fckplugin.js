@@ -2,10 +2,10 @@ FCKCommands.RegisterCommand(
     'Zeit_Image' ,
     new FCKDialogCommand(
         'Image', 'ZEIT: Bild',
-        FCKConfig.PageConfig.ZeitResources + '/image/dialog.pt',
+        FCKConfig.PageConfig.ZeitResources + '/reference/image.pt',
         800, 600));
 var button = new FCKToolbarButton('Zeit_Image', 'Image');
-button.IconPath = FCKConfig.PageConfig.ZeitResources + '/image/image.gif'
+button.IconPath = FCKConfig.PageConfig.ZeitResources + '/reference/image.gif'
 FCKToolbarItems.RegisterItem('Zeit_Image', button);
 
 
