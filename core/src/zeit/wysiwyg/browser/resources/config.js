@@ -6,7 +6,8 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
         ['OrderedList','UnorderedList', 'Table'],
         ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio', 'Zeit_MailForm',
-         'Zeit_RAW', 'Zeit_Pagebreak'],
+         'Zeit_RAW', 'Zeit_Pagebreak',
+         'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery'],
         ['Link','Unlink','Anchor'],
 ];
 

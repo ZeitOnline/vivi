@@ -18,3 +18,11 @@
     text-align: center;
 }
 
+#select-item,
+.widget {
+    margin-bottom: 1em;
+}
+
+label {
+    display: block;
+}
