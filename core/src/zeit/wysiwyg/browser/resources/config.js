@@ -29,7 +29,7 @@ FCKConfig.FlashUpload = false;
 
 FCKConfig.Plugins.Add('video', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('mailform', '', FCKConfig.PageConfig.ZeitResources + '/');
-FCKConfig.Plugins.Add('image', '', FCKConfig.PageConfig.ZeitResources + '/');
+FCKConfig.Plugins.Add('reference', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('raw', '', FCKConfig.PageConfig.ZeitResources + '/');
 FCKConfig.Plugins.Add('pagebreak', '', FCKConfig.PageConfig.ZeitResources + '/');
 
