@@ -11,8 +11,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <tal:block replace="resource_library:zeit.cms.tree" />
     <tal:block replace="resource_library:zeit.wysiwyg.fckeditor" />
     <script type="text/javascript">setSkinCSS();</script>
-    <script src="video.js" type="text/javascript"></script>
-    <link href="video.css" type="text/css" rel="stylesheet" />
+    <script src="dialog.js" type="text/javascript"></script>
+    <link href="dialog.css" type="text/css" rel="stylesheet" />
   </head>
   <body>
     <form>
