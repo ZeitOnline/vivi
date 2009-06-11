@@ -70,7 +70,7 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
 
     create: function() {
         var self = this;
-        var div = DIV({'class': self.container_class},
+        var div = DIV({'class': 'inline-element ' + self.container_class},
             DIV({'class': self.container_class + 'Id'}),
             DIV({'class': 'expires'}),
             DIV({'class': 'format'}));
