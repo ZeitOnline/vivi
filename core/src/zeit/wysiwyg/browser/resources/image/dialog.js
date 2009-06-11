@@ -1,66 +1,70 @@
-// Image
+zeit.wysiwyg.ImageDialog = zeit.wysiwyg.Dialog.extend({
 
-MochiKit.Signal.connect(window, 'onload', function(event) {
-    dialog.SetOkButton(true);
-
-    var browse_url = oPage.context_url + '/@@default-browsing-location';
-    new ObjectReferenceWidget('select-image', browse_url, 'images', false);
-
-    MochiKit.Signal.connect('image', 'onchange', function(event) {
-        var image = $('image');
-        var preview = $('preview');
-        var unique_id = image.value;
-        preview.innerHTML = ''
-        if (unique_id) {
-            preview.appendChild(IMG({'src': id_to_url(unique_id)}));
+    get_container: function() {
+        var self = this;
+        var img = oEditor.FCKSelection.GetSelectedElement();
+        if (img === null || img.nodeName != 'IMG') {
+            return null;
         }
-    });
+        return img;
+    },
 
-    if (get_image() !== null) {
-        var image = get_image().src;
-        $('image').value = url_to_id(image);
-        MochiKit.Signal.signal('image', 'onchange');
-    }
+    construct: function() {
+        var self = this;
+        arguments.callee.$.construct.call(self);
+
+        var browse_url = oPage.context_url + '/@@default-browsing-location';
+        new ObjectReferenceWidget('select-image', browse_url, 'images', false);
+
+        MochiKit.Signal.connect('image', 'onchange', function(event) {
+            var image = $('image');
+            var preview = $('preview');
+            var unique_id = image.value;
+            preview.innerHTML = ''
+            if (unique_id) {
+                preview.appendChild(IMG({'src': self.id_to_url(unique_id)}));
+            }
+        });
+
+        if (self.container !== null) {
+            $('image').value = url_to_id(self.container);
+            MochiKit.Signal.signal('image', 'onchange');
+        }
+    },
+
+    validate: function() {
+        var self = this;
+        var unique_id = $('image').value;
+        if (! unique_id) {
+            alert('Die Bild-URL wird benötigt.');
+            return false;
+        } else {
+            return true;
+        }
+    },
+
+    update: function() {
+        var self = this;
+        self.container.src = self.id_to_url($('image').value);
+    },
+
+    create: function() {
+        var self = this;
+        var img = IMG();
+        FCK.InsertElement(img);
+        return img;
+    },
+
+    id_to_url: function(unique_id) {
+        return unique_id.replace(
+            'http://xml.zeit.de', oPage.application_url + '/repository');
+    },
+
+    url_to_id: function(url) {
+        return url.replace(
+            oPage.application_url + '/repository', 'http://xml.zeit.de');
+    },
 });
 
 
-function get_image() {
-    var img = oEditor.FCKSelection.GetSelectedElement();
-    if (img === null || img.nodeName != 'IMG') {
-        return null;
-    }
-    return img;
-}
-
-
-function id_to_url(unique_id) {
-    return unique_id.replace(
-        'http://xml.zeit.de', oPage.application_url + '/repository');
-}
-
-function url_to_id(url) {
-    return url.replace(
-        oPage.application_url + '/repository', 'http://xml.zeit.de');
-}
-
-
-function Ok() {
-    var unique_id = $('image').value;
-    if (!unique_id) {
-        alert('Die Bild-URL wird benötigt.');
-        return false;
-    }
-
-    oEditor.FCKUndo.SaveUndoStep();
-
-    var image_display_url = id_to_url(unique_id);
-    var image = get_image();
-    if (image === null) {
-        var image = IMG({'src': image_display_url});
-        FCK.InsertElement(image);
-    } else {
-        image.src = image_display_url;
-    }
-
-    return true;
-}
+zeit.wysiwyg.dialog_class = zeit.wysiwyg.ImageDialog;
