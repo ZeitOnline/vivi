@@ -53,8 +53,7 @@ It is not possible to switch on the autopilot when there is no centerpage
 referenced:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit').click()
->>> browser.open('edit-properties')
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.getControl('Autopilot active').selected = True
 >>> browser.getControl('Apply').click()
 >>> print browser.contents

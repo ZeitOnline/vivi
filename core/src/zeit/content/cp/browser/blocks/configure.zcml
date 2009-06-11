@@ -44,7 +44,7 @@
     name="edit"
     template="layout.block.edit.pt"
     permission="zeit.EditContent"
-    weight="90"
+    weight="-10"
     />
 
   <browser:viewlet
@@ -55,7 +55,7 @@
     name="edit"
     template="layout.block.edit.pt"
     permission="zeit.EditContent"
-    weight="90"
+    weight="-10"
     />
 
   <browser:viewletManager
@@ -108,7 +108,7 @@
     name="delete"
     template="layout.block.delete.pt"
     permission="zeit.EditContent"
-    weight="10"
+    weight="90"
     />
 
   <browser:viewlet

@@ -4,7 +4,6 @@
 
 #cp-content {
   bottom: 1em;
-  font-size: 0.5em;
   left: 0;
   position: absolute;
   right: 35%;
@@ -16,7 +15,6 @@
   left: 0;
   overflow: auto;
   position: absolute;
-  position: absolute;
   right: 0;
   top: 0;
 }
@@ -26,14 +24,12 @@
 }
 
 #cp-content .editable-area {
-  border: 1px solid #eeeeee;
   margin: 0.5em;
   padding: 0.5em;
 }
 
 #cp-content .hover > * {
-  /* 1px outline + 1px border (which we have anyway) results in 2px */
-  outline: 1px solid black;
+  outline: 2px solid #eee;
   border-style: solid;
 }
 
@@ -54,6 +50,10 @@
 #cp-informatives {
   width: 36%;
   float: left;
+}
+
+#cp-informatives #cp-informatives-inner {
+  margin-top: 4.2em;
 }
 
 #cp-teasermosaic {
@@ -85,7 +85,6 @@
 
 #cp-content > .lightbox,
 #cp-content > .lightbox-header {
-  font-size: 2em;
   left: 5%;
   right: 5%;
 }
@@ -121,8 +120,8 @@
 /* Block layout */
 
 .block > .block-inner {
-  border: 1px solid black;
-  padding: 0 0.5em;
+  border: 1px solid #bbb;
+  overflow: hidden; 
 }
 
 .block {
@@ -135,7 +134,6 @@
 
 .editable-area > .landing-zone {
   border: 1px solid #00ee5e;
-  font-size: 2em;
   height: 1em;
   margin: 0.25em 0;
   visibility: hidden;
@@ -207,13 +205,10 @@
 }
 
 .edit {
-  background-color: inherit;
-  border-top: 3px solid #aaa;
-  clear: both;
-  font-size: 2em;
-  height: 1.5em;
-  margin-top: 0.5em;
-  padding: 0.25em 0 ;
+  border-bottom: 1px solid #bbb;
+  margin-bottom: .3em;
+  padding-top: .3em;
+
 }
 
 .editable-area > .edit {
@@ -233,8 +228,9 @@
   background-repeat: no-repeat;
   display: block;
   float: left;
-  height: 20px;
-  width: 22px;
+  height: 16px;
+  margin-left: .3em;
+  width: 16px;
 }
 
 .editable-area.validation-error {
@@ -263,6 +259,7 @@
 .edit-bar > .delete-link {
   background-image: url('delete.png');
   float: right;
+  padding-right: .3em;
 }
 
 .edit-bar > .edit-teaser-link {
@@ -304,6 +301,10 @@
 
 }
 
+.edit-bar {
+  background-color: #f2f2f2;
+}
+
 .type-teaser-bar > .block-inner > .block {
   float: left;
   width: 25%;
@@ -311,13 +312,12 @@
 
 .type-teaser-bar > .block-inner > .block > .block-inner {
   margin: 1.5em 0.5em;
-  padding-bottom: 3.5em;
+  padding-bottom: 2em;
 }
 
 .type-teaser-bar > .block-inner > .block > .block-inner > .edit {
   bottom: 1.25em;
   left: 1em;
-  position: absolute;
   right: 1em;
 }
 
@@ -326,7 +326,7 @@
 }
 
 .type-teaser-bar > .block-inner {
-  background-color: #eeeeee;
+  background-color: #fff;
 }
 
 .block.type-blocked {
@@ -360,7 +360,6 @@
 
 
 .dragger > .center {
-  background: url('line.png') repeat-x center;
   height: 20px;
   cursor: move;
 }
@@ -373,7 +372,6 @@
 }
 
 .block.type-placeholder > .block-inner > * {
-  font-size: 2em;
   margin: 1.5em;
 }
 
@@ -389,12 +387,15 @@
 /* Teaser block */
 
 .autopilot-chooser {
-  border-bottom: 3px solid #aaa;
+  bottom: 1.2em;
   cursor: pointer;
   display: block;
-  height: 3em;
+  height: 1em;
   margin-bottom: 0.8em;
-  padding:0.3em;
+  padding: 0.3em;
+  position: absolute;
+  right: 1em;
+  width: 6em;
 }
 
 .autopilot-on > * {
@@ -438,7 +439,12 @@
 
 .teaser-list {
   min-height: 5em;
+  margin: 1em;
 }
+
+.teaser {
+  font-size: 0.8em;
+}  
 
 .teaser > img {
   display: none
@@ -565,7 +571,6 @@
 .cpextra-title { 
   margin: 2em 2em 0.5em 2em;
   text-transform: uppercase;
-  font-size: 2em;
 }
 
 .block-item,
