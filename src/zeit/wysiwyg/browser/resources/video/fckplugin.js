@@ -1,11 +1,13 @@
-// Plugin for managing videos.
-
 FCKCommands.RegisterCommand(
     'Zeit_Add_Video' ,
     new FCKDialogCommand(
         'Video', 'ZEIT: Video',
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt?kind=video',
         380, 250));
+var button = new FCKToolbarButton('Zeit_Add_Video', 'Video');
+button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/icon.jpg';
+FCKToolbarItems.RegisterItem( 'Zeit_Add_Video', button);
+
 
 FCKCommands.RegisterCommand(
     'Zeit_Add_Audio' ,
@@ -13,20 +15,11 @@ FCKCommands.RegisterCommand(
         'Audio', 'ZEIT: Audio',
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt?kind=audio',
         380, 250));
+var button = new FCKToolbarButton('Zeit_Add_Audio', 'Audio');
+button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/audio_icon.gif';
+FCKToolbarItems.RegisterItem( 'Zeit_Add_Audio', button);
 
 
-// Create the toolbar button.
-var oVideoItem = new FCKToolbarButton(
-    'Zeit_Add_Video', 'Video');
-oVideoItem.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/icon.jpg';
-FCKToolbarItems.RegisterItem( 'Zeit_Add_Video', oVideoItem);
-
-var oAudioItem = new FCKToolbarButton(
-    'Zeit_Add_Audio', 'Audio');
-oAudioItem.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/audio_icon.gif';
-FCKToolbarItems.RegisterItem( 'Zeit_Add_Audio', oAudioItem);
-        
-    
 // Register context menu item
 FCK.ContextMenu.RegisterListener({
     AddItems : function(menu, element, tagName) {
@@ -45,4 +38,3 @@ FCK.ContextMenu.RegisterListener({
             oVideoItem.IconPath);
     }
 });
-
