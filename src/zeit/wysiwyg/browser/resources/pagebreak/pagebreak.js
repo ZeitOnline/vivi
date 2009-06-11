@@ -1,29 +1,13 @@
 // Pagebreak
 
-function Import(aSrc) {
-   document.write('<scr'+'ipt type="text/javascript" src="' + aSrc + '"></sc' + 'ript>');
-}
-
-
-var dialog		= window.parent ;
-var oEditor		= dialog.InnerDialogLoaded() ;
-var FCK			= oEditor.FCK ;
-var FCKLang		= oEditor.FCKLang ;
-var FCKConfig	= oEditor.FCKConfig ;
-var FCKTools	= oEditor.FCKTools ;
-
-Import(FCKConfig.FullBasePath + 'dialog/common/fck_dialog_common.js');
-Import(FCKConfig.PageConfig.ApplicationURL +
-       '/@@/mochikit/MochiKit.js');
-
-window.addEventListener('load', function() {
+MochiKit.Signal.connect(window, 'onload', function(event) {
     dialog.SetOkButton(true);
 
     if (get_pagebreak_div() !== null) {
         var teaser = get_teaser_div().textContent;
         $('teaser').value = teaser;
     }
-}, false);
+});
 
 
 function get_pagebreak_div() {
