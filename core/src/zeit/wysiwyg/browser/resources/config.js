@@ -59,7 +59,7 @@ function CleanWord( oNode, bIgnoreFont, bRemoveStyles )
         var node = to_delete.snapshotItem(i);
         node.parentNode.removeChild(node);
     }
-        
+
     // Remove everything but elements and text
     var next = oNode.firstChild;
     while (next) {
