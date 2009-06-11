@@ -1,21 +1,7 @@
 // Video
 
-function Import(aSrc) {
-   document.write('<scr'+'ipt type="text/javascript" src="' + aSrc + '"></sc' + 'ript>');
-}
-
-
-var dialog		= window.parent ;
-var oEditor		= dialog.InnerDialogLoaded() ;
-var FCK			= oEditor.FCK ;
-var FCKLang		= oEditor.FCKLang ;
-var FCKConfig	= oEditor.FCKConfig ;
-var FCKTools	= oEditor.FCKTools ;
-
 var date_format = '%Y-%m-%d %H:%M';
 var video_div;
-
-Import(FCKConfig.FullBasePath + 'dialog/common/fck_dialog_common.js');
 
 // Calendar, includes Date object patches for parsing/printing in a
 // strptime/strftime like manner
@@ -23,11 +9,9 @@ Import(FCKConfig.PageConfig.ApplicationURL +
        '/@@/zc.datetimewidget/calendar.js');
 Import(FCKConfig.PageConfig.ApplicationURL +
        '/@@/zc.datetimewidget/lang/calendar-en.js');
-Import(FCKConfig.PageConfig.ApplicationURL +
-       '/@@/mochikit/MochiKit.js');
 
-window.addEventListener('load', function() {
-	dialog.SetOkButton(true);
+MochiKit.Signal.connect(window, 'onload', function(event) {
+    dialog.SetOkButton(true);
     new Calendar(1);
 
     if (get_video_div() !== null) {
@@ -56,7 +40,7 @@ window.addEventListener('load', function() {
         GetE('expires').value = '';
     }, false);
 
-}, false);
+});
 
 
 function get_video_div() {

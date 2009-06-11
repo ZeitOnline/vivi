@@ -1,17 +1,4 @@
-// RAW
-
-function Import(aSrc) {
-   document.write('<scr'+'ipt type="text/javascript" src="' + aSrc + '"></sc' + 'ript>');
-}
-
-
-var dialog = window.parent;
-var oEditor = dialog.InnerDialogLoaded();
-var oPage = oEditor.parent;
-var FCKConfig = oEditor.FCKConfig;
-var FCKTools = oEditor.FCKTools;
-
-Import(FCKConfig.FullBasePath + 'dialog/common/fck_dialog_common.js');
+// Raw
 
 MochiKit.Signal.connect(window, 'onload', function(event) {
     dialog.SetOkButton(true);
@@ -43,6 +30,7 @@ function get_raw_area() {
     return selected_element;
 }
 
+
 function Ok() {
     var content = $('raw').value;
 
@@ -53,7 +41,7 @@ function Ok() {
         var raw_area = DIV({'class': 'raw'}, content);
         var selected_element = oEditor.FCKSelection.GetBoundaryParentElement();
         selected_element.parentNode.insertBefore(
-            raw_area, 
+            raw_area,
             selected_element.nextSibling);
     } else {
         raw_area.textContent = content;

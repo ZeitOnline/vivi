@@ -17,6 +17,13 @@
     <directory source="resources" />
   </resourceLibrary>
 
+  <resourceLibrary name="zeit.wysiwyg.fckeditor" require="gocept.fckeditor">
+    <directory
+      source="resources"
+      include="common.js"
+      />
+  </resourceLibrary>
+
   <adapter
     for="zc.form.interfaces.IHTMLSnippet
     zope.publisher.interfaces.browser.IBrowserRequest"
