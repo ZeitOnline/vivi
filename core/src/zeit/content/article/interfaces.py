@@ -1,19 +1,15 @@
-# vim:fileencoding=utf-8 encoding=utf-8
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.schema
-
+from zeit.content.article.i18n import MessageFactory as _
 import zc.form.field
-
-import zeit.cms.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
-from zeit.content.article.i18n import MessageFactory as _
-
+import zeit.cms.interfaces
+import zeit.cms.syndication.interfaces
 import zeit.content.article.source
+import zope.schema
+
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 
