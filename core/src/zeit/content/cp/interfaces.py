@@ -48,7 +48,8 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     type = zope.schema.Choice(
         title=_('CP type'),
         required=False,
-        source=CPTypeSource())
+        source=CPTypeSource(),
+        missing_value=u'centerpage')
 
     def __getitem__(area_key):
         """Return IArea for given key.

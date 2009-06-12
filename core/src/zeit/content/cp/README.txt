@@ -7,9 +7,11 @@ Centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
->>> cp.type is None
-True
+>>> cp.type
+'centerpage'
 >>> cp.type = u'homepage'
+>>> cp.type
+'homepage'
 
 
 A centerpage has three editable areas:
