@@ -43,6 +43,7 @@ setup(
         'zdaemon',
         'zeit.cms>=1.21.6',
         'zeit.connector>=0.14',
+        'zeit.content.cp>0.8',
         'zeit.content.infobox',
         'zeit.content.gallery',
         'zeit.content.portraitbox',

@@ -5,6 +5,7 @@ from zope.testing import doctest
 import unittest
 import zeit.cms.testing
 import zeit.content.article.tests
+import zeit.content.cp.testing
 
 
 def test_suite():
@@ -13,4 +14,9 @@ def test_suite():
         'README.txt',
         'recension.txt',
         layer=zeit.content.article.tests.ArticleLayer))
+    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'layout.txt',
+        product_config=zeit.content.cp.testing.product_config,
+        # we use the CDSLayer since it includes zeit.workflow which we need
+        layer=zeit.content.article.tests.CDSLayer))
     return suite
