@@ -20,7 +20,7 @@
   <resourceLibrary name="zeit.wysiwyg.fckeditor" require="gocept.fckeditor">
     <directory
       source="resources"
-      include="common.js"
+      include="common.js common.css"
       />
   </resourceLibrary>
 

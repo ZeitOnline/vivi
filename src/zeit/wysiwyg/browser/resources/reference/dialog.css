@@ -1,3 +1,7 @@
+#select-item {
+    margin-bottom: 1em;
+}
+
 /* Lightbox */
 
 #lightbox-header {
@@ -16,13 +20,4 @@
 #preview {
     margin-top: 1em;
     text-align: center;
-}
-
-#select-item,
-.widget {
-    margin-bottom: 1em;
-}
-
-label {
-    display: block;
 }
