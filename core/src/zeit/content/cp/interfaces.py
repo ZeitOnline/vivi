@@ -68,6 +68,17 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         """Update the metadata of the given content object."""
 
 
+class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.cp'
+
+    def verify_interface(self, value):
+        return ICenterPage.providedBy(value)
+
+
+centerPageSource = CenterPageSource()
+
+
 class IValidatingWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
     pass
 

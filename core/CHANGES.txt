@@ -1,10 +1,15 @@
 zeit.content.cp changes
 =======================
 
+0.9 (unreleased)
+----------------
+
+- Content-Source für CenterPages hinzugefügt.
+
 0.8 (2009-06-09)
 ----------------
 
-- ``type``-Attribut auf ``<centerpage>`` (#5030).
+- ``type``-Attribut auf ``<centerpage>`` (#5030, #5480).
 
 - Contextabhängige Layouts (#5034).
 

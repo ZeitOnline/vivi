@@ -29,6 +29,11 @@
       />
   </class>
 
+  <utility 
+    component=".interfaces.centerPageSource"
+    name="zeit.content.cp"
+    />
+
   <adapter factory=".centerpage.cms_content_iter" />
   <adapter factory=".rule.ValidatingWorkflow" 
     provides=".interfaces.IValidatingWorkflow"
