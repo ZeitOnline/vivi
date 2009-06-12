@@ -42,6 +42,7 @@
   <adapter factory=".article.PageBreakStep" name="PageBreakStep"/>
   <adapter factory=".article.DivisionStep" name="DivisionStep"/>
 
+  <adapter factory=".article.LayoutDependency" name="layout"/>
 
   <subscriber handler=".article.updateTextLengthOnChange" />
 

@@ -18,6 +18,7 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
+import zeit.workflow.interfaces
 import zeit.wysiwyg.html
 import zeit.wysiwyg.interfaces
 import zope.app.container.contained
@@ -185,3 +186,16 @@ class DivisionStep(zeit.wysiwyg.html.ConversionStep):
         new_node = lxml.etree.Element('division', **{'type': 'page',
                                                      'teaser': teaser})
         return new_node
+
+class LayoutDependency(object):
+
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+    zope.interface.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_dependencies(self):
+        layout = self.context.layout
+        return [layout]
