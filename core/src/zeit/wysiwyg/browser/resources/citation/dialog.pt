@@ -1,0 +1,43 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html i18n:domain="zeit.cms">
+  <head>
+    <tal:block replace="resource_library:zeit.cms" />
+    <tal:block replace="resource_library:zeit.cms.tree" />
+    <tal:block replace="resource_library:zeit.wysiwyg.fckeditor" />
+    <script type="text/javascript">setSkinCSS();</script>
+    <script src="dialog.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <form>
+      <div class="widget">
+        <label for="text" i18n:translate="">Zitat</label>
+        <input id="text" type="text" />
+      </div>
+      <div class="widget">
+        <label for="attribution" i18n:translate="">Unterschrift</label>
+        <input id="attribution" type="text" />
+      </div>
+      <div class="widget">
+        <label for="text2" i18n:translate="">Zitat 2</label>
+        <input id="text2" type="text" />
+      </div>
+      <div class="widget">
+        <label for="attribution2" i18n:translate="">Unterschrift 2</label>
+        <input id="attribution2" type="text" />
+      </div>
+      <div class="widget">
+        <label for="layout" i18n:translate="">Layout</label>
+        <select id="layout">
+          <option value=""
+            i18n:domain="zope"
+            i18n:translate="vocabulary-missing-single-value-for-edit">(no value)</option>
+          <option value="short" i18n:translate="">short</option>
+          <option value="wide" i18n:translate="">wide</option>
+          <option value="double" i18n:translate="">double</option>
+        </select>
+      </div>
+    </form>
+  </body>
+</html>

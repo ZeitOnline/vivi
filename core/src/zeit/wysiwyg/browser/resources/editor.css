@@ -109,6 +109,10 @@ intertitle {
     content: "Bildergallerie";
 }
 
+.citation:after {
+    content: "Zitat";
+}
+
 .audio > .audioId:before {
     content: "Audio-Id:";
 }
@@ -142,5 +146,25 @@ intertitle {
 }
 
 .portraitbox > .layout:before {
+    content: "Layout:";
+}
+
+.citation > .text:before {
+    content: "Zitat:";
+}
+
+.citation > .attribution:before {
+    content: "Unterschrift:";
+}
+
+.citation > .text2:before {
+    content: "Zitat 2:";
+}
+
+.citation > .attribution2:before {
+    content: "Unterschrift 2:";
+}
+
+.citation > .layout:before {
     content: "Layout:";
 }

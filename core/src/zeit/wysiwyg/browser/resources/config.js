@@ -7,7 +7,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['OrderedList','UnorderedList', 'Table'],
         ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio', 'Zeit_MailForm',
          'Zeit_RAW', 'Zeit_Pagebreak',
-         'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery'],
+         'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery', 'Zeit_Citation'],
         ['Link','Unlink','Anchor'],
 ];
 
@@ -28,11 +28,14 @@ FCKConfig.LinkUpload = false;
 FCKConfig.ImageUpload = false;
 FCKConfig.FlashUpload = false;
 
-FCKConfig.Plugins.Add('video', '', FCKConfig.PageConfig.ZeitResources + '/');
-FCKConfig.Plugins.Add('mailform', '', FCKConfig.PageConfig.ZeitResources + '/');
-FCKConfig.Plugins.Add('reference', '', FCKConfig.PageConfig.ZeitResources + '/');
-FCKConfig.Plugins.Add('raw', '', FCKConfig.PageConfig.ZeitResources + '/');
-FCKConfig.Plugins.Add('pagebreak', '', FCKConfig.PageConfig.ZeitResources + '/');
+var plugins = [
+    'video', 'mailform', 'reference', 'raw', 'pagebreak', 'citation'
+];
+
+for (var i = 0 ; i < plugins.length; i++) {
+    var plugin = plugins[i];
+    FCKConfig.Plugins.Add(plugin, '', FCKConfig.PageConfig.ZeitResources + '/');
+}
 
 
 FCK.CustomCleanWord = function( oNode, bIgnoreFont, bRemoveStyles )
