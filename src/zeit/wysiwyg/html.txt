@@ -1177,6 +1177,51 @@ Gallery
   </body>
 </article>
 
+Citation
+--------
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <citation text="Gallia est omnis divisa in partes tres"
+...               attribution="Julius Caesar"
+...               text2="Four apples a day" attribution2="Proverb"
+...               layout="short"
+...     />
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<div class="inline-element citation">
+  <div class="text">Gallia est omnis divisa in partes tres</div>
+  <div class="attribution">Julius Caesar</div>
+  <div class="text2">Four apples a day</div>
+  <div class="attribution2">Proverb</div>
+  <div class="layout">short</div>
+</div>
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="inline-element citation">
+...   <div class="text">Gallia est omnis divisa in partes tres</div>
+...   <div class="attribution">Julius Caesar</div>
+...   <div class="text2">Four apples a day</div>
+...   <div class="attribution2">Proverb</div>
+...   <div class="layout">short</div>
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <citation text2="Four apples a day"
+              text="Gallia est omnis divisa in partes tres"
+              attribution2="Proverb" attribution="Julius Caesar"
+              layout="short"/>
+  </body>
+</article>
+
 
 .. [#copyright-and-bu] Set a copyright and a BU for the image
 

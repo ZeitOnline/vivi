@@ -5,6 +5,7 @@
   <!-- sorted alphabetically, see the weights on the classes
   for execution order -->
   <adapter factory=".html.ArticleExtraStep" name="ArticleExtraStep" />
+  <adapter factory=".html.CitationStep" name="CitationStep" />
   <adapter factory=".html.DropEmptyStep" name="DropEmptyStep" />
   <adapter factory=".html.GalleryStep" name="GalleryStep" />
   <adapter factory=".html.ImageStep" name="ImageStep" />

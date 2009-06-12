@@ -612,6 +612,34 @@ class GalleryStep(ReferenceStep):
     content_type = 'gallery'
 
 
+class CitationStep(ConversionStep):
+
+    attributes = ['text', 'attribution',
+                  'text2', 'attribution2',
+                  'layout']
+
+    xpath_xml = './/citation'
+    xpath_html = './/*[contains(@class, "citation")]'
+
+    def to_html(self, node):
+        children = []
+        for name in self.attributes:
+            children.append(lxml.objectify.E.div(
+                node.get(name), **{'class': name}))
+        new_node = lxml.objectify.E.div(
+            *children, **{'class': 'inline-element citation'})
+        lxml.objectify.deannotate(new_node)
+        return new_node
+
+    def to_xml(self, node):
+        values = {}
+        for name in self.attributes:
+            value = node.xpath('*[@class="%s"]' % name)[0].text
+            values[name] = value
+        new_node = lxml.objectify.E.citation(**values)
+        return new_node
+
+
 class HTMLContentBase(object):
     """Base class for html content."""
 
