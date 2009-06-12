@@ -1,27 +1,30 @@
 {.repeated section results}
 <div class="search_entry">
   <span class="uniqueId">{uniqueId}</span>
-  <div>
+  <div class="supertitle">
     <img src="{icon}" />
     <span class="toggle_favorited">
       <img src="{favorited}" />
     </span>
-    <img src="{publication_status}" />
-    <span class="teaser_title">{teaser_title}</span>
-  </div>
-  <div class="teaser_text">
-    {teaser_text} 
-    <a target="_blank" href="{preview_url}">(Vorschau)</a>
-  </div>
-  <div class="related_links">
+      <img src="{publication_status}" />
+      {supertitle} 
+  </div>  
+  <div class="teaser_title">
+    {teaser_title}
   </div>
   <div class="filters">
-    <a class="date_filter">{date}</a>
-    <a class="volume_year_filter">{volume_year}</a>
-    <a class="topic_filter">{topic}</a>
-    {.repeated section authors}
+    <a class="date_filter">{date}</a>  
+    <a class="volume_year_filter">{volume_year}</a>  
+    <a class="topic_filter">{topic}</a>  
+    {.repeated section authors}  
     <a class="author_filter">{@}</a>
     {.end}
+  </div>
+  <div class="related_links">
+   Relateds
+  </div>
+  <div class="preview">
+    <a target="_blank" href="{preview_url}">Vorschau</a>
   </div>
   <div class="related_info"></div>
 </div>

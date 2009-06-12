@@ -151,7 +151,7 @@ class SearchResult(JSONView):
                     'publication_status': publication_status,
                     'arrow': r['arrow_right.png'](),
                     'teaser_title': title,
-                    'teaser_text': result.get('teaser_text', ''),
+                    'supertitle': result.get('supertitle', ''),
                     'preview_url': preview_url,
                     'date': format_date(dt),
                     'start_date': format_date(start_date),

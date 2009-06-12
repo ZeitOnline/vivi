@@ -1,5 +1,6 @@
 #fulltext {
-  width: 300px;
+  width: 80%;
+  margin-right: .4em;
 }
 
 .search_result {
@@ -8,15 +9,36 @@
 }
 
 .search_entry:hover {
-  background: #ddd;
+  border: 1px solid #bbb;  
+  outline: 2px solid #ddd;
 }
 
 .search_entry {
-  padding: 0.5em;
+  background: #fff;
+  border: 1px solid #fff;
   cursor: move;
+  margin-bottom: .8em;
+  padding: 0.5em;
+  overflow: hidden;
+}
+
+.search_entry .supertitle {
+  display: block;
+  font-weight: 400;
+  margin-bottom: .5em;
+  vertical-align: middle;
+}
+
+.search_entry .supertitle img {
+  display: inline;
+  margin-right: .3em;
+  vertical-align: bottom;
 }
 
 .search_entry .teaser_title {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: .3em;
 }
 
 .search_entry .teaser_text {
@@ -33,22 +55,31 @@
 
 .search_entry .filters {
   display: none;
-  font-size: 0.7em;
-  text-align: right;
+  font-size: 0.8em;
+  margin-bottom: .5em;
 }
 
 #search_form .search_entry .filters {
   display: block;
+  overflow: hidden;
 }
 
 .search_entry .filters > a {
-  padding-left: 0.5em;
+  display: block;
+  float: left;
+  border-left: 1px solid #bbb;
+  padding: 0 .5em;
 }
 
+.search_entry .filters > a:first-child {
+  border: none;
+  padding: 0 .5em 0 0;
+}
+
+
 .search_entry a {
-  color: blue;
+  color: #9BBBD3;
   cursor: pointer;
-  text-decoration: underline;
 }
 
 
@@ -155,29 +186,25 @@
   top: 3em;
 }
 
-#cp-search> .context-views {
-  border-bottom: 1px solid black;
-  height: 2em;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
 .related_links {
-  background: url('arrow_right.png') no-repeat top left;
+  background: url('arrow_right.png') no-repeat 0 50%;
   cursor: pointer;
   float:left;
-  height: 0.7em;
-  margin: 0.25em 0 0 0;
-  min-height: 1em;
-  right:0;
-  top:0;
-  width:12px;
+  padding-left: 16px;
+}
+
+#cp-search .preview {
+  float: right;
+  background: url(eye.png) no-repeat 0 50%;
+  padding-left: 20px;
+}
+
+#cp-search .preview a {
+  color: #4c4c4c;
 }
 
 .related_links.expanded {
-  background: url('arrow_down.png') no-repeat top left;
+  background: url('arrow_down.png') no-repeat 0 50%;
   cursor: pointer;
 }
 
@@ -190,7 +217,7 @@
 }
 
 #cp-search #search_form {
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 #cp-search .search_entry .related_entry {

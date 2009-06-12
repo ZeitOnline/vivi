@@ -38,7 +38,7 @@ def search(q, sort_order=None):
         sort_order = 'last-semantic-change desc'
 
     result_fields = ['uniqueId', 'published',
-                     'teaser_title', 'teaser_text',
+                     'teaser_title', 'supertitle',
                      'last-semantic-change', 'ressort',
                      'authors', 'volume', 'year', 'title', 'icon']
 
