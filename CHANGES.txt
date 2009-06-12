@@ -5,6 +5,8 @@ zeit.wysiwyg changes
 -----------------
 
 - <table> wird gesäubert und nach XML konvertiert.
+- Neue Inline-Elemente: Infobox, Portraitbox, Bildergallerie, Zitat
+- Video-Element kann ein oder zwei Videos beinhalten.
 
 1.23.1 (2009-06-08)
 -------------------
