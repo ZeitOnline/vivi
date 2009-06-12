@@ -5,23 +5,6 @@
 
 /* general input field styling */
 
-input[type="button"],
-input[type="submit"] {
-    background-color: #dee7ec;
-    border: 1px solid #196692;
-    color: black;
-    cursor: pointer;
-    font-size: 100%;
-    padding: 1px;
-    vertical-align: middle;
-}
-
-input[type="button"]:hover,
-input[type="submit"]:hover {
-    color: #196692;
-}
-
-
 textarea{
     font:100% Monaco,"Courier New",Courier,monospace;
     border:1px solid #196692;
@@ -30,7 +13,7 @@ textarea{
     width:100%;
 }
 
-input{
+input[type="text"] {
     font-family:"Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
     visibility:visible;
     border:1px solid #196692;
@@ -44,7 +27,6 @@ select {
     background-color:White;
     vertical-align:top;
 }
-
 
 input[type="button"]:active,
 input[type="submit"]:active {
