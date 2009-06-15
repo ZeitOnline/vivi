@@ -8,12 +8,14 @@ import gocept.lxml.objectify
 import lxml.etree
 import os
 import os.path
+import pytz
 import urlparse
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zope.app.file.image
 import zope.event
 import zope.interface
+
 
 ID_NAMESPACE = u'http://xml.zeit.de/'
 
@@ -116,7 +118,8 @@ class Connector(object):
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         resource.properties[('getlastmodified', 'DAV:')] = unicode(
-            datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT'))
+            datetime.datetime.now(pytz.UTC).strftime(
+                '%a, %d %b %Y %H:%M:%S GMT'))
         self._set_properties(id, resource.properties)
         self._content_types[id] = resource.contentType
         zope.event.notify(

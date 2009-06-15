@@ -178,8 +178,14 @@ The getlastmodified property is updated, too:
 
 >>> str(datetime.datetime.now().year) in resource_2.properties[
 ...     ('getlastmodified', 'DAV:')]
-True 
+True
 
+Check that the timezone is set correctly:
+
+>>> import pytz
+>>> datetime.datetime.now(pytz.UTC).strftime(' %H:') in resource_2.properties[
+...     ('getlastmodified', 'DAV:')]
+True
 
 Also the collection contains the resource now:
 
