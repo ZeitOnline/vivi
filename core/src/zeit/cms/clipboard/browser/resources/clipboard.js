@@ -69,18 +69,17 @@ zeit.cms.Clipboard = Class.extend({
             dragged_element, 'div', 'panel');
         if (!isNull(panel) && panel.id == 'ClipboardPanel') {
             url = '/@@moveContent';
-            var li = MochiKit.DOM.getFirstParentByTagAndClassName(
-                dragged_element, 'li', null);
-            options['object_path'] = li.getAttribute('uniqueid');
+            options['object_path'] = dragged_element.getAttribute('uniqueid');
         } else {
             url = '/@@addContent';
             options['unique_id'] = element.uniqueId;
         }
 
-        if (isEmpty(items(options))) {
+        if (isEmpty(MochiKit.Base.items(options))) {
             return
         }
         options['add_to'] = dropped_on;
+        log(repr(MochiKit.Base.items(options)));
 
         var d = doSimpleXMLHttpRequest(this.base_url + url, options);
         d.addCallbacks(
@@ -89,7 +88,7 @@ zeit.cms.Clipboard = Class.extend({
                 dnd.tree.replaceTree(result.responseText);
             },
             function(error) {
-                alert("Could not finish drop: " + repr(items(error.req)))
+                alert("Could not finish drop: " + repr(MochiKit.Base.items(error.req)))
                 return error
             });
         

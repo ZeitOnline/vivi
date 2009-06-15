@@ -23,12 +23,12 @@
   <!-- Sidebar/Navigation tree -->
 
   <browser:viewlet
-    name="10_navtree"
     for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="10_navtree"
     manager="zeit.cms.browser.interfaces.ISidebar"
     template="navtree.pt"
     class=".repository.HTMLTree"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     />
 

@@ -1,8 +1,13 @@
 zeit.cms changes
 ================
 
-1.22.2 (unreleased)
--------------------
+1.23 (unreleased)
+-----------------
+
+- Styling: Tabs sehen besser aus
+
+- DragAndDrop: Wird ein Objekt gezogen gibt es keine besondere »Drag-Pane«
+  mehr. Das gezogene Element wird direkt angezeigt.
 
 - Beim veröffentlichen "oldstatus" nur setzen, wenn sich der Wert auch geändert
   hat.

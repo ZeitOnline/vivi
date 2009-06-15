@@ -8,29 +8,24 @@ MochiKit.Signal.connect(
     if (!draggable.element.is_content_object) {
         return;
     }
-    uniqueId = draggable.element.textContent;
+    var draggable_element = draggable.element;
+    var uniqueId = draggable_element.uniqueId;
+    var dim = MochiKit.Style.getElementDimensions(draggable_element); 
 
     var div = $('drag-pane');
     if (div) {
         div.parentNode.removeChild(div);
     }
     div = DIV({id: 'drag-pane', class: 'content-drag-pane'});
+    div.appendChild(draggable_element.cloneNode(true));
     div.dragged_element = draggable.element;
     div.uniqueId = uniqueId;
-   
-    var content = $('body');
     
-    content.appendChild(div);
     draggable.element = div;
     draggable.offset = [-10, -10];
-   
-    var d = doSimpleXMLHttpRequest(
-        application_url + '/get-drag-pane', {uniqueId: uniqueId});
-    d.addCallbacks(
-        function(result) {
-            div.innerHTML = result.responseText;
-            return result;
-        });
+
+    $('body').appendChild(div);
+    MochiKit.Style.setElementDimensions(div, dim); 
 });
 
 
@@ -44,16 +39,15 @@ MochiKit.Signal.connect(
     MochiKit.Visual.switchOff(element);
 });
 
-
 zeit.cms.createDraggableContentObject = function(element) {
     var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
              'span', 'uniqueId', element);
-    unique_id_element.is_content_object = true;
-    return new MochiKit.DragAndDrop.Draggable(unique_id_element, {
+    element.is_content_object = true;
+    element.uniqueId = unique_id_element.textContent;
+    return new MochiKit.DragAndDrop.Draggable(element, {
         endeffect: null,
-        handle: element,
         starteffect: null,
-        zindex: null
+        zindex: null,
     });
 }
 
