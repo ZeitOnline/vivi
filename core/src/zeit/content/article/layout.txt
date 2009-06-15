@@ -1,0 +1,68 @@
+==============
+Article Layout
+==============
+
+[#functional]_
+
+The centerpage referenced by an article as its layout is published when the
+article is published.
+
+>>> dummy = with_statement
+>>> import zeit.content.article.article
+>>> import zeit.content.cp.centerpage
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import lovely.remotetask.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> tasks = zope.component.getUtility(
+...     lovely.remotetask.interfaces.ITaskService, 'general')
+
+>>> article = zeit.content.article.article.Article()
+>>> repository['2007']['01']['article'] = article
+>>> article = repository['2007']['01']['article']
+
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> repository['2007']['01']['cp'] = cp
+>>> cp = repository['2007']['01']['cp']
+
+>>> with zeit.cms.checkout.helper.checked_out(article) as co:
+...     co.layout = cp
+
+After publishing the article, the centerpage is published, too:
+
+>>> from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+>>> IPublishInfo(article).urgent = True
+>>> IPublish(article).publish()
+>>> tasks.process()
+
+Check that there were no errors during publishing:
+
+>>> import zeit.objectlog.interfaces
+>>> log = zope.component.getUtility(
+...     zeit.objectlog.interfaces.IObjectLog)
+>>> [x.message for x in log.get_log(article)]
+[u'${name}: ${new_value}', u'Publication scheduled', u'Published']
+>>> published_cp = IPublishInfo(cp).date_last_published
+>>> published_article = IPublishInfo(article).date_last_published
+>>> published_article
+datetime.datetime(...)
+>>> published_cp
+datetime.datetime(...)
+
+When publishing again, the centerpage is not published again, since it
+is already published:
+
+>>> IPublish(article).publish()
+>>> tasks.process()
+>>> IPublishInfo(article).date_last_published == published_article
+False
+>>> IPublishInfo(cp).date_last_published == published_cp
+True
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

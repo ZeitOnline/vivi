@@ -16,13 +16,16 @@ import zeit.cms.content.property
 import zeit.cms.content.util
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
+import zeit.workflow.dependency
 import zeit.workflow.interfaces
 import zeit.wysiwyg.html
 import zeit.wysiwyg.interfaces
 import zope.app.container.contained
 import zope.component
+import zope.dublincore.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -198,4 +201,18 @@ class LayoutDependency(object):
 
     def get_dependencies(self):
         layout = self.context.layout
-        return [layout]
+        if layout and self.needs_publishing(layout):
+            return [layout]
+        else:
+            return []
+
+    def needs_publishing(self, content):
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        dc = zope.dublincore.interfaces.IDCTimes(content)
+
+        if not workflow.published:
+            return True
+        if not all((workflow.date_last_published, dc.modified)):
+            return False
+
+        return workflow.date_last_published < dc.modified

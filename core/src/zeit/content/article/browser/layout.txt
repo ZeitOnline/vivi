@@ -31,33 +31,8 @@ Article Layout
 >>> '/online/2007/01/island' in browser.contents
 True
 
->>> browser.getLink('Workflow').click()
->>> browser.getControl('Urgent').click()
->>> browser.getControl('Save state and publish now').click()
->>> print browser.contents
-<...has been scheduled for publishing...
-
-[#publish]_
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/island')
->>> browser.getLink('Workflow').click()
->>> browser.getControl('Save state and retract now')
-<SubmitControl...>
-
 
 .. [#functional]
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
-
-.. [#publish]
-
-    >>> import lovely.remotetask.interfaces
-    >>> import zeit.cms.testing
-    >>> import zope.component
-    >>> import zope.security.management
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
-    >>> principal = zeit.cms.testing.create_interaction()
-    >>> tasks.process()
-    >>> zope.security.management.endInteraction()

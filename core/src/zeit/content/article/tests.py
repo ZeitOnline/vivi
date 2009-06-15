@@ -2,29 +2,35 @@
 # See also LICENSE.txt
 # $Id$
 
+from zope.testing import doctest
 import __future__
+import os
+import pkg_resources
+import re
 import shutil
 import tempfile
 import unittest
-import os
-import re
 import zeit.cms.testing
+import zeit.content.cp.testing
 import zope.app.testing.functional
 import zope.testing.renormalizing
-from zope.testing import doctest
+
 
 product_config = {
     'cds-import-valid-path': 'online/$year/$volume',
     'cds-import-invalid-path': 'cds/invalid/$year/$volume',
 }
 
+
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),])
 
+
 ArticleLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'ArticleLayer', allow_teardown=True)
+
 
 class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
 
@@ -48,6 +54,7 @@ class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
 
 CDSLayer = CDSLayerFactory()
 
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
@@ -55,13 +62,17 @@ def test_suite():
         'pagebreak.txt',
         'recension.txt',
         layer=ArticleLayer))
+
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'cds_export.txt',
         'cds_import.txt',
+        'layout.txt',
         layer=CDSLayer,
         checker=checker,
-        product_config={'zeit.content.article': product_config,
-                        'zeit.workflow': {'publish-script': 'cat',
-                                          'path-prefix': ''}},
+        product_config={
+            'zeit.content.article': product_config,
+            'zeit.content.cp': zeit.content.cp.testing.product_config['zeit.content.cp'],
+            'zeit.workflow': {'publish-script': 'cat',
+                              'path-prefix': ''}},
         globs={'with_statement': __future__.with_statement}))
     return suite
