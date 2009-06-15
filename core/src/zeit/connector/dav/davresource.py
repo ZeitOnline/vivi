@@ -235,7 +235,7 @@ class DAVResponse:
 
 class DAVResult(object):
 
-    def __init__ ( self, http_response=None ):
+    def __init__ (self, http_response=None):
         """Initialize a DAVResult instance.
 
         If http_response is given (and a httplib.HTTPResponse instance)
@@ -243,6 +243,7 @@ class DAVResult(object):
 
         If the status code equals 207 (Multi-Status), the body of
         the response is read and parsed.
+
         """
         self.responses = {}
         self.etag = self.status = self.reason = None
@@ -252,11 +253,13 @@ class DAVResult(object):
         self.reason = http_response.reason
         self.etag   = http_response.getheader('ETag', None)
         self.lock_token = http_response.getheader('Lock-Token', None)
-        if self.lock_token and self.lock_token[0] == '<':
+        if self.lock_token and self.lock_token.startswith('<'):
+            # Strip <> around token
             self.lock_token = self.lock_token[1:-1]
-        if self.status != 207:
-            return
-        self.parse_data(http_response)
+        if self.status == 207:
+            self.parse_data(http_response)
+        else:
+            self.body = http_response.read()
         http_response.close()
 
     def parse_data ( self, data ):

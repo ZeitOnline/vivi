@@ -2,7 +2,7 @@
 Connector
 =========
 
-Creating a connector:
+Creating a connector[#loghandler]_:
 
 >>> import os
 >>> from pprint import pprint
@@ -514,6 +514,21 @@ inconsistent/wrong state:
 []
 
 
+
+Cleanup and final tests
+=======================
+
+Restore log handler:
+
+>>> logging.root.removeHandler(log_handler)
+>>> logging.root.setLevel(old_log_level)
+
+Make sure the logfile is empty, as we don't expect anything to be logged in
+normal operation:
+
+>>> print logfile.getvalue(),
+
+
 .. [#create-folder-structure] Create a folder structure for copy/move
 
     Create helpers for creating folders/files:
@@ -569,3 +584,13 @@ inconsistent/wrong state:
     http://xml.zeit.de/testing/testroot/g text
     http://xml.zeit.de/testing/testroot/h text
     
+.. [#loghandler] We need a log handler
+
+    >>> import logging
+    >>> import StringIO
+    >>> logfile = StringIO.StringIO()
+    >>> log_handler = logging.StreamHandler(logfile)
+    >>> logging.root.addHandler(log_handler)
+    >>> old_log_level = logging.root.level
+    >>> logging.root.setLevel(logging.INFO)
+
