@@ -10,10 +10,6 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
     (as opposed to resource oriented)
     """
 
-    # Yeah. We might be tempted to override davbase.DAVConnection's
-    # lock() and unlock() methods. After reading up on Pathon's super()
-    # I just decided to use new names :-/
-
     def lock(self, url, owner=None, depth=0, timeout=None, headers={}):
         r = self.get_result(
             'lock', url, owner=owner, depth=depth, timeout=timeout,
