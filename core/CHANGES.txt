@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.14 (unreleased)
+1.14 (2009-06-15)
 -----------------
 
 - Cache invalidaion is smarter now. This allows processing larger amounts of
