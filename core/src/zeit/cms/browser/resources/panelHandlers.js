@@ -103,7 +103,7 @@ zeit.cms.PanelHandler = Class.extend({
     },
 
     registerFoldHandlers: function(panels) {
-        var this = this;
+        var self = this;
         forEach(panels, function(panel) {
             var foldmarker = panel.getElementsByTagName('h1')[0];
             connect(foldmarker, "onclick", function(event) {
@@ -116,8 +116,8 @@ zeit.cms.PanelHandler = Class.extend({
                     removeElementClass(panel, 'unfolded');
                     addElementClass(panel, 'folded');
                 }
-                this.resizeAllPanels();
-                this.storeState(panel.id);
+                self.resizeAllPanels();
+                self.storeState(panel.id);
             });
             var content_element = getFirstElementByTagAndClassName(
                 'div', 'PanelContent', panel);
