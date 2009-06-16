@@ -18,7 +18,7 @@ Centerpage
 >>> browser.getControl('Daily newsletter').selected = True
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl('CP type').displayOptions
-['(no value)', 'Homepage', 'Themenseite']
+['(no value)', 'Centerpage', 'Homepage', 'Themenseite']
 >>> browser.getControl('CP type').displayValue = ['Themenseite']
 >>> browser.getControl('Header image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl(name="form.actions.add").click()
