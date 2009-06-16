@@ -89,7 +89,6 @@ class Test(zeit.cms.selenium.Test):
             'css=div.type-teaser')
         s.waitForTextPresent('c1 teaser')
 
-
 class TestDottedName(Test):
 
     def test_lookup(self):
@@ -564,6 +563,15 @@ class TestQuizBlock(Test):
                        'http://xml.zeit.de/my_quiz')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')
+
+
+class TestSidebar(Test):
+
+    def test_sidebar_should_be_folded_away(self):
+        s = self.selenium
+        self.open_centerpage()
+        s.waitForElementPresent(
+            '//div[@id="sidebar-dragger" and @class="sidebar-folded"]')
 
 
 class CreateTestContent(object):

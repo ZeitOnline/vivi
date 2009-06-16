@@ -59,5 +59,11 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestSidebar"
+    name="zeit.content.cp.TestSidebar"
+    permission="zope.Public"
+    />
+
 </configure>
 
