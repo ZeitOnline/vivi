@@ -51,6 +51,11 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         source=CPTypeSource(),
         missing_value=u'centerpage')
 
+    header_image = zope.schema.Choice(
+        title=_('Header image'),
+        required=False,
+        source=zeit.content.image.interfaces.ImageSource())
+
     def __getitem__(area_key):
         """Return IArea for given key.
 

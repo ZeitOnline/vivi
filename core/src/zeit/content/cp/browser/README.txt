@@ -10,7 +10,6 @@ Centerpage
 
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['CenterPage']
->>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 >>> browser.getControl('File name').value = 'island'
@@ -21,6 +20,7 @@ Centerpage
 >>> browser.getControl('CP type').displayOptions
 ['(no value)', 'Homepage', 'Themenseite']
 >>> browser.getControl('CP type').displayValue = ['Themenseite']
+>>> browser.getControl('Header image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl(name="form.actions.add").click()
 
 >>> browser.url
@@ -28,7 +28,8 @@ Centerpage
 >>> print browser.contents
 <?xml...
 <!DOCTYPE...
-Title...Auf den Spuren der Elfen...
+...Title...Auf den Spuren der Elfen...
+...Header image...DSC00109_2.JPG...
 
 We can edit the metadata on the edit tab:
 
@@ -44,6 +45,10 @@ Traceback (most recent call last):
 LinkNotFoundError
 
 >>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<...
+...Title...Auf den Spuren der Elfen...
+...Header image...DSC00109_2.JPG...
 >>> browser.getLink('View metadata').click()
 >>> print browser.title.strip()
 Auf den Spuren der Elfen – View centerpage metadata

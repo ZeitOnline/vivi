@@ -9,6 +9,7 @@ import pkg_resources
 import stabledict
 import zeit.cms.connector
 import zeit.cms.content.adapter
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
@@ -17,7 +18,6 @@ import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
-
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                  UserDict.DictMixin):
@@ -35,8 +35,14 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     keys = editable_areas.keys
     __contains__ = editable_areas.__contains__
+
     type = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.cp.interfaces.ICenterPage,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('header_image',))
 
     def __init__(self, xml_source=None):
         super(CenterPage, self).__init__(xml_source)
