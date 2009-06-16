@@ -103,7 +103,7 @@ zeit.cms.PanelHandler = Class.extend({
     },
 
     registerFoldHandlers: function(panels) {
-        var handler = this;
+        var this = this;
         forEach(panels, function(panel) {
             var foldmarker = panel.getElementsByTagName('h1')[0];
             connect(foldmarker, "onclick", function(event) {
@@ -116,8 +116,8 @@ zeit.cms.PanelHandler = Class.extend({
                     removeElementClass(panel, 'unfolded');
                     addElementClass(panel, 'folded');
                 }
-                handler.resizeAllPanels();
-                handler.storeState(panel.id);
+                this.resizeAllPanels();
+                this.storeState(panel.id);
             });
             var content_element = getFirstElementByTagAndClassName(
                 'div', 'PanelContent', panel);
@@ -149,28 +149,28 @@ zeit.cms.PanelHandler = Class.extend({
 
 function SidebarDragger(base_url) {
     this.url = base_url + '/@@sidebar_toggle_folding';
-    this.observe_ids = new Array('sidebar', 'sidebar-dragger', 
+    this.observe_ids = new Array('sidebar', 'sidebar-dragger',
         'visualContentSeparator', 'visualContentWrapper', 'header');
 }
 
 SidebarDragger.prototype = {
 
     classes: ['sidebar-folded', 'sidebar-expanded'],
-    
+
     toggle: function(event) {
-        var dragger = this;
+        var self = this;
         var d = doSimpleXMLHttpRequest(this.url);
         d.addCallback(function(result) {
             var css_class = result.responseText;
-            dragger.setClass(css_class);
+            self.setClass(css_class);
         });
     },
 
     setClass: function(css_class) {
-        var dragger = this;
+        var self = this;
         forEach(this.observe_ids,
             function(element_id) {
-              forEach(dragger.classes, function(cls) {
+              forEach(self.classes, function(cls) {
                   var element = getElement(element_id);
                   removeElementClass(element, cls);
                   });
