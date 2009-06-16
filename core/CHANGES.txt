@@ -12,6 +12,9 @@ zeit.cms changes
 - Beim veröffentlichen "oldstatus" nur setzen, wenn sich der Wert auch geändert
   hat.
 
+- Sidebar ein/ausklappen mit expliziter Statusangabe anstatt mit umschalten
+  (damit der CP-Editor es vernünftig einklappen kann).
+
 1.22.1 (2009-06-09)
 -------------------
 
