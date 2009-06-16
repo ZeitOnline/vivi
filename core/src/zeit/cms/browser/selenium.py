@@ -28,8 +28,25 @@ class TestPanels(zeit.cms.selenium.Test):
 
     def assertPanelState(self, id, state):
         s = self.selenium
-        s.verifyElementPresent("//div[@id ='%s'][@class = 'panel %s']" %(
+        s.verifyElementPresent('//div[@id ="%s"][@class = "panel %s"]' %(
             id, state))
+
+
+class TestSidebar(zeit.cms.selenium.Test):
+
+    def test_expand_sidebar(self):
+        s = self.selenium
+        self.open('/repository/online/2007/01')
+        self.assertSidebarState('expanded')
+        s.click('sidebar-dragger')
+        self.assertSidebarState('folded')
+        self.open('/repository/online/2007/01')
+        self.assertSidebarState('folded')
+
+    def assertSidebarState(self, state):
+        s = self.selenium
+        s.verifyElementPresent(
+            '//div[@id="sidebar-dragger"][@class="sidebar-%s"]' % state)
 
 
 class TestMenu(zeit.cms.selenium.Test):

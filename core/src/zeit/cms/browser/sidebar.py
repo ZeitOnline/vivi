@@ -1,17 +1,13 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import persistent.mapping
-
+import zeit.cms.browser.interfaces
 import zope.annotation.factory
+import zope.app.preference.interfaces
 import zope.component
 import zope.interface
 import zope.security.interfaces
-
-import zope.app.preference.interfaces
-
-import zeit.cms.browser.interfaces
 
 
 class PanelState(persistent.mapping.PersistentMapping):
@@ -69,8 +65,9 @@ class Sidebar(object):
     def folded(self):
         return self.preferences.sidebarFolded
 
-    def toggle_folding(self):
-        self.preferences.sidebarFolded = not self.preferences.sidebarFolded
+    def set_folded(self, folded):
+        # XXX this type conversion is a little ridiculous
+        self.preferences.sidebarFolded = True if folded == 'true' else False
         return self.css_class
 
     @zope.cachedescriptors.property.Lazy

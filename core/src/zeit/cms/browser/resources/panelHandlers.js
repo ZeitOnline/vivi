@@ -148,7 +148,7 @@ zeit.cms.PanelHandler = Class.extend({
 // content area.
 
 function SidebarDragger(base_url) {
-    this.url = base_url + '/@@sidebar_toggle_folding';
+    this.url = base_url + '/@@sidebar_folded';
     this.observe_ids = new Array('sidebar', 'sidebar-dragger',
         'visualContentSeparator', 'visualContentWrapper', 'header');
 }
@@ -159,7 +159,8 @@ SidebarDragger.prototype = {
 
     toggle: function(event) {
         var self = this;
-        var d = doSimpleXMLHttpRequest(this.url);
+        var folded = ! hasElementClass('sidebar', 'sidebar-folded');
+        var d = doSimpleXMLHttpRequest(this.url, {folded: folded});
         d.addCallback(function(result) {
             var css_class = result.responseText;
             self.setClass(css_class);

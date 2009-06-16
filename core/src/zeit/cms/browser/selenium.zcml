@@ -8,6 +8,12 @@
     />
 
   <adapter
+    factory=".selenium.TestSidebar"
+    name="zeit.cms.browser.selenium.TestSidebar"
+    permission="zope.Public"
+    />
+
+  <adapter
     factory=".selenium.TestMenu"
     name="zeit.cms.browser.selenium.TestMenu"
     permission="zope.Public"

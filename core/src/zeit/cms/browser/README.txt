@@ -54,10 +54,10 @@ Initially the sidebar is open (expanded):
     <div id="visualContentWrapper" class="sidebar-expanded">...
 
 
-The java script calls `toggle_folding` which will toggle the folding:
+The java script calls `set_folded`:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/@@sidebar_toggle_folding' )
+...     'http://localhost/++skin++cms/@@sidebar_folded?folded=true' )
 >>> browser.contents
 'sidebar-folded'
 
@@ -75,7 +75,7 @@ So with the next page load the panel is folded:
 Toggling again will expand the sidebar again:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/@@sidebar_toggle_folding' )
+...     'http://localhost/++skin++cms/@@sidebar_folded?folded=false' )
 >>> browser.contents
 'sidebar-expanded'
 >>> browser.open('http://localhost/++skin++cms/' )

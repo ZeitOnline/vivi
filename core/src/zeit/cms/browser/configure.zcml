@@ -312,10 +312,10 @@
 
   <browser:page
     for="*"
-    name="sidebar_toggle_folding"
+    name="sidebar_folded"
     class=".sidebar.Sidebar"
     permission="zope.View"
-    attribute="toggle_folding"
+    attribute="set_folded"
     />
 
   <browser:page
