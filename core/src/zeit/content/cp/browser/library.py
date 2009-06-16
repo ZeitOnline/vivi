@@ -10,6 +10,7 @@ See http://cmsdev.zeit.de/node/362
 
 import zeit.cms.browser.view
 import zeit.content.cp.browser.landing
+import zope.browser.interfaces
 import zope.component
 
 
@@ -22,26 +23,33 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         return dict(factories=self.list_block_types())
 
     def list_block_types(self):
+        types = {}
+        for name, adapter, library_name in self.get_adapters():
+            if name not in types:
+                image = self.resources.get('module-%s.png' % name, None)
+                if image is None:
+                    image = self.resources['module-default-image.png']
+                image = image()
+                types[name] = dict(
+                    css=['module'],
+                    image=image,
+                    title=adapter.title,
+                    type=name,
+                )
+            types[name]['css'].append(library_name + '-module')
+        for type_ in types.values():
+            type_['css'] = ' '.join(type_['css'])
+        return sorted(types.values(), key=lambda r: r['title'])
+
+    def get_adapters(self):
         context = self.factory_context
         if context is None:
             return []
-        result = []
-        for name, adapter in zope.component.getAdapters(
-            (context,),
-            zeit.content.cp.interfaces.IElementFactory):
-            if adapter.title is None:
-                continue
-            image = self.resources.get('module-%s.png' % name, None)
-            if image is None:
-                image = self.resources['module-default-image.png']
-            image = image()
-            result.append(dict(
-                area=self.context.__name__,
-                title=adapter.title,
-                type=name,
-                image=image,
-            ))
-        return sorted(result, key=lambda r: r['title'])
+        library_name = self.context.__name__
+        adapters = zope.component.getAdapters(
+            (context,), zeit.content.cp.interfaces.IElementFactory)
+        return [(name, adapter, library_name) for (name, adapter) in adapters
+                if adapter.title]
 
     @property
     def factory_context(self):
@@ -58,6 +66,19 @@ class ClusterBlockFactories(BlockFactories):
             return None
         key = self.context.keys()[0]
         return self.context[key]
+
+
+class CPBlockFactories(BlockFactories):
+
+    def get_adapters(self):
+        adapters = []
+        for name in ('informatives', 'teaser-mosaic'):
+            region = self.context[name]
+            view = zope.component.getMultiAdapter(
+                (region, self.request), name=self.__name__)
+            adapters.extend(view.get_adapters())
+        return adapters
+
 
 
 class BlockLandingZone(zeit.content.cp.browser.landing.LandingZone):

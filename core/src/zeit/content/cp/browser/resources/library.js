@@ -20,12 +20,17 @@ MochiKit.Signal.connect(
         }
     };
 
-    var create_library = function(element_id, title) {
-        var url = $(element_id).getAttribute('cms:url') +
-            '/@@block-factories.json';
+    var create_library_for_element = function(element_id, title) {
+        var url = $(element_id).getAttribute('cms:url');
         var library_id = 'library-' + element_id;
+        create_library(library_id, url, title);
+    }
+
+    var create_library = function(library_id, url, title) {
+        url = url + '/@@block-factories.json';
         var view = new zeit.cms.JSONView(url, library_id);
-        tabs.add(new zeit.cms.ViewTab(library_id, title, view));
+        tabs.add(new zeit.cms.ViewTab(library_id, title, view, {
+            render_on_activate: true}));
         var draggables = []
 
         MochiKit.Signal.connect(view, 'before-load', function() {
@@ -37,15 +42,15 @@ MochiKit.Signal.connect(
     }
 
     var tabs = new zeit.cms.Tabs('cp-library');
-    create_library('cp-informatives-inner', 'Informatives');
-    create_library('cp-teasermosaic', 'Mosaic');
+    create_library('all', context_url, 'Alle');
+    create_library_for_element('cp-informatives-inner', 'Informatives');
+    create_library_for_element('cp-teasermosaic', 'Mosaic');
 
     MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'start',
         function(draggable)  {
             if (!MochiKit.DOM.hasElementClass(draggable.element, 'module')) {
                 return
             }
-            var area = draggable.element.getAttribute('cms:area');
             draggable.element = draggable.element.cloneNode(true);
             MochiKit.DOM.addElementClass(
                 draggable.element, 'module-drag-pane');

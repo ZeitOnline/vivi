@@ -7,14 +7,15 @@ are transmitted in JSON[#setup]_:
 
 >>> import cjson
 >>> import pprint
+>>> browser.handleErrors = False
 >>> browser.open('informatives/@@block-factories.json')
 >>> pprint.pprint(cjson.decode(browser.contents))
-{'factories': [{'area': 'informatives',
+{'factories': [{'css': 'module informatives-module',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
-               {'area': 'informatives',
+               {'css': 'module informatives-module',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
                 'title': 'Wetter',
                 'type': 'weather'}],
@@ -40,16 +41,29 @@ After creating a teaser bar, blocks are offered:
 >>> browser.open(cp_url)
 >>> browser.open('teaser-mosaic/@@block-factories.json')
 >>> pprint.pprint(cjson.decode(browser.contents))
-{'factories': [{'area': 'teaser-mosaic',
+{'factories': [{'css': 'module teaser-mosaic-module',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
-               {'area': 'teaser-mosaic',
+               {'css': 'module teaser-mosaic-module',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
                 'title': 'Wetter',
                 'type': 'weather'}],
  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
+
+
+One can also ask for blocks which can be added on the CP in general:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@block-factories.json')
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'factories': [{'css': 'module informatives-module teaser-mosaic-module',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
+                'title': 'Audioblock',
+                'type': 'audio'},
+                ...
+  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
 
 
 Adding blocks works by drag and drop. We simulate this here.

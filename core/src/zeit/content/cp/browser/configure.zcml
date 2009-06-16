@@ -223,6 +223,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.CPBlockFactories"
+    permission="zeit.EditContent"
+    />
+
 
 
 </configure>
