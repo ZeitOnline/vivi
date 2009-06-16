@@ -167,6 +167,11 @@ SidebarDragger.prototype = {
         });
     },
 
+    hide: function() {
+        var self = this;
+        self.setClass('sidebar-folded');
+    },
+
     setClass: function(css_class) {
         var self = this;
         forEach(this.observe_ids,

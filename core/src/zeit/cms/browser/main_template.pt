@@ -106,8 +106,8 @@
             });
 
             connect(window, 'onload', function(event) {
-                var sidebar_dragger = new SidebarDragger('$site_url');
-                connect('sidebar-dragger', 'onclick', sidebar_dragger,
+                zeit.cms.sidebar_dragger = new SidebarDragger('$site_url');
+                connect('sidebar-dragger', 'onclick', zeit.cms.sidebar_dragger,
                         'toggle');
             });
             ">
