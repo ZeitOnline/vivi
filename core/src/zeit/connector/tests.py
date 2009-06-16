@@ -169,15 +169,17 @@ class ConnectorCache(ConnectorTest):
         self.assertEquals([], list(children))
 
     def test_cache_time_is_not_stored_on_dav(self):
-        self.connector.changeProperties(self.rid, {
-            ('cached-time', 'INTERNAL'): 'foo'})
+        key = ('cached-time', 'INTERNAL')
         properties = self.connector[self.rid].properties
-        self.assertNotEqual(
-            'foo', properties[('cached-time', 'INTERNAL')])
+        cache_time = properties[key]
+        self.connector.changeProperties(self.rid, {key: 'foo'})
+        properties = self.connector[self.rid].properties
+        self.assertNotEqual('foo', properties[key])
         davres = self.connector._get_dav_resource(self.rid)
         davres.update()
-        self.assertTrue(
-            ('cached-time', 'INTERNAL') not in davres.get_all_properties())
+        self.assertTrue(key not in davres.get_all_properties())
+        properties = self.connector[self.rid].properties
+        self.assertEqual(cache_time, properties[key])
 
 
 def test_suite():
