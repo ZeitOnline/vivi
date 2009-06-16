@@ -13,8 +13,8 @@ on parallel delete on which the server just stops putting out XML.
 
 >>> base_id = 'http://xml.zeit.de/testing/stresslock'
 >>> import StringIO
->>> import random
->>> import time
+>>> import datetime
+>>> import pytz
 >>> import zeit.connector.interfaces
 >>> from zeit.connector.resource import Resource
 >>> thread_counter = 0
@@ -34,13 +34,14 @@ on parallel delete on which the server just stops putting out XML.
 ...                contentType = 'text/plain')
 ...     res.properties[('foo', 'bar')] = 'baz'
 ...     res.properties[('count', 'bar')] = '-1'
+...     until = (
+...         datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=120))
+...     token = connector.lock(res.id, 'frodo', until)
 ...     connector.add(res)
 ...     for count in range(50):
-...         token = connector.lock(id, 'test', None)
 ...         r = connector[id]
 ...         assert r.properties[('count', 'bar')]  == str(count-1), dict(r.properties)
 ...         connector.changeProperties(id, {('count', 'bar'): str(count)})
-...         token = connector.unlock(id)
 ...     del connector[id]
 
 >>> threads = []
