@@ -357,10 +357,9 @@ class TestSorting(Test):
         s.storeEval("new Number(storedVars['width']) * -2.75", "delta_x")
         s.dragAndDrop('css=#${block3} > .block-inner > .edit > .dragger',
                       '${delta_x},0')
-        s.pause(500)
 
         # 1 2 3 4 ->  3 1 2 4
-        s.verifyOrdered('${block3}', '${block1}')
+        s.waitForOrdered('${block3}', '${block1}')
         s.verifyOrdered('${block1}', '${block2}')
         s.verifyOrdered('${block2}', '${block4}')
 
@@ -395,9 +394,8 @@ class TestSorting(Test):
         s.verifyAttribute(path + '[2]@id', '${bar1}')
 
         # Drag bar3 to the first position.
-        # When we move up, we have to move less, so the 1.75 move *two* slots
-        # now. This is because the handle is on the top of the box.
         # 2 1 3 -> 3 2 1
+        s.storeEval("new Number(storedVars['bar-height']) * 2.75", "delta_y")
         s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
                       '0,-${delta_y}')
         s.waitForAttribute(path + '[1]@id', '${bar3}')
@@ -411,7 +409,7 @@ class TestSorting(Test):
         s.verifyAttribute(path + '[2]@id', '${bar2}')
         s.verifyAttribute(path + '[3]@id', '${bar1}')
 
-    def _test_lead(self):
+    def test_lead(self):
         s = self.selenium
 
         self.create_content_and_fill_clipboard()
