@@ -86,16 +86,22 @@ zeit.cms.Tab = gocept.Class.extend({
 
 zeit.cms.ViewTab = zeit.cms.Tab.extend({
 
-    construct: function(id, title, view) {
+    _options: {
+        render_on_activate: false,
+    },
+
+    construct: function(id, title, view, options) {
         var self = this;
         self.rendered = false;
         arguments.callee.$.construct.call(self, id, title);
         self.view = view;
+        self.options = MochiKit.Base.update(
+            MochiKit.Base.clone(self._options), options);
     },
 
     activate: function() {
         var self = this;
-        if (!self.rendered) {
+        if (!self.rendered || self.options.render_on_activate) {
             self.view.render();
             self.rendered = true;
         }
