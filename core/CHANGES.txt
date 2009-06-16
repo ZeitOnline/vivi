@@ -8,6 +8,8 @@ zeit.content.cp changes
 
 - Modul-Bibliothek: Tab für »alle«.
 
+- Die Sidebar wird beim Öffnen des Editors automatisch ausgeblendet (#5038).
+
 0.8 (2009-06-09)
 ----------------
 
