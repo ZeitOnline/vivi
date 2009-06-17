@@ -375,9 +375,10 @@ class Connector(object):
         self.copy(old_id, new_id)
         del self[old_id]
 
-    def changeProperties(self, id, properties):
+    def changeProperties(self, id, properties, locktoken=None):
         id = self._get_cannonical_id(id)
-        locktoken = self._get_my_locktoken(id)
+        if locktoken is None:
+            locktoken = self._get_my_locktoken(id)
         davres = self._get_dav_resource(id)
         properties = dict(properties)
         properties[('cached-time', 'INTERNAL')] = (
@@ -593,12 +594,9 @@ class Connector(object):
         properties[RESOURCE_TYPE_PROPERTY] = resource.type
         __traceback_info__ = (
             dict(properties), zeit.connector.interfaces.DeleteProperty)
-        davres.change_properties(
-            properties,
-            delmark=zeit.connector.interfaces.DeleteProperty,
-            locktoken=locktoken)
+        self.changeProperties(id, properties, locktoken=locktoken)
 
-        if autolock and locktoken: # This was _our_ lock. Cleanup:
+        if autolock and locktoken:  # This was _our_ lock. Cleanup:
             self.unlock(id, locktoken=locktoken)
         self._invalidate_cache(id)
 
@@ -715,6 +713,8 @@ class Connector(object):
                 # This happens when the cache is stale and there are entries
                 # for "foo/" *and* "foo" in the cache. We remove (for instance)
                 # "foo/" from the cache, and get "foo" with self['foo/'].
+                self._remove_from_caches(res.id, [self.property_cache,
+                                                  self.child_name_cache])
                 raise KeyError
         except KeyError:
             exists = False

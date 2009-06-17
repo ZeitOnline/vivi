@@ -182,6 +182,13 @@ class ConnectorCache(ConnectorTest):
         properties = self.connector[self.rid].properties
         self.assertEqual(cache_time, properties[key])
 
+    def test_cache_time_is_not_stored_on_dav_with_add(self):
+        key = ('cached-time', 'INTERNAL')
+        self.connector.add(self.connector[self.rid])
+        davres = self.connector._get_dav_resource(self.rid)
+        davres.update()
+        self.assertTrue(key not in davres.get_all_properties())
+
 
 def test_suite():
     suite = unittest.TestSuite()
