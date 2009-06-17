@@ -17,7 +17,7 @@
 
   <resourceLibrary
     name="zeit.content.gallery"
-    require="zeit.cms.DragAndDrop">
+    require="zeit.cms">
     <directory source="resources" include="sorting.js" />
   </resourceLibrary>
     

@@ -1,6 +1,11 @@
 zeit.content.gallery changes
 ============================
 
+1.22.3 (2009-06-17)
+-------------------
+
+- Veraltete Resource-Library zeit.content.Sortable nicht mehr verwenden.
+
 1.22.2 (2009-06-08)
 -------------------
 
