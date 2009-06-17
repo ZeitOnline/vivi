@@ -43,6 +43,7 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
         zope.app.component.hooks.setSite(self.getRootFolder())
         self.connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
+        transaction.commit()
 
     def tearDown(self):
         """Cleans up after a functional test case."""
