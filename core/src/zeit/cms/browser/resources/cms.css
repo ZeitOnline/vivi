@@ -411,7 +411,7 @@ pre {
   top: -1em;
   height: 3.2em;
   width: 100%;
-  background: #f2f2f2 url(tabs_bg.gif) repeat-x 0 100%;
+  background: #f2f2f2 url(layout/tabs_bg.gif) repeat-x 0 100%;
 }
 
 .context-views > ul {

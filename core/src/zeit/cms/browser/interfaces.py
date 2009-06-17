@@ -11,6 +11,14 @@ import zope.schema
 import zope.viewlet.interfaces
 
 
+class ICMSStyles(zope.publisher.interfaces.browser.IBrowserRequest):
+    """Styles (CSS) for the CMS."""
+
+
+class ICMSOldStyles(zope.publisher.interfaces.browser.IBrowserRequest):
+    """Old Styles (CSS) for the CMS (yellow tabs etc.)."""
+
+
 class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """Master Layer for CMS skin"""
 
@@ -22,11 +30,20 @@ class ICMSTestingSkin(ICMSLayer,
     """Layer/Skin which is only used in tests."""
 
 
-class ICMSSkin(ICMSLayer,
+class ICMSSkin(ICMSOldStyles,
+               ICMSLayer,
                z3c.hashedresource.interfaces.IHashedResourceSkin,
                gocept.form.interfaces.IJSValidationLayer,
                zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """CMS skin"""
+
+
+class IViviSkin(ICMSStyles,
+               ICMSLayer,
+               z3c.hashedresource.interfaces.IHashedResourceSkin,
+               gocept.form.interfaces.IJSValidationLayer,
+               zope.publisher.interfaces.browser.IDefaultBrowserLayer):
+    """Vivi skin."""
 
 
 class IGlobalInformation(zope.viewlet.interfaces.IViewletManager):

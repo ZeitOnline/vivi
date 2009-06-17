@@ -24,6 +24,13 @@
     name="cms"
     />
 
+  <interface
+    zcml:condition="not-have zeit.cms.testing"
+    interface=".interfaces.IViviSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="vivi"
+    />
+
   <browser:page
     for="*"
     name="standard_macros"
@@ -61,19 +68,40 @@
   <include package="gocept.mochikit" />
 
   <resourceLibrary
-    name="zeit.cms"
+    name="zeit.cms.javascript"
     require="mochikit mochikit.DragAndDrop gocept.mochikit.jsclass
     gocept.mochikit.lightbox">
-    <directory source="resources" include="
+    <directory source="js" include="
       base.js
       tooltip.js
       dnd.js
       menu.js
       messages.js
+      lightbox.js
+      "/>
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.cms"
+    require="zeit.cms.javascript"
+    layer=".interfaces.ICMSStyles">
+    <directory source="resources" include="
       forms.css
       tables.css
       lightbox.css
-      lightbox.js
+      cms-widgets.css
+      cms.css
+      "/>
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.cms"
+    require="zeit.cms.javascript"
+    layer=".interfaces.ICMSOldStyles">
+    <directory source="oldstyle" include="
+      forms.css
+      tables.css
+      lightbox.css
       cms-widgets.css
       cms.css
       "/>
@@ -92,12 +120,12 @@
   <!-- remove those ... -->
 
   <resourceLibrary name="zeit.cms.filteringtable">
-    <directory source="resources" include="filteringtable.js" />
+    <directory source="js" include="filteringtable.js" />
   </resourceLibrary>
 
   <resourceLibrary name="zeit.cms.tree"
     require="zeit.cms">
-    <directory source="resources" include="tree.js"/>
+    <directory source="js" include="tree.js"/>
   </resourceLibrary>
 
   <resourceLibrary name="zeit.cms.error"

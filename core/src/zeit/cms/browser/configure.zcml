@@ -171,7 +171,7 @@
     />
 
   <resourceLibrary name="zeit.cms.panels">
-    <directory source="resources" include="panelHandlers.js" />
+    <directory source="js" include="panelHandlers.js" />
   </resourceLibrary>
 
   <adapter factory=".sidebar.panelStateFactory" trusted="yes" />

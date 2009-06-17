@@ -4,7 +4,7 @@ zeit.cms changes
 1.23 (unreleased)
 -----------------
 
-- Styling: Tabs sehen besser aus
+- Anfänge eines neuen Skins: Vivi. Tabs sehen schon besser aus.
 
 - DragAndDrop: Wird ein Objekt gezogen gibt es keine besondere »Drag-Pane«
   mehr. Das gezogene Element wird direkt angezeigt.
