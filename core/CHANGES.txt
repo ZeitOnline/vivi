@@ -7,6 +7,8 @@ CHANGES
 - Fixed bug in mock connector: last-modified property is now set with timezone
   UTC.
 
+- Use only one way to change properties.
+
 1.14.1 (2009-06-15)
 -------------------
 
