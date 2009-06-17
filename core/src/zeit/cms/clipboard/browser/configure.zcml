@@ -87,7 +87,7 @@
     />
 
 
-  <resourceLibrary name="zeit.cms.clipboard" require="zeit.cms.DragAndDrop">
+  <resourceLibrary name="zeit.cms.clipboard" require="zeit.cms">
     <directory source="resources" include="clipboard.js" />
   </resourceLibrary>
 

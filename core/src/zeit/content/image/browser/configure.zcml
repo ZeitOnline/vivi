@@ -12,9 +12,7 @@
     <directory source="resources" />
   </resourceLibrary>
 
-  <resourceLibrary
-    name="zeit.content.image.drag-images"
-    require="zeit.cms.DragAndDrop">
+  <resourceLibrary name="zeit.content.image.drag-images" require="zeit.cms">
     <directory source="resources" include="drag-images.js" />
   </resourceLibrary>
 

@@ -1,15 +1,14 @@
 # Copyright (c) 2006-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """Interfaces for CMS skin"""
 
+import gocept.form.interfaces
+import z3c.hashedresource.interfaces
+import zope.interface
 import zope.interface.common.mapping
 import zope.publisher.interfaces.browser
-import zope.viewlet.interfaces
-import zope.interface
 import zope.schema
-
-import gocept.form.interfaces
+import zope.viewlet.interfaces
 
 
 class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
@@ -17,12 +16,14 @@ class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
 
 
 class ICMSTestingSkin(ICMSLayer,
+                      z3c.hashedresource.interfaces.IHashedResourceSkin,
                       zope.publisher.interfaces.browser.IBrowserRequest,
                       zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """Layer/Skin which is only used in tests."""
 
 
 class ICMSSkin(ICMSLayer,
+               z3c.hashedresource.interfaces.IHashedResourceSkin,
                gocept.form.interfaces.IJSValidationLayer,
                zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """CMS skin"""

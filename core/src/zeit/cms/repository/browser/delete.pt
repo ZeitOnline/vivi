@@ -1,6 +1,6 @@
 <div class="topcontent deleteScreen"
   i18n:domain="zeit.cms">
-    <tal:replace replace="resource_library:zeit.cms.Lightbox" />
+    <tal:replace replace="resource_library:zeit.cms" />
   <h1 i18n:translate="delete_content_header">Delete content</h1>
 
   <span class="nextUrl" tal:content="view/nextUrl" />

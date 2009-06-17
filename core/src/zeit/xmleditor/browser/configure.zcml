@@ -44,7 +44,7 @@
   </browser:pages>
     
 
-  <resourceLibrary name="zeit.xmleditor" require="zeit.cms.DragAndDrop">
+  <resourceLibrary name="zeit.xmleditor" require="zeit.cms">
     <directory source="resources" include="xmleditor.css xmleditor.js" />
   </resourceLibrary>
 

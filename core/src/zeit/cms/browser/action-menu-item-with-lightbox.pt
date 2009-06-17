@@ -1,5 +1,5 @@
 <li i18n:domain="zeit.cms">
-  <tal:replace replace="resource_library:zeit.cms.Lightbox" />
+  <tal:replace replace="resource_library:zeit.cms" />
   <a title="Title"
     tal:attributes="
     href string:javascript:zeit.cms.lightbox_form('${context/@@absolute_url}/${view/lightbox}');

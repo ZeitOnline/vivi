@@ -1,5 +1,5 @@
 <div tal:attributes="id view/form_id | nothing">
-  <tal:replace replace="resource_library:zeit.cms.Lightbox" />
+  <tal:replace replace="resource_library:zeit.cms" />
   <h1 i18n:translate=""
     tal:content="view/title">
     Title
@@ -13,4 +13,4 @@
 
   </form>
 
-</div>  
+</div>

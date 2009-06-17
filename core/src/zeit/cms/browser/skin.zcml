@@ -90,8 +90,6 @@
   </resourceLibrary>
 
   <!-- remove those ... -->
-  <resourceLibrary name="zeit.cms.DragAndDrop" require="zeit.cms" />
-  <resourceLibrary name="zeit.cms.Lightbox" require="zeit.cms" />
 
   <resourceLibrary name="zeit.cms.filteringtable">
     <directory source="resources" include="filteringtable.js" />

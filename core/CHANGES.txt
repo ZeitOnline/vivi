@@ -9,11 +9,13 @@ zeit.cms changes
 - DragAndDrop: Wird ein Objekt gezogen gibt es keine besondere »Drag-Pane«
   mehr. Das gezogene Element wird direkt angezeigt.
 
-- Beim veröffentlichen "oldstatus" nur setzen, wenn sich der Wert auch geändert
+- Beim veröffentlichen »oldstatus« nur setzen, wenn sich der Wert auch geändert
   hat.
 
 - Sidebar ein/ausklappen mit expliziter Statusangabe anstatt mit umschalten
   (damit der CP-Editor es vernünftig einklappen kann).
+
+- Statische Resourcen mit einem Hash in der URL versehen.
 
 1.22.1 (2009-06-09)
 -------------------
