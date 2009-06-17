@@ -84,7 +84,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
         return zope.component.getUtility(
             zeit.connector.interfaces.ILockInfoStorage)
 
-    def _invalidate_cache(self, id, added=False, deleted=False):
+    def _invalidate_cache(self, id):
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
