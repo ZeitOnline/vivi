@@ -42,7 +42,7 @@ setup(
         'zc.table',
         'zdaemon',
         'zeit.cms>=1.21.6',
-        'zeit.connector>0.14.1',
+        'zeit.connector>1.14.1',
         'zeit.content.cp>0.8',
         'zeit.content.infobox',
         'zeit.content.gallery',
