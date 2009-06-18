@@ -44,7 +44,7 @@ def search(q, sort_order=None):
 
     conn = get_solr()
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
-                       rows=100)
+                       rows=20)
 
 def counts(q):
     """Count in solr according to query.
