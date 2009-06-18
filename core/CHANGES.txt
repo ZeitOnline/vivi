@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.24 (unreleased)
+1.24 (2009-06-18)
 -----------------
 
 - <table> wird gesäubert und nach XML konvertiert.
