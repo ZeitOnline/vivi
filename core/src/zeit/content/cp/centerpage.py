@@ -44,10 +44,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('header_image',))
 
-    def __init__(self, xml_source=None):
-        super(CenterPage, self).__init__(xml_source)
-        self.type = zeit.content.cp.interfaces.ICenterPage['type'].missing_value
-
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]
         area = zope.component.getMultiAdapter(

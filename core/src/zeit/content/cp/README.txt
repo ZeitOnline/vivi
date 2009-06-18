@@ -7,8 +7,6 @@ Centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
->>> cp.type
-'centerpage'
 >>> cp.type = u'homepage'
 >>> cp.type
 'homepage'
