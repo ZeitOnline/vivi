@@ -24,17 +24,17 @@ layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'zeit.content.cp.tests.layer', allow_teardown=True)
 
-
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),
-    (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile('[0-9a-f]{32}'), "<MD5>"),
     (re.compile('[0-9]{4}-[0-9]{2}-[0-9]{2}[T ][0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(\+[0-9]{2}:[0-9]{2})?'),
      "<ISO DATE>"),
     (re.compile('[A-Z][a-z]{2}, [0-9]{2} [A-Z][a-z]{2} [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}'),
      "<RFC822 DATE>"),
 ])
+
+checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
 def FunctionalDocFileSuite(*args, **kw):
