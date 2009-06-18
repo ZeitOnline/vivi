@@ -145,22 +145,22 @@ class SearchResult(JSONView):
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
             results.append({
-                    'uniqueId': uniqueId,
-                    'icon': icon,
-                    'favorited': favorited_icon,
-                    'publication_status': publication_status,
                     'arrow': r['arrow_right.png'](),
-                    'teaser_title': title,
-                    'supertitle': result.get('supertitle', ''),
-                    'preview_url': preview_url,
-                    'date': format_date(dt),
-                    'start_date': format_date(start_date),
-                    'end_date': format_date(end_date),
-                    'volume_year': volume_year,
-                    'topic': result.get('ressort', ''),
                     'authors': result.get('authors', []),
-                    'related_url': self.url('expanded_search_result', uniqueId),
+                    'date': format_date(dt),
+                    'end_date': format_date(end_date),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
+                    'favorited': favorited_icon,
+                    'icon': icon,
+                    'preview_url': preview_url,
+                    'publication_status': publication_status,
+                    'related_url': self.url('expanded_search_result', uniqueId),
+                    'start_date': format_date(start_date),
+                    'supertitle': result.get('supertitle', ''),
+                    'teaser_title': title,
+                    'topic': result.get('ressort', ''),
+                    'uniqueId': uniqueId,
+                    'volume_year': volume_year,
                     })
         if not results:
             return {'template': 'no_search_result.jsont'}
@@ -299,7 +299,7 @@ class Favorites(JSONView):
             else:
                 authors = []
             teaser_title = metadata.teaserTitle or ''
-            teaser_text = metadata.teaserText or ''
+            supertitle = metadata.supertitle or ''
             year = metadata.year or ''
             volume = metadata.volume or ''
             if year and volume:
@@ -310,6 +310,7 @@ class Favorites(JSONView):
         else:
             authors = []
             teaser_title = ''
+            supertitle = ''
             teaser_text = ''
             volume_year = ''
             topic = ''
@@ -323,27 +324,34 @@ class Favorites(JSONView):
         else:
             start_date = None
             end_date = None
- 
+
         preview_url = zeit.cms.browser.preview.get_preview_url(
             'preview-prefix', uniqueId)
 
+        icon = zope.component.queryMultiAdapter(
+            (content, self.request), name='zmi_icon')
+        if icon is None:
+            icon = ''
+        else:
+            icon = icon.url()
+
         return {
-            'uniqueId': uniqueId,
-            'icon': '/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png',
-            'favorited': favorited_icon,
-            'publication_status': r['published.png'](),
             'arrow': r['arrow_right.png'](),
-            'teaser_title': teaser_title,
-            'teaser_text': teaser_text,
-            'preview_url': preview_url,
-            'date': format_date(date),
-            'start_date': format_date(start_date),
-            'end_date': format_date(end_date),
-            'volume_year': volume_year,
-            'topic': topic,
             'authors': authors,
-            'related_url': self.url('expanded_search_result', uniqueId),
+            'date': format_date(date),
+            'end_date': format_date(end_date),
             'favorite_url': self.url('toggle_favorited', uniqueId),
+            'favorited': favorited_icon,
+            'icon': icon,
+            'preview_url': preview_url,
+            'publication_status': r['published.png'](),
+            'related_url': self.url('expanded_search_result', uniqueId),
+            'start_date': format_date(start_date),
+            'supertitle': supertitle,
+            'teaser_title': teaser_title,
+            'topic': topic,
+            'uniqueId': uniqueId,
+            'volume_year': volume_year,
             }
 
     def json(self):
