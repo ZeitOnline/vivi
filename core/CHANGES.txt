@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Tab-Resource-Library repariert
 
+- ObjectPathAttributeProperty kann jetzt auch mit ContextualSources umgehen.
+
 1.23 (2009-06-17)
 -----------------
 

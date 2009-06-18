@@ -122,7 +122,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
             # But only if it is a string. This is mostly the case, but if the
             # attribute is missing `value` is none.
             try:
-                value = self.field.fromUnicode(value)
+                value = self.field.bind(instance).fromUnicode(value)
             except ValueError:
                 value = self.field.missing_value
         elif isinstance(value, str):
@@ -131,7 +131,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
 
     def __set__(self, instance, value):
         if self.field is not None:
-            self.field.validate(value)
+            self.field.bind(instance).validate(value)
         if not isinstance(value, basestring):
             value = unicode(value)
         self.getNode(instance).set(self.attribute_name, value)

@@ -122,6 +122,11 @@ not in the document, yet:
 
 >>> import zope.schema
 >>> from zeit.cms.content.property import ObjectPathAttributeProperty
+>>> from zc.sourcefactory.contextual import BasicContextualSourceFactory
+>>> class ExampleSource(BasicContextualSourceFactory):
+...     def getValues(self, context):
+...         return ['one', 'two', 'three']
+...
 >>> class Content(object):
 ...     xml = xml_tree
 ...     url = ObjectPathAttributeProperty('.a', 'href')
@@ -131,6 +136,8 @@ not in the document, yet:
 ...         '.count', 'chars', zope.schema.Int())
 ...     sentences = ObjectPathAttributeProperty(
 ...         '.count', 'sentences', zope.schema.Int())
+...     choice = ObjectPathAttributeProperty(
+...         '.count', 'choice', zope.schema.Choice(source=ExampleSource()))
 ...
 >>> content = Content()
 
@@ -144,6 +151,8 @@ u'url'
 20
 >>> content.sentences is None
 True
+>>> content.choice is None
+True
 
 
 Setting new values:
@@ -151,11 +160,14 @@ Setting new values:
 >>> content.url = 'http://www.zeit.de'
 >>> content.words = 53
 >>> content.sentences = 2
+>>> content.choice = 'two'
 >>> print lxml.etree.tostring(xml_tree, pretty_print=True)
 <doc>
   <a href="http://www.zeit.de">link</a>
-  <count words="53" chars="20" sentences="2"/>
+  <count words="53" chars="20" sentences="2" choice="two"/>
 </doc>
+>>> content.choice
+'two'
 
 
 Setting invalid values will fail:
