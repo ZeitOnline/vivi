@@ -25,6 +25,7 @@ product_config = {
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),])
+checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
 ArticleLayer = zope.app.testing.functional.ZCMLLayer(
