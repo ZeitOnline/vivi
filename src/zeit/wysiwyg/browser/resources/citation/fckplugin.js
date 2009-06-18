@@ -5,5 +5,5 @@ FCKCommands.RegisterCommand(
         FCKConfig.PageConfig.ZeitResources + '/citation/dialog.pt',
         380, 350));
 var button = new FCKToolbarButton('Zeit_Citation', 'Zitat');
-button.IconPath = FCKConfig.PageConfig.ZeitResources+'/citation/icon.jpg';
+button.IconPath = FCKConfig.PageConfig.ZeitResources+'/citation/icon.png';
 FCKToolbarItems.RegisterItem('Zeit_Citation', button);

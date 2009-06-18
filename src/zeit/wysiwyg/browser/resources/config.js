@@ -2,13 +2,13 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['Source', 'About'],
         ['Cut','Copy','Paste','PasteText','PasteWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+        ['Link','Unlink','Anchor'],
         '/',
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
         ['OrderedList','UnorderedList', 'Table'],
         ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio', 'Zeit_MailForm',
          'Zeit_RAW', 'Zeit_Pagebreak',
          'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery', 'Zeit_Citation'],
-        ['Link','Unlink','Anchor'],
 ];
 
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/office2003/' ;
