@@ -34,6 +34,7 @@ They are represented in XML as:
     </cluster>
     <cluster area="teaser-mosaic"/>
   </body>
+  <feed/>
 </centerpage>
 
 

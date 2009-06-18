@@ -16,7 +16,10 @@ product_config = {
         'rss-folder': 'rss',
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests.fixtures', 'example_rules.py'),
-    }}
+    },
+    'zeit.workflow': {'publish-script': 'cat',
+                      'path-prefix': ''}
+    }
 
 
 

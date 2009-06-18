@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import UserDict
 import itertools
 import lxml.etree
+import lxml.objectify
 import pkg_resources
 import stabledict
 import zeit.cms.connector
@@ -13,11 +14,15 @@ import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
+import zeit.cms.related.interfaces
+import zeit.cms.related.related
 import zeit.cms.type
+import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
+
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                  UserDict.DictMixin):
@@ -56,7 +61,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         for entry in self.xml.xpath('//block[@href="%s"]' % content.uniqueId):
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
             updater.update(entry)
-
 
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -100,3 +104,27 @@ def modified_propagator(context, event):
     zope.security.proxy.removeSecurityProxy(cp)._p_changed = True
     global _test_helper_cp_changed
     _test_helper_cp_changed = True
+
+
+class Feed(zeit.cms.related.related.RelatedBase):
+
+    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
+    zope.interface.implements(zeit.content.cp.interfaces.IFeed)
+
+    path = lxml.objectify.ObjectPath('.feed.reference')
+
+    items = property(zeit.cms.related.related.RelatedBase._get_related,
+                     zeit.cms.related.related.RelatedBase._set_related)
+
+
+@zope.component.adapter(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+def update_feed_items(context, event):
+    feed = zeit.content.cp.interfaces.IFeed(context)
+    items = list(feed.items)
+
+    for item in zeit.cms.syndication.interfaces.IReadFeed(context):
+        items.append(item)
+
+    feed.items = items

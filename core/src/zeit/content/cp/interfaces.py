@@ -155,6 +155,12 @@ class ICMSContentIterable(zope.interface.Interface):
         pass
 
 
+class IFeed(zope.interface.Interface):
+    """Feed section of a CenterPage"""
+
+    items = zope.interface.Attribute("tuple of feed items")
+
+
 class IElementFactory(zope.interface.Interface):
 
     title = zope.schema.TextLine(
