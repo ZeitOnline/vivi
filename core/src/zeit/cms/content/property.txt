@@ -25,7 +25,7 @@ Normally the document root is the `xml` attribute.  Create a test class:
 ...     xml = lxml.objectify.fromstring(
 ...         '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
 ...     b = ObjectPathProperty('.b')
->>> content = Content()   
+>>> content = Content()
 
 Initially b is None, since the node doesn't exist:
 
@@ -83,7 +83,7 @@ create a test-class:
 >>> class Content(object):
 ...     xml = xml_tree.b[1]
 ...     b = ObjectPathProperty(None)
->>> content = Content()   
+>>> content = Content()
 
 
 Initially b is an empty string, since the node exist and is empty:
@@ -104,7 +104,7 @@ Let's assign some values to b. Integer:
     <b/>
 </a>
 
-   
+
 ObjectPathAttributeProperty
 ===========================
 
@@ -325,7 +325,7 @@ ValueError: `attributes` must be tuple, got <type 'str'>
 
 
 
-Clean up: 
+Clean up:
 
 >>> gsm.unregisterUtility(
 ...     repository, zeit.cms.repository.interfaces.IRepository)
