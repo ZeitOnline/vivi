@@ -1,6 +1,13 @@
 zeit.cms changes
 ================
 
+1.23.1 (unreleased)
+-------------------
+
+- Test-Skin repariert
+
+- Tab-Resource-Library repariert
+
 1.23 (2009-06-17)
 -----------------
 

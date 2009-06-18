@@ -23,7 +23,8 @@ class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """Master Layer for CMS skin"""
 
 
-class ICMSTestingSkin(ICMSLayer,
+class ICMSTestingSkin(ICMSOldStyles,
+                      ICMSLayer,
                       z3c.hashedresource.interfaces.IHashedResourceSkin,
                       zope.publisher.interfaces.browser.IBrowserRequest,
                       zope.publisher.interfaces.browser.IDefaultBrowserLayer):
