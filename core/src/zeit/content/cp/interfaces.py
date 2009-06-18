@@ -206,7 +206,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
-        missing_value=zeit.content.cp.layout.get_layout('leader'))
+        default=zeit.content.cp.layout.get_layout('leader'))
 
 
 class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
@@ -356,7 +356,7 @@ class IReadTeaserBar(IReadRegion, IElement):
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBarLayoutSource(),
-        missing_value=zeit.content.cp.layout.get_layout('normal'))
+        default=zeit.content.cp.layout.get_layout('normal'))
 
 
 class IWriteTeaserBar(IWriteRegion):

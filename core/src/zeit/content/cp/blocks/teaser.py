@@ -47,7 +47,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
             if layout.id == self.xml.get('module'):
                 return layout
         return zeit.content.cp.interfaces.IReadTeaserBlock[
-            'layout'].missing_value
+            'layout'].default
 
     @rwproperty.setproperty
     def layout(self, layout):
@@ -144,7 +144,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
     zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'),
     module=zeit.content.cp.interfaces.IReadTeaserBlock[
-            'layout'].missing_value.id)
+            'layout'].default.id)
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)

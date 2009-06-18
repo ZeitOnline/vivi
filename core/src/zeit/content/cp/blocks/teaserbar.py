@@ -25,7 +25,7 @@ class TeaserBar(zeit.content.cp.area.Container):
         for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source(self):
             if layout.id == self.xml.get('module'):
                 return layout
-        return zeit.content.cp.interfaces.IReadTeaserBar['layout'].missing_value
+        return zeit.content.cp.interfaces.IReadTeaserBar['layout'].default
 
     @rwproperty.setproperty
     def layout(self, layout):
@@ -53,7 +53,7 @@ class TeaserBarFactory(zeit.content.cp.blocks.block.ElementFactory):
     element_type = 'teaser-bar'
     title = None
     module = zeit.content.cp.interfaces.IReadTeaserBar[
-            'layout'].missing_value.id
+            'layout'].default.id
 
     def get_xml(self):
         region = super(TeaserBarFactory, self).get_xml()
