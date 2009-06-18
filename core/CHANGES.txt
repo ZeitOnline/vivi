@@ -1,6 +1,15 @@
 zeit.find changes
 =================
 
+
+0.6 (unreleased)
+----------------
+
+- Nur 20 Suchergebnisse anzeigen
+
+- Styling
+
+
 0.5 (2009-05-09)
 ----------------
 
