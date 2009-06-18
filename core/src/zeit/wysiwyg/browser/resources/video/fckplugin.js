@@ -5,7 +5,7 @@ FCKCommands.RegisterCommand(
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt?kind=video',
         380, 300));
 var button = new FCKToolbarButton('Zeit_Add_Video', 'Video');
-button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/icon.jpg';
+button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/video_icon.png';
 FCKToolbarItems.RegisterItem( 'Zeit_Add_Video', button);
 
 
@@ -16,7 +16,7 @@ FCKCommands.RegisterCommand(
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt?kind=audio',
         380, 250));
 var button = new FCKToolbarButton('Zeit_Add_Audio', 'Audio');
-button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/audio_icon.gif';
+button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/audio_icon.png';
 FCKToolbarItems.RegisterItem( 'Zeit_Add_Audio', button);
 
 

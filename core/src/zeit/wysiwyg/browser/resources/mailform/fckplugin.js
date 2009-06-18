@@ -35,6 +35,6 @@ FCKCommands.RegisterCommand(
 var oMailItem = new FCKToolbarButton(
     'Zeit_MailForm', 'MailForm');
 oMailItem.IconPath =
-    FCKConfig.PageConfig.ZeitResources+ '/mailform/mail_icon.gif';
+    FCKConfig.PageConfig.ZeitResources+ '/mailform/mail_icon.png';
 FCKToolbarItems.RegisterItem('Zeit_MailForm', oMailItem);
         
