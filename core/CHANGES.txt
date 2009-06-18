@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.14.2 (unreleased)
+1.14.2 (2009-06-18)
 -------------------
 
 - Fixed bug in mock connector: last-modified property is now set with timezone
