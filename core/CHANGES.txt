@@ -8,6 +8,10 @@ zeit.content.article changes
 
 - Tests für Hashed-Resources angepasst.
 
+- CDS beim import weniger aggresiv (#5525).
+  
+- Nicht veröffentlichte CDS-Artikel werden jetzt in der Nacht gelöscht.
+
 2.0 (2009-06-08)
 ----------------
 

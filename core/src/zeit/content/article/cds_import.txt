@@ -204,17 +204,10 @@ True
 Automatic removal of unpublished articles
 +++++++++++++++++++++++++++++++++++++++++
 
-Articles which were imported from the CDS and are not published within a given
-amount of time are deleted automatically.
+Articles which were imported from the CDS and are not published within two days
+are deleted automatically in the night after those two days have passed.
 
-For testing purposes we set the timeout to a small value:
-
->>> import datetime
->>> old_timeout = zeit.content.article.cds.DELETE_TIMEOUT
->>> zeit.content.article.cds.DELETE_TIMEOUT = datetime.timedelta(seconds=2)
-
-When importing an article, a job will be scheduled for 2 seconds in the future
-to delete the article:
+When importing an article, a job will be scheduled for 2 days + something:
 
 >>> with fs.create('auto-delete') as f:
 ...     f.write(article_xml)
@@ -232,8 +225,13 @@ True
 
 After the scheduled time has arrived, the article is gone:
 
+>>> import datetime
 >>> import time
->>> time.sleep(2)
+>>> def new_now():
+...     now = datetime.datetime.now() + datetime.timedelta(days=3)
+...     return float(now.strftime('%s'))
+>>> old_now = time.time
+>>> time.time = new_now
 >>> tasks.process()
 >>> 'auto-delete' in container
 False
@@ -263,8 +261,9 @@ Make the article published:
 
 When the removal time has come, the object will not be removed:
 
->>> time.sleep(2)
+>>> time.time = new_now
 >>> tasks.process()
+>>> time.time = old_now
 >>> 'auto-delete' in container
 True
 
@@ -275,10 +274,6 @@ Remove the published adapter:
 ...     PublishInfo, (zeit.content.article.interfaces.IArticle,),
 ...     zeit.cms.workflow.interfaces.IPublishInfo)
 True
-
-Reset the timeout to its original value:
-
->>> zeit.content.article.cds.DELETE_TIMEOUT = old_timeout
 
 
 Broken XML
@@ -312,12 +307,12 @@ Add a file to the filestore again:
 When something was imported the sleep time is low:
 
 >>> zeit.content.article.cds.import_and_schedule()
-0.02
+10
 
 When there was nothing imported the sleep time is higher:
 
 >>> zeit.content.article.cds.import_and_schedule()
-10
+60
 
 
 The real appmain is:

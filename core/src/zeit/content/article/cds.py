@@ -9,6 +9,7 @@ import logging
 import lovely.remotetask.interfaces
 import lxml.etree
 import os.path
+import pytz
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -142,8 +143,12 @@ def import_file(path):
     # Create removal job
     tasks = zope.component.getUtility(
         lovely.remotetask.interfaces.ITaskService, 'general')
-    # Ignore microseconds:
-    delay = 60*60*24 * DELETE_TIMEOUT.days + DELETE_TIMEOUT.seconds
+    # Compute delete timeout which is > DELETE_TIMEOUT but in the night
+    remove_at = (datetime.datetime.now(pytz.UTC)
+                 + DELETE_TIMEOUT + datetime.timedelta(days=1))
+    remove_at = remove_at.replace(hour=1)
+    remove_in = remove_at - datetime.datetime.now(pytz.UTC)
+    delay = 60*60*24 * remove_in.days + remove_in.seconds
     tasks.addCronJob(
         u'zeit.content.article.cds.remove_if_not_published',
         article.uniqueId, delay=delay)
@@ -165,8 +170,8 @@ def import_one():
 
 def import_and_schedule():
     if import_one():
-        return 0.02
-    return 10
+        return 10
+    return 60
 
 
 @gocept.runner.appmain(ticks=360, principal=PRINCIPAL)
