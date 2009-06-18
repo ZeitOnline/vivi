@@ -257,7 +257,7 @@ table.properties textarea {
 
 #drag-pane {
   background-color: #fff;
-  opacity: 0.8;
+  opacity: 0.9;
   overflow: hidden;
 }
 
@@ -267,6 +267,10 @@ table.properties textarea {
 
 #drag-pane td:last-child {
   display: none;
+}
+
+#drag-pane li > p {
+  margin: 0;
 }
 
 #tooltip {

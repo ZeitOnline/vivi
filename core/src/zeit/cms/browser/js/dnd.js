@@ -10,7 +10,11 @@ MochiKit.Signal.connect(
     }
     var draggable_element = draggable.element;
     var uniqueId = draggable_element.uniqueId;
-    var dim = MochiKit.Style.getElementDimensions(draggable_element); 
+    if (draggable_element.nodeName == 'TR') {
+        var dim = null;
+    } else {
+        var dim = MochiKit.Style.getElementDimensions(draggable_element); 
+    }
 
     var div = $('drag-pane');
     if (div) {
@@ -25,7 +29,9 @@ MochiKit.Signal.connect(
     draggable.offset = [-10, -10];
 
     $('body').appendChild(div);
-    MochiKit.Style.setElementDimensions(div, dim); 
+    if (!isNull(dim)) {
+        MochiKit.Style.setElementDimensions(div, dim);
+    }
 });
 
 

@@ -248,13 +248,35 @@ table.properties textarea {
  * */
 #tooltip,
 #drag-pane {
-  position: absolute;
-  background-color: #ffdd11;
   border: 1px solid black;
-  padding: 5px;
-  max-width: 18em;
   cursor: move;
+  padding: 5px;
+  position: absolute;
   z-index: 1;
+}
+
+#drag-pane {
+  -moz-border-radius: 10px;
+  background-color: #fff;
+  opacity: 0.9;
+  overflow: hidden;
+}
+
+#drag-pane > * {
+  margin: 0;
+}
+
+#drag-pane td:last-child {
+  display: none;
+}
+
+#drag-pane li > p {
+  margin: 0;
+}
+
+#tooltip {
+  background-color: #ffdd11;
+  max-width: 18em;
 }
 
 #tooltip .text,
