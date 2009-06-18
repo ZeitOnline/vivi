@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-2.1 (unreleased)
+2.1 (2009-06-18)
 ----------------
 
 - Ein Artikel kann eine CenterPage als sein Layout referenzieren (#5491).
