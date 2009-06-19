@@ -128,4 +128,10 @@ def update_feed_items(context, event):
         if item not in items:
             items.append(item)
 
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.cp')
+    max_items = config['cp-feed-max-items']
+    while len(items) > max_items:
+        del items[-1]
+
     feed.items = items

@@ -16,6 +16,7 @@ product_config = {
         'rss-folder': 'rss',
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests.fixtures', 'example_rules.py'),
+        'cp-feed-max-items': 200,
     },
     'zeit.workflow': {'publish-script': 'cat',
                       'path-prefix': ''}
