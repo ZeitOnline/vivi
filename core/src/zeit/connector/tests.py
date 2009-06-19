@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """Connector test setup."""
 
+from zope.testing import doctest
 import StringIO
 import os
 import random
@@ -19,7 +20,7 @@ import zope.app.appsetup.product
 import zope.app.component.hooks
 import zope.app.testing.functional
 import zope.component
-from zope.testing import doctest
+import zope.security.proxy
 
 
 real_connector_layer = zope.app.testing.functional.ZCMLLayer(
@@ -188,6 +189,15 @@ class ConnectorCache(ConnectorTest):
         davres = self.connector._get_dav_resource(self.rid)
         davres.update()
         self.assertTrue(key not in davres.get_all_properties())
+
+    def test_cache_handles_webdav_keys(self):
+        key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))
+        self.connector.changeProperties(self.rid, {key: 'baz'})
+
+    def test_cache_handles_security_proxied_webdav_keys(self):
+        key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))
+        key = zope.security.proxy.ProxyFactory(key)
+        self.connector.changeProperties(self.rid, {key: 'baz'})
 
 
 def test_suite():

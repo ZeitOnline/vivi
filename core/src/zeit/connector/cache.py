@@ -15,6 +15,7 @@ import zc.set
 import zeit.connector.interfaces
 import zope.component
 import zope.interface
+import zope.security.proxy
 import zope.testing.cleanup
 
 
@@ -257,17 +258,19 @@ class WebDAVPropertyKey(object):
         return instance
 
     def __init__(self, name):
+        assert not zope.security.proxy.isinstance(name, WebDAVPropertyKey)
         self.name = name
 
     def __getitem__(self, idx):
         return self.name.__getitem__(idx)
 
     def __cmp__(self, other):
-        if isinstance(other, WebDAVPropertyKey):
+        if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
             return cmp(self.name, other.name)
         return cmp(self.name, other)
 
     def __hash__(self):
+        assert not zope.security.proxy.isinstance(self.name, WebDAVPropertyKey)
         return hash(self.name)
 
     def __repr__(self):
@@ -304,9 +307,9 @@ class Properties(persistent.mapping.PersistentMapping):
 
     def __setitem__(self, key, value):
         if (key is not zeit.connector.interfaces.DeleteProperty
-            and not isinstance(key, WebDAVPropertyKey)):
+            and not zope.security.proxy.isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
-        super(type(self), self).__setitem__(key, value)
+        super(Properties, self).__setitem__(key, value)
 
     def update(self, dict=None, **kwargs):
         if dict is None:
