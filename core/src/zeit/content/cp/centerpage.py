@@ -125,6 +125,7 @@ def update_feed_items(context, event):
     items = list(feed.items)
 
     for item in zeit.cms.syndication.interfaces.IReadFeed(context):
-        items.append(item)
+        if item not in items:
+            items.append(item)
 
     feed.items = items
