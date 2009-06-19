@@ -19,7 +19,7 @@ class TargetSource(zc.sourcefactory.basic.BasicSourceFactory):
         return ('_blank',)
 
     def getTitle(self, value):
-        return self.values[value]
+        return self.values.get(value, value)
 
 
 class ILink(zope.interface.Interface):

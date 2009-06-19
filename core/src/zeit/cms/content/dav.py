@@ -179,6 +179,7 @@ class ChoicePropertyWithIterableSource(object):
         for possible_value in self.source:
             if zeit.cms.content.interfaces.IDAVToken(possible_value) == value:
                 return possible_value
+        return value
         # XXX what to do here?
         raise ValueError(value)
 

@@ -39,7 +39,7 @@ class AlignmentSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values
 
     def getTitle(self, value):
-        return self.titles[value]
+        return self.titles.get(value, value)
 
 
 class IImageMetadata(zope.interface.Interface):

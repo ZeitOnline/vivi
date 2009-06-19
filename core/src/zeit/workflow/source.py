@@ -48,7 +48,7 @@ class TriState(zc.sourcefactory.basic.BasicSourceFactory):
         NotNecessary: _('not necessary')}
 
     def getTitle(self, value):
-        return self._values[value]
+        return self._values.get(value, value)
 
     def getValues(self):
         return self._values.keys()

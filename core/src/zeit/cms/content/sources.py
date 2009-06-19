@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import gocept.cache.method
 import gocept.lxml.objectify
@@ -75,8 +74,11 @@ class NavigationSource(SimpleXMLSource):
     def getTitle(self, value):
         __traceback_info__ = (value, )
         tree = self._get_tree()
-        return unicode(tree.xpath('/ressorts/ressort[@name = "%s"]' %
-                                  value)[0]['title'])
+        nodes = tree.xpath('/ressorts/ressort[@name = %s]' %
+                           xml.sax.saxutils.quoteattr(value))
+        if nodes:
+            return unicode(nodes[0]['title'])
+        return value
 
 
 class SerieSource(SimpleXMLSource):
@@ -105,14 +107,14 @@ class SubNavigationSource(SimpleContextualXMLSource):
             nodes = tree.xpath(
                 '//subnavigation[@name = %s]' % (
                     xml.sax.saxutils.quoteattr(value)))
-            assert len(nodes) >= 1
         else:
             nodes = tree.xpath(
                 '/ressorts/ressort[@name = %s]/subnavigation[@name = %s]' % (
                     xml.sax.saxutils.quoteattr(ressort),
                     xml.sax.saxutils.quoteattr(value)))
-            assert len(nodes) == 1
-        return unicode(nodes[0]['title'])
+        if nodes:
+            return unicode(nodes[0]['title'])
+        return value
 
     def _get_ressort_nodes(self, context):
         tree = self._get_tree()
