@@ -4,11 +4,26 @@ zeit.content.cp changes
 0.9 (2009-06-18)
 ----------------
 
-- Content-Source für CenterPages hinzugefügt.
+Neue Funktionen
+~~~~~~~~~~~~~~~
 
 - Modul-Bibliothek: Tab für »alle«.
 
 - Die Sidebar wird beim Öffnen des Editors automatisch ausgeblendet (#5038).
+
+- Die CenterPage enthält einen neuen Abschnitt ``<feed>``, in dem
+  ``<reference>``s zu den n letzten Teasern aus dem Aufmacherbereich stehen;
+  jeweils der erste Teaser eines Teaserblocks wird dort eingefügt (#4884).
+
+  Die Einträge sind umgekehrt chronologisch geordnet, d. h. um den eigentlichen
+  RSS-Feed zu erzeugen, kann das XSLT die ersten x Einträge nehmen.
+  n ist konfigurierbar über product config ``cp-feed-max-items``
+  (im Moment n=200).
+
+Technische Änderungen
+~~~~~~~~~~~~~~~~~~~~~
+
+- Content-Source für CenterPages hinzugefügt.
 
 0.8 (2009-06-09)
 ----------------
@@ -36,7 +51,7 @@ Neue Funktionen
 - Blockblibliothek
 
 - Tabs im Block-Bearbeiten (#5323)
- 
+
 - Freie Teaser können im CMS direkt bearbeitet werden (#5059).
 
 - Autopilot in der Aufmacherfläche nicht mehr möglich (verhindert Kreise,

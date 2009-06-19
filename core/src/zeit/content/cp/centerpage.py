@@ -113,6 +113,8 @@ class Feed(zeit.cms.related.related.RelatedBase):
 
     path = lxml.objectify.ObjectPath('.feed.reference')
 
+    # the feed items are ordered chronologically descending,
+    # so the XSLT can just get the first n items to build the actual feed.
     items = property(zeit.cms.related.related.RelatedBase._get_related,
                      zeit.cms.related.related.RelatedBase._set_related)
 
@@ -126,7 +128,7 @@ def update_feed_items(context, event):
 
     for item in zeit.cms.syndication.interfaces.IReadFeed(context):
         if item not in items:
-            items.append(item)
+            items.insert(0, item)
 
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.cp')

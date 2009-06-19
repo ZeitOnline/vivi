@@ -71,8 +71,8 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         items = cp.xml.feed.getchildren()
         self.assertEqual(2, len(items))
         self.assertEqual('reference', items[0].tag)
-        self.assertEqual('http://xml.zeit.de/testcontent', items[0].get('href'))
-        self.assertEqual('http://xml.zeit.de/test2', items[1].get('href'))
+        self.assertEqual('http://xml.zeit.de/test2', items[0].get('href'))
+        self.assertEqual('http://xml.zeit.de/testcontent', items[1].get('href'))
 
     def test_teasers_are_added_only_once(self):
         cp = self.repository['cp']
@@ -104,8 +104,9 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.publish(cp)
         items = cp.xml.feed.getchildren()
         self.assertEqual(5, len(items))
-        self.assert_('http://xml.zeit.de/test7' not in
-                     [x.get('href') for x in items])
+        # the oldest item ('testcontent') has been purged from the list
+        expected = ['http://xml.zeit.de/test%s' % i for i in [6, 5, 4, 3, 2]]
+        self.assertEqual(expected, [x.get('href') for x in items])
 
 
 def test_suite():
