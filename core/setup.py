@@ -15,11 +15,10 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
-        'setuptools',
-        'zeit.cms>1.21',
         'python-cjson',
-        'pysolr >= 2.0.1',
-        'simplejson', # for pysolr
+        'setuptools',
         'zc.iso8601',
+        'zeit.cms>1.21',
+        'zeit.solr',
     ],
 )

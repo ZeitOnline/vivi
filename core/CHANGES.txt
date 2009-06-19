@@ -1,6 +1,11 @@
 zeit.find changes
 =================
 
+0.7 (unreleased)
+------------------
+
+- Moved solr connection (via pysolr) to zeit.solr
+
 0.6.1 (2009-06-18)
 ------------------
 

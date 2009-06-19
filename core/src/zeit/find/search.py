@@ -1,24 +1,15 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import itertools
-import pysolr
-import zope.app.appsetup.product
 from zeit.find import lucenequery as lq
 from zeit.find.daterange import DATE_FILTERS
+import itertools
+import zeit.solr.interfaces
+import zope.component
+
 
 TYPES = ['article', 'gallery', 'video', 'teaser', 'centerpage']
 
-def get_solr():
-    """Make a connection with Apache Solr.
-
-    Use configuration as specified in zeit.find 'solr_url' field in
-    product-specific configuration.
-    """
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.find')
-    solr_url = config.get('solr_url')
-    return pysolr.Solr(solr_url)
 
 def search(q, sort_order=None):
     """Search solr according to query.
@@ -42,9 +33,10 @@ def search(q, sort_order=None):
                      'last-semantic-change', 'ressort',
                      'authors', 'volume', 'year', 'title', 'icon']
 
-    conn = get_solr()
+    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
                        rows=20)
+
 
 def counts(q):
     """Count in solr according to query.
@@ -65,7 +57,7 @@ def counts(q):
         'facet.query': date_queries,
         }
 
-    conn = get_solr()
+    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     facet_data = conn.search(q, rows=0, **facets).facets
 
     facet_queries = facet_data['facet_queries']
@@ -82,6 +74,7 @@ def counts(q):
     type_counts = _counts(facet_fields['type'])
 
     return time_counts, topic_counts, author_counts, type_counts
+
 
 def query(fulltext, from_, until, volume, year, topic, authors, keywords,
           published, types, filter_terms=None):
