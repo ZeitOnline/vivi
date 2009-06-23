@@ -1,6 +1,12 @@
 zeit.content.gallery changes
 ============================
 
+1.22.4 (2006-06-23)
+-------------------
+
+- Beim »Bilderordner synchronisieren« werden nur noch die Bilder im
+  Thumbnail-Ordner gelöscht und nicht mehr der gesamte Thumbnail-Ordner.
+
 1.22.3 (2009-06-17)
 -------------------
 

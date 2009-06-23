@@ -70,7 +70,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     def reload_image_folder(self):
         image_folder = self.image_folder
         if 'thumbnails' in image_folder:
-            del image_folder['thumbnails']
+            for name in image_folder['thumbnails']:
+                del image_folder['thumbnails'][name]
         for name in image_folder:
             image = image_folder[name]
             entry = zeit.content.gallery.interfaces.IGalleryEntry(image, None)
