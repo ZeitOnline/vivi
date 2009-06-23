@@ -623,7 +623,7 @@ When calling `reload_image_folder` the entry is removed from the xml:
 </gallery>
 
 Reloading the image folder will also re-create all the thumbnails. The
-thumbnail of the removed image is also remove:
+thumbnail of the removed image is also removed:
 
 >>> repository['2006']['thumbnails'].keys()
 [u'DSC00109_2.JPG']
