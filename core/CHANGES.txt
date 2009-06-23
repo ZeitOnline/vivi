@@ -1,6 +1,11 @@
 zeit.locales CHANGES
 ====================
 
+0.5 (2009-06-23)
+++++++++++++++++
+
+- ZCML von zeit.content.gallery eingebunden.
+
 0.4 (2009-06-09)
 ++++++++++++++++
 
