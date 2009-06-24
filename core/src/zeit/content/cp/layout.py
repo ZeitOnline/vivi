@@ -44,7 +44,7 @@ TEASER_BLOCK = [
                 u'Großer Teaser mit Bild und Teaserliste',
                 '450x200', area='lead-1'),
     BlockLayout('leader-upright',
-                u'Großer Teaser mit Hochkant-Bild und Teaserliste'
+                u'Großer Teaser mit Hochkant-Bild und Teaserliste',
                 '450x200', area='lead-1'),
     BlockLayout('buttons',
                 u'Kleiner Teaser mit kleinem Bild und Teaserliste',
