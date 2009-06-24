@@ -297,7 +297,7 @@ class ImageStep(ConversionStep):
     xpath_html = './/img'
 
     def to_html(self, node):
-        unique_id = node.get('src')
+        unique_id = node.get('src', '')
         if unique_id.startswith('/cms/work/'):
             unique_id = unique_id.replace(
                 '/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)
@@ -310,14 +310,17 @@ class ImageStep(ConversionStep):
             else:
                 url = self.url(image)
 
-        return lxml.objectify.E.img(src=url)
+        img = lxml.objectify.E.img()
+        if url:
+            img.set('src', url)
+        return img
 
     def to_xml(self, node):
         repository_url = self.url(self.repository)
         url = node.get('src')
 
         new_node = None
-        if url.startswith(repository_url):
+        if url and url.startswith(repository_url):
             unique_id = url.replace(
                 repository_url, zeit.cms.interfaces.ID_NAMESPACE)
             try:
@@ -331,7 +334,9 @@ class ImageStep(ConversionStep):
                     name='image')
 
         if new_node is None:
-            new_node = lxml.objectify.E.image(src=url)
+            new_node = lxml.objectify.E.image()
+            if url:
+                new_node.set('src', url)
         return new_node
 
 
