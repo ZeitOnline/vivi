@@ -143,7 +143,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         self.busy = false;
         MochiKit.Signal.connect(
             'content', 'onclick',
-            self, 'handleContentClick');
+            self, self.handleContentClick);
         MochiKit.Signal.connect(
             self, 'reload', self, 'reload');
         new zeit.cms.ToolTipManager(self.content);
@@ -169,7 +169,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             new module(target);
         } else if (event.target().nodeName == 'A' && event.target().target) {
             // pass
-        } else if (event.target().nodeName != 'INPUT') {
+        } else if (event.target().nodeName == 'A') {
             event.preventDefault();
         }
     },
