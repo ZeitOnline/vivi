@@ -70,6 +70,7 @@ import re
 import sys
 import threading
 import time
+import urllib
 import urlparse
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
@@ -182,9 +183,6 @@ class Connector(object):
         __traceback_info__ = (id, )
         id = self._get_cannonical_id(id)
         for child_id in self._get_resource_child_ids(id):
-            if child_id != child_id.encode('ascii', 'replace'):
-                # We want to ignore objects with strange characters in the id.
-                continue
             yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
 
     def _get_resource_type(self, id):
@@ -297,13 +295,11 @@ class Connector(object):
     def __delitem__(self, id):
         """Remove the resource from the repository."""
         id = self._get_cannonical_id(id)
-        parent, name = self._id_splitlast(id)
 
         # Invalidate the cache to make sure we have the real lock information
         self._invalidate_cache(id)
         token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
-
-        self._get_dav_resource(parent).delete(name, token)
+        self.get_connection().delete(self._id2loc(id), token)
         self._invalidate_cache(id)
 
     def __contains__(self, id):
@@ -528,10 +524,13 @@ class Connector(object):
              http://xml.zeit.de/2006/12/ -->
              http://zip4.zeit.de:9999/cms/work/2006/12/
            Just a textual transformation: replace _prefix with _root"""
-        if id.startswith(self._prefix):
-            return self._roots['default'] + id[len(self._prefix):]
-        else:
+        if not id.startswith(self._prefix):
             raise ValueError("Bad id %r (prefix is %r)" % (id, self._prefix))
+        path = id[len(self._prefix):]
+        #if isinstance(path, unicode):
+        #    path = path.encode('utf8')
+        #path = urllib.quote(path)
+        return self._roots['default'] + path
 
     def _loc2id(self, loc):
         """Transform a location to an id, e.g.
@@ -539,10 +538,11 @@ class Connector(object):
              http://xml.zeit.de/2006/12/
            Just a textual transformation: replace _root with _prefix"""
         root = self._roots['default']
-        if loc.startswith(root):
-            return self._prefix + loc[len(root):]
-        else:
+        if not loc.startswith(root):
             raise ValueError("Bad location %r (root is %r)" % (loc, root))
+        path = loc[len(root):]
+        #path = unicode(urllib.unquote(path), 'utf8')
+        return self._prefix + path
 
     def _internal_add(self, id, resource):
         """The grunt work of __setitem__() and add()
@@ -579,15 +579,10 @@ class Connector(object):
             # of the box by httplib (which is used in DAV). We could override
             # the send method though.
             data = resource.data.read()
-            if(self._check_dav_resource(id) is None):
-                (parent, name) = self._id_splitlast(id)
-                parent = self._get_dav_resource(parent, ensure='collection')
-                davres = parent.create_file(name, data, resource.contentType,
-                                            locktoken=locktoken)
-            else:
-                davres = self._get_dav_resource(id, ensure='file')
-                davres.upload(data, resource.contentType,
-                              locktoken = locktoken)
+            etag = resource.properties.get('etag', 'DAV:')
+            conn = self.get_connection()
+            conn.put(self._id2loc(id), data, mime_type=resource.contentType,
+                    locktoken=locktoken, etag=etag)
 
         # Set the resource type from resource.type.
         properties = dict(resource.properties)

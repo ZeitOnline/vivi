@@ -88,7 +88,16 @@ class HTTPBasicAuthCon(object):
             headers['Authorization'] = auth
         return
 
+    def quote_uri(self, uri):
+        if isinstance(uri, unicode):
+            uri = uri.encode('utf8')
+        parsed = list(urlparse.urlparse(uri))
+        # NOTE: We don't care about query arguments here
+        parsed[2] = urllib.quote(parsed[2])
+        return urlparse.urlunparse(parsed)
+
     def request(self, method, uri, body=None, extra_hdrs=None):
+        uri = self.quote_uri(uri)
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
@@ -101,15 +110,12 @@ class HTTPBasicAuthCon(object):
             raw = "%s:%s" % self.get_auth(self._realm)
             auth = 'Basic %s' % base64.encodestring(raw).strip()
             headers['Authorization'] = auth
-        ulist = list(urlparse.urlparse(uri))
-        if ulist[1]:
-            headers['Host'] = ulist[1]
+        host = urlparse.urlparse(uri).netloc
+        if host:
+            headers['Host'] = host
         headers['Connection'] = 'keep-alive'
         headers['User-Agent'] = 'zeit.connector'
         headers.update(self.additional_headers)
-        # FIXME: after getting rid of .quote(): do we need unparse(parse(...))?
-        # ulist[2] = urllib.quote(ulist[2])
-        uri = urlparse.urlunparse(tuple(ulist))
         try:
             self._con.request(method, uri, body, headers)
         except httplib.CannotSendRequest:
@@ -117,6 +123,7 @@ class HTTPBasicAuthCon(object):
             self.connect()
             # If that raises the error again, well let it raise.
             self._con.request(method, uri, body, headers)
+        #self._con.sock.settimeout(10)
 
     def getresponse(self):
         self._resp = self._con.getresponse()

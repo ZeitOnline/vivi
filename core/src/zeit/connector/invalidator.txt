@@ -50,7 +50,8 @@ The updater works also for deleted resources. So delete w/o the connector
 knowing it:
 
 
->>> connector._get_dav_resource('http://xml.zeit.de/testing/').delete('foo/')
+>>> conn = connector.get_connection()
+>>> result = conn.delete(connector._id2loc('http://xml.zeit.de/testing/foo/'))
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 [(u'foo', u'http://xml.zeit.de/testing/foo/')]
 >>> while not invalidator():
@@ -80,7 +81,7 @@ Let's see how this works with files:
 
 The file is completely cached now. Delete it without the connector knowing it:
 
->>> connector._get_dav_resource('http://xml.zeit.de/testing/').delete('lt1')
+>>> result = conn.delete(connector._id2loc('http://xml.zeit.de/testing/lt1'))
 
 We can still list and retrieve it:
 
@@ -119,7 +120,7 @@ an object is removed from directly the DAV and the container is being
 invalidated the properties of the deleted object stay in the property cache
 even though the connector does not "adveritse" the object via listCollection:
 
->>> connector._get_dav_resource('http://xml.zeit.de/testing/').delete('lt2')
+>>> result = conn.delete(connector._id2loc('http://xml.zeit.de/testing/lt2'))
 >>> import zope.event
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(
 ...     'http://xml.zeit.de/testing/'))

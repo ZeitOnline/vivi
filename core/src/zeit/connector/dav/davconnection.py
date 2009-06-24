@@ -43,6 +43,51 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
                     continue
                 raise
 
+    def proppatch(self, uri, body, locktoken=None):
+        hdrs = {}
+        self.set_if_header(hdrs, uri, locktoken)
+        res = self.get_result('proppatch', uri, body, extra_hdrs=hdrs)
+        if res.status == 200 or res.status >= 300:
+            raise zeit.connector.dav.interfaces.DAVError(
+                res.status, res.reason, res)
+        return res
+
+    def put(self, url, data, mime_type=None, encoding=None, locktoken=None,
+            etag=None):
+        if mime_type is None:
+            mime_type = 'application/octet-stream'
+        hdrs = {}
+        self.set_if_header(hdrs, url, locktoken, etag)
+        res = self.get_result(
+            'put', url, data,
+            content_type=mime_type, content_enc=encoding, extra_hdrs=hdrs)
+        if res.status not in (200, 201, 204):
+            raise zeit.connector.dav.interfaces.DAVUploadFailedError(
+                res.status, res.reason)
+        return res
+
+    def delete(self, url, locktoken=None):
+        hdrs = {}
+        self.set_if_header(hdrs, url, locktoken)
+        res = self.get_result('delete', url, hdrs)
+        if res.status == 423:
+            raise zeit.connector.dav.interfaces.DAVLockedError(
+                res.status, res.reason, url)
+        if res.status >= 300:
+            raise zeit.connector.dav.interfaces.DAVDeleteFailedError(
+                res.status, res.reason, url)
+        return res
+
+    def set_if_header(self, hdrs, url, locktoken=None, etag=None):
+        if_clause = []
+        if locktoken:
+            hdrs['Lock-Token'] = '<%s>' % locktoken
+            if_clause.append('(<%s>)' % locktoken)
+        if etag:
+            if_clause.append('([%s])' % etag)
+        if if_clause:
+            hdrs['If'] = '<%s>%s' % (self.quote_uri(url), ''.join(if_clause))
+
     def get_result(self, method_name, *args, **kwargs):
         method = getattr(super(DAVConnection, self), method_name)
         response = method(*args, **kwargs)

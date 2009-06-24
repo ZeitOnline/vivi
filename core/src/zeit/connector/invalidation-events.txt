@@ -15,9 +15,9 @@ not see objects which are not invalidated:
 >>> inv2 = testing + 'inv2'
 >>> list(connector.listCollection(testing))
 []
->>> davres = connector._get_dav_resource(testing)
->>> dav_file = davres.create_file('inv1', 'pop.', 'text/plain')
->>> dav_file_2 = davres.create_file('inv2', 'peep.', 'text/plain')
+>>> conn = connector.get_connection()
+>>> result = conn.put(connector._id2loc(inv), 'pop.', 'text/plain')
+>>> result = conn.put(connector._id2loc(inv2), 'peep.', 'text/plain')
 >>> list(connector.listCollection(testing))
 []
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(inv))
@@ -33,10 +33,10 @@ peep.
 
 When an object changes the invalidaton will also tell the connector to reload:
 
->>> inv_res = connector._get_dav_resource(inv, ensure='file')
->>> inv_res.upload('Mary had a little lamb.', 'text/plain')
->>> inv2_res = connector._get_dav_resource(inv2, ensure='file')
->>> inv2_res.upload('Mary had a little ogre.', 'text/plain')
+>>> result = conn.put(connector._id2loc(inv), 
+...                   'Mary had a little lamb.', 'text/plain')
+>>> result = conn.put(connector._id2loc(inv2), 
+...                   'Mary had a little ogre.', 'text/plain')
 >>> connector[inv].data.read()
 'pop.'
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(inv))
@@ -48,8 +48,8 @@ peep.
 When an object is remove in the dav the connector only sees this after an
 invalidation event. The object id is removed from the parent's child ids:
 
->>> davres.delete('inv1')
->>> davres.delete('inv2')
+>>> result = conn.delete(connector._id2loc(inv))
+>>> result = conn.delete(connector._id2loc(inv2))
 >>> list(connector.listCollection(testing))
 [(u'inv1', u'http://xml.zeit.de/testing/inv1')]
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(inv))

@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2007-2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 """Connector test setup."""
@@ -141,11 +142,6 @@ class ConnectorTest(unittest.TestCase):
         super(ConnectorTest, self).setUp()
         self.connector = zeit.connector.connector.Connector(
             roots={"default": os.environ['connector-url']})
-        self.connector[self.rid] = zeit.connector.resource.Resource(
-            self.rid, None, 'text',
-            StringIO.StringIO('Pop.'),
-            contentType='text/plain')
-        list(self.connector.listCollection('http://xml.zeit.de/testing/'))
 
     def tearDown(self):
         for name, uid in self.connector.listCollection(
@@ -153,9 +149,47 @@ class ConnectorTest(unittest.TestCase):
             del self.connector[uid]
 
 
+
+class TestUnicode(ConnectorTest):
+
+    def test_access(self):
+        r = self.connector[
+            u'http://xml.zeit.de/online/2007/09/laktose-milchzucker-gewöhnung']
+
+    def test_create_and_list(self):
+        rid = u'http://xml.zeit.de/testing/ünicöde'
+        self.connector[rid] = zeit.connector.resource.Resource(
+            rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        self.assertEquals(
+            [(u'ünicöde', rid)],
+            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
+
+    def test_overwrite(self):
+        rid = u'http://xml.zeit.de/testing/ünicöde'
+        self.connector[rid] = zeit.connector.resource.Resource(
+            rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        self.connector[rid] = zeit.connector.resource.Resource(
+            rid, None, 'text',
+            StringIO.StringIO('Paff'),
+            contentType='text/plain')
+        self.assertEquals('Paff', self.connector[rid].data.read())
+
+
 class ConnectorCache(ConnectorTest):
 
     rid = 'http://xml.zeit.de/testing/cache_test'
+
+    def setUp(self):
+        super(ConnectorCache, self).setUp()
+        self.connector[self.rid] = zeit.connector.resource.Resource(
+            self.rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        list(self.connector.listCollection('http://xml.zeit.de/testing/'))
 
     def test_deleting_non_existing_resource_does_not_create_cache_entry(self):
         children = self.connector.child_name_cache[
@@ -210,6 +244,7 @@ def test_suite():
         'search.txt',
         optionflags=optionflags))
     suite.addTest(unittest.makeSuite(ConnectorCache))
+    suite.addTest(unittest.makeSuite(TestUnicode))
 
     long_running = doctest.DocFileSuite(
         'longrunning.txt',

@@ -231,7 +231,8 @@ Create resource:
 After deleting the resource via webdav it is still reachable in the connector
 because it is cached:
 
->>> connector._get_dav_resource('http://xml.zeit.de/testing/').delete('edge6')
+>>> conn = connector.get_connection()
+>>> result = conn.delete(connector._id2loc('http://xml.zeit.de/testing/edge6'))
 >>> connector[res.id].data.read()
 'Pop goes the weasel!'
 
