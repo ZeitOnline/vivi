@@ -126,6 +126,13 @@ def _abs2timeout(time):
     return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
 
 
+class CannonicalId(unicode):
+    """A canonical id."""
+
+    def __repr__(self):
+        return '<CannonicalId %s>' % super(CannonicalId, self).__repr__()
+
+
 class Connector(object):
     """Connect to the CMS backend.
        WebDAV implementation based on pydavclient
@@ -276,9 +283,9 @@ class Connector(object):
             content_type = self._get_resource_properties(id).get(
                 ('getcontenttype', 'DAV:'))
         except zeit.connector.dav.interfaces.DAVNotFoundError:
-            raise KeyError("The resource %r does not exist." % id)
+            raise KeyError("The resource %r does not exist." % unicode(id))
         return zeit.connector.resource.CachedResource(
-            id, self._id_splitlast(id)[1].rstrip('/'),
+            unicode(id), self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
@@ -742,21 +749,23 @@ class Connector(object):
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""
-        if id == self._prefix:
+        if isinstance(id, CannonicalId):
             return id
+        if id == self._prefix:
+            return CannonicalId(id)
         if id.endswith('/'):
             id = id[:-1]
         if self.property_cache.get(id + '/') is not None:
-            return id + '/'
+            return CannonicalId(id + '/')
         if self.property_cache.get(id) is not None:
-            return id
+            return CannonicalId(id)
         dav_resource = zeit.connector.dav.davresource.DAVResource(
             self._id2loc(id), conn=self.get_connection())
         response = dav_resource.head()
         response.read()
         if response.status == 301:
-            return id + '/'
-        return id
+            return CannonicalId(id + '/')
+        return CannonicalId(id)
 
     @staticmethod
     def _id_splitlast(id):

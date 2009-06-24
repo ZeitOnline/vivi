@@ -65,7 +65,7 @@ class ResourceCache(persistent.Persistent):
         cached_etag = self._etags.get(key)
 
         if current_etag != cached_etag:
-            raise KeyError("Object %r is not cached." % unique_id)
+            raise KeyError(u"Object %r is not cached." % unique_id)
         self._update_cache_access(key)
         value = self._data[key]
         if isinstance(value, str):

@@ -48,7 +48,7 @@ If a resource does not exist, a KeyError is raised:
 >>> connector['http://xml.zeit.de/foobar']
 Traceback (most recent call last):
     ...
-KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
+KeyError: "The resource u'http://xml.zeit.de/foobar' does not exist."
 
 The properties are cached now:
 
@@ -63,7 +63,7 @@ We can also get directory resources:
 >>> resource.type
 'collection'
 >>> resource.__name__
-'deutschland'
+u'deutschland'
 
 Storing an object. The object will be created when not yet there.
 Don't forget content-type:
@@ -324,7 +324,7 @@ Copying an non existing object raises a KeyError:
 ...                'http://xml.zeit.de/testing/bar')
 Traceback (most recent call last):
     ...
-KeyError: "The resource 'http://xml.zeit.de/testing/foo' does not exist."
+KeyError: "The resource u'http://xml.zeit.de/testing/foo' does not exist."
 
 Clean up:
 

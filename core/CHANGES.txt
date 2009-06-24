@@ -6,6 +6,8 @@ CHANGES
 
 - Support UTF8 characters in URLs.
 
+- Make less HEAD requests.
+
 1.14.4 (2009-06-19)
 -------------------
 

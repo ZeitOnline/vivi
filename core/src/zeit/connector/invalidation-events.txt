@@ -58,7 +58,7 @@ invalidation event. The object id is removed from the parent's child ids:
 >>> connector[inv]
 Traceback (most recent call last):
     ...
-KeyError: "The resource 'http://xml.zeit.de/testing/inv1' does not exist."
+KeyError: "The resource u'http://xml.zeit.de/testing/inv1' does not exist."
 
 Events non existing resource do not harm:
 

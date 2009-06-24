@@ -29,7 +29,7 @@ KeyError.:
 >>> cache.getData('some-id', properties)
 Traceback (most recent call last):
     ...
-KeyError: "Object 'some-id' is not cached."
+KeyError: u"Object 'some-id' is not cached."
 
 
 Set some data. `setData` returns either a StringIO or an open file handle. What
