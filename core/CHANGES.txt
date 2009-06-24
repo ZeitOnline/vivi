@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.15 (unreleased)
+1.15 (2009-06-24)
 -----------------
 
 - Support UTF8 characters in URLs.
