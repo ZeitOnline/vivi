@@ -25,7 +25,7 @@ Get a list:
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 connect: (zip6.zeit.de, 9000)
-send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
+send: 'HEAD /cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
 header: Server: ...
@@ -33,7 +33,7 @@ header: Location: http://zip6.zeit.de:9000/cms/work/testing/
 header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/html; charset=iso-8859-1
-send: 'PROPFIND http://zip6.zeit.de:9000/cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: zip6.zeit.de:9000\r\nUser-Agent: zeit.connector\r\n\r\n'
+send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: zip6.zeit.de:9000\r\nUser-Agent: zeit.connector\r\n\r\n'
 send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
@@ -54,10 +54,10 @@ the server, then the reconnect happens and the HEAD request is send again:
 >>> import time
 >>> time.sleep(16)
 >>> connector._invalidate_cache('http://xml.zeit.de/testing/')
-send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
+send: 'HEAD /cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: ''
 connect: (zip6.zeit.de, 9000)
-send: 'HEAD http://zip6.zeit.de:9000/cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
+send: 'HEAD /cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
 header: Server: ...
@@ -65,7 +65,7 @@ header: Location: http://zip6.zeit.de:9000/cms/work/testing/
 header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/html; charset=iso-8859-1
-send: 'PROPFIND http://zip6.zeit.de:9000/cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: zip6.zeit.de:9000\r\nUser-Agent: zeit.connector\r\n\r\n'
+send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: zip6.zeit.de:9000\r\nUser-Agent: zeit.connector\r\n\r\n'
 send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...

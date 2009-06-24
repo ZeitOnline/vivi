@@ -98,6 +98,7 @@ class HTTPBasicAuthCon(object):
 
     def request(self, method, uri, body=None, extra_hdrs=None):
         uri = self.quote_uri(uri)
+        path = urlparse.urlunparse(('', '') + urlparse.urlparse(uri)[2:])
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
@@ -117,7 +118,7 @@ class HTTPBasicAuthCon(object):
         headers['User-Agent'] = 'zeit.connector'
         headers.update(self.additional_headers)
         try:
-            self._con.request(method, uri, body, headers)
+            self._con.request(method, path, body, headers)
         except httplib.CannotSendRequest:
             # Yikes. The connection got into an inconsistent state! Reconnect.
             self.connect()
