@@ -6,6 +6,8 @@ zeit.locales CHANGES
 
 - ZCML von zeit.content.gallery eingebunden.
 
+- Übersetzungen aktualisiert.
+
 0.4 (2009-06-09)
 ++++++++++++++++
 
