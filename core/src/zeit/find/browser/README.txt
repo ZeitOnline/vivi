@@ -16,7 +16,6 @@ There is one main HTML view defined, which loads all the JavaScript and the
 JSON template to setup the search UI. See the selenium tests for more details
 on the UI itself:
 
->>> browser.handleErrors = False
 >>> browser.open('http://localhost:8080/++skin++cms/find')
 >>> print browser.contents
 <html>
@@ -33,6 +32,9 @@ on the UI itself:
   <body id="body">
     <div id="cp-search">
     </div>
+    <script language="javascript">
+     zeit.find.init_full_search();
+    </script>
   </body>
 </html>
 

@@ -9,5 +9,8 @@
   <body id="body">
     <div id="cp-search">
     </div>
+    <script language="javascript">
+      zeit.find.init_full_search();
+    </script>
   </body>
 </html>

@@ -186,35 +186,57 @@ class ResultFilters(JSONView):
          author_counts, type_counts) = zeit.find.search.counts(q)
 
         result = {
-            'topic_entries': _entries(topic_counts),
-            'time_entries': time_entries(time_counts),
-            'type_entries': _entries(type_counts),
-            'author_entries': _entries(author_counts),
+            'topic_entries': self.entries(topic_counts),
+            'time_entries': self.time_entries(time_counts),
+            'type_entries': self.type_entries(type_counts),
+            'author_entries': self.entries(author_counts),
             }
         if not (result['topic_entries'] or result['time_entries'] or
                 result['type_entries'] or result['author_entries']):
             return {'template': 'no_result_filters.jsont'}
         return result
 
+    def time_entries(self, counts):
+        result = []
+        for ((name, count),
+             (name2, (start_date, end_date)))  in zip(counts, DATE_RANGES):
+            if count == 0:
+                continue
+            result.append(dict(title=name,
+                               amount=format_amount(count),
+                               start_date=format_date(start_date),
+                               end_date=format_date(end_date)))
+        return result
 
-def time_entries(counts):
-    result = []
-    for ((name, count),
-         (name2, (start_date, end_date)))  in zip(counts, DATE_RANGES):
-        if count == 0:
-            continue
-        result.append(dict(title=name,
-                           amount=format_amount(count),
-                           start_date=format_date(start_date),
-                           end_date=format_date(end_date)))
-    return result
+    def type_entries(self, counts):
+        types = {}
+        for name, interface in zope.component.getUtilitiesFor(
+            zeit.cms.interfaces.ICMSContentType):
+            type_ = interface.queryTaggedValue('zeit.cms.type')
+            if type_:
+                types[type_] = interface
 
-def _entries(counts):
-    result = []
-    for name, count in counts:
-        result.append(dict(title=name,
-                           amount=format_amount(count)))
-    return result
+        result = []
+        for type_name, count in counts:
+            interface = types.get(type_name)
+            title = None
+            if interface:
+                title = interface.queryTaggedValue('zeit.cms.title')
+            if not title:
+                title = type_name
+            result.append(dict(
+                amount=format_amount(count),
+                title=zope.i18n.translate(title, context=self.request),
+                type=type_name,
+            ))
+        return result
+
+    def entries(self, counts):
+        result = []
+        for name, count in counts:
+            result.append(dict(title=name,
+                               amount=format_amount(count)))
+        return result
 
 
 class ExpandedSearchResult(JSONView):
@@ -407,15 +429,7 @@ def search_form(request):
     published = g('published', None)
     if not published:
         published = None
-    # detect whether we are looking for expanded results or not
-    expanded = g('from', None) is not None
-    if not expanded:
-        types = zeit.find.search.TYPES
-    else:
-        types = set()
-        for t in zeit.find.search.TYPES:
-            if g(t, '') == 'on':
-                types.add(t)
+    types = request.get('types', [])
     return dict(
         fulltext=fulltext,
         from_=from_,
@@ -482,7 +496,7 @@ class VolumeYearError(InputError):
 
 def parse_volume_year(s):
     """Parse volume/year indicator.
-    
+
     Date is of format WW/JJJJ. Special value 'WW/JJJJ' is
     equivalent to no volume/year.
     """

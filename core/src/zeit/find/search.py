@@ -8,9 +8,6 @@ import zeit.solr.interfaces
 import zope.component
 
 
-TYPES = ['article', 'gallery', 'video', 'teaser', 'centerpage']
-
-
 def search(q, sort_order=None):
     """Search solr according to query.
 

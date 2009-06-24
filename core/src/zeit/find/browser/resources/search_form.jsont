@@ -1,4 +1,4 @@
-<form method="GET">
+<form method="GET" id="zeit-find-search-form">
   <input type="text" name="fulltext" id="fulltext" value="" />
   <input type="button" id="search_button" value=" OK " />
 
@@ -10,13 +10,13 @@
     <div id="extended_search" style="display:none">
       <div>
         <label>Von:</label>
-        <input type="text" name="from" id="from" value="TT.MM.JJJJ" />
+        <input type="text" name="from" value="TT.MM.JJJJ" />
         <label>Bis:</label>
-        <input type="text" name="until" id="until" value="TT.MM.JJJJ" />
+        <input type="text" name="until" value="TT.MM.JJJJ" />
       </div>
       <div>
         <label>Ausgabe:</label>
-        <input type="text" name="volume_year" id="volume_year" value="WW/JJJJ" />
+        <input type="text" name="volume_year" value="WW/JJJJ" />
       </div>
       <div>
         <label>Ressort:</label>
@@ -29,11 +29,11 @@
       </div>
       <div>
         <label>Autor:</label>
-        <input type="text" name="author" id="author" value="" />
+        <input type="text" name="author" value="" />
       </div>
       <div>
         <label>Schlagworte:</label>
-        <input type="text" name="keywords" id="keywords" value="" />
+        <input type="text" name="keywords" value="" />
       </div>
       <div>
         <label>Veröffentlicht:</label>
@@ -50,8 +50,8 @@
           {.repeated section types}
           <div class="type-outer">
              <div class="type-inner">
-              <input type="checkbox" checked="checked" id="{type}" name="{type}" />
-              <label for="{type}">
+              <label>
+                <input type="checkbox" checked="checked" name="types:list" value="{type}" />
                 {title}
               </label>
             </div>
