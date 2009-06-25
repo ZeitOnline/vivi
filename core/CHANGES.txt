@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+1.15.1 (unreleased)
+-------------------
+
+- Make sure no SecurityProxies are tried to be stored as cache keys.
+
 1.15 (2009-06-24)
 -----------------
 

@@ -306,8 +306,9 @@ class Properties(persistent.mapping.PersistentMapping):
         return old
 
     def __setitem__(self, key, value):
+        key = zope.security.proxy.removeSecurityProxy(key)
         if (key is not zeit.connector.interfaces.DeleteProperty
-            and not zope.security.proxy.isinstance(key, WebDAVPropertyKey)):
+            and not isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
         super(Properties, self).__setitem__(key, value)
 

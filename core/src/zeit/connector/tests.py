@@ -233,6 +233,14 @@ class ConnectorCache(ConnectorTest):
         key = zope.security.proxy.ProxyFactory(key)
         self.connector.changeProperties(self.rid, {key: 'baz'})
 
+    def test_cache_does_not_store_security_proxied_webdav_keys(self):
+        key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))
+        key = zope.security.proxy.ProxyFactory(key)
+        self.connector.property_cache['id'] = {key: 'baz'}
+        self.assertTrue(isinstance(
+            self.connector.property_cache['id'].keys()[0],
+            zeit.connector.cache.WebDAVPropertyKey))
+
 
 def test_suite():
     suite = unittest.TestSuite()
