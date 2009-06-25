@@ -1,6 +1,15 @@
 zeit.wysiwyg changes
 ====================
 
+1.26 (unreleased)
+-----------------
+
+- Referenzen auf Objekte werden jetzt mit der http://xml.zeit.de URL angezeigt.
+
+- Invalidae Referenzen werden einfach gespeichert, statt einen Systemfehler zu
+  erzeugen.
+
+
 1.25 (unreleased)
 -----------------
 

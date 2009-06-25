@@ -34,13 +34,11 @@ zeit.wysiwyg.ReferenceDialog = zeit.wysiwyg.Dialog.extend({
     },
 
     id_to_url: function(unique_id) {
-        return unique_id.replace(
-            'http://xml.zeit.de', oPage.application_url + '/repository');
+        return unique_id
     },
 
     url_to_id: function(url) {
-        return url.replace(
-            oPage.application_url + '/repository', 'http://xml.zeit.de');
+        return url
     },
 });
 
@@ -69,7 +67,7 @@ zeit.wysiwyg.PortraitboxDialog = zeit.wysiwyg.ReferenceDialog.extend({
     update: function() {
         var self = this;
         arguments.callee.$.update.call(self);
-        self.set_value('layout', self.id_to_url($('layout').value));
+        self.set_value('layout', $('layout').value);
     },
 
     create: function() {
@@ -114,6 +112,16 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
             $('href').value = url_to_id(self.container);
             MochiKit.Signal.signal('href', 'onchange');
         }
+    },
+
+    id_to_url: function(unique_id) {
+        return unique_id.replace(
+            'http://xml.zeit.de', oPage.application_url + '/repository');
+    },
+
+    url_to_id: function(url) {
+        return url.replace(
+            oPage.application_url + '/repository', 'http://xml.zeit.de');
     },
 
     get_container: function() {
