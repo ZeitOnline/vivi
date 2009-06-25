@@ -1082,6 +1082,7 @@ Tables
   </body>
 </article>
 
+
 Portraitbox
 -----------
 
@@ -1100,13 +1101,13 @@ Portraitbox
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <div class="inline-element portraitbox">
-  <div class="href">http://127.0.0.1/repository/2006/pb</div>
+  <div class="href">http://xml.zeit.de/2006/pb</div>
   <div class="layout">short</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element portraitbox">
-...   <div class="href">http://127.0.0.1/repository/2006/pb</div>
+...   <div class="href">http://xml.zeit.de/2006/pb</div>
 ...   <div class="layout">short</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -1119,6 +1120,24 @@ Portraitbox
     </portraitbox>
   </body>
 </article>
+
+When the HTML contains a reference to a portrait box which doesn't exist,
+nothing bad happens:
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="inline-element portraitbox">
+...   <div class="href">http://xml.zeit.de/2006/pb-not-there</div>
+...   <div class="layout">short</div>
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <portraitbox href="http://xml.zeit.de/2006/pb-not-there" layout="short"/>
+  </body>
+</article>
+
+
 
 Infobox
 -------
@@ -1138,12 +1157,12 @@ Infobox
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <div class="inline-element infobox">
-  <div class="href">http://127.0.0.1/repository/2006/ib</div>
+  <div class="href">http://xml.zeit.de/2006/ib</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element infobox">
-...   <div class="href">http://127.0.0.1/repository/2006/ib</div>
+...   <div class="href">http://xml.zeit.de/2006/ib</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article...>
@@ -1173,12 +1192,12 @@ Gallery
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <div class="inline-element gallery">
-  <div class="href">http://127.0.0.1/repository/2006/gal</div>
+  <div class="href">http://xml.zeit.de/2006/gal</div>
 </div>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element gallery">
-...   <div class="href">http://127.0.0.1/repository/2006/gal</div>
+...   <div class="href">http://xml.zeit.de/2006/gal</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article...>

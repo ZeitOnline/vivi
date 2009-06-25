@@ -568,24 +568,22 @@ class ReferenceStep(ConversionStep):
         self.xpath_html = './/*[contains(@class, "%s")]' % self.content_type
 
     def to_html(self, node):
-        content = zeit.cms.interfaces.ICMSContent(node.get('href'))
+        href = node.get('href')
         new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(self.url(content), **{'class': 'href'}),
+            lxml.objectify.E.div(href, **{'class': 'href'}),
             **{'class': 'inline-element %s' % self.content_type})
         lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
-        url = node.xpath('*[contains(@class, "href")]')[0].text
-        repository_url = self.url(self.repository) + '/'
-        unique_id = url.replace(
-            repository_url, zeit.cms.interfaces.ID_NAMESPACE)
+        unique_id = node.xpath('*[contains(@class, "href")]')[0].text
 
         factory = getattr(lxml.objectify.E, self.content_type)
         new_node = factory(href=unique_id)
-        content = zeit.cms.interfaces.ICMSContent(unique_id)
-        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-        updater.update(new_node)
+        content = zeit.cms.interfaces.ICMSContent(unique_id, None)
+        if content is not None:
+            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
+            updater.update(new_node)
         return new_node
 
 
