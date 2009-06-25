@@ -19,6 +19,8 @@
 
   <include package="zeit.cms.testcontenttype" />
 
+  <include package="zeit.solr" />
   <include package="zeit.find" />
   <include package="zeit.find.browser" />
+
 </configure>

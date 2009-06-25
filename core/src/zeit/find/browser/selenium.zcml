@@ -8,4 +8,11 @@
     name="zeit.content.cp.TestTabs"
     permission="zope.Public"
     />
+
+  <adapter
+    factory=".selenium.TestSearch"
+    name="zeit.content.cp.TestSearch"
+    permission="zope.Public"
+    />
+
 </configure>

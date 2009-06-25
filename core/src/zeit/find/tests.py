@@ -2,14 +2,39 @@
 # See also LICENSE.txt
 
 import os
+import pkg_resources
 import unittest
 import zeit.cms.testing
+import zeit.find.search
 import zope.app.testing.functional
+
+product_config = """\
+<product-config zeit.solr>
+    solr-url file://%s
+</product-config>
+""" % pkg_resources.resource_filename(__name__, 'testdata')
+
 
 SearchLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'SearchLayer', allow_teardown=True)
+    __name__, 'SearchLayer', allow_teardown=True,
+    product_config=product_config)
+
+
+class QueryTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = SearchLayer
+
+    def test_query(self):
+        q = zeit.find.search.query('Obama')
+        result = zeit.find.search.search(q)
+        self.assertEquals(45, result.hits)
+        self.assertEquals(
+            'http://xml.zeit.de/online/2009/19/obama-deutschlandbesuch',
+            result.docs[0]['uniqueId'])
+
 
 def test_suite():
     suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(QueryTest))
     return suite

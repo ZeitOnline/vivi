@@ -24,3 +24,18 @@ class TestTabs(zeit.cms.selenium.Test):
         s.click('link=Favoriten')
         s.waitForVisible('id=favorites')
         self.assertSelected('favorites')
+
+
+class TestSearch(zeit.cms.selenium.Test):
+
+    def setUp(self):
+        super(TestSearch, self).setUp()
+        self.open('/find')
+        self.selenium.waitForVisible('css=div.teaser_title')
+
+    def test_relateds(self):
+        s = self.selenium
+        s.click('css=div.related_links')
+        s.waitForTextPresent('No related entries could be found.')
+        s.click('css=div.related_links')
+        s.waitForTextNotPresent('No related entries could be found.')

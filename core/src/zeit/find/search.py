@@ -73,8 +73,17 @@ def counts(q):
     return time_counts, topic_counts, author_counts, type_counts
 
 
-def query(fulltext, from_, until, volume, year, topic, authors, keywords,
-          published, types, filter_terms=None):
+def query(fulltext=None,
+          from_=None,
+          until=None,
+          volume=None,
+          year=None,
+          topic=None,
+          authors=None,
+          keywords=None,
+          published=None,
+          types=(),
+          filter_terms=None):
     """Create lucene query string for search.
 
     fulltext - fulltext to search for
@@ -121,10 +130,6 @@ def query(fulltext, from_, until, volume, year, topic, authors, keywords,
         type_terms.append(lq.field('type', type))
     if type_terms:
         terms.append(lq.or_(*type_terms))
-    else:
-        # we find absolutely nothing as there isn't any
-        # __neverfound type around
-        terms.append(lq.field('type', '__neverfound'))
 
     terms.extend(filter_terms)
     return lq.and_(*terms)
