@@ -352,5 +352,3 @@ class IUUID(zope.interface.Interface):
             title=u"The uuid of the content object.",
             default=None,
             required=False)
-
-
