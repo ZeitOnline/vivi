@@ -4,12 +4,14 @@
 import cjson
 import subprocess
 import sys
+import transaction
 import urllib
 import webbrowser
 import xml.sax.saxutils
 import zc.selenium.pytest
 import zeit.cms.testing
 import zope.component
+import zope.error.error
 
 
 if sys.platform == 'darwin':
@@ -43,6 +45,9 @@ class Test(zc.selenium.pytest.Test):
 
     def setUp(self):
         super(Test, self).setUp()
+        zope.component.getUtility(
+            zope.error.interfaces.IErrorReportingUtility).copy_to_zlog = True
+        transaction.commit()
         product_config = cjson.encode(self.product_config)
         query = urllib.urlencode(dict(product_config=product_config))
         self.open('/@@setup-product-config?' + query, auth=None)
