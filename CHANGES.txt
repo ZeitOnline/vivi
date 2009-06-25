@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.26 (unreleased)
+1.26 (2009-06-25)
 -----------------
 
 - Referenzen auf Objekte werden jetzt mit der http://xml.zeit.de URL angezeigt.
@@ -10,7 +10,7 @@ zeit.wysiwyg changes
   erzeugen.
 
 
-1.25 (unreleased)
+1.25 (2009-06-24)
 -----------------
 
 - Image-Konvertierung robuster, wenn keine URL im Tag enthalten ist.
