@@ -44,8 +44,8 @@ setup(
         'zeit.cms>=1.21.6',
         'zeit.connector>1.14.1',
         'zeit.content.cp>0.8',
-        'zeit.content.infobox',
         'zeit.content.gallery',
+        'zeit.content.infobox',
         'zeit.content.portraitbox',
         'zeit.objectlog>=0.2',
         'zeit.wysiwyg>1.22',
@@ -60,6 +60,7 @@ setup(
         'zope.app.twisted',
         'zope.copypastemove',
         'zope.i18n>3.4.0',
+        'zope.index',
         'zope.location>=3.4.0b2',
     ],
     entry_points = """

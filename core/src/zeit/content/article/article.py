@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import copy
+import grokcore.component
 import lxml.etree
 import lxml.objectify
 import persistent
@@ -26,6 +27,7 @@ import zeit.wysiwyg.interfaces
 import zope.app.container.contained
 import zope.component
 import zope.dublincore.interfaces
+import zope.index.text.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -216,3 +218,18 @@ class LayoutDependency(object):
             return False
 
         return workflow.date_last_published < dc.modified
+
+
+class SearchableText(grokcore.component.Adapter):
+    """SearchableText for an article."""
+
+    grokcore.component.context(zeit.content.article.interfaces.IArticle)
+    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+
+    def getSearchableText(self):
+        main_text = []
+        for p in self.context.xml.body.findall('p'):
+            text = unicode(p).strip()
+            if text:
+                main_text.append(text)
+        return main_text

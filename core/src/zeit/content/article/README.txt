@@ -330,6 +330,15 @@ u'http://xml.zeit.de/online/2007/01/Somalia'
 u'R\xfcckkehr der Warlords'
 
 
+Searchable text
+===============
+
+>>> article = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> adapter = zope.index.text.interfaces.ISearchableText(article)
+>>> adapter.getSearchableText()
+[u'Kriegsherr Hussein Moha...ruine.']
+
 
 Cleanup
 =======

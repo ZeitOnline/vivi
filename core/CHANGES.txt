@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+2.2 (unreleased)
+----------------
+
+- Adapter zur Volltextindizierung hinzugefügt.
+
+
 2.1 (2009-06-18)
 ----------------
 
