@@ -1,11 +1,17 @@
 function Tree(base_url, element_id) {
     this.base_url = base_url + '/';
     this.contentElement = getElement(element_id);
-    connect(this.contentElement, 'onclick', this, 'clickHandler');
+    this.event = MochiKit.Signal.connect(
+        this.contentElement, 'onclick', this, 'clickHandler');
     this.query_arguments = {}
 }
 
 Tree.prototype = {
+
+    destruct: function() {
+        MochiKit.Signal.disconnect(this.event);
+    },
+
     clickHandler: function(event) {
         var target = event.target();
         var action = target.getAttribute('action');

@@ -3,6 +3,8 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <browser:resourceDirectory name="zeit.cms.repository" directory="resources"/>
+
   <!-- helpers -->
 
   <browser:view

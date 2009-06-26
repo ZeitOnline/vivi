@@ -16,14 +16,14 @@ zeit.cms.LightboxForm = Class.extend({
         self.lightbox = this.create_lightbox();
         self.content_box = this.lightbox.content_box;
         this.events.push(
-            connect(this.content_box, 'onclick', this, 'handle_click'));
+            connect(this.content_box, 'onclick', self, self.handle_click));
         this.events.push(
             connect(window, 'zeit.cms.LightboxReload', function(event) {
                 self.loading();
             }));
         this.events.push(
             MochiKit.Signal.connect(
-                this.lightbox, 'before-close', this, 'close'));
+                this.lightbox, 'before-close', self, self.close));
         self.reload();
     },
 
@@ -135,7 +135,7 @@ zeit.cms.LightboxForm = Class.extend({
         if (typeof message == 'undefined') {
             message = 'Loading ...';
         }
-        this.content_box.innerHTML = 'Loading ...';
+        this.content_box.innerHTML = message;
     },
 
     post_process_html: function() {

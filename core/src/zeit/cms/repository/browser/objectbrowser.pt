@@ -3,7 +3,7 @@
   repository context/@@get_repository;
   tree_view nocall:repository/@@tree.html"
   i18n:domain="zeit.cms">
-  
+
   <h1 tal:content="python:context.uniqueId">
     http://xml.zeit.de/
   </h1>
@@ -29,4 +29,15 @@
     tal:content="string:${repository/@@absolute_url}/@@tree.html">
   </div>
 
+  <script language="javascript" tal:content="string:
+  (function() {
+    var url = '${context/++resource++zeit.cms.repository}/objectbrowser.js';
+    var d = zeit.cms.import(url);
+    d.addCallback(function(result) {
+      new zeit.cms.repository.ObjectBrowser(self);
+      return result;
+    });
+    })();  
+  "></script>
+  
 </tal:block>

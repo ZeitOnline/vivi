@@ -10,6 +10,10 @@ zeit.cms changes
 - Ungültige Ressorts und Unterressorts werden jetzt im CMS angezeigt (via
   #5431).
 
+Technisches
++++++++++++
+
+- ObjektReferenceWidget umgebaut damit die Suche integriert werden kann.
 
 1.23.2 (2009-06-18)
 -------------------

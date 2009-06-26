@@ -124,7 +124,9 @@ var ObjectReferenceWidget = Class.extend({
         this.input.object_reference_widget = this;
         this.changed = false;
 
-        new Droppable(this.element, {
+        new MochiKit.DragAndDrop.Droppable(this.element, {
+            accept: 'content-drag-pane',
+            activeclass: 'drop-widget-hover',
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
                     othis.handleDrop(element);
@@ -159,44 +161,27 @@ var ObjectReferenceWidget = Class.extend({
         var action;
         var argument;
         if (target.nodeName == 'INPUT' && target.type == 'button') {
-            var action = target.getAttribute('name');
-            argument = event;
-        } else if (target.nodeName == 'A') {
-            action = "handleNewUrl";
-            argument = target.href;
-        } else if (target.nodeName == 'TD') {
-            var tr = target.parentNode;
-            var url_node = getFirstElementByTagAndClassName(
-                'span', 'uniqueId', tr);
-            if (url_node) {
-                action = 'handleObjectSelected';
-                argument = url_node.textContent;
-            }
-        }
-
-
-        if (action) {
             event.stop();
+            var action = target.getAttribute('name');
             var func = bind(action, this);
-            func(argument);
+            func(event);
         }
-    },
-
-    handleNewUrl: function(url) {
-        var scroll_state = new zeit.cms.ScrollStateRestorer('popup-navtree');
-        scroll_state.rememberScrollState();
-        this.loadContentFromUrl(url);
     },
 
     handleObjectSelected: function(unique_id) {
         this.lightbox.close();
+        this.lightbox = null;
         this.selectObject(unique_id);
     },
 
     browseObjects: function(event) {
-        this.lightbox = new gocept.Lightbox($('body'));
-        connect(this.lightbox.content_box, 'onclick', this, 'handleClick');
-        this.loadContentFromUrl(this.default_browsing_url);
+        var self = this;
+        var url = self.default_browsing_url + '/@@get_object_browser';
+        self.lightbox = new zeit.cms.LightboxForm(url, $('body'));
+        self.lightbox.events.push(MochiKit.Signal.connect(
+            self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
+            self, self.handleObjectSelected));
+
     },
 
     showReferencedObject: function(event) {
@@ -228,24 +213,6 @@ var ObjectReferenceWidget = Class.extend({
 
     getObject: function() {
         return this.input.value;
-    },
-
-    loadContentFromUrl: function(url) {
-        if (url.indexOf('@@') == -1) {
-            url = url + '/@@get_object_browser';
-        }
-        var d = this.lightbox.load_url(url, {type_filter: this.type_filter});
-        var othis = this;
-        d.addCallback(function(result) {
-            var url = getFirstElementByTagAndClassName(
-                'div', 'tree-view-url', othis.lightbox.content_box).innerHTML;
-            var navtree = new Tree(url, 'popup-navtree');
-            var scroll_state = new zeit.cms.ScrollStateRestorer(
-                'popup-navtree');
-            scroll_state.restoreScrollState();
-            return result;
-        });
-        return d;
     },
 
     getToolTipURL: function() {
@@ -500,4 +467,3 @@ MochiKit.Signal.connect(window, 'onload', function(event) {
     });
 
 });
-

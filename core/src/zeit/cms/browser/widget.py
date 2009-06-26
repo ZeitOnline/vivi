@@ -31,8 +31,6 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'object-reference-widget.pt')
 
-    content_types_source = zeit.cms.content.sources.CMSContentTypeSource()
-
     def __init__(self, context, source, request):
         super(ObjectReferenceWidget, self).__init__(context, request)
         self.source = source
