@@ -97,9 +97,18 @@ class Container(zope.app.container.contained.Contained):
 
     def __delitem__(self, name):
         '''See interface `IWriteContainer`'''
+
+        obj = self[name]
+
         id = self._get_id_for_name(name)
         del self.connector[id]
         self._local_unique_map_data.clear()
+
+        try:
+            zope.event.notify(
+                zeit.cms.repository.interfaces.AfterObjectRemovedEvent(obj))
+        except KeyError:
+            pass
 
     # Internal helper methods and properties:
 

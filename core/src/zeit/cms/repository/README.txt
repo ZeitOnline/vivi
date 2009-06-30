@@ -276,11 +276,13 @@ Rename it back:
 Deleting Content Object
 =======================
 
-Content can be deleted just like with any other container, using __delitem__:
+Content can be deleted just like with any other container, using
+__delitem__[#after-delete-event]_:
 
 >>> 'i_am_new' in repository
 True
 >>> del repository['i_am_new']
+Deleting http://xml.zeit.de/i_am_new
 >>> 'i_am_new' in repository
 False 
 
@@ -298,6 +300,22 @@ When you try to delete a non existend object, a KeyError is raised:
 Traceback (most recent call last):
     ...
 KeyError: "The resource u'http://xml.zeit.de/i-dont-exist' does not exist."
+
+
+.. [#after-delete-event] Deleting objects sends an event:
+
+    >>> import zeit.cms.interfaces
+    >>> def after_remove(object, event):
+    ...     print "Deleting", object.uniqueId
+    ...     site_manager.unregisterHandler(
+    ...         after_remove,
+    ...         (zeit.cms.interfaces.ICMSContent,
+    ...          zeit.cms.repository.interfaces.IAfterObjectRemovedEvent))
+    >>> site_manager = zope.component.getSiteManager()
+    >>> site_manager.registerHandler(
+    ...     after_remove,
+    ...     (zeit.cms.interfaces.ICMSContent,
+    ...      zeit.cms.repository.interfaces.IAfterObjectRemovedEvent))
 
 
 Copying objects

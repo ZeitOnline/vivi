@@ -6,6 +6,7 @@ import zeit.cms.interfaces
 import zope.component.interfaces
 import zope.file.interfaces
 import zope.interface
+import zope.lifecycleevent
 
 
 class IBeforeObjectAddEvent(zope.component.interfaces.IObjectEvent):
@@ -33,6 +34,16 @@ class AfterObjectConstructedEvent(zope.component.interfaces.ObjectEvent):
     def __init__(self, obj, resource):
         self.object = obj
         self.resource = resource
+
+
+class IAfterObjectRemovedEvent(zope.lifecycleevent.IObjectRemovedEvent):
+    """An event sent after an ICMSContent is removed from a resource."""
+
+
+class AfterObjectRemovedEvent(zope.lifecycleevent.ObjectRemovedEvent):
+    """An event sent after an ICMSContent is removed from a resource."""
+
+    zope.interface.implements(IAfterObjectRemovedEvent)
 
 
 class IRepository(zope.interface.Interface):
