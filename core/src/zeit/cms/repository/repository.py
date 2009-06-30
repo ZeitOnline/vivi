@@ -100,15 +100,12 @@ class Container(zope.app.container.contained.Contained):
 
         obj = self[name]
 
+        zope.event.notify(
+            zeit.cms.repository.interfaces.BeforeObjectRemovedEvent(obj))
+
         id = self._get_id_for_name(name)
         del self.connector[id]
         self._local_unique_map_data.clear()
-
-        try:
-            zope.event.notify(
-                zeit.cms.repository.interfaces.AfterObjectRemovedEvent(obj))
-        except KeyError:
-            pass
 
     # Internal helper methods and properties:
 

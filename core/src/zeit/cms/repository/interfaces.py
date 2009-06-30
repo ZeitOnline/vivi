@@ -36,14 +36,14 @@ class AfterObjectConstructedEvent(zope.component.interfaces.ObjectEvent):
         self.resource = resource
 
 
-class IAfterObjectRemovedEvent(zope.lifecycleevent.IObjectRemovedEvent):
+class IBeforeObjectRemovedEvent(zope.lifecycleevent.IObjectRemovedEvent):
     """An event sent after an ICMSContent is removed from a resource."""
 
 
-class AfterObjectRemovedEvent(zope.lifecycleevent.ObjectRemovedEvent):
+class BeforeObjectRemovedEvent(zope.lifecycleevent.ObjectRemovedEvent):
     """An event sent after an ICMSContent is removed from a resource."""
 
-    zope.interface.implements(IAfterObjectRemovedEvent)
+    zope.interface.implements(IBeforeObjectRemovedEvent)
 
 
 class IRepository(zope.interface.Interface):

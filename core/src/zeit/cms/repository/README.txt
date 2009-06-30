@@ -310,12 +310,12 @@ KeyError: "The resource u'http://xml.zeit.de/i-dont-exist' does not exist."
     ...     site_manager.unregisterHandler(
     ...         after_remove,
     ...         (zeit.cms.interfaces.ICMSContent,
-    ...          zeit.cms.repository.interfaces.IAfterObjectRemovedEvent))
+    ...          zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
     >>> site_manager = zope.component.getSiteManager()
     >>> site_manager.registerHandler(
     ...     after_remove,
     ...     (zeit.cms.interfaces.ICMSContent,
-    ...      zeit.cms.repository.interfaces.IAfterObjectRemovedEvent))
+    ...      zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
 
 
 Copying objects
