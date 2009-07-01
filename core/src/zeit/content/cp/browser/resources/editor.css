@@ -116,6 +116,11 @@
   border-bottom: 1px solid #EEF3F7;
 }
 
+#content .lightbox {
+      -moz-border-radius-bottomleft: 3px;
+      -moz-border-radius-bottomright: 3px;
+}
+
 #content .lightbox,
 #content .lightbox-shade,
 #content .lightbox-header {
@@ -131,7 +136,7 @@
 }
 
 #cp-content .context-views {
-  margin-top:-2.1em;
+  margin-top:-3.2em;
   right: 20px;
 }
 
