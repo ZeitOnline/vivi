@@ -1,6 +1,14 @@
 /* Lightbox */
 
+:focus {
+    outline: 0;
+}
+
 .lightbox-header {
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #bbb;
     z-index: 3;
 }
 
@@ -19,6 +27,10 @@
   left: 1em;
   right: 1em;
   overflow: auto;
+}
+
+.lightbox .form-fields {
+    margin-left: 1em;
 }
 
 .lightbox .nextUrl {
