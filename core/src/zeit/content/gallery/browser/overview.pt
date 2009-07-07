@@ -17,7 +17,7 @@
             tal:attributes="value entry/__name__" />
           <div class="gallery-layout"
             tal:content="python: view.get_entry_layout(entry)">
-            Nur BIld
+            Nur Bild
           </div>
           <a href="#" title="Edit"
             i18n:attributes="title"
@@ -48,6 +48,7 @@
             tal:content="structure python:view.get_text(entry)">
             Text
           </div>
+          <div tal:condition="entry/hidden" i18n:translate="">[hidden]</div>
         </td>
       </tr>
     </table>
