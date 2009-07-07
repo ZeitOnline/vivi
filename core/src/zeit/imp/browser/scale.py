@@ -24,7 +24,6 @@ def parse_filter_args(request, crop):
             crop.add_filter(filter_type, factor)
 
 
-
 class ScaledImage(zeit.cms.browser.view.Base):
 
     def __call__(self, width, height):
@@ -67,6 +66,7 @@ class CropImage(zeit.cms.browser.view.Base):
         cropper.crop(w, h, x1, y1, x2, y2, parse_border(border))
         image = cropper.store(name)
         return self.url(image)
+
 
 def parse_border(border):
     border_color = None
