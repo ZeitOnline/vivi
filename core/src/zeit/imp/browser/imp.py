@@ -16,6 +16,7 @@ class NoMasterImageErrorView(object):
         transaction.doom()
         return super(NoMasterImageErrorView, self).__call__()
 
+
 class Imp(object):
 
     @property
