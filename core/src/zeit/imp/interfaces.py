@@ -34,7 +34,9 @@ class ICropper(zope.interface.Interface):
 
         """
 
-    def store(name):
+class IStorer(zope.interface.Interface):
+
+    def store(name, pil_image):
         """Store a previously cropped image.
 
         - The cropped image is put into the image group as
@@ -44,7 +46,6 @@ class ICropper(zope.interface.Interface):
         returns image
 
         """
-
 
 class IPossibleScale(zope.interface.Interface):
 

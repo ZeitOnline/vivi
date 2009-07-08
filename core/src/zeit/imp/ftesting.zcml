@@ -19,6 +19,9 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
+  <include package="zeit.content.gallery" />
+  <include package="zeit.content.gallery.browser" />
+
   <include package="zeit.imp" />
   <include package="zeit.imp.browser" />
 

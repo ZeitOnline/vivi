@@ -150,12 +150,10 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         r_sharp, g, b = self.get_histogram(image)
         self.assertNotEqual(r_smooth, r_sharp)
 
-    def test_store_without_crop_raises(self):
-        self.assertRaises(RuntimeError, self.crop.store, 'foo')
-
     def test_store(self):
         self.crop.crop(200, 200, 0, 0, 200, 200)
-        image = self.crop.store('foo')
+        image = zeit.imp.interfaces.IStorer(self.group).store(
+            'foo', self.crop.pil_image)
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertEquals(['group-foo.jpg', 'master-image.jpg'],
                           self.group.keys())

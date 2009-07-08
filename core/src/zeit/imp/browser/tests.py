@@ -149,6 +149,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'gallery.txt',
         layer=zeit.imp.tests.imp_layer,
         product_config=zeit.imp.tests.product_config))
     suite.addTest(unittest.makeSuite(ImageBarTest))
