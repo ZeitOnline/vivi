@@ -107,10 +107,12 @@ class HTMLConverter(object):
         """return a copy of `tree` that contains only those nodes we know how to
         deal with."""
         root = lxml.objectify.E.body()
-        covered = tree.xpath(self.covered_xpath())
-        for child in tree.iterchildren():
-            if child in covered:
-                root.append(copy.copy(child))
+        xpath = self.covered_xpath()
+        if xpath:
+            covered = tree.xpath(xpath)
+            for child in tree.iterchildren():
+                if child in covered:
+                    root.append(copy.copy(child))
         return root
 
     def _clear(self, tree):
