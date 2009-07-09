@@ -641,7 +641,11 @@
 }
 
 .feed-items {
+  font-size: 0.8em;
   list-style: none;
+  margin-bottom: 2em;
+  margin-top: -1em;
+  margin: 1em;
   padding: 0;
 }
 
