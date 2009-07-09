@@ -77,18 +77,18 @@ Let's add an image to the image folder:
 >>> import os.path
 >>> import zeit.content.image.image
 >>> import zeit.content.image.interfaces
->>> def add_image():
+>>> def add_image(filename='01.jpg', name='01.jpg'):
 ...     filename = os.path.join(os.path.dirname(__file__),
-...                             'browser', 'testdata', '01.jpg')
+...                             'browser', 'testdata', filename)
 ...     test_data = open(filename, 'rb').read()
 ...     image = zeit.content.image.image.LocalImage()
-...     image.__name__ = '01.jpg'
+...     image.__name__ = name
 ...     image.contentType = 'image/jpeg'
 ...     image.open('w').write(test_data)
 ...     metadata = zeit.content.image.interfaces.IImageMetadata(image)
 ...     metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
 ...     metadata.caption = u'Nice <em>01</em> image'
-...     repository['2006']['01.jpg'] = image
+...     repository['2006'][name] = image
 ...
 >>> add_image()
 
@@ -447,6 +447,25 @@ True
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <...
 <block name="01.jpg">...
+
+Crops
++++++
+
+When using zeit.imp to crop images, it will store the cropped images under the
+same name prefix. zeit.imp needs to retrieve those again, so GalleryEntry has
+a helper method to return images that are crops of its image:
+
+>>> entry = gallery['01.jpg']
+>>> entry.crops
+[]
+>>> add_image('02.jpg', '01.jpg-10x10.jpg')
+>>> gallery.reload_image_folder()
+>>> entry = gallery['01.jpg']
+>>> entry.crops[0].__name__
+u'01.jpg-10x10.jpg'
+>>> del repository['2006']['01.jpg-10x10.jpg']
+>>> gallery.reload_image_folder()
+
 
 Sorting
 +++++++

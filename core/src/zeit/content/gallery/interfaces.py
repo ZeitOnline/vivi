@@ -76,6 +76,9 @@ class IGalleryEntry(zope.interface.Interface):
     image = zope.schema.Object(zeit.content.image.interfaces.IImage)
     thumbnail = zope.schema.Object(zeit.content.image.interfaces.IImage)
 
+    crops = zope.interface.Attribute(
+        'List of IGalleryEntry that are crops of this entry')
+
     title = zope.schema.TextLine(
         title=_('Title'),
         required=False)

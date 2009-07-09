@@ -131,6 +131,10 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 lxml.etree.tostring(copy.copy(node), encoding=unicode)
                 for node in gallery_caption.iterchildren())
 
+        # XXX need location information on the entry itself for crops(),
+        # but just returning entry here breaks tests, so we do both for now.
+        entry.__parent__ = self
+        entry.__name__ = key
         return zope.location.location.located(entry, self, key)
 
     def __delitem__(self, key):
@@ -287,6 +291,14 @@ def galleryentry_factory(context):
 class GalleryEntry(object):
 
     zope.interface.implements(zeit.content.gallery.interfaces.IGalleryEntry)
+
+    @property
+    def crops(self):
+        result = []
+        for name, entry in self.__parent__.items():
+            if name.startswith('%s-' % self.__name__):
+                result.append(entry)
+        return result
 
 
 class EntryXMLRepresentation(object):

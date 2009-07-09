@@ -12,16 +12,14 @@ Create a  browser first:
 
 For creating a gallery we need a folder containing images:
 
->>> import zeit.content.gallery.browser.testing
+>>> from zeit.content.gallery.browser.testing import add_folder, add_image
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> zeit.content.gallery.browser.testing.add_folder(browser, 'gallery')
+>>> add_folder(browser, 'gallery')
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/@@view.html'
 
-
 Add some images to the folder:
 
->>> from zeit.content.gallery.browser.testing import add_image
 >>> add_image(browser, '01.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/@@view.html'
 >>> add_image(browser, '02.jpg')
@@ -53,6 +51,7 @@ Set the most important values:
 >>> browser.getControl(name="form.image_folder").value = (
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.handleErrors = False
 >>> browser.getControl(name="form.actions.add").click()
 
 After adding the gallery we're at the overview page.  The overview page shows
@@ -366,10 +365,10 @@ u'http://xml.zeit.de/online/2007/01'
 Create the image folder:
 
 >>> browser.open('http://localhost/++skin++cms/repository')
->>> add_folder('bilder')
->>> add_folder('2008')
->>> add_folder('26')
->>> add_folder('bildergalerien')
+>>> add_folder(browser, 'bilder')
+>>> add_folder(browser, '2008')
+>>> add_folder(browser, '26')
+>>> add_folder(browser, 'bildergalerien')
 
 We get the right location now:
 
