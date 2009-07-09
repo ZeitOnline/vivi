@@ -16,6 +16,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
 import zeit.wysiwyg.html
 import zope.component
 import zope.interface
@@ -345,3 +346,9 @@ class EntryHTMLConverter(zeit.wysiwyg.html.HTMLConverter):
     zope.lifecycleevent.IObjectModifiedEvent)
 def update_gallery_on_entry_change(entry, event):
     entry.__parent__[entry.__name__] = entry
+
+
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
+def metadata_for_entry(context):
+    return zeit.content.image.interfaces.IImageMetadata(context.image)

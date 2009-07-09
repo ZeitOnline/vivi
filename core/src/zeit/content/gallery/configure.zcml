@@ -65,4 +65,12 @@
   <!-- Workflow -->
   <adapter factory=".workflow.PublicationDependencies" />
 
+  <!-- Metadata -->
+  <adapter factory=".gallery.metadata_for_entry" />
+  <view
+    for=".interfaces.IGalleryEntry"
+    type="*"
+    name="metadata"
+    factory="zeit.content.image.interfaces.IImageMetadata"
+    />
 </configure>
