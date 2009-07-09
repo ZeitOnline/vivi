@@ -31,12 +31,11 @@ class Imp(object):
         return zeit.imp.source.ColorSource()
 
 
-class ImageBar(zeit.cms.browser.view.Base):
+class ImageBar(zeit.imp.browser.imp.ImageBar):
 
-    def __call__(self):
-        result = []
-        # nyi
-        return cjson.encode(result)
+    @property
+    def images(self):
+        return self.context.crops
 
 
 class ScaledImage(zeit.imp.browser.scale.ScaledImage):

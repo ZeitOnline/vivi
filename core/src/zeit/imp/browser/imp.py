@@ -45,16 +45,21 @@ class ImageBar(zeit.cms.browser.view.Base):
 
     def __call__(self):
         result = []
+        for image in self.images:
+            scale_name = image.__name__.replace(
+                self.context.__name__ + '-', '', 1)
+            scale_name = scale_name.rsplit('.', 1)[0]
+            result.append(dict(
+                url=self.url(image),
+                name=image.__name__,
+                scale_name=scale_name))
+        return cjson.encode(result)
+
+    @property
+    def images(self):
         for obj in self.context.values():
             if not zeit.content.image.interfaces.IImage.providedBy(obj):
                 continue
             if zeit.content.image.interfaces.IMasterImage.providedBy(obj):
                 continue
-            scale_name = obj.__name__.replace(
-                self.context.__name__ + '-', '', 1)
-            scale_name = scale_name.rsplit('.', 1)[0]
-            result.append(dict(
-                url=self.url(obj),
-                name=obj.__name__,
-                scale_name=scale_name))
-        return cjson.encode(result)
+            yield obj
