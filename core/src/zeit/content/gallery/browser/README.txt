@@ -12,50 +12,25 @@ Create a  browser first:
 
 For creating a gallery we need a folder containing images:
 
->>> def add_folder(name):
-...     menu = browser.getControl(name='add_menu')
-...     menu.displayValue = ['Folder']
-...     browser.open(menu.value[0])
-...     browser.getControl('File name').value = name
-...     browser.getControl('Add').click()
-...
+>>> import zeit.content.gallery.browser.testing
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> add_folder('gallery')
+>>> zeit.content.gallery.browser.testing.add_folder(browser, 'gallery')
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/@@view.html'
 
 
 Add some images to the folder:
 
->>> import os.path
->>> def add_image(name):
-...     menu = browser.getControl(name='add_menu')
-...     menu.displayValue = ['Image (single)']
-...     browser.open(menu.value[0])
-...     test_file = os.path.join(os.path.dirname(__file__),
-...                              'testdata', name)
-...     test_data = open(test_file, 'rb')
-...     file_control = browser.getControl(name='form.blob')
-...     file_control.add_file(test_data, 'image/jpeg', name)
-...     browser.getControl(name='form.copyrights.0..combination_00').value = (
-...         'ZEIT ONLINE')
-...     browser.getControl(name='form.copyrights.0..combination_01').value = (
-...         'http://www.zeit.de/')
-...     browser.getControl(name='form.actions.add').click()
-...     browser.getLink('Checkin').click() 
-...     url = browser.url
-...     browser.getLink('gallery').click()
-...     return url
-...
->>> add_image('01.jpg')
+>>> from zeit.content.gallery.browser.testing import add_image
+>>> add_image(browser, '01.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/@@view.html'
->>> add_image('02.jpg')
+>>> add_image(browser, '02.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/@@view.html'
->>> add_image('03.jpg')
+>>> add_image(browser, '03.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/03.jpg/@@view.html'
->>> add_image('04.jpg')
+>>> add_image(browser, '04.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/@@view.html'
->>> add_image('05.jpg')
+>>> add_image(browser, '05.jpg')
 'http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/@@view.html'
 
 
