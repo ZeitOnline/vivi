@@ -96,6 +96,10 @@ class IGalleryEntry(zope.interface.Interface):
         title=_('Hidden'),
         required=True)
 
+    is_crop = zope.schema.Bool(
+        title=_('Cropped'),
+        required=False)
+
     caption = zeit.cms.content.field.XMLSnippet(
         title=_("Image caption"),
         description=_('gallery-image-caption-description'),

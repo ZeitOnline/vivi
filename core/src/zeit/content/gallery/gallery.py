@@ -107,6 +107,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry = zeit.content.gallery.interfaces.IGalleryEntry(image)
         if node.get('hidden', None) == 'True':
             entry.hidden = True
+        if node.get('is_crop', None) == 'True':
+            entry.is_crop = True
         entry.title = node.find('title')
         if entry.title is not None:
             entry.title = unicode(entry.title)
@@ -281,6 +283,7 @@ def galleryentry_factory(context):
     entry.title = None
     entry.text = None
     entry.layout = None
+    entry.is_crop = False
 
     # Prefill the caption with the image's caption
     metadata = zeit.content.image.interfaces.IImageMetadata(context)
@@ -325,6 +328,8 @@ class EntryXMLRepresentation(object):
                 '<caption>%s</caption>' % (self.context.caption,)))
         if self.context.hidden:
             node.set('hidden', 'True')
+        if self.context.is_crop:
+            node.set('is_crop', 'True')
 
         node['image'] = zope.component.getAdapter(
             self.context.image,
