@@ -11,7 +11,7 @@
   <adapter factory=".crop.cropper_for_imagegroup" />
   <adapter factory=".crop.cropper_for_gallery" />
 
-  <adapter factory=".crop.ImageGroupStorer" />
-  <adapter factory=".crop.GalleryStorer" />
+  <adapter factory=".store.ImageGroupStorer" />
+  <adapter factory=".store.GalleryStorer" />
 </configure>
 

@@ -188,6 +188,25 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
                                border=(127, 127, 127))
 
 
+class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
+
+    layer = imp_layer
+
+    def test_store(self):
+        gallery = zeit.content.gallery.gallery.Gallery()
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        gallery.image_folder = repository['2007']
+        zeit.content.gallery.testing.add_image('2007', '01.jpg')
+        zeit.content.gallery.testing.add_image('2007', '02.jpg')
+        gallery.reload_image_folder()
+
+        entry = gallery['01.jpg']
+        pil = PIL.Image.open(entry.image.open())
+        zeit.imp.interfaces.IStorer(entry).store('10x10', pil)
+        self.assertEqual(['01.jpg', '01.jpg-10x10.jpg', '02.jpg'],
+                         list(gallery.keys()))
+        self.assertEqual([True, False, False], [x.hidden for x in gallery.values()])
 
 
 scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
@@ -203,4 +222,5 @@ def test_suite():
     suite.addTest(unittest.makeSuite(TestLayerMask))
     suite.addTest(unittest.makeSuite(TestSources))
     suite.addTest(unittest.makeSuite(TestCrop))
+    suite.addTest(unittest.makeSuite(TestGalleryStorer))
     return suite
