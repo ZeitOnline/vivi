@@ -24,7 +24,6 @@ True
 Now assign an image folder. We deliberatly use one where other objects are in,
 too:
 
-
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
@@ -74,23 +73,8 @@ Adding images to the image folder
 
 Let's add an image to the image folder:
 
->>> import os.path
->>> import zeit.content.image.image
->>> import zeit.content.image.interfaces
->>> def add_image(filename='01.jpg', name='01.jpg'):
-...     filename = os.path.join(os.path.dirname(__file__),
-...                             'browser', 'testdata', filename)
-...     test_data = open(filename, 'rb').read()
-...     image = zeit.content.image.image.LocalImage()
-...     image.__name__ = name
-...     image.contentType = 'image/jpeg'
-...     image.open('w').write(test_data)
-...     metadata = zeit.content.image.interfaces.IImageMetadata(image)
-...     metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
-...     metadata.caption = u'Nice <em>01</em> image'
-...     repository['2006'][name] = image
-...
->>> add_image()
+>>> import zeit.content.gallery.testing
+>>> zeit.content.gallery.testing.add_image('2006', '01.jpg')
 
 The gallery obviously hasn't noted this change:
 
@@ -458,7 +442,7 @@ a helper method to return images that are crops of its image:
 >>> entry = gallery['01.jpg']
 >>> entry.crops
 []
->>> add_image('02.jpg', '01.jpg-10x10.jpg')
+>>> zeit.content.gallery.testing.add_image('2006', '02.jpg', '01.jpg-10x10.jpg')
 >>> gallery.reload_image_folder()
 >>> entry = gallery['01.jpg']
 >>> entry.crops[0].__name__
@@ -691,7 +675,7 @@ Old XML format
 
 The old xml format is a bit more lazy. Let's add the second image again:
 
->>> add_image()
+>>> zeit.content.gallery.testing.add_image('2006', '01.jpg')
 >>> gallery.xml = lxml.objectify.XML(u"""\
 ...     <gallery>
 ...       <head>
