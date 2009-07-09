@@ -123,4 +123,11 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <browser:page
+    name="metadata-preview"
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    permission="zope.View"
+    class=".gallery.MetadataPreview"
+    />
+
 </configure>

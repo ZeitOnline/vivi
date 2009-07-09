@@ -41,3 +41,9 @@ def gallery_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+class MetadataPreview(zeit.content.image.browser.image.MetadataPreview):
+
+    def __init__(self, context, request):
+        super(MetadataPreview, self).__init__(context.image, request)
