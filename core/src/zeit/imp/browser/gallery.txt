@@ -10,7 +10,9 @@ IMP for Galleries
 >>> from zeit.content.gallery.browser.testing import add_image
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> zeit.content.gallery.browser.testing.add_folder(browser, 'gallery')
->>> img_url = add_image(browser, '01.jpg')
+>>> ignore = add_image(browser, '01.jpg')
+>>> ignore = add_image(browser, '02.jpg')
+>>> ignore = add_image(browser, '03.jpg')
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
@@ -34,3 +36,26 @@ IMP for Galleries
 >>> browser.getLink('Images').click()
 >>> print browser.contents
 <...01.jpg...01.jpg-10x10.jpg...
+
+
+Previous/next image
+===================
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg')
+>>> browser.getLink('Transform').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp.html'
+>>> 'previous image' in browser.contents
+False
+>>> browser.getLink('next image').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/02.jpg/@@imp.html'
+>>> browser.getLink('previous image').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp.html'
+>>> browser.getLink('next image').click()
+>>> browser.getLink('next image').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/03.jpg/@@imp.html'
+>>> 'next image' in browser.contents
+False

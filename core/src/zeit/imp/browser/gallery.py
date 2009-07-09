@@ -30,6 +30,27 @@ class Imp(object):
     def colors(self):
         return zeit.imp.source.ColorSource()
 
+    @property
+    def previous(self):
+        gallery = self.context.__parent__
+        images = list(gallery.values())
+        current = list(gallery.keys()).index(self.context.__name__)
+        for i in range(current - 1, -1, -1):
+            image = images[i]
+            if not image.is_crop:
+                return image
+
+    # XXX duplicate code previous/next
+    @property
+    def next(self):
+        gallery = self.context.__parent__
+        images = list(gallery.values())
+        current = list(gallery.keys()).index(self.context.__name__)
+        for i in range(current + 1, len(gallery)):
+            image = images[i]
+            if not image.is_crop:
+                return image
+
 
 class ImageBar(zeit.imp.browser.imp.ImageBar):
 

@@ -88,8 +88,17 @@
         value="Reset sliders" i18n:attributes="value" />
 
     </form>
+
+      <div id="imp-prevnext" tal:condition="python: hasattr(view, 'previous')">
+        <a tal:condition="view/previous"
+           tal:attributes="href string:${view/previous/@@absolute_url}/@@imp.html">
+           &laquo; previous image</a> |
+        <a tal:condition="view/next"
+           tal:attributes="href string:${view/next/@@absolute_url}/@@imp.html">
+           next image &raquo;</a>
+      </div>
   </div>
 
-  <div id="imp-image-bar" />
+  <div id="imp-image-bar"></div>
 
 </tal:block>

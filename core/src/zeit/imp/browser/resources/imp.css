@@ -136,3 +136,7 @@ div.filter > input {
 div.filter > label {
     height: 2em;
 }
+
+#imp-prevnext {
+    margin-top: 2em;
+}

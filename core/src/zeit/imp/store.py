@@ -43,6 +43,7 @@ class GalleryStorer(object):
             zeit.content.gallery.interfaces.IGalleryEntry).values():
             field.set(entry, field.get(self.context))
         entry.image = image
+        entry.is_crop = True
 
         gallery = self.context.__parent__
         gallery.image_folder[image_name] = image
