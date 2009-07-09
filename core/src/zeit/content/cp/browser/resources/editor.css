@@ -500,11 +500,16 @@
   display: block;
 }
 
+.teaser > .teaserTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+}
 
 .teaser > .supertitle,
 .teaser > .teaserTitle,
 .teaser > .teaserText {
   display: none;
+  margin-bottom: 0.6em;
 }
 
 .teaser > .shortTeaserTitle,
@@ -526,6 +531,8 @@
 .teaser > .supertitle,
 .teaser > .shortTeaserTitle {
   color: #990000;
+  font-size: 0.9em;
+  font-weight: normal;
 }
 
 .leader .teaser:first-child > img {
@@ -642,6 +649,7 @@
 
 .feed-items {
   font-size: 0.8em;
+  height: 8.7em;
   list-style: none;
   margin-bottom: 2em;
   margin-top: -1em;
@@ -651,7 +659,7 @@
 
 .feed-items > li {
   display: block;
-  height: 1.2em;
+  height: 3.2em;
   overflow: hidden;
 }
 
