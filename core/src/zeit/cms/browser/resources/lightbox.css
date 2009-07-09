@@ -33,6 +33,10 @@
     margin-left: 1em;
 }
 
+.lightbox .form-controls {
+    margin: 1em;
+}
+
 .lightbox .nextUrl {
   display: none;
 }
