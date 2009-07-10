@@ -102,33 +102,70 @@
 }
 
 
-#extended_search > div > label:first-child {
+#extended_search > div > label.first-child {
   margin: auto;
   width: 8em;
 }
 
-#extended_search .types > div 
+#extended_search > fieldset {
+  margin: 0;
+  padding: 0;
+  background: none;
+  margin-top: 0.5em;
+}
+
+#extended_search > fieldset > label {
+  display: block;
+  float:left;
+  width: 110px;
+
+}
+
+#extended_search > fieldset > input {
+  width: 178px;
+}
+
+#extended_search > fieldset > select {
+  width: 185px;
+}
+
+#extended_search .likelabel {
+  width: 100px;
+  float:left;
+}
+
+#extended_search .date > label {
+  display:block;
+}
+
+#extended_search .date > input {
+  display:block;
+  width: 80px;
+}
+
+#extended_search div.date {
+  float:left;
+  height:35px;
+  position:relative;
+  margin-left: 10px;
+ }
 
 #extended_search > div > select,
 #extended_search > div > input {
   float: left;
 }
 
-#extended_search > div {
-  clear: both;
+#extended_search > fieldset.types label {
+  float: none;
+}  
+
+#extended_search > fieldset.types div.inner {
+  float:left;
+  width: 170px;
 }
 
-#extended_search .types > div {
-  clear: both;
-}
-
-#extended_search .types > div > .type-outer {
-  float: left;
-}
-
-#extended_search .types > div > .type-outer {
-  float: left;
-  width: 50%;
+#extended_search > fieldset.types div.outer {
+  margin-top: 5px;
 }
 
 #extended_search .types > .type-outer > .type-inner {

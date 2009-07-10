@@ -8,17 +8,22 @@
 
   <div id="extended_search_form">
     <div id="extended_search" style="display:none">
-      <div>
-        <label>Von:</label>
-        <input type="text" name="from" value="TT.MM.JJJJ" />
-        <label>Bis:</label>
-        <input type="text" name="until" value="TT.MM.JJJJ" />
-      </div>
-      <div>
+      <fieldset class="daterange">
+        <p class="likelabel">Datum:</p>
+        <div class="date date1">
+          <label for="from">Vom:</label>
+          <input type="text" name="from" value="TT.MM.JJJJ" />
+        </div>
+        <div class="date date2">
+          <label for="until">Bis:</label>
+          <input type="text" name="until" value="TT.MM.JJJJ" />
+        </div>  
+      </fieldset>
+      <fieldset>
         <label>Ausgabe:</label>
         <input type="text" name="volume_year" value="WW/JJJJ" />
-      </div>
-      <div>
+      </fieldset>
+      <fieldset>
         <label>Ressort:</label>
         <select name="topic">
         <option value=""></option>
@@ -26,16 +31,16 @@
         <option value="{ressort}">{ressort}</option>
         {.end}
         </select>
-      </div>
-      <div>
+      </fieldset>
+      <fieldset>
         <label>Autor:</label>
         <input type="text" name="author" value="" />
-      </div>
-      <div>
+      </fieldset>
+      <fieldset>
         <label>Schlagworte:</label>
         <input type="text" name="keywords" value="" />
-      </div>
-      <div>
+      </fieldset>
+      <fieldset>
         <label>Veröffentlicht:</label>
         <select name="published">
           <option value=""></option>
@@ -43,29 +48,25 @@
           <option value="not-published">nein</option>
           <option value="published-with-changes">liegt verändert vor</option>
         </select>
-      </div>
-      <div class="types">
-        <label>Typen:</label>
-        <div>
-          {.repeated section types}
-          <div class="type-outer">
-             <div class="type-inner">
-              <label>
-                <input type="checkbox" checked="checked" name="types:list" value="{type}" />
-                {title}
-              </label>
-            </div>
-          </div>
-          {.end}
-        </div>  
-      </div>
-      <div>
+      </fieldset>
+      <fieldset>
         <label>Sortierung:</label>
         <select name="sort_order">
           <option value="relevance">Relevanz</option>
           <option value="date">Datum</option>
         </select>
-      </div>
+      </fieldset>
+      <fieldset class="types">
+        <label>Typen:</label>
+          <div class="outer">
+          {.repeated section types}
+            <div class="inner">
+               <input type="checkbox" checked="checked" name="{type}" value="{type}" />
+               <label for="{type}">{title}</label>
+            </div>
+          {.end}
+          </div>
+      </fieldset>
     </div>
   </div>
 
