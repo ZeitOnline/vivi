@@ -160,7 +160,8 @@
 }
 
 .highlight {
-  background-color: #fd1 !important;
+  background-color: #ddd !important;
+  border: 1px solid #f00 !important;
 }
 
 /* Block layout */
@@ -318,13 +319,13 @@
 
 .edit-bar > .delete-link > .confirm-delete {
   background-color: white;
-  border: 3px solid red;
+  border: 2px solid red;
   color: red;
   opacity: 0;  /* will be blended in by JS */
   position: relative;
-  right: 8em;
+  right: 7em;
   text-align: center;
-  top: -0.5em;
+  top: -0.1em;
   width: 6em;
   z-index: 3;
 }
@@ -340,10 +341,8 @@
 
 .edit > .delete-link > .confirm-delete > a {
   color: red;
-  font-weight: bold;
   text-transform: uppercase;
   display: block;
-  margin: 0.5em;
 
 }
 
