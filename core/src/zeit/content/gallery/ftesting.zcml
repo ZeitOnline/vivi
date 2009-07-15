@@ -28,4 +28,12 @@
 
   <include package="zeit.cms.testcontenttype" />
 
+  <include package="zeit.imp" />
+  <include package="zeit.imp.browser" />
+
+  <grant
+    principal="zope.user"
+    permission="zeit.imp.Use"
+    />
+
 </configure>

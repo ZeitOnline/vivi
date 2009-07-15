@@ -1,0 +1,60 @@
+=================
+IMP for Galleries
+=================
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+>>> import zeit.content.gallery.browser.testing
+>>> from zeit.content.gallery.browser.testing import add_image
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> zeit.content.gallery.browser.testing.add_folder(browser, 'gallery')
+>>> ignore = add_image(browser, '01.jpg')
+>>> ignore = add_image(browser, '02.jpg')
+>>> ignore = add_image(browser, '03.jpg')
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Gallery']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'island'
+>>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
+>>> browser.getControl('Daily newsletter').selected = True
+>>> browser.getControl(name="form.image_folder").value = (
+...     'http://xml.zeit.de/online/2007/01/gallery')
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl(name="form.actions.add").click()
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg')
+>>> browser.getLink('Transform').click()
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp-crop?x1=0&y1=0&x2=10&y2=10&w=10&h=10&name=10x10&border=')
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island')
+>>> browser.getLink('Images').click()
+>>> print browser.contents
+<...01.jpg...01.jpg-10x10.jpg...
+
+
+Previous/next image
+===================
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg')
+>>> browser.getLink('Transform').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp.html'
+>>> 'previous image' in browser.contents
+False
+>>> browser.getLink('next image').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/02.jpg/@@imp.html'
+>>> browser.getLink('previous image').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp.html'
+>>> browser.getLink('next image').click()
+>>> browser.getLink('next image').click()
+>>> browser.url
+'http://localhost/++skin++cms/workingcopy/zope.user/island/03.jpg/@@imp.html'
+>>> 'next image' in browser.contents
+False

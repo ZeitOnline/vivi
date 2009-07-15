@@ -14,9 +14,11 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'PIL',
         'gocept.form',
         'setuptools',
         'zeit.cms>=1.21.5',
+        'zeit.imp',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.testing',

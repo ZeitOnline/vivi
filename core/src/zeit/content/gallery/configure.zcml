@@ -73,4 +73,10 @@
     name="metadata"
     factory="zeit.content.image.interfaces.IImageMetadata"
     />
+
+  <!-- IMP -->
+
+  <adapter factory=".imp.cropper_for_gallery" />
+  <adapter factory=".imp.GalleryStorer" />
+
 </configure>
