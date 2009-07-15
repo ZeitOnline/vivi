@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<scales>
+
+  <scale
+    name="650x380"
+    width="650"
+    height="380"
+    title="Großes Bild (650×380)"
+    />
+
+  <scale
+    name="380x380"
+    width="380"
+    height="380"
+    title="Kleines Bild (380×380)"
+    />
+
+</scales>

@@ -8,6 +8,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.gallery.source
 import zeit.content.image.interfaces
+import zeit.imp.source
 import zope.schema
 
 
@@ -125,3 +126,8 @@ class IGalleryReference(zope.interface.Interface):
         title=_('Embedded image gallery'),
         required=False,
         source=gallerySource)
+
+
+class ScaleSource(zeit.imp.source.ScaleSource):
+
+    product_configuration = 'zeit.content.gallery'

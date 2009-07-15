@@ -2,12 +2,9 @@
 # See also LICENSE.txt
 
 import cjson
-import zeit.cms.browser.view
-import zeit.content.image.interfaces
 import zeit.imp.browser.imp
-import zeit.imp.browser.interfaces
+import zeit.content.gallery.interfaces
 import zeit.imp.browser.scale
-import zeit.imp.source
 import zope.cachedescriptors.property
 
 
@@ -18,7 +15,7 @@ class Imp(zeit.imp.browser.imp.ImpBase):
         return self.context.image
 
     def scales(self):
-        return zeit.imp.source.ScaleSource()
+        return zeit.content.gallery.interfaces.ScaleSource()
 
     @property
     def previous(self):

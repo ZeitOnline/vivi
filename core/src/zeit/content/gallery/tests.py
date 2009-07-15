@@ -2,19 +2,20 @@
 # See also LICENSE.txt
 
 import PIL
-import os
+import pkg_resources
 import unittest
 import zeit.cms.testing
+import zeit.imp.tests
 import zeit.workflow.tests
 import zope.app.testing.functional
 
 
 GalleryLayer = zope.app.testing.functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'GalleryLayer', allow_teardown=True)
 
 GalleryWorkflowLayer = zeit.workflow.tests.WorkflowLayerFactory(
-    os.path.join(os.path.dirname(__file__), 'ftesting-workflow.zcml'),
+    pkg_resources.resource_filename(__name__, 'ftesting-workflow.zcml'),
     __name__, 'GalleryWorkflowLayer', allow_teardown=True)
 
 
@@ -39,6 +40,13 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual([True, False, False], [
             x.hidden for x in gallery.values()])
 
+
+product_config = {
+    'zeit.content.gallery': {
+        'scale-source': 'file://' + pkg_resources.resource_filename(
+            __name__, 'scales.xml')
+}}
+product_config.update(zeit.imp.tests.product_config)
 
 
 def test_suite():
