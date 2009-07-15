@@ -79,6 +79,11 @@ class IGalleryEntry(zope.interface.Interface):
     crops = zope.interface.Attribute(
         'List of IGalleryEntry that are crops of this entry')
 
+    is_crop = zope.schema.Bool(
+        title=_('Cropped'),
+        required=False,
+        readonly=True)
+
     title = zope.schema.TextLine(
         title=_('Title'),
         required=False)
@@ -95,10 +100,6 @@ class IGalleryEntry(zope.interface.Interface):
     hidden = zope.schema.Bool(
         title=_('Hidden'),
         required=True)
-
-    is_crop = zope.schema.Bool(
-        title=_('Cropped'),
-        required=False)
 
     caption = zeit.cms.content.field.XMLSnippet(
         title=_("Image caption"),
