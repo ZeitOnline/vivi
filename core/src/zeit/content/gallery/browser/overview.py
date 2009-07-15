@@ -1,19 +1,18 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.view
+import zeit.cms.content.interfaces
+import zeit.content.gallery.interfaces
+import zeit.wysiwyg.interfaces
 import zope.app.form.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
 
-import zeit.cms.browser.view
-import zeit.cms.content.interfaces
-import zeit.content.gallery.interfaces
-import zeit.wysiwyg.interfaces
-from zeit.cms.i18n import MessageFactory as _
 
-
-class Overview(object):
+class Overview(zeit.cms.browser.view.Base):
 
     layout_source = zeit.content.gallery.interfaces.IGalleryEntry[
         'layout'].vocabulary
@@ -21,6 +20,20 @@ class Overview(object):
     def update(self):
         if 'form.actions.save_sorting' in self.request:
             self.context.updateOrder(self.request.get('images'))
+        entries = []
+        for entry in self.context.values():
+            entries.append(dict(
+                __name__=entry.__name__,
+                caption=entry.caption,
+                css_class='layout-%s' % entry.layout if entry.layout else '',
+                image=entry.image,
+                layout=self.get_entry_layout(entry),
+                text=self.get_text(entry),
+                thumbnail=entry.thumbnail,
+                title=entry.title,
+                url=self.url(entry),
+            ))
+        self.entries = entries
 
     def get_text(self, entry):
         return zeit.wysiwyg.interfaces.IHTMLConverter(entry).to_html(

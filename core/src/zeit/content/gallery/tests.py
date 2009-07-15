@@ -38,7 +38,7 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(['01.jpg', '01-10x10.jpg', '02.jpg'],
                          list(gallery.keys()))
         self.assertEqual([True, False, False], [
-            x.hidden for x in gallery.values()])
+            x.layout == 'hidden' for x in gallery.values()])
 
         # Images are not overwritten
         pil = PIL.Image.open(entry.image.open())

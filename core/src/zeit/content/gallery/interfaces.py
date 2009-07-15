@@ -95,10 +95,6 @@ class IGalleryEntry(zope.interface.Interface):
         required=False,
         source=zeit.content.gallery.source.LayoutSource())
 
-    hidden = zope.schema.Bool(
-        title=_('Hidden'),
-        required=True)
-
     caption = zeit.cms.content.field.XMLSnippet(
         title=_("Image caption"),
         description=_('gallery-image-caption-description'),

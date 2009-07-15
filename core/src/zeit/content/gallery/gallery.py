@@ -105,7 +105,6 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         # What happens if the image goes away? A key-error is raised.
         image = self.image_folder[image_name]
         entry = zeit.content.gallery.interfaces.IGalleryEntry(image)
-        entry.hidden = node.get('hidden') == 'true'
         entry.is_crop_of = node.get('is_crop_of')
         entry.title = node.find('title')
         if entry.title is not None:
@@ -277,7 +276,6 @@ def galleryentry_factory(context):
     entry.image = context
     entry.thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
         context)
-    entry.hidden = False
     entry.title = None
     entry.text = None
     entry.layout = None
@@ -324,8 +322,6 @@ class EntryXMLRepresentation(object):
         if self.context.caption:
             node.append(lxml.objectify.fromstring(
                 '<caption>%s</caption>' % (self.context.caption,)))
-        if self.context.hidden:
-            node.set('hidden', 'true')
         if self.context.is_crop_of:
             node.set('is_crop_of', self.context.is_crop_of)
 

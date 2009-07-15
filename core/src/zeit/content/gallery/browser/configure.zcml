@@ -18,7 +18,7 @@
   <resourceLibrary
     name="zeit.content.gallery"
     require="zeit.cms">
-    <directory source="resources" include="sorting.js" />
+    <directory source="resources" include="sorting.js gallery.css" />
   </resourceLibrary>
     
 

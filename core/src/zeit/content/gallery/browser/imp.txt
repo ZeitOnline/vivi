@@ -36,6 +36,14 @@ IMP for Galleries
 >>> print browser.contents
 <...01.jpg...01-10x10.jpg...
 
+Trying to crop a cropped image redirects to the uncropped image:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     '01-10x10.jpg')
+>>> browser.getLink('Transform').click()
+>>> print browser.url
+http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp.html
 
 Previous/next image
 ===================

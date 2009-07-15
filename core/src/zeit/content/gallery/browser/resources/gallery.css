@@ -1,0 +1,7 @@
+.layout-hidden {
+  opacity: 0.3;
+}
+
+.layout-hidden:hover {
+  opacity: 1;
+}

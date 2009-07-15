@@ -50,14 +50,13 @@ class GalleryStorer(object):
 
         # hide the original entry and all of its crops except for the newly
         # created one
-        self.context.hidden = True
+        self.context.layout = 'hidden'
         gallery[self.context.__name__] = self.context
         for crop in self.context.crops:
-            crop.hidden = True
+            crop.layout = 'hidden'
             # XXX restructure GalleryEntry similar to blocks in a centerpage,
             # so that changes persist directly
             gallery[crop.__name__] = crop
-        entry.hidden = False
         gallery[entry.__name__] = entry
 
         # sort the new entry after its origin

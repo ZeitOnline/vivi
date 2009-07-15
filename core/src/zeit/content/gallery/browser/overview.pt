@@ -11,17 +11,18 @@
   <form action="" method="POST">
     <tal:block tal:replace="resource_library:zeit.content.gallery" />
     <table class="gallery">
-      <tr tal:repeat="entry context/values">
+      <tr tal:repeat="entry view/entries"
+          tal:attributes="class entry/css_class">
         <td class="image-column">
           <input type="hidden" name="images:list"
             tal:attributes="value entry/__name__" />
           <div class="gallery-layout"
-            tal:content="python: view.get_entry_layout(entry)">
+               tal:content="entry/layout">
             Nur Bild
           </div>
           <a href="#" title="Edit"
             i18n:attributes="title"
-            tal:attributes="href entry/@@absolute_url">
+            tal:attributes="href entry/url">
             <img tal:replace="structure entry/thumbnail/@@view.html/tag" />
             <div class="image-name"
               tal:content="entry/image/__name__">01.jpg</div>
@@ -45,10 +46,9 @@
             Title
           </div>
           <div class="text"
-            tal:content="structure python:view.get_text(entry)">
+               tal:content="structure entry/text">
             Text
           </div>
-          <div tal:condition="entry/hidden" i18n:translate="">[hidden]</div>
         </td>
       </tr>
     </table>

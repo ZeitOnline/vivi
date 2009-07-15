@@ -401,36 +401,6 @@ u'image-only'
   </body>
 </gallery>
 
-Hiding entries
-++++++++++++++
-
-Entries can be hidden. By default, they are not:
-
->>> entry = gallery['01.jpg']
->>> entry.hidden
-False
->>> gallery['01.jpg'] = entry
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<...
-<block name="01.jpg">...
-
->>> entry = gallery['01.jpg']
->>> entry.hidden = True
->>> gallery['01.jpg'] = entry
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<...
-<block hidden="true" name="01.jpg">...
-
-Un-hide it again, to not disturb the following tests:
-
->>> entry = gallery['01.jpg']
->>> entry.hidden
-True
->>> entry.hidden = False
->>> gallery['01.jpg'] = entry
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
-<...
-<block name="01.jpg">...
 
 Crops
 +++++

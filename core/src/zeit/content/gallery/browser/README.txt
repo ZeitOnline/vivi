@@ -116,7 +116,7 @@ After saving we're back at the overview:
 
 >>> print browser.contents
 <?xml ...
-  <tr>
+  <tr class="layout-image-only">
     <td class="image-column">
       <input type="hidden" ...
       <div class="gallery-layout">Image only</div>
