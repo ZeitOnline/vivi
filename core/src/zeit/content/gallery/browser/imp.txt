@@ -28,6 +28,7 @@ IMP for Galleries
 >>> browser.getControl(name="form.actions.add").click()
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg')
+>>> browser.handleErrors = False
 >>> browser.getLink('Transform').click()
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg/@@imp-crop?x1=0&y1=0&x2=10&y2=10&w=10&h=10&name=10x10&border=')
 

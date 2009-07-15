@@ -22,24 +22,27 @@ class Imp(zeit.imp.browser.imp.ImpBase):
 
     @property
     def previous(self):
-        gallery = self.context.__parent__
-        images = list(gallery.values())
-        current = list(gallery.keys()).index(self.context.__name__)
-        for i in range(current - 1, -1, -1):
-            image = images[i]
-            if not image.is_crop:
-                return image
+        return self.get_image_with_offset(-1)
 
-    # XXX duplicate code previous/next
     @property
     def next(self):
+        return self.get_image_with_offset(1)
+
+    @zope.cachedescriptors.property.Lazy
+    def original_entries(self):
         gallery = self.context.__parent__
-        images = list(gallery.values())
-        current = list(gallery.keys()).index(self.context.__name__)
-        for i in range(current + 1, len(gallery)):
-            image = images[i]
-            if not image.is_crop:
-                return image
+        return [entry for entry in gallery.values()
+                if entry.is_crop_of is None]
+
+    def get_image_with_offset(self, offset):
+        index = [e.__name__ for e in self.original_entries].index(
+            self.context.__name__)
+        new_index = index + offset
+        if new_index >= 0:
+            try:
+                return self.original_entries[new_index]
+            except KeyError:
+                pass
 
 
 class ImageBar(zeit.imp.browser.imp.ImageBar):

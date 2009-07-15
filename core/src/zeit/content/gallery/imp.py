@@ -31,7 +31,7 @@ class GalleryStorer(object):
             if not field.readonly:
                 field.set(entry, field.get(self.context))
         entry.image = image
-        entry.is_crop = True
+        entry.is_crop_of = self.context.__name__
 
         gallery = self.context.__parent__
         gallery.image_folder[image_name] = image

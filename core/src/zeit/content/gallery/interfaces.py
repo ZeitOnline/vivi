@@ -1,17 +1,14 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.schema
-
-import zeit.cms.interfaces
-import zeit.cms.content.contentsource
-import zeit.cms.content.interfaces
-import zeit.cms.content.field
 from zeit.cms.i18n import MessageFactory as _
-
-import zeit.content.image.interfaces
+import zeit.cms.content.contentsource
+import zeit.cms.content.field
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.content.gallery.source
+import zeit.content.image.interfaces
+import zope.schema
 
 
 class IGalleryFolderSource(zeit.cms.content.interfaces.ICMSContentSource):
@@ -79,8 +76,8 @@ class IGalleryEntry(zope.interface.Interface):
     crops = zope.interface.Attribute(
         'List of IGalleryEntry that are crops of this entry')
 
-    is_crop = zope.schema.Bool(
-        title=_('Cropped'),
+    is_crop_of = zope.schema.TextLine(
+        title=_('Is a cropped image of'),
         required=False,
         readonly=True)
 

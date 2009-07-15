@@ -105,10 +105,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         # What happens if the image goes away? A key-error is raised.
         image = self.image_folder[image_name]
         entry = zeit.content.gallery.interfaces.IGalleryEntry(image)
-        if node.get('hidden', None) == 'True':
-            entry.hidden = True
-        if node.get('is_crop', None) == 'True':
-            entry.is_crop = True
+        entry.hidden = node.get('hidden') == 'true'
+        entry.is_crop_of = node.get('is_crop_of')
         entry.title = node.find('title')
         if entry.title is not None:
             entry.title = unicode(entry.title)
@@ -283,7 +281,7 @@ def galleryentry_factory(context):
     entry.title = None
     entry.text = None
     entry.layout = None
-    entry.is_crop = False
+    entry.is_crop_of = None
 
     # Prefill the caption with the image's caption
     metadata = zeit.content.image.interfaces.IImageMetadata(context)
@@ -298,8 +296,8 @@ class GalleryEntry(object):
     @property
     def crops(self):
         result = []
-        for name, entry in self.__parent__.items():
-            if name.startswith('%s-' % self.__name__):
+        for entry in self.__parent__.values():
+            if entry.is_crop_of == self.__name__:
                 result.append(entry)
         return result
 
@@ -327,9 +325,9 @@ class EntryXMLRepresentation(object):
             node.append(lxml.objectify.fromstring(
                 '<caption>%s</caption>' % (self.context.caption,)))
         if self.context.hidden:
-            node.set('hidden', 'True')
-        if self.context.is_crop:
-            node.set('is_crop', 'True')
+            node.set('hidden', 'true')
+        if self.context.is_crop_of:
+            node.set('is_crop_of', self.context.is_crop_of)
 
         node['image'] = zope.component.getAdapter(
             self.context.image,
