@@ -89,14 +89,17 @@
 
     </form>
 
-      <div id="imp-prevnext" tal:condition="python: hasattr(view, 'previous')">
-        <a tal:condition="view/previous"
-           tal:attributes="href string:${view/previous/@@absolute_url}/@@imp.html">
-           &laquo; previous image</a> |
-        <a tal:condition="view/next"
-           tal:attributes="href string:${view/next/@@absolute_url}/@@imp.html">
-           next image &raquo;</a>
-      </div>
+    <div id="imp-prevnext"
+         tal:define="previous view/previous|nothing;
+                     next view/next|nothing">
+      <a tal:condition="previous"
+         tal:attributes="href string:${previous/@@absolute_url}/@@imp.html">
+        &laquo; previous image</a> |
+      <a tal:condition="next"
+         tal:attributes="href string:${next/@@absolute_url}/@@imp.html">
+        next image &raquo;</a>
+    </div>
+
   </div>
 
   <div id="imp-image-bar"></div>
