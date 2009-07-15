@@ -41,7 +41,8 @@ class GalleryStorer(object):
         entry = zeit.content.gallery.gallery.GalleryEntry()
         for field in zope.schema.getFields(
             zeit.content.gallery.interfaces.IGalleryEntry).values():
-            field.set(entry, field.get(self.context))
+            if not field.readonly:
+                field.set(entry, field.get(self.context))
         entry.image = image
         entry.is_crop = True
 
