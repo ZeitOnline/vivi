@@ -14,7 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
-        'PIL',
+        'PILwoTk',
         'gocept.form',
         'setuptools',
         'zeit.cms>=1.21.5',
