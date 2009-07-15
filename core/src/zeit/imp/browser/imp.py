@@ -7,6 +7,7 @@ import zeit.cms.browser.view
 import zeit.content.image.interfaces
 import zeit.imp.browser.interfaces
 import zeit.imp.source
+import zope.app.pagetemplate
 import zope.cachedescriptors.property
 
 
@@ -18,6 +19,8 @@ class NoMasterImageErrorView(object):
 
 
 class ImpBase(object):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile('imp.pt')
 
     @property
     def width(self):

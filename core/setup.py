@@ -17,7 +17,6 @@ setup(
     install_requires=[
         'setuptools',
         'zeit.cms>=1.20',
-        'zeit.content.gallery>1.22.4',
         'zc.selenium',
     ],
 )

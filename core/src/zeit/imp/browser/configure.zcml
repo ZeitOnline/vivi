@@ -19,7 +19,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp.html"
     class=".imp.Imp"
-    template="imp.pt"
     permission="zeit.imp.Use"
     menu="zeit-context-views" title="Transform"
     />
@@ -64,40 +63,5 @@
     permission="zeit.imp.Use"
     />
 
-  <!-- zeit.content.gallery -->
-
-  <gocept:pagelet
-    for="zeit.content.gallery.interfaces.IGalleryEntry"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="imp.html"
-    class=".gallery.Imp"
-    template="imp.pt"
-    permission="zeit.imp.Use"
-    menu="zeit-context-views" title="Transform"
-    />
-
-  <browser:page
-    for="zeit.content.gallery.interfaces.IGalleryEntry"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="imp-scaled"
-    class=".gallery.ScaledImage"
-    permission="zeit.imp.Use"
-    />
-
-  <browser:page
-    for="zeit.content.gallery.interfaces.IGalleryEntry"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="imp-crop"
-    class=".scale.CropImage"
-    permission="zeit.AddContent"
-    />
-
-  <browser:page
-    for="zeit.content.gallery.interfaces.IGalleryEntry"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="imp-image-bar"
-    class=".gallery.ImageBar"
-    permission="zeit.imp.Use"
-    />
 </configure>
 
