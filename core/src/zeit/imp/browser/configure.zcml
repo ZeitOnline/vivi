@@ -32,7 +32,6 @@
     permission="zope.Public"
     />
 
-
   <browser:page
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
