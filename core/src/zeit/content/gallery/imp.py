@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import os.path
 import zeit.content.gallery.interfaces
 import zeit.imp.interfaces
 import zope.component
@@ -22,9 +23,17 @@ class GalleryStorer(object):
         self.context = context
 
     def store(self, name, pil_image):
+        gallery = self.context.__parent__
         image = zeit.content.image.image.LocalImage()
         pil_image.save(image.open('w'), 'JPEG', optimize=True, quality=80)
-        image_name = '%s-%s.jpg' % (self.context.__name__, name)
+
+        base_name, ext = os.path.splitext(self.context.__name__)
+        image_name = '%s-%s.jpg' % (base_name, name)
+        i = 1
+        while image_name in gallery:
+            i += 1
+            image_name = '%s-%s-%s.jpg' % (base_name, name, i)
+
         entry = zeit.content.gallery.gallery.GalleryEntry()
         for field in zope.schema.getFields(
             zeit.content.gallery.interfaces.IGalleryEntry).values():
@@ -33,7 +42,6 @@ class GalleryStorer(object):
         entry.image = image
         entry.is_crop_of = self.context.__name__
 
-        gallery = self.context.__parent__
         gallery.image_folder[image_name] = image
         gallery[image_name] = entry
         entry = gallery[image_name]

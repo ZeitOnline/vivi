@@ -34,7 +34,7 @@ IMP for Galleries
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island')
 >>> browser.getLink('Images').click()
 >>> print browser.contents
-<...01.jpg...01.jpg-10x10.jpg...
+<...01.jpg...01-10x10.jpg...
 
 
 Previous/next image
