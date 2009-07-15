@@ -25,6 +25,9 @@
   <include package="zeit.imp" />
   <include package="zeit.imp.browser" />
 
+  <include package="zeit.wysiwyg" />
+  <include package="zeit.wysiwyg.browser"/>
+
   <grant
     principal="zope.user"
     permission="zeit.imp.Use"

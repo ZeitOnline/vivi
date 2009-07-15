@@ -88,7 +88,7 @@
     for="zeit.content.gallery.interfaces.IGalleryEntry"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-crop"
-    class=".gallery.CropImage"
+    class=".scale.CropImage"
     permission="zeit.AddContent"
     />
 

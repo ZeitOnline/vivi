@@ -17,28 +17,32 @@ class NoMasterImageErrorView(object):
         return super(NoMasterImageErrorView, self).__call__()
 
 
-class Imp(object):
+class ImpBase(object):
 
     @property
     def width(self):
-        return self.master_image.getImageSize()[0]
+        return self.image.getImageSize()[0]
 
     @property
     def height(self):
-        return self.master_image.getImageSize()[1]
-
-    @zope.cachedescriptors.property.Lazy
-    def master_image(self):
-        try:
-            return zeit.content.image.interfaces.IMasterImage(self.context)
-        except TypeError:
-            raise zeit.imp.browser.interfaces.NoMasterImageError()
+        return self.image.getImageSize()[1]
 
     def scales(self):
         return zeit.imp.source.ScaleSource()
 
     def colors(self):
         return zeit.imp.source.ColorSource()
+
+
+class Imp(ImpBase):
+    """Imp for an ImageFolder."""
+
+    @zope.cachedescriptors.property.Lazy
+    def image(self):
+        try:
+            return zeit.content.image.interfaces.IMasterImage(self.context)
+        except TypeError:
+            raise zeit.imp.browser.interfaces.NoMasterImageError()
 
 
 class ImageBar(zeit.cms.browser.view.Base):

@@ -27,8 +27,11 @@ def parse_filter_args(request, crop):
 class ScaledImage(zeit.cms.browser.view.Base):
 
     def __call__(self, width, height):
+        return self.get_scaled_image(self.context, width, height)
+
+    def get_scaled_image(self, image, width, height):
         width, height = int(width), int(height)
-        cropper = zeit.imp.interfaces.ICropper(self.context)
+        cropper = zeit.imp.interfaces.ICropper(image)
         cropper.downsample_filter = PIL.Image.NEAREST
         parse_filter_args(self.request, cropper)
         pil_image = cropper.crop(width, height, 0, 0, width, height)
@@ -64,7 +67,8 @@ class CropImage(zeit.cms.browser.view.Base):
         cropper = zeit.imp.interfaces.ICropper(self.context)
         parse_filter_args(self.request, cropper)
         cropper.crop(w, h, x1, y1, x2, y2, parse_border(border))
-        image = zeit.imp.interfaces.IStorer(self.context).store(name, cropper.pil_image)
+        image = zeit.imp.interfaces.IStorer(self.context).store(
+            name, cropper.pil_image)
         return self.url(image)
 
 
