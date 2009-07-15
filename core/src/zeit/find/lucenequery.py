@@ -10,6 +10,9 @@ def _field(name, value):
 def field(name, value):
     return _field(name, quoted(value))
 
+def any_value():
+    return '*:*'
+
 def bool_field(name, value):
     if value:
         return _field(name, 'true')

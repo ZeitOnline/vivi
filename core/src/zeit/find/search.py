@@ -132,6 +132,8 @@ def query(fulltext=None,
         terms.append(lq.or_(*type_terms))
 
     terms.extend(filter_terms)
+    if not terms:
+        terms = [lq.any_value()]
     return lq.and_(*terms)
 
 
