@@ -18,7 +18,7 @@ class NoMasterImageErrorView(object):
         return super(NoMasterImageErrorView, self).__call__()
 
 
-class ImpBase(object):
+class ImpBase(zeit.cms.browser.view.Base):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('imp.pt')
 
