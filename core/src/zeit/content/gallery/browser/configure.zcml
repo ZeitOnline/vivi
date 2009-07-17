@@ -110,6 +110,17 @@
     />
 
   <!-- upload -->
+
+  <browser:viewlet
+    name="Upload"
+    for="zeit.content.gallery.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    template="upload.pt"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.EditContent"
+    sort="-20"
+    />
+
   <browser:page
     for="zeit.content.gallery.interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

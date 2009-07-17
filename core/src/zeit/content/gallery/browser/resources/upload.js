@@ -36,19 +36,18 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
             http_success: [201],
             button_placeholder_id: 'image-upload',
             prevent_swf_caching: false,
-            button_text: 'Bilder hochladen',
             button_cursor : SWFUpload.CURSOR.HAND,
-            button_width: 100,
-            button_height: 100,
+            button_width: 17,
+            button_height: 18,
             button_image_url: self.options.resource_base_url + 
-                '/upload-button.png',
+                '/upload-icon.png',
             button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
 
             file_post_name: 'form.blob',
             post_params: {
                 'form.actions.add': 'Add',
             },
-            file_queue_limit: 0,  // upload one at a time
+            file_queue_limit: 0,  // no limit
             file_size_limit: 0,  // no limit
             file_types: '*.jpg;*.tif;*.gif;*.png',
             file_dialog_start_handler: function() {

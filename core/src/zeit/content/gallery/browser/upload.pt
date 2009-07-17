@@ -1,0 +1,11 @@
+<li i18n:domain="zeit.cms">
+  <a href="#" title="Upload images to gallery"
+     i18n:attributes="title">
+    <span id="image-upload"></span>
+  </a>
+</li>
+<script languagae="javascript" tal:content="string:
+  new zeit.content.gallery.Uploader({
+    resource_base_url: '${request/++resource++zeit.content.gallery}',
+  });
+  "></script> 

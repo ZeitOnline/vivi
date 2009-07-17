@@ -2,18 +2,11 @@
   i18n:domain="zeit.cms">
 
   <div class="wysiwyg-header">
-    <div id="image-upload"></div>
     <div class="supertitle" tal:content="view/metadata/supertitle" />:
     <div class="title" tal:content="view/metadata/title" />
     <div class="byline" tal:content="view/metadata/byline" />
     <div class="subtitle" tal:content="view/metadata/subtitle" />
   </div>
-
-  <script languagae="javascript" tal:content="string:
-    new zeit.content.gallery.Uploader({
-      resource_base_url: '${request/++resource++zeit.content.gallery}',
-    });
-    "></script> 
 
   <form action="" method="POST">
     <tal:block tal:replace="resource_library:zeit.content.gallery" />
