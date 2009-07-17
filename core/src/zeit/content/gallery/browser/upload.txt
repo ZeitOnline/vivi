@@ -30,6 +30,23 @@ Create the gallery:
 >>> print browser.title.strip()
 Gallery – Zeit CMS
 
+There is a javascript action:
+
+>>> print browser.contents
+<...
+          <li>
+  <a href="#" title="Upload images to gallery">
+    <span id="image-upload"></span>
+  </a>
+</li>
+<script languagae="javascript">
+  new zeit.content.gallery.Uploader({
+    resource_base_url: 'http://localhost/++skin++cms/++noop++9e70ed43e848170ee1124f0f1c70e9f6/@@/zeit.content.gallery',
+  });
+  </script>
+  ...
+
+
 Construct a POST which looks like a post which the Flash movie would generate:
 
 >>> import pkg_resources
