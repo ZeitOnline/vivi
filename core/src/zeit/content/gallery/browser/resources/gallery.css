@@ -5,3 +5,13 @@
 .layout-hidden:hover {
   opacity: 1;
 }
+
+.wysiwyg-header .swfupload {
+  float: right;
+  height: 2em;
+  width: 10em;
+}
+
+.gallery {
+  clear: both;
+}

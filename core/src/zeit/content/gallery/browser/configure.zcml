@@ -18,7 +18,11 @@
   <resourceLibrary
     name="zeit.content.gallery"
     require="zeit.cms">
-    <directory source="resources" include="sorting.js gallery.css" />
+    <directory source="resources" include="
+               sorting.js
+               gallery.css
+               upload.js
+               SWFUpload/swfupload.js" />
   </resourceLibrary>
     
 
@@ -79,16 +83,17 @@
 
   <gocept:pagelet
     for="..interfaces.IGallery"
-    name="overview.html"
-    template="overview.pt"
-    class=".overview.Overview"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="overview.html"
+    class=".overview.Overview"
+    template="overview.pt"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Images"
     />
   
   <browser:page
     for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".overview.Synchronise"
     name="synchronise-with-image-folder"
     permission="zeit.EditContent"
@@ -96,6 +101,7 @@
 
   <browser:menuItem
     for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@synchronise-with-image-folder"
     permission="zeit.EditContent"
     menu="zeit-context-actions"
@@ -103,14 +109,23 @@
     icon='reload'
     />
 
+  <!-- upload -->
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="upload-image"
+    class=".overview.UploadImage"
+    permission="zeit.EditContent"
+    />
+
 
   <!-- Gallery entries -->
   <browser:page
     for="..interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="index.html"
     class=".form.EditEntry"
     permission="zeit.EditContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views" title="Edit"
     />
 
@@ -163,6 +178,16 @@
     name="imp-image-bar"
     class=".imp.ImageBar"
     permission="zeit.imp.Use"
+    />
+
+  <!-- ticket -->
+
+  <adapter factory=".ticket.TicketTraverser" name="ticket" />
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="get-ticket"
+    class=".ticket.TicketIssuer"
+    permission="zope.Public"
     />
 
 </configure>

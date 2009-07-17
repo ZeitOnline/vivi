@@ -66,3 +66,26 @@ class Synchronise(zeit.cms.browser.view.Base):
         self.send_message(_('Image folder was synchronised.'))
         self.redirect(self.url('@@overview.html'))
         return''
+
+
+class UploadImage(zeit.cms.browser.view.JSON):
+
+    def json(self):
+        view = zope.component.getMultiAdapter(
+            (self.context.image_folder, self.request),
+            name='zeit.content.image.Add')
+        view.checkout = False
+        view()
+        result = {}
+        if view.errors:
+            if len(view.errors) == 1 and view.errors[0][0] == 'blob':
+                # That was not an image.
+                self.request.response.setStatus(415)
+                result['error'] = 'NotAnImage'
+            else:
+                # Okay, something else.
+                __traceback_info__ = (view.errors,)
+                self.request.response.setStatus(500)
+        else:
+            self.request.response.setStatus(201)  # Created
+        return result

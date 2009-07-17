@@ -1,0 +1,42 @@
+Ticket authentication
+=====================
+
+Ticket authentication works by getting a ticket from the server which allows
+authentication then.
+
+To get a ticket we have to authenticate normally first:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++cms/@@get-ticket')
+>>> ticket = browser.contents
+>>> print browser.headers
+Status: 200 Ok
+Cache-Control: no-cache
+Content-Length: 56
+Content-Type: text/plain
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+
+Every time we ask for a ticket we get a new one:
+
+>>> browser.reload()
+>>> ticket == browser.contents
+False
+
+
+We can now use the ticket to authenticate a request:
+
+>>> browser = Browser()
+>>> browser.handleErrors = False
+>>> browser.open(
+...     'http://localhost/++skin++cms/++ticket++%s/repository' % ticket)
+>>> browser.handleErrors = True
+>>> print browser.title.strip()
+repository – Directory listing
+
+Without the ++ticket++ authentication does not happen:
+>>> browser.open('http://localhost/++skin++cms/repository')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 401: Unauthorized

@@ -50,7 +50,8 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
 product_config = {
     'zeit.content.gallery': {
         'scale-source': 'file://' + pkg_resources.resource_filename(
-            __name__, 'scales.xml')
+            __name__, 'scales.xml'),
+        'ticket-secret': 'All work and no play makes jack a dull boy.',
 }}
 product_config.update(zeit.imp.tests.product_config)
 

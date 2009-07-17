@@ -1,0 +1,109 @@
+Multiple File Upload
+--------------------
+
+The file upload is handled by a flash movie. There is one view to upload an
+image to the gallery.
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+>>> from zeit.content.gallery.browser.testing import add_folder, add_image
+>>> browser.open('http://localhost/++skin++cms/repository')
+>>> add_folder(browser, 'image-folder')
+>>> folder_url = browser.url
+
+Create the gallery:
+
+>>> browser.open('/++skin++cms/repository')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Gallery']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'gallery'
+>>> browser.getControl('Title').value = 'Gallery'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
+>>> browser.getControl(name="form.image_folder").value = (
+...     'http://xml.zeit.de/image-folder')
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl(name="form.actions.add").click()
+>>> gallery_url = browser.url
+>>> print browser.title.strip()
+Gallery – Zeit CMS
+
+Construct a POST which looks like a post which the Flash movie would generate:
+
+>>> import pkg_resources
+>>> post_data_template = """\
+... ------------Ij5Ij5KM7ei4GI3ae
+... Content-Disposition: form-data; name="Filename"
+... 
+... a-new-file.jpg
+... ------------Ij5Ij5KM7ei4GI3ae
+... Content-Disposition: form-data; name="form.__name__"
+... 
+... a-new-file.jpg
+... ------------Ij5Ij5KM7ei4GI3ae
+... Content-Disposition: form-data; name="form.actions.add"
+... 
+... Add
+... ------------Ij5Ij5KM7ei4GI3ae
+... Content-Disposition: form-data; name="Upload"
+... 
+... Submit Query
+... ------------Ij5Ij5KM7ei4GI3ae
+... Content-Disposition: form-data; name="form.blob"; filename="a-new-file.jpg"
+... Content-Type: application/octet-stream
+... 
+... %s
+... ------------Ij5Ij5KM7ei4GI3ae--
+... """
+>>> content_type = (
+...     "multipart/form-data; boundary=----------Ij5Ij5KM7ei4GI3ae")
+
+After calling POSTing, a new image has been added to the folder:
+
+>>> post_data = post_data_template % (pkg_resources.resource_stream(
+...     'zeit.content.gallery.browser', 'testdata/01.jpg').read())
+>>> browser.post('@@upload-image', post_data, content_type)
+>>> print browser.contents
+{}
+>>> print browser.headers
+Status: 201 Created
+Content-Length: 2
+Content-Type: text/json
+Location: http://localhost/++skin++cms/repository/image-folder/a-new-file.jpg/@@view.html
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+
+>>> browser.open(folder_url)
+>>> 'a-new-file' in browser.contents
+True
+
+The gallery has not ben synchornised, yet. This is because it is possible to
+upload many images. The JavaScript part triggers the sync just after the last
+image has been uploaded:
+
+>>> browser.open(gallery_url)
+>>> browser.getLink('Images').click()
+>>> 'a-new-file' in browser.contents
+False
+>>> browser.getLink('Synchro').click()
+>>> 'a-new-file' in browser.contents
+True
+
+
+Posting erroneous image data yields a 415. The contents indicates the error:
+
+>>> post_data = post_data_template % 'this is not an image'
+>>> browser.post('@@upload-image', post_data, content_type)
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 415: Unsupported Media Type
+>>> print browser.contents
+{"error": "NotAnImage"}
+
+If the post is in any other way broken, a 500 is returned:
+
+>>> browser.post('@@upload-image', 'form.actions.add=yes')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error

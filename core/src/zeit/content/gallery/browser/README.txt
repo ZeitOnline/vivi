@@ -51,7 +51,6 @@ Set the most important values:
 >>> browser.getControl(name="form.image_folder").value = (
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.handleErrors = False
 >>> browser.getControl(name="form.actions.add").click()
 
 After adding the gallery we're at the overview page.  The overview page shows
@@ -282,6 +281,7 @@ the caption) of the image changes:
           </thumbnail>
         </block>
         ...
+
 
 
 Checkin
