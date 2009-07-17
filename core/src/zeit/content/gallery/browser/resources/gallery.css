@@ -15,3 +15,30 @@
 .gallery {
   clear: both;
 }
+
+
+.lightbox > .upload {
+  margin: 1em;
+  padding-left: 2em;
+  position: static;
+}
+
+.upload > .filename {
+  display: inline;
+}
+
+.upload.active {
+  background: transparent url('busy.gif') no-repeat left center;
+}
+
+.upload > .progress {
+  float: left;
+  margin-right: 1em;
+  text-align: right;
+  width: 3em;
+}
+
+.upload > .progress:after {
+  content: "%";
+  padding-left: 0.25em;
+}

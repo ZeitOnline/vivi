@@ -33,6 +33,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
             flash_url: self.options.resource_base_url 
                   + '/SWFUpload/Flash/swfupload.swf',
             upload_url: self.get_upload_url(ticket),
+            http_success: [201],
             button_placeholder_id: 'image-upload',
             prevent_swf_caching: false,
             button_text: 'Bilder hochladen',
@@ -50,8 +51,15 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
             file_queue_limit: 0,  // upload one at a time
             file_size_limit: 0,  // no limit
             file_types: '*.jpg;*.tif;*.gif;*.png',
-            file_dialog_complete_handler: function() {
-                self.files_selected();
+            file_dialog_start_handler: function() {
+                self.file_dialog_start();
+            },
+            file_queued_handler: function(file) {
+                self.file_queued(file);
+            },
+            file_dialog_complete_handler: function(
+                selected, queued, total_queued) {
+                self.file_dialog_complete(selected, queued, total_queued);
             },
             upload_start_handler: function(file) {
                 self.upload_start(file);
@@ -71,36 +79,98 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
         });
     },
 
-    sync_and_reload: function() {
-        document.location = context_url + '/@@synchronise-with-image-folder';
+    get_id: function(file) {
+        return 'file-' + file.id;
+    },
+    
+    set_progress: function(file, progress) {
+        var self = this;
+        var div = $(self.get_id(file));
+        var progress_div = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'div', 'progress', div);
+        progress_div.innerHTML = progress;
     },
 
-    files_selected: function() {
+    make_active: function(file) {
         var self = this;
-        // XXX handle cancel
-        self.swfupload.startUpload();
-        log('uploading');
+        var divs = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'upload', self.lightbox.content_box);
+        forEach(divs, function(div) {
+            MochiKit.DOM.removeElementClass(div, 'active');
+        });
+        if (!isUndefinedOrNull(file)) {
+            MochiKit.DOM.addElementClass($(self.get_id(file)), 'active');
+        }
+    },
+
+    sync_and_reload: function() {
+        var self = this;
+        self.make_active(null);
+        self.lightbox.content_box.appendChild(
+            DIV({'class': 'upload active'},
+                DIV({'class': 'filename'},
+                    "Creating thumbnails and reloading …")));
+        // We're making another async call here because the synchronize takes a
+        // while. When we'd set document.location immeadiately the animated
+        // busy indicator would stop until everything is processes.
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            context_url + '/@@synchronise-with-image-folder?redirect=false');
+        d.addCallback(function(result) {
+            document.location = result.responseText;
+        });
+    },
+
+    file_dialog_start: function() {
+        var self = this;
+        self.lightbox = new gocept.Lightbox($('body'));
+        self.lightbox.content_box.appendChild(
+            H1({}, "Uploading images …"));
+        return true;
+    },
+
+    file_queued: function(file) {
+        var self = this;
+        var id = self.get_id(file);
+        var filename_contents = file.name + ' (' + file.size + ' Bytes)';
+        self.lightbox.content_box.appendChild(
+            DIV({'id': id, 'class': 'upload'}, 
+                DIV({'class': 'filename'}, filename_contents),
+                DIV({'class': 'progress'}, '0')));
+        return true;
+    },
+
+    file_dialog_complete: function(selected, queued, total_queued) {
+        var self = this;
+        if (selected) {
+            self.swfupload.startUpload();
+        } else {
+            self.lightbox.close();
+        }
     },
 
     upload_start: function(file) {
         var self = this;
-        log("starting " + file.name);
         self.swfupload.addFileParam(file.id, 'form.__name__', file.name);
+        self.make_active(file);
         return true;
     },
 
     upload_progress: function(file, uploaded, total) {
+        var self = this;
+        self.set_progress(file, Math.ceil(uploaded/total*100));
         return true;
     },
 
     upload_success: function(file) {
         var self = this;
-        log("Uploaded " + file.name);
+        self.set_progress(file, 100);
         return true;
     },
 
     upload_error: function(file, error_code, message) {
-        log("ERROR ", file.name, error_code, message);
+        var self = this;
+        self.set_progress(file, 'ERR');
+        logError(message, error_code);
         return true;
     },
 

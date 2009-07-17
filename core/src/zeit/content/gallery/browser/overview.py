@@ -61,11 +61,13 @@ class Overview(zeit.cms.browser.view.Base):
 
 class Synchronise(zeit.cms.browser.view.Base):
 
-    def __call__(self):
+    def __call__(self, redirect=''):
         self.context.reload_image_folder()
         self.send_message(_('Image folder was synchronised.'))
-        self.redirect(self.url('@@overview.html'))
-        return''
+        url = self.url('@@overview.html')
+        if redirect.lower() != 'false':
+            self.redirect(url)
+        return url
 
 
 class UploadImage(zeit.cms.browser.view.JSON):

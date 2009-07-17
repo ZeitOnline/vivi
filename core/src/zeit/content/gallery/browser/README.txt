@@ -283,6 +283,14 @@ the caption) of the image changes:
         ...
 
 
+The redirect of the synchronise view can be prevented by passing an argument.
+The url where it would have redirected to will be returned:
+
+>>> url = browser.getLink('Synchronise with image folder').url
+>>> browser.open(url + '?redirect=false')
+>>> print browser.contents
+http://localhost/++skin++cms/workingcopy/zope.user/island/@@overview.html
+>>> browser.open(browser.contents)
 
 Checkin
 =======
