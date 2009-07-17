@@ -1,10 +1,13 @@
 zeit.content.gallery changes
 ============================
 
-1.22.5 (unreleased)
--------------------
+2.0 (unreleased)
+-----------------
 
-- Bilder können als 'versteckt' markiert werden (#4280).
+- Skalieren von Bildern in der Bildergallerie (#4973).
+
+- Bulkupload von Bildern (#5640).
+
 - Hilfsfunktionen für Browser-Tests nach zeit.content.gallery.browser.testing
   extrahiert.
 
