@@ -159,8 +159,8 @@ class IRepositoryImageGroup(IImageGroup,
 class ILocalImageGroup(IImageGroup,
                        zeit.cms.workingcopy.interfaces.ILocalContent):
     """Local version of an image group.
-    The local version only holds the metadata, therefore it is not a container.
 
+    The local version only holds the metadata, therefore it is not a container.
     """
 
 
