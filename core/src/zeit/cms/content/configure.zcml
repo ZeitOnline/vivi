@@ -138,4 +138,7 @@
   <adapter factory=".semanticchange.SemanticChange" />
   <adapter factory=".semanticchange.properties" />
 
+  <!-- LXML -->
+  <subscriber handler=".lxmlpickle.clean_refs" />
+
 </configure>

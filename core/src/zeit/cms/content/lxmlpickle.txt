@@ -16,3 +16,27 @@ Verify the lxml pickle support.
   <b>zoot</b>
 </foo>
 <?bar?>
+
+In the same request, unpickling the same state will yield the same XML
+instance. This is because otherwise there might be strange behaviour like not
+saving data:
+
+>>> restored_xml is xml
+True
+>>> xml.set('foo', 'bar')
+>>> restored_xml.get('foo')
+'bar'
+
+When the request has ended a new xml is returned:
+
+>>> import zope.app.publication.interfaces
+>>> import zope.event
+>>> zope.event.notify(
+...     zope.app.publication.interfaces.EndRequestEvent(None, None))
+>>> xml.set('foo', 'baz')
+>>> restored_xml_2 = pickle.loads(p)
+>>> restored_xml_2.get('foo') is None
+True
+
+Note that we would have liked to use weak references instead of using an event
+handler. Unfortunately lxml doesn't support that, yet.

@@ -145,7 +145,6 @@ def test_suite():
     suite.addTest(doctest.DocFileSuite(
         'adapter.txt',
         'keyword.txt',
-        'lxmlpickle.txt',
         'property.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
@@ -154,6 +153,7 @@ def test_suite():
         'dav.txt',
         'field.txt',
         'liveproperty.txt',
+        'lxmlpickle.txt',
         'metadata.txt',
         'semanticchange.txt',
         'sources.txt',
