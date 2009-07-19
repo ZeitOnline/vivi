@@ -1,10 +1,16 @@
-if (typeof(zeit) == 'undefined') {
-    zeit = {};
-}
-
-if (typeof(zeit.cms) == 'undefined') {
-    zeit.cms = {};
-}
+(function() {
+    var declare_namespace = function(namespace) {
+        var obj = window;
+        forEach(namespace.split('.'), function(name) {
+            if (isUndefined(obj[name])) {
+                obj[name] = {}
+            }
+            obj = obj[name];
+        });
+    }
+    declare_namespace('zeit.cms');
+    zeit.cms.declare_namespace = declare_namespace;
+})();
 
 
 zeit.cms.ScrollStateRestorer = gocept.Class.extend({
