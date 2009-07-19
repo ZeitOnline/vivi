@@ -52,6 +52,7 @@ class JSON(Base):
         super(JSON, self).__init__(context, request)
 
     def __call__(self):
+        # XXX application/json would be correct
         self.request.response.setHeader('Content-Type', 'text/json')
         result = self.json()
 
