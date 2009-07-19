@@ -108,7 +108,7 @@ reachable at `get_object_browser` for every folder:
 ...              '@@get_object_browser')
 >>> print browser.contents
   <h1>http://xml.zeit.de/online/2007/01</h1>
-<div id="popup-navtree" class="Tree">
+  <div id="popup-navtree" class="Tree">
   <ul>
       <li active="True" class="Root">
       ...
@@ -120,6 +120,7 @@ reachable at `get_object_browser` for every folder:
 ...
 </div>
   <div class="tree-view-url">http://localhost/++skin++cms/repository/@@tree.html</div>
+...
 
 The object browser also supports filtering of types via a content type source
 name. Without filter everything is displayed:
