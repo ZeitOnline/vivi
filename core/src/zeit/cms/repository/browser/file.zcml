@@ -46,12 +46,22 @@
 
   <browser:icon
     for="zeit.cms.repository.interfaces.IFile"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     name="zmi_icon"
     width="18"
     height="18"
     file="resources/file.png"
     />
+
+  <browser:icon
+    for="zeit.cms.repository.interfaces.IFile"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="18"
+    height="18"
+    file="resources/file.png"
+    />
+
 
   <browser:page
     for="zeit.cms.repository.interfaces.IFile"

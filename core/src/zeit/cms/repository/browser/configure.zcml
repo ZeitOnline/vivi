@@ -171,7 +171,7 @@
   <browser:viewlet
     name="Reload"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     class=".reload.MenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zope.View"
@@ -179,6 +179,19 @@
     icon="/@@/zeit.cms/icons/reload.png"
     sort="120"
     />
+
+  <browser:viewlet
+    name="Reload"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    class=".reload.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
+    action="@@refresh-cache"
+    icon="/@@/zeit.cms/icons/reload-vivi.png"
+    sort="120"
+    />
+
 
   <browser:page
     name="refresh-cache"

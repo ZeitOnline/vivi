@@ -86,7 +86,16 @@
     width="20"
     height="20"
     file="resources/collectionResource.png"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    />
+
+  <browser:icon
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/collectionResource-vivi.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
   <browser:page
