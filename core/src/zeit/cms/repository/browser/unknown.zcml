@@ -10,17 +10,8 @@
     width="20"
     height="20"
     file="resources/unknownResource.png"
-    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
-
-  <browser:icon
-    for="zeit.cms.repository.interfaces.IUnknownResource"
-    name="zmi_icon"
-    width="20"
-    height="20"
-    file="resources/unknownResource-vivi.png"
-    layer="zeit.cms.browser.interfaces.ICMSStyles"
-    />  
 
   <browser:page
     for="zeit.cms.repository.interfaces.IUnknownResource"
