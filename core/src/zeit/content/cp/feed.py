@@ -56,28 +56,33 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         You should not call `fetch_and_convert` directly. Use the FeedManager
         instead."""
 
+        self.error = None
         self.last_update = datetime.datetime.now(pytz.UTC)
-        self.parsed = feedparser.parse(self.url)
-        if self.parsed.bozo:
-            exc = self.parsed.bozo_exception
-            self.error = '%s: %s' % (type(exc), str(exc))
+        if not self.url:
+            self.error = "No or invaid URL."
+            return
+        url = self.url
+        if url.startswith('file://'):
+            url = url.replace('file://', '', 1)
+        parsed = feedparser.parse(url)
+        if parsed.bozo:
+            exc = parsed.bozo_exception
+            self.error = '%s: %s' % (type(exc).__name__, str(exc))
             return
 
-        self.error = None
         if self.xml.getchildren():
             self.xml.remove(self.xml.rss)
         rss = lxml.etree.Element('rss', version='2.0')
         channel = lxml.etree.SubElement(rss, 'channel')
-
         for src, dest in CHANNEL_MAPPING.items():
-            self._append(channel, dest, self.parsed.feed, src)
+            self._append(channel, dest, parsed.feed, src)
 
-        if 'image' in self.parsed.feed:
+        if 'image' in parsed.feed:
             image = lxml.etree.SubElement(channel, 'image')
             for src, dest in IMAGE_MAPPING.items():
-                self._append(image, dest, self.parsed.feed.image, src)
+                self._append(image, dest, parsed.feed.image, src)
 
-        for entry in self.parsed.entries:
+        for entry in parsed.entries:
             item = lxml.etree.SubElement(channel, 'item')
             for src, dest in ITEM_MAPPING.items():
                 self._append(item, dest, entry, src)
@@ -86,7 +91,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         # objectified doesn't allow manipulating element.text
         self.xml.append(rss)
 
-        self.entry_count = len(self.parsed.entries)
+        self.entry_count = len(parsed.entries)
 
     def _append(self, parent, name, data, key):
         if not key in data:
@@ -105,11 +110,12 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             '/feed/rss/channel/item[position() <= 15]/title')]
 
 
-feedFactory = zeit.cms.content.adapter.xmlContentFactory(Feed)
+class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
 
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory('feed')
-resourceFactory = zope.component.adapter(
-    zeit.content.cp.interfaces.IFeed)(resourceFactory)
+    interface = zeit.content.cp.interfaces.IFeed
+    type = 'feed'
+    register_as_type = False
+    factory = Feed
 
 
 class FeedValidator(object):
@@ -144,26 +150,32 @@ class FeedManager(object):
             return repository[rss_folder_name]
 
     def get_feed(self, url):
-        if url is None:
-            url = ''
+        if not url:
+            return
         hash_ = md5.new(url).hexdigest()
-        try:
+        if hash_ in self.folder:
             return self.folder[hash_]
-        except KeyError:
+        else:
             feed = Feed()
             feed.url = url
-            feed = self.folder[hash_] = feed
+            self.folder[hash_] = feed
             self.refresh_feed(url)
             return self.folder[hash_]
 
     def refresh_feed(self, url):
         feed = self.get_feed(url)
         with zeit.cms.checkout.helper.checked_out(
-                feed, semantic_change=True) as co_feed:
+                feed, semantic_change=True, events=False) as co_feed:
+            # We don't need to send events here as a full checkout/checkin
+            # cycle is done duing publication anyway. Also when sending events
+            # async tasks are done in parallel to publishing which isn't nice
+            # either (conflicts).
             co_feed.fetch_and_convert()
         try:
             zeit.cms.workflow.interfaces.IPublish(feed).publish()
         except zeit.cms.workflow.interfaces.PublishingError:
+            # This is raised when there are errors in the feed. It will not
+            # be published then.
             pass
 
 

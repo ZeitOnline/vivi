@@ -3,6 +3,8 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
+import re
+import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -155,7 +157,7 @@ class ICMSContentIterable(zope.interface.Interface):
         pass
 
 
-class IFeed(zope.interface.Interface):
+class ICPFeed(zope.interface.Interface):
     """Feed section of a CenterPage"""
 
     items = zope.interface.Attribute("tuple of feed items")
@@ -283,11 +285,26 @@ class IAVBlock(IBlock):
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
+class InvalidFeedURL(zope.schema.interfaces.ValidationError):
+
+    def doc(self):
+        return self.args[0]
+
+
+def valid_feed_url(uri):
+    zope.schema.URI().fromUnicode(uri)  # May raise InvalidURI
+    if urlparse.urlparse(uri).scheme in ('http', 'https', 'file'):
+        return True
+    # NOTE: we hide the fact that we support (some) file urls.
+    raise InvalidFeedURL(_('Only http and https are supported.'))
+
+
 class IFeed(zeit.cms.content.interfaces.IXMLContent,
             zeit.cms.interfaces.IAsset):
 
-    url = zope.schema.TextLine(
-        title=_("RSS feed URL (http://...)"))
+    url = zope.schema.URI(
+        title=_("RSS feed URL (http://...)"),
+        constraint=valid_feed_url)
 
     title = zope.schema.TextLine(
         title=_("Feed title"),
@@ -335,8 +352,9 @@ class IRSSFolder(zeit.cms.repository.interfaces.IFolder):
 class IRSSBlock(IBlock):
     """ A RSS teaserblock."""
 
-    url = zope.schema.TextLine(
-        title=_("URL to RSS feed (http://...)."))
+    url = zope.schema.URI(
+        title=_("URL of RSS feed (http://...)"),
+        constraint=valid_feed_url)
 
     feed = zope.interface.Attribute("The corresponding IFeed object.")
 

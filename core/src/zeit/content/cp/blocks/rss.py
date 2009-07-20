@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import thread
 from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
@@ -27,7 +28,7 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
 
     def __init__(self, context, xml):
         super(RSSBlock, self).__init__(context, xml)
-        if len(self.xml.getchildren()) == 0:
+        if not self.xml.getchildren():
             self.xml.append(lxml.objectify.E.dummy_include())
 
     @rwproperty.setproperty
@@ -48,4 +49,3 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
 
 RSSBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
     zeit.content.cp.interfaces.IRegion, 'rss', _('RSS block'))
-

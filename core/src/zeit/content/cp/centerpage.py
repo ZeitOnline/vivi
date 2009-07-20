@@ -109,7 +109,7 @@ def modified_propagator(context, event):
 class Feed(zeit.cms.related.related.RelatedBase):
 
     zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
-    zope.interface.implements(zeit.content.cp.interfaces.IFeed)
+    zope.interface.implements(zeit.content.cp.interfaces.ICPFeed)
 
     path = lxml.objectify.ObjectPath('.feed.reference')
 
@@ -123,7 +123,7 @@ class Feed(zeit.cms.related.related.RelatedBase):
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def update_feed_items(context, event):
-    feed = zeit.content.cp.interfaces.IFeed(context)
+    feed = zeit.content.cp.interfaces.ICPFeed(context)
     items = list(feed.items)
 
     for item in zeit.cms.syndication.interfaces.IReadFeed(context):

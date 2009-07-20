@@ -17,7 +17,7 @@ Creating feeds
 --------------
 
 >>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
->>> url = pkg_resources.resource_filename(
+>>> url = 'file://' + pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'heise.xml')
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
@@ -75,11 +75,15 @@ True
 Errors in feeds
 ---------------
 
-If an error occurs during parsing, it is stored in the `error` attribute:
+If an error occurs during retrieval or parsing, it is stored in the `error`
+attribute:
 
 >>> feed = fm.get_feed('foobar')
 >>> print feed.error
-<class 'xml.sax...
+No or invaid URL.
+>>> feed = fm.get_feed('http://foo.testing')
+>>> print feed.error
+ URLError: <urlopen error (8, 'nodename nor servname provided, or not known')>
 
 
 Publishing feeds
@@ -98,11 +102,11 @@ True
 When creating a new feed with an invalid url, it won't be published because of
 existing errors:
 
->>> feed = fm.get_feed('bar')
+>>> feed = fm.get_feed('http://bar.testing')
 >>> tasks.process()
->>> feed = fm.get_feed('bar')
->>> feed.error
-u"<class 'xml.sax._exceptions..."
+>>> feed = fm.get_feed('http://bar.testing')
+>>> print feed.error
+URLError: <urlopen error (8, 'nodename nor servname provided, or not known')>
 >>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
 False
 
@@ -123,7 +127,7 @@ Edge cases
 This is a test that the RSS2.0 <image> element is mapped correctly, and that
 HTML-content is preserved properly:
 
->>> url = pkg_resources.resource_filename(
+>>> url = 'file://' + pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'tagesschau.xml')
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)

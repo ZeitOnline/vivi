@@ -49,7 +49,7 @@
 
   <adapter
     factory=".centerpage.Feed"
-    provides="zeit.content.cp.interfaces.IFeed"
+    provides="zeit.content.cp.interfaces.ICPFeed"
     />
   <subscriber handler=".centerpage.update_feed_items" />
 
@@ -166,9 +166,6 @@
     for="zeit.content.cp.interfaces.IFeed"
     factory=".feed.FeedValidator" />
 
-
-  <adapter factory=".feed.resourceFactory" />
-  <adapter factory=".feed.feedFactory" name="feed" />
-
   <utility factory=".feed.FeedManager" />
+
 </configure>

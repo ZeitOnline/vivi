@@ -8,20 +8,51 @@ RSS blocks
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open('informatives/@@landing-zone-drop-module'
 ...              '?block_type=rss')
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 
 Editing the block
 -----------------
+
+Feed URLs must be urls:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('URL of RSS feed').value = 'foo/bar'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...
+  URL of RSS feed (http://...): <span class="error">The specified URI is not valid.</span>
+...
+
+
+Only http(s) is supported (and file):
+
+>>> browser.getControl('URL of RSS feed').value = 'feed://foo'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...
+  URL of RSS feed (http://...): <span class="error">Only http and https are supported.</span>
+...
+
+Set a valid URL:
 
 >>> import pkg_resources
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> url = pkg_resources.resource_filename(
+>>> url = 'file://' + pkg_resources.resource_filename(
 ...     'zeit.content.cp.tests', 'tagesschau.xml')
->>> browser.getControl('URL to RSS feed').value = url
+>>> browser.getControl('URL of RSS feed').value = url
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getControl('Apply').click()
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
 >>> print browser.contents
 <...self.close();...
 
@@ -38,6 +69,28 @@ Editing the block
     <li>Sri Lanka: Zivilisten unter Dauerbeschuss</li>
 </ul>...
 
+Change to another URL:
+
+
+>>> url = 'file://' + pkg_resources.resource_filename(
+...     'zeit.content.cp.tests', 'heise.xml')
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('URL of RSS feed').value = url
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.getControl('Apply').click()
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> print browser.contents
+<...self.close();...
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('URL').value
+'.../heise.xml'
+
+
 
 XML of a RSS block
 ==================
@@ -50,7 +103,7 @@ XML of a RSS block
     cp:type="rss"
     module="rss"
     cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
-    url=".../tagesschau.xml">
+    url=".../heise.xml">
   <xi:include
       xmlns:xi="http://www.w3.org/2003/XInclude"
       parse="xml"
@@ -86,12 +139,15 @@ Displaying error messages
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getControl('URL').value = 'foo'
+>>> browser.getControl('URL').value = 'http://notthere.testing/foo.rss'
 >>> browser.getControl('Apply').click()
 
 >>> browser.open(contents_url)
 >>> print browser.contents
-<...<div
-  cms:tooltip="...xml.sax._exceptions...
-  class="block type-rss validation-error"...>
-<div class="block-item">An error occurred...
+<...
+  <div class="block-title">RSS Feed</div>
+      <div class="block-item">
+        An error occurred.
+      </div>
+      <div>URLError: &lt;urlopen error (8, 'nodename nor servname provided, or not known')&gt;</div>
+      ...
