@@ -24,7 +24,7 @@ if __name__ == '__main__':
         browser.open(edit_url)
         if url and url != browser.getControl('URL').value:
             print "Setting url failed:", url
-        url = 'feed://%s' % (i,)
+        url = 'http://foo.testing/%s' % (i,)
         print url
         browser.getControl('URL').value = url
         browser.getControl('Apply').click()

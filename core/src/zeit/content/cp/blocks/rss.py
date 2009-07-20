@@ -34,6 +34,7 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
     @rwproperty.setproperty
     def url(self, url):
         self.xml.set('url', url)
+        self._p_changed = True
         self.xml.replace(self.xml.getchildren()[0],
                          create_xi_include(self.feed, '/feed/rss'))
 

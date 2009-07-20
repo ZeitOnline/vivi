@@ -53,7 +53,8 @@ def cms_content_to_centerpage(context):
     return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
 
 
-class Element(zope.container.contained.Contained):
+class Element(zope.container.contained.Contained,
+              zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
 
     zope.interface.implements(zeit.content.cp.interfaces.IElement)
@@ -70,7 +71,8 @@ class Element(zope.container.contained.Contained):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
 
     def _set_name(self, name):
-        return self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
+        self._p_changed = True
+        self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
 
     __name__ = property(_get_name, _set_name)
 

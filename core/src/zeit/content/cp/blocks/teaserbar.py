@@ -29,6 +29,7 @@ class TeaserBar(zeit.content.cp.area.Container):
 
     @rwproperty.setproperty
     def layout(self, layout):
+        self._p_changed = True
         self.xml.set('module', layout.id)
 
         if len(self) < layout.blocks:

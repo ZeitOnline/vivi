@@ -29,7 +29,7 @@ setup(
         'setuptools',
         'stabledict',
         'zc.sourcefactory',
-        'zeit.cms>1.23',
+        'zeit.cms>=1.24',
         'zeit.content.quiz>=0.4.2',
         'zeit.find >= 0.4',
         'zope.app.appsetup',

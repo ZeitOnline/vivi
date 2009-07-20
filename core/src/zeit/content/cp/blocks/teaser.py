@@ -37,6 +37,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         return self.xml
 
     def clear(self):
+        self._p_changed = True
         for entry in self:
             self.remove(entry)
 
@@ -51,6 +52,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
 
     @rwproperty.setproperty
     def layout(self, layout):
+        self._p_changed = True
         self.xml.set('module', layout.id)
 
 
@@ -83,12 +85,15 @@ class AutoPilotTeaserBlock(TeaserBlock):
             return super(AutoPilotTeaserBlock, self).keys()
 
     def insert(self, *args, **kw):
+        self._p_changed = True
         self._forbidden_on_autopilot('insert', *args, **kw)
 
     def remove(self, *args, **kw):
+        self._p_changed = True
         self._forbidden_on_autopilot('remove', *args, **kw)
 
     def updateOrder(self, *args, **kw):
+        self._p_changed = True
         self._forbidden_on_autopilot('updateOrder', *args, **kw)
 
     def _forbidden_on_autopilot(self, method, *args, **kw):
@@ -104,6 +109,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
     @rwproperty.setproperty
     def autopilot(self, autopilot):
+        self._p_changed = True
         if autopilot and self.referenced_cp is None:
             raise ValueError(
                 'Cannot activate autopilot without referenced centerpage.')
@@ -137,6 +143,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
     def clear(self):
         if not self.autopilot:
+            self._p_changed = True
             for entry in self:
                 self.remove(entry)
 

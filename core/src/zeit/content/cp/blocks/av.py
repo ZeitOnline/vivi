@@ -26,6 +26,7 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
 
     @rwproperty.setproperty
     def format(self, value):
+        self._p_changed = True
         return self.first_child.set('format', value)
 
     # XXX very abridged version of zeit.cms.content.dav.DatetimeProperty
@@ -37,6 +38,7 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
 
     @rwproperty.setproperty
     def expires(self, value):
+        self._p_changed = True
         value = value.isoformat() if value else ''
         self.xml.getchildren()[0].set('expires', value)
 
