@@ -30,6 +30,9 @@ from zeit.cms.i18n import MessageFactory as _
 logger = logging.getLogger(__name__)
 
 
+PUBLISHED_FUTURE_SHIFT = 60
+
+
 class TaskDescription(object):
     """Data to be passed to publish/retract tasks."""
 
@@ -275,7 +278,8 @@ class PublishTask(PublishRetractTask):
         # the object will be most likely changed. It therefore would have a
         # modification after the publication and would be shown as stale in the
         # CMS.
-        now = datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=60)
+        now = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
+            seconds=PUBLISHED_FUTURE_SHIFT)
         info.date_last_published = now
         if not info.date_first_released:
             info.date_first_released = now

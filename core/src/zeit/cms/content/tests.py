@@ -3,9 +3,12 @@
 
 from __future__ import with_statement
 from zope.testing import doctest
+import mock
+import persistent
 import re
 import unittest
 import zeit.cms.checkout.helper
+import zeit.cms.content.xmlsupport
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.unknown
 import zeit.cms.testing
@@ -13,6 +16,7 @@ import zope.app.testing.functional
 import zope.component
 import zope.interface
 import zope.security.management
+import zope.security.proxy
 import zope.testing.renormalizing
 
 
@@ -140,11 +144,50 @@ class DAVTest(zope.app.testing.functional.BrowserTestCase):
             zeit.connector.interfaces.IConnector)
 
 
+
+class PersistentTest(unittest.TestCase):
+
+    def setUp(self):
+        self.p = zeit.cms.content.xmlsupport.Persistent()
+
+    def test_propagation(self):
+        self.p.__parent__ = persistent.Persistent()
+        self.assertEquals(self.p._p_changed, False)  # Unsaved --> False
+        self.p._p_changed = True
+        # Since the underlying object is unsaved we cannot set to True
+        self.assertEquals(self.p._p_changed, False)
+        # Assign a jar, so we can save
+        self.p.__parent__._p_jar = mock.Mock()
+        self.p._p_changed = True
+        self.assertEquals(self.p._p_changed, True)
+        self.assertEquals(self.p.__parent__._p_changed, True)
+
+    def test_proxied(self):
+        parent =  persistent.Persistent()
+        parent._p_jar = mock.Mock()
+        self.p.__parent__ = zope.security.proxy.ProxyFactory(parent)
+        self.p._p_changed = True
+        self.assertEquals(self.p._p_changed, True)
+        self.assertEquals(parent._p_changed, True)
+
+    def test_no_parent(self):
+        self.p._p_changed = True
+        self.assertTrue(self.p._p_changed is None)
+
+    def test_setattr_marks_change(self):
+        self.p.__parent__ = persistent.Persistent()
+        self.p.__parent__._p_jar = mock.Mock()
+        self.p.foo = 'bar'
+        self.assertEquals(self.p._p_changed, True)
+        self.assertEquals(self.p.__parent__._p_changed, True)
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(doctest.DocFileSuite(
         'adapter.txt',
         'keyword.txt',
+        'lxmlpickle.txt',
         'property.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS),
@@ -153,7 +196,6 @@ def test_suite():
         'dav.txt',
         'field.txt',
         'liveproperty.txt',
-        'lxmlpickle.txt',
         'metadata.txt',
         'semanticchange.txt',
         'sources.txt',
@@ -162,4 +204,5 @@ def test_suite():
         checker=checker,
     ))
     suite.addTest(unittest.makeSuite(DAVTest))
+    suite.addTest(unittest.makeSuite(PersistentTest))
     return suite

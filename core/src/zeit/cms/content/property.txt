@@ -18,14 +18,17 @@ Root as `xml`
 
 Normally the document root is the `xml` attribute.  Create a test class:
 
->>> import lxml.objectify
->>> import lxml.etree
 >>> from zeit.cms.content.property import ObjectPathProperty
->>> class Content(object):
+>>> import lxml.etree
+>>> import lxml.objectify
+>>> import mock
+>>> import persistent
+>>> class Content(persistent.Persistent):
 ...     xml = lxml.objectify.fromstring(
 ...         '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
 ...     b = ObjectPathProperty('.b')
 >>> content = Content()
+>>> content._p_jar = mock.Mock()
 
 Initially b is None, since the node doesn't exist:
 
@@ -41,6 +44,8 @@ Let's assign some values to b. Integer:
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
     <b lxml:pytype="int">5</b>
 </a>
+>>> content._p_changed
+True
 
 
 Float:
@@ -80,11 +85,13 @@ object path of `None` to refer directly to the node specified by `xml`. Let's
 create a test-class:
 
 >>> xml_tree = lxml.objectify.fromstring('<a><b/><c/><b/><b/></a>')
->>> class Content(object):
+>>> class Content(persistent.Persistent):
 ...     xml = xml_tree.b[1]
 ...     b = ObjectPathProperty(None)
 >>> content = Content()
-
+>>> content._p_jar = mock.Mock()
+>>> content._p_changed
+False
 
 Initially b is an empty string, since the node exist and is empty:
 
@@ -103,6 +110,8 @@ Let's assign some values to b. Integer:
     <b xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">4253890</b>
     <b/>
 </a>
+>>> content._p_changed
+True
 
 
 ObjectPathAttributeProperty

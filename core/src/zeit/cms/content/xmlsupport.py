@@ -3,24 +3,20 @@
 
 import StringIO
 import datetime
-
-import lxml.objectify
-import pytz
-
-import persistent
 import gocept.lxml.objectify
-
-import zope.interface
-import zope.security.interfaces
-import zope.security.proxy
-
-import zope.app.container.contained
-
+import lxml.objectify
+import persistent
+import pytz
+import rwproperty
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
 import zeit.cms.interfaces
 import zeit.connector.interfaces
+import zope.container.contained
+import zope.interface
+import zope.security.interfaces
+import zope.security.proxy
 
 
 class XMLRepresentationBase(object):
@@ -40,7 +36,7 @@ class XMLRepresentationBase(object):
 
 class XMLContentBase(XMLRepresentationBase,
                      persistent.Persistent,
-                     zope.app.container.contained.Contained):
+                     zope.container.contained.Contained):
     """Base class for xml content."""
 
     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
@@ -54,6 +50,34 @@ class XMLContentBase(XMLRepresentationBase,
         return cmp(self.__name__, other.__name__)
 
 _default_marker = object()
+
+
+class Persistent(object):
+    """Helper to indicate changes for object modified xml trees."""
+
+    def __setattr__(self, key, value):
+        if not key.startswith('_p_'):
+            self._p_changed = True
+        super(Persistent, self).__setattr__(key, value)
+
+    @rwproperty.getproperty
+    def _p_changed(self):
+        persistent = self.__get_persistent()
+        return persistent._p_changed if persistent is not None else None
+
+    @rwproperty.setproperty
+    def _p_changed(self, value):
+        persistent = self.__get_persistent()
+        if persistent is not None:
+           persistent._p_changed = value
+
+    def __get_persistent(self):
+        parent = getattr(self, '__parent__', None)
+        while parent is not None:
+            unproxied = zope.proxy.removeAllProxies(parent)
+            if isinstance(unproxied, persistent.Persistent):
+                return unproxied
+            parent = parent.__parent__
 
 
 class PropertyToXMLAttribute(object):
