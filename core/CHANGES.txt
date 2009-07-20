@@ -6,6 +6,9 @@ zeit.find changes
 
 - Moved solr connection (via pysolr) to zeit.solr
 
+- Search for content types changed to not transmit all types on each search but
+  none when all types should be found.
+
 0.6.1 (2009-06-18)
 ------------------
 
