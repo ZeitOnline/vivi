@@ -47,16 +47,20 @@ again when publishing testcontent.
 >>> somalia_workflow.published
 True
 >>> somalia_published_on = somalia_workflow.date_last_published
+>>> somalia = repository['online']['2007']['01']['Somalia']
+>>> dc = zope.dublincore.interfaces.IDCTimes(somalia)
 
+Also wait bit to make sure the modification date is larger. This is necessary
+because it doesn't have microseconds:
 
-Update the teaser of testcontent, which will change Somalia implicitly:
+>>> import time
+>>> time.sleep(1)
+
+Make a non semantic change to "Somalia"
 
 >>> with zeit.cms.checkout.helper.checked_out(
-...     content, semantic_change=True) as checked_out:
-...     checked_out.teaserTitle = u'Tease me'
->>> content = repository['testcontent']
->>> content.teaserTitle
-u'Tease me'
+...     somalia, semantic_change=False):
+...     pass
 >>> publish = zeit.cms.workflow.interfaces.IPublish(content)
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
 
@@ -81,6 +85,7 @@ True
 If Somalia is not published it will of couse not published automatically, even
 if the date relation constraint is satisfied:
 
+>>> time.sleep(1)
 >>> somalia_publish.retract()
 >>> tasks.process()
 >>> somalia = repository['online']['2007']['01']['Somalia']
@@ -120,7 +125,9 @@ Even if the related was published:
 >>> related_dependencies.get_dependencies()
 []
 
+Cleanup:
 
+>>> zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT = old_shift
 
 .. [#functional]
 
@@ -140,9 +147,11 @@ Even if the related was published:
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
     
-    >>> with_statement
-    _Feature...
+    >>> dummy = with_statement
     >>> import zeit.cms.checkout.helper
+    >>> import zeit.workflow.publish
+    >>> old_shift = zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT
+    >>> zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT = 0.1
 
 .. [#somalia-semantic-change] Somalia needs a semantic change:
 
