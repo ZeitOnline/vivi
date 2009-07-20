@@ -61,8 +61,9 @@
           <div class="outer">
           {.repeated section types}
             <div class="inner">
-               <input type="checkbox" checked="checked" name="{type}" value="{type}" />
-               <label for="{type}">{title}</label>
+               <input type="checkbox" name="types:list"
+               value="{type}" id="search-type-{type}" /> 
+               <label for="search-type-{type}">{title}</label>
             </div>
           {.end}
           </div>
