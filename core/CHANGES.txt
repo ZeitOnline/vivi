@@ -1,6 +1,12 @@
 zeit.content.cp changes
 =======================
 
+0.10 (unreleased)
+-----------------
+
+- Bessere Anzeige von Fehlern im RSS-Block (#5678).
+
+
 0.9.1 (2009-06-24)
 ------------------
 
