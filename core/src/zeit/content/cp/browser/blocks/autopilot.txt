@@ -89,6 +89,7 @@ True
 When the autopilot is on and content is dropped on the block, the autopilot is
 automatically switched off[#calculate_drop_url]_:
 
+>>> import zeit.content.cp.centerpage
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getLink('Switch autopilot').click()
 >>> browser.open(contents_url)
