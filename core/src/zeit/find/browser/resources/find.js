@@ -33,8 +33,6 @@ zeit.find.Search = zeit.find.BaseView.extend({
         self.result_filters = new zeit.cms.JSONView(
             base_url + 'result_filters', 'result_filters',
             MochiKit.Base.bind(self.search_form_parameters, self));
-        self.favorited = new zeit.cms.JSONView(
-            base_url + 'toggle_favorited')
         // Connect handlers
         zeit.find.init_search_results(self.search_result);
         new zeit.find.ResultsFilters(self.search_result);
@@ -112,6 +110,9 @@ zeit.find.Favorites = zeit.find.BaseView.extend({
         self.main_view = new zeit.cms.JSONView(
             base_url + 'favorites', 'favorites');
         zeit.find.init_search_results(self.main_view);
+        MochiKit.Signal.connect(
+            window, 'zeit.find.update-favorites',
+            MochiKit.Base.bind(self.render, self));
     },
 });
 
@@ -259,6 +260,14 @@ zeit.find.SearchResultsDraggable = zeit.find.Component.extend({
 
 zeit.find.ToggleFavorited = zeit.find.Component.extend({
 
+    construct: function(view) {
+        var self = this;
+        arguments.callee.$.construct.call(self, view)
+        var base_url = application_url + '/@@';
+        self.favorited = new zeit.cms.JSONView(
+            base_url + 'toggle_favorited');
+    },
+
     connect: function(element, data) {
         var self = this;
         var results = MochiKit.DOM.getElementsByTagAndClassName(
@@ -277,9 +286,10 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
 
 
     toggle: function(toggle_favorited, favorite_url) {
-        var d = zeit.find.favorited.render(toggle_favorited, favorite_url);
+        var self = this;
+        var d = self.favorited.render(toggle_favorited, favorite_url);
         d.addCallback(function(result) {
-            zeit.find.favorites.render();
+            MochiKit.Signal.signal(window, 'zeit.find.update-favorites');
             return result;
         });
 

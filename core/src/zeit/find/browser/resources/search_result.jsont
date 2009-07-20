@@ -3,11 +3,10 @@
   <span class="uniqueId">{uniqueId}</span>
   <div class="supertitle">
     <img src="{icon}" />
-    <span class="toggle_favorited">
-      <img src="{favorited}" />
+    <span class="toggle_favorited {favorited_css_class}">
     </span>
-      <img src="{publication_status}" />
-      {supertitle} 
+    <img src="{publication_status}" />
+    {supertitle} 
   </div>  
   <div class="teaser_title">
     {teaser_title}

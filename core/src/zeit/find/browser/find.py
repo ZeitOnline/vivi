@@ -103,11 +103,7 @@ class SearchResult(JSONView):
             if not title:
                 title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE,
                                          '', 1)
-            if uniqueId in favorite_uniqueIds:
-                favorited_icon = r['favorite.png']()
-            else:
-                favorited_icon = r['not_favorite.png']()
-
+            favorited = uniqueId in favorite_uniqueIds
             last_semantic_change = result.get('last-semantic-change')
             if last_semantic_change is not None:
                 dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
@@ -150,7 +146,9 @@ class SearchResult(JSONView):
                     'date': format_date(dt),
                     'end_date': format_date(end_date),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
-                    'favorited': favorited_icon,
+                    'favorited': favorited,
+                    'favorited_css_class': (
+                        'favorited' if favorited else 'not_favorited'),
                     'icon': icon,
                     'preview_url': preview_url,
                     'publication_status': publication_status,
@@ -311,7 +309,6 @@ class Favorites(JSONView):
     def result_entry(self, content):
         r = self.resources
         uniqueId = content.uniqueId
-        favorited_icon = r['favorite.png']()
 
         metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
 
@@ -363,7 +360,8 @@ class Favorites(JSONView):
             'date': format_date(date),
             'end_date': format_date(end_date),
             'favorite_url': self.url('toggle_favorited', uniqueId),
-            'favorited': favorited_icon,
+            'favorited': True,
+            'favorited_css_class': 'favorited',
             'icon': icon,
             'preview_url': preview_url,
             'publication_status': r['published.png'](),

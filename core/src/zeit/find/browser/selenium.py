@@ -25,6 +25,12 @@ class TestTabs(zeit.cms.selenium.Test):
         s.waitForVisible('id=favorites')
         self.assertSelected('favorites')
 
+    def test_activate_for_this_page(self):
+        s = self.selenium
+        s.click('link=Für diese Seite')
+        s.waitForVisible('id=for-this-page')
+        self.assertSelected('for-this-page')
+
 
 class TestSearch(zeit.cms.selenium.Test):
 
@@ -39,3 +45,14 @@ class TestSearch(zeit.cms.selenium.Test):
         s.waitForTextPresent('No related entries could be found.')
         s.click('css=div.related_links')
         s.waitForTextNotPresent('No related entries could be found.')
+
+    def test_favorites(self):
+        s = self.selenium
+        s.click('link=Favoriten')
+        s.waitForVisible('id=favorites')
+        s.verifyElementNotPresent('css=#favorites .related_links')
+        s.click('link=Suche')
+        s.click('css=.toggle_favorited')
+        s.waitForElementPresent('css=.toggle_favorited.favorited')
+        s.click('link=Favoriten')
+        s.waitForElementPresent('css=#favorites .related_links')

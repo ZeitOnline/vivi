@@ -247,6 +247,17 @@
 
 .toggle_favorited {
   cursor: pointer;
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+}
+
+.toggle_favorited.favorited {
+  background: transparent url('favorite.png') no-repeat center center;
+}
+
+.toggle_favorited.not_favorited {
+  background: transparent url('not_favorite.png') no-repeat center center;
 }
 
 .related_info {
