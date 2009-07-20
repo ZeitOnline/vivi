@@ -6,7 +6,7 @@
     accesskey view/accesskey | nothing;
     title view/title"
     i18n:attributes="title">
-    <img tal:attributes="src view/icon" />
+    <img tal:replace="structure view/img_tag" />
     <span class="action-title" 
       tal:content="view/title" i18n:translate="">Title</span>
   </a>

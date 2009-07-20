@@ -17,6 +17,8 @@ Technisches
 
 - Unterstüzung für `_p_changed` auf XML-Klassen.
 
+- Icons werden mit vollem Pfad eingebunden (#5657).
+
 1.23.2 (2009-06-18)
 -------------------
 

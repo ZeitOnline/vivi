@@ -11,7 +11,7 @@
       target menu_item/target | nothing"
       i18n:attributes="title">
       <img src="" alt="actionmenuicon"
-        tal:attributes="src string:/@@/zeit.cms/icons/$klass.png" />
+           tal:attributes="src string:${context/++resource++zeit.cms}/icons/$klass.png" />
       <span class="action-title"
         tal:content="menu_item/title"
         i18n:translate="">

@@ -45,6 +45,16 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
             (self.context, self.request), name='absolute_url')
         return '%s/%s' % (url, self.action)
 
+    def img_tag(self):
+        img_url = self.icon
+        if img_url.startswith('/@@/'):
+            # Dereference resource library
+            library_name, path = img_url[4:].split('/', 1)
+            library = zope.component.getAdapter(
+                self.request, name=library_name)
+            img_url = library() + '/' + path
+        return '<img src=%s />' % xml.sax.saxutils.quoteattr(img_url)
+
 
 class MenuViewlet(MenuItemBase):
 
@@ -102,9 +112,6 @@ class LightboxActionMenuItem(ActionMenuItem):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'action-menu-item-with-lightbox.pt')
-
-    def img_tag(self):
-        return '<img src=%s />' % xml.sax.saxutils.quoteattr(self.icon)
 
 
 class DropDownMenuBase(object):
