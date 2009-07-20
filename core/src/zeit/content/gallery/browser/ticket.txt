@@ -28,10 +28,8 @@ False
 We can now use the ticket to authenticate a request:
 
 >>> browser = Browser()
->>> browser.handleErrors = False
 >>> browser.open(
 ...     'http://localhost/++skin++cms/++ticket++%s/repository' % ticket)
->>> browser.handleErrors = True
 >>> print browser.title.strip()
 repository – Directory listing
 
