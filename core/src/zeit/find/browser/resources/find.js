@@ -22,16 +22,17 @@ zeit.find.Search = zeit.find.BaseView.extend({
 
     construct: function() {
         var self = this;
+        self.initial_query = true;
         var base_url = application_url + '/@@';
         // Initialize views
         self.main_view = new zeit.cms.JSONView(
             base_url + 'search_form', 'search_form');
         self.search_result = new zeit.cms.JSONView(
             base_url + 'search_result', 'search_result',
-            self.search_form_parameters);
+            MochiKit.Base.bind(self.search_form_parameters, self));
         self.result_filters = new zeit.cms.JSONView(
             base_url + 'result_filters', 'result_filters',
-            self.search_form_parameters);
+            MochiKit.Base.bind(self.search_form_parameters, self));
         self.favorited = new zeit.cms.JSONView(
             base_url + 'toggle_favorited')
         // Connect handlers
@@ -81,6 +82,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
 
     update_search_result: function() {
         var self = this;
+        log("updating search result");
         self.search_result.render();
         if ($('result_filters_data')) {
             self.result_filters.render();
@@ -88,10 +90,13 @@ zeit.find.Search = zeit.find.BaseView.extend({
     },
 
     search_form_parameters: function() {
-        var qs = MochiKit.Base.queryString($('search_form'));
-        if (!qs) {
-            // initial query
-            qs = "sort_order=date";
+        var self = this;
+        var qs;
+        if (self.initial_query) {
+            qs = "&sort_order=date";
+            self.initial_query = false;
+        } else {
+            qs = MochiKit.Base.queryString($('search_form'));
         }
         return qs
     },
@@ -149,7 +154,6 @@ zeit.find.init_full_search = function() {
         'favorites', 'Favoriten', new zeit.find.Favorites()));
     zeit.find.tabs.add(new zeit.cms.ViewTab(
         'for-this-page', 'Für diese Seite', new zeit.find.ForThisPage()));
-    search.render();
 }
 
 
