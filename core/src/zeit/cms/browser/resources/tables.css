@@ -49,11 +49,6 @@ table > * > tr > td {
    display: none;
 }
 
-#workingcopycontents table {
-  background-color: #fff;
-  border: 1px solid #e4e4e4 !important;
-}
-
 /* don't display unlocked indicator */
 table.contentListing > tbody > tr > td > img.lock-open,
 table.syndication-manager > tbody > tr > td > img.lock-open {

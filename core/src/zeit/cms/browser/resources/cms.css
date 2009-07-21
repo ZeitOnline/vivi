@@ -243,6 +243,13 @@ pre {
   background-color: transparent;
 }
 
+.PanelContent {
+  margin: 0 10px 20px 0;
+  background-color: #ffffff;
+  border: 1px solid #e4e4e4 !important;
+
+}
+
 #topcontent {
   position: absolute;
   top: 3em; 
