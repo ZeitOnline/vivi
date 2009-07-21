@@ -115,9 +115,10 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
         // busy indicator would stop until everything is processes.
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             context_url + '/@@synchronise-with-image-folder?redirect=false');
-        d.addCallback(function(result) {
+        d.addCallbacks(function(result) {
             document.location = result.responseText;
-        });
+        },
+        zeit.cms.log_error);
     },
 
     file_dialog_start: function() {
