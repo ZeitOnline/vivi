@@ -4,7 +4,7 @@
  *
  * */
 body {
-  background: #F2F2F2;
+  background-color: #f1f4f92;
   position: absolute;
   top: 0;
   right: 0;
@@ -172,11 +172,16 @@ pre {
   background-color: transparent;
 }
 
+#main-navigation {
+}
+
 #sidebar {
   visibility: hidden; /* The sidebar is displayed *after* resizing */
   position: absolute;
-  left: 1em;
-  width: 20em;
+  background-color: #f1f4f9;
+  border: 1px solid #e4e4e4;
+  left: 0em;
+  width: 21em;
   top: 3em;
   bottom: 0;
   overflow: hidden;
@@ -187,11 +192,9 @@ pre {
 }
 
 #sidebar h1 {
-  padding-left: 0.6em;
+  padding-left: 10px;
   margin: 0;
-  background-color: #ddd;
-  background-repeat: no-repeat;
-  background-position: 0.3em center;
+  background: transparent url("layout/opener.png") no-repeat 5px center;
   font-weight: normal;
 }
 
@@ -203,6 +206,7 @@ pre {
   bottom: 0;
   cursor: pointer;
   background: transparent url("layout/sidebardragger.png") no-repeat center;
+  border-right: 1px solid #e4e4e4;
 }
 
 #sidebar.sidebar-folded {
@@ -411,7 +415,7 @@ pre {
   top: -1em;
   height: 3.2em;
   width: 100%;
-  background: #f2f2f2 url(layout/tabs_bg.gif) repeat-x 0 100%;
+  background: #f1f4f9 url(layout/tabs_bg.gif) repeat-x 0 100%;
 }
 
 .context-views > ul {
@@ -535,7 +539,6 @@ pre {
 .secondary-context-actions > li {
   display: block;
   margin: 0.5em 0;
-
 }
 
 .secondary-context-actions > li > a > * {
