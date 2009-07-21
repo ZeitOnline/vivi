@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - Bessere Anzeige von Fehlern im RSS-Block (#5678).
 
+- Modulnamen in der Modulbibliothek werden jetzt übersetzt (u.A. #5677).
+
 
 0.9.1 (2009-06-24)
 ------------------

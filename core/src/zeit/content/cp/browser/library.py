@@ -12,6 +12,7 @@ import zeit.cms.browser.view
 import zeit.content.cp.browser.landing
 import zope.browser.interfaces
 import zope.component
+import zope.i18n
 
 
 class BlockFactories(zeit.cms.browser.view.JSON):
@@ -33,7 +34,8 @@ class BlockFactories(zeit.cms.browser.view.JSON):
                 types[name] = dict(
                     css=['module'],
                     image=image,
-                    title=adapter.title,
+                    title=zope.i18n.translate(adapter.title,
+                                              context=self.request),
                     type=name,
                 )
             types[name]['css'].append(library_name + '-module')
