@@ -4,7 +4,7 @@ table {
 }
 
 table > thead > tr > th {
-    background-color: #ddd;
+    background-color: #d2dce5;
     padding: 0.5em;
 }
 
@@ -31,12 +31,12 @@ table > * > tr > td {
 }
 
 .contentListing > tbody > tr.even {
-   background-color: #f2f2f2;
+   background-color: #eef2f5;
    position: static !important;
 }
 
 .contentListing > tbody > tr.selected > td {
-  background-color: #ffdd11;
+  background-color: #fbfbfb;
 }
 
 .contentListing > thead > tr > th {
@@ -47,6 +47,11 @@ table > * > tr > td {
 .hasMetadata > thead > tr > th:last-child,
 .hasMetadata > tbody > tr > td:last-child {
    display: none;
+}
+
+#workingcopycontents table {
+  background-color: #fff;
+  border: 1px solid #e4e4e4 !important;
 }
 
 /* don't display unlocked indicator */
