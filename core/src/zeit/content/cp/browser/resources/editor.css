@@ -135,12 +135,6 @@
   right: 5%;
 }
 
-#cp-content .context-views {
-  margin-top:-3.2em;
-  right: 20px;
-}
-
-
 #cp-forms > .lightbox,
 #cp-forms > .lightbox-header {
   left: 0;
@@ -270,8 +264,8 @@
 
 .edit-bar > a,
 .edit-bar > .locked-indicator {
-  background-attachment: top left;
   background-color: inherit;
+  background-position: top left;
   background-repeat: no-repeat;
   display: block;
   float: left;
@@ -699,10 +693,18 @@
 
 /* Fullgraphical block */
 
-.fullgraphical-image {
+.fullgraphical-image,
+.fullgraphical-no-image {
+  margin: 0.5em;
+}
+
+.fullgraphical-image img {
   width: 100%;
-  margin-top: 3px;
-  margin-bottom: 13px;
+}
+
+.fullgraphical-no-image {
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .object-widget .object-reference {

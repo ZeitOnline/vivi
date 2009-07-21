@@ -1,2 +1,16 @@
-<img class="fullgraphical-image"
-     tal:attributes='src context/image/@@absolute_url' />
+<tal:block define="image context/image|nothing"
+           i18n:domain="zeit.cms">
+
+  <div class="fullgraphical-image"
+       tal:condition="image">
+    <img tal:attributes="
+         src image/@@absolute_url;
+         title context/referenced_object/uniqueId" />
+  </div>
+  <div class="fullgraphical-no-image"
+       tal:condition="not:image"
+       i18n:translate="">
+    Fullgraphical Block
+  </div>
+
+</tal:block>

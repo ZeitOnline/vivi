@@ -10,6 +10,18 @@ Fullgraphical block
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
 ...              '?block_type=fullgraphical')
+>>> print browser.contents
+{"signals": [{"args": ["5eaf3c57-a175-4d17-a01a-3a729fdbf6fa"],
+ "when": "after-reload", "name": "added"}]}
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-no-image">
+    Fullgraphical Block
+  </div>
+  ...
+
+
 
 Add an object (e.g. a quiz) to the repository:[#functional]_
 
@@ -33,6 +45,14 @@ Edit the quiz block and reference the newly added quiz:
 <...self.close();...
 
 >>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-image">
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"
+        title="http://xml.zeit.de/my_quiz" />
+  </div>
+  ...
+     
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Link to').value

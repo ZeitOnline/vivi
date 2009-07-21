@@ -8,6 +8,8 @@ zeit.content.cp changes
 
 - Modulnamen in der Modulbibliothek werden jetzt übersetzt (u.A. #5677).
 
+- Vollgraphischer Block ist direkt nach dem Anlegen nicht mehr leer.
+
 
 0.9.1 (2009-06-24)
 ------------------
