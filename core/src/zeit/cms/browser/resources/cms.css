@@ -4,7 +4,7 @@
  *
  * */
 body {
-  background-color: #f1f4f92;
+  background-color: #f1f4f9;
   position: absolute;
   top: 0;
   right: 0;
@@ -93,7 +93,7 @@ pre {
  *
  * */
 .selected {
-  background-color: #ffdd00;
+  background-color: #f1f4f9;
 }
 
 .hidden {
@@ -154,7 +154,7 @@ pre {
 #visualContentSeparator {
   position: absolute;
   top: 0;
-  left: 22em;
+  left: 21em;
   right: 0;
   bottom: 0;
   background-color: #fcfcfc;
@@ -181,10 +181,11 @@ pre {
   background-color: #f1f4f9;
   border: 1px solid #e4e4e4;
   left: 0em;
-  width: 20.8em;
+  width: 18.7em;
   top: 3em;
   bottom: 0;
   overflow: hidden;
+  padding-left: 26px;
 }
 
 #sidebar.sized {
@@ -193,7 +194,7 @@ pre {
 
 #sidebar h1 {
   margin: 0;
-  background: transparent url("layout/opener.png") no-repeat 5px center;
+  background: transparent url("layout/opener.png") no-repeat left center;
   font-weight: normal;
 }
 
