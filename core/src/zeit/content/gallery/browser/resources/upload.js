@@ -14,9 +14,10 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
     get_ticket: function() {
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             application_url + '/@@get-ticket');
-        d.addCallback(function(result) {
+        d.addCallbacks(function(result) {
             return result.responseText;
-        });
+        },
+        zeit.cms.log_error);
         return d;
     },
 
