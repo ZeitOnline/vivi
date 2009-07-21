@@ -49,7 +49,6 @@
   <resourceLibrary
     name="zeit.content.cp"
     require="zeit.cms
-             zeit.cms.tabs
              zeit.find
              zc.datetimewidget
     ">
