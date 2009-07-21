@@ -91,14 +91,6 @@ legend {
     padding: 0.5em 0;
 }
 
-.sequencewidget > tbody > tr:hover {
-    background: #ddd;
-}
-
-.sequencewidget > tbody > tr:hover:last-child {
-    background: transparent;
-}
-
 .sequencewidget {
     border-collapse: collapse;
 }

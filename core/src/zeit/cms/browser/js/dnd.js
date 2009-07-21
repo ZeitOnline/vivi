@@ -129,8 +129,8 @@ var ObjectReferenceWidget = Class.extend({
 
         new MochiKit.DragAndDrop.Droppable(this.element, {
             accept: ['content-drag-pane', 'uniqueId'],
-            activeclass: 'drop-widget-hover',
-            hoverclass: 'drop-widget-hover',
+            activeclass: 'droppable-active',
+            hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
                     othis.handleDrop(element);
             },
@@ -238,10 +238,16 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
     construct: function(widget_id) {
         this.widget_id = widget_id;
         this.element = $(widget_id);
-        this.form = getFirstParentByTagAndClassName(this.element, 'form');
+        this.form = MochiKit.DOM.getFirstParentByTagAndClassName(
+            this.element, 'form');
         var othis = this;
-        new Droppable(this.element, {
-            hoverclass: 'drop-widget-hover',
+        var droppable_element = MochiKit.Selector.findChildElements(
+            this.element,
+            ['> table.sequencewidget > tbody > tr:last-child'])[0];
+        new MochiKit.DragAndDrop.Droppable(droppable_element, {
+            accept: ['content-drag-pane', 'uniqueId'],
+            activeclass: 'droppable-active',
+            hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
                     othis.handleDrop(element);
             },

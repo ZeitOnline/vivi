@@ -418,14 +418,26 @@ table.properties textarea {
   cursor: pointer;
   opacity: 0.3;
 }
+
 .objectsequencewidget img[action="delete"]:hover {
   opacity: 1;
 }
-.drop-widget-hover {
-  background: #ccc url("icons/drop-widget-hover.png") no-repeat right center;
+
+.object-widget.droppable-active input[type=text],
+.object-widget.hover-content input[type=text] {
+  border: 1px solid #00ee5e;
 }
-.drop-widget-hover .new {
-  visibility: hidden;
+
+.object-widget.hover-content input[type=text] {
+  outline: 4px solid #00ee5e;
+}
+
+.sequencewidget tr.droppable-active {
+  outline: 1px dashed #00ee5e;
+}
+
+.sequencewidget tr.hover-content {
+  outline: 4px solid #00ee5e;
 }
 
 
