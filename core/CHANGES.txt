@@ -10,6 +10,7 @@ zeit.content.cp changes
 
 - Vollgraphischer Block ist direkt nach dem Anlegen nicht mehr leer.
 
+- LightboxForms aktivieren jetzt den Lightbox-Context.
 
 0.9.1 (2009-06-24)
 ------------------

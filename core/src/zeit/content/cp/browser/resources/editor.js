@@ -633,6 +633,7 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     __name__: 'zeit.content.cp.LightBoxForm',
+    context: zeit.content.cp.in_context.Lightbox,
 
     construct: function(context_element) {
         var self = this;
@@ -642,7 +643,11 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
         var url = context_element.getAttribute('href');
         arguments.callee.$.construct.call(self, url, $(container_id));
         self.lightbox.content_box.__handler__ = self;
+        new self.context(self);
+    },
 
+    connect: function() {
+        var self = this;
         self.events.push(MochiKit.Signal.connect(
            zeit.content.cp.editor, 'before-reload',
            self, 'close'));
@@ -652,6 +657,11 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
         self.events.push(
             MochiKit.Signal.connect(
                 self, 'reload', self, self.reload));
+    },
+
+    disconnect: function() {
+        // hum, do we need to do anything here? We use the lightbox events
+        // right now.
     },
 
     reload: function() {
