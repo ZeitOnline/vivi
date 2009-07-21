@@ -28,11 +28,6 @@ select {
     vertical-align:top;
 }
 
-input[type="button"]:active,
-input[type="submit"]:active {
-    background-color: #ffdd00;
-}
-
 input[type="text"] {
     padding: 0.2em;
 }
