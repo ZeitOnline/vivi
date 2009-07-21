@@ -181,7 +181,7 @@ pre {
   background-color: #f1f4f9;
   border: 1px solid #e4e4e4;
   left: 0em;
-  width: 21em;
+  width: 20.8em;
   top: 3em;
   bottom: 0;
   overflow: hidden;
@@ -192,7 +192,6 @@ pre {
 }
 
 #sidebar h1 {
-  padding-left: 10px;
   margin: 0;
   background: transparent url("layout/opener.png") no-repeat 5px center;
   font-weight: normal;
@@ -201,8 +200,8 @@ pre {
 #sidebar-dragger {
   position: absolute;
   left: 21em;
-  width: 1em;
-  top: 3em;
+  width: 0.5em;
+  top: 5.2em;
   bottom: 0;
   cursor: pointer;
   background: transparent url("layout/sidebardragger.png") no-repeat center;
@@ -220,7 +219,7 @@ pre {
 }
 
 #visualContentWrapper.sidebar-folded {
-  left: 1em;
+  left: 0em;
 }
 
 #content {
@@ -233,7 +232,7 @@ pre {
 
 #visualContentWrapper {
   position: fixed;
-  left: 22em;
+  left: 21em;
   right: 1em;
   top: 3em;
   bottom: 0;
@@ -411,11 +410,12 @@ pre {
 
 .contextViewsAndActions {
   position: absolute;
-  left: -0.6em;
+  left: 0;
   top: -1em;
   height: 3.2em;
   width: 100%;
-  background: #f1f4f9 url(layout/tabs_bg.gif) repeat-x 0 100%;
+  border-bottom: 1px solid #c4c4c4;
+  background: #f1f4f9; /*url(layout/tabs_bg.gif) repeat-x 0 100%;*/
 }
 
 .context-views > ul {
