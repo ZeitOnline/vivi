@@ -9,7 +9,6 @@
              gocept.mochikit.jsclass
              gocept.mochikit.lightbox
              zeit.cms
-             zeit.cms.tabs
     ">
     <directory source="resources" include="find.js find.css" />
   </resourceLibrary>
