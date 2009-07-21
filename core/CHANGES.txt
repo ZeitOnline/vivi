@@ -19,6 +19,8 @@ Technisches
 
 - Icons werden mit vollem Pfad eingebunden (#5657).
 
+- DragAndDrop-Panes werden anders zusammen gebaut.
+
 1.23.2 (2009-06-18)
 -------------------
 

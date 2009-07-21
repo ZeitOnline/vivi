@@ -8,12 +8,12 @@ MochiKit.Signal.connect(
     if (!draggable.element.is_content_object) {
         return;
     }
-    var draggable_element = draggable.element;
-    var uniqueId = draggable_element.uniqueId;
-    if (draggable_element.nodeName == 'TR') {
+    var pane_clone_from = draggable.element.pane_element;
+    var uniqueId = draggable.element.textContent;
+    if (pane_clone_from.nodeName == 'TR') {
         var dim = null;
     } else {
-        var dim = MochiKit.Style.getElementDimensions(draggable_element); 
+        var dim = MochiKit.Style.getElementDimensions(pane_clone_from); 
     }
 
     var div = $('drag-pane');
@@ -21,7 +21,7 @@ MochiKit.Signal.connect(
         div.parentNode.removeChild(div);
     }
     div = DIV({id: 'drag-pane', class: 'content-drag-pane'});
-    div.appendChild(draggable_element.cloneNode(true));
+    div.appendChild(pane_clone_from.cloneNode(true));
     div.dragged_element = draggable.element;
     div.uniqueId = uniqueId;
     
@@ -42,16 +42,19 @@ MochiKit.Signal.connect(
     var dragged_element = element.dragged_element;
     if (dragged_element == undefined) return;
     draggable.element = dragged_element;
-    MochiKit.Visual.switchOff(element);
+    MochiKit.Visual.fade(element);
 });
+
 
 zeit.cms.createDraggableContentObject = function(element) {
     var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
              'span', 'uniqueId', element);
-    element.is_content_object = true;
-    element.uniqueId = unique_id_element.textContent;
-    return new MochiKit.DragAndDrop.Draggable(element, {
+    unique_id_element.pane_element = element;
+    unique_id_element.is_content_object = true;
+    //element.uniqueId = unique_id_element.textContent;
+    return new MochiKit.DragAndDrop.Draggable(unique_id_element, {
         endeffect: null,
+        handle: element,
         starteffect: null,
         zindex: null,
     });
@@ -125,7 +128,7 @@ var ObjectReferenceWidget = Class.extend({
         this.changed = false;
 
         new MochiKit.DragAndDrop.Droppable(this.element, {
-            accept: ['content-drag-pane'],
+            accept: ['content-drag-pane', 'uniqueId'],
             activeclass: 'drop-widget-hover',
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
