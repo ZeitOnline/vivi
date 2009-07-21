@@ -45,6 +45,11 @@
     padding: 0.4em;
 }
 
+.lightbox .context-views {
+  margin-top:-3.2em;
+  right: 20px;
+}
+
 .lightbox .keyword-tree {
     position: absolute;
     top: 0;
