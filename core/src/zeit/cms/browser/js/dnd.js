@@ -125,7 +125,7 @@ var ObjectReferenceWidget = Class.extend({
         this.changed = false;
 
         new MochiKit.DragAndDrop.Droppable(this.element, {
-            accept: 'content-drag-pane',
+            accept: ['content-drag-pane'],
             activeclass: 'drop-widget-hover',
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
