@@ -201,6 +201,9 @@ var ObjectReferenceWidget = Class.extend({
 
     browseObjects: function(event) {
         var self = this;
+        if (zeit.cms.activate_objectbrowser()) {
+            return
+        }
         var url = self.default_browsing_url + '/@@get_object_browser';
         self.lightbox = new zeit.cms.LightboxForm(url, $('body'));
         self.lightbox.events.push(MochiKit.Signal.connect(

@@ -24,6 +24,9 @@ Technisches
 - ObjectWidgets kompatibel zum Verwenden in einer Lightbox gemacht
   (deregistrieren von Events, etc.)
 
+- ObjectWidget öffnet den Browser nur, wenn noch keiner auf der Seite vorhanden
+  ist (relevant für CP-Editor).
+
 1.23.2 (2009-06-18)
 -------------------
 

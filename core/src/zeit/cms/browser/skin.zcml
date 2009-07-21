@@ -68,11 +68,26 @@
   <include package="gocept.mochikit" />
 
   <resourceLibrary
+    name="zeit.cms.javascript.base"
+    layer=".interfaces.ICMSLayer"
+    require="mochikit">
+    <directory source="js" include="base.js"/>
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.cms.javascript.objectbrowser"
+    layer=".interfaces.ICMSLayer"
+    require="zeit.cms.javascript.base">
+    <directory source="js" include="objectbrowser.js" />
+  </resourceLibrary>
+
+  <resourceLibrary
     name="zeit.cms.javascript"
-    require="mochikit mochikit.DragAndDrop gocept.mochikit.jsclass
-    gocept.mochikit.lightbox">
+    layer=".interfaces.ICMSLayer"
+    require="mochikit.DragAndDrop gocept.mochikit.jsclass
+    gocept.mochikit.lightbox zeit.cms.javascript.base
+    zeit.cms.javascript.objectbrowser">
     <directory source="js" include="
-      base.js
       tooltip.js
       dnd.js
       menu.js
