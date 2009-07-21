@@ -21,6 +21,6 @@
   </ul>
 </div>
 <script tal:content="string:
-  var widget = new ObjectSequenceWidget('${view/name}');
+  var widget = new ObjectSequenceWidget('${view/name}', self);
 ">
 </script>

@@ -45,10 +45,12 @@ zeit.cms.LightboxForm = Class.extend({
     },
 
     close: function() {
+        var self = this;
+        MochiKit.Signal.signal(self, 'close');
         // Close the lightbox and unregister everything.
-        forEach(this.events, function(ident) {
-            MochiKit.Signal.disconnect(ident);
-        });
+        while(self.events.length) {
+            MochiKit.Signal.disconnect(self.events.pop());
+        };
         this.lightbox.close();
     },
 

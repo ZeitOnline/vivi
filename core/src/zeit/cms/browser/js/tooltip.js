@@ -42,14 +42,22 @@ zeit.cms.ToolTip = Class.extend({
         var self = this;
         self.context = $(context);
         self.url_getter = url_getter;
+        self.events = []
 
         self.mouse_over_deferred = null;
 
-        MochiKit.Signal.connect(
+        self.events.push(MochiKit.Signal.connect(
             context, 'onmouseover',
-            self, self.handleMouseOver);
-        MochiKit.Signal.connect(
-            context, 'onmouseout', self, self.handleMouseOut);
+            self, self.handleMouseOver));
+        self.events.push(MochiKit.Signal.connect(
+            context, 'onmouseout', self, self.handleMouseOut));
+    },
+
+    destruct: function() {
+        var self = this;
+        while (self.events.length) {
+            MochiKit.Signal.disconnect(self.events.pop());
+        }
     },
 
     handleMouseOver: function(event) {

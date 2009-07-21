@@ -21,6 +21,9 @@ Technisches
 
 - DragAndDrop-Panes werden anders zusammen gebaut.
 
+- ObjectWidgets kompatibel zum Verwenden in einer Lightbox gemacht
+  (deregistrieren von Events, etc.)
+
 1.23.2 (2009-06-18)
 -------------------
 

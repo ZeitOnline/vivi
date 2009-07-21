@@ -117,41 +117,63 @@ var ObjectReferenceWidget = Class.extend({
     // e.g. for Tuple fields.
 
     construct: function(element, default_browsing_url, type_filter,
-                        show_popup) {
-        var othis = this;
-        this.element = $(element);
-        this.default_browsing_url = default_browsing_url;
-        this.type_filter = type_filter;
-        this.input = getFirstElementByTagAndClassName(
-            'input', 'object-reference', this.element);
-        this.input.object_reference_widget = this;
-        this.changed = false;
+                        show_popup, parent_component) {
+        var self = this;
+        self.events = [];
 
-        new MochiKit.DragAndDrop.Droppable(this.element, {
+        self.element = $(element);
+        self.default_browsing_url = default_browsing_url;
+        self.type_filter = type_filter;
+        self.input = getFirstElementByTagAndClassName(
+            'input', 'object-reference', self.element);
+        self.input.object_reference_widget = self;
+        self.changed = false;
+        self.parent_component = parent_component;
+
+        self.droppable = new MochiKit.DragAndDrop.Droppable(self.element, {
             accept: ['content-drag-pane', 'uniqueId'],
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
-                    othis.handleDrop(element);
+                    self.handleDrop(element);
             },
         });
-        connect(element, 'onclick', this, 'handleClick');
-        connect(this.input, 'onchange', function(event) {
-            othis.changed = true;
+
+        self.events.push(
+            MochiKit.Signal.connect(
+                element, 'onclick', self, self.handleClick));
+        self.events.push(
+            MochiKit.Signal.connect(self.input, 'onchange', function(event) {
+                self.changed = true;
+        }));
+
+        self.tooltip = new zeit.cms.ToolTip(element, function() {
+            return self.getToolTipURL();
         });
 
-        new zeit.cms.ToolTip(element, function() {
-            return othis.getToolTipURL();
-        });
-
-        // this saves a click and shows the object browser initially
-        if (show_popup) {
+        // self saves a click and shows the object browser initially
+        if (show_popup && isUndefinedOrNull(parent_component)) {
             // Defer popup loading until page is completed to allow others to
             // set a unique id. 
-            connect(window, 'onload', function() {
-                if (!othis.input.value) 
-                    othis.browseObjects();
-            });
+            self.events.push(MochiKit.Signal.connect(
+                window, 'onload', function() {
+                    if (!self.input.value) 
+                        self.browseObjects();
+            }));
+        }
+
+        if (!isUndefinedOrNull(parent_component)) {
+            self.events.push(MochiKit.Signal.connect(
+                parent_component, 'close', self, self.destruct));
+        }
+    },
+
+    destruct: function() {
+        var self = this;
+        self.tooltip.destruct();
+        self.droppable.destroy();
+        while (self.events.length) {
+            MochiKit.Signal.disconnect(self.events.pop());
         }
     },
 
@@ -235,24 +257,33 @@ var ObjectReferenceWidget = Class.extend({
 
 zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
 
-    construct: function(widget_id) {
-        this.widget_id = widget_id;
-        this.element = $(widget_id);
-        this.form = MochiKit.DOM.getFirstParentByTagAndClassName(
-            this.element, 'form');
-        var othis = this;
+    construct: function(widget_id, parent_component) {
+        var self = this;
+        self.widget_id = widget_id;
+        self.element = $(widget_id);
+        self.parent_component = parent_component;
+        self.form = MochiKit.DOM.getFirstParentByTagAndClassName(
+            self.element, 'form');
         var droppable_element = MochiKit.Selector.findChildElements(
-            this.element,
+            self.element,
             ['> table.sequencewidget > tbody > tr:last-child'])[0];
-        new MochiKit.DragAndDrop.Droppable(droppable_element, {
+        self.droppable = new MochiKit.DragAndDrop.Droppable(droppable_element, {
             accept: ['content-drag-pane', 'uniqueId'],
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
-                    othis.handleDrop(element);
+                    self.handleDrop(element);
             },
         });
-        this.setObject();
+        self.setObject();
+        if (!isUndefinedOrNull(parent_component)) {
+            self.events.push(MochiKit.Signal.connect(
+                parent_component, 'close', self, self.destruct));
+        }
+    },
+
+    destruct: function() {
+        self.droppable.destroy();
     },
 
     handleDrop: function(element) {

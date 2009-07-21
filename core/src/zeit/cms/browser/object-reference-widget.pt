@@ -21,6 +21,7 @@
   '${view/name}.outerdiv',
   '${view/default_browsing_location/@@absolute_url}',
   '${view/type_filter_token}',
-  ${view/show_popup});
+  ${view/show_popup},
+  self);
   ">
 </script>
