@@ -32,7 +32,7 @@ zeit.cms.View = gocept.Class.extend({
             self.do_render(result.responseText, target_element)
             return result;
         });
-        d.addErrback(zeit.cms.log_error);
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d;
     },
 
@@ -41,7 +41,7 @@ zeit.cms.View = gocept.Class.extend({
         var target_element = target_element || $(self.target_id);
         MochiKit.Signal.signal(self, 'before-load');
         target_element.innerHTML = html;
-        log('template expanded successfully');
+        log('template expanded successfully', self.target_id);
         MochiKit.Signal.signal(self, 'load', target_element, data);
     },
 });
@@ -65,7 +65,7 @@ zeit.cms.JSONView = zeit.cms.View.extend({
         d.addCallback(function(json) {
             return self.callback_json(json, target_element);
         });
-        d.addErrback(zeit.cms.log_error);
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d;
     },
 
@@ -82,6 +82,7 @@ zeit.cms.JSONView = zeit.cms.View.extend({
 
     load_template: function(template_url, json, target_element) {
         var self = this;
+        log("loading template", template_url)
         var d = MochiKit.Async.doSimpleXMLHttpRequest(template_url);
         d.addCallback(function(result) {
             self.template = jsontemplate.Template(
@@ -92,7 +93,10 @@ zeit.cms.JSONView = zeit.cms.View.extend({
             self.expand_template(json, target_element);
             return result;
         });
-        d.addErrback(zeit.cms.log_error);
+        d.addErrback(function(err) {
+            zeit.cms.log_error(err);
+            return err
+        });
         return d;
     },
 
