@@ -96,10 +96,10 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
         var divs = MochiKit.DOM.getElementsByTagAndClassName(
             'div', 'upload', self.lightbox.content_box);
         forEach(divs, function(div) {
-            MochiKit.DOM.removeElementClass(div, 'active');
+            MochiKit.DOM.removeElementClass(div, 'busy');
         });
         if (!isUndefinedOrNull(file)) {
-            MochiKit.DOM.addElementClass($(self.get_id(file)), 'active');
+            MochiKit.DOM.addElementClass($(self.get_id(file)), 'busy');
         }
     },
 
@@ -107,7 +107,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
         var self = this;
         self.make_active(null);
         self.lightbox.content_box.appendChild(
-            DIV({'class': 'upload active'},
+            DIV({'class': 'upload busy'},
                 DIV({'class': 'filename'},
                     "Creating thumbnails and reloading …")));
         // We're making another async call here because the synchronize takes a
