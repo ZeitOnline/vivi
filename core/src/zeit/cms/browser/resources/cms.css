@@ -65,22 +65,13 @@ h2 {
   text-transform: uppercase;
 }
 
-label span {
-}
-
-fieldset,
 pre {
   border: none;
-  background: transparent url("layout/fadeout.png") repeat-x 0 0;
 }
 
 legend {
   font-weight: bold;
-  background-color: transparent;
-  margin-bottom: -3em;
-  margin-left: -0.6em;
-  padding: 0em 0em 1em 1em;
-}
+  background-color: transparent;}
 
 pre {
   padding: 1em;

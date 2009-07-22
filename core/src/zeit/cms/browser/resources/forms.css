@@ -7,29 +7,31 @@
 
 textarea{
     font:100% Monaco,"Courier New",Courier,monospace;
-    border:1px solid #196692;
+    border:1px solid #e4e4e4;
     color:Black;
-    background:White url(layout/input_background.gif) repeat-x;
     width:100%;
+    padding: 0.3em;
 }
 
 input[type="text"] {
     font-family:"Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
     visibility:visible;
-    border:1px solid #196692;
+    border:1px solid #e4e4e4;
     color:Black;
     vertical-align:middle;
-    background:White url(layout/input_background.gif) repeat-x;
+    padding: 0.3em;
 }
+
 select {
-    border:1px solid #8cacbb;
+    border:1px solid #e4e4e4;
     color:Black;
     background-color:White;
     vertical-align:top;
+    padding: 0.2em;
 }
 
 input[type="text"] {
-    padding: 0.2em;
+    padding: 0.3em;
 }
 
 
@@ -37,20 +39,30 @@ input[type="text"] {
     line-height: 2em;
 }
 
+div.widget > input,
+div.widget > textarea,
+div.widget > div > div > select {
+  margin-top: 0.4em;
+}
+
+.hint {
+  display: none;
+}
 
 /* formlib styling */
 
 fieldset {
-    padding-top: 1.5em;
-    margin: 0;
+    padding-top: 0.5em;
+    margin: 0 0 10px 0;
+    border: 1px solid #d5dee7;
+    background: #d5dee7;
 }
 
 legend {
-    font-weight: bold;
-    background-color: transparent;
-    margin-bottom: -3em;
-    margin-left: -0.6em;
-    padding: 0em 0em 1em 1em;
+  font-weight: bold;
+  background-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
 }
 
 
@@ -103,7 +115,7 @@ form .widgets-float .field {
 }
 
 form .widgets-float .field label {
-    height: 3em;
+    height: 1.7em;
     display: block;
 }
 
@@ -209,9 +221,10 @@ input#form\.copyrights[type=text] {
 }
 
 .gallery {
-  background: transparent url("layout/fadeout.png") repeat-x 0 0;
   width: 100%;
 }
+
+/*background: transparent url("layout/fadeout.png") repeat-x 0 0; */
 
 table.gallery .image-column {
   text-align: center;
@@ -307,7 +320,9 @@ textarea#form\.caption {
   height: 70ex;
 }
 
-
+label > span {
+  margin: 0.2em;
+}
 
 span.h_tag {
   color: blue;
