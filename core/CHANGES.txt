@@ -1,6 +1,12 @@
 zeit.wysiwyg changes
 ====================
 
+1.26.1 (2009-07-20)
+-------------------
+
+- Der Konverter stirbt nicht mehr, wenn keine Konvertierungsschritte vorhanden
+  sind.
+
 1.26 (2009-06-25)
 -----------------
 
