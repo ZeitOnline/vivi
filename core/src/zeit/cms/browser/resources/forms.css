@@ -48,6 +48,21 @@ div.widget > div > div > select {
   margin-top: 0.4em;
 }
 
+div.widget {
+  padding: 0.3em;  
+}
+
+.view div.widget {
+  margin-top: 1px;
+  padding: 0.3em;
+  background-color: #d5dee7;
+  height: 13px;
+}
+
+label {
+  font-weight: bold;
+}
+
 .hint {
   display: none;
 }
