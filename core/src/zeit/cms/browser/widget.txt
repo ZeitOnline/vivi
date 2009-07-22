@@ -62,7 +62,8 @@ Returning location for <Content object at 0x...>
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
-  false);
+  false,
+  self);
   </script>
 
 
@@ -96,7 +97,8 @@ Returning location for <Content object at 0x...>
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
-  false);
+  false,
+  self);
   </script>
 
 
@@ -135,7 +137,8 @@ Returning location for <Content object at 0x...>
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
-  false);
+  false,
+  self);
   </script>
 
 
@@ -172,7 +175,8 @@ Returning location for <Content object at 0x...>
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
-  false);
+  false,
+  self);
   </script>
 
 
