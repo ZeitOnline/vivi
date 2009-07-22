@@ -60,6 +60,16 @@ Let's see if is_hidden works:
 True
 >>> preferences.is_hidden(repository['online']['2007'])
 False
+>>> preferences.get_hidden_containers()
+<BTrees.OIBTree.OITreeSet object at 0x...>
+>>> list(preferences.get_hidden_containers())
+[u'http://xml.zeit.de/2006',
+ u'http://xml.zeit.de/online/2005',
+ u'http://xml.zeit.de/online/2006',
+ u'http://xml.zeit.de/politik.feed',
+ u'http://xml.zeit.de/testcontent',
+ u'http://xml.zeit.de/wirtschaft.feed']
+
 
 Let's show a container:
 

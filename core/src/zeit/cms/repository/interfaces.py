@@ -136,3 +136,6 @@ class IUserPreferences(zope.interface.Interface):
 
     def is_hidden(container):
         """Return if the container is hidden."""
+
+    def get_hidden_containers():
+        """Returen a set of hidden containers."""

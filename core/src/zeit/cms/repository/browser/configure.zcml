@@ -29,8 +29,8 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="10_navtree"
     manager="zeit.cms.browser.interfaces.ISidebar"
-    template="navtree.pt"
     class=".repository.HTMLTree"
+    template="navtree.pt"
     permission="zope.View"
     />
 

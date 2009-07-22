@@ -1,11 +1,8 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.cachedescriptors.property
-import zope.component
-import zope.formlib.form
-import zope.viewlet.viewlet
-
+from zeit.cms.i18n import MessageFactory as _
+import hashlib
 import zeit.cms.browser.form
 import zeit.cms.browser.tree
 import zeit.cms.browser.view
@@ -13,7 +10,10 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.workingcopy.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.cachedescriptors.property
+import zope.component
+import zope.formlib.form
+import zope.viewlet.viewlet
 
 
 class Repository(object):
@@ -23,11 +23,31 @@ class Repository(object):
             zeit.cms.repository.interfaces.IRepository)
 
 
-class HTMLTree(zope.viewlet.viewlet.ViewletBase):
+class HTMLTree(zope.viewlet.viewlet.ViewletBase,
+               zeit.cms.browser.view.Base):
     """view class for navtree"""
 
     def render(self):
         return self.index()
+
+    @zope.cachedescriptors.property.Lazy
+    def tree_view(self):
+        return zope.component.getMultiAdapter(
+            (self.repository, self.request), name='tree.html')
+
+    @property
+    def tree_url(self):
+        preferences = zeit.cms.repository.interfaces.IUserPreferences(
+            zeit.cms.workingcopy.interfaces.IWorkingcopy(
+                self.request.principal))
+        hash_ = hashlib.md5()
+        for container in preferences.get_hidden_containers():
+            hash_.update(container)
+        hash_.update('TREE')
+        for container in sorted(self.tree_view.treeState):
+            hash_.update(container)
+        return '%s/++noop++%s/@@tree.html' % (self.url(self.repository),
+                                              hash_.hexdigest())
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
@@ -41,6 +61,12 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     root_name = 'Repository'
     key = __module__ + '.Tree'
+
+    def __call__(self):
+        response = self.request.response
+        response.setHeader('Cache-Control', 'private; max-age=360')
+
+        return super(Tree, self).__call__()
 
     def listContainer(self, container):
         for obj in sorted(container.values(),

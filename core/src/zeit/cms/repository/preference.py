@@ -54,6 +54,9 @@ class UserPreferences(persistent.Persistent,
     def is_hidden(self, container):
         return container.uniqueId in self._hidden_containers
 
+    def get_hidden_containers(self):
+        return self._hidden_containers
+
     def _set_default_hidden_containers(self):
         hidden = set()
         shown = set()

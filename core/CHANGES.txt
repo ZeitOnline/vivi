@@ -10,6 +10,9 @@ zeit.cms changes
 - Ungültige Ressorts und Unterressorts werden jetzt im CMS angezeigt (via
   #5431).
 
+- Navigationsbaum wird asynchron geladen und zwischengespeichert. Dies sollte
+  die Ladezeiten deutlich verbessern.
+
 Technisches
 +++++++++++
 

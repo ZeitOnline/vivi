@@ -221,6 +221,10 @@ table.properties textarea {
     padding-bottom: 2em;
 }
 
+#NavtreePanel .PanelContent {
+  height: 20em;
+}
+
 /* Hide the root node from repository and clipboard. Also move those trees a
    bit more to the left */
 #clipboardcontents .Root > p,

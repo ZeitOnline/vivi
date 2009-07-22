@@ -6,26 +6,27 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.IRepository"
-    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="tree.html"
     class=".repository.Tree"
+    permission="zope.View"
     allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
 
   <browser:page
-    name="view.html"
     for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
     class="zeit.cms.browser.listing.Listing"
     template="content_listing.pt"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"
     menu="zeit-context-views" title="View"
     />
 
   <browser:defaultView
     for="zeit.cms.repository.interfaces.IFolder"
-    name="view.html"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
     />
 
   <browser:containerViews

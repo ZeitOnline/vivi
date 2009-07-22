@@ -29,20 +29,14 @@ class ITestInterface(zope.interface.Interface):
     pass
 
 
-class DAVTest(zope.app.testing.functional.BrowserTestCase):
-
-    layer = zeit.cms.testing.cms_layer
+class DAVTest(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(DAVTest, self).setUp()
-        self.setSite(self.getRootFolder())
         self.content = zeit.cms.repository.unknown.PersistentUnknownResource(
             u'data')
-        zeit.cms.testing.create_interaction()
 
     def tearDown(self):
-        zope.security.management.endInteraction()
-        self.setSite(None)
         super(DAVTest, self).tearDown()
 
     def test_provides_stored_in_property(self):

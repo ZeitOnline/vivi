@@ -1,12 +1,11 @@
 <div xmlns:panel="http://namespaces.gocept.com/panel"
   tal:define="panel_id string:NavtreePanel;
-              tree_view nocall:view/repository/@@tree.html;
-              tree_url string:${view/repository/@@absolute_url}/@@tree.html;
+              tree_view nocall:view/tree_view;
+              tree_url view/tree_url;
               panel_handlers nocall:context/@@panel_handlers"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
                   id panel_id"
-  i18n:domain="zeit.cms"
-  panel:flex="2">
+  i18n:domain="zeit.cms">
 
   
   <tal:replace replace="resource_library:zeit.cms.tree" />
@@ -18,15 +17,21 @@
     </a> 
   </h1>
   
-  <div id="navtreecontents" class="PanelContent Tree"
-    tal:content="structure tree_view">
-    Navigation tree
+  <div id="navtreecontents" class="PanelContent Tree">
+    
   </div>
   <script type="text/javascript"
     tal:content="string:
       var navtree = new Tree('$tree_url', 'navtreecontents');
-      connect(navtree, 'state-changed', function(event) {
-        signal('sidebar', 'panel-content-changed');
+      (function() {
+        var ident = MochiKit.Signal.connect(
+          window, 'onload', function() {
+            navtree.loadTree();
+            MochiKit.Signal.disconnect(ident);
+         });
+      })();
+      MochiKit.Signal.connect(navtree, 'state-changed', function(event) {
+        MochiKit.Signal.signal('sidebar', 'panel-content-changed');
       });
       ">
   </script>

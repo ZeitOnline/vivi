@@ -15,34 +15,88 @@ Create a browser first:
 Tree Rendering
 ==============
 
-The tree is rendered  in the sidebar all the time:
+The tree is rendered  in the sidebar all the time. But it is loaded
+asynchronously:
 
 >>> browser.open('http://localhost/++skin++cms/')
->>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
+>>> navtree = browser.etree.xpath("//html:div[@id='NavtreePanel']",
 ...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
+>>> print lxml.etree.tostring(navtree, pretty_print=True),
+<div xmlns:panel="http://namespaces.gocept.com/panel" xmlns="http://www.w3.org/1999/xhtml" class="panel unfolded" id="NavtreePanel">
+  <h1>
+    <a href="http://localhost/++skin++cms/repository">
+        Dateiverwaltung
+    </a>
+  </h1>
+  <div id="navtreecontents" class="PanelContent Tree">
+  </div>
+  <script type="text/javascript">
+      var navtree = new Tree('http://localhost/++skin++cms/repository/++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html', 'navtreecontents');
+      (function() {
+        var ident = MochiKit.Signal.connect(
+          window, 'onload', function() {
+            navtree.loadTree();
+            MochiKit.Signal.disconnect(ident);
+         });
+      })();
+      MochiKit.Signal.connect(navtree, 'state-changed', function(event) {
+        MochiKit.Signal.signal('sidebar', 'panel-content-changed');
+      });
+      </script>
+</div>
+
+The noop in the URL is actually a hash of the user's tree state. Load the tree:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/'
+...     '++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html')
+>>> print browser.headers
+Status: 200 Ok
+Cache-Control: private; max-age=360
+Content-Length: 831
+Content-Type: text/html;charset=utf-8
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+>>> print browser.contents,
   <ul>
       <li active="True" class="Root">
         <p>
-        <a href="...">Repository</a>
-        ...
-        <ul>
-          <li...online...
-          <li...2007...
-        </ul>
+        <a href="http://localhost/++skin++cms/repository">Repository</a>
+        <span class="uniqueId">None</span>
+      </p>
+  <ul>
+      <li action="expand" class="NotRoot"
+          uniqueid="http://xml.zeit.de/online">
+        <p>
+        <a href="http://localhost/++skin++cms/repository/online">online</a>
+        <span class="uniqueId">http://xml.zeit.de/online</span>
+      </p>
       </li>
-   </ul>
-</div>
+      <li action="expand" class="NotRoot"
+          uniqueid="http://xml.zeit.de/2007">
+        <p>
+        <a href="http://localhost/++skin++cms/repository/2007">2007</a>
+        <span class="uniqueId">http://xml.zeit.de/2007</span>
+      </p>
+      </li>
+  </ul>
+      </li>
+  </ul>
+
+The currently visited URL is transmitted as an argument. Define a helper
+function:
+
+>>> import urllib
+>>> def open_tree(url):
+...     query = urllib.urlencode(dict(view_url=url))
+...     browser.open(
+...         'http://localhost/++skin++cms/repository/'
+...         '++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html?' + query)
 
 
 When we visit `online` it is *not* automatically expanded while visiting it:
 
->>> browser.open('http://localhost/++skin++cms/repository/online')
->>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
+>>> open_tree('http://localhost/++skin++cms/repository/online')
+>>> print browser.contents
  <ul>
     <li active="True" class="Root">
       <p>
@@ -54,7 +108,6 @@ When we visit `online` it is *not* automatically expanded while visiting it:
       </ul>
     </li>
  </ul>
-</div>
 
 
 Now we expand online/2007. This is done via an ajax request. Thus the returned
@@ -86,11 +139,8 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 Since we've explicitly expanded the tree via an ajax request (i.e. by clicking
 on the + icon) the tree stays expanded even when we're not inside online:
 
->>> browser.open('http://localhost/++skin++cms/repository')
->>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
+>>> open_tree('http://localhost/++skin++cms/repository')
+>>> print browser.contents,
   <ul>
       <li active="True" class="Root">
         <p>
@@ -106,7 +156,6 @@ on the + icon) the tree stays expanded even when we're not inside online:
         </ul>
       </li>
    </ul>
-</div>
 
 
 Hidden Containers
@@ -116,8 +165,8 @@ Users often do not want to see certain containers, so they can hide them.
 Initially most containers are hidden actually. If 2006 was shown it would be
 between online/2007 and 2007:
 
->>> print browser.contents
-<?xml ...
+>>> print browser.contents.strip(),
+<ul>...
       <li action="expand" class="NotRoot"
           uniqueid="http://xml.zeit.de/online/2007">
           <p>
@@ -137,16 +186,12 @@ between online/2007 and 2007:
   </ul>
       </li>
   </ul>
-  ...
 
 
 When we are *inside* a hidden container, it is shown nevertheles:
 
->>> browser.open('http://localhost/++skin++cms/repository/2006')
->>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
+>>> open_tree('http://localhost/++skin++cms/repository/2006')
+>>> print browser.contents,
   <ul>
       <li active="True" class="Root">
         <p>
@@ -163,7 +208,6 @@ When we are *inside* a hidden container, it is shown nevertheles:
         </ul>
       </li>
    </ul>
-</div>
 
 
 Let's explicitly "show' the 2006 container now:
@@ -177,11 +221,8 @@ Let's explicitly "show' the 2006 container now:
 
 The navigation tree contains the 2006 even when looking at the root:
 
->>> browser.open('http://localhost/++skin++cms/repository/')
->>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
+>>> open_tree('http://localhost/++skin++cms/repository/')
+>>> print browser.contents,
   <ul>
       <li active="True" class="Root">
         <p>
@@ -198,7 +239,6 @@ The navigation tree contains the 2006 even when looking at the root:
         </ul>
       </li>
    </ul>
-</div>
 
 A shown container cant't be shown twice:
 
@@ -216,10 +256,8 @@ A shown container can be hidden again though:
     <li class="message">"2006" is now hidden from the navigation tree.</li>
     ...
 
->>> navtree = browser.etree.xpath("//html:div[@id='navtreecontents']",
-...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True)
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:panel="http://namespaces.gocept.com/panel" id="navtreecontents" class="PanelContent Tree">
+>>> open_tree('http://localhost/++skin++cms/repository/2006')
+>>> print browser.contents,
   <ul>
       <li active="True" class="Root">
         <p>
@@ -235,7 +273,6 @@ A shown container can be hidden again though:
         </ul>
       </li>
    </ul>
-</div>
 
 Now, of course, after showing, the `Hide` action is no longer available:
 
