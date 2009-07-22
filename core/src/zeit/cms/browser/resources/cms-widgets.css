@@ -12,7 +12,7 @@
 }
 
 .contentListing > tbody > tr.selected > td {
-  background-color: #ffdd11;
+  background-color: #d5dee7;
 }
 
 .contentListing > thead > tr > th {
@@ -196,9 +196,13 @@ table.properties textarea {
 
 .Tree li[action="collapse"] {
    list-style-image: url("layout/minus.png");
+   color: #000000 !important;
+
 }
 .Tree ul > li[action="collapse"].collapse:last-child {
    list-style-image: url("layout/minus_lastchild.png");
+   color: #000000 !important;
+
 }
 .Tree li.Root:last-child {
    list-style: none;
@@ -206,14 +210,18 @@ table.properties textarea {
 
 .Tree li[action="expand"] {
    list-style-image: url("layout/plus.png");
+   color: #8A0808 !important;
 }
 .Tree li[action="expand"]:last-child {
    list-style-image: url("layout/plus_lastchild.png");
+   color: #8A0808 !important;
+
 }
 
 .Tree li[active] > p > a {
   font-weight: bold;
-  background-color: #ffdd11;
+   color: #8A0808;
+
 }
 
 .TreeHover > *:first-child {
@@ -274,7 +282,7 @@ table.properties textarea {
 }
 
 #tooltip {
-  background-color: #ffdd11;
+  background-color: #d5dee7;
   max-width: 18em;
 }
 
@@ -459,7 +467,7 @@ table.properties textarea {
 }
 
 .haveMessages.staticErrorText {
-  background-color: #fd1;
+  background-color: #d5dee7;
   padding: 0.5em 1em;
   float: right;
   color: black;
