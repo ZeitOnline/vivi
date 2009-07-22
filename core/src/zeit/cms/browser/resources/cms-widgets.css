@@ -471,7 +471,7 @@ table.properties textarea {
 }
 
 .haveMessages.staticErrorText {
-  background-color: #d5dee7;
+  background-color: #ffffff;
   padding: 0.5em 1em;
   float: right;
   color: black;
@@ -490,8 +490,8 @@ table.properties textarea {
 #messages ul {
   padding: 1em 1em 0em 1em;
   margin: 0;
-  background-color: #fcfcfc;
-  border: 2px solid #ffdd11;
+  background-color: #f1f4f9;
+  border: 2px solid #d5dee7;
 }
 
 #messages.hiddenMessages ul {
@@ -504,7 +504,7 @@ table.properties textarea {
 }
 
 #messages .hideText {
-  background-color: #fd1;
+  background-color: #d5dee7;
   text-align: right;
   padding: 0.5em 1em;
   cursor: pointer;
