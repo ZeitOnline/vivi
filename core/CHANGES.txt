@@ -1,8 +1,12 @@
 zeit.content.cp changes
 =======================
 
-0.10 (unreleased)
+0.10 (2009-07-20)
 -----------------
+
+- RSS-Block zeigt Fehler sinnvoller an (#5678).
+
+- Speichern funktioniert zuverlässiger (#5707, #5669).
 
 - Bessere Anzeige von Fehlern im RSS-Block (#5678).
 
