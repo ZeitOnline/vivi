@@ -64,7 +64,7 @@ h2 {
 .byline {
   text-transform: uppercase;
 }
-
+    
 pre {
   border: none;
 }
@@ -328,8 +328,13 @@ pre {
 }
 
 #actionsView {
+  background-color: #d5dee7;
   clear: both;
-  margin-left: 0.5em;
+}
+
+#actionsView{
+  line-height: 35px;
+  padding-left: 10px;
 }
 
 
