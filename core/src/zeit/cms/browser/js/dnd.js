@@ -193,10 +193,38 @@ var ObjectReferenceWidget = Class.extend({
         }
     },
 
-    handleObjectSelected: function(unique_id) {
-        this.lightbox.close();
-        this.lightbox = null;
-        this.selectObject(unique_id);
+    handleObjectSelected: function(unique_id, element) {
+        var self = this;
+        if (isUndefinedOrNull(element)) {
+            self.lightbox.close();
+            self.lightbox = null;
+        } else { 
+            MochiKit.Style.makePositioned(element);
+            var pos = MochiKit.Style.getElementPosition(element);
+            var element = element.cloneNode(true);
+            $('body').appendChild(element);
+            MochiKit.Style.setElementPosition(element, pos);
+            MochiKit.Style.makeClipping(element);
+            self.lightbox.close();
+            self.lightbox = null;
+            // Visual candy
+            var pos = MochiKit.Style.getElementPosition(self.input);
+            var move = new MochiKit.Visual.Move(element, {
+                mode: 'absolute',
+                sync: true,
+                x: pos.x,
+                y: pos.y,
+            });
+            var shrink = MochiKit.Visual.Scale(element, 0, {
+                sync: true
+            });
+            new MochiKit.Visual.Parallel([move, shrink], {
+                afterFinish: function() {
+                    self.selectObject(unique_id);
+                    element.parentNode.removeChild(element);
+                },
+            })
+        }
     },
 
     browseObjects: function(event) {
