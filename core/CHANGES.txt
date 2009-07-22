@@ -1,8 +1,8 @@
 zeit.content.gallery changes
 ============================
 
-2.0 (unreleased)
------------------
+2.0 (2009-07-22)
+----------------
 
 - Skalieren von Bildern in der Bildergallerie (#4973).
 
