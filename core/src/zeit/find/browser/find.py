@@ -65,6 +65,11 @@ class SearchForm(JSONView):
         return sorted(result, key=lambda r:r['title'])
 
 
+def get_favorited_css_class(favorited):
+    return 'toggle_favorited ' + (
+        'favorited' if favorited else 'not_favorited')
+
+
 class SearchResult(JSONView):
 
     template = 'search_result.jsont'
@@ -147,8 +152,7 @@ class SearchResult(JSONView):
                     'end_date': format_date(end_date),
                     'favorite_url': self.url('toggle_favorited', uniqueId),
                     'favorited': favorited,
-                    'favorited_css_class': (
-                        'favorited' if favorited else 'not_favorited'),
+                    'favorited_css_class': get_favorited_css_class(favorited),
                     'icon': icon,
                     'preview_url': preview_url,
                     'publication_status': publication_status,
@@ -287,20 +291,23 @@ class ExpandedSearchResult(JSONView):
 
 
 class ToggleFavorited(JSONView):
+
     template = 'toggle_favorited.jsont'
 
     def json(self):
-        r = self.resources
         content = zeit.cms.interfaces.ICMSContent(
             self.request.get('uniqueId'))
-
         favorites = get_favorites(self.request)
         if content.__name__ in favorites:
             del favorites[content.__name__]
-            return {'favorited': r['not_favorite.png']()}
-        favorites[content.__name__] = (zeit.cms.clipboard.
-                                       interfaces.IClipboardEntry(content))
-        return {'favorited': r['favorite.png']()}
+            favorited = False
+        else:
+            favorites[content.__name__] = (
+                zeit.cms.clipboard.interfaces.IClipboardEntry(content))
+            favorited = True
+        return {
+            'favorited_css_class': get_favorited_css_class(favorited),
+        }
 
 
 class Favorites(JSONView):

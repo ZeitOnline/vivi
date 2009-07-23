@@ -51,7 +51,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
         MochiKit.Signal.connect('search_button', 'onclick', function(e) {
             self.update_search_result();
         });
-        MochiKit.Signal.connect('cp-search', 'onkeydown', function(e) {
+        MochiKit.Signal.connect('search_form', 'onkeydown', function(e) {
             if (e.key().string == 'KEY_ENTER') {
                 self.update_search_result();
                 e.stop();
@@ -255,8 +255,8 @@ zeit.find.SearchResultsDraggable = zeit.find.Component.extend({
         });
     },
 
-
 });
+
 
 zeit.find.ToggleFavorited = zeit.find.Component.extend({
 
@@ -288,7 +288,9 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
     toggle: function(toggle_favorited, favorite_url) {
         var self = this;
         var d = self.favorited.render(toggle_favorited, favorite_url);
-        d.addCallback(function(result) {
+        d.addCallback(function(json) {
+            MochiKit.DOM.setElementClass(
+                toggle_favorited, json['favorited_css_class']);
             MochiKit.Signal.signal(window, 'zeit.find.update-favorites');
             return result;
         });
@@ -450,4 +452,47 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
             
         });
     }
+});
+
+
+zeit.find.Selector = gocept.Class.extend({
+    
+    construct: function(lightbox_form, search) {
+        var self = this;
+        self.lightbox_form = lightbox_form;
+        self.search = search;
+        var ident = MochiKit.Signal.connect(
+            self.search.main_view, 'load', function() {
+            MochiKit.Signal.disconnect(ident);
+            self.event = MochiKit.Signal.connect(
+                'search_result', 'onclick', self, self.select_object);
+        });
+    },
+
+    select_object: function(event) {
+        var self = this;
+        var target = event.target();
+        if (target.nodeName == 'A') {
+            return
+
+        }
+        var unique_id = null;
+        var selected_element = null;
+        while (isNull(unique_id) ||
+               MochiKit.DOM.hasElementClass(target, 'search_entry')) {
+            var unique_id = MochiKit.DOM.getFirstElementByTagAndClassName(
+                null, 'uniqueId', target);
+            selected_element = target;
+            target = target.parentNode;
+        }
+        if (isNull(unique_id)) {
+            return
+        }
+        event.stop();
+        unique_id = unique_id.textContent;
+        MochiKit.Signal.signal(
+            self.lightbox_form,
+            'zeit.cms.ObjectReferenceWidget.selected',
+            unique_id, selected_element);
+    },
 });

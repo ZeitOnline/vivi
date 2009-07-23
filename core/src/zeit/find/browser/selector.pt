@@ -1,0 +1,21 @@
+<tal:block i18n:domain="zeit.cms">
+  <h1 i18n:translate="">Search</h1>
+
+  <div id="cp-search">
+  <div id="search_form"></div>
+  </div>
+
+  <script language="javascript" tal:content="string:
+  (function() {
+    var url = '${context/++resource++zeit.find}';
+    zeit.cms.import(url+'/find.css');
+    var d = zeit.cms.import(url+'/find.js');
+    d.addCallback(function(result) {
+      var search = new zeit.find.Search()
+      var selector = new zeit.find.Selector(self, search);
+      search.render();
+      return result;
+    });
+    })();  
+  "></script>
+</tal:block>

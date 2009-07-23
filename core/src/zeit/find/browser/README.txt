@@ -86,10 +86,10 @@ Adding a content object as a favorite requires the call of the
 
 >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
 
-It returns the location of the icon with the new status (favorite or not):
+It returns the css class for the favorite star:
 
->>> print browser.contents
-{"favorited": ".../favorite.png", ...}
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'favorited_css_class': 'toggle_favorited favorited',...
 
 The clipboard now has a clip "Favoriten" with one entry:
 
@@ -111,8 +111,8 @@ The favorites tab now lists the favorited object:
 Calling the same view again removes the object from the favorites:
 
 >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
->>> print browser.contents
-{"favorited": ".../not_favorite.png", ...}
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'favorited_css_class': 'toggle_favorited not_favorited',...
 
 The clip persists, but is now empty:
 

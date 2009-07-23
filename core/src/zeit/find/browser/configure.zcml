@@ -3,7 +3,15 @@
   xmlns:browser="http://namespaces.zope.org/browser">
 
   <resourceLibrary
+    name="zeit.cms.javascript.objectbrowser"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    require="zeit.cms.javascript.base">
+    <directory source="resources" include="objectbrowser.js" />
+  </resourceLibrary>
+
+  <resourceLibrary
     name="zeit.find"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     require="mochikit
              mochikit.DragAndDrop
              gocept.mochikit.jsclass
@@ -76,6 +84,16 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".find.ForThisPage"
     name="for-this-page-search"
+    permission="zope.View"
+    />
+
+  <!-- selector -->
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    layer="zeit.cms.browser.interfaces.IViviSkin"
+    name="get_object_browser"
+    template="selector.pt"
     permission="zope.View"
     />
 

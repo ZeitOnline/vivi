@@ -3,8 +3,7 @@
   <span class="uniqueId">{uniqueId}</span>
   <div class="supertitle">
     <img src="{icon}" />
-    <span class="toggle_favorited {favorited_css_class}">
-    </span>
+    <a href="#" class="{favorited_css_class}"></a>
     <img src="{publication_status}" />
     {supertitle} 
   </div>  
@@ -19,9 +18,9 @@
     <a class="author_filter">{@}</a>
     {.end}
   </div>
-  <div class="related_links">
+  <a href="#" class="related_links">
    Relateds
-  </div>
+  </a>
   <div class="preview">
     <a target="_blank" href="{preview_url}">Vorschau</a>
   </div>
