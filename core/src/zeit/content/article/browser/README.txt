@@ -204,23 +204,10 @@ Let's relate a content object:
 False
 
 
-Associate an infobox[1]_:
-
->>> browser.getControl('Infobox').value = 'http://xml.zeit.de/infobox'
-
-
 We also want to add an image group[2]_.
 
 >>> browser.getControl('Add Images').click()
 >>> browser.getControl(name="form.images.1.").value = group.uniqueId
-
-Also associate a gallery[3]_:
-
->>> browser.getControl('Image gallery').value = gallery.uniqueId
-
-Also associate a portraitbox[#portraitbox]_:
-
->>> browser.getControl('Portraitbox').value = 'http://xml.zeit.de/pb'
 
 Aggregate the comments of another object:
 
@@ -234,10 +221,8 @@ Apply changes:
 <?xml ...
     ...Updated on...
 
-Verify some values:
+Verify:
 
->>> browser.getControl('Infobox').value
-'http://xml.zeit.de/infobox'
 >>> browser.getControl(name="form.images.0.").value
 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 
@@ -675,43 +660,6 @@ prevent entering more than the allowed length. Makre sure the widget is used:
         <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
         ...
 
-
-
-.. [1] Create an infobox
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Create the infobox
-
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-    >>> import zeit.content.infobox.infobox
-    >>> infobox = zeit.content.infobox.infobox.Infobox()
-    >>> infobox.supertitle = u'Altersvorsorge'
-    >>> import zope.publisher.browser
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal('bob')
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)
-    >>> infobox.contents = (
-    ...     ('Informationen', '<p>Nutzen Sie die Renteninformation, etc</p>'),
-    ...     ('Fehlende Versicherungszeiten',
-    ...      '<p>Pruefen Sie, ob in Ihrer Renteninformation alle</p>'))
-    >>> repository['infobox'] = infobox
-    >>> zope.security.management.endInteraction()
-
-    Commit the transaction so our browser sees the change. Also unset the site
-    again:
-
-    >>> import transaction
-    >>> transaction.commit()
-    >>> zope.app.component.hooks.setSite(old_site)
-
 .. [2] Create an image group. To create it we need to setup the site:
 
     >>> import zope.app.component.hooks
@@ -729,40 +677,3 @@ prevent entering more than the allowed length. Makre sure the widget is used:
     >>> import transaction
     >>> transaction.commit()
     >>> zope.app.component.hooks.setSite(old_site)
-
-.. [3] Create an image gallery.
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Create and add:
-
-    >>> import zeit.content.gallery.gallery
-    >>> gallery = zeit.content.gallery.gallery.Gallery()
-    >>> repository['gallery'] = gallery
-
-    >>> import transaction
-    >>> transaction.commit()
-    >>> zope.app.component.hooks.setSite(old_site)
-
-
-.. [#portraitbox] Create a portraitbox
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Create and add:
-
-    >>> import zeit.content.portraitbox.portraitbox
-    >>> pb = zeit.content.portraitbox.portraitbox.Portraitbox()
-    >>> pb.name = 'Harry Hirsch'
-    >>> pb.text = 'hirsch'
-    >>> repository['pb'] = pb
-
-    >>> import transaction
-    >>> transaction.commit()
-    >>> zope.app.component.hooks.setSite(old_site)
-
-

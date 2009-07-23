@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Adapter zur Volltextindizierung hinzugefügt.
 
+- Abhängigkeiten zu anderen Paketen reduziert.
+
 
 2.1 (2009-06-18)
 ----------------

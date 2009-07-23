@@ -1,33 +1,23 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.content.article.i18n import MessageFactory as _
 import StringIO
 import datetime
-
-import zope.formlib.form
-import zope.publisher.interfaces.browser
-import zope.session.interfaces
-
-import zope.app.appsetup.interfaces
-
 import gocept.form.grouped
 import zc.resourcelibrary
-
 import zeit.cms.browser.form
-import zeit.cms.content.browser.interfaces
 import zeit.cms.content.browser.form
+import zeit.cms.content.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
 import zeit.cms.interfaces
-import zeit.wysiwyg.interfaces
-from zeit.content.article.i18n import MessageFactory as _
-
 import zeit.content.article.interfaces
-import zeit.content.gallery.interfaces
-import zeit.content.image.interfaces
-import zeit.content.infobox.interfaces
-import zeit.content.portraitbox.interfaces
+import zeit.wysiwyg.interfaces
+import zope.app.appsetup.interfaces
+import zope.formlib.form
+import zope.publisher.interfaces.browser
+import zope.session.interfaces
 
 
 ITemplateChooserSchema = (
@@ -58,7 +48,6 @@ class ArticleFormBase(object):
         gocept.form.grouped.Fields(
             _('misc.'),
             ('authors', 'copyrights',
-             'related', 'infobox', 'images',
              'pageBreak', 'paragraphs', 'vg_wort_id',
              'automaticMetadataUpdateDisabled', 'template', 'layout'),
             css_class='column-right'),
