@@ -3,6 +3,7 @@
 """Connector which integrates into Zope CA and transaction machinery."""
 
 import ZConfig
+import ZODB.POSException
 import gocept.cache.property
 import logging
 import os
@@ -160,7 +161,13 @@ class DataManager(object):
     def _cleanup(self):
         for method, args, kwargs in self.cleanup:
             log.info("Abort cleanup: %s(%s, %s)" % (method, args, kwargs))
-            method(*args, **kwargs)
+            try:
+                method(*args, **kwargs)
+            except ZODB.POSException.ConflictError:
+                raise
+            except:
+                log.warning("Cleanup failed", exc_info=True)
+
         self.cleanup[:] = []
 
 

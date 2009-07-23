@@ -97,6 +97,18 @@ The resource is no longer locked:
 (None, None, False)
 
 
+When the lock times out in between the clean up doesn't fail:
+
+>>> import datetime
+>>> import pytz
+>>> until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=2)
+>>> token = connector.lock(res.id, 'frodo', until=until)
+>>> import time
+>>> time.sleep(2)
+>>> transaction.abort()
+>>> connector.locked(res.id)
+(None, None, False)
+
 Make sure the resource stays locked on commit:
 
 >>> connector.lock(res.id, 'frodo', until=None)

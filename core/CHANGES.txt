@@ -6,6 +6,8 @@ CHANGES
 
 - Reuse Blobs instead of creating new ones when updating resources (#5580).
 
+- Don't fail in abort clean up when a lock has timed out (#5578).
+
 1.15.1 (2009-06-25)
 -------------------
 
