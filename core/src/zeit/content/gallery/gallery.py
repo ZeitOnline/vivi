@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import copy
 import gocept.lxml.interfaces
+import grokcore.component
 import lxml.etree
 import lxml.objectify
 import rwproperty
@@ -363,3 +364,18 @@ def update_gallery_on_entry_change(entry, event):
 @zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
 def metadata_for_entry(context):
     return zeit.content.image.interfaces.IImageMetadata(context.image)
+
+
+class SearchableText(grokcore.component.Adapter):
+    """SearchableText for a gallery."""
+
+    grokcore.component.context(zeit.content.gallery.interfaces.IGallery)
+    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+
+    def getSearchableText(self):
+        main_text = []
+        for p in self.context.xml.body.xpath("//p"):
+            text = unicode(p).strip()
+            if text:
+                main_text.append(text)
+        return main_text

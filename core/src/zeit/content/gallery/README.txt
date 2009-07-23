@@ -841,3 +841,11 @@ The keys also correct(ed) and the names are set:
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
+
+
+Searchable text
+===============
+
+>>> adapter = zope.index.text.interfaces.ISearchableText(gallery)
+>>> adapter.getSearchableText()
+[u'Im holl\xc3\xa4ndischen Kapit\xc3\xa4nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie\xc3\x9f aber...']
