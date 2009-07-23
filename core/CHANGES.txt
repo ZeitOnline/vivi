@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-1.16.1 (unrelease)
-------------------
+1.16.1 (2099-07-23)
+-------------------
 
 - Fixed a unicode bug in cache (related to #5580).
 
