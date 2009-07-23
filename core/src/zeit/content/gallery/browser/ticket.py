@@ -75,7 +75,7 @@ def get_hash(rnd, principal):
     return pack(rnd, hash_, principal)
 
 
-format = '>i28s'
+format = '>q28s'
 
 def pack(rnd, hash_, principal):
     packed = struct.pack(format, rnd, hash_) + principal
