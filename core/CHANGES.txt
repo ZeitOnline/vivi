@@ -8,6 +8,8 @@ zeit.content.article changes
 
 - Abhängigkeiten zu anderen Paketen reduziert.
 
+- CDS-Import von Artikeln mit ungültigem Ressort korrigiert, nach dem ungültige
+  Ressorts jetzt im CMS angezeigt werden.
 
 2.1 (2009-06-18)
 ----------------
