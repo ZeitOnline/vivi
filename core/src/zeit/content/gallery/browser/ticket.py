@@ -55,7 +55,7 @@ class TicketIssuer(object):
         if zope.authentication.interfaces.IUnauthenticatedPrincipal.providedBy(
             principal):
             raise zope.security.interfaces.Unauthorized
-        principal = principal.id
+        principal = str(principal.id)
         rnd = random.randint(-sys.maxint, sys.maxint)
         self.request.response.setHeader('Content-Type', 'text/plain')
         self.request.response.setHeader('Cache-Control', 'no-cache')
