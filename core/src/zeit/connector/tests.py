@@ -252,13 +252,13 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
         self.cache = zeit.connector.cache.ResourceCache()
         self.getRootFolder()['cache'] = self.cache
         self.properties = {('getetag', 'DAV:'): 'etag'}
-        self.uniqueId = 'foo'
+        self.uniqueId = u'föö'
         self.key = zeit.connector.cache.get_storage_key(self.uniqueId)
 
     def _store(self, d1, d2):
-        self.cache.setData('foo', self.properties, d1)
+        self.cache.setData(self.uniqueId, self.properties, d1)
         store1 = self.cache._data[self.key]
-        self.cache.setData('foo', self.properties, d2)
+        self.cache.setData(self.uniqueId, self.properties, d2)
         store2 = self.cache._data[self.key]
         return store1, store2
 
@@ -292,14 +292,14 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
 
     def test_etag_migration(self):
         self.cache._etags = BTrees.family64.OO.BTree()
-        self.cache._etags[self.uniqueId] = 'etag'
+        self.cache._etags[self.key] = 'etag'
         data = StringIO.StringIO('data')
-        self.cache.setData('foo', self.properties, data)
-        del self.cache._data['foo'].etag
+        self.cache.setData(self.uniqueId, self.properties, data)
+        del self.cache._data[self.key].etag
         self.assertEquals(
             'data',
             self.cache.getData(self.uniqueId, self.properties).read())
-        del self.cache._etags[self.uniqueId]
+        del self.cache._etags[self.key]
         self.assertRaises(KeyError,
             self.cache.getData, self.uniqueId, self.properties)
         del self.cache._etags

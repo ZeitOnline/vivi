@@ -1,8 +1,10 @@
 CHANGES
 =======
 
-1.17 (unrelease)
-----------------
+1.16.1 (unrelease)
+------------------
+
+- Fixed a unicode bug in cache (related to #5580).
 
 1.16 (2009-07-23)
 -----------------
