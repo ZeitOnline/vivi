@@ -228,8 +228,9 @@ class SearchableText(grokcore.component.Adapter):
 
     def getSearchableText(self):
         main_text = []
-        for p in self.context.xml.body.findall('p'):
+        for p in self.context.xml.body.xpath("//p"):
             text = unicode(p).strip()
             if text:
                 main_text.append(text)
         return main_text
+
