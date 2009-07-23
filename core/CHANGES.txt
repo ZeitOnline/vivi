@@ -8,6 +8,13 @@ zeit.cms changes
   gleichzeitig veröffentlicht. Verschiedene Objekte werden weiterhin parallel
   veröffentlicht (#5579).
 
+Technisches
++++++++++++
+
+- JSONView verwendet busy-CSS-Klasse statt den Text "Loading"
+
+- JSONView gibt JSON in den Deferreds als Ergebnis aus.
+
 
 1.24 (2009-07-22)
 -----------------
