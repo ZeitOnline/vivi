@@ -1,6 +1,11 @@
 zeit.find changes
 =================
 
+0.8 (unreleased)
+----------------
+
+- Objectchooser with Search.
+
 0.7 (2009-07-22)
 ----------------
 
