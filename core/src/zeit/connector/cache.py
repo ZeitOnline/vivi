@@ -37,6 +37,8 @@ class StringRef(persistent.Persistent):
     def open(self, mode):
         return cStringIO.StringIO(self._str)
 
+    def update(self, new_data):
+        self._str = new_data
 
 class SlottedStringRef(StringRef):
     """A variant of StringRef using slots for less memory consumption."""
@@ -54,7 +56,6 @@ class ResourceCache(persistent.Persistent):
     BUFFER_SIZE = 10*1024
 
     def __init__(self):
-        self._etags = BTrees.family64.OO.BTree()
         self._data = BTrees.family64.OO.BTree()
         self._last_access_time = BTrees.family64.OI.BTree()
         self._access_time_to_ids = BTrees.family32.IO.BTree()
@@ -62,12 +63,17 @@ class ResourceCache(persistent.Persistent):
     def getData(self, unique_id, properties):
         key = get_storage_key(unique_id)
         current_etag = properties[('getetag', 'DAV:')]
-        cached_etag = self._etags.get(key)
+
+        value = self._data.get(key)
+        cached_etag = getattr(value, 'etag', None)
+        if cached_etag is None:
+            old_etags = getattr(self, '_etags', None)
+            if old_etags is not None:
+                cached_etag = old_etags.get(unique_id)
 
         if current_etag != cached_etag:
             raise KeyError(u"Object %r is not cached." % unique_id)
         self._update_cache_access(key)
-        value = self._data[key]
         if isinstance(value, str):
             log.warning("Loaded str for %s" % unique_id)
             raise KeyError(unique_id)
@@ -85,17 +91,28 @@ class ResourceCache(persistent.Persistent):
         log.debug('Storing body of %s with etag %s' % (
             unique_id, current_etag))
 
+
+        # Reuse previously stored container
+        store = self._data.get(key)
+
         target = cStringIO.StringIO()
 
         if hasattr(data, 'seek'):
             data.seek(0)
         s = data.read(self.BUFFER_SIZE)
-        if len(s) < self.BUFFER_SIZE:
+        if len(s) < self.BUFFER_SIZE and not isinstance(store, ZODB.blob.Blob):
             # Small object
             small = True
         else:
+            if isinstance(store, StringRef):
+                # Migrate to Blob from the stringref.
+                store = None
             small = False
-            blob = ZODB.blob.Blob()
+            if store is None:
+                blob = ZODB.blob.Blob()
+            else:
+                # Reuse the blob we already have
+                blob = store
             blob_file = blob.open('w')
             target = blob_file
 
@@ -104,13 +121,17 @@ class ResourceCache(persistent.Persistent):
             s = data.read(self.BUFFER_SIZE)
 
         if small:
-            store = SlottedStringRef(target.getvalue())
+            if store is None:
+                store = SlottedStringRef(target.getvalue())
+                self._data[key] = store
+            else:
+                store.update(target.getvalue())
         else:
             blob_file.close()
-            store = blob
+            if store is None:
+                self._data[key] = store = blob
 
-        self._etags[key] = current_etag
-        self._data[key] = store
+        store.etag = current_etag
         self._update_cache_access(key)
         transaction.savepoint(optimistic=True)
         return self._make_filelike(store)
@@ -175,7 +196,6 @@ class ResourceCache(persistent.Persistent):
             for id in id_set:
                 self._last_access_time.pop(id, None)
                 self._data.pop(id, None)
-                self._etags.pop(id, None)
         for access_time in access_times_to_remove:
             self._access_time_to_ids.pop(access_time, None)
 

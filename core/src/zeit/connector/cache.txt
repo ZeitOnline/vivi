@@ -24,7 +24,7 @@ For getting data from the cache, the cache needs the etag from the properties:
 >>> properties = {('getetag', 'DAV:'): 'hurz'}
 
 Initially the cache is empty and asking for a non  cached entry yields a
-KeyError.:
+KeyError:
 
 >>> cache.getData('some-id', properties)
 Traceback (most recent call last):
@@ -63,8 +63,6 @@ reference to a plain string:
 <cStringIO.StringI object at 0x...>
 >>> cached.open('r').read()
 'datadata/end of line.'
->>> cache._etags[get_storage_key('some-id')]
-'hurz'
 
 Also the access times are noted in the cache:
 
@@ -160,10 +158,6 @@ We don't have any data stored for the key now:
 Traceback (most recent call last):
     ...
 KeyError: ...
->>> cache._etags[get_storage_key('some-id')]
-Traceback (most recent call last):
-    ...
-KeyError: ...
 
 
 Large data handling
@@ -240,8 +234,6 @@ from the cache:
 All the cache parts are still not changed:
 
 >>> cache._p_changed
-False
->>> cache._etags._p_changed
 False
 >>> cache._data._p_changed
 False
