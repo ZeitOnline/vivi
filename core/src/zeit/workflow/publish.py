@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 """Publish and retract actions."""
 
+from __future__ import with_statement
+from zeit.cms.i18n import MessageFactory as _
 import ZODB.POSException
 import datetime
 import logging
@@ -10,6 +12,7 @@ import os.path
 import pytz
 import random
 import subprocess
+import threading
 import time
 import transaction
 import zeit.cms.interfaces
@@ -24,7 +27,6 @@ import zope.event
 import zope.interface
 import zope.publisher.interfaces
 import zope.security.management
-from zeit.cms.i18n import MessageFactory as _
 
 
 logger = logging.getLogger(__name__)
@@ -83,6 +85,10 @@ class Publish(object):
 
 
 
+active_objects = set()
+active_objects_lock = threading.Lock()
+
+
 class PublishRetractTask(object):
 
     zope.interface.implements(lovely.remotetask.interfaces.ITask)
@@ -92,6 +98,7 @@ class PublishRetractTask(object):
         logger.info("Running job %s" % jobid)
         uniqueId = input.uniqueId
         principal = input.principal
+
         self.login(principal)
 
         obj = self.repository.getContent(input.uniqueId)
@@ -100,7 +107,15 @@ class PublishRetractTask(object):
         retries = 0
         while True:
             try:
-                self.run(obj, info)
+                acquired = self.acquire_active_lock(uniqueId)
+                if acquired:
+                    self.run(obj, info)
+                else:
+                    self.log(
+                        obj, _('A publish/retract job is already active.'
+                               ' Aborting'))
+                    logger.info("Aborting parallel publish/retract of %r" % (
+                        uniqueId))
                 transaction.commit()
             except ZODB.POSException.ConflictError, e:
                 retries += 1
@@ -124,6 +139,20 @@ class PublishRetractTask(object):
             else:
                 # Everything okay. 
                 break
+            finally:
+                if acquired:
+                    self.release_active_lock(uniqueId)
+
+    def acquire_active_lock(self, uniqueId):
+        with active_objects_lock:
+            if uniqueId in active_objects:
+                return False
+            active_objects.add(uniqueId)
+            return True
+
+    def release_active_lock(self, uniqueId):
+        with active_objects_lock:
+            active_objects.remove(uniqueId)
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.

@@ -1,6 +1,14 @@
 zeit.cms changes
 ================
 
+1.25 (unreleased)
+-----------------
+
+- Es ist jetzt nicht mehr möglich, dass das CMS das selbe Objekte zwei mal
+  gleichzeitig veröffentlicht. Verschiedene Objekte werden weiterhin parallel
+  veröffentlicht (#5579).
+
+
 1.24 (2009-07-22)
 -----------------
 
