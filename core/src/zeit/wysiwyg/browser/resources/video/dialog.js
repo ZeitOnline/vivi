@@ -18,7 +18,9 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
 
         var id = self.container_class + 'Id';
         $('avid').value = self.get_value(id);
-        $('id2').value = self.get_value(id + '2');
+        if (!isNull($('id2'))) {
+            $('id2').value = self.get_value(id + '2');
+        }
         $('expires').value = self.get_value('expires');
         $('format').value = self.get_value('format');
     },
@@ -65,7 +67,9 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
         var self = this;
         var id = self.container_class + 'Id';
         self.set_value(id, $('avid').value);
-        if ($('id2').value) self.set_value(id + '2', $('id2').value);
+        if (!isNull($('id')) && $('id2').value) {
+            self.set_value(id + '2', $('id2').value);
+        }
         self.set_value('expires', $('expires').value);
         self.set_value('format', $('format').value);
     },
