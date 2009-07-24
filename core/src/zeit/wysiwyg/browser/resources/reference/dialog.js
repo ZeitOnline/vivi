@@ -116,12 +116,14 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
 
     id_to_url: function(unique_id) {
         return unique_id.replace(
-            'http://xml.zeit.de', oPage.application_url + '/repository');
+            'http://xml.zeit.de',
+            zeit.cms.get_application_url() + '/repository');
     },
 
     url_to_id: function(url) {
         return url.replace(
-            oPage.application_url + '/repository', 'http://xml.zeit.de');
+            zeit.cms.get_application_url() + '/repository',
+            'http://xml.zeit.de');
     },
 
     get_container: function() {
