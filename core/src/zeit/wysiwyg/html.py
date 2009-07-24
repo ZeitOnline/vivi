@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -643,6 +644,26 @@ class CitationStep(ConversionStep):
             values[name] = value
         new_node = lxml.objectify.E.citation(**values)
         return new_node
+
+class InlineElementAppendParagraph(ConversionStep):
+    """Add an empty paragraph after each inline element.
+
+    This is necessary to allow to position the cursor between two blocks.
+    The empty paragraph stripper will remove those paragraphs when converting
+    to XML.
+
+    """
+
+    weight = 100
+    xpath_xml = './/*[contains(@class, "inline-element")]'
+
+    def to_html(self, node):
+        index = node.getparent().index(node)
+        # Note: between the ' ' there is a non-breaking space.
+        p = lxml.objectify.E.p(u' ')
+        lxml.objectify.deannotate(p)
+        node.getparent().insert(index + 1, p)
+        return node
 
 
 class HTMLContentBase(object):

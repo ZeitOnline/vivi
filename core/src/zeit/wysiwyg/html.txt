@@ -620,6 +620,7 @@ information:
   <div class="expires">2000-11-30 13:00</div>
   <div class="format">large</div>
 </div>
+<p> </p>
 <p>Foo bar</p>
 
 When there is no expires or format, or empty ones, empty divs are rendered:
@@ -644,6 +645,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
   <div class="expires"></div>
   <div class="format"></div>
 </div>
+<p> </p>
 <p>Foo bar</p>
 
 On the way back the divs become a video node:
@@ -687,6 +689,8 @@ Double video
   <div class="expires"></div>
   <div class="format"></div>
 </div>
+<p> </p>
+
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <div class="inline-element video">
@@ -734,6 +738,7 @@ information:
   <div class="expires">2000-11-30 13:00</div>
   <div class="format">large</div>
 </div>
+<p> </p>
 <p>Foo bar</p>
 
 
@@ -758,6 +763,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
   <div class="expires"></div>
   <div class="format"></div>
 </div>
+<p> </p>
 <p>Foo bar</p>
 
 
@@ -816,6 +822,7 @@ after saving there is no more ``article_extra`` for a video:
   <div class="expires"></div>
   <div class="format"></div>
 </div>
+<p> </p>
 <p>Foo bar</p>
 
 
@@ -969,6 +976,7 @@ source contains entities:
 <div ...class="inline-element raw">&lt;embed foo="bar"/&gt;
 &lt;b&gt;booh&lt;/b&gt;
 </div>
+<p> </p>
 <p>Foo bar</p>
 
 The other way round converts a ``<div class="raw">`` to a ``<raw>`` tag:
@@ -1104,6 +1112,7 @@ Portraitbox
   <div class="href">http://xml.zeit.de/2006/pb</div>
   <div class="layout">short</div>
 </div>
+<p> </p>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element portraitbox">
@@ -1159,6 +1168,7 @@ Infobox
 <div class="inline-element infobox">
   <div class="href">http://xml.zeit.de/2006/ib</div>
 </div>
+<p> </p>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element infobox">
@@ -1194,6 +1204,7 @@ Gallery
 <div class="inline-element gallery">
   <div class="href">http://xml.zeit.de/2006/gal</div>
 </div>
+<p> </p>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element gallery">
@@ -1235,6 +1246,7 @@ Citation
   <div class="attribution2">Proverb</div>
   <div class="layout">short</div>
 </div>
+<p> </p>
 
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element citation">
