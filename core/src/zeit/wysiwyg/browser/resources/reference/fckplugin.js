@@ -4,9 +4,9 @@ FCKCommands.RegisterCommand(
         'Image', 'ZEIT: Bild',
         FCKConfig.PageConfig.ZeitResources + '/reference/image.pt',
         800, 600));
-var button = new FCKToolbarButton('Zeit_Image', 'Image');
-button.IconPath = FCKConfig.PageConfig.ZeitResources + '/reference/image.gif'
-FCKToolbarItems.RegisterItem('Zeit_Image', button);
+var image_button = new FCKToolbarButton('Zeit_Image', 'Image');
+image_button.IconPath = FCKConfig.PageConfig.ZeitResources + '/reference/image.gif'
+FCKToolbarItems.RegisterItem('Zeit_Image', image_button);
 
 
 // Register context menu item
@@ -21,7 +21,7 @@ FCK.ContextMenu.RegisterListener({
         menu.AddItem(
             'Zeit_Image',
             'Bild ändern',
-            oImageItem.IconPath);
+            image_button.IconPath);
     }
 });
 
