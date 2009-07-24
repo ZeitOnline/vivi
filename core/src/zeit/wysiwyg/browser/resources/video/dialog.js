@@ -5,7 +5,7 @@ var date_format = '%Y-%m-%d %H:%M';
 Import(FCKConfig.PageConfig.ApplicationURL +
        '/@@/zc.datetimewidget/calendar.js');
 Import(FCKConfig.PageConfig.ApplicationURL +
-       '/@@/zc.datetimewidget/lang/calendar-en.js');
+       '/@@/zc.datetimewidget/languages/calendar-en.js');
 
 zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
 
