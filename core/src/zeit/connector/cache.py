@@ -30,6 +30,7 @@ def get_storage_key(key):
 
 
 class StringRef(persistent.Persistent):
+    # Legacy
 
     def __init__(self, s):
         self._str = s
@@ -40,10 +41,96 @@ class StringRef(persistent.Persistent):
     def update(self, new_data):
         self._str = new_data
 
+
 class SlottedStringRef(StringRef):
     """A variant of StringRef using slots for less memory consumption."""
+    # Legacy
 
     __slots__ = ('_str',)
+
+
+INVALID_ETAG = object()
+
+
+class Body(persistent.Persistent):
+
+    BUFFER_SIZE = 10*1024
+    __slots__ = ('data', 'etag')
+
+    def __init__(self):
+        self.data = self.etag = None
+
+    def open(self, mode='r'):
+        assert mode == 'r'
+        if isinstance(self.data, ZODB.blob.Blob):
+            try:
+                commited_name = self.data.committed()
+            except ZODB.blob.BlobError:
+                # In the rather rare case that the blob was created in this
+                # transaction, we have to copy the data to a temporary file.
+                data = self.data.open('r')
+                tmp = tempfile.NamedTemporaryFile()
+                s = data.read(self.BUFFER_SIZE)
+                while s:
+                    tmp.write(s)
+                    s = data.read(self.BUFFER_SIZE)
+                tmp.seek(0, 0)
+                data_file = open(tmp.name, 'rb')
+            else:
+                data_file = open(commited_name, 'rb')
+        elif isinstance(self.data, str):
+            data_file = cStringIO.StringIO(self.data)
+        else:
+            raise RuntimeError('self.data is of unsupported type %s' %
+                               type(self.data))
+        return data_file
+
+
+    def update(self, data, etag):
+        if etag == self.etag:
+            return
+        self.etag = etag
+
+        if hasattr(data, 'seek'):
+            data.seek(0)
+        s = data.read(self.BUFFER_SIZE)
+        if len(s) < self.BUFFER_SIZE and not isinstance(self.data,
+                                                        ZODB.blob.Blob):
+            # Small object
+            small = True
+            target = cStringIO.StringIO()
+        else:
+            small = False
+            if isinstance(self.data, str):
+                # Migrate to Blob from the stringref.
+                self.data = None
+            if self.data is not None:
+                try:
+                    target = self.data.open('w')
+                except ZODB.POSException.POSKeyError:
+                    # When the blob file goes away we'll have this error. Of
+                    # course normally blob files don't go away. But
+                    # historically the Connector behaves very greedy against
+                    # missing blob files.
+                    self.data = None
+            if self.data is None:
+                self.data = ZODB.blob.Blob()
+                target = self.data.open('w')
+        while s:
+            target.write(s)
+            s = data.read(self.BUFFER_SIZE)
+
+        if small:
+            self.data = target.getvalue()
+        else:
+            target.close()
+
+    def _p_resolveConflict(self, old, commited, newstate):
+        if commited[1]['etag'] == newstate[1]['etag']:
+            return newstate
+        # Different ETags. Invalidate the cache.
+        commited[1]['etag'] = INVALID_ETAG
+        return commited
 
 
 class ResourceCache(persistent.Persistent):
@@ -53,7 +140,6 @@ class ResourceCache(persistent.Persistent):
 
     CACHE_TIMEOUT = 30 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
-    BUFFER_SIZE = 10*1024
 
     def __init__(self):
         self._data = BTrees.family64.OO.BTree()
@@ -65,19 +151,25 @@ class ResourceCache(persistent.Persistent):
         current_etag = properties[('getetag', 'DAV:')]
 
         value = self._data.get(key)
-        cached_etag = getattr(value, 'etag', None)
-        if cached_etag is None:
+        if value is not None and not isinstance(value, Body):
+            if isinstance(value, str):
+                log.warning("Loaded str for %s" % unique_id)
+                raise KeyError(unique_id)
+            # Legacy, meke a temporary body
             old_etags = getattr(self, '_etags', None)
+            etag = None
             if old_etags is not None:
-                cached_etag = old_etags.get(key)
+                etag = old_etags.get(key)
+            if etag is None:
+                raise KeyError('No ETAG for legacy value.')
+            body = Body()
+            body.update(value.open('r'), etag)
+            value = body
 
-        if current_etag != cached_etag:
+        if value is None or value.etag != current_etag:
             raise KeyError(u"Object %r is not cached." % unique_id)
         self._update_cache_access(key)
-        if isinstance(value, str):
-            log.warning("Loaded str for %s" % unique_id)
-            raise KeyError(unique_id)
-        return self._make_filelike(value)
+        return value.open()
 
     def setData(self, unique_id, properties, data):
         key = get_storage_key(unique_id)
@@ -94,71 +186,13 @@ class ResourceCache(persistent.Persistent):
 
         # Reuse previously stored container
         store = self._data.get(key)
+        if store is None or not isinstance(store, Body):
+            self._data[key] = store = Body()
+        store.update(data, current_etag)
 
-        target = cStringIO.StringIO()
-
-        if hasattr(data, 'seek'):
-            data.seek(0)
-        s = data.read(self.BUFFER_SIZE)
-        if len(s) < self.BUFFER_SIZE and not isinstance(store, ZODB.blob.Blob):
-            # Small object
-            small = True
-        else:
-            if isinstance(store, StringRef):
-                # Migrate to Blob from the stringref.
-                store = None
-            small = False
-            if store is None:
-                blob = ZODB.blob.Blob()
-            else:
-                # Reuse the blob we already have
-                blob = store
-            blob_file = blob.open('w')
-            target = blob_file
-
-        while s:
-            target.write(s)
-            s = data.read(self.BUFFER_SIZE)
-
-        if small:
-            if store is None:
-                store = SlottedStringRef(target.getvalue())
-                self._data[key] = store
-            else:
-                store.update(target.getvalue())
-        else:
-            blob_file.close()
-            if store is None:
-                self._data[key] = store = blob
-
-        store.etag = current_etag
         self._update_cache_access(key)
         transaction.savepoint(optimistic=True)
-        return self._make_filelike(store)
-
-    def _make_filelike(self, blob_or_str):
-        if isinstance(blob_or_str, ZODB.blob.Blob):
-            try:
-                commited_name = blob_or_str.committed()
-            except ZODB.blob.BlobError:
-                # In the rather rare case that the blob was created in this
-                # transaction, we have to copy the data to a temporary file.
-                data = blob_or_str.open('r')
-                tmp = tempfile.NamedTemporaryFile()
-                s = data.read(self.BUFFER_SIZE)
-                while s:
-                    tmp.write(s)
-                    s = data.read(self.BUFFER_SIZE)
-                tmp.seek(0, 0)
-                data_file = open(tmp.name, 'rb')
-            else:
-                data_file = open(commited_name, 'rb')
-        elif isinstance(blob_or_str, str):
-            # Legacy
-            data_file = cStringIO.StringIO(blob_or_str)
-        else:
-            data_file = blob_or_str.open('r')
-        return data_file
+        return store.open()
 
     def _update_cache_access(self, key):
         last_access_time = self._last_access_time.get(key, 0)

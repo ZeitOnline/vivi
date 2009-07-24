@@ -56,8 +56,8 @@ reference to a plain string:
 >>> from zeit.connector.cache import get_storage_key
 >>> cached = cache._data[get_storage_key('some-id')]
 >>> cached
-<zeit.connector.cache.SlottedStringRef object at 0x...>
->>> cached._str
+<zeit.connector.cache.Body object at 0x...>
+>>> cached.data
 'datadata/end of line.'
 >>> cached.open('r')
 <cStringIO.StringI object at 0x...>
@@ -166,13 +166,12 @@ Large data handling
 For large objects we store a blob. What a large object is, is determined by the
 buffer size:
 
->>> cache.BUFFER_SIZE
-10240
+>>> BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
 
 Create data which is large than that:
 
 
->>> large_data = 'Large' + ('Data' * cache.BUFFER_SIZE)
+>>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
 >>> 
 >>> file_handle = cache.setData(
 ...     'some-id', properties, StringIO(large_data))
@@ -190,8 +189,10 @@ We can get the data also via `getData` which returns an open file handle:
 
 Internally a blob is created in this case:
 
->>> blob = cache._data[get_storage_key('some-id')]
->>> blob
+>>> body = cache._data[get_storage_key('some-id')]
+>>> body
+<zeit.connector.cache.Body object at 0x...>
+>>> body.data
 <ZODB.blob.Blob object at 0x...>
 
 When the transaction is commited we'll get a file directly from the blob
@@ -243,6 +244,69 @@ False
 False
 >>> [s for s in cache._access_time_to_ids.values() if s._p_changed]
 []
+
+
+Conflict resolution
+-------------------
+
+Body conflict resolution works by comparing etags. When conflicting etags are
+different the result state is "not cached". When the etags are equal, the state
+is preserved.
+
+Note that we don't handle the case where the etags are equal but the bodies are
+different. We don't expect this to happen.
+
+>>> from zc.queue.tests import ConflictResolvingMappingStorage
+>>> from ZODB import DB
+>>> db = DB(ConflictResolvingMappingStorage('test'))
+>>> transactionmanager_1 = transaction.TransactionManager()
+>>> transactionmanager_2 = transaction.TransactionManager()
+>>> connection_1 = db.open(transaction_manager=transactionmanager_1)
+>>> root_1 = connection_1.root()
+
+>>> c_1 = root_1["cache"] = zeit.connector.cache.ResourceCache()
+>>> body = StringIO('A small file')
+>>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'initial-etag'}, body)
+>>> transactionmanager_1.commit()
+
+>>> transactionmanager_2 = transaction.TransactionManager()
+>>> connection_2 = db.open(transaction_manager=transactionmanager_2)
+>>> root_2 = connection_2.root()
+>>> c_2 = root_2['cache']
+
+Different ETAGS:
+
+>>> body1 = StringIO('Body 1')
+>>> body2 = StringIO('Body 2')
+>>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'etag1'}, body1)
+>>> dummy = c_2.setData('id', {('getetag', 'DAV:'): 'etag2'}, body2)
+>>> transactionmanager_2.commit()
+>>> transactionmanager_1.commit()
+>>> connection_1.sync()
+>>> connection_2.sync()
+>>> c_1.getData('id', {('getetag', 'DAV:'): 'etag1'})
+Traceback (most recent call last):
+    ...
+KeyError: u"Object 'id' is not cached."
+>>> c_2.getData('id', {('getetag', 'DAV:'): 'etag2'})
+Traceback (most recent call last):
+    ...
+KeyError: u"Object 'id' is not cached."
+
+The same ETAG also doesn't generate a conflict:
+
+>>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'etag3'}, body)
+>>> dummy = c_2.setData('id', {('getetag', 'DAV:'): 'etag3'}, body)
+>>> transactionmanager_2.commit()
+>>> transactionmanager_1.commit()
+>>> connection_1.sync()
+>>> connection_2.sync()
+>>> c_1.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
+'A small file'
+>>> c_2.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
+'A small file'
+
+
 
 
 Property Cache
@@ -385,8 +449,6 @@ Note that the most common conflicts are value changes *in* the cache. We do not
 change the conflict resolution of the underling btree.
 
 
->>> from zc.queue.tests import ConflictResolvingMappingStorage
->>> from ZODB import DB
 >>> db = DB(ConflictResolvingMappingStorage('test'))
 >>> transactionmanager_1 = transaction.TransactionManager()
 >>> transactionmanager_2 = transaction.TransactionManager()

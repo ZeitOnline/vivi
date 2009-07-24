@@ -1,6 +1,14 @@
 CHANGES
 =======
 
+1.17 (2009-07-24)
+-----------------
+
+- Fixed an issue with vanishing Blob files sending a POSKeyError to the user.
+
+- Refactored body cache store Body objects which do conflict resolution. This
+  way two threads storing the same body don't generate a conflict.
+
 1.16.1 (2099-07-23)
 -------------------
 

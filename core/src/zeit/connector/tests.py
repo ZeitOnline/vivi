@@ -6,6 +6,7 @@
 from zope.testing import doctest
 import BTrees
 import StringIO
+import ZODB
 import os
 import random
 import thread
@@ -251,28 +252,34 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
         super(TestResourceCache, self).setUp()
         self.cache = zeit.connector.cache.ResourceCache()
         self.getRootFolder()['cache'] = self.cache
-        self.properties = {('getetag', 'DAV:'): 'etag'}
+        self.properties1 = {('getetag', 'DAV:'): 'etag1'}
+        self.properties2 = {('getetag', 'DAV:'): 'etag2'}
         self.uniqueId = u'föö'
         self.key = zeit.connector.cache.get_storage_key(self.uniqueId)
+        self.BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
 
     def _store(self, d1, d2):
-        self.cache.setData(self.uniqueId, self.properties, d1)
-        store1 = self.cache._data[self.key]
-        self.cache.setData(self.uniqueId, self.properties, d2)
-        store2 = self.cache._data[self.key]
+        self.cache.setData(self.uniqueId, self.properties1, d1)
+        store1 = self.cache._data[self.key].data
+        self.cache.setData(self.uniqueId, self.properties2, d2)
+        store2 = self.cache._data[self.key].data
         return store1, store2
 
     def assert_reused(self, d1, d2):
         store1, store2 = self._store(d1, d2)
-        self.assertEquals(store1._p_oid, store2._p_oid)
+        oid1 = getattr(store1, '_p_oid', 'str')
+        oid2 = getattr(store2, '_p_oid', 'str')
+        self.assertEquals(oid1, oid2)
 
     def assert_not_reused(self, d1, d2):
         store1, store2 = self._store(d1, d2)
-        self.assertNotEquals(store1._p_oid, store2._p_oid)
+        oid1 = getattr(store1, '_p_oid', 'str')
+        oid2 = getattr(store2, '_p_oid', 'str')
+        self.assertNotEquals(oid1, oid2)
 
     def test_blob_reuse(self):
-        data1 = StringIO.StringIO(self.cache.BUFFER_SIZE*2*'x')
-        data2 = StringIO.StringIO(self.cache.BUFFER_SIZE*2*'y')
+        data1 = StringIO.StringIO(self.BUFFER_SIZE*2*'x')
+        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
         self.assert_reused(data1, data2)
 
     def test_stringref_reuse(self):
@@ -282,31 +289,57 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
 
     def test_stringref_to_blob_switch(self):
         data1 = StringIO.StringIO('x')
-        data2 = StringIO.StringIO(self.cache.BUFFER_SIZE*2*'y')
+        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
         self.assert_not_reused(data1, data2)
 
     def test_blob_to_stringref_not_switched(self):
-        data1 = StringIO.StringIO(self.cache.BUFFER_SIZE*2*'y')
+        data1 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
         data2 = StringIO.StringIO('x')
         self.assert_reused(data1, data2)
 
     def test_etag_migration(self):
         self.cache._etags = BTrees.family64.OO.BTree()
-        self.cache._etags[self.key] = 'etag'
-        data = StringIO.StringIO('data')
-        self.cache.setData(self.uniqueId, self.properties, data)
-        del self.cache._data[self.key].etag
+        self.cache._etags[self.key] = 'etag1'
+        data = zeit.connector.cache.SlottedStringRef('data')
+        self.cache._data[self.key] = data
         self.assertEquals(
             'data',
-            self.cache.getData(self.uniqueId, self.properties).read())
+            self.cache.getData(self.uniqueId, self.properties1).read())
         del self.cache._etags[self.key]
         self.assertRaises(KeyError,
-            self.cache.getData, self.uniqueId, self.properties)
+            self.cache.getData, self.uniqueId, self.properties1)
         del self.cache._etags
         self.assertRaises(KeyError,
-            self.cache.getData, self.uniqueId, self.properties)
+            self.cache.getData, self.uniqueId, self.properties1)
 
+    def test_missing_blob_file(self):
+        data1 = StringIO.StringIO(self.BUFFER_SIZE*2*'x')
+        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
+        self.cache.setData(self.uniqueId, self.properties1, data1)
+        transaction.commit()
+        body = self.cache._data[self.key]
+        os.remove(body.data.committed())
+        del body.data._p_changed  # Invalidate, thurs force reload
+        self.assertRaises(KeyError,
+                          self.cache.getData, self.uniqueId, self.properties1)
+        self.cache.setData(self.uniqueId, self.properties2, data2)
+        self.assertEquals(
+            data2.getvalue(),
+            self.cache.getData(self.uniqueId, self.properties2).read())
 
+    def test_missing_blob_file_with_legacy_data(self):
+        data = ZODB.blob.Blob()
+        data.open('w').write('ablob')
+        self.cache._data[self.key] = data
+        self.cache._etags = BTrees.family64.OO.BTree()
+        self.cache._etags[self.key] = 'etag1'
+        transaction.commit()
+        os.remove(data.committed())
+        del data._p_changed
+        self.assertRaises(KeyError,
+                          self.cache.getData, self.uniqueId, self.properties1)
+        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
+        self.cache.setData(self.uniqueId, self.properties2, data2)
 
 def test_suite():
     suite = unittest.TestSuite()
