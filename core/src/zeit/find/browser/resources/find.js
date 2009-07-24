@@ -23,7 +23,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
     construct: function() {
         var self = this;
         self.initial_query = true;
-        var base_url = application_url + '/@@';
+        var base_url = zeit.cms.get_application_url() + '/@@';
         // Initialize views
         self.main_view = new zeit.cms.JSONView(
             base_url + 'search_form', 'search_form');
@@ -106,7 +106,7 @@ zeit.find.Favorites = zeit.find.BaseView.extend({
 
     construct: function() {
         var self = this;
-        var base_url = application_url + '/@@';
+        var base_url = zeit.cms.get_application_url() + '/@@';
         self.main_view = new zeit.cms.JSONView(
             base_url + 'favorites', 'favorites');
         zeit.find.init_search_results(self.main_view);
@@ -120,7 +120,7 @@ zeit.find.ForThisPage = zeit.find.BaseView.extend({
 
     construct: function() {
         var self = this;
-        var base_url = application_url + '/@@';
+        var base_url = zeit.cms.get_application_url() + '/@@';
 
         self.main_view = new zeit.cms.JSONView(
             context_url + '/@@for-this-page-search',
@@ -194,7 +194,7 @@ zeit.find.Relateds = zeit.find.Component.extend({
         var self = this;
         arguments.callee.$.construct.call(self, view);
         self.expanded_search_result = new zeit.cms.JSONView(
-            application_url + '/@@expanded_search_result')
+            zeit.cms.get_application_url() + '/@@expanded_search_result')
     },
 
     connect: function(element, data) {
@@ -263,7 +263,7 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
     construct: function(view) {
         var self = this;
         arguments.callee.$.construct.call(self, view)
-        var base_url = application_url + '/@@';
+        var base_url = zeit.cms.get_application_url() + '/@@';
         self.favorited = new zeit.cms.JSONView(
             base_url + 'toggle_favorited');
     },
