@@ -4,13 +4,13 @@
 
 /* Lightbox */
 
-#lightbox-header {
+.lightbox-header {
     top: 2em;
     left: 2em;
     right: 2em;
 }
 
-#lightbox {
+.lightbox {
     top: 4em;
     left: 2em;
     right: 2em;
