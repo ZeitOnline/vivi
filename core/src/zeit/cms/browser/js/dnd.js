@@ -232,7 +232,12 @@ var ObjectReferenceWidget = Class.extend({
         if (zeit.cms.activate_objectbrowser()) {
             return
         }
-        var url = self.default_browsing_url + '/@@get_object_browser';
+        var url = self.default_browsing_url;
+        if (url.indexOf('@@') == -1) {
+            url += '/@@get_object_browser';
+        }
+        url += '?' + MochiKit.Base.queryString(
+            {type_filter: this.type_filter});
         self.lightbox = new zeit.cms.LightboxForm(url, $('body'));
         self.lightbox.events.push(MochiKit.Signal.connect(
             self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
