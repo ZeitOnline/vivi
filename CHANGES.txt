@@ -1,6 +1,11 @@
 zeit.wysiwyg changes
 ====================
 
+1.26.2 (unreleased)
+-------------------
+
+- Anlegen von Audio repariert.
+
 1.26.1 (2009-07-20)
 -------------------
 
