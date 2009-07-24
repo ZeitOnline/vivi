@@ -151,3 +151,7 @@ zeit.cms.import = function(src) {
     }
     return d;
 };
+
+zeit.cms.get_application_url = function() {
+    return window.top.application_url;
+};
