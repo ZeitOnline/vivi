@@ -26,6 +26,8 @@ checker = zope.testing.renormalizing.RENormalizing([
     (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
     (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
+    (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
+     "<GUID>"),
 ])
 
 

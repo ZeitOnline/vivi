@@ -77,6 +77,7 @@ setup(
         'zope.principalannotation',
         'zope.sendmail',
         'zope.site',
+        'zope.testing>=3.8.0',
         'zope.xmlpickle',
     ],
 )

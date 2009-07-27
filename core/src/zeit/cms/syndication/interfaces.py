@@ -161,9 +161,7 @@ class FeedSource(zeit.cms.content.contentsource.CMSContentSource):
 
     zope.interface.implements(IFeedSource)
     name = 'zeit.cms.syndication.feed'
-
-    def verify_interface(self, value):
-        return IFeed.providedBy(value)
+    check_interfaces = (IFeed,)
 
 
 feedSource = FeedSource()

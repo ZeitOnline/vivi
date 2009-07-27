@@ -17,6 +17,7 @@ Technisches
 
 - Objectify-Bäume werden nur noch einmal pro Transaktion geladen.
 
+- CMSContentSource gibt Auskunft über beinhaltete Content-Typen.
 
 1.24 (2009-07-22)
 -----------------

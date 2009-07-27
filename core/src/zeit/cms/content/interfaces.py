@@ -26,6 +26,9 @@ class INamedCMSContentSource(ICMSContentSource):
 
     name = zope.interface.Attribute("Utility name of the source")
 
+    def get_check_types():
+        """Return a sequence of cms type identifiers which areincluded."""
+
 
 class IKeywordInterface(zope.interface.interfaces.IInterface):
     """The interface of the keyword interface."""

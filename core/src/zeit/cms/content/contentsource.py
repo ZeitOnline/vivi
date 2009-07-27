@@ -34,9 +34,27 @@ class CMSContentSource(object):
 
         return True
 
+    def get_check_interfaces(self):
+        check = []
+        if isinstance(self.check_interfaces, tuple):
+            check.extend(self.check_interfaces)
+        else:
+            assert issubclass(self.check_interfaces,
+                              zope.interface.interfaces.IInterface)
+            for name, interface in zope.component.getUtilitiesFor(
+                self.check_interfaces):
+                check.append(interface)
+        return check
+
+    def get_check_types(self):
+        types = []
+        for interface in self.get_check_interfaces():
+            __traceback_info__ = (interface,)
+            types.append(interface.getTaggedValue('zeit.cms.type'))
+        return types
+
     def verify_interface(self, value):
-        for name, interface in zope.component.getUtilitiesFor(
-            self.check_interfaces):
+        for interface in self.get_check_interfaces():
             if interface.providedBy(value):
                 return True
         return False
@@ -49,9 +67,8 @@ class FolderSource(CMSContentSource):
     """A source containing folders."""
 
     name = 'folders'
-
-    def verify_interface(self, value):
-        return zeit.cms.repository.interfaces.IFolder.providedBy(value)
+    check_interfaces = (
+        zeit.cms.repository.interfaces.IFolder,)
 
 
 folderSource = FolderSource()
