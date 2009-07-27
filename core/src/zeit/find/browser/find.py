@@ -368,7 +368,7 @@ class Favorites(JSONView):
             'end_date': format_date(end_date),
             'favorite_url': self.url('toggle_favorited', uniqueId),
             'favorited': True,
-            'favorited_css_class': 'favorited',
+            'favorited_css_class': get_favorited_css_class(True),
             'icon': icon,
             'preview_url': preview_url,
             'publication_status': r['published.png'](),

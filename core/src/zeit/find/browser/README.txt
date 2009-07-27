@@ -103,7 +103,7 @@ The favorites tab now lists the favorited object:
 {'results': [{...
     'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
     'favorited': True,
-    'favorited_css_class': 'favorited',
+    'favorited_css_class': 'toggle_favorited favorited',
     ...
  'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
 
