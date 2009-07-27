@@ -68,6 +68,7 @@ setup(
         'zope.app.onlinehelp',
         'zope.app.preference',
         'zope.app.securitypolicy',
+        'zope.app.server',
         'zope.app.twisted',
         'zope.copypastemove',
         'zope.file',
