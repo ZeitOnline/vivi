@@ -620,8 +620,8 @@ class GalleryStep(ReferenceStep):
 
 class CitationStep(ConversionStep):
 
-    attributes = ['text', 'attribution',
-                  'text2', 'attribution2',
+    attributes = ['text', 'text2',
+                  'attribution', 'attribution2',
                   'layout']
 
     xpath_xml = './/citation'
@@ -644,6 +644,7 @@ class CitationStep(ConversionStep):
             values[name] = value
         new_node = lxml.objectify.E.citation(**values)
         return new_node
+
 
 class InlineElementAppendParagraph(ConversionStep):
     """Add an empty paragraph after each inline element.

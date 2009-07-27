@@ -1241,8 +1241,8 @@ Citation
 >>> print converter.to_html(article.xml['body'])
 <div class="inline-element citation">
   <div class="text">Gallia est omnis divisa in partes tres</div>
-  <div class="attribution">Julius Caesar</div>
   <div class="text2">Four apples a day</div>
+  <div class="attribution">Julius Caesar</div>
   <div class="attribution2">Proverb</div>
   <div class="layout">short</div>
 </div>
@@ -1251,8 +1251,8 @@ Citation
 >>> converter.from_html(article.xml['body'], """\
 ... <div class="inline-element citation">
 ...   <div class="text">Gallia est omnis divisa in partes tres</div>
-...   <div class="attribution">Julius Caesar</div>
 ...   <div class="text2">Four apples a day</div>
+...   <div class="attribution">Julius Caesar</div>
 ...   <div class="attribution2">Proverb</div>
 ...   <div class="layout">short</div>
 ... </div>""")

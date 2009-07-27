@@ -4,13 +4,15 @@ zeit.wysiwyg changes
 1.27 (unreleased)
 -------------------
 
-- Anlegen von Audio repariert.
+- Anlegen von Audio repariert (#5788).
 
 - Nach Inline-Elementen wird jetzt immer ein leerer Absatz erzeugt damit der
   Cursor dort positioniert werden kann.
 
 - Inline-Element werden jetzt immer an der Cursor-Position eingefügt. Dabei
   wird ein vorhandener Absatz ggf. aufgetrennt (#5572).
+
+- Styling und kleinere andere Korrekturen.
 
 1.26.1 (2009-07-20)
 -------------------
