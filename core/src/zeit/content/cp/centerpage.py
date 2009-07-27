@@ -22,6 +22,7 @@ import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
+import zope.proxy
 
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
@@ -137,3 +138,11 @@ def update_feed_items(context, event):
         del items[-1]
 
     feed.items = items
+
+
+def has_changed(context):
+    context = zope.proxy.removeAllProxies(context)
+    if context._p_jar is None:
+        # If there no jar, no change will have been marked.
+        return True
+    return context._p_changed

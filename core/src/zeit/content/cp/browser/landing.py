@@ -26,6 +26,7 @@ class LandingZone(zeit.content.cp.browser.view.Action):
             self.create_in, zeit.content.cp.interfaces.IElementFactory,
             name=self.block_type)
         self.block = factory()
+        assert zeit.content.cp.centerpage.has_changed(self.context)
 
     def initialize_block(self):
         pass
@@ -35,6 +36,7 @@ class LandingZone(zeit.content.cp.browser.view.Action):
         order.remove(self.block.__name__)
         order = self.get_order(order, self.block.__name__)
         self.create_in.updateOrder(order)
+        assert zeit.content.cp.centerpage.has_changed(self.create_in)
 
     @property
     def create_in(self):
@@ -59,7 +61,6 @@ class TeaserBlockLandingZone(LandingZone):
     uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
 
     def initialize_block(self):
-        pass
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         self.block.insert(0, content)
         related = zeit.cms.related.interfaces.IRelatedContent(content, None)

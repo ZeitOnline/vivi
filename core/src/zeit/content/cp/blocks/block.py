@@ -5,6 +5,7 @@ import gocept.lxml.interfaces
 import lxml.objectify
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
+import zeit.content.cp.centerpage
 import zope.component
 import zope.interface
 
@@ -31,6 +32,7 @@ class ElementFactory(object):
             zeit.content.cp.interfaces.IElement,
             name=self.element_type)
         self.context.add(content)
+        assert zeit.content.cp.centerpage.has_changed(self.context)
         return content
 
 
