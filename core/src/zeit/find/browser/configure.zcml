@@ -93,6 +93,7 @@
     for="zeit.cms.repository.interfaces.ICollection"
     layer="zeit.cms.browser.interfaces.IViviSkin"
     name="get_object_browser"
+    class=".selector.Selector"
     template="selector.pt"
     permission="zope.View"
     />

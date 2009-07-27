@@ -20,9 +20,9 @@ zeit.find.BaseView = gocept.Class.extend({
 
 zeit.find.Search = zeit.find.BaseView.extend({
 
-    construct: function() {
+    construct: function(initial_query) {
         var self = this;
-        self.initial_query = true;
+        self.initial_query = initial_query;
         var base_url = zeit.cms.get_application_url() + '/@@';
         // Initialize views
         self.main_view = new zeit.cms.JSONView(
@@ -75,6 +75,22 @@ zeit.find.Search = zeit.find.BaseView.extend({
                 self.result_filters.render();
             }
         });
+        if (!isUndefinedOrNull(self.initial_query)) {
+            var name;
+            for (name in self.initial_query) {
+                var element = $(name)
+                if (isNull(element)) {
+                    continue
+                }
+                var value = self.initial_query[name]
+                log("Setting", name, value);
+                if (element.type == 'checkbox') {
+                    element.checked = value;
+                } else {
+                    element.value = value;
+                }
+            }
+        }
         self.update_search_result();
     },
 
@@ -89,13 +105,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
 
     search_form_parameters: function() {
         var self = this;
-        var qs;
-        if (self.initial_query) {
-            qs = "&sort_order=date";
-            self.initial_query = false;
-        } else {
-            qs = MochiKit.Base.queryString($('search_form'));
-        }
+        var qs = MochiKit.Base.queryString($('search_form'));
         return qs
     },
 

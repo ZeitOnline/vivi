@@ -10,8 +10,9 @@
     var url = '${context/++resource++zeit.find}';
     zeit.cms.import(url+'/find.css');
     var d = zeit.cms.import(url+'/find.js');
+    var initial_query = MochiKit.Base.evalJSON('${view/initial_query}');
     d.addCallback(function(result) {
-      var search = new zeit.find.Search()
+      var search = new zeit.find.Search(initial_query)
       var selector = new zeit.find.Selector(self, search);
       search.render();
       return result;
