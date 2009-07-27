@@ -65,16 +65,22 @@ intertitle {
 
 
 .inline-element {
+    -moz-border-radius: 10px;
+    background-color: #d5dee7;
     border: 1px solid black;
     padding: 0.5em;
+    width: 50%;
+    margin: 0 auto;
 }
 
 .inline-element:after {
-    background-color: black;
-    color: white;
+    -moz-border-radius: 5px;
+    background-color: #fff;
+    color: #000;
     display: block;
-    text-transform: uppercase;
     padding: 0.25em;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .inline-element > div:before {
@@ -121,8 +127,20 @@ intertitle {
     content: "Video-Id:";
 }
 
+.video > .videoId {
+    float: left;
+}
+
+.video > .videoId2 {
+    float: right;
+}
+
 .video > .videoId2:before {
-    content: "Video-Id2:";
+    content: "2. Video-Id:";
+}
+
+.video > .expires {
+  clear: both;
 }
 
 .audio > .expires:before,
@@ -146,25 +164,33 @@ intertitle {
 }
 
 .portraitbox > .layout:before {
-    content: "Layout:";
+    content: "Format:";
 }
 
-.citation > .text:before {
-    content: "Zitat:";
+.citation > .text,
+.citation > .attribution {
+  clear: left;
+  float: left;
+  text-align: center;
+  width: 33%;
+}
+.citation > .text2,
+.citation > .attribution2 {
+  clear: right;
+  float: right;
+  text-align: center;
+  width: 33%;
 }
 
-.citation > .attribution:before {
-    content: "Unterschrift:";
+.citation > .text,
+.citation > .text2 {
+  font-style: italic;
 }
 
-.citation > .text2:before {
-    content: "Zitat 2:";
-}
-
-.citation > .attribution2:before {
-    content: "Unterschrift 2:";
+.citation > .layout {
+  clear: both;
 }
 
 .citation > .layout:before {
-    content: "Layout:";
+    content: "Format:";
 }

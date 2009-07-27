@@ -4,8 +4,9 @@ zeit.wysiwyg.CitationDialog = zeit.wysiwyg.Dialog.extend({
         var self = this;
         self.container_class = 'citation';
         arguments.callee.$.construct.call(self);
-        self.attributes = ['text', 'attribution',
-                           'text2', 'attribution2', 'layout'];
+        self.attributes = ['text', 'text2', 
+                           'attribution', 'attribution2',
+                           'layout'];
         MochiKit.Iter.forEach(self.attributes, function(attribute) {
             $(attribute).value = self.get_value(attribute);
         });
