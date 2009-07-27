@@ -41,9 +41,9 @@ class TestSearch(zeit.cms.selenium.Test):
 
     def test_relateds(self):
         s = self.selenium
-        s.click('css=div.related_links')
+        s.click('css=.related_links')
         s.waitForTextPresent('No related entries could be found.')
-        s.click('css=div.related_links')
+        s.click('css=.related_links')
         s.waitForTextNotPresent('No related entries could be found.')
 
     def test_favorites(self):

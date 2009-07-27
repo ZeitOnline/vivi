@@ -61,4 +61,4 @@ def escape(s):
     return _escape_re_compiled.sub(_escape, s)
 
 def quoted(value):
-    return '"%s"' % escape(value)
+    return '(%s)' % escape(value)

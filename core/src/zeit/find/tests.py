@@ -28,9 +28,9 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
     def test_query(self):
         q = zeit.find.search.query('Obama')
         result = zeit.find.search.search(q)
-        self.assertEquals(45, result.hits)
+        self.assertEquals(606, result.hits)
         self.assertEquals(
-            'http://xml.zeit.de/online/2009/19/obama-deutschlandbesuch',
+            'http://xml.zeit.de/online/2009/26/obama-tabakgesetz',
             result.docs[0]['uniqueId'])
 
 

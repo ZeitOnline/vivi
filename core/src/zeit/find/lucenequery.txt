@@ -12,17 +12,17 @@ Various field queries
 This is a query on a single field:
 
 >>> print lq.field('text', 'foo')
-text:"foo"
+text:(foo)
 
 We try it with multiple words:
 
 >>> print lq.field('text', 'foo bar')
-text:"foo bar"
+text:(foo bar)
 
 We can also use nasty characters safely, as they will be escaped:
 
 >>> print lq.field('text', 'bar ||')
-text:"bar \|\|"
+text:(bar \|\|)
 
 We can query boolean fields:
 
