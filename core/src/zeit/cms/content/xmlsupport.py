@@ -71,6 +71,12 @@ class Persistent(object):
         if persistent is not None:
            persistent._p_changed = value
 
+    @property
+    def _p_jar(self):
+        persistent = self.__get_persistent()
+        if persistent is not None:
+           return persistent._p_jar
+
     def __get_persistent(self):
         parent = getattr(self, '__parent__', None)
         while parent is not None:
