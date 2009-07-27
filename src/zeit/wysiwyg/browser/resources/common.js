@@ -84,6 +84,7 @@ zeit.wysiwyg.Dialog = gocept.Class.extend({
     create_element: function(element) {
         oEditor.FCK.InsertElement(element);
         // Note: between the ' ' there is a non-breaking space.
+        element.parentNode.insertBefore(P({}, ' '), element);
         element.parentNode.insertBefore(P({}, ' '), element.nextSibling);
     },
 
