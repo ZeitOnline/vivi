@@ -6,6 +6,8 @@ zeit.content.gallery changes
 
 - Gallery-Source zum Filtern per Suche angepasst (#4499).
 
+- Volltext-Indexer hinzugefügt.
+
 2.0.2 (2009-07-23)
 ------------------
 
