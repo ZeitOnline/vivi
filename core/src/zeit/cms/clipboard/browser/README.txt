@@ -26,7 +26,7 @@ The clipboard is displayed as a tree. Initially it's empty:
           <a href="...">Clipboard</a>
           <span class="uniqueId">...</span>
           <a title="Remove" class="deleteLink context-action"...>
-             <img ... alt="Delete" />
+             <img alt="Delete".../>
              <span class="action-title">Remove</span>
           </a>
         </p>
@@ -58,7 +58,7 @@ We assume, that we drag the pane over the Clipboard:
       <a href="...">Clipboard</a>
       <span class="uniqueId">...</span>
       <a title="Remove" class="deleteLink context-action"...>
-         <img ... alt="Delete" />
+         <img alt="Delete" ... />
          <span class="action-title">Remove</span>
       </a>
       </p>
@@ -68,7 +68,7 @@ We assume, that we drag the pane over the Clipboard:
             <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
             <span class="uniqueId">...wirtschaft.feed</span>
             <a title="Remove" class="deleteLink context-action"...>
-               <img ... alt="Delete" />
+               <img alt="Delete" ... />
                <span class="action-title">Remove</span>
             </a>
           </p>
