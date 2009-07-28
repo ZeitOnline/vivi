@@ -4,7 +4,9 @@
 from zope.testing import doctest
 import pkg_resources
 import unittest
+import zeit.cms.content.tests.test_contentsource
 import zeit.cms.testing
+import zeit.content.portraitbox.interfaces
 import zope.app.testing.functional
 
 
@@ -13,9 +15,19 @@ PortraitboxLayer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'PortraitboxLayer', allow_teardown=True)
 
 
+class PortraitboxSourceTest(
+    zeit.cms.content.tests.test_contentsource.ContentSourceTest):
+
+    layer = PortraitboxLayer
+
+    source = zeit.content.portraitbox.interfaces.portraitboxSource
+    expected_types = ['portraitbox']
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         layer=PortraitboxLayer))
+    suite.addTest(unittest.makeSuite(PortraitboxSourceTest))
     return suite

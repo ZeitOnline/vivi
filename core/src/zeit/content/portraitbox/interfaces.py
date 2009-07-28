@@ -29,9 +29,8 @@ class IPortraitbox(zope.interface.Interface):
 class PortraitboxSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.portraitbox'
+    check_interfaces = (IPortraitbox,)
 
-    def verify_interface(self, value):
-        return IPortraitbox.providedBy(value)
 
 portraitboxSource = PortraitboxSource()
 
