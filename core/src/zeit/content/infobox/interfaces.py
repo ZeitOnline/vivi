@@ -28,9 +28,8 @@ class IInfobox(zope.interface.Interface):
 class InfoboxSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.infobox'
+    check_interfaces = (IInfobox,)
 
-    def verify_interface(self, value):
-        return IInfobox.providedBy(value)
 
 infoboxSource = InfoboxSource()
 
