@@ -1,10 +1,12 @@
 zeit.find changes
 =================
 
-0.8 (unreleased)
+0.8 (2009-07-28)
 ----------------
 
-- Objectchooser with Search.
+- Objectchooser mit Suche (#4499).
+
+- Suchfeld macht keine Phrasensuche mehr (#5792).
 
 0.7 (2009-07-22)
 ----------------
