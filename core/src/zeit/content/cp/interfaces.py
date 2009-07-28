@@ -79,9 +79,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.cp'
-
-    def verify_interface(self, value):
-        return ICenterPage.providedBy(value)
+    check_interfaces = (ICenterPage,)
 
 
 centerPageSource = CenterPageSource()
