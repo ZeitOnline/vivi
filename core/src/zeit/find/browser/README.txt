@@ -30,7 +30,7 @@ on the UI itself:
     </script>
   </head>
   <body id="body">
-    <div id="cp-search">
+    <div id="cp-search" class="zeit-find-search">
     </div>
     <script language="javascript">
      zeit.find.init_full_search();
