@@ -576,6 +576,11 @@ pre {
 .workflow-column {
   white-space: nowrap;
   letter-spacing: -0.15em;
+  line-height: 12px;
+}
+
+.workflow-column span{
+ margin-right: 1px;
 }
 
 .tab-content {
