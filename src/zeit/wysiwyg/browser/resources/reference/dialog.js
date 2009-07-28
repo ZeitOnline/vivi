@@ -109,7 +109,7 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
         });
 
         if (self.container !== null) {
-            $('href').value = url_to_id(self.container);
+            $('href').value = self.url_to_id(self.container.src);
             MochiKit.Signal.signal('href', 'onchange');
         }
     },
