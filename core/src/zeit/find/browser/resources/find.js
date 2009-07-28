@@ -14,8 +14,6 @@ zeit.find.BaseView = gocept.Class.extend({
         self.main_view.render();
     },
 
-    
-
 });
 
 zeit.find.Search = zeit.find.BaseView.extend({
@@ -76,16 +74,29 @@ zeit.find.Search = zeit.find.BaseView.extend({
             }
         });
         if (!isUndefinedOrNull(self.initial_query)) {
+            var form = $('zeit-find-search-form');
             var name;
             for (name in self.initial_query) {
-                var element = $(name)
-                if (isNull(element)) {
+                var element = form[name];
+                if (isUndefinedOrNull(element)) {
                     continue
                 }
                 var value = self.initial_query[name]
-                log("Setting", name, value);
-                if (element.type == 'checkbox') {
-                    element.checked = value;
+                if (name == 'types:list') {
+                    if (element.length != value.length) {
+                        // Only act if not *everything* would be selected.
+                        // Since selecting everyting is basically the same as
+                        // selecting nothing
+                        forEach(value, function(type) {
+                            forEach(element, function(checkbox) {
+                                if (checkbox.value == type) {
+                                    checkbox.checked = true;
+                                } else {
+                                    checkbox.checked = false;
+                                }
+                            });
+                        });
+                    }
                 } else {
                     element.value = value;
                 }

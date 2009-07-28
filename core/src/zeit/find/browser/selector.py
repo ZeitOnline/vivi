@@ -17,6 +17,5 @@ class Selector(object):
             source = zope.component.getUtility(
                 zeit.cms.content.interfaces.ICMSContentSource,
                 name=source_name)
-            for type_ in source.get_check_types():
-                result['search-type-' + type_] = True
+            result['types:list'] = source.get_check_types()
         return cjson.encode(result)
