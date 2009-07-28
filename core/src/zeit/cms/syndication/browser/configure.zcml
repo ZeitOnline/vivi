@@ -14,7 +14,16 @@
     width="20"
     height="20"
     file="resources/feed.png"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    />   
+
+  <browser:icon
+    for="zeit.cms.syndication.interfaces.IFeed"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/feed.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
   <browser:page

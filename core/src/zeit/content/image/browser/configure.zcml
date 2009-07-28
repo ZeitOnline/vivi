@@ -122,7 +122,16 @@
     width="20"
     height="20"
     file="resources/imageResource.png"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    />
+
+  <browser:icon
+    for="zeit.content.image.interfaces.IImage"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/imageResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
 
@@ -154,7 +163,16 @@
     width="20"
     height="20"
     file="resources/imagegroupResource.png"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    />
+
+  <browser:icon
+    for="zeit.content.image.interfaces.IImageGroup"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/imagegroupResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
   <adapter factory=".image.ImageListRepresentation"

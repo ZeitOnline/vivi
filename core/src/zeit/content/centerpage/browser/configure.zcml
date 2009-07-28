@@ -8,14 +8,25 @@
   </class>
 
   <adapter factory=".centerpage.ListRepresentation" />
+  
   <browser:icon
     for="zeit.content.centerpage.interfaces.ICenterPage"
     name="zmi_icon"
     width="20"
     height="20"
     file="centerpage.png"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     />
+  
+  <browser:icon
+    for="zeit.content.centerpage.interfaces.ICenterPage"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="vivi/centerpage.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    />
+
 
   <browser:page
     name="edit.html"
