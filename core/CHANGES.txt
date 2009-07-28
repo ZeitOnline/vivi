@@ -1,6 +1,11 @@
 zeit.content.gallery changes
 ============================
 
+2.0.4 (unreleased)
+------------------
+
+- JavaScript-Fehler wegen nicht vorhandenem Uploader behoben.
+
 2.0.3 (2009-07-28)
 ------------------
 

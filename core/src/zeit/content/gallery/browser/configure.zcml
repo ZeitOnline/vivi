@@ -115,6 +115,7 @@
     name="Upload"
     for="zeit.content.gallery.interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".overview.Overview"
     template="upload.pt"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.EditContent"
