@@ -2,7 +2,9 @@
 <div class="search_entry">
   <span class="uniqueId">{uniqueId}</span>
   <div class="supertitle">
-    <img src="{icon}" />
+    {.section icon}
+      <img src="{icon}" />
+    {.end}
     <a href="#" class="{favorited_css_class}"></a>
     <img src="{publication_status}" />
     {supertitle} 
