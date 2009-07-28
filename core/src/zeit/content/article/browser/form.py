@@ -45,11 +45,8 @@ class ArticleFormBase(object):
         base.navigation_fields,
         base.head_fields,
         base.text_fields,
-        gocept.form.grouped.Fields(
+        gocept.form.grouped.RemainingFields(
             _('misc.'),
-            ('authors', 'copyrights',
-             'pageBreak', 'paragraphs', 'vg_wort_id',
-             'automaticMetadataUpdateDisabled', 'template', 'layout'),
             css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Options"),

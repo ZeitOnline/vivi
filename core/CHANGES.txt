@@ -4,6 +4,9 @@ zeit.content.article changes
 2.3 (unreleased)
 ----------------
 
+- »RemainingFields« benutzten, damit Erweiterungen an den Standardmetadaten
+  korrekt angezeigt werden.
+
 2.2 (2009-07-23)
 ----------------
 
