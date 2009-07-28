@@ -104,9 +104,8 @@ class IGalleryEntry(zope.interface.Interface):
 class GallerySource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.gallery'
+    check_interfaces = (IGallery,)
 
-    def verify_interface(self, value):
-        return IGallery.providedBy(value)
 
 gallerySource = GallerySource()
 

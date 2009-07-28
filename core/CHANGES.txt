@@ -1,6 +1,11 @@
 zeit.content.gallery changes
 ============================
 
+2.0.3 (2009-07-28)
+------------------
+
+- Gallery-Source zum Filtern per Suche angepasst (#4499).
+
 2.0.2 (2009-07-23)
 ------------------
 

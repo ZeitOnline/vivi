@@ -8,6 +8,8 @@ import zeit.cms.testing
 import zeit.imp.tests
 import zeit.workflow.tests
 import zope.app.testing.functional
+import zeit.cms.content.tests.test_contentsource
+import zeit.content.gallery.interfaces
 
 
 GalleryLayer = zope.app.testing.functional.ZCMLLayer(
@@ -47,6 +49,15 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
                          list(gallery.keys()))
 
 
+class TestGallerySource(
+    zeit.cms.content.tests.test_contentsource.ContentSourceTest):
+
+    layer = GalleryLayer
+
+    source = zeit.content.gallery.interfaces.gallerySource
+    expected_types = ['gallery']
+
+
 product_config = {
     'zeit.content.gallery': {
         'scale-source': 'file://' + pkg_resources.resource_filename(
@@ -67,4 +78,5 @@ def test_suite():
         product_config={'zeit.workflow': zeit.workflow.tests.product_config},
         layer=GalleryWorkflowLayer))
     suite.addTest(unittest.makeSuite(TestGalleryStorer))
+    suite.addTest(unittest.makeSuite(TestGallerySource))
     return suite
