@@ -153,5 +153,12 @@ zeit.cms.import = function(src) {
 };
 
 zeit.cms.get_application_url = function() {
-    return window.top.application_url;
+    var current = window;
+    var application_url = current.application_url;
+    while (current !== window.top && isUndefined(application_url)) {
+        current = current.parent;
+        application_url = current.application_url;
+    }
+    return application_url;
+
 };
