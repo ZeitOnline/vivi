@@ -20,7 +20,8 @@
           tal:condition="item/delete_url"
           tal:attributes="href item/delete_url"
           i18n:attributes="title">
-          <img src="/@@/zeit.cms/icons/delete.png" alt="Delete" />
+          <img alt="Delete"
+               tal:attributes="src string:${context/++resource++zeit.cms}/icons/delete.png" />
           <span class="action-title">Remove</span>
         </a>
       </p>
