@@ -717,14 +717,21 @@
 .module {
   float: left;
   height: 80px;
-  width: 80px;
-  border: 1px solid black;
+  width: 93px;
+  border: 1px solid #cccccc;
   margin: 0.25em;
   overflow: hidden;
   background-color: white;
+  font-size: 10px;
 }
 
 .module-inner {
-  padding: 1em;
   text-align: center;
+  vertical-align: middle;
+}
+
+.module-inner > img{
+  line-height: 50px;
+  margin: 5px auto;
+  display: block;
 }
