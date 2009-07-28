@@ -1,20 +1,17 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import os
+import pkg_resources
 import unittest
-
-from zope.testing import doctest
-
-import zope.app.testing.functional
-
 import zeit.cms.testing
+import zope.app.testing.functional
 
 
 InfoboxLayer = zope.app.testing.functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+    pgk_resources.get_resourcefilename(__name__, 'ftesting.zcml'),
     __name__, 'InfoboxLayer', allow_teardown=True)
+
+
 
 
 def test_suite():
