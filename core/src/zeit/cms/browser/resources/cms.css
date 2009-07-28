@@ -207,8 +207,11 @@ pre {
 
 #sidebar-dragger.sidebar-folded {
   left: 0;
-  width: 1em;
-  background: transparent url("layout/sidebardragger-open.png") no-repeat center;
+  width: 0.5em;
+  cursor: pointer;
+  background: transparent url("layout/sidebardragger-open.png") no-repeat
+  center;
+  border-right: 1px solid #e4e4e4;
 }
 
 #visualContentWrapper.sidebar-folded {
