@@ -170,6 +170,14 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Comments allowed"),
         default=True)
 
+    product_id = zope.schema.Choice(
+        title=_('Product id'),
+        default='ZEDE',
+        source=zeit.cms.content.sources.ProductSource())
+
+    product_text = zope.interface.Attribute(
+        "Title of product_id (r/o).")
+
 
 class IDAVPropertyConverter(zope.interface.Interface):
     """Parse a unicode string from a DAV property to a value and vice versa."""

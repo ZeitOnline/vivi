@@ -35,6 +35,24 @@ Verify the data:
  ('copyrights', u'http://namespaces.zeit.de/CMS/document'): u'ich',
  ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
 
+Products
+++++++++
+
+>>> content.product_id = u'ZEDE'
+>>> content.product_text
+u'Zeit Online'
+>>> properties[('product-id', 'http://namespaces.zeit.de/CMS/workflow')]
+u'ZEDE'
+>>> properties[('product-name', 'http://namespaces.zeit.de/CMS/workflow')]
+u'Zeit Online'
+
+Setting the product text doesn't work:
+
+>>> content.product_text = 'foo'
+Traceback (most recent call last):
+    ...
+AttributeError: can't set attribute
+
 
 Clean up:
 

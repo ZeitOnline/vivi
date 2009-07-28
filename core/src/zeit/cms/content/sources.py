@@ -140,6 +140,27 @@ class SubNavigationSource(SimpleContextualXMLSource):
         return metadata.ressort
 
 
+class ProductSource(SimpleContextualXMLSource):
+    # NOTE: this source is contextual to be able to set a default for a field
+    # using the source even while there is no product config.
+
+    config_url = 'source-products'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [unicode(ressort.get('id'))
+                for ressort in tree.iterchildren()]
+
+    def getTitle(self, context, value):
+        __traceback_info__ = (value, )
+        tree = self._get_tree()
+        nodes = tree.xpath('//product[@id= %s]' %
+                           xml.sax.saxutils.quoteattr(value))
+        if nodes:
+            return unicode(nodes[0].text)
+        return value
+
+
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):

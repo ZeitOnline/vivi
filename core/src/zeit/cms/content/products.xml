@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<products>
+    <product id="ZEI">Die Zeit</product>
+    <product id="ZMLB">Zeit Magazin</product>
+    <product id="TEST">Test/Development</product>
+    <product id="ZTCS">Zeit Campus</product>
+    <product id="ZTWI">Zeit Wissen</product>
+    <product id="ZTGS">Zeit Geschichte</product>
+    <product id="tdb">Zeit Schweiz</product>
+    <product id="tbd">Zeit Oesterreich</product>
+    <product id="KINZ">Kinderzeit Magazin</product>
+    <product id="ZEDE">Zeit Online</product>
+</products>

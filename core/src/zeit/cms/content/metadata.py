@@ -1,16 +1,17 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.component
-import zope.interface
-
+import rwproperty
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.keyword
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.syndication.interfaces
+import zope.browser.interfaces
+import zope.component
+import zope.interface
+import zope.publisher.browser
 
 
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -71,3 +72,31 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['dailyNewsletter'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
+
+    _product_id = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['product_id'],
+        'http://namespaces.zeit.de/CMS/workflow', 'product-id')
+    _product_text = zeit.cms.content.dav.DAVProperty(
+        zope.schema.TextLine(),
+        'http://namespaces.zeit.de/CMS/workflow', 'product-name')
+
+    @rwproperty.getproperty
+    def product_id(self):
+        return self._product_id
+
+
+    @rwproperty.setproperty
+    def product_id(self, value):
+        self._product_id = value
+        source = zeit.cms.content.interfaces.ICommonMetadata[
+            'product_id'].source(self)
+        # Set title        
+        request = zope.publisher.browser.TestRequest()
+        terms = zope.component.getMultiAdapter(
+            (source, request), zope.browser.interfaces.ITerms)
+        self._product_text = terms.getTerm(value).title
+
+    @property
+    def product_text(self):
+        return self._product_text
+

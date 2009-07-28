@@ -60,6 +60,8 @@ def setup_product_config(product_config={}):
         base_path, 'print-ressort.xml')
     cms_config['source-keyword'] = 'file://%s' % os.path.join(
         base_path, 'zeit-ontologie-prism.xml')
+    cms_config['source-products'] = 'file://%s' % os.path.join(
+        base_path, 'products.xml')
 
     cms_config['preview-prefix'] = 'http://localhost/preview-prefix'
     cms_config['live-prefix'] = 'http://localhost/live-prefix'
