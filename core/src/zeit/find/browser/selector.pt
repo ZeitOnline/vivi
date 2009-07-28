@@ -1,8 +1,8 @@
 <tal:block i18n:domain="zeit.cms">
   <h1 i18n:translate="">Search</h1>
 
-  <div id="cp-search">
-  <div id="search_form"></div>
+  <div class="zeit-find-search">
+    <div id="search_form"></div>
   </div>
 
   <script language="javascript" tal:content="string:

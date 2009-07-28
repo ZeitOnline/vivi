@@ -3,7 +3,7 @@
   margin-right: .4em;
 }
 
-.search_result {
+#cp-search .search_result {
   clear: both;
   padding: 1em 0 0 0;
 }
@@ -83,7 +83,7 @@
 }
 
 
-#cp-search .button{
+.zeit-find-search .button{
   border-top: 1px solid #ddd;
   cursor: pointer;
   margin: 1em 0;
@@ -230,13 +230,13 @@
   padding-left: 16px;
 }
 
-#cp-search .preview {
+.zeit-find-search .preview {
   float: right;
   background: url(eye.png) no-repeat 0 50%;
   padding-left: 20px;
 }
 
-#cp-search .preview a {
+.zeit-find-search .preview a {
   color: #4c4c4c;
 }
 
@@ -274,21 +274,43 @@
   overflow-y: scroll;
 }
 
-#cp-search .search_entry .related_entry {
+.zeit-find-search .search_entry .related_entry {
   padding: 0.5em;
 }
 
-#cp-search .search_entry .related_entry:hover {
+.zeit-find-search .search_entry .related_entry:hover {
   /* It needs to be clear that a related can be dragged. Making it yellow for
    * now so someone who knows styling can make it look decent :) */
   background-color: yellow;
 }
 
-#cp-search .search_entry .related_entry > div {
+.zeit-find-search .search_entry .related_entry > div {
   clear: both;
 }
 
-#cp-search .search_entry .related_entry .content-status {
+.zeit-find-search .search_entry .related_entry .content-status {
   display: none;
 }
 
+
+/* search in lightbox styles */
+
+.lightbox #zeit-find-search-form {
+  bottom: 0;
+  left: 1em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 1em;
+  width: 49%;
+}
+
+.lightbox #search_result {
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+  top: 1em;
+  width: 49%;
+}
