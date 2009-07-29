@@ -30,7 +30,6 @@ h1 {
   padding: 0.4em;
 }
 
-
 h2 {
   font-size: 1em;;
   padding-bottom: 0.1em;
@@ -188,6 +187,12 @@ pre {
   margin: 0 0 5px 0;
   background: transparent url("layout/opener.png") no-repeat left center;
   font-weight: normal;
+  cursor: pointer;
+}
+
+#sidebar div.unfolded > h1 {
+  background: transparent url("layout/opener_close.png") no-repeat left center;
+  cursor: pointer;
 }
 
 #sidebar-dragger {
@@ -217,6 +222,8 @@ pre {
 #visualContentWrapper.sidebar-folded {
   left: 0.5em;
 }
+
+
 
 #content {
   left: 1em;
