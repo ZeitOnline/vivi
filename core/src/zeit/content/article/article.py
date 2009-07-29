@@ -179,8 +179,9 @@ class DivisionStep(zeit.wysiwyg.html.ConversionStep):
     xpath_html = './/*[contains(@class, "page-break")]'
 
     def to_html(self, node):
+        teaser = node.get('teaser', '')
         new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(node.get('teaser'), **{'class': 'teaser'}),
+            lxml.objectify.E.div(teaser, **{'class': 'teaser'}),
             **{'class': 'inline-element page-break'})
         lxml.objectify.deannotate(new_node)
         return new_node

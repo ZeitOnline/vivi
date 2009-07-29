@@ -61,6 +61,37 @@ but from two on, <division> is converted to a <div class="page-break">:
 <p>4</p>
 
 
+When there is no teaser attribute on the ``<division>`` the teaser will be
+empty:
+
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <division type="page">
+...       <p>1</p>
+...       <p>2</p>
+...     </division>
+...     <division type="page">
+...       <p>3</p>
+...       <p>4</p>
+...     </division>
+...   </body>
+... </article>'''
+>>> article = zeit.content.article.article.Article(StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> print converter.to_html(article.xml['body']),
+<p>1</p>
+<p>2</p>
+<div class="inline-element page-break">
+  <div class="teaser"></div>
+</div>
+<p> </p>
+<p>3</p>
+<p>4</p>
+
+
 HTML->XML
 ---------
 
@@ -104,6 +135,33 @@ and multiple ones are converted accordingly:
     <p>4</p>
   </division>
 </body>
+
+
+When the teaser is empty, the teaser attribute is empty:
+
+>>> article = zeit.content.article.article.Article()
+>>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
+>>> converter.from_html(article.xml['body'], """\
+...   <p>1</p>
+...   <p>2</p>
+...   <div class="page-break inline-element">
+...     <div class="teaser"></div>
+...   </div>
+...   <p>3</p>
+...   <p>4</p>
+... """)
+>>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
+<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <division type="page">
+    <p>1</p>
+    <p>2</p>
+  </division>
+  <division teaser="" type="page">
+    <p>3</p>
+    <p>4</p>
+  </division>
+</body>
+
 
 Page breaking only applies to Articles, not to other content types:
 
