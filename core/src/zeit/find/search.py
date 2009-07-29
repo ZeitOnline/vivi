@@ -1,7 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.find import lucenequery as lq
+from zeit.solr import query as lq
 from zeit.find.daterange import DATE_FILTERS
 import itertools
 import zeit.solr.interfaces

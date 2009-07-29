@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from zeit.find import lucenequery as lq
+from zeit.solr import query as lq
 
 def today_range():
     start = datetime.now().replace(

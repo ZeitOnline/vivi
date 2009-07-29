@@ -7,6 +7,8 @@ zeit.find changes
 - Wenn die erweiterte Suche eingeklappt ist, werden die Kriterien klein, als
   Text dargestellt.
 
+- lucenequery nach zeit.solr verschoben.
+
 0.8 (2009-07-28)
 ----------------
 
