@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Neues Feld »Product-Id« in den Standardmetadaten (#5819).
 
+- printRessort als CommonMetadata hinzugefügt.
+
 1.25 (2009-07-28)
 -----------------
 
