@@ -55,15 +55,15 @@ zeit.find.Search = zeit.find.BaseView.extend({
                 e.stop();
             };
         });
+        MochiKit.Signal.connect('search_form', 'onchange', function(e) {
+            self.update_search_result();
+        });
 
         MochiKit.Signal.connect(
             'extended_search_button', 'onclick', function(e) {
-            if (MochiKit.Style.getStyle($('extended_search'), 'display')
-                == 'none') {
-                MochiKit.Style.showElement($('extended_search'));
-            } else {
-                MochiKit.Style.hideElement($('extended_search'));
-            }
+            self.update_extended_search_info();
+            MochiKit.DOM.toggleElementClass(
+                'hidden', 'extended_search', 'extended_search_info');
         });
         MochiKit.Signal.connect(
             'result_filters_button', 'onclick', function(e) {
@@ -108,10 +108,44 @@ zeit.find.Search = zeit.find.BaseView.extend({
     update_search_result: function() {
         var self = this;
         log("updating search result");
+        self.update_extended_search_info();
         self.search_result.render();
         if ($('result_filters_data')) {
             self.result_filters.render();
         }
+    },
+
+    update_extended_search_info: function() {
+        var node = $('extended_search_info');
+        node.innerHTML = '';
+        forEach($('zeit-find-search-form').elements, function(element) {
+            var value = null;
+            var title = null;
+            if (element.nodeName == 'SELECT') {
+                var option = element.options[element.selectedIndex];
+                title = option.text;
+                value = option.value;
+            } else if (element.nodeName == 'INPUT') {
+                if (element.type == 'checkbox') {
+                    if (element.checked) {
+                        var label  = $$('label[for="' + element.id + '"]');
+                        if (label.length != 1) {
+                            return
+                        }
+                        value = element.value;
+                        title = label[0].textContent;
+                    }
+                } else if (element.type == 'text' && element.name != 'text') {
+                    value = element.value;
+                    title = value;
+                }
+            }
+            var default_value = element.getAttribute('default');
+            if (title && value != default_value) {
+                var class = 'info-' + element.name;
+                node.appendChild(SPAN({'class': class}, title));
+            }
+        });
     },
 
     search_form_parameters: function() {

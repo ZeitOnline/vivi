@@ -56,3 +56,16 @@ class TestSearch(zeit.cms.selenium.Test):
         s.waitForElementPresent('css=.toggle_favorited.favorited')
         s.click('link=Favoriten')
         s.waitForElementPresent('css=#favorites .related_links')
+
+    def test_extended_search_display(self):
+        s = self.selenium
+        s.verifyVisible('id=extended_search_info')
+        s.verifyNotVisible('id=extended_search')
+        s.click('id=extended_search_button')
+        s.waitForVisible('id=extended_search')
+        s.verifyNotVisible('id=extended_search_info')
+        s.click('id=search-type-unknown')
+        s.click('id=extended_search_button')
+        s.waitForVisible('id=extended_search_info')
+        s.verifyNotVisible('id=extended_search')
+        s.verifyText('css=#extended_search_info span', 'Unknown Resource')

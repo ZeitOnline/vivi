@@ -7,21 +7,25 @@
   </div>
 
   <div id="extended_search_form">
-    <div id="extended_search" style="display:none">
+    <div id="extended_search_info"></div>
+    <div id="extended_search" class="hidden">
       <fieldset class="daterange">
         <p class="likelabel">Datum:</p>
         <div class="date date1">
           <label for="from">Vom:</label>
-          <input type="text" name="from" value="TT.MM.JJJJ" />
+          <input type="text" name="from" value="TT.MM.JJJJ"
+            default="TT.MM.JJJJ" />
         </div>
         <div class="date date2">
           <label for="until">Bis:</label>
-          <input type="text" name="until" value="TT.MM.JJJJ" />
+          <input type="text" name="until" value="TT.MM.JJJJ"
+            default="TT.MM.JJJJ" />
         </div>  
       </fieldset>
       <fieldset>
         <label>Ausgabe:</label>
-        <input type="text" name="volume_year" value="WW/JJJJ" />
+        <input type="text" name="volume_year" value="WW/JJJJ"
+          default="WW/JJJJ" />
       </fieldset>
       <fieldset>
         <label>Ressort:</label>
@@ -51,8 +55,8 @@
       </fieldset>
       <fieldset>
         <label>Sortierung:</label>
-        <select name="sort_order">
-          <option value="relevance">Relevanz</option>
+        <select name="sort_order" default="relevance">
+          <option value="relevance" selected="selected">Relevanz</option>
           <option value="date">Datum</option>
         </select>
       </fieldset>

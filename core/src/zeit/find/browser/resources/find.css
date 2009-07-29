@@ -85,6 +85,7 @@
 
 .zeit-find-search .button{
   border-top: 1px solid #ddd;
+  clear: both;
   cursor: pointer;
   margin: 1em 0;
 }
@@ -170,7 +171,54 @@
 
 #extended_search .types > .type-outer > .type-inner {
   overflow: hidden;
- 
+}
+
+#extended_search_info {
+  font-size: 0.8em;
+  overflow: hidden;
+}
+
+#extended_search_info > span {
+  display: block;
+  float: left;
+  font-style: italic;
+  margin-left: 1em;
+  padding-bottom: 0.25em;
+  white-space: nowrap;
+}
+
+#extended_search_info > span:before {
+  font-style: normal;
+  padding-right: 0.5em;
+}
+
+#extended_search_info > .info-from:before {
+  content: "ab";
+}
+
+#extended_search_info > .info-until:before {
+  content: "bis";
+}
+
+#extended_search_info > .info-from +
+.info-until {
+  /* Smaller margin when we have both from and until. */
+  margin-left: 0.5em;
+}
+
+#extended_search_info > .info-sort_order:before {
+  content: "sortiert nach";
+}
+
+#extended_search_info > .info-types\:list +
+.info-types\:list:before {
+  content: "/";
+  padding-right: 0.25em;
+}
+
+#extended_search_info > .info-types\:list +
+.info-types\:list {
+  margin-left: 0.25em;
 }
 
 

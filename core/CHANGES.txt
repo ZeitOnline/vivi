@@ -1,6 +1,12 @@
 zeit.find changes
 =================
 
+0.9 (unreleased)
+----------------
+
+- Wenn die erweiterte Suche eingeklappt ist, werden die Kriterien klein, als
+  Text dargestellt.
+
 0.8 (2009-07-28)
 ----------------
 
