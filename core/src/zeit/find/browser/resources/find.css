@@ -88,6 +88,12 @@
   clear: both;
   cursor: pointer;
   margin: 1em 0;
+  padding-left: 15px;
+  background: transparent url(opener.png) no-repeat 0px 5px;
+}
+
+#zeit-find-search-form .unfolded {
+  background: transparent url(opener_close.png) no-repeat 0px 5px;
 }
 
 #extended_search {

@@ -64,9 +64,16 @@ zeit.find.Search = zeit.find.BaseView.extend({
             self.update_extended_search_info();
             MochiKit.DOM.toggleElementClass(
                 'hidden', 'extended_search', 'extended_search_info');
+             MochiKit.DOM.toggleElementClass(
+                'unfolded', 'extended_search_button');    
         });
+        
         MochiKit.Signal.connect(
             'result_filters_button', 'onclick', function(e) {
+             
+             MochiKit.DOM.toggleElementClass(
+                'unfolded', 'result_filters_button');    
+
             if ($('result_filters_data')) {
                 $('result_filters').innerHTML = '';
             } else {
