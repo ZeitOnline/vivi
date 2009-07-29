@@ -11,7 +11,7 @@ are transmitted in JSON[#setup]_:
 >>> browser.open('informatives/@@block-factories.json')
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'factories': [{'css': 'module informatives-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
@@ -42,7 +42,7 @@ After creating a teaser bar, blocks are offered:
 >>> browser.open('teaser-mosaic/@@block-factories.json')
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'factories': [{'css': 'module teaser-mosaic-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
@@ -59,7 +59,7 @@ One can also ask for blocks which can be added on the CP in general:
 >>> browser.open('@@block-factories.json')
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'factories': [{'css': 'module informatives-module teaser-mosaic-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
