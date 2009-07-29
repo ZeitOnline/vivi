@@ -38,6 +38,16 @@ Verify the data:
 Products
 ++++++++
 
+>>> content.product_id is None
+True
+
+Setting the same value doesn't change anything. We'd get an error otherwise
+that there is no title for "None":
+
+>>> content.product_id = None
+
+Setting normal values:
+
 >>> content.product_id = u'ZEDE'
 >>> content.product_text
 u'Zeit Online'

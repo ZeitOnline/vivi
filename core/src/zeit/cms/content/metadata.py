@@ -87,6 +87,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @rwproperty.setproperty
     def product_id(self, value):
+        if self._product_id == value:
+            return
         self._product_id = value
         source = zeit.cms.content.interfaces.ICommonMetadata[
             'product_id'].source(self)
