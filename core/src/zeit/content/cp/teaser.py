@@ -35,7 +35,9 @@ resourceFactory = zope.component.adapter(
 def metadata_to_teaser(content):
     teaser = Teaser()
     for name in zeit.cms.content.interfaces.ICommonMetadata:
-        setattr(teaser, name, getattr(content, name))
+        field = zeit.cms.content.interfaces.ICommonMetadata[name]
+        if zope.schema.interfaces.IField.providedBy(field):
+            setattr(teaser, name, getattr(content, name))
     teaser.original_content = content
     return teaser
 
