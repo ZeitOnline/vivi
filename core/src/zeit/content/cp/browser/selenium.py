@@ -28,7 +28,7 @@ class Test(zeit.cms.selenium.Test):
     def open_centerpage(self):
         s = self.selenium
         self.open('/@@create-test-cp')
-        self.open('/workingcopy/zope.user/cp/@@cp-editor.html')
+        self.open('/workingcopy/zope.user/cp/@@edit.html')
         s.waitForElementPresent('css=div.landing-zone')
 
     def create_clip(self):

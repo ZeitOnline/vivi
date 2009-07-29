@@ -38,9 +38,9 @@
     />
 
   <browser:page
-    name="edit.html"
     for="..interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-metadata.html"
     class=".form.EditForm"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit metadata"
@@ -63,7 +63,7 @@
   <gocept:pagelet
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="cp-editor.html"
+    name="edit.html"
     class=".editor.Editor"
     template="editor.pt"
     permission="zeit.EditContent"
