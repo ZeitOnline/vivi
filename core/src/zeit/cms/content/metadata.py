@@ -69,6 +69,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'automaticMetadataUpdateDisabled',
         use_default=True)
 
+    printRessort = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['printRessort'],
+        zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort')
+
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['dailyNewsletter'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
