@@ -50,12 +50,13 @@ but from two on, <division> is converted to a <div class="page-break">:
 ... </article>'''
 >>> article = zeit.content.article.article.Article(StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
->>> print converter.to_html(article.xml['body'])
+>>> print converter.to_html(article.xml['body']),
 <p>1</p>
 <p>2</p>
 <div class="inline-element page-break">
   <div class="teaser">Teaser</div>
 </div>
+<p> </p>
 <p>3</p>
 <p>4</p>
 
