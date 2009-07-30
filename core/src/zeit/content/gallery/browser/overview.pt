@@ -13,41 +13,48 @@
     <table class="gallery">
       <tr tal:repeat="entry view/entries"
           tal:attributes="class entry/css_class">
-        <td class="image-column">
-          <input type="hidden" name="images:list"
-            tal:attributes="value entry/__name__" />
-          <div class="gallery-layout"
-               tal:content="entry/layout">
-            Nur Bild
-          </div>
-          <a href="#" title="Edit"
-            i18n:attributes="title"
-            tal:attributes="href entry/url">
-            <img tal:replace="structure entry/thumbnail/@@view.html/tag" />
-            <div class="image-name"
-              tal:content="entry/image/__name__">01.jpg</div>
-          </a>
-          <a title="Show image" class="gallery-show-image-link"
-            tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
-            i18n:attributes="title"
-            i18n:translate="">
-            Show image
-          </a>
-        </td>
         <td>
-          <div class="caption"
-            tal:condition="entry/caption"
-            tal:content="entry/caption">
-            Caption
+          <div class="handle">
+             <a href="#" title="Edit"
+             i18n:attributes="title"
+             tal:attributes="href entry/url">
+            Edit
+              </a>
           </div>
-          <div class="title"
-            tal:condition="entry/title"
-            tal:content="entry/title">
-            Title
+          <div class="box">
+            <div class="image">
+              <input type="hidden" name="images:list"
+                tal:attributes="value entry/__name__" />
+              <div class="gallery-layout"
+                 tal:content="entry/layout">
+                Nur Bild
+              </div>
+              <img tal:replace="structure entry/thumbnail/@@view.html/tag" />
+              <!--  <div class="image-name"
+               tal:content="entry/image/__name__">01.jpg</div>
+              <a title="Show image" class="gallery-show-image-link"
+                   tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
+                  i18n:attributes="title"
+                  i18n:translate="">
+                Show image
+              </a> -->
+              <div class="caption"
+                tal:condition="entry/caption"
+                tal:content="entry/caption">
+                Caption
+              </div>
           </div>
-          <div class="text"
-               tal:content="structure entry/text">
-            Text
+          <div class="content">     
+              <div class="title"
+                tal:condition="entry/title"
+                tal:content="entry/title">
+                Title
+              </div>
+              <div class="text"
+                 tal:content="structure entry/text">
+                Text
+              </div>
+            </div> 
           </div>
         </td>
       </tr>
