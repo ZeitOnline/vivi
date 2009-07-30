@@ -295,6 +295,7 @@
 
 .edit-bar > .edit-link {
   background-image: url('edit.png');
+  padding-right: 0.5em;
 }
 
 .edit-bar > .delete-link {
