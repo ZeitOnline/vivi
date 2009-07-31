@@ -18,7 +18,7 @@
              <a href="#" class="edit-image" title="Edit image"
                 i18n:attributes="title"
                 tal:attributes="href entry/url">&nbsp;
-                <span class="action-title">Edit Image</span>
+                <span class="action-title">Edit image</span>
             </a>
              <a href="#" class="cut-image" title="Cut image"
                 i18n:attributes="title"
