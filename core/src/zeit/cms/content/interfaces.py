@@ -90,7 +90,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
 
     printRessort = zope.schema.Choice(
-        title=_("Print Ressort"),
+        title=_("Print ressort"),
         source=zeit.cms.content.sources.PrintRessortSource(),
         readonly=True,
         required=False)
