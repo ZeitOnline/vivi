@@ -25,6 +25,19 @@
                SWFUpload/swfupload.js" />
   </resourceLibrary>
     
+  <browser:page
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".gallery.Index"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    />
 
   <browser:page
     for="..interfaces.IGallery"
@@ -59,12 +72,6 @@
     action="@@view.html"
     permission="zope.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
-    />
-
-  <browser:defaultView
-    for="..interfaces.IGallery"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
     />
 
   <class class="..gallery.Gallery">

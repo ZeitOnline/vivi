@@ -14,6 +14,7 @@ import zope.i18n
 
 class Overview(zeit.cms.browser.view.Base):
 
+    title = _('Overview')
     layout_source = zeit.content.gallery.interfaces.IGalleryEntry[
         'layout'].vocabulary
 

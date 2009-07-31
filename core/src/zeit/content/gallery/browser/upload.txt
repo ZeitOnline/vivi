@@ -28,7 +28,7 @@ Create the gallery:
 >>> browser.getControl(name="form.actions.add").click()
 >>> gallery_url = browser.url
 >>> print browser.title.strip()
-Gallery – Zeit CMS
+Gallery – Overview
 
 There is a javascript action:
 

@@ -80,11 +80,8 @@ We can edit the metadata of the gallery on the edit tab:
 >>> browser.getLink('Edit metadata').click()
 >>> browser.getControl('Title').value
 'Auf den Spuren der Elfen'
->>> print browser.contents
-<?xml ...
-<!DOCTYPE html ...
-    <title> Auf den Spuren der Elfen – Edit gallery </title>
-    ...
+>>> print browser.title.strip()
+Auf den Spuren der Elfen – Edit gallery
 
 There is no read only view of the metadata:
 
@@ -160,6 +157,12 @@ Galleries also have assets:
 >>> browser.getLink('Edit assets').click()
 >>> browser.getControl('Add Related')
 <SubmitControl name='form.related.add' type='submit'>
+
+The default view while editing a gallery is the overview page:
+
+>>> browser.open('/++skin++cms/workingcopy/zope.user/island')
+>>> print browser.title.strip()
+Auf den Spuren der Elfen – Overview
 
 
 Reloading the image folder
@@ -285,11 +288,8 @@ Check in the gallery:
 We now have a view tab:
 
 >>> browser.getLink('View metadata').click()
->>> print browser.contents
-<?xml ...
-<!DOCTYPE html ...
-    <title> Auf den Spuren der Elfen – View gallery metadata </title>
-    ...
+>>> print browser.title.strip(),
+Auf den Spuren der Elfen – View gallery metadata
 
 There is also a metdata preview showing the images:
 
@@ -313,6 +313,11 @@ There is also a metdata preview showing the images:
     ...
 
 
+The default view while a gallery is checked in, is the metadata page:
+
+>>> browser.open('/++skin++cms/repository/online/2007/01/island')
+>>> print browser.title.strip()
+Auf den Spuren der Elfen – View gallery metadata
 
 Browsing location
 =================

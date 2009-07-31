@@ -6,6 +6,8 @@ import zeit.cms.repository.interfaces
 import zeit.content.gallery.interfaces
 import zope.component
 import zope.interface
+import zope.security.interfaces
+import zope.security.proxy
 
 
 @zope.component.adapter(
@@ -45,3 +47,18 @@ class MetadataPreview(zeit.content.image.browser.image.MetadataPreview):
 
     def __init__(self, context, request):
         super(MetadataPreview, self).__init__(context.image, request)
+
+
+class Index(object):
+
+    def __call__(self):
+        views = ('overview.html', 'view.html')
+        for name in views:
+            view = zope.component.getMultiAdapter(
+                (self.context, self.request), name=name)
+            try:
+                return zope.security.proxy.ProxyFactory(view)()
+            except zope.security.interfaces.Unauthorized, e:
+                pass
+        raise e
+
