@@ -33,7 +33,8 @@ def add_image(folder, filename, name=None):
     if name is None:
         name = filename
 
-    filename = pkg_resources(__name__, 'browser/testdata/' + filename)
+    filename = pkg_resources.resource_filename(
+        __name__, 'browser/testdata/' + filename)
     test_data = open(filename, 'rb').read()
 
     image = zeit.content.image.image.LocalImage()

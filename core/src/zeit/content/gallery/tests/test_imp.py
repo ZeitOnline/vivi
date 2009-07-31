@@ -6,6 +6,7 @@ import zeit.cms.testing
 import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.imp.interfaces
+import zope.component
 
 
 class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
