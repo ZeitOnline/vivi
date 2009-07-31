@@ -17,20 +17,20 @@
           <div class="handle">
              <a href="#" class="edit-image" title="Edit image"
                 i18n:attributes="title"
-                tal:attributes="href entry/url">&nbsp;
+                tal:attributes="href entry/url">
                 <span class="action-title">Edit image</span>
             </a>
              <a href="#" class="cut-image" title="Cut image"
                 i18n:attributes="title"
                 tal:attributes="href string:${entry/url}/@@imp.html">
-                  &nbsp;
+                  
                   <span class="action-title">Cut Image</span>
             </a>
             <a title="Show image" class="show-image"
                   tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
                   i18n:attributes="title"
                   i18n:translate="">
-                    &nbsp;<span class="action-title">Show Image</span>
+                    <span class="action-title">Show Image</span>
             </a> 
           </div>
           <div class="box">

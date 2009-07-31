@@ -96,6 +96,7 @@ table.gallery .caption {
   display:block;
   background-repeat:no-repeat;
   width:14px;
+  height: 14px;
   float:left;
   margin-right:5px;
 }
