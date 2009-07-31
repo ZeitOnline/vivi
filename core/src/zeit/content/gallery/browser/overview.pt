@@ -15,11 +15,25 @@
           tal:attributes="class entry/css_class">
         <td>
           <div class="handle">
-             <a href="#" title="Edit image"
-             i18n:attributes="title"
-             tal:attributes="href entry/url">
-            Edit image
-              </a>
+             <a href="#" class="edit-image" title="Edit image"
+                i18n:attributes="title"
+                tal:attributes="href entry/url">
+                Bilddaten bearbeiten 
+                <span class="action-title">Edit Image ^I</span>
+            </a>
+             <a href="#" class="cut-image" title="Cut image"
+                i18n:attributes="title"
+                tal:attributes="href string:${entry/url}/@@imp.html">
+                  Bild zuschneiden 
+                  <span class="action-title">Cut Image ^I</span>
+            </a>
+            <a title="Show image" class="show-image"
+                  tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
+                  i18n:attributes="title"
+                  i18n:translate="">
+                     Bildobjekt anzeigen
+                    <span class="action-title">Show Image ^I</span>
+            </a> 
           </div>
           <div class="box">
             <div class="image">
@@ -50,12 +64,23 @@
                 tal:content="entry/title">
                 Title
               </div>
+             
               <div class="text"
                  tal:content="structure entry/text">
                 Text
               </div>
             </div> 
-          </div>
+            <div style="height:1px;clear:left;width:100%;line-height:1px;color:white;">x
+                 xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                 xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                  xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                  xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                 xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+                  xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
+           </div>
+
         </td>
       </tr>
     </table>

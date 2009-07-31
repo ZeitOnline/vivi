@@ -101,7 +101,7 @@ Editing a gallery
 Each entry can be edited on the overview page:
 
 >>> browser.getLink('Images').click()
->>> browser.getLink('Edit image').click()
+>>> browser.getLink('Edit image ^I').click()
 >>> browser.getControl('Title').value = 'The man man'
 >>> browser.getControl('Text').value = (
 ...     '<p><strong>Der Mann am Stein</strong></p>')
