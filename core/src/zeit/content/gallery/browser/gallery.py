@@ -1,13 +1,11 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
-import zope.interface
 
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.interfaces
 import zeit.content.gallery.interfaces
+import zope.component
+import zope.interface
 
 
 @zope.component.adapter(
