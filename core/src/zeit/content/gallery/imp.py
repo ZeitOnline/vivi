@@ -21,15 +21,24 @@ class GalleryStorer(object):
 
     def __init__(self, context):
         self.context = context
+        self.gallery = self.context.__parent__
 
     def store(self, name, pil_image):
-        gallery = self.context.__parent__
         image = zeit.content.image.image.LocalImage()
         pil_image.save(image.open('w'), 'JPEG', optimize=True, quality=80)
 
-        base_name, ext = os.path.splitext(self.context.__name__)
-        image_name = '%s-%s.jpg' % (base_name, name)
+        self.copy_image_metadata(image)
+        new_entry = self.copy_entry(image)
+        new_entry = self.store_image(image, new_entry, name)
+        self.hide_related_images(new_entry)
+        self.update_order(new_entry)
 
+        return self.gallery[new_entry.__name__]
+
+    def copy_image_metadata(self, image):
+        pass
+
+    def copy_entry(self, image):
         entry = zeit.content.gallery.gallery.GalleryEntry()
         for field in zope.schema.getFields(
             zeit.content.gallery.interfaces.IGalleryEntry).values():
@@ -37,29 +46,32 @@ class GalleryStorer(object):
                 field.set(entry, field.get(self.context))
         entry.image = image
         entry.is_crop_of = self.context.__name__
+        return entry
 
-        gallery.image_folder[image_name] = image
-        gallery[image_name] = entry
-        entry = gallery[image_name]
+    def store_image(self, image, entry, name):
+        base_name, ext = os.path.splitext(self.context.__name__)
+        image_name = '%s-%s.jpg' % (base_name, name)
+        self.gallery.image_folder[image_name] = image
+        self.gallery[image_name] = entry
+        entry = self.gallery[image_name]
+        self.gallery.reload_image_folder()
+        return entry
 
-        gallery.reload_image_folder()
-
-        # hide the original entry and all of its crops except for the newly
-        # created one
+    def hide_related_images(self, entry):
+        """Hide the original entry and all of its old crops."""
         self.context.layout = 'hidden'
-        gallery[self.context.__name__] = self.context
+        self.gallery[self.context.__name__] = self.context
         for crop in self.context.crops:
             crop.layout = 'hidden'
             # XXX restructure GalleryEntry similar to blocks in a centerpage,
             # so that changes persist directly
-            gallery[crop.__name__] = crop
-        gallery[entry.__name__] = entry
+            self.gallery[crop.__name__] = crop
+        self.gallery[entry.__name__] = entry
 
+    def update_order(self, entry):
         # sort the new entry after its origin
-        keys = list(gallery.keys())
+        keys = list(self.gallery.keys())
         origin = keys.index(self.context.__name__)
         keys.remove(entry.__name__)
         keys.insert(origin + 1, entry.__name__)
-        gallery.updateOrder(keys)
-
-        return self.context.__parent__[entry.__name__]
+        self.gallery.updateOrder(keys)
