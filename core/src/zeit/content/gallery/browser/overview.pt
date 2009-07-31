@@ -15,10 +15,10 @@
           tal:attributes="class entry/css_class">
         <td>
           <div class="handle">
-             <a href="#" title="Edit"
+             <a href="#" title="Edit image"
              i18n:attributes="title"
              tal:attributes="href entry/url">
-            Edit
+            Edit image
               </a>
           </div>
           <div class="box">

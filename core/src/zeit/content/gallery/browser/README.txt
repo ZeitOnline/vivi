@@ -101,7 +101,7 @@ Editing a gallery
 Each entry can be edited on the overview page:
 
 >>> browser.getLink('Images').click()
->>> browser.getLink('01.jpg').click()
+>>> browser.getLink('Edit image').click()
 >>> browser.getControl('Title').value = 'The man man'
 >>> browser.getControl('Text').value = (
 ...     '<p><strong>Der Mann am Stein</strong></p>')
@@ -114,28 +114,42 @@ Each entry can be edited on the overview page:
 After saving we're back at the overview:
 
 >>> print browser.contents
-<?xml ...
-  <tr class="layout-image-only">
-    <td class="image-column">
-      <input type="hidden" ...
-      <div class="gallery-layout">Image only</div>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg"
-        title="Edit">
-       <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
-        <div class="image-name">01.jpg</div>
-      </a>
-      <a title="Show image"...
-         href="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/@@view.html">
-       Show image
-      </a>
-    </td>
-    <td>
-      <div class="caption">Mann/Stein</div>
-      <div class="title">The man man</div>
-      <div class="text"><p> <strong>Der Mann am Stein</strong> </p> </div>
-    </td>
-  </tr>
-  ...
+<?xml version="1.0"?>...
+     <tr class="layout-image-only">
+           <td>
+             <div class="handle">
+                <a href="http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg"
+                   title="Edit image">
+               Edit image
+                 </a>
+             </div>
+             <div class="box">
+               <div class="image">
+                 <input type="hidden" name="images:list"
+                        value="01.jpg" />
+                 <div class="gallery-layout">Image only</div>
+                 <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/thumbnails/01.jpg" alt="" height="50" width="50" border="0" />
+                 <!--  <div class="image-name"
+                  tal:content="entry/image/__name__">01.jpg</div>
+                 <a title="Show image" class="gallery-show-image-link"
+                      tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
+                     i18n:attributes="title"
+                     i18n:translate="">
+                   Show image
+                 </a> -->
+                 <div class="caption">Mann/Stein</div>
+             </div>
+             <div class="content">
+                 <div class="title">The man man</div>
+                 <div class="text"><p>
+     <strong>Der Mann am Stein</strong>
+   </p>
+   </div>
+               </div>
+             </div>
+           </td>
+         </tr>...
+
 
 
 Images can be re-ordered at the overview via javascript drag and drop. This
