@@ -3,9 +3,11 @@
 
 import os.path
 import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
 import zeit.imp.interfaces
 import zope.component
 import zope.interface
+import zope.schema.interfaces
 
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
@@ -36,7 +38,17 @@ class GalleryStorer(object):
         return self.gallery[new_entry.__name__]
 
     def copy_image_metadata(self, image):
-        pass
+        source = zeit.content.image.interfaces.IImageMetadata(
+            self.context.image)
+        destination = zeit.content.image.interfaces.IImageMetadata(image)
+        for name in zeit.content.image.interfaces.IImageMetadata:
+            field = zeit.content.image.interfaces.IImageMetadata[name]
+            if not zope.schema.interfaces.IField.providedBy(field):
+                continue
+            value = getattr(source, name, self)  # use self as marker
+            if value is self:
+                continue
+            setattr(destination, name, value)
 
     def copy_entry(self, image):
         entry = zeit.content.gallery.gallery.GalleryEntry()
