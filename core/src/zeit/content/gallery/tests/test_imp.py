@@ -33,5 +33,5 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         # Images are not overwritten
         pil = PIL.Image.open(entry.image.open())
         zeit.imp.interfaces.IStorer(entry).store('10x10', pil)
-        self.assertEqual(['01.jpg', '01-10x10-2.jpg', '01-10x10.jpg', '02.jpg'],
+        self.assertEqual(['01.jpg', '01-10x10.jpg', '02.jpg'],
                          list(gallery.keys()))

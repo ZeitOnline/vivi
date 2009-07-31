@@ -29,10 +29,6 @@ class GalleryStorer(object):
 
         base_name, ext = os.path.splitext(self.context.__name__)
         image_name = '%s-%s.jpg' % (base_name, name)
-        i = 1
-        while image_name in gallery:
-            i += 1
-            image_name = '%s-%s-%s.jpg' % (base_name, name, i)
 
         entry = zeit.content.gallery.gallery.GalleryEntry()
         for field in zope.schema.getFields(
