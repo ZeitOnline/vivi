@@ -119,6 +119,8 @@ class Display(zeit.cms.browser.view.Base):
         layout = self.context.layout
         if layout is None:
             return
+        if not layout.image_pattern:
+            return
         images = zeit.content.image.interfaces.IImages(content, None)
         if images is None:
             return

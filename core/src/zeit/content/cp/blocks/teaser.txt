@@ -184,7 +184,7 @@ There are different layouts in the informatives:
 >>> teaser_i = factory()
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_i))
-['large', 'two-side-by-side']
+['date', 'large', 'short', 'two-side-by-side']
 
 
 And yet other ones in the mosic:
@@ -199,7 +199,7 @@ And yet other ones in the mosic:
 >>> teaser_m = factory()
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
-['ressort']
+['date', 'ressort', 'short']
 
 
 .. [#functional]

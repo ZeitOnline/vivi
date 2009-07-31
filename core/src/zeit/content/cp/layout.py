@@ -37,11 +37,11 @@ class BlockLayout(object):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 area=None, columns=1):
+                 areas=None, columns=1):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
-        self.area = area
+        self.areas = frozenset(areas)
         self.columns = columns
 
 
@@ -49,25 +49,31 @@ class BlockLayout(object):
 TEASER_BLOCK = [
     BlockLayout('leader',
                 u'Großer Teaser mit Bild und Teaserliste',
-                '450x200', area='lead-1'),
+                '450x200', areas=('lead-1',)),
     BlockLayout('leader-two-columns',
                 u'Großer Teaser mit zwei Spalten',
-                '450x200', area='lead-1', columns=2),
+                '450x200', areas=('lead-1',), columns=2),
     BlockLayout('leader-upright',
                 u'Großer Teaser mit Hochkant-Bild und Teaserliste',
-                '450x200', area='lead-1'),
+                '450x200', areas=('lead-1',)),
     BlockLayout('buttons',
                 u'Kleiner Teaser mit kleinem Bild und Teaserliste',
-                '140x140', area='lead'),
+                '140x140', areas=('lead',)),
     BlockLayout('two-side-by-side',
                 u'Zwei kleine Teaser mit Bild',
-                '140x140', area='informatives'),
+                '140x140', areas=('informatives',)),
     BlockLayout('large',
                 u'Großer Teaser mit Bild und Teaserliste',
-                '140x140', area='informatives'),
+                '140x140', areas=('informatives',)),
     BlockLayout('ressort',
                 u'Ressort Teaser mit Teaserliste',
-                '140x140', area='teaser-mosaic'),
+                '140x140', areas=('teaser-mosaic',)),
+    BlockLayout('short',
+                u'Kurzteaser',
+                areas=('teaser-mosaic', 'informatives')),
+    BlockLayout('date',
+                u'Datumsteaser',
+                areas=('teaser-mosaic', 'informatives')),
 ]
 
 
@@ -124,7 +130,7 @@ class TeaserBlockLayoutSource(LayoutSource):
             else:
                 areas.append('lead-x')
         return [layout for layout in TEASER_BLOCK
-                if layout.area in areas]
+                if layout.areas.intersection(areas)]
 
 
 class TeaserBarLayoutSource(LayoutSource):
