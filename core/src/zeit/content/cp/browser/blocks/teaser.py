@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -16,6 +17,9 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
+
+
+COLUMN_ID = 'column://'
 
 
 class TeaserBlockViewletManager(
@@ -79,14 +83,15 @@ class Display(zeit.cms.browser.view.Base):
 
     @property
     def css_class(self):
-        css = ['action-content-droppable']
+        css = ['teaser-contents action-content-droppable']
         layout = self.context.layout
         if layout is not None:
             css.append(layout.id)
         return ' '.join(css)
 
     def update(self):
-        self.teasers = []
+        self.image = None
+        teasers = []
         for i, content in enumerate(self.context):
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
@@ -99,12 +104,16 @@ class Display(zeit.cms.browser.view.Base):
                          'shortTeaserTitle', 'shortTeaserText'):
                 texts.append(dict(css_class=name,
                                   content=getattr(metadata, name)))
-            image = None
+            teasers.append(dict(texts=texts))
             if i == 0:
-                image = self.get_image(content)
-            self.teasers.append(dict(
-                image=image,
-                texts=texts))
+                self.image = self.get_image(content)
+
+        columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
+        idx = 0
+        self.columns = []
+        for amount in columns:
+            self.columns.append(teasers[idx:idx+amount])
+            idx += amount
 
     def get_image(self, content):
         layout = self.context.layout
@@ -122,6 +131,7 @@ class Display(zeit.cms.browser.view.Base):
                     return image[name]
         else:
             return image
+
 
 class AutoPilotDisplay(Display):
 
@@ -153,7 +163,7 @@ class AutoPilotDrop(Drop):
         super(AutoPilotDrop, self).update()
 
 
-class EditContents(Display):
+class EditContents(zeit.cms.browser.view.Base):
     """Edit the teaser list."""
 
     @zope.cachedescriptors.property.Lazy
@@ -168,12 +178,29 @@ class EditContents(Display):
                 continue
             editable = zeit.cms.checkout.interfaces.ICheckoutManager(
                 content).canCheckout
+            locking_indicator = None
+            if not editable:
+                locking_indicator = zope.component.queryMultiAdapter(
+                    (content, self.request), name='get_locking_indicator')
             teasers.append(dict(
-                content=content,
+                css_class='edit-bar teaser',
+                deletable=True,
                 editable=editable,
-                metadata=metadata,
+                locking_indicator=locking_indicator,
+                teaserTitle=metadata.teaserTitle,
                 uniqueId=content.uniqueId,
-                url=self.url(content),
+            ))
+
+        columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
+        if len(columns) == 2:
+            left = columns[0]
+            teasers.insert(left, dict(
+                css_class='edit-bar column-separator',
+                deletable=False,
+                editable=False,
+                locking_indicator=None,
+                teaserTitle=_('^ Left | Right v'),
+                uniqueId=COLUMN_ID,
             ))
 
         return teasers
@@ -219,7 +246,16 @@ class UpdateOrder(zeit.content.cp.browser.view.Action):
     keys = zeit.content.cp.browser.view.Form('keys', json=True)
 
     def update(self):
-        self.context.updateOrder(self.keys)
+        keys = self.keys
+        try:
+            left = keys.index(COLUMN_ID)
+        except ValueError:
+            left = None
+        else:
+            del keys[left]
+            cols = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
+            cols[0] = left
+        self.context.updateOrder(keys)
         zope.event.notify(
             zope.lifecycleevent.ObjectModifiedEvent(self.context))
 

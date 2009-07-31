@@ -11,9 +11,15 @@ class ITeaserBlockLayout(zope.interface.Interface):
 
     id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
     title = zope.schema.TextLine(title=u'Human readable title.')
-
     image_pattern = zope.schema.ASCIILine(
         title=u'A match for the image to use in this layout.')
+    columns = zope.schema.Int(
+        title=u'Columns',
+        min=1,
+        max=2,
+        default=1)
+
+
 
 
 class ITeaserBarLayout(zope.interface.Interface):
@@ -31,11 +37,12 @@ class BlockLayout(object):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 area=None):
+                 area=None, columns=1):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
         self.area = area
+        self.columns = columns
 
 
 # XXX the image formats need to be set correctly, but we don't know them, yet.
@@ -43,6 +50,9 @@ TEASER_BLOCK = [
     BlockLayout('leader',
                 u'Großer Teaser mit Bild und Teaserliste',
                 '450x200', area='lead-1'),
+    BlockLayout('leader-two-columns',
+                u'Großer Teaser mit zwei Spalten',
+                '450x200', area='lead-1', columns=2),
     BlockLayout('leader-upright',
                 u'Großer Teaser mit Hochkant-Bild und Teaserliste',
                 '450x200', area='lead-1'),
@@ -61,7 +71,6 @@ TEASER_BLOCK = [
 ]
 
 
-# Aufmacher:Block:Großer Teaser mit 2 Spalten
 # Aufmacher:Block:Großer Teaser mit Bildergalerie und Teaserliste
 # Aufmacher:Block:Großer Teaser mit Video statt Bild und Teaserliste
 

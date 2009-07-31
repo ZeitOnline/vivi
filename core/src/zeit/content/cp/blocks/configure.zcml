@@ -70,6 +70,16 @@
   <subscriber 
     handler=".teaser.apply_layout" />
 
+  <adapter factory=".teaser.ColumnSpec" trusted="yes" />
+  <class class=".teaser.ColumnSpec">
+    <require
+      interface="..interfaces.IReadTeaserBlockColumns"
+      permission="zope.View" />
+    <require
+      interface="..interfaces.IWriteTeaserBlockColumns"
+      permission="zeit.EditContent" />
+  </class>
+
   <!-- Teaser bar -->
 
   <class class=".teaserbar.TeaserBar">

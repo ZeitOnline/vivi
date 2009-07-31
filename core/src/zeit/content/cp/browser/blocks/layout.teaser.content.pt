@@ -3,13 +3,14 @@
   cms:drop-url string:${context/@@absolute_url}/drop;
   class view/css_class">
 
-  <div class="teaser-list">
+  <img tal:condition="view/image"
+       tal:attributes="src view/image/@@absolute_url" />
+
+  <div class="teaser-list"
+       tal:repeat="teasers view/columns">
 
     <div class="teaser"
-         tal:repeat="teaser view/teasers">
-
-      <img tal:condition="teaser/image"
-           tal:attributes="src teaser/image/@@absolute_url" />
+         tal:repeat="teaser teasers">
 
       <div tal:repeat="item teaser/texts"
            tal:attributes="class item/css_class"

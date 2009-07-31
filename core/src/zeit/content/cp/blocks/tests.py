@@ -9,5 +9,6 @@ def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
         'cpextra.txt',
         'teaser.txt',
+        'teaser-two-column-layout.txt',
         'xml.txt',
     )

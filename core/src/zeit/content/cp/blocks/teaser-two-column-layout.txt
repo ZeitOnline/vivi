@@ -1,0 +1,119 @@
+Two column layout
+=================
+
+A two column layout is indicated by the layout itself and the `column_1`` 
+attribute on the xml node[#functional]_.
+
+Create a teaser block to play with:
+
+>>> import zeit.content.cp.centerpage
+>>> import zeit.content.cp.interfaces
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> tb = factory()
+
+The column information can be obtained via the ``ITeaserBlockColumn``
+interface:
+
+>>> columns = zeit.content.cp.interfaces.ITeaserBlockColumns(tb)
+
+
+Currently there is 1 column with no teasers:
+
+>>> columns
+ColumnSpec(0)
+
+After setting a layout with 2 columns there are two columns (with still no
+teasers):
+
+>>> import zeit.content.cp.layout
+>>> tb.layout = zeit.content.cp.layout.get_layout('leader-two-columns')
+>>> columns
+ColumnSpec(0, 0)
+
+Create a little helper to insert into the teaser block:
+
+>>> import zeit.cms.interfaces
+>>> def insert(pos, name):
+...     uid = 'http://xml.zeit.de/online/2007/01/' + name
+...     tb.insert(pos, uid)
+
+Currently, there is no information about where to split:
+
+>>> columns.column_1 is None
+True
+
+Therefor all teasers are added to the first column:
+
+>>> insert(0, 'Somalia')
+>>> columns
+ColumnSpec(1, 0)
+>>> insert(0, 'eta-zapatero')
+>>> columns
+ColumnSpec(2, 0)
+>>> insert(1, 'Ford-Beerdigung')
+>>> columns
+ColumnSpec(3, 0)
+
+When setting the first column to contain two teasers, the second column
+contains one:
+
+>>> columns[0] = 2
+>>> columns
+ColumnSpec(2, 1)
+
+Setting the amount to more than there are teasers is not an error. Neither is a
+small value, such as 1:
+
+
+>>> columns[0] = 7
+>>> columns
+ColumnSpec(3, 0)
+>>> columns[0] = 1
+>>> columns
+ColumnSpec(1, 2)
+
+Setting the amount of the second column is not possible:
+
+>>> columns[1] = 4
+Traceback (most recent call last):
+    ...
+KeyError: 'Can only set column 0'
+
+
+The items can be accessed:
+
+>>> columns[0]
+1
+>>> columns[1]
+2
+>>> columns[2]
+Traceback (most recent call last):
+    ...
+IndexError: column index out of range
+
+And there is a length:
+
+>>> len(columns)
+2
+
+
+When setting a one column layout, the information about the left/right split is
+*not* removed:
+
+>>> tb.layout = zeit.content.cp.layout.get_layout('leader')
+>>> columns
+ColumnSpec(3)
+>>> columns.column_1
+1
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

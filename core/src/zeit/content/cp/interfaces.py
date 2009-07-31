@@ -245,6 +245,33 @@ class IAutoPilotTeaserBlock(IAutoPilotReadTeaserBlock, ITeaserBlock):
     """A list of teasers."""
 
 
+class IReadTeaserBlockColumns(zope.interface.Interface):
+
+    def __getitem__(idx):
+        """Return teasers in column ``idx``."""
+
+    def __len__():
+        """Return the number of columns.
+
+        (Currently either 1 or 2)
+
+        """
+
+
+class IWriteTeaserBlockColumns(zope.interface.Interface):
+    """Column information for a teaser block."""
+
+    def __setitem__(idx, amount):
+        """Set teasers in column ``idx``.
+
+        NOTE: The only valid value of ``idx`` is 0 at the moment.
+
+        """
+
+class ITeaserBlockColumns(IReadTeaserBlockColumns, IWriteTeaserBlockColumns):
+    """Column information for a teaser block."""
+
+
 def validate_xml_block(xml):
     if xml.tag != 'container':
         raise ValidationError(_("The root element must be <container>."))

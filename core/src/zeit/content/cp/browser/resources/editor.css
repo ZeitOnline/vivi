@@ -325,6 +325,15 @@
   z-index: 3;
 }
 
+.edit-bar.column-separator {
+  -moz-border-radius: 1em;
+  border: 1px solid black;
+  font-size: 0.5em;
+  margin: auto;
+  text-align: center;
+  width: 80%;
+}
+
 #confirm-delete-overlay {
   bottom: 0;
   left: 0;
@@ -477,67 +486,69 @@
 
 /* Teaser visualisations */
 
-.teaser-list {
+.block.type-teaser .teaser-contents {
   min-height: 5em;
   margin: 1em;
 }
 
-.teaser {
+.block.type-teaser .teaser {
   font-size: 0.8em;
 }  
 
-.teaser > img {
-  display: none
-}
-
-.teaser:first-child > img {
+.block.type-teaser .teaser-contents > img {
   display: block;
 }
 
-.teaser > .teaserTitle {
+.block.type-teaser .teaser > .teaserTitle {
   font-size: 1.2em;
   font-weight: bold;
 }
 
-.teaser > .supertitle,
-.teaser > .teaserTitle,
-.teaser > .teaserText {
+.block.type-teaser .teaser > .supertitle,
+.block.type-teaser .teaser > .teaserTitle,
+.block.type-teaser .teaser > .teaserText {
   display: none;
   margin-bottom: 0.6em;
 }
 
-.teaser > .shortTeaserTitle,
-.teaser > .shortTeaserText {
+.block.type-teaser .teaser > .shortTeaserTitle,
+.block.type-teaser .teaser > .shortTeaserText {
   display: inline;
 }
 
-.teaser:first-child > .supertitle,
-.teaser:first-child > .teaserTitle,
-.teaser:first-child > .teaserText {
+.block.type-teaser .teaser:first-child > .supertitle,
+.block.type-teaser .teaser:first-child > .teaserTitle,
+.block.type-teaser .teaser:first-child > .teaserText {
   display: block;
 }
 
-.teaser:first-child > .shortTeaserTitle,
-.teaser:first-child > .shortTeaserText {
+.block.type-teaser .teaser:first-child > .shortTeaserTitle,
+.block.type-teaser .teaser:first-child > .shortTeaserText {
   display: none;
 }
 
-.teaser > .supertitle,
-.teaser > .shortTeaserTitle {
+.block.type-teaser .teaser > .supertitle,
+.block.type-teaser .teaser > .shortTeaserTitle {
   color: #990000;
   font-size: 0.9em;
   font-weight: normal;
 }
 
-.leader .teaser:first-child > img {
+.leader-two-columns > img,
+.leader > img {
   margin: 0.5em 0;
   width: 100%;
 }
 
-.buttons .teaser:first-child > img {
-  width: 20%;
+.buttons > img {
   float: left;
   margin: 0.5em 1em 0.5em 0;
+  width: 20%;
+}
+
+.leader-two-columns .teaser-list {
+  float: left;
+  width: 45%;
 }
 
 /* layout chooser */

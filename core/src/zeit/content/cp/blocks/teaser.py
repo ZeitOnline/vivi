@@ -3,18 +3,65 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
+import gocept.lxml.interfaces
 import lxml.objectify
 import rwproperty
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
+import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.interface
-import gocept.lxml.interfaces
+import zope.schema
+
+
+class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
+
+    zope.interface.implements(zeit.content.cp.interfaces.ITeaserBlockColumns)
+    zope.component.adapts(zeit.content.cp.interfaces.ITeaserBlock)
+
+    column_1 = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'column_1', zope.schema.Int())
+
+    def __init__(self, block):
+        self.__parent__ = self.context = block
+        self.xml = block.xml
+
+    def _get_columns(self):
+        teasers = len(self.context)
+        if len(self) == 1:
+            return (teasers,)
+        if self.column_1 is None or teasers < self.column_1:
+            left = teasers
+            right = 0
+        else:
+            left = min(self.column_1, teasers)
+            right = teasers - self.column_1
+        return left, right
+
+    def __getitem__(self, idx):
+        try:
+            return self._get_columns()[idx]
+        except IndexError:
+            raise IndexError('column index out of range')
+
+    def __setitem__(self, idx, value):
+        if idx != 0:
+            raise KeyError('Can only set column 0')
+        self.column_1 = value
+
+    def __len__(self):
+        columns = self.context.layout.columns
+        assert columns in (1, 2)
+        return columns
+
+    def __repr__(self):
+        spec = ', '.join(str(x) for x in self._get_columns())
+        return 'ColumnSpec(%s)' % spec
 
 
 class TeaserBlock(zeit.content.cp.blocks.block.Block,

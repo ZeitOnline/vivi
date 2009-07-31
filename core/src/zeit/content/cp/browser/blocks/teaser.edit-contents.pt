@@ -8,11 +8,11 @@
       </li>
       <li class="edit-bar"
           tal:attributes="
-          class python:repeat['teaser'].even() and 'edit-bar even' or 'edit-bar odd';
+          class teaser/css_class;
           cms:uniqueId teaser/uniqueId">
         <span class="locked-indicator"
-              tal:condition="not: teaser/editable"
-              tal:content="structure teaser/content/@@get_locking_indicator" />
+              tal:condition="teaser/locking_indicator"
+              tal:content="structure teaser/locking_indicator" />
         <a class="edit-link"
            tal:condition="teaser/editable"
            tal:attributes="href string:${context/@@absolute_url}/checkout-content?uniqueId=${teaser/uniqueId}"
@@ -21,6 +21,7 @@
           <span class="action-title">Edit</span>
         </a>
         <a class="delete-link" title="Delete"
+           tal:condition="teaser/deletable"
            tal:attributes="href string:${context/@@absolute_url}/delete?uniqueId=${teaser/uniqueId}"
            i18n:attributes="title"
            cms:cp-module="zeit.content.cp.ConfirmDelete"
@@ -29,7 +30,7 @@
           <span class="action-title">Delete</span>
         </a>
 
-        <div tal:content="teaser/metadata/teaserTitle" />
+        <div tal:content="teaser/teaserTitle" />
 
       </li>
     </tal:repeat>
