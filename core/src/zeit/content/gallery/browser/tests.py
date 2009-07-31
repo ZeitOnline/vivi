@@ -4,7 +4,7 @@
 import unittest
 import zeit.cms.testing
 import zeit.content.gallery.browser.ticket
-import zeit.content.gallery.tests
+import zeit.content.gallery.testing
 import zope.app.appsetup.product
 
 
@@ -17,7 +17,7 @@ class TestTicketAuthorization(unittest.TestCase):
     def setUp(self):
         self.config = zope.app.appsetup.product.saveConfiguration()
         zope.app.appsetup.product.restoreConfiguration(
-            zeit.content.gallery.tests.product_config)
+            zeit.content.gallery.testing.product_config)
 
     def tearDown(self):
         zope.app.appsetup.product.restoreConfiguration(self.config)
@@ -47,6 +47,6 @@ def test_suite():
         'imp.txt',
         'ticket.txt',
         'upload.txt',
-        product_config=zeit.content.gallery.tests.product_config,
-        layer=zeit.content.gallery.tests.GalleryLayer))
+        product_config=zeit.content.gallery.testing.product_config,
+        layer=zeit.content.gallery.testing.GalleryLayer))
     return suite
