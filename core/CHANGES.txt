@@ -8,6 +8,8 @@ zeit.find changes
   Text dargestellt.
 
 - lucenequery nach zeit.solr verschoben.
+  
+- Link zum Objekt im CMS
 
 0.8 (2009-07-28)
 ----------------

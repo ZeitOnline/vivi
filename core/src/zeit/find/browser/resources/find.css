@@ -284,14 +284,23 @@
   padding-left: 16px;
 }
 
-.zeit-find-search .preview {
+.zeit-find-search .object-link {
   float: right;
-  background: url(eye.png) no-repeat 0 50%;
-  padding-left: 20px;
+  padding-left: 3em;
+  background-repeat: no-repeat;
+  background-position: 1.25em center;
 }
 
-.zeit-find-search .preview a {
+.zeit-find-search .object-link > a {
   color: #4c4c4c;
+}
+
+.zeit-find-search .preview {
+  background-image: url(eye.png);
+}
+
+.zeit-find-search .goto-object {
+  background-image: url(eye.png);
 }
 
 .related_links.expanded {

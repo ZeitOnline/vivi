@@ -23,7 +23,12 @@
   <a href="#" class="related_links">
    Relateds
   </a>
-  <div class="preview">
+  <div class="goto-object object-link">
+    <a target="_top" href="{application_url}/@@redirect_to?unique_id={uniqueId}">
+      CMS
+    </a>
+  </div>
+  <div class="preview object-link">
     <a target="_blank" href="{preview_url}">Vorschau</a>
   </div>
   <div class="related_info"></div>

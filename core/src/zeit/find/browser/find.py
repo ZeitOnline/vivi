@@ -146,6 +146,7 @@ class SearchResult(JSONView):
             preview_url = zeit.cms.browser.preview.get_preview_url(
                 'preview-prefix', uniqueId)
             results.append({
+                    'application_url': application_url,
                     'arrow': r['arrow_right.png'](),
                     'authors': result.get('authors', []),
                     'date': format_date(dt),
@@ -362,6 +363,7 @@ class Favorites(JSONView):
             icon = icon.url()
 
         return {
+            'application_url': self.request.getApplicationURL(),
             'arrow': r['arrow_right.png'](),
             'authors': authors,
             'date': format_date(date),
