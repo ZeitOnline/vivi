@@ -2,7 +2,7 @@ zeit.content.gallery changes
 ============================
 
 
-2.1 (unreleased)
+2.1 (2009-08-03)
 ----------------
 
 - JavaScript-Fehler wegen nicht vorhandenem Uploader behoben.
