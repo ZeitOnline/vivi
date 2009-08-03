@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-0.11 (unreleased)
+0.11 (2009-08-03)
 -----------------
 
 - Weitere Layouts für den Teaserblock: Doppelspalter, Datumsteaser, Kleine
