@@ -142,7 +142,8 @@ zeit.find.Search = zeit.find.BaseView.extend({
                         value = element.value;
                         title = label[0].textContent;
                     }
-                } else if (element.type == 'text' && element.name != 'text') {
+                } else if (element.type == 'text'
+                           && element.name != 'fulltext') {
                     value = element.value;
                     title = value;
                 }
