@@ -1,6 +1,10 @@
 zeit.content.gallery changes
 ============================
 
+2.1.1 (2009-08-03)
+------------------
+
+- Bilder werden nicht mehr versteckt, wenn man sie ein zweites Mal zuschneidet.
 
 2.1 (2009-08-03)
 ----------------

@@ -31,14 +31,17 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         zeit.imp.interfaces.IStorer(entry).store('10x10', pil)
         self.assertEqual(['01.jpg', '01-10x10.jpg', '02.jpg'],
                          list(self.gallery.keys()))
-        self.assertEqual([True, False, False], [
-            x.layout == 'hidden' for x in self.gallery.values()])
+        self.assertEqual([True, False, False],
+                         [x.layout == 'hidden' for x in self.gallery.values()])
 
         # Images are overwritten
         pil = PIL.Image.open(entry.image.open())
         zeit.imp.interfaces.IStorer(entry).store('10x10', pil)
         self.assertEqual(['01.jpg', '01-10x10.jpg', '02.jpg'],
                          list(self.gallery.keys()))
+        self.assertEqual([True, False, False],
+                         [x.layout == 'hidden' for x in self.gallery.values()])
+
 
     def test_metadata_from_source_image_is_copied(self):
         entry = self.gallery['01.jpg']

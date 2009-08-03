@@ -75,9 +75,9 @@ class GalleryStorer(object):
         self.gallery[self.context.__name__] = self.context
         for crop in self.context.crops:
             crop.layout = 'hidden'
-            # XXX restructure GalleryEntry similar to blocks in a centerpage,
-            # so that changes persist directly
             self.gallery[crop.__name__] = crop
+        if entry.layout == 'hidden':
+            entry.layout = None
         self.gallery[entry.__name__] = entry
 
     def update_order(self, entry):
