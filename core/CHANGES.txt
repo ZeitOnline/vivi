@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.26 (unreleased)
+1.26 (2009-08-03)
 -----------------
 
 - Neues Feld »Product-Id« in den Standardmetadaten (#5819).
