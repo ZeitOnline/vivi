@@ -5,8 +5,8 @@ Image Gallery
 Galleries are basically a document which references a folder containing images.
 Create a  browser first:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
@@ -163,6 +163,11 @@ The default view while editing a gallery is the overview page:
 >>> browser.open('/++skin++cms/workingcopy/zope.user/island')
 >>> print browser.title.strip()
 Auf den Spuren der Elfen – Overview
+>>> import lxml.cssselect
+>>> nodes = lxml.cssselect.CSSSelector('.context-views li.images.selected')(
+...     browser.etree)
+>>> [li.xpath('string(.)').strip() for li in nodes]
+['Images']
 
 
 Reloading the image folder
@@ -318,6 +323,11 @@ The default view while a gallery is checked in, is the metadata page:
 >>> browser.open('/++skin++cms/repository/online/2007/01/island')
 >>> print browser.title.strip()
 Auf den Spuren der Elfen – View gallery metadata
+>>> nodes = lxml.cssselect.CSSSelector(
+...     '.context-views li.view_metadata.selected')(browser.etree)
+>>> [li.xpath('string(.)').strip() for li in nodes]
+['View metadata']
+
 
 Browsing location
 =================

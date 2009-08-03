@@ -2,11 +2,12 @@
 # See also LICENSE.txt
 
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
 import zeit.content.gallery.interfaces
 import zope.component
 import zope.interface
-import zope.security.interfaces
+import zope.security
 import zope.security.proxy
 
 
@@ -49,16 +50,13 @@ class MetadataPreview(zeit.content.image.browser.image.MetadataPreview):
         super(MetadataPreview, self).__init__(context.image, request)
 
 
-class Index(object):
+class Index(zeit.cms.browser.view.Base):
 
     def __call__(self):
         views = ('overview.html', 'view.html')
         for name in views:
             view = zope.component.getMultiAdapter(
                 (self.context, self.request), name=name)
-            try:
-                return zope.security.proxy.ProxyFactory(view)()
-            except zope.security.interfaces.Unauthorized, e:
-                pass
-        raise e
-
+            if zope.security.canAccess(view, '__call__'):
+                return self.redirect(self.url(view))
+        raise zope.security.interfaces.Unauthorized()
