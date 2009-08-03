@@ -1,6 +1,14 @@
 zeit.locales CHANGES
 ====================
 
+
+0.6 (2009-08-03)
+++++++++++++++++
+
+- zeit.solr hinzugefügt
+
+- Übersetzungen aktualisiert.
+
 0.5 (2009-06-23)
 ++++++++++++++++
 
