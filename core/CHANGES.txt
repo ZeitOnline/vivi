@@ -4,6 +4,8 @@ zeit.cms changes
 1.26.1 (unreleased)
 -------------------
 
+- DragAndDrop im Clipboard funktioniert wieder.
+
 - Objektauswahl-Lightbox funktioniert wieder.
 
 1.26 (2009-08-03)
