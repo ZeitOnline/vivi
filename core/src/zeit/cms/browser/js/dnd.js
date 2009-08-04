@@ -198,6 +198,7 @@ var ObjectReferenceWidget = Class.extend({
         if (isUndefinedOrNull(element)) {
             self.lightbox.close();
             self.lightbox = null;
+            self.selectObject(unique_id);
         } else { 
             MochiKit.Style.makePositioned(element);
             var pos = MochiKit.Style.getElementPosition(element);

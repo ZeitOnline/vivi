@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.26.1 (unreleased)
+-------------------
+
+- Objektauswahl-Lightbox funktioniert wieder.
+
 1.26 (2009-08-03)
 -----------------
 
@@ -77,7 +82,7 @@ Technisches
 - DragAndDrop: Wird ein Objekt gezogen gibt es keine besondere »Drag-Pane«
   mehr. Das gezogene Element wird direkt angezeigt.
 
-- Beim veröffentlichen »oldstatus« nur setzen, wenn sich der Wert auch geändert
+- Beim Veröffentlichen »oldstatus« nur setzen, wenn sich der Wert auch geändert
   hat.
 
 - Sidebar ein/ausklappen mit expliziter Statusangabe anstatt mit umschalten
