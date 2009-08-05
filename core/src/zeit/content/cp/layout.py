@@ -58,7 +58,7 @@ TEASER_BLOCK = [
                 '450x200', areas=('lead-1',)),
     BlockLayout('archive-print',
                 u'Teaser im Printarchiv',
-                '450x200', areas=('lead-1',)),
+                areas=('lead-1',)),
     BlockLayout('buttons',
                 u'Kleiner Teaser mit kleinem Bild und Teaserliste',
                 '140x140', areas=('lead',)),
