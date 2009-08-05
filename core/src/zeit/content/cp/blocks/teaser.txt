@@ -171,7 +171,7 @@ other positions:
 >>> teaser_2 = factory()
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_1))
-['buttons', 'leader', 'leader-two-columns', 'leader-upright']
+['archive-print', 'buttons', 'leader', 'leader-two-columns', 'leader-upright']
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_2))
 ['buttons']
