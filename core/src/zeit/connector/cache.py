@@ -101,21 +101,8 @@ class Body(persistent.Persistent):
             target = cStringIO.StringIO()
         else:
             small = False
-            if isinstance(self.data, str):
-                # Migrate to Blob from the stringref.
-                self.data = None
-            if self.data is not None:
-                try:
-                    target = self.data.open('w')
-                except ZODB.POSException.POSKeyError:
-                    # When the blob file goes away we'll have this error. Of
-                    # course normally blob files don't go away. But
-                    # historically the Connector behaves very greedy against
-                    # missing blob files.
-                    self.data = None
-            if self.data is None:
-                self.data = ZODB.blob.Blob()
-                target = self.data.open('w')
+            self.data = ZODB.blob.Blob()
+            target = self.data.open('w')
         while s:
             target.write(s)
             s = data.read(self.BUFFER_SIZE)
@@ -127,7 +114,7 @@ class Body(persistent.Persistent):
 
     def _p_resolveConflict(self, old, commited, newstate):
         if commited[1]['etag'] == newstate[1]['etag']:
-            return newstate
+            return commited
         # Different ETags. Invalidate the cache.
         commited[1]['etag'] = INVALID_ETAG
         return commited

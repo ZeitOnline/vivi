@@ -256,16 +256,18 @@ is preserved.
 Note that we don't handle the case where the etags are equal but the bodies are
 different. We don't expect this to happen.
 
->>> from zc.queue.tests import ConflictResolvingMappingStorage
+>>> import tempfile
+>>> blob_dir = tempfile.mkdtemp()
+>>> from zeit.connector.testing import get_storage
 >>> from ZODB import DB
->>> db = DB(ConflictResolvingMappingStorage('test'))
+>>> db = DB(get_storage(blob_dir))
 >>> transactionmanager_1 = transaction.TransactionManager()
 >>> transactionmanager_2 = transaction.TransactionManager()
 >>> connection_1 = db.open(transaction_manager=transactionmanager_1)
 >>> root_1 = connection_1.root()
 
 >>> c_1 = root_1["cache"] = zeit.connector.cache.ResourceCache()
->>> body = StringIO('A small file')
+>>> body = StringIO('A small file' * BUFFER_SIZE)
 >>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'initial-etag'}, body)
 >>> transactionmanager_1.commit()
 
@@ -276,8 +278,8 @@ different. We don't expect this to happen.
 
 Different ETAGS:
 
->>> body1 = StringIO('Body 1')
->>> body2 = StringIO('Body 2')
+>>> body1 = StringIO('Body 1' * BUFFER_SIZE)
+>>> body2 = StringIO('Body 2' * BUFFER_SIZE)
 >>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'etag1'}, body1)
 >>> dummy = c_2.setData('id', {('getetag', 'DAV:'): 'etag2'}, body2)
 >>> transactionmanager_2.commit()
@@ -302,11 +304,9 @@ The same ETAG also doesn't generate a conflict:
 >>> connection_1.sync()
 >>> connection_2.sync()
 >>> c_1.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
-'A small file'
+'A small fileA small...'
 >>> c_2.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
-'A small file'
-
-
+'A small fileA small...'
 
 
 Property Cache
@@ -449,11 +449,11 @@ Note that the most common conflicts are value changes *in* the cache. We do not
 change the conflict resolution of the underling btree.
 
 
->>> db = DB(ConflictResolvingMappingStorage('test'))
->>> transactionmanager_1 = transaction.TransactionManager()
->>> transactionmanager_2 = transaction.TransactionManager()
->>> connection_1 = db.open(transaction_manager=transactionmanager_1)
->>> root_1 = connection_1.root()
+#>>> db = DB(ConflictResolvingMappingStorage('test'))
+#>>> transactionmanager_1 = transaction.TransactionManager()
+#>>> transactionmanager_2 = transaction.TransactionManager()
+#>>> connection_1 = db.open(transaction_manager=transactionmanager_1)
+#>>> root_1 = connection_1.root()
 
 >>> c_1 = root_1["cache"] = zeit.connector.cache.PropertyCache()
 >>> c_1['id'] = {'foo': 'bar'}
@@ -625,6 +625,12 @@ When the conflicting state is *equal* it is kept, though:
 ['foo']
 >>> list(c_2['id'])
 ['foo']
+
+
+Clean:
+
+>>> import shutil
+>>> shutil.rmtree(blob_dir)
 
 .. [#cleanup] 
 

@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+1.17.1 (2009-08-05)
+-------------------
+
+- Refactored body cache to no longer reuse blobs for even better conflict
+  resolution.
+
 1.17 (2009-07-24)
 -----------------
 

@@ -258,45 +258,6 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
         self.key = zeit.connector.cache.get_storage_key(self.uniqueId)
         self.BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
 
-    def _store(self, d1, d2):
-        self.cache.setData(self.uniqueId, self.properties1, d1)
-        store1 = self.cache._data[self.key].data
-        self.cache.setData(self.uniqueId, self.properties2, d2)
-        store2 = self.cache._data[self.key].data
-        return store1, store2
-
-    def assert_reused(self, d1, d2):
-        store1, store2 = self._store(d1, d2)
-        oid1 = getattr(store1, '_p_oid', 'str')
-        oid2 = getattr(store2, '_p_oid', 'str')
-        self.assertEquals(oid1, oid2)
-
-    def assert_not_reused(self, d1, d2):
-        store1, store2 = self._store(d1, d2)
-        oid1 = getattr(store1, '_p_oid', 'str')
-        oid2 = getattr(store2, '_p_oid', 'str')
-        self.assertNotEquals(oid1, oid2)
-
-    def test_blob_reuse(self):
-        data1 = StringIO.StringIO(self.BUFFER_SIZE*2*'x')
-        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
-        self.assert_reused(data1, data2)
-
-    def test_stringref_reuse(self):
-        data1 = StringIO.StringIO('x')
-        data2 = StringIO.StringIO('y')
-        self.assert_reused(data1, data2)
-
-    def test_stringref_to_blob_switch(self):
-        data1 = StringIO.StringIO('x')
-        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
-        self.assert_not_reused(data1, data2)
-
-    def test_blob_to_stringref_not_switched(self):
-        data1 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
-        data2 = StringIO.StringIO('x')
-        self.assert_reused(data1, data2)
-
     def test_etag_migration(self):
         self.cache._etags = BTrees.family64.OO.BTree()
         self.cache._etags[self.key] = 'etag1'
@@ -340,6 +301,24 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
                           self.cache.getData, self.uniqueId, self.properties1)
         data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
         self.cache.setData(self.uniqueId, self.properties2, data2)
+        self.assertEquals(
+            data2.getvalue(),
+            self.cache.getData(self.uniqueId, self.properties2).read())
+
+    def test_blob_conflict_resolution(self):
+        size = zeit.connector.cache.Body.BUFFER_SIZE
+        body = StringIO.StringIO('body' * size)
+        def store():
+            transaction.abort()
+            self.cache.setData(self.uniqueId, self.properties1, body)
+            transaction.commit()
+        t1 = threading.Thread(target=store)
+        t2 = threading.Thread(target=store)
+        t1.start()
+        t2.start()
+        t1.join()
+        t2.join()
+
 
 def test_suite():
     suite = unittest.TestSuite()
