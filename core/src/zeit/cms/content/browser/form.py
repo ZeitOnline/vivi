@@ -2,25 +2,21 @@
 # See also LICENSE.txt
 """Content related forms."""
 
+from zeit.cms.i18n import MessageFactory as _
 import copy
 import datetime
-
-import zope.testing.cleanup
-
-import zope.app.appsetup.interfaces
-import zope.app.form.browser.textwidgets
-
 import gocept.form.grouped
 import zc.resourcelibrary
-
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
-import zeit.cms.content.interfaces
 import zeit.cms.content.browser.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.settings.interfaces
 import zeit.cms.syndication.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.app.appsetup.interfaces
+import zope.app.form.browser.textwidgets
+import zope.testing.cleanup
 
 
 
