@@ -1,8 +1,13 @@
 zeit.cms changes
 ================
 
-1.26.2 (unreleased)
--------------------
+1.27 (unreleased)
+-----------------
+
+- Markierungen für Inline-Assets (#5770).
+
+Technisches
++++++++++++
 
 - Basisklasse für Adapter, die WebDAVPropertys brauchen.
 

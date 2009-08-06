@@ -53,5 +53,29 @@ frozenset([])
   <body/>
 </testtype>
 
-# XXX syndication
 
+The badges are also in the xml metadata when syndicating (or relating):
+
+>>> feed = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed')
+>>> with zeit.cms.checkout.helper.checked_out(feed) as co:
+...     co.insert(0, content)
+>>> feed = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed')
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True),
+<channel>...
+      <badges>
+        <badge py:pytype="str">gallery</badge>
+        <badge py:pytype="str">video</badge>
+      </badges>
+      ...
+
+If there are no badges, no <badges/> will be created:
+
+
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     badges = zeit.cms.asset.interfaces.IBadges(content)
+...     badges.badges = frozenset([])
+>>> with zeit.cms.checkout.helper.checked_out(feed) as co:
+...     co.insert(0, content)
+>>> feed = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed')
+>>> 'badges' in lxml.etree.tostring(feed.xml, pretty_print=True)
+False

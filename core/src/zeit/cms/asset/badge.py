@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import grokcore.component
+import lxml.objectify
 import zeit.cms.asset.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -19,3 +20,19 @@ class Badges(zeit.cms.content.dav.DAVPropertiesAdapter):
     @property
     def xml(self):
         return self.context.xml
+
+
+class MetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+
+    target_iface = zeit.cms.asset.interfaces.IBadges
+
+    def update_with_context(self, entry, badges):
+        if badges.badges:
+            badges = [lxml.objectify.E.badge(badge)
+                      for badge in sorted(badges.badges)]
+            badges = lxml.objectify.E.badges(*badges)
+            entry[badges.tag] = badges
+        else:
+            badges = entry.find('badges')
+            if badges is not None:
+                entry.remove(badges)

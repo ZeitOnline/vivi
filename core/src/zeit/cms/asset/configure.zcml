@@ -8,5 +8,7 @@
              permission="zeit.EditContent" />
   </class>
 
+  <adapter factory=".badge.MetadataUpdater" name="badge" />
+
 </configure>
 
