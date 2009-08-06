@@ -7,6 +7,7 @@ import zeit.cms.asset.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
+import zeit.cms.content.xmlsupport
 
 
 class Badges(zeit.cms.content.dav.DAVPropertiesAdapter):
