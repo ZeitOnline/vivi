@@ -12,6 +12,7 @@ import zeit.cms.testing
 import zeit.connector.interfaces
 import zope.component
 import zope.interface
+import zope.security.proxy
 
 
 class ITestInterface(zope.interface.Interface):
@@ -143,6 +144,14 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
         grokcore.component.testing.grok_component('adapter', Adapter)
         adapter = ITestInterface(self.content)
         self.assertTrue(isinstance(adapter, Adapter))
+        # When content is proxied, the adapter will be proxied (trusted
+        # adapter)
+        adapter = ITestInterface(zope.security.proxy.ProxyFactory(
+            self.content))
+        self.assertFalse(isinstance(adapter, Adapter))
+        self.assertTrue(isinstance(zope.security.proxy.removeSecurityProxy(
+            adapter), Adapter))
+
         zope.component.getGlobalSiteManager().unregisterAdapter(
             Adapter, (zeit.cms.interfaces.ICMSContent,), ITestInterface)
 

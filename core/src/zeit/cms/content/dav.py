@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 
 import datetime
-import grokcore.component
 import gocept.lxml.interfaces
+import grokcore.component
 import logging
 import lxml.etree
 import pytz
@@ -22,6 +22,7 @@ import zope.component
 import zope.event
 import zope.proxy
 import zope.schema.interfaces
+import zope.security.proxy
 import zope.xmlpickle
 
 
@@ -494,6 +495,19 @@ class DAVPropertiesAdapter(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.cms.interfaces.ICMSContent)
     grokcore.component.baseclass()
+
+    def __new__(cls, context):
+        # Trusted adapter
+        instance = object.__new__(cls)
+        if zope.security.proxy.removeSecurityProxy(context) is context:
+            # Context is unwrapped. Basically do nothing special here.
+            wrap = lambda x: x
+        else:
+            # Context is wrapped. Unwrap and wrap adapter
+            wrap = zope.security.proxy.ProxyFactory
+            context = zope.security.proxy.removeSecurityProxy(context)
+        instance.__init__(context)
+        return wrap(instance)
 
 
 @grokcore.component.adapter(DAVPropertiesAdapter)
