@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<badges>
+    <badge name="video">Video</badge>
+    <badge name="double-video">Doppelvideo</badge>
+    <badge name="audio">Audio</badge>
+    <badge name="gallery">Bildergalerie</badge>
+</badges>

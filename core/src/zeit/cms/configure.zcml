@@ -16,6 +16,7 @@
 
   <include file="permissions.zcml" />
 
+  <include package=".asset" />
   <include package=".content" />
   <include package=".related" />
   <include package=".checkout"  />

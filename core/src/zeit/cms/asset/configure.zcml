@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <class class=".badge.Badges">
+    <require interface=".interfaces.IBadges"
+             permission="zope.View" />
+    <require set_schema=".interfaces.IBadges"
+             permission="zeit.EditContent" />
+  </class>
+
+</configure>
+

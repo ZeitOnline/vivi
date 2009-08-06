@@ -20,12 +20,20 @@ We stay on the asset page when checking out:
 >>> print browser.title.strip()
 testcontent – Edit assets
 
+Set badges:
+
+>>> browser.getControl('Video').click()
+>>> browser.getControl('Audio').click()
+>>> browser.getControl('Apply').click()
+
 And checking in:
 
 >>> browser.getLink('Checkin').click()
 >>> print browser.title.strip()
 testcontent – Assets
-
+>>> print browser.contents
+<...Audio<br />
+Video...
 
 Clean up:
 

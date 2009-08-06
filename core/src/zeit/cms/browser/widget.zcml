@@ -2,6 +2,16 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser">
 
+  <!-- Use checkbox widget -->
+  <adapter
+      for="zope.schema.interfaces.IFrozenSet
+           zope.schema.interfaces.IIterableSource
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory="zope.app.form.browser.source.SourceMultiCheckBoxWidget"
+      permission="zope.Public"
+      />
+  
   <adapter
     for="zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource

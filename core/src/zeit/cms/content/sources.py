@@ -23,6 +23,7 @@ logger = logging.getLogger('zeit.cms.content.sources')
 class SimpleXMLSourceBase(object):
 
     product_configuration = 'zeit.cms'
+    config_url = NotImplemented
 
     def _get_tree(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
@@ -40,6 +41,30 @@ class SimpleXMLSourceBase(object):
     def getValues(self):
         xml = self._get_tree()
         return [unicode(serie).strip() for serie in xml.iterchildren()]
+
+
+class XMLSource(
+    SimpleXMLSourceBase,
+    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    # NOTE: this source is contextual to be able to set a default for a field
+    # using the source even while there is no product config.
+
+    attribute = NotImplemented
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [unicode(node.get(self.attribute))
+                for node in tree.iterchildren()]
+
+    def getTitle(self, context, value):
+        __traceback_info__ = (value, )
+        tree = self._get_tree()
+        nodes = tree.xpath('//*[@%s= %s]' % (
+                           self.attribute,
+                           xml.sax.saxutils.quoteattr(value)))
+        if nodes:
+            return unicode(nodes[0].text)
+        return value
 
 
 class SimpleXMLSource(
@@ -140,25 +165,10 @@ class SubNavigationSource(SimpleContextualXMLSource):
         return metadata.ressort
 
 
-class ProductSource(SimpleContextualXMLSource):
-    # NOTE: this source is contextual to be able to set a default for a field
-    # using the source even while there is no product config.
+class ProductSource(XMLSource):
 
     config_url = 'source-products'
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        return [unicode(ressort.get('id'))
-                for ressort in tree.iterchildren()]
-
-    def getTitle(self, context, value):
-        __traceback_info__ = (value, )
-        tree = self._get_tree()
-        nodes = tree.xpath('//product[@id= %s]' %
-                           xml.sax.saxutils.quoteattr(value))
-        if nodes:
-            return unicode(nodes[0].text)
-        return value
+    attribute = 'id'
 
 
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):

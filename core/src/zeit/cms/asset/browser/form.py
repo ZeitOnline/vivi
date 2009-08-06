@@ -4,6 +4,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import zeit.cms.asset.interfaces
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.content.browser.interfaces
@@ -16,9 +17,12 @@ import zope.testing.cleanup
 class AssetBase(object):
     """Asset form field definitions."""
 
-    form_fields = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.asset.interfaces.IBadges)
 
     field_groups = (
+        gocept.form.grouped.Fields(
+            _('Badges'), ('badges',)),
         gocept.form.grouped.RemainingFields(
             _('Teaser elements'),
             'wide-widgets full-width'),

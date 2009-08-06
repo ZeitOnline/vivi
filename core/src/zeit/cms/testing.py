@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import pkg_resources
 from zope.testing import doctest
 import __future__
 import os
@@ -62,6 +63,8 @@ def setup_product_config(product_config={}):
         base_path, 'zeit-ontologie-prism.xml')
     cms_config['source-products'] = 'file://%s' % os.path.join(
         base_path, 'products.xml')
+    cms_config['source-badges'] = 'file://%s' % (
+        pkg_resources.resource_filename(__name__, 'asset/badges.xml'),)
 
     cms_config['preview-prefix'] = 'http://localhost/preview-prefix'
     cms_config['live-prefix'] = 'http://localhost/live-prefix'

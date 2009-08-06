@@ -139,8 +139,10 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
 
 class MultiPropertyBase(object):
 
-    def __init__(self, path):
+    def __init__(self, path, result_type=tuple, sorted=lambda x:x):
         self.path = lxml.objectify.ObjectPath(path)
+        self.result_type = result_type
+        self.sorted = sorted
 
     def __get__(self, instance, class_):
         tree = instance.xml
@@ -152,7 +154,7 @@ class MultiPropertyBase(object):
             element_set = []
         for node in element_set:
             result.append(self._element_factory(node, tree))
-        return tuple(elem for elem in result if elem is not None)
+        return self.result_type(elem for elem in result if elem is not None)
 
     def __set__(self, instance, value):
         # Remove nodes.
@@ -160,6 +162,7 @@ class MultiPropertyBase(object):
         for entry in self.path.find(tree, []):
             entry.getparent().remove(entry)
         # Add new nodes:
+        value = self.sorted(value)
         self.path.setattr(tree, [self._node_factory(entry, tree)
                                  for entry in value])
 

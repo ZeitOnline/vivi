@@ -1,0 +1,57 @@
+Asset badges
+============
+
+Asset badges are markers on the website which indicate which assets are
+attached to an object. For a yet unknown reason those badges must be set
+manually.
+
+There is a source for badges:
+
+>>> import zeit.cms.asset.interfaces
+>>> source = zeit.cms.asset.interfaces.BadgeSource()(object())
+>>> list(source)
+[u'video', u'double-video', u'audio', u'gallery']
+>>> import zope.browser.interfaces
+>>> import zope.publisher.browser
+>>> request = zope.publisher.browser.TestRequest()
+>>> terms = zope.component.getMultiAdapter(
+...     (source, request),
+...     zope.browser.interfaces.ITerms)
+>>> print terms.getTerm('video').title
+Video
+
+
+Set badges for a content object:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> p = zeit.cms.testing.create_interaction()
+
+>>> import zeit.cms.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/testcontent')
+>>> badges = zeit.cms.asset.interfaces.IBadges(content)
+>>> badges
+<zeit.cms.asset.badge.Badges object at 0x...>
+>>> badges.badges
+frozenset([])
+>>> import zeit.cms.checkout.helper
+>>> dummy = with_statement
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     badges = zeit.cms.asset.interfaces.IBadges(content)
+...     badges.badges = frozenset(['video', 'gallery'])
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True),
+<testtype>
+  <head>
+    <badges>
+      <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">gallery</badge>
+      <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">video</badge>
+    </badges>
+  </head>
+  <body/>
+</testtype>
+
+# XXX syndication
+
