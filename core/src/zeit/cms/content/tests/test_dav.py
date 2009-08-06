@@ -151,6 +151,7 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
         self.assertFalse(isinstance(adapter, Adapter))
         self.assertTrue(isinstance(zope.security.proxy.removeSecurityProxy(
             adapter), Adapter))
+        self.assertEquals(self.content, adapter.__parent__)
 
         zope.component.getGlobalSiteManager().unregisterAdapter(
             Adapter, (zeit.cms.interfaces.ICMSContent,), ITestInterface)
