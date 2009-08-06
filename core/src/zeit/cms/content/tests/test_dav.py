@@ -2,10 +2,14 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
+import grokcore.component
+import grokcore.component.testing
 import zeit.cms.checkout.helper
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.unknown
 import zeit.cms.testing
+import zeit.connector.interfaces
 import zope.component
 import zope.interface
 
@@ -121,3 +125,30 @@ class DAVTest(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
+
+
+class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(TestPropertyBase, self).setUp()
+        self.content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+
+    def test_adapter_grokking(self):
+
+        class Adapter(zeit.cms.content.dav.DAVPropertiesAdapter):
+            grokcore.component.implements(ITestInterface)
+
+        self.assertRaises(TypeError, ITestInterface, self.content)
+        grokcore.component.testing.grok_component('adapter', Adapter)
+        adapter = ITestInterface(self.content)
+        self.assertTrue(isinstance(adapter, Adapter))
+        zope.component.getGlobalSiteManager().unregisterAdapter(
+            Adapter, (zeit.cms.interfaces.ICMSContent,), ITestInterface)
+
+    def test_adapter_grokking_isolation(self):
+        self.assertRaises(TypeError, ITestInterface, self.content)
+
+    def test_adatper_adaptable_to_properties(self):
+        adapter = zeit.cms.content.dav.DAVPropertiesAdapter(self.content)
+        properties = zeit.connector.interfaces.IWebDAVProperties(adapter)

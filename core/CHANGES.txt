@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.26.2 (unreleased)
+-------------------
+
+- Basisklasse für Adapter, die WebDAVPropertys brauchen.
+
 1.26.1 (2009-08-04)
 -------------------
 

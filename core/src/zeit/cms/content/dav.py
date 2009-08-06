@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import datetime
+import grokcore.component
 import gocept.lxml.interfaces
 import logging
 import lxml.etree
@@ -487,3 +488,15 @@ def restore_provides_from_dav(obj, event):
         obj.__provides__ = new_provides
         # directly provide Interface to restore the _cls on __provides__
         zope.interface.alsoProvides(obj, zope.interface.Interface)
+
+
+class DAVPropertiesAdapter(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.cms.interfaces.ICMSContent)
+    grokcore.component.baseclass()
+
+
+@grokcore.component.adapter(DAVPropertiesAdapter)
+@grokcore.component.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def dav_properties_for_dav_properties_adapter(context):
+    return zeit.connector.interfaces.IWebDAVProperties(context.context)
