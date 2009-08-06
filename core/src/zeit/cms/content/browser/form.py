@@ -135,7 +135,7 @@ class AssetBase(object):
 
     field_groups = (
         gocept.form.grouped.RemainingFields(
-            _('Assets and related'),
+            _('Teaser elements'),
             'wide-widgets full-width'),
     )
 
@@ -152,6 +152,7 @@ class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
     """Form to edit assets."""
 
     title = _('Edit assets')
+
 
 class AssetView(AssetBase, zeit.cms.browser.form.DisplayForm):
 
