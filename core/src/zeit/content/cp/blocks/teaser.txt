@@ -174,7 +174,7 @@ other positions:
 ['archive-print', 'buttons', 'leader', 'leader-two-columns', 'leader-upright']
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_2))
-['buttons']
+['archive-print', 'buttons']
 
 There are different layouts in the informatives:
 
@@ -200,6 +200,40 @@ And yet other ones in the mosic:
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
 ['date', 'ressort', 'short']
+
+
+Archive centerpages should always keep the same module attribute:
+
+>>> archive_cp = zeit.content.cp.centerpage.CenterPage()
+>>> archive_cp.type = 'archive-print'
+>>> print archive_cp.type
+archive-print
+>>> factory = zope.component.getAdapter(
+...     archive_cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> archive_teaser_1 = factory()
+>>> layout = zeit.content.cp.layout.get_layout('archive-print')
+>>> archive_teaser_1.layout = layout
+>>> archive_teaser_2 = factory()
+>>> archive_teaser_2.layout = layout
+>>> archive_teaser_3 = factory()
+>>> archive_teaser_3.layout = layout
+>>> print lxml.etree.tostring(archive_cp.xml, pretty_print=True)
+<centerpage ...>
+  <head/>
+  <body>
+    <cluster area="feature">
+      <region area="lead">
+        <container cp:type="teaser" module="archive-print" .../>
+        <container cp:type="teaser" module="archive-print" .../>
+        <container cp:type="teaser" module="archive-print" .../>
+      </region>
+      <region area="informatives"/>
+    </cluster>
+    <cluster area="teaser-mosaic"/>
+  </body>
+  <feed/>
+</centerpage>
+<BLANKLINE>
 
 
 .. [#functional]

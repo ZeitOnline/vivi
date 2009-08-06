@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <centerpage-types>
+    <type name="archive-print">Archiv-Print</type>
     <type name="centerpage">Centerpage</type>
     <type name="homepage">Homepage</type>
     <type name="ressort">Themenseite</type>
