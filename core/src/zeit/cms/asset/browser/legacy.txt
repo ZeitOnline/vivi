@@ -1,0 +1,9 @@
+Legacy locations
+================
+
+>>> import zeit.cms.content.browser.interfaces
+>>> zeit.cms.content.browser.interfaces.IAssetViews
+<InterfaceClass zeit.cms.asset.browser.interfaces.IAssetViews>
+>>> import zeit.cms.content.browser.form
+>>> zeit.cms.content.browser.form.AssetBase
+<class 'zeit.cms.asset.browser.form.AssetBase'>

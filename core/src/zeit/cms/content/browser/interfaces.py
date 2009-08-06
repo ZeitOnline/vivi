@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.asset.browser.interfaces import IAssetViews  # Legacy
 import zope.interface
 
 
@@ -26,7 +26,3 @@ class IXMLTreeWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
 
 class IXMLSnippetWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
     """A widget for editing xml snippets."""
-
-
-class IAssetViews(zope.interface.Interface):
-    """Marker interface for object which want asset views."""
