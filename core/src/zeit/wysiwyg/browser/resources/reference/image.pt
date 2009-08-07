@@ -20,6 +20,17 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         style="width: 60em" />
       <input name="browseObjects" type="button" value="…" />
     </div>
+    <div class="widget">
+      <label for="layout" i18n:translate="">Layout</label>
+      <select id="layout">
+        <option value=""
+          i18n:domain="zope"
+          i18n:translate="vocabulary-missing-single-value-for-edit">(no value)</option>
+        <option value="small" i18n:translate="">small</option>
+        <option value="large" i18n:translate="">large</option>
+        <option value="infobox" i18n:translate="">Infobox</option>
+      </select>
+    </div>
     <div id="preview"></div>
   </body>
 </html>

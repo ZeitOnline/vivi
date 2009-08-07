@@ -316,6 +316,9 @@ class ImageStep(ConversionStep):
         img = lxml.objectify.E.img()
         if url:
             img.set('src', url)
+        layout = node.get('layout')
+        if layout:
+            img.set('title', layout)
         return img
 
     def to_xml(self, node):
@@ -337,9 +340,16 @@ class ImageStep(ConversionStep):
                     name='image')
 
         if new_node is None:
+            # An XML reference could not be created because the object could
+            # not be found. Instead of just removing the image we create an
+            # image tag with the url we've got. This way it is also possible to
+            # create images to other servers.
             new_node = lxml.objectify.E.image()
             if url:
                 new_node.set('src', url)
+        layout = node.get('title')
+        if layout:
+            new_node.set('layout', layout)
         return new_node
 
 
