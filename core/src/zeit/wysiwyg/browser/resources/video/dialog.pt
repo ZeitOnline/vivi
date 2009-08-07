@@ -36,7 +36,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <input id="expires.1m" type="button" value="1M" />
         <input id="expires.infty" type="button" value="∞" />
       </div>
-      <div class="widget">
+      <div class="widget" tal:condition="video">
         <label for="format" i18n:translate="">Format</label>
         <select id="format">
           <option value=""

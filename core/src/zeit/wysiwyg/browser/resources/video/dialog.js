@@ -22,7 +22,9 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
             $('id2').value = self.get_value(id + '2');
         }
         $('expires').value = self.get_value('expires');
-        $('format').value = self.get_value('format');
+        if (!isNull($('format'))) {
+            $('format').value = self.get_value('format');
+        }
     },
 
     _connect_date_buttons: function() {
@@ -71,7 +73,9 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
             self.set_value(id + '2', $('id2').value);
         }
         self.set_value('expires', $('expires').value);
-        self.set_value('format', $('format').value);
+        if (!isNull($('format'))) {
+            self.set_value('format', $('format').value);
+        }
     },
 
     create: function() {
@@ -80,8 +84,10 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
         var div = DIV({'class': 'inline-element ' + self.container_class},
             DIV({'class': id}),
             DIV({'class': id + '2'}),
-            DIV({'class': 'expires'}),
-            DIV({'class': 'format'}));
+            DIV({'class': 'expires'}));
+        if (!isNull($('format'))) {
+            div.appendChild(DIV({'class': 'format'}));
+        }
         self.create_element(div);
         return div;
     },
