@@ -196,10 +196,16 @@ class DropEmptyStep(ConversionStep):
     xpath_html = 'child::*'
 
     def to_xml(self, node):
-        if not node.countchildren() and not node.text:
-            node.getparent().remove(node)
-        if node.text and not node.text.strip():
-            node.getparent().remove(node)
+        if node.get('keep'):
+            del node.attrib['keep']
+            return
+        if node.countchildren():
+            return
+        if node.text and node.text.strip():
+            return
+        if node.attrib:
+            return
+        node.getparent().remove(node)
 
 
 class TagReplaceStep(ConversionStep):
@@ -478,7 +484,7 @@ class VideoAudioStep(ConversionStep):
             id2 = node.get('videoID2', '')
             id_class = 'videoId'
             div_class = 'video'
-            video = True 
+            video = True
         elif node.tag == 'audio':
             id_ = node.get('audioID')
             id_class = 'audioId'
@@ -660,6 +666,22 @@ class CitationStep(ConversionStep):
             values[name] = value
         new_node = lxml.objectify.E.citation(**values)
         return new_node
+
+
+class RelatedsStep(ConversionStep):
+
+    xpath_xml = './/relateds'
+    xpath_html = './/*[contains(@class, "relateds")]'
+    weight = +1.5
+
+    def to_html(self, node):
+        new_node = lxml.objectify.E.div(
+            ' ', **{'class': 'inline-element relateds'})
+        lxml.objectify.deannotate(new_node)
+        return new_node
+
+    def to_xml(self, node):
+        return lxml.objectify.E.relateds(keep='yes')
 
 
 class InlineElementAppendParagraph(ConversionStep):

@@ -8,7 +8,8 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['OrderedList','UnorderedList', 'Table'],
         ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio',
          'Zeit_RAW', 'Zeit_Pagebreak',
-         'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery', 'Zeit_Citation'],
+         'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery', 'Zeit_Citation',
+         'Zeit_Related'],
 ];
 
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/office2003/' ;
@@ -29,7 +30,12 @@ FCKConfig.ImageUpload = false;
 FCKConfig.FlashUpload = false;
 
 var plugins = [
-    'video', 'reference', 'raw', 'pagebreak', 'citation'
+    'citation',
+    'pagebreak',
+    'raw',
+    'reference',
+    'related',
+    'video',
 ];
 
 for (var i = 0 ; i < plugins.length; i++) {
