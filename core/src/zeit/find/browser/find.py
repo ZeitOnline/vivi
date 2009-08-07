@@ -19,12 +19,6 @@ import zope.interface
 import zope.viewlet.interfaces
 
 
-class Find(zeit.cms.browser.view.Base):
-    def __call__(self):
-        zc.resourcelibrary.need('zeit.find')
-        return super(Find, self).__call__()
-
-
 class JSONView(zeit.cms.browser.view.JSON):
 
     resource_library = 'zeit.find'

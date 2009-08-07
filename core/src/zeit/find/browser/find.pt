@@ -1,5 +1,6 @@
 <html>
   <head>
+    <tal:block replace="resource_library:zeit.find" />
     <script language="javascript"
             tal:content="string:
             var application_url = '${context/@@absolute_url}';
