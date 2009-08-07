@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Aug  3 13:57:01 2009\n"
+"POT-Creation-Date: Fri Aug  7 10:35:16 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1378,6 +1378,8 @@ msgid "View metadata"
 msgstr ""
 
 #: zeit/content/article/browser/configure.zcml:53
+#: zeit/wysiwyg/browser/configure.zcml:8
+#: zeit/wysiwyg/browser/configure.zcml:8
 msgid "Edit WYSIWYG"
 msgstr ""
 

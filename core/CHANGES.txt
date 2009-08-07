@@ -1,6 +1,10 @@
 zeit.locales CHANGES
 ====================
 
+0.7 (unreleased)
+++++++++++++++++
+
+- ZCML von zeit.wysiwyg eingebunden (#5864).
 
 0.6 (2009-08-03)
 ++++++++++++++++
