@@ -99,6 +99,11 @@ intertitle {
     content: "Video";
 }
 
+.page-break {
+    width: auto;
+    margin: 0;
+}
+
 .page-break:after {
     content: "Seitenumbruch";
 }
