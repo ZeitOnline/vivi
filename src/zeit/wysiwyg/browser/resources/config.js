@@ -6,7 +6,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         '/',
         ['FontFormat', 'Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript', 'SpecialChar'],
         ['OrderedList','UnorderedList', 'Table'],
-        ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio', 'Zeit_MailForm',
+        ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio',
          'Zeit_RAW', 'Zeit_Pagebreak',
          'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery', 'Zeit_Citation'],
 ];
@@ -29,7 +29,7 @@ FCKConfig.ImageUpload = false;
 FCKConfig.FlashUpload = false;
 
 var plugins = [
-    'video', 'mailform', 'reference', 'raw', 'pagebreak', 'citation'
+    'video', 'reference', 'raw', 'pagebreak', 'citation'
 ];
 
 for (var i = 0 ; i < plugins.length; i++) {
