@@ -1,6 +1,11 @@
 zeit.find changes
 =================
 
+0.10 (unreleased)
+-----------------
+
+- Die Suche ist nun Startseite des CMS (#5857)
+
 0.9 (2009-08-03)
 ----------------
 

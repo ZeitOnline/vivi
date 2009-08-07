@@ -39,6 +39,15 @@ on the UI itself:
 </html>
 
 
+The index of the CMS (ISite) is a search whyen using the vivi skin:
+
+>>> browser.open('http://localhost:8080/++skin++vivi/')
+>>> print browser.contents
+<...
+    var search = new zeit.find.Search(...
+    ...
+
+
 JSON views
 ==========
 
@@ -120,15 +129,6 @@ The clip persists, but is now empty:
 []
 
  
-Cleanup
-=======
-
-After the tests we clean up:
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
-
-
 
 Footnotes
 =========

@@ -1,0 +1,15 @@
+<tal:block>
+  
+  <tal:block replace="resource_library:zeit.find" />
+
+  <div class="zeit-find-search">
+    <div id="search_form"></div>
+  </div>
+
+  <script language="javascript" tal:content="string:
+  (function() {
+    var search = new zeit.find.Search({sort_order: 'date'});
+    search.render();
+  })();  
+  "></script>
+</tal:block>

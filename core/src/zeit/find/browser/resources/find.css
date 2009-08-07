@@ -358,22 +358,28 @@
 
 /* search in lightbox styles */
 
-.lightbox #zeit-find-search-form {
+#content > .zeit-find-search #search_result,
+.lightbox #search_result {
   bottom: 0;
-  left: 1em;
+  left: 0;
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
   top: 1em;
-  width: 49%;
+  width: 66%;
 }
 
 .lightbox #search_result {
+  left: 1em;
+}
+
+#content > .zeit-find-search #zeit-find-search-form,
+.lightbox #zeit-find-search-form {
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
   right: 0;
   top: 1em;
-  width: 49%;
+  width: 32%;
 }

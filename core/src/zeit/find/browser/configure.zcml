@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser">
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml">
 
   <resourceLibrary
     name="zeit.cms.javascript.objectbrowser"
@@ -24,8 +25,16 @@
   <browser:page
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    template="find.pt"
     name="find"
+    template="find.pt"
+    permission="zope.View"
+  />
+
+  <gocept:pagelet
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="index.html"
+    template="find_start_page.pt"
     permission="zope.View"
   />
 
@@ -33,8 +42,8 @@
   <browser:page
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".find.SearchForm"
     name="search_form"
+    class=".find.SearchForm"
     permission="zope.View"
   />
 
