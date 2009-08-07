@@ -108,8 +108,9 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
             }
         });
 
-        if (self.container !== null) {
+        if (!isNull(self.container)) {
             $('href').value = self.url_to_id(self.container.src);
+            $('layout').value = self.container.getAttribute('title');
             MochiKit.Signal.signal('href', 'onchange');
         }
     },
@@ -138,6 +139,7 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
     update: function() {
         var self = this;
         self.container.src = self.id_to_url($('href').value);
+        self.container.setAttribute('title', $('layout').value);
     },
 
     create: function() {
