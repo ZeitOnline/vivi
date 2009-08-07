@@ -1,21 +1,16 @@
 // Plugin for mailform
 
-var ZeitMailFormCommand = function() {
-    this.Name = 'Zeit_MailForm';
+var ZeitRelatedCommand = function() {
+    this.Name = 'Zeit_Related';
 }
 
-ZeitMailFormCommand.prototype = {
+ZeitRelatedCommand.prototype = {
 
     Execute: function() {
-        var input = FCK.EditorDocument.createElement('INPUT');
-        var selected_element = 
-            FCKSelection.GetBoundaryParentElement();
-        selected_element.parentNode.insertBefore(
-            input, 
-            selected_element.nextSibling);
-        input.setAttribute('value', 'mailformular');
-        input.setAttribute('type', 'text');
-        input.setAttribute('size', '60');
+        var div = FCK.EditorDocument.createElement('DIV');
+        div.innerHTML = '&nbsp;';
+        div.setAttribute('class', 'related inline-element');
+        FCK.InsertElement(div);
     },
 
     GetState: function() {
@@ -27,14 +22,14 @@ ZeitMailFormCommand.prototype = {
 
 
 FCKCommands.RegisterCommand(
-    'Zeit_MailForm' ,
-    new ZeitMailFormCommand());
+    'Zeit_Related' ,
+    new ZeitRelatedCommand());
 
 
 // Create the toolbar button.
-var oMailItem = new FCKToolbarButton(
-    'Zeit_MailForm', 'MailForm');
-oMailItem.IconPath =
-    FCKConfig.PageConfig.ZeitResources+ '/mailform/mail_icon.png';
-FCKToolbarItems.RegisterItem('Zeit_MailForm', oMailItem);
+var oItem = new FCKToolbarButton(
+    'Zeit_Related', 'Related');
+oItem.IconPath =
+    FCKConfig.PageConfig.ZeitResources+ '/related/icon.png';
+FCKToolbarItems.RegisterItem('Zeit_Related', oItem);
         
