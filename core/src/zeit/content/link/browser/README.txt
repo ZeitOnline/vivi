@@ -56,6 +56,7 @@ Have a look at the source:
 >>> print browser.getControl(name='form.xml').value
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
+    <attribute ...
     <references>
       <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
     </references>

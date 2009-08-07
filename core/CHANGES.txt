@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Markierungen für Inline-Assets (#5770).
 
+- WebDAV-Metadaten werden in das XML des Link-Objekts kopiert (#5904).
+
 Technisches
 +++++++++++
 
