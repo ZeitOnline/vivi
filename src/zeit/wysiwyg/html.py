@@ -472,15 +472,20 @@ class VideoAudioStep(ConversionStep):
                   '(contains(@class, "video") or contains(@class, "audio"))]')
 
     def to_html(self, node):
+        audio = video = False
         if node.tag == 'video':
             id_ = node.get('videoID')
             id2 = node.get('videoID2', '')
             id_class = 'videoId'
             div_class = 'video'
+            video = True 
         elif node.tag == 'audio':
             id_ = node.get('audioID')
             id_class = 'audioId'
             div_class = 'audio'
+            audio = True
+        else:
+            assert False
 
         expires = node.get('expires')
         format = node.get('format') or ''
@@ -503,8 +508,10 @@ class VideoAudioStep(ConversionStep):
             lxml.objectify.E.div(id_, **{'class': id_class}),
             id2,
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
-            lxml.objectify.E.div(format, **{'class': 'format'}),
             **{'class': 'inline-element %s' % div_class})
+        if video:
+            new_node.append(
+                lxml.objectify.E.div(format, **{'class': 'format'}))
         lxml.objectify.deannotate(new_node)
         return new_node
 
@@ -540,8 +547,7 @@ class VideoAudioStep(ConversionStep):
             new_node = lxml.objectify.E.video(
                 videoID=id_, videoID2=id2, expires=expires, format=format)
         else:
-            new_node = lxml.objectify.E.audio(audioID=id_, expires=expires,
-                                              format=format)
+            new_node = lxml.objectify.E.audio(audioID=id_, expires=expires)
         return new_node
 
 
