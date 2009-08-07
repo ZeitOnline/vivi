@@ -8,6 +8,8 @@ zeit.content.cp changes
 - Weitere Layouts für den Teaserblock: Doppelspalter, Datumsteaser, Kleine
   Teaser (#5829).
 
+- Layout für Printarchivseiten hinzugefügt.
+
 
 0.10.1 (2009-07-28)
 -------------------
