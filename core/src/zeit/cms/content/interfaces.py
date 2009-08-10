@@ -176,6 +176,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Comments allowed"),
         default=True)
 
+    banner = zope.schema.Bool(
+        title=_("Banner"),
+        default=True)
+
     product_id = zope.schema.Choice(
         title=_('Product id'),
         default='ZEDE',

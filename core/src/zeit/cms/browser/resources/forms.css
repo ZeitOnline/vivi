@@ -216,6 +216,26 @@ form .column-right-small {
 }
 
 
+/* checkbox rendering */
+
+form .checkboxes label {
+  line-height: 1.7em;
+}
+
+form .checkboxes .widget {
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+
+form .checkboxes .field {
+  overflow: hidden;
+}
+
+form .checkboxes .field > input{
+  margin: 0;
+}
+
 /* Line height: 1.3em * rows */
 #form\.teaserText {
     height: 6.5em;
@@ -248,8 +268,6 @@ input#form\.copyrights[type=text] {
 .gallery {
   width: 100%;
 }
-
-/*background: transparent url("layout/fadeout.png") repeat-x 0 0; */
 
 
 #folderActionForm {
