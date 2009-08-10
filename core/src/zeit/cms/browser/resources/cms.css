@@ -171,11 +171,11 @@ pre {
   background-color: #f1f4f9;
   border: 1px solid #e4e4e4;
   left: 0em;
-  width: 18.7em;
+  width: 20em;
   top: 3em;
   bottom: 0;
   overflow: hidden;
-  padding-left: 26px;
+  padding-left: 10px;
   padding-top: 20px;
 }
 
@@ -223,8 +223,6 @@ pre {
   left: 0.5em;
 }
 
-
-
 #content {
   left: 1em;
   right: 0;
@@ -249,8 +247,9 @@ pre {
   margin: 0 10px 20px 0;
   background-color: #ffffff;
   border-color: #e4e4e4;
-  border-width: 2px;
-  border-style: inset;
+  border-width: 1px;
+  border-style: solid;
+  -moz-border-radius: 5px;
 
 }
 
