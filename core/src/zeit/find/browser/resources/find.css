@@ -296,11 +296,11 @@
 }
 
 .zeit-find-search .preview {
-  background-image: url(eye.png);
+  background-image: url(preview.png);
 }
 
 .zeit-find-search .goto-object {
-  background-image: url(eye.png);
+  background-image: url(show-original.png);
 }
 
 .related_links.expanded {
