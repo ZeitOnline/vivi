@@ -16,10 +16,16 @@ class Form(object):
         if instance is None:
             return self
 
+        if (instance.request.method == 'POST'
+            and not instance.request.form.get('_body_decoded')):
+            decoded = cjson.decode(instance.request.bodyStream.read())
+            instance.request.form.update(decoded)
+            instance.request.form['_body_decoded'] = True
+
         value = instance.request.form.get(self.var_name, self.default)
         if value is self.default:
             return value
-        if self.json:
+        if self.json and isinstance(value, basestring):
             value = cjson.decode(value)
         return value
 

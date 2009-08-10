@@ -48,19 +48,31 @@ if (isUndefinedOrNull(zeit.content)) {
 zeit.content.cp = {}
 
 
-zeit.content.cp.makeJSONRequest = function(url, options, target_component) {
-    var query_string = MochiKit.Base.queryString(options);
-    if (url.indexOf('?') == -1) {
-        var conjunctor = '?';
-    } else {
-        var conjunctor = '&';
-    }
-    var url = url + conjunctor + query_string;
+zeit.content.cp.makeJSONRequest = function(
+    url, json, target_component, options) {
     if (isUndefinedOrNull(target_component)) {
         target_component = zeit.content.cp.editor;
     }
     zeit.content.cp.editor.busy_until_reload_of(target_component);
-    var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+    options = MochiKit.Base.setdefault(options, {
+        method: 'GET',
+    });
+
+    var q_index = url.indexOf('?');
+    if (q_index >= 0) {
+        json = MochiKit.Base.setdefault(
+            json,
+            MochiKit.Base.parseQueryString(url.slice(q_index + 1)));
+        url = url.slice(0, q_index);
+    }
+    
+    if (!isUndefinedOrNull(json)) {
+        options.method = 'POST';
+        json = MochiKit.Base.serializeJSON(json);
+    }
+    var d = MochiKit.Async.doXHR(url, {
+        method: options.method,
+        sendContent: json});
     d.addCallbacks(function(result) {
         var result_obj = null;
         try {
@@ -512,13 +524,17 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
 
     on_update: function(element) {
         var self = this;
-        var keys = MochiKit.Base.serializeJSON(self.serialize());
+        var data = MochiKit.Base.serializeJSON({
+            keys: self.serialize(),
+        });
         var url = self.options()['update_url'];
         if (isUndefinedOrNull(url)) {
             var url = $(self.container).getAttribute(
                 'cms:url') + '/@@updateOrder';
         }
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(url, {keys:keys});
+        var d = MochiKit.Async.doXHR(url, {
+            method: 'POST',
+            sendContent: data});
         // We don't have do anything on success as the ordering is already
         // applied in the HTML.
         // XXX error handling!
@@ -751,7 +767,7 @@ zeit.content.cp.LoadAndReload = gocept.Class.extend({
     construct: function(context_element) {
         var self = this;
         var url = context_element.getAttribute('href');
-        var d = zeit.content.cp.makeJSONRequest(url, {});
+        var d = zeit.content.cp.makeJSONRequest(url);
         return d;
     },
 

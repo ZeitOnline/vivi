@@ -1,9 +1,10 @@
 zeit.content.cp changes
 =======================
 
-
-0.11.1 (unreleased)
+0.12 (unreleased)
 -----------------
+
+- JSON-Post statt GET mit langer URL (#5868).
 
 - Layout für Printarchivseiten hinzugefügt.
 

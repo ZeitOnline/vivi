@@ -7,6 +7,7 @@ import zeit.cms.content.browser.commonmetadata
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zope.app.pagetemplate
 import zope.component
@@ -18,8 +19,10 @@ import zope.lifecycleevent
 class Delete(object):
     """Delete item from TeaserBlock."""
 
-    def __call__(self, uniqueId):
-        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+
+    def __call__(self):
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         self.context.remove(content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))

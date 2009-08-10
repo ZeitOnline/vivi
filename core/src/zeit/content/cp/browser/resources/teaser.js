@@ -62,11 +62,10 @@ zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
         var self = this;
         var url = context_element.getAttribute('href');
         self.parent = zeit.content.cp.getParentComponent(context_element);
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
-        // XXX error handling
-        d.addCallback(function(result) {
-            MochiKit.Signal.signal(self.parent, 'reload');
+        var d = zeit.content.cp.makeJSONRequest(url, null, self.parent, {
+            method: 'POST',
         });
+        // XXX error handling
     },
 });
 
