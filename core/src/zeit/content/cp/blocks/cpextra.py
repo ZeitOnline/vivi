@@ -70,3 +70,14 @@ factor('mostcommented', u'Meistkommentiert',
        zeit.content.cp.interfaces.IInformatives)
 factor('weather', u'Wetter')
 factor('stocks', u'Börse')
+factor('ressort_news', u'Neu Im Ressort',
+       zeit.content.cp.interfaces.IInformatives)
+factor('live_search', u'Live-Search',
+       zeit.content.cp.interfaces.IInformatives)
+factor('print_archive', u'Print Archiv',
+       zeit.content.cp.interfaces.IInformatives)
+factor('relateds', u'Relateds',
+       zeit.content.cp.interfaces.IInformatives)
+factor('blindblock', u'Blindblock',
+       zeit.content.cp.interfaces.IInformatives)
+factor('debug', u'Debug')
