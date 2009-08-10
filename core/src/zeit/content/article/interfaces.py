@@ -18,10 +18,6 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
-    banner = zope.schema.Bool(
-        title=_("Banner"),
-        default=True)
-
     boxMostRead = zope.schema.Bool(
         title=_("Box Most Read"),
         default=True)
