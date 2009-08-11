@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-2.4 (unreleased)
------------------
+2.4 (2009-08-11)
+----------------
 
 - Banner-Feld entfernt (nach zeit.cms gewandert, #5931)
 
