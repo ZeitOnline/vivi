@@ -184,10 +184,10 @@ pre {
 }
 
 #sidebar h1 {
-  margin: 0 0 5px 0;
   background: transparent url("layout/opener.png") no-repeat left center;
-  font-weight: normal;
   cursor: pointer;
+  font-weight: normal;
+  margin: 0;
 }
 
 #sidebar div.unfolded > h1 {
@@ -244,13 +244,15 @@ pre {
 }
 
 .PanelContent {
-  margin: 0 10px 20px 0;
+  -moz-border-radius: 5px;
   background-color: #ffffff;
   border-color: #e4e4e4;
-  border-width: 1px;
   border-style: solid;
-  -moz-border-radius: 5px;
+  border-width: 1px;
+}
 
+.panel  {
+  margin: 0 1em 0 0;
 }
 
 #topcontent {

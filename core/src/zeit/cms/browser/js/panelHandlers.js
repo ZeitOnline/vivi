@@ -30,7 +30,8 @@ zeit.cms.PanelHandler = Class.extend({
     },
 
     resizePanels: function(panels) {
-        var max_height = $('sidebar').clientHeight;
+        var max_height = MochiKit.Style.getElementDimensions(
+            'sidebar', true).h;
         var fixed_space = 0;
         var flex_sum = 0;
 

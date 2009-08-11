@@ -8,6 +8,12 @@ zeit.cms changes
 
 - WebDAV-Metadaten werden in das XML des Link-Objekts kopiert (#5904).
 
+- »Banner« in die Standardmetadaten (bisher nur bei Artikel, #5946).
+
+- Schönere Anzeige für Checkboxen in Metadaten (Vivi).
+
+- Panels in der Sidebar werden wieder vollständig angeeigt (Vivi, #5840).
+
 Technisches
 +++++++++++
 
