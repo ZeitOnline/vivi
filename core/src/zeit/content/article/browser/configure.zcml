@@ -66,12 +66,22 @@
 
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     name="zmi_icon"
     width="20"
     height="20"
     file="resources/articleResource.png"
     />
+
+  <browser:icon
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/articleResource.png"
+    />
+
 
   <browser:icon
     for="zeit.content.article.interfaces.ITagesspiegelArticle"
