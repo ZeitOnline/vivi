@@ -24,6 +24,10 @@ Technisches
 
 - Basisklasse für Adapter, die WebDAVPropertys brauchen.
 
+- SubPageForm wurde von LightboxForm abgespalten (für #5937).
+
+- Die TypeDeclaration enthält den Namen des Add-Forms (für #5937).
+
 1.26.1 (2009-08-04)
 -------------------
 
