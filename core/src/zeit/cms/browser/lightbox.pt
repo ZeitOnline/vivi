@@ -5,7 +5,7 @@
     Title
   </h1>
 
-  <span class="nextUrl" tal:content="view/nextURL" />
+  <span class="nextURL" tal:content="view/nextURL" />
 
   <form id="lightbox.form" action="#"
     tal:attributes="action request/URL"

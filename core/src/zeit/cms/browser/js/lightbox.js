@@ -17,6 +17,7 @@ zeit.cms.SubPageForm = Class.extend({
 
     reload: function() {
         var self = this;
+        MochiKit.Signal.signal(self, 'before-reload');
         // XXX duplicated from gocept.Lightbox.load_url
         var d = doSimpleXMLHttpRequest(self.url);
         d.addCallbacks(
@@ -33,6 +34,7 @@ zeit.cms.SubPageForm = Class.extend({
                 self.container.appendChild(form);
                 form.innerHTML = result;
                 self.post_process_html();
+                MochiKit.Signal.signal(self, 'after-reload');
                 return result;
             });
         return d
@@ -103,7 +105,7 @@ zeit.cms.SubPageForm = Class.extend({
                     return result;
                 }
                 var next_url_node = getFirstElementByTagAndClassName(
-                    'span', 'nextUrl', self.container);
+                    'span', 'nextURL', self.container);
                 if (next_url_node == null) {
                     return result;
                 }
