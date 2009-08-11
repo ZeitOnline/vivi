@@ -5,5 +5,7 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <include package="zeit.content.image" />
+
   <include package="zeit.addcentral" />
 </configure>
