@@ -63,13 +63,14 @@
 }
 
 #imp-configuration {
+  background-color: white;
+  bottom: 0;
+  overflow-y: auto;
   position: absolute;
   right: 0;
-  width: 19em;
   top:0;
+  width: 19em;
   z-index: 1;
-  overflow-y: auto;
-  background-color: white;
 }
 
 #imp-image-bar {
@@ -77,10 +78,10 @@
     height: 12em;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 20em;
     overflow-x: auto;
     overflow-y: hidden;
-    border-top: 1px solid black;
+    border-right: 1px solid black;
     padding-top: 0.5em;
 }
 

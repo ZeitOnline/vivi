@@ -94,7 +94,8 @@
                      next view/next|nothing">
       <a tal:condition="previous"
          tal:attributes="href string:${previous/@@absolute_url}/@@imp.html">
-        &laquo; previous image</a> |
+        &laquo; previous image</a> <span tal:condition="python:previous and
+        next">|</span>
       <a tal:condition="next"
          tal:attributes="href string:${next/@@absolute_url}/@@imp.html">
         next image &raquo;</a>
