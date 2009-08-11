@@ -22,6 +22,7 @@ setup(
         'setuptools',
         'zc.resourcelibrary',
         'zeit.cms>1.26',
+        'zope.app.pagetemplate',
         'zope.cachedescriptors',
         'zope.formlib',
         'zope.interface',
