@@ -178,6 +178,12 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
                 zope.component.getUtilitiesFor(
                     zeit.cms.interfaces.ICMSContentType))
 
+    def getTitle(self, value):
+        try:
+            return value.getTaggedValue('zeit.cms.title')
+        except KeyError:
+            return unicode(value)
+
 
 _collect_lock = threading.Lock()
 _collect_counter = 0
