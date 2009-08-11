@@ -4,11 +4,16 @@
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
+import PIL.ImageFile
 import zeit.content.image.interfaces
 import zeit.imp.interfaces
 import zope.component
 import zope.interface
 import zope.security.proxy
+
+
+# default is 64k, this allows cropping large images, see #5957
+PIL.ImageFile.MAXBLOCK = 50000000
 
 
 class Cropper(object):

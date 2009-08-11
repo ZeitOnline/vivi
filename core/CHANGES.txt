@@ -1,6 +1,11 @@
 zeit.imp changes
 ================
 
+0.7.2 (2009-08-11)
+++++++++++++++++++
+
+- Skalieren von großen Bildern funktioniert jetzt zuverlässig (#5957).
+
 0.7.1 (2009-08-11)
 ++++++++++++++++++
 
