@@ -305,10 +305,25 @@
 
 .zeit-find-search .preview {
   background-image: url(preview.png);
+ padding-left: 3px;
+
+}
+
+.zeit-find-search .preview a {
+  text-indent: -10px;
+  margin-left: 15px;
+  padding-left: 17px;
 }
 
 .zeit-find-search .goto-object {
   background-image: url(show-original.png);
+ padding-left: 5px;
+}
+
+.zeit-find-search .goto-object a {
+  text-indent: -10px;
+  margin-left: 15px;
+  padding-left: 15px;
 }
 
 .related_links.expanded {
