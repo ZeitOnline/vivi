@@ -69,5 +69,22 @@
     permission="zope.Public"
     />
 
+  <!-- boolean -->
+
+  <adapter
+      for="zope.schema.interfaces.IBool
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory=".widget.CheckboxWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zope.schema.interfaces.IBool
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.interfaces.IDisplayWidget"
+      factory=".widget.CheckboxDisplayWidget"
+      permission="zope.Public"
+      />
 
 </configure>

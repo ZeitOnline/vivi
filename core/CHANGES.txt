@@ -1,6 +1,11 @@
 zeit.cms changes
 ================
 
+1.28 (unreleased)
+-----------------
+
+- Schönere Anzeige von Checkboxen (CMS-Skin und Vivi-Skin).
+
 1.27 (2009-08-10)
 -----------------
 

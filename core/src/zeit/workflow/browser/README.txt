@@ -155,11 +155,11 @@ Reload the workflow page.
         <div class="hint"></div>
         <div class="widget"><span class="dateTime">2008 3 7  12:47:16 </span></div>
         ...
+        ...<input class="checkboxType" checked="checked"...
         <label for="form.published">
           <span>Published</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">True</div>
         ...
         <label for="form.date_first_released">
           <span>Date first released</span>
@@ -207,11 +207,11 @@ Check out an unpublished object:
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
+        ...<input class="checkboxType" id="...
         <label for="form.published">
           <span>Published</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">False</div>
     ...
 
 Note that the object is not published. Thus we have no "retract":
@@ -274,11 +274,11 @@ False
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
+        ...<input class="checkboxType" checked="checked"...
         <label for="form.published">
           <span>Published</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">True</div>
     ...
 
 Go the the checked out object and check in:
@@ -291,11 +291,11 @@ The object is still published:
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
+        ...<input class="checkboxType" checked="checked"...
         <label for="form.published">
           <span>Published</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">True</div>
         ...
 
 Now try the other way around, unpublish a published document while it is
@@ -323,11 +323,11 @@ Unpublish now:
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
+        ...<input class="checkboxType" id="...
         <label for="form.published">
           <span>Published</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">False</div>
         ...
 
 Check back in:
@@ -340,11 +340,11 @@ The object is still unpublished:
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
+        ...<input class="checkboxType" id="...
         <label for="form.published">
           <span>Published</span>
         </label>
         <div class="hint"></div>
-        <div class="widget">False</div>
         ...
 
 

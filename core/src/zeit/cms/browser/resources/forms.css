@@ -186,9 +186,10 @@ form .wide-widgets .field .object-widget > .object-reference {
 }
 
 form .column-right {
-    float:  right;
-    width: 35%;
-    margin-right: 20px;
+  clear: right;
+  float:  right;
+  margin-right: 20px;
+  width: 35%;
 }
 
 
@@ -216,24 +217,15 @@ form .column-right-small {
 }
 
 
-/* checkbox rendering */
+/* reversed rendering */
 
-form .checkboxes label {
-  line-height: 1.7em;
+.widget.reversed {
+  display: inline-block;
 }
 
-form .checkboxes .widget {
-  float: left;
-  margin: 0;
+.checkboxes .field,
+.checkboxes .widget {
   padding: 0;
-}
-
-form .checkboxes .field {
-  overflow: hidden;
-}
-
-form .checkboxes .field > input{
-  margin: 0;
 }
 
 /* Line height: 1.3em * rows */

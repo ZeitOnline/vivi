@@ -181,8 +181,9 @@ form .wide-widgets .field .object-widget > .object-reference {
 }
 
 form .column-right {
-    float:  right;
-    width: 35%;
+  clear: right;
+  float:  right;
+  width: 35%;
 }
 
 
@@ -207,6 +208,16 @@ form .column-left-small .field {
 form .column-right-small {
     float:  right;
     width: 58%;
+}
+
+/* reversed rendering */
+
+.widget.reversed {
+  display: inline-block;
+}
+
+.checkboxes .field {
+  padding: 0;
 }
 
 

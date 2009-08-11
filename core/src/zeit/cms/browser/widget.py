@@ -1,28 +1,24 @@
 # coding: utf8
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.i18n import MessageFactory as _
 import time
 import xml.sax.saxutils
-
-import zope.component
-import zope.interface
-import zope.schema
-import zope.schema.interfaces
-
+import zc.datetimewidget.datetimewidget
+import zeit.cms.browser.interfaces
+import zeit.cms.repository.interfaces
+import zope.app.form.browser
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.itemswidgets
 import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
+import zope.component
+import zope.interface
+import zope.schema
+import zope.schema.interfaces
 import zope.traversing.browser.interfaces
-
-import zc.datetimewidget.datetimewidget
-
-import zeit.cms.repository.interfaces
-import zeit.cms.browser.interfaces
-from zeit.cms.i18n import MessageFactory as _
 
 
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
@@ -309,3 +305,15 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
         return (u'<div class="dateTimeWidget">'
                 + html + week + month + infty
                 + '</div>')
+
+
+def CheckboxWidget(context, request):
+    widget = zope.app.form.browser.CheckBoxWidget(context, request)
+    widget.reversed = True
+    return widget
+
+
+def CheckboxDisplayWidget(context, request):
+    widget = CheckboxWidget(context, request)
+    widget.extra = 'disabled="disabled"'
+    return widget

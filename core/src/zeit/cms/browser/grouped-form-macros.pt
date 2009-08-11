@@ -42,7 +42,47 @@
             tal:attributes="class group/meta/css_class">
             <legend tal:content="group/meta/title">Kopf</legend>
             <div tal:define="widgets group/widgets">
-              <metal:macro use-macro="context/@@grouped_form_macros/render_form_widget" />
+
+
+    <tal:block repeat="widget widgets">
+      <div 
+        class="field" 
+        tal:define="hint widget/hint"
+        tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
+
+        <div class="widget reversed" 
+             tal:condition="widget/reversed|nothing"
+             tal:content="structure widget">
+        </div>
+
+        <label tal:attributes="for widget/name">
+          <span i18n:translate="" tal:content="widget/label">label</span>
+          <span class="annotation"
+            tal:condition="widget/required"
+            >
+            (<tal:block
+              i18n:domain="gocept.form"
+              i18n:translate="">required</tal:block>)
+          </span>
+        </label>
+
+
+        <div class="hint" tal:content="widget/hint"/>
+
+        <div tal:condition="widget/error" class="error">
+          <span tal:replace="structure widget/error">error</span>
+        </div>
+
+        <div class="widget" 
+             tal:condition="not:widget/reversed|nothing"
+             tal:content="structure widget">
+        </div>
+      </div>
+
+    </tal:block>
+
+
+              
             </div>
           </fieldset>
         </tal:group>
