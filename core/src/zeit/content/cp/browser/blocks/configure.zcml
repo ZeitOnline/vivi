@@ -148,8 +148,8 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-common"
-    template="block.edit-common.pt"
     class=".block.EditCommon"
+    template="block.edit-common.pt"
     permission="zeit.EditContent"
     />
 
