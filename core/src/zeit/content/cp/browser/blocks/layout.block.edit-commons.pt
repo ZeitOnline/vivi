@@ -1,5 +1,6 @@
 <a class="common-link lightbox-tab-data" title="Common"
    tal:attributes="href string:${context/@@absolute_url}/edit-common"
+   i18n:domain="zeit.cms"
    i18n:attributes="title"
    cms:cp-module="zeit.content.cp.TabbedLightBoxForm"
    cms:lightbox-in="cp-content">

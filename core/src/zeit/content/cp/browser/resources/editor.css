@@ -116,10 +116,7 @@
   border-bottom: 1px solid #EEF3F7;
 }
 
-#content .lightbox {
-      -moz-border-radius-bottomleft: 3px;
-      -moz-border-radius-bottomright: 3px;
-}
+/* lightbox styling */
 
 #content .lightbox,
 #content .lightbox-shade,
@@ -158,6 +155,11 @@
   border: 1px solid #f00 !important;
 }
 
+#content .lightbox .edit-common-box input[type="text"] {
+  width: 30em;
+}
+
+
 /* Block layout */
 
 .block > .block-inner {
@@ -190,7 +192,14 @@
 }
 
 .edit-bar > a.common-link {
-  display: None;
+  display: none;
+}
+
+/* When there is no "other" edit, we show the common. */
+.edit-bar > a.common-link:first-child {
+  background-image: url('page.png');
+  display: block;
+  padding-right: 0.5em;
 }
 
 .editable-area > .landing-zone + .block {

@@ -8,6 +8,9 @@ zeit.content.cp changes
 
 - Layout für Printarchivseiten hinzugefügt.
 
+- »Common«-Tab bei Blöcken erreichbar, die sonst keine Bearbeitungsmöglichkeit
+  haben (#5955).
+
 - ``cp_extra`` Blöcke: Neu im Ressort, Live-Search, Print Archiv, Relateds,
   Blindblock, Debug
 

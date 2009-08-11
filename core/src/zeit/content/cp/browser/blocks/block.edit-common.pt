@@ -1,4 +1,4 @@
-<div class="floating">
+<div class="floating edit-common-box">
 
   <form id="lightbox.form" action="#"
         tal:condition="not: view/close"
