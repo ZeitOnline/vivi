@@ -4,7 +4,6 @@
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
-import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.imp.interfaces
 import zope.component
@@ -72,9 +71,3 @@ class Cropper(object):
 def cropper_for_imagegroup(context):
     image = zeit.content.image.interfaces.IMasterImage(context)
     return zeit.imp.interfaces.ICropper(image)
-
-
-@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@zope.interface.implementer(zeit.imp.interfaces.ICropper)
-def cropper_for_gallery(context):
-    return zeit.imp.interfaces.ICropper(context.image)
