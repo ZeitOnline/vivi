@@ -1,0 +1,22 @@
+<div
+  tal:define="panel_id string:zeit.addcentral;
+  panel_handlers nocall:context/@@panel_handlers"
+  tal:attributes="
+  class python:panel_handlers.css_class(panel_id);
+  id panel_id"
+  i18n:domain="zeit.cms">
+
+  <h1>
+    <a href="javascript:void(null)"
+      i18n:translate="">
+      Add
+    </a>
+  </h1>
+
+  <div class="PanelContent" id="zeit.addcentral.panelcontent">
+  </div>
+  <script type="text/javascript">
+    new zeit.cms.SubPageForm(application_url + '/@@addcentral',
+                             $('zeit.addcentral.panelcontent'));
+  </script>
+</div>
