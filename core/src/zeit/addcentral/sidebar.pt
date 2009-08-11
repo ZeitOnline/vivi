@@ -1,3 +1,5 @@
+<tal:block content="resource_library:zeit.cms.content.dropdown"/>
+
 <div
   tal:define="panel_id string:zeit.addcentral;
   panel_handlers nocall:context/@@panel_handlers"
@@ -16,7 +18,10 @@
   <div class="PanelContent" id="zeit.addcentral.panelcontent">
   </div>
   <script type="text/javascript">
-    new zeit.cms.SubPageForm(application_url + '/@@addcentral',
+    var form = new zeit.cms.SubPageForm(application_url + '/@@addcentral',
                              $('zeit.addcentral.panelcontent'));
+    MochiKit.Signal.connect(form, 'after-reload', function() {
+        zeit.cms.configure_ressort_dropdown();
+    });
   </script>
 </div>
