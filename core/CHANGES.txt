@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.27 (unreleased)
+1.27 (2009-08-10)
 -----------------
 
 - Markierungen für Inline-Assets (#5770).
