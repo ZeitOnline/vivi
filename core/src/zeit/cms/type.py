@@ -19,6 +19,11 @@ class TypeDeclaration(object):
     type = None
     title = None
     register_as_type = True
+    addform = None
+
+    def __init__(self):
+        if self.addform is None:
+            self.addform = self.__module__ + '.Add'
 
     def content(self, resource):
         raise NotImplementedError
