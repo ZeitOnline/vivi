@@ -1,43 +1,37 @@
 // Copyright (c) 2007-2009 gocept gmbh & co. kg
 // See also LICENSE.txt
 
-zeit.cms.LightboxForm = Class.extend({
-    // Javascript support for forms in a light box
+zeit.cms.SubPageForm = Class.extend({
 
     construct: function(url, container) {
-        // URL: URL of the form to load
-        if (isUndefinedOrNull(container)) {
-            container = $('body');
-        }
+        // the url is expected not to provide a <form> tag,
+        // since we generate one, using the url as the action
         var self = this;
         self.container = container;
         self.url = url;
         self.events = [];
-        self.lightbox = this.create_lightbox();
-        self.content_box = this.lightbox.content_box;
-        this.events.push(
-            connect(this.content_box, 'onclick', self, self.handle_click));
-        this.events.push(
-            connect(window, 'zeit.cms.LightboxReload', function(event) {
-                self.loading();
-            }));
-        this.events.push(
-            MochiKit.Signal.connect(
-                this.lightbox, 'before-close', self, self.close));
+        self.events.push(
+            connect(self.container, 'onclick', self, self.handle_click));
         self.reload();
-    },
-
-    create_lightbox: function() {
-        return new gocept.Lightbox(this.container, {
-            use_ids: false
-        });
     },
 
     reload: function() {
         var self = this;
-        var d = self.lightbox.load_url(self.url);
+        // XXX duplicated from gocept.Lightbox.load_url
+        var d = doSimpleXMLHttpRequest(self.url);
+        d.addCallbacks(
+            function(result) {
+                return result.responseText;
+            },
+            function(error) {
+                return "There was an error loading the content: " + error;
+            });
         d.addCallback(
             function(result) {
+                self.container.innerHTML = '';
+                form = FORM({'action': self.url });
+                self.container.appendChild(form);
+                form.innerHTML = result;
                 self.post_process_html();
                 return result;
             });
@@ -47,14 +41,14 @@ zeit.cms.LightboxForm = Class.extend({
     close: function() {
         var self = this;
         MochiKit.Signal.signal(self, 'close');
-        // Close the lightbox and unregister everything.
         while(self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop());
         };
-        this.lightbox.close();
     },
 
     handle_click: function(event) {
+        var self = this;
+
         var target = event.target()
         if (target.nodeName != 'INPUT')
             return
@@ -62,7 +56,7 @@ zeit.cms.LightboxForm = Class.extend({
             return
         if (! hasElementClass(target, 'submit'))
             return
-        this.handle_submit(target.name);
+        self.handle_submit(target.name);
         event.stop();
     },
 
@@ -73,7 +67,7 @@ zeit.cms.LightboxForm = Class.extend({
         var elements = filter(
             function(element) {
                 return (element.type != 'button')
-            }, this.form.elements);
+            }, self.form.elements);
 
         var data = map(function(element) {
                 if ((element.type == 'radio' || element.type == 'checkbox')
@@ -84,10 +78,10 @@ zeit.cms.LightboxForm = Class.extend({
             }, elements);
         data.push(action + '=clicked')
         data = data.join('&');
-        var submit_to = this.form.getAttribute('action');
+        var submit_to = self.form.getAttribute('action');
 
         // clear box with loading message
-        this.loading();
+        self.loading();
 
         var d = doXHR(submit_to, {
             'method': 'POST',
@@ -97,19 +91,19 @@ zeit.cms.LightboxForm = Class.extend({
         d.addCallbacks(
             function(result) {
                 MochiKit.Signal.disconnectAll(self.form);
-                self.content_box.innerHTML = result.responseText;
+                self.container.innerHTML = result.responseText;
                 if (action.indexOf('form.actions.') != 0) {
                     // This was no action. No error could have been generated.
                     // Also the form is not done, yet.
                     return result;
                 }
                 var errors = getFirstElementByTagAndClassName(
-                    'ul', 'errors', self.content_box)
+                    'ul', 'errors', self.container)
                 if (errors != null) {
                     return result;
                 }
                 var next_url_node = getFirstElementByTagAndClassName(
-                    'span', 'nextUrl', self.content_box);
+                    'span', 'nextUrl', self.container);
                 if (next_url_node == null) {
                     return result;
                 }
@@ -134,16 +128,17 @@ zeit.cms.LightboxForm = Class.extend({
     },
 
     loading: function(message) {
+        var self = this;
         if (typeof message == 'undefined') {
             message = 'Loading ...';
         }
-        this.content_box.innerHTML = message;
+        self.container.innerHTML = message;
     },
 
     post_process_html: function() {
         var self = this;
         form = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'form', null, self.content_box);
+            'form', null, self.container);
         self.rewire_submit_buttons(form);
         self.eval_javascript_tags();
     },
@@ -155,7 +150,7 @@ zeit.cms.LightboxForm = Class.extend({
         self.form = form;
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
-                'input', null, self.content_box),
+                'input', null, self.container),
             function(button) {
                 if (button.type == 'submit') {
                     button.type = 'button';
@@ -175,12 +170,59 @@ zeit.cms.LightboxForm = Class.extend({
         var self = this;
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
-            'SCRIPT', null, self.content_box),
+            'SCRIPT', null, self.container),
             function(script) {
                 eval(script.text);
             });
     },
 });
+
+
+zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
+
+    construct: function(url, container) {
+        // as opposed to our superclass, we expect the url to provide a <form>
+        // tag
+        var self = this;
+        if (isUndefinedOrNull(container)) {
+            container = $('body');
+        }
+        self.lightbox = self.create_lightbox(container);
+        arguments.callee.$.construct(url, self.lightbox.content_box);
+        self.events.push(
+            connect(window, 'zeit.cms.LightboxReload', function(event) {
+                self.loading();
+            }));
+        self.events.push(
+            MochiKit.Signal.connect(
+                self.lightbox, 'before-close', self, self.close));
+    },
+
+    create_lightbox: function(container) {
+        var self = this;
+        return new gocept.Lightbox(container, {
+            use_ids: false
+        });
+    },
+
+    reload: function() {
+        var self = this;
+        var d = self.lightbox.load_url(self.url);
+        d.addCallback(
+            function(result) {
+                self.post_process_html();
+                return result;
+            });
+        return d
+    },
+
+    close: function() {
+        var self = this;
+        arguments.callee.$.close();
+        self.lightbox.close();
+    },
+});
+
 
 zeit.cms.lightbox_form = function(url) {
     new zeit.cms.LightboxForm(url);
