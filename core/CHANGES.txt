@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.12 (unreleased)
+0.12 (2009-08-11)
 -----------------
 
 - JSON-Post statt GET mit langer URL (#5868).
