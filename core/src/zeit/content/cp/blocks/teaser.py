@@ -269,7 +269,7 @@ def create_xi_include(context, xpath):
     # We hardcode the path here as it is not going to change any time
     # soon.
     path = context.uniqueId.replace(
-        zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/')
+        zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/work/')
 
     include = include_maker.include(
         include_maker.fallback('Ziel %s nicht erreichbar.' % context.uniqueId),
