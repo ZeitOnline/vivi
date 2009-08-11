@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.28 (unreleased)
+1.28 (2009-08-11)
 -----------------
 
 - Bild: Layoutauswahl klein, groß, Infobox (#5864)
