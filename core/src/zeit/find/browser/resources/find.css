@@ -10,7 +10,6 @@
 
 .search_entry:hover {
   border: 1px solid #bbb;  
-  background-color: #F2F2F2;
   //outline: 2px solid #ddd;
 }
 
@@ -26,8 +25,8 @@
 .search_entry .supertitle {
   display: block;
   font-weight: 400;
-  height: 40px;
-  line-height: 40px;
+  height: 30px;
+  line-height: 30px;
   margin-bottom: .5em;
   vertical-align: middle;}
 
@@ -335,7 +334,7 @@
 }
 
 .related_info {
-  margin-top: 2em;
+  margin-top: 3em;
   margin-left: 0.7em;
 }
 
