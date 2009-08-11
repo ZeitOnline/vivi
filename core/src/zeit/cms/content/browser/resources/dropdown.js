@@ -34,10 +34,14 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
 })
 
 
-connect(window, 'onload', function(event) {
-    var path = window.location.pathname.split('/').slice(0, -1) 
-    path.push('@@subnavigationupdater.json')
-    path = path.join('/')
+zeit.cms.configure_ressort_dropdown = function() {
+    var path = window.location.pathname.split('/').slice(0, -1);
+    path.push('@@subnavigationupdater.json');
+    path = path.join('/');
     new zeit.cms.MasterSlaveDropDown(
-        'form.ressort', 'form.sub_ressort', path)
+        'form.ressort', 'form.sub_ressort', path);
+};
+
+MochiKit.Signal.connect(window, 'onload', function(event) {
+    zeit.cms.configure_ressort_dropdown();
 });
