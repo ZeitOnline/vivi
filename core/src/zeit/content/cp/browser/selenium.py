@@ -490,6 +490,18 @@ class TestLandingZone(Test):
             'css=.block + .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
 
+    def test_mosaic_placeholder(self):
+        self.create_content_and_fill_clipboard()
+        self.open_centerpage()
+        s = self.selenium
+
+        s.click('link=*Add teaser bar*')
+        s.waitForElementPresent('css=div.block.type-teaser-bar')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=#cp-teasermosaic .landing-zone.action-content-droppable')
+        s.waitForElementPresent('css=#cp-teasermosaic .block.type-teaser') 
+
 
 class TestVideoBlock(Test):
 

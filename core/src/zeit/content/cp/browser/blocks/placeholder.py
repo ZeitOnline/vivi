@@ -9,13 +9,14 @@ import zope.lifecycleevent
 
 class DropContent(zeit.content.cp.browser.view.Action):
 
+    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+
     def update(self):
-        uniqueId = self.request.form['uniqueId']
         switcher = zope.component.getMultiAdapter(
             (self.context.__parent__, self.context, self.request),
             name='type-switcher')
         teaserlist = switcher('teaser')
-        teaserlist.insert(0, zeit.cms.interfaces.ICMSContent(uniqueId))
+        teaserlist.insert(0, zeit.cms.interfaces.ICMSContent(self.uniqueId))
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal('before-reload', 'deleted', self.context.__name__)
