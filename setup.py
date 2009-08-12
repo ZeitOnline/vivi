@@ -31,6 +31,5 @@ setup(
     ],
     extras_require=dict(test=[
         'zope.publisher',
-        'zope.testbrowser',
     ]),
 )
