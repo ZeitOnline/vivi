@@ -14,6 +14,7 @@
       <title>Foo</title>
       <width>200</width>
     </image>
+    <category domain="http://www.tagesschau.de/taxonomy/term/1">Allgemein</category>
     <item>
       <title>Sri Lanka: Zivilisten unter Dauerbeschuss</title>
       <link>http://www.tagesschau.de/ausland/srilanka252.html</link>
@@ -39,6 +40,7 @@
       </content:encoded>
       <description>Sri Lankas Regierung und tamilische Rebellen werfen sich gegenseitig schwere Kriegsverbrechen vor. Beide Seiten streiten ab, auf Zivilisten zu schießen. Unabhängig überprüfen darf das keiner. Neue Satellitenbilder deuten aber auf schwere Kämpfe und fliehende Menschen hin. [mehr]</description>
       <guid>http://www.tagesschau.de/ausland/srilanka252.html</guid>
+      <category domain="http://www.tagesschau.de/taxonomy/term/2">Ausland</category>
     </item>
   </channel>
 </rss>

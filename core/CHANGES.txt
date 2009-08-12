@@ -9,6 +9,8 @@ zeit.content.cp changes
 
 - Maximale Anzahl anzuzeigender Einträge im RSS-Block einstellbar (#5964).
 
+- <category> wird in Feeds übernommen (#5967).
+
 0.12 (2009-08-11)
 -----------------
 

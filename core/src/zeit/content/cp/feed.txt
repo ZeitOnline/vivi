@@ -139,6 +139,16 @@ HTML-content is preserved properly:
 </image>...
 <description>Sri Lankas Regierung und tamilische Rebellen...</description>...
 
+Categories should be mapped, both on the feed and individual items (#5967):
+
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<...
+<category domain="http://www.tagesschau.de/taxonomy/term/1">Allgemein</category>
+...
+<category domain="http://www.tagesschau.de/taxonomy/term/2">Ausland</category>
+...
+
+
 .. [#functional]
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()

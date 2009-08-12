@@ -82,10 +82,19 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             for src, dest in IMAGE_MAPPING.items():
                 self._append(image, dest, parsed.feed.image, src)
 
+        # XXX thank you feedparser for the non-uniform API :-(
+        if hasattr(parsed.feed, 'categories'):
+            for domain, value in parsed.feed.categories:
+                self._append_category(channel, domain, value)
+
         for entry in parsed.entries:
             item = lxml.etree.SubElement(channel, 'item')
             for src, dest in ITEM_MAPPING.items():
                 self._append(item, dest, entry, src)
+
+            if hasattr(entry, 'categories'):
+                for domain, value in entry.categories:
+                    self._append_category(item, domain, value)
 
         # append this last, since self.xml is objectified, and
         # objectified doesn't allow manipulating element.text
@@ -98,6 +107,11 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             return
         elem = lxml.etree.SubElement(parent, name)
         elem.text = unicode(data[key])
+
+    def _append_category(self, parent, domain, value):
+        category = lxml.etree.SubElement(parent, 'category')
+        category.set('domain', domain)
+        category.text = value
 
     @property
     def title(self):
