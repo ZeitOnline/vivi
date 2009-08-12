@@ -7,9 +7,10 @@ import zeit.cms.workflow.interfaces
 import zope.component
 import zope.dublincore.interfaces
 import zope.interface
+import zope.security.proxy
 
 
-class Modified(object):
+class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     zope.interface.implements(zeit.cms.workflow.interfaces.IModified)
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
@@ -19,18 +20,9 @@ class Modified(object):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('last_modified_by', ))
 
-    def __init__(self, context):
-        self.context = context
-
     @property
     def date_last_modified(self):
         return zope.dublincore.interfaces.IDCTimes(self.context).modified
-
-
-@zope.component.adapter(Modified)
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-def modifiedProperties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
 
 @zope.component.adapter(
@@ -40,6 +32,5 @@ def update_last_modified_by(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
         return
-    modified.last_modified_by = event.principal.id
-
-
+    zope.security.proxy.removeSecurityProxy(modified).last_modified_by = (
+        event.principal.id)

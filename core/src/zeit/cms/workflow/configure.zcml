@@ -1,10 +1,12 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".modified.Modified" />
-  <adapter factory=".modified.modifiedProperties" />
   <subscriber handler=".modified.update_last_modified_by" />
   <adapter factory=".status.PublicationStatus" />
 
-</configure>
+  <class class=".modified.Modified">
+    <require interface=".interfaces.IModified"
+             permission="zope.View" />
+  </class>
 
+</configure>
