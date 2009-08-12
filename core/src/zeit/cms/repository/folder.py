@@ -24,6 +24,7 @@ class FolderType(zeit.cms.type.TypeDeclaration):
     interface = zeit.cms.repository.interfaces.IFolder
     type = 'collection'
     title = _('Folder')
+    addform = 'zeit.cms.repository.folder.Add'
 
     def content(self, resource):
         folder = Folder()

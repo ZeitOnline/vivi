@@ -88,6 +88,7 @@ class FileType(zeit.cms.type.TypeDeclaration):
     interface = zeit.cms.repository.interfaces.IFile
     type = 'file'
     title = _('File')
+    addform = 'zeit.cms.repository.file.Add'
 
     def content(self, resource):
         return RepositoryFile(resource.id, resource.contentType)

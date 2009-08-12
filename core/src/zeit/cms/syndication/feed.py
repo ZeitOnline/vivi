@@ -177,6 +177,7 @@ class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
     factory = Feed
     type = 'channel'
     title = _('Channel')
+    addform = 'zeit.cms.syndication.feed.Add'
 
 
 def syndicated_in(content, catalog):

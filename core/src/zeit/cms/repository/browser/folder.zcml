@@ -103,7 +103,7 @@
     for="zeit.cms.repository.interfaces.IFolder"
     permission="zeit.AddContent"
     class=".folder.FolderAdd"
-    name="zeit.cms.repository.Add"
+    name="zeit.cms.repository.folder.Add"
     menu="zeit-add-menu" title="Folder"
     />
 
