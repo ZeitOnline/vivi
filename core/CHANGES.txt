@@ -6,6 +6,11 @@ zeit.cms changes
 
 - Schönere Anzeige von Checkboxen (CMS-Skin und Vivi-Skin).
 
+Technisches
++++++++++++
+
+- AddableCMSContentTypeSource hinzugefügt (#5937).
+
 1.27 (2009-08-10)
 -----------------
 

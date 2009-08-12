@@ -11,6 +11,7 @@ import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zeit.cms.interfaces
+import zeit.cms.type
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.component
@@ -183,6 +184,16 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
             return value.getTaggedValue('zeit.cms.title')
         except KeyError:
             return unicode(value)
+
+
+class AddableCMSContentTypeSource(CMSContentTypeSource):
+
+    def filterValue(self, value):
+        try:
+            return (value.getTaggedValue('zeit.cms.addform') !=
+                    zeit.cms.type.SKIP_ADD)
+        except KeyError:
+            return False
 
 
 _collect_lock = threading.Lock()

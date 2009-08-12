@@ -10,6 +10,7 @@ import zeit.connector.resource
 
 
 log = logging.getLogger(__name__)
+SKIP_ADD = object()
 
 
 class TypeDeclaration(object):
