@@ -10,7 +10,7 @@
     Note: Renaming destroys links. 
   </div>
 
-  <span class="nextUrl"
+  <span class="nextURL"
         tal:content="string:${context/__parent__/@@absolute_url}/@@view.html" />
 
   <form id="lightbox.form" action="#"

@@ -3,7 +3,7 @@
     <tal:replace replace="resource_library:zeit.cms" />
   <h1 i18n:translate="delete_content_header">Delete content</h1>
 
-  <span class="nextUrl" tal:content="view/nextUrl" />
+  <span class="nextURL" tal:content="view/nextURL" />
 
   <p>
     <span i18n:translate="delete_content_text">

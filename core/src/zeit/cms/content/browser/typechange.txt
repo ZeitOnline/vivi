@@ -58,7 +58,7 @@ Make it a channel.
     <div>
       Type changed. Loading ...
     </div>
-    <span class="nextUrl">http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html</span>
+    <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html</span>
   </div>
 </div>
 

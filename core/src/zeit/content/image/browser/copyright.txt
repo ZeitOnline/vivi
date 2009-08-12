@@ -58,7 +58,7 @@ Fill in two copyrights:
 >>> browser.getControl('Set copyrights').click()
 >>> print browser.contents
 <div...
-   <span class="nextUrl">http://localhost/++skin++cms/repository/2006/@@view.html</span>
+   <span class="nextURL">http://localhost/++skin++cms/repository/2006/@@view.html</span>
    ...
 
 When we open the 2006 page (where we would have been redirected) we'll get a

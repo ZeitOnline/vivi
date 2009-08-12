@@ -43,7 +43,7 @@ After deleting the form is rendered with a next URL.
 
 >>> browser.getControl("Delete").click()
 >>> print browser.contents
-<span class="nextUrl">http://localhost/++skin++cms/repository/2007/01</span>
+<span class="nextURL">http://localhost/++skin++cms/repository/2007/01</span>
 
 The article it is gone of couse:
 

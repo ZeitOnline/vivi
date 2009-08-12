@@ -66,7 +66,7 @@ will redirect to this URL:
 >>> print browser.contents
 <div id="rename-box" class="floating">
     ...
-   <span class="nextUrl">http://localhost/++skin++cms/repository/online/2007/01/@@view.html</span>
+   <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/@@view.html</span>
     ...
     
 

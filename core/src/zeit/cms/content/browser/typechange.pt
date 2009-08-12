@@ -39,7 +39,7 @@
         Type changed. Loading ...
       </div>
 
-      <span class="nextUrl"
+      <span class="nextURL"
         tal:content="string:${context/@@absolute_url}/@@view.html" />
 
     </tal:form>

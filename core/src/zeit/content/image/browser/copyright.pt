@@ -6,7 +6,7 @@
       i18n:name="object-unique-id"/>
   </h1>
 
-  <span class="nextUrl"
+  <span class="nextURL"
     tal:content="string:${context/@@absolute_url}/@@view.html" />
 
   <form id="lightbox.form" action="#"
