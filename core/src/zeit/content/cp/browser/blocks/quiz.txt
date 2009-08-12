@@ -60,6 +60,9 @@ The source of a quiz block:
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
     </homepage>
+    <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/quiz/question)" href="/var/cms/work/my_quiz">
+      <xi:fallback>Ziel http://xml.zeit.de/my_quiz nicht erreichbar.</xi:fallback>
+    </xi:include>
   </block>
 </container>...
 

@@ -11,6 +11,8 @@ zeit.content.cp changes
 
 - <category> wird in Feeds übernommen (#5967).
 
+- Quiz-Block enthält jetzt ein xi:include (#5974).
+
 0.12 (2009-08-11)
 -----------------
 

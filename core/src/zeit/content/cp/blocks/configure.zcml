@@ -187,6 +187,8 @@
     factory=".quiz.QuizBlock"
     />
 
+  <adapter factory=".quiz.quiz_xi_include" name="quizblock"/>
+
   <!-- Fullgraphical block -->
   <class class=".fullgraphical.FullGraphicalBlock">
     <require
