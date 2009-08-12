@@ -14,4 +14,4 @@ class AddTest(zeit.cms.selenium.Test):
         s.waitForElementPresent('xpath=//option[text() = "Meinung"]')
         s.select('form.sub_ressort', 'Meinung')
         s.clickAndWait('form.actions.add')
-        s.verifyLocation('*/international/meinung/*-*/@@zeit.content.image.imagegroup.Add')
+        s.verifyLocation('*/international/meinung/*-*/@@zeit.content.image.imagegroup.Add*')

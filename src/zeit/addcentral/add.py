@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 
 import datetime
+import urllib
 import zeit.addcentral.interfaces
 import zeit.cms.repository.interfaces
+import zope.browser.interfaces
 import zope.component
 import zope.interface
 
@@ -18,8 +20,9 @@ class ContentAdder(object):
         self.request = request
 
         self.type_ = type_
-        self.ressort = ressort and ressort.lower()
-        self.sub_ressort = sub_ressort and sub_ressort.lower()
+        self.ressort = ressort
+        self.sub_ressort = sub_ressort
+
         now = datetime.date.today()
         if year is None:
             year = now.year
@@ -30,11 +33,27 @@ class ContentAdder(object):
 
     def __call__(self):
         folder = self.find_or_create_folder()
-        return (zope.traversing.browser.absoluteURL(folder, self.request)
-                + '/@@' + self.type_.getTaggedValue('zeit.cms.addform'))
+        params = {}
+        params['form.ressort'] = self._get_token(
+            zeit.addcentral.interfaces.IContentAdder['ressort'])
+        if self.sub_ressort is not None:
+            params['form.sub_ressort'] = self._get_token(
+                zeit.addcentral.interfaces.IContentAdder['sub_ressort'])
+        return '%s/@@%s?%s' % (
+            zope.traversing.browser.absoluteURL(folder, self.request),
+            self.type_.getTaggedValue('zeit.cms.addform'),
+            urllib.urlencode(params))
+
+    def _get_token(self, field):
+        source = callable(field.source) and field.source(self) or field.source
+        terms = zope.component.getMultiAdapter(
+            (source, self.request), zope.browser.interfaces.ITerms)
+        return terms.getTerm(field.get(self)).token
 
     def find_or_create_folder(self):
-        path = [self.ressort, self.sub_ressort,
+        ressort = self.ressort and self.ressort.lower()
+        sub_ressort = self.sub_ressort and self.sub_ressort.lower()
+        path = [ressort, sub_ressort,
                 '%s-%02d' % (self.year, int(self.month))]
         repos = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)

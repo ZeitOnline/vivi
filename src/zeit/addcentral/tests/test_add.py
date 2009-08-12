@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import zeit.addcentral.testing
+import zeit.cms.browser.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.content.image.interfaces
@@ -30,11 +31,24 @@ class ContentAdderTest(zeit.addcentral.testing.FunctionalTestCase):
         self.assertEqual(repos['wirtschaft']['2009-02'], folder)
 
     def test_url(self):
-        request = zope.publisher.browser.TestRequest()
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
         adder = zeit.addcentral.add.ContentAdder(
             request, type_=zeit.content.image.interfaces.IImageGroup,
-            ressort='wirtschaft', sub_ressort='geld',
+            ressort='wirtschaft', sub_ressort='geldanlage',
             year='2009', month='02')
         self.assertEqual(
-            'http://127.0.0.1/repository/wirtschaft/geld/2009-02/@@zeit.content.image.imagegroup.Add',
+            'http://127.0.0.1/repository/wirtschaft/geldanlage/2009-02/'
+            '@@zeit.content.image.imagegroup.Add'
+            '?form.sub_ressort=41546881df79e17e56a3bf5ff3f447a6'
+            '&form.ressort=cb61e5a1d8e82f77f50ce4f86a114006',
+            adder())
+
+        adder = zeit.addcentral.add.ContentAdder(
+            request, type_=zeit.content.image.interfaces.IImageGroup,
+            ressort='wirtschaft', year='2009', month='02')
+        self.assertEqual(
+            'http://127.0.0.1/repository/wirtschaft/2009-02/'
+            '@@zeit.content.image.imagegroup.Add'
+            '?form.ressort=cb61e5a1d8e82f77f50ce4f86a114006',
             adder())
