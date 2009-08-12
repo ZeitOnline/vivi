@@ -30,6 +30,7 @@ zeit.cms.SubPageForm = Class.extend({
                 self.container.innerHTML = result;
                 self.post_process_html();
                 MochiKit.Signal.signal(self, 'after-reload');
+                MochiKit.DOM.removeElementClass(self.container, 'busy');
                 return result;
             });
         return d
@@ -114,6 +115,7 @@ zeit.cms.SubPageForm = Class.extend({
                 return null;
             }
             self.post_process_html();
+            MochiKit.DOM.removeElementClass(self.container, 'busy');
             return result;
         });
         return d;
@@ -121,10 +123,10 @@ zeit.cms.SubPageForm = Class.extend({
 
     loading: function(message) {
         var self = this;
-        if (typeof message == 'undefined') {
-            message = 'Loading ...';
+        if (!isUndefinedOrNull(message)) {
+            self.container.innerHTML = message;
         }
-        self.container.innerHTML = message;
+        MochiKit.DOM.addElementClass(self.container, 'busy');
     },
 
     post_process_html: function() {

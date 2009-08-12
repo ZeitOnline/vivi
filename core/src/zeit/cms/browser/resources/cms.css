@@ -600,7 +600,9 @@ pre {
 }
 
 .busy {
-  background: transparent url('busy.gif') no-repeat center center;
+  background-image: url('busy.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
   opacity:0.7;
 }
 
