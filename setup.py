@@ -28,6 +28,7 @@ setup(
         'zope.formlib',
         'zope.interface',
         'zope.schema',
+        'zope.session',
         'zope.viewlet',
     ],
     extras_require=dict(test=[
