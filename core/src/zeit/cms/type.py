@@ -23,7 +23,8 @@ class TypeDeclaration(object):
 
     def __init__(self):
         if self.addform is None:
-            self.addform = self.__module__ + '.Add'
+            package = '.'.join(self.__module__.split('.')[:-1])
+            self.addform = package + '.Add'
 
     def content(self, resource):
         raise NotImplementedError

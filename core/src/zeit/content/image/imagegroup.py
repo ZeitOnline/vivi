@@ -47,6 +47,7 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
     interface_type = zeit.content.image.interfaces.IImageType
     type = 'image-group'
     title = _('Image Group')
+    addform = 'zeit.content.image.imagegroup.Add'
 
     def content(self, resource):
         ig = ImageGroup()
