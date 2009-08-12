@@ -1,0 +1,20 @@
+#zeit\.addcentral\.panelcontent {
+  padding-right: 1em;
+}
+
+#zeit\.addcentral\.panelcontent td {
+  height: auto;
+}
+
+#zeit\.addcentral\.panelcontent table * {
+  padding: 0;
+}
+
+#zeit\.addcentral\.panelcontent select {
+  width: 100%;
+}
+
+#zeit\.addcentral\.panelcontent .form-controls {
+  padding-top: 0.5em;
+  text-align: right;
+}
