@@ -3,17 +3,26 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   >
 
+  <resourceLibrary
+    name="zeit.addcentral"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    require="zeit.cms.content.dropdown">
+    <directory source="resources" include="addcentral.css" />
+  </resourceLibrary>
+  
   <browser:viewlet
-    name="30_addcentral"
     for="*"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="30_addcentral"
     manager="zeit.cms.browser.interfaces.ISidebar"
     template="sidebar.pt"
     permission="zope.View"
     />
 
   <browser:page
-    name="addcentral"
     for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="addcentral"
     class=".sidebar.Form"
     permission="zope.View"
     />
