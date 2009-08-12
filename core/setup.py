@@ -23,6 +23,7 @@ setup(
         'zc.resourcelibrary',
         'zeit.cms>1.27',
         'zope.app.pagetemplate',
+        'zope.browser',
         'zope.cachedescriptors',
         'zope.formlib',
         'zope.interface',
