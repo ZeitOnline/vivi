@@ -157,5 +157,3 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if workflow.released_to:
             date = workflow.released_to.isoformat()
         entry.set('expires', date)
-
-
