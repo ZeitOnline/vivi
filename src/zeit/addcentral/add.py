@@ -18,8 +18,8 @@ class ContentAdder(object):
         self.request = request
 
         self.type_ = type_
-        self.ressort = ressort
-        self.sub_ressort = sub_ressort
+        self.ressort = ressort and ressort.lower()
+        self.sub_ressort = sub_ressort and sub_ressort.lower()
         now = datetime.date.today()
         if year is None:
             year = now.year
