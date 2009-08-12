@@ -201,7 +201,7 @@ def _refresh_all():
     interval = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.cp')['feed-update-minimum-age']
     for feed in fm.folder.values():
-        if now > feed.last_update + datetime.timedelta(minutes=interval):
+        if now > feed.last_update + datetime.timedelta(minutes=int(interval)):
             logger.info('Refreshing feed for <%s>' % feed.url)
             fm.refresh_feed(feed.url)
         else:
