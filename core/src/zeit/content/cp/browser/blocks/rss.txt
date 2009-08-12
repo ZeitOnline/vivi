@@ -162,5 +162,5 @@ Displaying error messages
       <div class="block-item">
         An error occurred.
       </div>
-      <div>URLError: &lt;urlopen error (8, 'nodename nor servname provided, or not known')&gt;</div>
+      <div>URLError: &lt;...&gt;</div>
       ...
