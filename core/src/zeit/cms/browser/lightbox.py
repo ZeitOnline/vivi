@@ -22,7 +22,7 @@ class Form(zeit.cms.browser.view.Base,
         return self.url(self.context, '@@view.html')
 
     def get_data(self):
-        """Returnds dictionary of data."""
+        """Returns dictionary of data."""
         raise NotImplementedError("Implemented in subclasses.")
 
     def setUpWidgets(self, ignore_request=False):
