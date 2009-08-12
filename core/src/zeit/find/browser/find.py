@@ -86,7 +86,7 @@ class SearchResult(JSONView):
         # the search results
         favorite_uniqueIds = set()
         for favorite in get_favorites(self.request).values():
-            uniqueId = favorite.references.uniqueId
+            uniqueId = favorite.referenced_unique_id
             if not uniqueId:
                 continue
             favorite_uniqueIds.add(uniqueId)
@@ -379,10 +379,13 @@ class Favorites(JSONView):
 
     def json(self):
         favorites = get_favorites(self.request)
-        return {"results": [
-            self.result_entry(a) for a in [
-                zeit.cms.interfaces.ICMSContent(c.referenced_unique_id)
-                for c in favorites.values()]]}
+        result = []
+        for fav in favorites.values():
+            obj = fav.references
+            if obj is None:
+                continue
+            result.append(self.result_entry(obj))
+        return {"results": result}
 
 
 class ForThisPage(JSONView):
