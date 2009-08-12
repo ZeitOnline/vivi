@@ -83,7 +83,7 @@ attribute:
 No or invaid URL.
 >>> feed = fm.get_feed('http://foo.testing')
 >>> print feed.error
- URLError: <urlopen error (8, 'nodename nor servname provided, or not known')>
+ URLError: ...
 
 
 Publishing feeds
@@ -106,7 +106,7 @@ existing errors:
 >>> tasks.process()
 >>> feed = fm.get_feed('http://bar.testing')
 >>> print feed.error
-URLError: <urlopen error (8, 'nodename nor servname provided, or not known')>
+URLError: ...
 >>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
 False
 
@@ -138,8 +138,6 @@ HTML-content is preserved properly:
   <url>http://www.tagesschau.de/image.png</url>
 </image>...
 <description>Sri Lankas Regierung und tamilische Rebellen...</description>...
-
-
 
 .. [#functional]
     >>> import zeit.cms.testing
