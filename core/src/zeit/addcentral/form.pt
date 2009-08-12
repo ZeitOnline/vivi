@@ -1,5 +1,7 @@
+<form tal:attributes="action request/URL">
 <div metal:use-macro="view/template:default/macros/form">
     <div metal:fill-slot="extra_info">
         <span class="nextURL" tal:content="view/nextURL" />
     </div>
 </div>
+</form>
