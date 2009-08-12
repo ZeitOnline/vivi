@@ -3,18 +3,10 @@
 
 from zeit.cms.i18n import MessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-import zc.resourcelibrary
 import zeit.addcentral.add
 import zeit.addcentral.interfaces
 import zeit.cms.content.sources
 import zope.formlib.form
-
-
-class Sidebar(object):
-
-    def __init__(self, *args, **kw):
-        zc.resourcelibrary.need('zeit.cms.content.dropdown')
-        super(Sidebar, self).__init__(*args, **kw)
 
 
 class Form(zope.formlib.form.SubPageForm):

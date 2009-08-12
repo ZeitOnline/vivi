@@ -7,7 +7,6 @@
     name="30_addcentral"
     for="*"
     manager="zeit.cms.browser.interfaces.ISidebar"
-    class=".sidebar.Sidebar"
     template="sidebar.pt"
     permission="zope.View"
     />
