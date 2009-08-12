@@ -22,10 +22,10 @@ Open the lightbox. The object is currently not locked:
 <div>
   <h1>Locks</h1>
   ...
-        ...<input class="checkboxType" id="...
         <label for="form.locked">
           <span>Locked</span>
         </label>
+        ...<input class="checkboxType" id="...
         ...
         <label for="form.locker">
           <span>Locker</span>
@@ -52,10 +52,10 @@ When we lock we'll see the relevant information:
 >>> print browser.contents
 <div>
     ...
-        ...<input class="checkboxType" checked="checked" ...
         <label for="form.locked">
           <span>Locked</span>
         </label>
+        ...<input class="checkboxType" checked="checked" ...
         ...
         <label for="form.locker">
           <span>Locker</span>
@@ -88,10 +88,10 @@ We can now unlock Somalia:
 <div>
   <h1>Locks</h1>
   ...
-        ...<input class="checkboxType" id="...
         <label for="form.locked">
           <span>Locked</span>
         </label>
+        ...<input class="checkboxType" id="...
         ...
 
 Make sure the unlock message was sent to the user:      
@@ -110,10 +110,10 @@ Let's lock the object again to test stealing:
 >>> print browser.contents
 <div>
     ...
-        ...<input class="checkboxType" checked="checked"...
         <label for="form.locked">
           <span>Locked</span>
         </label>
+        ...<input class="checkboxType" checked="checked"...
 
 
 Login in as zmgr and steal the lock:
@@ -130,10 +130,10 @@ Login in as zmgr and steal the lock:
 >>> print mgr.contents
 <div>
     ...
-        ...<input class="checkboxType" checked="checked"...
         <label for="form.locked">
           <span>Locked</span>
         </label>
+        ...<input class="checkboxType" checked="checked"...
         <label for="form.locker">
           <span>Locker</span>
         </label>
