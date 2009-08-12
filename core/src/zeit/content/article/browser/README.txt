@@ -70,17 +70,8 @@ arbitrary url and add an article then:
 >>> menu.displayValue = ['Article']
 >>> url = menu.value[0]
 >>> url
-'http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.ChooseTemplate'
->>> browser.open(menu.value[0])
-
-We now need to choose a template. Since we haven't created one there is only
-the (no value) to be choosen.
-
->>> browser.getControl('Template').displayOptions
-['(no value)']
->>> browser.getControl('Template').displayValue
-['(no value)']
->>> browser.getControl('Continue').click()
+'http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.Add'
+>>> browser.open(url)
 
 We are now looking at the add form. Some fields are filled with suitable
 defaults:
@@ -495,143 +486,6 @@ Check the feed back in to have nothing laying around:
 >>> browser.getLink('Checkin').click()
 
 
-Templates
-=========
-
-A template can be choosen upon creation of an article. Initially there are no
-templates. Creating articles w/o template works as well since there is a
-standard template.
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Article']
->>> browser.open(menu.value[0])
-
-The choice allows selecting a "None" value:
->>> browser.getControl('Template').displayOptions
-['(no value)']
-
-
-Let's create two templates. This works via the template manager:
-
-
->>> admin = Browser()
->>> admin.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
->>> admin.open('http://localhost:8080/++skin++cms')
->>> admin.getLink('Templates').click()
->>> admin.getLink('Article templates').click()
->>> menu = admin.getControl(name='add_menu')
->>> menu.displayValue = ['Template']
->>> admin.open(menu.value[0])
->>> admin.getControl('Title').value = 'Zuender'
->>> admin.getControl('Source').value = (
-...     '<article><head/><body>'
-...     '<a href="http://zuender.zeit.de"><strong>Nach Hause</strong> - '
-...     '/Zuender. Das Netzmagazin</a></body></article>')
->>> admin.getControl('Add').click()
->>> print admin.contents
-<?xml ...
-<!DOCTYPE ...
-    <title> Zuender – Edit webdav properties </title>
-    ...
-
-
-Add another template:
-
->>> admin.getLink('Article templates').click()
->>> menu = admin.getControl(name='add_menu')
->>> menu.displayValue = ['Template']
->>> admin.open(menu.value[0])
->>> admin.getControl('Title').value = 'Extrablatt'
->>> admin.getControl('Source').value = (
-...     '<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-...     '<head/><body/></article>\n'
-...     '<?ZEIT-StyleGroup zeitwissen-extrablatt?>')
->>> admin.getControl('Add').click()
->>> print admin.contents
-<?xml ...
-<!DOCTYPE ...
-    <title> Extrablatt – Edit webdav properties </title>
-    ...
-
-Set the default ressort to Studium:
-
->>> admin.getControl(name='namespace:list').value = (
-...     'http://namespaces.zeit.de/CMS/document')
->>> admin.getControl(name='name:list').value = 'ressort'
->>> admin.getControl(name='value:list').value = 'Studium'
->>> admin.getControl('Save').click()
-
-Add another, totally unrelated property, to make sure those are copied to the
-article:
-
->>> admin.getControl(name='namespace:list', index=1).value = (
-...     'http://namespaces.zeit.de/my-own-namespace')
->>> admin.getControl(name='name:list', index=1).value = 'hans'
->>> admin.getControl(name='value:list', index=1).value = 'wurst'
-
-
-When we're now adding an article we can choose those templates:
-
->>> browser.getLink('online').click()
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Article']
->>> browser.open(menu.value[0])
->>> browser.getControl('Template').displayOptions
-['(no value)', 'Extrablatt', 'Zuender']
-
-Create an article with `Extrablatt` template:
-
->>> browser.getControl('Template').displayValue = ['Extrablatt']
->>> browser.getControl('Continue').click()
-
-As we've choosen extrablatt, the ressort is filled with the changed ressort
-now:
-
->>> browser.getControl('Ressort').displayValue
-['Studium']
-
-The other fields, like copyright, which are prefilled by default are still
-filled:
-
->>> browser.getControl('Copyright').value
-'ZEIT ONLINE'
-
-Now fill in the actual article:
-
->>> browser.getControl('File name').value = 'new-extrablatt'
->>> browser.getControl('Title').value = 'Extrablatt 53'
->>> browser.getControl('Year').value = '2007'
->>> browser.getControl('Volume').value = '49'
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.getControl(name='form.actions.add').click()
->>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
-    <title> Extrablatt 53 – Edit article </title>
-    ...
-
-
-Let's have a look at the source:
-
->>> browser.getLink('Source').click()
->>> print browser.getControl('Source').value.replace('\r\n', '\n')
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">49</attribute>
-    ...
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">7</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
-  </head>
-  <body>
-    <title>Extrablatt 53</title>
-  </body>
-</article>
-<?ZEIT-StyleGroup zeitwissen-extrablatt?>
-
-
 Javascript validations
 ======================
 
@@ -642,7 +496,6 @@ prevent entering more than the allowed length. Makre sure the widget is used:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Article']
 >>> browser.open(menu.value[0])
->>> browser.getControl('Continue').click()
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...

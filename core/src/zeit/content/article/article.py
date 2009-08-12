@@ -84,6 +84,7 @@ class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.article.interfaces.IArticle
     type = 'article'
     title = _('Article')
+    addform = 'zeit.content.article.Add'
 
 
 @zope.interface.implementer(zeit.content.article.interfaces.IArticle)

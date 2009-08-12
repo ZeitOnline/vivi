@@ -20,18 +20,6 @@ import zope.publisher.interfaces.browser
 import zope.session.interfaces
 
 
-ITemplateChooserSchema = (
-    zeit.cms.content.browser.template.TemplateChooserSchema(
-        'Article templates'))
-
-
-class ChooseTemplate(zeit.cms.content.browser.template.ChooseTemplateForm):
-    """Form for choosing the article template."""
-
-    add_view = 'zeit.content.article.Add'
-    form_fields = zope.formlib.form.FormFields(ITemplateChooserSchema)
-
-
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 class ArticleFormBase(object):
@@ -59,34 +47,9 @@ class AddForm(ArticleFormBase,
               zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     title = _('Add article')
-    form_fields = (
-        ArticleFormBase.form_fields +
-        ChooseTemplate.form_fields).omit('automaticMetadataUpdateDisabled',
-                                         'paragraphs')
-
-    content_template = None
-
-    def create(self, data):
-        source = None
-        template = data.get('template')
-        if template:
-            source = StringIO.StringIO(
-                zeit.cms.content.interfaces.IXMLSource(template))
-        del data['template']
-        article = zeit.content.article.article.Article(source)
-        self.applyChanges(article, data)
-        return article
-
-    def _get_widgets(self, form_fields, ignore_request=False):
-        widgets = super(AddForm, self)._get_widgets(
-            form_fields, ignore_request)
-
-        zeit.cms.content.browser.interfaces.ITemplateWidgetSetup(
-            self).setup_widgets(
-                widgets, ChooseTemplate.add_view, ITemplateChooserSchema,
-                ignore_request)
-
-        return widgets
+    form_fields = ArticleFormBase.form_fields.omit(
+        'automaticMetadataUpdateDisabled', 'paragraphs')
+    factory = zeit.content.article.article.Article
 
 
 class EditForm(ArticleFormBase,
