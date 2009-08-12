@@ -4,8 +4,6 @@
 zeit.cms.SubPageForm = Class.extend({
 
     construct: function(url, container) {
-        // the url is expected not to provide a <form> tag,
-        // since we generate one, using the url as the action
         var self = this;
         self.container = container;
         self.url = url;
@@ -29,10 +27,7 @@ zeit.cms.SubPageForm = Class.extend({
             });
         d.addCallback(
             function(result) {
-                self.container.innerHTML = '';
-                form = FORM({'action': self.url });
-                self.container.appendChild(form);
-                form.innerHTML = result;
+                self.container.innerHTML = result;
                 self.post_process_html();
                 MochiKit.Signal.signal(self, 'after-reload');
                 return result;
@@ -94,11 +89,6 @@ zeit.cms.SubPageForm = Class.extend({
             function(result) {
                 MochiKit.Signal.disconnectAll(self.form);
                 self.container.innerHTML = result.responseText;
-                if (action.indexOf('form.actions.') != 0) {
-                    // This was no action. No error could have been generated.
-                    // Also the form is not done, yet.
-                    return result;
-                }
                 var errors = getFirstElementByTagAndClassName(
                     'ul', 'errors', self.container)
                 if (errors != null) {
@@ -183,8 +173,6 @@ zeit.cms.SubPageForm = Class.extend({
 zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
 
     construct: function(url, container) {
-        // as opposed to our superclass, we expect the url to provide a <form>
-        // tag
         var self = this;
         if (isUndefinedOrNull(container)) {
             container = $('body');
