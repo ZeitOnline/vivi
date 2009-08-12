@@ -11,7 +11,7 @@ class IContentAdder(zope.interface.Interface):
 
     type_ = zope.schema.Choice(
         title=_("Type"),
-        source=zeit.cms.content.sources.CMSContentTypeSource())
+        source=zeit.cms.content.sources.AddableCMSContentTypeSource())
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),

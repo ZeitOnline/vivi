@@ -21,7 +21,7 @@ setup(
     install_requires=[
         'setuptools',
         'zc.resourcelibrary',
-        'zeit.cms>1.26',
+        'zeit.cms>1.27',
         'zope.app.pagetemplate',
         'zope.cachedescriptors',
         'zope.formlib',
