@@ -2,16 +2,8 @@
  Adding content
 ================
 
-asdf
-
->>> import zope.testbrowser.testing
->>> b = zope.testbrowser.testing.Browser()
->>> b.addHeader('Authorization', 'Basic user:userpw')
->>> b.open('http://localhost/++skin++cms/@@addcentral')
->>> print b.contents
-<...Type...Folder...
-...Ressort...Wirtschaft...
-
->>> b.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print b.contents
-<...Add...zeit.addcentral.panelcontent...
+zeit.addcentral provides a viewlet for the sidebar that allows to immediately
+create a content object by selecting the content type and the ressort.
+The newly created object will be filed automatically in a folder named
+``/<ressort>[/<subressort>]/<year>-<month>``, missing folders will be created
+along the way.
