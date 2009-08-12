@@ -12,8 +12,9 @@
 
 
   <browser:viewlet
-    name="15_search"
     for="*"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="15_search"
     manager="zeit.cms.browser.interfaces.ISidebar"
     template="sidebar.pt"
     class=".search.Viewlet"
