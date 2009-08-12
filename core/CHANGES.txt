@@ -7,6 +7,7 @@ zeit.content.cp changes
 - Drop von Inhaltsobjekten in einen Teasermosaik-Platzhalter funktioniert
   wieder (#5972).
 
+- Maximale Anzahl anzuzeigender Einträge im RSS-Block einstellbar (#5964).
 
 0.12 (2009-08-11)
 -----------------

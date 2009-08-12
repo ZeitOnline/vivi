@@ -381,6 +381,11 @@ class IRSSBlock(IBlock):
         title=_("URL of RSS feed (http://...)"),
         constraint=valid_feed_url)
 
+    max_items = zope.schema.Int(
+        title=_('Items to show'),
+        default=5,
+        min=1)
+
     feed = zope.interface.Attribute("The corresponding IFeed object.")
 
 

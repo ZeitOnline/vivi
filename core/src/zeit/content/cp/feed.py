@@ -107,7 +107,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def entries(self):
         return [unicode(x.text) for x in self.xml.xpath(
-            '/feed/rss/channel/item[position() <= 15]/title')]
+            '/feed/rss/channel/item/title')]
 
 
 class FeedType(zeit.cms.type.XMLContentTypeDeclaration):

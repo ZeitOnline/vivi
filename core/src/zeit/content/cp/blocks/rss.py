@@ -18,6 +18,7 @@ import zope.app.appsetup.product
 import zope.component
 import zope.container.interfaces
 import zope.interface
+import zeit.cms.content.property
 
 
 class RSSBlock(zeit.content.cp.blocks.block.Block):
@@ -26,10 +27,17 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
         zeit.content.cp.interfaces.IRSSBlock,
         zope.container.interfaces.IContained)
 
+    max_items = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'max_items', zeit.content.cp.interfaces.IRSSBlock['max_items'])
+
+
     def __init__(self, context, xml):
         super(RSSBlock, self).__init__(context, xml)
         if not self.xml.getchildren():
             self.xml.append(lxml.objectify.E.dummy_include())
+        if not self.max_items:
+            self.max_items = (
+                zeit.content.cp.interfaces.IRSSBlock['max_items'].default)
 
     @rwproperty.setproperty
     def url(self, url):

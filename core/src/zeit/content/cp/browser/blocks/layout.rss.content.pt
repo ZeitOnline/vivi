@@ -18,7 +18,11 @@
         Titel
       </div>
       <ul class="feed-items">
-        <li tal:repeat="entry feed/entries" tal:content="entry"/>
+        <tal:block repeat="entry feed/entries">
+          <li
+            tal:condition="python:repeat['entry'].number() <= context.max_items"
+            tal:content="entry"/>
+        </tal:block>
       </ul>
     </tal:display>
   </tal:feed>

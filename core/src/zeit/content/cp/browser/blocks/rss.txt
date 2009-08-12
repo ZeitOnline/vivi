@@ -77,6 +77,9 @@ Change to another URL:
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL of RSS feed').value = url
+>>> print browser.getControl('Items to show').value
+5
+>>> browser.getControl('Items to show').value = '2'
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getControl('Apply').click()
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
@@ -85,6 +88,15 @@ True
 <...self.close();...
 
 >>> browser.open(contents_url)
+>>> print browser.contents
+<...
+      <div class="block-item">heise online News</div>
+      <ul class="feed-items">
+        <li>QSC kann Umsatz und Ergebnis deutlich verbessern</li>
+        <li>Applied Materials bleibt in der Verlustzone</li>
+      </ul>
+      ...
+
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL').value
@@ -102,6 +114,7 @@ XML of a RSS block
 <container
     cp:type="rss"
     module="rss"
+    max_items="2"
     cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
     url=".../heise.xml">
   <xi:include
