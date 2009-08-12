@@ -1,14 +1,12 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
-import zope.dublincore.interfaces
-import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zope.component
+import zope.dublincore.interfaces
+import zope.interface
 
 
 class Modified(object):
