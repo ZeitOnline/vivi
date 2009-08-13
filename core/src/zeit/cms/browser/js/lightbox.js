@@ -33,6 +33,7 @@ zeit.cms.SubPageForm = Class.extend({
                 MochiKit.DOM.removeElementClass(self.container, 'busy');
                 return result;
             });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d
     },
 
@@ -118,6 +119,7 @@ zeit.cms.SubPageForm = Class.extend({
             MochiKit.DOM.removeElementClass(self.container, 'busy');
             return result;
         });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d;
     },
 
@@ -180,7 +182,7 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
             container = $('body');
         }
         self.lightbox = self.create_lightbox(container);
-        arguments.callee.$.construct(url, self.lightbox.content_box);
+        arguments.callee.$.construct.call(self, url, self.lightbox.content_box);
         self.events.push(
             connect(window, 'zeit.cms.LightboxReload', function(event) {
                 self.loading();
@@ -200,17 +202,17 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
     reload: function() {
         var self = this;
         var d = self.lightbox.load_url(self.url);
-        d.addCallback(
-            function(result) {
-                self.post_process_html();
-                return result;
-            });
+        d.addCallback(function(result) {
+            self.post_process_html();
+            return result;
+        });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d
     },
 
     close: function() {
         var self = this;
-        arguments.callee.$.close();
+        arguments.callee.$.close.call(self);
         self.lightbox.close();
     },
 });
