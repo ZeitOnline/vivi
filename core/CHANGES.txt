@@ -6,8 +6,8 @@ zeit.cms changes
 
 - Schönere Anzeige von Checkboxen (CMS-Skin und Vivi-Skin).
 
-- Date-Last-Modified und Last-Semantic-Change zur XML-Referenz hinzugefügt
-  (#5965).
+- Date-Last-Modified, Last-Semantic-Change, Date-First-Released und
+  Date-Last-Published zur XML-Referenz hinzugefügt (#5965).
 
 Technisches
 +++++++++++
