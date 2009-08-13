@@ -69,7 +69,7 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
         var self = this;
         var id = self.container_class + 'Id';
         self.set_value(id, $('avid').value);
-        if (!isNull($('id')) && $('id2').value) {
+        if (!isNull($('id2')) && $('id2').value) {
             self.set_value(id + '2', $('id2').value);
         }
         self.set_value('expires', $('expires').value);
