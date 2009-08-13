@@ -45,7 +45,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
           <option value="small" i18n:translate="">small</option>
           <option value="with-links" i18n:translate="">with info</option>
           <option value="large" i18n:translate="">large</option>
-          <option value="large" i18n:translate="">double</option>
+          <option value="double" i18n:translate="">double</option>
         </select>
       </div>
     </form>
