@@ -26,7 +26,13 @@ class Checkout(zeit.cms.browser.view.Base):
         if new_view is None:
             new_view = 'edit.html'
         new_url = self.url(checked_out, '@@' + new_view)
-        self.request.response.redirect(new_url)
+        # XXX type conversion would be so nice
+        if self.request.form.get('redirect') == 'False':
+            # XXX redirect=False now has two meanings:
+            # 1. don't redirect, 2. don't use any view
+            return self.url(checked_out)
+        else:
+            self.request.response.redirect(new_url)
 
     @property
     def canCheckout(self):
@@ -53,7 +59,10 @@ class Checkin(zeit.cms.browser.view.Base):
         if new_view is None:
             new_view = 'view.html'
         new_url = self.url(checked_in, '@@' + new_view)
-        self.request.response.redirect(new_url)
+        if self.request.form.get('redirect') == 'False':
+            return self.url(checked_in)
+        else:
+            self.request.response.redirect(new_url)
 
     @property
     def canCheckin(self):

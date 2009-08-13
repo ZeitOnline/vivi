@@ -183,3 +183,21 @@ Clean up the adapter:
 ...     zeit.cms.browser.interfaces.IDisplayViewName,
 ...     name='view.html')
 True
+
+
+Faking redirects
+================
+
+For javascript, we provide a variant that does not redirect but instead returns
+the URL. It also does not do any view calculation but returns the base URL of
+the freshly checked-out/-in object:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/'
+...     '2007/01/Somalia/@@checkout?redirect=False')
+>>> url = browser.contents
+>>> url
+'http://localhost/++skin++cms/workingcopy/zope.user/Somalia'
+
+>>> browser.open(url + '/@@checkin?redirect=False')
+>>> browser.contents
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia'
