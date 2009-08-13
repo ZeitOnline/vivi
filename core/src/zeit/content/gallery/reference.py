@@ -4,6 +4,7 @@
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.content.gallery.interfaces
 import zope.component
