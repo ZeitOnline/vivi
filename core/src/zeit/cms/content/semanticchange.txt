@@ -4,15 +4,40 @@ Semantic change
 The SemanticChange adapter indicates the last semantic change [#functional]_:
 
 >>> import zeit.cms.content.interfaces
->>> sc = zeit.cms.content.interfaces.ISemanticChange(repository['testcontent'])
+>>> content = repository['testcontent']
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(content)
 >>> sc.last_semantic_change is None
 True
 
+The last semantic change is set on checkin:
+
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(content, semantic_change=True):
+...     pass
+>>> content = repository['testcontent']
+>>> sc = zeit.cms.content.interfaces.ISemanticChange(content)
+>>> sc.last_semantic_change
+datetime.datetime(..., tzinfo=<UTC>)
+
+
+An xml reference contains the last-semantic-change:
+
+>>> import lxml.etree
+>>> import zeit.cms.content.interfaces
+>>> node = zope.component.getAdapter(
+...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
+>>> print lxml.etree.tostring(node, pretty_print=True),
+<reference ... last-semantic-change="...T...+00:00"...
+>>> import zc.iso8601.parse
+>>> zc.iso8601.parse.datetimetz(node.get('last-semantic-change'))
+datetime.datetime(..., tzinfo=<UTC>)
 
 .. [#functional]
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> p = zeit.cms.testing.create_interaction()
+    >>> dummy = with_statement
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces

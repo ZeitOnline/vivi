@@ -4,13 +4,11 @@
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zope.component
 import zope.interface
 
 
-class SemanticChange(object):
+class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.cms.content.interfaces.ISemanticChange)
 
     last_semantic_change = zeit.cms.content.dav.DAVProperty(
@@ -18,11 +16,13 @@ class SemanticChange(object):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'last-semantic-change')
 
-    def __init__(self, context):
-        self.context = context
 
+class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
-@zope.component.adapter(zeit.cms.content.interfaces.ISemanticChange)
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-def properties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context)
+    target_iface = zeit.cms.content.interfaces.ISemanticChange
+
+    def update_with_context(self, entry, lsc):
+        date = ''
+        if lsc.last_semantic_change:
+            date = lsc.last_semantic_change.isoformat()
+        entry.set('last-semantic-change', date)

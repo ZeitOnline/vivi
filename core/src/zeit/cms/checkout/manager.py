@@ -15,6 +15,7 @@ import zope.cachedescriptors.property
 import zope.component
 import zope.event
 import zope.interface
+import zope.security.proxy
 
 
 class CheckoutManager(object):
@@ -110,9 +111,9 @@ class CheckoutManager(object):
                 "Cannot checkin.")
         workingcopy =  self.context.__parent__
         if semantic_change:
-            zeit.cms.content.interfaces.ISemanticChange(
-                self.context).last_semantic_change = datetime.datetime.now(
-                    pytz.UTC)
+            lsc = zope.security.proxy.removeSecurityProxy(
+                zeit.cms.content.interfaces.ISemanticChange(self.context))
+            lsc.last_semantic_change = datetime.datetime.now(pytz.UTC)
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(

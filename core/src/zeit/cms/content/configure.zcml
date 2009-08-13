@@ -135,8 +135,12 @@
   <subscriber handler=".sources.collect_caches" />
 
   <!-- semantic changes -->
-  <adapter factory=".semanticchange.SemanticChange" />
-  <adapter factory=".semanticchange.properties" />
+  <class class=".semanticchange.SemanticChange">
+    <require interface=".interfaces.ISemanticChange"
+             permission="zope.View" />
+  </class>
+  <adapter factory=".semanticchange.XMLReferenceUpdater"
+           name="last-semantic-change" />
 
   <!-- LXML -->
   <subscriber handler=".lxmlpickle.clean_refs" />
