@@ -6,18 +6,17 @@ gallery[#functional]_:
 
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
->>> gallery.uniqueId = u'gallery-id'
 >>> import zeit.cms.repository.interfaces
 >>> import zope.component
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> gallery.__parent__ = repository
+>>> repository['gallery'] = gallery
+>>> gallery = repository['gallery']
 
 Create a testcontent:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
->>> content.__parent__ = repository['online']
 
 Adapting `content` to IGalleryReference enables us to reference gallery:
 
@@ -38,15 +37,16 @@ The gallery is now noted in the webdav properties of `content`:
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id',
- ('biga-src', 'http://namespaces.zeit.de/CMS/document'): u'gallery-id',
+{('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'http://xml.zeit.de/gallery',
+ ('biga-src', 'http://namespaces.zeit.de/CMS/document'): u'http://xml.zeit.de/gallery',
  ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
  
-
 
 The browse location of a gallery reference depends on the adapted object and
 yields the container the object is in:
 
+>>> repository['online']['content'] = content
+>>> content = repository['online']['content']
 >>> import zeit.cms.browser.interfaces
 >>> loc = zope.component.getMultiAdapter(
 ...     (gref,
@@ -68,7 +68,38 @@ The gallery source is a utility:
 ...     zeit.cms.content.interfaces.ICMSContentSource, name)
 <zeit.content.gallery.interfaces.GallerySource object at 0x...>
 
+
+An xml reference to content also indicates the gallery:
+
+>>> import lxml.etree
+>>> import zeit.cms.content.interfaces
+>>> node = zope.component.getAdapter(
+...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
+>>> print lxml.etree.tostring(node, pretty_print=True),
+<reference ...type="intern" href="http://xml.zeit.de/online/content"...>
+  ...
+  <gallery type="intern" href="http://xml.zeit.de/gallery"...>
+    <supertitle xsi:nil="true"/>
+    ...
+  </gallery>
+</reference>
+
+When the reference is removed the <gallery> tag is removed:
+
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     gref = zeit.content.gallery.interfaces.IGalleryReference(co)
+...     gref.gallery = None
+>>> content = repository['online']['content']
+>>> node = zope.component.getAdapter(
+...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
+>>> '<gallery' in lxml.etree.tostring(node, pretty_print=True)
+False
+
+
 .. [#functional]
 
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> p = zeit.cms.testing.create_interaction()
+    >>> dummy = with_statement

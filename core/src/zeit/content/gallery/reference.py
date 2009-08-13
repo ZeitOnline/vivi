@@ -3,6 +3,7 @@
 
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.gallery.interfaces
 import zope.component
@@ -35,3 +36,23 @@ def gallery_reference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+
+    target_iface = zeit.content.gallery.interfaces.IGalleryReference
+
+    def update_with_context(self, node, reference):
+        if reference.gallery is None:
+            gallery_node = node.find('gallery')
+            if gallery_node is not None:
+                node.remove(gallery_node)
+        else:
+            gref = zope.component.getAdapter(
+                reference.gallery, zeit.cms.content.interfaces.IXMLReference,
+                name='related')
+            gref.tag = 'gallery'
+            node.append(gref)
+
+
+

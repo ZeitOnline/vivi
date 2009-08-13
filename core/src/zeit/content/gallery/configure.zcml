@@ -65,6 +65,7 @@
     component=".interfaces.gallerySource"
     name="zeit.content.gallery"
     />
+  <adapter factory=".reference.XMLReferenceUpdater" name="gallery" />
 
   <!-- Workflow -->
   <adapter factory=".workflow.PublicationDependencies" />

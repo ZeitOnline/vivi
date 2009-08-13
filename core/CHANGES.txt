@@ -1,6 +1,11 @@
 zeit.content.gallery changes
 ============================
 
+2.2 (unreleased)
+----------------
+
+- Eine referenzierte Galerie wird in den Relateds mit ausgegeben (#5975).
+
 2.1.1 (2009-08-03)
 ------------------
 
