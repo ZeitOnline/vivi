@@ -21,6 +21,9 @@ class GalleryReference(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.content.gallery.interfaces.IGalleryReference['embedded_gallery'],
         'http://namespaces.zeit.de/CMS/document', 'biga-src')
 
+    def __init__(self, context):
+        self.context = self.__parent__ = context
+
 
 @zope.component.adapter(
     zeit.content.gallery.interfaces.IGalleryReference,
@@ -32,4 +35,3 @@ def gallery_reference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-
