@@ -9,4 +9,6 @@
              permission="zope.View" />
   </class>
 
+  <adapter factory=".modified.XMLReferenceUpdater" name="date-last-modified" />
+
 </configure>

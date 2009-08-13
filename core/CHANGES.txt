@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Schönere Anzeige von Checkboxen (CMS-Skin und Vivi-Skin).
 
+- Date-Last-Modified zur XML-Referenz hinzugefügt (#5965).
+
 Technisches
 +++++++++++
 
