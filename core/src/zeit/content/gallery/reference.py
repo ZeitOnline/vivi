@@ -9,9 +9,8 @@ import zope.component
 import zope.interface
 
 
-class GalleryReference(object):
+class GalleryReference(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.content.gallery.interfaces.IGalleryReference)
 
@@ -22,16 +21,6 @@ class GalleryReference(object):
         zeit.content.gallery.interfaces.IGalleryReference['embedded_gallery'],
         'http://namespaces.zeit.de/CMS/document', 'biga-src')
 
-    def __init__(self, context):
-        self.context = context
-
-
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-@zope.component.adapter(GalleryReference)
-def gallery_reference_to_webdav_properties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context)
-
-
 
 @zope.component.adapter(
     zeit.content.gallery.interfaces.IGalleryReference,
@@ -41,6 +30,6 @@ def gallery_reference_to_webdav_properties(context):
 def gallery_reference_browse_location(context, source):
     """Gallery browse location."""
     return zope.component.queryMultiAdapter(
-        (context.context, source),
+        (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 

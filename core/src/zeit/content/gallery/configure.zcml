@@ -54,8 +54,12 @@
   <adapter factory=".gallery.EntryHTMLConverter" />
 
   <!-- References -->
-  <adapter factory=".reference.GalleryReference" />
-  <adapter factory=".reference.gallery_reference_to_webdav_properties" />
+  <class class=".reference.GalleryReference" >
+    <require interface=".interfaces.IGalleryReference"
+             permission="zope.View" />
+    <require set_schema=".interfaces.IGalleryReference"
+             permission="zeit.EditContent" />
+  </class>
   <adapter factory=".reference.gallery_reference_browse_location" />
   <utility
     component=".interfaces.gallerySource"
