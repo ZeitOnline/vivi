@@ -54,7 +54,7 @@
     ">
     <directory
       source="resources"
-      include="editor.css editor.js drop.js teaser.js library.js"/>
+      include="editor.css editor.js drop.js teaser.js library.js publish.js"/>
   </resourceLibrary>
 
 
@@ -230,6 +230,25 @@
     permission="zeit.EditContent"
     />
 
+  <!-- 1-Click publishing -->
 
+  <browser:viewlet
+    name="Publish"
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".publish.MenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.workflow.Publish"
+    icon="/@@/zeit.cms/icons/favicon.png"
+    /> <!-- XXX proper icon -->
+
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish.html"
+    template="publish.pt"
+    permission="zeit.workflow.Publish"
+    />
 
 </configure>

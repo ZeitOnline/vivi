@@ -1,0 +1,13 @@
+<tal:block i18n:domain="zeit.cms">
+<h1 i18n:translate="">Publish</h1>
+
+<ol>
+<li id="publish.checkin">Check in</li>
+<li id="publish.publish">Publish</li>
+<li id="publish.checkout">Check out</li>
+</ol>
+</tal:block>
+
+<script type="text/javascript">
+new zeit.content.cp.publish.Publisher();
+</script>

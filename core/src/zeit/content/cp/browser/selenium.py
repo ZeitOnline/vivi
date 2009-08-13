@@ -586,6 +586,23 @@ class TestSidebar(Test):
             '//div[@id="sidebar-dragger" and @class="sidebar-folded"]')
 
 
+class TestOneClickPublish(Test):
+
+    def test_editor_should_be_reloaded_after_publishing(self):
+        s = self.selenium
+        self.open_centerpage()
+        s.click('xpath=//a[@title="Publish"]')
+        s.waitForElementPresent('xpath=//div[@class="lightbox"]')
+        s.waitForPageToLoad(30000)
+        s.waitForElementPresent('css=div.landing-zone')
+
+    def test_publish_button_should_not_be_visible_when_checked_in(self):
+        s = self.selenium
+        self.open_centerpage()
+        s.clickAndWait('xpath=//a[@title="Checkin ^I"]')
+        s.verifyElementNotPresent('xpath=//a[@title="Publish"]')
+
+
 class CreateTestContent(object):
 
     def __call__(self):

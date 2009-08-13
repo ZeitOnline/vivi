@@ -65,5 +65,11 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.TestOneClickPublish"
+    name="zeit.content.cp.TestOneClickPublish"
+    permission="zope.Public"
+    />
+
 </configure>
 
