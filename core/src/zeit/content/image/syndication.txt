@@ -28,7 +28,7 @@ We have not added any image, so no image is referenced:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="http://xml.zeit.de/testcontent">
+    <block href="http://xml.zeit.de/testcontent"...>
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -73,9 +73,9 @@ Update the metadata of the feed. The image is now referenced:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="http://xml.zeit.de/testcontent">
+    <block href="http://xml.zeit.de/testcontent"...>
      ...
-      <image base-id="http://xml.zeit.de/image-group" type="jpg">
+      <image base-id="http://xml.zeit.de/image-group" type="jpg"...>
         <bu xsi:nil="true"/>
         <copyright py:pytype="str">&#169;</copyright>
       </image>
@@ -102,10 +102,10 @@ When more than one image is referenced, only the first one will be in the feed:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="http://xml.zeit.de/testcontent">
+    <block href="http://xml.zeit.de/testcontent"...>
       ...
       <references/>
-      <image base-id="http://xml.zeit.de/image-group" type="jpg">
+      <image base-id="http://xml.zeit.de/image-group" type="jpg"...>
         <bu xsi:nil="true"/>
         <copyright py:pytype="str">&#169;</copyright>
       </image>
@@ -128,7 +128,7 @@ When we have no image referenced it is also removed from the channel:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="http://xml.zeit.de/testcontent">
+    <block href="http://xml.zeit.de/testcontent"...>
       ...
       <references/>
     </block>
@@ -152,9 +152,8 @@ Before:
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
-    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        base-id="http://xml.zeit.de/image-group" 
-        type="jpg">
+    <image ...base-id="http://xml.zeit.de/image-group" 
+        type="jpg"...>
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">&#169;</copyright>
     </image>
@@ -179,7 +178,7 @@ The content has changed automatically:
 ...     repository['testcontent'].xml, pretty_print=True),
 <testtype>
   <head>
-    <image xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="Image title" base-id="http://xml.zeit.de/image-group" type="jpg">
+    <image ...title="Image title" base-id="http://xml.zeit.de/image-group" type="jpg"...>
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">&#169;</copyright>
     </image>

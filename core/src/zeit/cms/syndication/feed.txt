@@ -39,9 +39,12 @@ Feeds behave mostly like a list. An empty feed doen't contain any objects:
 
 We now will add objects to the feed. Let's create some fake object:
 
+>>> import zope.annotation.interfaces
 >>> import zope.interface
 >>> class Article(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+...     zope.interface.implements(
+...         zeit.cms.interfaces.ICMSContent,
+...         zope.annotation.interfaces.IAttributeAnnotatable)
 ...     def __init__(self, id=None):
 ...         self.uniqueId = id
 
@@ -307,21 +310,15 @@ The layout can be big:
 True
 >>> import lxml.etree
 >>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
-<block
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    href="third" pinned="false" hp_hide="false" layout="big"/>
+<block ...
+    href="third" ...pinned="false" hp_hide="false" layout="big"/>
 
 When the layout is not big, the attribute is removed:
 
 >>> feed.getMetadata(third).big_layout = False
 >>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
-<block
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    href="third" pinned="false" hp_hide="false"/>
+<block ...
+    href="third" ...pinned="false" hp_hide="false"/>
 
 Hidden relateds
 +++++++++++++++
@@ -334,21 +331,15 @@ Relateds can be marked as hidden:
 True
 >>> import lxml.etree
 >>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
-<block
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    href="third" pinned="false" hp_hide="false" hidden_relateds="true"/>
+<block ...
+    href="third" ...pinned="false" hp_hide="false" hidden_relateds="true"/>
 
 The default is that they're shown though:
 
 >>> feed.getMetadata(third).hidden_relateds = False
 >>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
-<block
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    href="third" pinned="false" hp_hide="false" hidden_relateds="false"/>
+<block ...
+    href="third" ...pinned="false" hp_hide="false" hidden_relateds="false"/>
 
 
 XML-Representation
@@ -367,7 +358,7 @@ in it:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -402,7 +393,7 @@ Insert the article to the feed:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="art2" year="2007" issue="4">
+    <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Frankreich</supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -417,7 +408,7 @@ Insert the article to the feed:
         <text xsi:nil="true"/>
       </homepage>
     </block>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -436,7 +427,7 @@ changes:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="art2" year="2007" issue="4">
+    <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -451,7 +442,7 @@ changes:
         <text py:pytype="str">HP Teaser Text</text>
       </homepage>
     </block>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -471,7 +462,7 @@ too:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="tct">
+    <block href="tct"...>
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -486,11 +477,11 @@ too:
         <text xsi:nil="true"/>
       </homepage>
       <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero"/>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero".../>
       </references>
     </block>
-    <block href="art2" year="2007" issue="4">
+    <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -505,7 +496,7 @@ too:
         <text py:pytype="str">HP Teaser Text</text>
       </homepage>
     </block>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -520,7 +511,7 @@ When we change the order this is reflected:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="tct">
+    <block href="tct"...>
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -535,11 +526,11 @@ When we change the order this is reflected:
         <text xsi:nil="true"/>
       </homepage>
       <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero"/>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia"/>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero".../>
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
       </references>
     </block>
-    <block href="art2" year="2007" issue="4">
+    <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -554,7 +545,7 @@ When we change the order this is reflected:
         <text py:pytype="str">HP Teaser Text</text>
       </homepage>
     </block>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -568,7 +559,7 @@ We can also remove all relateds:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="tct">
+    <block href="tct"...>
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -584,7 +575,7 @@ We can also remove all relateds:
       </homepage>
       <references/>
     </block>
-    <block href="art2" year="2007" issue="4">
+    <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -599,7 +590,7 @@ We can also remove all relateds:
         <text py:pytype="str">HP Teaser Text</text>
       </homepage>
     </block>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -614,7 +605,7 @@ node in the HTML:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title py:pytype="str">Politik</title>
   <container>
-    <block href="tct">
+    <block href="tct"...>
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -630,7 +621,7 @@ node in the HTML:
       </homepage>
       <references/>
     </block>
-    <block href="art2" year="2007" issue="4">
+    <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -645,7 +636,7 @@ node in the HTML:
         <text xsi:nil="true"/>
       </homepage>
     </block>
-    <block href="art1"/>
+    <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>

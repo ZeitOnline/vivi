@@ -7,6 +7,7 @@ and expiration date will be added to the feed.
 
 Create a dummy content object:
 
+>>> import zope.annotation.interfaces
 >>> import zope.interface
 >>> import zeit.cms.interfaces
 >>> import zeit.workflow.interfaces
@@ -14,10 +15,13 @@ Create a dummy content object:
 >>> class Content(object):
 ...     zope.interface.implements(
 ...         zeit.workflow.interfaces.IContentWorkflow,
+...         zope.annotation.interfaces.IAttributeAnnotatable,
 ...         zeit.cms.interfaces.ICMSContent)
 ...     uniqueId = 'content1'
 ...     released_from = None
 ...     released_to = None
+...     date_first_released = None
+...     date_last_published = None
 
 Create a feed:
 
@@ -37,7 +41,7 @@ any:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="content1" publication-date="" expires=""/>
+    <block href="content1" ...publication-date="" expires=""/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
@@ -56,7 +60,7 @@ reflected:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
-    <block href="content1" publication-date="2008-01-05T16:00:00+00:00" expires="2008-01-06T00:00:00+00:00"/>
+    <block href="content1" ...publication-date="2008-01-05T16:00:00+00:00" expires="2008-01-06T00:00:00+00:00"/>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>

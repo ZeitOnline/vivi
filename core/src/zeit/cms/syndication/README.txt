@@ -171,7 +171,7 @@ Check the source of the feed first:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent" hp_hide="true">
+    <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -210,7 +210,7 @@ Now, the channel metadata has changed:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent" hp_hide="true">
+    <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
@@ -253,7 +253,7 @@ The feed was not updated:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent" hp_hide="true">
+    <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true"...>
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
@@ -298,7 +298,7 @@ The feed has not changed this time:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/testcontent" hp_hide="true">
+    <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
       <supertitle xsi:nil="true"/>
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>

@@ -173,7 +173,7 @@ The xml structure of a and b contain "Tease me" now:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+      <reference ...href="http://xml.zeit.de/c"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me</title>
         <text xsi:nil="true"/>
@@ -188,7 +188,7 @@ The xml structure of a and b contain "Tease me" now:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+      <reference ...href="http://xml.zeit.de/c"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me</title>
         <text xsi:nil="true"/>
@@ -217,7 +217,7 @@ And check in:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+      <reference ...href="http://xml.zeit.de/c"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
@@ -232,7 +232,7 @@ And check in:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/b">
+      <reference ...href="http://xml.zeit.de/b"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -254,7 +254,7 @@ Verify the source of "d" before we do anything:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+      <reference ...href="http://xml.zeit.de/c"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
@@ -294,7 +294,7 @@ Check out "c" and modify it. Then check in.
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+      <reference ...href="http://xml.zeit.de/c"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
@@ -329,7 +329,7 @@ Check out and in again:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/c">
+      <reference ...href="http://xml.zeit.de/c"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>

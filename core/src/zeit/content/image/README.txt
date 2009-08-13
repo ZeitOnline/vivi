@@ -21,11 +21,8 @@ Test the image xml reference:
 ...     image,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  src="http://xml.zeit.de/2006/DSC00109_2.JPG"
-  type="JPG">
+<image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG"
+  type="JPG"...>
   <bu xsi:nil="true"/>
   <copyright py:pytype="str">&#169;</copyright>
 </image>
@@ -117,10 +114,7 @@ Reference the image via XML:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       base-id="http://xml.zeit.de/image-group" type="jpg">
+<image ...base-id="http://xml.zeit.de/image-group" type="jpg"...>
   <bu xsi:nil="true"/>
   <copyright py:pytype="str">&#169;</copyright>
 </image>
@@ -140,11 +134,8 @@ Set metadata:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       align="right"
-       base-id="http://xml.zeit.de/image-group" type="jpg">
+<image ...align="right"
+       base-id="http://xml.zeit.de/image-group" type="jpg"...>
   <bu>Cap&gt;tion<br/><a href="#">foo</a></bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -166,11 +157,8 @@ Make sure we don't die when there is an invalid XML snippet stored:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       align="right"
-       base-id="http://xml.zeit.de/image-group" type="jpg">
+<image ...align="right"
+       base-id="http://xml.zeit.de/image-group" type="jpg"...>
   <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -186,12 +174,9 @@ Set the link:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       align="right"
+<image ...align="right"
        href="http://www.asdf.com"
-       base-id="http://xml.zeit.de/image-group" type="jpg">
+       base-id="http://xml.zeit.de/image-group" type="jpg"...>
   <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -214,14 +199,10 @@ in x140 is used:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    align="right"
+<image ...align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
-    type="gif">
+    type="gif"...>
   <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -240,13 +221,9 @@ one is used:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    align="right"
+<image ... align="right"
     href="http://www.asdf.com"
-    base-id="http://xml.zeit.de/image-group" type="jpg">
+    base-id="http://xml.zeit.de/image-group" type="jpg"...>
   <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -264,14 +241,10 @@ Images whose names have no extension at all will be ignored:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    align="right"
+<image ...align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
-    type="jpg">
+    type="jpg"...>
   <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -286,14 +259,10 @@ If there is no image in the image group the ``type`` will be an empty string:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True),
-<image
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    align="right"
+<image ... align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
-    type="">
+    type=""...>
   <bu>5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>

@@ -52,8 +52,8 @@ Let's have a look at the source:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -77,8 +77,8 @@ Also check the source of related:
 
 >>> print lxml.etree.tostring(related.xml, pretty_print=True)
 <references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    type="intern" href="http://xml.zeit.de/related">
+  <reference ...
+    type="intern" href="http://xml.zeit.de/related"...>
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
     <text xsi:nil="true"/>
@@ -108,8 +108,8 @@ Assigning the same content object again doesn't change the xml:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -140,8 +140,8 @@ Let's add another related content:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -156,8 +156,8 @@ Let's add another related content:
           <text xsi:nil="true"/>
         </homepage>
       </reference>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related2">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related2"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -200,8 +200,8 @@ So far nothing has changed:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -216,8 +216,8 @@ So far nothing has changed:
           <text xsi:nil="true"/>
         </homepage>
       </reference>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related2">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related2"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -246,8 +246,8 @@ when we reassign the two objects the metadata will be reflected in the xml:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related" year="2006" issue="19">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related" year="2006" issue="19"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
@@ -262,7 +262,7 @@ when we reassign the two objects the metadata will be reflected in the xml:
           <text xsi:nil="true"/>
         </homepage>
       </reference>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/related2">
+      <reference ... type="intern" href="http://xml.zeit.de/related2"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -301,8 +301,8 @@ After sending the event the metadata is updated:
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        type="intern" href="http://xml.zeit.de/related" year="2007" issue="19">
+      <reference ...
+        type="intern" href="http://xml.zeit.de/related" year="2007" issue="19"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
@@ -317,7 +317,7 @@ After sending the event the metadata is updated:
           <text xsi:nil="true"/>
         </homepage>
       </reference>
-      <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="intern" href="http://xml.zeit.de/related2">
+      <reference ...type="intern" href="http://xml.zeit.de/related2"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>

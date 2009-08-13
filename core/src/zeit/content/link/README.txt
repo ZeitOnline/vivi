@@ -67,7 +67,7 @@ Create a channel and insert the link[#functional]_:
   <title/>
   <container>
     <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-      href="http://xml.zeit.de/link"
+      href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com" ns0:target="_blank">
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
@@ -100,7 +100,7 @@ channel:
   <title/>
   <container>
     <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-      href="http://xml.zeit.de/link"
+      href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com">
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
@@ -138,10 +138,8 @@ representation of that object's related content includes the target URL:
 >>> import lxml.etree
 >>> print lxml.etree.tostring(related.xml, pretty_print=True)
 <references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <reference xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-             type="intern" href="http://xml.zeit.de/link"
+  <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+             type="intern" href="http://xml.zeit.de/link"...
              ns0:href="http://gocept.com">
     ...
   </reference>

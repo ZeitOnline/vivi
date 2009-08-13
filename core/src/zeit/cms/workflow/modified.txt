@@ -56,9 +56,6 @@ Date last published and date first released are also in the xml[#mock]_:
 
 Clean up:
 
->>> gsm.unregisterAdapter(
-...     zeit.cms.workflow.mock.MockPublishInfo)
-True
 >>> zeit.cms.workflow.mock._publish_times.clear()
 >>> zeit.cms.workflow.mock.MockPublishInfo.date_first_released = old_dfr
 
@@ -75,9 +72,6 @@ True
 
 .. [#mock]
 
-    >>> gsm = zope.component.getGlobalSiteManager()
-    >>> gsm.registerAdapter(
-    ...     zeit.cms.workflow.mock.MockPublish)
     >>> import datetime
     >>> import pytz
     >>> old_dfr = zeit.cms.workflow.mock.MockPublishInfo.date_first_released

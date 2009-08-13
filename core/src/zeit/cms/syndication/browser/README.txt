@@ -513,10 +513,9 @@ Let's have a look at the source now:
 <channel> 
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    <block ...
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           ...
            hidden_relateds="false"
            hp_hide="true"
            pinned="true"/>
@@ -545,10 +544,9 @@ Its also indicated in the source:
 <channel> 
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    <block ...
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           ...
            hidden_relateds="false"
            hp_hide="true"
            pinned="true"
@@ -573,14 +571,13 @@ False
 Its also indicated in the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML').value.replace('\r\n', '\n')
+>>> print browser.getControl('XML').value.replace('\r\n', '\n'),
 <channel> 
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    <block ...
            href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
+           ...
            hidden_relateds="true"
            hp_hide="true"
            pinned="true"
