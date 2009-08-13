@@ -14,6 +14,8 @@ Technisches
 
 - AddableCMSContentTypeSource hinzugefügt (#5937).
 
+- checkout/checkin-View neuer Parameter redirect=False für JavaScript (#5661).
+
 1.27 (2009-08-10)
 -----------------
 
