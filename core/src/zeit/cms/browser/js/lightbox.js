@@ -153,7 +153,7 @@ zeit.cms.SubPageForm = Class.extend({
                     addElementClass(button, 'submit');
                 }
             });
-        if (self.form != null) {
+        if (!isNull(self.form)) {
             self.events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
                 // prevent accidental submit
