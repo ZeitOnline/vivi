@@ -94,8 +94,7 @@ class Body(persistent.Persistent):
         if hasattr(data, 'seek'):
             data.seek(0)
         s = data.read(self.BUFFER_SIZE)
-        if len(s) < self.BUFFER_SIZE and not isinstance(self.data,
-                                                        ZODB.blob.Blob):
+        if len(s) < self.BUFFER_SIZE:
             # Small object
             small = True
             target = cStringIO.StringIO()
