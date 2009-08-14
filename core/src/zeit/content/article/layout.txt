@@ -33,7 +33,7 @@ After publishing the article, the centerpage is published, too:
 
 >>> from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 >>> IPublishInfo(article).urgent = True
->>> IPublish(article).publish()
+>>> job_id = IPublish(article).publish()
 >>> tasks.process()
 
 Check that there were no errors during publishing:
@@ -54,7 +54,7 @@ datetime.datetime(...)
 When publishing again, the centerpage is not published again, since it
 is already published:
 
->>> IPublish(article).publish()
+>>> job_id = IPublish(article).publish()
 >>> tasks.process()
 >>> IPublishInfo(article).date_last_published == published_article
 False
