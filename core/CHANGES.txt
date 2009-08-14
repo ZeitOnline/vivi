@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.18 (unreleased)
+1.18 (2009-08-14)
 -----------------
 
 - There was a chance that cache inconsitencies could yield a KeyError: "The
