@@ -45,7 +45,7 @@ class TestSidebar(zeit.cms.selenium.Test):
 
     def assertSidebarState(self, state):
         s = self.selenium
-        s.verifyElementPresent(
+        s.waitForElementPresent(
             '//div[@id="sidebar-dragger"][@class="sidebar-%s"]' % state)
 
 
