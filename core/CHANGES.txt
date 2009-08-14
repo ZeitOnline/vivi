@@ -1,6 +1,13 @@
 zeit.find changes
 =================
 
+0.11 (2009-08-14)
+-----------------
+
+- Styling
+
+- Favoriten robuster gegen nicht vorhandene Objekte.
+
 0.10 (2009-08-10)
 -----------------
 
