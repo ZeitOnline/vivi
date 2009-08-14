@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.13 (unreleased)
+0.13 (2009-08-14)
 -----------------
 
 - Drop von Inhaltsobjekten in einen Teasermosaik-Platzhalter funktioniert
