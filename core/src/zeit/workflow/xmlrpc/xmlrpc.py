@@ -22,8 +22,7 @@ class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
             return False
         publish = zeit.cms.workflow.interfaces.IPublish(
             self.repository.getContent(unique_id))
-        publish.publish()
-        return True
+        return publish.publish()
 
 
     @zope.cachedescriptors.property.Lazy

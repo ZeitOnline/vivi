@@ -101,9 +101,9 @@ Publish/retract the content. This removes it from the feed:
 ...     repository['testcontent'])
 >>> info.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> len(repository['politik.feed'])
 0
@@ -127,7 +127,7 @@ Publish:
 ...     repository['testcontent'])
 >>> info.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 
 
@@ -141,7 +141,7 @@ Modify politik feed but avoid the checkout/checkin cycle:
 
 Now retract:
 
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> len(repository['politik.feed'])
 0

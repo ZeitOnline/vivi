@@ -65,13 +65,13 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         self.log(self.context, _('Publication scheduled'))
-        self.tasks.add(u'zeit.workflow.publish',
+        return self.tasks.add(u'zeit.workflow.publish',
                        TaskDescription(self.context))
 
     def retract(self):
         """Retract object."""
         self.log(self.context, _('Retracting scheduled'))
-        self.tasks.add(u'zeit.workflow.retract',
+        return self.tasks.add(u'zeit.workflow.retract',
                        TaskDescription(self.context))
 
     @property

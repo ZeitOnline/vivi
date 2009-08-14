@@ -129,7 +129,7 @@ True
 Let's publish the object:
 
 >>> workflow.urgent = True
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.published
 True
@@ -139,7 +139,7 @@ datetime.datetime(...)
 
 One can publish more than once to put up a new version:
 
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.published
 True
@@ -152,7 +152,7 @@ After retracting an object it is no longer publically visible. Note that
 retract is unconditinally possible:
 
 >>> workflow.urgent = False
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> workflow.published
 False
@@ -298,7 +298,7 @@ Wait:
 >>> time.sleep(2)
 >>> tasks.process()
 
-The object is rectracted now:
+The object is retracted now:
 
 >>> workflow.published
 False
@@ -364,7 +364,7 @@ True
 >>> workflow.urgent = True
 >>> import zeit.cms.workflow.interfaces
 >>> publish = zeit.cms.workflow.interfaces.IPublish(article)
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.date_first_released
 datetime.datetime(...)
@@ -391,7 +391,7 @@ We expect the value to be in the xml now as well (amongst others):
 
 When we de-publish the object, the status-flag is removed again:
 
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
@@ -435,14 +435,14 @@ False
 Publish somalia:
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.published
 True
 
 Retract of course also works:
 
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> workflow.published
 False
@@ -493,7 +493,7 @@ False
 Now publish the folder:
 
 >>> workflow.urgent = True
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.published
 True
@@ -514,7 +514,7 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 
 Retracting is also possible recursivly:
 
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> workflow.published
 False
@@ -546,7 +546,7 @@ Publish script
 The actual publishing happens by external the publish script[#loghandler]_.
 Publish the folder again and verify the log:
 
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> print logfile.getvalue()
 Running job ...
@@ -619,7 +619,7 @@ of publish:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> print logfile.getvalue()
 Running job ...
@@ -648,7 +648,7 @@ fails when there is 'JPG' in the input data:
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(jpg)
 >>> workflow.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> import transaction
 >>> transaction.commit()
 >>> tasks.process()
@@ -753,7 +753,7 @@ False
 When we publish somalia now the feed is published automatically:
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.published
 True
@@ -793,7 +793,7 @@ Add the reverse dependency:
 
 Publish somalia again:
 
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> print_log(log.get_log(feed))
 http://xml.zeit.de/politik.feed
@@ -808,7 +808,7 @@ Retract honours dependencies, too:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> publish.retract()
+>>> job_id = publish.retract()
 >>> tasks.process()
 >>> feed_workflow.published
 False
@@ -863,7 +863,7 @@ When somalia is published, the folder and its content is also published:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> print logfile.getvalue(),
 Running job ...

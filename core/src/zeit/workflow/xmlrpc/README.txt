@@ -33,8 +33,7 @@ False
 
 Good. Let's publish:
 
->>> publish('http://xml.zeit.de/online/2007/01/Somalia')
-True
+>>> job_id = publish('http://xml.zeit.de/online/2007/01/Somalia')
 >>> new_interaction()
 >>> tasks.process()
 >>> zope.security.management.endInteraction()

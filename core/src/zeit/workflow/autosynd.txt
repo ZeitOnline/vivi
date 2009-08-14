@@ -40,7 +40,7 @@ Publish content:
 >>> info = zeit.cms.workflow.interfaces.IPublishInfo(content)
 >>> info.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(content)
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> info.published
 True
@@ -82,14 +82,14 @@ the politik channel:
 ...     'http://xml.zeit.de/politik.feed')
 >>> politik.getPosition(content)
 2
->>> zeit.cms.workflow.interfaces.IPublish(politik).retract()
+>>> job_id = zeit.cms.workflow.interfaces.IPublish(politik).retract()
 >>> tasks.process()
 >>> zeit.cms.workflow.interfaces.IPublishInfo(politik).published
 False
 
 Publish content now:
 
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> info.published
 True
@@ -105,11 +105,11 @@ added again:
 
 >>> with zeit.cms.checkout.helper.checked_out(politik) as co:
 ...     co.remove(content)
->>> zeit.cms.workflow.interfaces.IPublish(politik).retract()
+>>> job_id = zeit.cms.workflow.interfaces.IPublish(politik).retract()
 >>> tasks.process()
 >>> zeit.cms.workflow.interfaces.IPublishInfo(politik).published
 False
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> info.published
 True

@@ -16,6 +16,9 @@ Technisches
 
 - checkout/checkin-View neuer Parameter redirect=False für JavaScript (#5661).
 
+- XML-RPC für Workflow gibt bei publish und retract die Job-Id zurück
+  (für #5661).
+
 1.27 (2009-08-10)
 -----------------
 

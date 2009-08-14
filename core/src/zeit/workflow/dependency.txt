@@ -31,7 +31,7 @@ publishing testcontent Somalia will not be publishd[#somalia-semantic-change]_:
 False
 >>> somalia_workflow.published
 False
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> workflow.published
 True
@@ -42,7 +42,7 @@ When somalia is published and changed by a related update it will be published
 again when publishing testcontent.
 
 >>> somalia_workflow.urgent = True
->>> somalia_publish.publish()
+>>> job_id = somalia_publish.publish()
 >>> tasks.process()
 >>> somalia_workflow.published
 True
@@ -77,7 +77,7 @@ True
 
 Publishing testcontent will publish somalia now:
 
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> somalia_workflow.date_last_published > somalia_published_on
 True
@@ -86,7 +86,7 @@ If Somalia is not published it will of couse not published automatically, even
 if the date relation constraint is satisfied:
 
 >>> time.sleep(1)
->>> somalia_publish.retract()
+>>> job_id = somalia_publish.retract()
 >>> tasks.process()
 >>> somalia = repository['online']['2007']['01']['Somalia']
 >>> dc = zope.dublincore.interfaces.IDCTimes(somalia)
@@ -94,7 +94,7 @@ if the date relation constraint is satisfied:
 >>> somalia_published_on = somalia_workflow.date_last_published
 >>> sc.last_semantic_change < somalia_published_on < dc.modified
 True
->>> publish.publish()
+>>> job_id = publish.publish()
 >>> tasks.process()
 >>> somalia = repository['online']['2007']['01']['Somalia']
 >>> somalia_workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
@@ -120,7 +120,7 @@ Even if the related was published:
 >>> ford_workflow= zeit.cms.workflow.interfaces.IPublishInfo(ford)
 >>> ford_workflow.urgent = True
 >>> ford_publish = zeit.cms.workflow.interfaces.IPublish(ford)
->>> ford_publish.publish()
+>>> job_id = ford_publish.publish()
 >>> tasks.process()
 >>> related_dependencies.get_dependencies()
 []
