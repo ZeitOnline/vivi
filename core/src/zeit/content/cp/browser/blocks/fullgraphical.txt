@@ -68,7 +68,7 @@ The source of a fullgraphical block:
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
            cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
-  <block type="intern" href="http://xml.zeit.de/my_quiz" publication-date="" expires="">
+  <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
     <text xsi:nil="true"/>
@@ -83,7 +83,7 @@ The source of a fullgraphical block:
       <text xsi:nil="true"/>
     </homepage>
   </block>
-  <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG" publication-date="" expires=""/>
+  <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
 </container>...
 
 .. [#functional]_
