@@ -179,14 +179,6 @@ class Connector(object):
 
     def listCollection(self, id):
         """List the filenames of a collection identified by <id> (see[8]). """
-        # FIXME
-        # Performance notes [4]:
-        # This one slurps a list of names, keeps a copy and deals name
-        # by name via yield(). Our provider, DavCollection, also has a
-        # list of (whatever). It might make sense pushing the iterator
-        # one layer deeper. But there are other worries (do we get one
-        # DAV access per child if our clients request details about our
-        # children? Probably yes!
         __traceback_info__ = (id, )
         id = self._get_cannonical_id(id)
         for child_id in self._get_resource_child_ids(id):
