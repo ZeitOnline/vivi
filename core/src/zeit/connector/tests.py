@@ -243,6 +243,19 @@ class ConnectorCache(ConnectorTest):
             self.connector.property_cache['id'].keys()[0],
             zeit.connector.cache.WebDAVPropertyKey))
 
+    def test_inconsistent_child_names_do_not_yields_non_existing_objects(self):
+        self.assertEquals(
+            [(u'cache_test', u'http://xml.zeit.de/testing/cache_test')],
+            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
+        cache = self.connector.child_name_cache['http://xml.zeit.de/testing/']
+        self.assertEquals(
+            [u'http://xml.zeit.de/testing/cache_test'],
+            list(cache))
+        cache.add('http://xml.zeit.de/testing/cache_test_2')
+        self.assertEquals(
+            [(u'cache_test', u'http://xml.zeit.de/testing/cache_test')],
+            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
+
 
 class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
 

@@ -181,8 +181,10 @@ class Connector(object):
         """List the filenames of a collection identified by <id> (see[8]). """
         __traceback_info__ = (id, )
         id = self._get_cannonical_id(id)
+        property_cache = self.property_cache
         for child_id in self._get_resource_child_ids(id):
-            yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
+            if child_id in property_cache:
+                yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
 
     def _get_resource_type(self, id):
         __traceback_info__ = (id, )

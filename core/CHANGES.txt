@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+1.18 (unreleased)
+-----------------
+
+- There was a chance that cache inconsitencies could yield a KeyError: "The
+  resource xzy does not exist." (#5993).
+
 1.17.1 (2009-08-05)
 -------------------
 
