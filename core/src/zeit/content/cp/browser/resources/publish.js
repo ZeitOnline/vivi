@@ -1,4 +1,4 @@
-zeit.content.cp.publish = {}
+zeit.content.cp.publish = {};
 
 
 zeit.content.cp.publish.Publisher = Class.extend({
@@ -6,7 +6,8 @@ zeit.content.cp.publish.Publisher = Class.extend({
         var self = this;
         self.steps = [
             self.checkin,
-            //self.publish,
+            self.publish,
+            self.poll,
             self.checkout,
             self.reload_editor,
         ];
@@ -29,8 +30,34 @@ zeit.content.cp.publish.Publisher = Class.extend({
 
     publish: function(context) {
         var self = this;
-        // call publish view, retrieve job id
-        // poll for job id to complete
+        self.busy('publish');
+        self.checked_in = context;
+
+        uniqueId = context.replace(
+            application_url + '/repository', 'http://xml.zeit.de');
+        var d = gocept.xmlrpc.call(application_url, 'publish', [uniqueId]);
+        d.addCallback(function(job) {
+            // XXX if (job == false) display error: can't publish
+            self.next(job);
+        });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+    },
+
+    poll: function(job) {
+        var self = this;
+        var d = gocept.xmlrpc.call(
+            application_url + '/++etc++site/tasks.general', 'getStatus', [job]);
+        // status is defined in lovely.remotetask.interfaces
+        d.addCallback(function(status) {
+            if (status == 'completed') {
+                self.next(self.checked_in);
+            } else if (status == 'error' || status == 'cancelled') {
+                // XXX display errror
+            } else {
+                MochiKit.Async.callLater(5, bind(self.poll, self), job);
+            }
+        });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
     },
 
     checkout: function(context) {

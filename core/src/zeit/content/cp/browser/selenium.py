@@ -68,9 +68,8 @@ class Test(zeit.cms.selenium.Test):
         self.open('/')
         self.create_clip()
         s.clickAndWait('link=Dateiverwaltung')
-        self.clip_object('c1')
-        self.clip_object('c2')
-        self.clip_object('c3')
+        for i in range(1, 4):
+            self.clip_object('c%s' % i)
 
     def create_filled_teaserlist(self):
         s = self.selenium
@@ -590,7 +589,19 @@ class TestOneClickPublish(Test):
 
     def test_editor_should_be_reloaded_after_publishing(self):
         s = self.selenium
+        self.create_content_and_fill_clipboard()
         self.open_centerpage()
+
+        # XXX try it first with too few items to see the error message
+
+        # fill lead with required blocks
+        for i in range(1, 4):
+            s.dragAndDropToObject(
+                '//li[@uniqueid="Clip/c%s"]' % i,
+                'css=#cp-aufmacher .landing-zone')
+            s.waitForTextPresent('c%s teaser' % i)
+
+        # now publish
         s.click('xpath=//a[@title="Publish"]')
         s.waitForElementPresent('xpath=//div[@class="lightbox"]')
         s.waitForPageToLoad(30000)
@@ -608,15 +619,10 @@ class CreateTestContent(object):
     def __call__(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        c1 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-        c1.teaserTitle = c1.shortTeaserTitle = u'c1 teaser'
-        repository['c1'] = c1
-        c2 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-        c2.teaserTitle = c2.shortTeaserTitle = u'c2 teaser'
-        repository['c2'] = c2
-        c3 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-        c3.teaserTitle = c3.shortTeaserTitle = u'c3 teaser'
-        repository['c3'] = c3
+        for i in range(1, 4):
+            content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+            content.teaserTitle = content.shortTeaserTitle = u'c%s teaser' % i
+            repository['c%s' % i] = content
         quiz = zeit.content.quiz.quiz.Quiz()
         quiz.teaserTitle = quiz.shortTeaserTitle = u'MyQuiz'
         repository['my_quiz'] = quiz

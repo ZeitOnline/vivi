@@ -51,6 +51,7 @@
     require="zeit.cms
              zeit.find
              zc.datetimewidget
+             gocept.mochikit.xmlrpc
     ">
     <directory
       source="resources"
