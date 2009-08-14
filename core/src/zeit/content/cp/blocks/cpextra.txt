@@ -25,7 +25,6 @@ ComponentLookupError: (<zeit.content.cp.area.Lead object at 0x...>, <InterfaceCl
 ...     zeit.content.cp.interfaces.IElementFactory, name='mostread')
 <zeit.content.cp.blocks.cpextra.MostreadFactory object at 0x...>
 
-
 When a centerpage is created the toplist is automatically added[#functional]_:
 
 >>> import zeit.cms.interfaces
@@ -39,6 +38,19 @@ When a centerpage is created the toplist is automatically added[#functional]_:
 <container...>
   <cp_extra id="mostread"/>
 </container>
+
+CP-Extra blocks have a block title:
+
+>>> print mr.block_title
+Meistgelesen
+
+The generic title can also be set:
+
+>>> mr.title is None
+True
+>>> mr.title = u'a title'
+>>> print mr.title
+a title
 
 
 MostCommented

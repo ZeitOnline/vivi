@@ -1,4 +1,4 @@
-<div class="cpextra-title" tal:content="context/title">
+<div class="cpextra-title" tal:content="context/block_title">
   Meistgelesen
 </div>
 <div class="cpextra-id" tal:content="context/type">

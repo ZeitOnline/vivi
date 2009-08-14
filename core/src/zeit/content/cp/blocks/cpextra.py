@@ -32,7 +32,7 @@ def factor(extra_id, title, interface=zeit.content.cp.interfaces.IRegion):
     """A factory which creates a cpextra block and a corresponding factory."""
     class_name = '%sBlock' % extra_id.capitalize()
     class_ = type(class_name, (CPExtraBlock,), dict(
-        title=title))
+        block_title=title))
 
     factory_name = '%sFactory' % extra_id.capitalize()
     factory = type(factory_name, (CPExtraBlockFactory,), dict(

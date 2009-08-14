@@ -392,7 +392,7 @@ class IRSSBlock(IBlock):
 class ICPExtraBlock(IBlock):
     """Block which contains a cp_extra."""
 
-    title = zope.schema.TextLine(
+    block_title = zope.schema.TextLine(
         title=u'Title of the cp_extra.')
 
 
