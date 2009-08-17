@@ -3,9 +3,9 @@
 
 <tal:block condition="view/can_publish">
 <ol>
-<li id="publish.checkin" i18n:translate="">Check in</li>
-<li id="publish.publish" i18n:translate="">Publish</li>
-<li id="publish.checkout" i18n:translate="">Check out</li>
+<li id="publish.checkin" i18n:translate="">Checking in</li>
+<li id="publish.publish" i18n:translate="">Publishing</li>
+<li id="publish.checkout" i18n:translate="">Checking out</li>
 </ol>
 
 <script type="text/javascript">
