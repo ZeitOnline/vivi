@@ -230,17 +230,18 @@
     permission="zeit.EditContent"
     />
 
-  <!-- 1-Click publishing -->
+  <!-- 1-click publishing -->
 
   <browser:viewlet
     name="Publish"
     for="zeit.content.cp.interfaces.ICenterPage"
+    view=".editor.Editor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".publish.MenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.workflow.Publish"
-    icon="/@@/zeit.cms/icons/favicon.png"
-    /> <!-- XXX proper icon -->
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
 
 
   <browser:page
