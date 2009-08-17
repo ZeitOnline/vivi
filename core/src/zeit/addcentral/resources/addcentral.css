@@ -18,3 +18,8 @@
   padding-top: 0.5em;
   text-align: right;
 }
+
+#zeit\.addcentral\.panelcontent .errors,
+#zeit\.addcentral\.panelcontent .summary {
+  display: none;
+}
