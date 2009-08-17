@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.28.1 (unreleased)
+1.28.1 (2009-08-17)
 -------------------
 
 - XML-RPC für Workflow gibt bei publish und retract die Job-Id zurück
