@@ -619,12 +619,6 @@ class TestOneClickPublish(Test):
         s.waitForPageToLoad(30000)
         s.waitForElementPresent('css=div.landing-zone')
 
-    def test_publish_button_should_not_be_visible_when_checked_in(self):
-        s = self.selenium
-        self.open_centerpage()
-        s.clickAndWait('xpath=//a[@title="Checkin ^I"]')
-        s.verifyElementNotPresent('xpath=//a[@title="Publish"]')
-
     def test_publish_failure_should_be_displayed(self):
         product_config = self.product_config.copy()
         product_config['zeit.workflow']['publish-script'] = 'invalid'
