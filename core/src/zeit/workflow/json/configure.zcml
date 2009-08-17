@@ -7,6 +7,15 @@
     for="zeit.cms.interfaces.ICMSContent"
     name="publish"
     class=".publish.Publish"
+    attribute="publish"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="can-publish"
+    class=".publish.Publish"
+    attribute="can_publish"
     permission="zeit.workflow.Publish"
     />
 

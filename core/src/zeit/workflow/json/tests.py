@@ -47,11 +47,19 @@ class PublishJSONTest(JSONTestCase):
 
     def test_negative_can_publish_should_return_false(self):
         result = self.call_json(
+            'http://localhost/repository/online/2007/01/Somalia/@@can-publish')
+        self.assertEqual(False, result)
+
+        result = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
         self.assertEqual(False, result)
 
     def test_publish_should_return_job_id(self):
         self.enable_publish('http://xml.zeit.de/online/2007/01/Somalia')
+        result = self.call_json(
+            'http://localhost/repository/online/2007/01/Somalia/@@can-publish')
+        self.assertEqual(True, result)
+
         result = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
         self.assertNotEqual(False, result)
