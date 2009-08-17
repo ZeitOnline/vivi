@@ -4,29 +4,13 @@ zeit.content.cp.publish = {};
 zeit.content.cp.publish.Publisher = Class.extend({
     construct: function() {
         var self = this;
-        self.steps = [
-            self.checkin,
-            self.publish,
-            self.poll,
-            self.check_error,
-            self.checkout,
-            self.reload_editor,
-        ];
-        self.step = 0;
-        self.next(context_url);
-    },
-
-    next: function(url) {
-        var self = this;
-        if (self.step >= self.steps.size)
-            return;
-        self.steps[self.step].call(self, url);
-        self.step++;
+        self.checkin(context_url);
     },
 
     checkin: function(context) {
         var self = this;
-        self._async_step(context + '/@@checkin?redirect=False', 'checkin');
+        self._redirect_step(context + '/@@checkin?redirect=False', 'checkin',
+                         bind(self.publish, self));
     },
 
     publish: function(context) {
@@ -40,7 +24,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
                 self.error('publish');
                 $('publish.errors').innerHTML = 'Automatisches Veröffentlichen nicht möglich';
             } else {
-                self.next(job);
+                self.poll(job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
@@ -53,7 +37,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
-                self.next(job);
+                self.check_error(job);
             } else {
                 MochiKit.Async.callLater(5, bind(self.poll, self), job);
             }
@@ -67,27 +51,28 @@ zeit.content.cp.publish.Publisher = Class.extend({
             application_url + '/@@flash-publish-errors', {'job': job});
         d.addCallback(function(result) {
             self.done('publish');
-            self.next(self.checked_in);
+            self.checkout(self.checked_in);
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
     },
 
     checkout: function(context) {
         var self = this;
-        self._async_step(context + '/@@checkout?redirect=False', 'checkout');
+        self._redirect_step(context + '/@@checkout?redirect=False', 'checkout',
+                            bind(self.reload_editor, self));
     },
 
     reload_editor: function(url) {
         document.location = url + '/@@edit.html';
     },
 
-    _async_step: function(url, step) {
+    _redirect_step: function(url, step, next) {
         var self = this;
         self.busy(step);
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         d.addCallback(function(result) {
             self.done(step);
-            self.next(result.responseText);
+            next(result.responseText);
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
     },
