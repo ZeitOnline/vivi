@@ -1,7 +1,7 @@
 zeit.addcentral changes
 =======================
 
-0.1 (unreleased)
+0.1 (2009-08-17)
 ----------------
 
 - Erstes release.
