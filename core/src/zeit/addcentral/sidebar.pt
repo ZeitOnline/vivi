@@ -22,6 +22,7 @@
                              $('zeit.addcentral.panelcontent'));
     MochiKit.Signal.connect(form, 'after-reload', function() {
         zeit.cms.configure_ressort_dropdown();
+        MochiKit.Signal.signal('sidebar', 'panel-content-changed');
     });
   </script>
 </div>
