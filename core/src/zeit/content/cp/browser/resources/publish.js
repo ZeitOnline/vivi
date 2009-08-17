@@ -33,9 +33,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
         self.busy('publish');
         self.checked_in = context;
 
-        uniqueId = context.replace(
-            application_url + '/repository', 'http://xml.zeit.de');
-        var d = gocept.xmlrpc.call(application_url, 'publish', [uniqueId]);
+        var d = MochiKit.Async.loadJSONDoc(context + '/@@publish');
         d.addCallback(function(job) {
             // XXX if (job == false) display error: can't publish
             self.next(job);
@@ -45,8 +43,8 @@ zeit.content.cp.publish.Publisher = Class.extend({
 
     poll: function(job) {
         var self = this;
-        var d = gocept.xmlrpc.call(
-            application_url + '/++etc++site/tasks.general', 'getStatus', [job]);
+        var d = MochiKit.Async.loadJSONDoc(
+            application_url + '/@@publish-status', {'job': job});
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
