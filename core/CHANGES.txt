@@ -9,6 +9,9 @@ zeit.cms changes
 
 - SubPageForm sended after-reload auch beim Form-Post.
 
+- JSON-Views für publish und um den Status von Jobs abzufragen hinzugefügt
+  (#5661).
+
 1.28 (2009-08-14)
 -----------------
 
