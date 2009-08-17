@@ -158,25 +158,29 @@ pre {
   position: absolute;
   top: 0;
   right: 0;
-  left: 1em;
-  background-color: #fff;
+  left: 0em;
 }
 
 #main-navigation {
+	width: 252px;
+	height: 90px;
+    background: transparent url("layout/logo.png") no-repeat left 10px;
 }
 
 #sidebar {
   visibility: hidden; /* The sidebar is displayed *after* resizing */
   position: absolute;
   background-color: #f1f4f9;
-  border: 1px solid #e4e4e4;
+  border-top: 1px solid #e4e4e4;
+  border-left: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
   left: 0em;
-  width: 20em;
-  top: 3em;
+  width: 20.1em;
+  top: 90px;
   bottom: 0;
-  overflow: hidden;
+  overflow: visible;
   padding-left: 10px;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 #sidebar.sized {
@@ -198,12 +202,13 @@ pre {
 #sidebar-dragger {
   position: absolute;
   left: 21em;
-  width: 0.5em;
-  top: 5.2em;
+  width: 0.45em;
+  top: 0em;
   bottom: 0;
   cursor: pointer;
   background: transparent url("layout/sidebardragger.png") no-repeat center;
   border-right: 1px solid #e4e4e4;
+  border-left: 1px solid #e4e4e4;
 }
 
 #sidebar.sidebar-folded {
@@ -212,7 +217,7 @@ pre {
 
 #sidebar-dragger.sidebar-folded {
   left: 0;
-  width: 0.5em;
+  width: 0.34em;
   cursor: pointer;
   background: transparent url("layout/sidebardragger-open.png") no-repeat
   center;
@@ -241,6 +246,7 @@ pre {
   padding-top: 3em;
   padding-left: 1em;
   background-color: transparent;
+  border-left: 1px solid #e4e4e4;
 }
 
 .PanelContent {
@@ -353,6 +359,8 @@ pre {
  * navigations 
  *
  * */
+  
+  
 #breadcrumbs li,
 #main-navigation li,
 #folder-actions li,
@@ -376,10 +384,9 @@ pre {
    z-index: -1;
 }
 #main-navigation {
-  margin-top: 0.25em;
+  margin-top: 0em;
   padding: 0;
   position: absolute;
-  width: 20em;
 }
 
 #main-navigation > li {
