@@ -48,14 +48,17 @@ class Test(zc.selenium.pytest.Test):
         zope.component.getUtility(
             zope.error.interfaces.IErrorReportingUtility).copy_to_zlog = True
         transaction.commit()
-        product_config = cjson.encode(self.product_config)
-        query = urllib.urlencode(dict(product_config=product_config))
-        self.open('/@@setup-product-config?' + query, auth=None)
+        self.set_product_config(self.product_config)
 
     def tearDown(self):
         super(Test, self).tearDown()
         self.selenium.open('http://%s/@@reset-mock-connector' %
                            self.selenium.server)
+
+    def set_product_config(self, product_config):
+        product_config = cjson.encode(product_config)
+        query = urllib.urlencode(dict(product_config=product_config))
+        self.open('/@@setup-product-config?' + query, auth=None)
 
     def click_label(self, label):
         self.selenium.click('//label[contains(string(.), %s)]' %
