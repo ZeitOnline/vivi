@@ -24,28 +24,29 @@ zeit.content.cp.publish.Publisher = Class.extend({
                 self.error('publish');
                 $('publish.errors').innerHTML = 'Automatisches Veröffentlichen nicht möglich';
             } else {
-                self.poll(job);
+                self.poll_until_publish_complete(job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
     },
 
-    poll: function(job) {
+    poll_until_publish_complete: function(job) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(
             application_url + '/@@publish-status', {'job': job});
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
-                self.check_error(job);
+                self.check_publish_error(job);
             } else {
-                MochiKit.Async.callLater(5, bind(self.poll, self), job);
+                MochiKit.Async.callLater(
+                    5, bind(self.poll_until_publish_complete, self), job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
     },
 
-    check_error: function(job) {
+    check_publish_error: function(job) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             application_url + '/@@flash-publish-errors', {'job': job});
