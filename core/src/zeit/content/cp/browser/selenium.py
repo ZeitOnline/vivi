@@ -593,6 +593,14 @@ class TestOneClickPublish(Test):
         self.open('/@@restart-remotetask')
         self.create_content_and_fill_clipboard()
 
+    def _fill_lead(self):
+        s = self.selenium
+        for i in range(1, 4):
+            s.dragAndDropToObject(
+                '//li[@uniqueid="Clip/c%s"]' % i,
+                'css=#cp-aufmacher .landing-zone')
+            s.waitForTextPresent('c%s teaser' % i)
+
     def test_editor_should_be_reloaded_after_publishing(self):
         s = self.selenium
         self.open_centerpage()
@@ -610,14 +618,6 @@ class TestOneClickPublish(Test):
         s.waitForElementPresent('css=div.lightbox')
         s.waitForPageToLoad(30000)
         s.waitForElementPresent('css=div.landing-zone')
-
-    def _fill_lead(self):
-        s = self.selenium
-        for i in range(1, 4):
-            s.dragAndDropToObject(
-                '//li[@uniqueid="Clip/c%s"]' % i,
-                'css=#cp-aufmacher .landing-zone')
-            s.waitForTextPresent('c%s teaser' % i)
 
     def test_publish_button_should_not_be_visible_when_checked_in(self):
         s = self.selenium
@@ -638,7 +638,7 @@ class TestOneClickPublish(Test):
         s.waitForPageToLoad(30000)
         s.waitForElementPresent('css=div.landing-zone')
 
-        s.verifyText('css=li.error', 'Error during publish/retract*')
+        s.verifyText('css=li.error', 'Error during publish/retract: OSError*')
 
 
 class CreateTestContent(object):
