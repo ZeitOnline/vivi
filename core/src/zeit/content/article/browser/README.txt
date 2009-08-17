@@ -157,15 +157,6 @@ Traceback (most recent call last):
     ...
 LookupError: label 'File name'
 
-
-The article isn't syndicated in any feed for now. The form shouldn't
-have a readonly field for Automatic Teasersyndication:
-
->>> browser.getControl(name="form.automaticTeaserSyndication:list")
-Traceback (most recent call last):
-    ...
-LookupError: name 'form.automaticTeaserSyndication:list'
-
 Relating images and other content is done on the "asset" page. There is no
 read-only view to the assets:
 
@@ -380,7 +371,7 @@ xml source:
         <text xsi:nil="true"/>
       </homepage>
       <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1"...>
           <supertitle py:pytype="str">Thailand</supertitle>
           <title py:pytype="str">Bomben in Bangkok</title>
           <text py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</text>
@@ -396,7 +387,7 @@ xml source:
           </homepage>
         </reference>
       </references>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
         <bu xsi:nil="true"/>
         <copyright...
       </image>
@@ -406,14 +397,6 @@ xml source:
 </channel>
 >>> browser.getLink('Checkin').click()
 
-We could now select do not automatically update the metadata:
-
->>> browser.open(article_url)
->>> browser.getLink('Checkout').click()
->>> browser.getLink('Edit metadata').click()
->>> browser.getControl('No automatic metadata update').displayOptions
-['Politik']
-
 
 Checking in a Syndicated Article
 ================================
@@ -421,6 +404,8 @@ Checking in a Syndicated Article
 We change the article's teaser and check it in. We expect to see the change in
 the feeds automatically:
 
+>>> browser.open(article_url)
+>>> browser.getLink('Checkout').click()
 >>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
@@ -456,7 +441,7 @@ at its xml source:
         <text xsi:nil="true"/>
       </homepage>
       <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1">
+        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1"...>
           <supertitle py:pytype="str">Thailand</supertitle>
           <title py:pytype="str">Bomben in Bangkok</title>
           <text py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</text>
@@ -472,7 +457,7 @@ at its xml source:
           </homepage>
         </reference>
       </references>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
         <bu xsi:nil="true"/>
         <copyright...
       </image>

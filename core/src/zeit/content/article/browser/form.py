@@ -26,7 +26,6 @@ class ArticleFormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata,
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
         zeit.cms.interfaces.ICMSContent).omit('textLength')
 
     field_groups = (
@@ -38,8 +37,8 @@ class ArticleFormBase(object):
             css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Options"),
-            ('dailyNewsletter', 'boxMostRead', 'commentsAllowed',
-             'has_recensions', 'artbox_thema', 'export_cds'),
+            base.option_fields.fields + (
+                'boxMostRead', 'has_recensions', 'artbox_thema', 'export_cds'),
             css_class='column-right checkboxes'))
 
 
@@ -47,8 +46,7 @@ class AddForm(ArticleFormBase,
               zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     title = _('Add article')
-    form_fields = ArticleFormBase.form_fields.omit(
-        'automaticMetadataUpdateDisabled', 'paragraphs')
+    form_fields = ArticleFormBase.form_fields.omit('paragraphs')
     factory = zeit.content.article.article.Article
 
 

@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Templates für Artikel gibt es nicht mehr.
 
+- Tests repariert (#5946).
+
 2.4 (2009-08-11)
 ----------------
 
