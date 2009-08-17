@@ -22,7 +22,7 @@ setup(
         'FeedParser',
         'gocept.cache',
         'gocept.lxml',
-        'gocept.mochikit>1.4.2.4',
+        'gocept.mochikit>=1.4.2.2',
         'gocept.runner',
         'lxml',
         'python-cjson',
