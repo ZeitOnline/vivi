@@ -35,8 +35,12 @@ zeit.content.cp.publish.Publisher = Class.extend({
 
         var d = MochiKit.Async.loadJSONDoc(context + '/@@publish');
         d.addCallback(function(job) {
-            // XXX if (job == false) display error: can't publish
-            self.next(job);
+            if (job == false) {
+                self.error('publish');
+                $('publish.errors').innerHTML = 'Automatisches Veröffentlichen nicht möglich';
+            } else {
+                self.next(job);
+            }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
     },
@@ -48,9 +52,9 @@ zeit.content.cp.publish.Publisher = Class.extend({
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
-                self.next(self.checked_in);
-            } else if (status == 'error' || status == 'cancelled') {
                 // XXX display errror
+                
+                self.next(self.checked_in);
             } else {
                 MochiKit.Async.callLater(5, bind(self.poll, self), job);
             }
@@ -85,5 +89,10 @@ zeit.content.cp.publish.Publisher = Class.extend({
     done: function(step) {
         removeElementClass($('publish.' + step), 'busy');
         addElementClass($('publish.' + step), 'done');
+    },
+
+    error: function(step) {
+        removeElementClass($('publish.' + step), 'busy');
+        addElementClass($('publish.' + step), 'error');
     },
 });

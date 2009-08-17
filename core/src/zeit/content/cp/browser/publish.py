@@ -3,6 +3,7 @@
 
 import zeit.cms.browser.menu
 import zeit.cms.checkout.interfaces
+import zeit.cms.workflow.interfaces
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
@@ -19,3 +20,10 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         if self.is_visible():
             return super(MenuItem, self).render()
         return ''
+
+
+class Publish(object):
+
+    def can_publish(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        return info.can_publish()

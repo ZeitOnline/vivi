@@ -247,6 +247,7 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="publish.html"
+    class=".publish.Publish"
     template="publish.pt"
     permission="zeit.workflow.Publish"
     />

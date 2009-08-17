@@ -17,6 +17,13 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="restart-remotetask"
+    class=".selenium.RestartRemotetask"
+    permission="zope.View"
+    />
+
   <adapter
     factory=".selenium.TestGenericEditing"
     name="zeit.content.cp.TestGenericEditing"

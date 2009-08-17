@@ -2,6 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lovely.remotetask.interfaces
 import lxml.cssselect
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -9,8 +10,8 @@ import zeit.cms.repository.interfaces
 import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.centerpage
-import zope.component
 import zeit.content.quiz.quiz
+import zope.component
 
 
 def css_path(css):
@@ -589,10 +590,17 @@ class TestOneClickPublish(Test):
 
     def test_editor_should_be_reloaded_after_publishing(self):
         s = self.selenium
+
+        self.open('/@@restart-remotetask')
         self.create_content_and_fill_clipboard()
         self.open_centerpage()
 
         # XXX try it first with too few items to see the error message
+        s.click('xpath=//a[@title="Publish"]')
+        s.waitForElementPresent('css=div.lightbox')
+        s.verifyText('publish.errors',
+                     'Cannot publish since validation rules are violated.')
+        s.click('css=a.CloseButton')
 
         # fill lead with required blocks
         for i in range(1, 4):
@@ -603,8 +611,9 @@ class TestOneClickPublish(Test):
 
         # now publish
         s.click('xpath=//a[@title="Publish"]')
-        s.waitForElementPresent('xpath=//div[@class="lightbox"]')
-        s.waitForPageToLoad(30000)
+        s.waitForElementPresent('css=div.lightbox')
+        #s.waitForPageToLoad(30000)
+        s.waitForPageToLoad(10*60000)
         s.waitForElementPresent('css=div.landing-zone')
 
     def test_publish_button_should_not_be_visible_when_checked_in(self):
@@ -638,3 +647,17 @@ class CreateTestCP(zeit.cms.browser.view.Base):
         cp = zeit.cms.checkout.interfaces.ICheckoutManager(
             repository['cp']).checkout()
         self.url(cp)
+
+
+class RestartRemotetask(object):
+    """The remotetask utility does not automatically use the current demostorage
+    (and thus does not process any tasks generated during a selenium test).
+
+    This view provides the means to give it a nudge."""
+
+    def __call__(self):
+        for name, task in zope.component.getUtilitiesFor(
+            lovely.remotetask.interfaces.ITaskService):
+            task.stopProcessing()
+            task.startProcessing()
+
