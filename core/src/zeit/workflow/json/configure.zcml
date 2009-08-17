@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  >
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="publish"
+    class=".publish.Publish"
+    permission="zeit.workflow.Publish"
+    />
+</configure>
