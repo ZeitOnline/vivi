@@ -7,6 +7,8 @@ zeit.cms changes
 - XML-RPC für Workflow gibt bei publish und retract die Job-Id zurück
   (für #5661).
 
+- SubPageForm sended after-reload auch beim Form-Post.
+
 1.28 (2009-08-14)
 -----------------
 

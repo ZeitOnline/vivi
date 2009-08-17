@@ -116,6 +116,7 @@ zeit.cms.SubPageForm = Class.extend({
                 return null;
             }
             self.post_process_html();
+            MochiKit.Signal.signal(self, 'after-reload');
             MochiKit.DOM.removeElementClass(self.container, 'busy');
             return result;
         });
