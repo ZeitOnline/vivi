@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.28.1 (unreleased)
+-------------------
+
+- XML-RPC für Workflow gibt bei publish und retract die Job-Id zurück
+  (für #5661).
+
 1.28 (2009-08-14)
 -----------------
 
@@ -15,9 +21,6 @@ Technisches
 - AddableCMSContentTypeSource hinzugefügt (#5937).
 
 - checkout/checkin-View neuer Parameter redirect=False für JavaScript (#5661).
-
-- XML-RPC für Workflow gibt bei publish und retract die Job-Id zurück
-  (für #5661).
 
 1.27 (2009-08-10)
 -----------------
