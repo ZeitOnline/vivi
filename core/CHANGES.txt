@@ -6,6 +6,8 @@ zeit.locales CHANGES
 
 - ZCML von zeit.wysiwyg eingebunden (#5864).
 
+- Übersetzungen aktualisiert (u.A. #5994).
+
 0.6 (2009-08-03)
 ++++++++++++++++
 
