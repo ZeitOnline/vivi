@@ -588,39 +588,57 @@ class TestSidebar(Test):
 
 class TestOneClickPublish(Test):
 
-    def test_editor_should_be_reloaded_after_publishing(self):
-        s = self.selenium
-
+    def setUp(self):
+        super(TestOneClickPublish, self).setUp()
         self.open('/@@restart-remotetask')
         self.create_content_and_fill_clipboard()
+
+    def test_editor_should_be_reloaded_after_publishing(self):
+        s = self.selenium
         self.open_centerpage()
 
-        # XXX try it first with too few items to see the error message
+        # try it first with too few items to see the error message
         s.click('xpath=//a[@title="Publish"]')
         s.waitForElementPresent('css=div.lightbox')
         s.verifyText('publish.errors',
                      'Cannot publish since validation rules are violated.')
         s.click('css=a.CloseButton')
 
-        # fill lead with required blocks
+        # satisfy the rules and publish
+        self._fill_lead()
+        s.click('xpath=//a[@title="Publish"]')
+        s.waitForElementPresent('css=div.lightbox')
+        s.waitForPageToLoad(30000)
+        s.waitForElementPresent('css=div.landing-zone')
+
+    def _fill_lead(self):
+        s = self.selenium
         for i in range(1, 4):
             s.dragAndDropToObject(
                 '//li[@uniqueid="Clip/c%s"]' % i,
                 'css=#cp-aufmacher .landing-zone')
             s.waitForTextPresent('c%s teaser' % i)
 
-        # now publish
-        s.click('xpath=//a[@title="Publish"]')
-        s.waitForElementPresent('css=div.lightbox')
-        #s.waitForPageToLoad(30000)
-        s.waitForPageToLoad(10*60000)
-        s.waitForElementPresent('css=div.landing-zone')
-
     def test_publish_button_should_not_be_visible_when_checked_in(self):
         s = self.selenium
         self.open_centerpage()
         s.clickAndWait('xpath=//a[@title="Checkin ^I"]')
         s.verifyElementNotPresent('xpath=//a[@title="Publish"]')
+
+    def test_publish_failure_should_be_displayed(self):
+        product_config = self.product_config.copy()
+        product_config['zeit.workflow']['publish-script'] = 'invalid'
+        self.set_product_config(product_config)
+
+        s = self.selenium
+        self.open_centerpage()
+        self._fill_lead()
+        s.click('xpath=//a[@title="Publish"]')
+        s.waitForElementPresent('css=div.lightbox')
+        s.waitForPageToLoad(30000)
+        s.waitForElementPresent('css=div.landing-zone')
+
+        s.verifyText('css=li.error', 'Error during publish/retract*')
 
 
 class CreateTestContent(object):
