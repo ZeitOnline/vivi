@@ -93,6 +93,7 @@ class PublishRetractTask(object):
 
     zope.interface.implements(lovely.remotetask.interfaces.ITask)
     #inputSchema = zope.schema.Object()  # XXX
+    #outputSchema = None or an error message
 
     def __call__(self, service, jobid, input):
         logger.info("Running job %s" % jobid)
@@ -130,15 +131,15 @@ class PublishRetractTask(object):
                 logger.error("Error during publish/retract", exc_info=True)
                 log = zope.component.getUtility(
                     zeit.objectlog.interfaces.IObjectLog)
-                log.log(
-                    obj, _("Error during publish/retract: ${exc}: ${message}",
-                           mapping=dict(
-                               exc=e.__class__.__name__,
-                               message=str(e))))
-                break
+                message = _("Error during publish/retract: ${exc}: ${message}",
+                            mapping=dict(
+                                exc=e.__class__.__name__,
+                                message=str(e)))
+                log.log(obj, message)
+                return message
             else:
-                # Everything okay. 
-                break
+                # Everything okay.
+                return None
             finally:
                 if acquired:
                     self.release_active_lock(uniqueId)
