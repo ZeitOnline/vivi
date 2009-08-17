@@ -13,7 +13,7 @@
   <browser:viewlet
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
-    name="30_addcentral"
+    name="05_addcentral"
     manager="zeit.cms.browser.interfaces.ISidebar"
     template="sidebar.pt"
     permission="zope.View"
