@@ -1,6 +1,11 @@
 zeit.content.portraitbox changes
 ================================
 
+1.22.3 (unreleased)
+-------------------
+
+- Tests repariert.
+
 1.22.2 (2009-07-28)
 -------------------
 

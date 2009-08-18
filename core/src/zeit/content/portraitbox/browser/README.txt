@@ -56,7 +56,7 @@ Verify the source:
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
   <block>
     <title py:pytype="str">Hans Wurst</title>
-    <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+    <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
       <bu xsi:nil="true"/>
       <copyright...
     </image>
