@@ -22,7 +22,7 @@ class AssetBase(object):
 
     field_groups = (
         gocept.form.grouped.Fields(
-            _('Badges'), ('badges',)),
+            _('Badges'), ('badges',), css_class='asset-badges'),
         gocept.form.grouped.RemainingFields(
             _('Teaser elements'),
             'wide-widgets full-width'),

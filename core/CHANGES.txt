@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.28.2 (unreleased)
+-------------------
+
+- Asset-Badges im CMS-Skin versteckt.
+
+
 1.28.1 (2009-08-17)
 -------------------
 

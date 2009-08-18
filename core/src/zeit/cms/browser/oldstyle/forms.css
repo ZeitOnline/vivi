@@ -320,6 +320,10 @@ table.gallery .caption {
 }
 
 
+fieldset.asset-badges {
+  display: none;
+}
+
 /* image form */
 
 form .column-left.image-form {
