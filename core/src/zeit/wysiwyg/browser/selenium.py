@@ -5,7 +5,6 @@ import zeit.cms.selenium
 import zeit.cms.testcontenttype.interfaces
 import zeit.wysiwyg.interfaces
 import zope.formlib.form
-import zope.interface
 
 
 class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
