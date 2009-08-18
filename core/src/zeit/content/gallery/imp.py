@@ -66,7 +66,6 @@ class GalleryStorer(object):
         self.gallery.image_folder[image_name] = image
         self.gallery[image_name] = entry
         entry = self.gallery[image_name]
-        self.gallery.reload_image_folder()
         return entry
 
     def hide_related_images(self, entry):

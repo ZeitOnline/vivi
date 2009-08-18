@@ -1,6 +1,11 @@
 zeit.content.gallery changes
 ============================
 
+2.2.1 (unreleased)
+------------------
+
+- Beim Zuschneiden werden nicht mehr alle Thumbnails neu erzeugt.
+
 2.2 (2009-08-17)
 ----------------
 
