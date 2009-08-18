@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.28.3 (unreleased)
+1.28.3 (2009-08-18)
 -------------------
 
 - Kompatibilität zu Python 2.6
