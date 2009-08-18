@@ -1,13 +1,10 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.schema
-
-import zeit.cms.interfaces
-import zeit.cms.content.field
-import zeit.cms.content.interfaces
-
 from zeit.content.rawxml.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zope.schema
 
 
 class IRawXML(zeit.cms.interfaces.IAsset,
