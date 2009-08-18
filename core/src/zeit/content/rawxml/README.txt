@@ -73,7 +73,7 @@ a channel:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/raw">
+    <block ...href="http://xml.zeit.de/raw"...>
       <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true"/>
     </block>
   </container>
@@ -90,7 +90,7 @@ Let's add some more  xml:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/raw">
+    <block ...href="http://xml.zeit.de/raw"...>
       <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true">
         <foo bar="baz"/>
         <blubs py:pytype="str">oink</blubs>
@@ -108,7 +108,7 @@ It is possible to omit the root note when syndicating:
 <channel>
   <title>Politik</title>
   <container>
-    <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/raw">
+    <block ...href="http://xml.zeit.de/raw"...>
       <foo xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" bar="baz" ns0:isSyndicatedRawXML="true"/>
       <blubs xmlns:ns1="http://namespaces.zeit.de/CMS/RawXML" py:pytype="str" ns1:isSyndicatedRawXML="true">oink</blubs>
     </block>

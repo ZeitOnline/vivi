@@ -1,6 +1,12 @@
 zeit.content.rawxml changes
 ===========================
 
+0.3.3 (unreleased)
+------------------
+
+- Tests repariert.
+
+
 0.3.2 (2009-05-15)
 ------------------
 
