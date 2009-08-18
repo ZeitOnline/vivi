@@ -1,6 +1,11 @@
 zeit.content.cp changes
 =======================
 
+0.13.1 (unreleased)
+-----------------
+
+- ``cp_extra`` Block: dpa-News
+
 0.13 (2009-08-14)
 -----------------
 

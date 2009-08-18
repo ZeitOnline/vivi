@@ -18,7 +18,11 @@ are transmitted in JSON[#setup]_:
                {'css': 'module informatives-module',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
                 'title': 'Wetter',
-                'type': 'weather'}],
+                'type': 'weather'},
+               {'css': 'module informatives-module',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
+                'title': 'dpa-News',
+                'type': 'dpa-news'}],
  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
 
 
@@ -49,7 +53,11 @@ After creating a teaser bar, blocks are offered:
                {'css': 'module teaser-mosaic-module',
                 'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
                 'title': 'Wetter',
-                'type': 'weather'}],
+                'type': 'weather'},
+               {'css': 'module teaser-mosaic-module',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
+                'title': 'dpa-News',
+                'type': 'dpa-news'}],
  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
 
 

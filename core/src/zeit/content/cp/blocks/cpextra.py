@@ -81,3 +81,4 @@ factor('relateds', u'Relateds',
 factor('blindblock', u'Blindblock',
        zeit.content.cp.interfaces.IInformatives)
 factor('debug', u'Debug')
+factor('dpa-news', u'dpa-News')
