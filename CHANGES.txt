@@ -1,8 +1,8 @@
 zeit.securitypolicy changes
 ===========================
 
-0.5.1 (unreleased)
-----------------
+0.5.1 (2009-08-18)
+------------------
 
 - Tests repariert, nach dem sich der Name des Folder-Add-Views geändert hat.
 
