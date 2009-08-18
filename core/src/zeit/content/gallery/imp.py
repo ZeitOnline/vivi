@@ -66,6 +66,9 @@ class GalleryStorer(object):
         self.gallery.image_folder[image_name] = image
         self.gallery[image_name] = entry
         entry = self.gallery[image_name]
+        # Delete thumbnail and recreate by getting the entry again
+        del entry.thumbnail.__parent__[entry.thumbnail.__name__]
+        entry = self.gallery[image_name]
         return entry
 
     def hide_related_images(self, entry):
