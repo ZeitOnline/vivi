@@ -195,8 +195,8 @@ When we try to get the data we'll get the default value (None):
 True
 >>> print log.getvalue()
 Could not parse DAV property value u'f\xfcblas' for TestContentType.myname at
-http://xml.zeit.de/foo [ValueError: (u'time data did not match format:
-data=f\xfcblas  fmt=%Y-%m-%d',)]. Using default None instead.
+http://xml.zeit.de/foo [ValueError: (...time data ...not match format...)].
+Using default None instead.
 
 
 Token adapter
@@ -388,7 +388,7 @@ datetime.date(2007, 5, 25)
 
 Invalid dates raise a ValueError:
 
->>> converter.fromProperty("1.1.07")
+>>> converter.fromProperty("1.1.07")  # doctest: +IGNORE_EXCEPTION_DETAIL
 Traceback (most recent call last):
     ...
 ValueError: time data did not match format:  data=1.1.07  fmt=%Y-%m-%d
