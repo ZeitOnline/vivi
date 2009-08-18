@@ -140,8 +140,8 @@ Enable debugging of the http data:
 >>> import zeit.connector.dav.davbase
 >>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
 
->>> connector._invalidate_cache('http://xml.zeit.de/testing/')
-connect...'HEAD ...\r\nReferer: http://127.0.0.1\r\n...
+>>> print 'x'; connector._invalidate_cache('http://xml.zeit.de/testing/')
+x...'HEAD ...\r\nReferer: http://127.0.0.1\r\n...
 
 Reset:
 
