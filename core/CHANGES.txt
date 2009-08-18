@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.18.1 (unreleased)
+1.18.1 (2009-08-18)
 -------------------
 
 - Python 2.6 compatibility.
