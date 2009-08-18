@@ -45,7 +45,7 @@ When we publish the gallery now, the image is also published[#loghandler]_:
 >>> gallery_info.can_publish()
 True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
->>> publish.publish()
+>>> tid = publish.publish()
 >>> tasks.process()
 >>> gallery_info.published
 True
@@ -72,7 +72,7 @@ On retract the folder is also retracted
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> publish.retract()
+>>> tid = publish.retract()
 >>> tasks.process()
 >>> image_info.published
 False
@@ -109,7 +109,7 @@ Delete the folder and try to publish:
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
->>> publish.publish()
+>>> tid = publish.publish()
 >>> tasks.process()
 >>> gallery_info.published
 True
