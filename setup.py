@@ -14,11 +14,12 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
-        'gocept.fckeditor',
+        'gocept.fckeditor>=2.6.4.1-1',
         'lxml',
         'rwproperty',
         'setuptools',
         'zc.iso8601',
+        'zc.resourcelibrary',
         'zeit.cms>=1.21.3',
         'zope.app.pagetemplate',
         'zope.app.testing',
