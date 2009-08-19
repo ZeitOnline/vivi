@@ -93,6 +93,13 @@ content:
 True
 
 
+GETTING SEARCHABLE TEXT
+=======================
+
+>>> adapter = zope.index.text.interfaces.ISearchableText(pb)
+>>> adapter.getSearchableText()
+[u'Hans Wurst', u'ist ', u'ist ', u'ein Hans', u' und wurstet.', u'\xa9']
+
 
 
 Clean up:

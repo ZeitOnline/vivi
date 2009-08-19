@@ -4,6 +4,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import lxml.objectify
+import grokcore.component
 import rwproperty
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -63,3 +64,15 @@ class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
                     text.remove(child)
                 text.append(lxml.objectify.E.p(*children))
         return text
+
+class SearchableText(grokcore.component.Adapter):
+    """SearchableText for a infobox."""
+
+    grokcore.component.context(zeit.content.portraitbox.interfaces.IPortraitbox)
+    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+
+    def getSearchableText(self):
+        main_text = []
+        text = self.context.xml.xpath("//text()")
+        return [unicode(s) for s in text]
+
