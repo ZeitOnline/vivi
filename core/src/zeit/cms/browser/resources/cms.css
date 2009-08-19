@@ -520,6 +520,7 @@ pre {
  * context actions 
  *
  * */
+
 .context-actions {
   right: 0.5em;
   top: .3em;
@@ -552,6 +553,10 @@ pre {
 
 .action-title {
   display: none;
+}
+
+.context-actions .hide {
+	display: none;
 }
 
 /* secondary context actions */
