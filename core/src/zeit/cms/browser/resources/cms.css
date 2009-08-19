@@ -169,8 +169,8 @@ pre {
 
 #main-navigation {
 	width: 252px;
-	height: 90px;
-    background: transparent url("layout/logo.png") no-repeat left 10px;
+	height: 81px;
+    background: transparent url("layout/logo.png") no-repeat left center;
 }
 
 #sidebar {
@@ -401,6 +401,7 @@ pre {
 #main-navigation > li {
   padding: 0.5em;
   margin-bottom: 0;
+  display: none;
 }
 
 #main-navigation > li.secondary > a {
