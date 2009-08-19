@@ -261,5 +261,25 @@
     template="publish.pt"
     permission="zeit.workflow.Publish"
     />
+    
+    <!-- -->
+    
+    <browser:icon
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/centerpage.png"
+    />
+    
+    <browser:icon
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/centerpage.png"
+    />
 
 </configure>
