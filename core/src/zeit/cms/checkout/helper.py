@@ -2,14 +2,11 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
+from zeit.cms.i18n import MessageFactory as _
 import contextlib
 import logging
-# XXX z3c.flashmessage should import this, not us
-import zope.schema
-import z3c.flashmessage.interfaces
 import zeit.cms.checkout.interfaces
-import zope.component
-from zeit.cms.i18n import MessageFactory as _
+
 
 log = logging.getLogger(__name__)
 
