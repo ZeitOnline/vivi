@@ -556,7 +556,8 @@ pre {
   display: none;
 }
 
-.context-actions .hide {
+.context-actions .hide,
+.context-actions .show {
 	display: none;
 }
 
