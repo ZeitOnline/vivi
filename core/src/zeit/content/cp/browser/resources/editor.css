@@ -95,7 +95,8 @@
 
 .tab-content > .context-views {
   background: #fff url(tabs_bg.gif) repeat-x 0 100%;
-  padding-top: .9em;
+  border-top: 1px solid #bbb;
+  padding-top: 0.5em;
   right: 0;
   top: 0;
 }
@@ -110,6 +111,9 @@
   padding: 0.7em 0.5em;
 } 
 
+#extended_search fieldset {
+  border: 0px solid #ffffff;
+}
 
 .tab-content > .context-views > ul > li.selected > a {
   background: #EEF3F7;
@@ -743,6 +747,12 @@
   overflow: hidden;
   background-color: white;
   font-size: 10px;
+  cursor: move;
+}
+
+.module:hover {
+  border: 1px solid #bbb;  
+  background-color: #F2F2F2;
 }
 
 .module-inner {
