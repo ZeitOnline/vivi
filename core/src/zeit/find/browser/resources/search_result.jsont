@@ -10,7 +10,7 @@
     {supertitle} 
   </div>  
   <div class="teaser_title">
-    {teaser_title}
+    {teaser_title} 
   </div>
   <div class="teaser_text">
     {teaser_text}
