@@ -181,6 +181,28 @@ form .wide-widgets .field textarea {
     width: 95%;
 }
 
+form .field label[for="form.shortTeaserTitle"],
+form .field label[for="form.shortTeaserText"],
+form .field label[for="form.hpTeaserTitle"],
+form .field label[for="form.hpTeaserText"]
+{
+	display: none;
+}
+
+form .field label[for="form.shortTeaserTitle"] ~ .widget,
+form .field label[for="form.shortTeaserText"] ~ .widget
+{
+	display: none;
+}
+
+form .field textarea[id="form.shortTeaserTitle"],
+form .field textarea[id="form.shortTeaserText"],
+form .field textarea[id="form.hpTeaserTitle"],
+form .field textarea[id="form.hpTeaserText"]
+{
+	display: none;
+}
+
 form .wide-widgets .field .object-widget > .object-reference {
     width: 80%;
 }
@@ -430,6 +452,23 @@ span.h_other {
     width: 8em;
 }
 
+.PanelContent fieldset#search-extended-form legend {
+  text-transform: capitalize;
+}
+
+.PanelContent #search-extended-form{
+  width: 198px;
+  background-color: #fff;
+}
+
+.PanelContent fieldset#search-extended-form {
+  border: 0px solid #fff;
+}
+
+.PanelContent fieldset#search-extended-form * {
+  white-space: normal;
+}
+
 
 iframe {
     position: fixed !important;
@@ -438,4 +477,19 @@ iframe {
 
 .widget > iframe {
     position: inherit !important;
+}
+
+/* 
+ * Sidebar Forms
+ */
+
+#sidebar select option {
+	padding: 3px;
+}
+
+#sidebar select {
+	color:Black;
+	padding: 0 !important;
+	height: 20px;
+	border: 1px solid #E4E4E4;
 }
