@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
 import gocept.async
 import logging
 import lxml.etree
@@ -66,5 +67,12 @@ def update_relating(context):
         zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context, 'related')
     for related_object in relating_objects:
-        zeit.cms.checkout.helper.with_checked_out(
-            related_object, update_relating_of_checked_out)
+        # Don't send events for the subsequent checkins to avoid recursing too
+        # deep. See also #6026.
+        with zeit.cms.checkout.helper.checked_out(
+            related_object, events=False) as co:
+            if co is None:
+                continue
+            changed = update_relating_of_checked_out(co)
+            if not changed:
+                raise zeit.cms.checkout.interfaces.NotChanged()

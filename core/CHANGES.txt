@@ -4,7 +4,8 @@ zeit.cms changes
 1.28.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Related-Updater aktualisiert nur noch eine Ebene um »maximum recursion depth
+  exceeded« zu verhindern (#6026).
 
 
 1.28.3 (2009-08-18)
