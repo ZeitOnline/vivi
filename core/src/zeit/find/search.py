@@ -25,10 +25,23 @@ def search(q, sort_order=None):
     elif sort_order == 'date':
         sort_order = 'last-semantic-change desc'
 
-    result_fields = ['uniqueId', 'published',
-                     'teaser_title', 'supertitle',
-                     'last-semantic-change', 'ressort',
-                     'authors', 'volume', 'year', 'title', 'icon']
+    result_fields = [
+        'authors',
+        'icon'
+        'keywords',
+        'last-semantic-change',
+        'published',
+        'ressort',
+        'serie',
+        'subtitle',
+        'supertitle',
+        'teaser_text',
+        'teaser_title',
+        'title',
+        'uniqueId',
+        'volume',
+        'year',
+    ]
 
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),

@@ -2,7 +2,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from datetime import datetime, timedelta
+import datetime
 from zeit.find.daterange import DATE_RANGES
 import zc.iso8601.parse
 import zc.resourcelibrary
@@ -64,9 +64,114 @@ def get_favorited_css_class(favorited):
         'favorited' if favorited else 'not_favorited')
 
 
-class SearchResult(JSONView):
+class SearchResultBase(JSONView):
 
     template = 'search_result.jsont'
+
+    search_result_keys = (
+        'application_url',
+        'arrow',
+        'authors',
+        'date',
+        'end_date',
+        'favorite_url',
+        'favorited',
+        'favorited_css_class',
+        'icon',
+        'preview_url',
+        'publication_status',
+        'related_url',
+        'serie',
+        'start_date',
+        'subtitle',
+        'supertitle',
+        'teaser_text',
+        'teaser_title',
+        'topic',
+        'uniqueId',
+        'volume_year',
+    )
+
+    def results(self, results):
+        processed = []
+        for result in results:
+            entry = {}
+            for key in self.search_result_keys:
+                handler = getattr(self, 'get_%s' % key)
+                entry[key] = handler(result)
+            processed.append(entry)
+        if not processed:
+            return {'template': 'no_search_result.jsont'}
+        return {'results': processed}
+
+    # generic processors
+
+    def get_application_url(self, result=None):
+        return self.request.getApplicationURL()
+
+    def get_arrow(self, result):
+        return self.resources['arrow_right.png']()
+
+    def get_date(self, result):
+        return format_date(self._get_unformatted_date(result))
+
+    def get_end_date(self, result):
+        dt = self._get_unformatted_date(result)
+        end_date = None
+        if dt is not None:
+            end_date = dt.date() + datetime.timedelta(days=1)
+        return format_date(end_date)
+
+    def get_favorite_url(self, result):
+        return self.url('toggle_favorited', self.get_uniqueId(result))
+
+    def get_favorited_css_class(self, result):
+        return get_favorited_css_class(self.get_favorited(result))
+
+    def get_preview_url(self, result):
+        return zeit.cms.browser.preview.get_preview_url(
+            'preview-prefix', self.get_uniqueId(result))
+
+    def get_publication_status(self, result):
+        r = self.resources
+        published = self._get_unformatted_publication_status(result)
+        if published == 'published':
+            publication_status = r['published.png']()
+        elif published == 'published-with-changes':
+            publication_status = r['published_new.png']()
+        else:
+            publication_status = r['unpublished.png']()
+        return publication_status
+
+    def get_related_url(self, result):
+        return self.url('expanded_search_result', self.get_uniqueId(result))
+
+    def get_start_date(self, result):
+        dt =self._get_unformatted_date(result)
+        start_date = None
+        if dt is not None:
+            start_date = dt.date()
+        return format_date(start_date)
+
+    def get_teaser_title(self, result):
+        title = self._get_unformatted_teaser_title(result)
+        if not title:
+            title = self._get_unformatted_title(result)
+        if not title:
+            uniqueId = self.get_uniqueId(result)
+            title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
+        return title
+
+    def get_volume_year(self, result):
+        volume, year = self._get_unformatted_volume_year(result)
+        if volume and year:
+            volume_year = '%s/%s' % (volume, year)
+        else:
+            volume_year = ''
+        return volume_year
+
+
+class SearchResult(SearchResultBase):
 
     def sort_order(self):
         return self.request.get('sort_order', 'relevance')
@@ -79,89 +184,77 @@ class SearchResult(JSONView):
             return {'template': 'no_search_result.jsont', "error": error}
         if q is None:
             return {'template': 'no_search_result.jsont'}
+        results = zeit.find.search.search(q, self.sort_order())
+        return self.results(results)
 
-        # record any known favorites
-        # XXX this isn't that pleasant to do every search,
-        # but we need to match the uniqueIds quickly during
-        # the search results
+    def get_authors(self, result):
+        return result.get('authors', [])
+
+    def _get_unformatted_date(self, result):
+        last_semantic_change = result.get('last-semantic-change')
+        dt = None
+        if last_semantic_change is not None:
+            dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
+        return dt
+
+    def get_favorited(self, result):
+        return self.get_uniqueId(result) in self.favorite_ids
+
+    def get_icon(self, result):
+        icon = result.get('icon')
+        if icon:
+            icon = self.get_application_url() + icon
+        return icon
+
+    def _get_unformatted_publication_status(self, result):
+        return result.get('published', 'published')
+
+    def get_subtitle(self, result):
+        return result.get('subtitle', '')
+
+    def get_supertitle(self, result):
+        return result.get('supertitle', '')
+
+    def get_teaser_text(self, result):
+        return result.get('teaser_text', '')
+
+    def _get_unformatted_teaser_title(self, result):
+        return result.get('teaser_title')
+
+    def _get_unformatted_title(self, result):
+        return result.get('title')
+
+    def get_serie(self, result):
+        return result.get('serie', '')
+
+    def get_topic(self, result):
+        return result.get('ressort', '')
+
+    def get_uniqueId(self, result):
+        return result.get('uniqueId', '')
+
+    def _get_unformatted_volume_year(self, result):
+        volume = result.get('volume')
+        year = result.get('year')
+        return volume, year
+
+    @zope.cachedescriptors.property.Lazy
+    def favorite_ids(self):
+        """Record any known favorites.
+
+        This isn't that pleasant to do every search, but we need to match the
+        uniqueIds quickly during the search results. Besides there are not so
+        many favorites anyway.
+
+        """
         favorite_uniqueIds = set()
         for favorite in get_favorites(self.request).values():
             uniqueId = favorite.referenced_unique_id
             if not uniqueId:
                 continue
             favorite_uniqueIds.add(uniqueId)
+        return favorite_uniqueIds
 
-        r = self.resources
-        results = []
-        application_url = self.request.getApplicationURL()
-        for result in zeit.find.search.search(q, self.sort_order()):
-            uniqueId = result.get('uniqueId', '')
-            title = result.get('teaser_title')
-            if not title:
-                title = result.get('title')
-            if not title:
-                title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE,
-                                         '', 1)
-            favorited = uniqueId in favorite_uniqueIds
-            last_semantic_change = result.get('last-semantic-change')
-            if last_semantic_change is not None:
-                dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
-            else:
-                dt = None
-
-            volume = result.get('volume')
-            year = result.get('year')
-            if volume and year:
-                volume_year = '%s/%s' % (volume, year)
-            else:
-                volume_year = ''
-
-            published = result.get('published', 'published')
-            if published == 'published':
-                publication_status = r['published.png']()
-            elif published == 'not-published':
-                publication_status = r['unpublished.png']()
-            elif published == 'published-with-changes':
-                publication_status = r['published_new.png']()
-            else:
-                # XXX fallback status is always published
-                publication_status = r['published.png']()
-
-            if dt:
-                start_date = dt.date()
-                end_date = start_date + timedelta(1)
-            else:
-                start_date = None
-                end_date = None
-
-            icon = result.get('icon')
-            if icon:
-                icon = application_url + icon
-            preview_url = zeit.cms.browser.preview.get_preview_url(
-                'preview-prefix', uniqueId)
-            results.append({
-                    'application_url': application_url,
-                    'arrow': r['arrow_right.png'](),
-                    'authors': result.get('authors', []),
-                    'date': format_date(dt),
-                    'end_date': format_date(end_date),
-                    'favorite_url': self.url('toggle_favorited', uniqueId),
-                    'favorited': favorited,
-                    'favorited_css_class': get_favorited_css_class(favorited),
-                    'icon': icon,
-                    'preview_url': preview_url,
-                    'publication_status': publication_status,
-                    'related_url': self.url('expanded_search_result', uniqueId),
-                    'start_date': format_date(start_date),
-                    'supertitle': result.get('supertitle', ''),
-                    'teaser_title': title,
-                    'topic': result.get('ressort', ''),
-                    'uniqueId': uniqueId,
-                    'volume_year': volume_year,
-                    })
-        if not results:
-            return {'template': 'no_search_result.jsont'}
-        return {'results': results}
 
 
 class ResultFilters(JSONView):
@@ -305,87 +398,94 @@ class ToggleFavorited(JSONView):
         }
 
 
-class Favorites(JSONView):
-    template = 'search_result.jsont'
+class Favorites(SearchResultBase):
 
-    def result_entry(self, content):
-        r = self.resources
-        uniqueId = content.uniqueId
+    def json(self):
+        favorites = get_favorites(self.request)
+        result = [fav.references for fav in favorites.values()
+                  if fav.references is not None]
+        return self.results(result)
 
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+    def get_authors(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return []
+        if metadata.authors:
+            return list(metadata.authors)
+        return []
 
-        if metadata:
-            if metadata.authors:
-                authors = list(metadata.authors)
-            else:
-                authors = []
-            teaser_title = metadata.teaserTitle or ''
-            supertitle = metadata.supertitle or ''
-            year = metadata.year or ''
-            volume = metadata.volume or ''
-            if year and volume:
-                volume_year = '%s/%s' % (volume, year)
-            else:
-                volume_year = ''
-            topic = metadata.ressort or ''
-        else:
-            authors = []
-            teaser_title = ''
-            supertitle = ''
-            teaser_text = ''
-            volume_year = ''
-            topic = ''
+    def get_favorited(self, result):
+        return True
 
-        date = zeit.cms.content.interfaces.ISemanticChange(
-            content).last_semantic_change
 
-        if date:
-            start_date = date.date()
-            end_date = start_date + timedelta(1)
-        else:
-            start_date = None
-            end_date = None
-
-        preview_url = zeit.cms.browser.preview.get_preview_url(
-            'preview-prefix', uniqueId)
-
+    def get_icon(self, result):
         icon = zope.component.queryMultiAdapter(
-            (content, self.request), name='zmi_icon')
+            (result, self.request), name='zmi_icon')
         if icon is None:
             icon = ''
         else:
             icon = icon.url()
+        return icon
 
-        return {
-            'application_url': self.request.getApplicationURL(),
-            'arrow': r['arrow_right.png'](),
-            'authors': authors,
-            'date': format_date(date),
-            'end_date': format_date(end_date),
-            'favorite_url': self.url('toggle_favorited', uniqueId),
-            'favorited': True,
-            'favorited_css_class': get_favorited_css_class(True),
-            'icon': icon,
-            'preview_url': preview_url,
-            'publication_status': r['published.png'](),
-            'related_url': self.url('expanded_search_result', uniqueId),
-            'start_date': format_date(start_date),
-            'supertitle': supertitle,
-            'teaser_title': teaser_title,
-            'topic': topic,
-            'uniqueId': uniqueId,
-            'volume_year': volume_year,
-            }
+    def _get_unformatted_date(self, result):
+        return zeit.cms.content.interfaces.ISemanticChange(
+            result).last_semantic_change
 
-    def json(self):
-        favorites = get_favorites(self.request)
-        result = []
-        for fav in favorites.values():
-            obj = fav.references
-            if obj is None:
-                continue
-            result.append(self.result_entry(obj))
-        return {"results": result}
+    def _get_unformatted_publication_status(self, result):
+        status = zeit.cms.workflow.interfaces.IPublicationStatus(result, None)
+        if status is not None:
+            return status.published
+
+    def get_subtitle(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.subtitle or ''
+
+    def get_supertitle(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.supertitle or ''
+
+    def get_teaser_text(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.teaserText or ''
+
+    def _get_unformatted_teaser_title(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.teaserTitle or ''
+
+    def _get_unformatted_title(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.title or ''
+
+    def get_serie(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.serie or ''
+
+    def get_topic(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return ''
+        return metadata.ressort
+
+    def get_uniqueId(self, result):
+        return result.uniqueId
+
+    def _get_unformatted_volume_year(self, result):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
+        if metadata is None:
+            return None, None
+        return metadata.volume, metadata.year
 
 
 class ForThisPage(JSONView):
@@ -460,6 +560,7 @@ def get_favorites(request):
         clipboard.addClip(favorites_id)
     return clipboard[favorites_id]
 
+
 class InputError(Exception):
     pass
 
@@ -493,7 +594,7 @@ def parse_input_date(s):
         year = int(year)
     except ValueError:
         raise InputDateParseError("Year is not a proper number")
-    return datetime(year, month, day)
+    return datetime.datetime(year, month, day)
 
 class VolumeYearError(InputError):
     pass
