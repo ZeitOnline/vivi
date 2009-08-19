@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - ``cp_extra`` Block: dpa-News
 
+- Layout für Printarchivseiten in Volume und Year unterteilt.
+
 0.13 (2009-08-14)
 -----------------
 

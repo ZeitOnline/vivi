@@ -244,7 +244,7 @@ def apply_layout(context, event):
     The first one mustn't be small, all other have to be small.
     """
     cp_type = zeit.content.cp.interfaces.ICenterPage(context).type
-    if cp_type == 'archive-print':
+    if (cp_type == 'archive-print-volume') or (cp_type == 'archive-print-year'):
         return
     # We are leaders!
     content = [content for content in context.values()
