@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.30 (unreleased)
+1.30 (2009-08-19)
 -----------------
 
 - FCKEditor wird via JavaScript instanziert, nicht mehr manuell mittels iframe
