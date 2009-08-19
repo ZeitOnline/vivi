@@ -13,7 +13,7 @@
     menu="zeit-context-views" title="Edit WYSIWYG"
     />
 
-  <resourceLibrary name="zeit.wysiwyg" require="gocept.fckeditor">
+  <resourceLibrary name="zeit.wysiwyg" require="gocept.fckeditor.editor">
     <directory source="resources" />
   </resourceLibrary>
 
