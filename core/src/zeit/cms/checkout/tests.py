@@ -67,6 +67,15 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
             pass
         self.assertFalse(sc.last_semantic_change is None)
 
+    def test_old_style_without_change(self):
+        content = self.repository['testcontent']
+        self.assertEqual(None, self.repository['testcontent'].title)
+        def set_title_and_return_false(co):
+            co.title = u'foo'
+            return False
+        zeit.cms.checkout.helper.with_checked_out(
+            content, set_title_and_return_false)
+        self.assertTrue(self.repository['testcontent'].title is None)
 
 def test_suite():
     suite = unittest.TestSuite()
