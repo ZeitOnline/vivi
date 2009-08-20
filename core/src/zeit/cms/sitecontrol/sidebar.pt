@@ -8,7 +8,7 @@
   i18n:domain="zeit.cms">
 
   <h1>
-    <a href="javascript:void(null)"
+    <a tal:attributes="href view/index_url"
       i18n:translate="">
       Ressorts
     </a>
