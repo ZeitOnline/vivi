@@ -38,7 +38,10 @@ class Tree(zeit.cms.browser.tree.Tree):
         return object.uniqueId
 
     def getUrl(self, obj):
-        return super(Tree, self).getUrl(obj) + '/index/@@checkout'
+        url = super(Tree, self).getUrl(obj)
+        if 'index' in obj:
+            url += '/index/@@checkout'
+        return url
 
     def selected(self, url):
         return False

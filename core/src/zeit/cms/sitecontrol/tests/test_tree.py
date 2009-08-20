@@ -3,6 +3,7 @@
 
 import zeit.cms.repository.interfaces
 import zeit.cms.sitecontrol.tree
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zope.component
 import zope.publisher.browser
@@ -23,6 +24,8 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         self.tree = zeit.cms.sitecontrol.tree.Tree(repository, request)
 
         repository['deutschland'] = zeit.cms.repository.folder.Folder()
+        repository['deutschland']['index'] = (
+            zeit.cms.testcontenttype.testcontenttype.TestContentType())
         repository['deutschland']['integration'] = zeit.cms.repository.folder.Folder()
 
     def test_toplevel_should_contain_ressorts(self):
@@ -48,3 +51,6 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         integration = deutschland['sub_data'][0]
         self.assertEqual(u'Integration', integration['title'])
         self.assertEqual(False, integration['subfolders'])
+        self.assertEqual(
+            'http://127.0.0.1/repository/deutschland/integration',
+            integration['url'])
