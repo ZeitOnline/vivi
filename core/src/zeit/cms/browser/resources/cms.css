@@ -167,12 +167,6 @@ pre {
   left: 0em;
 }
 
-#main-navigation {
-	width: 252px;
-	height: 81px;
-    background: transparent url("layout/logo.png") no-repeat left center;
-}
-
 #sidebar {
   visibility: hidden; /* The sidebar is displayed *after* resizing */
   position: absolute;
@@ -393,14 +387,38 @@ pre {
    z-index: -1;
 }
 #main-navigation {
+  height: 81px;
   margin-top: 0em;
   padding: 0;
   position: absolute;
+  text-align: right;
+  width: 20em;
 }
 
 #main-navigation > li {
-  padding: 0.5em;
   margin-bottom: 0;
+  padding: 0.5em;
+}
+
+#main-navigation > li:first-child,
+#main-navigation > li:first-child > a {
+  bottom: 0;
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0em;
+}
+
+#main-navigation > li:first-child {
+  right: 2.5em;
+}
+
+#main-navigation > li:first-child > a {
+  background: transparent url("layout/logo.png") no-repeat left center;
+  right: 0;
+}
+
+#main-navigation > li:first-child > a > span {
   display: none;
 }
 

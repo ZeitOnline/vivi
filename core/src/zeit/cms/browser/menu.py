@@ -97,6 +97,10 @@ class CMSMenuItem(GlobalMenuItem):
     sort = 0
 
     @property
+    def css(self):
+        return super(CMSMenuItem, self).css
+
+    @property
     def selected(self):
         """We are selected when no other item is selected."""
         for viewlet in self.manager.viewlets:
