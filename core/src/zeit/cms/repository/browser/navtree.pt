@@ -1,6 +1,5 @@
 <div xmlns:panel="http://namespaces.gocept.com/panel"
   tal:define="panel_id string:NavtreePanel;
-              tree_view nocall:view/tree_view;
               tree_url view/tree_url;
               panel_handlers nocall:context/@@panel_handlers"
   tal:attributes="class python:panel_handlers.css_class(panel_id);
