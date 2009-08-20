@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Warnung bei parallelem Veröffentlichen wird korrekt ausgegeben (#6030).
 
+- Ressort-Baum hinzugefügt, von dem aus die Index-Seiten der Ressorts
+  (CenterPages) direkt bearbeitet werden können (#5548).
 
 1.28.4 (2009-08-19)
 -------------------
