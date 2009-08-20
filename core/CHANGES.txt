@@ -4,7 +4,8 @@ CHANGES
 1.18.2 (unreleased)
 -------------------
 
-- Added testcontent for ressort/subressort (#5548).
+- Nothing changed yet.
+
 
 1.18.1 (2009-08-18)
 -------------------
