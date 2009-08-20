@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """Menu infrastructure."""
 
+from zeit.cms.i18n import MessageFactory as _
 import time
 import xml.sax.saxutils
 import z3c.menu.simple.menu
@@ -10,7 +11,6 @@ import zope.app.publisher.browser.menu
 import zope.app.publisher.interfaces.browser
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
-from zeit.cms.i18n import MessageFactory as _
 
 
 class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
