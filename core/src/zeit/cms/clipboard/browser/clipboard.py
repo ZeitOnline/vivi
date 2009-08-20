@@ -1,21 +1,17 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import transaction
-
-import zope.component
-import zope.cachedescriptors.property
-import zope.viewlet.viewlet
-import zope.traversing.interfaces
-import zope.traversing.api
-
 import zeit.cms.browser.interfaces
-import zeit.cms.browser.tree
-import zeit.cms.repository.interfaces
 import zeit.cms.browser.listing
-
+import zeit.cms.browser.tree
 import zeit.cms.clipboard.interfaces
+import zeit.cms.repository.interfaces
+import zope.cachedescriptors.property
+import zope.component
+import zope.traversing.api
+import zope.traversing.interfaces
+import zope.viewlet.viewlet
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase):
@@ -26,7 +22,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase):
 
 
 class Tree(zeit.cms.browser.tree.Tree):
-    """Clipbaord tree"""
+    """Clipboard tree"""
 
     root_name = 'Clipboard'
     key = __module__ + '.Tree'
