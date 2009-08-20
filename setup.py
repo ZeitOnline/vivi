@@ -21,7 +21,7 @@ setup(
     install_requires=[
         'setuptools',
         'zc.resourcelibrary',
-        'zeit.cms>1.27',
+        'zeit.cms>=1.28.5',
         'zope.app.pagetemplate',
         'zope.browser',
         'zope.cachedescriptors',

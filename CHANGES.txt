@@ -1,6 +1,11 @@
 zeit.addcentral changes
 =======================
 
+0.2 (unreleased)
+----------------
+
+- Subressort wird wieder gefiltert (#6016).
+
 0.1 (2009-08-17)
 ----------------
 
