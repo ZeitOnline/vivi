@@ -28,6 +28,7 @@
   <include package=".workflow" />
   <include package=".relation" />
   <include package=".settings" />
+  <include package=".sitecontrol" />
 
 
   <!-- configuration -->

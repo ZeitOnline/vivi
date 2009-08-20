@@ -1,0 +1,25 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  >
+
+  <browser:viewlet
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="10_sitecontrol"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    class=".sidebar.Sidebar"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IRepository"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zeit.cms.sitecontrol.tree"
+    class=".tree.Tree"
+    permission="zope.View"
+    allowed_interface="zeit.cms.browser.interfaces.ITree"
+    />
+
+</configure>
