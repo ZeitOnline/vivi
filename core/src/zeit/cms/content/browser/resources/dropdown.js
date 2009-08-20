@@ -1,25 +1,22 @@
 zeit.cms.MasterSlaveDropDown = Class.extend({
     
     construct: function(master, slave, update_url) {
-        this.master = $(master);
-        this.slave = $(slave);
-        this.update_url = update_url;
-
-        if (this.master == null || this.slave == null) {
-            return
-        }
-        connect(master, 'onchange', this, 'update');
-        this.update();
+        var self = this;
+        self.master = master;
+        self.slave = slave;
+        self.update_url = update_url;
+        MochiKit.Signal.connect(master, 'onchange', self, self.update);
+        self.update();
     },
 
     update: function(event) {
-        var othis = this;
-        var d = doSimpleXMLHttpRequest(
-            this.update_url, {master_token: this.master.value});
+        var self = this;
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            self.update_url, {master_token: self.master.value});
         d.addCallback(function(result) {
             var data = evalJSONRequest(result)
-            var selected = othis.slave.value;
-            othis.slave.options.length = 1
+            var selected = self.slave.value;
+            self.slave.options.length = 1
             forEach(data, function(new_option) {
                 var label = new_option[0]
                 var value = new_option[1]
@@ -27,20 +24,36 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
                 if (value == selected) {
                     option.selected = true;
                 }
-                othis.slave.options[othis.slave.options.length] = option;
+                self.slave.options[self.slave.options.length] = option;
             });
         });
     },
 })
 
 
-zeit.cms.configure_ressort_dropdown = function() {
+zeit.cms.master_slave_dropdown = {}
+
+zeit.cms.configure_ressort_dropdown = function(prefix) {
+    if (isUndefinedOrNull(prefix)) {
+        prefix = 'form.'
+    }
+    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[prefix])) {
+        return
+    }
+    var master = $(prefix + 'ressort');
+    var slave = $(prefix + 'sub_ressort');
+    
+    if (isNull(master) || isNull(slave)) {
+        return
+    }
+
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push('@@subnavigationupdater.json');
     path = path.join('/');
-    new zeit.cms.MasterSlaveDropDown(
-        'form.ressort', 'form.sub_ressort', path);
+    zeit.cms.master_slave_dropdown[prefix] = 
+        new zeit.cms.MasterSlaveDropDown(master, slave, path);
 };
+
 
 MochiKit.Signal.connect(window, 'onload', function(event) {
     zeit.cms.configure_ressort_dropdown();

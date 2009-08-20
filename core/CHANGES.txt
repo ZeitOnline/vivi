@@ -4,6 +4,7 @@ zeit.cms changes
 1.28.5 (unreleased)
 -------------------
 
+- MasterSlaveDropDown kommt mit verschiedenen Form-Prefixes klar (für #6016).
 
 - Warnung bei parallelem Veröffentlichen wird korrekt ausgegeben (#6030).
 
