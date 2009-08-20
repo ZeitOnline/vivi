@@ -27,7 +27,10 @@ class Tree(zeit.cms.browser.tree.Tree):
         else:
             source = zeit.cms.content.sources.SubNavigationSource()(container)
         names = list(source)
-        return [container[x] for x in names if x in container]
+        return [container[x.lower()] for x in names if x.lower() in container]
+
+    def getTitle(self, obj):
+        return super(Tree, self).getTitle(obj).title()
 
     def getUniqueId(self, object):
         if self.isRoot(object):
@@ -39,3 +42,6 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     def selected(self, url):
         return False
+
+    def expandable(self, obj):
+        return self.isRoot(obj.__parent__) or self.isRoot(obj)

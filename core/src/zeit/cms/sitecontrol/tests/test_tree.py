@@ -22,16 +22,21 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
             zeit.cms.repository.interfaces.IRepository)
         self.tree = zeit.cms.sitecontrol.tree.Tree(repository, request)
 
+        repository['deutschland'] = zeit.cms.repository.folder.Folder()
+        repository['deutschland']['integration'] = zeit.cms.repository.folder.Folder()
+
     def test_toplevel_should_contain_ressorts(self):
         root = self.tree.getTreeData()[0]
         self.assertEqual(u'Start', root['title'])
+        self.assertEqual(True, root['subfolders'])
         deutschland = root['sub_data'][0]
         # this test relies on the testcontent in the mock connector
         # where Deutschland is the only ressort that exists
         self.assertEqual(u'Deutschland', deutschland['title'])
+        self.assertEqual(True, deutschland['subfolders'])
 
         self.assertEqual(
-            'http://127.0.0.1/repository/Deutschland/index/@@checkout',
+            'http://127.0.0.1/repository/deutschland/index/@@checkout',
             deutschland['url'])
 
     def test_ressort_should_contain_subressorts(self):
@@ -40,4 +45,6 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         self.tree.expandNode(deutschland['uniqueId'])
         root = self.tree.getTreeData()[0]
         deutschland = root['sub_data'][0]
-        self.assertEqual(u'Integration', deutschland['sub_data'][0]['title'])
+        integration = deutschland['sub_data'][0]
+        self.assertEqual(u'Integration', integration['title'])
+        self.assertEqual(False, integration['subfolders'])
