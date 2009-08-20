@@ -9,24 +9,29 @@ zeit.cms.PanelHandler = Class.extend({
     },
 
     registerPanelHandlers: function() {
-        var panels = getElementsByTagAndClassName('div', 'panel');
+        var panels = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'panel', 'sidebar');
         this.resizePanels(panels);
         this.registerFoldHandlers(panels);
-        connect('sidebar', 'panel-content-changed', this, 'resizeAllPanels');
-        addElementClass('sidebar', 'sized');
+        MochiKit.Signal.connect(
+            'sidebar', 'panel-content-changed', this, this.resizeAllPanels);
+        MochiKit.DOM.addElementClass('sidebar', 'sized');
     },
 
     resizeAllPanels: function() {
-        signal('sidebar', 'zeit.cms.RememberScrollStateEvent');
-        var panels = getElementsByTagAndClassName('div', 'panel');
+        MochiKit.Signal.signal('sidebar', 'zeit.cms.RememberScrollStateEvent');
+        var panels = MochiKit.DOM.getElementsByTagAndClassName(
+            'div', 'panel', 'sidebar');
         // Reset
         forEach(panels, function(panel) {
-            var content_element = getFirstElementByTagAndClassName(
+            var content_element = MochiKit.DOM.getFirstElementByTagAndClassName(
                 'div', 'PanelContent', panel);
-            setStyle(content_element, {'height': ''});
+            if (!isNull(content_element)) {
+                MochiKit.Style.setStyle(content_element, {'height': ''});
+            }
         });
         this.resizePanels(panels);
-        signal('sidebar', 'zeit.cms.RestoreScrollStateEvent');
+        MochiKit.Signal.signal('sidebar', 'zeit.cms.RestoreScrollStateEvent');
     },
 
     resizePanels: function(panels) {
@@ -37,12 +42,12 @@ zeit.cms.PanelHandler = Class.extend({
 
         // Compute flex_sum and fixed_space
         forEach(panels, function(panel) {
-            var content_element = getFirstElementByTagAndClassName(
-                'div', 'PanelContent', panel);
             // XXX: getAttributeNS doesn't work :(
             var flex = panel.getAttribute('panel:flex');
             var fixed;
             if (flex) {
+                var content_element = getFirstElementByTagAndClassName(
+                    'div', 'PanelContent', panel);
                 panel._flex = new Number(flex);
                 flex_sum += panel._flex;
                 fixed = panel.clientHeight - content_element.clientHeight;
@@ -62,19 +67,22 @@ zeit.cms.PanelHandler = Class.extend({
             log("Max height", max_height);
             log("Fixed space", fixed_space);
             var available_space = max_height - fixed_space;
+            log("Available space", available_space);
             var space_per_flex = available_space / flex_sum;
-            log("space per flex", space_per_flex);
+            log("space per flex", space_per_flex, available_space, flex_sum);
 
             forEach(panels, function(panel) {
-                var content_element = getFirstElementByTagAndClassName(
-                    'div', 'PanelContent', panel);
                 if (panel._flex) {
+                    var content_element = getFirstElementByTagAndClassName(
+                        'div', 'PanelContent', panel);
                     var new_height = panel._flex * space_per_flex;
                     if (new_height >= content_element.clientHeight) {
                         flex_sum -= panel._flex;
                         fixed_space += content_element.clientHeight;
                         panel._flex = null;
                         continue_ = true;
+                        log('Panel does not exceed flex size:', panel.id,
+                            new_height);
                         throw MochiKit.Iter.StopIteration;
                     }
                 }
@@ -83,22 +91,23 @@ zeit.cms.PanelHandler = Class.extend({
 
         // Finally set the sizes
         forEach(panels, function(panel) {
-            var content_element = getFirstElementByTagAndClassName(
-                'div', 'PanelContent', panel);
             if (panel._flex) {
+                var content_element = getFirstElementByTagAndClassName(
+                    'div', 'PanelContent', panel);
                 // compute padding and remove px from padding;
                 // NOTE: this is quite expensive, maybe we can work around
                 // calling getStyle somehow?
-                var padding_top = getStyle(
+                var padding_top = MochiKit.Style.getStyle(
                     content_element, 'padding-top').slice(0, -2);
-                var padding_bottom = getStyle(
+                var padding_bottom = MochiKit.Style.getStyle(
                     content_element, 'padding-bottom').slice(0, -2);
                 var padding = (
                     new Number(padding_top) + new Number(padding_bottom));
 
                 var height = panel._flex * space_per_flex - padding;
                 log("Sizing", panel.id, "at", height, "flex =", panel._flex);
-                setStyle(content_element, {'height': height + 'px'});
+                MochiKit.Style.setStyle(
+                    content_element, {'height': height + 'px'});
             }
         });
     },
@@ -106,9 +115,15 @@ zeit.cms.PanelHandler = Class.extend({
     registerFoldHandlers: function(panels) {
         var self = this;
         forEach(panels, function(panel) {
-            var foldmarker = panel.getElementsByTagName('h1')[0];
-            connect(foldmarker, "onclick", function(event) {
-                if (event.target() != foldmarker) return;
+            var foldmarker = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'h1', null, panel)
+            if (isNull(foldmarker)) {
+                return; // continue
+            }
+            MochiKit.Signal.connect(foldmarker, "onclick", function(event) {
+                if (event.target() != foldmarker) {
+                    return;
+                }
                 var new_state;
                 if (hasElementClass(panel, 'folded')) {
                     removeElementClass(panel, 'folded');
