@@ -41,7 +41,7 @@ copy. Get a content object first:
 >>> ICMSContent.providedBy(content)
 True
 
-For adapting the content to to ICheckoutManager we also need a principaal:
+For adapting the content to to ICheckoutManager we also need a principal:
 
 >>> from zeit.cms.checkout.interfaces import (
 ...     ICheckoutManager, ICheckinManager)
