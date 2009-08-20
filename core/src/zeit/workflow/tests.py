@@ -98,6 +98,12 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         t1.join()
         t2.join()
         self.assertEquals(1, len(self.task.test_log))
+        log = list(zope.component.getUtility(
+            zeit.objectlog.interfaces.IObjectLog).get_log(self.obj))
+        self.assertEquals(1, len(log))
+        self.assertEquals(
+            u'A publish/retract job is already active. Aborting',
+            log[0].message)
 
     def test_parallel_with_differnt_obj(self):
         t1 = threading.Thread(

@@ -129,13 +129,11 @@ class PublishRetractTask(object):
                 time.sleep(random.uniform(0, 2**(retries)))
             except Exception, e:
                 logger.error("Error during publish/retract", exc_info=True)
-                log = zope.component.getUtility(
-                    zeit.objectlog.interfaces.IObjectLog)
                 message = _("Error during publish/retract: ${exc}: ${message}",
                             mapping=dict(
                                 exc=e.__class__.__name__,
                                 message=str(e)))
-                log.log(obj, message)
+                self.log(obj, message)
                 return message
             else:
                 # Everything okay.
@@ -239,7 +237,8 @@ class PublishRetractTask(object):
 
     @property
     def log(self):
-        return zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        return zope.component.getUtility(
+            zeit.objectlog.interfaces.IObjectLog).log
 
     @property
     def repository(self):
@@ -287,7 +286,7 @@ class PublishTask(PublishRetractTask):
         logger.info('Publishing %s' % obj.uniqueId)
         if not info.can_publish():
             logger.error("Could not publish %s" % obj.uniqueId)
-            self.log.log(
+            self.log(
                 obj, _("Could not publish because conditions not satisifed."))
             return
 
@@ -326,7 +325,7 @@ class PublishTask(PublishRetractTask):
         self.call_script(publish_script, '\n'.join(paths))
 
     def after_publish(self, obj):
-        self.log.log(obj, _('Published'))
+        self.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj))
         return obj
 
@@ -351,7 +350,7 @@ class RetractTask(PublishRetractTask):
             zeit.cms.workflow.interfaces.BeforeRetractEvent(obj))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
-        self.log.log(obj, _('Retracted'))
+        self.log(obj, _('Retracted'))
         return obj
 
     def call_retract_script(self, obj):
