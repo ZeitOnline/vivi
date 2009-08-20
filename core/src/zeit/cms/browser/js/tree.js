@@ -17,9 +17,9 @@ Tree.prototype = {
         var action = target.getAttribute('action');
         if (action == null)
             return;
-        
+
         var d = this.changeState(target, action)
-        if (d != null) 
+        if (d != null)
             event.stop();  // event is handled
     },
 
