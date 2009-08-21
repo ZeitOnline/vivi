@@ -201,3 +201,17 @@ the freshly checked-out/-in object:
 >>> browser.open(url + '/@@checkin?redirect=False')
 >>> browser.contents
 'http://localhost/++skin++cms/repository/online/2007/01/Somalia'
+
+
+Checking out already checked-out objects
+========================================
+
+Instead of throwing an error, the @@checkout view just redirects to the already
+checked-out object:
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/'
+...     '2007/01/Somalia/@@checkout')
+>>> browser.open('http://localhost/++skin++cms/repository/online/'
+...     '2007/01/Somalia/@@checkout')
+>>> browser.url
+http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html

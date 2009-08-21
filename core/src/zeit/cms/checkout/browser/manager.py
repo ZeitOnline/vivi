@@ -12,9 +12,25 @@ from zeit.cms.i18n import MessageFactory as _
 class Checkout(zeit.cms.browser.view.Base):
 
     def __call__(self):
-        checked_out = self.manager.checkout()
-        self.send_message(_('"${name}" has been checked out.',
-                            mapping=dict(name=self.context.__name__)))
+        checked_out = None
+        try:
+            checked_out = self.manager.checkout()
+            self.send_message(_('"${name}" has been checked out.',
+                                mapping=dict(name=self.context.__name__)))
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
+            # if the failure is because the object is already checked out,
+            # we'll just use that one instead of complaining
+            for obj in self.manager.workingcopy.values():
+                if (zeit.cms.interfaces.ICMSContent.providedBy(obj)
+                    and obj.uniqueId == self.context.uniqueId):
+                    checked_out = obj
+                    break
+            # checkout failed for a different reason
+            if checked_out is None:
+                raise
+            self.send_message(_('"${name}" was already checked out.',
+                                mapping=dict(name=self.context.__name__)))
+
 
         new_view = None
         came_from = self.request.form.get('came_from')
