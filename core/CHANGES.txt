@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.29 (unreleased)
+1.29 (2009-08-21)
 -----------------
 
 - Ressort-Baum hinzugefügt, von dem aus die Index-Seiten der Ressorts
