@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-0.8 (unreleased)
+0.8 (2009-08-21)
 ++++++++++++++++
 
 - zeit.addcentral egg/zcml hinzugefügt.
