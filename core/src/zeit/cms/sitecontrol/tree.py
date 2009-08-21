@@ -12,6 +12,11 @@ class Tree(zeit.cms.browser.tree.Tree):
     root_name = _('Start')
     key = __module__ + '.Tree'
 
+    def __call__(self):
+        self.request.response.setHeader(
+            'Cache-Control', 'private; max-age=360')
+        return super(Tree, self).__call__()
+
     @zope.cachedescriptors.property.Lazy
     def root(self):
         return zope.component.getUtility(

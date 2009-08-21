@@ -1,15 +1,18 @@
 zeit.cms changes
 ================
 
-1.28.5 (unreleased)
--------------------
+1.29 (unreleased)
+-----------------
+
+- Ressort-Baum hinzugefügt, von dem aus die Index-Seiten der Ressorts
+  (CenterPages) direkt bearbeitet werden können (nur Vivi-Skin, #5548).
+
+Technisches
++++++++++++
 
 - MasterSlaveDropDown kommt mit verschiedenen Form-Prefixes klar (für #6016).
 
 - Warnung bei parallelem Veröffentlichen wird korrekt ausgegeben (#6030).
-
-- Ressort-Baum hinzugefügt, von dem aus die Index-Seiten der Ressorts
-  (CenterPages) direkt bearbeitet werden können (#5548).
 
 1.28.4 (2009-08-19)
 -------------------

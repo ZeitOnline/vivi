@@ -65,7 +65,6 @@ class Tree(zeit.cms.browser.tree.Tree):
     def __call__(self):
         response = self.request.response
         response.setHeader('Cache-Control', 'private; max-age=360')
-
         return super(Tree, self).__call__()
 
     def listContainer(self, container):

@@ -25,7 +25,6 @@
     />
 
   <interface
-    zcml:condition="not-have zeit.cms.testing"
     interface=".interfaces.IViviSkin"
     type="zope.publisher.interfaces.browser.IBrowserSkinType"
     name="vivi"

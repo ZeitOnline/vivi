@@ -1,5 +1,5 @@
 <div
-  tal:define="panel_id string:zeit.cms.sitecontrol;
+  tal:define="panel_id string:zeit-cms-sitecontrol;
               panel_handlers nocall:context/@@panel_handlers;
               tree_url view/tree_url"
   tal:attributes="
@@ -10,7 +10,7 @@
   <h1>
     <a tal:attributes="href view/index_url"
       i18n:translate="">
-      Ressorts
+      Site control
     </a>
   </h1>
 

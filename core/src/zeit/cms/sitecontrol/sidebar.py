@@ -20,8 +20,6 @@ class Sidebar(zeit.cms.browser.view.Base):
 
     @property
     def index_url(self):
-        if 'index' not in self.repository:
-            return self.url(self.repository)
-        view = zope.component.getMultiAdapter(
-            (self.repository['index'], self.request), name='checkout')
-        return self.url(view)
+        if 'index' in self.repository:
+            return self.url(self.repository['index'], '@@checkout')
+        return self.url(self.repository)
