@@ -11,8 +11,10 @@ import zope.app.testing.functional
 product_config = """\
 <product-config zeit.solr>
     solr-url file://%s
+    public-solr-url file://%s
 </product-config>
-""" % pkg_resources.resource_filename(__name__, 'testdata')
+""" % (pkg_resources.resource_filename(__name__, 'testdata'),
+       pkg_resources.resource_filename(__name__, 'testdata'))
 
 
 SearchLayer = zope.app.testing.functional.ZCMLLayer(
