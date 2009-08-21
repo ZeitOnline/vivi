@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+1.30 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
 1.29 (2009-08-21)
 -----------------
 
