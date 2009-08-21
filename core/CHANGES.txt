@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.12 (unreleased)
+0.12 (2009-08-21)
 -----------------
 
 - Serie, Teaser-Text und Subtitel wird mit angezeigt (#6024).
