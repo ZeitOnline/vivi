@@ -33,8 +33,6 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(u'Start', root['title'])
         self.assertEqual(True, root['subfolders'])
         deutschland = root['sub_data'][0]
-        # this test relies on the testcontent in the mock connector
-        # where Deutschland is the only ressort that exists
         self.assertEqual(u'Deutschland', deutschland['title'])
         self.assertEqual(True, deutschland['subfolders'])
 
