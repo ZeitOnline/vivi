@@ -21,12 +21,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <input id="attribution" type="text" />
       </div>
       <div class="widget">
+        <label for="url" i18n:translate="">URL</label>
+        <input id="url" type="text" />
+      </div>
+      <div class="widget">
         <label for="text2" i18n:translate="">Zitat 2</label>
         <textarea id="text2" type="text" ></textarea>
       </div>
       <div class="widget">
         <label for="attribution2" i18n:translate="">Unterschrift 2</label>
         <input id="attribution2" type="text" />
+      </div>
+      <div class="widget">
+        <label for="url2" i18n:translate="">URL 2</label>
+        <input id="url2" type="text" />
       </div>
       <div class="widget">
         <label for="layout" i18n:translate="">Layout</label>

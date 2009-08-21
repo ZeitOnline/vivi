@@ -644,6 +644,7 @@ class CitationStep(ConversionStep):
 
     attributes = ['text', 'text2',
                   'attribution', 'attribution2',
+                  'url', 'url2',
                   'layout']
 
     xpath_xml = './/citation'

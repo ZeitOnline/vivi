@@ -1226,8 +1226,8 @@ Citation
 ...   <head/>
 ...   <body>
 ...     <citation text="Gallia est omnis divisa in partes tres"
-...               attribution="Julius Caesar"
-...               text2="Four apples a day" attribution2="Proverb"
+...               attribution="Julius Caesar" url="http://caesar.it/"
+...               text2="Four apples a day" attribution2="Proverb" url2="url2"
 ...               layout="short"
 ...     />
 ...   </body>
@@ -1241,6 +1241,8 @@ Citation
   <div class="text2">Four apples a day</div>
   <div class="attribution">Julius Caesar</div>
   <div class="attribution2">Proverb</div>
+  <div class="url">http://caesar.it/</div>
+  <div class="url2">url2</div>
   <div class="layout">short</div>
 </div>
 <p> </p>
@@ -1251,6 +1253,8 @@ Citation
 ...   <div class="text2">Four apples a day</div>
 ...   <div class="attribution">Julius Caesar</div>
 ...   <div class="attribution2">Proverb</div>
+...   <div class="url">http://caesar.it/</div>
+...   <div class="url2">url2</div>
 ...   <div class="layout">short</div>
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -1258,8 +1262,9 @@ Citation
   <head/>
   <body>
     <citation text2="Four apples a day"
-              text="Gallia est omnis divisa in partes tres"
               attribution2="Proverb" attribution="Julius Caesar"
+              url2="url2" url="http://caesar.it/"
+              text="Gallia est omnis divisa in partes tres"
               layout="short"/>
   </body>
 </article>
