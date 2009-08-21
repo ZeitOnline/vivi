@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+2.6 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
 2.5 (2009-08-21)
 ----------------
 
