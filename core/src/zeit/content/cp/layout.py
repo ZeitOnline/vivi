@@ -3,7 +3,9 @@
 # See also LICENSE.txt
 
 import zc.sourcefactory.contextual
+import zeit.cms.content.sources
 import zope.interface
+import zope.security.proxy
 
 
 class ITeaserBlockLayout(zope.interface.Interface):
@@ -18,8 +20,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
         min=1,
         max=2,
         default=1)
-
-
+    default = zope.schema.Bool(
+        title=u"True if this is the default for an area/region")
 
 
 class ITeaserBarLayout(zope.interface.Interface):
@@ -37,50 +39,17 @@ class BlockLayout(object):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 areas=None, columns=1):
+                 areas=None, columns=1, default=False):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
         self.columns = columns
+        self.default = default
 
-
-# XXX the image formats need to be set correctly, but we don't know them, yet.
-TEASER_BLOCK = [
-    BlockLayout('leader',
-                u'Großer Teaser mit Bild und Teaserliste',
-                '450x200', areas=('lead-1',)),
-    BlockLayout('leader-two-columns',
-                u'Großer Teaser mit zwei Spalten',
-                '450x200', areas=('lead-1',), columns=2),
-    BlockLayout('leader-upright',
-                u'Großer Teaser mit Hochkant-Bild und Teaserliste',
-                '450x200', areas=('lead-1',)),
-    BlockLayout('archive-print-volume',
-                u'Ausgabenteaser im Printarchiv',
-                areas=('lead',)),
-    BlockLayout('archive-print-year',
-                u'Jahresteaser im Printarchiv',
-                areas=('lead',)),
-    BlockLayout('buttons',
-                u'Kleiner Teaser mit kleinem Bild und Teaserliste',
-                '140x140', areas=('lead',)),
-    BlockLayout('two-side-by-side',
-                u'Zwei kleine Teaser mit Bild',
-                '140x140', areas=('informatives',)),
-    BlockLayout('large',
-                u'Großer Teaser mit Bild und Teaserliste',
-                '140x140', areas=('informatives',)),
-    BlockLayout('ressort',
-                u'Ressort Teaser mit Teaserliste',
-                '140x140', areas=('teaser-mosaic',)),
-    BlockLayout('short',
-                u'Kurzteaser',
-                areas=('teaser-mosaic', 'informatives')),
-    BlockLayout('date',
-                u'Datumsteaser',
-                areas=('teaser-mosaic', 'informatives')),
-]
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, BlockLayout) and self.id == other.id
 
 
 # Aufmacher:Block:Großer Teaser mit Bildergalerie und Teaserliste
@@ -122,6 +91,28 @@ class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
         return value.id
 
 
+class AllTeaserBlockLayoutSource(zeit.cms.content.sources.SimpleXMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'block-layout-source'
+
+    def getValues(self):
+        xml = self._get_tree()
+        result = []
+        for layout in xml['layout']:
+            g = layout.get
+            areas = g('areas')
+            areas = areas.split()
+            columns = g('columns', 1)
+            if columns:
+                columns = int(columns)
+            default = g('default', '').lower() == 'true'
+            result.append(BlockLayout(
+                g('id'), g('title'), g('image_pattern'), areas, columns,
+                default))
+        return result
+
+
 class TeaserBlockLayoutSource(LayoutSource):
 
     def getValues(self, context):
@@ -130,12 +121,15 @@ class TeaserBlockLayoutSource(LayoutSource):
         area = IArea(context)
         areas = [area.__name__]
         if ILead.providedBy(area):
-            position = area.keys().index(context.__name__)
+            try:
+                position = area.keys().index(context.__name__)
+            except ValueError:  # Not in list
+                position = 0
             if position == 0:
                 areas.append('lead-1')
             else:
                 areas.append('lead-x')
-        return [layout for layout in TEASER_BLOCK
+        return [layout for layout in AllTeaserBlockLayoutSource()
                 if layout.areas.intersection(areas)]
 
 
@@ -146,6 +140,12 @@ class TeaserBarLayoutSource(LayoutSource):
 
 
 def get_layout(id):
-    for layout in TEASER_BLOCK + TEASER_BAR:
+    for layout in list(AllTeaserBlockLayoutSource()):
+        if layout.id == id:
+            return layout
+
+
+def get_bar_layout(id):
+    for layout in TEASER_BAR:
         if layout.id == id:
             return layout

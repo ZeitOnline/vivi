@@ -78,6 +78,12 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.content.cp.interfaces.ILead,
         gocept.lxml.interfaces.IObjectified)
 
+    def __init__(self, context, xml):
+        super(TeaserBlock, self).__init__(context, xml)
+        if self.xml.get('module') == 'teaser':
+            self.layout = self.layout
+        assert self.xml.get('module') != 'teaser'
+
     @property
     def entries(self):
         # overriden so that super.insert() and updateOrder() work
@@ -90,12 +96,14 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
 
     @rwproperty.getproperty
     def layout(self):
+        default = None
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
             self):
             if layout.id == self.xml.get('module'):
                 return layout
-        return zeit.content.cp.interfaces.IReadTeaserBlock[
-            'layout'].default
+            if layout.default:
+                default = layout
+        return default
 
     @rwproperty.setproperty
     def layout(self, layout):
@@ -196,9 +204,10 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'),
-    module=zeit.content.cp.interfaces.IReadTeaserBlock[
-            'layout'].default.id)
+    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'))
+    #module=zeit.content.cp.interfaces.IReadTeaserBlock[
+    #        'layout'].default.id)
+    # XXX
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)

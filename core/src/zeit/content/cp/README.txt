@@ -227,7 +227,7 @@ Teaser mosaic layouts
 (analog to blocks/teaser.txt/Layouts)
 
 >>> import zeit.content.cp.layout
->>> bar.layout = zeit.content.cp.layout.get_layout('dmr')
+>>> bar.layout = zeit.content.cp.layout.get_bar_layout('dmr')
 >>> print lxml.etree.tostring(bar.xml, pretty_print=True)
 <region...module="dmr"...
 

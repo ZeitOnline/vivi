@@ -8,6 +8,12 @@ zeit.content.cp changes
 
 - Layout für Printarchivseiten in Volume und Year unterteilt.
 
+- Vorausgewähltes Layout abhängig von der Fläche (#5870).
+
+- Block-Layouts kommen aus einer XML-Datei und stehen nicht mehr direkt im
+  Quellcode. Damit stimmen jetzt auch die verwendeten Bilder (#5876).
+
+
 0.13 (2009-08-14)
 -----------------
 
