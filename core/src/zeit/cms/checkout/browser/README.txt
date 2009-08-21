@@ -213,5 +213,5 @@ checked-out object:
 ...     '2007/01/Somalia/@@checkout')
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
 ...     '2007/01/Somalia/@@checkout')
->>> browser.url
+>>> print browser.url
 http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html
