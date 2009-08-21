@@ -173,14 +173,16 @@ intertitle {
 }
 
 .citation > .text,
-.citation > .attribution {
+.citation > .attribution,
+.citation > .url {
   clear: left;
   float: left;
   text-align: center;
   width: 33%;
 }
 .citation > .text2,
-.citation > .attribution2 {
+.citation > .attribution2,
+.citation > .url2  {
   clear: right;
   float: right;
   text-align: center;
@@ -194,6 +196,11 @@ intertitle {
 
 .citation > .layout {
   clear: both;
+}
+
+.citation > .url:before,
+.citation > .url2:before {
+    content: "URL:";
 }
 
 .citation > .layout:before {
