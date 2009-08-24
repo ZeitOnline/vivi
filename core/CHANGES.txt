@@ -9,6 +9,9 @@ zeit.content.cp changes
   
 - Robusteres erstellen von freien Teasern.
 
+- Centerpage kann eingecheckt werden, auch wenn (ganz) alte Feeds beinhaltet
+  sind (#6064).
+
 
 0.14 (2009-08-21)
 -----------------

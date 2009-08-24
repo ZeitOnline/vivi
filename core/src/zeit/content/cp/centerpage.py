@@ -60,8 +60,10 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     def updateMetadata(self, content):
         for entry in self.xml.xpath('//block[@href="%s"]' % content.uniqueId):
-            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-            updater.update(entry)
+            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
+                content, None)
+            if updater is not None:
+                updater.update(entry)
 
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
