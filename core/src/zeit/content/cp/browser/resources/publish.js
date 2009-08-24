@@ -9,8 +9,9 @@ zeit.content.cp.publish.Publisher = Class.extend({
 
     checkin: function(context) {
         var self = this;
-        self._redirect_step(context + '/@@checkin?redirect=False', 'checkin',
-                         bind(self.publish, self));
+        self._redirect_step(
+            context + '/@@checkin?redirect=False&event:boolean=', 'checkin',
+            bind(self.publish, self));
     },
 
     publish: function(context) {
