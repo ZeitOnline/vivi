@@ -43,7 +43,7 @@ class Checkout(zeit.cms.browser.view.Base):
             new_view = 'edit.html'
         new_url = self.url(checked_out, '@@' + new_view)
         # XXX type conversion would be so nice
-        if self.request.form.get('redirect') == 'False':
+        if self.request.form.get('redirect').lower() == 'false':
             # XXX redirect=False now has two meanings:
             # 1. don't redirect, 2. don't use any view
             return self.url(checked_out)
