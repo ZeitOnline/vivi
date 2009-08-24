@@ -25,10 +25,10 @@ product_config = {
     }
 
 
-
 layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'zeit.content.cp.tests.layer', allow_teardown=True)
+
 
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),

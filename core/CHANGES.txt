@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- In der CP beinhaltete Objekte werden automatisch veröffentlicht (wenn lsc <=
+  dlp <= dlm, #6057)
 
 
 0.14 (2009-08-21)
