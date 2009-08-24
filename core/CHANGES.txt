@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - In der CP beinhaltete Objekte werden automatisch veröffentlicht (wenn lsc <=
   dlp <= dlm, #6057)
+  
+- Robusteres erstellen von freien Teasern.
 
 
 0.14 (2009-08-21)
