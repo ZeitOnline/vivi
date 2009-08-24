@@ -4,8 +4,8 @@ zeit.cms changes
 1.30 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Funktion zum Bestimmen der automatischen Veöffentlichungsfähigkeit eines
+  Objekts (für #6057) extrahiert.
 
 1.29 (2009-08-21)
 -----------------

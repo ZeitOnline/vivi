@@ -33,6 +33,30 @@ class Dependencies(object):
         return sorted(dependencies, key=lambda x: x.uniqueId)
 
 
+def has_only_non_semantic_changes(content):
+    """Returns if content has changes but only non sematincally ones.
+
+    When True is returned this usually means content can be published without
+    further notice. This also includes that it has been published before.
+
+    """
+    workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+    dc = zope.dublincore.interfaces.IDCTimes(content)
+    sc = zeit.cms.content.interfaces.ISemanticChange(content)
+    if not workflow.published:
+        return False
+    if not all((sc.last_semantic_change,
+                workflow.date_last_published,
+                dc.modified)):
+        # We have not all values for comparison. Be on the save side.
+        return False
+    if not (sc.last_semantic_change
+            <= workflow.date_last_published
+            <= dc.modified):
+        return False
+    return True
+
+
 class Relateds(object):
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
@@ -49,19 +73,6 @@ class Relateds(object):
             return []
         dependencies = []
         for related in relateds.related:
-            workflow = zeit.cms.workflow.interfaces.IPublishInfo(related)
-            dc = zope.dublincore.interfaces.IDCTimes(related)
-            sc = zeit.cms.content.interfaces.ISemanticChange(related)
-
-            if not workflow.published:
-                continue
-            if not all((sc.last_semantic_change,
-                        workflow.date_last_published,
-                        dc.modified)):
-                continue
-            if not (sc.last_semantic_change
-                    < workflow.date_last_published
-                    < dc.modified):
-                continue
-            dependencies.append(related)
+            if has_only_non_semantic_changes(related):
+                dependencies.append(related)
         return dependencies
