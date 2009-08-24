@@ -22,6 +22,14 @@
   overflow: hidden;
 }
 
+.search_result .search_entry {
+  margin: 10px;
+}
+
+.search_result {
+	background-color: #F2F2F2;
+}
+
 .search_entry .supertitle {
   display: block;
   font-weight: 400;
