@@ -12,6 +12,8 @@ zeit.content.cp changes
 - Centerpage kann eingecheckt werden, auch wenn (ganz) alte Feeds beinhaltet
   sind (#6064).
 
+- Freie Teaser werden immer mit der CP veröffentlicht (#6060).
+
 
 0.14 (2009-08-21)
 -----------------

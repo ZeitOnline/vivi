@@ -37,6 +37,7 @@ def metadata_to_teaser(content):
     for name in zeit.cms.content.interfaces.ICommonMetadata:
         field = zeit.cms.content.interfaces.ICommonMetadata[name]
         if zope.schema.interfaces.IField.providedBy(field):
+            field = field.bind(teaser)
             value = getattr(content, name)
             try:
                 field.validate(value)
