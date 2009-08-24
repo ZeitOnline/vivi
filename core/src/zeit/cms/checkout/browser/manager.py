@@ -61,8 +61,9 @@ class Checkout(zeit.cms.browser.view.Base):
 
 class Checkin(zeit.cms.browser.view.Base):
 
-    def __call__(self, semantic_change=True):
-        checked_in = self.manager.checkin(semantic_change=semantic_change)
+    def __call__(self, semantic_change=True, event=True):
+        checked_in = self.manager.checkin(semantic_change=semantic_change,
+                                          event=event)
         self.send_message(_('"${name}" has been checked in.',
                             mapping=dict(name=checked_in.__name__)))
         new_view = None

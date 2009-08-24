@@ -198,7 +198,7 @@ the freshly checked-out/-in object:
 >>> url
 'http://localhost/++skin++cms/workingcopy/zope.user/Somalia'
 
->>> browser.open(url + '/@@checkin?redirect=False')
+>>> browser.open(url + '/@@checkin?redirect=False&event=')
 >>> browser.contents
 'http://localhost/++skin++cms/repository/online/2007/01/Somalia'
 
