@@ -63,7 +63,7 @@ class TeaserBlockProxyItem(object):
 
 @zope.component.adapter(TeaserBlockProxyItem)
 @zope.interface.implementer(zeit.cms.checkout.interfaces.ICheckinManager)
-def checkout_manager_for_proxy(proxy):
+def checkin_manager_for_proxy(proxy):
     return zeit.cms.checkout.interfaces.ICheckinManager(
         proxy.get_proxied_object())
 

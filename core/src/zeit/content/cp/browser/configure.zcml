@@ -168,7 +168,7 @@
       permission="zope.View" />
   </class>
 
-  <adapter factory=".teaser.checkout_manager_for_proxy" trusted="true" />
+  <adapter factory=".teaser.checkin_manager_for_proxy" trusted="true" />
 
   <adapter factory=".feed.ListRepresentation" />
   <browser:page
