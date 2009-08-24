@@ -1,15 +1,16 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import pkg_resources
 from zope.testing import doctest
 import __future__
+import contextlib
 import os
+import pkg_resources
 import re
 import sys
 import zeit.connector.interfaces
 import zope.app.appsetup.product
-import zope.app.component.hooks
+import zope.site.hooks
 import zope.app.testing.functional
 import zope.component
 import zope.publisher.browser
@@ -42,7 +43,7 @@ def tearDown(test):
     if hasattr(test, 'globs'):
         old_site = test.globs.get('old_site')
         if old_site is not None:
-            zope.app.component.hooks.setSite(old_site)
+            zope.site.hooks.setSite(old_site)
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     connector._reset()
@@ -109,12 +110,12 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
         setup_product_config(self.product_config)
-        zope.app.component.hooks.setSite(self.getRootFolder())
+        zope.site.hooks.setSite(self.getRootFolder())
         zeit.cms.testing.create_interaction(u'zope.user')
 
     def tearDown(self):
         zeit.cms.testing.tearDown(self)
-        zope.app.component.hooks.setSite(None)
+        zope.site.hooks.setSite(None)
         super(FunctionalTestCase, self).tearDown()
 
 
@@ -139,10 +140,10 @@ def set_site(site=None):
     """
 
     globs = sys._getframe(1).f_locals
-    globs['old_site'] = zope.app.component.hooks.getSite()
+    globs['old_site'] = zope.site.hooks.getSite()
     if site is None:
         site = globs['getRootFolder']()
-    zope.app.component.hooks.setSite(site)
+    zope.site.hooks.setSite(site)
 
 
 def create_interaction(name=u'zope.user'):
@@ -151,3 +152,18 @@ def create_interaction(name=u'zope.user'):
     request.setPrincipal(principal)
     zope.security.management.newInteraction(request)
     return principal
+
+
+@contextlib.contextmanager
+def interaction(principal_id):
+    create_interaction(principal_id)
+    yield
+    zope.security.management.endInteraction()
+
+
+@contextlib.contextmanager
+def site(root):
+    old_site = zope.site.hooks.getSite()
+    zope.site.hooks.setSite(root)
+    yield
+    zope.site.hooks.setSite(old_site)
