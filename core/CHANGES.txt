@@ -19,6 +19,8 @@ zeit.content.cp changes
 - Block-Layouts kommen aus einer XML-Datei und stehen nicht mehr direkt im
   Quellcode. Damit stimmen jetzt auch die verwendeten Bilder (#5876).
 
+- Veröffentlichen einer CP mit einem Click (#5661).
+
 
 0.13 (2009-08-14)
 -----------------
