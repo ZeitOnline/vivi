@@ -14,6 +14,8 @@ zeit.content.cp changes
 
 - Freie Teaser werden immer mit der CP veröffentlicht (#6060).
 
+- ``cp_extra`` Blöcke entfernt: Relateds, Debug
+
 
 0.14 (2009-08-21)
 -----------------

@@ -76,9 +76,6 @@ factor('live_search', u'Live-Search',
        zeit.content.cp.interfaces.IInformatives)
 factor('print_archive', u'Print Archiv',
        zeit.content.cp.interfaces.IInformatives)
-factor('relateds', u'Relateds',
-       zeit.content.cp.interfaces.IInformatives)
 factor('blindblock', u'Blindblock',
        zeit.content.cp.interfaces.IInformatives)
-factor('debug', u'Debug')
 factor('dpa-news', u'dpa-News')
