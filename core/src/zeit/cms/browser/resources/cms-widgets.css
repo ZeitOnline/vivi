@@ -59,7 +59,7 @@ table.properties textarea {
    /* max-height: 20em; */
    overflow-y: auto;
    overflow-x: hidden; /* XXX not sure if I'm making it unusable here */
-   padding: 0.5em;
+   padding: 0 0.5em;
 }
 
 .folded .PanelContent {
@@ -169,7 +169,7 @@ table.properties textarea {
  * */
 .Tree ul {
    list-style-position: inside;
-   padding-left: 1em;
+   padding-left: 1.6em;
    margin: 0;
 }
 
@@ -181,7 +181,17 @@ table.properties textarea {
 }
 .Tree li.Root > p {
    margin: 0;
-   padding: 0;
+   padding-left: 17px;
+   font-weight: bold;
+}
+
+.Tree li.Root > p {
+   background: url("layout/minus.png") no-repeat !important;
+   cursor: pointer;
+}
+
+.Tree li.Root > p > a {
+   padding-top: 5px;
 }
 
 .Tree li {
@@ -238,7 +248,7 @@ table.properties textarea {
    bit more to the left */
 #clipboardcontents .Root > p,
 #navtreecontents .Root > p,
-#zeit-cms-sitecontrol .PanelContent .Root > p {
+/*#zeit-cms-sitecontrol .PanelContent .Root > p*/ {
    display: none;
 }
 
