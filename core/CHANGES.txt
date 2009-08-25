@@ -11,6 +11,8 @@ zeit.cms changes
 - XML-RPC-Methode ``retract`` um veröffentlichte Inhalte zurückzuziehen
   (#6071).
 
+- »Erstes Related als Box« versteckt (nur Vivi-Skin, #6076).
+
 Technisches
 +++++++++++
 
