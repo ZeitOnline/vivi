@@ -17,7 +17,7 @@ import zope.testing.renormalizing
 
 
 product_config = {
-    'cds-import-valid-path': 'online/$year/$volume',
+    'cds-import-valid-path': '$ressort/$year/$volume',
     'cds-import-invalid-path': 'cds/invalid/$year/$volume',
 }
 

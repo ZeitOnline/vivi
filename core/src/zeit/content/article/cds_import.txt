@@ -53,12 +53,12 @@ True as something was imported:
 >>> zeit.content.article.cds.import_one()
 True
 
-The article was created in the current online working directory (which happens
+The article was created in the wissen working directory (which happens
 to be 2008/26):
 
 >>> import zeit.cms.interfaces
 >>> container = zeit.cms.interfaces.ICMSContent(
-...     'http://xml.zeit.de/online/2008/26')
+...     'http://xml.zeit.de/wissen/2008/26')
 >>> article = container['art1']
 >>> article.year
 2007
@@ -321,12 +321,31 @@ The real appmain is:
 <function import_main at 0x...>
 
 
+Replacements
+++++++++++++
 
+>>> import datetime
+>>> import mock
+>>> import pytz
+>>> new_dt = mock.Mock()
+>>> new_dt.datetime = mock.Mock()
+>>> new_dt.datetime.now = mock.Mock(return_value=datetime.datetime(
+...     2008, 8, 5, tzinfo=pytz.UTC))
+>>> new_dt.timedelta = datetime.timedelta
+>>> zeit.content.article.cds.datetime = new_dt
+>>> import pprint
+>>> pprint.pprint(zeit.content.article.cds.get_replacements(article))
+{'real_day': 5,
+ 'real_month': 8,
+ 'real_year': 2008,
+ 'ressort': u'wissen',
+ 'sub_ressort': u''}
 
 
 Clean up:
 
 >>> zeit.connector.mock.Connector.search = old_search
+>>> zeit.content.article.cds.datetime = datetime
 
 
 .. [#functional]
@@ -350,3 +369,4 @@ Clean up:
     ...     return []
     >>> old_search = zeit.connector.mock.Connector.search
     >>> zeit.connector.mock.Connector.search = new_search
+

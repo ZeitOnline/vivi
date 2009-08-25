@@ -4,7 +4,9 @@ zeit.content.article changes
 2.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Weitere Ersetzungsmöglichkeiten für den CDS-Import-Pfad: `real_year`,
+  `real_month`, `real_day`, `ressort` und `sub_ressort`. Dies ermöglicht die
+  neue Verzeichnisstuktur (#6045).
 
 
 2.5 (2009-08-21)

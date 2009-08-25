@@ -85,6 +85,17 @@ def export(object, event):
     log.debug('File %s was created. Leaving.' % filename)
 
 
+def get_replacements(article):
+    now = datetime.datetime.now(pytz.UTC)
+    return dict(
+        real_year=now.year,
+        real_month=now.month,
+        real_day=now.day,
+        ressort=article.ressort.lower() if article.ressort else u'',
+        sub_ressort=(
+            article.sub_ressort.lower() if article.sub_ressort else u''),
+    )
+
 def import_file(path):
     """Import single file from CDS."""
     log.info("Importing %s" % path)
@@ -131,7 +142,8 @@ def import_file(path):
         settings = zeit.cms.settings.interfaces.IGlobalSettings(site)
         source = zeit.content.article.interfaces.IArticle['ressort'].source
         prefix = (valid_path if article.ressort in source else invalid_path)
-        container = settings.get_working_directory(prefix)
+        container = settings.get_working_directory(prefix,
+                                                   **get_replacements(article))
 
     name = zope.container.interfaces.INameChooser(container).chooseName(
         name, article)
@@ -145,8 +157,8 @@ def import_file(path):
     tasks = zope.component.getUtility(
         lovely.remotetask.interfaces.ITaskService, 'general')
     # Compute delete timeout which is > DELETE_TIMEOUT but in the night
-    remove_at = (datetime.datetime.now(pytz.UTC)
-                 + DELETE_TIMEOUT + datetime.timedelta(days=1))
+    now = datetime.datetime.now(pytz.UTC)
+    remove_at = now + DELETE_TIMEOUT + datetime.timedelta(days=1)
     remove_at = remove_at.replace(hour=1)
     remove_in = remove_at - datetime.datetime.now(pytz.UTC)
     delay = 60*60*24 * remove_in.days + remove_in.seconds
