@@ -76,6 +76,10 @@ fieldset {
     background: #f1f4f9; /*#d5dee7;*/
 }
 
+#zeit-find-search-form fieldset {
+	border: 0px solid #fff !important;
+}
+
 legend {
   font-weight: bold;
   background-color: transparent;
@@ -181,10 +185,13 @@ form .wide-widgets .field textarea {
     width: 95%;
 }
 
+/* Felder ausblenden */
+
 form .field label[for="form.shortTeaserTitle"],
 form .field label[for="form.shortTeaserText"],
 form .field label[for="form.hpTeaserTitle"],
-form .field label[for="form.hpTeaserText"]
+form .field label[for="form.hpTeaserText"],
+form .field label[for="form.artbox_thema"]
 {
 	display: none;
 }
@@ -198,7 +205,8 @@ form .field label[for="form.shortTeaserText"] ~ .widget
 form .field textarea[id="form.shortTeaserTitle"],
 form .field textarea[id="form.shortTeaserText"],
 form .field textarea[id="form.hpTeaserTitle"],
-form .field textarea[id="form.hpTeaserText"]
+form .field textarea[id="form.hpTeaserText"],
+form .field input[id="form.artbox_thema"]
 {
 	display: none;
 }
