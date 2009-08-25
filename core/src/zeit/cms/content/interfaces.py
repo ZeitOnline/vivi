@@ -188,6 +188,13 @@ class ICommonMetadata(zope.interface.Interface):
     product_text = zope.interface.Attribute(
         "Title of product_id (r/o).")
 
+    foldable = zope.schema.Bool(
+        title=_('Foldable'),
+        default=True)
+
+    minimal_header = zope.schema.Bool(
+        title=_('Minimal header'))
+
 
 class IDAVPropertyConverter(zope.interface.Interface):
     """Parse a unicode string from a DAV property to a value and vice versa."""

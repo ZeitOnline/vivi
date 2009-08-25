@@ -13,6 +13,8 @@ zeit.cms changes
 
 - »Erstes Related als Box« versteckt (nur Vivi-Skin, #6076).
 
+- Neue Optionen »Einklappbar« und »Minimalheader« (#6015).
+
 Technisches
 +++++++++++
 
