@@ -110,7 +110,8 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     def _append_category(self, parent, domain, value):
         category = lxml.etree.SubElement(parent, 'category')
-        category.set('domain', domain)
+        if domain:
+            category.set('domain', domain)
         category.text = value
 
     @property

@@ -16,6 +16,8 @@ zeit.content.cp changes
 
 - ``cp_extra`` Blöcke entfernt: Relateds, Debug
 
+- RSS-Feeds: Domain-Attribut bei <category> optional (#6074).
+
 
 0.14 (2009-08-21)
 -----------------
