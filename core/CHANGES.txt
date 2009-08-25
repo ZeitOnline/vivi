@@ -23,6 +23,8 @@ Technisches
 
 - Test-Hilfs-Methoden aus zeit.content.cp verschoben.
 
+- `get_working_directory` kann zusätzliche Ersetzungen vornehmen (für #6045).
+
 1.29 (2009-08-21)
 -----------------
 

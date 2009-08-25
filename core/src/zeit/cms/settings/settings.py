@@ -20,10 +20,11 @@ class GlobalSettings(persistent.Persistent):
     default_year = 2008
     default_volume = 26
 
-    def get_working_directory(self, template):
+    def get_working_directory(self, template, **additional_replacements):
         path = string.Template(template).substitute(dict(
             year=self.default_year,
-            volume=self.default_volume))
+            volume=self.default_volume,
+            **additional_replacements))
         path = path.split('/')
 
         target_folder = zeit.cms.interfaces.ICMSContent(
