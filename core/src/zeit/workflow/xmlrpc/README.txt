@@ -8,6 +8,7 @@ Setup:
 >>> server = ServerProxy('http://user:userpw@localhost/')
 >>> can_publish = getattr(server, '@@can_publish')
 >>> publish = getattr(server, '@@publish')
+>>> retract = getattr(server, '@@retract')
 
 Let's see if we can publish Somalia:
 
@@ -49,6 +50,14 @@ False
 >>> publish('http://xml.zeit.de/online/2007/01/eta-zapatero')
 False
 
+Retract:
+
+>>> job_id = retract('http://xml.zeit.de/online/2007/01/Somalia')
+>>> new_interaction()
+>>> tasks.process()
+>>> zope.security.management.endInteraction()
+>>> workflow.published
+False
 
 Clean up:
 

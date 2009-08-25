@@ -6,7 +6,7 @@
     for="zope.location.interfaces.ISite"
     class=".xmlrpc.Publish"
     permission="zeit.workflow.Publish"
-    methods="publish can_publish"
+    methods="publish can_publish retract"
     />
 
 </configure>

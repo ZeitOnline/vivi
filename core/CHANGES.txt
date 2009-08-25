@@ -8,6 +8,9 @@ zeit.cms changes
   bis die Metadaten des Bildes bearbeitet wurden, bzw. das Bild eingecheckt
   wurde (#6073).
 
+- XML-RPC-Methode ``retract`` um veröffentlichte Inhalte zurückzuziehen
+  (#6071).
+
 Technisches
 +++++++++++
 

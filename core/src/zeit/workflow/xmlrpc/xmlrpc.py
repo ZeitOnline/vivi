@@ -24,6 +24,10 @@ class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
             self.repository.getContent(unique_id))
         return publish.publish()
 
+    def retract(self, unique_id):
+        publish = zeit.cms.workflow.interfaces.IPublish(
+            self.repository.getContent(unique_id))
+        return publish.retract()
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
