@@ -61,17 +61,17 @@ zeit.find.Search = zeit.find.BaseView.extend({
 		
 		
 		function hightToggler(){
-			switch(MochiKit.DOM.$('search_result').className) 
-			{
-				case "search_result" :
+			if(MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && !MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
+				MochiKit.DOM.$('search_result').className = 'search_result h50';
+			}
+			if(!MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
+				MochiKit.DOM.$('search_result').className = 'search_result h50';
+			}
+			if(MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
 				MochiKit.DOM.$('search_result').className = 'search_result h25';
-				break;
-				case "search_result h25" :
-				MochiKit.DOM.$('search_result').className = 'search_result h50';
-				break;
-				case "search_result h50" :
-				MochiKit.DOM.$('search_result').className = 'search_result h50';
-				break;
+			}
+			if(!MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && !MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
+				MochiKit.DOM.$('search_result').className = 'search_result';
 			}
 		}
 
