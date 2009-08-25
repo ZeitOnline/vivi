@@ -9,7 +9,7 @@ import zope.component
 
 class Tree(zeit.cms.browser.tree.Tree):
 
-    root_name = _('Start')
+    root_name = _('Homepage')
     key = __module__ + '.Tree'
 
     def __call__(self):

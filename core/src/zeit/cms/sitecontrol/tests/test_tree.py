@@ -30,7 +30,7 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_toplevel_should_contain_ressorts(self):
         root = self.tree.getTreeData()[0]
-        self.assertEqual(u'Start', root['title'])
+        self.assertEqual(u'Homepage', root['title'])
         self.assertEqual(True, root['subfolders'])
         deutschland = root['sub_data'][0]
         self.assertEqual(u'Deutschland', deutschland['title'])

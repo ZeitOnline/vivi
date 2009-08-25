@@ -38,6 +38,6 @@ Content-Type: text/html;charset=utf-8
   <ul>
       <li class="Root">
         <p>
-        <a href="http://localhost/++skin++vivi/repository">Start</a>
+        <a href="http://localhost/++skin++vivi/repository">Homepage</a>
         <span class="uniqueId">None</span>
         ...

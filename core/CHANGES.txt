@@ -1,15 +1,22 @@
 zeit.cms changes
 ================
 
-1.30 (unreleased)
+1.31 (unreleased)
 -----------------
 
 - Bilder innerhalb von Bildergruppen „erben“ die Metadaten der Bildergruppe,
   bis die Metadaten des Bildes bearbeitet wurden, bzw. das Bild eingecheckt
   wurde (#6073).
 
+- Scrollbalken in der Suche (rechte Seite) entfernt und allen drei Boxen hinzugefuegt.
+- Javascript - Funktion steuert, wieviel Prozent eine Box in der Hoehe einnimmt, wenn andere aufgeklappt werden
+- In SiteControl 'start' wieder sichtbar gemacht und an das Layout angepasst
+
+1.30 (25-08-2009)
+-----------------
 - XML-RPC-Methode ``retract`` um veröffentlichte Inhalte zurückzuziehen
   (#6071).
+
 
 - »Erstes Related als Box« versteckt (nur Vivi-Skin, #6076).
 
