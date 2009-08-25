@@ -4,6 +4,13 @@ zeit.cms changes
 1.30 (unreleased)
 -----------------
 
+- Bilder innerhalb von Bildergruppen „erben“ die Metadaten der Bildergruppe,
+  bis die Metadaten des Bildes bearbeitet wurden, bzw. das Bild eingecheckt
+  wurde (#6073).
+
+Technisches
++++++++++++
+
 - Funktion zum Bestimmen der automatischen Veöffentlichungsfähigkeit eines
   Objekts (für #6057) extrahiert.
 

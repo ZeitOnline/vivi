@@ -22,7 +22,7 @@ class FormBase(object):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageGroup,
         zeit.content.image.interfaces.IImageMetadata,
-        zeit.content.image.interfaces.IReferences)
+        zeit.content.image.interfaces.IReferences).omit('acquire_metadata')
 
 
 class AddForm(FormBase,

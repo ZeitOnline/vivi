@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grokcore.component
 import lxml.objectify
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -8,6 +9,7 @@ import zeit.cms.syndication.interfaces
 import zeit.content.image.interfaces
 import zope.component
 import zope.interface
+import zope.schema
 
 
 class ImageMetadata(object):
@@ -28,6 +30,11 @@ class ImageMetadata(object):
         ('copyrights',),
         use_default=True)
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImageMetadata,
+        'http://namespaces.zeit.de/CMS/meta',
+        ('acquire_metadata',))
+
     def __init__(self, context):
         self.context = context
 
@@ -37,6 +44,32 @@ class ImageMetadata(object):
 def metadata_webdav_properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(
         context.context)
+
+
+@grokcore.component.implementer(zeit.content.image.interfaces.IImageMetadata)
+@grokcore.component.adapter(zeit.content.image.interfaces.IImage)
+def metadata_for_image(image):
+    metadata = ImageMetadata(image)
+    # Be sure to get the image in the repository
+    parent = None
+    if image.uniqueId:
+        parent = zeit.cms.interfaces.ICMSContent(image.uniqueId).__parent__
+    if zeit.content.image.interfaces.IImageGroup.providedBy(parent):
+        # The image *is* in an image group.
+        if metadata.acquire_metadata is None or metadata.acquire_metadata:
+            group_metadata = zeit.content.image.interfaces.IImageMetadata(
+                parent)
+            if zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(image):
+                for name, field in zope.schema.getFieldsInOrder(
+                    zeit.content.image.interfaces.IImageMetadata):
+                    value = getattr(group_metadata, name, None)
+                    setattr(metadata, name, value)
+                metadata.acquire_metadata = False
+            else:
+                # For repository content return the metadata of the group.
+                metadata = group_metadata
+
+    return metadata
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImageMetadata)

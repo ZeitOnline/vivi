@@ -34,7 +34,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.browser.interfaces.IFileEditSchema,
         zeit.content.image.interfaces.IImageMetadata,
-        zeit.content.image.interfaces.IReferences)
+        zeit.content.image.interfaces.IReferences).omit('acquire_metadata')
 
     form_fields['blob'].custom_widget = (
         zeit.cms.repository.browser.file.BlobWidget)

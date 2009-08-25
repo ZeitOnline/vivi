@@ -1,21 +1,55 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
+from zope.testing import doctest
 import os.path
+import pkg_resources
 import unittest
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zope.app.testing.functional
 import zope.component
-import pkg_resources
-from zope.testing import doctest
 
 
 ImageLayer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'ImageLayer', allow_teardown=True)
+
+
+class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ImageLayer
+
+    def setUp(self):
+        super(TestImageMetadataAcquisition, self).setUp()
+        self.group_id = create_image_group().uniqueId
+        with zeit.cms.checkout.helper.checked_out(self.group) as co:
+            metadata = zeit.content.image.interfaces.IImageMetadata(co)
+            metadata.title = u'Title'
+
+    @property
+    def group(self):
+        return zeit.cms.interfaces.ICMSContent(self.group_id)
+
+    @property
+    def img(self):
+        return self.group['new-hampshire-450x200.jpg']
+
+    def test_acquired_in_repository(self):
+        metadata = zeit.content.image.interfaces.IImageMetadata(self.img)
+        self.assertEqual(u'Title', metadata.title)
+
+    def test_acquired_in_workingcopy(self):
+        with zeit.cms.checkout.helper.checked_out(self.img) as co:
+            metadata = zeit.content.image.interfaces.IImageMetadata(co)
+            self.assertEqual(u'Title', metadata.title)
+            metadata.title = u'Image title'
+        metadata = zeit.content.image.interfaces.IImageMetadata(self.img)
+        self.assertEqual(u'Image title', metadata.title)
 
 
 def test_suite():
@@ -26,6 +60,7 @@ def test_suite():
         'transform.txt',
         'masterimage.txt',
         layer=ImageLayer))
+    suite.addTest(unittest.makeSuite(TestImageMetadataAcquisition))
     return suite
 
 

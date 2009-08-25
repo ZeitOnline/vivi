@@ -68,10 +68,6 @@
 
   <!-- metadata -->
 
-  <adapter
-    factory=".metadata.ImageMetadata" 
-    for=".interfaces.IImage"
-    />
   <view
     for=".interfaces.IImage"
     type="*"

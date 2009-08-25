@@ -97,6 +97,11 @@ class IImageMetadata(zope.interface.Interface):
         source=AlignmentSource(),
         default='left')
 
+    acquire_metadata = zope.schema.Bool(
+        title=u'True if metadata should be acquired from the parent.')
+
+
+
 
 class IImage(zeit.cms.interfaces.IAsset,
              zope.file.interfaces.IFile):
