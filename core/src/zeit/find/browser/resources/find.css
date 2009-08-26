@@ -14,12 +14,20 @@
 
 .search_entry {
   background: #fff;
-  border: 1px solid #fff;
+  border: 1px solid #e4e4e4;
   cursor: move;
   margin-bottom: .8em;
   padding: 1em;
   overflow: hidden;
+  
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  
 }
+
+
 
 .search_result .search_entry {
   margin: 10px;
@@ -137,10 +145,17 @@ div.unfolded + #result_filters {
 	margin-left: 10px;
 	margin-bottom: 10px;
 	padding: 1em;
+	
+  border: 1px solid #e4e4e4;	
+	
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
 }
 
 
-#zeit-find-search-form:after { 
+#cp-search #zeit-find-search-form:after { 
 	content:"Suchergebnis"; 
 	margin-left: 14px;	
 	font-size: 16px;
@@ -430,11 +445,11 @@ div.unfolded + #result_filters {
 }
 
 #cp-search .h50 {
-	height: 65% !important;
+	height: 60% !important;
 }
 
 #cp-search .h25 {
-	height: 25% !important;
+	height: 40% !important;
 }
 
 
