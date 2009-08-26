@@ -525,6 +525,10 @@ pre {
   padding-bottom: 0;
 }
 
+.contextViewsAndActions .context-views {
+  margin: 0 !important;
+}
+
 .context-views li.selected > a{
   background-color: #ffdd11;
 }
