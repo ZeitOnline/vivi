@@ -4,7 +4,7 @@ zeit.find changes
 0.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Die Suche hat jetzt eine Scrollbar je Box statt eine insgesamt (#6032).
 
 
 0.12 (2009-08-21)
