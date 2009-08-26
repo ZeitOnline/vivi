@@ -521,7 +521,7 @@ pre {
 
 .context-views {
   left: 0em;
-  margin: 0em;
+  margin: -2px 0 0;
   padding-bottom: 0;
 }
 
