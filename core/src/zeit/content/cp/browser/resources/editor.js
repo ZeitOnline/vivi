@@ -117,6 +117,19 @@ zeit.content.cp.makeJSONRequest = function(
     },
     function(error) {
         zeit.cms.log_error(error);
+        if (!isUndefinedOrNull(error.req)) {
+            var div = DIV();
+            div.innerHTML = error.req.responseText;
+            var message_node = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'pre', null, div);
+            if (isNull(message_node)) {
+                var message = req.statusText;
+            } else {
+                var message = message_node.textContent;
+            }
+            alert(message);
+            MochiKit.Signal.signal(target_component, 'reload');
+        }
         return error;
     });
     return d;

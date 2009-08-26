@@ -20,6 +20,8 @@ zeit.content.cp changes
 
 - Feed-Elemente in der Centerpage werden jetzt korrekt geschrieben.
 
+- Bessere Fehlerbehandlung, wenn aysynchrone Requests fehlschlagen (#6061).
+
 
 0.14 (2009-08-21)
 -----------------
