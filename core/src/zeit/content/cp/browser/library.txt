@@ -96,6 +96,12 @@ information about the created block:
 {'signals': [{'args': ['c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515'],
               'name': 'added',
               'when': 'after-reload'}]}
+>>> print browser.headers
+Status: 200 Ok
+Content-Length: ...
+Content-Type: text/json
+...
+
 >>> created_block_id = result['signals'][0]['args'][0]
 
 The block is contained in the contents. A landing zone to create blocks *after*

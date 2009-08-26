@@ -7,9 +7,10 @@ See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-z
 
 """
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.related.interfaces
-import zope.browser.interfaces
 import zeit.content.cp.browser.view
+import zope.browser.interfaces
 import zope.component
 
 
@@ -61,7 +62,10 @@ class TeaserBlockLandingZone(LandingZone):
     uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
 
     def initialize_block(self):
-        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
+        if content is None:
+            raise ValueError(
+                _('The object "%s" does not exist.' % self.uniqueId))
         self.block.insert(0, content)
         related = zeit.cms.related.interfaces.IRelatedContent(content, None)
         if related is not None:

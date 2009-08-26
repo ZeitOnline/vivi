@@ -1,8 +1,15 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import ZODB.POSException
 import cjson
+import logging
+import transaction
 import zeit.cms.browser.view
+import zope.i18n
+
+
+log = logging.getLogger(__name__)
 
 
 class Form(object):
@@ -40,9 +47,22 @@ class Action(zeit.cms.browser.view.Base):
         ))
 
     def render(self):
+        self.request.response.setHeader('Content-Type', 'text/json')
         return cjson.encode(dict(signals=self.signals))
 
     def __call__(self):
         self.signals = []
-        self.update()
+        try:
+            self.update()
+        except ZODB.POSException.ConflictError:
+            raise
+        except Exception, e:
+            log.exception('Error in action')
+            transaction.doom()
+            message = e.args[0]
+            if isinstance(message, zope.i18n.Message):
+                message = zope.i18n.translate(message, context=self.request)
+            self.request.response.setStatus(500)
+            self.request.response.setHeader('Content-Type', 'text/plain')
+            return message
         return self.render()

@@ -22,6 +22,8 @@ zeit.content.cp changes
 
 - Bessere Fehlerbehandlung, wenn aysynchrone Requests fehlschlagen (#6061).
 
+- CPE erzeugt einen sinnvollen Fehler, wenn ein Objekt in den Editor gezogen
+  wird, das es garnicht gibg (#6062).
 
 0.14 (2009-08-21)
 -----------------

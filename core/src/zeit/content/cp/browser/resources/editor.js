@@ -123,7 +123,7 @@ zeit.content.cp.makeJSONRequest = function(
             var message_node = MochiKit.DOM.getFirstElementByTagAndClassName(
                 'pre', null, div);
             if (isNull(message_node)) {
-                var message = req.statusText;
+                var message = error.req.responseText;
             } else {
                 var message = message_node.textContent;
             }

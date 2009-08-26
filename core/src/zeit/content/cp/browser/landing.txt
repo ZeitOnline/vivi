@@ -76,3 +76,14 @@ area on 2+ blocks):
   <div ...class="block type-teaser...
   <div ...class="block type-teaser...
   <div ...class="block type-teaser...
+
+When the content indicated by the uniqueId does not exist a meaningful error is
+reported:
+
+>>> url = '%s?uniqueId=http://xml.zeit.de/holla' % (drop_url,)
+>>> browser.open(url)
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+The object "http://xml.zeit.de/holla" does not exist.
