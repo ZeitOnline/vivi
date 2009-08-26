@@ -53,10 +53,10 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def publish(self, content):
         # for debugging errors during publishing
-#         import logging, sys
-#         logging.root.handlers = []
-#         logging.root.addHandler(logging.StreamHandler(sys.stderr))
-#         logging.root.setLevel(logging.DEBUG)
+        # import logging, sys
+        # logging.root.handlers = []
+        # logging.root.addHandler(logging.StreamHandler(sys.stderr))
+        # logging.root.setLevel(logging.DEBUG)
 
         zeit.cms.workflow.interfaces.IPublish(content).publish()
         tasks = zope.component.getUtility(
@@ -68,6 +68,7 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_teasers_are_added_to_rss_before_publishing(self):
         cp = self.repository['cp']
         self.publish(cp)
+        cp = self.repository['cp']
         items = cp.xml.feed.getchildren()
         self.assertEqual(2, len(items))
         self.assertEqual('reference', items[0].tag)
@@ -77,6 +78,7 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_teasers_are_added_only_once(self):
         cp = self.repository['cp']
         self.publish(cp)
+        cp = self.repository['cp']
 
         with checked_out(cp) as working:
             t3 = self.create_teaser(working)
@@ -84,12 +86,14 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.repository['cp']
 
         self.publish(cp)
+        cp = self.repository['cp']
         items = cp.xml.feed.getchildren()
         self.assertEqual(2, len(items))
 
     def test_number_of_feed_items_is_limited(self):
         cp = self.repository['cp']
         self.publish(cp)
+        cp = self.repository['cp']
 
         with checked_out(cp) as working:
             for i in range(3, 7):
@@ -102,6 +106,7 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.repository['cp']
 
         self.publish(cp)
+        cp = self.repository['cp']
         items = cp.xml.feed.getchildren()
         self.assertEqual(5, len(items))
         # the oldest item ('testcontent') has been purged from the list

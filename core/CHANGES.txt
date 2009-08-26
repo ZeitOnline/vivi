@@ -18,6 +18,8 @@ zeit.content.cp changes
 
 - RSS-Feeds: Domain-Attribut bei <category> optional (#6074).
 
+- Feed-Elemente in der Centerpage werden jetzt korrekt geschrieben.
+
 
 0.14 (2009-08-21)
 -----------------

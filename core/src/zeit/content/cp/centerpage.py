@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
 import UserDict
 import itertools
@@ -8,6 +9,8 @@ import lxml.etree
 import lxml.objectify
 import pkg_resources
 import stabledict
+import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
@@ -126,20 +129,22 @@ class Feed(zeit.cms.related.related.RelatedBase):
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def update_feed_items(context, event):
-    feed = zeit.content.cp.interfaces.ICPFeed(context)
-    items = list(feed.items)
+    with zeit.cms.checkout.helper.checked_out(
+        context, events=False) as co:
+        feed = zeit.content.cp.interfaces.ICPFeed(co)
+        items = list(feed.items)
 
-    for item in zeit.cms.syndication.interfaces.IReadFeed(context):
-        if item not in items:
-            items.insert(0, item)
+        for item in zeit.cms.syndication.interfaces.IReadFeed(context):
+            if item not in items:
+                items.insert(0, item)
 
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.cp')
-    max_items = config['cp-feed-max-items']
-    while len(items) > max_items:
-        del items[-1]
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')
+        max_items = config['cp-feed-max-items']
+        while len(items) > max_items:
+            del items[-1]
 
-    feed.items = items
+        feed.items = items
 
 
 def has_changed(context):
