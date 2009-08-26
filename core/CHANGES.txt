@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-2.6 (unreleased)
+2.6 (2009-08-26)
 ----------------
 
 - Weitere Ersetzungsmöglichkeiten für den CDS-Import-Pfad: `real_year`,
