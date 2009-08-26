@@ -195,6 +195,16 @@ class ICommonMetadata(zope.interface.Interface):
     minimal_header = zope.schema.Bool(
         title=_('Minimal header'))
 
+    sub_type = zope.schema.Choice(
+        title=_('Sub type'),
+        values=(u'Arena', u'Frame', u'Template', u'Iframe'),
+        required=False)
+
+    color_scheme = zope.schema.Choice(
+        title=_('Color scheme'),
+        values=(u'Redaktion', u'Verlag'),
+        default=u'Redaktion')
+
 
 class IDAVPropertyConverter(zope.interface.Interface):
     """Parse a unicode string from a DAV property to a value and vice versa."""
