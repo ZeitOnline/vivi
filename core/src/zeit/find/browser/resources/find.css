@@ -1,5 +1,5 @@
 #fulltext {
-  width: 80%;
+  width: 280px;
   margin-right: .4em;
 }
 
@@ -441,15 +441,15 @@ div.unfolded + #result_filters {
 
   
 #cp-search #search_form {
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
+/*
 #cp-search .unfolded {
 	height: 25%;
-}
+}*/
 
 #cp-search #search_result {
-  overflow-y: auto;
   height: 80%;
 }
 
@@ -460,27 +460,6 @@ div.unfolded + #result_filters {
 #cp-search .h25 {
 	height: 40% !important;
 }
-
-
-#cp-search #extended_search_form,
-#cp-search #result_filters {
-  overflow-y: auto;
- }
- 
-
-/* 1. offen 2. zu */
-
-#cp-search div.unfolded  + #extended_search_form > #extended_search {
-	height: 100px;	
-}
-
-
-/* 1. offen 2. zu */
-
-#cp-search div.button + div + div.unfolded  + #result_filters {
-	height: 100px;
-}
-
 
 
 .zeit-find-search .search_entry .related_entry {
