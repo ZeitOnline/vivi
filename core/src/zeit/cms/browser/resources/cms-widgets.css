@@ -273,15 +273,25 @@ table.properties textarea {
  * */
 #tooltip,
 #drag-pane {
-  border: 1px solid black;
+  border: 0px solid black;
   cursor: move;
-  padding: 5px;
+  padding: 0px;
   position: absolute;
   z-index: 1;
+  height: 200px !important;
+  overflow: hidden;
+}
+
+#drag-pane .filters,
+#drag-pane .related_links,
+#drag-pane .goto-object,
+#drag-pane .preview,
+#drag-pane .related_info {
+	display:none;
 }
 
 #drag-pane {
-  background-color: #fff;
+  background-color: transparent;
   opacity: 0.9;
   overflow: hidden;
 }
