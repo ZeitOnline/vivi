@@ -209,6 +209,14 @@ class ICommonMetadata(zope.interface.Interface):
         values=(u'Redaktion', u'Verlag'),
         default=u'Redaktion')
 
+    countings = zope.schema.Bool(
+        title=_('Countings'),
+        default=True)
+
+    is_content = zope.schema.Bool(
+        title=_('Content'),
+        default=True)
+
 
 class IDAVPropertyConverter(zope.interface.Interface):
     """Parse a unicode string from a DAV property to a value and vice versa."""

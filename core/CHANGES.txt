@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Neues Feld »Banner-Id« (#6088).
 
+- Neue Optionen »Content« und »Countings« (#6104).
+
 
 1.30 (2009-08-26)
 -----------------
