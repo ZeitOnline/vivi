@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Fri Aug 21 14:26:06 2009\n"
-"PO-Revision-Date: 2009-08-21 14:27+0100\n"
+"POT-Creation-Date: Thu Aug 27 11:05:53 2009\n"
+"PO-Revision-Date: 2009-08-27 11:06+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -176,7 +176,6 @@ msgid "The event ends before it starts."
 msgstr "Der Termin endet bevor er beginnt."
 
 #: zeit/calendar/interfaces.py:32
-#: zeit/cms/sitecontrol/tree.py:12
 msgid "Start"
 msgstr "Beginn"
 
@@ -196,7 +195,7 @@ msgstr "Datum des Terminendes"
 #: zeit/cms/browser/listing.py:265
 #: zeit/cms/content/browser/template.py:46
 #: zeit/cms/content/interfaces.py:131
-#: zeit/cms/content/interfaces.py:303
+#: zeit/cms/content/interfaces.py:332
 #: zeit/cms/syndication/browser/feed.py:157
 #: zeit/cms/syndication/browser/manager.py:98
 #: zeit/cms/syndication/interfaces.py:51
@@ -492,15 +491,15 @@ msgstr "Die angegebene Id ist nicht gültig."
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
-#: zeit/cms/checkout/browser/manager.py:110
+#: zeit/cms/checkout/browser/manager.py:111
 msgid "Checkout ^O"
 msgstr "Auschecken ^O"
 
-#: zeit/cms/checkout/browser/manager.py:122
+#: zeit/cms/checkout/browser/manager.py:123
 msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
-#: zeit/cms/checkout/browser/manager.py:133
+#: zeit/cms/checkout/browser/manager.py:134
 msgid "Checkin (correction)"
 msgstr "Einchecken (Korrektur)"
 
@@ -515,7 +514,7 @@ msgid "\"${name}\" was already checked out."
 msgstr "»${name}« wurde ausgecheckt."
 
 #. Default: ""
-#: zeit/cms/checkout/browser/manager.py:66
+#: zeit/cms/checkout/browser/manager.py:67
 msgid "\"${name}\" has been checked in."
 msgstr "»${name}« wurde eingecheckt."
 
@@ -597,7 +596,7 @@ msgstr "Texte"
 msgid "Options"
 msgstr "Optionen"
 
-#: zeit/cms/content/browser/form.py:67
+#: zeit/cms/content/browser/form.py:69
 #: zeit/content/article/browser/form.py:36
 #: zeit/content/article/browser/recension.py:71
 msgid "misc."
@@ -791,31 +790,62 @@ msgid "Banner"
 msgstr "Banner"
 
 #: zeit/cms/content/interfaces.py:184
+msgid "Banner id"
+msgstr "Banner-Id"
+
+#: zeit/cms/content/interfaces.py:188
 msgid "Product id"
 msgstr "Produkt-Id"
 
-#: zeit/cms/content/interfaces.py:260
+#: zeit/cms/content/interfaces.py:196
+msgid "Foldable"
+msgstr "Einklappbar"
+
+#: zeit/cms/content/interfaces.py:200
+msgid "Minimal header"
+msgstr "Minimal-Header"
+
+#: zeit/cms/content/interfaces.py:203
+msgid "Sub type"
+msgstr "Sub-Typ"
+
+#: zeit/cms/content/interfaces.py:208
+msgid "Color scheme"
+msgstr "Farbwelt"
+
+#: zeit/cms/content/interfaces.py:213
+msgid "Countings"
+msgstr "Countings"
+
+#: zeit/cms/content/interfaces.py:217
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/content/article/browser/form.py:77
+#: zeit/content/text/interfaces.py:34
+msgid "Content"
+msgstr "Inhalt"
+
+#: zeit/cms/content/interfaces.py:289
 #: zeit/content/cp/interfaces.py:288
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:329
+#: zeit/cms/content/interfaces.py:358
 msgid "Hits today"
 msgstr "Treffer heute"
 
-#: zeit/cms/content/interfaces.py:330
+#: zeit/cms/content/interfaces.py:359
 msgid "Indicates how many times a page viewed today."
 msgstr "Gibt an wie oft die Seite heute angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:335
+#: zeit/cms/content/interfaces.py:364
 msgid "Total hits"
 msgstr "Gesamttreffer"
 
-#: zeit/cms/content/interfaces.py:336
+#: zeit/cms/content/interfaces.py:365
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr "Gibt an wie oft die Seite insgesamt angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:363
+#: zeit/cms/content/interfaces.py:392
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
@@ -1136,6 +1166,10 @@ msgstr "Vorgabe für Ausgabe"
 msgid "Site control"
 msgstr "Site-Steuerung"
 
+#: zeit/cms/sitecontrol/tree.py:12
+msgid "Homepage"
+msgstr "Homepage"
+
 #: zeit/cms/syndication/browser/configure.zcml:156
 #: zeit/cms/syndication/browser/manager.pt:16
 msgid "Syndicate"
@@ -1343,12 +1377,6 @@ msgstr "Zuerst veröffentlicht am"
 #: zeit/cms/workflow/interfaces.py:63
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
-
-#: zeit/cms/workingcopy/browser/configure.zcml:22
-#: zeit/content/article/browser/form.py:77
-#: zeit/content/text/interfaces.py:34
-msgid "Content"
-msgstr "Inhalt"
 
 #: zeit/cms/workingcopy/browser/sidebar.pt:13
 msgid "Edited documents"
@@ -1642,6 +1670,11 @@ msgstr "Centerpage hinzufügen"
 msgid "View centerpage metadata"
 msgstr "Metadaten"
 
+#. Default: ""
+#: zeit/content/cp/browser/landing.py:68
+msgid "The object \"${name}\" does not exist."
+msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
+
 #: zeit/content/cp/browser/layout.informatives.edit.pt:3
 msgid "+ Add block"
 msgstr "+ Block hinzufügen"
@@ -1652,7 +1685,7 @@ msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
 
 #: zeit/content/cp/browser/publish.pt:18
 msgid "Cannot publish since validation rules are violated."
-msgstr "${id} hat Validierungsfehler und kann daher nicht veröffentlicht werden."
+msgstr "Die CenterPage kann nicht veröffentlicht werden, weil die Validierungsregeln verletzt sind (rote Bereiche)."
 
 #: zeit/content/cp/browser/publish.pt:6
 msgid "Checking in"
@@ -1707,7 +1740,7 @@ msgstr "Log"
 msgid "Could not publish ${id} since it has validation errors."
 msgstr "${id} hat Validierungsfehler und  kann daher nicht veröffentlicht werden."
 
-#: zeit/content/cp/centerpage.py:71
+#: zeit/content/cp/centerpage.py:76
 msgid "Centerpage 2009"
 msgstr "Center-Page 2009"
 
@@ -1847,7 +1880,7 @@ msgstr "Zuschneiden"
 
 #: zeit/content/gallery/browser/configure.zcml:91
 #: zeit/content/image/browser/imagebrowser.py:12
-#: zeit/content/image/interfaces.py:184
+#: zeit/content/image/interfaces.py:189
 #: zeit/content/image/browser/configure.zcml:149
 msgid "Images"
 msgstr "Bilder"
@@ -2029,7 +2062,7 @@ msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
 #: zeit/content/image/browser/imagegroup.py:93
-#: zeit/content/image/interfaces.py:147
+#: zeit/content/image/interfaces.py:152
 msgid "Master image"
 msgstr "Hauptbild"
 
@@ -2061,7 +2094,7 @@ msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, wei
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:194
+#: zeit/content/image/interfaces.py:199
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 

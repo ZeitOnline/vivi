@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Aug 21 14:26:06 2009\n"
+"POT-Creation-Date: Thu Aug 27 11:05:53 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -188,7 +188,6 @@ msgid "The event ends before it starts."
 msgstr ""
 
 #: zeit/calendar/interfaces.py:32
-#: zeit/cms/sitecontrol/tree.py:12
 msgid "Start"
 msgstr ""
 
@@ -208,7 +207,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:265
 #: zeit/cms/content/browser/template.py:46
 #: zeit/cms/content/interfaces.py:131
-#: zeit/cms/content/interfaces.py:303
+#: zeit/cms/content/interfaces.py:332
 #: zeit/cms/syndication/browser/feed.py:157
 #: zeit/cms/syndication/browser/manager.py:98
 #: zeit/cms/syndication/interfaces.py:51
@@ -507,15 +506,15 @@ msgstr ""
 msgid "The object could not be found."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:110
+#: zeit/cms/checkout/browser/manager.py:111
 msgid "Checkout ^O"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:122
+#: zeit/cms/checkout/browser/manager.py:123
 msgid "Checkin ^I"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:133
+#: zeit/cms/checkout/browser/manager.py:134
 msgid "Checkin (correction)"
 msgstr ""
 
@@ -529,7 +528,7 @@ msgstr ""
 msgid "\"${name}\" was already checked out."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:66
+#: zeit/cms/checkout/browser/manager.py:67
 #. Default: ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
@@ -616,7 +615,7 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: zeit/cms/content/browser/form.py:67
+#: zeit/cms/content/browser/form.py:69
 #: zeit/content/article/browser/form.py:36
 #: zeit/content/article/browser/recension.py:71
 msgid "misc."
@@ -810,31 +809,62 @@ msgid "Banner"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:184
+msgid "Banner id"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:188
 msgid "Product id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:260
+#: zeit/cms/content/interfaces.py:196
+msgid "Foldable"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:200
+msgid "Minimal header"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:203
+msgid "Sub type"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:208
+msgid "Color scheme"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:213
+msgid "Countings"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:217
+#: zeit/cms/workingcopy/browser/configure.zcml:22
+#: zeit/content/article/browser/form.py:77
+#: zeit/content/text/interfaces.py:34
+msgid "Content"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:289
 #: zeit/content/cp/interfaces.py:288
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:329
+#: zeit/cms/content/interfaces.py:358
 msgid "Hits today"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:330
+#: zeit/cms/content/interfaces.py:359
 msgid "Indicates how many times a page viewed today."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:335
+#: zeit/cms/content/interfaces.py:364
 msgid "Total hits"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:336
+#: zeit/cms/content/interfaces.py:365
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:363
+#: zeit/cms/content/interfaces.py:392
 msgid "Last semantic change"
 msgstr ""
 
@@ -1155,6 +1185,10 @@ msgstr ""
 msgid "Site control"
 msgstr ""
 
+#: zeit/cms/sitecontrol/tree.py:12
+msgid "Homepage"
+msgstr ""
+
 #: zeit/cms/syndication/browser/configure.zcml:156
 #: zeit/cms/syndication/browser/manager.pt:16
 msgid "Syndicate"
@@ -1362,12 +1396,6 @@ msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:63
 msgid "Publication state"
-msgstr ""
-
-#: zeit/cms/workingcopy/browser/configure.zcml:22
-#: zeit/content/article/browser/form.py:77
-#: zeit/content/text/interfaces.py:34
-msgid "Content"
 msgstr ""
 
 #: zeit/cms/workingcopy/browser/sidebar.pt:13
@@ -1669,6 +1697,11 @@ msgstr ""
 msgid "View centerpage metadata"
 msgstr ""
 
+#: zeit/content/cp/browser/landing.py:68
+#. Default: ""
+msgid "The object \"${name}\" does not exist."
+msgstr ""
+
 #: zeit/content/cp/browser/layout.informatives.edit.pt:3
 msgid "+ Add block"
 msgstr ""
@@ -1734,7 +1767,7 @@ msgstr ""
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:71
+#: zeit/content/cp/centerpage.py:76
 msgid "Centerpage 2009"
 msgstr ""
 
@@ -1881,7 +1914,7 @@ msgstr ""
 #: zeit/content/gallery/browser/configure.zcml:91
 #: zeit/content/gallery/browser/configure.zcml:91
 #: zeit/content/image/browser/imagebrowser.py:12
-#: zeit/content/image/interfaces.py:184
+#: zeit/content/image/interfaces.py:189
 #: zeit/content/image/browser/configure.zcml:149
 msgid "Images"
 msgstr ""
@@ -2090,7 +2123,7 @@ msgid "Image group metadata"
 msgstr ""
 
 #: zeit/content/image/browser/imagegroup.py:93
-#: zeit/content/image/interfaces.py:147
+#: zeit/content/image/interfaces.py:152
 msgid "Master image"
 msgstr ""
 
@@ -2122,7 +2155,7 @@ msgstr ""
 msgid "Image Group"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:194
+#: zeit/content/image/interfaces.py:199
 msgid "Objects using this image"
 msgstr ""
 
