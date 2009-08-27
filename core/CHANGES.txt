@@ -4,7 +4,7 @@ zeit.cms changes
 1.31 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Neues Feld »Banner-Id« (#6088).
 
 
 1.30 (2009-08-26)

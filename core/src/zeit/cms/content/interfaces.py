@@ -180,6 +180,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Banner"),
         default=True)
 
+    banner_id = zope.schema.TextLine(
+        title=_('Banner id'),
+        required=False)
+
     product_id = zope.schema.Choice(
         title=_('Product id'),
         default='ZEDE',
