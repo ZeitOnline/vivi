@@ -65,7 +65,8 @@ class TeaserBlockLandingZone(LandingZone):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
         if content is None:
             raise ValueError(
-                _('The object "%s" does not exist.' % self.uniqueId))
+                _('The object "${name}" does not exist.', mapping=dict(
+                    name=self.uniqueId)))
         self.block.insert(0, content)
         related = zeit.cms.related.interfaces.IRelatedContent(content, None)
         if related is not None:
