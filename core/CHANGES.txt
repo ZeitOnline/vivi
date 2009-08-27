@@ -1,8 +1,8 @@
 zeit.content.cp changes
 =======================
 
-0.16 (unreleased)
------------------
+0.15.1 (2009-08-27)
+-------------------
 
 - I18N-Message-Id repariert.
 
