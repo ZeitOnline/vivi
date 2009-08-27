@@ -78,4 +78,5 @@ factor('print_archive', u'Print Archiv',
        zeit.content.cp.interfaces.IInformatives)
 factor('blindblock', u'Blindblock',
        zeit.content.cp.interfaces.IInformatives)
+factor('homepage_news', u'Neu auf Zeit Online')
 factor('dpa-news', u'dpa-News')

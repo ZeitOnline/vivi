@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.16 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- ``cp_extra`` Block hinzugefügt: homepage_news
 
 
 0.15.1 (2009-08-27)
