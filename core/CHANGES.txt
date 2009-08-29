@@ -1,8 +1,8 @@
 zeit.wysiwyg changes
 ====================
 
-1.32 (unreleased)
------------------
+1.31.1 (2009-08-29)
+-------------------
 
 - Nothing changed yet.
 
