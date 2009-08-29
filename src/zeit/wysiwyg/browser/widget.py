@@ -10,7 +10,7 @@ import zope.component
 TEMPLATE = """
 <script type="text/javascript">
 var fckeditor = new FCKeditor('%(field_name)s');
-fckeditor.BasePath = '/%(gocept_fckeditor)s/';
+fckeditor.BasePath = '%(gocept_fckeditor)s/';
 fckeditor.Height = 400;
 fckeditor.ToolbarSet = 'Zeit';
 fckeditor.Config['CustomConfigurationsPath'] = '%(zeit_wysiwyg)s/config.js';
