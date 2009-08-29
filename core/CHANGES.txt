@@ -4,13 +4,13 @@ zeit.wysiwyg changes
 1.32 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- URL zum FCKEditor repariert.
 
 
 1.31.1 (2009-08-29)
 -------------------
 
-- Nothing changed yet.
+- Brown bag release.
 
 
 1.31 (2009-08-21)
