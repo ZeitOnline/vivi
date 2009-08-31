@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.16 (unreleased)
+0.16 (2009-08-31)
 -----------------
 
 - Sortieren der Blöcke innerhalb eines MR funktioniert wieder (#6112).
