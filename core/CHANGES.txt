@@ -4,6 +4,10 @@ zeit.content.cp changes
 0.16 (unreleased)
 -----------------
 
+- Teaser sortieren funktioniert, wenn zerbrochene Objekt-Referenzen im
+  XML stehen (#6133).
+
+
 - Autopilot funktioniert jetzt auch, wenn ein Channel eingebunden wurde, der
   Referenzen auf nicht (mehr) vorhandene Objekte enthält.
 

@@ -174,22 +174,23 @@ class EditContents(zeit.cms.browser.view.Base):
         for content in self.context:
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
-            if metadata is None:
-                # XXX warn? Actually such a content shouldn't be here in the
-                # first place. We'll see.
-                continue
-            editable = zeit.cms.checkout.interfaces.ICheckoutManager(
-                content).canCheckout
             locking_indicator = None
-            if not editable:
-                locking_indicator = zope.component.queryMultiAdapter(
-                    (content, self.request), name='get_locking_indicator')
+            if metadata is None:
+                title = content.uniqueId
+                editable = False
+            else:
+                title = metadata.teaserTitle
+                editable = zeit.cms.checkout.interfaces.ICheckoutManager(
+                    content).canCheckout
+                if not editable:
+                    locking_indicator = zope.component.queryMultiAdapter(
+                        (content, self.request), name='get_locking_indicator')
             teasers.append(dict(
                 css_class='edit-bar teaser',
                 deletable=True,
                 editable=editable,
                 locking_indicator=locking_indicator,
-                teaserTitle=metadata.teaserTitle,
+                teaserTitle=title,
                 uniqueId=content.uniqueId,
             ))
 
