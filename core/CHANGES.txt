@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.32 (unreleased)
------------------
+1.31.1 (2009-08-31)
+-------------------
 
 - Metadaten von Bildern in den bearbeiteten Dokumenten gehen nicht mehr kaputt,
   wenn das Bild gelöscht wurde (#6132).
