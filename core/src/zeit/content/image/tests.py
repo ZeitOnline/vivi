@@ -51,6 +51,12 @@ class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
         metadata = zeit.content.image.interfaces.IImageMetadata(self.img)
         self.assertEqual(u'Image title', metadata.title)
 
+    def test_in_workingcopy_when_removed_in_repository(self):
+        with zeit.cms.checkout.helper.checked_out(self.img) as co:
+            del self.group[self.img.__name__]
+            metadata = zeit.content.image.interfaces.IImageMetadata(co)
+            self.assertEqual(None, metadata.title)
+
 
 def test_suite():
     suite = unittest.TestSuite()

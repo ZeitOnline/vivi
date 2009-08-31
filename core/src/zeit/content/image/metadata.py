@@ -53,7 +53,10 @@ def metadata_for_image(image):
     # Be sure to get the image in the repository
     parent = None
     if image.uniqueId:
-        parent = zeit.cms.interfaces.ICMSContent(image.uniqueId).__parent__
+        image_in_repository = parent = zeit.cms.interfaces.ICMSContent(
+            image.uniqueId, None)
+        if image_in_repository is not None:
+            parent = image_in_repository.__parent__
     if zeit.content.image.interfaces.IImageGroup.providedBy(parent):
         # The image *is* in an image group.
         if metadata.acquire_metadata is None or metadata.acquire_metadata:

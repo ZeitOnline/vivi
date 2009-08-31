@@ -4,7 +4,8 @@ zeit.cms changes
 1.32 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Metadaten von Bildern in den bearbeiteten Dokumenten gehen nicht mehr kaputt,
+  wenn das Bild gelöscht wurde (#6132).
 
 
 1.31 (2009-08-27)

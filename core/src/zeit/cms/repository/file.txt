@@ -147,6 +147,15 @@ Writing works as usual:
 >>> local.mimeType
 ''
 
+A local file, which has been removed from the repository, but does not have
+data by itself will return an empty file:
+
+>>> local = zeit.cms.repository.file.LocalFile()
+>>> local.uniqueId = 'http://xml.zeit.de/foo'
+>>> f = local.open()
+>>> f.read()
+''
+
 
 Integration
 +++++++++++

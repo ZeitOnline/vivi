@@ -68,8 +68,12 @@ class LocalFile(persistent.Persistent, RepositoryFile):
 
         if self.local_data is None:
             if mode == 'r':
-                data = super(LocalFile, self).open()
-                return data
+                try:
+                    data = super(LocalFile, self).open()
+                except KeyError:
+                    pass
+                else:
+                    return data
             self.local_data = ZODB.blob.Blob()
 
         return self.local_data.open(mode)
