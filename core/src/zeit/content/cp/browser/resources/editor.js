@@ -116,23 +116,28 @@ zeit.content.cp.makeJSONRequest = function(
         return result;
     },
     function(error) {
-        zeit.cms.log_error(error);
-        if (!isUndefinedOrNull(error.req)) {
-            var div = DIV();
-            div.innerHTML = error.req.responseText;
-            var message_node = MochiKit.DOM.getFirstElementByTagAndClassName(
-                'pre', null, div);
-            if (isNull(message_node)) {
-                var message = error.req.responseText;
-            } else {
-                var message = message_node.textContent;
-            }
-            alert(message);
-            MochiKit.Signal.signal(target_component, 'reload');
-        }
+        zeit.cms.cp.handle_json_errors(error);
+        MochiKit.Signal.signal(target_component, 'reload');
         return error;
     });
     return d;
+}
+
+zeit.content.cp.handle_json_errors = function(error) {
+    zeit.cms.log_error(error);
+    if (!isUndefinedOrNull(error.req)) {
+        var div = DIV();
+        div.innerHTML = error.req.responseText;
+        var message_node = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'pre', null, div);
+        if (isNull(message_node)) {
+            var message = error.req.responseText;
+        } else {
+            var message = message_node.textContent;
+        }
+        alert(message);
+    }
+    return error
 }
 
 zeit.content.cp.resolveDottedName = function(name) {
@@ -537,18 +542,22 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
 
     on_update: function(element) {
         var self = this;
-        var data = {keys: self.serialize()};
+        var data = MochiKit.Base.serializeJSON({
+            keys: self.serialize(),
+        });
         var url = self.options()['update_url'];
         if (isUndefinedOrNull(url)) {
             var url = $(self.container).getAttribute(
                 'cms:url') + '/@@updateOrder';
         }
-        var d = zeit.content.cp.makeJSONRequest(url, data)
+        var d = MochiKit.Async.doXHR(url, {
+            method: 'POST',
+            sendContent: data});
         // We don't have do anything on success as the ordering is already
         // applied in the HTML.
+        d.addErrback(zeit.content.cp.handle_json_errors);
         return d;
     },
-
 
     get_handle: function(element) {
         return null;  // make the whole element draggable
@@ -581,7 +590,7 @@ zeit.content.cp.BlockSorter = zeit.content.cp.Sortable.extend({
 
     get_sortable_nodes: function() {
         var self = this;
-        var selector = '#' + self.container + ' > div.block';
+        var selector = '#' + self.container + ' > div.block[id]';
         return $$(selector);
     },
 

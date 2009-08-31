@@ -4,6 +4,8 @@ zeit.content.cp changes
 0.16 (unreleased)
 -----------------
 
+- Sortieren der Blöcke innerhalb eines MR funktioniert wieder (#6112).
+
 - Teaser sortieren funktioniert, wenn zerbrochene Objekt-Referenzen im
   XML stehen (#6133).
 
