@@ -4,7 +4,8 @@ zeit.cms changes
 1.32 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Bessere Fehlerbeschreibung, wenn Bildergruppen referenziert werden, die
+  plötzlich keine Bildergruppen mehr sind (#6137).
 
 
 1.31.1 (2009-08-31)

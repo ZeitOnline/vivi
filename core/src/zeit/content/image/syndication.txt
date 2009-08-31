@@ -188,6 +188,20 @@ The content has changed automatically:
 </testtype>
 
 
+When a referenfced image group looses its type, the updater doesn't puke:
+
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> connector.changeProperties(
+...     'http://xml.zeit.de/image-group', {
+...     zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY: 'folder'})
+>>> feed.updateMetadata(repository['testcontent'])
+Traceback (most recent call last):
+    ...
+ValueError: Could not create xml reference 'image'
+    for http://xml.zeit.de/image-group 
+    which is referenced in http://xml.zeit.de/testcontent.
+
 
 Reference index
 ===============
