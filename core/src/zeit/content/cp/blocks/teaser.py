@@ -125,17 +125,17 @@ class AutoPilotTeaserBlock(TeaserBlock):
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
     referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
-    def iterentries(self):
+    def __iter__(self):
         if self.autopilot:
             feed = zeit.cms.syndication.interfaces.IReadFeed(
                 self.referenced_cp)
             return iter(feed)
         else:
-            return super(AutoPilotTeaserBlock, self).iterentries()
+            return super(AutoPilotTeaserBlock, self).__iter__()
 
     def keys(self):
         if self.autopilot:
-            return [c.uniqueId for c in self.iterentries()]
+            return [c.uniqueId for c in self]
         else:
             return super(AutoPilotTeaserBlock, self).keys()
 
