@@ -537,20 +537,15 @@ zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
 
     on_update: function(element) {
         var self = this;
-        var data = MochiKit.Base.serializeJSON({
-            keys: self.serialize(),
-        });
+        var data = {keys: self.serialize()};
         var url = self.options()['update_url'];
         if (isUndefinedOrNull(url)) {
             var url = $(self.container).getAttribute(
                 'cms:url') + '/@@updateOrder';
         }
-        var d = MochiKit.Async.doXHR(url, {
-            method: 'POST',
-            sendContent: data});
+        var d = zeit.content.cp.makeJSONRequest(url, data)
         // We don't have do anything on success as the ordering is already
         // applied in the HTML.
-        // XXX error handling!
         return d;
     },
 
