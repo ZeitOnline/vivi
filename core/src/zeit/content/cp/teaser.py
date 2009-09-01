@@ -64,4 +64,5 @@ class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaser)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 def images_for_teaser(context):
-    return zeit.content.image.interfaces.IImages(context.original_content)
+    return zeit.content.image.interfaces.IImages(
+        context.original_content, None)
