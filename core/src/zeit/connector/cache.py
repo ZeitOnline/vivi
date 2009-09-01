@@ -331,18 +331,18 @@ class Properties(persistent.mapping.PersistentMapping):
         if not (old.keys()
                 == commited.keys()
                 == newstate.keys()
-                == ['_container']):
-            # We can only resolve _container.
+                == ['data']):
+            # We can only resolve data.
             raise ZODB.POSException.ConflictError
-        commited_data = commited['_container']
-        newstate_data = newstate['_container'].copy()
+        commited_data = commited['data']
+        newstate_data = newstate['data'].copy()
 
         commited_data.pop(('cached-time', 'INTERNAL'), None)
         newstate_data.pop(('cached-time', 'INTERNAL'), None)
         if newstate_data == commited_data:
             return newstate
         # Completely invalidate cache entry when we cannot resolve.
-        old['_container'] = {zeit.connector.interfaces.DeleteProperty: None}
+        old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
     def __setitem__(self, key, value):

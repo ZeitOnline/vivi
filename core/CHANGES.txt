@@ -4,7 +4,7 @@ CHANGES
 1.18.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed Property conflict resolution with ZODB 3.9.0c
 
 
 1.18.1 (2009-08-18)
