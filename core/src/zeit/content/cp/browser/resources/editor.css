@@ -84,7 +84,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: auto;
   top: 2.2em;
   background: #EEF3F7;
 }
@@ -187,7 +186,6 @@
 }
 
 .lightbox > div.tab-content {
-  top: 2em;
   overflow-y: auto;
 }
 
@@ -549,7 +547,6 @@
 
 .leader-two-columns > img,
 .leader > img {
-  margin: 0.5em 0;
   width: 100%;
 }
 
@@ -567,22 +564,26 @@
 /* layout chooser */
 
 .layout-chooser.teaser {
-  border-top: 3px solid #aaa;
+  border-top: 0px solid #aaa;
   margin: 0.5em;
 }
 
 .layout-chooser.teaser > .layout-inner {
-  width: 25%;
-  float: left;
+  position:relative;
+  border:1px solid #CCCCCC;
+  float:left;
+  width:175px;
+  height:266px;
+  margin:0 10px 10px 0;
 }
 
 .layout-chooser.teaserbar > .layout-inner {
   height: 30%;
 }
-
+	
 .layout-chooser > .layout-inner > a {
   display: block;
-  margin: 1em;
+  margin: 0;
   opacity: 0.5;
 }
 
@@ -594,9 +595,21 @@
 
 
 .layout-chooser > .layout-inner > a > img {
-  border: none;
-  display: block;
-  width: 100%;
+  border:0 solid #888888;
+  position: absolute;
+  margin: 58px 0px 0px 6px;
+  display:block;
+  width:160px;
+}
+
+.layout-chooser > .layout-inner > a > span {
+  background-color:#CCCCCC;
+  display:block;
+  padding:3px;
+  width:170px;
+  height: 47px;
+  margin-top: 0px;
+  position:absolute;
 }
 
 /* Teaser list editing */
