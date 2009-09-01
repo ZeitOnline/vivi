@@ -266,10 +266,11 @@ We can now only edit the local copy:
 >>> browser.getControl('Teaser text').value
 'Local teaser text'
 >>> browser.getControl('Teaser title').value = 'Very local teaser title'
->>> browser.getControl('Apply only for this page')
+>>> browser.getControl('Apply for article')
 Traceback (most recent call last):
-LookupError: label 'Apply only for this page'
->>> browser.getControl('Apply for article').click()
+    ...
+LookupError: label 'Apply for article'
+>>> browser.getControl('Apply only for this page').click()
 
 The original article is still unchanged:
 

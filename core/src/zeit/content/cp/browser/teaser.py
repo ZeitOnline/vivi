@@ -109,8 +109,24 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
     def form(self):
         return super(EditTeaser, self).template
 
-    @zope.formlib.form.action(_('Apply for article'), name='apply')
+    def _is_teaser(self, action):
+        return zeit.content.cp.interfaces.ITeaser.providedBy(
+            self.context.get_proxied_object())
+
+    def _is_not_teaser(self, action):
+        return not self._is_teaser(action)
+
+    @zope.formlib.form.action(_('Apply for article'), name='apply',
+                              condition=_is_not_teaser)
     def apply(self, action, data):
+        self._apply(data)
+
+    @zope.formlib.form.action(
+        _('Apply only for this page'), condition=_is_teaser)
+    def apply_in_teaser(self, action, data):
+        self._apply(data)
+
+    def _apply(self, data):
         changed = zope.formlib.form.applyChanges(
             self.context, self.form_fields, data, self.adapters)
         if changed:
@@ -118,10 +134,6 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
                 self.context)
             manager.checkin()
             self.close = True
-
-    def _is_not_teaser(self, action):
-        return not zeit.content.cp.interfaces.ITeaser.providedBy(
-            self.context.get_proxied_object())
 
     @zope.formlib.form.action(
         _('Apply only for this page'), condition=_is_not_teaser)

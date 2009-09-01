@@ -4,6 +4,8 @@ zeit.content.cp changes
 0.17 (unreleased)
 -----------------
 
+- Bessere Texte beim Bearbeiten von Teasern in der CP (#6144)
+
 - ``cp_extra`` Block hinzugefügt: authors-register
 
 
