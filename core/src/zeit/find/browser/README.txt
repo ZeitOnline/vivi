@@ -117,7 +117,20 @@ The favorites tab now lists the favorited object:
  'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
 
 
-Calling the same view again removes the object from the favorites:
+The view does not break when there is a clip in the favorites. The clip isn't
+shown though:
+
+>>> import zeit.cms.clipboard.entry
+>>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
+>>> browser.open('http://localhost:8080/++skin++cms/favorites')
+>>> result = cjson.decode(browser.contents)
+>>> len(result['results'])
+1
+>>> del clipboard['Favoriten']['Clip']
+
+
+
+Calling the toggle view again removes the object from the favorites:
 
 >>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
 >>> pprint.pprint(cjson.decode(browser.contents))

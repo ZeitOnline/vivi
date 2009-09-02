@@ -402,7 +402,11 @@ class Favorites(SearchResultBase):
 
     def json(self):
         favorites = get_favorites(self.request)
-        result = [fav.references for fav in favorites.values()
+        result = [
+            fav for fav in favorites.values()
+            if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
+                fav)]
+        result = [fav.references for fav in result
                   if fav.references is not None]
         return self.results(result)
 
