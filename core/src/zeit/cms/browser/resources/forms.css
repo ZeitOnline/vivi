@@ -191,7 +191,11 @@ form .field label[for="form.shortTeaserTitle"],
 form .field label[for="form.shortTeaserText"],
 form .field label[for="form.hpTeaserTitle"],
 form .field label[for="form.hpTeaserText"],
-form .field label[for="form.artbox_thema"]
+form .field label[for="form.artbox_thema"],
+form .field label[for="form.comment_id"],
+form .field label[for="form.infobox"],
+form .field label[for="form.portraitbox"],
+form .field label[for="form.embedded_gallery"]
 {
 	display: none;
 }
@@ -206,10 +210,23 @@ form .field textarea[id="form.shortTeaserTitle"],
 form .field textarea[id="form.shortTeaserText"],
 form .field textarea[id="form.hpTeaserTitle"],
 form .field textarea[id="form.hpTeaserText"],
-form .field input[id="form.artbox_thema"]
+form .field input[id="form.artbox_thema"],
+form .field input[id="form.comment_id"],
+form .field input[id="form.comment_id"] + input,
+form .field input[id="form.comment_id"] + input +input,
+form .field input[id="form.infobox"],
+form .field input[id="form.infobox"] + input,
+form .field input[id="form.infobox"] + input +input,
+form .field input[id="form.portraitbox"],
+form .field input[id="form.portraitbox"] + input,
+form .field input[id="form.portraitbox"] + input + input,
+form .field input[id="form.embedded_gallery"],
+form .field input[id="form.embedded_gallery"] + input,
+form .field input[id="form.embedded_gallery"] + input + input
 {
 	display: none;
 }
+
 
 form .wide-widgets .field .object-widget > .object-reference {
     width: 80%;
