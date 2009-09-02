@@ -32,7 +32,7 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
         result = zeit.find.search.search(q)
         self.assertEquals(606, result.hits)
         self.assertEquals(
-            'http://xml.zeit.de/online/2009/26/obama-tabakgesetz',
+            'http://xml.zeit.de/online/2007/01/Somalia',
             result.docs[0]['uniqueId'])
 
 

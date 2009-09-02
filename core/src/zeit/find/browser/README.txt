@@ -48,6 +48,7 @@ The index of the CMS (ISite) is a search whyen using the vivi skin:
     ...
 
 
+
 JSON views
 ==========
 
@@ -72,7 +73,6 @@ data for dropdowns/selects:
            {'title': 'Folder', 'type': 'collection'}...
 
     
-
 
 Favorites
 ---------
@@ -141,7 +141,55 @@ The clip persists, but is now empty:
 >>> clipboard["Favoriten"].keys()
 []
 
+
+Search
+======
+
+The search view returns all data for rendering the result:
+
+>>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> result = cjson.decode(browser.contents)
+>>> pprint.pprint(result)
+{'results': [{'application_url': 'http://localhost:8080/++skin++cms',
+             ...
+ 'template_url': 'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/@@/zeit.find/search_result.jsont'}
+
+Favorites are marked in the search result as well:
+
+>>> first_result = result['results'][0]
+>>> pprint.pprint(first_result)
+{...
+ 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorited': False,
+ 'favorited_css_class': 'toggle_favorited not_favorited',
+ ...
+
+Toggle favorite and search again:
+
+>>> browser.open(first_result['favorite_url'])
+>>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> result = cjson.decode(browser.contents)
+>>> first_result = result['results'][0]
+>>> pprint.pprint(first_result)
+{...
+ 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorited': True,
+ 'favorited_css_class': 'toggle_favorited favorited',
+ ...
+
+This also works if there is a Clip in the favorites:
  
+>>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
+>>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> result = cjson.decode(browser.contents)
+>>> first_result = result['results'][0]
+>>> pprint.pprint(first_result)
+{...
+ 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorited': True,
+ 'favorited_css_class': 'toggle_favorited favorited',
+ ...
+
 
 Footnotes
 =========

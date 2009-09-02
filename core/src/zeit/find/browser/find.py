@@ -249,6 +249,9 @@ class SearchResult(SearchResultBase):
         """
         favorite_uniqueIds = set()
         for favorite in get_favorites(self.request).values():
+            if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
+                favorite):
+                continue
             uniqueId = favorite.referenced_unique_id
             if not uniqueId:
                 continue
@@ -420,7 +423,6 @@ class Favorites(SearchResultBase):
 
     def get_favorited(self, result):
         return True
-
 
     def get_icon(self, result):
         icon = zope.component.queryMultiAdapter(

@@ -6,6 +6,9 @@ zeit.find changes
 
 - Die Suche hat jetzt eine Scrollbar je Box statt eine insgesamt (#6032).
 
+- Es ist jetzt möglich einen Clip in den Favoriten zu haben, ohne dass die
+  Suche kaputt geht (#6163).
+
 
 0.12 (2009-08-21)
 -----------------
