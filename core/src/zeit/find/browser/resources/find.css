@@ -1,15 +1,16 @@
 #fulltext {
-  width: 280px;
+  width: 80%;
   margin-right: .4em;
 }
 
 #cp-search .search_result {
   clear: both;
-  padding: 0;
+  padding: 1em 0 0 0;
 }
 
 .search_entry:hover {
   border: 1px solid #bbb;  
+  //outline: 2px solid #ddd;
 }
 
 .search_entry {
@@ -35,10 +36,6 @@
 
 .search_result {
 	background-color: #F2F2F2;
-}
-
-#cp-forms .search_result {
-	background: transparent;	
 }
 
 .search_entry .supertitle {
@@ -131,7 +128,7 @@
 
 
 .zeit-find-search .button{
-  border-top: 0px solid #ddd;
+  border-top: 1px solid #ddd;
   clear: both;
   cursor: pointer;
   margin: 1em 0;
@@ -139,6 +136,7 @@
   background: transparent url(opener.png) no-repeat 0px 5px;
 }
 
+<<<<<<< .working
 div.unfolded + #extended_search_form,
 div.unfolded + #result_filters {
 	background-color: #fff;
@@ -181,6 +179,8 @@ div.unfolded + #result_filters {
 }
 
 
+=======
+>>>>>>> .merge-right.r17503
 #zeit-find-search-form .unfolded {
   background: transparent url(opener_close.png) no-repeat 0px 5px;
 }
@@ -277,7 +277,7 @@ div.unfolded + #result_filters {
   display: block;
   float: left;
   font-style: italic;
-  margin-left: 1.5em;
+  margin-left: 1em;
   padding-bottom: 0.25em;
   white-space: nowrap;
 }
@@ -441,26 +441,8 @@ div.unfolded + #result_filters {
 
   
 #cp-search #search_form {
-  overflow-y: auto;
+  overflow-y: scroll;
 }
-
-/*
-#cp-search .unfolded {
-	height: 25%;
-}*/
-
-#cp-search #search_result {
-  height: 80%;
-}
-
-#cp-search .h50 {
-	height: 60% !important;
-}
-
-#cp-search .h25 {
-	height: 40% !important;
-}
-
 
 .zeit-find-search .search_entry .related_entry {
   padding: 0.5em;

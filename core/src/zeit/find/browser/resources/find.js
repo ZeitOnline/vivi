@@ -58,22 +58,6 @@ zeit.find.Search = zeit.find.BaseView.extend({
         MochiKit.Signal.connect('search_form', 'onchange', function(e) {
             self.update_search_result();
         });
-		
-		
-		function hightToggler(){
-			if(MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && !MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
-				MochiKit.DOM.$('search_result').className = 'search_result h50';
-			}
-			if(!MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
-				MochiKit.DOM.$('search_result').className = 'search_result h50';
-			}
-			if(MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
-				MochiKit.DOM.$('search_result').className = 'search_result h25';
-			}
-			if(!MochiKit.DOM.hasElementClass('extended_search_button', 'unfolded') && !MochiKit.DOM.hasElementClass('result_filters_button', 'unfolded')){
-				MochiKit.DOM.$('search_result').className = 'search_result';
-			}
-		}
 
         MochiKit.Signal.connect(
             'extended_search_button', 'onclick', function(e) {
@@ -81,20 +65,15 @@ zeit.find.Search = zeit.find.BaseView.extend({
             MochiKit.DOM.toggleElementClass(
                 'hidden', 'extended_search', 'extended_search_info');
              MochiKit.DOM.toggleElementClass(
-                'unfolded', 'extended_search_button');
-			
-			hightToggler();
-			  
+                'unfolded', 'extended_search_button');    
         });
-		
+        
         MochiKit.Signal.connect(
             'result_filters_button', 'onclick', function(e) {
              
              MochiKit.DOM.toggleElementClass(
-                'unfolded', 'result_filters_button');  
-			
-			hightToggler();
-			
+                'unfolded', 'result_filters_button');    
+
             if ($('result_filters_data')) {
                 $('result_filters').innerHTML = '';
             } else {
