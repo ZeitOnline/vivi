@@ -4,7 +4,7 @@ zeit.find changes
 0.13 (unreleased)
 -----------------
 
-- Die Suche hat jetzt eine Scrollbar je Box statt eine insgesamt (#6032).
+- Styling
 
 - Es ist jetzt möglich einen Clip in den Favoriten zu haben, ohne dass die
   Suche kaputt geht (#6163).
