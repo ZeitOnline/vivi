@@ -278,7 +278,7 @@ table.properties textarea {
   padding: 0px;
   position: absolute;
   z-index: 1;
-  height: 200px !important;
+  height: auto !important;
   overflow: hidden;
 }
 
@@ -309,7 +309,14 @@ table.properties textarea {
 }
 
 #tooltip {
-  background-color: #d5dee7;
+  -moz-border-radius-bottomleft:5px;
+  -moz-border-radius-bottomright:5px;
+  -moz-border-radius-topleft:5px;
+  -moz-border-radius-topright:5px;
+  border:1px solid #C4C4C4;
+  background-color: #F1F4F9;
+  padding: 10px;
+  height: auto;
   max-width: 18em;
 }
 
