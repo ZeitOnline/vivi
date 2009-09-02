@@ -6,7 +6,7 @@
   <browser:viewlet
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
-    name="10_sitecontrol"
+    name="08_sitecontrol"
     manager="zeit.cms.browser.interfaces.ISidebar"
     template="sidebar.pt"
     class=".sidebar.Sidebar"

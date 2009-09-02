@@ -10,7 +10,7 @@ The site control is situated in the sidebar:
 >>> browser.open('http://localhost/++skin++vivi/repository')
 >>> print browser.contents
 <...
-<div class="panel unfolded" id="zeit-cms-sitecontrol">
+...<div class="panel unfolded" id="zeit-cms-sitecontrol">
   <h1>
     <a href="http://localhost/++skin++vivi/repository">
       Site control
