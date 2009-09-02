@@ -573,7 +573,7 @@
   border:1px solid #CCCCCC;
   float:left;
   width:175px;
-  height:266px;
+  height:252px;
   margin:0 10px 10px 0;
 }
 
@@ -597,19 +597,26 @@
 .layout-chooser > .layout-inner > a > img {
   border:0 solid #888888;
   position: absolute;
-  margin: 58px 0px 0px 6px;
+  margin: 42px 0px 0px 6px;
   display:block;
   width:160px;
 }
 
 .layout-chooser > .layout-inner > a > span {
   background-color:#CCCCCC;
+  font-size:11px;
   display:block;
   padding:3px;
   width:170px;
-  height: 47px;
+  height: 30px;
   margin-top: 0px;
   position:absolute;
+}
+
+.lightbox-header .CloseButton {
+background:transparent url(close.png) no-repeat 0 0 !important;
+margin-top: 4px;
+
 }
 
 /* Teaser list editing */
@@ -622,7 +629,7 @@
 .teaser-list-edit-box > ol > li {
   clear: both;
   display: block;
-  height: 1.5em;
+  height: 1.1em;
   padding: 0.4em 0.5em;
 }
 
