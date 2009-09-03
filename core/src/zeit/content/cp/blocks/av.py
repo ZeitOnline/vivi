@@ -45,10 +45,12 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
 
 class VideoBlock(AVBlock):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IAVBlock)
+    zope.interface.implements(zeit.content.cp.interfaces.IVideoBlock)
 
     id = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.video', 'videoID')
+    player = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.video', 'player')
 
     media_type = 'video'
 

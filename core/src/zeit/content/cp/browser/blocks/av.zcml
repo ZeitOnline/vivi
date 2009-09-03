@@ -21,5 +21,13 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IVideoBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".av.VideoEditProperties"
+    permission="zeit.EditContent"
+    />
+
 </configure>
 

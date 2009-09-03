@@ -309,6 +309,14 @@ class IAVBlock(IBlock):
         source=zeit.content.cp.blocks.avsource.FormatSource())
 
 
+class IVideoBlock(IAVBlock):
+
+    player = zope.schema.Choice(
+        title=_('Player'),
+        source=zeit.content.cp.blocks.avsource.PlayerSource(),
+        default='vid')
+
+
 class InvalidFeedURL(zope.schema.interfaces.ValidationError):
 
     def doc(self):

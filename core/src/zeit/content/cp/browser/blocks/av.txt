@@ -16,11 +16,17 @@ Editing the block
 -----------------
 
 >>> browser.open(contents_url)
+>>> browser.handleErrors = False
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Media Id').value = '12345'
 >>> browser.getControl('Format').displayValue = ['small']
 >>> browser.getControl('Expiration date').value = '2009-05-05'
+>>> browser.getControl('Player').displayOptions
+['Einzelvideo', 'Playlist']
+>>> browser.getControl('Player').displayValue
+['Einzelvideo']
+>>> browser.getControl('Player').displayValue = ['Playlist']
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
@@ -34,6 +40,9 @@ Editing the block
 ['small']
 >>> browser.getControl('Expiration date').value
 '2009-05-05 00:00:00'
+>>> browser.getControl('Player').displayValue
+['Playlist']
+
 
 
 Audio blocks
@@ -52,6 +61,10 @@ Editing the block
 >>> browser.getControl('Media Id').value = '98765'
 >>> browser.getControl('Format').displayValue = [
 ...     'large']
+>>> browser.getControl('Player')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Player'
 
 An empty value for the expireation date means no expiration:
 
@@ -72,6 +85,7 @@ XML of an audio/video block
   <audio audioID="98765" format="large"/>
 </container>
 <container cp:type="video" module="video" cp:__name__="<GUID>">
-  <video videoID="12345" expires="2009-05-04T22:00:00+00:00" format="small"/>
+  <video videoID="12345" player="pls" expires="2009-05-04T22:00:00+00:00"
+  format="small"/>
 </container>...
 

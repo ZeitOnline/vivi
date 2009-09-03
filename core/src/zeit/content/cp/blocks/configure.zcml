@@ -142,10 +142,10 @@
   <!-- Video block -->
   <class class=".av.VideoBlock">
     <require
-      interface="..interfaces.IAVBlock"
+      interface="..interfaces.IVideoBlock"
       permission="zope.View" />
     <require
-      set_schema="..interfaces.IAVBlock"
+      set_schema="..interfaces.IVideoBlock"
       permission="zeit.EditContent"/>
   </class>
   <adapter factory=".av.VideoBlockFactory" name="video" />

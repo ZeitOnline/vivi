@@ -6,8 +6,16 @@ import zope.formlib.form
 import zeit.content.cp.interfaces
 import zeit.content.cp.browser.blocks.block
 
+
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IAVBlock).omit(
             *list(zeit.content.cp.interfaces.IBlock))
+
+
+class VideoEditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.cp.interfaces.IVideoBlock).select(
+            'media_type', 'id', 'player', 'expires', 'format')

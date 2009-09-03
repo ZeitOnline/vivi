@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.18 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Player (vid/pls) für Video (#6150).
 
 
 0.17 (2009-09-01)
