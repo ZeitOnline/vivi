@@ -29,6 +29,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <option value="small" i18n:translate="">small</option>
         <option value="large" i18n:translate="">large</option>
         <option value="infobox" i18n:translate="">Infobox</option>
+        <option value="upright" i18n:translate="">Hochkant</option>
       </select>
     </div>
     <div id="preview"></div>

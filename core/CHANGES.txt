@@ -6,6 +6,8 @@ zeit.wysiwyg changes
 
 - Player (vid/pls) bei Video (#6151)
 
+- Layout-Eigenschaft »Hochkant« für Bilder (#6172).
+
 1.31.2 (2009-08-29)
 -------------------
 
