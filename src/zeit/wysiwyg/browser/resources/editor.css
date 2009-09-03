@@ -132,11 +132,14 @@ intertitle {
     content: "Video-Id:";
 }
 
-.video > .videoId {
+.video > .videoId,
+.video > .player {
     float: left;
 }
 
-.video > .videoId2 {
+.video > .videoId2,
+.video > .player2 {
+    clear: both;
     float: right;
 }
 
@@ -156,6 +159,11 @@ intertitle {
 .audio > .format:before,
 .video > .format:before {
     content: "Format:";
+}
+
+.video > .player:before,
+.video > .player2:before {
+  content: "Player";
 }
 
 .page-break > .teaser:before {

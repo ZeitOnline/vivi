@@ -24,10 +24,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <label for="avid" tal:condition="audio"
           i18n:translate="">Audio Id</label>
         <input id="avid" type="text" />
+        <select id="player" tal:condition="video">
+          <option value="vid">Einzelvideo</option>
+          <option value="pls">Playlist</option>
+        </select>
       </div>
       <div class="widget" tal:condition="video">
         <label for="id2" i18n:translate="">Second Video Id</label>
         <input id="id2" type="text" />
+        <select id="player2" tal:condition="video">
+          <option value="vid">Einzelvideo</option>
+          <option value="pls">Playlist</option>
+        </select>
       </div>
       <div class="widget">
         <label for="expires" i18n:translate="">Expires</label>

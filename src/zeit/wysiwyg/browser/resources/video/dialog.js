@@ -22,9 +22,12 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
             $('id2').value = self.get_value(id + '2');
         }
         $('expires').value = self.get_value('expires');
-        if (!isNull($('format'))) {
-            $('format').value = self.get_value('format');
-        }
+        forEach(['format', 'player', 'player2'], function(id) {
+            var element = $(id);
+            if (!isNull(element)) {
+                element.value = self.get_value(id);
+            }
+        });
     },
 
     _connect_date_buttons: function() {
@@ -73,9 +76,12 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
             self.set_value(id + '2', $('id2').value);
         }
         self.set_value('expires', $('expires').value);
-        if (!isNull($('format'))) {
-            self.set_value('format', $('format').value);
-        }
+        forEach(['format', 'player', 'player2'], function(id) {
+            var element = $(id);
+            if (!isNull(element)) {
+                self.set_value(id, element.value);
+            }
+        });
     },
 
     create: function() {
@@ -84,6 +90,8 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
         var div = DIV({'class': 'inline-element ' + self.container_class},
             DIV({'class': id}),
             DIV({'class': id + '2'}),
+            DIV({'class': 'player'}),
+            DIV({'class': 'player2'}),
             DIV({'class': 'expires'}));
         if (!isNull($('format'))) {
             div.appendChild(DIV({'class': 'format'}));
