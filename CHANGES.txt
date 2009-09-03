@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.32 (unreleased)
+1.32 (2009-09-03)
 -----------------
 
 - Player (vid/pls) bei Video (#6151)
