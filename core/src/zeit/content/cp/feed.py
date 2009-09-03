@@ -211,4 +211,8 @@ def _refresh_all():
 
     logger.info('refresh_all() done')
 
-refresh_all = gocept.runner.once()(_refresh_all)
+
+@gocept.runner.once(principal=gocept.runner.from_config(
+    'zeit.content.cp', 'feed-invalidation-principal'))
+def refresh_all():
+    _refresh_all()

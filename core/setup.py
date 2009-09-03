@@ -23,7 +23,7 @@ setup(
         'gocept.cache',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
-        'gocept.runner',
+        'gocept.runner>-0.4',
         'lxml',
         'python-cjson',
         'setuptools',

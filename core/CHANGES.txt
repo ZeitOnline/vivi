@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - Player (vid/pls) für Video (#6150).
 
+- Principal mit dem die Feeds veröffentlicht werden ist jetzt konfigurierbar.
+
 
 0.17 (2009-09-01)
 -----------------
