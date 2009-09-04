@@ -6,7 +6,6 @@ Quiz block
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
->>> browser.handleErrors = False
 >>> zeit.content.cp.browser.tests.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
@@ -54,6 +53,16 @@ The source of a quiz block:
     <byline xsi:nil="true"/>...
   </block>
 </container>...
+
+
+The quiz is also in the CP's content:
+
+>>> browser.getLink('Checkin').click()
+>>> cp = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/island')
+>>> list(zeit.content.cp.interfaces.ICMSContentIterable(cp))
+[<zeit.content.quiz.quiz.Quiz object at 0x...>]
+
 
 
 .. [#functional]_

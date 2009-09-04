@@ -15,6 +15,8 @@ zeit.content.cp changes
 
 - Quiz wird ohne xi:include eingebunden (#6022).
 
+- Quiz-Metadaten werden in der CP aktualisiert (#6167).
+
 0.17 (2009-09-01)
 -----------------
 

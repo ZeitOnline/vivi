@@ -3,6 +3,7 @@
 
 from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
+import grokcore.component
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.content.xmlsupport
@@ -23,3 +24,11 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
 
 QuizBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
     zeit.content.cp.interfaces.IRegion, 'quiz', _('Quizblock'))
+
+
+@grokcore.component.adapter(zeit.content.cp.interfaces.IQuizBlock)
+@grokcore.component.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    quiz = context.referenced_quiz
+    if quiz is not None:
+        yield quiz
