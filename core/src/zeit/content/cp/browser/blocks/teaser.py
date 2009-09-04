@@ -100,8 +100,7 @@ class Display(zeit.cms.browser.view.Base):
                 # first place. We'll see.
                 continue
             texts = []
-            for name in ('supertitle', 'teaserTitle', 'teaserText',
-                         'shortTeaserTitle', 'shortTeaserText'):
+            for name in ('supertitle', 'teaserTitle', 'teaserText'):
                 texts.append(dict(css_class=name,
                                   content=getattr(metadata, name)))
             teasers.append(dict(texts=texts))

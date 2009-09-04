@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - Rule-Globs ``content`` und ``is_published`` (#6059).
 
+- Korrekte Anzeige der Teaser und Spitzmarke im Editor (Teil von #5877).
+
 
 0.18.2 (2009-09-04)
 -------------------
