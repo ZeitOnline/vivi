@@ -137,20 +137,24 @@
 
 #cp-forms > .lightbox,
 #cp-forms > .lightbox-header {
-  left: 0;
-  right: 0;
+  left: 1em;
+  right: 1em;
 }
 
 #cp-forms > .lightbox-header {
-  top: 0;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
+  top: 1em;
+  left: 1em;
+  right: 1em;
+  bottom: 1em;
 }
 
 #cp-forms > .lightbox {
-  bottom: 0;
-  top: 0em;
+  bottom: 1em;
+  top: 3.5em;
+}
+
+#cp-forms > .lightbox #form\.teaserTitle {
+  height: 3.9em;
 }
 
 .highlight {
