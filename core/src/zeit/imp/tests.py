@@ -187,6 +187,26 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         image = self.crop.crop(200, 200, 0, 0, 200, 200,
                                border=(127, 127, 127))
 
+    def test_cmyk_converted_to_rgb(self):
+        self.group = (
+            zeit.content.image.tests.create_image_group_with_master_image(
+                pkg_resources.resource_filename(
+                    __name__, 'testdata/cmyk.jpg')))
+        crop = zeit.imp.interfaces.ICropper(self.group)
+        image = self.crop.crop(200, 200, 0, 0, 200, 200,
+                               border=(127, 127, 127))
+        self.assertEquals('RGB', image.mode)
+
+    def test_palette_converted_to_rgb(self):
+        self.group = (
+            zeit.content.image.tests.create_image_group_with_master_image(
+                pkg_resources.resource_filename(
+                    __name__, 'testdata/palette.gif')))
+        crop = zeit.imp.interfaces.ICropper(self.group)
+        image = self.crop.crop(200, 200, 0, 0, 200, 200,
+                               border=(127, 127, 127))
+        self.assertEquals('RGB', image.mode)
+
 
 scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
 color_xml_path = pkg_resources.resource_filename(__name__, 'colors.xml')
