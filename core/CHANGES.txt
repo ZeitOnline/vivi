@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.8 (unreleased)
+0.8 (2009-09-04)
 ++++++++++++++++
 
 - Palette-Images (#4980) und CMYK-Images (#6171) werden nach RGB konvertiert.
