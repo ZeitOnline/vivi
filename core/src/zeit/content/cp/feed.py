@@ -64,10 +64,20 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         url = self.url
         if url.startswith('file://'):
             url = url.replace('file://', '', 1)
-        parsed = feedparser.parse(url)
-        if parsed.bozo:
-            exc = parsed.bozo_exception
-            self.error = '%s: %s' % (type(exc).__name__, str(exc))
+        exception = None
+        try:
+            parsed = feedparser.parse(url)
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except Exception, e:
+            # Bare except because the feedparser *may* raise almost any
+            # exception :/
+            exception = e
+        else:
+            if parsed.bozo:
+                exception = parsed.bozo_exception
+        if exception is not None:
+            self.error = '%s: %s' % (type(exception).__name__, str(exception))
             return
 
         if self.xml.getchildren():

@@ -85,6 +85,12 @@ No or invaid URL.
 >>> print feed.error
  URLError: ...
 
+>>> nf_url = 'file://' + pkg_resources.resource_filename(
+...     'zeit.content.cp.tests', 'nofeed.xml')
+>>> feed = fm.get_feed(nf_url)
+>>> print feed.error
+LookupError: unknown encoding:
+
 
 Publishing feeds
 ----------------

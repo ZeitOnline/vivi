@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.18.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Feed-Updates repariert, wenn der Feed kein Feed sondern z.B. eine HTML-Seite
+  ist.
 
 
 0.18.1 (2009-09-04)
