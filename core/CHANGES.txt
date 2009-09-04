@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.19 (unreleased)
+0.19 (2009-09-04)
 -----------------
 
 - Rule-Globs ``content`` und ``is_published`` (#6059).
