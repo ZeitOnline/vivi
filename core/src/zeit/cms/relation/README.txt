@@ -178,8 +178,7 @@ The xml structure of a and b contain "Tease me" now:
         <title py:pytype="str">Tease me</title>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        ...
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...
@@ -193,8 +192,7 @@ The xml structure of a and b contain "Tease me" now:
         <title py:pytype="str">Tease me</title>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        ...
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...
@@ -222,8 +220,7 @@ And check in:
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        ...
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...
@@ -237,8 +234,7 @@ And check in:
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        ...
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...
@@ -259,15 +255,7 @@ Verify the source of "d" before we do anything:
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...
@@ -299,15 +287,7 @@ Check out "c" and modify it. Then check in.
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...
@@ -334,15 +314,7 @@ Check out and in again:
         <title py:pytype="str">Tease me gently.</title>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
+        <byline xsi:nil="true"/>...
       </reference>
     </references>
     ...

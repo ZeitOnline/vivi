@@ -68,16 +68,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     teaserText = zeit.cms.content.property.ObjectPathProperty(
         '.teaser.text')
 
-    shortTeaserTitle = zeit.cms.content.property.ObjectPathProperty(
-        '.indexteaser.title')
-    shortTeaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.indexteaser.text')
-
-    hpTeaserTitle = zeit.cms.content.property.ObjectPathProperty(
-        '.homepageteaser.title')
-    hpTeaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.homepageteaser.text')
-
     automaticMetadataUpdateDisabled = zeit.cms.content.dav.DAVProperty(
         zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate[
             'automaticMetadataUpdateDisabled'],

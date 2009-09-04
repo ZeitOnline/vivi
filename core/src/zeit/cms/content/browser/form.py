@@ -49,9 +49,7 @@ class CommonMetadataFormBase(object):
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
         ('supertitle', 'byline', 'title', 'subtitle',
-         'teaserTitle', 'teaserText',
-         'shortTeaserTitle', 'shortTeaserText',
-         'hpTeaserTitle', 'hpTeaserText'),
+         'teaserTitle', 'teaserText'),
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
@@ -81,8 +79,7 @@ class CommonMetadataFormBase(object):
 
         if not self.for_display:
             # Change the widgets of the teaser fields
-            change_field_names = (
-                'teaserText', 'shortTeaserTitle', 'shortTeaserText')
+            change_field_names = ('teaserText',)
             form_fields = self.form_fields.omit(*change_field_names)
             changed_fields = []
             for field in change_field_names:

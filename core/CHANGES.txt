@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Site-Steuerung vor Dateiverwaltung (#6159).
 
+- Kurz-Teaser und Homepage-Teaser gibt es nicht mehr (#6161).
+
 
 1.31.2 (2009-08-31)
 -------------------

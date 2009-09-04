@@ -232,11 +232,6 @@ class XMLReferenceUpdaterRunner(XMLReferenceUpdater):
 class CommonMetadataUpdater(XMLReferenceUpdater):
     """Put information for ICommonMetadata into the channel."""
 
-    short_title_path = lxml.objectify.ObjectPath('.short.title')
-    short_text_path = lxml.objectify.ObjectPath('.short.text')
-    homepage_title_path = lxml.objectify.ObjectPath('.homepage.title')
-    homepage_text_path = lxml.objectify.ObjectPath('.homepage.text')
-
     target_iface = zeit.cms.content.interfaces.ICommonMetadata
 
     def update_with_context(self, entry, metadata):
@@ -248,7 +243,3 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             entry.set('year', unicode(metadata.year))
         if metadata.volume:
             entry.set('issue', unicode(metadata.volume))
-        self.short_title_path.setattr(entry, metadata.shortTeaserTitle)
-        self.short_text_path.setattr(entry, metadata.shortTeaserText)
-        self.homepage_title_path.setattr(entry, metadata.hpTeaserTitle)
-        self.homepage_text_path.setattr(entry, metadata.hpTeaserText)

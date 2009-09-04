@@ -73,15 +73,7 @@ Create a channel and insert the link[#functional]_:
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references/>
     </block>
   </container>
@@ -106,15 +98,7 @@ channel:
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references/>
     </block>
   </container>

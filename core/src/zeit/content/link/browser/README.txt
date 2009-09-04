@@ -134,15 +134,7 @@ Verify the source of the feed:
       <title py:pytype="str">gocept teaser</title>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
       </references>

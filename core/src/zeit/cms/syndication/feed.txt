@@ -372,12 +372,8 @@ included. Setup an article with ICommonMetadata:
 >>> art2.teaserTitle = u'Keine Sieger'
 >>> art2.teaserText = u'In Frankreich wird massiv gestreikt. Doch den'
 >>> art2.byline = u'Von Alain-Xavier Wurst'
->>> art2.shortTeaserTitle = u'Frankreich'
->>> art2.shortTeaserText = u'Die Streiks werden Sarkozy nicht bezwingen'
 >>> art2.year = 2007
 >>> art2.volume = 4
->>> art2.hpTeaserText = None
->>> art2.hpTeaserTitle = None
 
 Provide the interface:
 
@@ -399,14 +395,6 @@ Insert the article to the feed:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <short>
-        <title py:pytype="str">Frankreich</title>
-        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
     </block>
     <block href="art1".../>
   </container>
@@ -419,8 +407,6 @@ changes:
 
 >>> art2.teaserTitle = 'New Title'
 >>> art2.supertitle = 'Fronkroisch'
->>> art2.hpTeaserTitle = 'HP Teaser Title'
->>> art2.hpTeaserText = 'HP Teaser Text'
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -433,14 +419,6 @@ changes:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <short>
-        <title py:pytype="str">Frankreich</title>
-        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
-      </short>
-      <homepage>
-        <title py:pytype="str">HP Teaser Title</title>
-        <text py:pytype="str">HP Teaser Text</text>
-      </homepage>
     </block>
     <block href="art1".../>
   </container>
@@ -468,14 +446,6 @@ too:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero".../>
@@ -487,14 +457,6 @@ too:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <short>
-        <title py:pytype="str">Frankreich</title>
-        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
-      </short>
-      <homepage>
-        <title py:pytype="str">HP Teaser Title</title>
-        <text py:pytype="str">HP Teaser Text</text>
-      </homepage>
     </block>
     <block href="art1".../>
   </container>
@@ -517,14 +479,6 @@ When we change the order this is reflected:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
       <references>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero".../>
         <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
@@ -536,14 +490,6 @@ When we change the order this is reflected:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <short>
-        <title py:pytype="str">Frankreich</title>
-        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
-      </short>
-      <homepage>
-        <title py:pytype="str">HP Teaser Title</title>
-        <text py:pytype="str">HP Teaser Text</text>
-      </homepage>
     </block>
     <block href="art1".../>
   </container>
@@ -565,14 +511,6 @@ We can also remove all relateds:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
       <references/>
     </block>
     <block href="art2" year="2007" issue="4"...>
@@ -581,14 +519,6 @@ We can also remove all relateds:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <short>
-        <title py:pytype="str">Frankreich</title>
-        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
-      </short>
-      <homepage>
-        <title py:pytype="str">HP Teaser Title</title>
-        <text py:pytype="str">HP Teaser Text</text>
-      </homepage>
     </block>
     <block href="art1".../>
   </container>
@@ -599,7 +529,6 @@ We can also remove all relateds:
 When only one of the homepage teaser (title/text) is entered, we have only one
 node in the HTML:
 
->>> art2.hpTeaserText = None
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -611,14 +540,6 @@ node in the HTML:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
       <references/>
     </block>
     <block href="art2" year="2007" issue="4"...>
@@ -627,17 +548,8 @@ node in the HTML:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <short>
-        <title py:pytype="str">Frankreich</title>
-        <text py:pytype="str">Die Streiks werden Sarkozy nicht bezwingen</text>
-      </short>
-      <homepage>
-        <title py:pytype="str">HP Teaser Title</title>
-        <text xsi:nil="true"/>
-      </homepage>
     </block>
     <block href="art1".../>
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
-

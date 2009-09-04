@@ -15,16 +15,5 @@
       tal:content="context/teaserText">
       Teaser Text
     </div>
-
-    <div class="teaser-title"
-      title="Index-Teaser"
-      tal:content="context/shortTeaserTitle">
-      Teaser Title 
-    </div>
-    <div class="teaser-text"
-      title="Index-Teaser"
-      tal:content="context/shortTeaserText">
-      Teaser Text
-    </div>
   </metal:data>
 </metal:macro>

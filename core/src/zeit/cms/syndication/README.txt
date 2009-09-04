@@ -176,15 +176,7 @@ Check the source of the feed first:
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references/>
     </block>
   </container>
@@ -215,15 +207,7 @@ Now, the channel metadata has changed:
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references/>
     </block>
   </container>
@@ -258,15 +242,7 @@ The feed was not updated:
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references/>
     </block>
   </container>
@@ -303,15 +279,7 @@ The feed has not changed this time:
       <title py:pytype="str">nice Teaser Title</title>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
+      <byline xsi:nil="true"/>...
       <references/>
     </block>
   </container>

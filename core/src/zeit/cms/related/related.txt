@@ -59,14 +59,6 @@ Let's have a look at the source:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
     </references>
   </head>
@@ -84,14 +76,6 @@ Also check the source of related:
     <text xsi:nil="true"/>
     <description xsi:nil="true"/>
     <byline xsi:nil="true"/>
-    <short>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </short>
-    <homepage>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </homepage>
   </reference>
 </references>
 
@@ -115,14 +99,6 @@ Assigning the same content object again doesn't change the xml:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
     </references>
   </head>
@@ -147,14 +123,6 @@ Let's add another related content:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
       <reference ...
         type="intern" href="http://xml.zeit.de/related2"...>
@@ -163,14 +131,6 @@ Let's add another related content:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
     </references>
   </head>
@@ -189,10 +149,6 @@ ICommonMetadata some information is included in the XML:
 >>> related_content.volume = 19
 >>> related_content.teaserTitle = 'I relate the title'
 >>> related_content.teaserText = 'Dude.'
->>> related_content.shortTeaserTitle = None
->>> related_content.shortTeaserText = None
->>> related_content.hpTeaserTitle = None
->>> related_content.hpTeaserText = None
 
 So far nothing has changed:
 
@@ -207,14 +163,6 @@ So far nothing has changed:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
       <reference ...
         type="intern" href="http://xml.zeit.de/related2"...>
@@ -223,14 +171,6 @@ So far nothing has changed:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
     </references>
   </head>
@@ -253,14 +193,6 @@ when we reassign the two objects the metadata will be reflected in the xml:
         <text py:pytype="str">Dude.</text>
         <description py:pytype="str">Dude.</description>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
       <reference ... type="intern" href="http://xml.zeit.de/related2"...>
         <supertitle xsi:nil="true"/>
@@ -268,14 +200,6 @@ when we reassign the two objects the metadata will be reflected in the xml:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
     </references>
   </head>
@@ -308,14 +232,6 @@ After sending the event the metadata is updated:
         <text py:pytype="str">Dude.</text>
         <description py:pytype="str">Dude.</description>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
       <reference ...type="intern" href="http://xml.zeit.de/related2"...>
         <supertitle xsi:nil="true"/>
@@ -323,14 +239,6 @@ After sending the event the metadata is updated:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <short>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </short>
-        <homepage>
-          <title xsi:nil="true"/>
-          <text xsi:nil="true"/>
-        </homepage>
       </reference>
     </references>
     ...
