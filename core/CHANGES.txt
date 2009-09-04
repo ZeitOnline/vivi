@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.18 (unreleased)
+0.18 (2009-09-04)
 -----------------
 
 - Player (vid/pls) für Video (#6150).
