@@ -156,7 +156,7 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(3, len(self.rm.rules))
 
     def test_invalid_rules_file_should_yield_empty_ruleset(self):
-        self._set_rules('syntax_error.py')
+        self._set_rules('syntax_error')
         self.assertEqual(0, len(self.rm.rules))
 
 
