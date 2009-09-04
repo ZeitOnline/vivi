@@ -94,39 +94,35 @@ The teaser block can be edited:
     <li class="action-content-droppable...index=0...
     <li class="edit-bar teaser"
         cms:uniqueid="http://xml.zeit.de/online/2007/01/Somalia">
-      <a class="delete-link" title="Delete"...
-      <div>http://xml.zeit.de/online/2007/01/Somalia</div>
+        ...
+      <div title="http://xml.zeit.de/online/2007/01/Somalia">http://xml.zeit.de/online/2007/01/Somalia</div>
     </li>
     <li class="action-content-droppable...index=1...
     <li class="edit-bar teaser"
         cms:uniqueid="http://xml.zeit.de/c1">
-      <a class="edit-link"
-         ...
-         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/checkout-content?uniqueId=http://xml.zeit.de/c1">
-        <span class="action-title">Edit</span>
-      </a>
-      <a class="delete-link" title="Delete"
-        ...
-         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
-        <span class="action-title">Delete</span>
-      </a>
-      <div>c1 teaser</div>
-    </li>
-    <li class="action-content-droppable...index=2...
-    <li class="edit-bar teaser"
-        cms:uniqueid="http://xml.zeit.de/testcontent">
-      <a class="edit-link"
-         ...
-         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/checkout-content?uniqueId=http://xml.zeit.de/testcontent">
-        <span class="action-title">Edit</span>
-      </a>
-      <a class="delete-link" title="Delete"
-        ...
-         href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/testcontent">
-        <span class="action-title">Delete</span>
-      </a>
-      <div></div>
-    </li>
+        <a class="edit-link" title="Edit in place"
+           ...
+           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/checkout-content?uniqueId=http://xml.zeit.de/c1">
+          <span class="action-title">Edit inline</span>
+        </a>
+        <a class="edit-object-link"
+           title="Edit in new window" target="_blank"
+           href="http://localhost/++skin++cms/repository/c1/@@checkout">
+          <span class="action-title">Edit object</span>
+        </a>
+        <a class="delete-link" title="Delete"
+          ...
+           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
+          <span class="action-title">Delete</span>
+        </a>
+        <div title="http://xml.zeit.de/c1">c1 teaser</div>
+      </li>
+      <li class="action-content-droppable...index=2...
+      <li class="edit-bar teaser"
+          cms:uniqueid="http://xml.zeit.de/testcontent">
+          ...
+        <div title="http://xml.zeit.de/testcontent"></div>
+      </li>
     <li class="action-content-droppable...index=3...
   </ol>
 </div>
@@ -256,7 +252,7 @@ The teaser block now contains the local copy instead of the original article:
 
 >>> browser.open(lightbox_url)
 >>> print browser.contents
-<...<div>Local teaser title</div>...
+<...<div...>Local teaser title</div>...
 
 We can now only edit the local copy:
 
@@ -285,7 +281,7 @@ The original article is still unchanged:
 Again, the teaser block has been updated:
 >>> browser.open(lightbox_url)
 >>> print browser.contents
-<...<div>Very local teaser title</div>...
+<...<div...>Very local teaser title</div>...
 
 
 Deleting entries
@@ -306,7 +302,7 @@ True
     <li class="action-content-droppable...
     <li class="edit-bar teaser" ...
         ...
-      <div>Test content teaser title</div>
+      <div...>Test content teaser title</div>
     </li>
     <li class="action-content-droppable...
   </ol>

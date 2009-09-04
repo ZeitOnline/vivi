@@ -8,6 +8,11 @@ zeit.content.cp changes
 
 - Principal mit dem die Feeds veröffentlicht werden ist jetzt konfigurierbar.
 
+- Beim Umsortieren von Teasern kann man jetzt direkt das Objekt in einem neuen
+  Fenster bearbeiten (#5820).
+
+- Ein Mouseover beim Teaser-Sortieren zeigt die Id des Objekts.
+
 
 0.17 (2009-09-01)
 -----------------

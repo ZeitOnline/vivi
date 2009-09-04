@@ -51,7 +51,7 @@ the left side currently:
       <li ...cms:uniqueid="http://xml.zeit.de/c3">...
       <li class="edit-bar column-separator"
           cms:uniqueid="column://">
-        <div>^ Left | Right v</div>
+        <div...>^ Left | Right v</div>
       </li>
 ...
 

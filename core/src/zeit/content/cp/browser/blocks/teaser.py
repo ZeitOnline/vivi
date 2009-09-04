@@ -176,15 +176,17 @@ class EditContents(zeit.cms.browser.view.Base):
                 content, None)
             locking_indicator = None
             if metadata is None:
-                title = content.uniqueId
                 editable = False
+                title = content.uniqueId
+                url = None
             else:
-                title = metadata.teaserTitle
                 editable = zeit.cms.checkout.interfaces.ICheckoutManager(
                     content).canCheckout
                 if not editable:
                     locking_indicator = zope.component.queryMultiAdapter(
                         (content, self.request), name='get_locking_indicator')
+                title = metadata.teaserTitle
+                url = self.url(content)
             teasers.append(dict(
                 css_class='edit-bar teaser',
                 deletable=True,
@@ -192,6 +194,7 @@ class EditContents(zeit.cms.browser.view.Base):
                 locking_indicator=locking_indicator,
                 teaserTitle=title,
                 uniqueId=content.uniqueId,
+                url=url,
             ))
 
         columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)

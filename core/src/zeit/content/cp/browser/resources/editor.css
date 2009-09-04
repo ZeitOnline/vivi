@@ -309,6 +309,11 @@
   padding-right: 0.5em;
 }
 
+.edit-bar > .edit-object-link {
+  background-image: url('edit-in-new-window.png');
+  padding-right: 0.5em;
+}
+
 .edit-bar > .delete-link {
   background-image: url('delete.png');
   float: right;
