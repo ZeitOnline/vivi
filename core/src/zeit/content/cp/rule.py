@@ -7,6 +7,7 @@ import gocept.cache.method
 import itertools
 import logging
 import urllib2
+import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zeit.workflow.timebased
 import zope.app.appsetup.product
@@ -57,8 +58,8 @@ class Rule(object):
         except ZODB.POSException.ConflictError:
             raise
         except:
-            log.error('Error while evaluating rule starting line %d' %
-                      self.line, exc_info=True)
+            log.error('Error while evaluating rule starting line %s' %
+                      self.line if self.line else '<unknown>', exc_info=True)
 
         return status
 
@@ -172,6 +173,20 @@ def layout(context):
 @glob(zeit.content.cp.interfaces.ITeaserBar)
 def layout(context):
     return context.layout.id
+
+
+@glob(zeit.content.cp.interfaces.IBlock)
+def content(context):
+    return list(
+        zeit.content.cp.interfaces.ICMSContentIterable(context, []))
+
+
+@glob(zope.interface.Interface)
+def is_published(context):
+    def is_published_inner(obj):
+        pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)
+        return pi is not None and pi.published
+    return is_published_inner
 
 
 class RulesManager(object):

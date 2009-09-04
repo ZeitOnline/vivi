@@ -1,10 +1,13 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import with_statement
 from zeit.content.cp.rule import Rule
 import gocept.cache
 import pkg_resources
 import unittest
+import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
 import zope.app.appsetup.product
@@ -130,6 +133,43 @@ applicable(is_block and area == 'teaser-mosaic')
 error_if(True)
 """)
         s = r.apply(bar)
+        self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
+
+    def test_content_glob(self):
+        r = Rule("""
+applicable(is_block and content)
+error_if(True)
+""")
+        s = r.apply(self.teaser)
+        self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
+        self.teaser.insert(0, zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent'))
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+
+    def test_content_glob_is_empty_for_non_content_blocks(self):
+        r = Rule("""
+applicable(is_block)
+error_unless(content == [])
+""")
+        factory = zope.component.getAdapter(
+            self.cp['informatives'],
+            zeit.content.cp.interfaces.IElementFactory,
+            name='xml')
+        s = r.apply(factory())
+        self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
+
+    def test_published_glob(self):
+        r = Rule("""
+applicable(is_block and content)
+error_unless(is_published(content[0]))
+""")
+        tc = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+        self.teaser.insert(0, tc)
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+        zeit.cms.workflow.interfaces.IPublishInfo(tc).published = True
+        s = r.apply(self.teaser)
         self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
 
 
