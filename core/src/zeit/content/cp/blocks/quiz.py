@@ -18,17 +18,8 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
     zope.interface.implements(zeit.content.cp.interfaces.IQuizBlock)
 
     referenced_quiz = zeit.cms.content.property.SingleResource(
-        '.block', xml_reference_name='quizblock', attributes=('href',))
+        '.block', xml_reference_name='related', attributes=('href',))
 
 
 QuizBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
     zeit.content.cp.interfaces.IRegion, 'quiz', _('Quizblock'))
-
-
-@zope.component.adapter(zeit.content.quiz.interfaces.IQuiz)
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-def quiz_xi_include(context):
-    node = zope.component.getAdapter(
-        context, zeit.cms.content.interfaces.IXMLReference, name='related')
-    node.append(create_xi_include(context, '/quiz/question'))
-    return node

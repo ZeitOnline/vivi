@@ -13,6 +13,7 @@ zeit.content.cp changes
 
 - Ein Mouseover beim Teaser-Sortieren zeigt die Id des Objekts.
 
+- Quiz wird ohne xi:include eingebunden (#6022).
 
 0.17 (2009-09-01)
 -----------------
