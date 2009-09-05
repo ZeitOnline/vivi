@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-2.7 (unreleased)
-----------------
+2.6.1 (2009-09-05)
+------------------
 
 - Tests für Änderungen an zeit.cms angepasst.
 
