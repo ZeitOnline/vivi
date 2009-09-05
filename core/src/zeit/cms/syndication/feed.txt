@@ -446,10 +446,6 @@ too:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero".../>
-      </references>
     </block>
     <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
@@ -479,10 +475,6 @@ When we change the order this is reflected:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/eta-zapatero".../>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
-      </references>
     </block>
     <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
@@ -511,7 +503,6 @@ We can also remove all relateds:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <references/>
     </block>
     <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
@@ -540,7 +531,6 @@ node in the HTML:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
-      <references/>
     </block>
     <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>

@@ -8,6 +8,7 @@ zeit.cms changes
 
 - Kurz-Teaser und Homepage-Teaser gibt es nicht mehr (#6161).
 
+- XMLReferenzen beinhalten keine Relateds mehr.
 
 1.31.2 (2009-08-31)
 -------------------

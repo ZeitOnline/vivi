@@ -135,9 +135,6 @@ Verify the source of the feed:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>...
-      <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/Somalia".../>
-      </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
         <bu xsi:nil="true"/>
         <copyright...

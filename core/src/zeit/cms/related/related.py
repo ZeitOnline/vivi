@@ -146,17 +146,3 @@ def update_related_on_checkin(context, event):
     related_list = related.related
     if related_list:
         related.related = related_list
-
-
-class RelatedMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    """Put information from IRelated into the channel."""
-
-    target_iface = zeit.cms.related.interfaces.IRelatedContent
-
-    def update_with_context(self, entry, related):
-        if entry.tag == 'reference':
-            # prevent infinite recursion
-            return
-        xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(related)
-        entry[xml_repr.xml.tag] = zope.security.proxy.removeSecurityProxy(
-            xml_repr.xml)

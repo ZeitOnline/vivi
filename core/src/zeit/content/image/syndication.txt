@@ -34,7 +34,6 @@ We have not added any image, so no image is referenced:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>...
-      <references/>
     </block>
   </container>
   <object_limit py:pytype="int">50</object_limit>
@@ -96,7 +95,6 @@ When more than one image is referenced, only the first one will be in the feed:
   <container>
     <block href="http://xml.zeit.de/testcontent"...>
       ...
-      <references/>
       <image base-id="http://xml.zeit.de/image-group" type="jpg"...>
         <bu xsi:nil="true"/>
         <copyright py:pytype="str">&#169;</copyright>
@@ -122,7 +120,6 @@ When we have no image referenced it is also removed from the channel:
   <container>
     <block href="http://xml.zeit.de/testcontent"...>
       ...
-      <references/>
     </block>
   </container>
   <object_limit py:pytype="int">50</object_limit>

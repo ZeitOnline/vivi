@@ -74,7 +74,6 @@ Create a channel and insert the link[#functional]_:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>...
-      <references/>
     </block>
   </container>
   <object_limit py:pytype="int">50</object_limit>
@@ -98,8 +97,7 @@ channel:
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>...
-      <references/>
+      <byline xsi:nil="true"/>
     </block>
   </container>
   <object_limit py:pytype="int">50</object_limit>
