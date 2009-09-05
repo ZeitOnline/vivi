@@ -362,31 +362,6 @@ xml source:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline py:pytype="str">by Dr. Who</byline>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
-      <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1"...>
-          <supertitle py:pytype="str">Thailand</supertitle>
-          <title py:pytype="str">Bomben in Bangkok</title>
-          <text py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</text>
-          <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
-          <byline py:pytype="str">von Ulrich Ladurner</byline>
-          <short>
-            <title py:pytype="str">Thailand</title>
-            <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
-          </short>
-          <homepage>
-            <title xsi:nil="true"/>
-            <text xsi:nil="true"/>
-          </homepage>
-        </reference>
-      </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
         <bu xsi:nil="true"/>
         <copyright...
@@ -432,31 +407,6 @@ at its xml source:
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline py:pytype="str">by Dr. Who</byline>
-      <short>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </short>
-      <homepage>
-        <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-      </homepage>
-      <references>
-        <reference type="intern" href="http://xml.zeit.de/online/2007/01/thailand-anschlaege" year="2007" issue="1"...>
-          <supertitle py:pytype="str">Thailand</supertitle>
-          <title py:pytype="str">Bomben in Bangkok</title>
-          <text py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</text>
-          <description py:pytype="str">Nach den Anschlägen in Thailand gibt es bislang nur Spekulationen über die Täter. Eines jedoch steht fest: Die Regierung wirkt hilflos. Ein Kommentar</description>
-          <byline py:pytype="str">von Ulrich Ladurner</byline>
-          <short>
-            <title py:pytype="str">Thailand</title>
-            <text py:pytype="str">Nach den Anschlägen wirkt die Regierung hilflos</text>
-          </short>
-          <homepage>
-            <title xsi:nil="true"/>
-            <text xsi:nil="true"/>
-          </homepage>
-        </reference>
-      </references>
       <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
         <bu xsi:nil="true"/>
         <copyright...
@@ -486,10 +436,6 @@ prevent entering more than the allowed length. Makre sure the widget is used:
 <!DOCTYPE ...
     <title> 01 – Add article </title>...
         <div class="widget"><div class="show-input-limit" maxlength="170"></div><textarea cols="60" id="form.teaserText" name="form.teaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.teaserText");</script></div>
-        ...
-        <div class="widget"><div class="show-input-limit" maxlength="20"></div><textarea cols="60" id="form.shortTeaserTitle" name="form.shortTeaserTitle" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserTitle");</script></div>
-        ...
-        <div class="widget"><div class="show-input-limit" maxlength="50"></div><textarea cols="60" id="form.shortTeaserText" name="form.shortTeaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.shortTeaserText");</script></div>
         ...
 
 .. [2] Create an image group. To create it we need to setup the site:
