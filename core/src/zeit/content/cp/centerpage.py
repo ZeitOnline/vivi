@@ -64,6 +64,10 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     def updateMetadata(self, content):
         for entry in self.xml.xpath('//block[@href="%s"]' % content.uniqueId):
+            # migration code
+            node = entry.find('references')
+            if node is not None:
+                entry.remove(node)
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
                 content, None)
             if updater is not None:
