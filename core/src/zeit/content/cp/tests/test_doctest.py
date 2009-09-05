@@ -10,7 +10,6 @@ def test_suite():
         'README.txt',
         'cmscontentiterable.txt',
         'feed.txt',
-        'publish.txt',
         'rule.txt',
         'teaser.txt',
         package=zeit.content.cp)

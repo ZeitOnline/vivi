@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.20.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Beinhaltete, nicht semantisch geänderte, Objekte werden auch nicht mehr mit
+  veröffentlicht, weil es nicht performant genug ist.
 
 
 0.20.4 (2009-09-05)
