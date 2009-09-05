@@ -30,15 +30,6 @@ The teaser block contains a list of teasers[#functional]_.
     <text xsi:nil="true"/>
     <description xsi:nil="true"/>
     <byline xsi:nil="true"/>
-    <short>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </short>
-    <homepage>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </homepage>
-    <references/>
   </block>
   <block href="http://xml.zeit.de/2007/test".../>
 </container>

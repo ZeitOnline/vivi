@@ -74,14 +74,6 @@ The source of a fullgraphical block:
     <text xsi:nil="true"/>
     <description xsi:nil="true"/>
     <byline xsi:nil="true"/>
-    <short>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </short>
-    <homepage>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-    </homepage>
   </block>
   <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
 </container>...
