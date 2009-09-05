@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.32 (unreleased)
+1.32 (2009-09-05)
 -----------------
 
 - Site-Steuerung vor Dateiverwaltung (#6159).
