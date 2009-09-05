@@ -99,6 +99,8 @@ def update_centerpage_on_checkin(context, event):
 @gocept.async.function('events')
 def async_update_centerpage(context):
     with zeit.cms.checkout.helper.checked_out(context, events=False) as cp:
+        if cp is None:
+            return
         for content in zeit.content.cp.interfaces.ICMSContentIterable(cp):
             cp.updateMetadata(content)
 
