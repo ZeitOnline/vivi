@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.20.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Freie Teaser werden nicht mehr veröffentlicht, weil das garnicht nötig. ist.
 
 
 0.20.3 (2009-09-05)

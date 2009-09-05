@@ -55,24 +55,6 @@ When testcontent is published it will be a dependency:
 [<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
 
 
-Free teasers
-============
-
-Free teasers are always published together with the centerpage (even if the
-target is not published):
-
->>> import zeit.cms.testcontenttype.testcontenttype
->>> repository['t2'] = (
-...      zeit.cms.testcontenttype.testcontenttype.TestContentType())
->>> teaser = zeit.content.cp.interfaces.ITeaser(repository['t2'])
->>> repository['t2-teaser'] = teaser
->>> teasers.insert(2, repository['t2-teaser'])
->>> zeit.workflow.interfaces.IPublicationDependencies(cp).get_dependencies()
-[<zeit.content.cp.teaser.Teaser object at 0x...>,
- <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
-
-
-
 .. [#functional]
 
     >>> import zeit.cms.testing

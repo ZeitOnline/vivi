@@ -23,20 +23,3 @@ class DependentContent(grokcore.component.Adapter):
                 content):
                 result.append(content)
         return result
-
-
-class DependentTeasers(grokcore.component.Adapter):
-
-    grokcore.component.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-    grokcore.component.context(
-        zeit.content.cp.interfaces.ICenterPage)
-    grokcore.component.name('zeit.content.cp.Teaser')
-
-    def get_dependencies(self):
-        result = []
-        for content in zeit.content.cp.interfaces.ICMSContentIterable(
-            self.context):
-            if zeit.content.cp.interfaces.ITeaser.providedBy(content):
-                result.append(content)
-        return result
