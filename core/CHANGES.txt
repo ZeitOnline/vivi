@@ -9,6 +9,8 @@ zeit.content.cp changes
 - Aktualisieren der Metadaten funktioniert auch, wenn ein Autopilot
   ein ungültiges Objekt referenziert.
 
+- Beim Aufmachen des Editors wird zunächst ein Busy-Indicator gezeigt.
+
 
 0.19 (2009-09-04)
 -----------------

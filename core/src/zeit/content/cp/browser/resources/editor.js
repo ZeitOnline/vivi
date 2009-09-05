@@ -175,7 +175,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
             'content', 'onclick',
             self, self.handleContentClick);
         MochiKit.Signal.connect(
-            self, 'reload', self, 'reload');
+            self, 'reload', self, self.reload);
         new zeit.cms.ToolTipManager(self.content);
     },
 
@@ -184,7 +184,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         var target = event.target();
         log("Target " + target.nodeName);
         while (!isNull(target) && target.id != 'content') {
-            // Target can be null when it was removed from the dom by a
+            // Target can be null when it was removed from the DOM by a
             // previous event handler (like the lightbox shade)
             var module_name = target.getAttribute('cms:cp-module')
             if (!isNull(module_name)) {
@@ -259,7 +259,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         MochiKit.DOM.swapDOM(element, dom.firstChild);
     },
 
-    busy_until_reload_of: function(component) {
+    busy_until_reload_of: function(component, delay) {
         var self = this;
         if (self.busy) {
             // Already busy
@@ -267,7 +267,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
         }
         log("Entering BUSY state " + component.__name__);
         self.busy = true;
-        MochiKit.Signal.signal(self, 'busy');
+        MochiKit.Signal.signal(self, 'busy', delay);
         var ident = MochiKit.Signal.connect(
             component, 'after-reload', function() {
                 MochiKit.Signal.disconnect(ident);
@@ -294,6 +294,8 @@ zeit.content.cp.Editor = gocept.Class.extend({
         }
         zeit.content.cp.editor = new zeit.content.cp.Editor();
         MochiKit.Signal.signal(window, 'cp-editor-initialized');
+        zeit.content.cp.editor.busy_until_reload_of(
+            zeit.content.cp.editor, 0);
         var d = zeit.content.cp.editor.reload();
         d.addCallback(function(result) {
             MochiKit.Signal.signal(window, 'cp-editor-loaded');
@@ -955,9 +957,12 @@ zeit.content.cp.BusyIndicator = gocept.Class.extend({
         $('content').appendChild(self.indicator);
     },
 
-    busy_after_a_while: function() {
+    busy_after_a_while: function(delay) {
         var self = this;
-        self.delayer = MochiKit.Async.callLater(1, function() {
+        if (isUndefinedOrNull(delay)) {
+            delay = 1;
+        }
+        self.delayer = MochiKit.Async.callLater(delay, function() {
             self.busy();
         });
     },
