@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.21 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Refresh auf einem RSS-Block ohne URL führt nicht mehr zu einem Fehler.
 
 
 0.20 (2009-09-05)

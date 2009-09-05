@@ -70,6 +70,10 @@ False
 >>> feed.last_update > manual_update
 True
 
+Refreshing a None "url" doesn't raise an error:
+
+>>> fm.refresh_feed(None)
+
 
 
 Errors in feeds

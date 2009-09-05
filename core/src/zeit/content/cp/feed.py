@@ -189,6 +189,8 @@ class FeedManager(object):
 
     def refresh_feed(self, url):
         feed = self.get_feed(url)
+        if feed is None:
+            return
         with zeit.cms.checkout.helper.checked_out(
                 feed, semantic_change=True, events=False) as co_feed:
             # We don't need to send events here as a full checkout/checkin
