@@ -1,8 +1,8 @@
 zeit.content.cp changes
 =======================
 
-0.21 (unreleased)
------------------
+0.20.1 (2009-09-05)
+-------------------
 
 - Refresh auf einem RSS-Block ohne URL führt nicht mehr zu einem Fehler.
 
