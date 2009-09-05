@@ -1,23 +1,19 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.objectlog.i18n import MessageFactory as _
+import BTrees
 import datetime
 import logging
-import time
-
-import BTrees
 import persistent
 import pytz
+import time
 import transaction
-
+import zeit.objectlog.interfaces
+import zope.app.keyreference.interfaces
 import zope.component
 import zope.interface
 import zope.security.management
-
-import zope.app.keyreference.interfaces
-
-import zeit.objectlog.interfaces
-from zeit.objectlog.i18n import MessageFactory as _
 
 
 logger = logging.getLogger(__name__)
@@ -55,10 +51,24 @@ class ObjectLog(persistent.Persistent):
         while not object_log.insert(time_key, log_entry):
             time_key += 1
 
-        # Create savepoint to assing oid to log-entries. Required for
+        # Create savepoint to assign oid to log-entries. Required for
         # displaying in the same transaction.
         transaction.savepoint(optimistic=True)
 
+    def clean(self, timedelta):
+        reference_time = int((time.time()
+                              - timedelta.days * 3600 * 24
+                              - timedelta.seconds)
+                             * 10e6)
+        remove = []
+        for key in self._object_log:
+            log = self._object_log[key]
+            for time_key in list(log.keys(max=reference_time)):
+                del log[time_key]
+            if not log:
+                remove.append(key)
+        for key in remove:
+            del self._object_log[key]
 
 
 class LogEntry(persistent.Persistent):
