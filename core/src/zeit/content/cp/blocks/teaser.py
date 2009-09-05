@@ -128,7 +128,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
     def __iter__(self):
         if self.autopilot:
             feed = zeit.cms.syndication.interfaces.IReadFeed(
-                self.referenced_cp)
+                self.referenced_cp, [])
             return iter(feed)
         else:
             return super(AutoPilotTeaserBlock, self).__iter__()

@@ -6,6 +6,9 @@ zeit.content.cp changes
 
 - Asynchrones aktualisieren der Metadaten der CP beim Checkin.
 
+- Aktualisieren der Metadaten funktioniert auch, wenn ein Autopilot
+  ein ungültiges Objekt referenziert.
+
 
 0.19 (2009-09-04)
 -----------------

@@ -138,6 +138,14 @@ The xi:include is set accordingly:
   </xi:include>
 </container>
 
+When the autopilot target references an invalid object the block yields no
+content:
+
+>>> teasers.referenced_cp = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> list(teasers)
+[]
+
 
 
 Layouts
