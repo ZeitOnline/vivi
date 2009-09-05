@@ -239,6 +239,25 @@ The adapter does not affect the get_log method:
 ['Foo', 'bar', 'baz', 'bling', 'not-there-log']
 
 
+Cleaning the log
+================
+
+The objectlog can be cleaned of old logs.
+
+Cleaning everything that is older than 30 days changes nogthing here:
+
+>>> len(log._object_log)
+2
+>>> log.clean(datetime.timedelta(days=30))
+>>> len(log._object_log)
+2
+
+>>> import time
+>>> time.sleep(1)
+>>> log.clean(datetime.timedelta(seconds=1))
+>>> len(log._object_log)
+0
+
 Tear down / Clean up
 ====================
 

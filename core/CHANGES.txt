@@ -1,6 +1,11 @@
 zeit.objectlog changes
 ======================
 
+0.9 (unreleased)
+----------------
+
+- Added a method on the log to clean it from old entries.
+
 0.8.1 (2009-05-15)
 ------------------
 
