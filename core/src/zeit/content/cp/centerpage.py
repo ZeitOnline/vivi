@@ -4,6 +4,7 @@
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
 import UserDict
+import gocept.async
 import itertools
 import lxml.etree
 import lxml.objectify
@@ -90,10 +91,16 @@ def cms_content_iter(context):
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_centerpage_on_checkin(context, event):
-    for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
-        context.updateMetadata(content)
+    async_update_centerpage(zope.proxy.removeAllProxies(context))
+
+
+@gocept.async.function('events')
+def async_update_centerpage(context):
+    with zeit.cms.checkout.helper.checked_out(context, events=False) as cp:
+        for content in zeit.content.cp.interfaces.ICMSContentIterable(cp):
+            cp.updateMetadata(content)
 
 
 @zope.component.adapter(

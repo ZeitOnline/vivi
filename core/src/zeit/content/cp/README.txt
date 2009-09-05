@@ -270,6 +270,9 @@ When we now check in the centerpage, the changes in our article are propagated.
 We also check that the teaser object contains a link to its original article:
 
 >>> cp = zeit.cms.checkout.interfaces.ICheckinManager(cp).checkin()
+>>> import gocept.async.tests
+>>> gocept.async.tests.process()
+>>> cp = repository['cp']
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
 <centerpage ...
 <block href="http://xml.zeit.de/testcontent"...

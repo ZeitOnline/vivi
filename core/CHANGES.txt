@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.20 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Asynchrones aktualisieren der Metadaten der CP beim Checkin.
 
 
 0.19 (2009-09-04)
