@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.objectlog',
-    version='0.9dev',
+    version = '0.9',
     author='Christian Zagrodnick',
     author_email='cz@gocept.com',
     description="""\
