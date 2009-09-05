@@ -123,7 +123,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
         gocept.lxml.interfaces.IObjectified)
 
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
-    referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
+    _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     def __iter__(self):
         if self.autopilot:
@@ -170,37 +170,50 @@ class AutoPilotTeaserBlock(TeaserBlock):
                 'Cannot activate autopilot without referenced centerpage.')
         if autopilot == self._autopilot:
             return
+        self._update_autopilot(autopilot)
 
-        # we need to manipulate self.entries, which is only allowed while not
-        # on autopilot. Thus we switch the autopilot mode at different times.
-        if autopilot:
-            self.clear()
-            self.xml.append(
-                zope.component.getAdapter(
-                    self.referenced_cp,
-                    zeit.cms.content.interfaces.IXMLReference,
-                    name='xi:include'))
-            self._autopilot = autopilot
-        else:
-            self._autopilot = autopilot
-            try:
-                include = self.xml[
-                    '{http://www.w3.org/2003/XInclude}include']
-            except AttributeError:
-                pass
-            else:
-                self.xml.remove(include)
-            if self.referenced_cp:
-                for position, content in enumerate(
-                    zeit.cms.syndication.interfaces.IReadFeed(
-                        self.referenced_cp)):
-                    self.insert(position, content)
+    @rwproperty.getproperty
+    def referenced_cp(self):
+        return self._referenced_cp
+
+    @rwproperty.setproperty
+    def referenced_cp(self, value):
+        self._p_changed = True
+        self._referenced_cp = value
+        self._update_autopilot(self.autopilot)
 
     def clear(self):
         if not self.autopilot:
             self._p_changed = True
             for entry in self:
                 self.remove(entry)
+
+    def _update_autopilot(self, autopilot):
+        # we need to manipulate self.entries, which is only allowed while not
+        # on autopilot. Thus we switch the autopilot mode at different times.
+        try:
+            include = self.xml[
+                '{http://www.w3.org/2003/XInclude}include']
+        except AttributeError:
+            pass
+        else:
+            self.xml.remove(include)
+        if autopilot:
+            self.clear()
+            include = zope.component.queryAdapter(
+                self.referenced_cp,
+                zeit.cms.content.interfaces.IXMLReference,
+                name='xi:include')
+            if include is not None:
+                self.xml.append(include)
+            self._autopilot = autopilot
+        else:
+            self._autopilot = autopilot
+            if self.referenced_cp:
+                for position, content in enumerate(
+                    zeit.cms.syndication.interfaces.IReadFeed(
+                        self.referenced_cp)):
+                    self.insert(position, content)
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(

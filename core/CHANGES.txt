@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.21 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Ändern des Autopilots aktualisierte den xi:include nicht.
 
 
 0.20.1 (2009-09-05)

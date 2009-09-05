@@ -80,13 +80,13 @@ But its XML representation only contains an xi:include to the referenced page:
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
   <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
+  <autopilot ...>true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude"
     parse="xml"
     xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])"
     href="/var/cms/work/cp">
     <xi:fallback>Ziel http://xml.zeit.de/cp nicht erreichbar.</xi:fallback>
   </xi:include>
-  <autopilot ...>true</autopilot>
 </container>
 
 While on autopilot, manipulation of the teaser block's contents is forbidden:
@@ -137,6 +137,20 @@ The xi:include is set accordingly:
     <xi:fallback>Ziel http://xml.zeit.de/wirtschaft.feed nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
+
+
+The xi:include is also updated when the channel is updated:
+
+>>> teasers.referenced_cp = repository['politik.feed']
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...>
+  <referenced_cp py:pytype="str">http://xml.zeit.de/politik.feed</referenced_cp>
+  <autopilot py:pytype="bool">true</autopilot>
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/politik.feed">
+    <xi:fallback>Ziel http://xml.zeit.de/politik.feed nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>
+
 
 When the autopilot target references an invalid object the block yields no
 content:
