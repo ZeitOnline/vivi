@@ -4,7 +4,7 @@ CHANGES
 1.18.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed test as content changes.
 
 
 1.18.2 (2009-09-01)

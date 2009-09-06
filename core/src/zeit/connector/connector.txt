@@ -34,7 +34,7 @@ Resources
 
 Get an object. We will get a cached resource:
 
->>> index_id = "http://xml.zeit.de/deutschland/index"
+>>> index_id = "http://xml.zeit.de/index"
 >>> resource = connector[index_id]
 >>> resource
 <zeit.connector.resource.CachedResource object at 0x...>
@@ -59,11 +59,11 @@ The properties are cached now:
 
 We can also get directory resources:
 
->>> resource = connector['http://xml.zeit.de/deutschland/']
+>>> resource = connector['http://xml.zeit.de/testing/']
 >>> resource.type
 'collection'
 >>> resource.__name__
-u'deutschland'
+u'testing'
 
 Storing an object. The object will be created when not yet there.
 Don't forget content-type:
