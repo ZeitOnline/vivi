@@ -121,6 +121,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
             # If we've got a field assigned, let the field convert the value.
             # But only if it is a string. This is mostly the case, but if the
             # attribute is missing `value` is none.
+            value = unicode(value)
             try:
                 value = self.field.bind(instance).fromUnicode(value)
             except ValueError:
@@ -132,9 +133,12 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
     def __set__(self, instance, value):
         if self.field is not None:
             self.field.bind(instance).validate(value)
-        if not isinstance(value, basestring):
-            value = unicode(value)
-        self.getNode(instance).set(self.attribute_name, value)
+        if value is None:
+            self.getNode(instance).attrib.pop(self.attribute_name, None)
+        else:
+            if not isinstance(value, basestring):
+                value = unicode(value)
+            self.getNode(instance).set(self.attribute_name, value)
 
 
 class MultiPropertyBase(object):

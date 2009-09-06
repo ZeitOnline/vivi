@@ -147,6 +147,8 @@ not in the document, yet:
 ...         '.count', 'sentences', zope.schema.Int())
 ...     choice = ObjectPathAttributeProperty(
 ...         '.count', 'choice', zope.schema.Choice(source=ExampleSource()))
+...     text = ObjectPathAttributeProperty(
+...         '.', 'text', zope.schema.TextLine(required=False))
 ...
 >>> content = Content()
 
@@ -176,7 +178,7 @@ Setting new values:
   <count words="53" chars="20" sentences="2" choice="two"/>
 </doc>
 >>> content.choice
-'two'
+u'two'
 
 
 Setting invalid values will fail:
@@ -187,6 +189,28 @@ Traceback (most recent call last):
 WrongType: (6.25, (<type 'int'>, <type 'long'>))
 >>> content.words
 53
+
+
+Setting None will remove the attribute:
+
+>>> content.text = u'some text'
+>>> content.text
+u'some text'
+>>> content.text = None
+>>> content.text is None
+True
+>>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+<doc>
+  <a href="http://www.zeit.de">link</a>
+  <count words="53" chars="20" sentences="2" choice="two"/>
+</doc>
+
+Setting None again doens't harm:
+
+>>> content.text = None
+
+
+
 
 
 Let's change words to an invalid value, we'll get the missing value back then:
