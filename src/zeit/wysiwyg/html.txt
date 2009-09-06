@@ -1132,9 +1132,7 @@ Portraitbox
   <head/>
   <body>
     <portraitbox href="http://xml.zeit.de/2006/pb"
-      ...layout="short">
-      <references/>
-    </portraitbox>
+      ...layout="short"/>
   </body>
 </article>
 
@@ -1186,9 +1184,7 @@ Infobox
 <article...>
   <head/>
   <body>
-    <infobox href="http://xml.zeit.de/2006/ib"...>
-      <references/>
-    </infobox>
+    <infobox href="http://xml.zeit.de/2006/ib".../>
   </body>
 </article>
 
@@ -1224,7 +1220,6 @@ Gallery
   <body>
     <gallery href="http://xml.zeit.de/2006/gal" ...>
       <supertitle...
-      <references/>
     </gallery>
   </body>
 </article>

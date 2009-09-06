@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 1.33 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Tests angepasst für Änderungen am Kern.
 
 
 1.32 (2009-09-03)
