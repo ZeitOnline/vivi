@@ -144,6 +144,8 @@ class Feed(zeit.cms.related.related.RelatedBase):
 def update_feed_items(context, event):
     with zeit.cms.checkout.helper.checked_out(
         context, events=False) as co:
+        if co is None:
+            return
         feed = zeit.content.cp.interfaces.ICPFeed(co)
         items = list(feed.items)
 
