@@ -84,6 +84,15 @@ An xml reference to content also indicates the gallery:
   </gallery>
 </reference>
 
+When the xml reference is produced a second time there is still only one
+gallery node (used to be a bug which produced a new one each time):
+
+>>> updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
+>>> updater.update(node)
+>>> len(node.findall('gallery'))
+1
+
+
 When the reference is removed the <gallery> tag is removed:
 
 >>> import zeit.cms.checkout.helper

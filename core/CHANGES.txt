@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Der Gallery-XMLReferenceUpdater erzeugte immer ein neues <gallery>-Element.
 
 
 2.2.1 (2009-08-18)

@@ -44,16 +44,11 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.content.gallery.interfaces.IGalleryReference
 
     def update_with_context(self, node, reference):
-        if reference.gallery is None:
-            gallery_node = node.find('gallery')
-            if gallery_node is not None:
-                node.remove(gallery_node)
-        else:
+        for gallery_node in node.findall('gallery'):
+            node.remove(gallery_node)
+        if reference.gallery is not None:
             gref = zope.component.getAdapter(
                 reference.gallery, zeit.cms.content.interfaces.IXMLReference,
                 name='related')
             gref.tag = 'gallery'
             node.append(gref)
-
-
-
