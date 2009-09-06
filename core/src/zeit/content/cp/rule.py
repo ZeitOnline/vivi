@@ -182,6 +182,14 @@ def content(context):
 
 
 @glob(zope.interface.Interface)
+def cp_type(context):
+    cp = zeit.content.cp.interfaces.ICenterPage(context, None)
+    if cp is None:
+        return None
+    return cp.type
+
+
+@glob(zope.interface.Interface)
 def is_published(context):
     def is_published_inner(obj):
         pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)

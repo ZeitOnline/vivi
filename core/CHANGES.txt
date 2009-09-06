@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.20.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Regel-Glob ``cp_type``
 
 
 0.20.5 (2009-09-05)

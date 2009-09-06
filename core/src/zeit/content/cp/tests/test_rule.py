@@ -172,6 +172,16 @@ error_unless(is_published(content[0]))
         s = r.apply(self.teaser)
         self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
 
+    def test_cp_type_glob(self):
+        r = Rule("""
+applicable(cp_type == 'homepage')
+error_if(True)
+""")
+        s = r.apply(self.teaser)
+        self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
+        self.cp.type = 'homepage'
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 
