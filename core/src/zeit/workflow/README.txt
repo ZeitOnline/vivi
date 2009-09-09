@@ -842,7 +842,7 @@ http://xml.zeit.de/politik.feed
 Dependend retract
 +++++++++++++++++
 
-Retract honours dependencies, too:
+Retract does *not* honours dependencies:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
@@ -851,17 +851,11 @@ Retract honours dependencies, too:
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
-BeforeRetractEvent
-    Object: http://xml.zeit.de/politik.feed
-    Master: http://xml.zeit.de/online/2007/01/Somalia
 RetractedEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
-RetractedEvent
-    Object: http://xml.zeit.de/politik.feed
-    Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> feed_workflow.published
-False
+True
 
 Make sure the file would actually have been removed:
 
@@ -870,7 +864,6 @@ Running job ...
 Retracting http://xml.zeit.de/online/2007/01/Somalia
 ...retract.sh:
 Retracting test script
-work/politik.feed
 work/online/2007/01/Somalia
 done.
 

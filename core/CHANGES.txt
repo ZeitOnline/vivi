@@ -4,6 +4,8 @@ zeit.cms changes
 1.32.2 (unreleased)
 -------------------
 
+- Zurückziehen zieht abhängige Objekte nicht mehr mit zurück.
+
 - Publish- und RetractEvents haben jetzt Informationen über das Objekt, das der
   Benutzer veröffentlichen/zurückziehen wollte.
 
