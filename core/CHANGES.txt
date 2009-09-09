@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.32.2 (unreleased)
--------------------
+1.33 (2009-09-09)
+-----------------
 
 - Zurückziehen zieht abhängige Objekte nicht mehr mit zurück.
 
