@@ -63,6 +63,9 @@ def get_cds_filestore(name):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.workflow.interfaces.IPublishedEvent)
 def export(object, event):
+    if object != event.master:
+        # Only export master
+        return
     log.debug('Start export to Content-Drehscheibe')
     wf = zeit.content.article.interfaces.ICDSWorkflow(object, None)
     if wf is None:

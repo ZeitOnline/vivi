@@ -132,6 +132,35 @@ article can be found in the CDS filestore, ready for FTP-ing to the CDS:
 ['.../{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}.xml']
 
 
+Dependencies
+------------
+
+Dependent objects are not exported to the CDS:
+
+>>> class Dep(object):
+...     def __init__(self, context):
+...         self.context = context
+...     def get_dependencies(self):
+...         return (repository['online']['2007']['01']['eta-zapatero'],)
+...
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     Dep,
+...     (zeit.cms.interfaces.ICMSContent,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='dep')
+>>> tid = publish.publish()
+>>> tasks.process()
+>>> len(fs.list('new'))
+1
+>>> gsm.unregisterAdapter(
+...     Dep,
+...     (zeit.cms.interfaces.ICMSContent,),
+...     zeit.workflow.interfaces.IPublicationDependencies,
+...     name='dep')
+True
+
+
 .. [#functional] We need to set the site since we're a functional test:
 
     >>> import zeit.cms.testing
