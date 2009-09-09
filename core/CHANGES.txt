@@ -1,11 +1,8 @@
 zeit.find changes
 =================
 
-File"setup.py",line5
-version='/opt/local/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages/Pyrex/Compiler/Errors.py:17:DeprecationWarning:BaseException.messagehasbeendeprecatedasofPython2.6
-^
-SyntaxError:EOLwhilescanningstringliteral (2009-09-09)
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.14 (unreleased)
+-----------------
 
 - Relateds an Suchergebnissen funktionieren wieder.
 
