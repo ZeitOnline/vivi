@@ -458,9 +458,18 @@ div.unfolded + #result_filters {
   clear: both;
 }
 
-.zeit-find-search .search_entry .related_entry .content-status {
+.zeit-find-search .search_entry .related_entry .content-status,
+.zeit-find-search .search_entry .related_entry .taser_text {
   display: none;
 }
+
+.zeit-find-search .search_entry .related_entry .supertitle,
+.zeit-find-search .search_entry .related_entry .teaser_title {
+  display: inline;
+  font-weight: normal;
+  font-size: 1em;
+}
+
 
 
 /* search in lightbox styles */

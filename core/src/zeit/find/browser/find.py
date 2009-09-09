@@ -363,8 +363,9 @@ class ExpandedSearchResult(JSONView):
             results.append({
                     'uniqueId': content.uniqueId,
                     'publication_status': publication_status,
-                    'short_teaser_title': metadata.shortTeaserTitle or '',
-                    'short_teaser_text': metadata.shortTeaserText or '',
+                    'supertitle': metadata.supertitle or '',
+                    'teaser_title': metadata.teaserTitle or '',
+                    'teaser_text': metadata.teaserText or '',
                     'date': format_date(date),
                     })
         if not results:

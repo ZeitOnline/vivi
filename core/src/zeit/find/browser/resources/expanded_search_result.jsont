@@ -3,8 +3,9 @@
   <span class="uniqueId">{uniqueId}</span>
   <div>
     {publication_status|raw}
-    <span class="short_teaser_title">{short_teaser_title}</span> -
-    <span class="short_teaser_text">{short_teaser_text}</span>
+    <span class="supertitle">{supertitle}</span> -
+    <span class="teaser_title">{teaser_title}</span>
+    <span class="teaser_text">{teaser_text}</span>
     <span class="date">({date})</span>
   </div>
 </div>

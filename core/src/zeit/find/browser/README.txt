@@ -191,6 +191,62 @@ This also works if there is a Clip in the favorites:
  ...
 
 
+Relateds
+========
+
+The URL to get the relateds of a search result is included in the result:
+
+>>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> result = cjson.decode(browser.contents)
+>>> first_result = result['results'][0]
+>>> pprint.pprint(first_result)
+{...
+ 'related_url': 'http://localhost:8080/++skin++cms/expanded_search_result?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ ...
+
+>>> browser.open(first_result['related_url'])
+>>> print browser.contents
+{"template_url": "http://localhost:8080/++skin++cms/++noop++7104bd1fcec67bdf850d905dc2279504/@@/zeit.find/no_expanded_search_result.jsont"}
+
+Add content to testcontent
+
+>>> import zope.component
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.checkout.helper
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> p = zeit.cms.testing.create_interaction()
+>>> content = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/testcontent')
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> related = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> related.teaserTitle = u'Related title'
+>>> repository['related'] = related
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     zeit.cms.related.interfaces.IRelatedContent(co).related = (related,)
+>>> import zope.security.management
+>>> zope.security.management.endInteraction()
+
+
+>>> browser.open(
+...     'http://localhost:8080/++skin++cms/expanded_search_result?uniqueId='
+...     'http://xml.zeit.de/testcontent')
+>>> result = cjson.decode(browser.contents)
+>>> pprint.pprint(result)
+{'results': [{'date': '',
+              'publication_status': '',
+              'supertitle': '',
+              'teaser_text': '',
+              'teaser_title': 'Related title',
+              'uniqueId': 'http://xml.zeit.de/related'}],
+ 'template_url': 'http://localhost:8080/++skin++cms/++noop++94b533aa204ba84e5cd044c4f71cae06/@@/zeit.find/expanded_search_result.jsont'}
+
+
+
+
+
+
 Footnotes
 =========
 

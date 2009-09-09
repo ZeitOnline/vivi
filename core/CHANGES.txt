@@ -4,7 +4,7 @@ zeit.find changes
 0.14 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Relateds an Suchergebnissen funktionieren wieder.
 
 
 0.13 (2009-09-02)
