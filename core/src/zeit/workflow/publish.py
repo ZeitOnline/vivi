@@ -290,15 +290,15 @@ class PublishTask(PublishRetractTask):
                 obj, _("Could not publish because conditions not satisifed."))
             return
 
-        obj = self.recurse(self.before_publish, obj)
+        obj = self.recurse(self.before_publish, obj, obj)
         self.call_publish_script(obj)
-        self.recurse(self.after_publish, obj)
+        self.recurse(self.after_publish, obj, obj)
 
-    def before_publish(self, obj):
+    def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
 
         zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforePublishEvent(obj))
+            zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
@@ -324,9 +324,10 @@ class PublishTask(PublishRetractTask):
         paths = self.get_all_paths(obj)
         self.call_script(publish_script, '\n'.join(paths))
 
-    def after_publish(self, obj):
+    def after_publish(self, obj, master):
         self.log(obj, _('Published'))
-        zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj))
+        zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(
+            obj, master))
         return obj
 
 
@@ -339,15 +340,15 @@ class RetractTask(PublishRetractTask):
             logger.warning(
                 "Retracting object %s which is not published." % obj.uniqueId)
 
-        obj = self.recurse(self.before_retract, obj)
+        obj = self.recurse(self.before_retract, obj, obj)
         self.call_retract_script(obj)
-        self.recurse(self.after_retract, obj)
+        self.recurse(self.after_retract, obj, obj)
 
-    def before_retract(self, obj):
+    def before_retract(self, obj, master):
         """Do things before the actual retract."""
         self.lock(obj)
         zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforeRetractEvent(obj))
+            zeit.cms.workflow.interfaces.BeforeRetractEvent(obj, master))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
         self.log(obj, _('Retracted'))
@@ -361,9 +362,10 @@ class RetractTask(PublishRetractTask):
         paths = reversed(self.get_all_paths(obj))
         self.call_script(retract_script, '\n'.join(paths))
 
-    def after_retract(self, obj):
+    def after_retract(self, obj, master):
         """Do things after retract."""
-        zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj))
+        zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(
+            obj, master))
         obj = self.cycle(obj)
         self.unlock(obj)
         return obj

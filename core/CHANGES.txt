@@ -4,7 +4,8 @@ zeit.cms changes
 1.32.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Publish- und RetractEvents haben jetzt Informationen über das Objekt, das der
+  Benutzer veröffentlichen/zurückziehen wollte.
 
 
 1.32.1 (2009-09-06)

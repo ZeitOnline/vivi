@@ -696,6 +696,7 @@ Reset the folder implements:
 ...     *old_implements)
 
 
+>>> tasks.process()
 
 Dependencies
 ============
@@ -750,11 +751,24 @@ True
 >>> not not feed_workflow.published
 False
 
-When we publish somalia now the feed is published automatically:
+When we publish somalia now the feed is published
+automatically[#master-event-handler]_:
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
 >>> job_id = publish.publish()
 >>> tasks.process()
+BeforePublishEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+BeforePublishEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+PublishedEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+PublishedEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> workflow.published
 True
 >>> feed_workflow.published
@@ -765,6 +779,18 @@ Of couse the feed as a log entry:
 >>> print_log(log.get_log(feed))
 http://xml.zeit.de/politik.feed
      Published
+
+.. [#master-event-handler] Register event handlers to all the publish/retract
+    events to see the master
+
+    >>> def pr_handler(event):
+    ...     print type(event).__name__
+    ...     print '    Object:', event.object.uniqueId
+    ...     print '    Master:', event.master.uniqueId
+    
+    >>> gsm.registerHandler(pr_handler,
+    ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
+
 
 
 Recursive dependencies
@@ -795,6 +821,18 @@ Publish somalia again:
 
 >>> job_id = publish.publish()
 >>> tasks.process()
+BeforePublishEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+BeforePublishEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+PublishedEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+PublishedEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> print_log(log.get_log(feed))
 http://xml.zeit.de/politik.feed
      Published
@@ -810,6 +848,18 @@ Retract honours dependencies, too:
 >>> logfile.truncate()
 >>> job_id = publish.retract()
 >>> tasks.process()
+BeforeRetractEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+BeforeRetractEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+RetractedEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+RetractedEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> feed_workflow.published
 False
 
@@ -823,6 +873,11 @@ Retracting test script
 work/politik.feed
 work/online/2007/01/Somalia
 done.
+
+>>> gsm.unregisterHandler(pr_handler,
+...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
+True
+
 
 
 Depending on non workflowed objects

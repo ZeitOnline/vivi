@@ -1,15 +1,13 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """Workflow interfaces."""
 
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.contentsource
+import zeit.workflow.source
+import zope.app.security.vocabulary
 import zope.interface
 import zope.schema
-
-import zope.app.security.vocabulary
-
-import zeit.workflow.source
-from zeit.cms.i18n import MessageFactory as _
 
 
 class PublishingError(Exception):
@@ -87,7 +85,15 @@ class IPublish(zope.interface.Interface):
         """
 
 
-class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
+class IWithMasterObjectEvent(zope.component.interfaces.IObjectEvent):
+    """Object with master image."""
+
+    master = zope.schema.Choice(
+        title=u'The master object of this event.',
+        source=zeit.cms.content.contentsource.cmsContentSource)
+
+
+class IBeforePublishEvent(IWithMasterObjectEvent):
     """Issued before an object is published.
 
     Subscribers may veto publication by rasing an exception.
@@ -95,37 +101,47 @@ class IBeforePublishEvent(zope.component.interfaces.IObjectEvent):
     """
 
 
-class IPublishedEvent(zope.component.interfaces.IObjectEvent):
+class IPublishedEvent(IWithMasterObjectEvent):
     """Issued when an object was published."""
 
 
-class IBeforeRetractEvent(zope.component.interfaces.IObjectEvent):
+class IBeforeRetractEvent(IWithMasterObjectEvent):
     """Issued before an object is retracted."""
 
 
-class IRetractedEvent(zope.component.interfaces.IObjectEvent):
+class IRetractedEvent(IWithMasterObjectEvent):
     """Issued after an object has been retracted."""
 
 
-class BeforePublishEvent(zope.component.interfaces.ObjectEvent):
+
+class WithMasterObjectEvent(zope.component.interfaces.ObjectEvent):
+
+    zope.interface.implements(IWithMasterObjectEvent)
+
+    def __init__(self, obj, master):
+        super(WithMasterObjectEvent, self).__init__(obj)
+        self.master = master
+
+
+class BeforePublishEvent(WithMasterObjectEvent):
     """Issued before an object is published."""
 
     zope.interface.implements(IBeforePublishEvent)
 
 
-class PublishedEvent(zope.component.interfaces.ObjectEvent):
+class PublishedEvent(WithMasterObjectEvent):
     """Issued when an object was published."""
 
     zope.interface.implements(IPublishedEvent)
 
 
-class BeforeRetractEvent(zope.component.interfaces.ObjectEvent):
+class BeforeRetractEvent(WithMasterObjectEvent):
     """Issued before an object is published."""
 
     zope.interface.implements(IBeforeRetractEvent)
 
 
-class RetractedEvent(zope.component.interfaces.ObjectEvent):
+class RetractedEvent(WithMasterObjectEvent):
     """Issued after an object has been retracted."""
 
     zope.interface.implements(IRetractedEvent)
