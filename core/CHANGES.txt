@@ -4,7 +4,9 @@ zeit.cms changes
 1.34 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Date-Last-Modified, Last-Semantic-Change, Date-First-Released und
+  Date-Last-Published zur XML-Referenz wieder entfernt. Dies wird explizit in
+  CPs eingebaut.
 
 
 1.33 (2009-09-09)

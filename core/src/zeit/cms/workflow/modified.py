@@ -36,30 +36,3 @@ def update_last_modified_by(context, event):
         return
     zope.security.proxy.removeSecurityProxy(modified).last_modified_by = (
         event.principal.id)
-
-
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
-    target_iface = zeit.cms.workflow.interfaces.IModified
-
-    def update_with_context(self, entry, modified):
-        date = ''
-        if modified.date_last_modified:
-            date = modified.date_last_modified.isoformat()
-        entry.set('date-last-modified', date)
-
-
-class PublishInfoXMLReferenceUpdater(
-    zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
-    target_iface = zeit.cms.workflow.interfaces.IPublishInfo
-
-    def update_with_context(self, entry, publish_info):
-        date = ''
-        if publish_info.date_first_released:
-            date = publish_info.date_first_released.isoformat()
-        entry.set('date-first-released', date)
-        date = ''
-        if publish_info.date_last_published:
-            date = publish_info.date_last_published.isoformat()
-        entry.set('date-last-published', date)

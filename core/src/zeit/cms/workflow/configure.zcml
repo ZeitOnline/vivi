@@ -8,10 +8,4 @@
     <require interface=".interfaces.IModified"
              permission="zope.View" />
   </class>
-
-  <adapter factory=".modified.XMLReferenceUpdater"
-           name="date-last-modified" />
-  <adapter factory=".modified.PublishInfoXMLReferenceUpdater"
-           name="publish-info" />
-
 </configure>

@@ -31,33 +31,10 @@ The access time from IDCTimes can be accessed through IModified:
 >>> zeit.cms.workflow.interfaces.IModified(content).date_last_modified
 datetime.datetime(..., tzinfo=<UTC>)
 
-An xml reference contains the date-last-modified:
-
->>> import lxml.etree
->>> import zeit.cms.content.interfaces
->>> import zope.component
->>> node = zope.component.getAdapter(
-...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
->>> print lxml.etree.tostring(node, pretty_print=True),
-<reference ... date-last-modified="...T...+00:00"...
->>> import zc.iso8601.parse
->>> zc.iso8601.parse.datetimetz(node.get('date-last-modified'))
-datetime.datetime(..., tzinfo=<UTC>)
-
-
-Date last published and date first released are also in the xml[#mock]_:
-
->>> node = zope.component.getAdapter(
-...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
->>> print lxml.etree.tostring(node, pretty_print=True),
-<reference ...date-first-released="2008-02-03T04:05:00+00:00"
-              date-last-published="2009-01-02T03:04:00+00:00"...
-
 
 Clean up:
 
 >>> zeit.cms.workflow.mock._publish_times.clear()
->>> zeit.cms.workflow.mock.MockPublishInfo.date_first_released = old_dfr
 
 .. [#functional]
 
@@ -69,15 +46,3 @@ Clean up:
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
-
-.. [#mock]
-
-    >>> import datetime
-    >>> import pytz
-    >>> old_dfr = zeit.cms.workflow.mock.MockPublishInfo.date_first_released
-    >>> zeit.cms.workflow.mock.MockPublishInfo.date_first_released = (
-    ...     datetime.datetime(2008, 2, 3, 4, 5, tzinfo=pytz.UTC))
-    >>> zeit.cms.workflow.mock._publish_times[content.uniqueId] = (
-    ...     datetime.datetime(2009, 1, 2, 3, 4, tzinfo=pytz.UTC))
-
-
