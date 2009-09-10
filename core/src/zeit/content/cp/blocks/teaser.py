@@ -14,6 +14,7 @@ import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.workflow.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.interface
@@ -338,6 +339,23 @@ def create_xi_include(context, xpath, name_maker=make_path_for_unique_id):
 def feed_excerpt(context):
     return zeit.cms.interfaces.ICMSContent(
         cp_feed_name(context.uniqueId), None)
+
+
+class ExcerptDependency(object):
+
+    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
+    zope.interface.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_dependencies(self):
+        cp_feed = zope.component.queryAdapter(
+            self.context, zeit.cms.syndication.interfaces.IFeed, name='excerpt')
+        if cp_feed is None:
+            return []
+        return [cp_feed]
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)

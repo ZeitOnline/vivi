@@ -214,11 +214,22 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         source=zeit.content.cp.layout.TeaserBlockLayoutSource())
 
 
+class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'autopilot'
+    check_interfaces = (
+        ICenterPage,
+        zeit.cms.syndication.interfaces.IFeed,
+    )
+
+autopilotSource = AutopilotSource()
+
+
 class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
 
     referenced_cp = zope.schema.Choice(
         title=_("Get teasers from (autopilot)"),
-        source=zeit.cms.content.contentsource.CMSContentSource(),
+        source=autopilotSource,
         required=False)
     autopilot = zope.schema.Bool(
         title=_("Autopilot active")

@@ -62,6 +62,8 @@
     factory=".teaser.AutoPilotTeaserBlock"
     />
 
+  <adapter factory=".teaser.ExcerptDependency" name="zeit.content.cp-excerpt" />
+
   <subscriber 
     handler=".teaser.apply_layout_for_added" />
 

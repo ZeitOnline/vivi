@@ -132,6 +132,11 @@
   <adapter factory=".rule.Validator" />
   <adapter factory=".rule.CenterPageValidator" />
 
+  <utility
+    component=".interfaces.autopilotSource"
+    name="autopilot"
+    />
+
   <!-- Layout -->
   <class class=".layout.BlockLayout">
     <require

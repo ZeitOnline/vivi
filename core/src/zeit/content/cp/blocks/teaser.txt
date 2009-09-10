@@ -117,6 +117,14 @@ unter "name.lead":
 >>> list(x.uniqueId for x in repository['cp.lead'])
 [u'http://xml.zeit.de/testcontent']
 
+The excerpt is part of the workflow dependencies of the CP:
+
+>>> import zeit.workflow.interfaces
+>>> [x.uniqueId for x in 
+...  zeit.workflow.interfaces.IPublicationDependencies(cp).get_dependencies()]
+[u'http://xml.zeit.de/cp.lead']
+
+
 This excerpt is used for the xi:include when possible:
 
 >>> teasers.autopilot = True
