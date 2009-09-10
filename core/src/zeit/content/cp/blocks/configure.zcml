@@ -62,8 +62,6 @@
     factory=".teaser.AutoPilotTeaserBlock"
     />
 
-  <adapter factory=".teaser.cms_content_iter" />
-
   <subscriber 
     handler=".teaser.apply_layout_for_added" />
 

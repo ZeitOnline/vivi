@@ -58,7 +58,6 @@ ValueError: Cannot activate autopilot without referenced centerpage.
 
 Once the cp has been assigned we can activate the autopilot:
 
-
 >>> teasers.referenced_cp = repository['cp']
 >>> teasers.autopilot = True
 >>> len(teasers)
@@ -106,6 +105,36 @@ In manual mode, the contents can be changed again:
 >>> teasers.remove(repository['testcontent'])
 >>> len(teasers)
 0
+
+When the referenced CP is checked in an excerpt in channel format is created
+unter "name.lead":
+
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
+...     pass
+>>> repository['cp.lead']
+<zeit.cms.syndication.feed.Feed object at 0x...>
+>>> list(x.uniqueId for x in repository['cp.lead'])
+[u'http://xml.zeit.de/testcontent']
+
+This excerpt is used for the xi:include when possible:
+
+>>> teasers.autopilot = True
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...>
+  <referenced_cp...>http://xml.zeit.de/cp</referenced_cp>
+  <autopilot...>true</autopilot>
+  <xi:include ...xpointer="xpointer(/channel/container/block)"
+        href="/var/cms/work/cp.lead">
+    <xi:fallback>Ziel http://xml.zeit.de/cp.lead nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>
+
+The channel is also contained in the content list:
+
+>>> list(zeit.content.cp.interfaces.ICMSContentIterable(teasers))
+[<zeit.content.cp.centerpage.CenterPage object at 0x...>,
+ <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
 
 
 Channels can also be used for the autopilot:

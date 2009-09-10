@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.20.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Eine CP erzeugt beim Einchecken einen »Lead-Channel«. Dieser wird für
+  Autopiloten verwendet.
 
 
 0.20.6 (2009-09-06)

@@ -4,19 +4,23 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 import gocept.lxml.interfaces
+import grokcore.component
 import lxml.objectify
 import rwproperty
 import zeit.cms.content.property
+import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
-import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.interface
 import zope.schema
+
+
+CP_FEED_NAME = '%s.lead'
 
 
 class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
@@ -217,16 +221,24 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'))
-    #module=zeit.content.cp.interfaces.IReadTeaserBlock[
-    #        'layout'].default.id)
-    # XXX
+    zeit.content.cp.interfaces.IContainer, 'teaser',
+    _('List of teasers'))
 
-@zope.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
-@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+
+@grokcore.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
+@grokcore.component.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     for teaser in context:
         yield teaser
+
+
+@grokcore.component.adapter(zeit.content.cp.interfaces.IAutoPilotTeaserBlock)
+@grokcore.component.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def autopilot_cms_content_iter(context):
+    if context.autopilot:
+        yield context.referenced_cp
+    for obj in cms_content_iter(context):
+        yield obj
 
 
 class CenterpageFeed(zeit.cms.syndication.feed.Feed):
@@ -245,6 +257,23 @@ class CenterpageFeed(zeit.cms.syndication.feed.Feed):
     def iterentries(self):
         return self.xml.xpath("/centerpage/body/cluster[@area='feature']"
                               "/region[@area='lead']/container/block[1]")
+
+
+def cp_feed_name(name):
+    return CP_FEED_NAME % name
+
+
+@grokcore.component.subscribe(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def create_cp_channel(context, event):
+    feed = zeit.cms.syndication.feed.Feed()
+    cp_feed = zeit.cms.syndication.interfaces.IReadFeed(context)
+    for obj in reversed(list(cp_feed)):
+        if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+            feed.insert(0, obj)
+    feed_name = cp_feed_name(context.__name__)
+    context.__parent__[feed_name] = feed
 
 
 @zope.component.adapter(
@@ -281,17 +310,19 @@ def apply_layout(context, event):
         elem.layout = buttons
 
 
-def create_xi_include(context, xpath):
+def make_path_for_unique_id(uniqueId):
+    return uniqueId.replace(
+        zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/work/')
+
+
+def create_xi_include(context, xpath, name_maker=make_path_for_unique_id):
     include_maker = lxml.objectify.ElementMaker(
         annotate=False,
         namespace='http://www.w3.org/2003/XInclude',
         nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
     )
 
-    # We hardcode the path here as it is not going to change any time
-    # soon.
-    path = context.uniqueId.replace(
-        zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/work/')
+    path = name_maker(context.uniqueId)
 
     include = include_maker.include(
         include_maker.fallback('Ziel %s nicht erreichbar.' % context.uniqueId),
@@ -301,13 +332,31 @@ def create_xi_include(context, xpath):
     return include
 
 
+@grokcore.component.adapter(zeit.content.cp.interfaces.ICenterPage,
+                            name='excerpt')
+@grokcore.component.implementer(zeit.cms.syndication.interfaces.IFeed)
+def feed_excerpt(context):
+    return zeit.cms.interfaces.ICMSContent(
+        cp_feed_name(context.uniqueId), None)
+
+
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def cp_xi_include(context):
     """Reference a CP as xi:include."""
-    return create_xi_include(
-        context, ("/centerpage/body/cluster[@area='feature']"
-                  "/region[@area='lead']/container/block[1]"))
+    include = None
+    cp_feed = zope.component.queryAdapter(
+        context, zeit.cms.syndication.interfaces.IFeed, name='excerpt')
+    if cp_feed is not None:
+        include = zope.component.queryAdapter(
+            cp_feed, zeit.cms.content.interfaces.IXMLReference,
+            name='xi:include')
+    if include is None:
+        include = create_xi_include(
+            context, ("/centerpage/body/cluster[@area='feature']"
+                      "/region[@area='lead']/container/block[1]"))
+    return include
+
 
 
 @zope.component.adapter(zeit.cms.syndication.feed.Feed)

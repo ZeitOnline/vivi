@@ -31,7 +31,7 @@ Some setup to fill a centerpage:
 >>> teasers.insert(1, repository['2007']['test'])
 >>> mosaic.insert(0, repository['testcontent'])
 
-Now we can iterate over the centerpage and we get all contents in a flat list:
+Now we can iterate over the centerpage and we get all contents in a flat list.
 
 >>> list(zeit.content.cp.interfaces.ICMSContentIterable(cp))
 [<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x38a86b0>,
