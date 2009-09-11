@@ -15,14 +15,3 @@ class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.cms.content.interfaces.ISemanticChange['last_semantic_change'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'last-semantic-change')
-
-
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
-    target_iface = zeit.cms.content.interfaces.ISemanticChange
-
-    def update_with_context(self, entry, lsc):
-        date = ''
-        if lsc.last_semantic_change:
-            date = lsc.last_semantic_change.isoformat()
-        entry.set('last-semantic-change', date)

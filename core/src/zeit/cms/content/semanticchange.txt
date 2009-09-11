@@ -19,19 +19,6 @@ The last semantic change is set on checkin:
 >>> sc.last_semantic_change
 datetime.datetime(..., tzinfo=<UTC>)
 
-
-An xml reference contains the last-semantic-change:
-
->>> import lxml.etree
->>> import zeit.cms.content.interfaces
->>> node = zope.component.getAdapter(
-...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
->>> print lxml.etree.tostring(node, pretty_print=True),
-<reference ... last-semantic-change="...T...+00:00"...
->>> import zc.iso8601.parse
->>> zc.iso8601.parse.datetimetz(node.get('last-semantic-change'))
-datetime.datetime(..., tzinfo=<UTC>)
-
 .. [#functional]
 
     >>> import zeit.cms.testing

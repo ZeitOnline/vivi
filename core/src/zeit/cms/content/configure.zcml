@@ -139,8 +139,6 @@
     <require interface=".interfaces.ISemanticChange"
              permission="zope.View" />
   </class>
-  <adapter factory=".semanticchange.XMLReferenceUpdater"
-           name="last-semantic-change" />
 
   <!-- LXML -->
   <subscriber handler=".lxmlpickle.clean_refs" />

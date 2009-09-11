@@ -514,8 +514,7 @@ Let's have a look at the source now:
   <title>Politik</title>
   <container>
     <block ...
-           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
-           ...
+           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"...
            hidden_relateds="false"
            hp_hide="true"
            pinned="true"/>
@@ -545,8 +544,7 @@ Its also indicated in the source:
   <title>Politik</title>
   <container>
     <block ...
-           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
-           ...
+           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"...
            hidden_relateds="false"
            hp_hide="true"
            pinned="true"
@@ -576,8 +574,7 @@ Its also indicated in the source:
   <title>Politik</title>
   <container>
     <block ...
-           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"
-           ...
+           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"...
            hidden_relateds="true"
            hp_hide="true"
            pinned="true"
