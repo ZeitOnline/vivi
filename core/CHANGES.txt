@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.22 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Date-Last-Modified, Last-Semantic-Change, Date-First-Released und
+  Date-Last-Published wird in die ``<block>`` Knoten auf eienr CP eingefügt.
 
 
 0.21 (2009-09-10)

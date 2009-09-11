@@ -22,6 +22,7 @@ import zeit.cms.related.interfaces
 import zeit.cms.related.related
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
@@ -73,6 +74,31 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
             if updater is not None:
                 updater.update(entry)
 
+            modified = zeit.cms.workflow.interfaces.IModified(content, None)
+            if modified is not None:
+                date = ''
+                if modified.date_last_modified:
+                    date = modified.date_last_modified.isoformat()
+                entry.set('date-last-modified', date)
+
+            publish_info = zeit.cms.workflow.interfaces.IPublishInfo(content,
+                                                                     None)
+            if publish_info is not None:
+                date = ''
+                if publish_info.date_first_released:
+                    date = publish_info.date_first_released.isoformat()
+                entry.set('date-first-released', date)
+                date = ''
+                if publish_info.date_last_published:
+                    date = publish_info.date_last_published.isoformat()
+                entry.set('date-last-published', date)
+
+            lsc = zeit.cms.content.interfaces.ISemanticChange(content, None)
+            if lsc is not None:
+                date = ''
+                if lsc.last_semantic_change:
+                    date = lsc.last_semantic_change.isoformat()
+                entry.set('last-semantic-change', date)
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 

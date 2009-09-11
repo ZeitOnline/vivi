@@ -9,7 +9,7 @@ Centerpage
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
 >>> cp.type = u'homepage'
 >>> cp.type
-'homepage'
+u'homepage'
 
 
 A centerpage has three editable areas:
@@ -279,8 +279,63 @@ We also check that the teaser object contains a link to its original article:
   <title py:pytype="str">Foo</title>...
 <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
        href="http://xml.zeit.de/testcontent-1"...
-       ns0:href="http://xml.zeit.de/testcontent">...
+       ns0:href="http://xml.zeit.de/testcontent"...>...
 
+
+Content referenced in a centerpage has additional dates on the node:
+
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...
+  <block href="http://xml.zeit.de/testcontent"...
+         date-last-modified="2009-09-11T08:18:48+00:00"
+         date-first-released=""
+         date-last-published=""
+         last-semantic-change=""...
+
+
+Make a semantic change to testcontent:
+
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(repository['testcontent'],
+...                                           semantic_change=True):
+...     pass
+
+The metadata is updated (asynchronously) when the centerpage is checked in:
+
+>>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
+...     pass
+>>> gocept.async.tests.process()
+>>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
+<centerpage...
+  <block href="http://xml.zeit.de/testcontent"...
+         date-last-modified="2009-09-11T08:18:48+00:00"
+         date-first-released=""
+         date-last-published=""
+         last-semantic-change="2009-09-11T08:18:48+00:00"...
+
+Publish test content:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['testcontent']).urgent = True
+>>> job_id = zeit.cms.workflow.interfaces.IPublish(
+...     repository['testcontent']).publish()
+>>> import lovely.remotetask.interfaces
+>>> tasks = zope.component.getUtility(
+...     lovely.remotetask.interfaces.ITaskService, 'general')
+>>> tasks.process()
+
+The data is, again, updated when the CP is checked in:
+
+>>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
+...     pass
+>>> gocept.async.tests.process()
+>>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
+<centerpage...
+  <block href="http://xml.zeit.de/testcontent"...
+         date-last-modified="2009-09-11T08:18:48+00:00"
+         date-first-released="2009-09-11T08:18:48+00:00"
+         date-last-published="2009-09-11T08:18:48+00:00"
+         last-semantic-change="2009-09-11T08:18:48+00:00"...
 
 .. [#needsinteraction]
 
@@ -335,6 +390,3 @@ We also check that the teaser object contains a link to its original article:
     Traceback (most recent call last):
         ...
     ValueError: order must have the same keys.
-
-
-
