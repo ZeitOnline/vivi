@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.22 (unreleased)
+0.22 (2009-09-11)
 -----------------
 
 - Date-Last-Modified, Last-Semantic-Change, Date-First-Released und
