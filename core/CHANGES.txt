@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.34 (unreleased)
------------------
+1.33.2 (2009-09-14)
+-------------------
 
 - UUID-Lookup ist robuster gegen nicht vorhandene Objekte (#5734).
 
