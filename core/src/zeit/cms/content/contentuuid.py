@@ -69,4 +69,4 @@ def uuid_to_content(uuid):
         log.critical('There %s objects for uuid %s. Using first one.' % (
             len(result), uuid))
     unique_id = result[0][0]
-    return zeit.cms.interfaces.ICMSContent(unique_id)
+    return zeit.cms.interfaces.ICMSContent(unique_id, None)

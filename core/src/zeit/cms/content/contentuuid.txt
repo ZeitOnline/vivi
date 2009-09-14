@@ -85,6 +85,7 @@ Usually, when looking up an object via UUID one only has the UUID as string:
 >>> uuid = zeit.cms.content.interfaces.IUUID(somalia).id
 
 The UUID can be adapted to IUUID to get an object which represents the UUID:
+
 >>> uuid_obj = zeit.cms.content.interfaces.IUUID(uuid)
 
 This object can be adapted then:
@@ -94,6 +95,18 @@ Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a
 
 >>> print content.uniqueId
 http://xml.zeit.de/online/2007/01/Somalia
+
+When the search returns a value, but the object isn't there anymore ...
+
+>>> del content.__parent__[content.__name__]
+>>> zeit.cms.interfaces.ICMSContent(uuid_obj)
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt',
+    <zeit.cms.content.contentuuid.SimpleUUID object at 0x...>,
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+
+
 
 
 Cleanup
