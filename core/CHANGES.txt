@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.34 (unreleased)
------------------
+1.33.3 (2009-09-16)
+-------------------
 
 - Der Workflow loggt wofür Zeit verbraucht wird. Ziel ist das Veröffentlichen
   zu beschleunigen.
