@@ -30,9 +30,37 @@ import zope.security.management
 
 
 logger = logging.getLogger(__name__)
+timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
 PUBLISHED_FUTURE_SHIFT = 60
+
+
+class Timer(threading.local):
+
+    def start(self, message):
+        self.times = []
+        self.mark(message)
+
+    def mark(self, message):
+        self.times.append((time.time(), message))
+
+    def __unicode__(self):
+        result = []
+        last = None
+        total = 0
+        for when, message in self.times:
+            if last is None:
+                diff = 0
+            else:
+                diff = when - last
+            total += diff
+            last = when
+            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
+        return u'\n'.join(result)
+
+
+timer = Timer()
 
 
 class TaskDescription(object):
@@ -96,14 +124,18 @@ class PublishRetractTask(object):
     #outputSchema = None or an error message
 
     def __call__(self, service, jobid, input):
+        timer.start(u'Job %s started: %s (%s)' % (
+            type(self).__name__, input.uniqueId, jobid))
         logger.info("Running job %s" % jobid)
         uniqueId = input.uniqueId
         principal = input.principal
 
         self.login(principal)
+        timer.mark('Logged in')
 
         obj = self.repository.getContent(input.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        timer.mark('Looked up object')
 
         retries = 0
         while True:
@@ -118,7 +150,9 @@ class PublishRetractTask(object):
                     logger.info("Aborting parallel publish/retract of %r" % (
                         uniqueId))
                 transaction.commit()
+                timer.mark('Commited')
             except ZODB.POSException.ConflictError, e:
+                timer.mark('Conflict')
                 retries += 1
                 if retries >= 3:
                     raise
@@ -134,13 +168,17 @@ class PublishRetractTask(object):
                                 exc=e.__class__.__name__,
                                 message=str(e)))
                 self.log(obj, message)
-                return message
+                break
             else:
                 # Everything okay.
-                return None
+                message = None
+                break
             finally:
                 if acquired:
                     self.release_active_lock(uniqueId)
+        timer.mark('Done')
+        timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
+        return message
 
     def acquire_active_lock(self, uniqueId):
         with active_objects_lock:
@@ -162,7 +200,7 @@ class PublishRetractTask(object):
         """
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
         if not manager.canCheckout:
-            logger.error("Could not checkout %s" % obj.uniqueId)
+            logger.warning("Could not checkout %s" % obj.uniqueId)
             return obj
 
         # We do not use the user's workingcopy but a "fresh" one which we just
@@ -174,10 +212,12 @@ class PublishRetractTask(object):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         if not manager.canCheckin:
             # XXX this codepath is not tested!
-            logger.error("Could not checkin %s" % obj.uniqueId)
+            logger.warning("Could not checkin %s" % obj.uniqueId)
             del checked_out.__parent__[checked_out.__name__]
             return obj
-        return manager.checkin()
+        obj = manager.checkin()
+        timer.mark('Cycled %s' % obj.uniqueId)
+        return obj
 
     def recurse(self, method, dependencies, obj, *args):
         """Apply method recursively on obj."""
@@ -191,16 +231,20 @@ class PublishRetractTask(object):
             seen.add(current_obj.uniqueId)
             logger.debug('%s %s' % (method, current_obj.uniqueId))
             new_obj = method(current_obj, *args)
+            timer.mark('Called %s on %s' % (method.__name__,
+                                            current_obj.uniqueId))
 
             # Dive into folders
             if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
                 stack.extend(new_obj.values())
+                timer.mark('Recursed into %s' % (new_obj.uniqueId,))
 
             if dependencies:
                 # Dive into dependent objects
                 deps = zeit.workflow.interfaces.IPublicationDependencies(
                     new_obj)
                 stack.extend(deps.get_dependencies())
+                timer.mark('Got dependencies for %s' % (new_obj.uniqueId,))
 
             if result_obj is None:
                 result_obj = new_obj
@@ -301,6 +345,7 @@ class PublishTask(PublishRetractTask):
 
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
+        timer.mark('Sent BeforePublishEvent for %s' % obj.uniqueId)
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
@@ -312,8 +357,10 @@ class PublishTask(PublishRetractTask):
         now = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
             seconds=PUBLISHED_FUTURE_SHIFT)
         info.date_last_published = now
+        timer.mark('Set date_last_published')
         if not info.date_first_released:
             info.date_first_released = now
+            timer.mark('Set date_first_releaesd')
 
         new_obj = self.cycle(obj)
         return new_obj
@@ -325,11 +372,13 @@ class PublishTask(PublishRetractTask):
         publish_script = config['publish-script']
         paths = self.get_all_paths(obj, True)
         self.call_script(publish_script, '\n'.join(paths))
+        timer.mark('Called publish script')
 
     def after_publish(self, obj, master):
         self.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(
             obj, master))
+        timer.mark('Sent PublishedEvent for %s' % obj.uniqueId)
         return obj
 
 
