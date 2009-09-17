@@ -21,5 +21,5 @@ class Sidebar(zeit.cms.browser.view.Base):
     @property
     def index_url(self):
         if 'index' in self.repository:
-            return self.url(self.repository['index'], '@@checkout')
+            return self.url(self.repository['index'], '@@index')
         return self.url(self.repository)

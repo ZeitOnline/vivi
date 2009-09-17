@@ -45,7 +45,7 @@ class Tree(zeit.cms.browser.tree.Tree):
     def getUrl(self, obj):
         url = super(Tree, self).getUrl(obj)
         if 'index' in obj:
-            url += '/index/@@checkout'
+            url += '/index/@@view'
         return url
 
     def selected(self, url):

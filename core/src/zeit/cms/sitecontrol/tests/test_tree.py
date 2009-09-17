@@ -26,7 +26,8 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         repository['deutschland'] = zeit.cms.repository.folder.Folder()
         repository['deutschland']['index'] = (
             zeit.cms.testcontenttype.testcontenttype.TestContentType())
-        repository['deutschland']['integration'] = zeit.cms.repository.folder.Folder()
+        repository['deutschland']['integration'] = (
+            zeit.cms.repository.folder.Folder())
 
     def test_toplevel_should_contain_ressorts(self):
         root = self.tree.getTreeData()[0]
@@ -37,7 +38,7 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(True, deutschland['subfolders'])
 
         self.assertEqual(
-            'http://127.0.0.1/repository/deutschland/index/@@checkout',
+            'http://127.0.0.1/repository/deutschland/index/@@view',
             deutschland['url'])
 
     def test_ressort_should_contain_subressorts(self):
