@@ -40,7 +40,7 @@ FCKToolbarItems.RegisterItem('Zeit_Infobox', button);
 FCKCommands.RegisterCommand(
     'Zeit_Portraitbox' ,
     new FCKDialogCommand(
-        'Portraitbox', 'ZEIT: Portraitbox',
+        'Portraitbox', 'ZEIT: Porträtbox',
         FCKConfig.PageConfig.ZeitResources + '/reference/portraitbox.pt',
         800, 600));
 var button = new FCKToolbarButton('Zeit_Portraitbox', 'Portraitbox');
@@ -52,7 +52,7 @@ FCKToolbarItems.RegisterItem('Zeit_Portraitbox', button);
 FCKCommands.RegisterCommand(
     'Zeit_Gallery' ,
     new FCKDialogCommand(
-        'Gallery', 'ZEIT: Bildergallerie',
+        'Gallery', 'ZEIT: Bildergalerie',
         FCKConfig.PageConfig.ZeitResources + '/reference/gallery.pt',
         800, 600));
 var button = new FCKToolbarButton('Zeit_Gallery', 'Gallery');
