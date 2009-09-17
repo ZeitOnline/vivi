@@ -335,9 +335,9 @@ Replacements
 >>> zeit.content.article.cds.datetime = new_dt
 >>> import pprint
 >>> pprint.pprint(zeit.content.article.cds.get_replacements(article))
-{'real_day': 5,
- 'real_month': 8,
- 'real_year': 2008,
+{'real_day': '05',
+ 'real_month': '08',
+ 'real_year': '2008',
  'ressort': u'wissen',
  'sub_ressort': u''}
 

@@ -91,9 +91,9 @@ def export(object, event):
 def get_replacements(article):
     now = datetime.datetime.now(pytz.UTC)
     return dict(
-        real_year=now.year,
-        real_month=now.month,
-        real_day=now.day,
+        real_year='%04d' % now.year,
+        real_month='%02d' % now.month,
+        real_day='%02d' % now.day,
         ressort=article.ressort.lower() if article.ressort else u'',
         sub_ressort=(
             article.sub_ressort.lower() if article.sub_ressort else u''),

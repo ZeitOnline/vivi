@@ -4,7 +4,7 @@ zeit.content.article changes
 2.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- CDS-Pfade für Tag/Montag mit führender Null.
 
 
 2.7 (2009-09-09)
