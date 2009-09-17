@@ -25,7 +25,7 @@
         </a>
         <a class="edit-object-link"
            tal:condition="teaser/editable"
-           tal:attributes="href string:${teaser/url}/@@checkout"
+           tal:attributes="href string:${teaser/url}/@@view"
            title="Edit in new window"
            target="_blank"
            i18n:attributes="title">

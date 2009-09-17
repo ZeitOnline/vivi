@@ -101,7 +101,7 @@ The teaser block can be edited:
         </a>
         <a class="edit-object-link"
            title="Edit in new window" target="_blank"
-           href="http://localhost/++skin++cms/repository/c1/@@checkout">
+           href="http://localhost/++skin++cms/repository/c1/@@view">
           <span class="action-title">Edit object</span>
         </a>
         <a class="delete-link" title="Delete"
