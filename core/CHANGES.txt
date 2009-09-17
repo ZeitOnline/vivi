@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+2.8 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
 2.7.1 (2009-09-17)
 ------------------
 
