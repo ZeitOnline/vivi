@@ -113,11 +113,11 @@ intertitle {
 }
 
 .portraitbox:after {
-    content: "Portraitbox";
+    content: "Porträtbox";
 }
 
 .gallery:after {
-    content: "Bildergallerie";
+    content: "Bildergalerie";
 }
 
 .citation:after {
