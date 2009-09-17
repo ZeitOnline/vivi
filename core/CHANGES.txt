@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-2.8 (unreleased)
-----------------
+2.7.1 (2009-09-17)
+------------------
 
 - CDS-Pfade für Tag/Montag mit führender Null.
 
