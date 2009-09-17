@@ -228,12 +228,16 @@ autopilotSource = AutopilotSource()
 class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
 
     referenced_cp = zope.schema.Choice(
-        title=_("Get teasers from (autopilot)"),
+        title=_('Get teasers from (autopilot)'),
         source=autopilotSource,
         required=False)
+
     autopilot = zope.schema.Bool(
-        title=_("Autopilot active")
-        )
+        title=_('Autopilot active'))
+
+    hide_dupes = zope.schema.Bool(
+        title=_('Hide duplicate teasers'),
+        default=False)
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):

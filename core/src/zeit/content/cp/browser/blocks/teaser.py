@@ -76,7 +76,7 @@ class AutoPilotEditProperties(EditProperties):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
-            'referenced_cp', 'autopilot')
+            'referenced_cp', 'autopilot', 'hide_dupes')
 
 
 class Display(zeit.cms.browser.view.Base):

@@ -129,6 +129,9 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
+    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'hide-dupes', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
+        'hide_dupes'])
 
     def __iter__(self):
         if self.autopilot:

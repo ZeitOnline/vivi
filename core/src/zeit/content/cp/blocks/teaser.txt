@@ -188,6 +188,21 @@ content:
 >>> list(teasers)
 []
 
+There is a property to hide duplicates:
+
+>>> teasers.hide_dupes is None
+True
+>>> teasers.hide_dupes = True
+>>> teasers.hide_dupes
+True
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...hide-dupes="True"...
+>>> teasers.hide_dupes = False
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...hide-dupes="False"...
+>>> teasers.hide_dupes
+False
+
 
 
 Layouts
