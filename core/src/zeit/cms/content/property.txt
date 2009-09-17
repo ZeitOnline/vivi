@@ -149,6 +149,8 @@ not in the document, yet:
 ...         '.count', 'choice', zope.schema.Choice(source=ExampleSource()))
 ...     text = ObjectPathAttributeProperty(
 ...         '.', 'text', zope.schema.TextLine(required=False))
+...     bool = ObjectPathAttributeProperty(
+...         '.', 'bool', zope.schema.Bool(default=False, required=False))
 ...
 >>> content = Content()
 
@@ -164,6 +166,8 @@ u'url'
 True
 >>> content.choice is None
 True
+>>> content.bool is None
+True
 
 
 Setting new values:
@@ -172,13 +176,26 @@ Setting new values:
 >>> content.words = 53
 >>> content.sentences = 2
 >>> content.choice = 'two'
+>>> content.bool = True
 >>> print lxml.etree.tostring(xml_tree, pretty_print=True)
-<doc>
+<doc bool="True">
   <a href="http://www.zeit.de">link</a>
   <count words="53" chars="20" sentences="2" choice="two"/>
 </doc>
 >>> content.choice
 u'two'
+
+
+Setting bool to false works as well:
+
+>>> content.bool = False
+>>> content.bool
+False
+>>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+<doc bool="False">
+  <a href="http://www.zeit.de">link</a>
+  <count words="53" chars="20" sentences="2" choice="two"/>
+</doc>
 
 
 Setting invalid values will fail:
@@ -199,6 +216,7 @@ u'some text'
 >>> content.text = None
 >>> content.text is None
 True
+>>> content.bool = None
 >>> print lxml.etree.tostring(xml_tree, pretty_print=True)
 <doc>
   <a href="http://www.zeit.de">link</a>
