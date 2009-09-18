@@ -995,13 +995,3 @@ zeit.content.cp.BusyIndicator = gocept.Class.extend({
                 new zeit.content.cp.BusyIndicator();
         });
 })();
-
-
-(function() {
-    var ident = MochiKit.Signal.connect(
-        window, 'cp-editor-loaded',
-        function() {
-            MochiKit.Signal.disconnect(ident);
-            zeit.cms.sidebar_dragger.hide();
-        });
-})();

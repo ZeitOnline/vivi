@@ -583,7 +583,7 @@ class TestSidebar(Test):
         s = self.selenium
         self.open_centerpage()
         s.waitForElementPresent(
-            '//div[@id="sidebar-dragger" and @class="sidebar-folded"]')
+            '//div[@id="sidebar-dragger" and @class="sidebar-expanded"]')
 
 
 class TestOneClickPublish(Test):

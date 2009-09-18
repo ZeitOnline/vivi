@@ -4,6 +4,8 @@ zeit.content.cp changes
 0.23 (unreleased)
 -----------------
 
+- Die Sidebar wird nicht mehr automatisch ausgeblendet.
+
 - Beim Teaser-Bearbeiten-Link zum Objekt wird nicht mehr automatisch
   ausgecheckt.
 
