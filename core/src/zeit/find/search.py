@@ -45,7 +45,7 @@ def search(q, sort_order=None):
 
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
-                       rows=20)
+                       rows=50)
 
 
 def counts(q):

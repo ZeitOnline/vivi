@@ -4,7 +4,7 @@ zeit.find changes
 0.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Es werden jetzt 50 statt 20 Ergebnisse angezeigt.
 
 
 0.14 (2009-09-09)
