@@ -28,11 +28,29 @@
           default="WW/JJJJ" />
       </fieldset>
       <fieldset>
+        <label>Produkt:</label>
+        <select name="product">
+        <option value=""></option>
+        {.repeated section products}
+        <option value="{product_id}">{product_name}</option>
+        {.end}
+        </select>
+      </fieldset>
+      <fieldset>
         <label>Ressort:</label>
         <select name="topic">
         <option value=""></option>
         {.repeated section ressorts}
-        <option value="{ressort}">{ressort}</option>
+        <option value="{ressort}">{ressort_name}</option>
+        {.end}
+        </select>
+      </fieldset>
+      <fieldset>
+        <label>Serie:</label>
+        <select name="serie">
+        <option value=""></option>
+        {.repeated section series}
+        <option value="{serie}">{serie_title}</option>
         {.end}
         </select>
       </fieldset>

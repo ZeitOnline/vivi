@@ -4,6 +4,10 @@ zeit.find changes
 0.15 (unreleased)
 -----------------
 
+- Erweiterte Suche nach Product
+
+- Erweiterte Suche nach Serie (#5986)
+
 - Es werden jetzt 50 statt 20 Ergebnisse angezeigt.
 
 

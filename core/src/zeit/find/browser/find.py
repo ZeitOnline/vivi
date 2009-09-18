@@ -2,8 +2,8 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import datetime
 from zeit.find.daterange import DATE_RANGES
+import datetime
 import zc.iso8601.parse
 import zc.resourcelibrary
 import zeit.cms.browser.interfaces
@@ -13,6 +13,7 @@ import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.find.search
+import zope.browser.interfaces
 import zope.component
 import zope.i18n
 import zope.interface
@@ -33,15 +34,27 @@ class SearchForm(JSONView):
     template = 'search_form.jsont'
 
     def json(self):
+        metadata_if = zeit.cms.content.interfaces.ICommonMetadata
         return dict(
-            ressorts=self.ressorts,
-            types=self.types)
+            products=self.get_source(metadata_if['product_id'].source(None),
+                                     'product_id', 'product_name'),
+            ressorts=self.get_source(metadata_if['ressort'].source,
+                                     'ressort', 'ressort_name'),
+            series=self.get_source(metadata_if['serie'].source,
+                                   'serie', 'serie_title'),
+            types=self.types,
+        )
 
-    @property
-    def ressorts(self):
-        return [
-            dict(ressort=ressort)
-            for ressort in zeit.cms.content.sources.NavigationSource()]
+    def get_source(self, source, value_name, title_name):
+        result = []
+        terms = zope.component.getMultiAdapter(
+            (source, self.request), zope.browser.interfaces.ITerms)
+        for value in source:
+            title = terms.getTerm(value).title
+            result.append({
+                value_name: value,
+                title_name: title})
+        return result
 
     @property
     def types(self):
@@ -535,6 +548,8 @@ def search_form(request):
     topic = g('topic', None)
     authors = g('author', None)
     keywords = g('keywords', None)
+    product_id = g('product_id', None)
+    serie = g('serie', None)
     # four states: published, not-published, published-with-changes,
     # don't care (None)
     published = g('published', None)
@@ -542,16 +557,19 @@ def search_form(request):
         published = None
     types = request.get('types', [])
     return dict(
-        fulltext=fulltext,
+        authors=authors,
         from_=from_,
+        fulltext=fulltext,
+        keywords=keywords,
+        product_id=product_id,
+        published=published,
+        serie=serie,
+        topic=topic,
+        types=types,
         until=until,
         volume=volume,
         year=year,
-        topic=topic,
-        authors=authors,
-        keywords=keywords,
-        published=published,
-        types=types)
+    )
 
 def form_query(request, filter_terms=None):
     form = search_form(request)

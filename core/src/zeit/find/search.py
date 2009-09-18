@@ -96,6 +96,8 @@ def query(fulltext=None,
           keywords=None,
           published=None,
           types=(),
+          product_id=None,
+          serie=None,
           filter_terms=None):
     """Create lucene query string for search.
 
@@ -143,6 +145,10 @@ def query(fulltext=None,
         type_terms.append(lq.field('type', type))
     if type_terms:
         terms.append(lq.or_(*type_terms))
+    if product_id is not None:
+        terms.append(lq.field('product_id', product_id))
+    if serie is not None:
+        terms.append(lq.field('serie', serie))
 
     terms.extend(filter_terms)
     if not terms:
