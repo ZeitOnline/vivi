@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.23 (unreleased)
+0.23 (2009-09-21)
 -----------------
 
 - Die Sidebar wird nicht mehr automatisch ausgeblendet.
