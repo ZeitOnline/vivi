@@ -69,7 +69,6 @@ setup(
         'zope.app.preference',
         'zope.app.securitypolicy',
         'zope.app.server',
-        'zope.app.twisted',
         'zope.copypastemove',
         'zope.file',
         'zope.i18n>3.4.0',
