@@ -38,7 +38,7 @@ class TreeTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(True, deutschland['subfolders'])
 
         self.assertEqual(
-            'http://127.0.0.1/repository/deutschland/index/@@view',
+            'http://127.0.0.1/repository/deutschland/index/@@view.html',
             deutschland['url'])
 
     def test_ressort_should_contain_subressorts(self):

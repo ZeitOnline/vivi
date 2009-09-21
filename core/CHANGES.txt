@@ -4,7 +4,7 @@ zeit.cms changes
 1.35 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Site-Steuerung geht zum richtigen Link (@@view.html).
 
 
 1.34 (2009-09-21)
