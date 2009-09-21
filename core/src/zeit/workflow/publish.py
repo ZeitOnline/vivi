@@ -292,18 +292,24 @@ class PublishRetractTask(object):
             zeit.cms.repository.interfaces.IRepository)
 
     @staticmethod
-    def lock(obj):
-        lockable = zope.app.locking.interfaces.ILockable(obj)
-        if lockable.isLockedOut():
-            lockable.breaklock()
-        if not lockable.ownLock():
-            lockable.lock(timeout=120)
+    def lock(obj, master=None):
+        lockable = zope.app.locking.interfaces.ILockable(obj, None)
+        if (lockable is not None
+            and not lockable.locked()
+            and not lockable.ownLock()):
+            lockable.lock(timeout=240)
+        timer.mark('Locked %s' % obj.uniqueId)
+        return obj
 
     @staticmethod
-    def unlock(obj):
-        lockable = zope.app.locking.interfaces.ILockable(obj)
-        if lockable.ownLock():
+    def unlock(obj, master=None):
+        lockable = zope.app.locking.interfaces.ILockable(obj, None)
+        if (lockable is not None
+            and lockable.locked()
+            and lockable.ownLock()):
             lockable.unlock()
+        timer.mark('Unlocked %s' % obj.uniqueId)
+        return obj
 
     @staticmethod
     def call_script(filename, stdin):
@@ -336,9 +342,12 @@ class PublishTask(PublishRetractTask):
                 obj, _("Could not publish because conditions not satisifed."))
             return
 
+
+        obj = self.recurse(self.lock, True, obj, obj)
         obj = self.recurse(self.before_publish, True, obj, obj)
         self.call_publish_script(obj)
         self.recurse(self.after_publish, True, obj, obj)
+        obj = self.recurse(self.unlock, True, obj, obj)
 
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""

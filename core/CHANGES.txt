@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Site-Steuerung checkt nicht mehr aus.
 
+- Workflow sperrt, wenn möglich, alle benötigten Resourcen vor dem
+  Veröffentlichen.
+
 
 1.33.3 (2009-09-16)
 -------------------
