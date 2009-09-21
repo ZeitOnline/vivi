@@ -121,6 +121,6 @@ class SubNavigationUpdater(object):
 
     def __call__(self, master_token):
         result = self.get_result(master_token)
-        self.request.response.setHeader('Cache-Control', 'max-age=3600')
+        self.request.response.setHeader('Cache-Control', 'public;max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
         return cjson.encode(sorted(result)).encode('utf8')
