@@ -55,7 +55,6 @@ setup(
         'zope.app.onlinehelp',
         'zope.app.preference',
         'zope.app.securitypolicy',
-        'zope.app.twisted',
         'zope.copypastemove',
         'zope.i18n>3.4.0',
         'zope.index',

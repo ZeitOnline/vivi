@@ -4,7 +4,7 @@ zeit.content.article changes
 2.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Keine Abhängigkeit zu zope.app.twisted mehr.
 
 
 2.7.1 (2009-09-17)
