@@ -66,7 +66,8 @@ def syndicate_before_publish(context, event):
                 continue
             co.insert(0, context)
             syndicated_to.append(channel)
-    asw.was_automatically_syndicated_into += tuple(syndicated_to)
+    if syndicated_to:
+        asw.was_automatically_syndicated_into += tuple(syndicated_to)
 
 
 class Dependencies(object):
