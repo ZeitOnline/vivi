@@ -4,7 +4,7 @@ CHANGES
 1.18.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PROPPATCH on a locked resource raises correct DAVLockedError (#6237).
 
 
 1.18.3 (2009-09-06)

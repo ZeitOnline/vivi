@@ -43,10 +43,13 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
                     continue
                 raise
 
-    def proppatch(self, uri, body, locktoken=None):
+    def proppatch(self, url, body, locktoken=None):
         hdrs = {}
-        self.set_if_header(hdrs, uri, locktoken)
-        res = self.get_result('proppatch', uri, body, extra_hdrs=hdrs)
+        self.set_if_header(hdrs, url, locktoken)
+        res = self.get_result('proppatch', url, body, extra_hdrs=hdrs)
+        if res.status == 423:
+            raise zeit.connector.dav.interfaces.DAVLockedError(
+                res.status, res.reason, url)
         if res.status == 200 or res.status >= 300:
             raise zeit.connector.dav.interfaces.DAVError(
                 res.status, res.reason, res)

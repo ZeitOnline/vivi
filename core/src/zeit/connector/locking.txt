@@ -136,6 +136,24 @@ LockingError: http://xml.zeit.de/testing/edge2.2 is already locked.
 'opaquelocktoken:...'
 >>> del connector[res.id]
 
+Edge case 2.3: PROPATCH
+
+>>> res.id = 'http://xml.zeit.de/testing/edge2.3'
+>>> connector.add(res)
+>>> ignore = connector[res.id]  # fill cache again
+>>> url = connector._id2loc(res.id)
+>>> token = connector.get_connection().lock(
+...     url, owner='gimli', depth=0, timeout=20)
+>>> connector.changeProperties(res.id, {('foo', 'bar'): 'baz'})
+Traceback (most recent call last):
+    ...
+DAVLockedError: (423, 'Locked', u'http://zip6.zeit.de:9000/cms/work/testing/edge2.3')
+
+>>> connector.unlock(res.id, token)
+'opaquelocktoken:...'
+>>> del connector[res.id]
+
+
 
 Edge case 3: Locked resource w/o locking user
 +++++++++++++++++++++++++++++++++++++++++++++
