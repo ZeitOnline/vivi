@@ -7,7 +7,6 @@ import gocept.lxml.objectify
 import lxml.objectify
 import persistent
 import pytz
-import rwproperty
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
@@ -60,22 +59,22 @@ class Persistent(object):
             self._p_changed = True
         super(Persistent, self).__setattr__(key, value)
 
-    @rwproperty.getproperty
+    @property
     def _p_changed(self):
         persistent = self.__get_persistent()
         return persistent._p_changed if persistent is not None else None
 
-    @rwproperty.setproperty
+    @_p_changed.setter
     def _p_changed(self, value):
         persistent = self.__get_persistent()
         if persistent is not None:
-           persistent._p_changed = value
+            persistent._p_changed = value
 
     @property
     def _p_jar(self):
         persistent = self.__get_persistent()
         if persistent is not None:
-           return persistent._p_jar
+            return persistent._p_jar
 
     def __get_persistent(self):
         parent = getattr(self, '__parent__', None)
