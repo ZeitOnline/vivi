@@ -8,7 +8,7 @@ import feedparser
 import gocept.runner
 import logging
 import lxml.etree
-import md5
+import hashlib
 import pytz
 import zeit.cms.connector
 import zeit.cms.content.adapter
@@ -177,7 +177,7 @@ class FeedManager(object):
     def get_feed(self, url):
         if not url:
             return
-        hash_ = md5.new(url).hexdigest()
+        hash_ = hashlib.md5(url).hexdigest()
         if hash_ in self.folder:
             return self.folder[hash_]
         else:
