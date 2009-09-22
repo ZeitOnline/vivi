@@ -122,18 +122,10 @@ def cms_content_iter(context):
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_centerpage_on_checkin(context, event):
-    async_update_centerpage(zope.proxy.removeAllProxies(context))
-
-
-@gocept.async.function('events')
-def async_update_centerpage(context):
-    with zeit.cms.checkout.helper.checked_out(context, events=False) as cp:
-        if cp is None:
-            return
-        for content in zeit.content.cp.interfaces.ICMSContentIterable(cp):
-            cp.updateMetadata(content)
+    for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
+        context.updateMetadata(content)
 
 
 @zope.component.adapter(
