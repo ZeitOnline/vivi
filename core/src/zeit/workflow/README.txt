@@ -609,6 +609,7 @@ work/online/2007/01/terror-abschuss-schaeuble
 work/online/2007/01/thailand-anschlaege
 work/online/2007/01/weissrussland-russland-gas
 done.
+Done http://xml.zeit.de/online/2007/01 (...s)
 
 
 Retract script
@@ -636,6 +637,7 @@ work/online/2007/01/4schanzentournee-abgesang
 work/online/2007/01
 done.
 Could not checkout http://xml.zeit.de/online/2007/01
+Done http://xml.zeit.de/online/2007/01 (...s)
 
 
 Error handling
@@ -866,6 +868,7 @@ Retracting http://xml.zeit.de/online/2007/01/Somalia
 Retracting test script
 work/online/2007/01/Somalia
 done.
+...
 
 >>> gsm.unregisterHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
@@ -932,6 +935,7 @@ work/2007/01/LB-Sch-ttler
 work/2007/02/Vorspann-Dappen
 work/2007/02/W-Clear-02
 done.
+...
 
 And 2007 is marked as published now:
 

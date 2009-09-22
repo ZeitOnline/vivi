@@ -46,7 +46,7 @@ class Timer(threading.local):
     def mark(self, message):
         self.times.append((time.time(), message))
 
-    def __unicode__(self):
+    def get_timings(self):
         result = []
         last = None
         total = 0
@@ -57,6 +57,12 @@ class Timer(threading.local):
                 diff = when - last
             total += diff
             last = when
+            result.append((diff, total, message))
+        return result
+
+    def __unicode__(self):
+        result = []
+        for diff, total, message in self.get_timings():
             result.append(u'%2.4f %2.4f %s' % (diff, total, message))
         return u'\n'.join(result)
 
@@ -177,8 +183,10 @@ class PublishRetractTask(object):
             finally:
                 if acquired:
                     self.release_active_lock(uniqueId)
-        timer.mark('Done')
+        timer.mark('Done %s' % input.uniqueId)
         timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
+        dummy, total, message = timer.get_timings()[-1]
+        logger.info('%s (%2.4fs)' % (message, total))
         return message
 
     def acquire_active_lock(self, uniqueId):
