@@ -22,6 +22,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ILead"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.lead.contents.pt"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -31,6 +40,15 @@
     template="layout.lead.contents-provider.pt"
     permission="zeit.EditContent"
     weight="0"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IInformatives"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.informatives.contents.pt"
+    permission="zeit.EditContent"
     />
 
   <browser:viewlet
@@ -64,6 +82,15 @@
     template="layout.informatives.edit.pt"
     permission="zeit.EditContent"
     weight="90"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IMosaic"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.mosaic.contents.pt"
+    permission="zeit.EditContent"
     />
 
 

@@ -66,17 +66,19 @@ class Element(zope.container.contained.Contained,
         gocept.lxml.interfaces.IObjectified)
 
     def __init__(self, context, xml):
-        self.__parent__ = context
         self.xml = xml
+        # Set parent last so we don't trigger a write.
+        self.__parent__ = context
 
-    def _get_name(self):
+    @property
+    def __name__(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
 
-    def _set_name(self, name):
-        self._p_changed = True
-        self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
-
-    __name__ = property(_get_name, _set_name)
+    @__name__.setter
+    def __name__(self, name):
+        if name != self.__name__:
+            self._p_changed = True
+            self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
 
     @property
     def type(self):

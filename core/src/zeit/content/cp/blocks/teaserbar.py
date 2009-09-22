@@ -2,7 +2,6 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import rwproperty
 import zeit.content.cp.area
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
@@ -15,19 +14,20 @@ class TeaserBar(zeit.content.cp.area.Container):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
 
-    def __init__(self, context, xml):
-        super(TeaserBar, self).__init__(context, xml)
-        self.placeholder_factory = zope.component.getAdapter(
-            self, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
+    @property
+    def placeholder_factory(self):
+        return zope.component.getAdapter(
+            self, zeit.content.cp.interfaces.IElementFactory,
+            name='placeholder')
 
-    @rwproperty.getproperty
+    @property
     def layout(self):
         for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source(self):
             if layout.id == self.xml.get('module'):
                 return layout
         return zeit.content.cp.interfaces.IReadTeaserBar['layout'].default
 
-    @rwproperty.setproperty
+    @layout.setter
     def layout(self, layout):
         self._p_changed = True
         self.xml.set('module', layout.id)

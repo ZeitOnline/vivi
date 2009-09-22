@@ -227,6 +227,8 @@ class ChangeLayout(zeit.content.cp.browser.view.Action):
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal('before-reload', 'deleted', self.context.__name__)
+        self.signal(
+            None, 'reload', self.context.__name__, self.url('@@contents'))
         self.signal('after-reload', 'added', self.context.__name__)
 
 

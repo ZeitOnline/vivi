@@ -100,6 +100,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                     date = lsc.last_semantic_change.isoformat()
                 entry.set('last-semantic-change', date)
 
+
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 
     factory = CenterPage

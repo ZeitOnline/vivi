@@ -206,7 +206,7 @@ zeit.content.cp.Editor = gocept.Class.extend({
 
     reload: function(element_id, url) {
         var self = this;
-        log("Reloading");
+        log("Reloading", element_id, url);
         var element = null;
         if (!isUndefinedOrNull(element_id)) {
              element = $(element_id);
@@ -605,7 +605,18 @@ zeit.content.cp.BlockSorter = zeit.content.cp.Sortable.extend({
         var self = this;
         var d = arguments.callee.$.on_update.call(self);
         d.addCallback(function(result) {
-            MochiKit.Signal.signal(self.editor, 'reload');
+            var url = self.options()['reload_url'];
+            if (isUndefinedOrNull(url)) {
+                var url = $(self.container).getAttribute(
+                    'cms:url') + '/@@contents';
+            }
+            var reload_id = self.options()['reload_id']
+            if (isUndefinedOrNull(reload_id)) {
+                reload_id = self.container;
+            }
+            MochiKit.Signal.signal(
+                self.editor, 'reload', reload_id, url);
+            return result
         });
         return d;
     },
@@ -629,12 +640,14 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
                 bar.id = bar.parentNode.id + '-inner';
             }
             var url = bar.parentNode.getAttribute(
-                'cms:url') + '/@@updateOrder';
+                'cms:url');
             var sorter = new zeit.content.cp.BlockSorter(
                 bar.id, {
                 constraint: 'horizontal',
                 overlap: 'horizontal',
-                update_url: url,
+                update_url: url + '/@@updateOrder',
+                reload_id: bar.parentNode.id,
+                reload_url: url + '/@@contents',
             });
             self.sorters.push(sorter);
         });
@@ -676,16 +689,23 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
         var container_id = context_element.getAttribute('cms:lightbox-in');
         self.parent = zeit.content.cp.getParentComponent(context_element);
         var url = context_element.getAttribute('href');
+        self.reload_id = context_element.getAttribute(
+            'cms:lightbox-reload-id');
+        self.reload_url = context_element.getAttribute(
+            'cms:lightbox-reload-url');
         arguments.callee.$.construct.call(self, url, $(container_id));
         self.lightbox.content_box.__handler__ = self;
+        self.reload_parent_component_on_close = true;
         new self.context(self);
     },
 
     connect: function() {
         var self = this;
         self.events.push(MochiKit.Signal.connect(
-           zeit.content.cp.editor, 'before-reload',
-           self, 'close'));
+            zeit.content.cp.editor, 'before-reload', function() {
+                self.reload_parent_component_on_close = false;
+                self.close();
+        }));
         self.close_event_handle = MochiKit.Signal.connect(
             self.lightbox, 'before-close',
             self, self.on_close);
@@ -731,7 +751,11 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
         log("closing lightbox");
         MochiKit.Signal.disconnect(self.close_event_handle);
         MochiKit.Signal.signal(self, 'before-close');
-        MochiKit.Signal.signal(self.parent, 'reload');
+        if (self.reload_parent_component_on_close) {
+            MochiKit.Signal.signal(
+                self.parent, 'reload',
+                self.reload_id, self.reload_url);
+        }
     },
 });
 
@@ -874,6 +898,7 @@ zeit.content.cp.ConfirmDelete = gocept.Class.extend({
 zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     // check for unloaded images:
     
+    log("fixing box heights.", container.id);
     var images = MochiKit.DOM.getElementsByTagAndClassName(
         'img', null, container);
     var exit = false;
@@ -888,7 +913,6 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
             0.25, zeit.content.cp.makeBoxesEquallyHigh, container);
         return
     }
-
 
     var max_height = 0;
     var blocks = [];
@@ -919,12 +943,14 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
 (function() {
     
     var fix_box_heights = function() {
+        log('fixing box heights');
         forEach($$('#cp-teasermosaic > .block.type-teaser-bar > .block-inner'),
             function(bar) {
+                log('fixing box heights for', bar.id);
                 try {
                     zeit.content.cp.makeBoxesEquallyHigh(bar);
                 } catch (e) {
-                    log(e)
+                    log("Error", e)
                 }
         });
     }

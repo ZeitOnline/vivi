@@ -33,8 +33,9 @@ class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
         '.', 'column_1', zope.schema.Int())
 
     def __init__(self, block):
-        self.__parent__ = self.context = block
         self.xml = block.xml
+        self.context = block
+        self.__parent__ = block
 
     def _get_columns(self):
         teasers = len(self.context)

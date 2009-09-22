@@ -3,33 +3,14 @@
       class="cp-content-inner">
 
   <div class="cp-editor-top">
-    <div id="cp-aufmacher">
-      <div id="cp-aufmacher-inner"
-           tal:define="area context/lead;
-                       validation python:view.validate(area)"
-           tal:attributes="cms:url area/@@absolute_url;
-                           class validation/class_;
-                           cms:tooltip validation/messages;"
-           tal:content="structure area/@@contents"/>
-    </div>
+    <div id="cp-aufmacher"
+         tal:content="structure context/lead/@@contents"/>
 
-    <div id="cp-informatives">
-      <div id="cp-informatives-inner"
-           tal:define="area context/informatives;
-                       validation python:view.validate(area)"
-           tal:attributes="cms:url area/@@absolute_url;
-                           class validation/class_;
-                           cms:tooltip validation/messages;"
-           tal:content="structure area/@@contents"/>
-    </div>
+    <div id="cp-informatives"
+         tal:content="structure context/informatives/@@contents" />
+
   </div>
 
-  <div id="cp-teasermosaic"
-       tal:define="area context/teaser-mosaic;
-                   validation python:view.validate(area)"
-       tal:attributes="cms:url area/@@absolute_url;
-                       class validation/class_;
-                       cms:tooltip validation/messages;"
-       tal:content="structure area/@@contents"/>
+  <div tal:replace="structure context/teaser-mosaic/@@contents"/>
 
 </div>

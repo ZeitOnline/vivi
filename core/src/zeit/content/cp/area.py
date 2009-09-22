@@ -20,8 +20,9 @@ class Container(UserDict.DictMixin,
     zope.interface.implements(zeit.content.cp.interfaces.IContainer)
 
     def __init__(self, context, xml):
-        self.__parent__ = context
         self.xml = xml
+        # Set parent last so we don't trigger a write.
+        self.__parent__ = context
 
     def __getitem__(self, key):
         # XXX this is not very efficient
