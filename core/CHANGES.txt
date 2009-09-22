@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.34.2 (unreleased)
+1.34.2 (2009-09-22)
 -------------------
 
 - Invalidieren der Resourcen vor dem Veröffentlichen um der Locking-Errors Herr
