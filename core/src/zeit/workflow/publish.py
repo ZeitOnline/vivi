@@ -19,6 +19,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
+import zeit.connector.interfaces
 import zeit.objectlog.interfaces
 import zope.app.appsetup.product
 import zope.app.security.interfaces
@@ -293,6 +294,8 @@ class PublishRetractTask(object):
 
     @staticmethod
     def lock(obj, master=None):
+        zope.event.notify(
+            zeit.connector.interfaces.ResourceInvaliatedEvent(obj.uniqueId))
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
         if (lockable is not None
             and not lockable.locked()
