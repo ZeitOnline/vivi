@@ -1,12 +1,10 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import unittest
 
 from zope.testing import doctest
-
+import unittest
 import zeit.cms.testing
+
 
 def test_suite():
     suite = unittest.TestSuite()
@@ -14,5 +12,6 @@ def test_suite():
         'README.txt',
         'cache.txt',
         'preference.txt',
-        'file.txt'))
+        'file.txt',
+        package='zeit.cms.repository'))
     return suite
