@@ -11,6 +11,7 @@ import os.path
 import pytz
 import time
 import urlparse
+import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zope.app.file.image
