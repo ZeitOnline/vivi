@@ -333,7 +333,7 @@ True
 >>> manager.checkout()
 Traceback (most recent call last):
     ...
-CheckinCheckoutError: http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+CheckinCheckoutError
 
 Remove the utility registration:
 

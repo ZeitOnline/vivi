@@ -41,24 +41,26 @@ class CheckoutManager(object):
         if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
             self.context):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                "Can only checkout IRepositoryContent")
+                self.context.uniqueId, "Can only checkout IRepositoryContent")
         lockable = zope.app.locking.interfaces.ILockable(self.context)
         if lockable.locked() and not lockable.ownLock():
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                self.context.uniqueId,
                 _('The content object is locked by ${name}.', mapping=dict(
-                name=lockable.locker())))
+                    name=lockable.locker())))
         if zeit.cms.workingcopy.interfaces.ILocalContent(
             self.context, None) is None:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                self.context.uniqueId,
                 'Could not adapt content to ILocalContent')
         for obj in self.workingcopy.values():
             if (zeit.cms.interfaces.ICMSContent.providedBy(obj)
                 and obj.uniqueId == self.context.uniqueId):
                 raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+                    self.context.uniqueId,
                     _('The content you tried to check out is already in your '
                       'working copy.'))
         return True
-
 
     def checkout(self, event=True, temporary=False):
         self._guard_checkout()
@@ -108,7 +110,7 @@ class CheckoutManager(object):
     def checkin(self, event=True, semantic_change=False):
         if not self.canCheckin:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                "Cannot checkin.")
+                self.context.uniqueId, "Cannot checkin.")
         workingcopy =  self.context.__parent__
         if semantic_change:
             lsc = zope.security.proxy.removeSecurityProxy(

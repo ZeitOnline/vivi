@@ -49,6 +49,10 @@ class ICheckinManager(zope.interface.Interface):
 class CheckinCheckoutError(Exception):
     """Raised if there is an error during checkin or checkout.."""
 
+    def __init__(self, uniqueId, *args):
+        self.uniqueId = uniqueId
+        self.args = args
+
 
 class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
     """Generated when a content object is checked in or out."""
