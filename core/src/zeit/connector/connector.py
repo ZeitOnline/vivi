@@ -311,10 +311,10 @@ class Connector(object):
             return False
         return True
 
-    def add(self, object):
+    def add(self, object, verify_etag=True):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(resource.id)
-        self._internal_add(id, resource)
+        self._internal_add(id, resource, verify_etag)
 
     def copy(self, old_id, new_id):
         """Copy the resource old_id to new_id."""
@@ -403,9 +403,9 @@ class Connector(object):
             # NOTE: _timeout() returns None for timeouts too long. This blends
             #       with DAVConnection, which converts None to 'Infinite'.
             token = self.get_connection().lock(url,
-                                         owner=principal,
-                                         depth=0,
-                                         timeout=_abs2timeout(until))
+                                               owner=principal,
+                                               depth=0,
+                                               timeout=_abs2timeout(until))
         except zeit.connector.dav.interfaces.DAVLockedError:
             raise zeit.connector.interfaces.LockingError(
                 id, "%s is already locked." % id)
@@ -545,7 +545,7 @@ class Connector(object):
         #path = unicode(urllib.unquote(path), 'utf8')
         return self._prefix + path
 
-    def _internal_add(self, id, resource):
+    def _internal_add(self, id, resource, verify_etag=True):
         """The grunt work of __setitem__() and add()
         """
         self._invalidate_cache(id)
@@ -580,7 +580,9 @@ class Connector(object):
             # of the box by httplib (which is used in DAV). We could override
             # the send method though.
             data = resource.data.read()
-            etag = resource.properties.get('etag', 'DAV:')
+            etag = None
+            if verify_etag:
+                etag = resource.properties.get(('getetag', 'DAV:'))
             conn = self.get_connection()
             conn.put(self._id2loc(id), data, mime_type=resource.contentType,
                     locktoken=locktoken, etag=etag)
@@ -604,9 +606,7 @@ class Connector(object):
             id += '/'
         conn = self.get_connection()
         url = self._id2loc(id)
-        davres = zeit.connector.dav.davresource.DAVResult(conn.mkcol(url))
-        if davres.has_errors():
-            raise zeit.connector.dav.interfaces.DAVError(davres,)
+        return conn.mkcol(url)
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.

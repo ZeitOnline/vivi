@@ -35,3 +35,42 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             StringIO.StringIO('Paff'),
             contentType='text/plain')
         self.assertEquals('Paff', self.connector[rid].data.read())
+
+
+class TestConflictDetectionBase(object):
+
+    def setUp(self):
+        super(TestConflictDetectionBase, self).setUp()
+        rid = u'http://xml.zeit.de/testing/conflicting'
+        self.connector[rid] = self.get_resource('conflicting', 'Pop.')
+        r_a = self.connector[rid]
+        self.r_a = self.get_resource(r_a.__name__, r_a.data.read(),
+                                     r_a.properties)
+        self.connector[rid] = self.get_resource('conflicting', 'Bang.')
+
+    def test_conflict(self):
+        self.assertRaises(
+            zeit.connector.dav.interfaces.PreconditionFailedError,
+            self.connector.add, self.r_a)
+
+    def test_implicit_override(self):
+        del self.r_a.properties[('getetag', 'DAV:')]
+        self.connector.add(self.r_a)
+        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+
+    def test_explicit_override(self):
+        self.connector.add(self.r_a, verify_etag=False)
+        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+
+
+class TestConflictDetectionReal(
+    TestConflictDetectionBase,
+    zeit.connector.testing.ConnectorTest):
+    pass
+
+
+class TestConflictDetectionMock(
+    TestConflictDetectionBase,
+    zeit.connector.testing.MockTest):
+    pass
+

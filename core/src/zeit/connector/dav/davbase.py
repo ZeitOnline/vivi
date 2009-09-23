@@ -103,6 +103,8 @@ class HTTPBasicAuthCon(object):
         if extra_hdrs:
             headers.update(extra_hdrs)
         if self._resp is not None and not self._resp.isclosed():
+            assert False, "Response left"
+            # In production the assert will be optimized away.
             logger.error("Response left!")
             logger.error(self._resp.read())
             self._resp = None

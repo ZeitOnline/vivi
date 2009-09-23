@@ -4,7 +4,9 @@ CHANGES
 1.18.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Honour the ETAG for PUT requests so there is a way to detect conflicts.
+
+- Refactored DAV exceptions and exception handling to get this mor straight.
 
 
 1.18.4 (2009-09-21)

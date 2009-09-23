@@ -2,12 +2,14 @@
 # See also LICENSE.txt
 
 from zope.testing import doctest
+import StringIO
 import ZODB.blob
 import os
 import pkg_resources
 import unittest
 import zc.queue.tests
 import zeit.connector.connector
+import zeit.connector.mock
 import zope.app.testing.functional
 
 
@@ -20,7 +22,20 @@ optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
              doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
 
 
-class ConnectorTest(unittest.TestCase):
+
+class Test(unittest.TestCase):
+
+    def get_resource(self, name, body, properties={},
+                     contentType='text/plain'):
+        rid = 'http://xml.zeit.de/testing/' + name
+        return zeit.connector.resource.Resource(
+            rid, name, 'testing',
+            StringIO.StringIO(body),
+            properties=properties,
+            contentType=contentType)
+
+
+class ConnectorTest(Test):
 
     def setUp(self):
         super(ConnectorTest, self).setUp()
@@ -31,6 +46,17 @@ class ConnectorTest(unittest.TestCase):
         for name, uid in self.connector.listCollection(
             'http://xml.zeit.de/testing/'):
             del self.connector[uid]
+        super(ConnectorTest, self).tearDown()
+
+
+class MockTest(Test):
+
+    def setUp(self):
+        super(MockTest, self).setUp()
+        self.connector = zeit.connector.mock.Connector()
+        self.connector.add(self.get_resource(
+            '', '', contentType='httpd/x-unix-directory'))
+
 
 
 def get_storage(blob_dir):

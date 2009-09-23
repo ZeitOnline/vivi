@@ -59,7 +59,7 @@ We unlock the resource under the hood and of course expect that we can add it:
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> connector.get_connection().unlock(url, token)
+>>> dummy = connector.get_connection().unlock(url, token)
 >>> connector.add(res)
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
@@ -71,7 +71,7 @@ Edge case 1.1: With existing resource:
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> connector.get_connection().unlock(url, token)
+>>> dummy = connector.get_connection().unlock(url, token)
 >>> connector.add(res)
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
@@ -83,7 +83,7 @@ Edge case 1.2: Unlocking:
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
->>> connector.get_connection().unlock(url, token)
+>>> dummy = connector.get_connection().unlock(url, token)
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
 
@@ -180,7 +180,7 @@ LockedByOtherSystemError: (None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999
 
 Unlock the resource and remove it:
 
->>> connector.get_connection().unlock(dav_url, token)
+>>> dummy = connector.get_connection().unlock(dav_url, token)
 >>> del connector[res.id]
 
 
@@ -193,7 +193,7 @@ Edge case 4: We think the resource is locked but it is by somebody else
 >>> token = connector.lock(res.id, 'saruman', until=None)
 >>> r2 = connector[res.id]
 >>> url = connector._id2loc(res.id)
->>> connector.get_connection().unlock(url, token)
+>>> dummy = connector.get_connection().unlock(url, token)
 >>> new_token = connector.get_connection().lock(
 ...     url, owner='gimli', depth=0, timeout=20)
 >>> connector.add(res)

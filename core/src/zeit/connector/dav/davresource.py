@@ -309,11 +309,6 @@ class DAVResult(object):
         etag = pd.get(('getetag','DAV:'), None)
         return etag
 
-    def __repr__ ( self ):
-        return "=== DAVResult ===" + \
-               ("  Status: %d %s\n  " % (self.status, self.reason)) + \
-               "\n  ".join([r.__repr__() for r in self.responses.values()]) + \
-               "\n=================\n"
 
 class DAVResource(object):
     """Basic class describing an arbitrary DAV resource (file or collection)
@@ -588,65 +583,6 @@ class DAVResource(object):
         li = response.get_locking_info()
         return li.copy()
 
-    def _lock_path ( self, path, owner=None, depth=0, header=None ):
-        if header is None:
-            header = {}
-        r = self._conn.lock(path, owner=owner, depth=depth, extra_hdrs=header)
-        davres = DAVResult(r)
-        return davres
-
-    def _unlock_path ( self, path, locktoken, header=None ):
-        if header is None:
-            header = {}
-        r = self._conn.unlock(path, locktoken, extra_hdrs=header)
-        davres = DAVResult(r)
-        return davres
-
-    def lock ( self, owner=None, depth='0' ):
-        """Lock the resource this instance refers to and return the locktoken.
-
-        owner is a plain string or a xml fragment which is stored with the lock
-        information.
-
-        depth specifies the locking depth. Valid values are: 0 (default),
-        1 and 'infinite' which might not be supported by the server.
-
-        If the resource is already locked, DAVLockedError is raised.
-
-        If the lock fails, DAVLockFailedError is raised.
-        """
-        davres = self._lock_path(self.path, owner, depth)
-        if not davres.has_errors():
-            self.locktoken = davres.lock_token
-            return self.locktoken
-        if davres.status == 423:
-            raise zeit.connector.dav.interfaces.DAVLockedError, (davres,)
-        else:
-            raise zeit.connector.dav.interfaces.DAVLockFailedError, (davres,)
-
-    def unlock ( self, locktoken=None, owner=None ):
-        """Unlock this resource, if it is locked and the right locktoken is passed.
-
-        The method does not return anything.
-
-        If locktoken is None the method tries to use self.locktoken.
-        If there is no locktoken or the locktoken doesn't mactch the required
-        token, DAVInvalidLocktokenError is raised.
-        """
-        if locktoken is None: # no locktoken given, try ours
-            locktoken = self.locktoken
-        if not locktoken: # no locktoken available
-            raise zeit.connector.dav.interfaces.DAVInvalidLocktokenError
-        # check if our locktoken matches the required one
-        davres = self._unlock_path(self.url, locktoken)
-        if not davres.has_errors():
-            self.update()
-            if self.locktoken == locktoken:
-                self.locktoken = None
-            return
-        # FIXME Other exceptions here?
-        raise zeit.connector.dav.interfaces.DAVUnlockFailedError(davres)
-
     def _propfind ( self, depth=0 ):
         """Query all properties for this resource and return a DAVResult instance.
         """
@@ -761,45 +697,3 @@ class DAVCollection ( DAVResource ):
                 raise
             ret.append(fo)
         return ret
-
-    def _do_create_collection ( self, name, locktoken=None ):
-        conn = self._conn
-        # construct path
-        while name and name[0] == '/':
-            name = name[1:]
-        if name[-1] != '/':
-            name += '/'
-        url  = urljoin(self.url, name )
-        res  = conn.mkcol(url)
-        if res:
-            res = DAVResult(res)
-        return (res, url)
-
-    def _do_create_file(self, name, data='', content_type=None,
-                        encoding=None, locktoken=None):
-        conn = self._conn
-        url = urljoin(self.url, name)
-        hdr = {}
-        if locktoken:
-            hdr['If'] = '<%s>(<%s>)' % (url, locktoken)
-            hdr['Lock-Token'] = '<%s>' % locktoken
-        res = None
-        res = conn.put(url, data, content_type=content_type,
-                       content_enc=encoding, extra_hdrs=hdr)
-        if res:
-            res = DAVResult(res)
-        return (res, url)
-
-    def create_collection ( self, name, locktoken=None ):
-        """Create a new sub-collection as direct child of this collection.
-
-        Path names like 'xxx/aaa' are not allowed and will result in an error.
-
-        Returns a DAVCollection instance refering to the newly create collection.
-        """
-        res, url = self._do_create_collection(name, locktoken=locktoken)
-        if res.status in (200, 201):
-            # created, return collection
-            return DAVCollection(url, self._conn)
-        raise zeit.connector.dav.interfaces.DAVCreationFailedError(
-            res.status, res.reason, url)

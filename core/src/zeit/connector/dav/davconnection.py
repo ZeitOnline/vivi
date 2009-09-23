@@ -1,8 +1,10 @@
+import httplib
 import random
 import time
 import zeit.connector.dav.davbase
 import zeit.connector.dav.davresource
 import zeit.connector.dav.interfaces
+
 
 class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
     """DAV Connection oriented.
@@ -12,27 +14,25 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
 
     def lock(self, url, owner=None, depth=0, timeout=None, headers={}):
         r = self.get_result(
-            'lock', url, owner=owner, depth=depth, timeout=timeout,
+            'lock', (httplib.OK,),
+            url, owner=owner, depth=depth, timeout=timeout,
             extra_hdrs=headers)
-        if not r.has_errors():
-            return r.lock_token
-        if r.status == 423:
-            raise zeit.connector.dav.interfaces.DAVLockedError(r)
-        raise zeit.connector.dav.interfaces.DAVLockFailedError(r)
+        return r.lock_token
 
     def unlock(self, url, locktoken, headers={}):
-        if not locktoken:
-            raise zeit.connector.dav.interfaces.DAVInvalidLocktokenError()
-        r = self.get_result('unlock', url, locktoken, extra_hdrs=headers)
-        if r.has_errors():
-            raise zeit.connector.dav.interfaces.DAVUnlockFailedError(r)
+        r = self.get_result(
+            'unlock', (httplib.NO_CONTENT,),
+            url, locktoken, extra_hdrs=headers)
+        return r
 
     def propfind(self, *args, **kwargs):
         tries = 0
         while True:
             tries += 1
             try:
-                return self.get_result('propfind', *args, **kwargs)
+                return self.get_result(
+                    'propfind', None,  # Still handled by davresource
+                    *args, **kwargs)
             except zeit.connector.dav.interfaces.DavXmlParseError, e:
                 last_error = e.args[0].last_error
                 if (last_error
@@ -46,13 +46,9 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
     def proppatch(self, url, body, locktoken=None):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
-        res = self.get_result('proppatch', url, body, extra_hdrs=hdrs)
-        if res.status == 423:
-            raise zeit.connector.dav.interfaces.DAVLockedError(
-                res.status, res.reason, url)
-        if res.status == 200 or res.status >= 300:
-            raise zeit.connector.dav.interfaces.DAVError(
-                res.status, res.reason, res)
+        res = self.get_result(
+            'proppatch', (httplib.MULTI_STATUS,),
+            url, body, extra_hdrs=hdrs)
         return res
 
     def put(self, url, data, mime_type=None, encoding=None, locktoken=None,
@@ -62,36 +58,43 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken, etag)
         res = self.get_result(
-            'put', url, data,
-            content_type=mime_type, content_enc=encoding, extra_hdrs=hdrs)
-        if res.status not in (200, 201, 204):
-            raise zeit.connector.dav.interfaces.DAVUploadFailedError(
-                res.status, res.reason)
+            'put', (httplib.OK, httplib.CREATED, httplib.NO_CONTENT),
+            url, data, content_type=mime_type, content_enc=encoding,
+            extra_hdrs=hdrs)
         return res
+
+    def mkcol(self, url):
+        return self.get_result('mkcol', (httplib.CREATED,), url)
 
     def delete(self, url, locktoken=None):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
-        res = self.get_result('delete', url, hdrs)
-        if res.status == 423:
-            raise zeit.connector.dav.interfaces.DAVLockedError(
-                res.status, res.reason, url)
-        if res.status >= 300:
-            raise zeit.connector.dav.interfaces.DAVDeleteFailedError(
-                res.status, res.reason, url)
+        res = self.get_result(
+            'delete', (httplib.OK, httplib.ACCEPTED, httplib.NO_CONTENT),
+            url, hdrs)
         return res
 
     def set_if_header(self, hdrs, url, locktoken=None, etag=None):
         if_clause = []
         if locktoken:
-            hdrs['Lock-Token'] = '<%s>' % locktoken
-            if_clause.append('(<%s>)' % locktoken)
+            if_clause.append('<%s>' % locktoken)
         if etag:
-            if_clause.append('([%s])' % etag)
+            if_clause.append('[%s]' % etag)
         if if_clause:
-            hdrs['If'] = '<%s>%s' % (self.quote_uri(url), ''.join(if_clause))
+            hdrs['If'] = '<%s>(%s)' % (self.quote_uri(url), ''.join(if_clause))
 
-    def get_result(self, method_name, *args, **kwargs):
+    def get_result(self, method_name, accept_status, url,
+                   *args, **kwargs):
         method = getattr(super(DAVConnection, self), method_name)
-        response = method(*args, **kwargs)
-        return zeit.connector.dav.davresource.DAVResult(response)
+        response = method(url, *args, **kwargs)
+        if accept_status is None or response.status in accept_status:
+            return zeit.connector.dav.davresource.DAVResult(response)
+        body = response.read()
+        if response.status == httplib.LOCKED:
+            raise zeit.connector.dav.interfaces.DAVLockedError(
+                response.status, response.reason, url)
+        elif response.status == httplib.PRECONDITION_FAILED:
+            raise zeit.connector.dav.interfaces.PreconditionFailedError(
+                response.status, response.reason, url)
+        raise httplib.HTTPException(
+            response.status, response.reason, url)

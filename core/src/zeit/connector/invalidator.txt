@@ -37,7 +37,7 @@ following listCollection call does not yield any result. This happens because
 the invalidator does not only invalidate the cache but reloads it at the same
 time:
 
->>> connector._add_collection('http://xml.zeit.de/testing/foo/')
+>>> dummy = connector._add_collection('http://xml.zeit.de/testing/foo/')
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 

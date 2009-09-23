@@ -9,6 +9,7 @@ import lxml.etree
 import os
 import os.path
 import pytz
+import time
 import urlparse
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -106,9 +107,14 @@ class Connector(object):
             contentType=self._content_types.get(id, ''))
 
     def __setitem__(self, id, object):
+        resource = zeit.connector.interfaces.IResource(object)
+        if id in self:
+            new_etag = resource.properties.get(('getetag', 'DAV:'))
+            old_etag = self[id].properties.get(('getetag', 'DAV:'))
+            if new_etag and old_etag and new_etag != old_etag:
+                raise zeit.connector.dav.interfaces.PreconditionFailedError()
         if id in self._deleted:
             self._deleted.remove(id)
-        resource = zeit.connector.interfaces.IResource(object)
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
         self._data[id] = resource.data.read()
@@ -120,6 +126,7 @@ class Connector(object):
         resource.properties[('getlastmodified', 'DAV:')] = unicode(
             datetime.datetime.now(pytz.UTC).strftime(
                 '%a, %d %b %Y %H:%M:%S GMT'))
+        resource.properties[('getetag', 'DAV:')] = repr(time.time())
         self._set_properties(id, resource.properties)
         self._content_types[id] = resource.contentType
         zope.event.notify(
@@ -141,8 +148,10 @@ class Connector(object):
             return False
         return True
 
-    def add(self, object):
+    def add(self, object, verify_etag=True):
         resource = zeit.connector.interfaces.IResource(object)
+        if not verify_etag:
+            resource.properties.pop(('getetag', 'DAV:'))
         self[resource.id] = resource
 
     def copy(self, old_id, new_id):
@@ -248,7 +257,8 @@ class Connector(object):
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
         for ((name, namespace), value) in properties.items():
-            if name.startswith('get') and name != 'getlastmodified':
+            if (name.startswith('get') 
+                and name not in ('getlastmodified', 'getetag')):
                 continue
             stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:

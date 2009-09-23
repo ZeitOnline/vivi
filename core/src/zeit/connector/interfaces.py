@@ -111,10 +111,18 @@ class IConnector(zope.interface.Interface):
     def __contains__(id):
         """Return whether resource `id` exists."""
 
-    def add(object):
+    def add(object, verify_etag=True):
         """Add the given `object` to the document store.
 
         The object must be adaptable to IResource.
+
+        If verify_etag is True (the default) an {DAV:}getetag in the resource's
+        properties is added to a conditional ``If:`` header so adding only
+        succeeds when the given etag matches the etag on the DAV server.
+
+        Raises PreconditionFailedError if verify_etag is True and the etags do
+        not match or the resource's lock state is different from the expected
+        state.
 
         """
 
