@@ -9,9 +9,7 @@ import zope.component
 class Sidebar(zeit.cms.browser.view.Base):
 
     def tree_url(self):
-        view = zope.component.getMultiAdapter(
-            (self.repository, self.request), name='zeit.cms.sitecontrol.tree')
-        return self.url(view)
+        return self.url(self.repository, '@@zeit.cms.sitecontrol.tree')
 
     @property
     def repository(self):

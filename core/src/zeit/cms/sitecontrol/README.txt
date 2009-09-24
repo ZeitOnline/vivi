@@ -20,14 +20,14 @@ The site control is situated in the sidebar:
   </div>
   <script type="text/javascript">
       ...
-        var tree = new Tree('http://localhost/++skin++vivi/repository/zeit.cms.sitecontrol.tree', 'zeit.cms.sitecontrol.panelcontent');
+        var tree = new Tree('http://localhost/++skin++vivi/repository/@@zeit.cms.sitecontrol.tree', 'zeit.cms.sitecontrol.panelcontent');
         ...
 
 
 The actual tree is loaded via javascript. The result is cached by the browser:
 
 >>> browser.open(
-...     'http://localhost/++skin++vivi/repository/zeit.cms.sitecontrol.tree')
+...     'http://localhost/++skin++vivi/repository/@@zeit.cms.sitecontrol.tree')
 >>> print browser.headers
 Status: 200 Ok
 Cache-Control: private; max-age=360
