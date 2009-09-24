@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-1.18.5 (unreleased)
--------------------
+1.19 (2009-09-24)
+-----------------
 
 - Honour the ETAG for PUT requests so there is a way to detect conflicts.
 
