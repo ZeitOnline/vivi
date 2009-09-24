@@ -107,7 +107,8 @@ class CheckoutManager(object):
             return False
         return True
 
-    def checkin(self, event=True, semantic_change=False):
+    def checkin(self, event=True, semantic_change=False,
+                ignore_conflicts=False):
         if not self.canCheckin:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, "Cannot checkin.")
@@ -121,7 +122,14 @@ class CheckoutManager(object):
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
                     self.context, workingcopy, self.principal))
         unique_id = self.context.uniqueId
-        added = zeit.cms.repository.interfaces.IRepositoryContent(self.context)
+        if ignore_conflicts:
+            adapter_name = u'non-conflicting'
+        else:
+            adapter_name = u''
+        added = zope.component.getAdapter(
+            self.context,
+            zeit.cms.repository.interfaces.IRepositoryContent,
+            name=adapter_name)
         del workingcopy[self.context.__name__]
         if event:
             zope.event.notify(

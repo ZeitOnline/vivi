@@ -1,0 +1,108 @@
+Conflict handling
+=================
+
+Conflicts happen for example in the following case:
+
+1. A checks out document X
+
+2. B checks out document X
+
+3. B checks in document X
+
+4. A checks in document X
+
+>>> from zope.testbrowser.testing import Browser
+>>> a = Browser()
+>>> a.addHeader('Authorization', 'Basic user:userpw')
+>>> b = Browser()
+>>> b.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+
+
+1. A checks out document X
+
+>>> a.open('http://localhost/++skin++cms/repository/testcontent')
+
+Make one checkout/checkin cycle to assign an etag so the conflict handling
+actually works:
+
+>>> a.getLink('Checkout').click()
+>>> a.getLink('Checkin').click()
+>>> a.getLink('Checkout').click()
+
+
+2. B checks out document X
+
+>>> b.open('http://localhost/++skin++cms/repository/testcontent/@@locks.html')
+>>> b.getControl('Steal').click()
+>>> b.open('http://localhost/++skin++cms/repository/testcontent')
+>>> b.getLink('Checkout').click()
+
+
+3. B checks in document X
+
+
+>>> b.getLink('Checkin').click()
+
+4. A checks in document X
+
+>>> a.getLink('Checkin').click()
+Traceback (most recent call last):
+    ...
+httperror_seek_wrapper: HTTP Error 500: Internal Server Error
+>>> print a.contents
+<...
+  <h1>Conflict Error</h1>
+  <p>
+    There was an error while checking in your version of <span>http://xml.zeit.de/testcontent</span>.
+    ...
+            <span>Last modified by</span>...
+            <span>Date last modified</span>...
+            <span>Last semantic change</span>...
+  <form method="POST"
+        action="http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin-conflict-error">
+    <input type="hidden" name="came_from" value="edit.html" />
+    <input type="submit" name="checkin"
+           value="Checkin anyway" />
+    <input type="submit" name="delete"
+           value="Delete workingcopy" />
+    <input type="submit" name="cancel" value="Cancel" />
+  </form>
+  ...
+    
+
+Cancel goes back to the ``came_from`` view:
+
+>>> a.getControl('Cancel').click()
+>>> print a.url
+http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@edit.html
+
+Now check in:
+
+>>> a.getLink('Checkin').click()
+Traceback (most recent call last):
+    ...
+httperror_seek_wrapper: HTTP Error 500: Internal Server Error
+>>> a.getControl('Checkin anyway').click()
+>>> print a.contents
+<...
+    <li class="message">"testcontent" has been checked in. Conflicts were
+    ignored.</li>
+    ...
+
+
+The delete button removes the workingcopy:
+
+>>> a.getLink('Checkout').click()
+>>> b.open('http://localhost/++skin++cms/repository/testcontent/@@locks.html')
+>>> b.getControl('Steal').click()
+>>> b.open('http://localhost/++skin++cms/repository/testcontent')
+>>> b.getLink('Checkout').click()
+>>> b.getLink('Checkin').click()
+>>> a.getLink('Checkin').click()
+Traceback (most recent call last):
+    ...
+httperror_seek_wrapper: HTTP Error 500: Internal Server Error
+>>> a.getControl('Delete workingcopy').click()
+>>> print a.url
+http://localhost/++skin++cms/repository/testcontent
+

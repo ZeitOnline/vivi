@@ -1,14 +1,16 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grokcore.component
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+import zope.component
 import zope.interface
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
+@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent)
+@grokcore.component.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
 def default_local_content_adapter(context):
     # Default adapter to adapt cms content to local content: create a copy and
     # mark as local content
@@ -29,13 +31,28 @@ def default_local_content_adapter(context):
     return content
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.repository.interfaces.IRepositoryContent)
+def add_to_repository(context, ignore_conflicts):
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    repository.addContent(context, ignore_conflicts)
+    added = repository.getContent(context.uniqueId)
+    return added
+
+
+@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent)
+@grokcore.component.implementer(
+    zeit.cms.repository.interfaces.IRepositoryContent)
 def default_repository_content_adapter(context):
     # Default adapter to adapt local content to repository content: add to
     # repository and return
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
-    repository.addContent(context)
-    added = repository.getContent(context.uniqueId)
-    return added
+    return add_to_repository(context, False)
+
+
+@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent,
+                            name=u'non-conflicting')
+@grokcore.component.implementer(
+    zeit.cms.repository.interfaces.IRepositoryContent)
+def default_repository_content_adapter(context):
+    # Default adapter to adapt local content to repository content: add to
+    # repository and return
+    return add_to_repository(context, True)

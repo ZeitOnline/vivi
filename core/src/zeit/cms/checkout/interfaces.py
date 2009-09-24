@@ -32,7 +32,7 @@ class ICheckinManager(zope.interface.Interface):
     canCheckin = zope.interface.Attribute(
         "True if the object can be checked in, False otherwise.")
 
-    def checkin(event=True, semantic_change=False):
+    def checkin(event=True, semantic_change=False, ignore_conflicts=False):
         """Checkin the managed object and return the checked in object.
 
         Checking in effeectively removes the object from the working copy.
@@ -42,6 +42,9 @@ class ICheckinManager(zope.interface.Interface):
         - If the object's contents was changed in a semantic manner,
           ``semantic_change`` must be True. The ``last_semantic_change``
           property will be updated then.
+
+        - If ``ignore_conflicts`` is True no conflict detection will take
+        place.
 
         """
 

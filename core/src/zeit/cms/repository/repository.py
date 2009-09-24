@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import gocept.cache.property
 import logging
 import persistent
@@ -8,6 +9,7 @@ import transaction
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
+import zeit.connector.dav.interfaces
 import zope.annotation.interfaces
 import zope.app.appsetup.product
 import zope.app.container.contained
@@ -192,14 +194,20 @@ class Repository(persistent.Persistent, Container):
             self.uncontained_content[unique_id] = content
         return content
 
-    def addContent(self, content):
+    def addContent(self, content, ignore_conflicts=False):
         zope.event.notify(
             zeit.cms.repository.interfaces.BeforeObjectAddEvent(content))
         resource = zeit.cms.interfaces.IResource(content)
         if resource.id is None:
             raise ValueError("Objects to be added to the repository need a "
                              "unique id.")
-        self.connector.add(resource)
+        try:
+            self.connector.add(resource, verify_etag=not ignore_conflicts)
+        except zeit.connector.dav.interfaces.PreconditionFailedError:
+            raise zeit.cms.repository.interfaces.ConflictError(
+                content.uniqueId,
+                _('There was a conflict while adding ${name}',
+                  mapping=dict(name=content.uniqueId)))
 
     @property
     def repository(self):

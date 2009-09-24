@@ -4,7 +4,7 @@ zeit.cms changes
 1.34.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Konflikte beim Einchecken werden erkannt und können umgangen werden.
 
 
 1.34.2 (2009-09-22)

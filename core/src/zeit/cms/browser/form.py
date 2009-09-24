@@ -3,7 +3,6 @@
 
 import datetime
 import gocept.form.grouped
-import os.path
 import pytz
 import zope.app.container.interfaces
 import zope.app.pagetemplate
@@ -57,8 +56,7 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
 class FormBase(zeit.cms.browser.view.Base):
 
     widget_groups = ()
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        os.path.join(os.path.dirname(__file__), 'grouped-form.pt'))
+    template = zope.app.pagetemplate.ViewPageTemplateFile('grouped-form.pt')
 
     def applyChanges(self, object, data):
         return zope.formlib.form.applyChanges(

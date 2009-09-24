@@ -1,0 +1,27 @@
+<div i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">Conflict Error</h1>
+
+  <p i18n:translate="">
+
+    There was an error while checking in your version of <span
+      tal:content="context/uniqueId" i18n:name="name" />.
+
+  </p>
+
+  <form tal:content="structure view/information" />
+
+  <form method="POST"
+        tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
+    <input type="hidden" name="came_from"
+           tal:attributes="value request/came_from | nothing" />
+    <input type="submit" name="checkin" value="Checkin anyway"
+           i18n:attributes="value" />
+    <input type="submit" name="delete" value="Delete workingcopy"
+           i18n:attributes="value" />
+    <input type="submit" name="cancel" value="Cancel"
+           i18n:attributes="value" />
+  </form>
+
+
+</div>

@@ -342,16 +342,43 @@ Remove the utility registration:
 True
 
 
-
-Cleanup
-=======
-
-After the test we restore the old site:
+Remove the event printer:
 
 >>> site_manager.unregisterHandler(
 ...     checkoutEvent,
 ...     (ICMSContent, ICheckinCheckoutEvent))
 True
+
+
+Conflicts
+=========
+
+It is possible to override conflicts when checking in.
+
+>>> manager = ICheckoutManager(content)
+>>> checked_out = manager.checkout()
+
+Provoke a conflict:
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content.__parent__[content.__name__] = (
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+
+Checking in is not possible just like that:
+
+>>> ICheckinManager(checked_out).checkin()
+Traceback (most recent call last):
+    ...
+ConflictError: There was a conflict while adding ${name}
+
+Checking in is possible with ignored conflicts:
+
+>>> ICheckinManager(checked_out).checkin(ignore_conflicts=True)
+<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+
+
+
+
 
 .. [#functional]
 

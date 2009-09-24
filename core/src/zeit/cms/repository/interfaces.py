@@ -46,6 +46,14 @@ class BeforeObjectRemovedEvent(zope.lifecycleevent.ObjectRemovedEvent):
     zope.interface.implements(IBeforeObjectRemovedEvent)
 
 
+class ConflictError(Exception):
+    """Raised when adding to the repository yields a conflict."""
+
+    def __init__(self, uniqueId, *args):
+        self.uniqueId = uniqueId
+        self.args = args
+
+
 class IRepository(zope.interface.Interface):
     """Access the webdav repository.
 
@@ -84,11 +92,16 @@ class IRepository(zope.interface.Interface):
 
         """
 
-    def addContent(object):
+    def addContent(object, ignore_conflicts=False):
         """Add content to the repository.
+
+        If ``ignore_conflicts`` is True data can be overwritten
+        unconditionally.  Otherwise care is taken to not overwrite data already
+        written by other users or processes.
 
         Raises TypeError if `object` is not adaptable to IResource.
         Raises ValueError if `object` does not have a uniqueId assigned.
+        Raises ConflictError if there was a conflict.
 
         An IBeforeObjectAddEvent is sent before the object is added to the
         repository.

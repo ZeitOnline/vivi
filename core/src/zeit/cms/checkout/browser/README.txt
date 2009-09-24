@@ -7,7 +7,6 @@ Create a browser first:
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> browser.handleErrors = False
 
 
 Checkout
@@ -134,6 +133,7 @@ Register an adapter from 'view.html' to 'foobar.html':
 Since the foobar view doesn't actually exist we'll get an error:
 
 >>> browser.open(browser.url)
+>>> browser.handleErrors = False
 >>> browser.getLink('Checkout').click()
 Traceback (most recent call last):
     ...
@@ -183,7 +183,7 @@ Clean up the adapter:
 ...     zeit.cms.browser.interfaces.IDisplayViewName,
 ...     name='view.html')
 True
-
+>>> browser.handleErrors = True
 
 Faking redirects
 ================
