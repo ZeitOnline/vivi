@@ -1,12 +1,10 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.interface
 
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+import zope.interface
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
