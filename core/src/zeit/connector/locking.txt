@@ -147,7 +147,9 @@ Edge case 2.3: PROPATCH
 >>> connector.changeProperties(res.id, {('foo', 'bar'): 'baz'})
 Traceback (most recent call last):
     ...
-DAVLockedError: (423, 'Locked', u'http://zip6.zeit.de:9000/cms/work/testing/edge2.3')
+DAVLockedError: (423, 'Locked',
+    u'http://zip6.zeit.de:9000/cms/work/testing/edge2.3',
+    '<!DOCTYPE...')
 
 >>> connector.unlock(res.id, token)
 'opaquelocktoken:...'

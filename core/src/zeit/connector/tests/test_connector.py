@@ -52,6 +52,9 @@ class TestConflictDetectionBase(object):
         self.assertRaises(
             zeit.connector.dav.interfaces.PreconditionFailedError,
             self.connector.add, self.r_a)
+        self.assertEquals(
+            (None, None, False),
+            self.connector.locked(self.r_a.id))
 
     def test_implicit_override(self):
         del self.r_a.properties[('getetag', 'DAV:')]
@@ -66,8 +69,8 @@ class TestConflictDetectionBase(object):
 class TestConflictDetectionReal(
     TestConflictDetectionBase,
     zeit.connector.testing.ConnectorTest):
-    pass
 
+    pass
 
 class TestConflictDetectionMock(
     TestConflictDetectionBase,

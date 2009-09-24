@@ -8,6 +8,8 @@ CHANGES
 
 - Refactored DAV exceptions and exception handling to get this mor straight.
 
+- Autolocks when adding content are immeadeately removed when there was an
+  error during PUT or PROPPATCH.
 
 1.18.4 (2009-09-21)
 -------------------

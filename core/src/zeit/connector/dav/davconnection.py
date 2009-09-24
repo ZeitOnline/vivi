@@ -92,9 +92,9 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         body = response.read()
         if response.status == httplib.LOCKED:
             raise zeit.connector.dav.interfaces.DAVLockedError(
-                response.status, response.reason, url)
+                response.status, response.reason, url, body)
         elif response.status == httplib.PRECONDITION_FAILED:
             raise zeit.connector.dav.interfaces.PreconditionFailedError(
-                response.status, response.reason, url)
+                response.status, response.reason, url, body)
         raise httplib.HTTPException(
-            response.status, response.reason, url)
+            response.status, response.reason, url, body)

@@ -556,46 +556,44 @@ class Connector(object):
         if iscoll and not id.endswith('/'):
             id = id + '/'
 
-        if autolock and not iscoll:
+        if iscoll:
             # It is not necessary (and not possible) to lock collections when
             # they don't exist because MKCOL does *not* overwrite anything. So
             # only lock for files
-            locktoken = self.lock(id, "AUTOLOCK",
-                                  datetime.datetime.now(pytz.UTC) +
-                                  datetime.timedelta(seconds=60))
-        if iscoll:
             if not self._check_dav_resource(id):
                 self._add_collection(id)
             davres = self._get_dav_resource(id, ensure='collection')
-            # NOTE: here be race condition. Lock-null trick doesn't work,
-            #       so we lock _after_ creation
-            if autolock:
-                locktoken = self.lock(id, "AUTOLOCK",
-                                      datetime.datetime.now(pytz.UTC) +
-                                      datetime.timedelta(seconds=60))
-        else: # We are a file resource:
-            if hasattr(resource.data, 'seek'):
-                resource.data.seek(0)
-            # We should pass the data as IO object. This is not supported out
-            # of the box by httplib (which is used in DAV). We could override
-            # the send method though.
-            data = resource.data.read()
-            etag = None
-            if verify_etag:
-                etag = resource.properties.get(('getetag', 'DAV:'))
-            conn = self.get_connection()
-            conn.put(self._id2loc(id), data, mime_type=resource.contentType,
-                    locktoken=locktoken, etag=etag)
 
-        # Set the resource type from resource.type.
-        properties = dict(resource.properties)
-        properties[RESOURCE_TYPE_PROPERTY] = resource.type
-        __traceback_info__ = (
-            dict(properties), zeit.connector.interfaces.DeleteProperty)
-        self.changeProperties(id, properties, locktoken=locktoken)
+        if autolock:
+            locktoken = self.lock(id, "AUTOLOCK",
+                                  datetime.datetime.now(pytz.UTC) +
+                                  datetime.timedelta(seconds=60))
+        try:
+            if not iscoll:  # We are a file resource:
+                if hasattr(resource.data, 'seek'):
+                    resource.data.seek(0)
+                # We should pass the data as IO object. This is not supported
+                # out of the box by httplib (which is used in DAV). We could
+                # override the send method though.
+                data = resource.data.read()
+                etag = None
+                if verify_etag:
+                    etag = resource.properties.get(('getetag', 'DAV:'))
+                conn = self.get_connection()
+                conn.put(self._id2loc(id), data,
+                         mime_type=resource.contentType,
+                         locktoken=locktoken, etag=etag)
 
-        if autolock and locktoken:  # This was _our_ lock. Cleanup:
-            self.unlock(id, locktoken=locktoken)
+            # Set the resource type from resource.type.
+            properties = dict(resource.properties)
+            properties[RESOURCE_TYPE_PROPERTY] = resource.type
+            __traceback_info__ = (
+                dict(properties), zeit.connector.interfaces.DeleteProperty)
+            self.changeProperties(id, properties, locktoken=locktoken)
+        finally:
+            if autolock and locktoken:  # This was _our_ lock. Cleanup:
+
+                self.unlock(id, locktoken=locktoken)
         self._invalidate_cache(id)
 
     def _add_collection(self, id):

@@ -188,7 +188,7 @@ class Connector(object):
         return locktoken
 
     def locked(self, id):
-        return self._locked.get(id, (None, None, None))
+        return self._locked.get(id, (None, None, False))
 
     def search(self, attributes, expression):
         print  "Searching: ", expression._collect()._render()

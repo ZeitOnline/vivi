@@ -105,7 +105,7 @@ resource. For that we need a principal and a target date:
 Before we acquire the lock, the resource is not locked:
 
 >>> connector.locked(unique_id)
-(None, None, None)
+(None, None, False)
 
 
 After locking the resource is locked:
