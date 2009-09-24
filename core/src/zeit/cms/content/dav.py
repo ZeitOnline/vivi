@@ -465,7 +465,9 @@ def store_provides_in_dav(obj, event):
             unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
     except ValueError:
         # Can only remove directly provided interfaces.
-        pass
+        removed_local_content = False
+    else:
+        removed_local_content = True
     provides = unwrapped.__provides__
     if not list(zope.interface.directlyProvidedBy(obj)):
         # In the case we don't have any direct provides just store nothing.
@@ -476,6 +478,9 @@ def store_provides_in_dav(obj, event):
         # We probably stored an object providing IRepositoryContent. Thus we
         # may not change anything.
         pass
+    if removed_local_content:
+        zope.interface.alsoProvides(
+            unwrapped,zeit.cms.workingcopy.interfaces.ILocalContent)
 
 
 @zope.component.adapter(

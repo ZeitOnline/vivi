@@ -74,9 +74,13 @@ class DAVTest(zeit.cms.testing.FunctionalTestCase):
         zope.interface.alsoProvides(
             self.content, zeit.cms.workingcopy.interfaces.ILocalContent)
         self.repository['foo'] = self.content
-        self.assertEqual(
-            False, zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
+        self.assertFalse(
+            zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
                 self.repository['foo']))
+        # The object which was added itself keeps its ILocalContent
+        self.assertTrue(
+            zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
+                self.content))
 
     def test_file(self):
         f = zeit.cms.repository.file.LocalFile()
