@@ -1,0 +1,28 @@
+<div class="topcontent deleteScreen"
+  i18n:domain="zeit.cms">
+    <tal:replace replace="resource_library:zeit.cms" />
+  <h1 i18n:translate="">Delete from workingcopy</h1>
+
+  <span class="nextURL" tal:content="view/nextURL" />
+
+  <p>
+    <span i18n:translate="delete-from-workingcopy">
+      Do you really want to delete your workingcopy?
+    </span>
+  </p>
+  <p class="DeleteItem">
+    <img class="zmi_icon" tal:replace="structure view/icon" />
+    <span tal:content="view/title" />
+    (<span tal:content="view/unique_id" />)
+
+  </p>
+
+  <form action="" id="lightbox.form"
+    tal:attributes="action view/@@absolute_url">
+    <p>
+      <input type="submit" value="Delete" name="form.actions.delete"
+        i18n:attributes="value" />
+    </p>
+  </form>
+</div>
+

@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Konflikte beim Einchecken werden erkannt und können umgangen werden.
 
+- Löschen aus der Arbeitskopie wird jetzt gesondert behandelt, so dass
+  verständlicher ist, was passiert.
 
 1.34.2 (2009-09-22)
 -------------------

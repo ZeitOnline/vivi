@@ -92,11 +92,11 @@
   <!-- Delete view -->
 
   <browser:viewlet
-    name="Delete"
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".menu.Delete"
+    name="Delete"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    class=".menu.Delete"
     permission="zeit.DeleteContent"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
@@ -104,11 +104,11 @@
     />
 
   <browser:page
-    name="delete.html"
     for="zeit.cms.interfaces.ICMSContent"
-    template="delete.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete.html"
     class=".delete.DeleteContent"
+    template="delete.pt"
     permission="zeit.DeleteContent"
     />
 

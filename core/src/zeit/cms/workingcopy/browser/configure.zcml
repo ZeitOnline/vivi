@@ -44,7 +44,28 @@
 
   <browser:containerViews
     for="zeit.cms.workingcopy.interfaces.IWorkingcopyLocation"
-    contents="zope.ManageContent"
+    contents="zope.ManageContent"/>
+
+  <!-- delete -->
+  <browser:viewlet
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    class=".workingcopy.DeleteMenuItem"
+    permission="zeit.DeleteContent"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    sort="100"
+    />
+
+  <browser:page
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete.html"
+    class=".workingcopy.DeleteFromWorkingcopy"
+    template="delete.pt"
+    permission="zeit.DeleteContent"
     />
 
   <!-- object browser -->

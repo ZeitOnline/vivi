@@ -97,8 +97,8 @@ Looking at our working copy also shows the `Somalia` article:
 There is a delete link to remove object from the workingcopy again:
 
 >>> browser.getLink('Somalia').click()
->>> browser.getLink('Delete', index=1)
-<Link text='[IMG] Delete'
+>>> browser.getLink('Delete from workingcopy')
+<Link text='[IMG] Delete from workingcopy'
     url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html')">
 
 Let's open the delete form:
@@ -108,12 +108,11 @@ Let's open the delete form:
 ...     '@@delete.html')
 >>> print browser.contents
 <div class="topcontent deleteScreen">
-  <h1>Delete content</h1>
+  <h1>Delete from workingcopy</h1>
   ...
   <p>
     <span>
-      Do you really want to delete the object from the folder
-      "<span class="containerName">zope.user</span>"?
+      Do you really want to delete your workingcopy?
     </span>
   </p>
   <p class="DeleteItem">
@@ -132,6 +131,8 @@ Let's open the delete form:
 Let's delete it:
 
 >>> browser.getControl('Delete').click()
+>>> print browser.contents
+<span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia</span>
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
 >>> print browser.contents
 <?xml ...

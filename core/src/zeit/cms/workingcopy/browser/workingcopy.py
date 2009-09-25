@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import logging
 import zc.table.column
 import zc.table.table
@@ -9,13 +10,13 @@ import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.repository.browser.delete
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.traversing
 import zope.viewlet.viewlet
-from zeit.cms.i18n import MessageFactory as _
 
 
 log = logging.getLogger(__name__)
@@ -124,3 +125,24 @@ class ShowOriginal(zeit.cms.browser.menu.ActionMenuItem):
         if self.content is None:
             return ''
         return super(ShowOriginal, self).render()
+
+
+class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
+
+    def next_url(self):
+        unique_id = self.context.uniqueId
+        target = None
+        while target is None:
+            target = zeit.cms.interfaces.ICMSContent(unique_id, None)
+            unique_id = unique_id.rsplit('/', 1)[0]
+            if unique_id + '/' == zeit.cms.interfaces.ID_NAMESPACE:
+                break
+        if target is None:
+            target = self.context.__parent__
+        return self.url(target)
+
+
+class DeleteMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+    """Delete menu item."""
+
+    title = _('Delete from workingcopy')
