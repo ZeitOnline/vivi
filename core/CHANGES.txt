@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.24 (unreleased)
+0.24 (2009-09-26)
 -----------------
 
 - Die Metadaten in der Centerpage werden jetzt beim einchecken direkt
