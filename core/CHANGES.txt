@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-1.20 (unreleased)
------------------
+1.19.1 (2009-09-28)
+-------------------
 
 - Removed a savepoint to avoid garbage collection which lead to LockingErrors.
   Note that this probably is a ZODB bug we're working around here.
