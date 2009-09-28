@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-0.11 (unreleased)
+0.11 (2009-09-28)
 +++++++++++++++++
 
 - Nothing changed yet.
