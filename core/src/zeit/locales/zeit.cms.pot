@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Sep 21 11:43:05 2009\n"
+"POT-Creation-Date: Mon Sep 28 14:11:36 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -58,7 +58,7 @@ msgstr ""
 
 #: zeit/addcentral/sidebar.py:30
 #: zeit/addcentral/sidebar.pt:12
-#: zeit/cms/browser/form.py:116
+#: zeit/cms/browser/form.py:114
 #: zeit/cms/application.zcml:44
 #: zeit/content/article/browser/configure.zcml:143
 msgid "Add"
@@ -162,7 +162,7 @@ msgid "Edit event"
 msgstr ""
 
 #: zeit/calendar/browser/event.py:75
-#: zeit/cms/browser/form.py:209
+#: zeit/cms/browser/form.py:207
 #: zeit/cms/repository/browser/file.py:109
 #: zeit/content/cp/browser/blocks/block.py:62
 #: zeit/content/quiz/browser/answer.py:44
@@ -211,7 +211,7 @@ msgstr ""
 #: zeit/cms/syndication/browser/feed.py:157
 #: zeit/cms/syndication/browser/manager.py:98
 #: zeit/cms/syndication/interfaces.py:51
-#: zeit/cms/workingcopy/browser/workingcopy.py:33
+#: zeit/cms/workingcopy/browser/workingcopy.py:34
 #: zeit/content/article/interfaces.py:104
 #: zeit/content/cp/interfaces.py:176
 #: zeit/content/gallery/interfaces.py:86
@@ -355,13 +355,14 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
-#: zeit/cms/browser/form.py:144
+#: zeit/cms/browser/form.py:142
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:22
 #: zeit/content/quiz/browser/answer.py:57
 #: zeit/content/quiz/browser/question.py:55
 msgid "Cancel"
 msgstr ""
 
-#: zeit/cms/browser/form.py:167
+#: zeit/cms/browser/form.py:165
 #: zeit/cms/repository/browser/file.zcml:34
 #: zeit/cms/content/browser/template.zcml:41
 #: zeit/content/article/browser/configure.zcml:152
@@ -377,11 +378,11 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: zeit/cms/browser/form.py:206
+#: zeit/cms/browser/form.py:204
 msgid "No changes"
 msgstr ""
 
-#: zeit/cms/browser/form.py:217
+#: zeit/cms/browser/form.py:215
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:16
 #: zeit/cms/repository/browser/file.zcml:24
@@ -506,39 +507,64 @@ msgstr ""
 msgid "The object could not be found."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:111
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:18
+msgid "Checkin anyway"
+msgstr ""
+
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:20
+msgid "Delete workingcopy"
+msgstr ""
+
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:3
+msgid "Conflict Error"
+msgstr ""
+
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:7
+msgid "There was an error while checking in your version of ${name}."
+msgstr ""
+
+#: zeit/cms/checkout/browser/manager.py:131
+msgid "The object was removed from the repository."
+msgstr ""
+
+#: zeit/cms/checkout/browser/manager.py:190
 msgid "Checkout ^O"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:123
+#: zeit/cms/checkout/browser/manager.py:202
 msgid "Checkin ^I"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:134
+#: zeit/cms/checkout/browser/manager.py:213
 msgid "Checkin (correction)"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:18
+#: zeit/cms/checkout/browser/manager.py:24
 #. Default: ""
 msgid "\"${name}\" has been checked out."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:31
+#: zeit/cms/checkout/browser/manager.py:37
 #. Default: ""
 msgid "\"${name}\" was already checked out."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:67
+#: zeit/cms/checkout/browser/manager.py:81
+#. Default: ""
+msgid "\"${name}\" has been checked in. Conflicts were ignored."
+msgstr ""
+
+#: zeit/cms/checkout/browser/manager.py:84
 #. Default: ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:48
+#: zeit/cms/checkout/manager.py:49
 #. Default: ""
 msgid "The content object is locked by ${name}."
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:58
+#: zeit/cms/checkout/manager.py:61
 msgid "The content you tried to check out is already in your working copy."
 msgstr ""
 
@@ -1095,6 +1121,7 @@ msgstr ""
 #: zeit/cms/repository/browser/menu.py:18
 #: zeit/cms/content/browser/template.zcml:58
 #: zeit/cms/repository/browser/delete.pt:29
+#: zeit/cms/workingcopy/browser/delete.pt:23
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:34
 #: zeit/content/quiz/browser/quiz.py:87
 msgid "Delete"
@@ -1144,6 +1171,11 @@ msgstr ""
 #: zeit/cms/repository/file.py:94
 #: zeit/cms/repository/browser/file.zcml:81
 msgid "File"
+msgstr ""
+
+#: zeit/cms/repository/repository.py:209
+#. Default: ""
+msgid "There was a conflict while adding ${name}"
 msgstr ""
 
 #: zeit/cms/repository/unknown.py:52
@@ -1292,7 +1324,7 @@ msgid "Position"
 msgstr ""
 
 #: zeit/cms/syndication/browser/manager.py:111
-#: zeit/cms/workingcopy/browser/configure.zcml:54
+#: zeit/cms/workingcopy/browser/configure.zcml:75
 #: zeit/cms/browser/configure.zcml:352
 msgid "Preview"
 msgstr ""
@@ -1351,7 +1383,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:16
 #: zeit/cms/workflow/interfaces.py:35
-#: zeit/workflow/publish.py:387
+#: zeit/workflow/publish.py:398
 msgid "Published"
 msgstr ""
 
@@ -1383,6 +1415,11 @@ msgstr ""
 msgid "Publication state"
 msgstr ""
 
+#: zeit/cms/workingcopy/browser/delete.pt:9
+#. Default: "Do you really want to delete your workingcopy?"
+msgid "delete-from-workingcopy"
+msgstr ""
+
 #: zeit/cms/workingcopy/browser/sidebar.pt:13
 msgid "Edited documents"
 msgstr ""
@@ -1391,8 +1428,13 @@ msgstr ""
 msgid "No edited documents."
 msgstr ""
 
-#: zeit/cms/workingcopy/browser/workingcopy.py:105
+#: zeit/cms/workingcopy/browser/workingcopy.py:106
 msgid "Show original"
+msgstr ""
+
+#: zeit/cms/workingcopy/browser/workingcopy.py:148
+#: zeit/cms/workingcopy/browser/delete.pt:4
+msgid "Delete from workingcopy"
 msgstr ""
 
 #: zeit/content/article/article.py:86
@@ -1637,7 +1679,7 @@ msgstr ""
 msgid "RSS block"
 msgstr ""
 
-#: zeit/content/cp/blocks/teaser.py:229
+#: zeit/content/cp/blocks/teaser.py:230
 msgid "List of teasers"
 msgstr ""
 
@@ -1769,7 +1811,7 @@ msgstr ""
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:107
+#: zeit/content/cp/centerpage.py:108
 msgid "Centerpage 2009"
 msgstr ""
 
@@ -2752,29 +2794,29 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:101
+#: zeit/workflow/publish.py:102
+msgid "Publication scheduled"
+msgstr ""
+
+#: zeit/workflow/publish.py:108
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:148
+#: zeit/workflow/publish.py:155
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 
-#: zeit/workflow/publish.py:166
+#: zeit/workflow/publish.py:173
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:342
+#: zeit/workflow/publish.py:353
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:414
+#: zeit/workflow/publish.py:425
 msgid "Retracted"
-msgstr ""
-
-#: zeit/workflow/publish.py:95
-msgid "Publication scheduled"
 msgstr ""
 
 #: zeit/workflow/source.py:46

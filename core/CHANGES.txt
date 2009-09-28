@@ -4,13 +4,13 @@ zeit.locales CHANGES
 0.12 (unreleased)
 +++++++++++++++++
 
-- Nothing changed yet.
+- Übersetzungen aktualisiert
 
 
 0.11 (2009-09-28)
 +++++++++++++++++
 
-- Nothing changed yet.
+- Brown bag release.
 
 
 0.10 (2009-09-21)
