@@ -177,7 +177,6 @@ class ResourceCache(persistent.Persistent):
         store.update(data, current_etag)
 
         self._update_cache_access(key)
-        transaction.savepoint(optimistic=True)
         return store.open()
 
     def _update_cache_access(self, key):
