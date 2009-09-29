@@ -154,11 +154,13 @@ class Connector(object):
     def add(self, object, verify_etag=True):
         resource = zeit.connector.interfaces.IResource(object)
         if not verify_etag:
-            resource.properties.pop(('getetag', 'DAV:'))
+            resource.properties.pop(('getetag', 'DAV:'), None)
         self[resource.id] = resource
 
     def copy(self, old_id, new_id):
-        self[new_id] = self[old_id]
+        r = self[old_id]
+        r.id = new_id
+        self.add(r, verify_etag=False)
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
