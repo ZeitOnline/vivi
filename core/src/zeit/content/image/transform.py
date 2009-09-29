@@ -88,8 +88,13 @@ def persistent_thumbnail_factory(context):
         method = getattr(transform, method_name)
         thumbnail = method(width, height)
 
-        zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail).update(
-            zeit.connector.interfaces.IWebDAVReadProperties(context))
+        thumbnail_properties = (
+            zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail))
+        image_properties = zeit.connector.interfaces.IWebDAVReadProperties(
+            context)
+        for (name, namespace), value in image_properties.items():
+            if namespace != 'DAV:':
+                thumbnail_properties[(name, namespace)] = value
 
         thumbnail_container[image_name] = thumbnail
 

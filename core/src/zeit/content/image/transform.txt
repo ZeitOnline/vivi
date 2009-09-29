@@ -21,6 +21,11 @@ thumbnails a bounding box is defined in which the image is placed into.
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> image = repository['2006']['DSC00109_2.JPG']
+>>> import zeit.cms.checkout.helper
+>>> p = zeit.cms.testing.create_interaction()
+>>> with zeit.cms.checkout.helper.checked_out(image):
+...     pass
+>>> image = repository['2006']['DSC00109_2.JPG']
 >>> transform = zeit.content.image.interfaces.ITransform(image)
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
