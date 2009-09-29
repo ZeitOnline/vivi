@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-1.20 (unreleased)
------------------
+1.19.2 (2009-09-29)
+-------------------
 
 - Mock connector behaves more like the real one in regard to conflicts and
   etag preconditions.
