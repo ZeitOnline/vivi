@@ -65,6 +65,12 @@ class TestConflictDetectionBase(object):
         self.connector.add(self.r_a, verify_etag=False)
         self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
 
+    def test_adding_with_etag_fails(self):
+        r = self.get_resource('cannot-be-added', '*Puff*')
+        r.properties[('getetag', 'DAV:')] = 'schnutzengrutz'
+        self.assertRaises(
+            zeit.connector.dav.interfaces.PreconditionFailedError,
+            self.connector.add, r)
 
 class TestConflictDetectionReal(
     TestConflictDetectionBase,
