@@ -17,6 +17,7 @@ import zope.browser.interfaces
 import zope.component
 import zope.i18n
 import zope.interface
+import zope.session.interfaces
 import zope.traversing.browser.interfaces
 import zope.viewlet.interfaces
 
@@ -200,6 +201,9 @@ class SearchResult(SearchResultBase):
         if q is None:
             return {'template': 'no_search_result.jsont'}
         results = zeit.find.search.search(q, self.sort_order())
+        session = zope.session.interfaces.ISession(
+            self.request)['zeit.find.last-query']
+        session.update(search_parameters(self.request))
         return self.results(results)
 
     def get_authors(self, result):
@@ -549,6 +553,19 @@ class ForThisPage(JSONView):
         })
 
 
+class LastQuery(JSONView):
+
+    def json(self):
+        session = zope.session.interfaces.ISession(self.request).get(
+            'zeit.find.last-query', {})
+        query = {}
+        for key, value in session.items():
+            if isinstance(value, list):
+                key = '%s:list' % key
+            query[key] = value
+        return query
+
+
 def _get(request, name, default=None):
     value = request.get(name, default)
     if value is default:
@@ -558,7 +575,34 @@ def _get(request, name, default=None):
         return value
     return default
 
+def search_parameters(request):
+    """extract the search parameters from the request in raw form"""
+
+    parameters = [
+        'author',
+        'from',
+        'fulltext',
+        'keywords',
+        'product',
+        'published',
+        'serie',
+        'sort_order',
+        'topic',
+        'until',
+        'volume',
+        'year',
+    ]
+
+    result = {}
+    for name in parameters:
+        result[name] = _get(request, name)
+    result['types'] = request.get('types', [])
+    return result
+
+
 def search_form(request):
+    """extract the search parameters from the request in a format consumable by
+    solr"""
     g = lambda name, default=None: _get(request, name, default)
     fulltext = g('fulltext')
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))

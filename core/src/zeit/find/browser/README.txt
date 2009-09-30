@@ -162,6 +162,7 @@ Search
 
 The search view returns all data for rendering the result:
 
+>>> browser.handleErrors = False
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
 >>> result = cjson.decode(browser.contents)
 >>> pprint.pprint(result)
@@ -205,6 +206,17 @@ This also works if there is a Clip in the favorites:
  'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
  'favorited': True,
  'favorited_css_class': 'toggle_favorited favorited',
+ ...
+
+The last query parameters are available:
+
+>>> browser.open('/++skin++cms/zeit.find.last-query')
+>>> result = cjson.decode(browser.contents)
+>>> pprint.pprint(result)
+{...
+ 'fulltext': 'Obama',
+ ...
+ 'types:list': [],
  ...
 
 

@@ -18,9 +18,8 @@ zeit.find.BaseView = gocept.Class.extend({
 
 zeit.find.Search = zeit.find.BaseView.extend({
 
-    construct: function(initial_query) {
+    construct: function() {
         var self = this;
-        self.initial_query = initial_query;
         var base_url = zeit.cms.get_application_url() + '/@@';
         // Initialize views
         self.main_view = new zeit.cms.JSONView(
@@ -31,6 +30,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
         self.result_filters = new zeit.cms.JSONView(
             base_url + 'result_filters', 'result_filters',
             MochiKit.Base.bind(self.search_form_parameters, self));
+
         // Connect handlers
         zeit.find.init_search_results(self.search_result);
         new zeit.find.ResultsFilters(self.search_result);
@@ -38,6 +38,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
         new zeit.find.AuthorFilters(self.result_filters);
         new zeit.find.TopicFilters(self.result_filters);
         new zeit.find.TypeFilters(self.result_filters);
+
         MochiKit.Signal.connect(
             self.main_view, 'load', self, self.init_search_form);
         MochiKit.Signal.connect(
@@ -80,33 +81,41 @@ zeit.find.Search = zeit.find.BaseView.extend({
                 self.result_filters.render();
             }
         });
-        if (!isUndefinedOrNull(self.initial_query)) {
-            var form = $('zeit-find-search-form');
-            var name;
-            for (name in self.initial_query) {
-                var element = form[name];
-                if (isUndefinedOrNull(element)) {
-                    continue
-                }
-                var value = self.initial_query[name]
-                if (name == 'types:list') {
-                    if (element.length != value.length) {
-                        // Only act if not *everything* would be selected.
-                        // Since selecting everyting is basically the same as
-                        // selecting nothing
-                        forEach(value, function(type) {
-                            forEach(element, function(checkbox) {
-                                if (checkbox.value == type) {
-                                    checkbox.checked = true;
-                                } else {
-                                    checkbox.checked = false;
-                                }
-                            });
+
+        var d = MochiKit.Async.loadJSONDoc(
+            zeit.cms.get_application_url() + '/@@zeit.find.last-query');
+        d.addCallback(function(json) {
+            self.populate_query(json);
+        });
+    },
+
+    populate_query: function(query) {
+        var self = this;
+        var form = $('zeit-find-search-form');
+        var name;
+        for (name in query) {
+            var element = form[name];
+            if (isUndefinedOrNull(element)) {
+                continue
+            }
+            var value = query[name]
+            if (name == 'types:list') {
+                if (element.length != value.length) {
+                    // Only act if not *everything* would be selected.
+                    // Since selecting everyting is basically the same as
+                    // selecting nothing
+                    forEach(value, function(type) {
+                        forEach(element, function(checkbox) {
+                            if (checkbox.value == type) {
+                                checkbox.checked = true;
+                            } else {
+                                checkbox.checked = false;
+                            }
                         });
-                    }
-                } else {
-                    element.value = value;
+                    });
                 }
+            } else {
+                element.value = value;
             }
         }
         self.update_search_result();

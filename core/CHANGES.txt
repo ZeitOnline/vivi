@@ -5,9 +5,8 @@ zeit.find changes
 -----------------
 
 - Die Suche zeigt jetzt Thumbnails von Bildern an.
-
+- Die Einstellungen der letzten Suche werden gespeichert (#6017).
 - Wenn nach ``*:*`` gesucht wird, wird *immer* nach Datum sortiert.
-
 
 0.15 (2009-09-21)
 -----------------

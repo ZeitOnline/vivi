@@ -69,3 +69,23 @@ class TestSearch(zeit.cms.selenium.Test):
         s.waitForVisible('id=extended_search_info')
         s.verifyNotVisible('id=extended_search')
         s.verifyText('css=#extended_search_info span', 'Unknown Resource')
+
+    def test_last_query_should_be_saved(self):
+        s = self.selenium
+        s.click('id=extended_search_button')
+        s.waitForVisible('id=extended_search')
+        s.select('name=product', 'Zeit Online')
+        s.type('name=author', 'foo')
+        s.select('name=sort_order', 'Datum')
+        s.check('id=search-type-channel')
+        s.click('id=search_button')
+        s.pause(1000)
+
+        self.open('/find')
+        self.selenium.waitForVisible('css=div.teaser_title')
+        s.click('id=extended_search_button')
+        s.waitForVisible('id=extended_search')
+        s.verifySelectedLabel('name=product', 'Zeit Online')
+        s.verifyValue('name=author', 'foo')
+        s.verifySelectedLabel('name=sort_order', 'Datum')
+        s.verifyChecked('id=search-type-channel')

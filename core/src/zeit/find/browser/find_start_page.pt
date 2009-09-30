@@ -8,7 +8,7 @@
 
   <script language="javascript" tal:content="string:
   (function() {
-    var search = new zeit.find.Search({sort_order: 'date'});
+    var search = new zeit.find.Search();
     search.render();
   })();
   "></script>
