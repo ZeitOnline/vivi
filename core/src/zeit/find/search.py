@@ -28,6 +28,7 @@ def search(q, sort_order=None):
     result_fields = [
         'authors',
         'icon',
+        'graphical-preview-url',
         'keywords',
         'last-semantic-change',
         'published',

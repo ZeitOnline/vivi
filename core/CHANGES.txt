@@ -4,7 +4,7 @@ zeit.find changes
 0.16 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Die Suche zeigt jetzt Thumbnails von Bildern an.
 
 
 0.15 (2009-09-21)

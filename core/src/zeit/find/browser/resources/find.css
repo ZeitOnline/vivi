@@ -71,6 +71,11 @@
   margin-bottom:0.5em;
 }
 
+.search_entry .graphical_preview {
+  float: right;
+}
+
+
 .search_entry .recent_links {
   float: left;
 }
@@ -368,6 +373,7 @@ div.unfolded + #result_filters {
 
 .related_links {
   background: url('arrow_right.png') no-repeat 0 50%;
+  clear: right;
   cursor: pointer;
   float:left;
   padding-left: 16px;

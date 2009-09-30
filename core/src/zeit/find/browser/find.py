@@ -17,6 +17,7 @@ import zope.browser.interfaces
 import zope.component
 import zope.i18n
 import zope.interface
+import zope.traversing.browser.interfaces
 import zope.viewlet.interfaces
 
 
@@ -90,6 +91,7 @@ class SearchResultBase(JSONView):
         'favorite_url',
         'favorited',
         'favorited_css_class',
+        'graphical_preview_url',
         'icon',
         'preview_url',
         'publication_status',
@@ -212,6 +214,12 @@ class SearchResult(SearchResultBase):
 
     def get_favorited(self, result):
         return self.get_uniqueId(result) in self.favorite_ids
+
+    def get_graphical_preview_url(self, result):
+        url = result.get('graphical-preview-url')
+        if url:
+            url = self.get_application_url() + url
+        return url
 
     def get_icon(self, result):
         icon = result.get('icon')
@@ -437,6 +445,17 @@ class Favorites(SearchResultBase):
 
     def get_favorited(self, result):
         return True
+
+    def get_graphical_preview_url(self, result):
+        view_name = 'thumbnail'
+        thumbnail = zope.component.queryMultiAdapter(
+            (result, self.request), name=view_name)
+        if thumbnail is None:
+            return
+        url = zope.component.getMultiAdapter(
+            (result, self.request),
+            zope.traversing.browser.interfaces.IAbsoluteURL)
+        return '%s/@@thumbnail' % (url,)
 
     def get_icon(self, result):
         icon = zope.component.queryMultiAdapter(

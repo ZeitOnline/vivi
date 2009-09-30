@@ -95,7 +95,12 @@ KeyError: 'Favoriten'
 Adding a content object as a favorite requires the call of the
 `toggle_favorited` view with the uniqueId of the object:
 
->>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+>>> browser.open(
+...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+>>> browser.open(
+...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
 
 It returns the css class for the favorite star:
 
@@ -105,7 +110,7 @@ It returns the css class for the favorite star:
 The clipboard now has a clip "Favoriten" with one entry:
 
 >>> clipboard["Favoriten"].keys()
-[u'Somalia']
+[u'Somalia', u'DSC00109_2.JPG']
 
 The favorites tab now lists the favorited object:
 
@@ -115,6 +120,9 @@ The favorites tab now lists the favorited object:
     'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
     'favorited': True,
     'favorited_css_class': 'toggle_favorited favorited',
+    'graphical_preview_url': None,
+    ...
+    'graphical_preview_url': 'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
     ...
  'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
 
@@ -127,14 +135,19 @@ shown though:
 >>> browser.open('http://localhost:8080/++skin++cms/favorites')
 >>> result = cjson.decode(browser.contents)
 >>> len(result['results'])
-1
+2
 >>> del clipboard['Favoriten']['Clip']
 
 
 
 Calling the toggle view again removes the object from the favorites:
 
->>> browser.open('http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+>>> browser.open(
+...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
+>>> browser.open(
+...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> pprint.pprint(cjson.decode(browser.contents))
 {'favorited_css_class': 'toggle_favorited not_favorited',...
 
@@ -153,6 +166,8 @@ The search view returns all data for rendering the result:
 >>> result = cjson.decode(browser.contents)
 >>> pprint.pprint(result)
 {'results': [{'application_url': 'http://localhost:8080/++skin++cms',
+              ...
+              'graphical_preview_url': 'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
              ...
  'template_url': 'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/@@/zeit.find/search_result.jsont'}
 

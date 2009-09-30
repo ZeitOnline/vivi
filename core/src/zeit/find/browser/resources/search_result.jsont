@@ -1,6 +1,11 @@
 {.repeated section results}
 <div class="search_entry">
   <span class="uniqueId">{uniqueId}</span>
+  {.section graphical_preview_url}
+    <div class="graphical_preview">
+      <img src="{@}" />
+    </div>
+  {.end}
   <div class="supertitle">
     {.section icon}
       <img src="{icon}" />
