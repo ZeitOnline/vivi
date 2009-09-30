@@ -19,7 +19,10 @@ def search(q, sort_order=None):
     if q is None:
         return []
 
-    sort_order = sort_order or 'relevance'
+    if q == lq.any_value():
+        sort_order = 'date'
+    else:
+        sort_order = sort_order or 'relevance'
     if sort_order == 'relevance':
         sort_order = 'score desc'
     elif sort_order == 'date':
@@ -152,9 +155,9 @@ def query(fulltext=None,
         terms.append(lq.field('serie', serie))
 
     terms.extend(filter_terms)
-    if not terms:
-        terms = [lq.any_value()]
-    return lq.and_(*terms)
+    if terms:
+        return lq.and_(*terms)
+    return lq.any_value()
 
 
 def grouper(n, iterable, padvalue=None):

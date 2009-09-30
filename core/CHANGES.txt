@@ -6,6 +6,8 @@ zeit.find changes
 
 - Die Suche zeigt jetzt Thumbnails von Bildern an.
 
+- Wenn nach ``*:*`` gesucht wird, wird *immer* nach Datum sortiert.
+
 
 0.15 (2009-09-21)
 -----------------
