@@ -74,7 +74,7 @@ data for dropdowns/selects:
            {'title': 'File', 'type': 'file'},
            {'title': 'Folder', 'type': 'collection'}...
 
-    
+
 
 Favorites
 ---------
@@ -85,7 +85,7 @@ The favorites are stored inside the clipboard in a special clip named
 "Favoriten". If the principal never added favorites before, the clip does not
 exist:
 
->>> import zeit.cms.clipboard.interfaces 
+>>> import zeit.cms.clipboard.interfaces
 >>> clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
 >>> clipboard["Favoriten"]
 Traceback (most recent call last):
@@ -180,7 +180,7 @@ Toggle favorite and search again:
  ...
 
 This also works if there is a Clip in the favorites:
- 
+
 >>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
 >>> result = cjson.decode(browser.contents)

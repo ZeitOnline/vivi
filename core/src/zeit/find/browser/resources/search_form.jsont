@@ -20,7 +20,7 @@
           <label for="until">Bis:</label>
           <input type="text" name="until" value="TT.MM.JJJJ"
             default="TT.MM.JJJJ" />
-        </div>  
+        </div>
       </fieldset>
       <fieldset>
         <label>Ausgabe:</label>
@@ -84,7 +84,7 @@
           {.repeated section types}
             <div class="inner">
                <input type="checkbox" name="types:list"
-               value="{type}" id="search-type-{type}" /> 
+               value="{type}" id="search-type-{type}" />
                <label for="search-type-{type}">{title}</label>
             </div>
           {.end}

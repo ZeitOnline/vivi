@@ -17,6 +17,6 @@
       search.render();
       return result;
     });
-    })();  
+    })();
   "></script>
 </tal:block>

@@ -1,5 +1,5 @@
 <tal:block>
-  
+
   <tal:block replace="resource_library:zeit.find" />
 
   <div class="zeit-find-search">
@@ -10,6 +10,6 @@
   (function() {
     var search = new zeit.find.Search({sort_order: 'date'});
     search.render();
-  })();  
+  })();
   "></script>
 </tal:block>

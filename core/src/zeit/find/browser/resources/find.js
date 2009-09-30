@@ -65,14 +65,14 @@ zeit.find.Search = zeit.find.BaseView.extend({
             MochiKit.DOM.toggleElementClass(
                 'hidden', 'extended_search', 'extended_search_info');
              MochiKit.DOM.toggleElementClass(
-                'unfolded', 'extended_search_button');    
+                'unfolded', 'extended_search_button');
         });
-        
+
         MochiKit.Signal.connect(
             'result_filters_button', 'onclick', function(e) {
-             
+
              MochiKit.DOM.toggleElementClass(
-                'unfolded', 'result_filters_button');    
+                'unfolded', 'result_filters_button');
 
             if ($('result_filters_data')) {
                 $('result_filters').innerHTML = '';
@@ -481,7 +481,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                     until_field.value = end_date;
                     MochiKit.Signal.signal(window, 'zeit.find.update-search');
                 }));
-           
+
             var volume_year = lookup('volume_year');
             var volume_year_filter = MochiKit.Selector.findChildElements(
                 entry, ['.volume_year_filter'])[0];
@@ -499,7 +499,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                     topic_field.value = topic;
                     MochiKit.Signal.signal(window, 'zeit.find.update-search');
                 }));
-            
+
             var author_filters = MochiKit.Selector.findChildElements(
                 entry, ['.author_filter']);
             forEach(author_filters, function(author_filter) {
@@ -512,14 +512,14 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                     MochiKit.Signal.signal(window, 'zeit.find.update-search');
                 }));
             });
-            
+
         });
     }
 });
 
 
 zeit.find.Selector = gocept.Class.extend({
-    
+
     construct: function(lightbox_form, search) {
         var self = this;
         self.lightbox_form = lightbox_form;
