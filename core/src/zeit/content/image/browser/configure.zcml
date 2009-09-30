@@ -246,6 +246,14 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="..interfaces.IImageGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="thumbnail"
+    class=".imagegroup.Thumbnail"
+    permission="zope.View"
+    />
+
 
   <!-- copyright setter -->
   <!-- XXX the permission is bad. -->

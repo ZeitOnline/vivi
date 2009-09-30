@@ -1,8 +1,9 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import rwproperty
+import re
 import zc.table.column
 import zeit.cms.browser.form
 import zeit.cms.browser.listing
@@ -10,9 +11,8 @@ import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
-import zope.interface
 import zope.formlib.form
-from zeit.cms.i18n import MessageFactory as _
+import zope.interface
 
 
 class FormBase(object):
@@ -147,3 +147,19 @@ class Metadata(object):
         for obj in self.context.values():
             if zeit.content.image.interfaces.IImage.providedBy(obj):
                 yield obj
+
+
+class Thumbnail(object):
+
+    first_choice = re.compile(r'.*-\d+x\d+')
+
+    def __call__(self):
+        for name in self.context.keys():
+            if self.first_choice.match(name):
+                break
+        else:
+            name = self.context.keys()[0]
+        view = zope.component.getMultiAdapter(
+            (self.context[name], self.request), name='thumbnail')
+        return view()
+

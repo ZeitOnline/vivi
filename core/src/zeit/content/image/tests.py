@@ -80,7 +80,7 @@ def create_image_group(file_name=None):
                      'new-hampshire-artikel.jpg',
                      'obama-clinton-120x120.jpg'):
         image = zeit.content.image.image.LocalImage()
-        image.contentType = 'image/jpeg'
+        image.mimeType = 'image/jpeg'
         fh = image.open('w')
         if file_name is None:
             file_name = pkg_resources.resource_filename(
@@ -98,6 +98,7 @@ def create_image_group_with_master_image(file_name=None):
     group.master_image = u'master-image.jpg'
     repository['group'] = group
     image = zeit.content.image.image.LocalImage()
+    image.mimeType = 'image/jpeg'
     if file_name is None:
         fh = repository['2006']['DSC00109_2.JPG'].open()
     else:

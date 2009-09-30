@@ -56,14 +56,14 @@ We also have a preview version of an images. The preview is scaled down on the
 server:
 
 >>> image.open('http://localhost/++skin++cms/repository/'
-...            '2006/DSC00109_2.JPG/preview')
+...            '2006/DSC00109_2.JPG/@@preview')
 >>> image.headers['content-type']
 'image/jpeg'
 
 And a thumbnail is also scaled on the server:
 
 >>> image.open('http://localhost/++skin++cms/repository/'
-...            '2006/DSC00109_2.JPG/thumbnail')
+...            '2006/DSC00109_2.JPG/@@thumbnail')
 >>> image.headers['content-type']
 'image/jpeg'
 
@@ -356,8 +356,7 @@ Set the file data:
 ...         os.path.dirname(__file__), 'testdata', name)
 ...     test_data = file(test_file, 'rb')
 ...     file_control = browser.getControl(name='form.blob')
-...     file_control.filename = name
-...     file_control.value = test_data
+...     file_control.add_file(test_data, 'image/jpeg', name)
 
 >>> set_file_data('new-hampshire-artikel.jpg')
 >>> browser.getControl('Add').click()
@@ -580,6 +579,17 @@ break):
  <h1>http://xml.zeit.de/2006/new-hampshire</h1>
  ...
 
+Image groups also have a thumbnail:
+
+>>> browser.handleErrors = False
+>>> browser.open('@@thumbnail')
+>>> print browser.headers
+Status: 200 Ok
+Content-Length: 2429
+Content-Type: image/jpeg
+Last-Modified: ...
+>>> browser.contents[:16]
+'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01'
 
 Broken images
 =============
