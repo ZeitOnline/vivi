@@ -185,8 +185,8 @@ class PublishRetractTask(object):
                     self.release_active_lock(uniqueId)
         timer.mark('Done %s' % input.uniqueId)
         timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
-        dummy, total, message = timer.get_timings()[-1]
-        logger.info('%s (%2.4fs)' % (message, total))
+        dummy, total, timer_message = timer.get_timings()[-1]
+        logger.info('%s (%2.4fs)' % (timer_message, total))
         return message
 
     def acquire_active_lock(self, uniqueId):
