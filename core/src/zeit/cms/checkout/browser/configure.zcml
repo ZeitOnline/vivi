@@ -13,9 +13,13 @@
     class=".manager.Checkout"
     />
 
+  <!-- The menu item is registered for ICMSContent and not IRepositoryContent
+       to be able to register more specific menuitems for certain content
+       types. This is not possible with IRepositoryContent as
+       IRepositoryContent is  more specific in any case.  -->
   <browser:viewlet
     name="Checkout"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".manager.CheckoutMenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
