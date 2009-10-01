@@ -43,8 +43,8 @@ MochiKit.Signal.connect(
 
     var tabs = new zeit.cms.Tabs('cp-library');
     create_library('all', context_url, 'Alle');
-    create_library_for_element('cp-informatives-inner', 'Informatives');
-    create_library_for_element('cp-teasermosaic', 'Mosaic');
+    create_library_for_element('informatives', 'Informatives');
+    create_library_for_element('teaser-mosaic', 'Mosaic');
 
     MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'start',
         function(draggable)  {

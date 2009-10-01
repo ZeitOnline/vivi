@@ -21,6 +21,9 @@ class DropContent(zeit.content.cp.browser.view.Action):
             self.context))
         self.signal('before-reload', 'deleted', self.context.__name__)
         self.signal('after-reload', 'added', teaserlist.__name__)
+        self.signal(
+            None, 'reload', self.context.__name__, self.url(teaserlist,
+                                                            '@@contents'))
 
 
 class DropModule(zeit.content.cp.browser.view.Action):
@@ -35,4 +38,4 @@ class DropModule(zeit.content.cp.browser.view.Action):
         self.signal('before-reload', 'deleted', self.context.__name__)
         self.signal('after-reload', 'added', new.__name__)
         self.signal(None, 'reload',
-                    self.context.__name__, self.url(new, 'contents'))
+                    self.context.__name__, self.url(new, '@@contents'))

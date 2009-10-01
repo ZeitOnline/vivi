@@ -1,4 +1,4 @@
-<div id="cp-informatives-inner"
+<div id="informatives"
      tal:define="validation python:view.validate(context)"
      tal:attributes="cms:url context/@@absolute_url;
      class validation/class_;

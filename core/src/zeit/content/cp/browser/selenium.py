@@ -21,6 +21,7 @@ def css_path(css):
 class Test(zeit.cms.selenium.Test):
 
     product_config = zeit.content.cp.testing.product_config
+    skin = 'vivi'
 
     def get_module(self, area, text):
         return ('xpath=//div[@class="module %s-module"]'
@@ -117,7 +118,7 @@ class TestGenericEditing(Test):
 
         # Open delete verification
         s.pause(250)
-        s.click('css=#cp-informatives a.delete-link')
+        s.click('css=#informatives a.delete-link')
         s.waitForElementPresent('css=div.confirm-delete')
         s.verifyElementPresent('css=div.block-inner.highlight')
 
@@ -129,12 +130,12 @@ class TestGenericEditing(Test):
         s.verifyElementNotPresent('css=div.block-inner.highlight')
 
         # Now really delete
-        s.verifyXpathCount(css_path('#cp-informatives a.delete-link'), 3)
-        s.click('css=#cp-informatives a.delete-link')
+        s.verifyXpathCount(css_path('#informatives a.delete-link'), 3)
+        s.click('css=#informatives a.delete-link')
         s.click('css=div.confirm-delete > a')
         # mostread/mostcommented are still there
         s.waitForXpathCount(
-            css_path('#cp-informatives a.delete-link'), 2)
+            css_path('#informatives a.delete-link'), 2)
 
     def test_hover(self):
         self.create_teaserlist()
@@ -416,14 +417,14 @@ class TestSorting(Test):
 
         # Create a teaser list
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', 'css=#cp-aufmacher .landing-zone')
+            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
         s.storeAttribute('css=.block.type-teaser@id', 'block2')
 
 
         # Add a second teaser list
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]', 'css=#cp-aufmacher .landing-zone')
+            '//li[@uniqueid="Clip/c1"]', 'css=#lead .landing-zone')
         s.waitForElementPresent(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser')
         s.storeAttribute('css=.block.type-teaser@id', 'block1')
@@ -478,7 +479,7 @@ class TestLandingZone(Test):
 
         # Create a block, there will be a landing zone after it:
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', 'css=#cp-aufmacher .landing-zone')
+            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone')
         s.verifyElementPresent('css=.block + .landing-zone')
 
         # The "normal" landing zone is also there
@@ -499,8 +500,8 @@ class TestLandingZone(Test):
         s.waitForElementPresent('css=div.block.type-teaser-bar')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]',
-            'css=#cp-teasermosaic .landing-zone.action-content-droppable')
-        s.waitForElementPresent('css=#cp-teasermosaic .block.type-teaser') 
+            'css=#teaser-mosaic .landing-zone.action-content-droppable')
+        s.waitForElementPresent('css=#teaser-mosaic .block.type-teaser')
 
 
 class TestVideoBlock(Test):
@@ -598,7 +599,7 @@ class TestOneClickPublish(Test):
         for i in range(1, 4):
             s.dragAndDropToObject(
                 '//li[@uniqueid="Clip/c%s"]' % i,
-                'css=#cp-aufmacher .landing-zone')
+                'css=#lead .landing-zone')
             s.waitForTextPresent('c%s teaser' % i)
 
     def test_editor_should_be_reloaded_after_publishing(self):

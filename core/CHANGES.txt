@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.25 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- CPE in einigen Teilen schneller: Löschen von Blöcken, Hinzufügen von Inhalten
 
 
 0.24 (2009-09-26)

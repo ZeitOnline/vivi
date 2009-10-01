@@ -92,15 +92,15 @@ The contents of cp-content is loaded via javascript:
 >>> print browser.contents
 <div...
 <div class="cp-editor-top">
-  <div id="cp-aufmacher"><div id="cp-aufmacher-inner"...class="editable-area validation-error"...
-  <div id="cp-informatives"><div id="cp-informatives-inner"...class="editable-area"...
-  <div id="cp-teasermosaic"...class="editable-area"...
+  <div id="lead-outer"><div id="lead"...class="editable-area validation-error"...
+  <div id="informatives-outer"><div id="informatives"...class="editable-area"...
+  <div id="teaser-mosaic"...class="editable-area"...
 
 
 There is a "add block" link which only activates a tab:
 
 >>> browser.getLink('Add block')
-<Link text='+ Add block' url='tab://library-cp-informatives-inner'>
+<Link text='+ Add block' url='tab://library-informatives'>
 
 Blocks are added via drag and drop from the block library. The library is
 explained in detail in library.txt.
@@ -118,7 +118,7 @@ teaser bar:
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="cp-teasermosaic"]/div[contains(@class, "type-teaser-bar")]')
+...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
 ['92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
@@ -140,7 +140,7 @@ The order has been updated now:
 True
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="cp-teasermosaic"]/div[contains(@class, "type-teaser-bar")]')
+...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == reversed_ids
 True
@@ -152,7 +152,7 @@ Restore the original order again:
 ...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(original_ids))
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="cp-teasermosaic"]/div[contains(@class, "type-teaser-bar")]')
+...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == tuple(original_ids)
 True

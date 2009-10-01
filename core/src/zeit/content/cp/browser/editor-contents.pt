@@ -3,10 +3,10 @@
       class="cp-content-inner">
 
   <div class="cp-editor-top">
-    <div id="cp-aufmacher"
+    <div id="lead-outer"
          tal:content="structure context/lead/@@contents"/>
 
-    <div id="cp-informatives"
+    <div id="informatives-outer"
          tal:content="structure context/informatives/@@contents" />
 
   </div>

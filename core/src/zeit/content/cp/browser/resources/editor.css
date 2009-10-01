@@ -42,21 +42,21 @@
   outline: 4px solid #00ee5e;
 }
 
-#cp-aufmacher {
+#lead-outer {
   width: 64%;
   float: left;
 }
 
-#cp-informatives {
+#informatives-outer {
   width: 36%;
   float: left;
 }
 
-#cp-informatives #cp-informatives-inner {
+#informatives-outer #informatives {
   margin-top: 4.2em;
 }
 
-#cp-teasermosaic {
+#teaser-mosaic {
   clear: both;
 }
 

@@ -668,11 +668,11 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     zeit.content.cp.lead_sorter = new zeit.content.cp.BlockSorter(
-        'cp-aufmacher-inner');
+        'lead');
     zeit.content.cp.informatives_sorter = new zeit.content.cp.BlockSorter(
-        'cp-informatives-inner');
+        'informatives');
     zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.BlockSorter(
-        'cp-teasermosaic');
+        'teaser-mosaic');
     zeit.content.cp.teaser_bar_contents_sorter = 
         new zeit.content.cp.TeaserBarContentsSorter();
 });
@@ -944,7 +944,7 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     
     var fix_box_heights = function() {
         log('fixing box heights');
-        forEach($$('#cp-teasermosaic > .block.type-teaser-bar > .block-inner'),
+        forEach($$('#teaser-mosaic > .block.type-teaser-bar > .block-inner'),
             function(bar) {
                 log('fixing box heights for', bar.id);
                 try {

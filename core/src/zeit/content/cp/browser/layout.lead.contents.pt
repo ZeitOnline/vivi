@@ -1,4 +1,4 @@
-<div id="cp-aufmacher-inner"
+<div id="lead"
      tal:define="validation python:view.validate(context)"
      tal:attributes="cms:url context/@@absolute_url;
      class validation/class_;

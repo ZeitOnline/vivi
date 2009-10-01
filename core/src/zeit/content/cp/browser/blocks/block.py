@@ -43,6 +43,9 @@ class Delete(zeit.content.cp.browser.view.Action):
     def update(self):
         del self.context[self.key]
         self.signal('before-reload', 'deleted', self.key)
+        self.signal(
+            None, 'reload', self.context.__name__, self.url(self.context,
+                                                            '@@contents'))
 
 
 class EditCommon(zope.formlib.form.SubPageEditForm):

@@ -42,3 +42,6 @@ class Delete(zeit.content.cp.browser.view.Action):
             new = switcher('placeholder')
             self.signal('after-reload', 'added', new.__name__)
         self.signal('before-reload', 'deleted', self.key)
+        self.signal(
+            None, 'reload', self.context.__name__, self.url(self.context,
+                                                            '@@contents'))

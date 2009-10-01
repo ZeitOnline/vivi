@@ -153,6 +153,9 @@ class Drop(zeit.content.cp.browser.view.Action):
         self.context.insert(self.index, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
+        self.signal(
+            None, 'reload', self.context.__name__, self.url(self.context,
+                                                            '@@contents'))
 
 
 class AutoPilotDrop(Drop):
