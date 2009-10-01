@@ -580,9 +580,13 @@ class Connector(object):
                 if verify_etag:
                     etag = resource.properties.get(('getetag', 'DAV:'))
                 conn = self.get_connection()
-                conn.put(self._id2loc(id), data,
-                         mime_type=resource.contentType,
-                         locktoken=locktoken, etag=etag)
+                try:
+                    conn.put(self._id2loc(id), data,
+                             mime_type=resource.contentType,
+                             locktoken=locktoken, etag=etag)
+                except zeit.connector.dav.interfaces.PreconditionFailedError:
+                    if self[id].data.read() != data:
+                        raise
 
             # Set the resource type from resource.type.
             properties = dict(resource.properties)
@@ -594,7 +598,8 @@ class Connector(object):
             if autolock and locktoken:  # This was _our_ lock. Cleanup:
 
                 self.unlock(id, locktoken=locktoken)
-        self._invalidate_cache(id)
+            else:
+                self._invalidate_cache(id)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended as necessary.

@@ -115,7 +115,9 @@ class Connector(object):
             old_etag = None
         new_etag = resource.properties.get(('getetag', 'DAV:'))
         if new_etag and new_etag != old_etag:
-            raise zeit.connector.dav.interfaces.PreconditionFailedError()
+            if (id not in self
+                or resource.data.read() != self[id].data.read()):
+                raise zeit.connector.dav.interfaces.PreconditionFailedError()
         if id in self._deleted:
             self._deleted.remove(id)
         # Just a very basic in-memory data storage for testing purposes.

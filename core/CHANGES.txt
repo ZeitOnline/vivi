@@ -4,7 +4,10 @@ CHANGES
 1.19.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't raise a PreconditionFailedError when the body of the stored resource 
+  matches the to-be-written body. This is to support ZODB conflict errors
+  without DAV having transactions.
+
 
 
 1.19.2 (2009-09-29)

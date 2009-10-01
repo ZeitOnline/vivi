@@ -72,6 +72,12 @@ class TestConflictDetectionBase(object):
             zeit.connector.dav.interfaces.PreconditionFailedError,
             self.connector.add, r)
 
+    def test_no_conflict_with_same_content(self):
+        self.r_a.data = StringIO.StringIO('Bang.')
+        self.connector.add(self.r_a)
+        self.assertEquals('Bang.', self.connector[self.r_a.id].data.read())
+
+
 class TestConflictDetectionReal(
     TestConflictDetectionBase,
     zeit.connector.testing.ConnectorTest):
