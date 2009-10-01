@@ -42,6 +42,7 @@ class SetupProductConfig(object):
 class Test(zc.selenium.pytest.Test):
 
     product_config = {}
+    skin = 'cms'
 
     def setUp(self):
         super(Test, self).setUp()
@@ -70,4 +71,5 @@ class Test(zc.selenium.pytest.Test):
         else:
             auth = ''
         self.selenium.open(
-            'http://%s%s/++skin++cms%s' % (auth, self.selenium.server, path))
+            'http://%s%s/++skin++%s%s' % (
+                auth, self.selenium.server, self.skin, path))
