@@ -679,15 +679,20 @@ Create a subclass for PublishRetractTask which raises a ConflictError when run:
 ...         raise ZODB.POSException.ConflictError()
 
 When we run this task it'll be tried three times. After the third run the
-conflict error is passed on:
+conflict error logged:
 
 >>> task = ConflictingTask()
 >>> input = zeit.workflow.publish.TaskDescription(jpg)
->>> task(None, 1, input)
-Traceback (most recent call last):
-    ...
-ConflictError: database conflict error
-
+>>> message = task(None, 1, input)
+>>> print zope.i18n.translate(message)
+Error during publish/retract: ConflictError: database conflict error
+>>> print_log(log.get_log(jpg))
+http://xml.zeit.de/2006/DSC00109_2.JPG
+     Urgent: yes
+http://xml.zeit.de/2006/DSC00109_2.JPG
+     Publication scheduled
+http://xml.zeit.de/2006/DSC00109_2.JPG
+     Error during publish/retract: ConflictError: database conflict error
 >>> task.run_count 
 3
 

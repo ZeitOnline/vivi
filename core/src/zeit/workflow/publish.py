@@ -147,28 +147,31 @@ class PublishRetractTask(object):
         retries = 0
         while True:
             try:
-                acquired = self.acquire_active_lock(uniqueId)
-                if acquired:
-                    self.run(obj, info)
-                else:
-                    self.log(
-                        obj, _('A publish/retract job is already active.'
-                               ' Aborting'))
-                    logger.info("Aborting parallel publish/retract of %r" % (
-                        uniqueId))
-                transaction.commit()
-                timer.mark('Commited')
-            except ZODB.POSException.ConflictError, e:
-                timer.mark('Conflict')
-                retries += 1
-                if retries >= 3:
-                    raise
-                # Spiels noch einmal, Sam.
-                logger.exception(e)
-                transaction.abort()
-                # Stagger retry:
-                time.sleep(random.uniform(0, 2**(retries)))
+                try:
+                    acquired = self.acquire_active_lock(uniqueId)
+                    if acquired:
+                        self.run(obj, info)
+                    else:
+                        self.log(
+                            obj, _('A publish/retract job is already active.'
+                                   ' Aborting'))
+                        logger.info("Aborting parallel publish/retract of %r" % (
+                            uniqueId))
+                    transaction.commit()
+                    timer.mark('Commited')
+                except ZODB.POSException.ConflictError, e:
+                    timer.mark('Conflict')
+                    retries += 1
+                    if retries >= 3:
+                        raise
+                    # Spiels noch einmal, Sam.
+                    logger.exception(e)
+                    transaction.abort()
+                    # Stagger retry:
+                    time.sleep(random.uniform(0, 2**(retries)))
+                    continue
             except Exception, e:
+                transaction.abort()
                 logger.error("Error during publish/retract", exc_info=True)
                 message = _("Error during publish/retract: ${exc}: ${message}",
                             mapping=dict(

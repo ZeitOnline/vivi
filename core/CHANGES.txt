@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Bildergruppen haben jetzt ein Thumbnail.
 
+- Veröffentlichen hat jetzt immer ein Ergebnis; vorher konnte es vorkommen,
+  dass der Prozess keine Abbruchmeldung geschrieben hat.
+
 
 1.35.1 (2009-09-29)
 -------------------

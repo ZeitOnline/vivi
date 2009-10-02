@@ -29,7 +29,7 @@ setup(
         'gocept.runner',
         'grokcore.component',
         'guppy',
-        'lovely.remotetask',
+        'lovely.remotetask>=0.5',
         'lxml>=2.0.2',
         'martian',
         'mock',
