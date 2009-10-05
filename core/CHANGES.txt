@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Tests nach Änderungen in zeit.cms repariert.
 
 
 2.2.2 (2009-09-06)
