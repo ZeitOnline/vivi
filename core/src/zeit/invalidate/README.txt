@@ -39,7 +39,7 @@ When we invalidate an object, the event is issued:
 
 >>> invalidate('http://xml.zeit.de/index')
 Resource invalidated: http://xml.zeit.de/index
-    <zeit.connector.interfaces.ResourceInvaliatedEvent object at 0x...>
+    <zeit.connector.interfaces.ResourceInvalidatedEvent object at 0x...>
 True
 
 The resource id must be a string, a Fault(100) is returned otherwise:
@@ -68,13 +68,13 @@ Invalidate several objects at once:
 
 >>> invalidate_many(['index', 'foo', 'bar', 'baz'])
 Resource invalidated: index
-    <zeit.connector.interfaces.ResourceInvaliatedEvent object at 0x...>
+    <zeit.connector.interfaces.ResourceInvalidatedEvent object at 0x...>
 Resource invalidated: foo
-    <zeit.connector.interfaces.ResourceInvaliatedEvent object at 0x...>
+    <zeit.connector.interfaces.ResourceInvalidatedEvent object at 0x...>
 Resource invalidated: bar
-    <zeit.connector.interfaces.ResourceInvaliatedEvent object at 0x...>
+    <zeit.connector.interfaces.ResourceInvalidatedEvent object at 0x...>
 Resource invalidated: baz
-    <zeit.connector.interfaces.ResourceInvaliatedEvent object at 0x...>
+    <zeit.connector.interfaces.ResourceInvalidatedEvent object at 0x...>
 True
 
 
