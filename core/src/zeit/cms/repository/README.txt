@@ -222,10 +222,13 @@ The content does not have a unique id yet:
 >>> print content.uniqueId
 None
 
-After adding it to the repository, it has a unique id[#before-add-event]_:
+After adding it to the repository, it has a unique id[#add-events]_:
 
 >>> repository['i_am_new'] = content
-Adding <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+Before add: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Old: None None
+    New: <zeit.cms.repository.repository.Repository object at 0x...> i_am_new
 >>> content.uniqueId
 u'http://xml.zeit.de/i_am_new'
 
@@ -237,20 +240,37 @@ Since it does have an id we can get it back from the repository:
 >>> new_content.data
 u"I'm a shiny new object."
 
-.. [#before-add-event] Adding sends an event. Register an event handler for
+
+Adding it again will store it again on the DAV (i.e. overwrite). An
+IObjectAddedEvent is *not* sent:
+
+>>> repository['i_am_new'] = new_content
+Before add: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+
+>>> site_manager.unregisterHandler(
+...         before_added,
+...         (zeit.cms.interfaces.ICMSContent,
+...          zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
+True
+
+.. [#add-events] Adding sends an event. Register an event handler for
     IBeforeObjectAddedEvent
 
     >>> def before_added(object, event):
-    ...     print "Adding", object
-    ...     site_manager.unregisterHandler(
-    ...         before_added,
-    ...         (zeit.cms.interfaces.ICMSContent,
-    ...          zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
+    ...     print "Before add:", object
+    >>> def added(object, event):
+    ...     print type(event).__name__, object
+    ...     print '    Old:', event.oldParent, event.oldName
+    ...     print '    New:', event.newParent, event.newName
     >>> site_manager = zope.component.getSiteManager()
     >>> site_manager.registerHandler(
     ...     before_added,
     ...     (zeit.cms.interfaces.ICMSContent,
     ...      zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
+    >>> site_manager.registerHandler(
+    ...     added,
+    ...     (zeit.cms.interfaces.ICMSContent,
+    ...      zope.lifecycleevent.interfaces.IObjectMovedEvent))
 
 
 Renaming objects
@@ -261,6 +281,13 @@ Objects can be renamed in a container using IContainerItemRenamer:
 >>> import zope.copypastemove.interfaces
 >>> renamer = zope.copypastemove.interfaces.IContainerItemRenamer(repository)
 >>> renamer.renameItem('i_am_new', 'i_am_not_so_new_anymore')
+ObjectMovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3b3f970>
+    Old: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_new
+    New: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_not_so_new_anymore
+BeforeObjectRemovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3b3f970>
+    Old: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_not_so_new_anymore
+    New: None None
+
 >>> list(repository)
 [u'online', u'2006', u'2007', u'i_am_not_so_new_anymore', u'politik.feed',
  u'testcontent', u'wirtschaft.feed']
@@ -268,6 +295,7 @@ Objects can be renamed in a container using IContainerItemRenamer:
 Rename it back:
 
 >>> renamer.renameItem('i_am_not_so_new_anymore', 'i_am_new')
+ObjectMovedEvent...
 >>> list(repository)
 [u'online', u'2006', u'2007', u'i_am_new', u'politik.feed',
  u'testcontent', u'wirtschaft.feed']
@@ -282,6 +310,9 @@ __delitem__[#after-delete-event]_:
 >>> 'i_am_new' in repository
 True
 >>> del repository['i_am_new']
+BeforeObjectRemovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Old: <zeit.cms.repository.repository.Repository object at 0x...> i_am_new
+    New: None None
 Deleting http://xml.zeit.de/i_am_new
 >>> 'i_am_new' in repository
 False 
@@ -342,11 +373,16 @@ True
 Let's copy. `copyTo` returns the new name:
 
 >>> copier.copyTo(repository['online'])
+ObjectAddedEvent...
 u'01'
 
 When copying againer, we'll get another name:
 
 >>> copier.copyTo(repository['online'])
+ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Old: None None
+    New: <zeit.cms.repository.folder.Folder object at 0x...> 01-2
+...
 u'01-2'
 
 >>> repository['online'].keys()
@@ -356,9 +392,14 @@ u'01-2'
 
 Let's clean that up again:
 
+
+>>> site_manager.unregisterHandler(
+...     added,
+...     (zeit.cms.interfaces.ICMSContent,
+...      zope.lifecycleevent.interfaces.IObjectMovedEvent))
+True
 >>> del repository['online']['01']
 >>> del repository['online']['01-2']
-
 
 Getting content by unique_id
 ============================

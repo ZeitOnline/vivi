@@ -84,6 +84,9 @@ class Container(zope.app.container.contained.Contained):
         new_id = self._get_id_for_name(name)
         if object.uniqueId is None:
             object.uniqueId = new_id
+            event = True
+        else:
+            event = False
 
         if new_id == object.uniqueId:
             # Update resource.
@@ -91,11 +94,13 @@ class Container(zope.app.container.contained.Contained):
         else:
             log.info("Copying %s to %s" % (object.uniqueId, new_id))
             self.connector.copy(object.uniqueId, new_id)
+            event = True
 
-        object, event = zope.app.container.contained.containedEvent(
-            object, self, name)
         self._local_unique_map_data.clear()
-        zope.event.notify(event)
+        if event:
+            object, event = zope.app.container.contained.containedEvent(
+                object, self, name)
+            zope.event.notify(event)
 
     def __delitem__(self, name):
         '''See interface `IWriteContainer`'''
