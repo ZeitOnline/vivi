@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.37 (unreleased)
------------------
+1.36.1 (2009-10-05)
+-------------------
 
 - ObjectAddedEvent wird jetzt nur noch gesendet, wenn ein Objekt auch wirklich
   dem Repository hinzugefügt wird.
