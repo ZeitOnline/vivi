@@ -1,8 +1,8 @@
 zeit.wysiwyg changes
 ====================
 
-1.32.2 (unreleased)
------------------
+1.32.2 (2009-10-06)
+-------------------
 
 - DeprecationWarning (ISite) entfernt.
 
