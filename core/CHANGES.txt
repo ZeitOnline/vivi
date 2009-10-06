@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.16 (unreleased)
+0.16 (2009-10-06)
 -----------------
 
 - Die Suche zeigt jetzt Thumbnails von Bildern an.
