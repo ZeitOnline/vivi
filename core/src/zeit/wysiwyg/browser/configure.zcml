@@ -33,7 +33,7 @@
     />
 
   <browser:page
-    for="zope.app.component.interfaces.ISite"
+    for="zope.location.interfaces.ISite"
     name="zeit-fckeditor-link-browser.html"
     template="filebrowser.pt"
     class=".filebrowser.FileBrowser"
