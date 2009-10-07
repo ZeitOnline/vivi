@@ -174,7 +174,7 @@ def update_feed_items(context, event):
 
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp')
-        max_items = config['cp-feed-max-items']
+        max_items = int(config['cp-feed-max-items'])
         while len(items) > max_items:
             del items[-1]
 

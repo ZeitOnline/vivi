@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.26 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- feed-Eelement der CP wird jetzt korrekt gekürzt.
 
 
 0.25 (2009-10-06)

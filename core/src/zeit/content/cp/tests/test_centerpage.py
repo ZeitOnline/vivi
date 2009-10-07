@@ -24,7 +24,7 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.product_config['zeit.content.cp']['rules-url'] = 'file://%s' % (
             pkg_resources.resource_filename(
             'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
-        self.product_config['zeit.content.cp']['cp-feed-max-items'] = 5
+        self.product_config['zeit.content.cp']['cp-feed-max-items'] = '5'
         super(CenterPageTest, self).__init__(*args, **kw)
 
     def setUp(self):
