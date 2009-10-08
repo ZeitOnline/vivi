@@ -87,3 +87,14 @@ class SwitchType(object):
         order[index] = created.__name__
         self.parent.updateOrder(order)
         return created
+
+
+class Position(object):
+
+    def update(self):
+        area = self.context.__parent__
+        if zeit.content.cp.interfaces.ILead.providedBy(area):
+            keys = self.context.__parent__.keys()
+            self.position = keys.index(self.context.__name__) + 1
+        else:
+            self.position = None

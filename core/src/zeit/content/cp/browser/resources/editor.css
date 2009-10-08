@@ -278,7 +278,8 @@
 }
 
 .edit-bar > a,
-.edit-bar > .locked-indicator {
+.edit-bar > .locked-indicator,
+.edit-bar > .position {
   background-color: inherit;
   background-position: top left;
   background-repeat: no-repeat;
