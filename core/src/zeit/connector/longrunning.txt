@@ -24,7 +24,6 @@ Remember the connection for later:
 Get a list:
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
-connect: (zip6.zeit.de, 9000)
 send: 'HEAD /cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
@@ -43,7 +42,6 @@ header: Content-Length: 914
 header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/xml; charset="utf-8"
-header: X-Pad: avoid browser bug
 []
 
 
@@ -56,7 +54,6 @@ the server, then the reconnect happens and the HEAD request is send again:
 >>> connector._invalidate_cache('http://xml.zeit.de/testing/')
 send: 'HEAD /cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: ''
-connect: (zip6.zeit.de, 9000)
 send: 'HEAD /cms/work/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: zip6.zeit.de:9000\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector\r\n\r\n'
 reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
@@ -75,7 +72,6 @@ header: Content-Length: 914
 header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/xml; charset="utf-8"
-header: X-Pad: avoid browser bug
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 

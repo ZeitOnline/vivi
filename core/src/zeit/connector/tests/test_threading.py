@@ -112,7 +112,7 @@ class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
             traceback.print_exc()
             transaction.abort()
 
-        result = list_tree(self.connector, base)
+        result = zeit.connector.testing.list_tree(self.connector, base)
         self.checker.append([r.replace(base, '') for r in result])
         try:
             del self.connector[base]
