@@ -21,6 +21,10 @@ class LandingZone(zeit.content.cp.browser.view.Action):
         self.initialize_block()
         self.update_order()
         self.signal('after-reload', 'added', self.block.__name__)
+        self.signal(
+            None, 'reload',
+            self.create_in.__name__, self.url(self.create_in, '@@contents'))
+
 
     def create_block(self):
         factory = zope.component.getAdapter(

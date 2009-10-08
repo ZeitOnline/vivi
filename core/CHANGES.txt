@@ -8,6 +8,8 @@ zeit.content.cp changes
 
 - Performance der Container-Implementation verbessert.
 
+- Hinzufügen von Blöcken über die Landeflächen im Aufmacher schneller.
+
 0.25.1 (2009-10-07)
 -------------------
 
