@@ -6,6 +6,7 @@ zeit.content.cp changes
 
 - Blöcke im Aufmacher sind jetzt nummeriert (#6273).
 
+- Performance der Container-Implementation verbessert.
 
 0.25.1 (2009-10-07)
 -------------------

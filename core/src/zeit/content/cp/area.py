@@ -4,13 +4,14 @@
 import UserDict
 import gocept.lxml.interfaces
 import itertools
+import lxml.etree
 import uuid
+import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
 import zope.container.contained
 import zope.event
 import zope.interface
-import zeit.content.cp.blocks.block
 
 
 class Container(UserDict.DictMixin,
@@ -19,16 +20,25 @@ class Container(UserDict.DictMixin,
 
     zope.interface.implements(zeit.content.cp.interfaces.IContainer)
 
+    _find_item = lxml.etree.XPath(
+        './*[@cms:__name__ = $name]',
+        namespaces=dict(
+            cms='http://namespaces.zeit.de/CMS/cp'))
+    _get_keys = lxml.etree.XPath(
+        './*/attribute::cms:__name__',
+        namespaces=dict(
+            cms='http://namespaces.zeit.de/CMS/cp'))
+
+
     def __init__(self, context, xml):
         self.xml = xml
         # Set parent last so we don't trigger a write.
         self.__parent__ = context
 
     def __getitem__(self, key):
-        # XXX this is not very efficient
-        for node in self.xml.iterchildren():
-            if node.get('{http://namespaces.zeit.de/CMS/cp}__name__') != key:
-                continue
+        node = self._find_item(self.xml, name=key)
+        if node:
+            node = node[0]
             element_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
             element = zope.component.getMultiAdapter(
                 (self, node),
@@ -38,13 +48,10 @@ class Container(UserDict.DictMixin,
         raise KeyError(key)
 
     def __iter__(self):
-        for node in self.xml.iterchildren():
-            key = node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-            if key is not None:
-                yield key
+        return (unicode(k) for k in self._get_keys(self.xml))
 
     def keys(self):
-        return list(self.__iter__())
+        return list(iter(self))
 
     def add(self, item):
         name = self._add(item)
