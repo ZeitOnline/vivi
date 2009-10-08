@@ -6,6 +6,8 @@ zeit.find changes
 
 - Style-Fixes
 
+- Ausklappzustand der erweiterten Suche und der Filter wird gespeichert und
+  wiederhergestellt (#6272).
 
 0.16 (2009-10-06)
 -----------------

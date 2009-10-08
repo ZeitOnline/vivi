@@ -82,10 +82,18 @@ class TestSearch(zeit.cms.selenium.Test):
         s.pause(1000)
 
         self.open('/find')
-        self.selenium.waitForVisible('css=div.teaser_title')
-        s.click('id=extended_search_button')
+        self.selenium.waitForVisible('css=div.no_search_result')
+        # The extended_search is already visible as its state is restored, too.
         s.waitForVisible('id=extended_search')
         s.verifySelectedLabel('name=product', 'Zeit Online')
         s.verifyValue('name=author', 'foo')
         s.verifySelectedLabel('name=sort_order', 'Datum')
         s.verifyChecked('id=search-type-channel')
+
+    def test_result_filters_expand_automatically(self):
+        s = self.selenium
+        s.click('id=result_filters_button')
+        s.waitForElementPresent('css=#result_filters_button.unfolded')
+        s.pause(500)
+        self.open('/find')
+        s.waitForElementPresent('css=#result_filters_button.unfolded')

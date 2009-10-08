@@ -1,0 +1,1 @@
+{"responseHeader":{"status":0,"QTime":2,"params":{"fl":"authors icon graphical-preview-url keywords last-semantic-change published ressort serie subtitle supertitle teaser_text teaser_title title uniqueId volume year","sort":"last-semantic-change desc","q":"((authors_fulltext:(foo)) AND (type:(channel)))","wt":"json","rows":"50"}},"response":{"numFound":0,"start":0,"docs":[]}}

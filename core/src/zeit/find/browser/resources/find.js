@@ -61,31 +61,36 @@ zeit.find.Search = zeit.find.BaseView.extend({
         });
 
         MochiKit.Signal.connect(
-            'extended_search_button', 'onclick', function(e) {
-            self.update_extended_search_info();
-            MochiKit.DOM.toggleElementClass(
-                'hidden', 'extended_search', 'extended_search_info');
-             MochiKit.DOM.toggleElementClass(
-                'unfolded', 'extended_search_button');
-        });
+            'extended_search_button', 'onclick', function() {
+                self.toggle_extended_search(true);
+            });
 
         MochiKit.Signal.connect(
-            'result_filters_button', 'onclick', function(e) {
-
-             MochiKit.DOM.toggleElementClass(
-                'unfolded', 'result_filters_button');
-
-            if ($('result_filters_data')) {
-                $('result_filters').innerHTML = '';
-            } else {
-                self.result_filters.render();
-            }
+            'result_filters_button', 'onclick', function() {
+            self.toggle_result_filters(true);
         });
 
         var d = MochiKit.Async.loadJSONDoc(
             zeit.cms.get_application_url() + '/@@zeit.find.last-query');
+        d.addCallbacks(
+            function(json) {
+                self.populate_query(json);
+                return json
+            },
+            function(error) {
+                zeit.cms.log_error(error);
+                return error;
+        });
         d.addCallback(function(json) {
-            self.populate_query(json);
+            var field = $('zeit-find-search-form')['extended_search_expanded'];
+            if (field.value) {
+                self.toggle_extended_search(false);
+            }
+            var field = $('zeit-find-search-form')['result_filters_expanded'];
+            if (field.value) {
+                self.toggle_result_filters(false);
+            }
+            return json;
         });
     },
 
@@ -131,7 +136,26 @@ zeit.find.Search = zeit.find.BaseView.extend({
         }
     },
 
+    toggle_extended_search: function(update_field) {
+        var self = this;
+        self.update_extended_search_info();
+        MochiKit.DOM.toggleElementClass(
+            'hidden', 'extended_search', 'extended_search_info');
+        MochiKit.DOM.toggleElementClass(
+            'unfolded', 'extended_search_button');
+        if (update_field) {
+            var field = $('zeit-find-search-form')['extended_search_expanded'];
+            if (field.value) {
+                field.value = '';
+            } else {
+                field.value = 'expanded';
+            }
+            self.search_result.render();
+        }
+    },
+
     update_extended_search_info: function() {
+        var self = this;
         var node = $('extended_search_info');
         node.innerHTML = '';
         forEach($('zeit-find-search-form').elements, function(element) {
@@ -165,6 +189,26 @@ zeit.find.Search = zeit.find.BaseView.extend({
         });
     },
 
+    toggle_result_filters: function(update_field) {
+        var self = this;
+        MochiKit.DOM.toggleElementClass(
+            'unfolded', 'result_filters_button');
+        if (update_field) {
+            var field = $('zeit-find-search-form')['result_filters_expanded'];
+            if (field.value) {
+                field.value = '';
+            } else {
+                field.value = 'expanded';
+            }
+            self.search_result.render();
+        }
+
+        if ($('result_filters_data')) {
+            $('result_filters').innerHTML = '';
+        } else  {
+            self.result_filters.render();
+        }
+    },
     search_form_parameters: function() {
         var self = this;
         var qs = MochiKit.Base.queryString($('search_form'));

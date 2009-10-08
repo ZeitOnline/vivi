@@ -575,16 +575,19 @@ def _get(request, name, default=None):
         return value
     return default
 
+
 def search_parameters(request):
     """extract the search parameters from the request in raw form"""
 
     parameters = [
         'author',
+        'extended_search_expanded',
         'from',
         'fulltext',
         'keywords',
         'product',
         'published',
+        'result_filters_expanded',
         'serie',
         'sort_order',
         'topic',

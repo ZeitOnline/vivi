@@ -4,6 +4,7 @@
 
   <div id="extended_search_button" class="button">
     Erweiterte Suche
+    <input type="hidden" name="extended_search_expanded" />
   </div>
 
   <div id="extended_search_form">
@@ -95,6 +96,7 @@
 
   <div id="result_filters_button" class="button">
     Gefilterte Ergebnisse
+    <input type="hidden" name="result_filters_expanded" />
   </div>
   <div id="result_filters"></div>
 
