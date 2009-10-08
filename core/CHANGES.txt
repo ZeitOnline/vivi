@@ -4,7 +4,7 @@ zeit.find changes
 0.17 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Style-Fixes
 
 
 0.16 (2009-10-06)
