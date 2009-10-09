@@ -20,6 +20,8 @@ zeit.content.cp changes
 
 - Icon für freie Teaser (#6063).
 
+- Icon für RSS-Feeds.
+
 0.25.1 (2009-10-07)
 -------------------
 
