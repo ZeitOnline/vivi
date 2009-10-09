@@ -163,7 +163,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         for entry in self.iterentries():
             if entry.get('href') == unique_id:
                 parent = entry.getparent()
-                del parent[entry.tag][parent.index(entry)]
+                parent.remove(entry)
                 self._p_changed = True
                 # An element can only occur once. So we're done.
                 break
