@@ -134,11 +134,13 @@ class AutoPilotTeaserBlock(TeaserBlock):
         '.', 'hide-dupes', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
         'hide_dupes'])
 
+    AUTOPILOT_ENTRIES = 4
+
     def __iter__(self):
         if self.autopilot:
             feed = zeit.cms.syndication.interfaces.IReadFeed(
                 self.referenced_cp, [])
-            return iter(feed)
+            return iter(list(feed)[:self.AUTOPILOT_ENTRIES])
         else:
             return super(AutoPilotTeaserBlock, self).__iter__()
 
@@ -165,7 +167,8 @@ class AutoPilotTeaserBlock(TeaserBlock):
             raise RuntimeError("%s: '%s' is forbidden while on autopilot"
                                % (self, method))
         else:
-            return getattr(super(AutoPilotTeaserBlock, self), method)(*args, **kw)
+            return getattr(super(AutoPilotTeaserBlock, self), method)(*args,
+                                                                      **kw)
 
     @rwproperty.getproperty
     def autopilot(self):
@@ -193,8 +196,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
     def clear(self):
         if not self.autopilot:
-            self._p_changed = True
-            for entry in self:
+            for entry in list(self):
                 self.remove(entry)
 
     def _update_autopilot(self, autopilot):
@@ -223,6 +225,8 @@ class AutoPilotTeaserBlock(TeaserBlock):
                     zeit.cms.syndication.interfaces.IReadFeed(
                         self.referenced_cp)):
                     self.insert(position, content)
+                    if position + 1 >= self.AUTOPILOT_ENTRIES:
+                        break
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(

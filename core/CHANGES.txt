@@ -12,6 +12,10 @@ zeit.content.cp changes
 
 - Fehlerbehandlung asynchroner Requests repariert.
 
+- Es werden nur noch 4 Teaser in Autopilot-Boxen angezeigt um 1. die
+  Geschwindigkeit zu erhöhen und 2. das Aussehen der Seite besser
+  wiederzuspiegeln
+
 0.25.1 (2009-10-07)
 -------------------
 

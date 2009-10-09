@@ -39,6 +39,7 @@ Autopilot
 +++++++++
 
 A teaser block in autopilot mode fetches its contents from another CenterPage.
+We are actually referencing ourselves here.
 
 >>> teaserbar = zope.component.getAdapter(
 ...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
@@ -56,26 +57,39 @@ Traceback (most recent call last):
     ...
 ValueError: Cannot activate autopilot without referenced centerpage.
 
-Once the cp has been assigned we can activate the autopilot:
+Once the cp has been assigned we can activate the autopilot.  The amount of
+displayed teasers is limited to 4.
 
->>> teasers.referenced_cp = repository['cp']
+>>> cp2 = zeit.content.cp.centerpage.CenterPage()
+>>> o200701 = repository['online']['2007']['01']
+>>> for i in xrange(10):
+...     teaserblock = zope.component.getAdapter(
+...         cp2['lead'], zeit.content.cp.interfaces.IElementFactory,
+...         name='teaser')()
+...     teaserblock.insert(0, list(o200701.values())[i])
+>>> repository['cp2'] = cp2
+>>> teasers.referenced_cp = repository['cp2']
 >>> teasers.autopilot = True
+
+>>> len(repository['cp2']['lead'])
+10
 >>> len(teasers)
-1
->>> list(teasers)[0].uniqueId
-u'http://xml.zeit.de/testcontent'
+4
+>>> print list(teasers)[0].uniqueId
+http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+
 
 But its XML representation only contains an xi:include to the referenced page:
 
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
-  <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
+  <referenced_cp ...>http://xml.zeit.de/cp2</referenced_cp>
   <autopilot ...>true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude"
     parse="xml"
     xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])"
-    href="/var/cms/work/cp">
-    <xi:fallback>Ziel http://xml.zeit.de/cp nicht erreichbar.</xi:fallback>
+    href="/var/cms/work/cp2">
+    <xi:fallback>Ziel http://xml.zeit.de/cp2 nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
 
@@ -93,16 +107,17 @@ teasers are copied into it:
 >>> teasers.autopilot = False
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
-  <block href="http://xml.zeit.de/testcontent"...>
-  ...
-  </block>
-  <referenced_cp ...>http://xml.zeit.de/cp</referenced_cp>
+  <block href="http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang"...
+  <block...
+  <referenced_cp ...>http://xml.zeit.de/cp2</referenced_cp>
   <autopilot ...>false</autopilot>
 </container>
+>>> len(teasers)
+4
 
 In manual mode, the contents can be changed again:
 
->>> teasers.remove(repository['testcontent'])
+>>> teasers.clear()
 >>> len(teasers)
 0
 
@@ -110,19 +125,31 @@ When the referenced CP is checked in an excerpt in channel format is created
 unter "name.lead":
 
 >>> import zeit.cms.checkout.helper
->>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
+>>> with zeit.cms.checkout.helper.checked_out(repository['cp2']):
 ...     pass
->>> repository['cp.lead']
+>>> repository['cp2.lead']
 <zeit.cms.syndication.feed.Feed object at 0x...>
->>> list(x.uniqueId for x in repository['cp.lead'])
-[u'http://xml.zeit.de/testcontent']
+>>> import pprint
+>>> pprint.pprint(list(x.uniqueId for x in repository['cp2.lead']))
+[u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang',
+ u'http://xml.zeit.de/online/2007/01/Arbeitsmarktzahlen',
+ u'http://xml.zeit.de/online/2007/01/EU-Beitritt-rumaenien-bulgarien',
+ u'http://xml.zeit.de/online/2007/01/Flugsicherheit',
+ u'http://xml.zeit.de/online/2007/01/Ford-Beerdigung',
+ u'http://xml.zeit.de/online/2007/01/Gesundheitsreform-Die',
+ u'http://xml.zeit.de/online/2007/01/Guantanamo',
+ u'http://xml.zeit.de/online/2007/01/Lateinamerika-Jahresrueckblick',
+ u'http://xml.zeit.de/online/2007/01/Mehrwertsteuer-Jobs',
+ u'http://xml.zeit.de/online/2007/01/Merkel-Ansprache']
+
 
 The excerpt is part of the workflow dependencies of the CP:
 
 >>> import zeit.workflow.interfaces
 >>> [x.uniqueId for x in 
-...  zeit.workflow.interfaces.IPublicationDependencies(cp).get_dependencies()]
-[u'http://xml.zeit.de/cp.lead']
+...  zeit.workflow.interfaces.IPublicationDependencies(
+...     repository['cp2']).get_dependencies()]
+[u'http://xml.zeit.de/cp2.lead']
 
 
 This excerpt is used for the xi:include when possible:
@@ -130,26 +157,30 @@ This excerpt is used for the xi:include when possible:
 >>> teasers.autopilot = True
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
-  <referenced_cp...>http://xml.zeit.de/cp</referenced_cp>
+  <referenced_cp...>http://xml.zeit.de/cp2</referenced_cp>
   <autopilot...>true</autopilot>
   <xi:include ...xpointer="xpointer(/channel/container/block)"
-        href="/var/cms/work/cp.lead">
-    <xi:fallback>Ziel http://xml.zeit.de/cp.lead nicht erreichbar.</xi:fallback>
+        href="/var/cms/work/cp2.lead">
+    <xi:fallback>Ziel http://xml.zeit.de/cp2.lead nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
 
-The channel is also contained in the content list:
+The referenced centerpage is also contained in the content list. The excerpt is
+not though:
 
->>> list(zeit.content.cp.interfaces.ICMSContentIterable(teasers))
-[<zeit.content.cp.centerpage.CenterPage object at 0x...>,
- <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
+>>> pprint.pprint(
+...     list(zeit.content.cp.interfaces.ICMSContentIterable(teasers)))
+[<zeit.content.cp.centerpage.CenterPage object at 0x3e664f0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2e3b0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2eb70>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2d3b0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2db70>]
 
 
 Channels can also be used for the autopilot:
 
 >>> teasers.referenced_cp = repository['wirtschaft.feed']
 >>> teasers.autopilot = True
->>> import pprint
 >>> pprint.pprint(teasers.keys())
 [u'http://xml.zeit.de/online/2007/01/Querdax',
  u'http://xml.zeit.de/online/2007/01/Rosia-Montana',
