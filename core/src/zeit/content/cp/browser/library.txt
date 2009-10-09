@@ -93,9 +93,13 @@ information about the created block:
 ...              '?block_type=weather')
 >>> result = cjson.decode(browser.contents)
 >>> pprint.pprint(result)
-{'signals': [{'args': ['c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515'],
+{'signals': [{'args': ['7ccff7a0-3758-416c-ad30-d0183a2543fd'],
               'name': 'added',
-              'when': 'after-reload'}]}
+              'when': 'after-reload'},
+             {'args': ['informatives',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+              'name': 'reload',
+              'when': None}]}
 >>> print browser.headers
 Status: 200 Ok
 Content-Length: ...
