@@ -18,6 +18,8 @@ zeit.content.cp changes
 
 - (De-)aktivieren von Autopiloten schneller.
 
+- Icon für freie Teaser (#6063).
+
 0.25.1 (2009-10-07)
 -------------------
 

@@ -262,9 +262,7 @@
     permission="zeit.workflow.Publish"
     />
     
-    <!-- -->
-    
-    <browser:icon
+  <browser:icon
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     name="zmi_icon"
@@ -272,8 +270,8 @@
     height="20"
     file="resources/centerpage.png"
     />
-    
-    <browser:icon
+
+  <browser:icon
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     name="zmi_icon"
@@ -282,4 +280,12 @@
     file="resources/vivi/centerpage.png"
     />
 
+  <browser:icon
+    for="zeit.content.cp.interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="resources/teaser-icon.png"
+    />
 </configure>
