@@ -31,7 +31,7 @@ The source has not changed:
 >>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references/>
    </head>
   <body/>
@@ -50,7 +50,7 @@ Let's have a look at the source:
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
@@ -90,7 +90,7 @@ Assigning the same content object again doesn't change the xml:
 >>> related.related = (related_content, )
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
@@ -114,7 +114,7 @@ Let's add another related content:
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
@@ -154,7 +154,7 @@ So far nothing has changed:
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
@@ -184,7 +184,7 @@ when we reassign the two objects the metadata will be reflected in the xml:
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related" year="2006" issue="19"...>
@@ -223,7 +223,7 @@ After sending the event the metadata is updated:
 ...         content, None, zope.security.testing.Principal('hans.wurst')))
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <head>
+  <head>...
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related" year="2007" issue="19"...>

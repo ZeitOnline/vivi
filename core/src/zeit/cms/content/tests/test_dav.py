@@ -53,9 +53,8 @@ class DAVTest(zeit.cms.testing.FunctionalTestCase):
         self.repository['foo'] = self.content
         properties = zeit.connector.interfaces.IWebDAVProperties(self.content)
         self.assertEquals(
-            {('provides', 'http://namespaces.zeit.de/CMS/meta'):
-                zeit.connector.interfaces.DeleteProperty},
-            dict(properties))
+            zeit.connector.interfaces.DeleteProperty,
+            properties[('provides', 'http://namespaces.zeit.de/CMS/meta')])
 
     def test_changed_and_reset_provides_does_not_overwrite_implements(self):
         zope.interface.alsoProvides(self.content, ITestInterface)

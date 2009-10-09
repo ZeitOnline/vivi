@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Art und Weise geändert wie Einträge aus Channeln entfernt werden (#6200).
 
+- Objekte erhalten jetzt direkt beim Hinzufügen eine UUID und nicht erst beim
+  Einchecken (#6295).
+
 
 1.36.1 (2009-10-05)
 -------------------
