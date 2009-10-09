@@ -10,6 +10,8 @@ zeit.content.cp changes
 
 - Hinzufügen von Blöcken über die Landeflächen im Aufmacher schneller.
 
+- Fehlerbehandlung asynchroner Requests repariert.
+
 0.25.1 (2009-10-07)
 -------------------
 

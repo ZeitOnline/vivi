@@ -116,7 +116,7 @@ zeit.content.cp.makeJSONRequest = function(
         return result;
     },
     function(error) {
-        zeit.cms.cp.handle_json_errors(error);
+        zeit.content.cp.handle_json_errors(error);
         MochiKit.Signal.signal(target_component, 'reload');
         return error;
     });
