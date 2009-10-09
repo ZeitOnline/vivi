@@ -40,10 +40,10 @@ class ICMSSkin(ICMSOldStyles,
 
 
 class IViviSkin(ICMSStyles,
-               ICMSLayer,
-               z3c.hashedresource.interfaces.IHashedResourceSkin,
-               gocept.form.interfaces.IJSValidationLayer,
-               zope.publisher.interfaces.browser.IDefaultBrowserLayer):
+                ICMSLayer,
+                z3c.hashedresource.interfaces.IHashedResourceSkin,
+                gocept.form.interfaces.IJSValidationLayer,
+                zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """Vivi skin."""
 
 
