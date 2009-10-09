@@ -249,6 +249,7 @@ class ToggleAutopilot(zeit.content.cp.browser.view.Action):
         self.context.autopilot = (True if self.to == 'on' else False)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
+        self.signal_context_reload()
 
 
 class UpdateOrder(zeit.content.cp.browser.view.Action):

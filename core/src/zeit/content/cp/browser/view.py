@@ -39,6 +39,10 @@ class Form(object):
 
 class Action(zeit.cms.browser.view.Base):
 
+    def signal_context_reload(self):
+        self.signal(
+            None, 'reload', self.context.__name__, self.url('@@contents'))
+
     def signal(self, when, name, *args):
         self.signals.append(dict(
             args=args,

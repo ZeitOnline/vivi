@@ -16,6 +16,8 @@ zeit.content.cp changes
   Geschwindigkeit zu erhöhen und 2. das Aussehen der Seite besser
   wiederzuspiegeln
 
+- (De-)aktivieren von Autopiloten schneller.
+
 0.25.1 (2009-10-07)
 -------------------
 
