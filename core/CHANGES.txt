@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.36.2 (unreleased)
+1.37.0 (2009-10-12)
 -------------------
 
 - Art und Weise geändert wie Einträge aus Channeln entfernt werden (#6200).
