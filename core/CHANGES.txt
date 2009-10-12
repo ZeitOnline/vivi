@@ -4,7 +4,7 @@ zeit.cms changes
 1.37.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Preview-Redirect ist jetzt trusted.
 
 
 1.37.0 (2009-10-12)

@@ -21,7 +21,8 @@ def get_preview_url(prefix, unique_id):
     if not prefix.endswith('/'):
         prefix = prefix + '/'
     return urlparse.urljoin(prefix, path)
-    
+
+
 class PreviewBase(zeit.cms.browser.view.Base):
     """Base class for preview."""
 
@@ -32,7 +33,7 @@ class PreviewBase(zeit.cms.browser.view.Base):
     def __call__(self):
         preview_object = zeit.cms.browser.interfaces.IPreviewObject(
             self.context, self.context)
-        self.redirect(self.get_preview_url_for(preview_object))
+        self.redirect(self.get_preview_url_for(preview_object), trusted=True)
         return ''
 
 

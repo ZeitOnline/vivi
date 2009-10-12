@@ -34,8 +34,8 @@ class Base(object):
             return url
         return '%s/%s' % (url, name)
 
-    def redirect(self, url):
-        return self.request.response.redirect(url)
+    def redirect(self, url, trusted=False):
+        return self.request.response.redirect(url, trusted=trusted)
 
     def send_message(self, message, type='message'):
         source = zope.component.getUtility(
