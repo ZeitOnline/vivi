@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.25.2 (unreleased)
+0.26.0 (2009-10-12)
 -------------------
 
 - Blöcke im Aufmacher sind jetzt nummeriert (#6273).
