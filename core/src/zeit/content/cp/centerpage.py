@@ -3,8 +3,10 @@
 
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
+from zeit.connector.search import SearchVar
 import UserDict
 import gocept.async
+import grokcore.component
 import itertools
 import lxml.etree
 import lxml.objectify
@@ -12,7 +14,6 @@ import pkg_resources
 import stabledict
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
-import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -20,9 +21,11 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.related.interfaces
 import zeit.cms.related.related
+import zeit.cms.sitecontrol.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.connector.interfaces
 import zeit.content.cp.interfaces
 import zope.container.contained
 import zope.interface
@@ -201,3 +204,21 @@ def has_changed(context):
         # If there no jar, no change will have been marked.
         return True
     return context._p_changed
+
+
+class SiteControlTopicPages(grokcore.component.GlobalUtility):
+
+    grokcore.component.implements(
+        zeit.cms.sitecontrol.interfaces.ISitesProvider)
+    grokcore.component.name('topicpage')
+
+    def __iter__(self):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        type_index = SearchVar(
+            'type', zeit.content.cp.interfaces.DAV_NAMESPACE)
+        result = connector.search([type_index],
+                                  type_index == 'topicpage')
+        result = [zeit.cms.interfaces.ICMSContent(uid, None)
+                  for uid, dummy in result]
+        return (obj for obj in result if obj is not None)

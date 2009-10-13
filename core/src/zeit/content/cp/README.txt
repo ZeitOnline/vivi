@@ -342,6 +342,21 @@ The data is, again, updated when the CP is checked in:
          date-last-published="2009-09-11T08:18:48+00:00"
          last-semantic-change="2009-09-11T08:18:48+00:00"...
 
+
+Topic page
+==========
+
+
+>>> topic_provider = zope.component.getUtility(
+...     zeit.cms.sitecontrol.interfaces.ISitesProvider, name='topicpage')
+>>> import pprint
+>>> pprint.pprint(list(topic_provider))
+Searching:  (:eq "http://namespaces.zeit.de/CMS/zeit.content.cp" "type" "topicpage")
+[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a4a2f0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a4adf0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a5f4b0>]
+
+
 .. [#needsinteraction]
 
     >>> principal = zeit.cms.testing.create_interaction()

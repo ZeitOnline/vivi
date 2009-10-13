@@ -6,6 +6,7 @@ zeit.content.cp changes
 
 - Es werden jetzt 6 statt nur 4 Teaser in Autopilot-Blöcken angezeigt (#6354).
 
+- Themenseiten werden in der Site-Steuerung angezeigt (#6350).
 
 0.26.0 (2009-10-12)
 -------------------
