@@ -86,8 +86,25 @@ table.properties textarea {
 }
 
 /* site control panel */
+#zeit-cms-sitecontrol select {
+  max-width: 70%
+}
+
+#zeit-cms-sitecontrol input {
+  width: 25%
+}
+
 #zeit-cms-sitecontrol option.sub_ressort {
   padding-left: 2em;
+}
+
+#zeit-cms-sitecontrol option.topicpage {
+  font-style: italic;
+  padding-left: 2em;
+}
+
+#zeit-cms-sitecontrol option.topicpage.sub_ressort {
+  padding-left: 4em;
 }
 
 
