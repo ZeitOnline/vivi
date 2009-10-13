@@ -74,7 +74,7 @@ displayed teasers is limited to 4.
 >>> len(repository['cp2']['lead'])
 10
 >>> len(teasers)
-4
+6
 >>> print list(teasers)[0].uniqueId
 http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
 
@@ -113,7 +113,7 @@ teasers are copied into it:
   <autopilot ...>false</autopilot>
 </container>
 >>> len(teasers)
-4
+6
 
 In manual mode, the contents can be changed again:
 

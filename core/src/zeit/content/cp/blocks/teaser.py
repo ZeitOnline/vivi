@@ -134,7 +134,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
         '.', 'hide-dupes', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
         'hide_dupes'])
 
-    AUTOPILOT_ENTRIES = 4
+    AUTOPILOT_ENTRIES = 6
 
     def __iter__(self):
         if self.autopilot:
