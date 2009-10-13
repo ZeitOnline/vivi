@@ -12,22 +12,23 @@ The site control is situated in the sidebar:
 <...
 ...<div class="panel unfolded" id="zeit-cms-sitecontrol">
   <h1>
-    <a href="http://localhost/++skin++vivi/repository">
-      Site control
+    <a href="#">
+        Site control
     </a>
   </h1>
-  <div id="zeit.cms.sitecontrol.panelcontent" class="PanelContent Tree">
+  <div id="zeit.cms.sitecontrol.panelcontent" class="PanelContent">
   </div>
   <script type="text/javascript">
       ...
-        var tree = new Tree('http://localhost/++skin++vivi/repository/@@zeit.cms.sitecontrol.tree', 'zeit.cms.sitecontrol.panelcontent');
+      var sidebar = new zeit.cms.sitecontrol.Sidebar(
+        'http://localhost/++skin++vivi/repository/@@zeit.cms.sitecontrol');
         ...
 
 
 The actual tree is loaded via javascript. The result is cached by the browser:
 
 >>> browser.open(
-...     'http://localhost/++skin++vivi/repository/@@zeit.cms.sitecontrol.tree')
+...     'http://localhost/++skin++vivi/repository/@@zeit.cms.sitecontrol')
 >>> print browser.headers
 Status: 200 Ok
 Cache-Control: private; max-age=360
@@ -35,9 +36,13 @@ Content-Length: ...
 Content-Type: text/html;charset=utf-8
 ...
 >>> print browser.contents
-  <ul>
-      <li class="Root">
-        <p>
-        <a href="http://localhost/++skin++vivi/repository">Homepage</a>
-        <span class="uniqueId">None</span>
-        ...
+  <form action="#">
+    <select name="site">
+      <option value=""></option>
+      <option class="ressort">Deutschland</option>
+      <option class="sub_ressort"> Joschka Fisher</option>
+      <option class="sub_ressort"> Datenschutz</option>
+      <option class="sub_ressort"> Integration</option>
+      <option class="sub_ressort"> Meinung</option>
+      <option class="ressort">International</option>
+      ...

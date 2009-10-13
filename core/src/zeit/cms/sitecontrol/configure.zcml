@@ -3,23 +3,27 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   >
 
+  <resourceLibrary name="zeit.cms.sidecontrol">
+    <directory source="resources" include="sidebar.js" />
+  </resourceLibrary>
+
   <browser:viewlet
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     name="08_sitecontrol"
     manager="zeit.cms.browser.interfaces.ISidebar"
-    template="sidebar.pt"
     class=".sidebar.Sidebar"
+    template="sidebar.pt"
     permission="zope.View"
     />
 
   <browser:page
     for="zeit.cms.repository.interfaces.IRepository"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
-    name="zeit.cms.sitecontrol.tree"
-    class=".tree.Tree"
+    name="zeit.cms.sitecontrol"
+    class=".sidebar.SiteControl"
+    template="sitecontrol.pt"
     permission="zope.View"
-    allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
 
 </configure>

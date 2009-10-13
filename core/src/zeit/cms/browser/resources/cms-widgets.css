@@ -56,10 +56,9 @@ table.properties textarea {
  * 
  * */
 .PanelContent {
-   /* max-height: 20em; */
    overflow-y: auto;
-   overflow-x: hidden; /* XXX not sure if I'm making it unusable here */
-   padding: 0 0.5em;
+   overflow-x: hidden;
+   padding: 0.5em 0.5em;
 }
 
 .folded .PanelContent {
@@ -84,6 +83,11 @@ table.properties textarea {
 .unfolded h1 a {
   margin-left: 12px;
   padding-left: 0px;
+}
+
+/* site control panel */
+#zeit-cms-sitecontrol option.sub_ressort {
+  padding-left: 2em;
 }
 
 
@@ -239,7 +243,6 @@ table.properties textarea {
     padding-bottom: 2em;
 }
 
-#zeit-cms-sitecontrol .PanelContent,
 #NavtreePanel .PanelContent {
   height: 20em;
 }
@@ -247,14 +250,12 @@ table.properties textarea {
 /* Hide the root node from repository and clipboard. Also move those trees a
    bit more to the left */
 #clipboardcontents .Root > p,
-#navtreecontents .Root > p,
-/*#zeit-cms-sitecontrol .PanelContent .Root > p*/ {
+#navtreecontents .Root > p {
    display: none;
 }
 
 #clipboardcontents > ul,
-#navtreecontents > ul,
-#zeit-cms-sitecontrol .PanelContent > ul {
+#navtreecontents > ul {
     margin-left: -2em;
 }
 

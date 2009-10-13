@@ -1,31 +1,25 @@
 <div
   tal:define="panel_id string:zeit-cms-sitecontrol;
-              panel_handlers nocall:context/@@panel_handlers;
-              tree_url view/tree_url"
+              panel_handlers nocall:context/@@panel_handlers"
   tal:attributes="
   class python:panel_handlers.css_class(panel_id);
   id panel_id"
   i18n:domain="zeit.cms">
 
+  <tal:block replace="resource_library:zeit.cms.sidecontrol" />
+
   <h1>
-    <a tal:attributes="href view/index_url"
-      i18n:translate="">
+    <a href="#" i18n:translate="">
       Site control
     </a>
   </h1>
 
-  <div id="zeit.cms.sitecontrol.panelcontent" class="PanelContent Tree">
+  <div id="zeit.cms.sitecontrol.panelcontent" class="PanelContent">
   </div>
   <script type="text/javascript" tal:content="string:
       (function() {
-        var tree = new Tree('$tree_url', 'zeit.cms.sitecontrol.panelcontent');
-        var s = MochiKit.Signal.connect(window, 'onload', function() {
-            tree.loadTree();
-            MochiKit.Signal.disconnect(s);
-         });
-        MochiKit.Signal.connect(tree, 'state-changed', function(event) {
-          MochiKit.Signal.signal('sidebar', 'panel-content-changed');
-        });
+      var sidebar = new zeit.cms.sitecontrol.Sidebar(
+        '${view/repository/@@absolute_url}/@@zeit.cms.sitecontrol');
       })();
   "></script>
 </div>
