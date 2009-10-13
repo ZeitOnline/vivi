@@ -4,7 +4,7 @@ zeit.cms changes
 1.37.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Site-Steuerung ist jetzt ein Dropdown (#6350).
 
 
 1.37.1 (2009-10-12)
