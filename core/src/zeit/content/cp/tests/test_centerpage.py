@@ -112,7 +112,3 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         # the oldest item ('testcontent') has been purged from the list
         expected = ['http://xml.zeit.de/test%s' % i for i in [6, 5, 4, 3, 2]]
         self.assertEqual(expected, [x.get('href') for x in items])
-
-
-def test_suite():
-    return unittest.makeSuite(CenterPageTest)
