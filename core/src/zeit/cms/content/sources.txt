@@ -313,6 +313,18 @@ u'Meinung'
 >>> terms.getTerm('Foobar').title
 'Foobar'
 
+
+The subressort source can also be bound to a unicode which is interpreted as
+ressort:
+
+>>> bound = sub_ressort(u'Deutschland')
+>>> sorted(bound)
+[u'Datenschutz', u'Integration', u'Joschka Fisher', u'Meinung']
+>>> bound = sub_ressort(u'Bildung & Beruf')
+>>> sorted(bound)
+[]
+
+
 Products
 ++++++++
 

@@ -118,6 +118,7 @@ class SubNavigationSource(SimpleContextualXMLSource):
     config_url = 'source-navigation'
 
     def getValues(self, context):
+        __traceback_info__ = (context,)
         ressort_nodes = self._get_ressort_nodes(context)
         sub_navs = reduce(
             operator.add, [ressort_node.findall('subnavigation')
@@ -149,15 +150,15 @@ class SubNavigationSource(SimpleContextualXMLSource):
         if not ressort:
             return all_ressorts
 
-        nodes = tree.xpath(
-            '/ressorts/ressort[@name = %s]' %
-            xml.sax.saxutils.quoteattr(ressort))
+        nodes = tree.xpath('/ressorts/ressort[@name = "%s"]' % ressort)
         if not nodes:
             return None
         assert len(nodes) == 1
         return nodes
 
     def _get_ressort(self, context):
+        if isinstance(context, unicode):
+            return context
         if zeit.cms.interfaces.ICMSContent.providedBy(context):
             return None
         metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
