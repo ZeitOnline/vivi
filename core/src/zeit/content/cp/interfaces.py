@@ -19,6 +19,9 @@ import zope.container.interfaces
 import zope.interface
 
 
+DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
+
+
 class ValidationError(zope.schema.ValidationError):
 
     def doc(self):

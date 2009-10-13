@@ -47,8 +47,12 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
     keys = editable_areas.keys
     __contains__ = editable_areas.__contains__
 
-    type = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
+    _type_dav = zeit.cms.content.dav.DAVProperty(
+        zeit.content.cp.interfaces.ICenterPage['type'],
+        zeit.content.cp.interfaces.DAV_NAMESPACE, 'type')
+
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.cp.interfaces.ICenterPage,
@@ -99,6 +103,16 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                 if lsc.last_semantic_change:
                     date = lsc.last_semantic_change.isoformat()
                 entry.set('last-semantic-change', date)
+
+    @property
+    def type(self):
+        return self._type_xml
+
+    @type.setter
+    def type(self, value):
+        self._type_xml = value
+        self._type_dav = value
+
 
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):

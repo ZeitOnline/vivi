@@ -26,7 +26,7 @@ They are represented in XML as:
 >>> import lxml.etree
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
 <centerpage... type="homepage"...>
-  <head/>
+  <head>...
   <body>
     <cluster area="feature">
       <region area="lead"/>
@@ -36,6 +36,11 @@ They are represented in XML as:
   </body>
   <feed/>
 </centerpage>
+>>> import zeit.connector.interfaces
+>>> print zeit.connector.interfaces.IWebDAVProperties(cp)[
+...     ('type', 'http://namespaces.zeit.de/CMS/zeit.content.cp')]
+homepage
+
 
 
 Other areas are not accessible:

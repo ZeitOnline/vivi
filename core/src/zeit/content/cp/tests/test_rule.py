@@ -179,7 +179,7 @@ error_if(True)
 """)
         s = r.apply(self.teaser)
         self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)
-        self.cp.type = 'homepage'
+        self.cp.type = u'homepage'
         s = r.apply(self.teaser)
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 

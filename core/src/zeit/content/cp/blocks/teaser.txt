@@ -304,7 +304,7 @@ And yet other ones in the mosic:
 Archive centerpages should always keep the same module attribute:
 
 >>> archive_cp = zeit.content.cp.centerpage.CenterPage()
->>> archive_cp.type = 'archive-print-volume'
+>>> archive_cp.type = u'archive-print-volume'
 >>> print archive_cp.type
 archive-print-volume
 >>> factory = zope.component.getAdapter(
@@ -318,7 +318,7 @@ archive-print-volume
 >>> archive_teaser_3.layout = layout
 >>> print lxml.etree.tostring(archive_cp.xml, pretty_print=True)
 <centerpage ...>
-  <head/>
+  <head...
   <body>
     <cluster area="feature">
       <region area="lead">
