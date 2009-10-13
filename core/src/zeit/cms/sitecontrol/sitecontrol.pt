@@ -1,14 +1,13 @@
 <tal:block i18n:domain="zeit.cms">
   <form action="#">
     <select name="site">
-      <option value=""></option>
       <option
         tal:repeat="site view/sites"
         tal:attributes="value site/url; class site/css_class"
         tal:content="site/title"
         />
     </select>
-    <input type="button" name="go" value="Go"
+    <input type="button" name="go" value="Open"
            i18n:attributes="value" />
   </form>
 </tal:block>

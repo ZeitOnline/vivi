@@ -155,7 +155,7 @@ def create_interaction(name=u'zope.user'):
 
 
 @contextlib.contextmanager
-def interaction(principal_id):
+def interaction(principal_id=u'zope.user'):
     create_interaction(principal_id)
     yield
     zope.security.management.endInteraction()
