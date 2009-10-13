@@ -5,11 +5,13 @@ zeit.cms.sitecontrol.Sidebar = gocept.Class.extend({
     construct: function(view_url) {
         var self = this;
         self.view_url = view_url;
+        self.container = $('zeit.cms.sitecontrol.panelcontent');
         self.load();
     },
 
     load: function() {
         var self = this;
+        MochiKit.DOM.addElementClass(self.container, 'busy');
         var d = MochiKit.Async.doSimpleXMLHttpRequest(self.view_url);
         d.addCallback(function(result) {
             self.replace(result.responseText);   
@@ -18,16 +20,16 @@ zeit.cms.sitecontrol.Sidebar = gocept.Class.extend({
 
     replace: function(html) {
         var self = this;
-        var container = $('zeit.cms.sitecontrol.panelcontent');
-        container.innerHTML = html;
+        self.container.innerHTML = html;
         MochiKit.Signal.signal('sidebar', 'panel-content-changed');
         self.select = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'select', null, container);
+            'select', null, self.container);
         var button = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'input', null, container);
+            'input', null, self.container);
         MochiKit.Signal.connect(self.select, 'onchange', self, self.goto);
         MochiKit.Signal.connect(button, 'onclick', self, self.goto);
         self.highlight();
+        MochiKit.DOM.removeElementClass(self.container, 'busy');
     },
 
     highlight: function() {
