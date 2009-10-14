@@ -97,9 +97,9 @@
       </fieldset>
       <fieldset>
         <label>Sortierung:</label>
-        <select name="sort_order" default="relevance">
-          <option value="relevance" selected="selected">Relevanz</option>
-          <option value="date">Datum</option>
+        <select name="sort_order" default="date">
+          <option value="relevance">Relevanz</option>
+          <option value="date" selected="selected">Datum</option>
         </select>
       </fieldset>
     </div>

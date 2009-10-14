@@ -9,6 +9,7 @@ zeit.find changes
 - Die letzte Suche wird nur noch gespeichert, wenn sich auch etwas geändert
   hat. Durch weniger Schreiboperationen wird die Gesamtgeschwindigket erhöht.
 
+- Suche initial nach Datum sortiert (#6352).
 
 0.17.0 (2009-10-12)
 -------------------
