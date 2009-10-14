@@ -201,10 +201,14 @@ class SearchResult(SearchResultBase):
         if q is None:
             return {'template': 'no_search_result.jsont'}
         results = zeit.find.search.search(q, self.sort_order())
-        session = zope.session.interfaces.ISession(
-            self.request)['zeit.find.last-query']
-        session.update(search_parameters(self.request))
+        self.store_session()
         return self.results(results)
+
+    def store_session(self):
+        session = zope.session.interfaces.ISession(self.request)['zeit.find']
+        parameters = search_parameters(self.request)
+        if session.get('last-query') != parameters:
+            session['last-query'] = parameters
 
     def get_authors(self, result):
         return result.get('authors', [])
@@ -556,10 +560,13 @@ class ForThisPage(JSONView):
 class LastQuery(JSONView):
 
     def json(self):
+        last_query = {}
         session = zope.session.interfaces.ISession(self.request).get(
-            'zeit.find.last-query', {})
+            'zeit.find')
+        if session is not None:
+            last_query = session.get('last-query', {})
         query = {}
-        for key, value in session.items():
+        for key, value in last_query.items():
             if isinstance(value, list):
                 key = '%s:list' % key
             query[key] = value

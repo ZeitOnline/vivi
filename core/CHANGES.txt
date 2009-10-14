@@ -6,6 +6,9 @@ zeit.find changes
 
 - Die Typen-Suche ist jetzt in einer eigenen Box (#6351).
 
+- Die letzte Suche wird nur noch gespeichert, wenn sich auch etwas geändert
+  hat. Durch weniger Schreiboperationen wird die Gesamtgeschwindigket erhöht.
+
 
 0.17.0 (2009-10-12)
 -------------------
