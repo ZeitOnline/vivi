@@ -135,6 +135,10 @@
     principal="zope.producer"
     permission="zeit.ChangeGlobalSettings"
     />
+  <grant
+    principal="zope.producer"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    />
 
 </configure>
 

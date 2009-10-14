@@ -52,6 +52,11 @@
     id="zeit.Checkin"
     title="Checkin content"
     />
+
+  <permission
+    id="zeit.cms.repository.ViewNavigationTree"
+    title="View repository navigation tree"
+    />
   
   <permission
     id="zeit.cms.Syndicate"

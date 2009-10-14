@@ -9,7 +9,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="tree.html"
     class=".repository.Tree"
-    permission="zope.View"
+    permission="zeit.cms.repository.ViewNavigationTree"
     allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
 
@@ -57,7 +57,7 @@
     title="Hide"
     action="@@hide-from-tree.html"
     for="zeit.cms.repository.interfaces.ICollection"
-    permission="zope.View"
+    permission="zeit.cms.repository.ViewNavigationTree"
     filter="not: context/@@hide-from-tree.html/hidden"
     icon="hide"
     />
@@ -65,9 +65,9 @@
   <browser:page
     for="zeit.cms.repository.interfaces.ICollection"
     name="show-in-tree.html"
-    permission="zope.View"
     class=".repository.HiddenCollections"
     attribute="show_collection"
+    permission="zeit.cms.repository.ViewNavigationTree"
     allowed_attributes="hidden"
     />
 
@@ -76,7 +76,7 @@
     title="Show"
     action="@@show-in-tree.html"
     for="zeit.cms.repository.interfaces.ICollection"
-    permission="zope.View"
+    permission="zeit.cms.repository.ViewNavigationTree"
     filter="context/@@show-in-tree.html/hidden"
     icon="show"
     />

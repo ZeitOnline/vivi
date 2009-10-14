@@ -31,7 +31,7 @@
     manager="zeit.cms.browser.interfaces.ISidebar"
     class=".repository.HTMLTree"
     template="navtree.pt"
-    permission="zope.View"
+    permission="zeit.cms.repository.ViewNavigationTree"
     />
 
   <include file="unknown.zcml" />
