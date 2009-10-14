@@ -2,14 +2,37 @@
   <input type="text" name="fulltext" id="fulltext" value="" />
   <input type="button" id="search_button" value=" OK " />
 
+  <div id="type_search_button" class="button">
+    Typen
+    <input type="hidden" name="type_search_expanded" />
+  </div>
+
+  <div class="search-with-info">
+    <div id="type_search_info" class="info"></div>
+    <div id="type_search" class="hidden fields">
+        <fieldset class="types">
+          <label>Typen:</label>
+            <div class="outer">
+            {.repeated section types}
+              <div class="inner">
+                 <input type="checkbox" name="types:list"
+                 value="{type}" id="search-type-{type}" />
+                 <label for="search-type-{type}">{title}</label>
+              </div>
+            {.end}
+            </div>
+        </fieldset>
+    </div>
+  </div>
+
   <div id="extended_search_button" class="button">
     Erweiterte Suche
     <input type="hidden" name="extended_search_expanded" />
   </div>
 
-  <div id="extended_search_form">
-    <div id="extended_search_info"></div>
-    <div id="extended_search" class="hidden">
+  <div class="search-with-info">
+    <div id="extended_search_info" class="info"></div>
+    <div id="extended_search" class="hidden fields">
       <fieldset class="daterange">
         <p class="likelabel">Datum:</p>
         <div class="date date1">
@@ -78,18 +101,6 @@
           <option value="relevance" selected="selected">Relevanz</option>
           <option value="date">Datum</option>
         </select>
-      </fieldset>
-      <fieldset class="types">
-        <label>Typen:</label>
-          <div class="outer">
-          {.repeated section types}
-            <div class="inner">
-               <input type="checkbox" name="types:list"
-               value="{type}" id="search-type-{type}" />
-               <label for="search-type-{type}">{title}</label>
-            </div>
-          {.end}
-          </div>
       </fieldset>
     </div>
   </div>

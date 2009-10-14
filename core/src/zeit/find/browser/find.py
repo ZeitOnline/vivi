@@ -591,6 +591,7 @@ def search_parameters(request):
         'serie',
         'sort_order',
         'topic',
+        'type_search_expanded',
         'until',
         'volume',
         'year',

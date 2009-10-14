@@ -61,10 +61,13 @@ zeit.find.Search = zeit.find.BaseView.extend({
         });
 
         MochiKit.Signal.connect(
+            'type_search_button', 'onclick', function() {
+                self.toggle_type_search(true);
+        });
+        MochiKit.Signal.connect(
             'extended_search_button', 'onclick', function() {
                 self.toggle_extended_search(true);
-            });
-
+        });
         MochiKit.Signal.connect(
             'result_filters_button', 'onclick', function() {
             self.toggle_result_filters(true);
@@ -82,6 +85,10 @@ zeit.find.Search = zeit.find.BaseView.extend({
                 return error;
         });
         d.addCallback(function(json) {
+            var field = $('zeit-find-search-form')['type_search_expanded'];
+            if (field.value) {
+                self.toggle_type_search(false);
+            }
             var field = $('zeit-find-search-form')['extended_search_expanded'];
             if (field.value) {
                 self.toggle_extended_search(false);
@@ -129,16 +136,39 @@ zeit.find.Search = zeit.find.BaseView.extend({
     update_search_result: function() {
         var self = this;
         log("updating search result");
-        self.update_extended_search_info();
+        self.update_extended_search_info(
+            $('type_search'), $('type_search_info'));
+        self.update_extended_search_info(
+            $('extended_search'), $('extended_search_info'));
         self.search_result.render();
         if ($('result_filters_data')) {
             self.result_filters.render();
         }
     },
 
+    toggle_type_search: function(update_field) {
+        var self = this;
+        self.update_extended_search_info(
+            $('type_search'), $('type_search_info'));
+        MochiKit.DOM.toggleElementClass(
+            'hidden', 'type_search', 'type_search_info');
+        MochiKit.DOM.toggleElementClass(
+            'unfolded', 'type_search_button');
+        if (update_field) {
+            var field = $('zeit-find-search-form')['type_search_expanded'];
+            if (field.value) {
+                field.value = '';
+            } else {
+                field.value = 'expanded';
+            }
+            self.search_result.render();
+        }
+    },
+
     toggle_extended_search: function(update_field) {
         var self = this;
-        self.update_extended_search_info();
+        self.update_extended_search_info(
+            $('extended_search'), $('extended_search_info'));
         MochiKit.DOM.toggleElementClass(
             'hidden', 'extended_search', 'extended_search_info');
         MochiKit.DOM.toggleElementClass(
@@ -154,11 +184,13 @@ zeit.find.Search = zeit.find.BaseView.extend({
         }
     },
 
-    update_extended_search_info: function() {
+    update_extended_search_info: function(form_node, info_node) {
         var self = this;
-        var node = $('extended_search_info');
-        node.innerHTML = '';
+        info_node.innerHTML = '';
         forEach($('zeit-find-search-form').elements, function(element) {
+            if (!MochiKit.DOM.isChildNode(element, form_node)) {
+                return
+            }
             var value = null;
             var title = null;
             if (element.nodeName == 'SELECT') {
@@ -184,7 +216,7 @@ zeit.find.Search = zeit.find.BaseView.extend({
             var default_value = element.getAttribute('default');
             if (title && value != default_value) {
                 var class = 'info-' + element.name;
-                node.appendChild(SPAN({'class': class}, title));
+                info_node.appendChild(SPAN({'class': class}, title));
             }
         });
     },

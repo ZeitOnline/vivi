@@ -64,11 +64,24 @@ class TestSearch(zeit.cms.selenium.Test):
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')
         s.verifyNotVisible('id=extended_search_info')
-        s.click('id=search-type-unknown')
+        s.type('name=author', 'Foo bar')
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search_info')
         s.verifyNotVisible('id=extended_search')
-        s.verifyText('css=#extended_search_info span', 'Unknown Resource')
+        s.verifyText('css=#extended_search_info span', 'Foo bar')
+
+    def test_type_search_display(self):
+        s = self.selenium
+        s.verifyVisible('id=type_search_info')
+        s.verifyNotVisible('id=type_search')
+        s.click('id=type_search_button')
+        s.waitForVisible('id=type_search')
+        s.verifyNotVisible('id=type_search_info')
+        s.click('id=search-type-unknown')
+        s.click('id=type_search_button')
+        s.waitForVisible('id=type_search_info')
+        s.verifyNotVisible('id=type_search')
+        s.verifyText('css=#type_search_info span', 'Unknown Resource')
 
     def test_last_query_should_be_saved(self):
         s = self.selenium
@@ -97,3 +110,11 @@ class TestSearch(zeit.cms.selenium.Test):
         s.pause(500)
         self.open('/find')
         s.waitForElementPresent('css=#result_filters_button.unfolded')
+
+    def test_type_search_expand_automatically(self):
+        s = self.selenium
+        s.click('id=type_search_button')
+        s.waitForElementPresent('css=#type_search_button.unfolded')
+        s.pause(500)
+        self.open('/find')
+        s.waitForElementPresent('css=#type_search_button.unfolded')

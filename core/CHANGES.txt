@@ -4,7 +4,7 @@ zeit.find changes
 0.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Die Typen-Suche ist jetzt in einer eigenen Box (#6351).
 
 
 0.17.0 (2009-10-12)

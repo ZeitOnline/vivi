@@ -145,95 +145,92 @@
   background: transparent url(opener_close.png) no-repeat 0px 5px;
 }
 
-#extended_search {
+.search-with-info > .fields {
   margin-bottom: 1em;
 }
 
-#extended_search div {
-}
-
-#extended_search > div >  label {
+.search-with-info > .fields > div >  label {
   float: left;
   margin: 0 1em 0 2em;
 }
 
 
-#extended_search > div > label.first-child {
+.search-with-info > .fields > div > label.first-child {
   margin: auto;
   width: 8em;
 }
 
-#extended_search > fieldset {
+.search-with-info > .fields > fieldset {
   margin: 0;
   padding: 0;
   background: none;
   margin-top: 0.5em;
 }
 
-#extended_search > fieldset > label {
+.search-with-info > .fields > fieldset > label {
   display: block;
   float:left;
   width: 110px;
 
 }
 
-#extended_search > fieldset > input {
+.search-with-info > .fields > fieldset > input {
   width: 178px;
 }
 
-#extended_search > fieldset > select {
+.search-with-info > .fields > fieldset > select {
   width: 185px;
 }
 
-#extended_search .likelabel {
+.search-with-info > .fields .likelabel {
   width: 100px;
   float:left;
 }
 
-#extended_search .date > label {
+.search-with-info > .fields .date > label {
   display:block;
 }
 
-#extended_search .date > input {
+.search-with-info > .fields .date > input {
   display:block;
   width: 80px;
 }
 
-#extended_search div.date {
+.search-with-info > .fields div.date {
   float:left;
   height:35px;
   position:relative;
   margin-left: 10px;
  }
 
-#extended_search > div > select,
-#extended_search > div > input {
+.search-with-info > .fields > div > select,
+.search-with-info > .fields > div > input {
   float: left;
 }
 
-#extended_search > fieldset.types label {
+.search-with-info > .fields > fieldset.types label {
   float: none;
 }
 
-#extended_search > fieldset.types div.inner {
+.search-with-info > .fields > fieldset.types div.inner {
   float:left;
   width: 170px;
 }
 
-#extended_search > fieldset.types div.outer {
+.search-with-info > .fields > fieldset.types div.outer {
   margin-top: 5px;
 }
 
-#extended_search .types > .type-outer > .type-inner {
+.search-with-info > .fields .types > .type-outer > .type-inner {
   overflow: hidden;
 }
 
-#extended_search_info {
+.search-with-info > .info {
   font-size: 0.8em;
   overflow: hidden;
 }
 
-#extended_search_info > span {
+.search-with-info > .info > span {
   display: block;
   float: left;
   font-style: italic;
@@ -242,36 +239,36 @@
   white-space: nowrap;
 }
 
-#extended_search_info > span:before {
+.search-with-info > .info > span:before {
   font-style: normal;
   padding-right: 0.5em;
 }
 
-#extended_search_info > .info-from:before {
+.search-with-info > .info > .info-from:before {
   content: "ab";
 }
 
-#extended_search_info > .info-until:before {
+.search-with-info > .info > .info-until:before {
   content: "bis";
 }
 
-#extended_search_info > .info-from +
+.search-with-info > .info > .info-from +
 .info-until {
   /* Smaller margin when we have both from and until. */
   margin-left: 0.5em;
 }
 
-#extended_search_info > .info-sort_order:before {
+.search-with-info > .info > .info-sort_order:before {
   content: "sortiert nach";
 }
 
-#extended_search_info > .info-types\:list +
+.search-with-info > .info > .info-types\:list +
 .info-types\:list:before {
   content: "/";
   padding-right: 0.25em;
 }
 
-#extended_search_info > .info-types\:list +
+.search-with-info > .info > .info-types\:list +
 .info-types\:list {
   margin-left: 0.25em;
 }
