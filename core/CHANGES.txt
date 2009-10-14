@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Site-Steuerung ist jetzt ein Dropdown (#6350).
 
+- Die alte Suche (zeit.search) wurde entfernt.
 
 1.37.1 (2009-10-12)
 -------------------

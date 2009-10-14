@@ -18,9 +18,6 @@
   <include package="zeit.xmleditor" />
   <include package="zeit.xmleditor.browser" />
   
-  <include package="zeit.search" />
-  <include package="zeit.search.browser" />
-
   <include package="zeit.content.link" />
   <include package="zeit.content.link.browser" />
 
