@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Die alte Suche (zeit.search) wurde entfernt.
 
+- Extra Permission für den Repository-Navigationsbaum (#6165).
+
 1.37.1 (2009-10-12)
 -------------------
 
