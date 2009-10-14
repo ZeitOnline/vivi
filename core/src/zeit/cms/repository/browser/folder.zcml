@@ -46,7 +46,7 @@
   <browser:page
     for="zeit.cms.repository.interfaces.ICollection"
     name="hide-from-tree.html"
-    permission="zope.View"
+    permission="zeit.cms.repository.ViewNavigationTree"
     class=".repository.HiddenCollections"
     attribute="hide_collection"
     allowed_attributes="hidden"
