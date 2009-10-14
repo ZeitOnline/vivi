@@ -138,6 +138,10 @@
     role="zeit.Producer"
     permission="zeit.ManageLocks"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    />
 
 
   <!-- CvD grants -->
