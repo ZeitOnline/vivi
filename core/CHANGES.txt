@@ -1,7 +1,7 @@
 zeit.securitypolicy changes
 ===========================
 
-0.5.2 (unreleased)
+0.6.0 (2009-10-19)
 ------------------
 
 - Nur Producer sehen Navigationsbaum in der Seitenspalte (#6353).
