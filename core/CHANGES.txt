@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.17.1 (unreleased)
+0.18.0 (2009-10-19)
 -------------------
 
 - Die Typen-Suche ist jetzt in einer eigenen Box (#6351).
