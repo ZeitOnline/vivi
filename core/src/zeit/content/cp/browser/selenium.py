@@ -69,7 +69,7 @@ class Test(zeit.cms.selenium.Test):
         s.open('/@@create-cp-test-content')
         self.open('/')
         self.create_clip()
-        s.clickAndWait('link=Dateiverwaltung')
+        self.open('/repository')
         for i in range(1, 4):
             self.clip_object('c%s' % i)
 
@@ -176,7 +176,7 @@ class TestTeaserBlock(Test):
         s = self.selenium
 
         self.create_clip()
-        s.clickAndWait('link=Dateiverwaltung')
+        self.open('/repository')
         self.clip_object('testcontent')
 
         self.create_teaserlist()
