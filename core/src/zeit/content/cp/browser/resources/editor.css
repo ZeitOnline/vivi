@@ -570,21 +570,21 @@
 /* layout chooser */
 
 .layout-chooser.teaser {
-  border-top: 0px solid #aaa;
   margin: 0.5em;
 }
 
-.layout-chooser.teaser > .layout-inner {
+.layout-chooser > .layout-inner {
   position:relative;
   border:1px solid #CCCCCC;
   float:left;
-  width:175px;
-  height:252px;
-  margin:0 10px 10px 0;
+  width: 32%;
+  height: 22em;
+  margin:0 1% 1em 0;
+  overflow: hidden;
 }
 
 .layout-chooser.teaserbar > .layout-inner {
-  height: 30%;
+  height: 10em;
 }
 	
 .layout-chooser > .layout-inner > a {
@@ -601,22 +601,24 @@
 
 
 .layout-chooser > .layout-inner > a > img {
-  border:0 solid #888888;
-  position: absolute;
-  margin: 42px 0px 0px 6px;
+  border: none;
   display:block;
-  width:160px;
+  left: 0em;
+  margin: auto;
+  position: absolute;
+  right: 0em;
+  top: 4em;
+  width: 90%;
 }
 
 .layout-chooser > .layout-inner > a > span {
-  background-color:#CCCCCC;
-  font-size:11px;
+  background-color: #CCCCCC;
   display:block;
-  padding:3px;
-  width:170px;
-  height: 30px;
-  margin-top: 0px;
+  height: 3em;
+  margin-top: 0;
+  padding: 3px;
   position:absolute;
+  width: 100%;
 }
 
 .lightbox-header .CloseButton {
