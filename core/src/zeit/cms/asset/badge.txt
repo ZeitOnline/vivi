@@ -38,9 +38,10 @@ frozenset([])
 >>> import zeit.cms.checkout.helper
 >>> dummy = with_statement
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
-...     badges = zeit.cms.asset.interfaces.IBadges(content)
+...     badges = zeit.cms.asset.interfaces.IBadges(co)
 ...     badges.badges = frozenset(['video', 'gallery'])
 
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 >>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True),
 <testtype>
@@ -48,10 +49,7 @@ frozenset([])
     <badges>
       <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">gallery</badge>
       <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">video</badge>
-    </badges>
-  </head>
-  <body/>
-</testtype>
+    </badges>...
 
 
 The badges are also in the xml metadata when syndicating (or relating):
@@ -72,8 +70,9 @@ If there are no badges, no <badges/> will be created:
 
 
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
-...     badges = zeit.cms.asset.interfaces.IBadges(content)
+...     badges = zeit.cms.asset.interfaces.IBadges(co)
 ...     badges.badges = frozenset([])
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
 >>> with zeit.cms.checkout.helper.checked_out(feed) as co:
 ...     co.insert(0, content)
 >>> feed = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed')

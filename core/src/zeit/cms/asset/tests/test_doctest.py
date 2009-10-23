@@ -7,5 +7,5 @@ import zeit.cms.testing
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'badge.txt'))
+        '../badge.txt'))
     return suite

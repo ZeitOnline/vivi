@@ -4,7 +4,7 @@ zeit.cms changes
 1.38.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Asset-Badges werden jetzt zuverlässig gespeichert (#6165).
 
 
 1.38.0 (2009-10-19)

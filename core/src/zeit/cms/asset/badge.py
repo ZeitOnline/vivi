@@ -8,9 +8,11 @@ import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
+import zope.proxy
 
 
-class Badges(zeit.cms.content.dav.DAVPropertiesAdapter):
+class Badges(zeit.cms.content.dav.DAVPropertiesAdapter,
+             zeit.cms.content.xmlsupport.Persistent):
 
     grokcore.component.implements(zeit.cms.asset.interfaces.IBadges)
     grokcore.component.context(zeit.cms.content.interfaces.IXMLContent)
@@ -21,6 +23,10 @@ class Badges(zeit.cms.content.dav.DAVPropertiesAdapter):
     @property
     def xml(self):
         return self.context.xml
+
+    def _Persistent__get_persistent(self):
+        context = getattr(self, 'context', None)
+        return zope.proxy.removeAllProxies(context)
 
 
 class MetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
