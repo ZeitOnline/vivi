@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.27.1 (unreleased)
+0.27.1 (2009-10-26)
 -------------------
 
 - Darstellung der Layout-Auswahl der Teaserleisten korrigiert.
