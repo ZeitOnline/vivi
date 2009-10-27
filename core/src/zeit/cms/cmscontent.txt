@@ -1,0 +1,63 @@
+CMSContent Lookup
+=================
+
+A unique id can be adapted to ICMSContent. The result depends on the unique
+id's protocol and host.
+
+There is no handler for a foo protocol, yet:
+
+>>> import zeit.cms.interfaces
+>>> zeit.cms.interfaces.ICMSContent('foo://bar/baz')
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt', 'foo://bar/baz', <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+
+The lookup is delegated to a protocol handler:
+
+>>> import zope.component
+>>> import zope.interface
+>>> class Content(object):
+...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+...     def __init__(self, uid):
+...         self.uniqueId = uid
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> def lookup_foo(unique_id):
+...     print "foo:// lookup:", unique_id
+...     return Content(unique_id)
+>>> gsm.registerAdapter(
+...         lookup_foo, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         name='foo://')
+>>> zeit.cms.interfaces.ICMSContent('foo://bar/baz')
+foo:// lookup: foo://bar/baz
+<Content object at 0x440e550>
+
+
+There is a handler for the http protocol which delegates to http://hostname.
+Try this out with http://gocept.com/:
+
+>>> zeit.cms.interfaces.ICMSContent('http://gocept.com/content')
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt', 'http://gocept.com/content', <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+>>> def lookup_gocept(unique_id):
+...     print "gocept lookup:", unique_id
+...     return Content(unique_id)
+>>> gsm.registerAdapter(
+...         lookup_gocept, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         name='http://gocept.com/')
+>>> zeit.cms.interfaces.ICMSContent('http://gocept.com/content')
+gocept lookup: http://gocept.com/content
+<Content object at 0x4510530>
+
+
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...         lookup_foo, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         name='foo://')
+True
+>>> gsm.unregisterAdapter(
+...         lookup_gocept, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         name='http://gocept.com/')
+True

@@ -3,13 +3,14 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import gocept.cache.property
+import grokcore.component
 import logging
 import persistent
 import transaction
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zeit.connector.interfaces
 import zeit.connector.dav.interfaces
+import zeit.connector.interfaces
 import zope.annotation.interfaces
 import zope.app.appsetup.product
 import zope.app.container.contained
@@ -310,8 +311,9 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
 
 
 
-@zope.component.adapter(basestring)
-@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+@grokcore.component.adapter(basestring,
+                            name=zeit.cms.interfaces.ID_NAMESPACE)
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_content(uniqueId):
     repository = zope.component.queryUtility(
         zeit.cms.repository.interfaces.IRepository)
@@ -319,3 +321,10 @@ def unique_id_to_content(uniqueId):
         return repository.getContent(uniqueId)
     except (ValueError, KeyError):
         return None
+
+
+@grokcore.component.adapter(basestring, name='<no-scheme>://<no-netloc>/')
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
+def no_scheme_unique_id_to_cms_content(unique_id):
+    # try repository
+    return unique_id_to_content(unique_id)
