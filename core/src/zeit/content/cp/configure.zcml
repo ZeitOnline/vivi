@@ -7,6 +7,12 @@
   <include package="zeit.content.cp" file="meta.zcml" />
   <include package="zeit.find" /> <!-- XXX why?! -->
 
+  <utility
+    name="zeit.content.cp"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
   <class class=".centerpage.CenterPage">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
