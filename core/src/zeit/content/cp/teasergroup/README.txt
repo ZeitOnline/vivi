@@ -101,3 +101,37 @@ Images "redirect" to the first teaser.
 >>> images.images
 (<zeit.content.image.image.RepositoryImage object at 0x431c410>,)
 
+
+Search
+======
+
+The fulltext result consists of the title and all teasers:
+
+>>> import zope.index.text.interfaces
+>>> searchable_text = zope.index.text.interfaces.ISearchableText(teasergroup)
+>>> searchable_text.getSearchableText()
+[u'A nice test group']
+
+Define an index:
+
+>>> class TestIndex(object):
+...     def __init__(self, context):
+...         self.context = context
+...     def getSearchableText(self):
+...         return [self.context.uniqueId]
+>>> import zope.component
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     TestIndex, (zope.interface.Interface,),
+...     zope.index.text.interfaces.ISearchableText)
+>>> searchable_text.getSearchableText()
+[u'A nice test group',
+ u'http://xml.zeit.de/testcontent',
+ u'http://xml.zeit.de/online/2007/01/Somalia',
+ u'http://xml.zeit.de/online/2007/01/eta-zapatero']
+
+
+>>> gsm.unregisterAdapter(
+...     TestIndex, (zope.interface.Interface,),
+...     zope.index.text.interfaces.ISearchableText)
+True

@@ -10,6 +10,7 @@ import zope.component
 import zope.container.btree
 import zope.container.contained
 import zope.container.interfaces
+import zope.index.text.interfaces
 import zope.interface
 import zope.keyreference.interfaces
 
@@ -62,6 +63,24 @@ class Related(grokcore.component.Adapter):
 def images(context):
     assert context.teasers
     return zeit.content.image.interfaces.IImages(context.teasers[0], None)
+
+
+class SearchableText(grokcore.component.Adapter):
+
+    grokcore.component.context(
+        zeit.content.cp.teasergroup.interfaces.ITeaserGroup)
+    grokcore.component.implements(
+        zope.index.text.interfaces.ISearchableText)
+
+    def getSearchableText(self):
+        result = [self.context.name]
+        for teaser in self.context.teasers:
+            searchable_text = zope.index.text.interfaces.ISearchableText(
+                teaser, None)
+            if searchable_text is None:
+                continue
+            result.extend(searchable_text.getSearchableText())
+        return result
 
 
 class Repository(zope.container.btree.BTreeContainer):
