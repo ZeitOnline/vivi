@@ -5,11 +5,13 @@ import grokcore.component
 import persistent
 import zeit.cms.related.interfaces
 import zeit.content.cp.teasergroup.interfaces
+import zeit.content.image.interfaces
 import zope.component
 import zope.container.btree
 import zope.container.contained
 import zope.container.interfaces
 import zope.interface
+import zope.keyreference.interfaces
 
 
 class TeaserGroup(persistent.Persistent,
@@ -20,8 +22,17 @@ class TeaserGroup(persistent.Persistent,
 
     automatically_remove = True
     name = None
-    teasers = None
     uniqueId = None
+    _teasers = ()
+
+    @property
+    def teasers(self):
+        return tuple(ref() for ref in self._teasers)
+
+    @teasers.setter
+    def teasers(self, value):
+        self._teasers = tuple(
+            zope.keyreference.interfaces.IKeyReference(v) for v in value)
 
     def create(self):
         repository = zope.component.getUtility(
@@ -42,6 +53,15 @@ class Related(grokcore.component.Adapter):
         if self.context.teasers:
             return self.context.teasers[1:]
         return ()
+
+
+
+@grokcore.component.adapter(
+    zeit.content.cp.teasergroup.interfaces.ITeaserGroup)
+@grokcore.component.implementer(zeit.content.image.interfaces.IImages)
+def images(context):
+    assert context.teasers
+    return zeit.content.image.interfaces.IImages(context.teasers[0], None)
 
 
 class Repository(zope.container.btree.BTreeContainer):

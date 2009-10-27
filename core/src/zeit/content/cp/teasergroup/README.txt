@@ -6,8 +6,8 @@ Teaser groups (feature #6385)
 >>> import zeit.cms.interfaces
 >>> from zeit.content.cp.teasergroup.teasergroup import TeaserGroup
 >>> teasergroup = TeaserGroup()
->>> teasergroup.teasers is None
-True
+>>> teasergroup.teasers
+()
 >>> teasergroup.teasers = (
 ...     zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'),
 ...     zeit.cms.interfaces.ICMSContent(
@@ -18,6 +18,13 @@ True
 >>> teasergroup.name = u'A nice test group'
 >>> teasergroup.automatically_remove
 True
+
+The teasergroup only stores keyreferences to the actual objects:
+
+>>> teasergroup._teasers
+(<zeit.cms.content.keyreference.CMSContentKeyReference object at 0x3e94730>,
+ ...
+
 
 
 Adding a teaser group to database also assigns a uniqueId:
@@ -70,3 +77,27 @@ A teser group with exactly one teaser also yields no relateds:
 ...     zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'),)
 >>> zeit.cms.related.interfaces.IRelatedContent(one_group).related
 ()
+
+
+Images
+======
+
+Images "redirect" to the first teaser.
+
+>>> import zeit.content.image.interfaces
+>>> images = zeit.content.image.interfaces.IImages(teasergroup)
+>>> images.images
+()
+
+>>> import zeit.cms.checkout.helper
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+>>> image = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> with zeit.cms.testing.interaction():
+...     with zeit.cms.checkout.helper.checked_out(content) as co:
+...         zeit.content.image.interfaces.IImages(co).images = (image,)
+
+>>> images = zeit.content.image.interfaces.IImages(teasergroup)
+>>> images.images
+(<zeit.content.image.image.RepositoryImage object at 0x431c410>,)
+
