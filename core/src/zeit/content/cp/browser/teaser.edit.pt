@@ -1,6 +1,7 @@
-<div class="floating">
+<div class="floating"
+     i18n:domain="zeit.cms">
 
-  <h1>Edit Teaser</h1>
+  <h1 i18n:translate="">Edit Teaser</h1>
 
   <form
     tal:condition="not: view/close"
