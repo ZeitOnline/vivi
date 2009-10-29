@@ -40,6 +40,11 @@
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent" 
     handler=".contentuuid.set_uuid"
     />
+  <subscriber
+    for="zeit.cms.interfaces.ICMSContent
+    zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+    handler=".contentuuid.set_uuid"
+    />
   <adapter factory=".contentuuid.SimpleUUID" />
   <adapter factory=".contentuuid.uuid_to_content" />
 
