@@ -3,6 +3,7 @@
 
 import grokcore.component
 import persistent
+import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.cp.teasergroup.interfaces
 import zeit.content.image.interfaces
@@ -41,6 +42,18 @@ class TeaserGroup(persistent.Persistent,
         repository.add(self)
 
 
+class SemanticChange(grokcore.component.Adapter):
+
+    grokcore.component.context(
+        zeit.content.cp.teasergroup.interfaces.ITeaserGroup)
+    grokcore.component.implements(
+        zeit.cms.content.interfaces.ISemanticChange)
+
+    @property
+    def last_semantic_change(self):
+        dc = zope.dublincore.interfaces.IDCTimes(self.context)
+        return dc.modified
+
 
 class Related(grokcore.component.Adapter):
 
@@ -51,10 +64,7 @@ class Related(grokcore.component.Adapter):
 
     @property
     def related(self):
-        if self.context.teasers:
-            return self.context.teasers[1:]
-        return ()
-
+        return self.context.teasers
 
 
 @grokcore.component.adapter(
