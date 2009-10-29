@@ -10,7 +10,7 @@ Technische Änderungen
 - `ICMSContent` adapter flexibilisiert um per Scheme und/oder Netloc
   verschiedene Repositorys ansprechen zu können (#6385).
 
-- UUIDs werden bereits beim erzeugen (ObjectCreatedEvent) vergeben.
+- UUIDs werden bereits beim erzeugen (ObjectCreatedEvent) vergeben (#6385).
 
 
 1.38.1 (2009-10-26)
