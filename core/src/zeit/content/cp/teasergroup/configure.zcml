@@ -10,6 +10,15 @@
       permission="zope.View" />
   </class>
 
+  <browser:icon
+    for=".interfaces.ITeaserGroup"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="teasergroup.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
