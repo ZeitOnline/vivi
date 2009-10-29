@@ -94,6 +94,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         # Only insert IRepositoryContent (i.e. http://xml.zeit.de/...). This is
         # important because *only* such content can be rendered on public
         # pages.
+        content = zeit.cms.interfaces.ICMSContent(content)
         if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
             content):
             raise TypeError(
