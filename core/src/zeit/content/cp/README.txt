@@ -260,7 +260,8 @@ Now we need some test objects we can edit later on:
 >>> import zeit.cms.repository.interfaces
 >>> teaser = zeit.content.cp.teaser.Teaser()
 >>> teaser.original_content = repository['testcontent']
->>> teaser = repository['testcontent-1'] = teaser
+>>> repository['testcontent-1'] = teaser
+>>> teaser = repository['testcontent-1']
 >>> teasers.insert(0, repository['testcontent'])
 >>> teasers.insert(1, teaser)
 
