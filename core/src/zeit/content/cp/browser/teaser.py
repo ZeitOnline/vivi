@@ -138,26 +138,26 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
         _('Apply only for this page'), condition=_is_not_teaser)
     def apply_local(self, action, data):
         teaser = zeit.content.cp.interfaces.ITeaser(self.context)
+        changed = zope.formlib.form.applyChanges(
+            teaser, self.form_fields, data)
+        if not changed:
+            return
 
         folder = zeit.cms.interfaces.ICMSContent(
             self.context.uniqueId).__parent__
         name = zope.container.interfaces.INameChooser(
             folder).chooseName(self.context.__name__, teaser)
 
-        changed = zope.formlib.form.applyChanges(
-            teaser, self.form_fields, data)
-        if changed:
-            # Delete the original_content from the working copy.
-            del self.context.get_proxied_object().__parent__[
-                self.context.__name__]
-            folder[name] = teaser
-            teaser = folder[name]
-            teaser_list = self.context.__parent__
-            teaser_list.insert(teaser_list.getPosition(self.context), teaser)
-            teaser_list.remove(self.context)
-            zope.event.notify(
-                zope.lifecycleevent.ObjectModifiedEvent(teaser_list))
-            self.close = True
+        # Delete the original_content from the working copy.
+        del self.context.get_proxied_object().__parent__[self.context.__name__]
+        folder[name] = teaser
+        teaser = folder[name]
+        teaser_list = self.context.__parent__
+        teaser_list.insert(teaser_list.getPosition(self.context), teaser)
+        teaser_list.remove(self.context)
+        zope.event.notify(
+            zope.lifecycleevent.ObjectModifiedEvent(teaser_list))
+        self.close = True
 
 
 class ListRepresentation(
