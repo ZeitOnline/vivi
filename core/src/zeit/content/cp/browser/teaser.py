@@ -154,6 +154,7 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
             teaser, self.form_fields, data, self.adapters)
         if changed:
             folder[name] = teaser
+            teaser = folder[name]
             teaser_list = self.context.__parent__
             teaser_list.insert(teaser_list.getPosition(self.context), teaser)
             teaser_list.remove(self.context)
