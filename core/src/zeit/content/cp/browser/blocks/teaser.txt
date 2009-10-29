@@ -302,7 +302,6 @@ True
     </li>
     <li class="action-content-droppable...
   </ol>
-</div>
 ...
 
 The cp contents also has changed of course:
