@@ -150,7 +150,12 @@ class Drop(zeit.content.cp.browser.view.Action):
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        self.context.insert(self.index, content)
+        try:
+            self.context.insert(self.index, content)
+        except TypeError:
+            raise TypeError(
+                _('Dropping of ${id} to a teaser block is not supported.',
+                  mapping=dict(id=self.uniqueId)))
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal(
