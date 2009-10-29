@@ -18,6 +18,13 @@ Teaser groups (feature #6385)
 >>> teasergroup.name = u'A nice test group'
 >>> teasergroup.automatically_remove
 True
+>>> teasergroup.automatically_remove = False
+
+Send an created event:
+
+>>> import zope.event
+>>> import zope.lifecycleevent
+>>> zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(teasergroup))
 
 The teasergroup only stores keyreferences to the actual objects:
 
@@ -50,6 +57,7 @@ Teasergroups have a last semantic change (which is important for searching):
 >>> import zeit.cms.content.interfaces
 >>> zeit.cms.content.interfaces.ISemanticChange(
 ...     teasergroup).last_semantic_change
+datetime.datetime(...)
 
 
 Relateds
@@ -131,3 +139,42 @@ Define an index:
 ...     TestIndex, (zope.interface.Interface,),
 ...     zope.index.text.interfaces.ISearchableText)
 True
+
+
+Auto delete
+===========
+
+Teasergroups are automatically deleted after some time if the
+``automatically_remove`` flag is set. This is implemented in the repository:
+
+>>> repository = zope.component.getUtility(
+...     zeit.content.cp.teasergroup.interfaces.IRepository)
+>>> repository.AUTOREMOVE_AFTER
+datetime.timedelta(...)
+
+>>> list(repository.keys())
+[u'A nice test group']
+
+
+Lower the time to a second and sweep:
+
+>>> import datetime
+>>> import time
+>>> repository.AUTOREMOVE_AFTER = datetime.timedelta(seconds=1)
+>>> time.sleep(1)
+>>> repository.sweep()
+>>> list(repository.keys())
+[u'A nice test group']
+
+The object was will there as it was not marked for auto remove. Mark it for
+removal and sweep again:
+
+>>> teasergroup.automatically_remove = True
+>>> repository.sweep()
+>>> list(repository.keys())
+[]
+
+There is a runner/main method to trigger sweep:
+
+>>> zeit.content.cp.teasergroup.teasergroup.sweep_repository
+<function sweep_repository at 0x4265c70>

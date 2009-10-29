@@ -1,8 +1,11 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import datetime
+import gocept.runner
 import grokcore.component
 import persistent
+import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.cp.teasergroup.interfaces
@@ -98,6 +101,8 @@ class Repository(zope.container.btree.BTreeContainer):
     zope.interface.implements(
             zeit.content.cp.teasergroup.interfaces.IRepository)
 
+    AUTOREMOVE_AFTER = datetime.timedelta(days=7)
+
     def add(self, teasergroup):
         assert zeit.content.cp.teasergroup.interfaces.ITeaserGroup.providedBy(
             teasergroup)
@@ -106,6 +111,25 @@ class Repository(zope.container.btree.BTreeContainer):
         self[name] = teasergroup
         teasergroup.uniqueId = (
             zeit.content.cp.teasergroup.interfaces.ID_NAMESPACE + name)
+
+    def sweep(self):
+        remove = []
+        now = datetime.datetime.now(pytz.UTC)
+        for name, group in self.items():
+            if not group.automatically_remove:
+                continue
+            dc = zope.dublincore.interfaces.IDCTimes(group)
+            if dc.created + self.AUTOREMOVE_AFTER < now:
+                remove.append(name)
+        for name in remove:
+            del self[name]
+
+
+@gocept.runner.once()
+def sweep_repository():
+    repository = zope.component.getUtility(
+        zeit.content.cp.teasergroup.interfaces.IRepository)
+    repository.sweep()
 
 
 @grokcore.component.adapter(

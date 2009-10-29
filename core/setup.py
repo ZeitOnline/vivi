@@ -43,7 +43,10 @@ setup(
         'zope.lifecycleevent',
         'zope.viewlet',
     ],
-    entry_points = dict(
-        console_scripts =
-        ['refresh-feeds = zeit.content.cp.feed:refresh_all',])
+    entry_points = """
+        [console_scripts]
+        refresh-feeds = zeit.content.cp.feed:refresh_all
+        sweep-teasergroup-repository = zeit.content.cp.teasergroup.teasergroup:sweep_repository
+    """,
+
 )
