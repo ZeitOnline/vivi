@@ -60,6 +60,7 @@
   <subscriber handler=".centerpage.update_feed_items" />
 
   <include package=".browser" />
+  <include package=".teasergroup" />
 
   <!-- Areas -->
   <adapter factory=".area.container_to_centerpage" />

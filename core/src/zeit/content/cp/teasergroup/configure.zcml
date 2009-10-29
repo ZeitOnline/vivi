@@ -1,0 +1,24 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <class class=".teasergroup.TeaserGroup">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" /> 
+  </class>
+
+
+  <browser:containerViews
+    for=".interfaces.IRepository"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="create-teaser-group"
+    class=".browser.CreateTeaserGroup"
+    permission="zeit.EditContent"
+    />
+
+</configure>

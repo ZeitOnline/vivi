@@ -1,0 +1,15 @@
+<div class="floating" i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">Save teasers as group</h1>
+
+  <form
+    tal:condition="not: view/close"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form"/>
+
+  <script language="javascript"
+          tal:condition="view/close">
+    self.close();
+  </script>
+
+</div>

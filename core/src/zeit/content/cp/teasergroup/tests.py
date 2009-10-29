@@ -5,4 +5,7 @@ import zeit.content.cp.testing
 
 
 def test_suite():
-    return zeit.content.cp.testing.FunctionalDocFileSuite('README.txt')
+    return zeit.content.cp.testing.FunctionalDocFileSuite(
+        'README.txt',
+        'browser.txt',
+    )
