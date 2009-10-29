@@ -147,11 +147,8 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
         # Delete the original_content from the working copy.
         del self.context.get_proxied_object().__parent__[self.context.__name__]
 
-        # Don't cache the adapter lookups because we want to apply changes to
-        # another object.
-        self.adapters.clear()
         changed = zope.formlib.form.applyChanges(
-            teaser, self.form_fields, data, self.adapters)
+            teaser, self.form_fields, data)
         if changed:
             folder[name] = teaser
             teaser = folder[name]
