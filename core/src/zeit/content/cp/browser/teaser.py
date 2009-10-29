@@ -144,12 +144,12 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
         name = zope.container.interfaces.INameChooser(
             folder).chooseName(self.context.__name__, teaser)
 
-        # Delete the original_content from the working copy.
-        del self.context.get_proxied_object().__parent__[self.context.__name__]
-
         changed = zope.formlib.form.applyChanges(
             teaser, self.form_fields, data)
         if changed:
+            # Delete the original_content from the working copy.
+            del self.context.get_proxied_object().__parent__[
+                self.context.__name__]
             folder[name] = teaser
             teaser = folder[name]
             teaser_list = self.context.__parent__
