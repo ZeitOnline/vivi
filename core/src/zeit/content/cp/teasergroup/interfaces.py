@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.contentsource
 import zeit.cms.interfaces
 import zope.interface
 
@@ -15,7 +16,9 @@ class ITeaserGroup(zeit.cms.interfaces.ICMSContent):
 
     teasers = zope.schema.Tuple(
         title=_('Linked teasers'),
-        min_length=1)
+        min_length=1,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource))
 
     automatically_remove = zope.schema.Bool(
         title=_('Automatically remove'),

@@ -3,15 +3,12 @@
   xmlns:browser="http://namespaces.zope.org/browser">
 
   <class class=".teasergroup.TeaserGroup">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" /> 
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" /> 
+    <require
+      interface=".interfaces.ITeaserGroup"
+      permission="zope.View" />
   </class>
-
-
-  <browser:containerViews
-    for=".interfaces.IRepository"
-    contents="zope.ManageContent"
-    index="zope.View"
-    />
 
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
@@ -19,6 +16,34 @@
     name="create-teaser-group"
     class=".browser.CreateTeaserGroup"
     permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for=".interfaces.ITeaserGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".browser.DisplayTeaserGroup"
+    permission="zope.View"
+    />
+
+
+  <!-- repository -->
+
+  <class class=".teasergroup.Repository">
+    <require
+      interface="zope.container.interfaces.IReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.container.interfaces.IWriteContainer"
+      permission="zope.ManageContent"
+      />
+  </class>
+
+  <browser:containerViews
+    for=".interfaces.IRepository"
+    contents="zope.ManageContent"
+    index="zope.View"
     />
 
 </configure>
