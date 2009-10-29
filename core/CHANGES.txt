@@ -12,6 +12,9 @@ Technische Änderungen
 
 - UUIDs werden bereits beim erzeugen (ObjectCreatedEvent) vergeben (#6385).
 
+- UUIDs werden bereits beim kopieren neu vergeben (nur auf dem direkt kopierten
+  Objekt, #6385)
+
 
 1.38.1 (2009-10-26)
 -------------------

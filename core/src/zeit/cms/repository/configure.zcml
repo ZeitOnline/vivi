@@ -74,5 +74,10 @@
     trusted="yes"
     />
 
+  <adapter
+    factory=".repository.CMSObjectCopier"
+    trusted="yes"
+    />
+
 </configure>
 

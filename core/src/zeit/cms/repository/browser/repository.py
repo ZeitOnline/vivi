@@ -164,11 +164,6 @@ class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
     def __call__(self, unique_id, view='@@view.html'):
         # TODO: create a meaningful error message when the object doesn't
         # exist.
-        obj = self.repository.getContent(unique_id)
+        obj = zeit.cms.interfaces.ICMSContent(unique_id)
         self.redirect(self.url(obj, view))
         return u''
-
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)

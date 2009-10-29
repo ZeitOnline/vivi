@@ -45,10 +45,14 @@ After the ckeckin, the unique id is added:
 >>> uuid = zeit.cms.content.interfaces.IUUID(checked_in).id
 >>> uuid
 '{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+>>> zeit.cms.content.interfaces.IUUID(content).id == uuid
+True
 
 Let's verify, that when we check it out and then in again, the unique id has
 not changed:
 
+>>> checkout_manager = ICheckoutManager(checked_in)
 >>> checked_out = checkout_manager.checkout()
 >>> checkin_manager = ICheckinManager(checked_out)
 >>> checked_in = checkin_manager.checkin()
@@ -128,6 +132,17 @@ Objects get an UUID when an IObjectCreatedEvent is sent:
 >>> zeit.cms.content.interfaces.IUUID(obj).id
 '{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
 
+
+When an object is copied, it gets a new UUID:
+
+>>> import zope.copypastemove.interfaces
+>>> copier = zope.copypastemove.interfaces.IObjectCopier(
+...     repository['testcontent'])
+>>> name = copier.copyTo(repository, 'copied-content')
+>>> copied = repository[name]
+>>> zeit.cms.content.interfaces.IUUID(copied).id == (
+...     zeit.cms.content.interfaces.IUUID(repository['testcontent']).id)
+False
 
 Cleanup
 =======

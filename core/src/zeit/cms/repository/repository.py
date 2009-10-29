@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import gocept.cache.property
+import zope.lifecycleevent
 import grokcore.component
 import logging
 import persistent
@@ -13,7 +14,8 @@ import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zope.annotation.interfaces
 import zope.app.appsetup.product
-import zope.app.container.contained
+import zope.container.contained
+import zope.container.interfaces
 import zope.cachedescriptors.method
 import zope.component
 import zope.component.interfaces
@@ -25,7 +27,7 @@ import zope.securitypolicy.interfaces
 log = logging.getLogger('zeit.cms.repository')
 
 
-class Container(zope.app.container.contained.Contained):
+class Container(zope.container.contained.Contained):
     """The container represents webdav collections."""
 
     zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
@@ -51,7 +53,7 @@ class Container(zope.app.container.contained.Contained):
         content = self.repository.getUncontainedContent(unique_id)
         zope.interface.alsoProvides(
             content, zeit.cms.repository.interfaces.IRepositoryContent)
-        return zope.app.container.contained.contained(
+        return zope.container.contained.contained(
             content, self, content.__name__)
 
     def get(self, key, default=None):
@@ -99,7 +101,7 @@ class Container(zope.app.container.contained.Contained):
 
         self._local_unique_map_data.clear()
         if event:
-            object, event = zope.app.container.contained.containedEvent(
+            object, event = zope.container.contained.containedEvent(
                 object, self, name)
             zope.event.notify(event)
 
@@ -240,7 +242,7 @@ def repositoryFactory():
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepository,
-                        zope.app.container.interfaces.IObjectAddedEvent)
+                        zope.lifecycleevent.IObjectAddedEvent)
 def initializeRepository(repository, event):
     repository._initalizied = True
 
@@ -309,6 +311,31 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
+
+
+class CMSObjectCopier(zope.copypastemove.ObjectCopier):
+
+    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
+
+    def copyTo(self, target, new_name=None):
+        obj = self.context
+        container = obj.__parent__
+
+        orig_name = obj.__name__
+        if new_name is None:
+            new_name = orig_name
+
+        chooser = zope.container.interfaces.INameChooser(target)
+        new_name = chooser.chooseName(new_name, obj)
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        new = repository.getCopyOf(obj.uniqueId)
+        del new.__parent__
+        del new.__name__
+        target[new_name] = new  # This actually copies.
+        new = target[new_name]
+        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(new, obj))
+        return new_name
 
 
 @grokcore.component.adapter(basestring,
