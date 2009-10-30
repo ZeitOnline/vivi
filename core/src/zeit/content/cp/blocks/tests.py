@@ -10,5 +10,6 @@ def test_suite():
         'cpextra.txt',
         'teaser.txt',
         'teaser-two-column-layout.txt',
+        'teaser-teasergroup-support.txt',
         'xml.txt',
     )

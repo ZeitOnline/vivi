@@ -17,6 +17,7 @@ import zeit.content.cp.interfaces
 import zeit.workflow.interfaces
 import zope.component
 import zope.container.interfaces
+import zope.copypastemove.interfaces
 import zope.interface
 import zope.schema
 
@@ -95,6 +96,22 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         # important because *only* such content can be rendered on public
         # pages.
         content = zeit.cms.interfaces.ICMSContent(content)
+        if zeit.content.cp.teasergroup.interfaces.ITeaserGroup.providedBy(
+            content):
+            self._insert_teaser_group(index, content)
+        else:
+            self._insert_content(index, content)
+
+    def _insert_teaser_group(self, index, group):
+        for i, content in enumerate(group.teasers):
+            if zeit.content.cp.interfaces.ITeaser.providedBy(content):
+                # Teaser objects referenced in teaser groups are copied.
+                copier = zope.copypastemove.interfaces.IObjectCopier(content)
+                copied_name = copier.copyTo(content.__parent__)
+                content = content.__parent__[copied_name]
+            self._insert_content(index+i, content)
+
+    def _insert_content(self, index, content):
         if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
             content):
             raise TypeError(

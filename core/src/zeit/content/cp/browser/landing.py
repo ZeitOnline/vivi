@@ -70,12 +70,7 @@ class TeaserBlockLandingZone(LandingZone):
             raise ValueError(
                 _('The object "${name}" does not exist.', mapping=dict(
                     name=self.uniqueId)))
-        try:
-            self.block.insert(0, content)
-        except TypeError:
-            # Block did not like this object. This happens for instance when a
-            # teaser group was dropped.
-            pass
+        self.block.insert(0, content)
         related = zeit.cms.related.interfaces.IRelatedContent(content, None)
         if related is not None:
             for i, related in enumerate(related.related):
