@@ -190,11 +190,8 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 class AddableCMSContentTypeSource(CMSContentTypeSource):
 
     def filterValue(self, value):
-        try:
-            return (value.getTaggedValue('zeit.cms.addform') !=
-                    zeit.cms.type.SKIP_ADD)
-        except KeyError:
-            return False
+        return (value.queryTaggedValue('zeit.cms.addform') !=
+                zeit.cms.type.SKIP_ADD)
 
 
 _collect_lock = threading.Lock()
