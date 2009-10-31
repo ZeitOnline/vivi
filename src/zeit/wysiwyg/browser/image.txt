@@ -1,0 +1,42 @@
+Image browser
+=============
+
+In the image browser there is a shortcut to select the image the currently
+edited object has assigned.
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+Initially the testcontent doesn't have an image assigned:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/testcontent/@@images.json')
+>>> import cjson
+>>> import pprint
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'images': []}
+
+After assigning an image group it contained images are returned:
+
+>>> import zeit.cms.checkout.helper
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> import zeit.content.image.interfaces
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     content = zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/testcontent')
+...     image_group = zeit.content.image.tests.create_image_group()
+...     image = zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/2006/DSC00109_2.JPG')
+...     with zeit.cms.testing.interaction():
+...         with zeit.cms.checkout.helper.checked_out(content) as co:
+...             zeit.content.image.interfaces.IImages(co).images = (
+...                 image, image_group)
+>>> browser.handleErrors = False
+>>> browser.reload()
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'images': ['http://xml.zeit.de/2006/DSC00109_2.JPG',
+            'http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
+            'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
+            'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}

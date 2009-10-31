@@ -4,7 +4,8 @@ zeit.wysiwyg changes
 1.32.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Es gibt jetzt einen einfachen Weg das Artikel-Bild aus der einem Artikel
+  zugewiesenen Bildergruppe einzubinden (#6108).
 
 
 1.32.2 (2009-10-06)

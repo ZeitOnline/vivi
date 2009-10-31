@@ -113,6 +113,11 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
             $('layout').value = self.container.getAttribute('title');
             MochiKit.Signal.signal('href', 'onchange');
         }
+
+        MochiKit.Signal.connect(
+            $$('input[name="selectArticleImage"]')[0], 'onclick',
+            self, self.load_article_image);
+
     },
 
     id_to_url: function(unique_id) {
@@ -148,4 +153,34 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
         FCK.InsertElement(img);
         return img;
     },
+
+    load_article_image: function() {
+        var self = this;
+        var base_url = oEditor.parent.location.href.split(
+            '/').slice(0, -1).join('/');
+        var d = MochiKit.Async.loadJSONDoc(base_url + '/@@images.json');
+        d.addCallbacks(
+            function(result) {
+                // find the right image: 540x…
+                var unique_id = null;
+                forEach(result['images'], function(image) {
+                    var name = image.split('/').slice(-1)[0];
+                    if (name.search('540x') >= 0) {
+                        unique_id = image;
+                        throw MochiKit.Iter.StopIteration;
+                    }
+                });
+                if (!isNull(unique_id)) {
+                    $('href').value = unique_id;
+                    MochiKit.Signal.signal('href', 'onchange');
+                }
+            },
+            function(error) {
+                log("Could not load images", error);
+                alert("Could not load images.");
+            }
+        );
+        
+    },
+
 });
