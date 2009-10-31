@@ -23,15 +23,17 @@ class TypeGrokker(martian.ClassGrokker):
         if context.interface is None:
             return False
 
-        # Resource -> Content
-        zope.component.zcml.adapter(
-            config, (context.content,), zeit.cms.interfaces.ICMSContent,
-            (zeit.connector.interfaces.IResource,), name=context.type)
+        if context.type is not None:
+            # Resource -> Content
+            zope.component.zcml.adapter(
+                config, (context.content,), zeit.cms.interfaces.ICMSContent,
+                (zeit.connector.interfaces.IResource,), name=context.type)
 
-        # Content -> Resource
-        zope.component.zcml.adapter(
-            config, (context.resource,), zeit.connector.interfaces.IResource,
-            (context.interface,))
+            # Content -> Resource
+            zope.component.zcml.adapter(
+                config,
+                (context.resource,), zeit.connector.interfaces.IResource,
+                (context.interface,))
 
         # Annotate interface
         if context.register_as_type:
@@ -47,7 +49,8 @@ class TypeGrokker(martian.ClassGrokker):
                 args=(context.interface, 'zeit.cms.title', context.title))
             config.action(
                 discriminator=(
-                    'annotate_interface', context.interface, 'zeit.cms.addform'),
+                    'annotate_interface', context.interface,
+                    'zeit.cms.addform'),
                 callable=annotate_interface,
                 args=(context.interface, 'zeit.cms.addform', context.addform))
             zope.component.zcml.interface(

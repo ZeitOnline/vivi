@@ -10,6 +10,7 @@ import zeit.connector.resource
 
 
 log = logging.getLogger(__name__)
+# Marker object to indicate no add form.
 SKIP_ADD = object()
 
 
@@ -19,8 +20,8 @@ class TypeDeclaration(object):
     interface_type = zeit.cms.interfaces.ICMSContentType
     type = None
     title = None
-    register_as_type = True
     addform = None
+    register_as_type = True
 
     def __init__(self):
         if self.addform is None:
