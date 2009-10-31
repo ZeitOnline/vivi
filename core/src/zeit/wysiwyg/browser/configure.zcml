@@ -40,4 +40,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="images.json"
+    class=".image.Images"
+    permission="zope.View"
+    />
+
 </configure>

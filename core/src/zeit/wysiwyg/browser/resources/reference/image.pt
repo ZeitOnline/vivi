@@ -17,8 +17,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <div id="select-item">
       <label for="href" i18n:translate="">Image</label>
       <input id="href" type="text" class="object-reference"
-        style="width: 60em" />
+        style="width: 50em" />
       <input name="browseObjects" type="button" value="…" />
+      <input name="selectArticleImage" type="button"
+             value="from Article"
+             i18n:attributes="value" />
     </div>
     <div class="widget">
       <label for="layout" i18n:translate="">Layout</label>
