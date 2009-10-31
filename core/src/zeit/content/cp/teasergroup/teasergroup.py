@@ -1,7 +1,9 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import datetime
+import zeit.cms.type
 import gocept.runner
 import grokcore.component
 import persistent
@@ -43,6 +45,12 @@ class TeaserGroup(persistent.Persistent,
         repository = zope.component.getUtility(
             zeit.content.cp.teasergroup.interfaces.IRepository)
         repository.add(self)
+
+
+class TeaserGroupType(zeit.cms.type.TypeDeclaration):
+
+    interface = zeit.content.cp.teasergroup.interfaces.ITeaserGroup
+    title = _('Teasergroup')
 
 
 class SemanticChange(grokcore.component.Adapter):
