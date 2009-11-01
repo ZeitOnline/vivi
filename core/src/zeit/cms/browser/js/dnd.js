@@ -46,18 +46,21 @@ MochiKit.Signal.connect(
 });
 
 
-zeit.cms.createDraggableContentObject = function(element) {
+zeit.cms.createDraggableContentObject = function(element, options) {
+    var default_options = {
+        endeffect: null,
+        handle: element,
+        starteffect: null,
+        zindex: null,
+    };
+    MochiKit.Base.update(default_options, options);
     var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
              'span', 'uniqueId', element);
     unique_id_element.pane_element = element;
     unique_id_element.is_content_object = true;
     //element.uniqueId = unique_id_element.textContent;
-    return new MochiKit.DragAndDrop.Draggable(unique_id_element, {
-        endeffect: null,
-        handle: element,
-        starteffect: null,
-        zindex: null,
-    });
+    return new MochiKit.DragAndDrop.Draggable(
+        unique_id_element, default_options);
 }
 
 
