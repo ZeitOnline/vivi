@@ -41,7 +41,8 @@ class TypeGrokker(martian.ClassGrokker):
                 discriminator=(
                     'annotate_interface', context.interface, 'zeit.cms.type'),
                 callable=annotate_interface,
-                args=(context.interface, 'zeit.cms.type', context.type))
+                args=(context.interface, 'zeit.cms.type',
+                      context.type_identifier))
             config.action(
                 discriminator=(
                     'annotate_interface', context.interface, 'zeit.cms.title'),
@@ -55,6 +56,15 @@ class TypeGrokker(martian.ClassGrokker):
                 args=(context.interface, 'zeit.cms.addform', context.addform))
             zope.component.zcml.interface(
                 config, context.interface, context.interface_type)
+
+        def type_declaration_factory(an_instance):
+            return context
+
+        zope.component.zcml.adapter(
+            config, (type_declaration_factory,),
+            provides=zeit.cms.interfaces.ITypeDeclaration,
+            for_=(context.interface,))
+
 
         return True
 

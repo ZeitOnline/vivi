@@ -50,6 +50,13 @@ class TypeDeclaration(object):
             contentType=self.resource_content_type(content),
             properties=self.resource_properties(content))
 
+    @property
+    def type_identifier(self):
+        if self.type is not None:
+            return self.type
+        assert self.interface is not None
+        return u'%s.%s' % (self.interface.__module__, self.interface.__name__)
+
 
 class XMLContentTypeDeclaration(TypeDeclaration):
 

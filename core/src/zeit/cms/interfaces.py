@@ -72,3 +72,11 @@ class IAsset(ICMSContent):
 
 class IEditPermission(zope.security.interfaces.IPermission):
     """A permission which is always forbidden in the repository."""
+
+
+class ITypeDeclaration(zope.interface.Interface):
+
+    type_identifier = zope.schema.TextLine(
+        title=u'Unique identifier for this type')
+
+    # XXX add other attributes

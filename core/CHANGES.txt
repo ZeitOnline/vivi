@@ -15,6 +15,8 @@ Technische Änderungen
 - UUIDs werden bereits beim kopieren neu vergeben (nur auf dem direkt kopierten
   Objekt, #6385)
 
+- Adaptieren eines Objekts auf ITypeDeclaration (#6385).
+
 
 1.38.1 (2009-10-26)
 -------------------
