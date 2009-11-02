@@ -17,7 +17,6 @@
   <include package="zope.app.securitypolicy.tests" file="functional.zcml" />
 
   <include package="zeit.cms.workflow" file="mock.zcml" />
-  <include package="zeit.cms.testcontenttype" />
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
