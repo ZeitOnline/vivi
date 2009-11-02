@@ -550,6 +550,10 @@
   margin-bottom: 0.6em;
 }
 
+.block.type-teaser .teaser:first-child {
+  cursor: move;
+}
+  
 .leader-two-columns > img,
 .leader > img,
 .ressort > img {

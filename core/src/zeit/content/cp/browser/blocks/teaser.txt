@@ -26,6 +26,7 @@ teasers in the lead area[#fill-dav-with-content]_:
     <div class="supertitle"></div>
     <div class="teaserTitle"></div>
     <div class="teaserText"></div>
+    <span class="uniqueId">http://xml.zeit.de/testcontent</span>
   </div>
   ...
 
@@ -55,11 +56,13 @@ When a teaser is dragged on the teaser block, it is added as the first teaser:
     <div class="supertitle"></div>
     <div class="teaserTitle">c1 teaser</div>
     <div class="teaserText"></div>
+    <span class="uniqueId">http://xml.zeit.de/c1</span>
   </div>
   <div class="teaser">...
     <div class="supertitle"></div>
     <div class="teaserTitle"></div>
     <div class="teaserText"></div>
+    <span class="uniqueId">http://xml.zeit.de/testcontent</span>
   </div>
   ...
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
@@ -318,6 +321,7 @@ The cp contents also has changed of course:
     <div class="supertitle"></div>
     <div class="teaserTitle">Test content teaser title</div>
     <div class="teaserText">Test content teaser text</div>
+    ...
   </div>
 </div>
 ...

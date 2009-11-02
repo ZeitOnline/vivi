@@ -16,18 +16,6 @@ import zope.formlib.form
 import zope.lifecycleevent
 
 
-class Delete(object):
-    """Delete item from TeaserBlock."""
-
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
-
-    def __call__(self):
-        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        self.context.remove(content)
-        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-            self.context))
-
-
 class CheckoutContent(object):
 
     def __call__(self, uniqueId):

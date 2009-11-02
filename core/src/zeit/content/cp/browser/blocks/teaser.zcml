@@ -127,4 +127,12 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaser.Delete"
+    permission="zeit.EditContent"
+    />
+
 </configure>

@@ -6,6 +6,7 @@ import lovely.remotetask.interfaces
 import lxml.cssselect
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
+import zeit.cms.clipboard.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
@@ -66,12 +67,10 @@ class Test(zeit.cms.selenium.Test):
 
     def create_content_and_fill_clipboard(self):
         s = self.selenium
-        s.open('/@@create-cp-test-content')
+        self.open('/@@create-cp-test-content')
         self.open('/')
-        self.create_clip()
-        self.open('/repository')
-        for i in range(1, 4):
-            self.clip_object('c%s' % i)
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def create_filled_teaserlist(self):
         s = self.selenium
@@ -89,6 +88,7 @@ class Test(zeit.cms.selenium.Test):
             '//li[@uniqueid="Clip/c1"]',
             'css=div.type-teaser')
         s.waitForTextPresent('c1 teaser')
+
 
 class TestDottedName(Test):
 
@@ -636,18 +636,57 @@ class TestOneClickPublish(Test):
         s.verifyText('css=li.error', 'Error during publish/retract: OSError*')
 
 
+class TestTeaserDragging(Test):
+
+
+    def test_source_removed_when_dropped_to_cp(self):
+        self.create_filled_teaserlist()
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=.teaser-list > .teaser',
+            'css=.landing-zone')
+        s.waitForElementPresent(
+            'css=#lead .block.type-teaser')
+        s.verifyText('css=#lead .block.type-teaser .teaser-list',
+                     '*c1 teaser*')
+        s.verifyNotText('css=#lead .block.type-teaser .teaser-list',
+                     '*c2 teaser*')
+        # Verify the removal in the source:
+        s.waitForTextNotPresent(
+            'css=#informatives .block.type-teaser .teaser-list', '*c1 teaser*')
+
+    def test_source_not_removed_when_not_dropped_to_cp(self):
+        s = self.selenium
+        self.create_filled_teaserlist()
+        s.dragAndDropToObject(
+            'css=.teaser-list > .teaser',
+            '//li[@uniqueid="Clip"]')
+        s.waitForText(
+            '//li[@uniqueid="Clip"]', '*c1-2*')
+        # Verify text still in the drag source:
+        s.verifyText(
+            'css=.teaser-list > .teaser', '*c1 teaser*')
+
 class CreateTestContent(object):
 
     def __call__(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
+            self.request.principal)
+        clipboard.addClip('Clip')
+        clip = clipboard['Clip']
         for i in range(1, 4):
             content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
             content.teaserTitle = content.shortTeaserTitle = u'c%s teaser' % i
-            repository['c%s' % i] = content
+            name = 'c%s' % i
+            repository[name] = content
+            clipboard.addContent(clip, repository[name], name, insert=True)
         quiz = zeit.content.quiz.quiz.Quiz()
         quiz.teaserTitle = quiz.shortTeaserTitle = u'MyQuiz'
         repository['my_quiz'] = quiz
+
+
         return 'Done.'
 
 

@@ -103,7 +103,9 @@ class Display(zeit.cms.browser.view.Base):
             for name in ('supertitle', 'teaserTitle', 'teaserText'):
                 texts.append(dict(css_class=name,
                                   content=getattr(metadata, name)))
-            teasers.append(dict(texts=texts))
+            teasers.append(dict(
+                texts=texts,
+                uniqueId=content.uniqueId))
             if i == 0:
                 self.image = self.get_image(content)
 
@@ -154,8 +156,7 @@ class Drop(zeit.content.cp.browser.view.Action):
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal(
-            None, 'reload', self.context.__name__, self.url(self.context,
-                                                            '@@contents'))
+            None, 'reload', self.context.__name__, self.url('@@contents'))
 
 
 class AutoPilotDrop(Drop):
@@ -277,3 +278,16 @@ class AutoPilotUpdateOrder(UpdateOrder):
         self.context.autopilot = False
         super(AutoPilotUpdateOrder, self).update()
 
+
+class Delete(zeit.content.cp.browser.view.Action):
+    """Delete item from TeaserBlock."""
+
+    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+
+    def update(self):
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
+        self.context.remove(content)
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+            self.context))
+        self.signal(
+            None, 'reload', self.context.__name__, self.url('@@contents'))

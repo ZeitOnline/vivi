@@ -7,7 +7,7 @@
     for="zope.location.interfaces.ISite"
     name="create-cp-test-content"
     class=".selenium.CreateTestContent"
-    permission="zope.Public"
+    permission="zope.View"
     />
 
   <browser:page
@@ -75,6 +75,12 @@
   <adapter
     factory=".selenium.TestOneClickPublish"
     name="zeit.content.cp.TestOneClickPublish"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".selenium.TestTeaserDragging"
+    name="zeit.content.cp.TestTeaserDragging"
     permission="zope.Public"
     />
 

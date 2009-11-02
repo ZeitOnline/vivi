@@ -16,6 +16,7 @@
            tal:attributes="class item/css_class"
            tal:content="item/content">
       </div>
+      <span class="uniqueId" tal:content="teaser/uniqueId" />
 
     </div>
   </div>

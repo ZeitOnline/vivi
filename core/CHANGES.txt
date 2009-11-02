@@ -6,6 +6,10 @@ zeit.content.cp changes
 
 - Teasergruppen zum Zusammenfassen von Teasern (#6385).
 
+- Der erste Teaser eines Teaserblocks lässt sich ziehen. Wird er innerhalb der
+  CP fallen gelassen, wird der gezogene Teaser aus der „Quelle“ entfernt.
+  (#6384).
+
 
 0.27.1 (2009-10-26)
 -------------------

@@ -96,3 +96,54 @@ zeit.content.cp.teaser.TeaserEditBox = zeit.content.cp.LightBoxForm.extend({
     },
 
 });
+
+
+zeit.content.cp.teaser.Drag = zeit.content.cp.ContentActionBase.extend({
+
+    __name__: 'zeit.content.cp.teaser.Drag',
+    context: zeit.content.cp.in_context.Editor,
+
+    connect: function() {
+        var self = this;
+        forEach($$('div.block.type-teaser'), function(teaser) {
+            var draggable_element =
+                MochiKit.DOM.getFirstElementByTagAndClassName( 
+                    'div', 'teaser', teaser);
+            draggable_element.removeFromBlock = teaser.id;
+            self.dnd_objects.push(
+                zeit.cms.createDraggableContentObject(draggable_element, {
+                    scroll: 'cp-content-inner',
+                }));
+        });
+        
+    },
+
+});
+
+(function() {
+    var remove_from_cp = function(draggable_element, droppable, data_element) {
+        // Check if object was dragged from the CP
+        var dragged = draggable_element.dragged_element;
+        if (!MochiKit.DOM.isChildNode(dragged, 'cp-content')) {
+            return
+        }
+        var block = MochiKit.DOM.getFirstParentByTagAndClassName(
+            dragged, 'div', 'block');
+        if (isNull(block)) {
+            return
+        }
+        var base_url = block.getAttribute('cms:url');
+        var d = zeit.content.cp.makeJSONRequest(
+            base_url + '/@@delete', {uniqueId: draggable_element.uniqueId});
+        return d;
+    };
+
+    var ident = MochiKit.Signal.connect(
+        window, 'cp-editor-initialized', function() {
+        MochiKit.Signal.disconnect(ident);
+        zeit.content.cp.teaser.drag = new zeit.content.cp.teaser.Drag();
+        MochiKit.Signal.connect(
+            zeit.content.cp.drop.content_drop_handler, 'drop-finished',
+            remove_from_cp);
+    });
+})();

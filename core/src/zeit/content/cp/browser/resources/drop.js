@@ -22,6 +22,7 @@ zeit.content.cp.drop.registerHandler = function(options) {
         zeit.content.cp.drop.handler_by_accept[accept_class] = handler;
     });
     zeit.content.cp.drop.handler_by_activation[handler.activated_by] = handler;
+    return handler;
 };
 
 
@@ -66,6 +67,12 @@ zeit.content.cp.drop.Droppable = gocept.Class.extend({
         var query_args = handler.query_arguments(draggable_element);
 
         var d = zeit.content.cp.makeJSONRequest(url, query_args, self.parent)
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(
+                handler, 'drop-finished',
+                draggable_element, droppable, data_element);
+            return result;
+        });
         return d;
     },
 
@@ -120,20 +127,17 @@ zeit.content.cp.drop.EditorDroppers =
 });
 
 
-
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     zeit.content.cp.drop.droppers = new zeit.content.cp.drop.EditorDroppers();
 });
 
 
-
-(function() {
+zeit.content.cp.drop.content_drop_handler = 
     zeit.content.cp.drop.registerHandler({
         accept: ['uniqueId', 'content-drag-pane'],
         activated_by: 'action-content-droppable',
         url_attribute: 'cms:drop-url',
         query_arguments: function(draggable) {
-            return {'uniqueId': draggable.uniqueId};
+            return {'uniqueId': draggable.uniqueId}
         }
-    });
-})();
+});
