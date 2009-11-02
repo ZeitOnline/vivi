@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.32.3 (unreleased)
+1.33.0 (2009-11-02)
 -------------------
 
 - Es gibt jetzt einen einfachen Weg das Artikel-Bild aus der einem Artikel
