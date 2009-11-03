@@ -106,15 +106,27 @@ zeit.content.cp.teaser.Drag = zeit.content.cp.ContentActionBase.extend({
     connect: function() {
         var self = this;
         forEach($$('div.block.type-teaser'), function(teaser) {
-            var draggable_element =
+            var text =
                 MochiKit.DOM.getFirstElementByTagAndClassName( 
                     'div', 'teaser', teaser);
-            if (isNull(draggable_element)) {
+            if (isNull(text)) {
                 return
             }
-            draggable_element.removeFromBlock = teaser.id;
+            var image = MochiKit.Selector.findChildElements(
+                teaser, ['.teaser-contents > img']);
+            if (image.length) {
+                image = image[0];
+            } else {
+                image = null;
+            }
+            text.removeFromBlock = teaser.id;
             self.dnd_objects.push(
-                zeit.cms.createDraggableContentObject(draggable_element, {
+                zeit.cms.createDraggableContentObject(text, {
+                    scroll: 'cp-content-inner',
+                }));
+            self.dnd_objects.push(
+                zeit.cms.createDraggableContentObject(text, {
+                    handle: image,
                     scroll: 'cp-content-inner',
                 }));
         });

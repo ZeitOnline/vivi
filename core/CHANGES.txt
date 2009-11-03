@@ -7,6 +7,8 @@ zeit.content.cp changes
 - Asynchronse Requests serialisiert damit das Löschen beim Verschieben von
   Teaseren zuverlässig funktioniert.
 
+- Bild des ersten Teasers ist jetzt draggable.
+
 
 0.28.0 (2009-11-02)
 -------------------
