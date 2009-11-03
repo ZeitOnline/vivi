@@ -550,7 +550,8 @@
   margin-bottom: 0.6em;
 }
 
-.block.type-teaser .teaser:first-child {
+.block.type-teaser .teaser:first-child,
+.block.type-teaser .teaser-contents > img {
   cursor: move;
 }
   
