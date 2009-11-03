@@ -614,16 +614,36 @@ zeit.imp.ImageFilter = Class.extend({
 });
 
 
-MochiKit.Signal.connect(window, 'onload', function() {
-    document.imp = new zeit.imp.Imp();
-    document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
-    document.imp_data = new zeit.imp.ImageData();
-    new zeit.imp.DynamicMask(document.imp);
-    new zeit.imp.ImageBar();
-    new zeit.imp.AlreadyCroppedIndicator();
-    // Filters
-    new zeit.imp.ImageFilter('brightness');
-    new zeit.imp.ImageFilter('contrast');
-    new zeit.imp.ImageFilter('sharpness');
-    document.imp_color_filter = new zeit.imp.ImageFilter('color');
+zeit.imp.Zoomer = gocept.Class.extend({
+
+    construct: function() {
+        var self = this;
+        MochiKit.Signal.connect(
+            'imp-content-zoom-toggle', 'onclick', self, self.toggle_zoom);
+    },
+
+    toggle_zoom: function(event) {
+        event.stop();
+        MochiKit.DOM.toggleElementClass('imp-zoomed-content', 'content');
+    },
+
 });
+
+(function() {
+
+    var ident = MochiKit.Signal.connect(window, 'onload', function() {
+        MochiKit.Signal.disconnect(ident);
+        document.imp = new zeit.imp.Imp();
+        document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
+        document.imp_data = new zeit.imp.ImageData();
+        new zeit.imp.DynamicMask(document.imp);
+        new zeit.imp.ImageBar();
+        new zeit.imp.AlreadyCroppedIndicator();
+        // Filters
+        new zeit.imp.ImageFilter('brightness');
+        new zeit.imp.ImageFilter('contrast');
+        new zeit.imp.ImageFilter('sharpness');
+        document.imp_color_filter = new zeit.imp.ImageFilter('color');
+        new zeit.imp.Zoomer();
+    });
+})();

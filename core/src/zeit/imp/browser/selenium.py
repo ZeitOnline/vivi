@@ -421,6 +421,17 @@ class FilterTests(Selenium):
         s.verifyEval('window.document.imp.crop_arguments["filter.color"]', '0')
 
 
+class ContentZoomTest(Selenium):
+
+    def test_zoom(self):
+        s = self.selenium
+        s.verifyElementNotPresent('css=#content.imp-zoomed-content')
+        s.click('id=imp-content-zoom-toggle')
+        s.verifyElementPresent('css=#content.imp-zoomed-content')
+        s.click('id=imp-content-zoom-toggle')
+        s.verifyElementNotPresent('css=#content.imp-zoomed-content')
+
+
 class CreateImageGroup(object):
 
     def __call__(self):

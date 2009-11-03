@@ -101,6 +101,10 @@
         next image &raquo;</a>
     </div>
 
+    <a href="#"
+       id="imp-content-zoom-toggle"
+       i18n:translate="">± Zoom image area</a>
+
   </div>
 
   <div id="imp-image-bar"></div>

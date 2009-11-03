@@ -36,6 +36,12 @@
     permission="zope.Public"
     />
 
+  <adapter
+    factory=".selenium.ContentZoomTest"
+    name="zeit.imp.browser.ContentZoomTest"
+    permission="zope.Public"
+    />
+
   <browser:page
     for="zope.location.interfaces.ISite"
     name="create-image-group"
