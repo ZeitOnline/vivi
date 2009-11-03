@@ -48,8 +48,35 @@ if (isUndefinedOrNull(zeit.content)) {
 zeit.content.cp = {}
 
 
+// Lock to hold for asynchronous tasks.
+zeit.content.cp.json_request_lock = new MochiKit.Async.DeferredLock();
+
+zeit.content.cp.with_lock = function(callable) {
+    var d = zeit.content.cp.json_request_lock.acquire()
+    var pfunc = MochiKit.Base.partial.apply(
+        MochiKit.Base, MochiKit.Base.extend(null, arguments));
+    d.addCallback(function(result) {
+        return pfunc();
+    });
+    d.addBoth(function(result_or_error) {
+        zeit.content.cp.json_request_lock.release()
+        return result_or_error;
+    });
+    return d;
+}
+
+
 zeit.content.cp.makeJSONRequest = function(
     url, json, target_component, options) {
+    return zeit.content.cp.with_lock(
+        zeit.content.cp._locked_makeJSONRequest,
+        url, json, target_component, options);
+} 
+
+
+zeit.content.cp._locked_makeJSONRequest = function(
+    url, json, target_component, options) {
+
     if (isUndefinedOrNull(target_component)) {
         target_component = zeit.content.cp.editor;
     }
@@ -122,6 +149,7 @@ zeit.content.cp.makeJSONRequest = function(
     });
     return d;
 }
+
 
 zeit.content.cp.handle_json_errors = function(error) {
     zeit.cms.log_error(error);
@@ -215,7 +243,8 @@ zeit.content.cp.Editor = gocept.Class.extend({
         if (isUndefinedOrNull(url)) {
             url = context_url + '/contents';
         }
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        var d = zeit.content.cp.with_lock(
+            MochiKit.Async.doSimpleXMLHttpRequest, url);
         if (isNull(element)) {
             d.addCallback(function(result) {
                 self.replace_whole_editor(result);
@@ -231,7 +260,10 @@ zeit.content.cp.Editor = gocept.Class.extend({
             MochiKit.Signal.signal(self, 'after-reload');
             return result;
         });
-        d.addErrback(zeit.cms.log_error);
+        d.addErrback(function(error) {
+            zeit.cms.log_error(error);
+            return error
+        });
         return d;
     },
 

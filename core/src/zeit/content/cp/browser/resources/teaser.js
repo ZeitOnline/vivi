@@ -109,6 +109,9 @@ zeit.content.cp.teaser.Drag = zeit.content.cp.ContentActionBase.extend({
             var draggable_element =
                 MochiKit.DOM.getFirstElementByTagAndClassName( 
                     'div', 'teaser', teaser);
+            if (isNull(draggable_element)) {
+                return
+            }
             draggable_element.removeFromBlock = teaser.id;
             self.dnd_objects.push(
                 zeit.cms.createDraggableContentObject(draggable_element, {
@@ -119,6 +122,7 @@ zeit.content.cp.teaser.Drag = zeit.content.cp.ContentActionBase.extend({
     },
 
 });
+
 
 (function() {
     var remove_from_cp = function(draggable_element, droppable, data_element) {
