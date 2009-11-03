@@ -13,8 +13,8 @@ Create a centerpage:
 >>> browser.xml_strict = True
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> import zeit.content.cp.browser.tests
->>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('@@contents')
 >>> contents_url = browser.url
 

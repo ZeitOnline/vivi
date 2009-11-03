@@ -5,8 +5,8 @@ Teaser bars in the teaser mosaic
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.xml_strict = True
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> import zeit.content.cp.browser.tests
->>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
 
@@ -42,7 +42,7 @@ placeholders:
 
 Add a real block in the second place:
 
->>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser', 1)
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 1)
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
@@ -70,9 +70,9 @@ Changing the layout of a TeaserBar
 
 
 >>> browser.open(contents_url)
->>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser', 0)
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 0)
 >>> browser.open(contents_url)
->>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser', 0)
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 0)
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
 ...     '//div[@id="teaser-mosaic"]/div[@class="block type-teaser-bar"]')

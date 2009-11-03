@@ -4,11 +4,11 @@ Toplists
 Toplits are automatically created when the CP is created.
 
 >>> import z3c.etestbrowser.testing
->>> import zeit.content.cp.browser.tests
+>>> import zeit.content.cp.browser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
->>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.handleErrors = False
 >>> browser.open('contents')
 >>> contents_url = browser.url

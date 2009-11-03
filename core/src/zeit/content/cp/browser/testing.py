@@ -2,9 +2,6 @@
 # See also LICENSE.txt
 
 import lxml.cssselect
-import zeit.content.cp.browser
-import zeit.content.cp.testing
-import zeit.cms.testing
 
 
 def create_cp(browser, filename='island'):
@@ -31,11 +28,3 @@ def create_block_in_mosaic(browser, block_type, index=0):
         '{http://namespaces.gocept.com/zeit-cms}create-block-url')
     browser.open(drop_url + '?block_type=' + block_type)
     browser.xml_strict = old_strict
-
-
-def test_suite():
-    return zeit.content.cp.testing.FunctionalDocFileSuite(
-        'README.txt',
-        'landing.txt',
-        'library.txt',
-        'rule.txt')

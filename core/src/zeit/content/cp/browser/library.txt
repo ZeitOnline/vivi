@@ -166,8 +166,8 @@ True
 .. [#setup]
 
     >>> import z3c.etestbrowser.testing
-    >>> import zeit.content.cp.browser.tests
+    >>> import zeit.content.cp.browser.testing
     >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
     >>> browser.addHeader('Authorization', 'Basic user:userpw')
-    >>> zeit.content.cp.browser.tests.create_cp(browser)
+    >>> zeit.content.cp.browser.testing.create_cp(browser)
     >>> cp_url = browser.url

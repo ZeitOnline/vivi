@@ -4,19 +4,19 @@ Autopilot
 >>> import z3c.etestbrowser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> import zeit.content.cp.browser.tests
->>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(contents_url)
->>> zeit.content.cp.browser.tests.create_block_in_mosaic(browser, 'teaser')
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser')
 
 A teaser block can be set on 'autopilot'. In this mode, it will retrieve
 teasers from another CenterPage for display. To demonstrate this, we first
 create another CenterPage:
 
->>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
+>>> zeit.content.cp.browser.testing.create_cp(browser, filename='foreign')
 >>> foreign_url = browser.url
 >>> browser.open('contents')
 >>> foreign_contents_url = browser.url

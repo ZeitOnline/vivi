@@ -5,11 +5,11 @@ The teaser block contains a list of teasers. Let's first create a list of
 teasers in the lead area[#fill-dav-with-content]_:
 
 >>> import z3c.etestbrowser.testing
->>> import zeit.content.cp.browser.tests
+>>> import zeit.content.cp.browser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
->>> zeit.content.cp.browser.tests.create_cp(browser)
+>>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open(
@@ -463,7 +463,7 @@ LinkNotFoundError
 
     We create a new centerpage with a content type from the repository:
 
-    >>> zeit.content.cp.browser.tests.create_cp(browser, filename='foreign')
+    >>> zeit.content.cp.browser.testing.create_cp(browser, filename='foreign')
     >>> browser.open('contents')
     >>> contents_url = browser.url
     >>> browser.open(
