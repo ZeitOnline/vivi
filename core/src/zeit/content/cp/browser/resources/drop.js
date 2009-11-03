@@ -138,6 +138,8 @@ zeit.content.cp.drop.content_drop_handler =
         activated_by: 'action-content-droppable',
         url_attribute: 'cms:drop-url',
         query_arguments: function(draggable) {
-            return {'uniqueId': draggable.uniqueId}
+            var query = {'uniqueId': draggable.uniqueId}
+            MochiKit.Base.update(query, draggable.drop_query_args);
+            return query;
         }
 });

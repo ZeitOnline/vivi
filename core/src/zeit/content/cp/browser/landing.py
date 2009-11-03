@@ -63,6 +63,8 @@ class TeaserBlockLandingZone(LandingZone):
 
     block_type = 'teaser'
     uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+    relateds = zeit.content.cp.browser.view.Form(
+        'relateds', json=True, default=True)
 
     def initialize_block(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
@@ -71,10 +73,11 @@ class TeaserBlockLandingZone(LandingZone):
                 _('The object "${name}" does not exist.', mapping=dict(
                     name=self.uniqueId)))
         self.block.insert(0, content)
-        related = zeit.cms.related.interfaces.IRelatedContent(content, None)
-        if related is not None:
-            for i, related in enumerate(related.related):
-                self.block.insert(i+1, related)
+        if self.relateds:
+            related = zeit.cms.related.interfaces.IRelatedContent(content, None)
+            if related is not None:
+                for i, related in enumerate(related.related):
+                    self.block.insert(i+1, related)
 
 
 class LeaderLandingZoneDrop(TeaserBlockLandingZone):

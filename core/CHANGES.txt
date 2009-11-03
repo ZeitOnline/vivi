@@ -9,6 +9,9 @@ zeit.content.cp changes
 
 - Bild des ersten Teasers ist jetzt draggable.
 
+- Wird ein Teaser im CPE verschoben und auf eine Landezone gezogen, werden die
+  Relateds nicht mehr automatisch gezogen.
+
 
 0.28.0 (2009-11-02)
 -------------------
