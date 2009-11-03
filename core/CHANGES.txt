@@ -12,6 +12,9 @@ zeit.content.cp changes
 - Wird ein Teaser im CPE verschoben und auf eine Landezone gezogen, werden die
   Relateds nicht mehr automatisch gezogen.
 
+- Default für XML-Block geändert: der <container> beinhaltet ein offenes
+  <raw>-Tag (#6051).
+
 
 0.28.0 (2009-11-02)
 -------------------

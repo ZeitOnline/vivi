@@ -19,7 +19,11 @@ An empty XML block contains an empty <container> element:
 >>> container
 <Element container at ...>
 >>> print lxml.etree.tostring(container, pretty_print=True)
-<container.../>
+<container...>
+  <raw>
+<BLANKLINE>
+  </raw>
+</container>
 
 It is of the type 'xml':
 
@@ -36,6 +40,9 @@ You can add elements to the container:
 >>> container.append(lxml.etree.Element('foo'))
 >>> print lxml.etree.tostring(container, pretty_print=True)
 <container ...>
+  <raw>
+<BLANKLINE>
+  </raw>
   <foo/>
 </container>
 

@@ -20,7 +20,7 @@ A new block with an XML <container> element is created:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
-<span class="h_tag">&lt;container</span>...<span class="h_tagend">/&gt;</span>...
+<span class="h_tag">&lt;container</span>...
 
 Editing the XML
 ---------------
@@ -32,9 +32,12 @@ You can edit the XML content by clicking the Edit button:
 >>> browser.open('edit-properties')
 >>> xml = browser.getControl(name="form.xml").value
 >>> print xml
-<container...  cp:type="xml" module="xml" cp:__name__="..."/>
-
->>> print update_xml('/>', '><foo/></container>')
+<container...  cp:type="xml" module="xml" cp:__name__="...">
+ <raw>
+<BLANKLINE>
+ </raw>
+</container>
+>>> print update_xml('\r\n\r\n', '<foo/>')
 <...
 <div class="summary">Updated on...
 
