@@ -103,12 +103,12 @@ class SeleniumBasicTests(Selenium):
 
     def test_zoom_mouse_wheel(self):
         s = self.selenium
-        s.verifyEval('window.document.imp.zoom.toPrecision(3)<0.3', 'true')
+        s.storeEval('window.document.imp.zoom.toPrecision(3)', 'zoom')
         self.zoom_with_wheel(10000)
         s.verifyEval('window.document.imp.zoom>1', 'true')
         self.zoom_with_wheel(-5000)
         s.verifyEval('window.document.imp.zoom<1', 'true')
-        s.verifyEval('window.document.imp.zoom>0.268', 'true')
+        s.verifyEval('window.document.imp.zoom>storedVars["zoom"]', 'true')
 
     def test_zoom_with_mouse_wheel_updates_slider(self):
         s = self.selenium
