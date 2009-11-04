@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.28.1 (unreleased)
+0.28.1 (2009-11-04)
 -------------------
 
 - Asynchronse Requests serialisiert damit das Löschen beim Verschieben von
