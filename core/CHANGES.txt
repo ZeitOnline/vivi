@@ -4,7 +4,11 @@ zeit.cms changes
 1.39.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Technische Änderungen
++++++++++++++++++++++
+
+- Ermöglicht zusätzliche Drop-Query-Argumente bei
+  ``createDraggableContentObject`` anzugeben.
 
 
 1.39.0 (2009-11-02)

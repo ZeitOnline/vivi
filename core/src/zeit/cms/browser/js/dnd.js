@@ -24,6 +24,7 @@ MochiKit.Signal.connect(
     div.appendChild(pane_clone_from.cloneNode(true));
     div.dragged_element = draggable.element;
     div.uniqueId = uniqueId;
+    div.drop_query_args = draggable.element.drop_query_args || {}
     
     draggable.element = div;
     draggable.offset = [-10, -10];
@@ -35,29 +36,38 @@ MochiKit.Signal.connect(
 });
 
 
-MochiKit.Signal.connect(
-    MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
-    // Generic handler for hiding the drag pane after dragging ended.
-    var element = draggable.element;
-    var dragged_element = element.dragged_element;
-    if (dragged_element == undefined) return;
-    draggable.element = dragged_element;
-    MochiKit.Visual.fade(element);
-});
+(function() {
+
+    MochiKit.Signal.connect(
+        MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
+        // Generic handler for hiding the drag pane after dragging ended.
+        var element = draggable.element;
+        var dragged_element = element.dragged_element;
+        if (isUndefinedOrNull(dragged_element)) {
+            return
+        }
+        draggable.element = dragged_element;
+        MochiKit.Visual.fade(element);
+    });
+})();
 
 
 zeit.cms.createDraggableContentObject = function(element, options) {
     var default_options = {
+        drop_query_args: {},
         endeffect: null,
         handle: element,
         starteffect: null,
         zindex: null,
     };
     MochiKit.Base.update(default_options, options);
+    var drop_query_args = default_options['drop_query_args'];
+    delete default_options['drop_query_args'];
     var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
              'span', 'uniqueId', element);
     unique_id_element.pane_element = element;
     unique_id_element.is_content_object = true;
+    unique_id_element.drop_query_args = drop_query_args;
     //element.uniqueId = unique_id_element.textContent;
     return new MochiKit.DragAndDrop.Draggable(
         unique_id_element, default_options);
