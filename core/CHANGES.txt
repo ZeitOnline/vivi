@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-0.15 (unreleased)
+0.15 (2009-11-04)
 +++++++++++++++++
 
 - Übersetzungen aktualisiert
