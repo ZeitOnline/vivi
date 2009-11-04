@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Mon Nov  2 20:18:56 2009\n"
-"PO-Revision-Date: 2009-11-02 20:21+0100\n"
+"POT-Creation-Date: Wed Nov  4 17:38:40 2009\n"
+"PO-Revision-Date: 2009-11-04 18:10+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1642,7 +1642,7 @@ msgstr "RSS-Block"
 msgid "List of teasers"
 msgstr "Teaserliste"
 
-#: zeit/content/cp/blocks/xml.py:19
+#: zeit/content/cp/blocks/xml.py:23
 msgid "Raw XML block"
 msgstr "Rohes XML"
 
@@ -1705,7 +1705,7 @@ msgid "View centerpage metadata"
 msgstr "Metadaten"
 
 #. Default: ""
-#: zeit/content/cp/browser/landing.py:71
+#: zeit/content/cp/browser/landing.py:73
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
@@ -1934,7 +1934,7 @@ msgstr "Verlinkte Teaser"
 
 #: zeit/content/cp/teasergroup/interfaces.py:24
 msgid "Automatically remove"
-msgstr "Automatisch löschen?"
+msgstr "Automatisch löschen (nach 7 Tagen)?"
 
 #: zeit/content/cp/teasergroup/teasergroup.py:53
 msgid "Teasergroup"
@@ -2469,6 +2469,10 @@ msgstr "Benutzen Sie dies um einen Doppel-Video-Player zu erzeugen."
 msgid "Audio id"
 msgstr "Audio-Id"
 
+#: zeit/imp/browser/imp.pt:104
+msgid "± Zoom image area"
+msgstr "± Bild-Breich zoomen"
+
 #: zeit/imp/browser/imp.pt:63
 msgid "Brightness"
 msgstr "Helligkeit"
@@ -2802,7 +2806,7 @@ msgstr "Rohes HTML"
 
 #: zeit/wysiwyg/browser/resources/reference/image.pt:22
 msgid "from Article"
-msgstr "aus dem Artikel"
+msgstr "aus den Artikelassets"
 
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53

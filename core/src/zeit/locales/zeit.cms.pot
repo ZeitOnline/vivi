@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Nov  2 20:18:56 2009\n"
+"POT-Creation-Date: Wed Nov  4 17:38:40 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1669,7 +1669,7 @@ msgstr ""
 msgid "List of teasers"
 msgstr ""
 
-#: zeit/content/cp/blocks/xml.py:19
+#: zeit/content/cp/blocks/xml.py:23
 msgid "Raw XML block"
 msgstr ""
 
@@ -1731,7 +1731,7 @@ msgstr ""
 msgid "View centerpage metadata"
 msgstr ""
 
-#: zeit/content/cp/browser/landing.py:71
+#: zeit/content/cp/browser/landing.py:73
 #. Default: ""
 msgid "The object \"${name}\" does not exist."
 msgstr ""
@@ -2541,6 +2541,10 @@ msgstr ""
 
 #: zeit/content/video/interfaces.py:21
 msgid "Audio id"
+msgstr ""
+
+#: zeit/imp/browser/imp.pt:104
+msgid "\302\261 Zoom image area"
 msgstr ""
 
 #: zeit/imp/browser/imp.pt:63

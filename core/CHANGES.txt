@@ -4,7 +4,7 @@ zeit.locales CHANGES
 0.15 (unreleased)
 +++++++++++++++++
 
-- Nothing changed yet.
+- Übersetzungen aktualisiert
 
 
 0.14 (2009-11-02)
