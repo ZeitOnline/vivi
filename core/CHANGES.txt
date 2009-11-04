@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.9 (unreleased)
+0.9.0 (2009-11-04)
 ++++++++++++++++
 
 - Der Bild-Bereich kann gezoomt werden, damit auch sehr große Masken passen.
