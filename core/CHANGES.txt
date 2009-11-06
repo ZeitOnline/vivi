@@ -4,7 +4,8 @@ zeit.cms changes
 1.39.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Daten an das Veröffentlichungsscript werden nicht mehr per STDIN übermittelt
+  sondern per Datei und Argument.
 
 
 1.39.1 (2009-11-04)

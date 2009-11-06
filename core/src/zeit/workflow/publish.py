@@ -12,6 +12,7 @@ import os.path
 import pytz
 import random
 import subprocess
+import tempfile
 import threading
 import time
 import transaction
@@ -326,23 +327,25 @@ class PublishRetractTask(object):
         return obj
 
     @staticmethod
-    def call_script(filename, stdin):
-        if isinstance(stdin, unicode):
-            stdin = stdin.encode('UTF-8')
-        proc = subprocess.Popen(
-            [filename], bufsize=-1,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = proc.communicate(stdin)
-        if proc.returncode:
-            logger.error("%s exited with %s" % (filename, proc.returncode))
-        if stdout:
-            logger.info("%s:\n%s" % (filename, stdout))
-        if stderr:
-            logger.error("%s:\n%s" % (filename, stderr))
-        if proc.returncode:
-            raise zeit.workflow.interfaces.ScriptError(
-                stderr, proc.returncode)
+    def call_script(filename, input_data):
+        if isinstance(input_data, unicode):
+            input_data = input_data.encode('UTF-8')
+        with tempfile.NamedTemporaryFile() as f:
+            f.write(input_data)
+            f.flush()
+            proc = subprocess.Popen(
+                [filename, f.name],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = proc.communicate()
+            if proc.returncode:
+                logger.error("%s exited with %s" % (filename, proc.returncode))
+            if stdout:
+                logger.info("%s:\n%s" % (filename, stdout))
+            if stderr:
+                logger.error("%s:\n%s" % (filename, stderr))
+            if proc.returncode:
+                raise zeit.workflow.interfaces.ScriptError(
+                    stderr, proc.returncode)
 
 
 class PublishTask(PublishRetractTask):
