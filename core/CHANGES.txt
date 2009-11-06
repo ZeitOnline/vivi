@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.39.2 (unreleased)
+1.39.2 (2009-11-06)
 -------------------
 
 - Daten an das Veröffentlichungsscript werden nicht mehr per STDIN übermittelt
