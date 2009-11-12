@@ -140,13 +140,32 @@ class SeleniumCropTests(Selenium):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
-        s.dragAndDrop('id=imp-mask', '+30,+100')
+        s.dragAndDrop('id=imp-mask', '-30,-100')
         self.click_label("450×200")
         s.click('crop')
         s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
         s.comment('The label is marked as "cropped"')
         s.verifyElementPresent('css=label.cropped')
+
+    def test_crop_outside_mask(self):
+        s = self.selenium
+        s.verifyElementNotPresent('css=#imp-image-bar > div')
+        s.verifyElementNotPresent('css=label.cropped')
+        s.dragAndDrop('id=imp-mask', '+1000,+1000')
+        self.click_label("450×200")
+        s.click('crop')
+        s.verifyAlert('Das Bild ist nicht*', lineno=False)
+        s.verifyElementNotPresent('css=#imp-image-bar > div')
+
+    def test_drag_outside_mask_snaps_to_mask(self):
+        # As it snaps to the mask we can crop the image and no alert is
+        # generated.
+        s = self.selenium
+        self.click_label("450×200")
+        s.dragAndDrop('id=imp-mask', '+1000,+1000')
+        s.click('crop')
+        s.waitForElementPresent('css=#imp-image-bar > div')
 
 
 class SeleniumMaskTests(Selenium):

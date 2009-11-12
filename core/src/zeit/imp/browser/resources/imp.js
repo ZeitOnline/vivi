@@ -6,7 +6,7 @@ zeit.imp = {}
 zeit.imp.Imp = Class.extend({
 
     construct: function() {
-        var othis = this;
+        var self = this;
         this.zoom_grid = 0.0625;
 
         this.original_dimensions = new MochiKit.DOM.Dimensions(
@@ -35,12 +35,13 @@ zeit.imp.Imp = Class.extend({
             'handle': $('imp-mask'),
             'starteffect': null,
             'zindex': 0,
+            'snap': function(x, y) { return self.snap_image_to_mask(x, y) },
         });
         
         this.resize_monitor = new zeit.imp.ResizeMonitor('imp-image-area');
         MochiKit.Signal.connect(
             this.resize_monitor, 'resize', function(event) {
-                MochiKit.Signal.signal(othis, 'resize');
+                MochiKit.Signal.signal(self, 'resize');
         });
         MochiKit.Signal.connect(
             'imp-mask', 'onmousedown',
@@ -60,8 +61,8 @@ zeit.imp.Imp = Class.extend({
         MochiKit.Signal.connect(
             this, 'configuration-change',
             function() {
-                if (!MochiKit.Base.isNull(othis.image_server_dimensions)) {
-                    othis.load_image(othis.image_server_dimensions)
+                if (!MochiKit.Base.isNull(self.image_server_dimensions)) {
+                    self.load_image(self.image_server_dimensions)
                 }
             });
 
@@ -75,7 +76,7 @@ zeit.imp.Imp = Class.extend({
         var ident = MochiKit.Signal.connect(
             this.image, 'onload', function() {
                 MochiKit.Signal.disconnect(ident);
-                othis.ui_loading(false);
+                self.ui_loading(false);
         });
 
     },
@@ -126,11 +127,11 @@ zeit.imp.Imp = Class.extend({
             rnd(old_center.x * new_dim.w / old_dim.w),
             rnd(old_center.y * new_dim.h / old_dim.h));
         
-            var old_pos = this.get_image_position();
-            var new_pos = new MochiKit.Style.Coordinates(
-                old_pos.x + old_center.x - new_center.x -1,
-                old_pos.y + old_center.y - new_center.y -1);
-            MochiKit.Style.setElementPosition('imp-image-drag', new_pos);
+        var old_pos = this.get_image_position();
+        var new_pos = new MochiKit.Style.Coordinates(
+            old_pos.x + old_center.x - new_center.x -1,
+            old_pos.y + old_center.y - new_center.y -1);
+        MochiKit.Style.setElementPosition('imp-image-drag', new_pos);
 
         log("INFO", 'New pos '+ new_pos.x+'x'+new_pos.y);
 
@@ -164,15 +165,14 @@ zeit.imp.Imp = Class.extend({
         this.image.src = image_url; 
     },
 
-    get_crop_arguments: function() {
+    get_crop_arguments: function(image_pos) {
         if (!this.mask_dimensions) {
             return null;
         }
-        this.cropping = true;
-        this.ui_loading(true);
-
         // Calculate crop box
-        var image_pos = this.get_image_position();
+        if (isUndefinedOrNull(image_pos)) {
+            image_pos = this.get_image_position();
+        }
         var visual_dim = this.get_visual_area_dimensions();
         var f = Math.floor
         var x1 = f(-image_pos.x + visual_dim.w/2 - this.mask_dimensions.w/2);
@@ -193,15 +193,28 @@ zeit.imp.Imp = Class.extend({
     },
 
     crop_image: function() {
-        var othis = this;
-        if (this.cropping) {
-            // Do not run this twice
+        var self = this;
+        if (self.cropping) {
+            // Do not run self twice
             return;
         }
-        var crop_arguments = this.get_crop_arguments();
-        if (crop_arguments === null) {
+        var image_position = self.get_image_position();
+        var snapped_position = self.snap_image_to_mask(
+            image_position.x, image_position.y);
+        if (image_position.x != snapped_position[0] ||
+            image_position.y != snapped_position[1]) {
+            alert('Das Bild ist nicht vollständig in der Maske.' +
+                  ' Zuschneiden nicht möglich.');
+            return
+        }
+
+        var crop_arguments = self.get_crop_arguments();
+        if (isNull(crop_arguments)) {
             return;
         } 
+
+        self.cropping = true;
+        self.ui_loading(true);
 
         // Crop on server
         var crop_url = window.context_url + '/@@imp-crop'
@@ -209,8 +222,8 @@ zeit.imp.Imp = Class.extend({
             crop_url, crop_arguments);
         d.addCallback(function(result) {
             MochiKit.Signal.signal('content', 'imp-image-cropped')
-            othis.cropping = false;
-            othis.ui_loading(false);
+            self.cropping = false;
+            self.ui_loading(false);
             });
     },
 
@@ -275,6 +288,25 @@ zeit.imp.Imp = Class.extend({
         } else {
             this.mask_image.setAttribute('src', image_url);
         }
+    },
+
+    snap_image_to_mask: function(x, y) {
+        var self = this;
+        var image_pos = new MochiKit.Style.Coordinates(x, y);
+        var args = self.get_crop_arguments(image_pos);
+        if (!isNull(args)) {
+            if (args.x1 < 0) {
+                x += args.x1 - 1;
+            } else if (args.x2 > args.w) {
+                x += args.x2 - args.w - 1
+            }
+            if (args.y1 < 0) {
+                y += args.y1 - 1;
+            } else if (args.y2 > args.h) {
+                y += args.y2 - args.h -1
+            }
+        }
+        return [x, y]
     },
 
     move_image_on_size_change: function(event) {
