@@ -14,6 +14,7 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
         zope.formlib.form.FormFields(
             zeit.wysiwyg.interfaces.IHTMLContent))
 
+
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     """HTML content of an article."""
 
@@ -21,6 +22,7 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
     def get_tree(self):
         return self.context.xml['body']
+
 
 class Editor(zeit.cms.selenium.Test):
 
