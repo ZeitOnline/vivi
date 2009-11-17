@@ -105,8 +105,8 @@ class HTMLConverter(object):
         return '|'.join(xpath)
 
     def _copy(self, tree):
-        """return a copy of `tree` that contains only those nodes we know how to
-        deal with."""
+        """return a copy of `tree` that contains only those nodes we know how
+        to deal with."""
         root = lxml.objectify.E.body()
         xpath = self.covered_xpath()
         if xpath:
@@ -153,9 +153,9 @@ class ConversionStep(object):
     and descending for to_xml().
 
     The adapter context can be used to fine-tune for which objects a conversion
-    step applies, but probably should not be touched for anything else. Remember
-    to register steps as named adapters (the name itself doesn't matter), so the
-    HTMLConverter can pick them all up using getAdapters().
+    step applies, but probably should not be touched for anything else.
+    Remember to register steps as named adapters (the name itself doesn't
+    matter), so the HTMLConverter can pick them all up using getAdapters().
     """
 
     zope.component.adapts(zope.interface.Interface)
@@ -509,7 +509,7 @@ class VideoAudioStep(ConversionStep):
             expires = ''
 
         if node.tag == 'video':
-            id2 =  lxml.objectify.E.div(id2, **{'class': id_class + '2'})
+            id2 = lxml.objectify.E.div(id2, **{'class': id_class + '2'})
             p_node = lxml.objectify.E.div(player_1, **{'class': 'player'})
             p2_node = lxml.objectify.E.div(player_2, **{'class': 'player2'})
             format_node = lxml.objectify.E.div(format, **{'class': 'format'})
@@ -581,10 +581,11 @@ class RawXMLStep(ConversionStep):
         for child in node.iterchildren():
             # kill namespaces
             child = copy.copy(child)
-            result.append(
-                lxml.etree.tostring(child, pretty_print=True, encoding=unicode))
+            result.append(lxml.etree.tostring(
+                child, pretty_print=True, encoding=unicode))
         text = '\n'.join(result)
-        new_node = lxml.objectify.E.div(text, **{'class': 'inline-element raw'})
+        new_node = lxml.objectify.E.div(
+            text, **{'class': 'inline-element raw'})
         lxml.objectify.deannotate(new_node)
         return new_node
 
@@ -631,7 +632,8 @@ class PortraitboxStep(ReferenceStep):
 
     def to_html(self, node):
         new_node = super(PortraitboxStep, self).to_html(node)
-        layout = lxml.objectify.E.div(node.get('layout'), **{'class': 'layout'})
+        layout = lxml.objectify.E.div(
+            node.get('layout'), **{'class': 'layout'})
         lxml.objectify.deannotate(layout)
         new_node.append(layout)
         return new_node
