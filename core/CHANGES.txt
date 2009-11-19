@@ -4,7 +4,10 @@ zeit.cms changes
 1.39.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Technische Änderungen
++++++++++++++++++++++
+
+- Fehlertolerante Funktion zum XML parsen: objectify_soup_fromstring.
 
 
 1.39.2 (2009-11-06)

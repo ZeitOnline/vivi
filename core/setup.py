@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'BeautifulSoup',
         'PILwoTk',
         'SilverCity',
         'ZODB3>=3.8.1',
