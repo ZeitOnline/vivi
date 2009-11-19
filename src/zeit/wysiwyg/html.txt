@@ -1029,6 +1029,30 @@ discarded:
     </body>
 </article>
 
+Broken HTML, such as pasted from YouTube, is sanitized:
+
+>>> converter.from_html(article.xml['body'], """\
+... <p>No bo po co to.</p>
+... <div class="inline-element raw">
+... &lt;object width="560" height="340"&gt;
+... &lt;param name="movie"
+... value="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;"&gt;
+... &lt;/param&gt;&lt;/object&gt;
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <raw>
+    <object width="560" height="340">
+    <param name="movie"
+      value="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;"/>
+    </object>
+    </raw>
+    </body>
+</article>
+
 Tables
 ------
 

@@ -20,7 +20,7 @@ setup(
         'setuptools',
         'zc.iso8601',
         'zc.resourcelibrary',
-        'zeit.cms>=1.21.3',
+        'zeit.cms>1.39.2',
         'zope.app.pagetemplate',
         'zope.app.testing',
         'zope.cachedescriptors',

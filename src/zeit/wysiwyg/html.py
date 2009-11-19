@@ -2,6 +2,7 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.util import objectify_soup_fromstring
 import copy
 import datetime
 import htmlentitydefs
@@ -9,7 +10,6 @@ import lxml.etree
 import lxml.objectify
 import rwproperty
 import time
-import xml.sax.saxutils
 import zc.iso8601.parse
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -590,9 +590,7 @@ class RawXMLStep(ConversionStep):
         return new_node
 
     def to_xml(self, node):
-        # must only contain text, everything else will be discarded
-        text = xml.sax.saxutils.unescape(node.text)
-        new_node = lxml.objectify.fromstring('<raw>%s</raw>' % node.text)
+        new_node = objectify_soup_fromstring('<raw>%s</raw>' % node.text)
         return new_node
 
 
