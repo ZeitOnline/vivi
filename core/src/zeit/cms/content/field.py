@@ -1,7 +1,9 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.util import objectify_soup_fromstring
 from zeit.cms.i18n import MessageFactory as _
+import HTMLParser
 import lxml.etree
 import lxml.objectify
 import xml.dom.minidom
@@ -36,11 +38,20 @@ class _XMLBase(zope.schema.Field):
 
     zope.interface.implements(zope.schema.interfaces.IFromUnicode)
 
-    def fromUnicode(self, str):
+    def __init__(self, *args, **kw):
+        tidy_input = kw.pop('tidy_input', False)
+        if tidy_input:
+            self.parse = objectify_soup_fromstring
+        else:
+            self.parse = lxml.objectify.fromstring
+        super(_XMLBase, self).__init__(*args, **kw)
+
+    def fromUnicode(self, text):
         try:
-            return lxml.objectify.fromstring(str)
-        except (lxml.etree.XMLSyntaxError, ValueError), e:
-                raise zope.schema.ValidationError(e)
+            return self.parse(text)
+        except (lxml.etree.XMLSyntaxError, ValueError,
+                HTMLParser.HTMLParseError), e:
+            raise zope.schema.ValidationError(str(e))
 
     def set(self, object, value):
         if self.readonly:

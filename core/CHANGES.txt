@@ -8,7 +8,8 @@ Technische Änderungen
 +++++++++++++++++++++
 
 - Fehlertolerante Funktion zum XML parsen: objectify_soup_fromstring.
-
+- Das XMLTree-Feld hat einen optionalen Parameter tidy_input, mit dem es
+  kaputtes Markup per BeautifulSoup repariert.
 
 1.39.2 (2009-11-06)
 -------------------

@@ -130,3 +130,14 @@ Replacing node when there are siblings present
   <new/>
   <child/>
 </root>
+
+
+Tidying broken input
+~~~~~~~~~~~~~~~~~~~~
+
+>>> field = XMLTree(tidy_input=True)
+>>> field.__name__ = 'xml'
+>>> tree = field.fromUnicode(
+...     '<a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">')
+>>> print lxml.etree.tostring(tree, pretty_print=True),
+<a href="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;"/>
