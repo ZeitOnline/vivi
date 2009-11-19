@@ -285,6 +285,7 @@ class IWriteTeaserBlockColumns(zope.interface.Interface):
 
         """
 
+
 class ITeaserBlockColumns(IReadTeaserBlockColumns, IWriteTeaserBlockColumns):
     """Column information for a teaser block."""
 
@@ -304,7 +305,8 @@ class IXMLBlock(IBlock):
 
     xml = zeit.cms.content.field.XMLTree(
         title=_("XML Source"),
-        constraint=validate_xml_block)
+        constraint=validate_xml_block,
+        tidy_input=True)
 
 
 class IAVBlock(IBlock):
