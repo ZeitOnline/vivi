@@ -295,15 +295,16 @@ zeit.imp.Imp = Class.extend({
         var image_pos = new MochiKit.Style.Coordinates(x, y);
         var args = self.get_crop_arguments(image_pos);
         if (!isNull(args)) {
+            var border_offset = 1;
             if (args.x1 < 0) {
-                x += args.x1 - 1;
-            } else if (args.x2 > args.w) {
-                x += args.x2 - args.w - 1
+                x += args.x1 - 1 - border_offset;
+            } else if (args.x2 >= args.w) {
+                x += args.x2 - args.w - 1 + border_offset;
             }
             if (args.y1 < 0) {
-                y += args.y1 - 1;
-            } else if (args.y2 > args.h) {
-                y += args.y2 - args.h -1
+                y += args.y1 - 1 - border_offset;
+            } else if (args.y2 >= args.h) {
+                y += args.y2 - args.h - 1 + border_offset;
             }
         }
         return [x, y]
