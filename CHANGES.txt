@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.33.1 (unreleased)
+1.34.0 (2009-11-25)
 -------------------
 
 - Fehlerhaftes Markup im Raw-Block wird repariert (#6430).
