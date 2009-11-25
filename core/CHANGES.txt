@@ -4,8 +4,8 @@ zeit.imp changes
 0.9.1 (unreleased)
 ++++++++++++++++++
 
-- Beim Verschieben des Bildes wird versucht es innerhalb der Schnittmaske zu
-  behalten (#4972).
+- Das Bild kann nicht mehr außerhalb der Schnittmaske verschoben oder
+  zugeschnitten werden (#4972).
 
 
 0.9.0 (2009-11-04)
