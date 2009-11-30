@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.29.1 (2009-11-30)
+0.29.1 (unreleased)
 -------------------
 
 - Added new cp extra block -linkatory-
