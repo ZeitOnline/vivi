@@ -83,3 +83,4 @@ factor('dpa-news', u'dpa-News')
 factor('authors-register', u'Autoren-Register')
 factor('linkatory', u'Linkatory',
        zeit.content.cp.interfaces.IInformatives)
+factor('homepage_news_pics', u'Neu auf Zeit Online (Bilder)')
