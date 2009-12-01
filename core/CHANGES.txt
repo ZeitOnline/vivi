@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.29.1 (unreleased)
 -------------------
 
-- Added new cp extra block -linkatory-
+- ``cp_extra`` Block hinzugefügt: linkatory
 - ``cp_extra`` Block hinzugefügt: homepage_news_pics
 
 
