@@ -21,12 +21,6 @@
     <require
       set_schema="zeit.wysiwyg.interfaces.IHTMLContent"
       permission="zeit.EditContent" />
-    <require
-      interface="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
-      permission="zeit.EditContent" />
   </class>
 
   <adapter factory=".article.ArticleHTMLContent"/>
