@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 # $Id$
 
-import datetime
-
 import zope.formlib.form
 
 import zope.app.appsetup.interfaces
@@ -22,9 +20,8 @@ import zeit.content.gallery.gallery
 
 class GalleryFormBase(object):
 
-    form_fields =zope.formlib.form.FormFields(
+    form_fields = zope.formlib.form.FormFields(
         zeit.cms.interfaces.ICMSContent,
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
         zeit.content.gallery.interfaces.IGalleryMetadata)
 
 
