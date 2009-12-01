@@ -3,7 +3,6 @@
 
 import gocept.async
 import logging
-import persistent
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -30,8 +29,8 @@ def update_feed(context):
         context, None)
     if auto is None:
         log.debug("No automatic update of metadata for %s because"
-                  "no IAutomaticMetadataUpdate adapter found." %(
-                      context.uniqueId,))
+                  "no IAutomaticMetadataUpdate adapter found."
+                  % context.uniqueId)
         return
 
     relations = zope.component.getUtility(

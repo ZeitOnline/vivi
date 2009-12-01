@@ -3,7 +3,6 @@
 
 from __future__ import with_statement
 import gocept.async
-import logging
 import lxml.etree
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
@@ -22,6 +21,7 @@ def update_index_on_checkin(context, event):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     relations.index(context)
+
 
 def update_relating_of_checked_out(checked_out):
     """Update the objects which relate the checked_out."""
@@ -60,6 +60,7 @@ def update_relating_of_checked_out(checked_out):
 def update_relating_handler(context, event):
     """Update metadata in object which relates another."""
     update_relating(context)
+
 
 @gocept.async.function('events')
 def update_relating(context):

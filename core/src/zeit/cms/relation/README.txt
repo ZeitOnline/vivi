@@ -3,8 +3,8 @@ Relations
 
 The relation support is there to answer the question by which objects an object
 is referenced by, i.e. to resolve back references. The backreferences are
-extrinsict, the referenced object doesn't know about them. The actualy
-references are usually intrinsict, i.e. the referencing object knows it
+extrinsic, the referenced object doesn't know about them. The actual
+references are usually intrinsic, i.e. the referencing object knows it
 references the other object.
 
 
@@ -20,7 +20,7 @@ references[#functional]_:
 >>> relations
 <zeit.cms.relation.relation.Relations object at 0x...>
 
-[#interface]_ 
+[#interface]_
 
 
 Get a testcontent[#createtestcontent]_:
@@ -63,7 +63,7 @@ The same accounts for c:
 u'http://xml.zeit.de/a'
 
 
-Note that `get_relations` is not transitive. So if d references a, askind for
+Note that `get_relations` is not transitive. So if d references a, asking for
 c's references will still just yield a:
 
 >>> d = repository['d']
