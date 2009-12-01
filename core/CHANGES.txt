@@ -4,7 +4,7 @@ zeit.cms changes
 1.39.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Favicon aktualisiert.
 
 
 1.39.3 (2009-11-25)
