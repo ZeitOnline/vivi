@@ -3,7 +3,6 @@
 
 from __future__ import with_statement
 import gocept.async
-import lxml.etree
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
