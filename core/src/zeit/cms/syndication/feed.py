@@ -188,6 +188,20 @@ def syndicated_in(content, catalog):
     return list(feed)
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
+def feed_references(context):
+    return syndicated_in(context, None)
+
+
+@zope.component.adapter(
+    zeit.cms.syndication.interfaces.IFeed,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_feed_metadata_on_checkin(context, event):
+    for item in context:
+        context.updateMetadata(item)
+
+
 class Entry(object):
     """An entry in the feed."""
 

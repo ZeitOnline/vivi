@@ -2,16 +2,14 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
-import UserDict
-import datetime
+from zeit.cms.i18n import MessageFactory as _
 import logging
-import pytz
-import z3c.flashmessage.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
+import zeit.cms.syndication.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
@@ -20,7 +18,6 @@ import zope.component
 import zope.event
 import zope.interface
 import zope.location.location
-from zeit.cms.i18n import MessageFactory as _
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
@@ -77,8 +74,11 @@ def remove_from_channels_after_retract(context, event):
     """Removes objects from channels when they're retracted."""
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
-    syndicated_in = relations.get_relations(context, 'syndicated_in')
+    syndicated_in = relations.get_relations(context)
     for feed in list(syndicated_in):
+        # XXX we might want to store the kind of relation
+        if not zeit.cms.syndication.interfaces.IFeed.providedBy(feed):
+            continue
         with zeit.cms.checkout.helper.checked_out(feed) as checked_out:
             if checked_out is not None:
                 try:

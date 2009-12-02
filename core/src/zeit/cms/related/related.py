@@ -3,15 +3,14 @@
 
 import lxml.objectify
 import rwproperty
-
-import zope.component
-import zope.interface
-
-import zeit.cms.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
-import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
 import zeit.cms.related.interfaces
+import zeit.cms.relation.interfaces
+import zope.component
+import zope.interface
 
 
 class RelatedBase(object):
@@ -133,6 +132,12 @@ def related(content, catalog):
     if related is None:
         return None
     return related.related
+
+
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
+def related_references(context):
+    return related(context, None)
 
 
 @zope.component.adapter(

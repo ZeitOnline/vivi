@@ -11,12 +11,6 @@
     <require
       set_schema=".interfaces.ICenterPage"
       permission="zeit.EditContent" />
-    <require
-      interface="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate"
-      permission="zeit.EditContent" />
   </class>
 
   <adapter factory=".centerpage.centerpageFromTemplate" />

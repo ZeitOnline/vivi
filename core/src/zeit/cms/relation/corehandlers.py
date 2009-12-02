@@ -23,57 +23,22 @@ def update_index_on_checkin(context, event):
     relations.index(context)
 
 
-def update_relating_of_checked_out(checked_out):
-    """Update the objects which relate the checked_out."""
-    related = zeit.cms.related.interfaces.IRelatedContent(
-        checked_out, None)
-    if related is None:
-        return False
-
-    # Get an xml representation of the related to check if anything was
-    # actually changed
-    xml_before = lxml.etree.tostring(
-        zeit.cms.content.interfaces.IXMLRepresentation(related).xml)
-
-    # Update related
-    related.related = related.related
-
-    # Make sure there actually was a change.
-    xml_after = lxml.etree.tostring(
-        zeit.cms.content.interfaces.IXMLRepresentation(related).xml)
-
-    if xml_before == xml_after:
-        return False
-
-    # Okay to be really sure this isn't just some xml snafu put both xmls
-    # through an etree again
-    if (lxml.etree.tostring(lxml.etree.fromstring(xml_before)) ==
-        lxml.etree.tostring(lxml.etree.fromstring(xml_after))):
-        return False
-
-    return True
-
-
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_relating_handler(context, event):
-    """Update metadata in object which relates another."""
-    update_relating(context)
+def update_referencing_objects_handler(context, event):
+    """Update metadata in objects which reference the checked-in object."""
+    # prevent recursion
+    if not gocept.async.is_async():
+        update_referencing_objects(context)
 
 
 @gocept.async.function('events')
-def update_relating(context):
+def update_referencing_objects(context):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
-    relating_objects = relations.get_relations(context, 'related')
+    relating_objects = relations.get_relations(context)
     for related_object in relating_objects:
-        # Don't send events for the subsequent checkins to avoid recursing too
-        # deep. See also #6026.
-        with zeit.cms.checkout.helper.checked_out(
-            related_object, events=False) as co:
-            if co is None:
-                continue
-            changed = update_relating_of_checked_out(co)
-            if not changed:
-                raise zeit.cms.checkout.interfaces.NotChanged()
+        # the actual work is done by IBeforeCheckin-handlers
+        zeit.cms.checkout.helper.with_checked_out(
+            related_object, lambda x: True)

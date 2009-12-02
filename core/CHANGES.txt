@@ -6,6 +6,11 @@ zeit.cms changes
 
 - Favicon aktualisiert.
 
+Technische Änderungen
++++++++++++++++++++++
+
+- Relationen zwischen Content-Objekten werden über einen allgemeinen Index
+  abgebildet, nicht mehr einzelne (related, syndicated, image) (#6300).
 
 1.39.3 (2009-11-25)
 -------------------

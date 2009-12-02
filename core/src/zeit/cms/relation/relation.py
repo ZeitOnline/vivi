@@ -24,12 +24,13 @@ class Relations(persistent.Persistent):
     def index(self, obj):
         self._catalog.index(obj)
 
-    def get_relations(self, obj, name):
-        token = list(self._catalog.tokenizeValues([obj], name))[0]
+    def get_relations(self, obj):
+        index = 'referenced_by'
+        token = list(self._catalog.tokenizeValues([obj], index))[0]
         if token is None:
             return ()
         # TODO: add some code to remove removed objects from the index
-        return (obj for obj in self._catalog.findRelations({name: token})
+        return (obj for obj in self._catalog.findRelations({index: token})
                 if obj is not None)
 
     def add_index(self, element, multiple=False):
@@ -53,3 +54,22 @@ def _load_content(token, catalog, cache):
     except KeyError:
         # If the object doesn't exist, return None
         return None
+
+
+def referenced_by(content, catalog):
+    """Index for the zeit.cms.relation catalog."""
+    return zeit.cms.relation.interfaces.IReferences(content, None)
+
+
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.relation.interfaces.IReferences)
+def references(context):
+    result = []
+    for name, adapter in zope.component.getAdapters(
+        (context,), zeit.cms.relation.interfaces.IReferenceProvider):
+        # require a name since unnamed adapters would cause configuration
+        # conflicts
+        if not name:
+            continue
+        result.extend(adapter)
+    return result

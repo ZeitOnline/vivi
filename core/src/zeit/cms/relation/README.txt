@@ -33,7 +33,7 @@ Before asking for relations the content must be indexed:
 
 The content doesn't have any relateds currently, nor is it related anywhere:
 
->>> sorted(relations.get_relations(a, 'related'))
+>>> sorted(relations.get_relations(a))
 []
 
 Relate b and c to a via IRelatedContent
@@ -48,7 +48,7 @@ Relate b and c to a via IRelatedContent
 
 We could ask for b's relations:
 
->>> res = sorted(relations.get_relations(repository['b'], 'related'))
+>>> res = sorted(relations.get_relations(repository['b']))
 >>> len(res)
 1
 >>> res
@@ -58,7 +58,7 @@ u'http://xml.zeit.de/a'
 
 The same accounts for c:
 
->>> res = sorted(relations.get_relations(repository['c'], 'related'))
+>>> res = sorted(relations.get_relations(repository['c']))
 >>> res[0].uniqueId
 u'http://xml.zeit.de/a'
 
@@ -72,7 +72,7 @@ c's references will still just yield a:
 >>> repository['d'] = d
 >>> relations.index(d)
 
->>> res = sorted(relations.get_relations(repository['c'], 'related'))
+>>> res = sorted(relations.get_relations(repository['c']))
 >>> len(res)
 1
 >>> res[0].uniqueId
@@ -84,7 +84,7 @@ When we remove a from the repository, but do not update the index, c will no
 longer reference a anyway (because we cannot find a anymore)
 
 >>> del repository['a']
->>> sorted(relations.get_relations(repository['c'], 'related'))
+>>> sorted(relations.get_relations(repository['c']))
 []
 
 
@@ -92,7 +92,7 @@ longer reference a anyway (because we cannot find a anymore)
     is queried, nothing will be returned:
 
     >>> no_uid = TestContentType()
-    >>> sorted(relations.get_relations(no_uid, 'related'))
+    >>> sorted(relations.get_relations(no_uid))
     []
 
 
@@ -117,7 +117,7 @@ c[#needsinteraction]_:
 
 Nothing has been indexed so far:
 
->>> sorted(relations.get_relations(repository['c'], 'related'))
+>>> sorted(relations.get_relations(repository['c']))
 []
 
 Check in:
@@ -126,7 +126,7 @@ Check in:
 
 The relation can be queried now:
 
->>> res = sorted(relations.get_relations(repository['c'], 'related'))
+>>> res = sorted(relations.get_relations(repository['c']))
 >>> len(res)
 1
 >>> res[0].uniqueId

@@ -138,9 +138,9 @@ After syndication the relation utility knows where a content is syndicated in:
 >>> import zeit.cms.relation.interfaces
 >>> relations = zope.component.getUtility(
 ...     zeit.cms.relation.interfaces.IRelations)
->>> syndicated_in = list(
-...     relations.get_relations(content, 'syndicated_in'))
->>> len(syndicated_in)
+>>> referenced_by = list(
+...     relations.get_relations(content))
+>>> len(referenced_by)
 1
 
 
@@ -273,7 +273,7 @@ The feed has not changed this time:
   <container>
     <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
       <supertitle xsi:nil="true"/>
-      <title py:pytype="str">nice Teaser Title</title>
+      <title py:pytype="str">nice other Teaser Title</title>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>...
@@ -304,50 +304,6 @@ Even after checkout/checkin there is nothing in the feed:
 
 >>> len(repository['politik.feed'])
 0
-
-
-Make sure the ``SyndicatedInSource`` works even when 1. the channel is no
-longer a channel and 2. the channel is removed:
-
-Initially there is the politik feed in:
-
->>> source = zeit.cms.syndication.interfaces.SyndicatedInSource()(content)
->>> list(source)
-[<zeit.cms.syndication.feed.Feed object at 0x...>]
->>> feed = list(source)[0]
-
->>> import zope.publisher.browser
->>> import zope.app.form.browser
->>> request = zope.publisher.browser.TestRequest()
->>> terms = zope.component.getMultiAdapter(
-...     (source, request),
-...     zope.app.form.browser.interfaces.ITerms)
->>> terms.getTerm(feed).title
-u'Politik'
-
-Change the type of politik feed to unknown:
-
-
->>> connector.changeProperties(
-...     feed.uniqueId, {
-...         zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY: 'unknown'})
->>> import transaction
->>> transaction.commit()  # clears some caches
-
-Now there is an unknown resource in the channel:
-
->>> list(source)
-[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>]
->>> terms.getTerm(list(source)[0]).title
-u'http://xml.zeit.de/politik.feed'
-
-
-When we remove the feed from the repository, the source is empty:
-
->>> del repository['politik.feed']
->>> list(source)
-[]
-
 
 Footnotes
 =========

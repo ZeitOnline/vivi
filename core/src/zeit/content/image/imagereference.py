@@ -91,47 +91,10 @@ def image_referenced_by(content, catalog):
     return images.images
 
 
-def update_image_reference_of_checked_out(checked_out):
-    """Update the object which relate the checked out.
-
-    returns True if object has changed, False otherwise.
-
-    """
-    images = zeit.content.image.interfaces.IImages(checked_out, None)
-    if images is None:
-        return False
-    xml_before = lxml.etree.tostring(
-        zeit.cms.content.interfaces.IXMLRepresentation(images).xml)
-
-    # Update related
-    images.images = images.images
-
-    # Make sure there actually was a change.
-    xml_after = lxml.etree.tostring(
-        zeit.cms.content.interfaces.IXMLRepresentation(images).xml)
-
-    if xml_before == xml_after:
-        return False
-
-    return True
-
-
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_objects_referenced_by_images_handler(context, event):
-    update_objects_referenced_by_images(context)
-
-
-@gocept.async.function(service='events')
-def update_objects_referenced_by_images(context):
-    """Update objects which are referenced by images."""
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
-    relating_objects = relations.get_relations(context, 'image_referenced_by')
-    for related_object in relating_objects:
-        zeit.cms.checkout.helper.with_checked_out(
-            related_object, update_image_reference_of_checked_out)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
+def image_references(context):
+    return image_referenced_by(context, None)
 
 
 class References(object):
@@ -146,6 +109,5 @@ class References(object):
     def references(self):
         relations = zope.component.getUtility(
             zeit.cms.relation.interfaces.IRelations)
-        relating_objects = relations.get_relations(self.context,
-                                                   'image_referenced_by')
+        relating_objects = relations.get_relations(self.context)
         return tuple(relating_objects)

@@ -5,7 +5,6 @@
 from zeit.cms.asset.browser.form import AssetBase  # Legacy
 from zeit.cms.i18n import MessageFactory as _
 import copy
-import datetime
 import gocept.form.grouped
 import zc.resourcelibrary
 import zeit.cms.browser.form
@@ -14,12 +13,9 @@ import zeit.cms.content.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.settings.interfaces
-import zeit.cms.syndication.interfaces
 import zope.app.appsetup.interfaces
 import zope.app.form.browser.textwidgets
 import zope.testing.cleanup
-
-
 
 
 class ShowLimitInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -65,12 +61,11 @@ class CommonMetadataFormBase(object):
         text_fields,
         gocept.form.grouped.RemainingFields(
             _("misc."),
-            css_class= 'column-right'),
+            css_class='column-right'),
         option_fields,
         )
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate)
+        zeit.cms.content.interfaces.ICommonMetadata)
 
     for_display = False
 

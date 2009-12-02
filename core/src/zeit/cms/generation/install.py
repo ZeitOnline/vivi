@@ -54,8 +54,8 @@ def installRelations():
         zeit.cms.relation.relation.Relations,
         'relations',
         zeit.cms.relation.interfaces.IRelations)
-    relations.add_index(zeit.cms.content.related.related, multiple=True)
-    relations.add_index(zeit.cms.syndication.feed.syndicated_in, multiple=True)
+    relations.add_index(
+        zeit.cms.relation.relation.referenced_by, multiple=True)
 
 
 def install(root):

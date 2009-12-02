@@ -133,9 +133,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <subscriber
-    handler=".imagereference.update_objects_referenced_by_images_handler" />
-
   <adapter factory=".imagereference.References"/>
   <adapter
     factory=".imagereference.References"
@@ -146,6 +143,11 @@
       interface=".interfaces.IReferences"
       permission="zope.View" />
   </class>
+
+  <adapter
+    factory=".imagereference.image_references"
+    name="zeit.content.image"
+    />
 
   <adapter factory=".masterimage.group_to_master" />
 

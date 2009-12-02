@@ -81,4 +81,9 @@ setup(
         'zope.testing>=3.8.0',
         'zope.xmlpickle',
     ],
+    entry_points = dict(
+        console_scripts=[
+            'dump_references = zeit.cms.relation.migrate:dump_references',
+            'load_references = zeit.cms.relation.migrate:load_references',
+        ])
 )

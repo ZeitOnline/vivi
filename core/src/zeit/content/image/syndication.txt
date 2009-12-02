@@ -201,7 +201,7 @@ out via the relations utility:
 >>> import zeit.cms.relation.interfaces
 >>> relations = zope.component.getUtility(
 ...     zeit.cms.relation.interfaces.IRelations)
->>> list(relations.get_relations(group, 'image_referenced_by'))
+>>> list(relations.get_relations(group))
 [<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
 
 

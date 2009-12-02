@@ -165,32 +165,3 @@ class FeedSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 feedSource = FeedSource()
-
-
-class SyndicatedInSource(
-    zc.sourcefactory.contextual.BasicContextualSourceFactory):
-    """A source returning the feeds an article is syndicated in."""
-
-    def getValues(self, context):
-        relations = zope.component.getUtility(
-            zeit.cms.relation.interfaces.IRelations)
-        return relations.get_relations(context, 'syndicated_in')
-
-    def getTitle(self, context, value):
-        if IReadFeed.providedBy(value):
-            return value.title
-        if zeit.cms.interfaces.ICMSContent.providedBy(value):
-            return value.uniqueId
-        return str(value)  # XXX not tested, but should not be reached anyway.
-
-
-class IAutomaticMetadataUpdate(zope.interface.Interface):
-    """Access to information about automatic metadata update."""
-
-    automaticMetadataUpdateDisabled = zope.schema.FrozenSet(
-        title=_("No automatic metadata update"),
-        description=_("When this object is checked in, its metata will "
-                      "not automatically updated in the selected channels."),
-        default=frozenset(),
-        value_type=zope.schema.Choice(source=SyndicatedInSource()))
-

@@ -7,7 +7,6 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.keyword
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-import zeit.cms.syndication.interfaces
 import zope.browser.interfaces
 import zope.component
 import zope.interface
@@ -17,8 +16,7 @@ import zope.publisher.browser
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate)
+        zeit.cms.content.interfaces.ICommonMetadata)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.content.interfaces.ICommonMetadata,
@@ -67,13 +65,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.teaser.title')
     teaserText = zeit.cms.content.property.ObjectPathProperty(
         '.teaser.text')
-
-    automaticMetadataUpdateDisabled = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate[
-            'automaticMetadataUpdateDisabled'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'automaticMetadataUpdateDisabled',
-        use_default=True)
 
     printRessort = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['printRessort'],

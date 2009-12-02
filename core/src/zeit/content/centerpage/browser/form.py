@@ -3,14 +3,12 @@
 # $Id$
 
 import StringIO
-import datetime
 
 import zope.formlib.form
 
 import zeit.cms.browser.form
 import zeit.cms.interfaces
 import zeit.cms.content.browser.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.xmleditor.browser.form
 
 import zeit.content.centerpage.interfaces
@@ -32,7 +30,6 @@ class CPFormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.interfaces.ICMSContent,
-        zeit.cms.syndication.interfaces.IAutomaticMetadataUpdate,
         zeit.content.centerpage.interfaces.ICenterPageMetadata)
 
 
