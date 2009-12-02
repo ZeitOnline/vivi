@@ -180,18 +180,13 @@ class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = 'zeit.cms.syndication.feed.Add'
 
 
-def syndicated_in(content, catalog):
-    """Index for relations."""
-    feed = zeit.cms.syndication.interfaces.IFeed(content, None)
-    if not feed:
-        return None
-    return list(feed)
-
-
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def feed_references(context):
-    return syndicated_in(context, None)
+    feed = zeit.cms.syndication.interfaces.IFeed(context, None)
+    if not feed:
+        return None
+    return list(feed)
 
 
 @zope.component.adapter(

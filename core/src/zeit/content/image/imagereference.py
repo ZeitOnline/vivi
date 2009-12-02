@@ -83,18 +83,13 @@ def update_image_reference_on_checkin(context, event):
         images.images = image_list
 
 
-def image_referenced_by(content, catalog):
-    """Index support for relation catalog."""
-    images = zeit.content.image.interfaces.IImages(content, None)
-    if images is None:
-        return
-    return images.images
-
-
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def image_references(context):
-    return image_referenced_by(context, None)
+    images = zeit.content.image.interfaces.IImages(context, None)
+    if images is None:
+        return
+    return images.images
 
 
 class References(object):

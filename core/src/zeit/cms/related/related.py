@@ -126,18 +126,13 @@ def BasicReference(context):
     return reference
 
 
-def related(content, catalog):
-    """Index support for relation catalog."""
-    related = zeit.cms.related.interfaces.IRelatedContent(content, None)
-    if related is None:
-        return None
-    return related.related
-
-
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def related_references(context):
-    return related(context, None)
+    related = zeit.cms.related.interfaces.IRelatedContent(context, None)
+    if related is None:
+        return None
+    return related.related
 
 
 @zope.component.adapter(

@@ -9,7 +9,6 @@ import lovely.remotetask.processor
 import lovely.remotetask.interfaces
 
 import zeit.cms.content.interfaces
-import zeit.cms.content.related
 import zeit.cms.content.template
 import zeit.cms.generation
 import zeit.cms.relation.relation
