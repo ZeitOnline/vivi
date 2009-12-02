@@ -67,9 +67,9 @@ def references(context):
     result = []
     for name, adapter in zope.component.getAdapters(
         (context,), zeit.cms.relation.interfaces.IReferenceProvider):
-        # require a name since unnamed adapters would cause configuration
-        # conflicts
         if not name:
-            continue
+            raise ValueError(
+                'IReferenceProvider %r is registered without a name,'
+                ' this will cause configuration conflicts.')
         result.extend(adapter)
     return result
