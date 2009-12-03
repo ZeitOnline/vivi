@@ -100,15 +100,23 @@ class HTMLConverter(object):
                     filtered.tail = node.tail
 
     def references(self, tree):
-        result = []
+        candidates = []
         tree = zope.security.proxy.removeSecurityProxy(tree)
         for adapter in self._steps():
             xp = getattr(adapter, 'xpath_xml')
             if xp is SKIP:
                 continue
             for node in tree.xpath(xp):
-                result.extend(adapter.references(node))
-        return [zeit.cms.interfaces.ICMSContent(id) for id in result]
+                candidates.extend(adapter.references(node))
+
+        result = []
+        for id in candidates:
+            if not id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+                continue
+            obj = zeit.cms.interfaces.ICMSContent(id, None)
+            if obj is not None:
+                result.append(obj)
+        return result
 
     def covered_xpath(self):
         """return an xpath query that matches all nodes for which there is a
@@ -376,14 +384,7 @@ class ImageStep(ConversionStep):
 
     def references(self, node):
         unique_id = node.get('src', '')
-        if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
-            return []
-        try:
-            self.repository.getContent(unique_id)
-        except KeyError:
-            return []
-        else:
-            return [unique_id]
+        return [unique_id]
 
 
 class URLStep(ConversionStep):
@@ -652,14 +653,7 @@ class ReferenceStep(ConversionStep):
 
     def references(self, node):
         unique_id = node.get('href')
-        if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
-            return []
-        try:
-            self.repository.getContent(unique_id)
-        except KeyError:
-            return []
-        else:
-            return [unique_id]
+        return [unique_id]
 
 
 class PortraitboxStep(ReferenceStep):
