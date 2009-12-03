@@ -22,4 +22,22 @@
   <adapter factory=".html.URLStep" name="URLStep" />
   <adapter factory=".html.VideoAudioStep" name="VideoAudioStep" />
   <adapter factory=".html.RelatedsStep" name="RelatedsStep" />
+
+
+  <adapter factory=".reference.html_references" name="zeit.wysiwyg.html" />
+  <subscriber handler=".reference.update_metadata_on_checkin" />
+
+  <adapter
+      factory=".reference.AbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+      permission="zope.Public"
+      />
+
+  <adapter
+      factory=".reference.AbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+      name="absolute_url"
+      permission="zope.Public"
+      />
+
 </configure>

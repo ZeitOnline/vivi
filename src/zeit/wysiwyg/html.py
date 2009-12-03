@@ -11,8 +11,10 @@ import lxml.objectify
 import rwproperty
 import time
 import zc.iso8601.parse
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
 import zeit.cms.repository.interfaces
 import zeit.wysiwyg.interfaces
 import zope.cachedescriptors.property
@@ -79,12 +81,14 @@ class HTMLConverter(object):
 
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
-    def _apply_steps(self, tree, xpath, method, reverse):
+    def _steps(self, reverse=False):
         steps = [adapter for name, adapter in zope.component.getAdapters(
                 (self.context,), zeit.wysiwyg.interfaces.IConversionStep)]
         steps = sorted(steps, key=lambda x: x.weight, reverse=reverse)
+        return steps
 
-        for adapter in steps:
+    def _apply_steps(self, tree, xpath, method, reverse):
+        for adapter in self._steps(reverse):
             xp = getattr(adapter, xpath)
             if xp is SKIP:
                 continue
@@ -95,12 +99,21 @@ class HTMLConverter(object):
                     node.getparent().replace(node, filtered)
                     filtered.tail = node.tail
 
+    def references(self, tree):
+        result = []
+        tree = zope.security.proxy.removeSecurityProxy(tree)
+        for adapter in self._steps():
+            xp = getattr(adapter, 'xpath_xml')
+            if xp is SKIP:
+                continue
+            for node in tree.xpath(xp):
+                result.extend(adapter.references(node))
+        return [zeit.cms.interfaces.ICMSContent(id) for id in result]
+
     def covered_xpath(self):
         """return an xpath query that matches all nodes for which there is a
         ConversionStep registered."""
-        steps = [adapter for name, adapter in zope.component.getAdapters(
-                (self.context,), zeit.wysiwyg.interfaces.IConversionStep)]
-        xpath = [s.xpath_xml for s in steps
+        xpath = [s.xpath_xml for s in self._steps()
                  if s.xpath_xml is not SKIP and s.xpath_xml != '.']
         return '|'.join(xpath)
 
@@ -178,6 +191,9 @@ class ConversionStep(object):
     def to_xml(self, node):
         raise NotImplementedError(
             "when specifiyng xpath_html, to_xml() must be implemented")
+
+    def references(self, node):
+        return []
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
@@ -357,6 +373,12 @@ class ImageStep(ConversionStep):
         if layout:
             new_node.set('layout', layout)
         return new_node
+
+    def references(self, node):
+        unique_id = node.get('src', '')
+        if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+            return []
+        return [unique_id]
 
 
 class URLStep(ConversionStep):
@@ -734,6 +756,10 @@ class HTMLContentBase(object):
     @rwproperty.setproperty
     def html(self, value):
         return self.convert.from_html(self.get_tree(), value)
+
+    @property
+    def references(self):
+        return self.convert.references(self.get_tree())
 
     @property
     def convert(self):
