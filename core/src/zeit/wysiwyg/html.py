@@ -378,7 +378,12 @@ class ImageStep(ConversionStep):
         unique_id = node.get('src', '')
         if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
             return []
-        return [unique_id]
+        try:
+            self.repository.getContent(unique_id)
+        except KeyError:
+            return []
+        else:
+            return [unique_id]
 
 
 class URLStep(ConversionStep):
@@ -644,6 +649,17 @@ class ReferenceStep(ConversionStep):
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
             updater.update(new_node)
         return new_node
+
+    def references(self, node):
+        unique_id = node.get('href')
+        if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+            return []
+        try:
+            self.repository.getContent(unique_id)
+        except KeyError:
+            return []
+        else:
+            return [unique_id]
 
 
 class PortraitboxStep(ReferenceStep):
