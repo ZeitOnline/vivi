@@ -5,6 +5,8 @@ zeit.cms changes
 -------------------
 
 - Favicon aktualisiert.
+- Wenn im XML für die Keywords ein Fehler ist, wird das Laden abgebrochen und
+  die alte Fassung behalten (#6046).
 
 Technische Änderungen
 +++++++++++++++++++++

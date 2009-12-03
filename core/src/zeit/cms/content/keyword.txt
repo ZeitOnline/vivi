@@ -217,6 +217,18 @@ kept:
 >>> keywords.root.label
 u'Themen des Tests'
 
+>>> new_keywords.seek(0)
+>>> new_keywords.truncate()
+>>> new_keywords.write("""\
+...   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pcv="http://prismstandard.org/namespaces/1.2/pcv/" xml:base="http://namespaces.zeit.de/cv/themen.rdf">
+...     <pcv:Descriptor rdf:ID="Politik">
+...     </pcv:Descriptor>
+...   </rdf:RDF>""")
+>>> new_keywords.flush()
+>>> time.sleep(1)
+>>> keywords.root.label
+u'Themen des Tests'
+
 Reset the reload_interval to 5 minutes:
 
 >>> keywords.reload_interval = datetime.timedelta(seconds=360)

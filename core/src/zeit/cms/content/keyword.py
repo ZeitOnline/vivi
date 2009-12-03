@@ -90,9 +90,6 @@ class KeywordUtility(object):
                 return '{%s}%s' % (rdf_ns, node_name)
 
             prism_tree = self.load_tree()
-            if prism_tree is None:
-                # Doesn't parse etc.
-                return
 
             keywords = {}
             descriptors = []
@@ -135,6 +132,8 @@ class KeywordUtility(object):
             self._root = root_keyword
             self._keywords_by_code = keywords_by_code
             self.loaded = datetime.datetime.now(pytz.UTC)
+        except:
+            log.error('Could not load keywords.', exc_info=True)
         finally:
             self.load_lock.release()
 
@@ -144,12 +143,7 @@ class KeywordUtility(object):
         url = cms_config['source-keyword']
         log.info('Loading keywords from %s' % url)
         request = urllib2.urlopen(url)
-        try:
-            return lxml.objectify.parse(request).getroot()
-        except lxml.etree.XMLSyntaxError:
-            log.error('Could not load keywords.', exc_info=True)
-            return None
-
+        return lxml.objectify.parse(request).getroot()
 
 
 class KeywordsProperty(zeit.cms.content.property.MultiPropertyBase):
