@@ -4,8 +4,8 @@ zeit.find changes
 0.18.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Im Volltext ist die vollständige Solr-Syntax verfügbar
+  <http://lucene.apache.org/java/2_4_0/queryparsersyntax.html> (#5822).
 
 0.18.0 (2009-10-19)
 -------------------
