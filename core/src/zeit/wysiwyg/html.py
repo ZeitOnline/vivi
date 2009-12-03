@@ -100,17 +100,22 @@ class HTMLConverter(object):
                     filtered.tail = node.tail
 
     def references(self, tree):
-        candidates = []
+        return self._retrieve_content(self._extract_referenced_ids(tree))
+
+    def _extract_referenced_ids(self, tree):
+        result = []
         tree = zope.security.proxy.removeSecurityProxy(tree)
         for adapter in self._steps():
             xp = getattr(adapter, 'xpath_xml')
             if xp is SKIP:
                 continue
             for node in tree.xpath(xp):
-                candidates.extend(adapter.references(node))
+                result.extend(adapter.references(node))
+        return result
 
+    def _retrieve_content(self, ids):
         result = []
-        for id in candidates:
+        for id in ids:
             if not id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
                 continue
             obj = zeit.cms.interfaces.ICMSContent(id, None)
