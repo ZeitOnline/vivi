@@ -200,9 +200,13 @@ class SearchResult(SearchResultBase):
             return {'template': 'no_search_result.jsont', "error": error}
         if q is None:
             return {'template': 'no_search_result.jsont'}
-        results = zeit.find.search.search(q, self.sort_order())
         self.store_session()
-        return self.results(results)
+        try:
+            results = zeit.find.search.search(q, self.sort_order())
+            return self.results(results)
+        except zeit.solr.interfaces.SolrError, e:
+            return {'template': 'no_search_result.jsont',
+                    'error': e.args[0]}
 
     def store_session(self):
         session = zope.session.interfaces.ISession(self.request)['zeit.find']

@@ -19,6 +19,6 @@ setup(
         'setuptools',
         'zc.iso8601',
         'zeit.cms>1.21',
-        'zeit.solr>=0.3',
+        'zeit.solr>0.16.3',
     ],
 )

@@ -126,7 +126,7 @@ def query(fulltext=None,
 
     terms = []
     if fulltext:
-        terms.append(lq.field('text', fulltext))
+        terms.append(lq.field_raw('text', fulltext))
     if from_ is not None or until is not None:
         terms.append(
             lq.datetime_range('last-semantic-change', from_, until))
