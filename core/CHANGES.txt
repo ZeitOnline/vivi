@@ -6,7 +6,8 @@ zeit.content.cp changes
 
 - ``cp_extra`` Block hinzugefügt: linkatory
 - ``cp_extra`` Block hinzugefügt: homepage_news_pics
-
+- Teaser-Block im Autopilot: Doubletten-Vermeidung ist standardmäßig aktiviert
+  (#6243).
 
 0.29.0 (2009-11-25)
 -------------------

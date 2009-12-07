@@ -219,11 +219,8 @@ content:
 >>> list(teasers)
 []
 
-There is a property to hide duplicates:
+There is a property to hide duplicates, it defaults to true:
 
->>> teasers.hide_dupes is None
-True
->>> teasers.hide_dupes = True
 >>> teasers.hide_dupes
 True
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True),

@@ -240,7 +240,7 @@ class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
 
     hide_dupes = zope.schema.Bool(
         title=_('Hide duplicate teasers'),
-        default=False)
+        default=True)
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
