@@ -59,7 +59,8 @@ but from two on, <division> is converted to a <div class="page-break">:
 <p> </p>
 <p>3</p>
 <p>4</p>
-
+>>> article.paragraphs
+4
 
 When there is no teaser attribute on the ``<division>`` the teaser will be
 empty:

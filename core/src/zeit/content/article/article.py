@@ -65,7 +65,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     @property
     def paragraphs(self):
-        return len(self.xml.body.findall('p'))
+        return len(self.xml.xpath('//body/division/p'))
 
     def updateDAVFromXML(self):
         properties = zeit.connector.interfaces.IWebDAVProperties(self)
