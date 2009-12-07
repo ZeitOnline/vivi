@@ -112,7 +112,7 @@ class CheckoutManager(object):
         if not self.canCheckin:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, "Cannot checkin.")
-        workingcopy =  self.context.__parent__
+        workingcopy = self.context.__parent__
         if semantic_change:
             lsc = zope.security.proxy.removeSecurityProxy(
                 zeit.cms.content.interfaces.ISemanticChange(self.context))
