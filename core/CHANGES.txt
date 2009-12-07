@@ -7,6 +7,8 @@ zeit.cms changes
 - Favicon aktualisiert.
 - Wenn im XML für die Keywords ein Fehler ist, wird das Laden abgebrochen und
   die alte Fassung behalten (#6046).
+- Last-semantic-change wird direkt beim Anlegen eines Objektes gestzt, nicht
+  erst beim Einchecken (#6476).
 
 Technische Änderungen
 +++++++++++++++++++++
