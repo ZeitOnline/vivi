@@ -76,7 +76,7 @@ When the entered data is not valid xml a `ConversionError` is raised:
 >>> widget._toFieldValue(u'<ed')
 Traceback (most recent call last):
     ...
-ConversionError: (ValidationError(XMLSyntaxError(u"Couldn't find end of Start Tag ed line 1, line 1, column 4",)), None)
+ConversionError:...Couldn't find end of Start Tag ed line 1, line 1, column 4...
 
 
 Display field
