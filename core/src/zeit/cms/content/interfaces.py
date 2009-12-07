@@ -363,6 +363,9 @@ class ILivePropertyManager(zope.interface.Interface):
     def register_live_property(name, namespace):
         """Register property as live property."""
 
+    def unregister_live_property(name, namespace):
+        """Unregister property as live property."""
+
     def is_live_property(name, namespace):
         """Return (bool) whether the property is a live property."""
 

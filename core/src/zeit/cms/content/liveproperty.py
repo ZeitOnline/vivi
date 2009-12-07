@@ -59,6 +59,10 @@ class LiveProperties(object, UserDict.DictMixin):
         cls.live_properties.add((name, namespace))
 
     @classmethod
+    def unregister_live_property(cls, name, namespace):
+        cls.live_properties.remove((name, namespace))
+
+    @classmethod
     def is_live_property(cls, name, namespace):
         return (name, namespace) in cls.live_properties
 
