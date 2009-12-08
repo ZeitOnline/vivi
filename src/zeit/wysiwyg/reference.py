@@ -35,13 +35,6 @@ def update_metadata_on_checkin(context, event):
     html_content.html = html_content.html
 
 
-# XXX work around a weird bug in zope.component to be able to register our
-# AbsoluteURL for the specific class and not the (overly general) IRequest
-# interface
-zope.interface.interfaces.ISpecification.providedBy(
-    lovely.remotetask.processor.ProcessorRequest())
-
-
 class AbsoluteURL(zope.publisher.browser.BrowserView):
     # update_metadata_on_checkin works by converting to HTML and back again.
     # It may be called from inside a RemoteTask (when triggered by
