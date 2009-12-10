@@ -51,7 +51,7 @@ class CommonMetadataFormBase(object):
         _("Options"),
         ('dailyNewsletter', 'commentsAllowed', 'foldable',
          'minimal_header', 'countings', 'is_content',
-         'banner', 'banner_id'),
+         'banner', 'banner_id', 'breaking_news'),
         css_class='column-right checkboxes')
 
 

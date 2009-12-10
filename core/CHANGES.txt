@@ -9,6 +9,7 @@ zeit.cms changes
   die alte Fassung behalten (#6046).
 - Last-semantic-change wird direkt beim Anlegen eines Objektes gestzt, nicht
   erst beim Einchecken (#6476).
+- Neue Option »Schlagzeile«.
 
 Technische Änderungen
 +++++++++++++++++++++
