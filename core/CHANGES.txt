@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.29.1 (unreleased)
+0.30.0 (2009-12-11)
 -------------------
 
 - ``cp_extra`` Block hinzugefügt: linkatory
