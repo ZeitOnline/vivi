@@ -47,13 +47,25 @@ We start out with an empty cds filestore:
 >>> fs.list('new')
 []
 
-Unset `export_cds`. The inital value is True:
+Unset `export_cds`. The inital value is None:
 
 >>> import zeit.content.article.interfaces
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
+>>> print cdswf.export_cds
+None
+>>> cdswf.export_cds = False
+
+Only if the content object has the product_id 'ZEDE', the default is True:
+
+>>> article = repository['online']['2007']['01']['Guantanamo']
+>>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
+>>> print cdswf.export_cds
+None
+>>> with zeit.cms.checkout.helper.checked_out(article) as co:
+...     co.product_id = u'ZEDE'
+>>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
 >>> cdswf.export_cds
 True
->>> cdswf.export_cds = False
 
 We want to publish the article. The first step is to set it to
 ``urgent`` (this is the easiest way to publish within the workflow

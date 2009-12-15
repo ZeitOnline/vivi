@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - NoAutomaticMetadataUpdate entfernt.
 - Absätze werden wieder korrekt gezählt (#6197).
+- Nur Artikel mit der product_id 'ZEDE' haben standardmäßig den Haken 'Export
+  zum Tagesspiegel' gesetzt (#6184).
 
 
 2.7.2 (2009-09-21)

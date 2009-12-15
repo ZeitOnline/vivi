@@ -205,11 +205,15 @@ class CDSWorkflow(object):
         zeit.content.article.interfaces.ICDSWorkflow,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('export_cds',),
-        use_default=True,
         live=True)
 
     def __init__(self, context):
         self.context = context
+        if self.export_cds is None:
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                self.context)
+            if metadata.product_id == 'ZEDE':
+                self.export_cds = True
 
 
 @zope.component.adapter(CDSWorkflow)

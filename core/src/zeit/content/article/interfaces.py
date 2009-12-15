@@ -174,5 +174,4 @@ class ICDSWorkflow(zope.interface.Interface):
     """Special workflow "extension" for CDS."""
 
     export_cds = zope.schema.Bool(
-        title=_("Export to Tagesspiegel"),
-        default=True)
+        title=_("Export to Tagesspiegel"))
