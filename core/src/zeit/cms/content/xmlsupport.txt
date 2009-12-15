@@ -30,13 +30,18 @@ change and contain the property[#functional]_:
 >>> import zeit.cms.checkout.interfaces
 >>> content = zeit.cms.checkout.interfaces.ICheckoutManager(content).checkout()
 >>> content.year = 2004
+>>> content.ressort = u'Deutschland'
 >>> import lxml.etree
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str"
-        ns="http://namespaces.zeit.de/CMS/document" name="year">2004</attribute>
+        ns="http://namespaces.zeit.de/CMS/document"
+        name="year">2004</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+        name="ressort">Deutschland</attribute>
   </head>
   <body/>
 </testtype>
@@ -46,6 +51,7 @@ Setting the value to None, which is the default of the field, will remove the
 property:
 
 >>> content.year = None
+>>> content.ressort = None
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype>
   <head/>

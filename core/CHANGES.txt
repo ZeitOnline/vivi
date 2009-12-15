@@ -12,6 +12,7 @@ zeit.cms changes
 - Neue Option »Schlagzeile«.
 - Bilder, die aus Bildergruppen kommen, übernehmen die expires-Einstellung der
   Gruppe (#6662).
+- Ressort wird in die XML-Referenz (z. B. in Feeds) übernommen (#6650).
 
 Technische Änderungen
 +++++++++++++++++++++

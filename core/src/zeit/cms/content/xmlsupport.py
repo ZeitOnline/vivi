@@ -242,3 +242,5 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             entry.set('year', unicode(metadata.year))
         if metadata.volume:
             entry.set('issue', unicode(metadata.volume))
+        if metadata.ressort:
+            entry.set('ressort', unicode(metadata.ressort))
