@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
-from zope.testing import doctest
-import os.path
 import pkg_resources
 import unittest
 import zeit.cms.interfaces
