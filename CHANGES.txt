@@ -6,6 +6,7 @@ zeit.wysiwyg changes
 
 - Wenn Bilder referenziert werden, wird der Artikel aktualisiert, wenn die
   Bilder sich ändern (#6254).
+- Unbekannte Tags werden nicht ins HTML übertragen (#6678).
 
 
 1.34.0 (2009-11-25)
