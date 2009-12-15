@@ -264,34 +264,6 @@ zeit.find.Favorites = zeit.find.BaseView.extend({
     },
 });
 
-zeit.find.ForThisPage = zeit.find.BaseView.extend({
-
-    construct: function() {
-        var self = this;
-        var base_url = zeit.cms.get_application_url() + '/@@';
-
-        self.main_view = new zeit.cms.JSONView(
-            context_url + '/@@for-this-page-search',
-            'for-this-page')
-        self.results = new zeit.cms.JSONView(
-             base_url + 'search_result');
-        zeit.find.init_search_results(self.results);
-        MochiKit.Signal.connect(
-             self.main_view, 'load', self, self.load);
-
-    },
-
-    load: function(element, data) {
-        var self = this;
-        var result_element = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'div', 'search_result', element);
-        var search = MochiKit.Base.clone(data['search']);
-        search['_path'] = null;
-        self.results.render(result_element, null, search);
-    }
-});
-
-
 zeit.find.init_full_search = function() {
 
     var search = new zeit.find.Search();
@@ -301,8 +273,6 @@ zeit.find.init_full_search = function() {
         'search_form', 'Suche', search));
     zeit.find.tabs.add(new zeit.cms.ViewTab(
         'favorites', 'Favoriten', new zeit.find.Favorites()));
-    zeit.find.tabs.add(new zeit.cms.ViewTab(
-        'for-this-page', 'Für diese Seite', new zeit.find.ForThisPage()));
 }
 
 

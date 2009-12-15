@@ -539,28 +539,6 @@ class Favorites(SearchResultBase):
         return metadata.volume, metadata.year
 
 
-class ForThisPage(JSONView):
-
-    template = 'for-this-page.jsont'
-
-    def json(self):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(self.context,
-                                                               None)
-        if not metadata:
-            return {}
-
-        keywords = metadata.keywords
-        if keywords:
-            keywords = ' '.join(k.code for k in keywords)
-        else:
-            keywords = ''
-
-        return dict(search={
-            'topic': metadata.ressort,
-            'keywords': keywords,
-        })
-
-
 class LastQuery(JSONView):
 
     def json(self):

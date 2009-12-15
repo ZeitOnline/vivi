@@ -90,14 +90,6 @@
   <browser:page
     for="zope.interface.Interface"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".find.ForThisPage"
-    name="for-this-page-search"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zope.interface.Interface"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".find.LastQuery"
     name="zeit.find.last-query"
     permission="zope.View"

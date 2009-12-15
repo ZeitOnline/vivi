@@ -25,12 +25,6 @@ class TestTabs(zeit.cms.selenium.Test):
         s.waitForVisible('id=favorites')
         self.assertSelected('favorites')
 
-    def test_activate_for_this_page(self):
-        s = self.selenium
-        s.click('link=Für diese Seite')
-        s.waitForVisible('id=for-this-page')
-        self.assertSelected('for-this-page')
-
 
 class TestSearch(zeit.cms.selenium.Test):
 
