@@ -10,6 +10,8 @@ zeit.cms changes
 - Last-semantic-change wird direkt beim Anlegen eines Objektes gestzt, nicht
   erst beim Einchecken (#6476).
 - Neue Option »Schlagzeile«.
+- Bilder, die aus Bildergruppen kommen, übernehmen die expires-Einstellung der
+  Gruppe (#6662).
 
 Technische Änderungen
 +++++++++++++++++++++

@@ -3,7 +3,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
-import gocept.lxml.interfaces
 import zeit.cms.connector
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -13,6 +12,8 @@ import zeit.cms.repository.file
 import zeit.cms.type
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.interfaces
+import zeit.workflow.interfaces
+import zeit.workflow.timebased
 import zope.app.container.contained
 import zope.app.container.interfaces
 import zope.app.file.image
@@ -108,3 +109,21 @@ class ImageType(zeit.cms.type.TypeDeclaration):
 
     def resource_content_type(self, content):
         return content.mimeType
+
+
+class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
+
+    target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
+    zope.component.adapts(zeit.content.image.interfaces.IImage)
+
+    def update_with_context(self, entry, workflow):
+        super(XMLReferenceUpdater, self).update_with_context(entry, workflow)
+
+        parent = workflow.context.__parent__
+        if not zeit.content.image.interfaces.IImageGroup.providedBy(parent):
+            return
+
+        if not entry.get('expires'):
+            parent_workflow = self.target_iface(parent)
+            super(XMLReferenceUpdater, self).update_with_context(
+                entry, parent_workflow)

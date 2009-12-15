@@ -12,6 +12,7 @@
 
   <adapter factory=".image.localimage_factory" />
   <adapter factory=".image.XMLReference" name="image" />
+  <adapter factory=".image.XMLReferenceUpdater" name="timebased-workflow" />
   <adapter factory=".transform.ImageTransform" />
   <adapter factory=".transform.persistent_thumbnail_factory" />
   <adapter factory=".transform.thumbnail_folder_factory" />

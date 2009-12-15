@@ -1,0 +1,41 @@
+When referencing an image out of an image group, the group's expired attribute
+appears on the image as well:
+
+>>> import datetime
+>>> import lxml
+>>> import pytz
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testing
+>>> import zeit.content.image.tests
+>>> import zope.component
+
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['testcontent']
+>>> group = zeit.content.image.tests.create_image_group()
+
+>>> workflow = zeit.workflow.interfaces.ITimeBasedPublishing(group)
+>>> workflow.release_period = (datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC),
+...                            datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC))
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> images = zeit.content.image.interfaces.IImages(checked_out)
+>>> first = group[group.keys()[0]]
+>>> images.images = (first,)
+>>> content = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
+>>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+<testtype>
+  <head>
+    <image ...src="http://xml.zeit.de/image-group/new-hampshire-450x....jpg"
+        type="jpg"...expires="2008-01-06T00:00:00+00:00"...>
+      <bu xsi:nil="true"/>
+      <copyright py:pytype="str">&#169;</copyright>
+    </image>
+    ...
+  </head>
+  <body/>
+</testtype>

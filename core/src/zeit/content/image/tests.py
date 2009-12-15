@@ -61,6 +61,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'syndication.txt',
+        'syndication2.txt',
         'transform.txt',
         'masterimage.txt',
         layer=ImageLayer))
