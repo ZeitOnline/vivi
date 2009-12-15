@@ -116,23 +116,8 @@ class TestGenericEditing(Test):
         s.click('form.actions.apply')
         s.waitForElementNotPresent('css=.lightbox')
 
-        # Open delete verification
-        s.pause(250)
-        s.click('css=#informatives a.delete-link')
-        s.waitForElementPresent('css=div.confirm-delete')
-        s.verifyElementPresent('css=div.block-inner.highlight')
-
-        # Clicking anywhere else but on the remove confirmer, does close the
-        # confirm but does not issue any action. Note that we've got to click
-        # on the #confirm-delete-overlay which overlays everything.
-        s.click("css=#confirm-delete-overlay")
-        s.waitForElementNotPresent('css=div.confirm-delete')
-        s.verifyElementNotPresent('css=div.block-inner.highlight')
-
-        # Now really delete
         s.verifyXpathCount(css_path('#informatives a.delete-link'), 3)
         s.click('css=#informatives a.delete-link')
-        s.click('css=div.confirm-delete > a')
         # mostread/mostcommented are still there
         s.waitForXpathCount(
             css_path('#informatives a.delete-link'), 2)
@@ -198,8 +183,6 @@ class TestTeaserBlock(Test):
         s.click(
             '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
             'a[@class="delete-link"]')
-        s.waitForElementPresent('css=.confirm-delete > a')
-        s.click('css=.confirm-delete > a')
         s.waitForXpathCount(
             '//div[@class="lightbox"]//a[@class="delete-link"]', 2)
 
