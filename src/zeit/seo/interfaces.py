@@ -1,11 +1,10 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.seo.i18n import MessageFactory as _
 import zope.interface
 import zope.schema
 
-from zeit.seo.i18n import MessageFactory as _
 
 class ISEO(zope.interface.Interface):
 
@@ -15,6 +14,10 @@ class ISEO(zope.interface.Interface):
 
     html_description = zope.schema.Text(
         title=_('HTML description'),
+        required=False)
+
+    meta_robots = zope.schema.Text(
+        title=_('Meta robots'),
         required=False)
 
     lexical_resource_query = zope.schema.TextLine(
