@@ -26,6 +26,10 @@ class SEO(object):
         zeit.seo.interfaces.ISEO['html_description'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-description')
 
+    meta_robots = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['meta_robots'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-robots')
+
     lexical_resource_query = zeit.cms.content.dav.DAVProperty(
         zeit.seo.interfaces.ISEO['lexical_resource_query'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'lexicalResourceQuery')

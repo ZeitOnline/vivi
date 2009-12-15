@@ -34,6 +34,7 @@ Fill out the form:
 >>> browser.getControl('Left column').displayOptions
 ['(no value)', 'custom']
 >>> browser.getControl('Left column').displayValue = ['custom']
+>>> browser.getControl('Meta robots').value = 'noindex'
 >>> browser.getControl('Apply').click()
 
 Verify the source:
@@ -44,6 +45,7 @@ Verify the source:
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-robots">noindex</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="lexicalResourceQuery">irgendwas</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="leftcolumn">custom</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
