@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.content.util import objectify_soup_fromstring
+from zeit.wysiwyg.util import contains_element
 import copy
 import datetime
 import htmlentitydefs
@@ -40,9 +41,6 @@ class HTMLConverter(object):
 
     zope.component.adapts(zope.interface.Interface)
     zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLConverter)
-
-    editable_xml_nodes = frozenset(['p', 'intertitle', 'article_extra',
-                                    'ul', 'ol', 'video', 'audio', 'raw'])
 
     def __init__(self, context):
         self.context = context
@@ -135,11 +133,12 @@ class HTMLConverter(object):
         to deal with."""
         root = lxml.objectify.E.body()
         xpath = self.covered_xpath()
-        if xpath:
-            covered = tree.xpath(xpath)
-            for child in tree.iterchildren():
-                if child in covered:
-                    root.append(copy.copy(child))
+        if not xpath:
+            return root
+        covered = tree.xpath(xpath)
+        for child in tree.iterchildren():
+            if contains_element(covered, child):
+                root.append(copy.copy(child))
         return root
 
     def _clear(self, tree):
@@ -511,7 +510,6 @@ class VideoAudioStep(ConversionStep):
                   '(contains(@class, "video") or contains(@class, "audio"))]')
 
     def to_html(self, node):
-        audio = video = False
         if node.tag == 'video':
             id_ = node.get('videoID')
             id2 = node.get('videoID2', '')
@@ -519,12 +517,10 @@ class VideoAudioStep(ConversionStep):
             player_2 = node.get('player2') or 'vid'
             id_class = 'videoId'
             div_class = 'video'
-            video = True
         elif node.tag == 'audio':
             id_ = node.get('audioID')
             id_class = 'audioId'
             div_class = 'audio'
-            audio = True
         else:
             assert False
 

@@ -6,10 +6,6 @@ The HTML representation ...
 
 We need the functional test setup and an interaction:
 
->>> import zope.security.management
->>> import zope.security.testing
->>> import zope.publisher.browser
->>> import zope.app.component.hooks
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
@@ -35,7 +31,6 @@ Instanciate a test content:
 
 Manually adapt to HTML:
 
->>> import zope.publisher.browser
 >>> import zeit.wysiwyg.html
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> converter
@@ -1330,10 +1325,32 @@ List of relateds
   </body>
 </article>
 
+Un-editable elements
+--------------------
+
+This is a regression test for #6678: only elements the HTML converter knows
+about should be visible in the HTML output.
+
+>>> source = u'''\
+... <article>
+...   <head/>
+...   <body>
+...     <supertitle>foo</supertitle>
+...     <p><a href="asdf">foo</a></p>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>
+  <a href="asdf">foo</a>
+</p>
 
 
 .. [#copyright-and-bu] Set a copyright and a BU for the image
 
+    >>> import zope.component
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
