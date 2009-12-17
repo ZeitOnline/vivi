@@ -21,6 +21,7 @@ Centerpage
 ['Archiv-Print-Volume', 'Archiv-Print-Year', 'Centerpage', 'Homepage', 'Themenseite']
 >>> browser.getControl('CP type').displayValue = ['Themenseite']
 >>> browser.getControl('Header image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> browser.getControl('CAP title').value = 'cap cap cap'
 >>> browser.handleErrors = False
 >>> browser.getControl(name="form.actions.add").click()
 
@@ -32,6 +33,7 @@ Centerpage
 ...Title...Auf den Spuren der Elfen...
 ...CP type...Themenseite...
 ...Header image...DSC00109_2.JPG...
+...CAP title...cap cap cap...
 
 We can edit the metadata on the edit tab:
 
