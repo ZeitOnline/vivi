@@ -33,7 +33,6 @@ Make sure we have a "view" link:
 
 We have to publish another url to see if articles are listed:
 
->>> browser.handleErrors = False
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print browser.contents
 <?xml version...
