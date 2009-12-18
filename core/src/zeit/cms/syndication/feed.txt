@@ -374,6 +374,7 @@ included. Setup an article with ICommonMetadata:
 >>> art2.byline = u'Von Alain-Xavier Wurst'
 >>> art2.year = 2007
 >>> art2.volume = 4
+>>> art2.ressort = u'International'
 
 Provide the interface:
 
