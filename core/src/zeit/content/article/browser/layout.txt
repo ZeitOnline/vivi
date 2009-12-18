@@ -7,7 +7,7 @@ Article Layout
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> from zeit.content.cp.browser.tests import create_cp
+>>> from zeit.content.cp.browser.testing import create_cp
 >>> create_cp(browser)
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
