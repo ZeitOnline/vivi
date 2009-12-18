@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.18.1 (unreleased)
+0.19.0 (2009-12-18)
 -------------------
 
 - Im Volltext ist die vollständige Solr-Syntax verfügbar
