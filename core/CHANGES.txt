@@ -1,6 +1,12 @@
 zeit.content.cp changes
 =======================
 
+0.32 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
 0.31 (2009-12-18)
 -----------------
 
