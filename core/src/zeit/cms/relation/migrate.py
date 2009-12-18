@@ -31,6 +31,8 @@ def _index(root, ids):
         zeit.cms.relation.interfaces.IRelations)
     for id in ids:
         print id
-        obj = zeit.cms.interfaces.ICMSContent(id)
+        obj = zeit.cms.interfaces.ICMSContent(id, None)
+        if obj is None:
+            continue
         relations.index(obj)
-    transaction.commit()
+        transaction.commit()
