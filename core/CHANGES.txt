@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+lo (unreleased)
+---------------
+
+- Nothing changed yet.
+
+
 1.40.0 (2009-12-18)
 -------------------
 
