@@ -1,8 +1,8 @@
 zeit.content.cp changes
 =======================
 
-0.30.1 (unreleased)
--------------------
+0.31 (2009-12-18)
+-----------------
 
 - Bestätigung beim Löschen von Elementen entfernt (#6412).
 - Neue Felder: CAP title, CAP context (#6598).
