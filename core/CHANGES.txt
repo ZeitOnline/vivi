@@ -1,7 +1,7 @@
 zeit.seo changes
 ================
 
-1.2.8 (unreleased)
+1.3.0 (2009-12-18)
 ------------------
 
 - Neues Feld 'robots' (#5726).
