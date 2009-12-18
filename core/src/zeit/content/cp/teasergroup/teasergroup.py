@@ -3,13 +3,14 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import datetime
-import zeit.cms.type
 import gocept.runner
 import grokcore.component
 import persistent
 import pytz
+import rwproperty
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
+import zeit.cms.type
 import zeit.content.cp.teasergroup.interfaces
 import zeit.content.image.interfaces
 import zope.component
@@ -60,10 +61,15 @@ class SemanticChange(grokcore.component.Adapter):
     grokcore.component.implements(
         zeit.cms.content.interfaces.ISemanticChange)
 
-    @property
+    @rwproperty.getproperty
     def last_semantic_change(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return dc.modified
+
+    @rwproperty.setproperty
+    def last_semantic_change(self, value):
+        dc = zope.dublincore.interfaces.IDCTimes(self.context)
+        dc.modified = value
 
 
 class Related(grokcore.component.Adapter):
