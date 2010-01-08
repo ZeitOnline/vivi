@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version = 'lodev',
+    version = '1.40.1dev',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
