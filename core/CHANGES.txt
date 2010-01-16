@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-1.40.1 (unreleased)
----------------
+1.40.1 (2010-01-16)
+-------------------
 
 - Index-Updater ``load_references`` repariert (no interaction, #6713).
 
