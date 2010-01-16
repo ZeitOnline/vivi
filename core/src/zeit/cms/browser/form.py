@@ -1,4 +1,4 @@
-# Copyright (c) 2006-2009 gocept gmbh & co. kg
+# Copyright (c) 2006-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import datetime
