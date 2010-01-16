@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.40.2 (unreleased)
+1.40.2 (2010-01-16)
 -------------------
 
 - ITZInfo-Adapter für alle Requests registriert, nicht nur für BrowserRequest.
