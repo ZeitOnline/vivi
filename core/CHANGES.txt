@@ -4,7 +4,7 @@ zeit.cms changes
 1.40.1 (unreleased)
 ---------------
 
-- Nothing changed yet.
+- Index-Updater ``load_references`` repariert (no interaction, #6713).
 
 
 1.40.0 (2009-12-18)
