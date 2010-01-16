@@ -86,3 +86,5 @@ factor('linkatory', u'Linkatory',
 factor('homepage_news_pics', u'Neu auf Zeit Online (Bilder)')
 factor('recensionsearch', u'Rezensionssuche',
        zeit.content.cp.interfaces.IInformatives)
+factor('solr-month', u'Solr Monatsübersicht')
+factor('dwds-ticker', u'DWDS Ticker')
