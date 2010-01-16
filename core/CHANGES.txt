@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Index-Updater ``load_references`` repariert (no interaction, #6713).
 
+- Security-Problem bei Bild-XMLReferenz behoben.
 
 1.40.0 (2009-12-18)
 -------------------

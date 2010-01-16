@@ -119,7 +119,8 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
     def update_with_context(self, entry, workflow):
         super(XMLReferenceUpdater, self).update_with_context(entry, workflow)
 
-        parent = workflow.context.__parent__
+        parent = zope.security.proxy.removeSecurityProxy(
+            workflow).context.__parent__
         if not zeit.content.image.interfaces.IImageGroup.providedBy(parent):
             return
 
