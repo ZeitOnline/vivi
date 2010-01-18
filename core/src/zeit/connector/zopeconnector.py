@@ -1,4 +1,4 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 """Connector which integrates into Zope CA and transaction machinery."""
 
