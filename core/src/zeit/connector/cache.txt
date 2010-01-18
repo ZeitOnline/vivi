@@ -120,9 +120,10 @@ We now have two elements in the cache:
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 ['another-id', 'some-id']
 
-Now sleep another 4 seconds and see the `some-id` will be gone after accessing:
+Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 
 >>> time.sleep(1)
+>>> cache.sweep()
 >>> cache.getData('another-id', properties)
 <cStringIO.StringI object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
@@ -131,6 +132,7 @@ Now sleep another 4 seconds and see the `some-id` will be gone after accessing:
 Still there ...
 
 >>> time.sleep(1)
+>>> cache.sweep()
 >>> cache.getData('another-id', properties)
 <cStringIO.StringI object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
@@ -139,6 +141,7 @@ Still there ...
 Still there ...
 
 >>> time.sleep(1)
+>>> cache.sweep()
 >>> cache.getData('another-id', properties)
 <cStringIO.StringI object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
@@ -147,6 +150,7 @@ Still there ...
 Now it's gone:
 
 >>> time.sleep(1)
+>>> cache.sweep()
 >>> cache.getData('another-id', properties)
 <cStringIO.StringI object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())

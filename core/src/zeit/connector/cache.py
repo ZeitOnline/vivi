@@ -204,9 +204,7 @@ class ResourceCache(persistent.Persistent):
             new_set.insert(key)
             self._last_access_time[key] = new_access_time
 
-            self._sweep()
-
-    def _sweep(self):
+    def sweep(self):
         timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)
         access_times_to_remove = []
         for access_time in self._access_time_to_ids.keys(max=timeout):

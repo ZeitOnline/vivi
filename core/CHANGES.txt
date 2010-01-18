@@ -4,7 +4,7 @@ CHANGES
 1.19.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Do not sweep cache automatically. This should be done via a cronjob.
 
 
 1.19.3 (2009-10-08)

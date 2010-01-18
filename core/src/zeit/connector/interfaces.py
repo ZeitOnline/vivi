@@ -276,6 +276,10 @@ class IResourceCache(zope.interface.Interface):
 
         """
 
+    def sweep():
+        """Minimize cache."""
+
+
 class ICache(zope.interface.common.mapping.IReadMapping,
              zope.interface.common.mapping.IWriteMapping):
     """Generic cache interface."""
