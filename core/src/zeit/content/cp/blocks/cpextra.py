@@ -88,3 +88,4 @@ factor('recensionsearch', u'Rezensionssuche',
        zeit.content.cp.interfaces.IInformatives)
 factor('solr-month', u'Solr Monatsübersicht')
 factor('dwds-ticker', u'DWDS Ticker')
+factor('sportextra', u'Sport Extra')

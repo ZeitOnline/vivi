@@ -10,6 +10,8 @@ zeit.content.cp changes
 
 - ``cp_extra`` Block hinzugefügt: recensionsearch
 
+- ``cp_extra`` Block hinzugefügt: sportextra
+
 0.31 (2009-12-18)
 -----------------
 
