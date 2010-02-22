@@ -189,9 +189,10 @@ def update_feed_items(context, event):
             if item not in items:
                 items.insert(0, item)
 
+        items_in_lead = len(zeit.cms.syndication.interfaces.IReadFeed(context))
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp')
-        max_items = int(config['cp-feed-max-items'])
+        max_items = max(items_in_lead, int(config['cp-feed-max-items']))
         while len(items) > max_items:
             del items[-1]
 
