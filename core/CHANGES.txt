@@ -4,7 +4,8 @@ zeit.cms changes
 1.40.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Site settings' working directory creator ignores empty path elements
+  correctly now.
 
 
 1.40.2 (2010-01-16)

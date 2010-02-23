@@ -30,6 +30,8 @@ class GlobalSettings(persistent.Persistent):
         target_folder = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/')
         for next_name in path:
+            if not next_name:
+                continue
             if next_name not in target_folder:
                 target_folder[next_name] = zeit.cms.repository.folder.Folder()
             target_folder = target_folder[next_name]
