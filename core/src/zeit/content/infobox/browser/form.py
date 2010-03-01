@@ -90,9 +90,3 @@ class Display(FormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('View infobox')
     for_display = True
-
-
-@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
-def register_asset_interface(event):
-    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-        zeit.content.infobox.interfaces.IInfoboxReference)

@@ -34,4 +34,9 @@
     />
   <adapter factory=".reference.infobox_reference_to_webdav_properties" />
 
+  <interface
+    interface=".interfaces.IInfoboxReference"
+    type="zeit.cms.asset.interfaces.IAssetInterface"
+    />
+
 </configure>
