@@ -10,6 +10,11 @@
     component=".generation.manager"
     />
 
+  <interface
+    interface=".interfaces.IImages"
+    type="zeit.cms.asset.interfaces.IAssetInterface"
+    />
+
   <adapter factory=".image.localimage_factory" />
   <adapter factory=".image.XMLReference" name="image" />
   <adapter factory=".image.XMLReferenceUpdater" name="timebased-workflow" />

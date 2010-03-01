@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 import zope.interface
+import zope.interface.interfaces
 import zope.schema
 
 
@@ -19,3 +20,7 @@ class IBadges(zope.interface.Interface):
         title=_('Badges'),
         value_type=zope.schema.Choice(
             source=BadgeSource()))
+
+
+class IAssetInterface(zope.interface.interfaces.IInterface):
+    """The interface for asset interfaces."""

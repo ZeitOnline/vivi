@@ -31,8 +31,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <subscriber handler=".form.register_asset_interface" />
-
   <adapter factory=".form.asset_edit_view_name" name="asset_view.html" />
   <adapter factory=".form.asset_display_view_name" name="asset_edit.html" />
 

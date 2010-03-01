@@ -10,15 +10,13 @@ import zeit.cms.browser.interfaces
 import zeit.cms.content.browser.interfaces
 import zeit.cms.related.interfaces
 import zope.app.appsetup.interfaces
+import zope.component
 import zope.testing.cleanup
 
 
 
 class AssetBase(object):
     """Asset form field definitions."""
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.asset.interfaces.IBadges)
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -28,13 +26,13 @@ class AssetBase(object):
             'wide-widgets full-width'),
     )
 
-    @classmethod
-    def add_asset_interface(class_, interface):
-        new_fields = zope.formlib.form.FormFields(interface)
-        if class_.form_fields is None:
-            class_.form_fields = new_fields
-        else:
-            class_.form_fields += new_fields
+    @property
+    def form_fields(self):
+        interfaces = []
+        for name, interface in zope.component.getUtilitiesFor(
+            zeit.cms.asset.interfaces.IAssetInterface):
+            interfaces.append(interface)
+        return zope.formlib.form.FormFields(*interfaces)
 
 
 class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
@@ -46,17 +44,6 @@ class AssetEdit(AssetBase, zeit.cms.browser.form.EditForm):
 class AssetView(AssetBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('Assets')
-
-
-
-def _clean_asset_interfaces():
-    AssetBase.form_fields = None
-zope.testing.cleanup.addCleanUp(_clean_asset_interfaces)
-
-
-@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
-def register_asset_interface(event):
-    AssetBase.add_asset_interface(zeit.cms.related.interfaces.IRelatedContent)
 
 
 @zope.component.adapter(zeit.cms.content.browser.interfaces.IAssetViews)
