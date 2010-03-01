@@ -1,21 +1,15 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import sys
-import xml.sax.saxutils
 
 import lxml.etree
 import lxml.objectify
-
+import sys
 import transaction
-
-import zope.component
-
-import zope.app.keyreference.interfaces
-
-import zeit.cms.repository.interfaces
+import xml.sax.saxutils
 import zeit.cms.content.interfaces
+import zeit.cms.repository.interfaces
+import zope.app.keyreference.interfaces
+import zope.component
 
 
 class ObjectPathProperty(object):
