@@ -11,11 +11,6 @@ import zope.app.appsetup.interfaces
 import zope.component
 
 
-@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
-def register_asset_interface(event):
-    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-        zeit.content.article.interfaces.IAggregatedComments)
-
 @zope.component.adapter(
     zeit.content.article.comment.AggregatedComments,
     zeit.cms.content.interfaces.ICMSContentSource)
