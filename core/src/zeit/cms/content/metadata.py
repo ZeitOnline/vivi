@@ -54,18 +54,24 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     keywords = zeit.cms.content.keyword.KeywordsProperty()
 
     title = zeit.cms.content.property.Structure(
-        '.body.title')
+        '.body.title',
+        zeit.cms.content.interfaces.ICommonMetadata['title'])
     subtitle = zeit.cms.content.property.Structure(
-        '.body.subtitle')
+        '.body.subtitle',
+        zeit.cms.content.interfaces.ICommonMetadata['subtitle'])
     supertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.body.supertitle')
+        '.body.supertitle',
+        zeit.cms.content.interfaces.ICommonMetadata['supertitle'])
     byline = zeit.cms.content.property.ObjectPathProperty(
-        '.body.byline')
+        '.body.byline',
+        zeit.cms.content.interfaces.ICommonMetadata['byline'])
 
     teaserTitle = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.title')
+        '.teaser.title',
+        zeit.cms.content.interfaces.ICommonMetadata['teaserTitle'])
     teaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.text')
+        '.teaser.text',
+        zeit.cms.content.interfaces.ICommonMetadata['teaserText'])
 
     printRessort = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['printRessort'],

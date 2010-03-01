@@ -77,6 +77,16 @@ u'Foo'
 </a>
 
 
+It is also possible to declare a field for the property. This helps when
+objectify guesses the data wrong:
+
+>>> import zope.schema
+>>> prop = ObjectPathProperty('.b', zope.schema.TextLine())
+>>> content.xml.b = 1234
+>>> prop.__get__(content, None)
+u'1234'
+
+
 Arbitrary Element as `xml`
 --------------------------
 
@@ -129,7 +139,6 @@ integers. Since lxml.objectify only supports str/unicode attributes we give a
 hint using a zope.schema field. We are also referencing `sencences` which is
 not in the document, yet:
 
->>> import zope.schema
 >>> from zeit.cms.content.property import ObjectPathAttributeProperty
 >>> from zc.sourcefactory.contextual import BasicContextualSourceFactory
 >>> class ExampleSource(BasicContextualSourceFactory):

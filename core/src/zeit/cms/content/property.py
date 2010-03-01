@@ -10,31 +10,35 @@ import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zope.app.keyreference.interfaces
 import zope.component
+import zope.schema.interfaces
 
 
 class ObjectPathProperty(object):
     """Property which is stored in an XML tree."""
 
-    def __init__(self, path):
+    def __init__(self, path, field=None):
         if path is None:
             # This is the root itself.
             self.path = None
         else:
             self.path = lxml.objectify.ObjectPath(path)
+        self.field = field
 
     def __get__(self, instance, class_):
         node = self.getNode(instance)
-        if node is not None:
-            try:
-                value = node.pyval
-            except AttributeError:
-                return None
-            if isinstance(value, str):
-                # This is save because lxml only uses str for optimisation
-                # reasons and unicode when non us-ascii chars are in the str:
-                value = unicode(value)
-            return value
-
+        if node is None:
+            return None
+        if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
+            return self.field.fromUnicode(unicode(node))
+        try:
+            value = node.pyval
+        except AttributeError:
+            return None
+        if isinstance(value, str):
+            # This is save because lxml only uses str for optimisation
+            # reasons and unicode when non us-ascii chars are in the str:
+            value = unicode(value)
+        return value
 
     def __set__(self, instance, value):
         if self.path is None:
