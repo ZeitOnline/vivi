@@ -10,6 +10,9 @@ zeit.cms changes
 - Change the way asset interfaces are registered. This fixes isolation problems
   during tests (#6712).
 
+- Checkin-Conflict-Resolver wird mit HTTP-Status 200 ausgeliefert, statt bisher
+  500 (#6392).
+
 
 1.40.3 (2010-02-23)
 -------------------

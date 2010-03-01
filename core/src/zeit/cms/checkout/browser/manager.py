@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import transaction
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -102,7 +103,8 @@ class Checkin(zeit.cms.browser.view.Base):
             return self.request.response.redirect(new_url)
 
     def _handle_conflict(self):
-        self.request.response.setStatus(500)
+        self.request.response.setStatus(200)
+        transaction.doom()
         view = zope.component.getMultiAdapter(
             (self.context, self.request),
             zope.browser.interfaces.IBrowserView,

@@ -46,9 +46,6 @@ actually works:
 4. A checks in document X
 
 >>> a.getLink('Checkin').click()
-Traceback (most recent call last):
-    ...
-httperror_seek_wrapper: HTTP Error 500: Internal Server Error
 >>> print a.contents
 <...
   <h1>Conflict Error</h1>
@@ -79,9 +76,10 @@ http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@edit.html
 Now check in:
 
 >>> a.getLink('Checkin').click()
-Traceback (most recent call last):
-    ...
-httperror_seek_wrapper: HTTP Error 500: Internal Server Error
+>>> print a.contents
+<...
+  <h1>Conflict Error</h1>
+  ...
 >>> a.getControl('Checkin anyway').click()
 >>> print a.contents
 <...
@@ -99,10 +97,10 @@ The delete button removes the workingcopy:
 >>> b.getLink('Checkout').click()
 >>> b.getLink('Checkin').click()
 >>> a.getLink('Checkin').click()
-Traceback (most recent call last):
-    ...
-httperror_seek_wrapper: HTTP Error 500: Internal Server Error
+>>> print a.contents
+<...
+  <h1>Conflict Error</h1>
+  ...
 >>> a.getControl('Delete workingcopy').click()
 >>> print a.url
 http://localhost/++skin++cms/repository/testcontent
-
