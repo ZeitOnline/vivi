@@ -15,6 +15,8 @@
         tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
     <input type="hidden" name="came_from"
            tal:attributes="value request/came_from | nothing" />
+    <input type="hidden" name="semantic_change"
+           tal:attributes="value request/semantic_change | string:true" />
     <input type="submit" name="checkin" value="Checkin anyway"
            i18n:attributes="value" />
     <input type="submit" name="delete" value="Delete workingcopy"

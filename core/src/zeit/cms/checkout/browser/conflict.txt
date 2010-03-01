@@ -58,6 +58,7 @@ actually works:
   <form method="POST"
         action="http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin-conflict-error">
     <input type="hidden" name="came_from" value="edit.html" />
+    <input type="hidden" name="semantic_change" value="true" />
     <input type="submit" name="checkin"
            value="Checkin anyway" />
     <input type="submit" name="delete"
@@ -104,3 +105,39 @@ The delete button removes the workingcopy:
 >>> a.getControl('Delete workingcopy').click()
 >>> print a.url
 http://localhost/++skin++cms/repository/testcontent
+
+
+Corrections are checked in correctly as well:
+
+>>> a.getLink('Checkout').click()
+>>> b.open('http://localhost/++skin++cms/repository/testcontent/@@locks.html')
+>>> b.getControl('Steal').click()
+>>> b.open('http://localhost/++skin++cms/repository/testcontent')
+>>> b.getLink('Checkout').click()
+>>> b.getLink('Checkin').click()
+>>> print b.title.strip()
+testcontent – View
+>>> import zeit.cms.content.interfaces
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     article = zeit.cms.interfaces.ICMSContent(  
+...         'http://xml.zeit.de/testcontent')
+...     lsc_before  = zeit.cms.content.interfaces.ISemanticChange(
+...         article).last_semantic_change
+>>> a.getLink('Checkin (correction)').click()
+>>> print a.contents
+<...
+  <h1>Conflict Error</h1>
+  ...
+>>> a.getControl('Checkin anyway').click()
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     article = zeit.cms.interfaces.ICMSContent(  
+...         'http://xml.zeit.de/testcontent')
+...     lsc_after = zeit.cms.content.interfaces.ISemanticChange(
+...         article).last_semantic_change
+
+The last semantic change has the value it had when "a" was checking out, thus:
+
+>>> lsc_before > lsc_after
+True

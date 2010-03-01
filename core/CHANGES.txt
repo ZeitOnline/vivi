@@ -13,6 +13,7 @@ zeit.cms changes
 - Checkin-Conflict-Resolver wird mit HTTP-Status 200 ausgeliefert, statt bisher
   500 (#6392).
 
+- Checkin-Conflict-Resolver checkt jetzt auch Korrekturen korrekt ein (#6880).
 
 1.40.3 (2010-02-23)
 -------------------

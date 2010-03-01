@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import transaction
+import urllib
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -72,8 +73,8 @@ class Checkin(zeit.cms.browser.view.Base):
                  ignore_conflicts=False):
         try:
             checked_in = self.manager.checkin(
-                semantic_change=semantic_change, event=event,
-                ignore_conflicts=ignore_conflicts)
+                semantic_change=bool(semantic_change), event=bool(event),
+                ignore_conflicts=bool(ignore_conflicts))
         except zeit.cms.repository.interfaces.ConflictError:
             return self._handle_conflict()
         else:
@@ -148,8 +149,11 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
 
     def checkin(self):
         self.redirect(self.url(
-            self.context, '@@checkin?came_from=%s&ignore_conflicts=true' %
-            self.request.get('came_from', '')))
+            self.context, '@@checkin?%s' % urllib.urlencode(dict(
+                came_from=self.request.get('came_from', ''),
+                ignore_conflicts='true',
+                semantic_change=self.request.get('semantic_change', 'true'),
+            ))))
 
     def delete(self):
         target = self.obj_in_repository
