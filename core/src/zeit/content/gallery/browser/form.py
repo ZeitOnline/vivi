@@ -1,21 +1,16 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.formlib.form
-
-import zope.app.appsetup.interfaces
-
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
-import zeit.wysiwyg.interfaces
-from zeit.cms.i18n import MessageFactory as _
-
-import zeit.content.gallery.interfaces
 import zeit.content.gallery.gallery
+import zeit.content.gallery.interfaces
+import zeit.wysiwyg.interfaces
+import zope.app.appsetup.interfaces
+import zope.formlib.form
 
 
 class GalleryFormBase(object):
