@@ -16,7 +16,7 @@ setup(
     install_requires=[
         'gocept.form',
         'setuptools',
-        'zeit.cms>=1.25',
+        'zeit.cms>=1.40.4',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.testing',
