@@ -77,9 +77,3 @@ class EditEntry(zeit.cms.browser.form.EditForm):
             fields=('image', 'layout', 'caption', 'title', 'html'),
             css_class='full-width wide-widgets'),
     )
-
-
-@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
-def register_asset_interface(event):
-    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-        zeit.content.gallery.interfaces.IGalleryReference)

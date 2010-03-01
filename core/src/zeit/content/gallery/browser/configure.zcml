@@ -13,7 +13,6 @@
 
   <adapter factory=".gallery.gallery_browse_location" />
   <adapter factory=".gallery.gallery_folder_browse_location" />
-  <subscriber handler=".form.register_asset_interface" />
 
   <resourceLibrary
     name="zeit.content.gallery"

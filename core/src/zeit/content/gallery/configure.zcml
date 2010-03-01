@@ -8,6 +8,11 @@
   <adapter factory=".gallery.EntryXMLRepresentation" />
   <subscriber handler=".gallery.update_gallery_on_entry_change" />
 
+  <interface
+    interface=".interfaces.IGalleryReference"
+    type="zeit.cms.asset.interfaces.IAssetInterface"
+    />
+
   <utility
     component=".interfaces.galleryFolderSource"
     name="gallery-folders"
