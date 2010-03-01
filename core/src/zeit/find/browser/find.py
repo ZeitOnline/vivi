@@ -323,9 +323,11 @@ class ResultFilters(JSONView):
         return result
 
     def time_entries(self, counts):
+        date_ranges = [(name, date_range())
+                       for name, date_range in DATE_RANGES]
         result = []
         for ((name, count),
-             (name2, (start_date, end_date)))  in zip(counts, DATE_RANGES):
+             (name2, (start_date, end_date)))  in zip(counts, date_ranges):
             if count == 0:
                 continue
             result.append(dict(title=name,

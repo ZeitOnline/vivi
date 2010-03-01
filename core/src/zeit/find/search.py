@@ -62,7 +62,8 @@ def counts(q):
     Each counts is a list of (name, count) tuples. Counts of zero are
     not returned.
     """
-    date_queries = [filter for (name, filter) in DATE_FILTERS]
+    date_filters = DATE_FILTERS()
+    date_queries = [filter for (name, filter) in date_filters]
 
     facets = {
         'facet': 'true',
@@ -76,7 +77,7 @@ def counts(q):
 
     facet_queries = facet_data['facet_queries']
     time_counts = []
-    for name, filter in DATE_FILTERS:
+    for name, filter in date_filters:
         time_counts.append((name, facet_queries[filter]))
 
     facet_fields = facet_data['facet_fields']

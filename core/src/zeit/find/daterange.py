@@ -36,12 +36,13 @@ def year_range():
     start = end - timedelta(days=366)
     return start, end
 
-DATE_RANGES = [('heute', today_range()),
-               ("gestern", yesterday_range()),
-               ("7 Tage",  seven_day_range()),
-               ("letzter Monat", month_range()),
-               ("letztes halbes Jahr", half_year_range()),
-               ("letztes Jahr", year_range())]
+DATE_RANGES = [('heute', today_range),
+               ("gestern", yesterday_range),
+               ("7 Tage",  seven_day_range),
+               ("letzter Monat", month_range),
+               ("letztes halbes Jahr", half_year_range),
+               ("letztes Jahr", year_range)]
 
-DATE_FILTERS = [(name, lq.datetime_range('last-semantic-change', *r))
-                for (name, r) in DATE_RANGES]
+def DATE_FILTERS():
+    return [(name, lq.datetime_range('last-semantic-change', *r()))
+            for (name, r) in DATE_RANGES]
