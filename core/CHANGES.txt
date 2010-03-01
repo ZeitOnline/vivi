@@ -4,7 +4,8 @@ zeit.cms changes
 1.40.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix that text fields which are mapped to xml nodes still work even when there
+  is no py:pytype and the contents is an integer (#6824).
 
 
 1.40.3 (2010-02-23)
