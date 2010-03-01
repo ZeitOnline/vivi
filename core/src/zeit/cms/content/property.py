@@ -29,7 +29,11 @@ class ObjectPathProperty(object):
         if node is None:
             return None
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
-            return self.field.fromUnicode(unicode(node))
+            try:
+                return self.field.fromUnicode(unicode(node))
+            except zope.schema.interfaces.ValidationError:
+                # Fall back to not using the field when the validaion fails.
+                pass
         try:
             value = node.pyval
         except AttributeError:

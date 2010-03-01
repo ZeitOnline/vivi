@@ -86,6 +86,14 @@ objectify guesses the data wrong:
 >>> prop.__get__(content, None)
 u'1234'
 
+Invalid values fall back to the default behaviour, i.e. don't use the field for
+validation:
+
+>>> prop = ObjectPathProperty('.b', zope.schema.TextLine(max_length=2))
+>>> content.xml.b = 1234
+>>> prop.__get__(content, None)
+1234
+
 
 Arbitrary Element as `xml`
 --------------------------
