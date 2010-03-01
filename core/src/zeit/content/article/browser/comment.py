@@ -2,15 +2,13 @@
 # See also LICENSE.txt
 """Comment browser integration."""
 
-import zope.component
-
-import zope.app.appsetup.interfaces
-
 import zeit.cms.browser.interfaces
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.content.article.comment
 import zeit.content.article.interfaces
+import zope.app.appsetup.interfaces
+import zope.component
 
 
 @zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
