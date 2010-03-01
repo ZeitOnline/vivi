@@ -3,9 +3,9 @@ zeit.content.portraitbox changes
 
 1.22.4 (unreleased)
 -------------------
-
-- Nothing changed yet.
-
+ 
+- Change the way asset interfaces are registered. This fixes isolation problems
+  during tests (#6712).
 
 1.22.3 (2009-08-18)
 -------------------

@@ -48,9 +48,3 @@ class Display(FormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('View portraitbox')
     form_fields = FormBase.form_fields.omit('__name__')
-
-
-@zope.component.adapter(zope.app.appsetup.interfaces.IDatabaseOpenedEvent)
-def register_asset_interface(event):
-    zeit.cms.content.browser.form.AssetBase.add_asset_interface(
-        zeit.content.portraitbox.interfaces.IPortraitboxReference)

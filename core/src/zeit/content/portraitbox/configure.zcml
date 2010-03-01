@@ -35,4 +35,9 @@
     />
   <adapter factory=".reference.portraitbox_reference_to_webdav_properties" />
 
+  <interface
+    interface=".interfaces.IPortraitboxReference"
+    type="zeit.cms.asset.interfaces.IAssetInterface"
+    />
+
 </configure>
