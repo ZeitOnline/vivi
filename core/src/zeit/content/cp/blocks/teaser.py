@@ -167,8 +167,9 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
     def __init__(self, *args, **kw):
         super(AutoPilotTeaserBlock, self).__init__(*args, **kw)
-        self.hide_dupes = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-            'hide_dupes'].default
+        if 'hide-dupes' not in self.xml.attrib:
+            self.hide_dupes = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
+                'hide_dupes'].default
 
     def __iter__(self):
         if self.autopilot:
