@@ -69,6 +69,11 @@
         {.end}
         </select>
       </fieldset>
+      <fieldset class="reverse">
+        <label>
+          <input type="checkbox" name="show_news" value="true" />
+          Tickermeldungen zeigen</label>
+      </fieldset>
       <fieldset>
         <label>Serie:</label>
         <select name="serie">

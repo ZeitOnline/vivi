@@ -607,6 +607,7 @@ def search_form(request):
     authors = g('author', None)
     keywords = g('keywords', None)
     product_id = g('product_id', None)
+    show_news = g('show_news', False)
     serie = g('serie', None)
     # four states: published, not-published, published-with-changes,
     # don't care (None)
@@ -622,6 +623,7 @@ def search_form(request):
         product_id=product_id,
         published=published,
         serie=serie,
+        show_news=show_news,
         topic=topic,
         types=types,
         until=until,

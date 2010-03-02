@@ -4,6 +4,8 @@ zeit.find changes
 0.19.1 (unreleased)
 -------------------
 
+- Ticker-Meldungen werden normalerweise ausgeblendet (#6914).
+
 - Die Datumsfilter hängen jetzt von der aktuellen Uhrzeit und nicht mehr von
   der Zeit des letzten Server-Neustarts ab (#6922).
 

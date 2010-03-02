@@ -174,9 +174,20 @@
 
 }
 
+.search-with-info > .fields > fieldset.reverse > label {
+  float: none;
+  width: auto;
+}
+
+
 .search-with-info > .fields > fieldset > input {
   width: 178px;
 }
+
+.search-with-info > .fields > fieldset.reverse > label > input {
+  margin-left: 110px;
+}
+
 
 .search-with-info > .fields > fieldset > select {
   width: 185px;

@@ -103,6 +103,7 @@ def query(fulltext=None,
           types=(),
           product_id=None,
           serie=None,
+          show_news=None,
           filter_terms=None):
     """Create lucene query string for search.
 
@@ -119,6 +120,7 @@ def query(fulltext=None,
               If None, no keyword restriction.
     published - Publication status to look for. If None, no restriction.
     types - a list of document types to look for. If None types don't matter.
+    show_news - Display ticker messages or not (boolean)
     filter_terms - an optional list of extra terms to add to the filter.
                    If None, no extra terms.
     Returns lucene query string that can be passed to solr.
@@ -154,6 +156,8 @@ def query(fulltext=None,
         terms.append(lq.field('product_id', product_id))
     if serie is not None:
         terms.append(lq.field('serie', serie))
+    if not show_news:
+        terms.append(lq.not_(lq.field('ressort', 'News')))
 
     terms.extend(filter_terms)
     if terms:
