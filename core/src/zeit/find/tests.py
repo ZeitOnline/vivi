@@ -34,9 +34,3 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(
             'http://xml.zeit.de/online/2007/01/Somalia',
             result.docs[0]['uniqueId'])
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(QueryTest))
-    return suite
