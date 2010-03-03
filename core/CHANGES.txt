@@ -11,6 +11,9 @@ zeit.content.cp changes
 - Die Felder CAP-Kontext und CAP-Titel von der Centerpage direkt entfernt und
   auf allen Objekten mit Standardmetadaten verfügbar gemacht (#6923).
 
+- Ist ein Objekt im RSS-Feed kommt ein freier Teaser dieses Objekts nicht mehr
+  in den RSS-Feed und umgekehrt (#6724).
+
   
 0.32.1 (2010-02-23)
 -------------------

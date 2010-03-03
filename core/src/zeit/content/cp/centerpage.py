@@ -183,11 +183,23 @@ def update_feed_items(context, event):
         if co is None:
             return
         feed = zeit.content.cp.interfaces.ICPFeed(co)
-        items = list(feed.items)
+        items = []
+        check_items = []
+        for item in feed.items:
+            if zeit.content.cp.interfaces.ITeaser.providedBy(item):
+                check_item = item.original_content
+            else:
+                check_item = item
+            items.append(item)
+            check_items.append(check_item)
 
         for item in zeit.cms.syndication.interfaces.IReadFeed(context):
-            if item not in items:
-                items.insert(0, item)
+            if zeit.content.cp.interfaces.ITeaser.providedBy(item):
+                if item.original_content in check_items:
+                    continue
+            elif item in check_items:
+                continue
+            items.insert(0, item)
 
         items_in_lead = len(zeit.cms.syndication.interfaces.IReadFeed(context))
         config = zope.app.appsetup.product.getProductConfiguration(

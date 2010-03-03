@@ -17,7 +17,7 @@ import zeit.content.cp.testing
 import zope.component
 
 
-class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
+class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
 
     def __init__(self, *args, **kw):
         self.product_config = copy.deepcopy(self.product_config)
@@ -25,10 +25,10 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             pkg_resources.resource_filename(
             'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
         self.product_config['zeit.content.cp']['cp-feed-max-items'] = '5'
-        super(CenterPageTest, self).__init__(*args, **kw)
+        super(TestCenterPageRSSFeed, self).__init__(*args, **kw)
 
     def setUp(self):
-        super(CenterPageTest, self).setUp()
+        super(TestCenterPageRSSFeed, self).setUp()
         # clear rules cache so we get the empty ruleset, so we can publish
         # undisturbed
         gocept.cache.method.clear()
@@ -64,6 +64,7 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         tasks.process()
         self.assert_(zeit.cms.workflow.interfaces.IPublishInfo(
             content).published)
+        return self.repository.getContent(content.uniqueId)
 
     def test_teasers_are_added_to_rss_before_publishing(self):
         cp = self.repository['cp']
@@ -138,3 +139,58 @@ class CenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.repository['cp']
         items = cp.xml.feed.getchildren()
         self.assertEquals(5, len(items))
+
+    def test_teasers_are_not_added_to_feed_when_article_was_added(self):
+        cp = self.repository['cp']
+        cp = self.publish(cp)
+        self.assertEqual(
+            ['http://xml.zeit.de/test2', 'http://xml.zeit.de/testcontent'],
+            [x.get('href') for x in cp.xml.feed.getchildren()])
+        # Create a teaser and insert it.
+        self.repository['t2'] = (
+            zeit.content.cp.interfaces.ITeaser(self.repository['testcontent']))
+        with checked_out(cp) as working:
+            teaser = self.create_teaser(working)
+            teaser.insert(0, self.repository['t2'])
+        cp = self.repository['cp']
+        cp = self.publish(cp)
+        # The teaser was not added to the feed because the object it references
+        # is already in the feed
+        #self.assertEquals(2, len(cp.xml.feed.getchildren()))
+        self.assertEqual(
+            ['http://xml.zeit.de/test2', 'http://xml.zeit.de/testcontent'],
+            [x.get('href') for x in cp.xml.feed.getchildren()])
+
+    def test_articles_are_not_added_to_feed_when_teaser_was_added(self):
+        cp = self.repository['cp']
+        cp = self.publish(cp)
+        self.assertEqual(
+            ['http://xml.zeit.de/test2', 'http://xml.zeit.de/testcontent'],
+            [x.get('href') for x in cp.xml.feed.getchildren()])
+        # Create a teaser and insert it.
+        self.repository['content'] = (
+            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+        self.repository['teaser'] = (
+            zeit.content.cp.interfaces.ITeaser(self.repository['content']))
+        with checked_out(cp) as working:
+            teaser = self.create_teaser(working)
+            teaser.insert(0, self.repository['teaser'])
+        cp = self.publish(cp)
+        self.assertEqual(
+            ['http://xml.zeit.de/teaser',
+             'http://xml.zeit.de/test2',
+             'http://xml.zeit.de/testcontent'],
+            [x.get('href') for x in cp.xml.feed.getchildren()])
+        # When the article is added to the CP the article will not be added to
+        # the RSS feed because a teaser referencing the article is already in
+        # the feed
+        with checked_out(cp) as working:
+            teaser = self.create_teaser(working)
+            teaser.insert(0, self.repository['content'])
+        cp = self.repository['cp']
+        cp = self.publish(cp)
+        self.assertEqual(
+            ['http://xml.zeit.de/teaser',
+             'http://xml.zeit.de/test2',
+             'http://xml.zeit.de/testcontent'],
+            [x.get('href') for x in cp.xml.feed.getchildren()])
