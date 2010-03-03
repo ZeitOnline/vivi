@@ -25,6 +25,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'banner',
             'banner_id',
             'breaking_news',
+            'cap_context',
+            'cap_title',
             'color_scheme',
             'copyrights',
             'countings',

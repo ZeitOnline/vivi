@@ -15,6 +15,10 @@ zeit.cms changes
 
 - Checkin-Conflict-Resolver checkt jetzt auch Korrekturen korrekt ein (#6880).
 
+- Die Felder CAP-Kontext und CAP-Titel auf allen Objekten mit Standardmetadaten
+  verfügbar gemacht (#6923).
+
+
 1.40.3 (2010-02-23)
 -------------------
 
