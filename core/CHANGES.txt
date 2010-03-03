@@ -6,6 +6,7 @@ zeit.content.cp changes
 
 - »Doubletten vermeiden« kann wieder deaktiviert werden (#6731)
 
+- Asset-Tab für CPs aktiviert (#6876).
 
 0.32.1 (2010-02-23)
 -------------------

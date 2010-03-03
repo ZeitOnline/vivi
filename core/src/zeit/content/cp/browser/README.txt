@@ -35,6 +35,12 @@ Centerpage
 ...Header image...DSC00109_2.JPG...
 ...CAP title...cap cap cap...
 
+There is an asset tab:
+
+>>> browser.getLink('Edit assets').click()
+>>> print browser.title.strip()
+Auf den Spuren der Elfen – Edit assets
+
 We can edit the metadata on the edit tab:
 
 >>> browser.getLink('Edit metadata').click()
