@@ -60,7 +60,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
     zeit.cms.content.dav.mapProperties(
         zeit.content.cp.interfaces.ICenterPage,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('header_image', 'cap_title', 'cap_context'))
+        ('header_image',))
 
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]

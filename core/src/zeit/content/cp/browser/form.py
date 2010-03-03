@@ -17,7 +17,7 @@ class FormBase(object):
             zeit.cms.content.interfaces.ICommonMetadata)
         + zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICenterPage).select(
-            'type', 'header_image', 'cap_title', 'cap_context'))
+            'type', 'header_image'))
 
 
 class AddForm(FormBase,

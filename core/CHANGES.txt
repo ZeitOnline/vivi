@@ -8,6 +8,10 @@ zeit.content.cp changes
 
 - Asset-Tab für CPs aktiviert (#6876).
 
+- Die Felder CAP-Kontext und CAP-Titel von der Centerpage direkt entfernt und
+  auf allen Objekten mit Standardmetadaten verfügbar gemacht (#6923).
+
+  
 0.32.1 (2010-02-23)
 -------------------
 

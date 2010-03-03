@@ -62,9 +62,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         source=zeit.content.image.interfaces.ImageSource())
 
-    cap_title = zope.schema.TextLine(title=_('CAP title'), required=False)
-    cap_context = zope.schema.TextLine(title=_('CAP context'), required=False)
-
     def __getitem__(area_key):
         """Return IArea for given key.
 
