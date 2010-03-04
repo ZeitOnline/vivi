@@ -24,6 +24,8 @@ zeit.cms changes
 
 - Syndication-Tab und dezentrale Syndizierung an- und abschaltbar (#6878).
 
+- Alte CenterPage komplett entfernt (#6878).
+
 1.40.3 (2010-02-23)
 -------------------
 
