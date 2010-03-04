@@ -4,7 +4,8 @@ zeit.securitypolicy changes
 0.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Syndication-Manager (``@@syndication_manager``) ist nicht mehr verfügbar
+  (#6878).
 
 
 0.6.0 (2009-10-19)
