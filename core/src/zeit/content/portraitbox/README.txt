@@ -17,7 +17,6 @@ Portraitbox is an asset:
 >>> import zope.interface.verify
 >>> import zeit.cms.interfaces
 >>> import zeit.content.portraitbox.interfaces
->>> import zeit.content.centerpage.centerpage
 >>> zope.interface.verify.verifyObject(
 ...     zeit.content.portraitbox.interfaces.IPortraitbox, pb)
 True
