@@ -19,12 +19,3 @@ class ISEO(zope.interface.Interface):
     meta_robots = zope.schema.Text(
         title=_('Meta robots'),
         required=False)
-
-    lexical_resource_query = zope.schema.TextLine(
-        title=_('Lexical resource query'),
-        required=False)
-
-    left_column = zope.schema.Choice(
-        title=_('Left column'),
-        values=('custom',),
-        required=False)
