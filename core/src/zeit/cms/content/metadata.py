@@ -37,7 +37,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'ressort',
             'serie',
             'sub_ressort',
-            'sub_type',
             'vg_wort_id',
             'volume',
             'year',
