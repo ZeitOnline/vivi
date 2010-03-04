@@ -6,6 +6,7 @@
    <meta:provides feature="zeit.cms.testing" />
 
    <meta:provides feature="zeit.cms.browser.development-preview" />
+   <meta:provides feature="zeit.cms.decentral-syndication" />
 
   <!-- This file is the equivalent of site.zcml and it is -->
   <!-- used for functional testing setup -->

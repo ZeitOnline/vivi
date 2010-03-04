@@ -2,6 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="zeit.cms">
 
   <adapter factory=".feed.FeedListRepresentation" />    
@@ -10,20 +11,20 @@
 
   <browser:icon
     for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     name="zmi_icon"
     width="20"
     height="20"
     file="resources/feed.png"
-    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
     />   
 
   <browser:icon
     for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
     name="zmi_icon"
     width="20"
     height="20"
     file="resources/vivi/feed.png"
-    layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
   <browser:page
@@ -37,10 +38,10 @@
   <!-- Feed -->
 
   <browser:page
-    name="metadata.html"
     for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zeit.EditContent"
+    name="metadata.html"
     class=".form.EditForm"
+    permission="zeit.EditContent"
     menu="zeit-context-views" title="Metadata"
     />
 
@@ -80,43 +81,49 @@
     />
 
   <browser:page
-    name="metadata_preview"
     for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zope.View"
-    template="metadata.pt"
-    class=".feed.FeedView"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="metadata_preview"
+    class=".feed.FeedView"
+    template="metadata.pt"
+    permission="zope.View"
     />
 
   <browser:page
+    for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drag-pane.html"
-    for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zope.View"
     template="feed-drag-pane.pt"
+    permission="zope.View"
     />
 
   <browser:page
-    name="add-to-my-syndication-targets.html"
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="add-to-my-syndication-targets.html"
     class=".feed.MyTargets"
     attribute="add_to_targets"
+    permission="zope.View"
     />
 
   <browser:page
-    name="remove-from-my-syndication-targets.html"
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zope.View"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="remove-from-my-syndication-targets.html"
     class=".feed.MyTargets"
     attribute="remove_from_my_targets"
+    permission="zope.View"
     />
 
   <browser:viewlet
-    name="remember-as-syndication-target"
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.syndication.interfaces.IFeed"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".feed.RememberSyndicationTargetMenuItem"
+    name="remember-as-syndication-target"
     manager="zeit.cms.browser.interfaces.IContextActions"
+    class=".feed.RememberSyndicationTargetMenuItem"
     permission="zeit.cms.Syndicate"
     icon="/@@/zeit.cms/icons/default-feed.png"
     action="@@add-to-my-syndication-targets.html"
@@ -125,6 +132,7 @@
     />
 
   <browser:viewlet
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.syndication.interfaces.IFeed"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="remove-from-my-syndication-targets"
@@ -137,13 +145,17 @@
     sort="90"
     />
 
-  <resourceLibrary name="zeit.cms.syndication" require="zeit.cms">
+  <resourceLibrary
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.cms.syndication"
+    require="zeit.cms">
     <directory source="resources" include="dragndropHandlers.js"/>
   </resourceLibrary>
 
   <!-- Syndication Manager -->
 
   <gocept:pagelet
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="syndication_manager"
@@ -154,13 +166,14 @@
     />
 
   <browser:menuItem
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views"
     title="Syndicate"
     action="@@syndication_manager"
     permission="zeit.cms.Syndicate"
     filter="context/@@syndication_manager/manager/canSyndicate"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
 
