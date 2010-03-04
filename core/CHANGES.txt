@@ -26,6 +26,9 @@ zeit.cms changes
 
 - Alte CenterPage komplett entfernt (#6878).
 
+- Channel sind keine vollwertigen Inhaltstypen mehr, wenn das dezentrale
+  Syndizieren ausgeschaltet ist (#6878).
+
 1.40.3 (2010-02-23)
 -------------------
 

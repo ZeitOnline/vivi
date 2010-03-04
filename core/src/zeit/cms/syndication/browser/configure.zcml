@@ -28,10 +28,12 @@
     />
 
   <browser:page
+    zcml:condition="have zeit.cms.decentral-syndication"
     for="zeit.cms.repository.interfaces.IFolder"
-    permission="zeit.AddContent"
-    class=".form.AddForm"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zeit.cms.syndication.feed.Add"
+    class=".form.AddForm"
+    permission="zeit.AddContent"
     menu="zeit-add-menu" title="Feed"
     />
 
@@ -39,6 +41,7 @@
 
   <browser:page
     for="zeit.cms.syndication.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="metadata.html"
     class=".form.EditForm"
     permission="zeit.EditContent"
@@ -46,12 +49,12 @@
     />
 
   <browser:page
-    name="edit.html"
     for="zeit.cms.syndication.interfaces.IFeed"
-    permission="zeit.EditContent"
-    template="feed_sorting.pt"
-    class=".feed.EditFeedView"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    permission="zeit.EditContent"
+    class=".feed.EditFeedView"
+    template="feed_sorting.pt"
     menu="zeit-context-views" title="Edit contents"
     />
 

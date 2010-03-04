@@ -36,7 +36,10 @@ class TypeGrokker(martian.ClassGrokker):
                 (context.interface,))
 
         # Annotate interface
-        if context.register_as_type:
+        register_as_type = context.register_as_type
+        if callable(register_as_type):
+            register_as_type = register_as_type(config)
+        if register_as_type:
             config.action(
                 discriminator=(
                     'annotate_interface', context.interface, 'zeit.cms.type'),

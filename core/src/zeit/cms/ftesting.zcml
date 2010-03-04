@@ -23,5 +23,4 @@
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
-
 </configure>

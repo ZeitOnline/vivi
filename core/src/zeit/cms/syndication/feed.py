@@ -179,6 +179,9 @@ class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
     title = _('Channel')
     addform = 'zeit.cms.syndication.feed.Add'
 
+    def register_as_type(self, config):
+        return config.hasFeature('zeit.cms.decentral-syndication')
+
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)

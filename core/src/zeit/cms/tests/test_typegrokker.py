@@ -49,7 +49,6 @@ class TestTypeIdentifier(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(u'zeit.cms.tests.test_typegrokker.ITestInterface',
                           ITestInterface.getTaggedValue('zeit.cms.type'))
 
-
     def test_type_identifier_conflict(self):
         self.assertRaises(
             zope.configuration.config.ConfigurationConflictError,
