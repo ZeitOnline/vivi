@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:zcml="http://namespaces.zope.org/zcml"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="zeit.cms">
 
   <!-- Menus -->
@@ -368,11 +368,12 @@
     />
 
   <browser:page
+    zcml:condition="have zeit.cms.browser.development-preview"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer=".interfaces.ICMSLayer"
     name="show_development-preview"
     class=".preview.DevelopmentPreview"
-    for="zeit.cms.interfaces.ICMSContent"
     permission="zope.View"
-    layer=".interfaces.ICMSLayer"
     menu="zeit-context-actions-external" title="Development"
     />
 
