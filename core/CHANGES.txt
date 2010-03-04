@@ -20,6 +20,8 @@ zeit.cms changes
 
 - Kein ``alert()`` mehr bei Nicht-Firefox-Browsern (#6935).
 
+- Relaunch-Preview-Icon entfernt (#6878).
+
 
 1.40.3 (2010-02-23)
 -------------------
