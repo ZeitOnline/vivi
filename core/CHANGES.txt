@@ -7,6 +7,7 @@ zeit.content.article changes
 - Change the way asset interfaces are registered. This fixes isolation problems
   during tests (#6712).
 
+- Fix tests after decentral syndication was disabled by default (##6878).
 
 
 2.8.0 (2009-12-18)
