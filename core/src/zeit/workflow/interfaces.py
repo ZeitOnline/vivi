@@ -6,7 +6,7 @@ from zeit.cms.i18n import MessageFactory as _
 import datetime
 import pytz
 import zc.form.field
-import zeit.cms.content.contentsource
+import zeit.cms.syndication.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.workflow.source
 import zope.app.security.vocabulary
@@ -119,11 +119,11 @@ class IAutoSyndicationWorkflow(zope.interface.Interface):
         title=_('Automatically syndicate into'),
         description=_('automatically-syndicate-description'),
         value_type=zope.schema.Choice(
-            source=zeit.cms.content.contentsource.cmsContentSource))
+            source=zeit.cms.syndication.interfaces.feedSource))
 
     was_automatically_syndicated_into = zope.schema.Tuple(
         title=_('The object was automatically syndicated into'),
         readonly=True,
         missing_value=(),
         value_type=zope.schema.Choice(
-            source=zeit.cms.content.contentsource.cmsContentSource))
+            source=zeit.cms.syndication.interfaces.feedSource))
