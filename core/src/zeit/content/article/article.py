@@ -51,9 +51,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     textLength = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['textLength'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')
-    boxMostRead = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['boxMostRead'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'mostread')
     pageBreak = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['pageBreak'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'paragraphsperpage')

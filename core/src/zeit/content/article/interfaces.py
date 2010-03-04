@@ -18,12 +18,6 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
-    boxMostRead = zope.schema.Bool(
-        title=_("Box Most Read"),
-        default=True)
-
-    # references / links to other content
-
     pageBreak = zope.schema.Int(
         title=_("Pagebreak"),
         description=_("Paragraphs per page until a pagebreak."),

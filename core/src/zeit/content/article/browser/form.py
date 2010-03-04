@@ -38,7 +38,7 @@ class ArticleFormBase(object):
         gocept.form.grouped.Fields(
             _("Options"),
             base.option_fields.fields + (
-                'boxMostRead', 'has_recensions', 'artbox_thema', 'export_cds'),
+                'has_recensions', 'artbox_thema', 'export_cds'),
             css_class='column-right checkboxes'))
 
 

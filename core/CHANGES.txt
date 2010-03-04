@@ -9,6 +9,8 @@ zeit.content.article changes
 
 - Fix tests after decentral syndication was disabled by default (#6878).
 
+- Option "meistgelesene Artikel" entfernt (#6878).
+
 
 2.8.0 (2009-12-18)
 ------------------
