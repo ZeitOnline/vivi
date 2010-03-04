@@ -17,7 +17,7 @@ setup(
         'PILwoTk',
         'gocept.form',
         'setuptools',
-        'zeit.cms>=1.40.4',
+        'zeit.cms>1.40.3',
         'zeit.imp>=0.7',
         'zeit.wysiwyg',
         'zope.app.appsetup',
