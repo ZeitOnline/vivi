@@ -18,6 +18,8 @@ zeit.cms changes
 - Die Felder CAP-Kontext und CAP-Titel auf allen Objekten mit Standardmetadaten
   verfügbar gemacht (#6923).
 
+- Kein ``alert()`` mehr bei Nicht-Firefox-Browsern (#6935).
+
 
 1.40.3 (2010-02-23)
 -------------------
