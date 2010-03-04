@@ -1,8 +1,9 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
    xmlns:meta="http://namespaces.zope.org/meta"
-   i18n_domain="zope"
-   >
+   i18n_domain="zope">
+
+   <meta:provides feature="zeit.cms.decentral-syndication" />
 
   <!-- This file is the equivalent of site.zcml and it is -->
   <!-- used for functional testing setup -->
