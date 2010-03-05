@@ -10,15 +10,17 @@ import zope.testing.renormalizing
 
 product_config = {
     'zeit.content.cp': {
+        'block-layout-source': 'file://%s' % pkg_resources.resource_filename(
+            __name__, 'layout.xml'),
+        'cp-extra-url': 'file://%s' % pkg_resources.resource_filename(
+            __name__, 'cpextra.xml'),
+        'cp-feed-max-items': '200',
         'cp-types-url': 'file://%s' % pkg_resources.resource_filename(
             __name__, 'cp-types.xml'),
         'feed-update-minimum-age': '30',
         'rss-folder': 'rss',
         'rules-url': 'file://%s' % pkg_resources.resource_filename(
             'zeit.content.cp.tests.fixtures', 'example_rules.py'),
-        'cp-feed-max-items': '200',
-        'block-layout-source': 'file://%s' % pkg_resources.resource_filename(
-            __name__, 'layout.xml')
     },
     'zeit.workflow': {'publish-script': 'cat',
                       'path-prefix': ''}

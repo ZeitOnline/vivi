@@ -53,7 +53,7 @@ It is not possible to switch on the autopilot when there is no centerpage
 referenced:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=3).click()
 >>> browser.getControl('Autopilot active').selected = True
 >>> browser.getControl('Hide duplicate teasers').selected = True
 >>> browser.getControl('Apply').click()

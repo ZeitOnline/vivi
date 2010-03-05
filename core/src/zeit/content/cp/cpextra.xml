@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<cpextras>
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="mostread">
+    Meistgelesen
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="mostcommented">
+    Meistkommentiert
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="weather">
+    Wetter
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="stocks">
+    Börse
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="ressort_news">
+    Neu Im Ressort
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="live_search">
+    Live-Search
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="print_archive">
+    Print Archiv
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="blindblock">
+    Blindblock
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="homepage_news">
+    Neu auf Zeit Online
+  </cpextra>
+
+  <cpextra
+    for="zeit.content.cp.interfaces.IRegion"
+    id="dpa-news">
+    dpa-News
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="authors-register">
+    Autoren-Register
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="linkatory">
+    Linkatory
+  </cpextra> 
+
+  <cpextra
+    for="zeit.content.cp.interfaces.IRegion"
+    id="homepage_news_pics">
+    Neu auf Zeit Online (Bilder)
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+           id="recensionsearch">
+    Rezensionssuche
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="solr-month">
+    Solr Monatsübersicht
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="dwds-ticker">
+    DWDS Ticker
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IRegion"
+           id="sportextra">
+    Sport Extra
+  </cpextra>
+
+</cpextras>

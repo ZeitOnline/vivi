@@ -7,11 +7,11 @@ import re
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
-import zeit.cms.content.sources
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.avsource
 import zeit.content.cp.layout
+import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
 import zeit.workflow.interfaces
@@ -28,25 +28,6 @@ class ValidationError(zope.schema.ValidationError):
         return self.args[0]
 
 
-class CPTypeSource(zeit.cms.content.sources.SimpleContextualXMLSource):
-    # we are contextual so we can set a default value, but have it not validated
-    # at import time, since we don't have our product config then, yet.
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'cp-types-url'
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        return [unicode(item.get('name'))
-                for item in tree.iterchildren()]
-
-    def getTitle(self, context, value):
-        __traceback_info__ = (value, )
-        tree = self._get_tree()
-        return unicode(tree.xpath('/centerpage-types/type[@name = "%s"]' %
-                                  value)[0])
-
-
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
@@ -54,7 +35,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
     type = zope.schema.Choice(
         title=_('CP type'),
-        source=CPTypeSource(),
+        source=zeit.content.cp.source.CPTypeSource(),
         default=u'centerpage')
 
     header_image = zope.schema.Choice(
@@ -419,8 +400,9 @@ class IRSSBlock(IBlock):
 class ICPExtraBlock(IBlock):
     """Block which contains a cp_extra."""
 
-    block_title = zope.schema.TextLine(
-        title=u'Title of the cp_extra.')
+    cpextra = zope.schema.Choice(
+        title=_('CP Extra Id'),
+        source=zeit.content.cp.source.CPExtraSource())
 
 
 class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,

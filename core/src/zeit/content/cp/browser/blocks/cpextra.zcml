@@ -8,22 +8,20 @@
     view="zope.interface.Interface"
     manager="..interfaces.IEditorContentViewletManager"
     name="contents"
+    class=".cpextra.CPExtraView"
     template="layout.cpextra.content.pt"
     permission="zeit.EditContent"
     weight="0"
     />
 
-  <!-- not editable, empty template -->
-  <browser:viewlet
+  <browser:page
     for="zeit.content.cp.interfaces.ICPExtraBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="edit-box"
-    template="layout.cpextra.edit-properties.pt"
+    name="edit-properties"
+    class=".cpextra.EditProperties"
     permission="zeit.EditContent"
-    weight="0"
     />
+
 
 </configure>
 

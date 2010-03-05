@@ -1,14 +1,10 @@
 CP-Extra bases blocks
 ======================
 
-``cp_extra`` based blocks are *very* simple blocks. It is not even possible to
-change them.
+``cp_extra`` based blocks are *very* simple blocks. They reference a cpextra id
+and nothing more.
 
-MostRead
-++++++++
-
-The most read block shows the most read articles. It is only valid in the
-Informatives area:
+Create a cp extra block:
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
@@ -16,14 +12,23 @@ Informatives area:
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='mostread')
-Traceback (most recent call last):
-    ...
-ComponentLookupError: (<zeit.content.cp.area.Lead object at 0x...>, <InterfaceClass zeit.content.cp.interfaces.IElementFactory>, 'mostread')
->>> zope.component.getAdapter(
-...     cp['informatives'],
-...     zeit.content.cp.interfaces.IElementFactory, name='mostread')
-<zeit.content.cp.blocks.cpextra.MostreadFactory object at 0x...>
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='cpextra')
+>>> cpextra = factory()
+>>> cpextra
+<zeit.content.cp.blocks.cpextra.CPExtraBlock object at 0x...>
+
+Initialy the block is empty and has no module assinged:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(cpextra.xml, pretty_print=True)
+<container ... cp:type="cpextra" module="" cp:__name__="ce7dc496-327f-432d-b6ec-380866c1ce29"/>
+
+
+MostRead
+++++++++
+
+The most read block shows the most read articles. It is only valid in the
+Informatives area.
 
 When a centerpage is created the toplist is automatically added[#functional]_:
 
@@ -32,19 +37,15 @@ When a centerpage is created the toplist is automatically added[#functional]_:
 >>> container['cp'] = zeit.content.cp.centerpage.CenterPage()
 >>> mr = container['cp']['informatives'].values()[0]
 >>> mr.type
+'cpextra'
+>>> mr.cpextra
 'mostread'
->>> import lxml.etree
 >>> print lxml.etree.tostring(mr.xml, pretty_print=True)
 <container...>
   <cp_extra id="mostread"/>
 </container>
 
-CP-Extra blocks have a block title:
-
->>> print mr.block_title
-Meistgelesen
-
-The generic title can also be set:
+The generic title can be set:
 
 >>> mr.title is None
 True
@@ -56,30 +57,14 @@ a title
 MostCommented
 +++++++++++++
 
-The most read block shows the most read articles. It is only addable in the
-informatives area:
-
->>> import zeit.content.cp.centerpage
->>> cp = zeit.content.cp.centerpage.CenterPage()
->>> lead = cp['lead']
->>> import zeit.content.cp.interfaces
->>> import zope.component
->>> zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='mostcommented')
-Traceback (most recent call last):
-    ...
-ComponentLookupError: (<zeit.content.cp.area.Lead object at 0x...>, <InterfaceClass zeit.content.cp.interfaces.IElementFactory>, 'mostcommented')
->>> zope.component.getAdapter(
-...     cp['informatives'],
-...     zeit.content.cp.interfaces.IElementFactory, name='mostcommented')
-<zeit.content.cp.blocks.cpextra.MostcommentedFactory object at 0x...>
-
-When a centerpage is created the toplist is automatically added. We look at the
-cp created above:
+The most read block shows the most read articles.  When a centerpage is created
+the mostcommented is automatically added. We look at the cp created above:
 
 >>> import zeit.cms.interfaces
 >>> mc = container['cp']['informatives'].values()[1]
 >>> mc.type
+'cpextra'
+>>> mc.cpextra
 'mostcommented'
 >>> import lxml.etree
 >>> print lxml.etree.tostring(mc.xml, pretty_print=True)
@@ -88,35 +73,45 @@ cp created above:
 </container>
 
 
+CPExtra source
+++++++++++++++
 
-Weather
-+++++++
+The source is contextual.
 
-Shows the weather ...
+>>> import pprint
+>>> import zeit.content.cp.source
+>>> source = zeit.content.cp.source.CPExtraSource()
+>>> lead_items = source(cpextra)
+>>> pprint.pprint(list(lead_items))
+[u'weather',
+ u'stocks',
+ u'homepage_news',
+ u'dpa-news',
+ u'authors-register',
+ u'homepage_news_pics',
+ u'solr-month',
+ u'dwds-ticker',
+ u'sportextra']
 
->>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='weather')
->>> block = factory()
->>> import lxml.etree
->>> print lxml.etree.tostring(block.xml, pretty_print=True)
-<container...>
-  <cp_extra id="weather"/>
-</container>
+There are more possible extras in the informatives:
+
+>>> pprint.pprint(list(source(mc)))
+[u'mostread',
+ u'mostcommented',
+ u'weather',
+ ...
 
 
-Stocks
-++++++
+The cpextras have titles:
 
-Shows stock info
-
->>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='stocks')
->>> block = factory()
->>> import lxml.etree
->>> print lxml.etree.tostring(block.xml, pretty_print=True)
-<container...>
-  <cp_extra id="stocks"/>
-</container>
+>>> import zope.browser.interfaces
+>>> import zope.publisher.browser
+>>> request = zope.publisher.browser.TestRequest()
+>>> terms = zope.component.getMultiAdapter(
+...     (lead_items, request), zope.browser.interfaces.ITerms)
+>>> term = terms.getTerm('weather')
+>>> print term.title
+Wetter
 
 
 

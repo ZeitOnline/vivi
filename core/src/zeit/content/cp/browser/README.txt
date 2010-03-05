@@ -171,11 +171,11 @@ Deleting blocks
 Blocks and teaser bars can be removed using the delete link:
 
 >>> browser.open(contents_url)
->>> len(browser.etree.xpath('//div[contains(@class, "type-mostread")]'))
-1
+>>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
+2
 >>> browser.getLink('Delete').url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
 >>> browser.open(contents_url)
->>> browser.etree.xpath('//div[contains(@class, "type-mostread")]')
-[]
+>>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
+1

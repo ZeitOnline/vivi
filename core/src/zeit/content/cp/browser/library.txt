@@ -15,14 +15,6 @@ are transmitted in JSON[#setup]_:
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
-               {'css': 'module informatives-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
-                'title': 'Wetter',
-                'type': 'weather'},
-               {'css': 'module informatives-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
-                'title': 'dpa-News',
-                'type': 'dpa-news'}],
  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
 
 
@@ -50,14 +42,6 @@ After creating a teaser bar, blocks are offered:
                 'title': 'Audioblock',
                 'type': 'audio'},
                 ...
-               {'css': 'module teaser-mosaic-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-weather.png',
-                'title': 'Wetter',
-                'type': 'weather'},
-               {'css': 'module teaser-mosaic-module',
-                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-default-image.png',
-                'title': 'dpa-News',
-                'type': 'dpa-news'}],
  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
 
 
@@ -85,12 +69,12 @@ In the informatives area is a landing zone to create a block:
       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
       ...
 
-Create a weather block as first block in the informatives. The view returns
+Create a cpextra block as first block in the informatives. The view returns
 information about the created block:
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...              'island/informatives/@@landing-zone-drop-module'
-...              '?block_type=weather')
+...              '?block_type=cpextra')
 >>> result = cjson.decode(browser.contents)
 >>> pprint.pprint(result)
 {'signals': [{'args': ['7ccff7a0-3758-416c-ad30-d0183a2543fd'],
@@ -117,14 +101,14 @@ it, is rendered too:
 <div class="landing-zone action-informatives-module-droppable"
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
 </div>
-  <div ...class="block type-weather"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
        cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
   ...
 
-Add an audio block after the just created weather block now:
+Add an audio block after the just created cpextra block now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
@@ -137,7 +121,7 @@ Add an audio block after the just created weather block now:
 <div class="landing-zone action-informatives-module-droppable"
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
 </div>
-  <div ...class="block type-weather"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
        cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">

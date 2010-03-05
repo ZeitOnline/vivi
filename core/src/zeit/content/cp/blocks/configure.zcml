@@ -1,6 +1,5 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:zeit="http://namespaces.zeit.de/zcml">
+  xmlns="http://namespaces.zope.org/zope">
 
   <adapter factory=".block.cms_content_to_centerpage" />
   <adapter factory=".block.cms_content_iter" />
@@ -203,8 +202,20 @@
     factory=".fullgraphical.FullGraphicalBlock"
     />
 
-  <!-- cp_extra based blocks -->
-  <zeit:cp_extras module=".cpextra" />
-  <subscriber handler=".cpextra.add_blocks_to_newly_created_cp" />
+  <!-- CPExtra block -->
+  <class class=".cpextra.CPExtraBlock">
+    <require
+      interface="..interfaces.ICPExtraBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.ICPExtraBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".cpextra.CPExtraBlockFactory" name="cpextra" />
+  <adapter
+    provides="..interfaces.IElement"
+    name="cpextra"
+    factory=".cpextra.CPExtraBlock"
+    />
 
 </configure>
