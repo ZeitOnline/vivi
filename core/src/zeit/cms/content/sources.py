@@ -64,7 +64,7 @@ class XMLSource(
                            self.attribute,
                            xml.sax.saxutils.quoteattr(value)))
         if nodes:
-            return unicode(nodes[0].text)
+            return unicode(nodes[0].text).strip()
         return value
 
 
