@@ -429,17 +429,15 @@ class TestSorting(Test):
         self.open_centerpage()
         # There are two modules in the informatives anyway, don't create any
         teaser_module = self.get_module('informatives', 'List of teasers')
-        s.storeAttribute('css=.block.type-mostread@id', 'block1')
-        s.storeAttribute('css=.block.type-mostcommented@id', 'block2')
+        s.storeAttribute('css=.block.type-cpextra@id', 'block1')
+        s.storeAttribute('css=.block.type-cpextra + .landing-zone + .block.type-cpextra@id', 'block2')
 
         s.storeElementHeight('id=${block2}', 'height');
         s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
 
         s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
                       '0,${delta_y}')
-        s.waitForElementPresent(
-            'css=.block.type-mostcommented + .landing-zone '
-            '+ .block.type-mostread')
+        s.waitForOrdered('${block2}', '${block1}')
 
 
 class TestLandingZone(Test):
