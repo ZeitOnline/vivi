@@ -40,10 +40,12 @@ class Container(UserDict.DictMixin,
         if node:
             node = node[0]
             element_type = node.get('{http://namespaces.zeit.de/CMS/cp}type')
-            element = zope.component.getMultiAdapter(
+            element = zope.component.queryMultiAdapter(
                 (self, node),
                 zeit.content.cp.interfaces.IElement,
                 name=element_type)
+            if element is None:
+               return None 
             return zope.container.contained.contained(element, self, key)
         raise KeyError(key)
 
