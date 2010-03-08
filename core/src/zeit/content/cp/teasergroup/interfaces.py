@@ -39,5 +39,5 @@ class IRepository(zope.interface.Interface):
 
         """
 
-    def __getitem__(self, name):
+    def __getitem__(name):
         """Get teaser group with given name."""
