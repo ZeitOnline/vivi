@@ -12,8 +12,11 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
-        'zeit.cms',
         'pybrightcove',
+        'setuptools',
+        'zeit.cms',
+        'zope.interface',
+        'zope.schema',
     ],
     entry_points = """
         """
