@@ -46,6 +46,8 @@ VIDEO_1234 = {
 
 class APIConnection(pybrightcove.connection.APIConnection):
 
+    posts = []
+
     def get_list(self, command, item_class, page_size, page_number, sort_by,
                  sort_order, **kwargs):
 
@@ -61,6 +63,9 @@ class APIConnection(pybrightcove.connection.APIConnection):
                                                       item_class=item_class,
                                                       connection=self)
 
+    def post(self, command, file_to_upload=None, **kwargs):
+        self.posts.append((command, file_to_upload, kwargs))
+
 
 BrightcoveLayer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
@@ -72,6 +77,11 @@ BrightcoveLayer = zope.app.testing.functional.ZCMLLayer(
 class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = BrightcoveLayer
+
+    def tearDown(self):
+        APIConnection.posts[:] = []
+        super(BrightcoveTestCase, self).tearDown()
+
 
 # 70355221001
 # 70740054001

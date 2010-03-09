@@ -2,10 +2,12 @@
 # See also LICENSE.txt
 
 import persistent
+import persistent.mapping
 import pybrightcove
 import zeit.brightcove.interfaces
 import zope.container.contained
 import zope.interface
+import transaction
 
 
 
@@ -18,14 +20,26 @@ class mapped(object):
     def __get__(self, instance, class_):
         if instance is None:
             return self
-        value = instance.data
-        for key in self.path:
-            if not isinstance(value, dict):
-                raise AttributeError()
-            value = value.get(key, self)
+        value = self._get_from_dict(instance.modified_data)
+        if value is self:
+            value = self._get_from_dict(instance.data)
         if value is self:
             raise AttributeError()
         return value
+
+    def _get_from_dict(self, value):
+        for key in self.path:
+            value = value.get(key, self)
+            if value is self:
+                break
+        return value
+
+    def __set__(self, instance, value):
+        data = instance.modified_data
+        for key in self.path[:-1]:
+            data = data.setdefault(key, {})
+        data[self.path[-1]] = value
+        instance.save_to_brightcove()
 
 
 class mapped_bool(mapped):
@@ -33,6 +47,7 @@ class mapped_bool(mapped):
     def __get__(self, instance, class_):
         value = super(mapped_bool, self).__get__(instance, class_)
         return value == '1'
+
 
 class mapped_keywords(mapped):
 
@@ -63,6 +78,7 @@ class Video(persistent.Persistent,
 
     def __init__(self, data, connection=None):
         self.data = data
+        self.modified_data = persistent.mapping.PersistentMapping()
 
     @staticmethod
     def get_connection():
@@ -75,3 +91,16 @@ class Video(persistent.Persistent,
         return pybrightcove.ItemResultSet(
             'find_videos_by_ids', class_, class_.get_connection(),
             video_ids=ids)
+
+    def save_to_brightcove(self):
+        registered = getattr(self, '_v_save_hook_registered', False)
+        if not registered:
+            transaction.get().addBeforeCommitHook(self._save)
+            self._v_save_hook_registered = True
+
+    def _save(self):
+        try:
+            del self._v_save_hook_registered
+        except AttribueError:
+            pass
+        self.get_connection().post('update_video', video=self.modified_data)

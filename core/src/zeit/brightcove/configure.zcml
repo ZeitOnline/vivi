@@ -10,5 +10,8 @@
     component=".generation.manager"
     />
 
+  <class class=".video.Video">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+  </class>
 </configure>
 

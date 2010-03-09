@@ -1,28 +1,65 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import grokcore.component
-import zeit.brightcove.video
+import BTrees
+import datetime
+import persistent
+import pytz
 import zeit.brightcove.interfaces
-import zope.container.btree
+import zeit.brightcove.video
+import zope.container.contained
+import zope.dublincore.interfaces
+import zope.event
+import zope.interface
+import zope.lifecycleevent
 
 
-class Repository(zope.container.btree.BTreeContainer):
+class Repository(persistent.Persistent,
+                 zope.container.contained.Contained):
+
+    zope.interface.implements(zeit.brightcove.interfaces.IRepository)
+
 
     _type_class_map = {
         'video': zeit.brightcove.video.Video
     }
 
+    BRIGHTCOVE_CACHE_TIMEOUT = datetime.timedelta(minutes=5)
+
+    def __init__(self):
+        self._data = BTrees.family32.OO.BTree()
+
     def __getitem__(self, key):
+        obj = None
+        try:
+            obj = self._data[key]
+        except KeyError:
+            pass
+        else:
+            created = zope.dublincore.interfaces.IDCTimes(obj).created
+            now = datetime.datetime.now(pytz.UTC)
+            if created + self.BRIGHTCOVE_CACHE_TIMEOUT < now:
+                obj = None
+        if obj is not None:
+            return obj
+        obj = self._get_from_brightcove(key)
+        if obj is None:
+            raise KeyError(key)
+        obj = zope.container.contained.contained(obj, self, key)
+        self._data[key] = obj
+        return obj
+
+    def _get_from_brightcove(self, key):
         class_, id = self._parse_key(key)
         if class_ is None:
-            raise KeyError(key)
+            return
         for obj in class_.find_by_ids([id]):
             # The brightcove API is rahter stupid and returns [None] instead of
             # [] when there is no result. *ARGH*
             if obj.data is not None:
+                zope.event.notify(
+                    zope.lifecycleevent.ObjectCreatedEvent(obj))
                 return obj
-        raise KeyError(key)
 
     def _parse_key(self, key):
         if ':' in key:
