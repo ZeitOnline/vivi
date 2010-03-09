@@ -6,6 +6,7 @@ import time
 import transaction
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
+import zeit.cms.interfaces
 import zope.component
 
 
@@ -48,9 +49,7 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(u'Auto', video.ressort)
         self.assertEquals(True, video.dailyNewsletter)
         self.assertEquals(False, video.breaking_news)
-        self.assertEquals(('Politik', 'Deutschland'),
-                          video.keywords)
-        self.assertRaises(AttributeError, lambda: video.product_id)
+        self.assertTrue(video.product_id is None)
 
     def test_modify(self):
         video = self.repository['video:1234']
@@ -70,6 +69,45 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(1,
                           len(zeit.brightcove.testing.APIConnection.posts))
         self.assertEquals(u'A new subtitle', video.subtitle)
+
+    def test_keywords(self):
+        video = self.repository['video:1234']
+        self.assertEquals(['Politik', 'koalition'],
+                          [kw.code for kw in video.keywords])
+        keywords = zope.component.getUtility(
+            zeit.cms.content.interfaces.IKeywords)
+        video.keywords = (keywords['staatsanwaltschaft'],
+                          keywords['parlament'])
+        self.assertEquals('staatsanwaltschaft;parlament',
+                          video.data['customFields']['cmskeywords'])
+
+    def test_bool(self):
+        video = self.repository['video:1234']
+        self.assertEquals(True, video.dailyNewsletter)
+        video.dailyNewsletter = False
+        self.assertEquals('0',
+                          video.data['customFields']['newsletter'])
+        video.dailyNewsletter = True
+        self.assertEquals('1',
+                          video.data['customFields']['newsletter'])
+
+    def test_related(self):
+        video = self.repository['video:1234']
+        self.assertEquals((), video.related)
+        content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.teaserTitle = u'a title'
+        video.related = (zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent'),)
+        self.assertEquals(
+            'http://xml.zeit.de/testcontent',
+            video.data['customFields']['ref_link1'])
+        self.assertEquals(
+            'a title',
+            video.data['customFields']['ref_title1'])
+
+
 
     def test_brightcove_cache_timeout(self):
         # Set the timeout ot 2 seconds

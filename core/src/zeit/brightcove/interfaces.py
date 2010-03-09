@@ -4,6 +4,8 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zeit.cms.related.interfaces
+import zope.container.interfaces
 import zope.interface
 import zope.schema
 
@@ -12,8 +14,8 @@ class IAPIConnection(zope.interface.Interface):
     """Brightcove API connection."""
 
 
-class IRepository(zope.interface.Interface):
-    """A repostory for accessing brightcove videso.
+class IRepository(zope.container.interfaces.IItemContainer):
+    """A repostory for accessing brightcove videos.
 
 
     Content from brightcove has unique ids in the form::
@@ -21,13 +23,6 @@ class IRepository(zope.interface.Interface):
         brighcove:<type>:<id>.
 
     """
-
-    def __getitem__(key):
-        """Return IBrightcoveContent for given key.
-
-        Key was the form: ``<type>:<id>``
-
-        """
 
 
 
@@ -39,7 +34,7 @@ class IBrightcoveContent(zope.interface.Interface):
         max_length=1024,
         required=False)
 
-    title = supertitle = zope.schema.TextLine(
+    title = zope.schema.TextLine(
         title=_("Title"))
 
     teaserText = zope.schema.Text(
@@ -97,5 +92,6 @@ class IBrightcoveContent(zope.interface.Interface):
         default=False)
 
 
-class IVideo(IBrightcoveContent):
+class IVideo(IBrightcoveContent,
+             zeit.cms.related.interfaces.IRelatedContent):
     """A video."""

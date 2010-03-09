@@ -19,7 +19,7 @@ VIDEO_1234 = {
              'ressort': 'Auto',
              'newsletter': '1',
              'breaking-news': '0',
-             'cmskeywords': 'Politik;Deutschland',
+             'cmskeywords': 'Politik;koalition',
          },
          'economics': 'AD_SUPPORTED',
          'id': 70662056001L,

@@ -1,0 +1,13 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zeit.brightcove.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".video.EditForm"
+    permission="zeit.brightcove.video.Edit"
+    />
+
+</configure>

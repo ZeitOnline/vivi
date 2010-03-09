@@ -1,8 +1,16 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:grok="http://namespaces.zope.org/grok">
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
 
   <grok:grok package="." />
+
+  <permission
+    id="zeit.brightcove.video.Edit"
+    title="Edit brightcove videos"
+    />
+
+  <include package=".browser" />
 
   <utility
     name="zeit.cms/brightcove"
@@ -10,8 +18,24 @@
     component=".generation.manager"
     />
 
+  <class class=".repository.Repository">
+    <require
+      interface=".interfaces.IRepository"
+      permission="zope.View"
+      />
+  </class>
+
   <class class=".video.Video">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IVideo"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IVideo"
+      permission="zeit.brightcove.video.Edit"
+      />
   </class>
+
 </configure>
 
