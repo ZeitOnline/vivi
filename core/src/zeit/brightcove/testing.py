@@ -12,7 +12,36 @@ product_config = """\
 """
 
 
-SINGLE_RESULT = {'items': [{'thumbnailURL': 'http://brightcove.vo.llnwd.net/d10/unsecured/media/18140073001/18140073001_70700928001_th-70700004001.jpg?pubId=18140073001', 'name': 'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung', 'publishedDate': '1268053197823', 'linkURL': None, 'lastModifiedDate': '1268053197824', 'tags': ['Vermischtes'], 'longDescription': u'Glanz, Glamour und erwartungsvolle Spannung lag \xfcber den Roten Teppich am Kodak Theatre in Los Angeles kurz vor der 82. Oscar-Verleihung.', 'playsTotal': None, 'length': 152640, 'referenceId': '2010-03-08T023523Z_1_OVE6276PP_RTRMADC_0_ONLINE-OSCARS-TEPPICH-O', 'playsTrailingWeek': None, 'linkText': None, 'economics': 'AD_SUPPORTED', 'creationDate': '1268018138802', 'shortDescription': u'Glanz, Glamour und erwartungsvolle Spannung lag \xfcber den Roten Teppich am Kodak Theatre in Los Angeles kurz vor der 82. Oscar-Verleihung.', 'id': 70662056001L, 'videoStillURL': 'http://brightcove.vo.llnwd.net/d10/unsecured/media/18140073001/18140073001_70700927001_vs-70700004001.jpg?pubId=18140073001'}], 'page_number': 0, 'page_size': 0, 'total_count': -1}
+VIDEO_1234 = {
+    'items': [
+        {'creationDate': '1268018138802',
+         'customFields': {
+             'ressort': 'Auto',
+             'newsletter': '1',
+             'breaking-news': '0',
+             'cmskeywords': 'Politik;Deutschland',
+         },
+         'economics': 'AD_SUPPORTED',
+         'id': 70662056001L,
+         'lastModifiedDate': '1268053197824',
+         'length': 152640,
+         'linkText': None,
+         'linkURL': None,
+         'longDescription': u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
+         'name': 'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+         'playsTotal': None,
+         'playsTrailingWeek': None,
+         'publishedDate': '1268053197823',
+         'referenceId': '2010-03-08T023523Z_1_OVE6276PP_RTRMADC_0_ONLINE',
+         'shortDescription': u'Glanz, Glamour und erwartungsvolle Spannung',
+         'tags': ['Vermischtes'],
+         'thumbnailURL': 'http://thumbnailurl',
+         'videoStillURL': 'http://videostillurl'}
+    ],
+    'page_number': 0,
+    'page_size': 0,
+    'total_count': -1,
+}
 
 
 class APIConnection(pybrightcove.connection.APIConnection):
@@ -22,9 +51,12 @@ class APIConnection(pybrightcove.connection.APIConnection):
 
         if (command == 'find_videos_by_ids' and
             kwargs.get('video_ids') == '1234'):
-            result = SINGLE_RESULT
+            result = VIDEO_1234
         else:
-            result = {}
+            result = {"items": [None],
+                      "page_number": 0,
+                      "page_size": 0,
+                      "total_count": -1}
         return pybrightcove.connection.ItemCollection(data=result,
                                                       item_class=item_class,
                                                       connection=self)

@@ -33,19 +33,28 @@ class IRepository(zope.interface.Interface):
 
 class IBrightcoveContent(zope.interface.Interface):
 
-    ressort = zope.schema.Choice(
-        title=_("Ressort"),
-        source=zeit.cms.content.sources.NavigationSource())
-
     supertitle = zope.schema.TextLine(
         title=_("Kicker"),
         description=_("Please take care of capitalisation."),
+        max_length=1024,
         required=False)
+
+    title = supertitle = zope.schema.TextLine(
+        title=_("Title"))
 
     teaserText = zope.schema.Text(
         title=_("Teaser text"),
         required=False,
         max_length=170)
+
+    subtitle = zope.schema.Text(
+        title=_("Video subtitle"),
+        required=False,
+        max_length=5000)
+
+    ressort = zope.schema.Choice(
+        title=_("Ressort"),
+        source=zeit.cms.content.sources.NavigationSource())
 
     serie = zope.schema.Choice(
         title=_("Serie"),
@@ -65,16 +74,24 @@ class IBrightcoveContent(zope.interface.Interface):
         value_type=zope.schema.Object(
             zeit.cms.content.interfaces.IKeyword))
 
+    dailyNewsletter = zope.schema.Bool(
+        title=_("Daily newsletter"),
+        description=_(
+            "Should this article be listed in the daily newsletter?"),
+        default=False)
+
     banner = zope.schema.Bool(
         title=_("Banner"),
-        default=True)
+        default=False)
 
     banner_id = zope.schema.TextLine(
         title=_('Banner id'),
         required=False)
 
-    dailyNewsletter = zope.schema.Bool(
-        title=_("Daily newsletter"),
-        description=_(
-            "Should this article be listed in the daily newsletter?"),
-        default=True)
+    breaking_news = zope.schema.Bool(
+        title=_('Breaking news'),
+        default=False)
+
+
+class IVideo(IBrightcoveContent):
+    """A video."""

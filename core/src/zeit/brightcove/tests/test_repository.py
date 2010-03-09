@@ -25,3 +25,19 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_getitem(self):
         video = self.repository['video:1234']
+        self.assertTrue(zeit.brightcove.interfaces.IVideo.providedBy(video))
+        self.assertEquals(
+            u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+            video.title)
+        self.assertEquals(
+            u'Glanz, Glamour und erwartungsvolle Spannung',
+            video.teaserText)
+        self.assertEquals(
+            u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
+            video.subtitle)
+        self.assertEquals(u'Auto', video.ressort)
+        self.assertEquals(True, video.dailyNewsletter)
+        self.assertEquals(False, video.breaking_news)
+        self.assertEquals(('Politik', 'Deutschland'),
+                          video.keywords)
+        self.assertRaises(AttributeError, lambda: video.product_id)
