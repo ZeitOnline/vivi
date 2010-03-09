@@ -59,8 +59,7 @@ class Video(persistent.Persistent,
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
-
-
+    has_recensions = mapped_bool('customFields', 'recensions')
 
     def __init__(self, data, connection=None):
         self.data = data

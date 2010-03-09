@@ -92,6 +92,10 @@ class IBrightcoveContent(zope.interface.Interface):
         title=_('Breaking news'),
         default=False)
 
+    has_recensions = zope.schema.Bool(
+        title=_('Has recension content'),
+        default=False)
+
 
 class IVideo(IBrightcoveContent):
     """A video."""
