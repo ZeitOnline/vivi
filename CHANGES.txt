@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.35.1 (unreleased)
+1.36.0 (2010-03-10)
 -------------------
 
 - Tabelle und Anker entfernt (#6878).
