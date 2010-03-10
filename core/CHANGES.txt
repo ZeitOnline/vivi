@@ -1,7 +1,7 @@
 zeit.content.rawxml changes
 ===========================
 
-0.3.4 (unreleased)
+0.3.4 (2010-03-10)
 ------------------
 
 - Fix tests after decentral syndication was disabled by default (#6878).
