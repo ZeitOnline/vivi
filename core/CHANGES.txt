@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-0.17 (unreleased)
+0.17 (2010-03-10)
 +++++++++++++++++
 
 - zeit.content.centerpage entfernt
