@@ -1,7 +1,7 @@
 zeit.seo changes
 ================
 
-1.3.1 (unreleased)
+1.4.0 (2010-03-10)
 ------------------
 
 - Felder »lexicalResourceQuery« und »linke Spalte« entfernt (#6878).
