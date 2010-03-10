@@ -51,7 +51,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     posts_received = []
     response = 200
-
+    
     def do_GET(self):
         if self.path == '/die':
             self.send_response(200)
@@ -64,6 +64,9 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         query = urlparse.parse_qs(self.path[2:])
         if (query.get('command') == ['find_videos_by_ids'] and
             query.get('video_ids') == ['1234']):
+            result = VIDEO_1234
+        elif (query.get('command') == ['find_playlists_by_ids'] and
+              query.get('playlist_ids') == ['2345']):
             result = VIDEO_1234
         else:
             result = {"items": [None],

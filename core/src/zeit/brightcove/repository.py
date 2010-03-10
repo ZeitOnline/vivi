@@ -22,6 +22,7 @@ class Repository(persistent.Persistent,
 
     _type_class_map = {
         'video': zeit.brightcove.content.Video,
+        'playlist': zeit.brightcove.content.Playlist        
     }
 
     BRIGHTCOVE_CACHE_TIMEOUT = datetime.timedelta(minutes=5)

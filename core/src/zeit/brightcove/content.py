@@ -66,13 +66,12 @@ class mapped_keywords(mapped):
         super(mapped_keywords, self).__set__(instance, value)
 
 
-class Video(persistent.Persistent,
+class Content(persistent.Persistent,
             zope.container.contained.Contained):
 
-    zope.interface.implements(zeit.brightcove.interfaces.IVideo)
+    zope.interface.implements(zeit.brightcove.interfaces.IBrightcoveContent)
 
     data = None
-
     supertitle = mapped('customFields', 'supertitle')
     title = mapped('name')
     teaserText = mapped('shortDescription')
@@ -100,12 +99,6 @@ class Video(persistent.Persistent,
         return zope.component.getUtility(
             zeit.brightcove.interfaces.IAPIConnection)
 
-    @classmethod
-    def find_by_ids(class_, ids):
-        ids = ','.join(str(i) for i in ids)
-        return class_.get_connection().get_list(
-            'find_videos_by_ids', class_, video_ids=ids)
-
     def save_to_brightcove(self):
         registered = getattr(self, '_v_save_hook_registered', False)
         if not registered:
@@ -123,6 +116,16 @@ class Video(persistent.Persistent,
             data['customFields'] = dict(data['customFields'])
         self.get_connection().post('update_video', video=data)
 
+
+class Video(Content):
+    zope.interface.implements(zeit.brightcove.interfaces.IVideo)
+    
+    @classmethod
+    def find_by_ids(class_, ids):
+        ids = ','.join(str(i) for i in ids)
+        return class_.get_connection().get_list(
+            'find_videos_by_ids', class_, video_ids=ids)
+    
     @property
     def related(self):
         result = []
@@ -152,3 +155,13 @@ class Video(persistent.Persistent,
                 continue
             custom['ref_link%s' % i] = obj.uniqueId
             custom['ref_title%s' % i] = metadata.teaserTitle
+
+
+class Playlist(Content):
+    zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)    
+    
+    @classmethod
+    def find_by_ids(class_, ids):
+        ids = ','.join(str(i) for i in ids)
+        return class_.get_connection().get_list(
+            'find_playlists_by_ids', class_, playlist_ids=ids)

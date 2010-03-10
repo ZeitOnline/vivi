@@ -94,3 +94,5 @@ class IBrightcoveContent(zope.interface.Interface):
 class IVideo(IBrightcoveContent,
              zeit.cms.related.interfaces.IRelatedContent):
     """A video."""
+class IPlaylist(IBrightcoveContent):
+    """A video."""
