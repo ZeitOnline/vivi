@@ -118,7 +118,7 @@ class Content(persistent.Persistent,
 
 
 class Video(Content):
-    
+
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
 
     @classmethod
@@ -126,7 +126,7 @@ class Video(Content):
         ids = ','.join(str(i) for i in ids)
         return class_.get_connection().get_list(
             'find_videos_by_ids', class_, video_ids=ids)
-    
+
     @property
     def related(self):
         result = []
@@ -161,7 +161,7 @@ class Video(Content):
 class Playlist(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
-    
+
     @classmethod
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
