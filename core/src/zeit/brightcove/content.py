@@ -86,7 +86,7 @@ class Content(persistent.Persistent,
     breaking_news = mapped_bool('customFields', 'breaking-news')
     has_recensions = mapped_bool('customFields', 'recensions')
 
-    fields = (
+    fields = ",".join((
         'id',
         'name',
         'shortDescription',
@@ -105,7 +105,7 @@ class Content(persistent.Persistent,
         'playsTotal',
         'playsTrailingWeek',
         'customFields'
-    )
+    ))
 
     def __init__(self, data, connection=None):
         if data is not None:
