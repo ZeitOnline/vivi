@@ -86,6 +86,27 @@ class Content(persistent.Persistent,
     breaking_news = mapped_bool('customFields', 'breaking-news')
     has_recensions = mapped_bool('customFields', 'recensions')
 
+    fields = (
+        'id',
+        'name',
+        'shortDescription',
+        'longDescription',
+        'creationDate',
+        'publisheddate',
+        'lastModifiedDate',
+        'linkURL',
+        'linkText',
+        'tags',
+        'videoStillURL',
+        'thumbnailURL',
+        'referenceId',
+        'length',
+        'economics',
+        'playsTotal',
+        'playsTrailingWeek',
+        'customFields'
+    )
+
     def __init__(self, data, connection=None):
         if data is not None:
             self.data = persistent.mapping.PersistentMapping(data)
@@ -125,7 +146,8 @@ class Video(Content):
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
         return class_.get_connection().get_list(
-            'find_videos_by_ids', class_, video_ids=ids)
+            'find_videos_by_ids', class_, video_ids=ids,
+            video_fields=class_.fields)
 
     @property
     def related(self):
@@ -166,4 +188,5 @@ class Playlist(Content):
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
         return class_.get_connection().get_list(
-            'find_playlists_by_ids', class_, playlist_ids=ids)
+            'find_playlists_by_ids', class_, playlist_ids=ids,
+            playlist_fields=class_.fields)

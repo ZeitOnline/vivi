@@ -63,10 +63,12 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             return
         query = urlparse.parse_qs(self.path[2:])
         if (query.get('command') == ['find_videos_by_ids'] and
-            query.get('video_ids') == ['1234']):
+            query.get('video_ids') == ['1234'] and
+            query.get('video_fields')):
             result = VIDEO_1234
         elif (query.get('command') == ['find_playlists_by_ids'] and
-              query.get('playlist_ids') == ['2345']):
+              query.get('playlist_ids') == ['2345'] and
+              query.get('playlist_fields')):
             result = VIDEO_1234
         else:
             result = {"items": [None],
