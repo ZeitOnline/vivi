@@ -44,7 +44,7 @@ setup(
         'zdaemon',
         'zeit.cms>1.40.3',
         'zeit.connector>1.14.1',
-        'zeit.content.cp>0.8',
+        'zeit.content.cp>=0.33.0',
         'zeit.objectlog>=0.2',
         'zeit.wysiwyg>1.22',
         'zope.app.apidoc',
