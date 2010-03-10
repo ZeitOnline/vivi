@@ -25,7 +25,7 @@
       />
   </class>
 
-  <class class=".video.Video">
+  <class class=".content.Video">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
       interface=".interfaces.IVideo"

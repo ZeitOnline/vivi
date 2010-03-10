@@ -6,7 +6,7 @@ import datetime
 import persistent
 import pytz
 import zeit.brightcove.interfaces
-import zeit.brightcove.video
+import zeit.brightcove.content
 import zope.container.contained
 import zope.dublincore.interfaces
 import zope.event
@@ -21,7 +21,7 @@ class Repository(persistent.Persistent,
 
 
     _type_class_map = {
-        'video': zeit.brightcove.video.Video
+        'video': zeit.brightcove.content.Video,
     }
 
     BRIGHTCOVE_CACHE_TIMEOUT = datetime.timedelta(minutes=5)
