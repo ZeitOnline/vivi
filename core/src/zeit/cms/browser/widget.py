@@ -62,9 +62,12 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
     @property
     def default_browsing_location(self):
-        return zope.component.getMultiAdapter(
+        location = zope.component.queryMultiAdapter(
             (self.context.context, self.source),
             zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+        if location is None:
+            return self.repository
+        return location
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
