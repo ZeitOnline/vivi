@@ -51,7 +51,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     posts_received = []
     response = 200
-    
+
     def do_GET(self):
         if self.path == '/die':
             self.send_response(200)
@@ -108,7 +108,6 @@ BrightcoveLayer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'BrightcoveLayer', allow_teardown=True,
     product_config=product_config)
-
 
 
 class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
