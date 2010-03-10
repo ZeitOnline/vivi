@@ -2,7 +2,7 @@
 # Copyright (c) 2009 StudioNow, Inc <patrick@studionow.com>
 # See also LICENSE.txt
 
-import simplejson
+import cjson
 import urllib
 import urllib2
 import zope.app.appsetup.product
@@ -21,9 +21,9 @@ class APIConnection(object):
             (key, value) for key, value in kwargs.items() if key and value)
         params['token'] = self.write_token
         data = dict(method=command, params=params)
-        post_data = urllib.urlencode(dict(json=simplejson.dumps(data)))
+        post_data = urllib.urlencode(dict(json=cjson.encode(data)))
         request = urllib2.urlopen(self.write_url, post_data)
-        response = simplejson.load(request)
+        response = cjson.decode(request)
         __traceback_info__ = (response, )
         error = response.get('error')
         if error:
@@ -37,7 +37,7 @@ class APIConnection(object):
             token=self.read_token,
             **kwargs)))
         request = urllib2.urlopen(url)
-        response = simplejson.load(request)
+        response = cjson.decode(request.read())
         __traceback_info__ = (url, response)
         error = response.get('error')
         if error:
@@ -58,6 +58,7 @@ class ItemResultSet(object):
 
     def __iter__(self):
         page = 0
+        count = 0
         while True:
             data = self.connection.get(self.command,
                                        page_size='100',
@@ -66,14 +67,9 @@ class ItemResultSet(object):
                                        **self.data)
             for item in data['items']:
                 yield self.item_class(item)
+                count += 1
             total_count = int(data['total_count'])
-            page_number = int(data['page_number'])
-            page_size = int(data['page_size'])
-            if total_count < 0 or page_size == 0:
-                # This doesn't seem right but is what happens when fetching a
-                # list less than a single page
-                break
-            if not data:
+            if count >= total_count:
                 break
             page += 1
 

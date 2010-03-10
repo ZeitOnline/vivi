@@ -12,12 +12,14 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'cjson',
         'setuptools',
-        'simplejson',
         'zeit.cms',
         'zope.interface',
         'zope.schema',
     ],
     entry_points = """
-        """
+    [console_scripts]
+    index-videos-and-playlists = zeit.brightcove.solr:index_changed_videos_and_playlists
+    """
 )
