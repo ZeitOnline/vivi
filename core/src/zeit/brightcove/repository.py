@@ -19,7 +19,6 @@ class Repository(persistent.Persistent,
 
     zope.interface.implements(zeit.brightcove.interfaces.IRepository)
 
-
     _type_class_map = {
         'video': zeit.brightcove.content.Video,
         'playlist': zeit.brightcove.content.Playlist        

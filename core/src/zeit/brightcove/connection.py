@@ -16,7 +16,6 @@ class APIConnection(object):
         self.read_url = read_url
         self.write_url = write_url
 
-
     def post(self, command, **kwargs):
         params = dict(
             (key, value) for key, value in kwargs.items() if key and value)
