@@ -37,5 +37,10 @@
       />
   </class>
 
+  <utility
+    provides="zeit.brightcove.interfaces.IAPIConnection"
+    factory=".connection.connection_factory"
+    />
+
 </configure>
 

@@ -67,7 +67,7 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         transaction.commit()
         video = self.repository['video:1234']
         self.assertEquals(1,
-                          len(zeit.brightcove.testing.APIConnection.posts))
+                          len(self.posts))
         self.assertEquals(u'A new subtitle', video.subtitle)
 
     def test_keywords(self):

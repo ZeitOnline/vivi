@@ -25,7 +25,6 @@ class IRepository(zope.container.interfaces.IItemContainer):
     """
 
 
-
 class IBrightcoveContent(zope.interface.Interface):
 
     supertitle = zope.schema.TextLine(

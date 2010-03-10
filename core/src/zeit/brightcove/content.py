@@ -3,7 +3,6 @@
 
 import persistent
 import persistent.mapping
-import pybrightcove
 import transaction
 import zeit.brightcove.interfaces
 import zeit.cms.content.interfaces
@@ -104,9 +103,8 @@ class Video(persistent.Persistent,
     @classmethod
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
-        return pybrightcove.ItemResultSet(
-            'find_videos_by_ids', class_, class_.get_connection(),
-            video_ids=ids)
+        return class_.get_connection().get_list(
+            'find_videos_by_ids', class_, video_ids=ids)
 
     def save_to_brightcove(self):
         registered = getattr(self, '_v_save_hook_registered', False)

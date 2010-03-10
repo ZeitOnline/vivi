@@ -1,15 +1,17 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import BaseHTTPServer
 import pkg_resources
-import pybrightcove.connection
+import random
+import simplejson
+import threading
+import urllib2
+import urlparse
+import zeit.brightcove.connection
 import zeit.cms.testing
 import zope.app.testing.functional
 
-product_config = """\
-<product-config zeit.brightcove>
-</product-config>
-"""
 
 
 VIDEO_1234 = {
@@ -44,27 +46,59 @@ VIDEO_1234 = {
 }
 
 
-class APIConnection(pybrightcove.connection.APIConnection):
 
-    posts = []
+class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
-    def get_list(self, command, item_class, page_size, page_number, sort_by,
-                 sort_order, **kwargs):
+    posts_received = []
+    response = 200
 
-        if (command == 'find_videos_by_ids' and
-            kwargs.get('video_ids') == '1234'):
+    def do_GET(self):
+        if self.path == '/die':
+            self.send_response(200)
+            self.end_headers()
+            return
+        if not self.path.startswith('/?'):
+            self.send_response(500)
+            self.end_headers()
+            return
+        query = urlparse.parse_qs(self.path[2:])
+        if (query.get('command') == ['find_videos_by_ids'] and
+            query.get('video_ids') == ['1234']):
             result = VIDEO_1234
         else:
             result = {"items": [None],
                       "page_number": 0,
                       "page_size": 0,
                       "total_count": -1}
-        return pybrightcove.connection.ItemCollection(data=result,
-                                                      item_class=item_class,
-                                                      connection=self)
+        self.send_response(self.response)
+        self.end_headers()
+        self.wfile.write(simplejson.dumps(result))
 
-    def post(self, command, file_to_upload=None, **kwargs):
-        self.posts.append((command, file_to_upload, kwargs))
+    def do_POST(self):
+        length = int(self.headers['content-length'])
+        self.posts_received.append(dict(
+            path=self.path,
+            data=self.rfile.read(length),
+        ))
+        self.send_response(self.response)
+        self.end_headers()
+        self.wfile.write('{"result":{}}')
+
+    def log_message(self, format, *args):
+        pass
+
+
+httpd_port = random.randint(30000, 40000)
+
+
+product_config = """\
+<product-config zeit.brightcove>
+    read-token rdtkn
+    write-token writetnk
+    read-url http://localhost:%s/
+    write-url http://localhost:%s/
+</product-config>
+""" % (httpd_port, httpd_port)
 
 
 BrightcoveLayer = zope.app.testing.functional.ZCMLLayer(
@@ -78,9 +112,31 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = BrightcoveLayer
 
+    def setUp(self):
+        super(BrightcoveTestCase, self).setUp()
+        self.start_httpd()
+        self.posts = RequestHandler.posts_received
+
     def tearDown(self):
-        APIConnection.posts[:] = []
+        self.stop_httpd()
+        self.posts[:] = []
         super(BrightcoveTestCase, self).tearDown()
+
+    def start_httpd(self):
+        self.httpd_running = True
+        def run():
+            server_address = ('localhost', httpd_port)
+            httpd = BaseHTTPServer.HTTPServer(
+                server_address, RequestHandler)
+            while self.httpd_running:
+                httpd.handle_request()
+        t = threading.Thread(target=run)
+        t.daemon = True
+        t.start()
+
+    def stop_httpd(self):
+        self.httpd_running = False
+        urllib2.urlopen('http://localhost:%s/die' % httpd_port)
 
 
 # 70355221001

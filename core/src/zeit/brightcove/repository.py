@@ -36,10 +36,13 @@ class Repository(persistent.Persistent,
         except KeyError:
             pass
         else:
-            created = zope.dublincore.interfaces.IDCTimes(obj).created
-            now = datetime.datetime.now(pytz.UTC)
-            if created + self.BRIGHTCOVE_CACHE_TIMEOUT < now:
+            times = zope.dublincore.interfaces.IDCTimes(obj, None)
+            if times is None:
                 obj = None
+            else:
+                now = datetime.datetime.now(pytz.UTC)
+                if times.created + self.BRIGHTCOVE_CACHE_TIMEOUT < now:
+                    obj = None
         if obj is not None:
             return obj
         obj = self._get_from_brightcove(key)

@@ -21,9 +21,4 @@
   <include package="zeit.brightcove" />
 
 
-  <utility
-    factory="zeit.brightcove.testing.APIConnection"
-    provides="zeit.brightcove.interfaces.IAPIConnection"
-    />
-
 </configure>
