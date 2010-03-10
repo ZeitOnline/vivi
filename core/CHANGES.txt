@@ -1,6 +1,12 @@
 zeit.content.gallery changes
 ============================
 
+2.2.6 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.2.5 (2010-03-10)
 ------------------
 
