@@ -20,5 +20,9 @@
 
   <include package="zeit.brightcove" />
 
+  <grant
+    principal="zope.user"
+    permission="zeit.brightcove.video.Edit"
+    />
 
 </configure>

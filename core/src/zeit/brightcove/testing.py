@@ -106,25 +106,24 @@ product_config = """\
 """ % (httpd_port, httpd_port)
 
 
-BrightcoveLayer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'BrightcoveLayer', allow_teardown=True,
-    product_config=product_config)
+class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
 
+    config_file = pkg_resources.resource_filename(__name__, 'ftesting.zcml')
+    module = __name__
+    __name__ =  'BrightcoveLayer'
+    allow_teardown = True
+    product_config = product_config
 
-class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
-
-    layer = BrightcoveLayer
+    def __init__(self):
+        pass
 
     def setUp(self):
-        super(BrightcoveTestCase, self).setUp()
+        zope.app.testing.functional.ZCMLLayer.setUp(self)
         self.start_httpd()
-        self.posts = RequestHandler.posts_received
 
     def tearDown(self):
         self.stop_httpd()
-        self.posts[:] = []
-        super(BrightcoveTestCase, self).tearDown()
+        zope.app.testing.functional.ZCMLLayer.tearDown(self)
 
     def start_httpd(self):
         self.httpd_running = True
@@ -141,6 +140,34 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
     def stop_httpd(self):
         self.httpd_running = False
         urllib2.urlopen('http://localhost:%s/die' % httpd_port)
+
+
+BrightcoveLayer = BrightcoveLayer()
+
+
+class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = BrightcoveLayer
+
+    def setUp(self):
+        super(BrightcoveTestCase, self).setUp()
+        self.posts = RequestHandler.posts_received
+
+    def tearDown(self):
+        self.posts[:] = []
+        super(BrightcoveTestCase, self).tearDown()
+
+
+def FunctionalDocFileSuite(*args, **kw):
+
+    def tearDown(self):
+        RequestHandler.posts_received[:] = []
+
+    kw.setdefault('layer', BrightcoveLayer)
+    kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
+    kw['tearDown'] = tearDown
+    return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
+
 
 
 # 70355221001

@@ -89,6 +89,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             'a title',
             video.data['customFields']['ref_title1'])
 
+
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     @property
