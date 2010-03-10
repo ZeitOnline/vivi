@@ -4,7 +4,9 @@ zeit.locales CHANGES
 0.17 (unreleased)
 +++++++++++++++++
 
-- Nothing changed yet.
+- zeit.content.centerpage entfernt
+
+- Übersetzungen aktualisiert
 
 
 0.16 (2010-02-08)
