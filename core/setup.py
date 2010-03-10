@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.rawxml',
-    version = '0.3.4',
+    version = '0.3.5dev',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms/zeit.content.rawxml',
