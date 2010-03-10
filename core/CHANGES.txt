@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.40.4 (unreleased)
+1.41.0 (2010-03-10)
 -------------------
 
 - Fix that text fields which are mapped to xml nodes still work even when there
