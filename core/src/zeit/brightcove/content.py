@@ -123,6 +123,24 @@ class Content(persistent.Persistent,
                         self.data['customFields']))
             self.uniqueId = 'brightcove://%s:%s' % (self.type, self.data['id'])
 
+    @property
+    def __parent__(self):
+        return zope.component.getUtility(
+            zeit.brightcove.interfaces.IRepository)
+
+    @__parent__.setter
+    def __parent__(self, value):
+        if self.__parent__ != value:
+            raise ValueError(value)
+
+    @property
+    def __name__(self):
+        return '%s:%s' % (self.type, self.data['id'])
+    
+    @property
+    def thumbnail(self):
+        return self.data['thumbnailURL']
+
     @staticmethod
     def get_connection():
         return zope.component.getUtility(

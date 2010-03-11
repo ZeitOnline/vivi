@@ -8,6 +8,14 @@
     name="index.html"
     class=".video.EditForm"
     permission="zeit.brightcove.video.Edit"
-    />
+  />
+
+ <browser:page
+   for="zeit.brightcove.interfaces.IVideo"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="thumbnail"
+   class=".video.Thumbnail"
+   permission="zope.View"
+   />
 
 </configure>

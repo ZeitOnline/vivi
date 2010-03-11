@@ -90,6 +90,12 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False)
+    
+    thumbnail = zope.schema.URI(
+        title=_('URI of the brightcove thumnail'),
+        readonly=True
+    )
+
 
 
 class IVideo(IBrightcoveContent,

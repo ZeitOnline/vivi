@@ -18,3 +18,19 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 >>> import zeit.brightcove.testing
 >>> len(zeit.brightcove.testing.RequestHandler.posts_received)
 1
+>>> def open_wo_redirect(browser, *args, **kwargs):
+...    import urllib2
+...    browser.mech_browser.set_handle_redirect(False)
+...    try:
+...        try:
+...            browser.open(*args, **kwargs)
+...        except urllib2.HTTPError, e:
+...            print str(e)
+...            print e.hdrs.get('location')
+...    finally:
+...        browser.mech_browser.set_handle_redirect(True)
+
+>>> open_wo_redirect(browser, '@@thumbnail')
+HTTP Error 303: See Other
+http://thumbnailurl
+

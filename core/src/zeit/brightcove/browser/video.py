@@ -10,3 +10,8 @@ class EditForm(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.brightcove.interfaces.IVideo)
+
+class Thumbnail(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        return self.redirect(self.context.thumbnail, trusted=True)
