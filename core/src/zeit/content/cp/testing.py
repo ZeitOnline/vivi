@@ -8,28 +8,32 @@ import zeit.cms.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
 
-product_config = {
-    'zeit.content.cp': {
-        'block-layout-source': 'file://%s' % pkg_resources.resource_filename(
-            __name__, 'layout.xml'),
-        'cp-extra-url': 'file://%s' % pkg_resources.resource_filename(
-            __name__, 'cpextra.xml'),
-        'cp-feed-max-items': '200',
-        'cp-types-url': 'file://%s' % pkg_resources.resource_filename(
-            __name__, 'cp-types.xml'),
-        'feed-update-minimum-age': '30',
-        'rss-folder': 'rss',
-        'rules-url': 'file://%s' % pkg_resources.resource_filename(
-            'zeit.content.cp.tests.fixtures', 'example_rules.py'),
-    },
-    'zeit.workflow': {'publish-script': 'cat',
-                      'path-prefix': ''}
-    }
+product_config = """
+<product-config zeit.content.cp>
+    block-layout-source file://%s
+    cp-extra-url file://%s
+    cp-feed-max-items 200
+    cp-types-url file://%s
+    feed-update-minimum-age 30
+    rss-folder rss
+    rules-url file://%s
+</product-config>
+
+<product-config zeit.workflow>
+    publish-script cat
+    path-prefix
+</product-config>
+""" % (pkg_resources.resource_filename(__name__, 'layout.xml'),
+    pkg_resources.resource_filename(__name__, 'cpextra.xml'),
+    pkg_resources.resource_filename(__name__, 'cp-types.xml'),
+    pkg_resources.resource_filename('zeit.content.cp.tests.fixtures',
+                                    'example_rules.py'))
 
 
 layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'zeit.content.cp.tests.layer', allow_teardown=True)
+    __name__, 'zeit.content.cp.tests.layer', allow_teardown=True,
+    product_config=product_config)
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -48,7 +52,6 @@ checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('checker', checker)
     kw.setdefault('layer', layer)
-    kw.setdefault('product_config', product_config)
     kw.setdefault('globs', dict(with_statement=__future__.with_statement))
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
@@ -56,4 +59,3 @@ def FunctionalDocFileSuite(*args, **kw):
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = layer
-    product_config = product_config

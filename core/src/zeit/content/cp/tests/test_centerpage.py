@@ -14,18 +14,11 @@ import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
+import zope.app.appsetup.product
 import zope.component
 
 
 class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
-
-    def __init__(self, *args, **kw):
-        self.product_config = copy.deepcopy(self.product_config)
-        self.product_config['zeit.content.cp']['rules-url'] = 'file://%s' % (
-            pkg_resources.resource_filename(
-            'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
-        self.product_config['zeit.content.cp']['cp-feed-max-items'] = '5'
-        super(TestCenterPageRSSFeed, self).__init__(*args, **kw)
 
     def setUp(self):
         super(TestCenterPageRSSFeed, self).setUp()
@@ -33,6 +26,12 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         # undisturbed
         gocept.cache.method.clear()
 
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')
+        product_config['rules-url'] = 'file://%s' % (
+            pkg_resources.resource_filename(
+                'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
+        product_config['cp-feed-max-items'] = '5'
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         cp = zeit.content.cp.centerpage.CenterPage()
