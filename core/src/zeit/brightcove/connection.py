@@ -2,10 +2,13 @@
 # Copyright (c) 2009 StudioNow, Inc <patrick@studionow.com>
 # See also LICENSE.txt
 
-import cjson
+import simplejson
 import urllib
 import urllib2
 import zope.app.appsetup.product
+
+
+JSON_CONTROL_CHARACTERS = ''.join(chr(x) for x in range(0, 0x1f))
 
 
 class APIConnection(object):
@@ -16,14 +19,19 @@ class APIConnection(object):
         self.read_url = read_url
         self.write_url = write_url
 
+
+    def decode_broken_brightcove_json(self, json):
+        return simplejson.loads(
+            json.translate(None, JSON_CONTROL_CHARACTERS))
+
     def post(self, command, **kwargs):
         params = dict(
             (key, value) for key, value in kwargs.items() if key and value)
         params['token'] = self.write_token
         data = dict(method=command, params=params)
-        post_data = urllib.urlencode(dict(json=cjson.encode(data)))
+        post_data = urllib.urlencode(dict(json=simplejson.dumps(data)))
         request = urllib2.urlopen(self.write_url, post_data)
-        response = cjson.decode(request)
+        response = self.decode_broken_brightcove_json(request.read())
         __traceback_info__ = (response, )
         error = response.get('error')
         if error:
@@ -37,7 +45,7 @@ class APIConnection(object):
             token=self.read_token,
             **kwargs)))
         request = urllib2.urlopen(url)
-        response = cjson.decode(request.read())
+        response = self.decode_broken_brightcove_json(request.read())
         __traceback_info__ = (url, response)
         error = response.get('error')
         if error:
@@ -66,7 +74,8 @@ class ItemResultSet(object):
                                        get_item_count='true',
                                        **self.data)
             for item in data['items']:
-                yield self.item_class(item)
+                if item:
+                    yield self.item_class(item)
                 count += 1
             total_count = int(data['total_count'])
             if count >= total_count:

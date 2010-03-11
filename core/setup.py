@@ -12,9 +12,10 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
-        'cjson',
         'setuptools',
+        'simplejson',
         'zeit.cms',
+        'zeit.solr',
         'zope.interface',
         'zope.schema',
     ],
