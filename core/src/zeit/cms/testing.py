@@ -4,18 +4,19 @@
 from zope.testing import doctest
 import __future__
 import contextlib
+import copy
 import os
 import pkg_resources
 import re
 import sys
 import zeit.connector.interfaces
 import zope.app.appsetup.product
-import zope.site.hooks
 import zope.app.testing.functional
 import zope.component
 import zope.publisher.browser
 import zope.security.management
 import zope.security.testing
+import zope.site.hooks
 import zope.testing.renormalizing
 
 
@@ -33,7 +34,9 @@ checker = zope.testing.renormalizing.RENormalizing([
 ])
 
 
-def setUp(test):
+def setUpDoctests(test):
+    test.old_product_config = copy.deepcopy(
+        zope.app.appsetup.product.saveConfiguration())
     setup_product_config(test.globs.get('product_config', {}))
 
 
@@ -47,10 +50,10 @@ def tearDown(test):
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     connector._reset()
+    zope.app.appsetup.product.restoreConfiguration(test.old_product_config)
 
 
 def setup_product_config(product_config={}):
-    zope.app.appsetup.product._configs.clear()
     cms_config = zope.app.appsetup.product._configs['zeit.cms'] = {}
     base_path = os.path.join(os.path.dirname(__file__), 'content')
 
@@ -79,6 +82,7 @@ def setup_product_config(product_config={}):
 
     zope.app.appsetup.product._configs.update(product_config)
 
+
 optionflags = (doctest.REPORT_NDIFF +
                doctest.INTERPRET_FOOTNOTES +
                doctest.NORMALIZE_WHITESPACE +
@@ -88,7 +92,7 @@ optionflags = (doctest.REPORT_NDIFF +
 def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
-    kw['setUp'] = setUp
+    kw['setUp'] = setUpDoctests
     kw['tearDown'] = tearDown
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
@@ -104,11 +108,14 @@ def FunctionalDocFileSuite(*paths, **kw):
 
 
 class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
+
     layer = cms_layer
     product_config = {}
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
+        self.old_product_config = copy.deepcopy(
+            zope.app.appsetup.product.saveConfiguration())
         setup_product_config(self.product_config)
         zope.site.hooks.setSite(self.getRootFolder())
         zeit.cms.testing.create_interaction(u'zope.user')
