@@ -125,6 +125,14 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(
             'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
             list_repr.title)
+    
+    def test_publication_status(self):
+        video = self.repository['video:1234']
+        publication_status = zeit.cms.workflow.interfaces.IPublicationStatus(
+            video)
+        self.assertEquals("published", publication_status.published)
+        video.item_state = 'INACTIVE'
+        self.assertEquals("not-published", publication_status.published)
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
@@ -137,7 +145,8 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_getitem(self):
         playlist = self.repository['playlist:2345']
         self.assertEquals(2345, playlist.id)
-        self.assertTrue(zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
+        self.assertTrue(
+            zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
         self.assertEquals(u'Videos zum Thema Film', playlist.title)
         self.assertEquals(u'Videos in kurz', playlist.teaserText)
 
@@ -147,5 +156,6 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals('playlist:2345', pls.__name__)
         self.assertEquals(
             pls,
-            zeit.cms.interfaces.ICMSContent('http://video.zeit.de/playlist/2345'))
+            zeit.cms.interfaces.ICMSContent(
+                'http://video.zeit.de/playlist/2345'))
 

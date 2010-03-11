@@ -40,6 +40,7 @@ VIDEO_1234 = {
     'tags': ['Vermischtes'],
     'thumbnailURL': 'http://thumbnailurl',
     'videoStillURL': 'http://videostillurl',
+    'itemState': 'ACTIVE',
 }
 
 PLAYLIST_2345 = {

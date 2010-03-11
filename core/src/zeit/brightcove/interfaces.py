@@ -82,6 +82,12 @@ class IVideo(IBrightcoveContent,
         unique=True,
         value_type=zope.schema.Object(
             zeit.cms.content.interfaces.IKeyword))
+    
+    item_state = zope.schema.Choice(
+        title=_("state of the brightcove-video"),
+        required=True,
+        readonly=True,
+        values=("ACTIVE", "INACTIVE", "DELETED"))
 
     dailyNewsletter = zope.schema.Bool(
         title=_("Daily newsletter"),

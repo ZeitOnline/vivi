@@ -12,6 +12,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.cms.type
 import zope.component
 import zope.container.contained
@@ -155,6 +156,7 @@ class Video(Content):
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
     has_recensions = mapped_bool('customFields', 'recensions')
+    item_state = mapped('itemState')
 
     fields = ",".join((
         'id',
@@ -174,7 +176,8 @@ class Video(Content):
         'economics',
         'playsTotal',
         'playsTrailingWeek',
-        'customFields'
+        'customFields',
+        'itemState',
     ))
 
     @classmethod
@@ -221,6 +224,19 @@ class Video(Content):
                 continue
             custom['ref_link%s' % i] = obj.uniqueId
             custom['ref_title%s' % i] = metadata.teaserTitle
+
+
+class VideoPublicationStatus(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.implements(
+        zeit.cms.workflow.interfaces.IPublicationStatus)
+
+    @property
+    def published(self):
+        if self.context.item_state == "ACTIVE":
+            return "published"
+        return "not-published"
 
 
 class VideoType(zeit.cms.type.TypeDeclaration):
