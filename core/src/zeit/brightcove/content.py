@@ -79,6 +79,7 @@ class Content(persistent.Persistent,
     zope.interface.implements(zeit.brightcove.interfaces.IBrightcoveContent)
 
     data = None
+    id = mapped('id')
     title = mapped('name')
     teaserText = mapped('shortDescription')
 

@@ -31,6 +31,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_getitem(self):
         video = self.repository['video:1234']
         self.assertTrue(zeit.brightcove.interfaces.IVideo.providedBy(video))
+        self.assertEquals(1234, video.id)
         self.assertEquals(
             u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
             video.title)
@@ -135,6 +136,7 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_getitem(self):
         playlist = self.repository['playlist:2345']
+        self.assertEquals(2345, playlist.id)
         self.assertTrue(zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
         self.assertEquals(u'Videos zum Thema Film', playlist.title)
         self.assertEquals(u'Videos in kurz', playlist.teaserText)

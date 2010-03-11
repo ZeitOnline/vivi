@@ -28,6 +28,10 @@ class IRepository(zope.container.interfaces.IItemContainer):
 
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
+    id = zope.schema.Int(
+        title=_('Id'),
+        readonly=True)
+
     title = zope.schema.TextLine(
         title=_("Title"))
 
@@ -40,6 +44,7 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
         title=_('URI of the thumbnail'),
         required=False,
         readonly=True)
+
 
 class IVideo(IBrightcoveContent,
              zeit.cms.related.interfaces.IRelatedContent):
