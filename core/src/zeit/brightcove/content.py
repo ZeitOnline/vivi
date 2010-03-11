@@ -298,6 +298,10 @@ class CommonMetadata(grokcore.component.Adapter):
             return None
         return datetime.datetime.fromtimestamp(modified/1000).year
 
+    @property
+    def teaserTitle(self):
+        return self.title
+
     def __getattr__(self, key):
         if key in zeit.cms.content.interfaces.ICommonMetadata:
             return getattr(self.context, key, None)
