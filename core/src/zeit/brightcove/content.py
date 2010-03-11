@@ -79,40 +79,8 @@ class Content(persistent.Persistent,
     zope.interface.implements(zeit.brightcove.interfaces.IBrightcoveContent)
 
     data = None
-    supertitle = mapped('customFields', 'supertitle')
     title = mapped('name')
     teaserText = mapped('shortDescription')
-    subtitle = mapped('longDescription')
-    ressort = mapped('customFields', 'ressort')
-    serie = mapped('customFields', 'serie')
-    product_id = mapped('customFields', 'produkt-id')
-    keywords = mapped_keywords('customFields', 'cmskeywords')
-    dailyNewsletter = mapped_bool('customFields', 'newsletter')
-    banner = mapped_bool('customFields', 'banner')
-    banner_id = mapped('customFields', 'banner-id')
-    breaking_news = mapped_bool('customFields', 'breaking-news')
-    has_recensions = mapped_bool('customFields', 'recensions')
-
-    fields = ",".join((
-        'id',
-        'name',
-        'shortDescription',
-        'longDescription',
-        'creationDate',
-        'publisheddate',
-        'lastModifiedDate',
-        'linkURL',
-        'linkText',
-        'tags',
-        'videoStillURL',
-        'thumbnailURL',
-        'referenceId',
-        'length',
-        'economics',
-        'playsTotal',
-        'playsTrailingWeek',
-        'customFields'
-    ))
 
     def __init__(self, data, connection=None):
         if data is not None:
@@ -168,6 +136,39 @@ class Video(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
     type = 'video'
+
+    supertitle = mapped('customFields', 'supertitle')
+    subtitle = mapped('longDescription')
+    ressort = mapped('customFields', 'ressort')
+    serie = mapped('customFields', 'serie')
+    product_id = mapped('customFields', 'produkt-id')
+    keywords = mapped_keywords('customFields', 'cmskeywords')
+    dailyNewsletter = mapped_bool('customFields', 'newsletter')
+    banner = mapped_bool('customFields', 'banner')
+    banner_id = mapped('customFields', 'banner-id')
+    breaking_news = mapped_bool('customFields', 'breaking-news')
+    has_recensions = mapped_bool('customFields', 'recensions')
+
+    fields = ",".join((
+        'id',
+        'name',
+        'shortDescription',
+        'longDescription',
+        'creationDate',
+        'publisheddate',
+        'lastModifiedDate',
+        'linkURL',
+        'linkText',
+        'tags',
+        'videoStillURL',
+        'thumbnailURL',
+        'referenceId',
+        'length',
+        'economics',
+        'playsTotal',
+        'playsTrailingWeek',
+        'customFields'
+    ))
 
     @classmethod
     def find_by_ids(class_, ids):
@@ -225,12 +226,26 @@ class Playlist(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
+    fields = ",".join((
+        'id',
+        'name',
+        'shortDescription',
+        'thumbnailURL',
+        'videoIds',
+    ))
 
     @classmethod
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
         return class_.get_connection().get_list(
-            'find_playlists_by_ids', class_, playlist_ids=ids,
+            'find_playlists_by_ids', class_,
+            playlist_fields=class_.fields,
+            playlist_ids=ids)
+
+    @classmethod
+    def find_all(class_):
+        return class_.get_connection().get_list(
+            'find_all_playlists', class_,
             playlist_fields=class_.fields)
 
 
@@ -272,7 +287,7 @@ class CommonMetadata(grokcore.component.Adapter):
     @property
     def year(self):
         try:
-            modified = int(self.context.data['lastModifiedDate'])
+            modified = int(self.context.data.get('lastModifiedDate'))
         except (TypeError, ValueError):
             return None
         return datetime.datetime.fromtimestamp(modified/1000).year

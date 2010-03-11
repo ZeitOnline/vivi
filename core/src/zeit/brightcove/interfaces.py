@@ -28,11 +28,6 @@ class IRepository(zope.container.interfaces.IItemContainer):
 
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
-    supertitle = zope.schema.TextLine(
-        title=_("Kicker"),
-        description=_("Please take care of capitalisation."),
-        max_length=1024,
-        required=False)
 
     title = zope.schema.TextLine(
         title=_("Title"))
@@ -41,6 +36,20 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
         title=_("Teaser text"),
         required=False,
         max_length=170)
+
+    thumbnail = zope.schema.URI(
+        title=_('URI of the brightcove thumnail'),
+        readonly=True)
+
+class IVideo(IBrightcoveContent,
+             zeit.cms.related.interfaces.IRelatedContent):
+    """A video."""
+
+    supertitle = zope.schema.TextLine(
+        title=_("Kicker"),
+        description=_("Please take care of capitalisation."),
+        max_length=1024,
+        required=False)
 
     subtitle = zope.schema.Text(
         title=_("Video subtitle"),
@@ -90,16 +99,7 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False)
-    
-    thumbnail = zope.schema.URI(
-        title=_('URI of the brightcove thumnail'),
-        readonly=True
-    )
 
 
-
-class IVideo(IBrightcoveContent,
-             zeit.cms.related.interfaces.IRelatedContent):
-    """A video."""
 class IPlaylist(IBrightcoveContent):
     """A video."""

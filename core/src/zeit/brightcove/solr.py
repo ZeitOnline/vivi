@@ -2,20 +2,19 @@
 # See also LICENSE.txt
 
 import datetime
-import pytz
 import gocept.runner
-import grokcore.component
+import itertools
+import pytz
 import zeit.brightcove.content
-import zeit.cms.interfaces
 import zeit.solr.interfaces
-import zope.component
 
 
 def _index_changed_videos_and_playlists():
     from_date = datetime.datetime.now(pytz.UTC) - datetime.timedelta(days=1)
     videos = zeit.brightcove.content.Video.find_modified(
         from_date=from_date)
-    for video in videos:
+    playlists = zeit.brightcove.content.Playlist.find_all()
+    for video in itertools.chain(videos, playlists):
         zeit.solr.interfaces.IUpdater(video).update()
 
 

@@ -136,19 +136,8 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_getitem(self):
         playlist = self.repository['playlist:2345']
         self.assertTrue(zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
-        self.assertEquals(
-            u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
-            playlist.title)
-        self.assertEquals(
-            u'Glanz, Glamour und erwartungsvolle Spannung',
-            playlist.teaserText)
-        self.assertEquals(
-            u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
-            playlist.subtitle)
-        self.assertEquals(u'Auto', playlist.ressort)
-        self.assertEquals(True, playlist.dailyNewsletter)
-        self.assertEquals(False, playlist.breaking_news)
-        self.assertTrue(playlist.product_id is None)
+        self.assertEquals(u'Videos zum Thema Film', playlist.title)
+        self.assertEquals(u'Videos in kurz', playlist.teaserText)
 
     def test_cmscontent(self):
         pls = self.repository['playlist:2345']

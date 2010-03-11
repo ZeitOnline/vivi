@@ -42,6 +42,15 @@ VIDEO_1234 = {
     'videoStillURL': 'http://videostillurl',
 }
 
+PLAYLIST_2345 = {
+    'filterTags': ['Film'],
+    'id': 2345,
+    'name': 'Videos zum Thema Film',
+    'shortDescription': 'Videos in kurz',
+    'thumbnailURL': None,
+    'videoIds': [1234]
+}
+
 
 # Define responses. Note that the API returns total_count == -1 when there is
 # only one page. *puke*
@@ -55,7 +64,7 @@ SINGLE_VIDEO_RESPONSE = {
 
 
 SINGLE_PLAYLIST_RESPONSE = {
-    'items': [VIDEO_1234.copy()],
+    'items': [PLAYLIST_2345],
     'page_number': 0,
     'page_size': 0,
     'total_count': -1,
@@ -70,6 +79,15 @@ VIDEO_LIST_RESPONSE = {
     'total_count': -1,
 }
 VIDEO_LIST_RESPONSE['items'][1]['id'] = 9876
+
+
+PLAYLIST_LIST_RESPONSE = {
+    'items': [PLAYLIST_2345, PLAYLIST_2345.copy()],
+    'page_number': 0,
+    'page_size': 0,
+    'total_count': -1,
+}
+PLAYLIST_LIST_RESPONSE['items'][1]['id'] = 3456
 
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -92,12 +110,13 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             query.get('video_fields')):
             result = SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_playlists_by_ids'] and
-              query.get('playlist_ids') == ['2345'] and
-              query.get('playlist_fields')):
+              query.get('playlist_ids') == ['2345']):
             result = SINGLE_PLAYLIST_RESPONSE
         elif (query.get('command') == ['find_modified_videos'] and
               query.get('video_fields')):
             result = VIDEO_LIST_RESPONSE
+        elif (query.get('command') == ['find_all_playlists']):
+            result = PLAYLIST_LIST_RESPONSE
         else:
             result = {"items": [None],
                       "page_number": 0,
