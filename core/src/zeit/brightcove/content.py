@@ -91,6 +91,11 @@ class Content(persistent.Persistent,
                         self.data['customFields']))
             self.uniqueId = 'brightcove://%s:%s' % (self.type, self.data['id'])
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.__name__ == other.__name__
+
     @property
     def __parent__(self):
         return zope.component.getUtility(
@@ -104,7 +109,7 @@ class Content(persistent.Persistent,
     @property
     def __name__(self):
         return '%s:%s' % (self.type, self.data['id'])
-    
+
     @property
     def thumbnail(self):
         return self.data['thumbnailURL']
@@ -118,6 +123,7 @@ class Content(persistent.Persistent,
         registered = getattr(self, '_v_save_hook_registered', False)
         if not registered:
             transaction.get().addBeforeCommitHook(self._save)
+            self.__parent__[self.__name__] = self
             self._v_save_hook_registered = True
 
     def _save(self):

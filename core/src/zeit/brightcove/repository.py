@@ -21,7 +21,7 @@ class Repository(persistent.Persistent,
 
     _type_class_map = {
         'video': zeit.brightcove.content.Video,
-        'playlist': zeit.brightcove.content.Playlist        
+        'playlist': zeit.brightcove.content.Playlist
     }
 
     BRIGHTCOVE_CACHE_TIMEOUT = datetime.timedelta(minutes=5)
@@ -49,8 +49,10 @@ class Repository(persistent.Persistent,
         if obj is None:
             raise KeyError(key)
         obj = zope.container.contained.contained(obj, self, key)
-        self._data[key] = obj
         return obj
+
+    def __setitem__(self, key, obj):
+        self._data[key] = obj
 
     def _get_from_brightcove(self, key):
         class_, id = self._parse_key(key)
