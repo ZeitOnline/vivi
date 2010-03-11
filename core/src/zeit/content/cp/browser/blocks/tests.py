@@ -1,13 +1,11 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import random
+import pkg_resources
 import unittest
-import z3c.etestbrowser.testing
+import zeit.brightcove.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
-import zeit.content.cp.browser.blocks
-import zeit.content.cp.browser.tests
 import zeit.content.cp.testing
 import zope.component
 import zope.security.management
@@ -29,10 +27,20 @@ def create_content(root):
     zope.site.hooks.setSite(old_site)
 
 
+class BrightcoveLayer(zeit.brightcove.testing.BrightcoveLayer):
+
+    config_file = pkg_resources.resource_filename(
+        __name__, 'ftesting-av.zcml')
+    module = __name__
+    __name__ = 'CPBrightcoveLayer'
+    product_config=(
+        zeit.brightcove.testing.product_config +
+        zeit.content.cp.testing.product_config)
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
-        'av.txt',
         'autopilot.txt',
         'cpextra.txt',
         'fullgraphical.txt',
@@ -43,4 +51,8 @@ def test_suite():
         'teaserbar.txt',
         'xml.txt',
         ))
+    av_test = zeit.content.cp.testing.FunctionalDocFileSuite(
+        'av.txt',
+        layer=BrightcoveLayer())
+    suite.addTest(av_test)
     return suite

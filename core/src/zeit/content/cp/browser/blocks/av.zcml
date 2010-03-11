@@ -13,6 +13,17 @@
     weight="0"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IVideoBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.video.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.IAVBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -26,6 +37,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-properties"
     class=".av.VideoEditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IVideoBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".av.DropVideo"
     permission="zeit.EditContent"
     />
 
