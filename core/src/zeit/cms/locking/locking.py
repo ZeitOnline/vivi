@@ -26,7 +26,7 @@ class LockStorage(object):
         try:
             locked_by, locked_until, my_lock = self.connector.locked(
                 object.uniqueId)
-        except KeyError:
+        except (KeyError, ValueError):
             # resource does not exist -> no lock
             return None
         if locked_by is None and locked_until is None:
