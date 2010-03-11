@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zope.container.interfaces
 import zope.interface
@@ -25,7 +26,7 @@ class IRepository(zope.container.interfaces.IItemContainer):
     """
 
 
-class IBrightcoveContent(zope.interface.Interface):
+class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
     supertitle = zope.schema.TextLine(
         title=_("Kicker"),

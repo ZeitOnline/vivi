@@ -6,8 +6,11 @@ import time
 import transaction
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
+import zeit.cms.browser.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zope.component
+import zope.publisher.browser
 
 
 class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
@@ -16,6 +19,14 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
     def repository(self):
         return zope.component.getUtility(
             zeit.brightcove.interfaces.IRepository)
+
+    def test_cmscontent(self):
+        video = self.repository['video:1234']
+        self.assertEquals('brightcove://video:1234', video.uniqueId)
+        self.assertEquals('video:1234', video.__name__)
+        self.assertEquals(
+            video,
+            zeit.cms.interfaces.ICMSContent('brightcove://video:1234'))
 
     def test_getitem(self):
         video = self.repository['video:1234']
@@ -89,6 +100,31 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             'a title',
             video.data['customFields']['ref_title1'])
 
+    def test_uuid(self):
+        # The uuid of videos is the unique id. This works because the unique id
+        # contains a database id from brightcove which never changes
+        uuid = zeit.cms.content.interfaces.IUUID(self.repository['video:1234'])
+        self.assertEquals('brightcove://video:1234', uuid.id)
+
+    def test_common_metadata(self):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(
+            self.repository['video:1234'])
+        self.assertEquals(2010, metadata.year)
+        self.assertEquals(
+            u'Glanz, Glamour und erwartungsvolle Spannung',
+            metadata.teaserText)
+
+    def test_list_repr(self):
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
+        list_repr = zope.component.getMultiAdapter(
+            (self.repository['video:1234'], request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+        self.assertEquals(2010, list_repr.year)
+        self.assertEquals(
+            'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+            list_repr.title)
+
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
@@ -113,3 +149,12 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(True, playlist.dailyNewsletter)
         self.assertEquals(False, playlist.breaking_news)
         self.assertTrue(playlist.product_id is None)
+
+    def test_cmscontent(self):
+        pls = self.repository['playlist:2345']
+        self.assertEquals('brightcove://playlist:2345', pls.uniqueId)
+        self.assertEquals('playlist:2345', pls.__name__)
+        self.assertEquals(
+            pls,
+            zeit.cms.interfaces.ICMSContent('brightcove://playlist:2345'))
+

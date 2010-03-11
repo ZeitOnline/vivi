@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import BaseHTTPServer
+import copy
 import pkg_resources
 import random
 import simplejson
@@ -10,41 +11,65 @@ import urllib2
 import urlparse
 import zeit.brightcove.connection
 import zeit.cms.testing
+import zeit.solr.testing
 import zope.app.testing.functional
 
 
 
 VIDEO_1234 = {
-    'items': [
-        {'creationDate': '1268018138802',
-         'customFields': {
-             'ressort': 'Auto',
-             'newsletter': '1',
-             'breaking-news': '0',
-             'cmskeywords': 'Politik;koalition',
-         },
-         'economics': 'AD_SUPPORTED',
-         'id': 70662056001L,
-         'lastModifiedDate': '1268053197824',
-         'length': 152640,
-         'linkText': None,
-         'linkURL': None,
-         'longDescription': u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
-         'name': 'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
-         'playsTotal': None,
-         'playsTrailingWeek': None,
-         'publishedDate': '1268053197823',
-         'referenceId': '2010-03-08T023523Z_1_OVE6276PP_RTRMADC_0_ONLINE',
-         'shortDescription': u'Glanz, Glamour und erwartungsvolle Spannung',
-         'tags': ['Vermischtes'],
-         'thumbnailURL': 'http://thumbnailurl',
-         'videoStillURL': 'http://videostillurl'}
-    ],
+    'creationDate': '1268018138802',
+    'customFields': {
+        'ressort': 'Auto',
+        'newsletter': '1',
+        'breaking-news': '0',
+        'cmskeywords': 'Politik;koalition',
+    },
+    'economics': 'AD_SUPPORTED',
+    'id': 1234,
+    'lastModifiedDate': '1268053197824',
+    'length': 152640,
+    'linkText': None,
+    'linkURL': None,
+    'longDescription': u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
+    'name': 'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+    'playsTotal': None,
+    'playsTrailingWeek': None,
+    'publishedDate': '1268053197823',
+    'referenceId': '2010-03-08T023523Z_1_OVE6276PP_RTRMADC_0_ONLINE',
+    'shortDescription': u'Glanz, Glamour und erwartungsvolle Spannung',
+    'tags': ['Vermischtes'],
+    'thumbnailURL': 'http://thumbnailurl',
+    'videoStillURL': 'http://videostillurl',
+}
+
+
+# Define responses. Note that the API returns total_count == -1 when there is
+# only one page. *puke*
+
+SINGLE_VIDEO_RESPONSE = {
+    'items': [VIDEO_1234],
     'page_number': 0,
     'page_size': 0,
     'total_count': -1,
 }
 
+
+SINGLE_PLAYLIST_RESPONSE = {
+    'items': [VIDEO_1234.copy()],
+    'page_number': 0,
+    'page_size': 0,
+    'total_count': -1,
+}
+SINGLE_PLAYLIST_RESPONSE['items'][0]['id'] = 2345
+
+
+VIDEO_LIST_RESPONSE = {
+    'items': [VIDEO_1234, VIDEO_1234.copy()],
+    'page_number': 0,
+    'page_size': 0,
+    'total_count': -1,
+}
+VIDEO_LIST_RESPONSE['items'][1]['id'] = 9876
 
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -65,11 +90,14 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         if (query.get('command') == ['find_videos_by_ids'] and
             query.get('video_ids') == ['1234'] and
             query.get('video_fields')):
-            result = VIDEO_1234
+            result = SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_playlists_by_ids'] and
               query.get('playlist_ids') == ['2345'] and
               query.get('playlist_fields')):
-            result = VIDEO_1234
+            result = SINGLE_PLAYLIST_RESPONSE
+        elif (query.get('command') == ['find_modified_videos'] and
+              query.get('video_fields')):
+            result = VIDEO_LIST_RESPONSE
         else:
             result = {"items": [None],
                       "page_number": 0,
@@ -104,6 +132,8 @@ product_config = """\
     write-url http://localhost:%s/
 </product-config>
 """ % (httpd_port, httpd_port)
+
+product_config += zeit.solr.testing.product_config
 
 
 class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
@@ -145,7 +175,7 @@ class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
 BrightcoveLayer = BrightcoveLayer()
 
 
-class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
+class BrightcoveTestCase(zeit.solr.testing.MockedFunctionalTestCase):
 
     layer = BrightcoveLayer
 

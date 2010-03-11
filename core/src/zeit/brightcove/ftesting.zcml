@@ -18,6 +18,7 @@
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
+  <include package="zeit.solr" />
   <include package="zeit.brightcove" />
 
   <grant

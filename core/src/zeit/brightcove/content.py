@@ -1,12 +1,19 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
+import datetime
+import grokcore.component
 import persistent
 import persistent.mapping
 import transaction
 import zeit.brightcove.interfaces
+import zeit.cms.browser.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.type
+import zope.component
 import zope.container.contained
 import zope.interface
 
@@ -114,6 +121,7 @@ class Content(persistent.Persistent,
                 self.data['customFields'] = (
                     persistent.mapping.PersistentMapping(
                         self.data['customFields']))
+            self.uniqueId = 'brightcove://%s:%s' % (self.type, self.data['id'])
 
     @staticmethod
     def get_connection():
@@ -141,12 +149,21 @@ class Content(persistent.Persistent,
 class Video(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
+    type = 'video'
 
     @classmethod
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
         return class_.get_connection().get_list(
             'find_videos_by_ids', class_, video_ids=ids,
+            video_fields=class_.fields)
+
+    @classmethod
+    def find_modified(class_, from_date):
+        from_date = int(from_date.strftime("%s")) / 60
+        return class_.get_connection().get_list(
+            'find_modified_videos', class_,
+            from_date=from_date,
             video_fields=class_.fields)
 
     @property
@@ -180,9 +197,16 @@ class Video(Content):
             custom['ref_title%s' % i] = metadata.teaserTitle
 
 
+class VideoType(zeit.cms.type.TypeDeclaration):
+
+    title = _('Video')
+    interface = zeit.brightcove.interfaces.IVideo
+
+
 class Playlist(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
+    type = 'playlist'
 
     @classmethod
     def find_by_ids(class_, ids):
@@ -190,3 +214,64 @@ class Playlist(Content):
         return class_.get_connection().get_list(
             'find_playlists_by_ids', class_, playlist_ids=ids,
             playlist_fields=class_.fields)
+
+
+class PlaylistType(zeit.cms.type.TypeDeclaration):
+
+    title = _('Playlist')
+    interface = zeit.brightcove.interfaces.IPlaylist
+
+
+@grokcore.component.adapter(basestring,
+                            name='brightcove://')
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
+def unique_id_to_cms_content(uniqueId):
+    assert uniqueId.startswith('brightcove://')
+    name = uniqueId.replace('brightcove://', '', 1)
+    repository = zope.component.getUtility(
+        zeit.brightcove.interfaces.IRepository)
+    try:
+        return repository[name]
+    except KeyError:
+        return None
+
+
+class UUID(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
+    grokcore.component.implements(zeit.cms.content.interfaces.IUUID)
+
+    @property
+    def id(self):
+        return self.context.uniqueId
+
+
+class CommonMetadata(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
+    grokcore.component.implements(zeit.cms.content.interfaces.ICommonMetadata)
+
+    @property
+    def year(self):
+        try:
+            modified = int(self.context.data['lastModifiedDate'])
+        except (TypeError, ValueError):
+            return None
+        return datetime.datetime.fromtimestamp(modified/1000).year
+
+    def __getattr__(self, key):
+        if key in zeit.cms.content.interfaces.ICommonMetadata:
+            return getattr(self.context, key, None)
+        return super(CommonMetadata, self).__getattr__(key)
+
+
+@grokcore.component.adapter(
+    zeit.brightcove.interfaces.IBrightcoveContent,
+    zeit.cms.browser.interfaces.ICMSSkin)
+@grokcore.component.implementer(
+    zeit.cms.browser.interfaces.IListRepresentation)
+def list_repr(context, request):
+    metadata = zeit.cms.content.interfaces.ICommonMetadata(context)
+    return zope.component.queryMultiAdapter(
+        (metadata, request),
+        zeit.cms.browser.interfaces.IListRepresentation)
