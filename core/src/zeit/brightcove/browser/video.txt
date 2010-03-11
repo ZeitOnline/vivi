@@ -13,8 +13,6 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 <...
  <li class="message">Updated on ...
 
-
-
 >>> import zeit.brightcove.testing
 >>> len(zeit.brightcove.testing.RequestHandler.posts_received)
 1
@@ -34,3 +32,10 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 HTTP Error 303: See Other
 http://thumbnailurl
 
+>>> browser.open('http://localhost/++skin++cms/repository-brightcove/playlist:2345')
+>>> print browser.contents
+<...
+   <label for="form.__name__">
+           <span>File name</span>
+         </label>...
+        <div class="widget">playlist:2345</div>...         

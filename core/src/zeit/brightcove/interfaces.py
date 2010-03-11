@@ -28,7 +28,6 @@ class IRepository(zope.container.interfaces.IItemContainer):
 
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
-
     title = zope.schema.TextLine(
         title=_("Title"))
 
@@ -38,7 +37,8 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
         max_length=170)
 
     thumbnail = zope.schema.URI(
-        title=_('URI of the brightcove thumnail'),
+        title=_('URI of the thumbnail'),
+        required=False,
         readonly=True)
 
 class IVideo(IBrightcoveContent,

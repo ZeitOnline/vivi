@@ -15,9 +15,23 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
+  
+  <browser:page
+    for="zeit.brightcove.interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".video.DisplayForm"
+    permission="zope.View"
+    />
+  
+  <browser:defaultView
+    for="zeit.brightcove.interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
 
  <browser:page
-   for="zeit.brightcove.interfaces.IVideo"
+   for="zeit.brightcove.interfaces.IBrightcoveContent"
    layer="zeit.cms.browser.interfaces.ICMSLayer"
    name="thumbnail"
    class=".video.Thumbnail"
