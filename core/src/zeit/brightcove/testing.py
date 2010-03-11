@@ -152,8 +152,6 @@ product_config = """\
 </product-config>
 """ % (httpd_port, httpd_port)
 
-product_config += zeit.solr.testing.product_config
-
 
 class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
 
@@ -174,6 +172,9 @@ class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
         self.stop_httpd()
         zope.app.testing.functional.ZCMLLayer.tearDown(self)
 
+    def testTearDown(self):
+        RequestHandler.posts_received[:] = []
+
     def start_httpd(self):
         self.httpd_running = True
         def run():
@@ -191,20 +192,16 @@ class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
         urllib2.urlopen('http://localhost:%s/die' % httpd_port)
 
 
-BrightcoveLayer = BrightcoveLayer()
+layer = BrightcoveLayer()
 
 
 class BrightcoveTestCase(zeit.solr.testing.MockedFunctionalTestCase):
 
-    layer = BrightcoveLayer
+    layer = layer
 
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()
         self.posts = RequestHandler.posts_received
-
-    def tearDown(self):
-        self.posts[:] = []
-        super(BrightcoveTestCase, self).tearDown()
 
 
 def FunctionalDocFileSuite(*args, **kw):

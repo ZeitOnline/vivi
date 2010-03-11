@@ -2,10 +2,25 @@
 # See also LICENSE.txt
 
 import zeit.brightcove.testing
+import pkg_resources
 import zeit.brightcove.solr
+import zeit.solr.testing
 
 
-class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
+class BrightcoveSolrLayer(zeit.brightcove.testing.BrightcoveLayer):
+
+    config_file = pkg_resources.resource_filename(
+        __name__, 'ftesting-solr.zcml')
+    module = __name__
+    __name__ =  'BrightcoveSolrLayer'
+    product_config=(
+        zeit.brightcove.testing.product_config +
+        zeit.solr.testing.product_config)
+
+
+class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
+
+    layer = BrightcoveSolrLayer()
 
     def test_indexing_changed_videos(self):
         zeit.brightcove.solr._index_changed_videos_and_playlists()
