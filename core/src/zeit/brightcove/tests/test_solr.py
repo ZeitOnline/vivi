@@ -13,17 +13,17 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(4, len(self.solr.update_raw.call_args_list))
         element_add = self.solr.update_raw.call_args_list[0][0][0]
         self.assertEquals(
-            ['brightcove://video:1234'],
+            ['http://video.zeit.de/video/1234'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[1][0][0]
         self.assertEquals(
-            ['brightcove://video:9876'],
+            ['http://video.zeit.de/video/9876'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[2][0][0]
         self.assertEquals(
-            ['brightcove://playlist:2345'],
+            ['http://video.zeit.de/playlist/2345'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[3][0][0]
         self.assertEquals(
-            ['brightcove://playlist:3456'],
+            ['http://video.zeit.de/playlist/3456'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))

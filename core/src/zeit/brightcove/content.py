@@ -89,7 +89,7 @@ class Content(persistent.Persistent,
                 self.data['customFields'] = (
                     persistent.mapping.PersistentMapping(
                         self.data['customFields']))
-            self.uniqueId = 'brightcove://%s:%s' % (self.type, self.data['id'])
+            self.uniqueId = 'http://video.zeit.de/%s/%s' % (self.type, self.data['id'])
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -262,11 +262,12 @@ class PlaylistType(zeit.cms.type.TypeDeclaration):
 
 
 @grokcore.component.adapter(basestring,
-                            name='brightcove://')
+                            name='http://video.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_cms_content(uniqueId):
-    assert uniqueId.startswith('brightcove://')
-    name = uniqueId.replace('brightcove://', '', 1)
+    assert uniqueId.startswith('http://video.zeit.de/')
+    name = uniqueId.replace('http://video.zeit.de/', '', 1)
+    name = name.replace('/', ':', 1)
     repository = zope.component.getUtility(
         zeit.brightcove.interfaces.IRepository)
     try:

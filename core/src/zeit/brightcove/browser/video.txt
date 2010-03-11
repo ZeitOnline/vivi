@@ -32,6 +32,7 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 HTTP Error 303: See Other
 http://thumbnailurl
 
+>>> browser.handleErrors=False
 >>> browser.open('http://localhost/++skin++cms/repository-brightcove/playlist:2345')
 >>> print browser.contents
 <...

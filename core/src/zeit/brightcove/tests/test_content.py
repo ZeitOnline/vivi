@@ -22,11 +22,11 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_cmscontent(self):
         video = self.repository['video:1234']
-        self.assertEquals('brightcove://video:1234', video.uniqueId)
+        self.assertEquals('http://video.zeit.de/video/1234', video.uniqueId)
         self.assertEquals('video:1234', video.__name__)
         self.assertEquals(
             video,
-            zeit.cms.interfaces.ICMSContent('brightcove://video:1234'))
+            zeit.cms.interfaces.ICMSContent('http://video.zeit.de/video/1234'))
 
     def test_getitem(self):
         video = self.repository['video:1234']
@@ -104,7 +104,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         # The uuid of videos is the unique id. This works because the unique id
         # contains a database id from brightcove which never changes
         uuid = zeit.cms.content.interfaces.IUUID(self.repository['video:1234'])
-        self.assertEquals('brightcove://video:1234', uuid.id)
+        self.assertEquals('http://video.zeit.de/video/1234', uuid.id)
 
     def test_common_metadata(self):
         metadata = zeit.cms.content.interfaces.ICommonMetadata(
@@ -141,9 +141,9 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_cmscontent(self):
         pls = self.repository['playlist:2345']
-        self.assertEquals('brightcove://playlist:2345', pls.uniqueId)
+        self.assertEquals('http://video.zeit.de/playlist/2345', pls.uniqueId)
         self.assertEquals('playlist:2345', pls.__name__)
         self.assertEquals(
             pls,
-            zeit.cms.interfaces.ICMSContent('brightcove://playlist:2345'))
+            zeit.cms.interfaces.ICMSContent('http://video.zeit.de/playlist/2345'))
 
