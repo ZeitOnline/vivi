@@ -37,6 +37,14 @@
       />
   </class>
 
+  <class class=".content.Playlist">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IPlaylist"
+      permission="zope.View"
+      />
+  </class>
+
   <utility
     provides="zeit.brightcove.interfaces.IAPIConnection"
     factory=".connection.connection_factory"
