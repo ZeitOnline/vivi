@@ -5,10 +5,16 @@
   <browser:page
     for="zeit.brightcove.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="index.html"
+    name="view.html"
     class=".video.EditForm"
     permission="zeit.brightcove.video.Edit"
-  />
+    />
+
+  <browser:defaultView
+    for="zeit.brightcove.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
 
  <browser:page
    for="zeit.brightcove.interfaces.IVideo"
