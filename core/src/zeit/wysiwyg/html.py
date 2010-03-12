@@ -216,6 +216,30 @@ class ConversionStep(object):
         return zope.component.getMultiAdapter(
             (obj, self.request), name='absolute_url')()
 
+    def datetime_to_html(self, dt_string):
+        dt = ''
+        if dt_string:
+            try:
+                dt = zc.iso8601.parse.datetimetz(dt_string)
+            except ValueError:
+                pass
+            else:
+                tz = zope.interface.common.idatetime.ITZInfo(self.request)
+                dt = dt.astimezone(tz).strftime('%Y-%m-%d %H:%M')
+        return dt
+
+    def datetime_to_xml(self, dt_string):
+        dt = ''
+        if dt_string:
+            try:
+                dt = datetime.datetime.strptime(dt_string, '%Y-%m-%d %H:%M')
+            except ValueError:
+                dt = ''
+            else:
+                tz = zope.interface.common.idatetime.ITZInfo(self.request)
+                dt = tz.localize(dt).isoformat()
+        return dt
+
 
 class DropEmptyStep(ConversionStep):
     """Drop empty HTML toplevel nodes."""
@@ -502,85 +526,87 @@ class ArticleExtraStep(ConversionStep):
         return new_node
 
 
-class VideoAudioStep(ConversionStep):
-    """Make <video> and <audio> editable."""
+class AudioStep(ConversionStep):
+    """Make editable."""
 
-    xpath_xml = './/video|.//audio'
+    xpath_xml = './/audio'
     xpath_html = ('.//*[contains(@class, "inline-element") and '
-                  '(contains(@class, "video") or contains(@class, "audio"))]')
+                  'contains(@class, "audio")]')
 
     def to_html(self, node):
-        if node.tag == 'video':
-            id_ = node.get('videoID')
-            id2 = node.get('videoID2', '')
-            player_1 = node.get('player') or 'vid'
-            player_2 = node.get('player2') or 'vid'
-            id_class = 'videoId'
-            div_class = 'video'
-        elif node.tag == 'audio':
-            id_ = node.get('audioID')
-            id_class = 'audioId'
-            div_class = 'audio'
-        else:
-            assert False
-
-        expires = node.get('expires')
-        format = node.get('format') or ''
-        if expires:
-            try:
-                expires = zc.iso8601.parse.datetimetz(expires)
-            except ValueError:
-                expires = ''
-            else:
-                tz = zope.interface.common.idatetime.ITZInfo(self.request)
-                expires = expires.astimezone(tz).strftime('%Y-%m-%d %H:%M')
-        else:
-            expires = ''
-
-        if node.tag == 'video':
-            id2 = lxml.objectify.E.div(id2, **{'class': id_class + '2'})
-            p_node = lxml.objectify.E.div(player_1, **{'class': 'player'})
-            p2_node = lxml.objectify.E.div(player_2, **{'class': 'player2'})
-            format_node = lxml.objectify.E.div(format, **{'class': 'format'})
-        else:
-            id2 = p_node = p2_node = format_node = None
+        id_ = node.get('audioID')
+        expires = self.datetime_to_html(node.get('expires'))
         new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(id_, **{'class': id_class}),
-            id2,
-            p_node,
-            p2_node,
+            lxml.objectify.E.div(id_, **{'class': 'audioId'}),
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
-            format_node,
-            **{'class': 'inline-element %s' % div_class})
+            **{'class': 'inline-element audio'})
         lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
-        if 'video' in node.get('class', None):
-            id_nodes = node.xpath('div[contains(@class, "videoId")]')
-            video = True
-        elif 'audio' in node.get('class', None):
-            id_nodes = node.xpath('div[@class="audioId"]')
-            video = False
+        id_nodes = node.xpath('div[@class="audioId"]')
 
+        id_ = expires = ''
+        if id_nodes:
+            id_ = unicode(id_nodes[0])
+
+        nodes = node.xpath('div[@class="expires"]')
+        if nodes:
+            expires = self.datetime_to_xml(unicode(nodes[0]))
+        new_node = lxml.objectify.E.audio(audioID=id_, expires=expires)
+        return new_node
+
+
+class VideoStep(ConversionStep):
+    """Make <video> editable."""
+
+    xpath_xml = './/video'
+    xpath_html = ('.//*[contains(@class, "inline-element") and '
+                  'contains(@class, "video")]')
+
+    def to_html(self, node):
+        id_1 = node.get('videoID', '')
+        id_2 = node.get('videoID2', '')
+        player_1 = 'playlist' if node.get('player') == 'pls' else 'video'
+        player_2 = 'playlist' if node.get('player2') == 'pls' else 'video'
+        if id_1:
+            id_1 = 'http://video.zeit.de/%s/%s' % (player_1, id_1)
+        if id_2:
+            id_2 = 'http://video.zeit.de/%s/%s' % (player_2, id_2)
+        expires = self.datetime_to_html(node.get('expires'))
+        format = node.get('format') or ''
+
+        new_node = lxml.objectify.E.div(
+            lxml.objectify.E.div(id_1, **{'class': 'videoId'}),
+            lxml.objectify.E.div(id_2, **{'class': 'videoId2'}),
+            lxml.objectify.E.div(expires, **{'class': 'expires'}),
+            lxml.objectify.E.div(format, **{'class': 'format'}),
+            **{'class': 'inline-element video'})
+        lxml.objectify.deannotate(new_node)
+        return new_node
+
+    def to_xml(self, node):
+        id_nodes = node.xpath('div[contains(@class, "videoId")]')
         id_ = id2 = expires = format = ''
-        p1 = p2 = 'vid'
         if id_nodes:
             id_ = unicode(id_nodes[0])
             if len(id_nodes) > 1:
                 id2 = unicode(id_nodes[1])
 
+        def get_id_player(video_id):
+            if video_id and video_id.startswith('http://video.zeit.de/'):
+                video_id = video_id.replace('http://video.zeit.de/', '', 1)
+                if '/' in video_id:
+                    type_, id_ = video_id.split('/', 1)
+                    type_ = 'pls' if type_ == 'playlist' else 'vid'
+                    return id_, type_
+            return '', ''
+
+        id_, p1 = get_id_player(id_)
+        id2, p2 = get_id_player(id2)
         nodes = node.xpath('div[@class="expires"]')
         if nodes:
-            expires = unicode(nodes[0])
-            try:
-                expires = datetime.datetime(
-                    *(time.strptime(expires, '%Y-%m-%d %H:%M')[0:6]))
-            except ValueError:
-                expires = ''
-            else:
-                tz = zope.interface.common.idatetime.ITZInfo(self.request)
-                expires = tz.localize(expires).isoformat()
+            expires = self.datetime_to_xml(unicode(nodes[0]))
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])
@@ -590,12 +616,9 @@ class VideoAudioStep(ConversionStep):
         nodes = node.xpath('div[@class="player2"]')
         if nodes:
             p2 = unicode(nodes[0])
-        if video:
-            new_node = lxml.objectify.E.video(
-                videoID=id_, videoID2=id2, expires=expires, format=format,
-                player=p1, player2=p2)
-        else:
-            new_node = lxml.objectify.E.audio(audioID=id_, expires=expires)
+        new_node = lxml.objectify.E.video(
+            videoID=id_, videoID2=id2, expires=expires, format=format,
+            player=p1, player2=p2)
         return new_node
 
 

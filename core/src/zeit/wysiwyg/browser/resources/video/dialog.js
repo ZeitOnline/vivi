@@ -12,7 +12,17 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
     construct: function() {
         var self = this;
         self.container_class = $('kind').value;
+        self.browse_filter = 'brightcove-content'
         arguments.callee.$.construct.call(self);
+
+        if (self.container_class == 'video') {
+            var browse_url = 
+                oPage.context_url + '/@@default-browsing-location';
+            new ObjectReferenceWidget(
+                'video1', browse_url, self.browse_filter, false);
+            new ObjectReferenceWidget(
+                'video2', browse_url, self.browse_filter, false);
+        }
 
         self._connect_date_buttons();
 
@@ -22,12 +32,6 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
             $('id2').value = self.get_value(id + '2');
         }
         $('expires').value = self.get_value('expires');
-        forEach(['format', 'player', 'player2'], function(id) {
-            var element = $(id);
-            if (!isNull(element)) {
-                element.value = self.get_value(id);
-            }
-        });
     },
 
     _connect_date_buttons: function() {
@@ -76,12 +80,10 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
             self.set_value(id + '2', $('id2').value);
         }
         self.set_value('expires', $('expires').value);
-        forEach(['format', 'player', 'player2'], function(id) {
-            var element = $(id);
-            if (!isNull(element)) {
-                self.set_value(id, element.value);
-            }
-        });
+        var element = $('format');
+        if (!isNull(element)) {
+            self.set_value('format', element.value);
+        }
     },
 
     create: function() {

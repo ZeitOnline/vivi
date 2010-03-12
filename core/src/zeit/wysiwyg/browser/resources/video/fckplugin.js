@@ -3,7 +3,7 @@ FCKCommands.RegisterCommand(
     new FCKDialogCommand(
         'Video', 'ZEIT: Video',
         FCKConfig.PageConfig.ZeitResources + '/video/dialog.pt?kind=video',
-        480, 400));
+        800, 600));
 var button = new FCKToolbarButton('Zeit_Add_Video', 'Video');
 button.IconPath = FCKConfig.PageConfig.ZeitResources+'/video/video_icon.png';
 FCKToolbarItems.RegisterItem( 'Zeit_Add_Video', button);
