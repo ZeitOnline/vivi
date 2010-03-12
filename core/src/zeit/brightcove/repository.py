@@ -69,5 +69,10 @@ class Repository(persistent.Persistent,
     def _parse_key(self, key):
         if ':' in key:
             type_, id_ = key.split(':', 1)
-            return self._type_class_map.get(type_), id_
+            try:
+                int(id_)
+            except (ValueError, TypeError):
+                pass
+            else:
+                return self._type_class_map.get(type_), id_
         return None, None

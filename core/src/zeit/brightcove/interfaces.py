@@ -114,3 +114,29 @@ class IVideo(IBrightcoveContent,
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""
+
+
+class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'brightcove-videos'
+    check_interfaces = (IVideo,)
+
+
+videoSource = VideoSource()
+
+
+class IVideoAsset(zope.interface.Interface):
+
+    audio_id = zope.schema.TextLine(
+        title=_('Audio id'),
+        required=False)
+
+    video = zope.schema.Choice(
+        title=_('Video'),
+        required=False,
+        source=videoSource)
+
+    video_2 = zope.schema.Choice(
+        title=_('Video 2'),
+        required=False,
+        source=videoSource)

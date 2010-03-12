@@ -6,6 +6,10 @@ import simplejson
 import urllib
 import urllib2
 import zope.app.appsetup.product
+import logging
+
+
+log = logging.getLogger(__name__)
 
 
 JSON_CONTROL_CHARACTERS = ''.join(chr(x) for x in range(0, 0x1f))
@@ -44,6 +48,7 @@ class APIConnection(object):
             command=command,
             token=self.read_token,
             **kwargs)))
+        log.info("Requesting %s", url)
         request = urllib2.urlopen(url)
         response = self.decode_broken_brightcove_json(request.read())
         __traceback_info__ = (url, response)
@@ -69,7 +74,7 @@ class ItemResultSet(object):
         count = 0
         while True:
             data = self.connection.get(self.command,
-                                       page_size='100',
+                                       page_size='10',
                                        page_number=str(page),
                                        get_item_count='true',
                                        **self.data)
