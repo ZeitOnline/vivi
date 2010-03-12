@@ -20,7 +20,8 @@
   <adapter factory=".html.TableStep" name="TableStep" />
   <adapter factory=".html.TagReplaceStep" name="TagReplaceStep" />
   <adapter factory=".html.URLStep" name="URLStep" />
-  <adapter factory=".html.VideoAudioStep" name="VideoAudioStep" />
+  <adapter factory=".html.AudioStep" name="AudioStep" />
+  <adapter factory=".html.VideoStep" name="VideoStep" />
   <adapter factory=".html.RelatedsStep" name="RelatedsStep" />
 
 

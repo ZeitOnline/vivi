@@ -132,23 +132,9 @@ intertitle {
     content: "Video-Id:";
 }
 
-.video > .videoId,
-.video > .player {
-    float: left;
-}
-
-.video > .videoId2,
-.video > .player2 {
-    clear: both;
-    float: right;
-}
 
 .video > .videoId2:before {
     content: "2. Video-Id:";
-}
-
-.video > .expires {
-  clear: both;
 }
 
 .audio > .expires:before,

@@ -1,4 +1,28 @@
-#avid,
-#id2 {
-  width: 20em
-};
+#avid {
+  width: 20em;
+}
+
+#avid.object-reference,
+#id2.object-reference {
+  width: 40em;
+}
+
+/* Lightbox */
+
+.lightbox-header {
+    top: 2em;
+    left: 2em;
+    right: 2em;
+}
+
+.lightbox {
+    top: 4em;
+    left: 2em;
+    right: 2em;
+    bottom: 2em;
+}
+
+#preview {
+    margin-top: 1em;
+    text-align: center;
+}

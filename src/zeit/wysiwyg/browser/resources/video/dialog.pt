@@ -14,28 +14,28 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <script src="dialog.js" type="text/javascript"></script>
     <link href="dialog.css" type="text/css" rel="stylesheet" />
   </head>
-  <body>
+  <body id="body">
     <form>
       <input type="hidden" id="kind" name="kind" value=""
         tal:attributes="value kind"/>
-      <div class="widget">
+      <div class="widget" id="video1">
         <label for="avid" tal:condition="video"
-          i18n:translate="">Video Id</label>
+          i18n:translate="">Video</label>
         <label for="avid" tal:condition="audio"
           i18n:translate="">Audio Id</label>
-        <input id="avid" type="text" />
-        <select id="player" tal:condition="video">
-          <option value="vid">Einzelvideo</option>
-          <option value="pls">Playlist</option>
-        </select>
+          <input
+            id="avid" type="text" 
+            tal:attributes="class python:'object-reference' if kind =='video' else ''"
+            />
+        <input 
+          name="browseObjects" type="button" value="…" 
+          tal:condition="video"
+          />
       </div>
-      <div class="widget" tal:condition="video">
-        <label for="id2" i18n:translate="">Second Video Id</label>
-        <input id="id2" type="text" />
-        <select id="player2" tal:condition="video">
-          <option value="vid">Einzelvideo</option>
-          <option value="pls">Playlist</option>
-        </select>
+      <div class="widget" id="video2" tal:condition="video">
+        <label for="id2" i18n:translate="">Second Video</label>
+        <input id="id2" type="text" class="object-reference" />
+        <input name="browseObjects" type="button" value="…" />
       </div>
       <div class="widget">
         <label for="expires" i18n:translate="">Expires</label>
