@@ -21,16 +21,9 @@ class CMSContentSource(object):
         if not self.verify_interface(value):
             return False
 
-        # Interface is correct, make sure the object actually is in the
-        # repository
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        try:
-            repository.getContent(value.uniqueId)
-        except KeyError:
-            return False
-
-        return True
+        # Interface is correct, make sure the object actually available
+        content = zeit.cms.interfaces.ICMSContent(value.uniqueId, None)
+        return content is not None
 
     def get_check_interfaces(self):
         check = []
@@ -85,12 +78,7 @@ class ChoicePropertyWithCMSContentSource(object):
     def fromProperty(self, value):
         if not value:
             return None
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        try:
-            content = repository.getContent(value)
-        except (KeyError, ValueError):
-            return
+        content = zeit.cms.interfaces.ICMSContent(value, None)
         if content in self.source:
             return content
 

@@ -72,7 +72,7 @@ Set the value to an existing, valid value; we now also see workflow
 information:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://content'},
+...     form={'field.reference': u'http://xml.zeit.de/content'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
@@ -85,7 +85,7 @@ Returning location for <Content object at 0x...>
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
-         id="field.reference" value="http://content"
+         id="field.reference" value="http://xml.zeit.de/content"
          name="field.reference" />
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
@@ -106,7 +106,7 @@ Returning location for <Content object at 0x...>
 Set the value to an existing but invalid value, so we get an validation error:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://exists/blubs'},
+...     form={'field.reference': u'http://xml.zeit.de/exists/blubs'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
@@ -117,7 +117,7 @@ WidgetInputError: ('reference', u'',
     ConstraintNotSatisfied(<object object at 0x...>))
 
 
-Note that the invalid value is rendered:
+The invalid value is rendered:
 
 >>> print widget()
 Returning location for <Content object at 0x...>
@@ -126,7 +126,7 @@ Returning location for <Content object at 0x...>
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
-         id="field.reference" value="http://exists/blubs"
+         id="field.reference" value="http://xml.zeit.de/exists/blubs"
          name="field.reference" />
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
@@ -142,11 +142,10 @@ Returning location for <Content object at 0x...>
   </script>
 
 
-
 Test the validation. Set a non existent resource:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://foo'},
+...     form={'field.reference': u'http://xml.zeit.de/foo'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
@@ -164,7 +163,7 @@ Returning location for <Content object at 0x...>
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
-         id="field.reference" value="http://foo"
+         id="field.reference" value="http://xml.zeit.de/foo"
          name="field.reference" />
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
@@ -181,19 +180,6 @@ Returning location for <Content object at 0x...>
 
 
 
-There are also completely invalid ids:
-
->>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'invalid'})
->>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
-...     field, source, request)
->>> widget.getInputValue()
-Traceback (most recent call last):
-    ...
-ConversionError: (u'The given id is invalid.', None)
-
-
-
 Display widget
 --------------
 
@@ -207,7 +193,7 @@ link title. The workflow status is shown as well:
 ...     field, source, request)
 >>> widget.setRenderedValue(Content())
 >>> print widget()
-<a href="http://127.0.0.1/repo/content" id="...">http://content</a>
+<a href="http://127.0.0.1/repo/content" id="...">http://xml.zeit.de/content</a>
 <img class="publish-state" src="http://127.0.0.1/@@/zeit.cms/icons/not-published.png" title="Not published" />
 <script language="javascript">
     new zeit.cms.LinkToolTip("...")
@@ -281,12 +267,10 @@ in one month:
     ...     __name__ = 'repo'
     ...
     ...     def getContent(self, unique_id):
-    ...         if unique_id.startswith('http://content'):
+    ...         if unique_id.startswith('http://xml.zeit.de/content'):
     ...             return Content()
-    ...         if unique_id.startswith('http://exists'):
+    ...         if unique_id.startswith('http://xml.zeit.de/exists'):
     ...             return object()
-    ...         if not unique_id.startswith('http://'):
-    ...             raise ValueError('Invalid id')
     ...         raise KeyError(unique_id)
     ...
     >>> repository = Repository()
@@ -304,7 +288,7 @@ in one month:
     ...         zope.annotation.interfaces.IAttributeAnnotatable)
     ...     __parent__ = repository
     ...     __name__ = u'content'
-    ...     uniqueId = 'http://content'
+    ...     uniqueId = 'http://xml.zeit.de/content'
 
     Make ICMSContent generally a contenttype:
 

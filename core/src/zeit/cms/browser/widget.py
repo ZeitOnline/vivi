@@ -7,6 +7,7 @@ import time
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
 import zeit.cms.browser.interfaces
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zope.app.form.browser
 import zope.app.form.browser.interfaces
@@ -37,15 +38,10 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def _toFieldValue(self, input):
         if input == self._missing:
             return self.context.missing_value
-        try:
-            content = self.repository.getContent(input)
-        except ValueError, e:
-            raise zope.app.form.interfaces.ConversionError(
-                _("The given id is invalid."))
-        except KeyError, e:
+        content = zeit.cms.interfaces.ICMSContent(input, None)
+        if content is None:
             raise zope.app.form.interfaces.ConversionError(
                 _("The object could not be found."))
-
         try:
             self.context.validate(content)
         except zope.schema.ValidationError, e:
