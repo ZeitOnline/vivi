@@ -50,7 +50,9 @@ def tearDown(test):
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     connector._reset()
-    zope.app.appsetup.product.restoreConfiguration(test.old_product_config)
+    old_config = getattr(test, 'old_product_config', None)
+    if old_config is not None:
+        zope.app.appsetup.product.restoreConfiguration(old_config)
 
 
 def setup_product_config(product_config={}):
@@ -87,6 +89,13 @@ optionflags = (doctest.REPORT_NDIFF +
                doctest.INTERPRET_FOOTNOTES +
                doctest.NORMALIZE_WHITESPACE +
                doctest.ELLIPSIS)
+
+
+def DocFileSuite(*paths, **kw):
+    kw['package'] = doctest._normalize_module(kw.get('package'))
+    kw.setdefault('checker', checker)
+    kw.setdefault('optionflags', optionflags)
+    return doctest.DocFileSuite(*paths, **kw)
 
 
 def FunctionalDocFileSuite(*paths, **kw):
