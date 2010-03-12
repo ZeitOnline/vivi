@@ -239,6 +239,17 @@ class VideoPublicationStatus(grokcore.component.Adapter):
         return "not-published"
 
 
+class PlaylistPublicationStatus(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IPlaylist)
+    grokcore.component.implements(
+        zeit.cms.workflow.interfaces.IPublicationStatus)
+
+    @property
+    def published(self):
+        return "published"
+
+
 class VideoType(zeit.cms.type.TypeDeclaration):
 
     title = _('Video')

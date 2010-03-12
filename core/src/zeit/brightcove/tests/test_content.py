@@ -158,4 +158,9 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
             pls,
             zeit.cms.interfaces.ICMSContent(
                 'http://video.zeit.de/playlist/2345'))
-
+    
+    def test_publication_status(self):
+        video = self.repository['playlist:2345']
+        publication_status = zeit.cms.workflow.interfaces.IPublicationStatus(
+            video)
+        self.assertEquals("published", publication_status.published)
