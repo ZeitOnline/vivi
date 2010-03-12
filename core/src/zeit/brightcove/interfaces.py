@@ -46,7 +46,7 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
         readonly=True)
 
     item_state = zope.schema.Choice(
-        title=_("state of the brightcove-video"),
+        title=_("State"),
         required=True,
         readonly=True,
         values=("ACTIVE", "INACTIVE", "DELETED"))
@@ -104,7 +104,7 @@ class IVideo(IBrightcoveContent,
         required=False)
 
     breaking_news = zope.schema.Bool(
-        title=_('Breaking news'),
+        title=_('video-breaking-news', default='Breaking news'),
         default=False)
 
     has_recensions = zope.schema.Bool(
