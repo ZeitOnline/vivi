@@ -44,7 +44,7 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
         title=_('URI of the thumbnail'),
         required=False,
         readonly=True)
-    
+
     item_state = zope.schema.Choice(
         title=_("state of the brightcove-video"),
         required=True,
@@ -123,6 +123,7 @@ class BrightcoveSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 brightcoveSource = BrightcoveSource()
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 
