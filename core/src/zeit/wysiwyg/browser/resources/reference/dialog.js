@@ -81,6 +81,7 @@ zeit.wysiwyg.PortraitboxDialog = zeit.wysiwyg.ReferenceDialog.extend({
 
 
 zeit.wysiwyg.GalleryDialog = zeit.wysiwyg.ReferenceDialog.extend({
+
     construct: function() {
         var self = this;
         self.container_class = 'gallery';
