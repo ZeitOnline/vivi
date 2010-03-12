@@ -1,13 +1,14 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.brightcove.testing
-import zeit.cms
+import mock
 import pkg_resources
 import zeit.brightcove.solr
+import zeit.brightcove.testing
+import zeit.cms
 import zeit.solr.testing
-import mock
-import zope
+import zope.component
+
 
 class BrightcoveSolrLayer(zeit.brightcove.testing.BrightcoveLayer):
 
@@ -27,7 +28,8 @@ class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
     def setUp(self):
         super(TestSolrIndexing, self).setUp()
         self.public_solr = mock.Mock()
-        zope.interface.alsoProvides(self.public_solr, zeit.solr.interfaces.ISolr)
+        zope.interface.alsoProvides(
+            self.public_solr, zeit.solr.interfaces.ISolr)
         zope.component.provideUtility(self.public_solr, name='public')
 
     def tearDown(self):
@@ -61,14 +63,14 @@ class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
         zeit.brightcove.solr._update_single_content(video)
         self.assertTrue(self.solr.update_raw.called)
         self.assertTrue(self.public_solr.update_raw.called)
-    
+
     def test_solr_inactive(self):
         video = zeit.cms.interfaces.ICMSContent("http://video.zeit.de/video/1234")
         video.item_state = 'INACTIVE'
         zeit.brightcove.solr._update_single_content(video)
         self.assertTrue(self.solr.update_raw.called)
         self.assertTrue(self.public_solr.delete.called)
-    
+
     def test_solr_deleted(self):
         video = zeit.cms.interfaces.ICMSContent("http://video.zeit.de/video/1234")
         video.item_state = 'DELETED'
@@ -80,4 +82,3 @@ class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
         zeit.brightcove.solr._empty_playlists()
         self.assertTrue(self.solr.delete)
         self.assertTrue(self.public_solr.delete)
-
