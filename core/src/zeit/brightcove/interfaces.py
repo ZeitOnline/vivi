@@ -116,6 +116,14 @@ class IPlaylist(IBrightcoveContent):
     """A playlist."""
 
 
+class BrightcoveSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'brightcove-content'
+    check_interfaces = (IVideo, IPlaylist)
+
+
+brightcoveSource = BrightcoveSource()
+
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'brightcove-videos'

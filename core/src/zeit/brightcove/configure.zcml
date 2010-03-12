@@ -52,6 +52,11 @@
 
 
   <utility
+    component=".interfaces.brightcoveSource"
+    name="brightcove-content"
+    />
+
+  <utility
     component=".interfaces.videoSource"
     name="brightcove-videos"
     />
