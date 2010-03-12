@@ -38,6 +38,7 @@ def _update_single_content(content):
         deleter.update()
         deleter.update(solr='public')
 
+
 def _empty_playlists():
     query = zeit.solr.query.field(
         'type', 'zeit.brightcove.interfaces.IPlaylist')
