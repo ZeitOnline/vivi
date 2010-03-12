@@ -226,9 +226,9 @@ class Video(Content):
             custom['ref_title%s' % i] = metadata.teaserTitle
 
 
-class VideoPublicationStatus(grokcore.component.Adapter):
+class BrightcoveContentPublicationStatus(grokcore.component.Adapter):
 
-    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
     grokcore.component.implements(
         zeit.cms.workflow.interfaces.IPublicationStatus)
 
@@ -237,17 +237,6 @@ class VideoPublicationStatus(grokcore.component.Adapter):
         if self.context.item_state == "ACTIVE":
             return "published"
         return "not-published"
-
-
-class PlaylistPublicationStatus(grokcore.component.Adapter):
-
-    grokcore.component.context(zeit.brightcove.interfaces.IPlaylist)
-    grokcore.component.implements(
-        zeit.cms.workflow.interfaces.IPublicationStatus)
-
-    @property
-    def published(self):
-        return "published"
 
 
 class VideoType(zeit.cms.type.TypeDeclaration):
@@ -260,6 +249,7 @@ class Playlist(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
+    item_state = 'ACTIVE'
     fields = ",".join((
         'id',
         'name',

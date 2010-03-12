@@ -2,10 +2,12 @@
 # See also LICENSE.txt
 
 import zeit.brightcove.testing
+import zeit.cms
 import pkg_resources
 import zeit.brightcove.solr
 import zeit.solr.testing
-
+import mock
+import zope
 
 class BrightcoveSolrLayer(zeit.brightcove.testing.BrightcoveLayer):
 
@@ -21,6 +23,16 @@ class BrightcoveSolrLayer(zeit.brightcove.testing.BrightcoveLayer):
 class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
 
     layer = BrightcoveSolrLayer()
+
+    def setUp(self):
+        super(TestSolrIndexing, self).setUp()
+        self.public_solr = mock.Mock()
+        zope.interface.alsoProvides(self.public_solr, zeit.solr.interfaces.ISolr)
+        zope.component.provideUtility(self.public_solr, name='public')
+
+    def tearDown(self):
+        zope.component.getSiteManager().unregisterUtility(self.public_solr, name='public')
+        super(TestSolrIndexing, self).tearDown()
 
     def test_indexing_changed_videos(self):
         zeit.brightcove.solr._index_changed_videos_and_playlists()
@@ -42,3 +54,26 @@ class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertEquals(
             ['http://video.zeit.de/playlist/3456'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
+
+    def test_solr_active(self):
+        video = zeit.cms.interfaces.ICMSContent("http://video.zeit.de/video/1234")
+        video.item_state = 'ACTIVE'
+        zeit.brightcove.solr._update_single_content(video)
+        self.assertTrue(self.solr.update_raw.called)
+        self.assertTrue(self.public_solr.update_raw.called)
+    
+    def test_solr_inactive(self):
+        video = zeit.cms.interfaces.ICMSContent("http://video.zeit.de/video/1234")
+        video.item_state = 'INACTIVE'
+        zeit.brightcove.solr._update_single_content(video)
+        self.assertTrue(self.solr.update_raw.called)
+        self.assertTrue(self.public_solr.delete.called)
+    
+    def test_solr_deleted(self):
+        video = zeit.cms.interfaces.ICMSContent("http://video.zeit.de/video/1234")
+        video.item_state = 'DELETED'
+        zeit.brightcove.solr._update_single_content(video)
+        self.assertTrue(self.solr.delete.called)
+        self.assertTrue(self.public_solr.delete.called)
+
+
