@@ -12,9 +12,6 @@
   <include package="zeit.calendar" />
   <include package="zeit.calendar.browser" />
 
-  <include package="zeit.content.video" />
-  <include package="zeit.content.video.browser" />
-
   <include package="zeit.content.quiz" />
   <include package="zeit.content.quiz.browser" />
 
@@ -24,4 +21,3 @@
   <include package="zeit.imp.browser" />
 
 </configure>
-
