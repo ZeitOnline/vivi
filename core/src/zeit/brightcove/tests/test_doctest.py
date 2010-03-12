@@ -7,4 +7,5 @@ import zeit.brightcove.testing
 def test_suite():
     return zeit.brightcove.testing.FunctionalDocFileSuite(
         'asset.txt',
+        'browser.txt',
         package='zeit.brightcove')

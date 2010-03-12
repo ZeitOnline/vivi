@@ -10,7 +10,7 @@
     title="Edit brightcove videos"
     />
 
-  <include package=".browser" />
+  <include file="browser.zcml" />
 
   <utility
     name="zeit.cms/brightcove"

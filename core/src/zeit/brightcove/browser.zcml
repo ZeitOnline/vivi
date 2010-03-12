@@ -6,7 +6,7 @@
     for="zeit.brightcove.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
-    class=".video.EditForm"
+    class=".browser.VideoEditForm"
     permission="zeit.brightcove.video.Edit"
     />
 
@@ -20,7 +20,7 @@
     for="zeit.brightcove.interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
-    class=".video.DisplayForm"
+    class=".browser.PlaylistDisplayForm"
     permission="zope.View"
     />
   
@@ -34,7 +34,7 @@
    for="zeit.brightcove.interfaces.IBrightcoveContent"
    layer="zeit.cms.browser.interfaces.ICMSLayer"
    name="thumbnail"
-   class=".video.Thumbnail"
+   class=".browser.Thumbnail"
    permission="zope.View"
    />
 

@@ -1,5 +1,7 @@
-Editing video metadata
-======================
+Brightcove in the browser
+=========================
+
+Video metadata can be edited:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
@@ -13,9 +15,16 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 <...
  <li class="message">Updated on ...
 
+
+Edited metadata is written to brightcove:
+ 
 >>> import zeit.brightcove.testing
 >>> len(zeit.brightcove.testing.RequestHandler.posts_received)
 1
+
+The thumbnail view redirects to the url brightcove told us the thumbnail would
+be:
+
 >>> def open_wo_redirect(browser, *args, **kwargs):
 ...    import urllib2
 ...    browser.mech_browser.set_handle_redirect(False)
@@ -27,12 +36,13 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 ...            print e.hdrs.get('location')
 ...    finally:
 ...        browser.mech_browser.set_handle_redirect(True)
-
 >>> open_wo_redirect(browser, '@@thumbnail')
 HTTP Error 303: See Other
 http://thumbnailurl
 
->>> browser.handleErrors=False
+
+Playlists information is visible:
+
 >>> browser.open('http://localhost/++skin++cms/repository-brightcove/playlist:2345')
 >>> print browser.contents
 <...

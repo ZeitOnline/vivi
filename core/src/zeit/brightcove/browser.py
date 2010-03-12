@@ -6,15 +6,17 @@ import zeit.cms.browser.form
 import zope.formlib.form
 
 
-class EditForm(zeit.cms.browser.form.EditForm):
+class VideoEditForm(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.brightcove.interfaces.IVideo)
 
-class DisplayForm(zeit.cms.browser.form.DisplayForm):
+
+class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.brightcove.interfaces.IPlaylist)
+
 
 class Thumbnail(zeit.cms.browser.view.Base):
 
