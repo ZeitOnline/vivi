@@ -89,12 +89,6 @@ Create some mock content first:
 >>> content.xml = lxml.objectify.fromstring(
 ...     '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
 
-The `KeywordsProperty` requires an `IKeywords` utility, so we register one:
-
->>> import zope.component
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(keywords, zeit.cms.content.interfaces.IKeywords)
-
 Initially the keywords is empty:
 
 >>> content.keywords
@@ -151,11 +145,6 @@ Make sure invalid keywords are ignored:
 >>> content.keywords
 ()
 
-Clean up and unregister the utility:
-
->>> gsm.unregisterUtility(keywords, zeit.cms.content.interfaces.IKeywords)
-True
-
 
 Automatic reloading
 ===================
@@ -186,7 +175,7 @@ So let's change the keyword url to some minimal file:
 >>> new_keywords.flush()
 
 
-
+>>> import zope.app.appsetup.product
 >>> cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
 >>> cms_config['source-keyword'] = 'file://' + new_keywords.name
 
