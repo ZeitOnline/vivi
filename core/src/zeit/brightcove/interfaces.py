@@ -82,7 +82,7 @@ class IVideo(IBrightcoveContent,
         unique=True,
         value_type=zope.schema.Object(
             zeit.cms.content.interfaces.IKeyword))
-    
+
     item_state = zope.schema.Choice(
         title=_("state of the brightcove-video"),
         required=True,
@@ -113,4 +113,4 @@ class IVideo(IBrightcoveContent,
 
 
 class IPlaylist(IBrightcoveContent):
-    """A video."""
+    """A playlist."""
