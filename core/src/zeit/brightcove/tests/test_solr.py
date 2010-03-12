@@ -76,4 +76,8 @@ class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertTrue(self.solr.delete.called)
         self.assertTrue(self.public_solr.delete.called)
 
+    def test_empty_playlists(self):
+        zeit.brightcove.solr._empty_playlists()
+        self.assertTrue(self.solr.delete)
+        self.assertTrue(self.public_solr.delete)
 

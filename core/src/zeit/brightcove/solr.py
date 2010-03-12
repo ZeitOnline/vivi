@@ -3,18 +3,26 @@
 
 import datetime
 import gocept.runner
-import itertools
 import pytz
 import zeit.brightcove.content
 import zeit.solr.interfaces
 import zope
+import zeit.solr.query
 
 def _index_changed_videos_and_playlists():
     from_date = datetime.datetime.now(pytz.UTC) - datetime.timedelta(days=1)
     videos = zeit.brightcove.content.Video.find_modified(
         from_date=from_date)
-    playlists = zeit.brightcove.content.Playlist.find_all()
-    for content in itertools.chain(videos, playlists):
+    
+    for content in videos:
+        _update_single_content(content)
+    
+    playlists = list(zeit.brightcove.content.Playlist.find_all())
+    
+    # we don't get the item_state on playlists, so this is necessary
+    _empty_playlists()
+
+    for content in playlists:
         _update_single_content(content)
 
 def _update_single_content(content):       
@@ -32,7 +40,16 @@ def _update_single_content(content):
     else:
         deleter.update()
         deleter.update(solr='public')
-        
+
+def _empty_playlists():
+    query = zeit.solr.query.field('type', 'zeit.brightcove.interfaces.IPlaylist')
+    query = query.encode('UTF-8')
+    
+    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+    conn.delete(q=query, commit=False)
+    
+    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr, name='public')
+    conn.delete(q=query, commit=False)
 
 @gocept.runner.once(principal=gocept.runner.from_config(
     'zeit.brightcove', 'index-principal'))
