@@ -92,9 +92,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         assert self.xml.get('module') != 'teaser'
 
     def insert(self, index, content):
-        # Only insert IRepositoryContent (i.e. http://xml.zeit.de/...). This is
-        # important because *only* such content can be rendered on public
-        # pages.
         content = zeit.cms.interfaces.ICMSContent(content)
         if zeit.content.cp.teasergroup.interfaces.ITeaserGroup.providedBy(
             content):
@@ -112,11 +109,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
             self._insert_content(index+i, content)
 
     def _insert_content(self, index, content):
-        if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-            content):
-            raise TypeError(
-                'Only IRepositoryContent can be added to a teaser block.'
-                ' Got %r' % (content,))
         super(TeaserBlock, self).insert(index, content)
 
     @property
