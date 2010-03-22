@@ -15,7 +15,7 @@ setup(
         'lxml',
         'setuptools',
         'simplejson',
-        'zeit.cms',
+        'zeit.cms>1.41.0',
         'zeit.solr',
         'zope.container',
         'zope.interface',
