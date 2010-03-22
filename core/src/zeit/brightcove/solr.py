@@ -3,11 +3,13 @@
 
 import datetime
 import gocept.runner
+import grokcore.component
 import pytz
 import zeit.brightcove.content
 import zeit.solr.interfaces
 import zeit.solr.query
 import zope
+import zope.lifecycleevent.interfaces
 
 
 def _index_changed_videos_and_playlists():
@@ -54,3 +56,10 @@ def _empty_playlists():
     'zeit.brightcove', 'index-principal'))
 def index_changed_videos_and_playlists():
     _index_changed_videos_and_playlists()
+
+
+@grokcore.component.subscribe(
+    zeit.brightcove.interfaces.IVideo,
+    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+def index_video_on_change(context, event):
+    _update_single_content(context)

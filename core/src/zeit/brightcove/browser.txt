@@ -22,6 +22,18 @@ Edited metadata is written to brightcove:
 >>> len(zeit.brightcove.testing.RequestHandler.posts_received)
 1
 
+The video was indexed:
+
+>>> import zeit.solr.interfaces
+>>> import zope.component
+>>> solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+>>> solr.update_raw.called
+True
+>>> solr = zope.component.getUtility(zeit.solr.interfaces.ISolr, name='public')
+>>> solr.update_raw.called
+True
+
+
 The thumbnail view redirects to the url brightcove told us the thumbnail would
 be:
 
