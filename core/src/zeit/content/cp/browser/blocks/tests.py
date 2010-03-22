@@ -27,15 +27,25 @@ def create_content(root):
     zope.site.hooks.setSite(old_site)
 
 
-class BrightcoveLayer(zeit.brightcove.testing.BrightcoveLayer):
+CPBrightcoveZCMLLLayer = zeit.cms.testing.ZCMLLayer(
+    pkg_resources.resource_filename(__name__, 'ftesting-av.zcml'),
+    __name__,
+    'CPBrightcoveLayer',
+    product_config=(zeit.brightcove.testing.product_config +
+                    zeit.content.cp.testing.product_config),
+    allow_teardown=True)
 
-    config_file = pkg_resources.resource_filename(
-        __name__, 'ftesting-av.zcml')
-    module = __name__
-    __name__ = 'CPBrightcoveLayer'
-    product_config=(
-        zeit.brightcove.testing.product_config +
-        zeit.content.cp.testing.product_config)
+
+class CPBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
+                      CPBrightcoveZCMLLLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
 
 
 def test_suite():
@@ -53,6 +63,6 @@ def test_suite():
         ))
     av_test = zeit.content.cp.testing.FunctionalDocFileSuite(
         'av.txt',
-        layer=BrightcoveLayer())
+        layer=CPBrightcoveLayer)
     suite.addTest(av_test)
     return suite
