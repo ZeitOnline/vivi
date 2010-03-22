@@ -16,7 +16,6 @@ def test_suite():
         layer=zeit.content.article.tests.ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'layout.txt',
-        product_config=zeit.content.cp.testing.product_config,
         # we use the CDSLayer since it includes zeit.workflow which we need
         layer=zeit.content.article.tests.CDSLayer))
     return suite

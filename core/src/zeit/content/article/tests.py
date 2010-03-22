@@ -30,7 +30,8 @@ checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 ArticleLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'ArticleLayer', allow_teardown=True)
+    __name__, 'ArticleLayer', allow_teardown=True,
+    product_config=zeit.content.cp.testing.product_config)
 
 
 class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
@@ -39,7 +40,8 @@ class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
         zope.app.testing.functional.ZCMLLayer.__init__(
             self, os.path.join(os.path.dirname(__file__),
                                'cds_ftesting.zcml'),
-            __name__, 'CDSLayer', allow_teardown=True)
+            __name__, 'CDSLayer', allow_teardown=True,
+            product_config=zeit.content.cp.testing.product_config)
 
     def setUp(self):
         zope.app.testing.functional.ZCMLLayer.setUp(self)
@@ -72,7 +74,6 @@ def test_suite():
         checker=checker,
         product_config={
             'zeit.content.article': product_config,
-            'zeit.content.cp': zeit.content.cp.testing.product_config['zeit.content.cp'],
             'zeit.workflow': {'publish-script': 'cat',
                               'path-prefix': ''}},
         globs={'with_statement': __future__.with_statement}))
