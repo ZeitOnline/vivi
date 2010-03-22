@@ -130,7 +130,7 @@ testcontent – View
 <...
   <h1>Conflict Error</h1>
   ...
->>> a.getControl('Checkin anyway').click()
+>>> a.getControl('Checkin correction anyway').click()
 >>> with zeit.cms.testing.site(getRootFolder()):
 ...     article = zeit.cms.interfaces.ICMSContent(  
 ...         'http://xml.zeit.de/testcontent')

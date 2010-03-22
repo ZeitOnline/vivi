@@ -18,6 +18,10 @@
     <input type="hidden" name="semantic_change"
            tal:attributes="value request/semantic_change | string:true" />
     <input type="submit" name="checkin" value="Checkin anyway"
+           tal:condition="python:bool(request.get('semantic_change', 'true'))"
+           i18n:attributes="value" />
+    <input type="submit" name="checkin" value="Checkin correction anyway"
+           tal:condition="python:not bool(request.get('semantic_change', 'true'))"
            i18n:attributes="value" />
     <input type="submit" name="delete" value="Delete workingcopy"
            i18n:attributes="value" />
