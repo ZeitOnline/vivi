@@ -154,51 +154,62 @@ product_config = """\
 """ % (httpd_port, httpd_port)
 
 
-class BrightcoveLayer(zope.app.testing.functional.ZCMLLayer):
+BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
+    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
+    __name__, 'BrightcoveZCMLLayer',
+    allow_teardown=True ,
+    product_config=product_config + zeit.solr.testing.product_config)
 
-    config_file = pkg_resources.resource_filename(__name__, 'ftesting.zcml')
-    module = __name__
-    __name__ =  'BrightcoveLayer'
-    allow_teardown = True
-    product_config = product_config
 
-    def __init__(self):
-        pass
+class BrightcoveHTTPLayer(object):
 
-    def setUp(self):
-        zope.app.testing.functional.ZCMLLayer.setUp(self)
-        self.start_httpd()
+    @classmethod
+    def setUp(cls):
+        cls.start_httpd()
 
-    def tearDown(self):
-        self.stop_httpd()
-        zope.app.testing.functional.ZCMLLayer.tearDown(self)
+    @classmethod
+    def tearDown(cls):
+        cls.stop_httpd()
 
-    def testTearDown(self):
+    @classmethod
+    def testTearDown(cls):
         RequestHandler.posts_received[:] = []
 
-    def start_httpd(self):
-        self.httpd_running = True
+    @classmethod
+    def start_httpd(cls):
+        cls.httpd_running = True
         def run():
             server_address = ('localhost', httpd_port)
             httpd = BaseHTTPServer.HTTPServer(
                 server_address, RequestHandler)
-            while self.httpd_running:
+            while cls.httpd_running:
                 httpd.handle_request()
         t = threading.Thread(target=run)
         t.daemon = True
         t.start()
 
-    def stop_httpd(self):
-        self.httpd_running = False
+    @classmethod
+    def stop_httpd(cls):
+        cls.httpd_running = False
         urllib2.urlopen('http://localhost:%s/die' % httpd_port)
 
 
-layer = BrightcoveLayer()
+class BrightcoveLayer(BrightcoveHTTPLayer,
+                      BrightcoveZCMLLayer,
+                      zeit.solr.testing.SolrMockLayerBase):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
 
 
-class BrightcoveTestCase(zeit.solr.testing.MockedFunctionalTestCase):
+class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = layer
+    layer = BrightcoveLayer
 
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()

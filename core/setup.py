@@ -15,7 +15,6 @@ setup(
         'lxml',
         'setuptools',
         'simplejson',
-        'mock',
         'zeit.cms',
         'zeit.solr',
         'zope.container',

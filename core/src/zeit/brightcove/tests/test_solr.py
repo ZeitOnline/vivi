@@ -1,36 +1,22 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import mock
 import pkg_resources
 import zeit.brightcove.solr
 import zeit.brightcove.testing
 import zeit.cms
-import zeit.solr.testing
+import zeit.solr.interfaces
 import zope.component
 
 
-class BrightcoveSolrLayer(zeit.brightcove.testing.BrightcoveLayer):
-
-    config_file = pkg_resources.resource_filename(
-        __name__, 'ftesting-solr.zcml')
-    module = __name__
-    __name__ =  'BrightcoveSolrLayer'
-    product_config=(
-        zeit.brightcove.testing.product_config +
-        zeit.solr.testing.product_config)
-
-
-class TestSolrIndexing(zeit.solr.testing.MockedFunctionalTestCase):
-
-    layer = BrightcoveSolrLayer()
+class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
 
     def setUp(self):
         super(TestSolrIndexing, self).setUp()
-        self.public_solr = mock.Mock()
-        zope.interface.alsoProvides(
-            self.public_solr, zeit.solr.interfaces.ISolr)
-        zope.component.provideUtility(self.public_solr, name='public')
+        self.solr = zope.component.getUtility(
+            zeit.solr.interfaces.ISolr)
+        self.public_solr = zope.component.getUtility(
+            zeit.solr.interfaces.ISolr, name='public')
 
     def tearDown(self):
         zope.component.getSiteManager().unregisterUtility(self.public_solr, name='public')

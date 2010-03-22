@@ -19,6 +19,7 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.brightcove" />
+  <include package="zeit.solr" />
 
   <grant
     principal="zope.user"
