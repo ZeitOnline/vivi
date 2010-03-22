@@ -20,7 +20,27 @@ import zope.site.hooks
 import zope.testing.renormalizing
 
 
-cms_layer = zope.app.testing.functional.ZCMLLayer(
+def ZCMLLayer(
+    config_file, module, name, allow_teardown=False, product_config=None):
+
+    def setUp(cls):
+        cls.setup = zope.app.testing.functional.FunctionalTestSetup(
+            config_file, product_config=product_config)
+
+    def tearDown(cls):
+        cls.setup.tearDownCompletely()
+        if not allow_teardown:
+            raise NotImplementedError
+
+    layer = type(name, (object,), dict(
+        __module__=module,
+        setUp=classmethod(setUp),
+        tearDown=classmethod(tearDown),
+    ))
+    return layer
+
+
+cms_layer = ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'CMSLayer', allow_teardown=True)
 
@@ -37,7 +57,9 @@ checker = zope.testing.renormalizing.RENormalizing([
 def setUpDoctests(test):
     test.old_product_config = copy.deepcopy(
         zope.app.appsetup.product.saveConfiguration())
-    setup_product_config(test.globs.get('product_config', {}))
+    config = test.globs.get('product_config', {})
+    __traceback_info__ = (config,)
+    setup_product_config(config)
 
 
 def tearDown(test):
