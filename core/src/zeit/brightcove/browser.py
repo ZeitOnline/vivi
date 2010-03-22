@@ -26,7 +26,7 @@ class VideoEditForm(zeit.cms.browser.form.EditForm):
             css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Options"),
-            ('item_state', 'dailyNewsletter', 'banner', 'banner_id',
+            ('item_state', 'expires', 'dailyNewsletter', 'banner', 'banner_id',
              'breaking_news', 'has_recensions', 'product_id'),
             css_class='column-right checkboxes'),
         gocept.form.grouped.Fields(

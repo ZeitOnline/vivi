@@ -41,6 +41,7 @@ VIDEO_1234 = {
     'thumbnailURL': 'http://thumbnailurl',
     'videoStillURL': 'http://videostillurl',
     'itemState': 'ACTIVE',
+    'endDate': '1269576000000',
 }
 
 PLAYLIST_2345 = {

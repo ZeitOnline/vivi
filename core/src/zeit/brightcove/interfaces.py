@@ -111,6 +111,12 @@ class IVideo(IBrightcoveContent,
         title=_('Has recension content'),
         default=False)
 
+    expires = zope.schema.Datetime(
+        title=_('Video expires on'),
+        required=False,
+        readonly=True,
+        default=None)
+
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""

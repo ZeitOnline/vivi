@@ -178,6 +178,7 @@ class Video(Content):
         'playsTrailingWeek',
         'customFields',
         'itemState',
+        'endDate'
     ))
 
     @classmethod
@@ -208,6 +209,11 @@ class Video(Content):
                 if content is not None:
                     result.append(content)
         return tuple(result)
+
+    @property
+    def expires(self):
+        exp = int(self.data.get('endDate'))
+        return datetime.datetime.fromtimestamp(exp/1000)
 
     @related.setter
     def related(self, value):

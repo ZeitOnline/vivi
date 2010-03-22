@@ -133,6 +133,10 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals("published", publication_status.published)
         video.item_state = 'INACTIVE'
         self.assertEquals("not-published", publication_status.published)
+    
+    def test_expires(self):
+        video = self.repository['video:1234']
+        self.assertEquals(datetime.datetime(2010, 3, 26, 5, 0), video.expires)
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
