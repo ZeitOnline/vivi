@@ -4,6 +4,7 @@
 import datetime
 import time
 import transaction
+import pytz
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.browser.interfaces
@@ -136,7 +137,9 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
     
     def test_expires(self):
         video = self.repository['video:1234']
-        self.assertEquals(datetime.datetime(2010, 3, 26, 5, 0), video.expires)
+        date = datetime.datetime(2010, 3, 26, 1, 0)
+        date = pytz.timezone("US/Eastern").localize(date, is_dst=True)
+        self.assertEquals(date, video.expires)
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):

@@ -6,6 +6,7 @@ import datetime
 import grokcore.component
 import persistent
 import persistent.mapping
+import pytz
 import transaction
 import zeit.brightcove.interfaces
 import zeit.cms.browser.interfaces
@@ -212,8 +213,10 @@ class Video(Content):
 
     @property
     def expires(self):
-        exp = int(self.data.get('endDate'))
-        return datetime.datetime.fromtimestamp(exp/1000)
+        end_date = self.data.get('endDate')
+        if not end_date: return None
+        end_date = datetime.datetime.utcfromtimestamp(int(end_date)/1000)
+        return pytz.utc.localize(end_date)
 
     @related.setter
     def related(self, value):
