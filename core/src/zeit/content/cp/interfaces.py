@@ -364,6 +364,10 @@ class IFeed(zeit.cms.content.interfaces.IXMLContent,
         readonly=True,
         required=False)
 
+    favicon = zope.schema.URI(
+        title=_('Favicon'),
+        required=False)
+
     def fetch_and_convert():
         """Retrieve the feed and convert it to RSS 2.0."""
 

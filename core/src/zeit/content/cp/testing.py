@@ -1,12 +1,19 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import BaseHTTPServer
+import SimpleHTTPServer
 import __future__
+import os
 import pkg_resources
+import random
 import re
+import threading
+import urllib2
 import zeit.cms.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
+
 
 product_config = """
 <product-config zeit.content.cp>
@@ -30,10 +37,58 @@ product_config = """
                                     'example_rules.py'))
 
 
-layer = zope.app.testing.functional.ZCMLLayer(
+layer = zeit.cms.testing.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'zeit.content.cp.tests.layer', allow_teardown=True,
     product_config=product_config)
+
+
+httpd_port = random.randint(30000, 40000)
+
+
+class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+
+    serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
+    serve_favicon = False
+
+    def send_head(self):
+        if self.path == '/favicon.ico' and not self.serve_favicon:
+            self.path = '/does-not-exist'
+        return SimpleHTTPServer.SimpleHTTPRequestHandler.send_head(self)
+
+    def translate_path(self, path):
+        cur_path = os.getcwd()
+        os.chdir(self.serve_from)
+        try:
+            return SimpleHTTPServer.SimpleHTTPRequestHandler.translate_path(
+                self, path)
+        finally:
+            os.chdir(cur_path)
+
+    def log_message(self, format, *args):
+        pass
+
+
+class FeedServer(layer):
+
+    @classmethod
+    def setUp(cls):
+        cls.httpd_running = True
+        def run():
+            server_address = ('localhost', httpd_port)
+            httpd = BaseHTTPServer.HTTPServer(
+                server_address, RequestHandler)
+            while cls.httpd_running:
+                httpd.handle_request()
+        t = threading.Thread(target=run)
+        t.daemon = True
+        t.start()
+
+    @classmethod
+    def tearDown(cls):
+        cls.httpd_running = False
+        urllib2.urlopen('http://localhost:%s/' % httpd_port)
+
 
 
 checker = zope.testing.renormalizing.RENormalizing([

@@ -16,13 +16,13 @@ stores it.
 Creating feeds
 --------------
 
+The feed manager creates the necessary objects and fetches the feed:
+
 >>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
->>> url = 'file://' + pkg_resources.resource_filename(
-...     'zeit.content.cp.tests', 'heise.xml')
+>>> url = 'http://localhost:%s/heise.xml' % port
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
-<feed
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<feed ...
   <rss version="2.0">
     <channel>
       <pubDate>2009-05-13T11:36:47+02:00</pubDate>
@@ -60,11 +60,14 @@ happens if the feed has not been updated since a certain time (configurable).
 >>> feed.last_update > manual_update
 False
 
+Force an update by setting the ``last_update`` time. To actually see a change
+we enable serving of the favicon.
+
 >>> import datetime
->>> dummy = with_statement
 >>> with zeit.cms.checkout.helper.checked_out(
 ...         feed, semantic_change=True) as co_feed:
 ...     co_feed.last_update -= datetime.timedelta(minutes=31)
+>>> zeit.content.cp.testing.RequestHandler.serve_favicon = True
 >>> zeit.content.cp.feed._refresh_all()
 >>> feed = fm.get_feed(url)
 >>> feed.last_update > manual_update
@@ -74,6 +77,23 @@ Refreshing a None "url" doesn't raise an error:
 
 >>> fm.refresh_feed(None)
 
+
+Favicon download
+----------------
+
+The favicon was also downloaded during the last update:
+
+>>> print feed.favicon
+http://xml.zeit.de/rss/<MD5>.ico
+>>> import zeit.cms.interfaces
+>>> image = zeit.cms.interfaces.ICMSContent(feed.favicon)
+>>> image
+<zeit.content.image.image.RepositoryImage object at 0x48f7530>
+>>> len(image.open().read())
+2295
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<feed ... favicon="http://xml.zeit.de/rss/<MD5>.ico">
+...
 
 
 Errors in feeds
@@ -89,8 +109,7 @@ No or invaid URL.
 >>> print feed.error
  URLError: ...
 
->>> nf_url = 'file://' + pkg_resources.resource_filename(
-...     'zeit.content.cp.tests', 'nofeed.xml')
+>>> nf_url = 'http://localhost:%s/nofeed.xml' % port
 >>> feed = fm.get_feed(nf_url)
 >>> print feed.error
 LookupError: unknown encoding:
@@ -107,6 +126,11 @@ Feeds are published after a refresh, if no errors occurred:
 >>> tasks.process()
 >>> feed = fm.get_feed(url)
 >>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
+True
+
+The favicon is published together with the feed:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(image).published
 True
 
 When creating a new feed with an invalid url, it won't be published because of
@@ -137,8 +161,7 @@ Edge cases
 This is a test that the RSS2.0 <image> element is mapped correctly, and that
 HTML-content is preserved properly:
 
->>> url = 'file://' + pkg_resources.resource_filename(
-...     'zeit.content.cp.tests', 'tagesschau.xml')
+>>> url = 'http://localhost:%s/tagesschau.xml' % port
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
 <...
@@ -158,6 +181,10 @@ Categories should be mapped, both on the feed and individual items (#5967):
 <category domain="http://www.tagesschau.de/taxonomy/term/2">Ausland</category>
 ...
 
+
+Cleanup
+
+>>> zeit.content.cp.testing.RequestHandler.serve_favicon = False
 
 .. [#functional]
     >>> import zeit.cms.testing

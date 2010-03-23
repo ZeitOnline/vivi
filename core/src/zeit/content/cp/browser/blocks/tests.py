@@ -55,7 +55,6 @@ def test_suite():
         'cpextra.txt',
         'fullgraphical.txt',
         'quiz.txt',
-        'rss.txt',
         'teaser.txt',
         'teaser-two-column-layout.txt',
         'teaserbar.txt',
@@ -65,4 +64,7 @@ def test_suite():
         'av.txt',
         layer=CPBrightcoveLayer)
     suite.addTest(av_test)
+    rss_test = zeit.content.cp.testing.FunctionalDocFileSuite(
+        'rss.txt',
+        layer=zeit.content.cp.testing.FeedServer)
     return suite

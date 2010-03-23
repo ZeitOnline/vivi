@@ -2,14 +2,16 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from __future__ import with_statement
 import datetime
 import feedparser
 import gocept.runner
+import grokcore.component
+import hashlib
 import logging
 import lxml.etree
-import hashlib
 import pytz
+import urllib2
+import urlparse
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
@@ -20,6 +22,7 @@ import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
+import zeit.content.image.image
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -49,6 +52,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.cp.interfaces.IFeed,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('url', 'entry_count', 'last_update', 'error'))
+
+    favicon = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'favicon')
 
     def fetch_and_convert(self):
         """Load and reconvert the feed into RSS 2.
@@ -111,6 +117,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         self.xml.append(rss)
 
         self.entry_count = len(parsed.entries)
+        self._update_favicon()
 
     def _append(self, parent, name, data, key):
         if not key in data:
@@ -123,6 +130,22 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         if domain:
             category.set('domain', domain)
         category.text = value
+
+    def _update_favicon(self):
+        split = urlparse.urlsplit(self.url)
+        favicon_url = urlparse.urlunsplit((split.scheme, split.netloc,
+                                           '/favicon.ico', '', ''))
+        try:
+            icon = urllib2.urlopen(favicon_url, timeout=30).read()
+        except urllib2.URLError:
+            self.favicon = None
+            return
+        image = zeit.content.image.image.LocalImage()
+        image.open('w').write(icon)
+        image_name = self.__name__ + '.ico'
+        feed_in_repository = zeit.cms.interfaces.ICMSContent(self.uniqueId)
+        feed_in_repository.__parent__[image_name] = image
+        self.favicon = feed_in_repository.__parent__[image_name].uniqueId
 
     @property
     def title(self):
@@ -155,6 +178,20 @@ class FeedValidator(object):
         if self.context.error:
             self.status = zeit.content.cp.rule.ERROR
             self.messages.append(self.context.error)
+
+
+class FaviconDependency(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.content.cp.interfaces.IFeed)
+    grokcore.component.name('favicon')
+    grokcore.component.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def get_dependencies(self):
+        icon = zeit.cms.interfaces.ICMSContent(self.context.favicon, None)
+        if icon:
+            return [icon]
+        return []
 
 
 class FeedManager(object):
@@ -214,6 +251,8 @@ def _refresh_all():
     interval = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.cp')['feed-update-minimum-age']
     for feed in fm.folder.values():
+        if not zeit.content.cp.interfaces.IFeed.providedBy(feed):
+            continue
         if (not feed.last_update or
             now > feed.last_update + datetime.timedelta(minutes=int(interval))):
             logger.info('Refreshing feed for <%s>' % feed.url)
