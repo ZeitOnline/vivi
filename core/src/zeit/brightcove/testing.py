@@ -1,7 +1,6 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import BaseHTTPServer
 import copy
 import pkg_resources
 import random
@@ -92,7 +91,7 @@ PLAYLIST_LIST_RESPONSE = {
 PLAYLIST_LIST_RESPONSE['items'][1]['id'] = 3456
 
 
-class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
 
     posts_received = []
     response = 200
@@ -142,7 +141,8 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         pass
 
 
-httpd_port = random.randint(30000, 40000)
+BrightcoveHTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(
+    RequestHandler)
 
 
 product_config = """\
@@ -162,38 +162,6 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
     product_config=product_config + zeit.solr.testing.product_config)
 
 
-class BrightcoveHTTPLayer(object):
-
-    @classmethod
-    def setUp(cls):
-        cls.start_httpd()
-
-    @classmethod
-    def tearDown(cls):
-        cls.stop_httpd()
-
-    @classmethod
-    def testTearDown(cls):
-        RequestHandler.posts_received[:] = []
-
-    @classmethod
-    def start_httpd(cls):
-        cls.httpd_running = True
-        def run():
-            server_address = ('localhost', httpd_port)
-            httpd = BaseHTTPServer.HTTPServer(
-                server_address, RequestHandler)
-            while cls.httpd_running:
-                httpd.handle_request()
-        t = threading.Thread(target=run)
-        t.daemon = True
-        t.start()
-
-    @classmethod
-    def stop_httpd(cls):
-        cls.httpd_running = False
-        urllib2.urlopen('http://localhost:%s/die' % httpd_port)
-
 
 class BrightcoveLayer(BrightcoveHTTPLayer,
                       BrightcoveZCMLLayer,
@@ -206,6 +174,10 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
     @classmethod
     def tearDown(cls):
         pass
+
+    @classmethod
+    def testTearDown(cls):
+        RequestHandler.posts_received[:] = []
 
 
 class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
