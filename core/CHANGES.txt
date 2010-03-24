@@ -4,7 +4,7 @@ zeit.content.rawxml changes
 0.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.3.4 (2010-03-10)
