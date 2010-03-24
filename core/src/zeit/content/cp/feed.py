@@ -68,8 +68,6 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             self.error = "No or invaid URL."
             return
         url = self.url
-        if url.startswith('file://'):
-            url = url.replace('file://', '', 1)
         exception = None
         try:
             parsed = feedparser.parse(url)
