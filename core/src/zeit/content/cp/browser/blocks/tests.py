@@ -28,16 +28,13 @@ def create_content(root):
 
 
 CPBrightcoveZCMLLLayer = zeit.cms.testing.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting-av.zcml'),
-    __name__,
-    'CPBrightcoveLayer',
+    'ftesting-av.zcml',
     product_config=(zeit.brightcove.testing.product_config +
-                    zeit.content.cp.testing.product_config),
-    allow_teardown=True)
+                    zeit.content.cp.testing.product_config))
 
 
 class CPBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
-                      CPBrightcoveZCMLLLayer):
+                        CPBrightcoveZCMLLLayer):
 
     @classmethod
     def setUp(cls):

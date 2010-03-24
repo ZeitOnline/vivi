@@ -38,12 +38,9 @@ product_config = """
 
 
 layer = zeit.cms.testing.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'zeit.content.cp.tests.layer', allow_teardown=True,
+    'ftesting.zcml',
     product_config=product_config)
 
-
-httpd_port = random.randint(30000, 40000)
 
 
 class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
@@ -69,25 +66,18 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         pass
 
 
-class FeedServer(layer):
+HTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+
+
+class FeedServer(HTTPLayer, layer):
 
     @classmethod
     def setUp(cls):
-        cls.httpd_running = True
-        def run():
-            server_address = ('localhost', httpd_port)
-            httpd = BaseHTTPServer.HTTPServer(
-                server_address, RequestHandler)
-            while cls.httpd_running:
-                httpd.handle_request()
-        t = threading.Thread(target=run)
-        t.daemon = True
-        t.start()
+        pass
 
     @classmethod
     def tearDown(cls):
-        cls.httpd_running = False
-        urllib2.urlopen('http://localhost:%s/' % httpd_port)
+        pass
 
 
 
