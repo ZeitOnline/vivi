@@ -4,7 +4,7 @@ zeit.objectlog changes
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.9 (2009-09-05)
