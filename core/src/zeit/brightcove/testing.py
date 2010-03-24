@@ -156,9 +156,7 @@ product_config = """\
 
 
 BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'BrightcoveZCMLLayer',
-    allow_teardown=True ,
+    'ftesting.zcml',
     product_config=product_config + zeit.solr.testing.product_config)
 
 
