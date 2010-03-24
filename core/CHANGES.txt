@@ -4,7 +4,7 @@ CHANGES
 0.3.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.3.3 (2009-10-05)
