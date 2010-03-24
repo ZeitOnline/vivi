@@ -4,7 +4,7 @@ zeit.addcentral changes
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.2 (2009-08-21)
