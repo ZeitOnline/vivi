@@ -30,7 +30,7 @@ def ZCMLLayer(
     if module is None:
         module = stack = inspect.stack()[1][0].f_globals['__name__']
     if name is None:
-        name = 'ZCMLLayer'
+        name = 'ZCMLLayer(%s)' % config_file
     if not config_file.startswith('/'):
         config_file = pkg_resources.resource_filename(module, config_file)
     def setUp(cls):
