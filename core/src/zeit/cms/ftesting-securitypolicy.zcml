@@ -35,9 +35,10 @@
     id="zope.mgr"
     title="Manager"
     login="zmgr"
-    password="mgrpw" />
+    password="mgrpw"
+    />
+  <grant role="zope.Manager" principal="zope.mgr" />
 
-  <!-- Bootstrap principal used to make local grant to the principal above -->
   <principal
     id="zope.globalmgr"
     title="Manager"
