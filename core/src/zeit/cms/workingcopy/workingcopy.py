@@ -1,20 +1,15 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import z3c.traverser.interfaces
+import zeit.cms.workingcopy.interfaces
+import zope.app.container.btree
+import zope.app.security.interfaces
 import zope.component
 import zope.dublincore.interfaces
 import zope.interface
 import zope.publisher.interfaces
 import zope.securitypolicy.interfaces
-
-import zope.app.container.btree
-import zope.app.security.interfaces
-import zope.app.securitypolicy.interfaces
-
-import z3c.traverser.interfaces
-
-import zeit.cms.workingcopy.interfaces
 
 
 class Workingcopy(zope.app.container.btree.BTreeContainer):
