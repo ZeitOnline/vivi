@@ -2,13 +2,18 @@
 # See also LICENSE.txt
 
 from zope.testing import doctest
+import BaseHTTPServer
 import __future__
 import contextlib
 import copy
+import inspect
 import os
 import pkg_resources
+import random
 import re
 import sys
+import threading
+import urllib2
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
@@ -21,8 +26,13 @@ import zope.testing.renormalizing
 
 
 def ZCMLLayer(
-    config_file, module, name, allow_teardown=False, product_config=None):
-
+    config_file, module=None, name=None, allow_teardown=True, product_config=None):
+    if module is None:
+        module = stack = inspect.stack()[1][0].f_globals['__name__']
+    if name is None:
+        name = 'ZCMLLayer'
+    if not config_file.startswith('/'):
+        config_file = pkg_resources.resource_filename(module, config_file)
     def setUp(cls):
         cls.setup = zope.app.testing.functional.FunctionalTestSetup(
             config_file, product_config=product_config)
@@ -40,9 +50,46 @@ def ZCMLLayer(
     return layer
 
 
-cms_layer = ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'CMSLayer', allow_teardown=True)
+def HTTPServerLayer(request_handler):
+    """Factory for a layer which opens a HTTP port."""
+    module = stack = inspect.stack()[1][0].f_globals['__name__']
+    port = random.randint(30000, 40000)
+
+    def setUp(cls):
+        cls.httpd_running = True
+        def run():
+            server_address = ('localhost', port)
+            httpd = BaseHTTPServer.HTTPServer(
+                server_address, request_handler)
+            while cls.httpd_running:
+                httpd.handle_request()
+        t = threading.Thread(target=run)
+        t.daemon = True
+        t.start()
+
+    def tearDown(cls):
+        cls.httpd_running = False
+        try:
+            urllib2.urlopen('http://localhost:%s/die' % port)
+        except urllib2.URLError:
+            pass
+
+    layer = type('HTTPLayer(%s)' % port, (object,), dict(
+        __module__=module,
+        setUp=classmethod(setUp),
+        tearDown=classmethod(tearDown),
+    ))
+    return layer, port
+
+
+class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    """Handler for testing which does not log to STDOUT."""
+
+    def log_message(self, format, *args):
+        pass
+
+
+cms_layer = ZCMLLayer('ftesting.zcml')
 
 
 checker = zope.testing.renormalizing.RENormalizing([
