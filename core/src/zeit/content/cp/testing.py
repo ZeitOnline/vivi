@@ -62,6 +62,9 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         finally:
             os.chdir(cur_path)
 
+    def guess_type(self, path):
+        return 'application/xml'
+
     def log_message(self, format, *args):
         pass
 
