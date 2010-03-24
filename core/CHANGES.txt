@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.33.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.33.0 (2010-03-10)

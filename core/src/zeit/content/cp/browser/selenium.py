@@ -11,6 +11,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.centerpage
+import zeit.content.cp.testing
 import zeit.content.quiz.quiz
 import zope.component
 
