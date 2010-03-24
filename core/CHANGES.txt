@@ -4,7 +4,7 @@ zeit.content.portraitbox changes
 1.22.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 1.22.4 (2010-03-10)
