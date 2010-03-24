@@ -12,6 +12,7 @@ import zeit.cms.repository.interfaces
 import zope.app.form.browser
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.itemswidgets
+import zope.app.form.browser.sequencewidget
 import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
