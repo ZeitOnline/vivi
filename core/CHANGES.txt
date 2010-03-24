@@ -4,6 +4,8 @@ zeit.cms changes
 1.41.1 (unreleased)
 -------------------
 
+- PURGE für HTTP-Cache-Server (#6969).
+
 - Using versions from the ZTK.
 
 

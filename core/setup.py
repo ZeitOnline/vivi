@@ -29,6 +29,7 @@ setup(
         'gocept.pagelet',
         'gocept.runner',
         'grokcore.component',
+        'grokcore.view',
         'guppy',
         'lovely.remotetask>=0.5',
         'lxml>=2.0.2',

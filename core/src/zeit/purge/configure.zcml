@@ -1,8 +1,25 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:grok="http://namespaces.zope.org/grok">
 
   <grok:grok package="."/>
 
-</configure>
+  <browser:resourceDirectory
+    name="zeit.purge"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    directory="resources"
+    />
 
+  <browser:viewlet
+    name="Rename"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".browser.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
+    action="@@purge"
+    icon="/@@/zeit.purge/icon_wand.gif"
+    />
+
+</configure>

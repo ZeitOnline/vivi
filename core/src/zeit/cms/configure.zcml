@@ -5,6 +5,8 @@
   i18n_domain="zeit.cms">
 
   <include package="grokcore.component" file="meta.zcml" />
+  <include package="grokcore.view" file="meta.zcml" />
+  <include package="grokcore.view"/>
   <include file="meta.zcml" />
   <grok:grok package="zeit.cms" />
 
