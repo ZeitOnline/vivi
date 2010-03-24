@@ -4,7 +4,7 @@ zeit.content.infobox changes
 1.23.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 1.23.1 (2010-03-10)
