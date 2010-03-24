@@ -4,7 +4,7 @@ zeit.find changes
 0.20.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.20.0 (2010-03-10)
