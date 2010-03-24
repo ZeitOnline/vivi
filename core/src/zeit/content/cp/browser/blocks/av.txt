@@ -64,7 +64,8 @@ The video block also supports dropping of videos:
 ['Einzelvideo']
 
 
-The video block also supports dropping of playlists:
+The video block also supports dropping of playlists; expiration date and player
+are updated automatically:
 
 >>> browser.open('@@drop?uniqueId=http://video.zeit.de/playlist/2345')
 >>> pprint.pprint(simplejson.loads(browser.contents))
@@ -78,7 +79,7 @@ The video block also supports dropping of playlists:
 >>> browser.getControl('Format').displayValue
 ['small']
 >>> browser.getControl('Expiration date').value
-'2009-05-05 00:00:00'
+''
 >>> browser.getControl('Player').displayValue
 ['Playlist']
 
@@ -133,7 +134,5 @@ XML of an audio/video block
   <audio audioID="98765" format="large"/>
 </container>
 <container cp:type="video" module="video" cp:__name__="<GUID>">
-  <video videoID="2345" player="pls" expires="2009-05-04T22:00:00+00:00"
-  format="small"/>
+  <video videoID="2345" player="pls" expires="" format="small"/>
 </container>...
-
