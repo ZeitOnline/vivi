@@ -4,7 +4,7 @@ zeit.seo changes
 1.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 1.4.0 (2010-03-10)
