@@ -4,7 +4,7 @@ zeit.imp changes
 0.10.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Using versions from the ZTK.
 
 
 0.10.0 (2009-11-25)
