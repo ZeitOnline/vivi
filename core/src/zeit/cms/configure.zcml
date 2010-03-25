@@ -4,6 +4,7 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
+  <include file="application.zcml" />
   <include package="grokcore.component" file="meta.zcml" />
   <include package="grokcore.view" file="meta.zcml" />
   <include package="grokcore.view"/>
@@ -11,7 +12,6 @@
   <grok:grok package="zeit.cms" />
 
   <!-- Include requirements -->
-  <include file="application.zcml" />
   <include package="zeit.cms" file="securitypolicy.zcml" />
 
   <!-- local includes -->
