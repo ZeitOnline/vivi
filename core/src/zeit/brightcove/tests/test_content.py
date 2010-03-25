@@ -137,9 +137,38 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
     
     def test_expires(self):
         video = self.repository['video:1234']
-        date = datetime.datetime(2010, 3, 26, 1, 0)
-        date = pytz.timezone("US/Eastern").localize(date, is_dst=True)
+        date = datetime.datetime(2010, 3, 26, 5, 0)
+        date = pytz.utc.localize(date)
         self.assertEquals(date, video.expires)
+
+    def test_created(self):
+        video = self.repository['video:1234']
+        date = datetime.datetime(2010, 3, 8, 3, 15, 38)
+        date = pytz.utc.localize(date)
+        self.assertEquals(date, video.date_created)
+
+    def test_released(self):
+        video = self.repository['video:1234']
+        date = datetime.datetime(2010, 3, 8, 12, 59, 57)
+        date = pytz.utc.localize(date)
+        self.assertEquals(date, video.date_first_released)
+    
+    def test_modified(self):
+        video = self.repository['video:1234']
+        date = datetime.datetime(2010, 3, 8, 12, 59, 57)
+        date = pytz.utc.localize(date)
+        self.assertEquals(date, video.date_first_released)
+    
+    def test_videostill(self):
+        video = self.repository['video:1234']
+        self.assertEquals("http://videostillurl", video.video_still)
+    
+    def test_bc_thumbnail(self):
+        video = self.repository['video:1234']
+        self.assertEquals("http://thumbnailurl", video.brightcove_thumbnail)
+
+    
+
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):

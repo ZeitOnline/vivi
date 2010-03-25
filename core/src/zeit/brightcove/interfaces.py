@@ -45,6 +45,12 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
         required=False,
         readonly=True)
 
+    brightcove_thumbnail = zope.schema.URI(
+        title=_('URI of the thumbnail'),
+        required=False,
+        readonly=True)
+
+
     item_state = zope.schema.Choice(
         title=_("State"),
         required=True,
@@ -116,6 +122,31 @@ class IVideo(IBrightcoveContent,
         required=False,
         readonly=True,
         default=None)
+    
+    date_first_released = zope.schema.Datetime(
+        title=_('First released'),
+        required=False,
+        readonly=True,
+        default=None)
+
+    date_created = zope.schema.Datetime(
+        title=_('Created on'),
+        required=False,
+        readonly=True,
+        default=None)
+
+    date_last_modified = zope.schema.Datetime(
+        title=_('last modified'),
+        required=False,
+        readonly=True,
+        default=None)
+
+    video_still = zope.schema.URI(
+        title=_('URI of the thumbnail'),
+        required=False,
+        readonly=True)
+
+
 
 
 class IPlaylist(IBrightcoveContent):

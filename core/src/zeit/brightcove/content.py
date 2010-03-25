@@ -84,6 +84,7 @@ class Content(persistent.Persistent,
     id = mapped('id')
     title = mapped('name')
     teaserText = mapped('shortDescription')
+    brightcove_thumbnail = mapped('thumbnailURL')
 
     def __init__(self, data, connection=None):
         if data is not None:
@@ -146,40 +147,42 @@ class Video(Content):
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
     type = 'video'
 
-    supertitle = mapped('customFields', 'supertitle')
-    subtitle = mapped('longDescription')
-    ressort = mapped('customFields', 'ressort')
-    serie = mapped('customFields', 'serie')
-    product_id = mapped('customFields', 'produkt-id')
-    keywords = mapped_keywords('customFields', 'cmskeywords')
-    dailyNewsletter = mapped_bool('customFields', 'newsletter')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
+    dailyNewsletter = mapped_bool('customFields', 'newsletter')
     has_recensions = mapped_bool('customFields', 'recensions')
     item_state = mapped('itemState')
+    keywords = mapped_keywords('customFields', 'cmskeywords')
+    product_id = mapped('customFields', 'produkt-id')
+    ressort = mapped('customFields', 'ressort')
+    serie = mapped('customFields', 'serie')
+    subtitle = mapped('longDescription')
+    supertitle = mapped('customFields', 'supertitle')
+    video_still = mapped('videoStillURL')
+
 
     fields = ",".join((
-        'id',
-        'name',
-        'shortDescription',
-        'longDescription',
         'creationDate',
-        'publisheddate',
-        'lastModifiedDate',
-        'linkURL',
-        'linkText',
-        'tags',
-        'videoStillURL',
-        'thumbnailURL',
-        'referenceId',
-        'length',
+        'customFields',
         'economics',
+        'endDate'
+        'id',
+        'itemState',
+        'lastModifiedDate',
+        'length',
+        'linkText',
+        'linkURL',
+        'longDescription',
+        'name',
         'playsTotal',
         'playsTrailingWeek',
-        'customFields',
-        'itemState',
-        'endDate'
+        'publisheddate',
+        'referenceId',
+        'shortDescription',
+        'tags',
+        'thumbnailURL',
+        'videoStillURL',
     ))
 
     @classmethod
@@ -210,13 +213,35 @@ class Video(Content):
                 if content is not None:
                     result.append(content)
         return tuple(result)
+    
+    def __create_bc_date__(self, ts):
+        date = datetime.datetime.utcfromtimestamp(ts/1000)
+        return pytz.utc.localize(date)
+
 
     @property
     def expires(self):
-        end_date = self.data.get('endDate')
-        if not end_date: return None
-        end_date = datetime.datetime.utcfromtimestamp(int(end_date)/1000)
-        return pytz.utc.localize(end_date)
+        ts = self.data.get('endDate')
+        if not ts: return None
+        return self.__create_bc_date__(int(ts)) 
+       
+    @property
+    def date_last_modified (self):
+        ts = self.data.get('lastModifiedDate')
+        if not ts: return None
+        return self.__create_bc_date__(int(ts)) 
+    
+    @property
+    def date_created(self):
+        ts = self.data.get('creationDate')
+        if not ts: return None
+        return self.__create_bc_date__(int(ts)) 
+
+    @property
+    def date_first_released(self):
+        ts = self.data.get('publishedDate')
+        if not ts: return None
+        return self.__create_bc_date__(int(ts)) 
 
     @related.setter
     def related(self, value):
