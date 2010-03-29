@@ -142,7 +142,7 @@ class IVideo(IBrightcoveContent,
         default=None)
 
     video_still = zope.schema.URI(
-        title=_('URI of the thumbnail'),
+        title=_('URI of the still image'),
         required=False,
         readonly=True)
 

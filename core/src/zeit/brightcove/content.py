@@ -15,9 +15,11 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.type
+import zeit.content.image.interfaces
 import zope.component
 import zope.container.contained
 import zope.interface
+import zope.dublincore.interfaces
 
 
 
@@ -166,7 +168,7 @@ class Video(Content):
         'creationDate',
         'customFields',
         'economics',
-        'endDate'
+        'endDate',
         'id',
         'itemState',
         'lastModifiedDate',
@@ -338,6 +340,76 @@ class UUID(grokcore.component.Adapter):
         return self.context.uniqueId
 
 
+class PublishInfo(grokcore.component.Adapter):
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.implements(zeit.cms.workflow.interfaces.IPublishInfo)
+
+    @property
+    def date_first_released(self):
+        return self.context.date_first_released
+
+
+class Modified(grokcore.component.Adapter):
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.implements(zeit.cms.workflow.interfaces.IModified)
+
+    @property
+    def date_last_modified(self):
+        return self.context.date_last_modified
+
+
+class Images(grokcore.component.Adapter):
+    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
+    grokcore.component.implements(zeit.content.image.interfaces.IImages)
+
+    @property
+    def images(self):
+        if self.context.brightcove_thumbnail != None:
+            return (self.context.brightcove_thumbnail)
+        return None
+
+
+class ImagesVideo(grokcore.component.Adapter):
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.implements(zeit.content.image.interfaces.IImages)
+
+    @property
+    def images(self):
+        ref = []
+        if self.context.brightcove_thumbnail != None:
+            ref.append(self.context.brightcove_thumbnail)
+        if self.context.brightcove_thumbnail != None:
+            ref.append(self.context.video_still)
+        
+        if len(ref) > 0:
+            return tuple(ref)
+        return None
+
+class IDCPublishing(grokcore.component.Adapter):
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.implements(zope.dublincore.interfaces.IDCPublishing)
+
+    @property
+    def effective(self):
+        return None
+
+    @property
+    def expires(self):
+        return self.context.expires
+
+
+#class IDCTimes(grokcore.component.Adapter):
+#    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+#    grokcore.component.implements(zope.dublincore.interfaces.IDCTimes)
+#
+#    @property
+#    def created(self):
+#        return self.context.date_created
+#
+#    @property
+#    def modified(self):
+#        return self.context.date_last_modified
+
 class CommonMetadata(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
@@ -371,3 +443,4 @@ def list_repr(context, request):
     return zope.component.queryMultiAdapter(
         (metadata, request),
         zeit.cms.browser.interfaces.IListRepresentation)
+
