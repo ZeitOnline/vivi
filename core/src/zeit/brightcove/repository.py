@@ -5,13 +5,16 @@ import BTrees
 import datetime
 import persistent
 import pytz
-import zeit.brightcove.interfaces
 import zeit.brightcove.content
+import zeit.brightcove.interfaces
+import zope.annotation.interfaces
 import zope.container.contained
-import zope.dublincore.interfaces
 import zope.event
 import zope.interface
 import zope.lifecycleevent
+
+
+CREATED_KEY = 'zeit.brightcove.repository.created'
 
 
 class Repository(persistent.Persistent,
@@ -36,12 +39,13 @@ class Repository(persistent.Persistent,
         except KeyError:
             pass
         else:
-            times = zope.dublincore.interfaces.IDCTimes(obj, None)
-            if times is None:
+            created = zope.annotation.interfaces.IAnnotations(obj).get(
+                CREATED_KEY)
+            if created is None:
                 obj = None
             else:
                 now = datetime.datetime.now(pytz.UTC)
-                if times.created + self.BRIGHTCOVE_CACHE_TIMEOUT < now:
+                if created + self.BRIGHTCOVE_CACHE_TIMEOUT < now:
                     obj = None
         if obj is not None:
             return obj
@@ -62,8 +66,8 @@ class Repository(persistent.Persistent,
             # The brightcove API is rahter stupid and returns [None] instead of
             # [] when there is no result. *ARGH*
             if obj.data is not None:
-                zope.event.notify(
-                    zope.lifecycleevent.ObjectCreatedEvent(obj))
+                zope.annotation.interfaces.IAnnotations(obj)[CREATED_KEY] = (
+                    datetime.datetime.now(pytz.UTC))
                 return obj
 
     def _parse_key(self, key):
