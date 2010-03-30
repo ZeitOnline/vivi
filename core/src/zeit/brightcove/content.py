@@ -398,17 +398,17 @@ class IDCPublishing(grokcore.component.Adapter):
         return self.context.expires
 
 
-#class IDCTimes(grokcore.component.Adapter):
-#    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
-#    grokcore.component.implements(zope.dublincore.interfaces.IDCTimes)
-#
-#    @property
-#    def created(self):
-#        return self.context.date_created
-#
-#    @property
-#    def modified(self):
-#        return self.context.date_last_modified
+class IDCTimes(grokcore.component.Adapter):
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.implements(zope.dublincore.interfaces.IDCTimes)
+
+    @property
+    def created(self):
+        return self.context.date_created
+
+    @property
+    def modified(self):
+        return self.context.date_last_modified
 
 class CommonMetadata(grokcore.component.Adapter):
 
