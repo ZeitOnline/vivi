@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.33.1 (unreleased)
+0.34.0 (unreleased)
 -------------------
 
 - Brightcove-Videos integriert (#6881).
