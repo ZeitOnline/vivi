@@ -16,6 +16,8 @@ zeit.cms changes
 
 - Improved test infrastructure.
 
+- "Trotzdem einchecken" honoriert nicht "als korrektur einchecken"  (#6880)
+
 
 1.41.0 (2010-03-10)
 -------------------
