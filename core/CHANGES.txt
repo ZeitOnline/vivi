@@ -4,6 +4,10 @@ zeit.content.cp changes
 0.33.1 (unreleased)
 -------------------
 
+- Brightcove-Videos integriert (#6881).
+
+- Favicon zu RSS-Feed speichern (#6937).
+
 - Using versions from the ZTK.
 
 
