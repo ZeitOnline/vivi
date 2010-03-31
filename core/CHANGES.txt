@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Using versions from the ZTK.
 
+- Improved test infrastructure.
+
 
 1.41.0 (2010-03-10)
 -------------------
