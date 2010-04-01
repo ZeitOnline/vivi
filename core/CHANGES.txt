@@ -1,0 +1,8 @@
+zeit.brightcove changes
+=======================
+
+
+0.1 (unreleased)
+----------------
+
+- First release
