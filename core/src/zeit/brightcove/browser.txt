@@ -70,6 +70,15 @@ The absoloute url of the thumbnail view is actually the thumbnail url:
 http://thumbnailurl
 
 
+The video still url is exposed as preview:
+
+>>> view = zope.component.getMultiAdapter(
+...     (video, request), name='preview')
+>>> print zope.component.getMultiAdapter(
+...     (view, request),
+...     zope.traversing.browser.interfaces.IAbsoluteURL)()
+http://videostillurl
+
 Playlists information is visible:
 
 >>> browser.open('http://localhost/++skin++cms/repository-brightcove/playlist:2345')
