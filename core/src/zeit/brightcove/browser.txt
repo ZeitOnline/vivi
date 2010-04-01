@@ -52,6 +52,23 @@ be:
 HTTP Error 303: See Other
 http://thumbnailurl
 
+The absoloute url of the thumbnail view is actually the thumbnail url:
+
+>>> zeit.cms.testing.set_site()
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.interfaces
+>>> import zope.publisher.browser
+>>> import zope.traversing.browser.interfaces
+>>> video = zeit.cms.interfaces.ICMSContent('http://video.zeit.de/video:1234')
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSLayer)
+>>> thumbnail_view = zope.component.getMultiAdapter(
+...     (video, request), name='thumbnail')
+>>> print zope.component.getMultiAdapter(
+...     (thumbnail_view, request),
+...     zope.traversing.browser.interfaces.IAbsoluteURL)()
+http://thumbnailurl
+
 
 Playlists information is visible:
 

@@ -6,6 +6,8 @@ import gocept.form.grouped
 import zeit.brightcove.interfaces
 import zeit.cms.browser.form
 import zope.formlib.form
+import zope.traversing.browser.absoluteurl
+import zope.traversing.browser.interfaces
 
 
 class VideoEditForm(zeit.cms.browser.form.EditForm):
@@ -45,5 +47,17 @@ class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
 
 class Thumbnail(zeit.cms.browser.view.Base):
 
+    @property
+    def thumbnail_url(self):
+        return self.context.thumbnail
+
     def __call__(self):
-        return self.redirect(self.context.thumbnail, trusted=True)
+        return self.redirect(self.thumbnail_url, trusted=True)
+
+
+class ThumbnailURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
+
+    def __str__(self):
+        if self.context.thumbnail_url:
+            return self.context.thumbnail_url
+        raise TypeError("No Thumbnail")

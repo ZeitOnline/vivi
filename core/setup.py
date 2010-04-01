@@ -16,7 +16,7 @@ setup(
         'setuptools',
         'simplejson',
         'zeit.cms>1.41.0',
-        'zeit.solr',
+        'zeit.solr>1.18.1',
         'zope.container',
         'zope.interface',
         'zope.schema',
