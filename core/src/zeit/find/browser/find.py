@@ -4,6 +4,7 @@
 
 from zeit.find.daterange import DATE_RANGES
 import datetime
+import urlparse
 import zc.iso8601.parse
 import zc.resourcelibrary
 import zeit.cms.browser.interfaces
@@ -229,7 +230,8 @@ class SearchResult(SearchResultBase):
 
     def get_graphical_preview_url(self, result):
         url = result.get('graphical-preview-url')
-        if url:
+        url_p = urlparse.urlsplit(url)
+        if url_p.scheme == '':
             url = self.get_application_url() + url
         return url
 
