@@ -230,6 +230,8 @@ class SearchResult(SearchResultBase):
 
     def get_graphical_preview_url(self, result):
         url = result.get('graphical-preview-url')
+        if url == None:
+            return None
         url_p = urlparse.urlsplit(url)
         if url_p.scheme == '':
             url = self.get_application_url() + url
