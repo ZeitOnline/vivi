@@ -1,15 +1,13 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.cachedescriptors.property
-import zope.component
-
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
-import zeit.cms.repository.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.interfaces
+import zope.cachedescriptors.property
+import zope.component
 
 
 class InsertMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
@@ -35,7 +33,7 @@ class Insert(zeit.cms.browser.view.Base):
     """Insert object from clipboard into current container."""
 
     def __call__(self, unique_id):
-        source = self.repository.getContent(unique_id)
+        source = zeit.cms.interfaces.ICMSContent(unique_id)
         copier = zope.copypastemove.interfaces.IObjectCopier(source)
         new_name = copier.copyTo(self.context)
         new_obj = self.context[new_name]
@@ -45,8 +43,3 @@ class Insert(zeit.cms.browser.view.Base):
                   source=unique_id,
                   target=new_obj.uniqueId)))
         self.redirect(self.url(new_obj))
-
-    @zope.cachedescriptors.property.Lazy
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)

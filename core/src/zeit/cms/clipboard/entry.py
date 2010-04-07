@@ -1,20 +1,14 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import persistent
 import rwproperty
-
-import zope.component
-import zope.interface
-
+import zeit.cms.clipboard.interfaces
+import zeit.cms.interfaces
 import zope.app.container.contained
 import zope.app.container.ordered
-
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-
-import zeit.cms.clipboard.interfaces
+import zope.component
+import zope.interface
 
 
 class Entry(zope.app.container.contained.Contained,
@@ -28,13 +22,7 @@ class Entry(zope.app.container.contained.Contained,
 
     @rwproperty.getproperty
     def references(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        try:
-            return repository.getContent(self._value)
-        except KeyError:
-            return None
-
+        return zeit.cms.interfaces.ICMSContent(self._value, None)
 
     @rwproperty.setproperty
     def references(self, references):

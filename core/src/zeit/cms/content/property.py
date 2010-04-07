@@ -7,7 +7,7 @@ import sys
 import transaction
 import xml.sax.saxutils
 import zeit.cms.content.interfaces
-import zeit.cms.repository.interfaces
+import zeit.cms.interfaces
 import zope.app.keyreference.interfaces
 import zope.component
 import zope.schema.interfaces
@@ -213,12 +213,7 @@ class SingleResource(ObjectPathProperty):
             unique_id = super(SingleResource, self).__get__(instance, class_)
         if not unique_id:
             return None
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        try:
-            return repository.getContent(unique_id)
-        except KeyError:
-            return None
+        return zeit.cms.interfaces.ICMSContent(unique_id, None)
 
     def __set__(self, instance, value):
         if self.xml_reference_name:

@@ -4,7 +4,8 @@ zeit.cms changes
 1.41.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Using ICMSContet adapter instead of direct repository access in most places
+  to support multiple repositories (i.e. videos).
 
 
 1.41.1 (2010-03-31)

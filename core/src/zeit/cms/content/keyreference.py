@@ -1,14 +1,10 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
-import zope.interface
-
-import zope.app.keyreference.interfaces
 
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
+import zope.app.keyreference.interfaces
+import zope.component
+import zope.interface
 
 
 class CMSContentKeyReference(object):
@@ -25,9 +21,7 @@ class CMSContentKeyReference(object):
         self.referenced_object = object.uniqueId
 
     def __call__(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        return repository.getContent(self.referenced_object)
+        return zeit.cms.interfaces.ICMSContent(self.referenced_object)
 
     def __hash__(self):
         return hash(self.referenced_object)

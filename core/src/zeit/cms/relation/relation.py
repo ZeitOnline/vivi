@@ -5,6 +5,7 @@ import BTrees
 import persistent
 import zc.relation.catalog
 import zc.relation.interfaces
+import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zope.interface
 
@@ -45,15 +46,7 @@ def _dump_content(content, catalog, cache):
 
 
 def _load_content(token, catalog, cache):
-    repository = cache.get('repository')
-    if repository is None:
-        cache['repository'] = repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-    try:
-        return repository.getContent(token)
-    except KeyError:
-        # If the object doesn't exist, return None
-        return None
+    return zeit.cms.interfaces.ICMSContent(token, None)
 
 
 def referenced_by(content, catalog):

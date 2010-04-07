@@ -265,23 +265,13 @@ unique id instead of object references.
 Create a mock repository:
 
 
+>>> import zeit.cms.interfaces
 >>> import zope.component
->>> import zeit.cms.repository.interfaces
->>>
 >>> repository_objects = {}
->>> class Repository(object):
-...
-...     def getContent(self, unique_id):
-...         return repository_objects[unique_id]
-...
-...     def add(self, obj):
-...         repository_objects[obj.uniqueId] = obj
-...
->>> repository = Repository()
->>>
 >>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerUtility(
-...     repository, zeit.cms.repository.interfaces.IRepository)
+>>> gsm.registerAdapter(
+...     repository_objects.get,
+...     (basestring,), zeit.cms.interfaces.ICMSContent)
 
 
 Referencing a single resource
@@ -307,7 +297,7 @@ Create an object which will be referenced:
 
 Add the referenced object to the repository:
 
->>> repository.add(referenced_obj)
+>>> repository_objects[referenced_obj.uniqueId] = referenced_obj
 
 
 Reference the object:
@@ -362,7 +352,7 @@ Create a content object and an object which can be referenced:
 >>> content = Content()
 >>> referenced_obj = Content()
 >>> referenced_obj.uniqueId = u'http://xml.zeit.de/related'
->>> repository.add(referenced_obj)
+>>> repository_objects[referenced_obj.uniqueId] = referenced_obj
 
 Currently no object is referenced:
 
@@ -407,8 +397,9 @@ ValueError: `attributes` must be tuple, got <type 'str'>
 
 Clean up:
 
->>> gsm.unregisterUtility(
-...     repository, zeit.cms.repository.interfaces.IRepository)
+>>> gsm.unregisterAdapter(
+...     repository_objects.get,
+...     (basestring,), zeit.cms.interfaces.ICMSContent)
 True
 >>> gsm.unregisterAdapter(xmlref, name='related')
 True

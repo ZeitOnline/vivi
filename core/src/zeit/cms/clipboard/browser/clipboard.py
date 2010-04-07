@@ -6,7 +6,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.tree
 import zeit.cms.clipboard.interfaces
-import zeit.cms.repository.interfaces
+import zeit.cms.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.traversing.api
@@ -50,7 +50,7 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     def addContent(self, add_to, unique_id):
         container = self.getAddContext(add_to)
-        add_object = self.repository.getContent(unique_id)
+        add_object = zeit.cms.interfaces.ICMSContent(unique_id)
         self.context.addContent(container, add_object, add_object.__name__,
                                 insert=self.expanded(container))
         return self()
@@ -69,11 +69,6 @@ class Tree(zeit.cms.browser.tree.Tree):
         except ValueError:
             transaction.doom()
         return self()
-
-    @zope.cachedescriptors.property.Lazy
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
 
     def getObjectData(self, obj):
         data = super(Tree, self).getObjectData(obj)

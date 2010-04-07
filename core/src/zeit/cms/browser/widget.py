@@ -238,7 +238,7 @@ class MultiObjectSequenceWidget(
         return result
 
     def _toFieldValue(self, value):
-        return tuple(self.repository.getContent(unique_id)
+        return tuple(zeit.cms.interfaces.ICMSContent(unique_id)
                      for unique_id in value)
 
     @property
@@ -246,11 +246,6 @@ class MultiObjectSequenceWidget(
         count = len(self._getFormValue())
         return ('<input type="hidden" id="%s.count" name="%s.count" value="%d" />'
                 % (self.name, self.name, count))
-
-    @zope.cachedescriptors.property.Lazy
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
 
 
 class MultiObjectSequenceDisplayWidget(

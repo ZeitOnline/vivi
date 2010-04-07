@@ -47,15 +47,12 @@ class RelatedBase(object):
 
     def _get_related(self):
         related = []
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
         for element in self._get_related_nodes():
             unique_id = self._get_unique_id(element)
             if unique_id is None:
                 continue
-            try:
-                content = repository.getContent(unique_id)
-            except (ValueError, KeyError):
+            content = zeit.cms.interfaces.ICMSContent(unique_id, None)
+            if content is None:
                 continue
             related.append(content)
         return tuple(related)
