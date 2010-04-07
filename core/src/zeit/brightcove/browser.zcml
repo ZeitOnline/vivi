@@ -51,6 +51,24 @@
    class=".browser.Still"
    permission="zope.View"
    />
+ 
+ <browser:icon
+    for="zeit.brightcove.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/video_icon.gif"
+    />
+  
+  <browser:icon
+    for="zeit.brightcove.interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/playlist_icon.gif"
+    />
 
  <adapter
    for=".browser.Still
