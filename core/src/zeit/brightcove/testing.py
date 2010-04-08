@@ -12,7 +12,7 @@ import zeit.brightcove.connection
 import zeit.cms.testing
 import zeit.solr.testing
 import zope.app.testing.functional
-
+import pkg_resources
 
 
 VIDEO_1234 = {
@@ -151,8 +151,11 @@ product_config = """\
     write-token writetnk
     read-url http://localhost:%s/
     write-url http://localhost:%s/
+    source-serie file://%s
 </product-config>
-""" % (httpd_port, httpd_port)
+""" % (httpd_port, 
+       httpd_port,
+       pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
 
 
 BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(

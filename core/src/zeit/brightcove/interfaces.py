@@ -25,6 +25,10 @@ class IRepository(zope.container.interfaces.IItemContainer):
 
     """
 
+class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
+    config_url = 'source-serie'
+    product_configuration = 'zeit.brightcove'
+
 
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
@@ -79,7 +83,7 @@ class IVideo(IBrightcoveContent,
 
     serie = zope.schema.Choice(
         title=_("Serie"),
-        source=zeit.cms.content.sources.SerieSource(),
+        source= SerieSource(),
         required=False)
 
     product_id = zope.schema.Choice(
@@ -186,3 +190,5 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=videoSource)
+
+
