@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.1 (unreleased)
-----------------
+0.1.0 (2010-04-09)
+------------------
 
 - First release
