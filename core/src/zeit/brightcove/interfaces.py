@@ -104,6 +104,12 @@ class IVideo(IBrightcoveContent,
         description=_(
             "Should this article be listed in the daily newsletter?"),
         default=False)
+    
+    allow_comments = zope.schema.Bool(
+        title=_("comments allowed"),
+        description=_(
+            "Are comments allowed for this video?"),
+        default=False)
 
     banner = zope.schema.Bool(
         title=_("Banner"),

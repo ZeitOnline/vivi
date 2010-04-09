@@ -29,7 +29,7 @@ class VideoEditForm(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.Fields(
             _("Options"),
             ('item_state', 'expires', 'dailyNewsletter', 'banner', 'banner_id',
-             'breaking_news', 'has_recensions', 'product_id'),
+             'breaking_news', 'has_recensions', 'product_id', 'allow_comments'),
             css_class='column-right checkboxes'),
         gocept.form.grouped.Fields(
             _('Teaser elements'),

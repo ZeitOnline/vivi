@@ -147,7 +147,7 @@ class Video(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
     type = 'video'
-
+    allow_comments = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
@@ -384,6 +384,7 @@ class IDCTimes(grokcore.component.Adapter):
     def modified(self):
         return self.context.date_last_modified
 
+
 class CommonMetadata(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
@@ -405,6 +406,14 @@ class CommonMetadata(grokcore.component.Adapter):
         if key in zeit.cms.content.interfaces.ICommonMetadata:
             return getattr(self.context, key, None)
         return super(CommonMetadata, self).__getattr__(key)
+
+
+class CommonMetadataVideo(CommonMetadata):
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    
+    @property 
+    def commentsAllowed(self):
+        return self.context.allow_comments
 
 
 @grokcore.component.adapter(
