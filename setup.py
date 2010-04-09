@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'setuptools',
         'xlrd',
+        'zeit.brightcove',
         'zeit.calendar',
         'zeit.cms>1.37.1',
         'zeit.content.article',

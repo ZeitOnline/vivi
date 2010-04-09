@@ -108,6 +108,10 @@
     role="zeit.Editor"
     permission="zeit.imp.Use"
     />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.brightcove.video.Edit"
+    />
 
   <!-- Producer grants -->
   <grant

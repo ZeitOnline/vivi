@@ -4,6 +4,7 @@
 import os.path
 import unittest
 import xlrd
+import zeit.brightcove.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.imp.tests
@@ -11,9 +12,9 @@ import zope.app.testing.functional
 import zope.component
 
 
-SecurityPolicyLayer = zope.app.testing.functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'SecurityPolicyLayer', allow_teardown=True)
+SecurityPolicyLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml',
+    product_config=zeit.brightcove.testing.product_config)
 
 
 class TestSecurityPolicyXLSSheet(
