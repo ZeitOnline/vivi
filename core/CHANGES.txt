@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.41.2 (unreleased)
+1.41.2 (2010-04-09)
 -------------------
 
 - Using ICMSContet adapter instead of direct repository access in most places
