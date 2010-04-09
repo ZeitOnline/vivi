@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.cp',
-    version = '0.34.0dev',
+    version = '0.34.0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://intra.gocept.com/projects/projects/zeit-cms',
@@ -19,7 +19,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
-        'FeedParser',
+        'feedparser',
         'gocept.cache',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
