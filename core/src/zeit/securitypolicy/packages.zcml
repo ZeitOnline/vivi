@@ -20,4 +20,6 @@
   <include package="zeit.imp" />
   <include package="zeit.imp.browser" />
 
+  <include package="zeit.brightcove" />
+
 </configure>
