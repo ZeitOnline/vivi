@@ -4,6 +4,7 @@ zeit.find changes
 0.20.1 (unreleased)
 -------------------
 
+- URLs für grpahical-preivew-url können nun auch vollaufgelöst sein
 - Using versions from the ZTK.
 
 
