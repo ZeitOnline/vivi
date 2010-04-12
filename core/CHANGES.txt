@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.1.1 (unreleased)
+0.1.1 (2010-04-12)
 ------------------
 
 - better handling for page iteration using brightcove API.
