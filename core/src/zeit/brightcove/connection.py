@@ -83,8 +83,8 @@ class ItemResultSet(object):
                     yield self.item_class(item)
                 count += 1
             total_count = int(data['total_count'])
-            if count >= total_count:
-                break
+            if count >= total_count: break
+            if not data['items']: break
             page += 1
 
 
