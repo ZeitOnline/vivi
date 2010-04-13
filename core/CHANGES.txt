@@ -5,7 +5,8 @@ zeit.brightcove changes
 0.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- brightcove will delete all videos with state != ACTIVE from internal and
+  public solr 
 
 
 0.1.1 (2010-04-12)

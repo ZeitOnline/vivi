@@ -34,7 +34,7 @@ def _update_single_content(content):
         updater.update()
         updater.update(solr='public')
     elif content.item_state == 'INACTIVE':
-        updater.update()
+        deleter.update()
         deleter.update(solr='public')
     else:
         deleter.update()

@@ -54,7 +54,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
         video = zeit.cms.interfaces.ICMSContent("http://video.zeit.de/video/1234")
         video.item_state = 'INACTIVE'
         zeit.brightcove.solr._update_single_content(video)
-        self.assertTrue(self.solr.update_raw.called)
+        self.assertTrue(self.solr.delete.called)
         self.assertTrue(self.public_solr.delete.called)
 
     def test_solr_deleted(self):

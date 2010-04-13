@@ -201,7 +201,7 @@ class Video(Content):
             'find_modified_videos', class_,
             from_date=from_date,
             video_fields=class_.fields,
-            filter="PLAYABLE,DELETED")
+            filter="PLAYABLE,DELETED,INACTIVE,UNSCHEDULED")
 
     @property
     def related(self):
