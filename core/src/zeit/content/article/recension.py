@@ -1,21 +1,15 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import lxml.objectify
-
-import zope.component
-import zope.interface
-import zope.security.proxy
-import zope.publisher.interfaces
-
 import z3c.traverser.interfaces
-
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.content.article.interfaces
-
-
+import zope.component
+import zope.interface
+import zope.publisher.interfaces
+import zope.security.proxy
 
 
 class BookRecensionContainer(object):
@@ -143,5 +137,3 @@ class RecensionTraverser(object):
                 pass
 
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
-
-
