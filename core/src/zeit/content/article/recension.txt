@@ -177,3 +177,19 @@ u'Buch'
 124
 >>> rec.price
 u'25,99'
+
+
+If the recension is modified, the article is marked as changed. The article
+needs to be attachted to a database to see this:
+
+>>> getRootFolder().article = article
+>>> import transaction
+>>> transaction.commit()
+>>> article._p_changed
+False
+
+>>> rec.title = u'Zuhauseschläfer'
+>>> rec._p_changed
+True
+>>> article._p_changed
+True

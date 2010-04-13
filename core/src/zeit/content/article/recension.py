@@ -12,7 +12,7 @@ import zope.publisher.interfaces
 import zope.security.proxy
 
 
-class BookRecensionContainer(object):
+class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
 
     zope.interface.implements(
         zeit.content.article.interfaces.IBookRecensionContainer,
@@ -38,8 +38,7 @@ class BookRecensionContainer(object):
     def append(self, recension):
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(recension)
         self.xml['body'].append(xml_repr.xml)
-        zope.security.proxy.removeSecurityProxy(
-            self.context)._p_changed = True
+        self._p_changed = True
 
     @property
     def entries(self):
@@ -57,7 +56,8 @@ class BookRecensionContainer(object):
         return zope.location.location.located(recension, self, unicode(index))
 
 
-class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase):
+class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
+                    zeit.cms.content.xmlsupport.Persistent):
     """Information about a book in a recension."""
 
     zope.interface.implements(

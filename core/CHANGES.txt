@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Using versions from the ZTK.
 
+- Rezensionsinformationen lassen sich wieder(?) bearbeiten (#7075)
+
 
 2.8.1 (2010-03-10)
 ------------------
