@@ -331,6 +331,14 @@ done directly in the repository:
 >>> print browser.title.strip()
 New Hampshire – Image group
 
+Image groups don't have a thumbnail when there are no images in it:
+
+>>> browser.open('@@thumbnail')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 404: Not Found
+>>> browser.goBack()
+
 Create a few images in the group:
 
 >>> menu = browser.getControl(name='add_menu')
@@ -581,7 +589,6 @@ break):
 
 Image groups also have a thumbnail:
 
->>> browser.handleErrors = False
 >>> browser.open('@@thumbnail')
 >>> print browser.headers
 Status: 200 Ok

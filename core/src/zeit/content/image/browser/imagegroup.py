@@ -13,6 +13,7 @@ import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zope.formlib.form
 import zope.interface
+import zope.publisher.interfaces
 
 
 class FormBase(object):
@@ -154,6 +155,9 @@ class Thumbnail(object):
     first_choice = re.compile(r'.*-\d+x\d+')
 
     def __call__(self):
+        if not self.context.keys():
+            raise zope.publisher.interfaces.NotFound(
+                self.context, self.__name__, self.request)
         for name in self.context.keys():
             if self.first_choice.match(name):
                 break
