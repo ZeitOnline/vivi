@@ -610,12 +610,6 @@ class VideoStep(ConversionStep):
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])
-        nodes = node.xpath('div[@class="player"]')
-        if nodes:
-            p1 = unicode(nodes[0])
-        nodes = node.xpath('div[@class="player2"]')
-        if nodes:
-            p2 = unicode(nodes[0])
         new_node = lxml.objectify.E.video(
             videoID=id_, videoID2=id2, expires=expires, format=format,
             player=p1, player2=p2)

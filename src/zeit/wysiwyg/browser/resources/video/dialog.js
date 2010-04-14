@@ -92,8 +92,6 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
         var div = DIV({'class': 'inline-element ' + self.container_class},
             DIV({'class': id}),
             DIV({'class': id + '2'}),
-            DIV({'class': 'player'}),
-            DIV({'class': 'player2'}),
             DIV({'class': 'expires'}));
         if (!isNull($('format'))) {
             div.appendChild(DIV({'class': 'format'}));

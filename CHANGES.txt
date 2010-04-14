@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 1.37.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Anlegen von Playlisten funktioniert wieder (#7077).
 
 
 1.37.0 (2010-04-12)
