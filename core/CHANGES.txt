@@ -4,8 +4,8 @@ zeit.cms changes
 1.41.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Provide useful error message in the ``redirect_to`` view when the object
+  doesn't exist (#6998).
 
 1.41.3 (2010-04-14)
 -------------------

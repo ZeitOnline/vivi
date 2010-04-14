@@ -13,6 +13,7 @@ import zeit.cms.workingcopy.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.formlib.form
+import zope.i18n
 import zope.viewlet.viewlet
 
 
@@ -162,8 +163,10 @@ class HiddenCollections(zeit.cms.browser.view.Base):
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
 
     def __call__(self, unique_id, view='@@view.html'):
-        # TODO: create a meaningful error message when the object doesn't
-        # exist.
-        obj = zeit.cms.interfaces.ICMSContent(unique_id)
+        obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
+        if obj is None:
+            msg = _("The object '${id}' could not be found.",
+                    mapping=dict(id=unique_id))
+            return zope.i18n.translate(msg, context=self.request)
         self.redirect(self.url(obj, view))
         return u''

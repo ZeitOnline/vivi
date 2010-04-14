@@ -296,6 +296,14 @@ When another view is desired it can be passed as the ``view`` query argument:
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@drag-pane.html'
 
+If no object with the given UID can be found, an ugly but useful error is
+returned:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/@@redirect_to'
+...     '?unique_id=blafasel')
+>>> print browser.contents
+The object 'blafasel' could not be found.
 
 
 Invalidating the cache
