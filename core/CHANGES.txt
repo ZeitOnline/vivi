@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.41.4 (unreleased)
+1.41.4 (2010-04-14)
 -------------------
 
 - Provide useful error message in the ``redirect_to`` view when the object
