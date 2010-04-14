@@ -156,7 +156,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         try:
             return self.xml['container']
         except AttributeError, e:
-            log.exception(e)
+            log.error("Invalid channel XML format", exc_info=True)
             raise RuntimeError("Invalid channel XML format.")
 
     def _remove_by_id(self, unique_id):

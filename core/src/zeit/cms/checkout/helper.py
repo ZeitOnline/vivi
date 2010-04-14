@@ -32,8 +32,7 @@ def checked_out(content, events=True, semantic_change=False):
         checked_out = manager.checkout(temporary=True, event=events)
     except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
         log.warning("Could not checkout %s for related update." %
-                       content.uniqueId)
-        log.exception(e)
+                       content.uniqueId, exc_info=True)
         yield None
     else:
         try:
