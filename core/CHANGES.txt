@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.1.2 (unreleased)
+0.1.2 (2010-04-14)
 ------------------
 
 - brightcove will delete all videos with state != ACTIVE from internal and
