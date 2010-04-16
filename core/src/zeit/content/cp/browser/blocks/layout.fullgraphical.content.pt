@@ -5,7 +5,7 @@
        tal:condition="image">
     <img tal:attributes="
          src image/@@absolute_url;
-         title context/referenced_object/uniqueId" />
+         title context/referenced_object/uniqueId|nothing" />
   </div>
   <div class="fullgraphical-no-image"
        tal:condition="not:image"
