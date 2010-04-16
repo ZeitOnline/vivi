@@ -161,6 +161,17 @@ class IVideo(IBrightcoveContent,
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""
+    video_ids = zope.schema.Tuple(
+        title=_("Video IDs"),
+        required=False,
+        default=(),
+        unique=False,
+        value_type=zope.schema.URI(
+            title=_('URI of the Playlist-Video'),
+            required=False,
+            readonly=True)
+    )
+
 
 
 class BrightcoveSource(zeit.cms.content.contentsource.CMSContentSource):

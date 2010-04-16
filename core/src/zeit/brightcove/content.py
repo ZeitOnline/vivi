@@ -294,6 +294,11 @@ class Playlist(Content):
         'thumbnailURL',
         'videoIds',
     ))
+    
+    @property
+    def video_ids(self):
+        return tuple('http://video.zeit.de/video/%s' % id for id in
+                     self.data['videoIds'])
 
     @classmethod
     def find_by_ids(class_, ids):

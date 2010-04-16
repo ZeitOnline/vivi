@@ -43,13 +43,41 @@ VIDEO_1234 = {
     'endDate': '1269579600000',
 }
 
+VIDEO_6789 = {
+    'creationDate': '1268018138802',
+    'customFields': {
+        'ressort': 'Auto',
+        'newsletter': '1',
+        'breaking-news': '0',
+        'cmskeywords': 'Politik;koalition',
+    },
+    'economics': 'AD_SUPPORTED',
+    'id': 6789,
+    'lastModifiedDate': '1268053197824',
+    'length': 152640,
+    'linkText': None,
+    'linkURL': None,
+    'longDescription': u'Once more, a video. Wirh a very long description',
+    'name': 'Woah, a video',
+    'playsTotal': None,
+    'playsTrailingWeek': None,
+    'publishedDate': '1268053197823',
+    'referenceId': '2010-03-08T023523Z_1_OVE6276PP_RTRMADC_0_ONLINE',
+    'shortDescription': u'rockon, video',
+    'tags': ['Vermischtes'],
+    'thumbnailURL': 'http://thumbnailurl',
+    'videoStillURL': 'http://videostillurl',
+    'itemState': 'ACTIVE',
+    'endDate': '1269579600000',
+}
+
 PLAYLIST_2345 = {
     'filterTags': ['Film'],
     'id': 2345,
     'name': 'Videos zum Thema Film',
     'shortDescription': 'Videos in kurz',
     'thumbnailURL': None,
-    'videoIds': [1234]
+    'videoIds': [1234,6789]
 }
 
 

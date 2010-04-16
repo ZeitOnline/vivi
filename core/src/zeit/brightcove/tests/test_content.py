@@ -200,3 +200,8 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         publication_status = zeit.cms.workflow.interfaces.IPublicationStatus(
             video)
         self.assertEquals("published", publication_status.published)
+    
+    def test_video_ids(self):
+        pls = self.repository['playlist:2345']
+        vids = ('http://video.zeit.de/video/1234', 'http://video.zeit.de/video/6789')
+        self.assertEquals(vids, pls.video_ids)
