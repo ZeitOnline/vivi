@@ -11,4 +11,3 @@ class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IFullGraphicalBlock).omit(
             *list(zeit.content.cp.interfaces.IBlock))
-

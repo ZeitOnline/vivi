@@ -11,6 +11,7 @@ import zeit.content.cp.interfaces
 import zope.component
 import zope.interface
 
+
 class FullGraphicalBlock(zeit.content.cp.blocks.block.Block):
 
     zope.interface.implements(zeit.content.cp.interfaces.IFullGraphicalBlock)
@@ -20,6 +21,7 @@ class FullGraphicalBlock(zeit.content.cp.blocks.block.Block):
 
     image = zeit.cms.content.property.SingleResource(
         '.image', xml_reference_name='related', attributes=('href',))
+
 
 FullGraphicalFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
     zeit.content.cp.interfaces.IRegion, 'fullgraphical',

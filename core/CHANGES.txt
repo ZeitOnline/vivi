@@ -6,6 +6,9 @@ zeit.content.cp changes
 
 - Errors in editors actions are logged as warning now.
 
+- Fullgraphical block doesn't break CPE if the referenced object is removed
+  (#7093).
+
 
 0.34.0 (2010-04-09)
 -------------------

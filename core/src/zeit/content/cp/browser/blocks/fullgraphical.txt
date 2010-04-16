@@ -85,6 +85,19 @@ The source of a fullgraphical block:
   <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
 </container>...
 
+
+The layout doesn't break if the image or referenced content is removed:
+
+>>> del repository['2006']['DSC00109_2.JPG']
+>>> del repository['my_quiz']
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-no-image">
+    Fullgraphical Block
+  </div>
+  ...
+
 .. [#functional]_
 
     >>> import zeit.cms.testing
