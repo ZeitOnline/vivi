@@ -61,7 +61,7 @@ class Action(zeit.cms.browser.view.Base):
         except ZODB.POSException.ConflictError:
             raise
         except Exception, e:
-            log.exception('Error in action')
+            log.warning('Error in action', exc_info=True)
             transaction.doom()
             message = e.args[0]
             if isinstance(message, zope.i18n.Message):
