@@ -91,6 +91,12 @@ SINGLE_VIDEO_RESPONSE = {
     'total_count': -1,
 }
 
+ANOTHER_SINGLE_VIDEO_RESPONSE = {
+    'items': [VIDEO_6789],
+    'page_number': 0,
+    'page_size': 0,
+    'total_count': -1,
+}
 
 SINGLE_PLAYLIST_RESPONSE = {
     'items': [PLAYLIST_2345],
@@ -102,7 +108,7 @@ SINGLE_PLAYLIST_RESPONSE['items'][0]['id'] = 2345
 
 
 VIDEO_LIST_RESPONSE = {
-    'items': [VIDEO_1234, VIDEO_1234.copy()],
+    'items': [VIDEO_1234, VIDEO_1234.copy(), VIDEO_6789],
     'page_number': 0,
     'page_size': 0,
     'total_count': -1,
@@ -138,6 +144,10 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
             query.get('video_ids') == ['1234'] and
             query.get('video_fields')):
             result = SINGLE_VIDEO_RESPONSE
+        elif (query.get('command') == ['find_videos_by_ids'] and
+            query.get('video_ids') == ['6789'] and
+            query.get('video_fields')):
+            result = ANOTHER_SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_playlists_by_ids'] and
               query.get('playlist_ids') == ['2345']):
             result = SINGLE_PLAYLIST_RESPONSE

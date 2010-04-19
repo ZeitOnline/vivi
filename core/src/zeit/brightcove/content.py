@@ -11,7 +11,7 @@ import transaction
 import zeit.brightcove.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.content.interfaces
+import zeit.cms.relation.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
@@ -74,6 +74,10 @@ class mapped_keywords(mapped):
         if value:
             value = ';'.join(keyword.code for keyword in value)
         super(mapped_keywords, self).__set__(instance, value)
+
+class BCContent(object):
+    
+    zope.interface.implements(zeit.brightcove.interfaces.IBCContent)
 
 
 class Content(persistent.Persistent,
@@ -420,6 +424,18 @@ class CommonMetadataVideo(CommonMetadata):
     def commentsAllowed(self):
         return self.context.allow_comments
 
+@grokcore.component.adapter(zeit.brightcove.interfaces.IPlaylist, name='videos')
+@grokcore.component.implementer(
+    zeit.cms.relation.interfaces.IReferenceProvider)
+def list_video_ids(context):
+    if context.video_ids is None:
+        return None
+    l = []
+    for name in context.video_ids:
+        content = BCContent()
+        content.uniqueId = name
+        l.append(content)
+    return l
 
 @grokcore.component.adapter(
     zeit.brightcove.interfaces.IBrightcoveContent,

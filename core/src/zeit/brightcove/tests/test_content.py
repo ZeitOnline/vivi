@@ -9,6 +9,7 @@ import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.relation.interfaces
 import zeit.cms.interfaces
 import zope.component
 import zope.publisher.browser
@@ -205,3 +206,8 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         pls = self.repository['playlist:2345']
         vids = ('http://video.zeit.de/video/1234', 'http://video.zeit.de/video/6789')
         self.assertEquals(vids, pls.video_ids)
+
+    def test_reference_adapter(self):
+        pls = self.repository['playlist:2345']
+        vids = zeit.cms.relation.interfaces.IReferences(pls)
+        self.assertEquals('http://video.zeit.de/video/1234', vids[0].uniqueId)

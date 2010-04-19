@@ -6,7 +6,9 @@ zeit.brightcove changes
 ------------------
 
 - videoIds in Playlists are a property
-
+- added IBCContent between ICMSContent and IBrightcoveContent 
+- IReferenceProvider adapted, which returns a list of IBCContent
+  (to avoid API-Calls)
 
 0.1.2 (2010-04-14)
 ------------------

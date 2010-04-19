@@ -25,7 +25,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
     def test_indexing_changed_videos(self):
         zeit.brightcove.solr._index_changed_videos_and_playlists()
         self.assertTrue(self.solr.update_raw.called)
-        self.assertEquals(4, len(self.solr.update_raw.call_args_list))
+        self.assertEquals(5, len(self.solr.update_raw.call_args_list))
         element_add = self.solr.update_raw.call_args_list[0][0][0]
         self.assertEquals(
             ['http://video.zeit.de/video/1234'],
@@ -36,9 +36,13 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[2][0][0]
         self.assertEquals(
-            ['http://video.zeit.de/playlist/2345'],
+            ['http://video.zeit.de/video/6789'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[3][0][0]
+        self.assertEquals(
+            ['http://video.zeit.de/playlist/2345'],
+            element_add.xpath("/add/doc/field[@name='uniqueId']"))
+        element_add = self.solr.update_raw.call_args_list[4][0][0]
         self.assertEquals(
             ['http://video.zeit.de/playlist/3456'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))

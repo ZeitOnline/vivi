@@ -25,12 +25,18 @@ class IRepository(zope.container.interfaces.IItemContainer):
 
     """
 
+
 class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
     config_url = 'source-serie'
     product_configuration = 'zeit.brightcove'
 
 
-class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
+class IBCContent(zeit.cms.interfaces.ICMSContent):
+     """Plain BrightCove-Content w/ just an uniqueId
+     """
+
+
+class IBrightcoveContent(IBCContent):
 
     id = zope.schema.Int(
         title=_('Id'),
@@ -157,8 +163,6 @@ class IVideo(IBrightcoveContent,
         readonly=True)
 
 
-
-
 class IPlaylist(IBrightcoveContent):
     """A playlist."""
     video_ids = zope.schema.Tuple(
@@ -171,7 +175,6 @@ class IPlaylist(IBrightcoveContent):
             required=False,
             readonly=True)
     )
-
 
 
 class BrightcoveSource(zeit.cms.content.contentsource.CMSContentSource):
