@@ -13,7 +13,7 @@ import zope.lifecycleevent.interfaces
 
 
 def _index_changed_videos_and_playlists():
-    from_date = datetime.datetime.now(pytz.UTC) - datetime.timedelta(days=1)
+    from_date = datetime.datetime.now(pytz.UTC) - datetime.timedelta(hours=2)
     videos = zeit.brightcove.content.Video.find_modified(from_date=from_date)
     for content in videos:
         _update_single_content(content)
