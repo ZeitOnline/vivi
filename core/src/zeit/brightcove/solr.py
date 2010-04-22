@@ -1,7 +1,6 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import logging
 import datetime
 import gocept.runner
 import grokcore.component
@@ -12,7 +11,6 @@ import zeit.solr.query
 import zope
 import zope.lifecycleevent.interfaces
 
-log = logging.getLogger(__name__)
 
 def _index_changed_videos_and_playlists():
     from_date = datetime.datetime.now(pytz.UTC) - datetime.timedelta(hours=2)
@@ -57,10 +55,6 @@ def _empty_playlists():
 @gocept.runner.once(principal=gocept.runner.from_config(
     'zeit.brightcove', 'index-principal'))
 def index_changed_videos_and_playlists():
-    try:
-        raise RuntimeError({'message': 'The request you made is taking longer than expected to return. If requesting a large amount of data please try again with a smaller page_size.', 'code': 103, 'name': 'CallTimeoutError'})
-    except Exception, e:
-        log.exception(e)
     _index_changed_videos_and_playlists()
 
 
