@@ -16,9 +16,12 @@ zeit.imp.Imp = Class.extend({
         this.mask_dimensions = null;
         this.mask_image_dimensions = null;
         this.mask_variable = null;
-        this.border = MochiKit.Iter.ifilter(
-            function(elem) { return elem.checked },
-            $('imp-configuration-form')['border']).next().value;
+        var borders = $('imp-configuration-form')['border'];
+        if (isUndefinedOrNull(borders)) { 
+            this.border = '';
+        } else {
+            this.border = borders[0].value;
+        }
         // Point for extensions to add arguments.
         this.crop_arguments = {}
 

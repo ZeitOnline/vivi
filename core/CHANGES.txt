@@ -4,6 +4,9 @@ zeit.imp changes
 0.10.1 (unreleased)
 +++++++++++++++++++
 
+- Es ist jetzt möglich eine leere Rahmen-Datei (colors.xml) zu haben ohne, dass
+  IMP kaputt geht (#6974).
+
 - Using versions from the ZTK.
 
 
