@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.2.6 (unreleased)
+2.2.6 (2010-04-27)
 ------------------
 
 - Using versions from the ZTK.
