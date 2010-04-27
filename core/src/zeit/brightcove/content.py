@@ -11,8 +11,8 @@ import transaction
 import zeit.brightcove.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.relation.interfaces
 import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zope.component
@@ -76,7 +76,7 @@ class mapped_keywords(mapped):
         super(mapped_keywords, self).__set__(instance, value)
 
 class BCContent(object):
-    
+
     zope.interface.implements(zeit.brightcove.interfaces.IBCContent)
 
 
@@ -166,7 +166,6 @@ class Video(Content):
     supertitle = mapped('customFields', 'supertitle')
     video_still = mapped('videoStillURL')
 
-
     fields = ",".join((
         'creationDate',
         'customFields',
@@ -220,7 +219,7 @@ class Video(Content):
                 if content is not None:
                     result.append(content)
         return tuple(result)
-    
+
     def __create_bc_date__(self, ts):
         date = datetime.datetime.utcfromtimestamp(ts/1000)
         return pytz.utc.localize(date)
@@ -230,25 +229,25 @@ class Video(Content):
     def expires(self):
         ts = self.data.get('endDate')
         if not ts: return None
-        return self.__create_bc_date__(int(ts)) 
-       
+        return self.__create_bc_date__(int(ts))
+
     @property
     def date_last_modified (self):
         ts = self.data.get('lastModifiedDate')
         if not ts: return None
-        return self.__create_bc_date__(int(ts)) 
-    
+        return self.__create_bc_date__(int(ts))
+
     @property
     def date_created(self):
         ts = self.data.get('creationDate')
         if not ts: return None
-        return self.__create_bc_date__(int(ts)) 
+        return self.__create_bc_date__(int(ts))
 
     @property
     def date_first_released(self):
         ts = self.data.get('publishedDate')
         if not ts: return None
-        return self.__create_bc_date__(int(ts)) 
+        return self.__create_bc_date__(int(ts))
 
     @related.setter
     def related(self, value):
@@ -298,7 +297,7 @@ class Playlist(Content):
         'thumbnailURL',
         'videoIds',
     ))
-    
+
     @property
     def video_ids(self):
         return tuple('http://video.zeit.de/video/%s' % id for id in
@@ -351,6 +350,7 @@ class UUID(grokcore.component.Adapter):
 
 
 class PublishInfo(grokcore.component.Adapter):
+
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
     grokcore.component.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
@@ -360,6 +360,7 @@ class PublishInfo(grokcore.component.Adapter):
 
 
 class Modified(grokcore.component.Adapter):
+
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
     grokcore.component.implements(zeit.cms.workflow.interfaces.IModified)
 
@@ -369,6 +370,7 @@ class Modified(grokcore.component.Adapter):
 
 
 class IDCPublishing(grokcore.component.Adapter):
+
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
     grokcore.component.implements(zope.dublincore.interfaces.IDCPublishing)
 
@@ -382,6 +384,7 @@ class IDCPublishing(grokcore.component.Adapter):
 
 
 class IDCTimes(grokcore.component.Adapter):
+
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
     grokcore.component.implements(zope.dublincore.interfaces.IDCTimes)
 
@@ -418,11 +421,13 @@ class CommonMetadata(grokcore.component.Adapter):
 
 
 class CommonMetadataVideo(CommonMetadata):
+
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
-    
-    @property 
+
+    @property
     def commentsAllowed(self):
         return self.context.allow_comments
+
 
 @grokcore.component.adapter(zeit.brightcove.interfaces.IPlaylist, name='videos')
 @grokcore.component.implementer(
@@ -436,6 +441,7 @@ def list_video_ids(context):
         content.uniqueId = name
         l.append(content)
     return l
+
 
 @grokcore.component.adapter(
     zeit.brightcove.interfaces.IBrightcoveContent,
