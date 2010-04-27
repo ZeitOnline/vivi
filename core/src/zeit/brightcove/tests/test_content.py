@@ -2,16 +2,18 @@
 # See also LICENSE.txt
 
 import datetime
+import pytz
 import time
 import transaction
-import pytz
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.relation.interfaces
 import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
+import zeit.cms.workflow.interfaces
 import zope.component
+import zope.interface.verify
 import zope.publisher.browser
 
 
@@ -208,3 +210,17 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         pls = self.repository['playlist:2345']
         vids = zeit.cms.relation.interfaces.IReferences(pls)
         self.assertEquals('http://video.zeit.de/video/1234', vids[0].uniqueId)
+
+
+class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.brightcove.interfaces.IRepository)
+
+    def test_publishinfo(self):
+        video = self.repository['video:1234']
+        pi = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        zope.interface.verify.verifyObject(
+            zeit.cms.workflow.interfaces.IPublishInfo, pi)

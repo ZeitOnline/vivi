@@ -354,9 +354,19 @@ class PublishInfo(grokcore.component.Adapter):
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
     grokcore.component.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
+    published = True
+
     @property
     def date_first_released(self):
         return self.context.date_first_released
+
+    date_last_published = date_first_released
+
+    def can_publish(self):
+        # Videos/playlists are actually always published, or at least not
+        # publishable in the CMS.
+        return False
+
 
 
 class Modified(grokcore.component.Adapter):
