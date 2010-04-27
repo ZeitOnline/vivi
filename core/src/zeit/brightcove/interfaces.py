@@ -138,7 +138,7 @@ class IVideo(IBrightcoveContent,
         required=False,
         readonly=True,
         default=None)
-    
+
     date_first_released = zope.schema.Datetime(
         title=_('First released'),
         required=False,
