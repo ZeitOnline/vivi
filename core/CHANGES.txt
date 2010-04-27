@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.2.1 (unreleased)
+0.2.1 (2010-04-27)
 ------------------
 
 - Fully implement IPublishInfo interface for videos and playlist.
