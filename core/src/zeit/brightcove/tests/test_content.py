@@ -52,7 +52,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = self.repository['video:1234']
         video.subtitle = u'A new subtitle'
         self.assertEquals(u'A new subtitle', video.subtitle)
-        # On abort nothing is written to brightcove 
+        # On abort nothing is written to brightcove
         transaction.abort()
         video = self.repository['video:1234']
         self.assertEquals(
@@ -127,7 +127,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(
             'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
             list_repr.title)
-    
+
     def test_publication_status(self):
         video = self.repository['video:1234']
         publication_status = zeit.cms.workflow.interfaces.IPublicationStatus(
@@ -135,7 +135,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals("published", publication_status.published)
         video.item_state = 'INACTIVE'
         self.assertEquals("not-published", publication_status.published)
-    
+
     def test_expires(self):
         video = self.repository['video:1234']
         date = datetime.datetime(2010, 3, 26, 5, 0)
@@ -153,23 +153,20 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         date = datetime.datetime(2010, 3, 8, 12, 59, 57)
         date = pytz.utc.localize(date)
         self.assertEquals(date, video.date_first_released)
-    
+
     def test_modified(self):
         video = self.repository['video:1234']
         date = datetime.datetime(2010, 3, 8, 12, 59, 57)
         date = pytz.utc.localize(date)
         self.assertEquals(date, video.date_first_released)
-    
+
     def test_videostill(self):
         video = self.repository['video:1234']
         self.assertEquals("http://videostillurl", video.video_still)
-    
+
     def test_bc_thumbnail(self):
         video = self.repository['video:1234']
         self.assertEquals("http://thumbnailurl", video.brightcove_thumbnail)
-
-    
-
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
@@ -195,13 +192,13 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
             pls,
             zeit.cms.interfaces.ICMSContent(
                 'http://video.zeit.de/playlist/2345'))
-    
+
     def test_publication_status(self):
         video = self.repository['playlist:2345']
         publication_status = zeit.cms.workflow.interfaces.IPublicationStatus(
             video)
         self.assertEquals("published", publication_status.published)
-    
+
     def test_video_ids(self):
         pls = self.repository['playlist:2345']
         vids = ('http://video.zeit.de/video/1234', 'http://video.zeit.de/video/6789')
