@@ -1,11 +1,13 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.async.tests
 import zeit.brightcove.solr
 import zeit.brightcove.testing
 import zeit.cms
 import zeit.solr.interfaces
 import zope.component
+import zope.lifecycleevent
 
 
 class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
@@ -16,16 +18,17 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
             zeit.solr.interfaces.ISolr)
         self.public_solr = zope.component.getUtility(
             zeit.solr.interfaces.ISolr, name='public')
+        # clear out indexing requests queued up by the test setup
+        gocept.async.tests.process()
+        self.solr.reset_mock()
+        self.public_solr.reset_mock()
 
-    def tearDown(self):
-        zope.component.getSiteManager().unregisterUtility(
-            self.public_solr, name='public')
-        super(TestSolrIndexing, self).tearDown()
-
-    def test_indexing_changed_videos(self):
-        zeit.brightcove.solr._index_changed_videos_and_playlists()
+    def test_updating_repository_should_index_contents(self):
+        self.repository.update_from_brightcove()
+        gocept.async.tests.process()
         self.assertTrue(self.solr.update_raw.called)
         self.assertEquals(5, len(self.solr.update_raw.call_args_list))
+        self.assertEquals(5, len(self.public_solr.update_raw.call_args_list))
         element_add = self.solr.update_raw.call_args_list[0][0][0]
         self.assertEquals(
             ['http://video.zeit.de/video/1234'],
@@ -47,31 +50,32 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
             ['http://video.zeit.de/playlist/3456'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
 
-    def test_solr_active(self):
+    def test_updating_repository_should_delete_playlists_from_solr(self):
+        self.repository.update_from_brightcove()
+        gocept.async.tests.process()
+        self.assertTrue(self.solr.delete.called)
+        self.assertTrue(self.public_solr.delete.called)
+
+    def test_active_videos_should_be_index(self):
         video = zeit.cms.interfaces.ICMSContent(
             "http://video.zeit.de/video/1234")
         video.item_state = 'ACTIVE'
-        zeit.brightcove.solr._update_single_content(video)
+        zope.lifecycleevent.modified(video)
         self.assertTrue(self.solr.update_raw.called)
         self.assertTrue(self.public_solr.update_raw.called)
 
-    def test_solr_inactive(self):
+    def test_inactive_videos_should_be_deleted_from_solr(self):
         video = zeit.cms.interfaces.ICMSContent(
             "http://video.zeit.de/video/1234")
         video.item_state = 'INACTIVE'
-        zeit.brightcove.solr._update_single_content(video)
+        zope.lifecycleevent.modified(video)
         self.assertTrue(self.solr.delete.called)
         self.assertTrue(self.public_solr.delete.called)
 
-    def test_solr_deleted(self):
+    def test_deleted_videos_should_be_deleted_from_solr(self):
         video = zeit.cms.interfaces.ICMSContent(
             "http://video.zeit.de/video/1234")
         video.item_state = 'DELETED'
-        zeit.brightcove.solr._update_single_content(video)
+        zope.lifecycleevent.modified(video)
         self.assertTrue(self.solr.delete.called)
         self.assertTrue(self.public_solr.delete.called)
-
-    def test_empty_playlists(self):
-        zeit.brightcove.solr._empty_playlists()
-        self.assertTrue(self.solr.delete)
-        self.assertTrue(self.public_solr.delete)

@@ -1,47 +1,46 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import datetime
-import gocept.runner
 import grokcore.component
-import pytz
-import zeit.brightcove.content
+import zeit.brightcove.interfaces
 import zeit.solr.interfaces
 import zeit.solr.query
 import zope
 import zope.lifecycleevent.interfaces
 
 
-def _index_changed_videos_and_playlists():
-    from_date = datetime.datetime.now(pytz.UTC) - datetime.timedelta(hours=2)
-    videos = zeit.brightcove.content.Video.find_modified(from_date=from_date)
-    for content in videos:
-        _update_single_content(content)
-    playlists = list(zeit.brightcove.content.Playlist.find_all())
-    # we don't get the item_state on playlists, so this is necessary:
-    _empty_playlists()
-    for content in playlists:
-        _update_single_content(content)
+class Updater(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
+    grokcore.component.implements(zeit.solr.interfaces.IUpdater)
+
+    def update(self):
+        updater = zope.component.getAdapter(
+            self.context, zeit.solr.interfaces.IUpdater, name='update')
+        deleter = zope.component.getAdapter(
+            self.context.uniqueId, zeit.solr.interfaces.IUpdater,
+            name='delete')
+
+        # XXX this conditional looks strange, see #7161
+        if self.context.item_state == "ACTIVE":
+            updater.update()
+            updater.update(solr='public')
+        elif self.context.item_state == 'INACTIVE':
+            deleter.update()
+            deleter.update(solr='public')
+        else:
+            deleter.update()
+            deleter.update(solr='public')
 
 
-def _update_single_content(content):
-    deleter = zope.component.getAdapter(
-         content.uniqueId, zeit.solr.interfaces.IUpdater,
-         name='delete')
-    updater = zeit.solr.interfaces.IUpdater(content)
-
-    if content.item_state == "ACTIVE":
-        updater.update()
-        updater.update(solr='public')
-    elif content.item_state == 'INACTIVE':
-        deleter.update()
-        deleter.update(solr='public')
-    else:
-        deleter.update()
-        deleter.update(solr='public')
+@grokcore.component.subscribe(
+    zeit.brightcove.interfaces.IVideo,
+    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+def index_video_on_change(context, event):
+    zeit.solr.interfaces.IUpdater(context).update()
 
 
-def _empty_playlists():
+def delete_playlists():
     query = zeit.solr.query.field(
         'type', 'zeit.brightcove.interfaces.IPlaylist')
     query = query.encode('UTF-8')
@@ -50,16 +49,3 @@ def _empty_playlists():
         zeit.solr.interfaces.ISolr, name='public')
     solr.delete(q=query, commit=False)
     public_solr.delete(q=query, commit=False)
-
-
-@gocept.runner.once(principal=gocept.runner.from_config(
-    'zeit.brightcove', 'index-principal'))
-def index_changed_videos_and_playlists():
-    _index_changed_videos_and_playlists()
-
-
-@grokcore.component.subscribe(
-    zeit.brightcove.interfaces.IVideo,
-    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
-def index_video_on_change(context, event):
-    _update_single_content(context)
