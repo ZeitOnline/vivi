@@ -33,9 +33,14 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_getitem(self):
         self.repository._data.clear()
         self.assertRaises(KeyError, self.repository.__getitem__, 'video:1234')
+        self.assertRaises(
+            KeyError, self.repository.__getitem__, 'playlist:2345')
         self.repository.update_from_brightcove()
         video = self.repository['video:1234']
         self.assertTrue(zeit.brightcove.interfaces.IVideo.providedBy(video))
+        playlist = self.repository['playlist:2345']
+        self.assertTrue(
+            zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
 
     def test_cronjob_should_not_overwrite_user_edits(self):
         self.repository.update_from_brightcove()
