@@ -19,6 +19,7 @@ import zope.component
 import zope.container.contained
 import zope.dublincore.interfaces
 import zope.interface
+import zope.security.proxy
 
 
 
@@ -74,6 +75,21 @@ class mapped_keywords(mapped):
         if value:
             value = ';'.join(keyword.code for keyword in value)
         super(mapped_keywords, self).__set__(instance, value)
+
+
+class mapped_datetime(mapped):
+
+    def __get__(self, instance, class_):
+        value = super(mapped_datetime, self).__get__(instance, class_)
+        if not value:
+            return None
+        date = datetime.datetime.utcfromtimestamp(int(value)/1000)
+        return pytz.utc.localize(date)
+
+    def __set__(self, instance, value):
+        value = str(int(value.strftime('%s')) * 1000)
+        super(mapped_datetime, self).__set__(instance, value)
+
 
 class BCContent(object):
 
@@ -132,7 +148,6 @@ class Content(persistent.Persistent,
         registered = getattr(self, '_v_save_hook_registered', False)
         if not registered:
             transaction.get().addBeforeCommitHook(self._save)
-            self.__parent__[self.__name__] = self
             self._v_save_hook_registered = True
 
     def _save(self):
@@ -144,6 +159,9 @@ class Content(persistent.Persistent,
         data = dict(self.data)
         if 'customFields' in data:
             data['customFields'] = dict(data['customFields'])
+        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
+        for field in READ_ONLY:
+            data.pop(field, None)
         self.get_connection().post('update_video', video=data)
 
 
@@ -165,6 +183,11 @@ class Video(Content):
     subtitle = mapped('longDescription')
     supertitle = mapped('customFields', 'supertitle')
     video_still = mapped('videoStillURL')
+
+    expires = mapped_datetime('endDate')
+    date_last_modified = mapped_datetime('lastModifiedDate')
+    date_created = mapped_datetime('creationDate')
+    date_first_released = mapped_datetime('publishedDate')
 
     fields = ",".join((
         'creationDate',
@@ -219,35 +242,6 @@ class Video(Content):
                 if content is not None:
                     result.append(content)
         return tuple(result)
-
-    def __create_bc_date__(self, ts):
-        date = datetime.datetime.utcfromtimestamp(ts/1000)
-        return pytz.utc.localize(date)
-
-
-    @property
-    def expires(self):
-        ts = self.data.get('endDate')
-        if not ts: return None
-        return self.__create_bc_date__(int(ts))
-
-    @property
-    def date_last_modified (self):
-        ts = self.data.get('lastModifiedDate')
-        if not ts: return None
-        return self.__create_bc_date__(int(ts))
-
-    @property
-    def date_created(self):
-        ts = self.data.get('creationDate')
-        if not ts: return None
-        return self.__create_bc_date__(int(ts))
-
-    @property
-    def date_first_released(self):
-        ts = self.data.get('publishedDate')
-        if not ts: return None
-        return self.__create_bc_date__(int(ts))
 
     @related.setter
     def related(self, value):
@@ -405,6 +399,19 @@ class IDCTimes(grokcore.component.Adapter):
     @property
     def modified(self):
         return self.context.date_last_modified
+
+    @modified.setter
+    def modified(self, value):
+        self.context.date_last_modified = value
+
+
+@grokcore.component.subscribe(
+    zeit.brightcove.interfaces.IVideo,
+    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+def set_last_modified(context, event):
+    times = zope.dublincore.interfaces.IDCTimes(
+        zope.security.proxy.removeSecurityProxy(context))
+    times.modified = datetime.datetime.now(pytz.utc)
 
 
 class CommonMetadata(grokcore.component.Adapter):

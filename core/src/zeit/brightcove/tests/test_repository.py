@@ -1,28 +1,24 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import datetime
+from zeit.brightcove.testing import VIDEO_1234
 import time
 import transaction
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.interfaces
-import zope.component
+import zope.lifecycleevent
 
 
 class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
 
-    def tearDown(self):
-        try:
-            del self.repository.BRIGHTCOVE_CACHE_TIMEOUT
-        except AttributeError:
-            pass
-        super(RepositoryTest, self).tearDown()
+    def setUp(self):
+        super(RepositoryTest, self).setUp()
+        self.old_video = VIDEO_1234.copy()
 
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
+    def tearDown(self):
+        VIDEO_1234.update(self.old_video)
+        super(RepositoryTest, self).tearDown()
 
     def test_invalid_id(self):
         self.assertRaises(KeyError,
@@ -35,25 +31,41 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
                           self.repository.__getitem__, 'video:2345723')
 
     def test_getitem(self):
+        self.repository._data.clear()
+        self.assertRaises(KeyError, self.repository.__getitem__, 'video:1234')
+        self.repository.update_from_brightcove()
         video = self.repository['video:1234']
         self.assertTrue(zeit.brightcove.interfaces.IVideo.providedBy(video))
 
-    def test_brightcove_cache_timeout(self):
-        # Set the timeout to 2 seconds
-        self.repository.BRIGHTCOVE_CACHE_TIMEOUT = datetime.timedelta(
-            seconds=2)
-        # Get video, modify and commit. The changes are visible for 2 seconds.
-        # After that they're gone because we're not *really* changing the data
+    def test_cronjob_should_not_overwrite_user_edits(self):
+        self.repository.update_from_brightcove()
         video = self.repository['video:1234']
-        video.subtitle = u'A new subtitle'
+        video.title = u'changed'
+        video = self.repository['video:1234']
+        self.assertEqual(u'changed', video.title)
+        zope.lifecycleevent.modified(video)
         transaction.commit()
-        time.sleep(1)
-        # Still old data
         video = self.repository['video:1234']
-        self.assertEquals(u'A new subtitle', video.subtitle)
-        time.sleep(1)
-        # Now we've got "new" data from brightcove
+        self.assertEqual(u'changed', video.title)
+        self.repository.update_from_brightcove()
         video = self.repository['video:1234']
-        self.assertEquals(
-            u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
-            video.subtitle)
+        self.assertEqual(u'changed', video.title)
+
+    def test_cronjob_should_fetch_changes_from_brightcove(self):
+        self.repository.update_from_brightcove()
+        video = self.repository['video:1234']
+        video.title = u'local change'
+        zope.lifecycleevent.modified(video)
+        transaction.commit()
+
+        # as long as the modified date is not newer than the local one,
+        # upstream changes are ignored
+        VIDEO_1234['name'] = u'upstream change'
+        self.repository.update_from_brightcove()
+        video = self.repository['video:1234']
+        self.assertEqual(u'local change', video.title)
+
+        VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
+        self.repository.update_from_brightcove()
+        video = self.repository['video:1234']
+        self.assertEqual(u'upstream change', video.title)

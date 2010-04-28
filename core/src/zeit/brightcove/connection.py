@@ -23,7 +23,6 @@ class APIConnection(object):
         self.read_url = read_url
         self.write_url = write_url
 
-
     def decode_broken_brightcove_json(self, json):
         return simplejson.loads(
             json.translate(None, JSON_CONTROL_CHARACTERS))

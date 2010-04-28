@@ -3,16 +3,17 @@
 
 import copy
 import pkg_resources
+import pkg_resources
 import random
 import simplejson
 import threading
+import transaction
 import urllib2
 import urlparse
 import zeit.brightcove.connection
 import zeit.cms.testing
 import zeit.solr.testing
 import zope.app.testing.functional
-import pkg_resources
 
 
 VIDEO_1234 = {
@@ -191,7 +192,7 @@ product_config = """\
     write-url http://localhost:%s/
     source-serie file://%s
 </product-config>
-""" % (httpd_port, 
+""" % (httpd_port,
        httpd_port,
        pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
 
@@ -199,7 +200,6 @@ product_config = """\
 BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=product_config + zeit.solr.testing.product_config)
-
 
 
 class BrightcoveLayer(BrightcoveHTTPLayer,
@@ -215,6 +215,15 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
         pass
 
     @classmethod
+    def testSetUp(cls):
+        root = BrightcoveZCMLLayer.setup.getRootFolder()
+        with zeit.cms.testing.site(root):
+            repository = zope.component.getUtility(
+                zeit.brightcove.interfaces.IRepository)
+            repository.update_from_brightcove()
+        transaction.commit()
+
+    @classmethod
     def testTearDown(cls):
         RequestHandler.posts_received[:] = []
 
@@ -223,25 +232,26 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = BrightcoveLayer
 
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.brightcove.interfaces.IRepository)
+
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()
         self.posts = RequestHandler.posts_received
+        self.repository.update_from_brightcove()
 
 
 def FunctionalDocFileSuite(*args, **kw):
-
-    def tearDown(self):
-        RequestHandler.posts_received[:] = []
-
     kw.setdefault('layer', BrightcoveLayer)
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
-    kw['tearDown'] = tearDown
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 
 
+# test video IDs from the live system.
 # 70355221001
 # 70740054001
 # 70662056001
 # 70355162001
-
