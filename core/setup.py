@@ -23,6 +23,6 @@ setup(
     ],
     entry_points = """
     [console_scripts]
-    index-videos-and-playlists = zeit.brightcove.solr:index_changed_videos_and_playlists
+    update-brightcove-repository = zeit.brightcove.repository:update_repository
     """
 )

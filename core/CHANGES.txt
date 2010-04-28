@@ -5,7 +5,9 @@ zeit.brightcove changes
 0.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- The repository does not access the Brightcove API directly anymore, it only
+  functions as a local cache. It is populated periodically by cron (Solr is
+  updated then, too, as a "byproduct").
 
 
 0.2.1 (2010-04-27)
