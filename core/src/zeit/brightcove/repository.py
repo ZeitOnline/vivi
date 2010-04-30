@@ -47,38 +47,56 @@ class Repository(persistent.Persistent,
         return self._data.items()
 
     def update_from_brightcove(self):
+        # getting the playlists seems to be much more likely to fail, and since
+        # we want to take what we can get, we do it *after* we have processed
+        # the videos (instead of combining both steps)
+        self._update_videos()
+        self._update_playlists()
+
+    def _update_videos(self):
         from_date = (datetime.datetime.now(pytz.UTC)
                      - datetime.timedelta(hours=2))
         videos = zeit.brightcove.content.Video.find_modified(
             from_date=from_date)
-        for content in videos:
-            current = self.get(content.__name__)
-            curtime = zope.dublincore.interfaces.IDCTimes(current, None)
-            bctime = zope.dublincore.interfaces.IDCTimes(content)
-            if curtime and curtime.modified > bctime.modified:
-                continue
-            self[content.__name__] = content
+        for x in videos:
+            self._update_content(x)
 
-        # separate into two loops, since getting the playlists is much more
-        # likely to fail, so we want to take what we can get
-        self.delete_playlists()
-        playlists = list(zeit.brightcove.content.Playlist.find_all())
-        for content in playlists:
-            self[content.__name__] = content
-
-    def delete_playlists(self):
-        """Playlists vanish from Brightcove when they are deleted (as opposed
-        to Videos that use a 'deleted' state instead), so we need to
-        pre-emptively delete them from our Repository, too.
-        """
-        for key, value in self.items():
-            if zeit.brightcove.interfaces.IPlaylist.providedBy(value):
-                del self[key]
-
+    def _update_playlists(self):
         # XXX this is bad coupling, but as we don't want to assume that the
-        # repository and Solr sare in sync (then we could delete playlists in
-        # __delitem__()), this is the only place and time where we can do this
+        # repository and Solr are in sync (then we could delete playlists from
+        # Solr in our __delitem__()), this is the only place and time where we
+        # can do this.
         zeit.brightcove.solr.delete_playlists()
+
+        playlists = list(zeit.brightcove.content.Playlist.find_all())
+        exists = set()
+        for x in playlists:
+            exists.add(x.__name__)
+            self._update_content(x)
+
+        for content in list(self.values()):
+            if not zeit.brightcove.interfaces.IPlaylist.providedBy(content):
+                continue
+            if content.__name__ not in exists:
+                del self[content.__name__]
+
+    def _update_content(self, newcontent):
+        current = self.get(newcontent.__name__)
+
+        if current:
+            curtime = zope.dublincore.interfaces.IDCTimes(current)
+            bctime = zope.dublincore.interfaces.IDCTimes(newcontent)
+            if curtime.modified and curtime.modified >= bctime.modified:
+                return
+
+            curdata = current.data.copy()
+            curdata.pop('lastModifiedDate', None)
+            newdata = newcontent.data.copy()
+            newdata.pop('lastModifiedDate', None)
+            if curdata == newdata:
+                return
+
+        self[newcontent.__name__] = newcontent
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(

@@ -24,6 +24,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
         self.public_solr.reset_mock()
 
     def test_updating_repository_should_index_contents(self):
+        self.repository._data.clear()
         self.repository.update_from_brightcove()
         gocept.async.tests.process()
         self.assertTrue(self.solr.update_raw.called)
@@ -52,7 +53,6 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_updating_repository_should_delete_playlists_from_solr(self):
         self.repository.update_from_brightcove()
-        gocept.async.tests.process()
         self.assertTrue(self.solr.delete.called)
         self.assertTrue(self.public_solr.delete.called)
 
