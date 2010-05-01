@@ -9,6 +9,8 @@ zeit.content.cp changes
 - Fullgraphical block doesn't break CPE if the referenced object is removed
   (#7093).
 
+- Added Snapshot image (#7181)
+
 
 0.34.0 (2010-04-09)
 -------------------

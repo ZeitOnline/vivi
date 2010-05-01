@@ -43,6 +43,11 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         source=zeit.content.image.interfaces.ImageSource())
 
+    snapshot = zope.schema.Choice(
+        title=_('Snapshot (HP only)'),
+        required=False,
+        source=zeit.content.image.interfaces.ImageSource())
+
     def __getitem__(area_key):
         """Return IArea for given key.
 
