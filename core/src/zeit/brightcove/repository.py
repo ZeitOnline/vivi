@@ -66,9 +66,8 @@ class Repository(persistent.Persistent,
         # repository and Solr are in sync (then we could delete playlists from
         # Solr in our __delitem__()), this is the only place and time where we
         # can do this.
-        zeit.brightcove.solr.delete_playlists()
-
         playlists = list(zeit.brightcove.content.Playlist.find_all())
+        zeit.brightcove.solr.delete_playlists()
         exists = set()
         for x in playlists:
             exists.add(x.__name__)
