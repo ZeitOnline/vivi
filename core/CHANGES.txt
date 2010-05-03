@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.34.1 (unreleased)
+0.35.0 (2010-05-03)
 -------------------
 
 - Errors in editors actions are logged as warning now.
