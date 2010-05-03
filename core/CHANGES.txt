@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.2.2 (unreleased)
+0.3.0 (2010-05-03)
 ------------------
 
 - The repository does not access the Brightcove API directly anymore, it only
