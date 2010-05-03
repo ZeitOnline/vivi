@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.invalidate',
-    version = '0.3.4',
+    version = '0.3.5dev',
     author='Christian Zagrodnick',
     author_email='cz@gocept.com',
     description="""\
