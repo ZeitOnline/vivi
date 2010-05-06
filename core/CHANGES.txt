@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.3.1 (unreleased)
+0.3.1 (2010-05-06)
 ------------------
 
 - Do not unconditionally delete all playlists from solr but only those we know
