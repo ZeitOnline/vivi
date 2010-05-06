@@ -5,7 +5,8 @@ zeit.brightcove changes
 0.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Explicitly index solr instead of modified event which causes the modification
+  time to change.
 
 
 0.3.1 (2010-05-06)

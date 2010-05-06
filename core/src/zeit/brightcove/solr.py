@@ -5,7 +5,7 @@ import grokcore.component
 import zeit.brightcove.interfaces
 import zeit.solr.interfaces
 import zeit.solr.query
-import zope
+import zope.component
 import zope.lifecycleevent.interfaces
 
 
@@ -36,6 +36,10 @@ class Updater(grokcore.component.Adapter):
 @grokcore.component.subscribe(
     zeit.brightcove.interfaces.IBrightcoveContent,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
-def index_video_on_change(context, event):
+def index_content_on_change(context, event):
+    index_content(context)
+
+
+def index_content(context):
     zeit.solr.interfaces.IUpdater(context).update()
 
