@@ -60,7 +60,6 @@ class IBrightcoveContent(IBCContent):
         required=False,
         readonly=True)
 
-
     item_state = zope.schema.Choice(
         title=_("State"),
         required=True,

@@ -111,5 +111,5 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         del PLAYLIST_LIST_RESPONSE['items'][-1]
 
         self.repository.update_from_brightcove()
-        self.assertRaises(
-            KeyError, self.repository.__getitem__, 'playlist:3456')
+        pls = self.repository['playlist:3456']
+        self.assertEquals('DELETED', pls.item_state)

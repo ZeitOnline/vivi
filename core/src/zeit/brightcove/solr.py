@@ -34,18 +34,8 @@ class Updater(grokcore.component.Adapter):
 
 
 @grokcore.component.subscribe(
-    zeit.brightcove.interfaces.IVideo,
+    zeit.brightcove.interfaces.IBrightcoveContent,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
 def index_video_on_change(context, event):
     zeit.solr.interfaces.IUpdater(context).update()
 
-
-def delete_playlists():
-    query = zeit.solr.query.field(
-        'type', 'zeit.brightcove.interfaces.IPlaylist')
-    query = query.encode('UTF-8')
-    solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-    public_solr= zope.component.getUtility(
-        zeit.solr.interfaces.ISolr, name='public')
-    solr.delete(q=query, commit=False)
-    public_solr.delete(q=query, commit=False)

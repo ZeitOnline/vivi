@@ -11,6 +11,7 @@ import zeit.brightcove.solr
 import zope.component
 import zope.container.contained
 import zope.interface
+import zope.lifecycleevent
 
 
 class Repository(persistent.Persistent,
@@ -26,13 +27,9 @@ class Repository(persistent.Persistent,
 
     def __setitem__(self, key, obj):
         self._data[key] = obj
-        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(obj))
 
     def get(self, key):
         return self._data.get(key)
-
-    def __delitem__(self, key):
-        del self._data[key]
 
     def __iter__(self):
         return iter(self._data)
@@ -45,6 +42,7 @@ class Repository(persistent.Persistent,
 
     def items(self):
         return self._data.items()
+
 
     def update_from_brightcove(self):
         # getting the playlists seems to be much more likely to fail, and since
@@ -62,40 +60,35 @@ class Repository(persistent.Persistent,
             self._update_content(x)
 
     def _update_playlists(self):
-        # XXX this is bad coupling, but as we don't want to assume that the
-        # repository and Solr are in sync (then we could delete playlists from
-        # Solr in our __delitem__()), this is the only place and time where we
-        # can do this.
-        playlists = list(zeit.brightcove.content.Playlist.find_all())
-        zeit.brightcove.solr.delete_playlists()
+        playlists = zeit.brightcove.content.Playlist.find_all()
         exists = set()
-        for x in playlists:
-            exists.add(x.__name__)
-            self._update_content(x)
+        for playlist in playlists:
+            exists.add(playlist.__name__)
+            self._update_content(playlist)
 
         for content in list(self.values()):
             if not zeit.brightcove.interfaces.IPlaylist.providedBy(content):
                 continue
             if content.__name__ not in exists:
-                del self[content.__name__]
+                self[content.__name__].item_state = 'DELETED'
+                zope.lifecycleevent.modified(self[content.__name__])
 
     def _update_content(self, newcontent):
         current = self.get(newcontent.__name__)
-
         if current:
             curtime = zope.dublincore.interfaces.IDCTimes(current)
             bctime = zope.dublincore.interfaces.IDCTimes(newcontent)
-            if curtime.modified and curtime.modified >= bctime.modified:
+            if (curtime.modified and bctime.modified and
+                curtime.modified >= bctime.modified):
                 return
-
             curdata = current.data.copy()
             curdata.pop('lastModifiedDate', None)
             newdata = newcontent.data.copy()
             newdata.pop('lastModifiedDate', None)
             if curdata == newdata:
                 return
-
         self[newcontent.__name__] = newcontent
+        zope.lifecycleevent.modified(newcontent)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(

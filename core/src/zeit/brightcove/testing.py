@@ -240,7 +240,6 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()
         self.posts = RequestHandler.posts_received
-        self.repository.update_from_brightcove()
 
 
 def FunctionalDocFileSuite(*args, **kw):

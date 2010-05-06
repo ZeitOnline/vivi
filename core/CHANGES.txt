@@ -5,7 +5,10 @@ zeit.brightcove changes
 0.3.1 (unreleased)
 ------------------
 
-- First load all playlists, then delete solr, then update solr.
+- Do not unconditionally delete all playlists from solr but only those we know
+  about but brightcove doesn't know about.
+
+- Update solr synchronously. The async updating was not intentional.
 
 
 0.3.0 (2010-05-03)
