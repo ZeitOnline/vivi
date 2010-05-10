@@ -10,6 +10,8 @@ zeit.cms changes
 
 - ``product_id`` moved to "head" in metadata form.
 
+- DAV-Properties from the "INTERNAL" namespace are no longer copied to XML
+  (#7151).
 
 
 1.41.4 (2010-04-14)

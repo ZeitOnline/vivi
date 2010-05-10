@@ -74,8 +74,8 @@ properties. Add some attributes to make sure they're removed:
 ...    </testtype>""")
 
 
-Let's add some properties under the hood. Note that properties in the DAV:
-namespace are *not* mapped:
+Let's add some properties under the hood. Note that properties in the DAV: or
+INTERNAL namespace are *not* mapped:
 
 >>> import zeit.connector.interfaces
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(
@@ -84,6 +84,7 @@ namespace are *not* mapped:
 >>> properties.register_live_property('foobar', 'DAV:')
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
+>>> properties[('foobar', 'INTERNAL')] = 'no-dav-sync'
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype>
   <head>
