@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Mar 10 10:41:03 2010\n"
-"PO-Revision-Date: 2010-05-10 14:41+0100\n"
+"PO-Revision-Date: 2010-05-10 15:09+0100\n"
 "Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -741,7 +741,7 @@ msgstr "Serie"
 
 #: zeit/cms/content/interfaces.py:117
 msgid "Copyright (c)"
-msgstr "Copyright © (nur in Ausnahmefällen setzen)"
+msgstr "Quelle"
 
 #: zeit/cms/content/interfaces.py:118
 msgid "Do not enter (c)."
@@ -798,7 +798,7 @@ msgstr "Banner-Id"
 
 #: zeit/cms/content/interfaces.py:169
 msgid "Product id"
-msgstr "Quelle"
+msgstr "Standard-Quelle"
 
 #: zeit/cms/content/interfaces.py:177
 msgid "Foldable"
