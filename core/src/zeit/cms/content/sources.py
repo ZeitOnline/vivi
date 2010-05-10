@@ -111,6 +111,10 @@ class SerieSource(SimpleXMLSource):
 
     config_url = 'source-serie'
 
+class SerieVideoSource(SimpleXMLSource):
+
+    config_url = 'source-serie'
+
 
 class SubNavigationSource(SimpleContextualXMLSource):
     """Source for the subnavigation."""
