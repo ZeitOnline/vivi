@@ -5,6 +5,7 @@ zeit.locales CHANGES
 +++++++++++++++++
 
 - Using versions from the ZTK.
+- Übersetzungen aktualisiert  
 
 
 0.17 (2010-03-10)
