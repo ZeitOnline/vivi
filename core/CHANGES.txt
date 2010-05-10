@@ -4,9 +4,12 @@ zeit.cms changes
 1.41.5 (unreleased)
 -------------------
 
-- copyrights-field from CommonMetadata is now optional
-- product_id moved to head in browser
-- copyrights moved to navigation in browser  
+- Copyrights-field from CommonMetadata is now optional
+
+- Copyrights moved to "navigation" in metadata form.
+
+- ``product_id`` moved to "head" in metadata form.
+
 
 
 1.41.4 (2010-04-14)
