@@ -1,14 +1,12 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """Dublincore implementation."""
 
+import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zope.component
 import zope.dublincore.interfaces
 import zope.interface
-
-import zeit.cms.interfaces
-import zeit.cms.content.dav
 
 
 class DCTimes(object):
