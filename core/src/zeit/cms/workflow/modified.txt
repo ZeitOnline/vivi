@@ -28,7 +28,12 @@ u'zope.user'
 
 The access time from IDCTimes can be accessed through IModified:
 
->>> zeit.cms.workflow.interfaces.IModified(content).date_last_modified
+>>> import zope.dublincore.interfaces
+>>> dc = zope.dublincore.interfaces.IDCTimes(content).modified
+>>> wf = zeit.cms.workflow.interfaces.IModified(content).date_last_modified
+>>> dc == wf
+True
+>>> wf
 datetime.datetime(..., tzinfo=<UTC>)
 
 

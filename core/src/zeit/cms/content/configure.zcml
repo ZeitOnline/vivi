@@ -127,8 +127,12 @@
   <subscriber handler=".xmlsupport.map_dav_properties_to_xml_before_checkin" />
 
   <!-- dublin core -->
-  <adapter factory=".dublincore.DCTimes" />
-  <adapter factory=".dublincore.webdav_properties" />
+  <class class=".dublincore.RepositoryDCTimes">
+    <require
+      interface="zope.dublincore.interfaces.IDCTimes"
+      permission="zope.View"
+      />
+  </class>
 
   <!-- source cache cleaner -->
   <subscriber handler=".sources.collect_caches" />

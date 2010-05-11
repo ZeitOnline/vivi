@@ -2,20 +2,17 @@
 # See also LICENSE.txt
 """Dublincore implementation."""
 
+import grokcore.component
 import zeit.cms.content.dav
-import zeit.cms.interfaces
-import zope.component
+import zeit.cms.repository.interfaces
 import zope.dublincore.interfaces
-import zope.interface
 
 
-class DCTimes(object):
+class RepositoryDCTimes(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-    zope.interface.implements(zope.dublincore.interfaces.IDCTimes)
-
-    def __init__(self, context):
-        self.context = context
+    grokcore.component.context(
+        zeit.cms.repository.interfaces.IRepositoryContent)
+    grokcore.component.implements(zope.dublincore.interfaces.IDCTimes)
 
     created = zeit.cms.content.dav.DAVProperty(
         zope.dublincore.interfaces.IDCTimes['created'],
@@ -25,9 +22,3 @@ class DCTimes(object):
         zope.dublincore.interfaces.IDCTimes['modified'],
         u'DAV:',
         'getlastmodified')
-
-
-@zope.component.adapter(DCTimes)
-@zope.interface.implementer(zeit.cms.interfaces.IWebDAVProperties)
-def webdav_properties(context):
-    return zeit.cms.interfaces.IWebDAVProperties(context.context, None)

@@ -1,0 +1,22 @@
+Dublincore
+==========
+
+Setup:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zeit.cms.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/testcontent')
+
+
+There is a IDCTimes adapter for repository content:
+
+>>> import zope.dublincore.interfaces
+>>> dc = zope.dublincore.interfaces.IDCTimes(content)
+>>> dc
+<zeit.cms.content.dublincore.RepositoryDCTimes object at 0x...>
+>>> dc.modified
+datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+>>> dc.created is None
+True
