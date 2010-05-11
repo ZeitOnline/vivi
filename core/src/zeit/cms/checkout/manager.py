@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import datetime
-import pytz
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -13,6 +11,7 @@ import zope.app.container.interfaces
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
+import zope.dublincore.interfaces
 import zope.event
 import zope.interface
 import zope.security.proxy
@@ -114,9 +113,10 @@ class CheckoutManager(object):
                 self.context.uniqueId, "Cannot checkin.")
         workingcopy = self.context.__parent__
         if semantic_change:
+            dc = zope.dublincore.interfaces.IDCTimes(self.context)
             lsc = zope.security.proxy.removeSecurityProxy(
                 zeit.cms.content.interfaces.ISemanticChange(self.context))
-            lsc.last_semantic_change = datetime.datetime.now(pytz.UTC)
+            lsc.last_semantic_change = dc.modified
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(

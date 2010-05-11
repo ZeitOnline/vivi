@@ -13,6 +13,10 @@ zeit.cms changes
 - DAV-Properties from the "INTERNAL" namespace are no longer copied to XML
   (#7151).
 
+- Last-Semantic-Change is now determined by the last save of the workingcopy.
+  Before it was determined by the time of the checkin which lead to superfluous
+  conflict errors (#7151).
+
 
 1.41.4 (2010-04-14)
 -------------------

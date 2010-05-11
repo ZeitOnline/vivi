@@ -20,3 +20,47 @@ There is a IDCTimes adapter for repository content:
 datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
 >>> dc.created is None
 True
+
+For checked out content there is a different one:
+
+>>> import zeit.cms.checkout.interfaces
+>>> p = zeit.cms.testing.create_interaction()
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> dc = zope.dublincore.interfaces.IDCTimes(checked_out)
+>>> dc
+<zeit.cms.content.dublincore.LocalDCTimes object at 0x...>
+>>> dc.created is None
+True
+
+The modified depends on _p_mtime but falls back to the DAV modification time:
+
+>>> dc.modified
+datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+
+The modified can be set:
+
+>>> import datetime
+>>> import pytz
+>>> dc.modified = datetime.datetime(2009, 1, 1, tzinfo=pytz.UTC)
+
+But that value is only used if there is neither one in the DAV properties nor
+on _p_mtime:
+
+>>> dc.modified
+datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+>>> import zeit.connector.interfaces
+>>> del zeit.connector.interfaces.IWebDAVProperties(
+...     checked_out)[('getlastmodified', 'DAV:')]
+>>> dc.modified
+datetime.datetime(2009, 1, 1, 0, 0, tzinfo=<UTC>)
+
+After committing the object has its own modified:
+
+>>> before_commit_time = datetime.datetime.now(pytz.UTC)
+>>> import transaction
+>>> transaction.commit()
+>>> dc.modified
+datetime.datetime(...)
+>>> dc.modified > before_commit_time
+True

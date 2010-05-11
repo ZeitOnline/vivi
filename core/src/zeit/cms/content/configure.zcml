@@ -134,6 +134,13 @@
       />
   </class>
 
+  <class class=".dublincore.LocalDCTimes">
+    <require
+      interface="zope.dublincore.interfaces.IDCTimes"
+      permission="zope.View"
+      />
+  </class>
+
   <!-- source cache cleaner -->
   <subscriber handler=".sources.collect_caches" />
 
