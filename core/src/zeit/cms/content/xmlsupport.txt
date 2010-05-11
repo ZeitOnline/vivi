@@ -82,6 +82,7 @@ INTERNAL namespace are *not* mapped:
 ...     repository['testcontent'])
 >>> properties.register_live_property('am-i', 'under-the-hood')
 >>> properties.register_live_property('foobar', 'DAV:')
+>>> properties.register_live_property('foobar', 'INTERNAL')
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
 >>> properties[('foobar', 'INTERNAL')] = 'no-dav-sync'
