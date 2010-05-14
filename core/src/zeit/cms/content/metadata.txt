@@ -16,8 +16,10 @@ The initial value for the copyright is None:
 >>> content.copyrights is None
 True
 
-(Test for copyrights not necessary anymore. It's an optional field now)
+The interface default is:
 
+>>> zeit.cms.content.interfaces.ICommonMetadata['copyrights'].default
+u'ZEIT ONLINE'
 
 Set a copyright:
 

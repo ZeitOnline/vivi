@@ -4,11 +4,7 @@ zeit.cms changes
 1.41.5 (unreleased)
 -------------------
 
-- Copyrights-field from CommonMetadata is now optional
-
-- Copyrights moved to "navigation" in metadata form.
-
-- ``product_id`` moved to "head" in metadata form.
+- Nothing changed yet.
 
 - DAV-Properties from the "INTERNAL" namespace are no longer copied to XML
   (#7151).

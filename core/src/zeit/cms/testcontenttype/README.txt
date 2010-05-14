@@ -116,6 +116,7 @@ invalid though:
         <li class="error">Ressort: Required input is missing.</li>
         <li class="error">Title: Required input is missing.</li>
         <li class="error">Authors: Wrong contained type</li>
+        <li class="error">Copyright (c): Required input is missing.</li>
       </ul>
       ...
 
