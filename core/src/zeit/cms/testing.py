@@ -26,7 +26,8 @@ import zope.testing.renormalizing
 
 
 def ZCMLLayer(
-    config_file, module=None, name=None, allow_teardown=True, product_config=None):
+    config_file, module=None, name=None, allow_teardown=True,
+    product_config=None):
     if module is None:
         module = stack = inspect.stack()[1][0].f_globals['__name__']
     if name is None:
