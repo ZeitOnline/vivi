@@ -17,5 +17,9 @@ setup(
     install_requires=[
         'setuptools',
         'zeit.cms',
+        'zope.app.generations',
+        'zope.component',
+        'zope.interface',
+        'zope.testing',
     ],
 )
