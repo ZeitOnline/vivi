@@ -4,6 +4,7 @@
 import StringIO
 import datetime
 import gocept.lxml.objectify
+import grokcore.component
 import lxml.objectify
 import persistent
 import pytz
@@ -85,6 +86,33 @@ class Persistent(object):
             parent = parent.__parent__
 
 
+class SynchronisingDAVPropertyToXMLEvent(object):
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+    vetoed = False
+
+    def __init__(self, namespace, name, value):
+        self.namespace, self.name, self.value = namespace, name, value
+
+    def veto(self):
+        self.vetoed = True
+
+
+@grokcore.component.subscribe(
+    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+def veto_dav(event):
+    if event.namespace == 'DAV:':
+        event.veto()
+
+
+@grokcore.component.subscribe(
+    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+def veto_internal(event):
+    if event.namespace == 'INTERNAL':
+        event.veto()
+
+
 class PropertyToXMLAttribute(object):
     """Attribute nodes reside in the head."""
 
@@ -142,8 +170,10 @@ class PropertyToXMLAttribute(object):
             self.addAttribute(namespace, name, value)
 
     def addAttribute(self, namespace, name, value):
-        if namespace in ('DAV:', 'INTERNAL'):
-            # We don't sync DAV: or INTERNAL properties.
+        sync_event = SynchronisingDAVPropertyToXMLEvent(
+            namespace, name, value)
+        zope.event.notify(sync_event)
+        if sync_event.vetoed:
             return
         root = self.context.xml
         self.path.addattr(root, value)

@@ -17,6 +17,9 @@ zeit.cms changes
   Before it was determined by the time of the checkin which lead to superfluous
   conflict errors (#7151).
 
+- Generalised the way to control which dav properties are copied to XML
+  (#7213).
+
 
 1.41.4 (2010-04-14)
 -------------------
