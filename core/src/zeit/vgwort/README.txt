@@ -1,8 +1,8 @@
 VGWort 
 ======
 
-Tokens
-++++++
+Tokens management
++++++++++++++++++
 
 
 >>> import zeit.cms.testing
@@ -51,6 +51,82 @@ Seed the random generator with a fixed value to get predictable results:
 >>> tokens.claim()
 Traceback (most recent call last):
 ValueError: No tokens available.
+
+
+Token assignment
+++++++++++++++++
+
+Tokens are assigned before an object is published.
+
+Mark the test content type:
+
+>>> import zope.interface
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> old_implements = list(zope.interface.implementedBy(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType))
+>>> zope.interface.classImplements(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.vgwort.interfaces.IGenerallyReportableContent)
+
+
+Add tokens:
+
+>>> tokens.add('public1', 'private1')
+>>> tokens.add('public2', 'private2')
+>>> tokens.add('public3', 'private3')
+>>> len(tokens)
+3
+
+
+>>> import zeit.cms.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+>>> zeit.vgwort.interfaces.IGenerallyReportableContent.providedBy(content)
+True
+>>> import zope.event
+>>> import zeit.cms.workflow
+>>> zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(
+...     content, content))
+>>> len(tokens)
+2
+
+Publishing the same object again does not assign a new token:
+
+>>> zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(
+...     content, content))
+>>> len(tokens)
+2
+
+Tokens are only assigned for the master object of the event:
+
+>>> content2 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(
+...     content2, content))
+>>> len(tokens)
+2
+
+The private token is *not* synched to xml:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True),
+<testtype>
+  <head>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public1</attribute>
+  </head>
+  <body/>
+</testtype>
+
+
+
+
+Clean up
+++++++++
+
+Reset marker:
+
+>>> zope.interface.classImplementsOnly(
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     *old_implements)
+
 
 Restore random-nes: 
 
