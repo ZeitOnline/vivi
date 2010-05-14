@@ -15,7 +15,7 @@
   <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
-
+  <include package="zeit.cms.testcontenttype" />
   <include package="zeit.vgwort" />
 
 </configure>
