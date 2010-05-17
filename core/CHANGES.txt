@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.41.5 (unreleased)
+1.42.0 (2010-05-17)
 -------------------
 
 - Nothing changed yet.
