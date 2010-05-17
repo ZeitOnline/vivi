@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.35.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed test for zeit.brightcove >= 0.3.0 (#7241)
 
 
 0.35.0 (2010-05-03)
