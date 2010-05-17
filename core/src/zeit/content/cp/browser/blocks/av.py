@@ -46,5 +46,3 @@ class DropVideo(zeit.content.cp.browser.view.Action):
         zope.lifecycleevent.modified(self.context)
         self.signal(
             None, 'reload', self.context.__name__, self.url('@@contents'))
-
-

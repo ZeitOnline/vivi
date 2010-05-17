@@ -1,12 +1,15 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import pkg_resources
+import transaction
 import unittest
+import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.cms.testing
 import zeit.content.cp.testing
+import zeit.solr.testing
 import zope.component
 import zope.security.management
 import zope.site.hooks
@@ -30,11 +33,13 @@ def create_content(root):
 CPBrightcoveZCMLLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting-av.zcml',
     product_config=(zeit.brightcove.testing.product_config +
-                    zeit.content.cp.testing.product_config))
+                    zeit.content.cp.testing.product_config +
+                    zeit.solr.testing.product_config))
 
 
 class CPBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
-                        CPBrightcoveZCMLLLayer):
+                        CPBrightcoveZCMLLLayer,
+                        zeit.solr.testing.SolrMockLayerBase):
 
     @classmethod
     def setUp(cls):
@@ -42,6 +47,19 @@ class CPBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
 
     @classmethod
     def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        root = CPBrightcoveZCMLLLayer.setup.getRootFolder()
+        with zeit.cms.testing.site(root):
+            repository = zope.component.getUtility(
+                zeit.brightcove.interfaces.IRepository)
+            repository.update_from_brightcove()
+        transaction.commit()
+
+    @classmethod
+    def testTearDown(cls):
         pass
 
 
