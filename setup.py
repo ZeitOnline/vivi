@@ -17,7 +17,7 @@ setup(
     install_requires=[
         'grokcore.component',
         'setuptools',
-        'zeit.cms>1.41.4',
+        'zeit.cms>=1.42.0',
         'zope.app.generations',
         'zope.component',
         'zope.interface',
