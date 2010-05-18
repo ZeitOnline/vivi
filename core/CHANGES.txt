@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.35.2 (unreleased)
+0.36.0 (2010-05-18)
 -------------------
 
 - RSS-Block: Felder für Feed-Icon und Teaserbild (#7259).
