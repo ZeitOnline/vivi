@@ -31,7 +31,7 @@ Feed URLs must be urls:
 ...
 
 
-Only http(s) is supported (and file):
+Only http(s) is supported:
 
 >>> browser.getControl('URL of RSS feed').value = 'feed://foo'
 >>> browser.getControl('Apply').click()
@@ -42,12 +42,12 @@ Only http(s) is supported (and file):
 
 Set a valid URL:
 
->>> import pkg_resources
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> url = 'file://' + pkg_resources.resource_filename(
-...     'zeit.content.cp.tests', 'tagesschau.xml')
+>>> import zeit.content.cp.testing
+>>> url = 'http://localhost:%s/tagesschau.xml' % (
+...     zeit.content.cp.testing.httpd_port)
 >>> browser.getControl('URL of RSS feed').value = url
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getControl('Apply').click()
@@ -72,8 +72,8 @@ True
 Change to another URL:
 
 
->>> url = 'file://' + pkg_resources.resource_filename(
-...     'zeit.content.cp.tests', 'heise.xml')
+>>> url = 'http://localhost:%s/heise.xml' % (
+...     zeit.content.cp.testing.httpd_port)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL of RSS feed').value = url
@@ -135,7 +135,7 @@ The feed object displays the feed's title in the repository listing:
 >>> browser.open('/++skin++cms/repository/rss/')
 >>> print browser.contents
 <...tagesschau.de - Die Nachrichten der ARD...
->>> hash_ = browser.etree.xpath('//span[@class="filename"]/text()')[0]
+>>> hash_ = browser.etree.xpath('//span[@class="filename"]/text()')[1]
 >>> browser.open(hash_ + '/@@view.html')
 >>> print browser.contents
 <...tagesschau.de - Die Nachrichten der ARD...

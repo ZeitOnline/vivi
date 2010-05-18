@@ -82,4 +82,5 @@ def test_suite():
     rss_test = zeit.content.cp.testing.FunctionalDocFileSuite(
         'rss.txt',
         layer=zeit.content.cp.testing.FeedServer)
+    suite.addTest(rss_test)
     return suite
