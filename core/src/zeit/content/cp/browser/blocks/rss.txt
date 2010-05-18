@@ -90,7 +90,9 @@ True
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
-      <div class="block-item">heise online News</div>
+      <div class="block-item">
+        <div>heise online News</div>
+      </div>
       <ul class="feed-items">
         <li>QSC kann Umsatz und Ergebnis deutlich verbessern</li>
         <li>Applied Materials bleibt in der Verlustzone</li>
@@ -102,6 +104,72 @@ True
 >>> browser.getControl('URL').value
 '.../heise.xml'
 
+Teaser image
+------------
+
+RSS blocks may have a separate teaser image:
+
+>>> browser.getControl('Teaser image').value = (
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> browser.getControl('Apply').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+      <div class="block-item">
+        <div>heise online News</div>
+        <img class="feed-teaser"
+             src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail" />
+      </div>
+      ...
+
+The teaser image may also be a teaser group:
+
+>>> import zeit.cms.testing
+>>> import zeit.content.image.tests
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     group = zeit.content.image.tests.create_image_group()
+>>> browser.getLink('Edit').click()
+>>> print browser.getControl('Teaser image').value 
+http://xml.zeit.de/2006/DSC00109_2.JPG
+>>> browser.getControl('Teaser image').value = 'http://xml.zeit.de/image-group'
+>>> browser.getControl('Apply').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+      <div class="block-item">
+        <div>heise online News</div>
+        <img class="feed-teaser"
+             src="http://localhost/++skin++cms/repository/image-group/@@thumbnail" />
+      </div>
+      ...
+>>> browser.getLink('Edit').click()
+>>> print browser.getControl('Teaser image').value 
+http://xml.zeit.de/image-group
+
+
+Feed icon
+---------
+
+The RSS block may have a (manually set) feed icon, which also can be a teaser
+group:
+
+>>> browser.getControl('Feed icon').value = 'http://xml.zeit.de/image-group'
+>>> browser.getControl('Apply').click()
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> print browser.getControl('Feed icon').value
+http://xml.zeit.de/image-group
+
+... or a normal image:
+
+
+>>> browser.getControl('Feed icon').value = (
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> browser.getControl('Apply').click()
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> print browser.getControl('Feed icon').value
+http://xml.zeit.de/2006/DSC00109_2.JPG
 
 
 XML of a RSS block
@@ -124,6 +192,14 @@ XML of a RSS block
       href="/var/cms/work/rss/<MD5>">
     <xi:fallback>Ziel http://xml.zeit.de/rss/<MD5> nicht erreichbar.</xi:fallback>
   </xi:include>
+  <teaser_image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
+    <bu xsi:nil="true"/>
+    <copyright py:pytype="str">©</copyright>
+  </teaser_image>
+  <feed_icon src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires="">
+    <bu xsi:nil="true"/>
+    <copyright py:pytype="str">©</copyright>
+  </feed_icon>
 </container>...
 
 
@@ -135,13 +211,11 @@ The feed object displays the feed's title in the repository listing:
 >>> browser.open('/++skin++cms/repository/rss/')
 >>> print browser.contents
 <...tagesschau.de - Die Nachrichten der ARD...
->>> hash_ = browser.etree.xpath('//span[@class="filename"]/text()')[1]
->>> browser.open(hash_ + '/@@view.html')
->>> print browser.contents
-<...tagesschau.de - Die Nachrichten der ARD...
 
 Feed objects do not display a 'checkout' button:
 
+>>> hash_ = browser.etree.xpath('//span[@class="filename"]/text()')[0]
+>>> browser.open(hash_ + '/@@view.html')
 >>> 'Checkout' not in browser.contents
 True
 

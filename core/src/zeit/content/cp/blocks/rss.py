@@ -30,6 +30,13 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
     max_items = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'max_items', zeit.content.cp.interfaces.IRSSBlock['max_items'])
 
+    teaser_image = zeit.cms.content.property.SingleResource(
+        '.teaser_image',
+        xml_reference_name='image', attributes=('base-id', 'src'))
+
+    feed_icon = zeit.cms.content.property.SingleResource(
+        '.feed_icon',
+        xml_reference_name='image', attributes=('base-id', 'src'))
 
     def __init__(self, context, xml):
         super(RSSBlock, self).__init__(context, xml)

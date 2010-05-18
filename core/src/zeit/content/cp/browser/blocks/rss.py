@@ -22,4 +22,5 @@ class Refresh(zeit.content.cp.browser.view.Action):
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
 
     form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IRSSBlock).select('url', 'max_items')
+        zeit.content.cp.interfaces.IRSSBlock).select(
+            'url', 'max_items', 'teaser_image', 'feed_icon')

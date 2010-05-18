@@ -41,12 +41,12 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     header_image = zope.schema.Choice(
         title=_('Header image'),
         required=False,
-        source=zeit.content.image.interfaces.ImageSource())
+        source=zeit.content.image.interfaces.imageSource)
 
     snapshot = zope.schema.Choice(
         title=_('Snapshot (HP only)'),
         required=False,
-        source=zeit.content.image.interfaces.ImageSource())
+        source=zeit.content.image.interfaces.imageSource)
 
     def __getitem__(area_key):
         """Return IArea for given key.
@@ -402,6 +402,16 @@ class IRSSBlock(IBlock):
         title=_('Items to show'),
         default=5,
         min=1)
+
+    teaser_image = zope.schema.Choice(
+        title=_('Teaser image'),
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
+
+    feed_icon = zope.schema.Choice(
+        title=_('Feed icon'),
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
 
     feed = zope.interface.Attribute("The corresponding IFeed object.")
 

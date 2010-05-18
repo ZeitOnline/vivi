@@ -13,9 +13,13 @@
       </div>
     </tal:error>
     <tal:display condition="not:feed/error">
-      <div class="block-item"
-           tal:content="feed/title">
-        Titel
+      <div class="block-item">
+        <div tal:content="feed/title">
+          Titel
+        </div>
+        <img class="feed-teaser"
+             tal:condition="context/teaser_image"
+             tal:attributes="src string:${context/teaser_image/@@absolute_url}/@@thumbnail" />
       </div>
       <ul class="feed-items">
         <tal:block repeat="entry feed/entries">
