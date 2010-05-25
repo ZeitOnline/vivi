@@ -129,7 +129,7 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
         transaction.commit()
         body = self.cache._data[self.key]
         os.remove(body.data.committed())
-        del body.data._p_changed  # Invalidate, thurs force reload
+        del body.data._p_changed  # Invalidate, thus force reload
         self.assertRaises(KeyError,
                           self.cache.getData, self.uniqueId, self.properties1)
         self.cache.setData(self.uniqueId, self.properties2, data2)
