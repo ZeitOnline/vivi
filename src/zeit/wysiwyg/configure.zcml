@@ -4,7 +4,6 @@
 
   <!-- sorted alphabetically, see the weights on the classes
   for execution order -->
-  <adapter factory=".html.ArticleExtraStep" name="ArticleExtraStep" />
   <adapter factory=".html.InlineElementAppendParagraph"
            name="InlineElementAppendParagraph" />
   <adapter factory=".html.CitationStep" name="CitationStep" />
