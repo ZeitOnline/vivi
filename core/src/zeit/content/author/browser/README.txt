@@ -1,0 +1,26 @@
+=======
+Authors
+=======
+
+>>> import zope.testbrowser.testing
+>>> browser = zope.testbrowser.testing.Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++vivi/repository/online/2007/01')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Author']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'william_shakespeare'
+>>> browser.getControl('Firstname').value = 'William'
+>>> browser.getControl('Lastname').value = 'Shakespeare'
+>>> browser.getControl('VG-Wort ID').value = '12345'
+>>> browser.getControl(name='form.actions.add').click()
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<...
+    <label for="form.firstname">...
+    <div class="widget">William</div>...
+    <label for="form.lastname">...
+    <div class="widget">Shakespeare</div>...
+    <label for="form.vgwortid">...
+    <div class="widget">12345</div>...
+...
