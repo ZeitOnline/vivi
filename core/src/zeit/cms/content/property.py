@@ -4,7 +4,6 @@
 import lxml.etree
 import lxml.objectify
 import sys
-import transaction
 import xml.sax.saxutils
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -48,7 +47,7 @@ class ObjectPathProperty(object):
         if self.path is None:
             # We cannot just set the new value because setting detaches the
             # instance.xml from the original tree leaving instance independet
-            # of the xml-tree. 
+            # of the xml-tree.
             node = instance.xml
             parent = node.getparent()
             new_node = lxml.objectify.E.root(
@@ -145,7 +144,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
 
 class MultiPropertyBase(object):
 
-    def __init__(self, path, result_type=tuple, sorted=lambda x:x):
+    def __init__(self, path, result_type=tuple, sorted=lambda x: x):
         self.path = lxml.objectify.ObjectPath(path)
         self.result_type = result_type
         self.sorted = sorted
