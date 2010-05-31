@@ -64,6 +64,8 @@ class ObjectPathProperty(object):
             node = self.path.find(instance.xml)
         except AttributeError:
             return None
+        if isinstance(node, lxml.objectify.NoneElement):
+            return None
         return node
 
 
