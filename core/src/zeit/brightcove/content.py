@@ -15,6 +15,7 @@ import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
+import zeit.workflow.interfaces
 import zope.component
 import zope.container.contained
 import zope.dublincore.interfaces
@@ -345,10 +346,11 @@ class UUID(grokcore.component.Adapter):
         return self.context.uniqueId
 
 
-class PublishInfo(grokcore.component.Adapter):
+class TimeBasedPublishing(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
-    grokcore.component.implements(zeit.cms.workflow.interfaces.IPublishInfo)
+    grokcore.component.implements(
+        zeit.workflow.interfaces.ITimeBasedPublishing)
 
     published = True
 
@@ -363,6 +365,15 @@ class PublishInfo(grokcore.component.Adapter):
         # publishable in the CMS.
         return False
 
+    released_from = date_first_released
+
+    @property
+    def released_to(self):
+        return self.context.expires
+
+    @property
+    def release_period(self):
+        return self.released_from, self.released_to
 
 
 class Modified(grokcore.component.Adapter):
@@ -448,7 +459,8 @@ class CommonMetadataVideo(CommonMetadata):
         return self.context.allow_comments
 
 
-@grokcore.component.adapter(zeit.brightcove.interfaces.IPlaylist, name='videos')
+@grokcore.component.adapter(
+    zeit.brightcove.interfaces.IPlaylist, name='videos')
 @grokcore.component.implementer(
     zeit.cms.relation.interfaces.IReferenceProvider)
 def list_video_ids(context):
@@ -472,4 +484,3 @@ def list_repr(context, request):
     return zope.component.queryMultiAdapter(
         (metadata, request),
         zeit.cms.browser.interfaces.IListRepresentation)
-

@@ -3,7 +3,6 @@
 
 import datetime
 import pytz
-import time
 import transaction
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
@@ -12,6 +11,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.workflow.interfaces
 import zope.component
 import zope.interface.verify
 import zope.publisher.browser
@@ -203,7 +203,8 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_video_ids(self):
         pls = self.repository['playlist:2345']
-        vids = ('http://video.zeit.de/video/1234', 'http://video.zeit.de/video/6789')
+        vids = ('http://video.zeit.de/video/1234',
+                'http://video.zeit.de/video/6789')
         self.assertEquals(vids, pls.video_ids)
 
     def test_reference_adapter(self):
@@ -224,3 +225,9 @@ class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
         pi = zeit.cms.workflow.interfaces.IPublishInfo(video)
         zope.interface.verify.verifyObject(
             zeit.cms.workflow.interfaces.IPublishInfo, pi)
+
+    def test_timebased(self):
+        video = self.repository['video:1234']
+        time = zeit.workflow.interfaces.ITimeBasedPublishing(video)
+        zope.interface.verify.verifyObject(
+            zeit.workflow.interfaces.ITimeBasedPublishing, time)

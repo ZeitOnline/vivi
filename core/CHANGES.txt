@@ -7,6 +7,8 @@ zeit.brightcove changes
 
 - Add a solr index 'h264_url' that contains the 'flv_url' of the video (#7362).
 - Change update-repository to be long-running instead of one-shot (#7339).
+- Provide an adapter to ITimeBasedPublishing, so videos get an expires
+  attribute when included in a centerpage (#7335).
 
 
 0.3.2 (2010-05-06)
