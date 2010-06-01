@@ -91,7 +91,7 @@ class Repository(persistent.Persistent,
         zeit.brightcove.solr.index_content(newcontent)
 
 
-@gocept.runner.once(principal=gocept.runner.from_config(
+@gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
     'zeit.brightcove', 'index-principal'))
 def update_repository():
     repository = zope.component.getUtility(
