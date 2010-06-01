@@ -4,7 +4,7 @@ zeit.content.cp changes
 0.36.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Header-Image und Snapshot werden im XML anstatt im DAV gespeichert (#7325).
 
 
 0.36.0 (2010-05-18)

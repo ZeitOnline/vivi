@@ -56,11 +56,13 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         zeit.content.cp.interfaces.ICenterPage['type'],
         zeit.content.cp.interfaces.DAV_NAMESPACE, 'type')
 
+    header_image = zeit.cms.content.property.SingleResource(
+        '.head.header_image',
+        xml_reference_name='image', attributes=('base-id', 'src'))
 
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.cp.interfaces.ICenterPage,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('header_image', 'snapshot'))
+    snapshot = zeit.cms.content.property.SingleResource(
+        '.head.snapshot',
+        xml_reference_name='image', attributes=('base-id', 'src'))
 
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]

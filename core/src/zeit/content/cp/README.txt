@@ -60,8 +60,23 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 [#modified-handler]_
 
 
+Header image
+++++++++++++
+
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> cp.header_image = repository['2006']['DSC00109_2.JPG']
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...>
+<head>
+...
+<header_image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
+...
+</centerpage>
+
+
 Blocks
-+++++
+++++++
 
 A block is part of an area.
 
