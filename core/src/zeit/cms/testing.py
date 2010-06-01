@@ -206,7 +206,6 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
 
 
 def click_wo_redirect(browser, *args, **kwargs):
-    import urllib2
     browser.mech_browser.set_handle_redirect(False)
     try:
         try:
