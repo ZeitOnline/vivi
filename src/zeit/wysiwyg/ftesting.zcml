@@ -31,4 +31,8 @@
   <include package="zeit.content.infobox" />
   <include package="zeit.content.portraitbox" />
 
+  <adapter
+    factory="zeit.wysiwyg.testing.mock_video_repository"
+    name="http://video.zeit.de/"
+    />
 </configure>
