@@ -11,13 +11,14 @@ Setup
 >>> import zeit.cms.testing
 >>> import zeit.wysiwyg.html
 >>> import zeit.wysiwyg.interfaces
+>>> import zeit.wysiwyg.testing
 >>> import zope.component
 
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
 
 >>> zope.component.getSiteManager().registerAdapter(
-...     zeit.wysiwyg.tests.HTMLContent)
+...     zeit.wysiwyg.testing.HTMLContent)
 
 References to images inside a HTML part are added to the zeit.cms.relation
 catalog, and thus the article is updated whenever the image metadata is
@@ -145,5 +146,5 @@ Teardown
 ========
 
 >>> zope.component.getSiteManager().unregisterAdapter(
-...     zeit.wysiwyg.tests.HTMLContent)
+...     zeit.wysiwyg.testing.HTMLContent)
 True

@@ -665,6 +665,27 @@ On the way back the divs become a video node:
   </body>
 </article>
 
+If no expires date is entered, it is taken from the content object instead:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <div class="inline-element video">
+...       <div class="videoId">http://video.zeit.de/video/1</div>
+...       <div class="expires"></div>
+...     </div>
+...     <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article ...>
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+     <video player2="" player="vid" videoID2="" format=""
+        expires="2010-01-01T00:00:00+01:00" videoID="1"/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
+
 Double video
 ~~~~~~~~~~~~
 

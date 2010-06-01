@@ -518,6 +518,13 @@ class VideoStep(ConversionStep):
             if len(id_nodes) > 1:
                 id2 = unicode(id_nodes[1])
 
+        nodes = node.xpath('div[@class="expires"]')
+        if nodes:
+            user_expires = self.datetime_to_xml(unicode(nodes[0]))
+        else:
+            user_expires = None
+        expires = self._expires(id_, id2, user_expires)
+
         def get_id_player(video_id):
             if video_id and video_id.startswith('http://video.zeit.de/'):
                 video_id = video_id.replace('http://video.zeit.de/', '', 1)
@@ -529,9 +536,7 @@ class VideoStep(ConversionStep):
 
         id_, p1 = get_id_player(id_)
         id2, p2 = get_id_player(id2)
-        nodes = node.xpath('div[@class="expires"]')
-        if nodes:
-            expires = self.datetime_to_xml(unicode(nodes[0]))
+
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])
@@ -539,6 +544,21 @@ class VideoStep(ConversionStep):
             videoID=id_, videoID2=id2, expires=expires, format=format,
             player=p1, player2=p2)
         return new_node
+
+    def _expires(self, video1, video2, user_entered):
+        if user_entered:
+            return user_entered
+
+        all_expires = []
+        maximum = datetime.datetime(datetime.MAXYEAR, 12, 31)
+        for id in [video1, video2]:
+            video = zeit.cms.interfaces.ICMSContent(id, None)
+            expires = getattr(video, 'expires', maximum)
+            all_expires.append(expires)
+        expires = min(all_expires)
+
+        tz = zope.interface.common.idatetime.ITZInfo(self.request)
+        return tz.localize(expires).isoformat()
 
 
 class RawXMLStep(ConversionStep):

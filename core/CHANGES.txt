@@ -5,6 +5,7 @@ zeit.wysiwyg changes
 -------------------
 
 - Removed support for ``article_extra`` (#5935).
+- Take expires from video object if user entered no value (#7028).
 
 
 1.37.1 (2010-04-14)
