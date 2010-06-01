@@ -4,7 +4,8 @@ zeit.cms changes
 1.42.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Retrieving None from XML now yields None, not the unicode string u'None'
+  (#7360).
 
 
 1.42.0 (2010-05-17)
