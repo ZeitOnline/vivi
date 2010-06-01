@@ -7,11 +7,15 @@ zeit.cms changes
 - Retrieving None from XML now yields None, not the unicode string u'None'
   (#7360).
 
+- Copyrights-field from CommonMetadata is now optional
+
+- Copyrights moved to "navigation" in metadata form.
+
+- ``product_id`` moved to "head" in metadata form.
+
 
 1.42.0 (2010-05-17)
 -------------------
-
-- Nothing changed yet.
 
 - DAV-Properties from the "INTERNAL" namespace are no longer copied to XML
   (#7151).
