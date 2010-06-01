@@ -43,7 +43,6 @@ class Repository(persistent.Persistent,
     def items(self):
         return self._data.items()
 
-
     def update_from_brightcove(self):
         # getting the playlists seems to be much more likely to fail, and since
         # we want to take what we can get, we do it *after* we have processed
