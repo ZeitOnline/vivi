@@ -69,7 +69,8 @@ class Body(persistent.Persistent):
                 # In the rather rare case that the blob was created in this
                 # transaction, we have to copy the data to a temporary file.
                 data = self.data.open('r')
-                tmp = tempfile.NamedTemporaryFile()
+                tmp = tempfile.NamedTemporaryFile(
+                    prefix='zeit.connector.cache.')
                 s = data.read(self.BUFFER_SIZE)
                 while s:
                     tmp.write(s)
