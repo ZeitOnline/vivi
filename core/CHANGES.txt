@@ -5,7 +5,7 @@ zeit.brightcove changes
 0.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add a solr index 'h264_url' that contains the 'flv_url' of the video (#7362).
 
 
 0.3.2 (2010-05-06)

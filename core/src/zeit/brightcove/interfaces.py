@@ -161,6 +161,11 @@ class IVideo(IBrightcoveContent,
         required=False,
         readonly=True)
 
+    flv_url = zope.schema.URI(
+        title=_('URI of the video file'),
+        required=False,
+        readonly=True)
+
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""

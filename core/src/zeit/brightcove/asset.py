@@ -50,7 +50,6 @@ class VideoAsset(zeit.cms.content.dav.DAVPropertiesAdapter):
         return 'http://video.zeit.de/video/%s' % (id_,)
 
 
-
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
     target_iface = zeit.brightcove.interfaces.IVideoAsset

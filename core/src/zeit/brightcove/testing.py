@@ -42,6 +42,7 @@ VIDEO_1234 = {
     'videoStillURL': 'http://videostillurl',
     'itemState': 'ACTIVE',
     'endDate': '1269579600000',
+    'FLVURL': 'http://flvurl',
 }
 
 VIDEO_6789 = {

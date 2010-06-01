@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import grokcore.component
+import lxml.objectify
 import zeit.brightcove.interfaces
 import zeit.solr.interfaces
 import zeit.solr.query
@@ -43,3 +44,17 @@ def index_content_on_change(context, event):
 def index_content(context):
     zeit.solr.interfaces.IUpdater(context).update()
 
+
+class FLVURLIndex(grokcore.component.GlobalUtility):
+
+    grokcore.component.implements(zeit.solr.interfaces.IIndex)
+    grokcore.component.name('flv_url')
+
+    interface = zeit.brightcove.interfaces.IVideo
+    attribute = 'flv_url'
+    name = 'h264_url'
+
+    def process(self, value, node):
+        child_node = lxml.objectify.E.field(value, name=self.name)
+        lxml.objectify.deannotate(child_node)
+        node.append(child_node)

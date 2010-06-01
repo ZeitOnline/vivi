@@ -183,6 +183,7 @@ class Video(Content):
     subtitle = mapped('longDescription')
     supertitle = mapped('customFields', 'supertitle')
     video_still = mapped('videoStillURL')
+    flv_url = mapped('FLVURL')
 
     expires = mapped_datetime('endDate')
     date_last_modified = mapped_datetime('lastModifiedDate')
@@ -210,6 +211,7 @@ class Video(Content):
         'tags',
         'thumbnailURL',
         'videoStillURL',
+        'FLVURL',
     ))
 
     @classmethod
