@@ -122,7 +122,7 @@ error_if(True, u'Region in teasermosaic.')
         s = r.apply(bar)
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 
-    def test_is_tesaerbar_is_no_block(self):
+    def test_teaserbar_is_no_block(self):
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
             zeit.content.cp.interfaces.IElementFactory,
@@ -182,6 +182,7 @@ error_if(True)
         self.cp.type = u'homepage'
         s = r.apply(self.teaser)
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 
