@@ -185,7 +185,7 @@ def content(context):
 def cp_type(context):
     cp = zeit.content.cp.interfaces.ICenterPage(context, None)
     if cp is None:
-        return None
+        return '__NONE__'
     return cp.type
 
 

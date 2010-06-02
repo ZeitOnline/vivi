@@ -5,6 +5,7 @@ zeit.content.cp changes
 -------------------
 
 - Header-Image und Snapshot werden im XML anstatt im DAV gespeichert (#7325).
+- Fehler bei Regeln ("cp_type is undefined") verhindern (#7192).
 
 
 0.36.0 (2010-05-18)
