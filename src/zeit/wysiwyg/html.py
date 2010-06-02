@@ -9,6 +9,7 @@ import datetime
 import htmlentitydefs
 import lxml.etree
 import lxml.objectify
+import pytz
 import rwproperty
 import time
 import zc.iso8601.parse
@@ -545,12 +546,13 @@ class VideoStep(ConversionStep):
             player=p1, player2=p2)
         return new_node
 
+    # XXX duplicated code in zeit.brightcove.asset
     def _expires(self, video1, video2, user_entered):
         if user_entered:
             return user_entered
 
         all_expires = []
-        maximum = datetime.datetime(datetime.MAXYEAR, 12, 31)
+        maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
         for id in [video1, video2]:
             video = zeit.cms.interfaces.ICMSContent(id, None)
             expires = getattr(video, 'expires', maximum)
@@ -559,8 +561,7 @@ class VideoStep(ConversionStep):
         if expires == maximum:
             return ''
 
-        tz = zope.interface.common.idatetime.ITZInfo(self.request)
-        return tz.localize(expires).isoformat()
+        return expires.isoformat()
 
 
 class RawXMLStep(ConversionStep):

@@ -16,6 +16,7 @@ setup(
     install_requires=[
         'gocept.fckeditor>=2.6.4.1-1',
         'lxml',
+        'pytz',
         'rwproperty',
         'setuptools',
         'zc.iso8601',

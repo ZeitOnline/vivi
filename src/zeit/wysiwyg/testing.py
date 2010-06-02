@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import datetime
+import pytz
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
@@ -42,10 +43,10 @@ def mock_video_repository(uniqueId):
     result = None
     if uniqueId == VIDEO1:
         result = Dummy()
-        result.expires = datetime.datetime(2010, 1, 1)
+        result.expires = datetime.datetime(2010, 1, 1, tzinfo=pytz.UTC)
     elif uniqueId == VIDEO2:
         result = Dummy()
-        result.expires = datetime.datetime(2009, 1, 1)
+        result.expires = datetime.datetime(2009, 1, 1, tzinfo=pytz.UTC)
     elif uniqueId == PLAYLIST:
         result = Dummy()
     return result

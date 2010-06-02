@@ -680,7 +680,7 @@ If no expires date is entered, it is taken from the content object instead:
   <body>
     <p>No bo po co to.</p>
      <video player2="" player="vid" videoID2="" format=""
-        expires="2010-01-01T00:00:00+01:00" videoID="1"/>
+        expires="2010-01-01T00:00:00+00:00" videoID="1"/>
     <p>Foo bar</p>
   </body>
 </article>
