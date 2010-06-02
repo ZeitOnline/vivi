@@ -11,6 +11,7 @@ zeit.brightcove changes
   attribute when included in a centerpage (#7335).
 - Allow both videos and playlists as assets (#7195).
 - Prefix the IDs of video/playlist assets in XML (vid123/pls987) (#7194).
+- Add expires attribute to asset XML-references (#7380).
 
 
 0.3.2 (2010-05-06)

@@ -13,6 +13,7 @@ setup(
     namespace_packages = ['zeit'],
     install_requires = [
         'lxml',
+        'pytz',
         'setuptools',
         'simplejson',
         'zeit.cms>1.41.0',

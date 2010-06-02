@@ -41,7 +41,8 @@ Audio and video are noted in the xml reference:
 >>> print lxml.etree.tostring(node, pretty_print=True),
 <reference ...href="http://xml.zeit.de/testcontent"...>...
     <audio audio_id="aud34"/>
-    <video video_id="vid1234" video_id_2="pls2345"/>...
+    <video video_id="vid1234" video_id_2="pls2345"
+      expires="2010-03-26T05:00:00+00:00"/>...
 </reference>
 
 When an IXMLReferenceUpdater is applied to the node the video elements do not

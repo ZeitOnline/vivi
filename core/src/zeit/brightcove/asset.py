@@ -1,8 +1,10 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import datetime
 import grokcore.component
 import lxml.objectify
+import pytz
 import zeit.brightcove.interfaces
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -63,9 +65,22 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             video = lxml.objectify.E.video()
             video.set('video_id', v1)
             video.set('video_id_2', v2)
+            video.set('expires', self._expires(av.video, av.video_2))
             node.append(video)
 
     def prefix_id(self, content):
         if content is None:
             return ''
         return '%s%s' % (content.id_prefix, content.id)
+
+    # XXX duplicated code from zeit.wysiwyg.html.VideoStep
+    def _expires(self, video1, video2):
+        all_expires = []
+        maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
+        for video in [video1, video2]:
+            expires = getattr(video, 'expires', maximum)
+            all_expires.append(expires)
+        expires = min(all_expires)
+        if expires == maximum:
+            return ''
+        return expires.isoformat()
