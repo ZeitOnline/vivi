@@ -556,6 +556,8 @@ class VideoStep(ConversionStep):
             expires = getattr(video, 'expires', maximum)
             all_expires.append(expires)
         expires = min(all_expires)
+        if expires == maximum:
+            return ''
 
         tz = zope.interface.common.idatetime.ITZInfo(self.request)
         return tz.localize(expires).isoformat()
