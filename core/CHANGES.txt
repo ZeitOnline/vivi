@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-2.8.3 (unreleased)
+2.8.3 (2010-06-02)
 ------------------
 
 - Extract all text content from the body (#7359).
