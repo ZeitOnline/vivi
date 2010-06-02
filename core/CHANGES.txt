@@ -9,6 +9,8 @@ zeit.brightcove changes
 - Change update-repository to be long-running instead of one-shot (#7339).
 - Provide an adapter to ITimeBasedPublishing, so videos get an expires
   attribute when included in a centerpage (#7335).
+- Allow both videos and playlists as assets (#7195).
+- Prefix the IDs of video/playlist assets in XML (vid123/pls987) (#7194).
 
 
 0.3.2 (2010-05-06)

@@ -14,11 +14,11 @@ class VideoAsset(zeit.cms.content.dav.DAVPropertiesAdapter):
     grokcore.component.implements(zeit.brightcove.interfaces.IVideoAsset)
 
     _video_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(),
+        zope.schema.TextLine(),
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'video_id')
 
     _video_id_2 = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(),
+        zope.schema.TextLine(),
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'video_id_2')
 
     zeit.cms.content.dav.mapProperties(
@@ -28,26 +28,21 @@ class VideoAsset(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     @property
     def video(self):
-        return zeit.cms.interfaces.ICMSContent(
-            self._get_unique_id(self._video_id), None)
+        return zeit.cms.interfaces.ICMSContent(self._video_id, None)
 
     @video.setter
     def video(self, value):
-        value = value.id if value else None
+        value = value and value.uniqueId
         self._video_id = value
 
     @property
     def video_2(self):
-        return zeit.cms.interfaces.ICMSContent(
-            self._get_unique_id(self._video_id_2), None)
+        return zeit.cms.interfaces.ICMSContent(self._video_id_2, None)
 
     @video_2.setter
     def video_2(self, value):
-        value = value.id if value else None
+        value = value and value.uniqueId
         self._video_id_2 = value
-
-    def _get_unique_id(self, id_):
-        return 'http://video.zeit.de/video/%s' % (id_,)
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
@@ -62,10 +57,15 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
         while node.find('video') is not None:
             node.remove(node.find('video'))
-        v1 = str(av.video.id) if av.video else ''
-        v2 = str(av.video_2.id) if av.video_2 else ''
+        v1 = self.prefix_id(av.video)
+        v2 = self.prefix_id(av.video_2)
         if v1 or v2:
             video = lxml.objectify.E.video()
             video.set('video_id', v1)
             video.set('video_id_2', v2)
             node.append(video)
+
+    def prefix_id(self, content):
+        if content is None:
+            return ''
+        return '%s%s' % (content.id_prefix, content.id)

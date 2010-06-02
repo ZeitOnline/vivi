@@ -170,6 +170,7 @@ class Video(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
     type = 'video'
+    id_prefix = 'vid' # for old-style asset IDs
     allow_comments = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
@@ -286,6 +287,7 @@ class Playlist(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
+    id_prefix = 'pls' # for old-style asset IDs
     item_state = 'ACTIVE'
     fields = ",".join((
         'id',

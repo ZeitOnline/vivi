@@ -208,11 +208,11 @@ class IVideoAsset(zope.interface.Interface):
     video = zope.schema.Choice(
         title=_('Video'),
         required=False,
-        source=videoSource)
+        source=brightcoveSource)
 
     video_2 = zope.schema.Choice(
         title=_('Video 2'),
         required=False,
-        source=videoSource)
+        source=brightcoveSource)
 
 
