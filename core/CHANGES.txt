@@ -4,7 +4,7 @@ zeit.content.article changes
 2.8.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Extract all text content from the body (#7359).
 
 
 2.8.2 (2010-04-13)

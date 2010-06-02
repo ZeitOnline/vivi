@@ -331,11 +331,24 @@ u'R\xfcckkehr der Warlords'
 Searchable text
 ===============
 
->>> article = zeit.cms.interfaces.ICMSContent(
-...     'http://xml.zeit.de/online/2007/01/Somalia')
+All Text inside <p> elements is extracted (empty paragraphs are ignored):
+
+>>> article_xml = StringIO.StringIO("""\
+... <?xml version="1.0" encoding="UTF-8"?>
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+...  <body>
+...    <supertitle>Neujahrsansprache</supertitle>
+...    <title>Jahr der Überraschungen</title>
+...    <p><a href="http://foo">Link</a> und mehr Text</p>
+...    <p></p>
+...    <p>Normaler Absatz</p>
+...  </body>
+... </article>
+... """)
+>>> article = Article(article_xml)
 >>> adapter = zope.index.text.interfaces.ISearchableText(article)
 >>> adapter.getSearchableText()
-[u'Kriegsherr Hussein Moha...ruine.']
+[u'Link', u'und mehr Text', u'Normaler Absatz']
 
 
 Cleanup
