@@ -39,6 +39,10 @@ class VideoExpiresTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
             self.localize(self.video1.expires),
             self.step._expires(VIDEO1, PLAYLIST, None))
 
+    def test_no_expires_found_should_yield_nothing(self):
+        self.assertEqual(
+            '', self.step._expires(PLAYLIST, PLAYLIST, None))
+
     def test_two_videos_should_yield_earlier_date(self):
         self.assertEqual(
             self.localize(self.video2.expires),
