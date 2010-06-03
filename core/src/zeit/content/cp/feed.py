@@ -232,6 +232,13 @@ class FeedManager(object):
             # cycle is done duing publication anyway. Also when sending events
             # async tasks are done in parallel to publishing which isn't nice
             # either (conflicts).
+
+            if co_feed is None:
+                logger = logging.getLogger('zeit.content.cp.feed')
+                logger.warning(
+                    'Feed for <%s> cannot be checked out, not refreshed'
+                    % url)
+                return
             co_feed.fetch_and_convert()
         try:
             zeit.cms.workflow.interfaces.IPublish(feed).publish()

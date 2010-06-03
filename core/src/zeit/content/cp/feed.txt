@@ -77,6 +77,13 @@ Refreshing a None "url" doesn't raise an error:
 
 >>> fm.refresh_feed(None)
 
+Refreshing does not raise an error if checking out the feed fails:
+
+>>> manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
+>>> checked_out = manager.checkout()
+>>> fm.refresh_feed(url)
+>>> del manager.workingcopy[checked_out.__name__]
+
 
 Favicon download
 ----------------
