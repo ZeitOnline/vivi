@@ -30,6 +30,7 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
 VIDEO1 = 'http://video.zeit.de/video/1'
 VIDEO2 = 'http://video.zeit.de/video/2'
+VIDEO3 = 'http://video.zeit.de/video/3'
 PLAYLIST = 'http://video.zeit.de/playlist/1'
 
 
@@ -47,6 +48,9 @@ def mock_video_repository(uniqueId):
     elif uniqueId == VIDEO2:
         result = Dummy()
         result.expires = datetime.datetime(2009, 1, 1, tzinfo=pytz.UTC)
+    elif uniqueId == VIDEO3:
+        result = Dummy()
+        result.expires = None
     elif uniqueId == PLAYLIST:
         result = Dummy()
     return result

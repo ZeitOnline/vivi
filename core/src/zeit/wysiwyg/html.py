@@ -548,14 +548,22 @@ class VideoStep(ConversionStep):
 
     # XXX duplicated code in zeit.brightcove.asset
     def _expires(self, video1, video2, user_entered):
+        """returns the earliest expire date of the two objects (the
+        user-entered value takes precedence)"""
+
         if user_entered:
             return user_entered
 
+        # an expires value might
+        # - not exist on the object (if it's a Playlist)
+        # - exist but be None (if a Video doesn't expire)
         all_expires = []
         maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
         for id in [video1, video2]:
             video = zeit.cms.interfaces.ICMSContent(id, None)
-            expires = getattr(video, 'expires', maximum)
+            expires = getattr(video, 'expires', None)
+            if expires is None:
+                expires = maximum
             all_expires.append(expires)
         expires = min(all_expires)
         if expires == maximum:

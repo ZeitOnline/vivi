@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 1.38.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- A Video might have expires==None
 
 
 1.38.0 (2010-06-02)
