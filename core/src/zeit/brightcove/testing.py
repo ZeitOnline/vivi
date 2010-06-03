@@ -23,6 +23,8 @@ VIDEO_1234 = {
         'newsletter': '1',
         'breaking-news': '0',
         'cmskeywords': 'Politik;koalition',
+        'banner': '1',
+        'banner-id': '99887',
     },
     'economics': 'AD_SUPPORTED',
     'id': 1234,

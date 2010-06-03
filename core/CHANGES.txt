@@ -6,6 +6,7 @@ zeit.brightcove changes
 ------------------
 
 - Nothing changed yet.
+- Added solr indexes for banner and banner-id (#7382).
 
 
 0.4.1 (2010-06-03)

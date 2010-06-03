@@ -34,6 +34,13 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(
             ['http://flvurl'],
             element_add.xpath("/add/doc/field[@name='h264_url']"))
+        self.assertEquals(
+            [True],
+            element_add.xpath("/add/doc/field[@name='banner']"))
+        self.assertEquals(
+            [99887],
+            element_add.xpath("/add/doc/field[@name='banner-id']"))
+
         element_add = self.solr.update_raw.call_args_list[1][0][0]
         self.assertEquals(
             ['http://video.zeit.de/video/9876'],

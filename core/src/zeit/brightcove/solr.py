@@ -45,16 +45,35 @@ def index_content(context):
     zeit.solr.interfaces.IUpdater(context).update()
 
 
-class FLVURLIndex(grokcore.component.GlobalUtility):
+class Index(object):
 
     grokcore.component.implements(zeit.solr.interfaces.IIndex)
-    grokcore.component.name('flv_url')
 
     interface = zeit.brightcove.interfaces.IVideo
-    attribute = 'flv_url'
-    name = 'h264_url'
 
     def process(self, value, node):
-        child_node = lxml.objectify.E.field(value, name=self.name)
+        child_node = lxml.objectify.E.field(value, name=self.solr_field_name)
         lxml.objectify.deannotate(child_node)
         node.append(child_node)
+
+    @property
+    def solr_field_name(self):
+        return getattr(self.__class__, 'grokcore.component.directive.name')
+
+
+class FLVURLIndex(Index, grokcore.component.GlobalUtility):
+
+    grokcore.component.name('h264_url')
+    attribute = 'flv_url'
+
+
+class BannerIndex(Index, grokcore.component.GlobalUtility):
+
+    grokcore.component.name('banner')
+    attribute = 'banner'
+
+
+class BannerIDIndex(Index, grokcore.component.GlobalUtility):
+
+    grokcore.component.name('banner-id')
+    attribute = 'banner_id'
