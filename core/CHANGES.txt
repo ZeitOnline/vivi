@@ -4,7 +4,7 @@ zeit.cms changes
 1.43.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- CAP-Kontext wieder entfernt (#7365).
 
 
 1.43.0 (2010-06-02)
