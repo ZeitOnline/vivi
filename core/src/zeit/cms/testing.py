@@ -13,6 +13,7 @@ import random
 import re
 import sys
 import threading
+import time
 import urllib2
 import zeit.connector.interfaces
 import zope.app.appsetup.product
@@ -67,6 +68,8 @@ def HTTPServerLayer(request_handler):
         t = threading.Thread(target=run)
         t.daemon = True
         t.start()
+        # XXX this is a little kludgy
+        time.sleep(0.001)
 
     def tearDown(cls):
         cls.httpd_running = False
