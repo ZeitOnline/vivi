@@ -75,10 +75,17 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
     # XXX duplicated code from zeit.wysiwyg.html.VideoStep
     def _expires(self, video1, video2):
+        """returns the earliest expire date of the two objects."""
+
+        # an expires value might
+        # - not exist on the object (if it's a Playlist)
+        # - exist but be None (if a Video doesn't expire)
         all_expires = []
         maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
         for video in [video1, video2]:
-            expires = getattr(video, 'expires', maximum)
+            expires = getattr(video, 'expires', None)
+            if expires is None:
+                expires = maximum
             all_expires.append(expires)
         expires = min(all_expires)
         if expires == maximum:

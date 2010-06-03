@@ -78,3 +78,19 @@ A freshly created node also does not contain those elements:
 0
 >>> len(node.findall('audio'))
 0
+
+
+Missing expire dates don't cause trouble:
+
+>>> video = zeit.cms.interfaces.ICMSContent(
+...     'http://video.zeit.de/video/6789')
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     av = zeit.brightcove.interfaces.IVideoAsset(co)
+...     av.video = video
+...     av.video_2 = None
+>>> node = zope.component.getAdapter(
+...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
+>>> print lxml.etree.tostring(node, pretty_print=True),
+<reference ...href="http://xml.zeit.de/testcontent"...>...
+    <video video_id="vid6789" video_id_2="" expires=""/>...
+</reference>
