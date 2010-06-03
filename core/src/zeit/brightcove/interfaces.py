@@ -42,6 +42,9 @@ class IBrightcoveContent(IBCContent):
         title=_('Id'),
         readonly=True)
 
+    id_prefix = zope.interface.Attribute(
+        'Prefix for IDs used in XML references for assets (vid or pls)')
+
     title = zope.schema.TextLine(
         title=_("Title"))
 

@@ -6,6 +6,7 @@ zeit.brightcove changes
 ------------------
 
 - Handle missing expire dates when writing asset references.
+- Add id_prefix to the interface so it gets security clearance.
 
 
 0.4.0 (2010-06-02)
