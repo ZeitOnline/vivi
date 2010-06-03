@@ -226,12 +226,12 @@ class Video(Content):
     @classmethod
     def find_modified(class_, from_date):
         from_date = int(from_date.strftime("%s")) / 60
-        # PLAYABLE,INACTIVE,DELETED,UNSCHEDULED
         return class_.get_connection().get_list(
             'find_modified_videos', class_,
             from_date=from_date,
             video_fields=class_.fields,
-            filter="PLAYABLE,DELETED,INACTIVE,UNSCHEDULED")
+            filter='PLAYABLE,DELETED,INACTIVE,UNSCHEDULED',
+            sort_by='MODIFIED_DATE', sort_order='DESC')
 
     @property
     def related(self):
