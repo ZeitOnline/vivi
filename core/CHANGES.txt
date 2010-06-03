@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.4.1 (unreleased)
+0.4.1 (2010-06-03)
 ------------------
 
 - Handle missing expire dates when writing asset references.
