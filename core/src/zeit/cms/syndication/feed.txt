@@ -544,3 +544,11 @@ node in the HTML:
   </container>
   <object_limit py:pytype="int">50</object_limit>
 </channel>
+
+An edge case are entries that do not point to actual CMS content, they are
+ignored silently when updating metadata:
+
+>>> article = Article('art1')
+>>> feed = Feed()
+>>> feed.insert(0, article)
+>>> for x in feed: feed.updateMetadata(x)

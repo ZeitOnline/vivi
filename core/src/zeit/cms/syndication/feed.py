@@ -258,3 +258,15 @@ class FakeEntry(object):
     def __init__(self, id, entry):
         self.uniqueId = id
         self.title = unicode(entry.find('title'))
+
+
+class FakeXMLReferenceUpdater(object):
+
+    zope.component.adapts(FakeEntry)
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
+
+    def __init__(self, context):
+        pass
+
+    def update(self, node):
+        pass
