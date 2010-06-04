@@ -42,6 +42,11 @@
     />
 
   <adapter factory=".centerpage.cms_content_iter" />
+  <adapter
+    factory=".centerpage.cms_content_iter"
+    provides="zeit.cms.relation.interfaces.IReferenceProvider"
+    name="zeit.content.cp"
+    />
   <adapter factory=".rule.ValidatingWorkflow" 
     provides=".interfaces.IValidatingWorkflow"
     for=".interfaces.ICenterPage"

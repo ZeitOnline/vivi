@@ -5,6 +5,7 @@ zeit.content.cp changes
 -------------------
 
 - Prevent error during refresh when feed cannot be checked out (#7313).
+- Participate in the zeit.relation index (for #6160).
 
 
 0.37.0 (2010-06-02)

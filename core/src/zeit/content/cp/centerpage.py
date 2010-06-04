@@ -130,7 +130,6 @@ class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 
 _test_helper_cp_changed = False
 
-
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
