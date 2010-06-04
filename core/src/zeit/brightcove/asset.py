@@ -61,11 +61,16 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             node.remove(node.find('video'))
         v1 = self.prefix_id(av.video)
         v2 = self.prefix_id(av.video_2)
+        href = av.video and av.video.uniqueId or ''
+        href2 = av.video_2 and av.video_2.uniqueId or ''
         if v1 or v2:
             video = lxml.objectify.E.video()
+            video.set('href', href)
+            video.set('href2', href2)
+            video.set('expires', self._expires(av.video, av.video_2))
+            # old style ID
             video.set('video_id', v1)
             video.set('video_id_2', v2)
-            video.set('expires', self._expires(av.video, av.video_2))
             node.append(video)
 
     def prefix_id(self, content):

@@ -41,8 +41,12 @@ Audio and video are noted in the xml reference:
 >>> print lxml.etree.tostring(node, pretty_print=True),
 <reference ...href="http://xml.zeit.de/testcontent"...>...
     <audio audio_id="aud34"/>
-    <video video_id="vid1234" video_id_2="pls2345"
-      expires="2010-03-26T05:00:00+00:00"/>...
+    <video
+      href="http://video.zeit.de/video/1234"
+      href2="http://video.zeit.de/playlist/2345"
+      expires="2010-03-26T05:00:00+00:00"
+      video_id="vid1234" video_id_2="pls2345"/>
+...
 </reference>
 
 When an IXMLReferenceUpdater is applied to the node the video elements do not
@@ -92,5 +96,9 @@ Missing expire dates don't cause trouble:
 ...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
 >>> print lxml.etree.tostring(node, pretty_print=True),
 <reference ...href="http://xml.zeit.de/testcontent"...>...
-    <video video_id="vid6789" video_id_2="" expires=""/>...
+  <video
+    href="http://video.zeit.de/video/6789"
+    href2="" expires=""
+    video_id="vid6789" video_id_2=""/>
+...
 </reference>
