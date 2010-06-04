@@ -105,6 +105,8 @@ class View(zeit.cms.browser.listing.Listing):
         zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
         zeit.cms.browser.listing.GetterColumn(
             title=_("File name"),
+            # zc.table can't deal with spaces in colum names
+            name='filename',
             getter=lambda i, f: i.__name__),
         zeit.cms.browser.listing.GetterColumn(
             title=_('Dimensions'),
