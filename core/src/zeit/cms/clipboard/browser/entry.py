@@ -98,9 +98,11 @@ def entryListRepresentationFactory(context, request):
     if references is None:
         return InvalidReferenceListRepresentation(
             request, context.referenced_unique_id)
-    list_repr = zope.component.getMultiAdapter(
+    list_repr = zope.component.queryMultiAdapter(
         (references, request),
         zeit.cms.browser.interfaces.IListRepresentation)
+    if list_repr is None:
+        return None
     list_repr = EntryListRepresentation(context, list_repr, context.__name__)
     return list_repr
 
@@ -124,5 +126,3 @@ def entry_icon(context, request):
         return None
     return zope.component.queryMultiAdapter(
         (references, request), name="zmi_icon")
-
-

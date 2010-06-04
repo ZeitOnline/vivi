@@ -5,6 +5,7 @@ zeit.cms changes
 -------------------
 
 - CAP-Kontext wieder entfernt (#7365).
+- Obskurer Clipboard/Ghost-Fehler behoben (#6631).
 
 
 1.43.0 (2010-06-02)
