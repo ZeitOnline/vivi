@@ -491,20 +491,24 @@ class VideoStep(ConversionStep):
                   'contains(@class, "video")]')
 
     def to_html(self, node):
-        id_1 = node.get('videoID', '')
-        id_2 = node.get('videoID2', '')
-        player_1 = 'playlist' if node.get('player') == 'pls' else 'video'
-        player_2 = 'playlist' if node.get('player2') == 'pls' else 'video'
-        if id_1:
-            id_1 = 'http://video.zeit.de/%s/%s' % (player_1, id_1)
-        if id_2:
-            id_2 = 'http://video.zeit.de/%s/%s' % (player_2, id_2)
+        def get_url(id_attr, player_attr):
+            # XXX since #7381 we store the full URL itself (href/href2),
+            # so this function could be removed, we only keep it for
+            # backwards compatibility with existing articles
+            id_ = node.get(id_attr, '')
+            player = 'playlist' if node.get(player_attr) == 'pls' else 'video'
+            if id_:
+                id_ = 'http://video.zeit.de/%s/%s' % (player, id_)
+            return id_
+
+        id1 = get_url('videoID', 'player')
+        id2 = get_url('videoID2', 'player2')
         expires = self.datetime_to_html(node.get('expires'))
         format = node.get('format') or ''
 
         new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(id_1, **{'class': 'videoId'}),
-            lxml.objectify.E.div(id_2, **{'class': 'videoId2'}),
+            lxml.objectify.E.div(id1, **{'class': 'videoId'}),
+            lxml.objectify.E.div(id2, **{'class': 'videoId2'}),
             lxml.objectify.E.div(expires, **{'class': 'expires'}),
             lxml.objectify.E.div(format, **{'class': 'format'}),
             **{'class': 'inline-element video'})
@@ -513,9 +517,9 @@ class VideoStep(ConversionStep):
 
     def to_xml(self, node):
         id_nodes = node.xpath('div[contains(@class, "videoId")]')
-        id_ = id2 = expires = format = ''
+        id1 = id2 = expires = format = ''
         if id_nodes:
-            id_ = unicode(id_nodes[0])
+            id1 = unicode(id_nodes[0])
             if len(id_nodes) > 1:
                 id2 = unicode(id_nodes[1])
 
@@ -524,7 +528,7 @@ class VideoStep(ConversionStep):
             user_expires = self.datetime_to_xml(unicode(nodes[0]))
         else:
             user_expires = None
-        expires = self._expires(id_, id2, user_expires)
+        expires = self._expires(id1, id2, user_expires)
 
         def get_id_player(video_id):
             if video_id and video_id.startswith('http://video.zeit.de/'):
@@ -535,15 +539,17 @@ class VideoStep(ConversionStep):
                     return id_, type_
             return '', ''
 
-        id_, p1 = get_id_player(id_)
-        id2, p2 = get_id_player(id2)
+        old_id, player1 = get_id_player(id1)
+        old_id2, player2 = get_id_player(id2)
 
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])
         new_node = lxml.objectify.E.video(
-            videoID=id_, videoID2=id2, expires=expires, format=format,
-            player=p1, player2=p2)
+            href=id1, href2=id2,
+            expires=expires, format=format,
+            videoID=old_id, videoID2=old_id2,
+            player=player1, player2=player2)
         return new_node
 
     # XXX duplicated code in zeit.brightcove.asset

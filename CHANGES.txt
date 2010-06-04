@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 1.38.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add video-uniqueId to XML (#7381).
 
 
 1.38.1 (2010-06-03)
