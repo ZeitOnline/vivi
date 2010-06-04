@@ -171,6 +171,23 @@ http://xml.zeit.de/image-group
 >>> print browser.getControl('Feed icon').value
 http://xml.zeit.de/2006/DSC00109_2.JPG
 
+Misc properties
+---------------
+
+>>> browser.getControl('Show supertitle').selected
+True
+>>> browser.getControl('Time format').displayValue
+['None']
+>>> browser.getControl('Show supertitle').selected = False
+>>> browser.getControl('Time format').displayValue = ['Time']
+>>> browser.getControl('Apply').click()
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('Show supertitle').selected
+False
+>>> browser.getControl('Time format').displayValue
+['Time']
+
 
 XML of a RSS block
 ==================
@@ -183,6 +200,8 @@ XML of a RSS block
     cp:type="rss"
     module="rss"
     max_items="2"
+    show_supertitle="False"
+    time_format="time"
     cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
     url=".../heise.xml">
   <xi:include

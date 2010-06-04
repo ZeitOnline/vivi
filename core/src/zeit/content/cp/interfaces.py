@@ -413,6 +413,15 @@ class IRSSBlock(IBlock):
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
+    show_supertitle = zope.schema.Bool(
+        title=_('Show supertitle'),
+        default=True)
+
+    time_format = zope.schema.Choice(
+        title=_('Time format'),
+        source=zeit.content.cp.source.RSSTimeFormatSource(),
+        default=list(zeit.content.cp.source.RSSTimeFormatSource())[0])
+
     feed = zope.interface.Attribute("The corresponding IFeed object.")
 
 

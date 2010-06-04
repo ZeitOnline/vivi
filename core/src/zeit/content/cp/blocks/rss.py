@@ -38,13 +38,22 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
         '.feed_icon',
         xml_reference_name='image', attributes=('base-id', 'src'))
 
+    show_supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'show_supertitle',
+        zeit.content.cp.interfaces.IRSSBlock['show_supertitle'])
+
+    time_format = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'time_format',
+        zeit.content.cp.interfaces.IRSSBlock['time_format'])
+
     def __init__(self, context, xml):
         super(RSSBlock, self).__init__(context, xml)
         if not self.xml.getchildren():
             self.xml.append(lxml.objectify.E.dummy_include())
-        if not self.max_items:
-            self.max_items = (
-                zeit.content.cp.interfaces.IRSSBlock['max_items'].default)
+        for field in ['max_items', 'show_supertitle', 'time_format']:
+            if getattr(self, field) is None:
+                setattr(self, field,
+                        zeit.content.cp.interfaces.IRSSBlock[field].default)
 
     @rwproperty.setproperty
     def url(self, url):
