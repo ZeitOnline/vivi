@@ -32,17 +32,21 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     )
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.browser.interfaces.IFileEditSchema,
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IReferences).omit('acquire_metadata')
 
-    form_fields['blob'].custom_widget = (
-        zeit.cms.repository.browser.file.BlobWidget)
+    def __init__(self, *args, **kw):
+        self.form_fields['blob'].custom_widget = (
+            zeit.cms.repository.browser.file.BlobWidget)
+        super(ImageFormBase, self).__init__(*args, **kw)
 
 
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
-    form_fields = ImageFormBase.form_fields.omit('references')
+    form_fields = (zope.formlib.form.FormFields(
+        zeit.content.image.browser.interfaces.IFileAddSchema)
+                   + ImageFormBase.form_fields.omit('references'))
+
     title = _("Add image")
 
     def create(self, data):
@@ -61,7 +65,9 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
 
     title = _("Edit image")
-    form_fields = ImageFormBase.form_fields.omit('__name__')
+    form_fields = (zope.formlib.form.FormFields(
+        zeit.content.image.browser.interfaces.IFileEditSchema).omit('__name__')
+                   + ImageFormBase.form_fields)
 
     def applyChanges(self, data):
         blob = data.pop('blob')

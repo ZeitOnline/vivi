@@ -229,6 +229,27 @@ Let's add an image:
 >>> menu.displayValue = ['Image (single)']
 >>> browser.open(menu.value[0])
 
+The image file is required:
+
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+...     'ZEIT ONLINE')
+>>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+...     'http://www.zeit.de/')
+>>> browser.getControl(name='form.actions.add').click()
+>>> print browser.contents
+<...
+<label for="form.blob">
+  <span>Upload new image</span>
+  <span class="annotation">
+    (required)
+  </span>
+</label>
+<div class="hint"></div>
+<div class="error">
+  <span class="error">Required input is missing.</span>
+</div>
+...
+
 Load the opernball image data an add w/o setting a file name. This selects the
 filename automatically[#no-references]_.
 
@@ -236,14 +257,17 @@ filename automatically[#no-references]_.
 >>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl(name='form.volume').value != '0'
 True
->>> browser.getControl(name='form.copyrights.0..combination_00').value = (
-...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
 
+
+When editing, the image file is no longer required:
+
+>>> browser.getControl('Image title').value = 'foo'
+>>> browser.getControl('Apply').click()
+>>> 'Required input is missing' in browser.contents
+False
 
 .. [#no-references] There must not be the "references" field on the add form:
 

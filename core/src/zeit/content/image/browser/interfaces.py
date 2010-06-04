@@ -1,13 +1,12 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
-import zc.sourcefactory.contextual
-import zeit.cms.repository.interfaces
 import zope.component
 import zope.interface
 import zope.schema
-from zeit.cms.i18n import MessageFactory as _
+
 
 class NotAnImageError(zope.schema.ValidationError):
 
@@ -26,11 +25,20 @@ def is_image(value):
     return True
 
 
-class IFileEditSchema(zope.interface.Interface):
+class IFileAddSchema(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(
         title=_('File name'),
         required=False)
+
+    blob = zope.schema.Object(
+        zope.interface.Interface,
+        title=_('Upload new image'),
+        required=True,
+        constraint=is_image)
+
+
+class IFileEditSchema(IFileAddSchema):
 
     blob = zope.schema.Object(
         zope.interface.Interface,
