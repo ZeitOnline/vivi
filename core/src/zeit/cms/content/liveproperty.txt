@@ -52,7 +52,6 @@ True
  ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
 
 
-
 Since foo/test is a live property now, it will not be overwritten when we check
 in an object:
 
@@ -86,8 +85,33 @@ The repository itself has live properties:
 >>> zeit.connector.interfaces.IWebDAVProperties(repository)
 <zeit.cms.content.liveproperty.LiveProperties object at 0x...>
 
+Duplicate writes
+++++++++++++++++
+
+When a live property is set to the value it currently has, there is no WebDAV
+request:
+
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector) 
+>>> change_properties = connector.changeProperties
+>>> def printing_change_props(id, properties):
+...     print 'Change:', id, properties
+...     change_properties(id, properties)
+>>> connector.changeProperties = printing_change_props
+
+>>> properties[('foo', 'test')] = 'New Value'
+Change: http://xml.zeit.de/testcontent {('foo', 'test'): 'New Value'}
+
+Setting the same value again does not make a DAV request:
+
+>>> properties[('foo', 'test')] = 'New Value'
+
 
 Clean up:
+
+
+>>> del connector.changeProperties
+
+
 
 .. [#functional] We need to set the site since we're a functional test:
 

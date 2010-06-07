@@ -4,6 +4,7 @@ zeit.cms changes
 1.43.1 (unreleased)
 -------------------
 
+- Live-Propertys nur setzen, wenn sich der Wert geändert hat (#7392).
 - CAP-Kontext wieder entfernt (#7365).
 - Bilddatei ist beim Anlegen jetzt obligatorisch, beim Editieren nicht (#7253).
 - Obskurer Clipboard/Ghost-Fehler behoben (#6631).
