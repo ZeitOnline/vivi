@@ -1,17 +1,14 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import UserDict
-
+import zeit.cms.checkout.interfaces
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
 import zope.component
 import zope.interface
 import zope.security.interfaces
 
-import zeit.connector.interfaces
-
-import zeit.cms.checkout.interfaces
-import zeit.cms.repository.interfaces
 
 class LiveProperties(object, UserDict.DictMixin):
     """Webdav properties which are updated upon change."""
@@ -82,7 +79,6 @@ def remove_live_properties(context, event):
 
     for live_property in manager.live_properties:
         properties.pop(live_property, None)
-
 
 
 @zope.component.adapter(LiveProperties)
