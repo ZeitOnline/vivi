@@ -13,6 +13,15 @@
     />
 
   <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AddContextfree"
+    name="zeit.content.author.add_contextfree"
+    menu="zeit-add-menu" title="Author"
+    permission="zeit.AddContent"
+    />
+
+  <browser:page
     name="edit.html"
     for="zeit.content.author.interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

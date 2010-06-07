@@ -4,8 +4,15 @@
 import zeit.cms.testing
 import zope.testing.doctest
 
+product_config = """
+<product-config zeit.content.author>
+    author-folder authors
+</product-config>
+"""
 
-ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+ZCMLLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml',
+    product_config=product_config)
 
 
 def FunctionalDocFileSuite(*args, **kw):
