@@ -1,18 +1,29 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zope.component
 import zope.interface
 
 
+class ICMSContentSource(zope.schema.interfaces.ISource):
+    """A source for CMS content types."""
+
+
+class INamedCMSContentSource(ICMSContentSource):
+    """A source for CMS content which is registered as utility."""
+
+    name = zope.interface.Attribute("Utility name of the source")
+
+    def get_check_types():
+        """Return a sequence of cms type identifiers which are included."""
+
+
 class CMSContentSource(object):
     """A source for all cms content."""
 
-    zope.interface.implements(
-        zeit.cms.content.interfaces.INamedCMSContentSource)
+    zope.interface.implements(INamedCMSContentSource)
 
     name = 'all-types'
     check_interfaces = zeit.cms.interfaces.ICMSContentType
@@ -69,7 +80,7 @@ class ChoicePropertyWithCMSContentSource(object):
 
     zope.component.adapts(
         zope.schema.interfaces.IChoice,
-        zeit.cms.content.interfaces.ICMSContentSource)
+        ICMSContentSource)
 
     def __init__(self, context, source):
         self.context = context

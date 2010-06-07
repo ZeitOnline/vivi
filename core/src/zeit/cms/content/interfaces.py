@@ -17,17 +17,8 @@ from zeit.cms.i18n import MessageFactory as _
 # XXX There is too much, too unordered in here, clean this up.
 
 
-class ICMSContentSource(zope.schema.interfaces.ISource):
-    """A source for CMS content types."""
-
-
-class INamedCMSContentSource(ICMSContentSource):
-    """A source for CMS content which is registered as utility."""
-
-    name = zope.interface.Attribute("Utility name of the source")
-
-    def get_check_types():
-        """Return a sequence of cms type identifiers which areincluded."""
+from zeit.cms.content.contentsource import ICMSContentSource
+from zeit.cms.content.contentsource import INamedCMSContentSource
 
 
 class IKeywordInterface(zope.interface.interfaces.IInterface):
@@ -62,6 +53,19 @@ class IKeywords(zope.interface.Interface):
         """
 
 
+class IAuthorType(zeit.cms.interfaces.ICMSContentType):
+    pass
+
+
+class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    check_interfaces = IAuthorType
+    name = 'authors'
+
+
+authorSource = AuthorSource()
+
+
 class ICommonMetadata(zope.interface.Interface):
 
     year = zope.schema.Int(
@@ -93,6 +97,11 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Print ressort"),
         source=zeit.cms.content.sources.PrintRessortSource(),
         readonly=True,
+        required=False)
+
+    author_references = zope.schema.Tuple(
+        title=_("Authors"),
+        value_type=zope.schema.Choice(source=authorSource),
         required=False)
 
     authors = zope.schema.Tuple(

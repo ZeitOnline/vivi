@@ -108,6 +108,10 @@
     component=".contentsource.folderSource"
     name="folders"
     />
+  <utility
+    component=".interfaces.authorSource"
+    name="authors"
+    />
   <adapter
     factory=".contentsource.ChoicePropertyWithCMSContentSource"
     provides=".interfaces.IDAVPropertyConverter"
