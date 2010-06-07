@@ -30,3 +30,4 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.author.interfaces.IAuthor
     type = 'author'
     title = _('Author')
+    addform = zeit.cms.type.SKIP_ADD
