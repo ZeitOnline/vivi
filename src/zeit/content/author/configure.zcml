@@ -4,6 +4,11 @@
 
   <grok:grok package="." />
 
+  <interface
+    interface=".interfaces.IAuthor"
+    type="zeit.cms.content.interfaces.IAuthorType"
+    />
+
   <class class=".author.Author">
     <implements
       interface="zope.annotation.interfaces.IAttributeAnnotatable" />
