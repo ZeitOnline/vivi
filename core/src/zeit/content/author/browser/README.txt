@@ -25,6 +25,12 @@ Authors
     <div class="widget">12345</div>...
 ...
 
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('VG-Wort ID').value = 'flub'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Invalid integer data...
+
 
 Context-free AddForm
 ====================
