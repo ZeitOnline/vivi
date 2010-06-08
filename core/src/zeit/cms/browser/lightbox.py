@@ -12,7 +12,7 @@ from zeit.cms.i18n import MessageFactory as _
 
 class Form(zeit.cms.browser.view.Base,
            zope.formlib.form.SubPageForm):
-    """A form in a lightbox."""
+    """A form in a lightbox that redirects after submit."""
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('lightbox.pt')
     title = _('Form')
