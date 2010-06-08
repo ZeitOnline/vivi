@@ -88,10 +88,10 @@
     zeit.cms.javascript.objectbrowser">
     <directory source="js" include="
       tooltip.js
+      lightbox.js
       dnd.js
       menu.js
       messages.js
-      lightbox.js
       json-template.js
       view.js
       tab.js

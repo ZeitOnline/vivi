@@ -123,6 +123,28 @@ zeit.cms.TableSorter = gocept.Class.extend({
 });
 
 
+zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
+    process_post_result: function(result) {
+        var self = this;
+
+        if (self.has_errors()) {
+            return result;
+        }
+
+        // enable the visual effect to work
+        MochiKit.DOM.removeElementClass(self.container, 'busy');
+
+        var node = getFirstElementByTagAndClassName(
+            'span', 'result', self.container);
+        var unique_id = node.textContent;
+        MochiKit.Signal.signal(
+            self, 'zeit.cms.ObjectReferenceWidget.selected',
+            unique_id, node);
+        return null;
+    },
+});
+
+
 var ObjectReferenceWidget = Class.extend({
     // Widget for referencing one object via unique id.
     // 
@@ -130,13 +152,14 @@ var ObjectReferenceWidget = Class.extend({
     // e.g. for Tuple fields.
 
     construct: function(element, default_browsing_url, type_filter,
-                        show_popup, parent_component) {
+                        add_view, show_popup, parent_component) {
         var self = this;
         self.events = [];
 
         self.element = $(element);
         self.default_browsing_url = default_browsing_url;
         self.type_filter = type_filter;
+        self.add_view = add_view;
         self.input = getFirstElementByTagAndClassName(
             'input', 'object-reference', self.element);
         self.input.object_reference_widget = self;
@@ -163,6 +186,12 @@ var ObjectReferenceWidget = Class.extend({
         self.tooltip = new zeit.cms.ToolTip(element, function() {
             return self.getToolTipURL();
         });
+
+        var addbutton = getFirstElementByTagAndClassName(
+            'input', 'add-object', self.element);
+        if (isUndefinedOrNull(self.add_view)) {
+            MochiKit.DOM.hideElement(addbutton);
+        }
 
         // self saves a click and shows the object browser initially
         if (show_popup && isUndefinedOrNull(parent_component)) {
@@ -257,6 +286,15 @@ var ObjectReferenceWidget = Class.extend({
             self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
             self, self.handleObjectSelected));
 
+    },
+
+    addObject: function(event) {
+        var self = this;
+        var url = self.default_browsing_url + '/@@' + self.add_view;
+        self.lightbox = new zeit.cms.ObjectAddForm(url, $('body'));
+        self.lightbox.events.push(MochiKit.Signal.connect(
+            self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
+            self, self.handleObjectSelected));
     },
 
     showReferencedObject: function(event) {

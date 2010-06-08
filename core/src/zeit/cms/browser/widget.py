@@ -91,6 +91,13 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return 'false'
 
     @property
+    def add_view(self):
+        view = self.context.queryTaggedValue('zeit.cms.addform.contextfree')
+        if view is None:
+            return 'null'
+        return "'%s'" % view
+
+    @property
     def workflow(self):
         workflow = zope.component.getMultiAdapter(
             (self._getCurrentValue(), self.request, self),

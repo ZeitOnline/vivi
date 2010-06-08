@@ -8,11 +8,14 @@
     id view/name;
     name view/name;
     value view/_getFormValue" />
-  <input title="Choose object" class="browse-objects" type="button" 
-    name="browseObjects" value="…" 
+  <input title="Choose object" class="browse-objects" type="button"
+    name="browseObjects" value="…"
     i18n:attributes="title" />
-  <input title="Show object" class="show-referenced-object" type="button" 
-    name="showReferencedObject" value="→" 
+  <input title="Show object" class="show-referenced-object" type="button"
+    name="showReferencedObject" value="→"
+    i18n:attributes="title" />
+  <input title="Choose object" class="add-object" type="button"
+    name="addObject" value="+"
     i18n:attributes="title" />
   <tal:workflow replace="structure view/workflow" />
 </div>
@@ -21,6 +24,7 @@
   '${view/name}.outerdiv',
   '${view/default_browsing_location/@@absolute_url}',
   '${view/type_filter_token}',
+  ${view/add_view},
   ${view/show_popup},
   self);
   ">
