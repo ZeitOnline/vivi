@@ -3,10 +3,12 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import grokcore
+import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
+import zeit.workflow.interfaces
 import zope.interface
 
 
@@ -47,3 +49,18 @@ def update_display_name(obj, event):
         obj.computed_display_name = obj.display_name
     else:
         obj.computed_display_name = u'%s %s' % (obj.firstname, obj.lastname)
+
+
+class Dependencies(grokcore.component.Adapter):
+
+    grokcore.component.context(
+        zeit.cms.content.interfaces.ICommonMetadata)
+    grokcore.component.name('zeit.content.author')
+    grokcore.component.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_dependencies(self):
+        return self.context.author_references

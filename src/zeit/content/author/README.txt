@@ -72,7 +72,7 @@ It takes precedence over the freetext authors:
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
-    <author ... href="http://xml.zeit.de/shakespeare">
+    <author ... href="http://xml.zeit.de/shakespeare" ...>
       <firstname py:pytype="str">William</firstname>
       <lastname py:pytype="str">Shakespeare</lastname>
       <vgwortid py:pytype="int">12345</vgwortid>
@@ -95,3 +95,26 @@ It takes precedence over the freetext authors:
   </head>
   <body/>
 </testtype>
+
+
+Publishing
+==========
+
+>>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
+...     co.author_references = [repository['shakespeare']]
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(
+...     repository['testcontent']).urgent = True
+>>> import transaction
+>>> transaction.commit()
+>>> job_id = zeit.cms.workflow.interfaces.IPublish(
+...     repository['testcontent']).publish()
+>>> import lovely.remotetask.interfaces
+>>> tasks = zope.component.getUtility(
+...     lovely.remotetask.interfaces.ITaskService, 'general')
+>>> tasks.process()
+
+
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
+>>> info.published
+True
