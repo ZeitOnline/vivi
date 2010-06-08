@@ -25,6 +25,9 @@
     <require
       set_schema="zeit.cms.content.interfaces.IXMLContent"
       permission="zeit.EditContent" />
+    <require
+      set_attributes="computed_display_name"
+      permission="zeit.EditContent" />
   </class>
 
 </configure>

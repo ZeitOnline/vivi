@@ -16,3 +16,8 @@ class IAuthor(zope.interface.Interface):
         required=False,
         # see messageService.wsdl:cardNumberType
         min=10, max=9999999)
+
+    display_name = zope.schema.TextLine(
+        title=_('Display name'),
+        required=False,
+        description=_(u"Default: 'Firstname Lastname'"))
