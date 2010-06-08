@@ -6,7 +6,7 @@ import zope.testing.doctest
 
 product_config = """
 <product-config zeit.content.author>
-    author-folder authors
+    author-folder /foo/bar/authors
 </product-config>
 """
 
