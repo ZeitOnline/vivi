@@ -11,4 +11,8 @@ class IAuthor(zope.interface.Interface):
     title = zope.schema.TextLine(title=_('Title'), required=False)
     firstname = zope.schema.TextLine(title=_('Firstname'))
     lastname = zope.schema.TextLine(title=_('Lastname'))
-    vgwortid = zope.schema.TextLine(title=_('VG-Wort ID'))
+    vgwortid = zope.schema.Int(
+        title=_('VG-Wort ID'),
+        required=False,
+        # see messageService.wsdl:cardNumberType
+        min=10, max=9999999)
