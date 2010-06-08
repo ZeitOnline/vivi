@@ -36,7 +36,7 @@
       />
   </class>
 
-  <utility 
+  <utility
     component=".interfaces.centerPageSource"
     name="zeit.content.cp"
     />
@@ -47,7 +47,7 @@
     provides="zeit.cms.relation.interfaces.IReferenceProvider"
     name="zeit.content.cp"
     />
-  <adapter factory=".rule.ValidatingWorkflow" 
+  <adapter factory=".rule.ValidatingWorkflow"
     provides=".interfaces.IValidatingWorkflow"
     for=".interfaces.ICenterPage"
     trusted="yes"
@@ -173,7 +173,7 @@
       />
   </class>
 
-  <adapter factory=".rule.ValidatingWorkflow" 
+  <adapter factory=".rule.ValidatingWorkflow"
     provides=".interfaces.IValidatingWorkflow"
     for=".interfaces.IFeed"
     trusted="yes"
