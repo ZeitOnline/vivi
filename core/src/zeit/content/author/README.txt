@@ -100,6 +100,8 @@ It takes precedence over the freetext authors:
 Publishing
 ==========
 
+Authors are published along with the articles that reference them:
+
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.author_references = [repository['shakespeare']]
 
@@ -114,7 +116,18 @@ Publishing
 ...     lovely.remotetask.interfaces.ITaskService, 'general')
 >>> tasks.process()
 
-
 >>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
 >>> info.published
 True
+
+
+References
+==========
+
+We can track which articles an author is referenced by:
+
+>>> import zeit.cms.relation.interfaces
+>>> rel = zope.component.getUtility(
+...     zeit.cms.relation.interfaces.IRelations)
+>>> [x.uniqueId for x in rel.get_relations(repository['shakespeare'])]
+[u'http://xml.zeit.de/testcontent']

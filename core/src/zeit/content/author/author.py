@@ -64,3 +64,12 @@ class Dependencies(grokcore.component.Adapter):
 
     def get_dependencies(self):
         return self.context.author_references
+
+
+@grokcore.component.adapter(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    name='zeit.content.author')
+@grokcore.component.implementer(
+    zeit.cms.relation.interfaces.IReferenceProvider)
+def references(context):
+    return context.author_references
