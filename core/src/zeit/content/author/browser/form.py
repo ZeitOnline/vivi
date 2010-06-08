@@ -82,11 +82,7 @@ class AddContextfree(
 
     # XXX duplicated code from zeit.addcentral.add.ContentAdder
     def create_folder(self, object):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.author')
-        author_folder = config['author-folder']
-
-        path = [author_folder, object.lastname[0].upper(),
+        path = self.author_folder + [object.lastname[0].upper(),
                 u'%s_%s' % (object.firstname, object.lastname)]
         repos = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
@@ -100,3 +96,10 @@ class AddContextfree(
             folder = folder[elem]
 
         return folder
+
+    @property
+    def author_folder(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.author')
+        author_folder = config['author-folder']
+        return [x for x in author_folder.split('/') if x]
