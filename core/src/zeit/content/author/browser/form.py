@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.content.author.author
 import zeit.content.author.interfaces
+import zope.app.pagetemplate
 import zope.formlib.form
 
 
@@ -34,13 +35,27 @@ class DisplayForm(FormBase,
     title = _('View')
 
 
+# This is the first version of a Lightbox-enabled AddForm,
+# and as such brings together zeit.cms.browser.form.AddForm
+# and zeit.cms.browser.lightbox.Form.
+# Which is to say: the next time we do this, we'll want to review,
+# refactor and extract from here, not take this as "the way it's done",
+# since we don't really know that yet.
 class AddContextfree(
-    zeit.cms.browser.lightbox.Form,
+    zeit.cms.browser.view.Base,
+    zope.formlib.form.SubPageForm,
     zope.formlib.form.AddFormBase):
 
+    template = zope.app.pagetemplate.ViewPageTemplateFile('lightbox.pt')
     title = _('Add author')
     form_fields = FormBase.form_fields.omit('__name__')
     factory = zeit.content.author.author.Author
+
+    result = None
+
+    @property
+    def form(self):
+        return super(AddContextfree, self).template
 
     def applyChanges(self, object, data):
         return zeit.cms.browser.form.apply_changes_with_setattr(
@@ -85,9 +100,3 @@ class AddContextfree(
             folder = folder[elem]
 
         return folder
-
-    def get_data(self):
-        return {}
-
-    def nextURL(self):
-        return None
