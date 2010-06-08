@@ -69,21 +69,11 @@ class AddContextfree(
 
     def add(self, object):
         container = self.create_folder(object)
-        if 'index' in container:
-            self.send_message(
-                _("'${name}' alredy exists, using it unchanged",
-                  mapping=dict(name=u'%s, %s'
-                               % (object.lastname, object.firstname))),
-                type='error')
-        else:
-            container['index'] = object
-
+        container['index'] = object
         self.result = container['index'].uniqueId
 
-    # XXX duplicated code from zeit.addcentral.add.ContentAdder
     def create_folder(self, object):
-        path = self.author_folder + [object.lastname[0].upper(),
-                u'%s_%s' % (object.firstname, object.lastname)]
+        path = self.author_folder + [object.lastname[0].upper()]
         repos = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
@@ -95,7 +85,14 @@ class AddContextfree(
                 folder[elem] = zeit.cms.repository.folder.Folder()
             folder = folder[elem]
 
-        return folder
+        author_folder = zeit.cms.repository.folder.Folder()
+        folder_name = u'%s_%s' % (object.firstname, object.lastname)
+        chooser = zope.app.container.interfaces.INameChooser(folder)
+        name = chooser.chooseName(folder_name, author_folder)
+        folder[name] = author_folder
+        author_folder = folder[name]
+
+        return author_folder
 
     @property
     def author_folder(self):
