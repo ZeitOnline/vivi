@@ -47,10 +47,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'author',
         use_default=True)
 
-    author_references = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['author_references'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'author_reference')
+    author_references = zeit.cms.content.property.MultiResource(
+        '.head.author', xml_reference_name='author')
 
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],

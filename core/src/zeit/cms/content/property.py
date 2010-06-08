@@ -7,6 +7,7 @@ import sys
 import xml.sax.saxutils
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.related.related
 import zope.app.keyreference.interfaces
 import zope.component
 import zope.schema.interfaces
@@ -225,6 +226,27 @@ class SingleResource(ObjectPathProperty):
         else:
             node = value.uniqueId
         super(SingleResource, self).__set__(instance, node)
+
+
+class MultiResource(object):
+
+    def __init__(self, path, xml_reference_name=None):
+        self.path = path
+        self.xml_reference_name = xml_reference_name
+
+    def related(self, instance):
+        # XXX: refactor this to be other way around, so that Related is
+        # implemented by using MultiResource (#7434)
+        result = zeit.cms.related.related.RelatedBase(instance)
+        result.path = lxml.objectify.ObjectPath(self.path)
+        result.xml_reference_name = self.xml_reference_name
+        return result
+
+    def __get__(self, instance, class_):
+        return self.related(instance)._get_related()
+
+    def __set__(self, instance, value):
+        return self.related(instance)._set_related(value)
 
 
 def mapAttributes(*names):
