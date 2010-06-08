@@ -88,22 +88,7 @@ zeit.cms.SubPageForm = Class.extend({
                 'Content-Type': 'application/x-www-form-urlencoded'},
             'sendContent': data});
         d.addCallbacks(
-            function(result) {
-                MochiKit.Signal.disconnectAll(self.form);
-                self.container.innerHTML = result.responseText;
-                var errors = getFirstElementByTagAndClassName(
-                    'ul', 'errors', self.container)
-                if (errors != null) {
-                    return result;
-                }
-                var next_url_node = getFirstElementByTagAndClassName(
-                    'span', 'nextURL', self.container);
-                if (next_url_node == null) {
-                    return result;
-                }
-                window.location = next_url_node.textContent;
-                return null;
-            },
+            MochiKit.Base.bind(self.replace_content, self),
             function(error) {
                 logError(error.req.status, error.req.statusText);
                 var parser = new DOMParser()
@@ -111,6 +96,7 @@ zeit.cms.SubPageForm = Class.extend({
                     error.req.responseText, "text/xml");
                 document.firstChild.nextSibling.innerHTML = doc.firstChild.nextSibling.innerHTML;
             });
+        d.addCallback(MochiKit.Base.bind(self.process_post_result, self));
         d.addCallback(function(result) {
             if (result === null) {
                 return null;
@@ -122,6 +108,43 @@ zeit.cms.SubPageForm = Class.extend({
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d;
+    },
+
+    replace_content: function(result) {
+        var self = this;
+        MochiKit.Signal.disconnectAll(self.form);
+        self.container.innerHTML = result.responseText;
+        return result;
+    },
+
+    process_post_result: function(result) {
+        var self = this;
+        if (self.has_errors()) {
+            return result;
+        }
+        var next_url = self.get_next_url();
+        if (isNull(next_url)) {
+            return result;
+        }
+        window.location = next_url;
+        return null;
+    },
+
+    has_errors: function(result) {
+        var self = this;
+        var errors = getFirstElementByTagAndClassName(
+            'ul', 'errors', self.container);
+        return (errors != null);
+    },
+
+    get_next_url: function() {
+        var self = this;
+        var next_url_node = getFirstElementByTagAndClassName(
+            'span', 'nextURL', self.container);
+        if (isNull(next_url_node)) {
+            return null;
+        }
+        return next_url_node.textContent;
     },
 
     loading: function(message) {
