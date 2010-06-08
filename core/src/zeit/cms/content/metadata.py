@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grokcore.component
 import rwproperty
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -95,7 +96,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     def product_id(self):
         return self._product_id
 
-
     @rwproperty.setproperty
     def product_id(self, value):
         if self._product_id == value:
@@ -103,7 +103,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         self._product_id = value
         source = zeit.cms.content.interfaces.ICommonMetadata[
             'product_id'].source(self)
-        # Set title        
+        # Set title
         request = zope.publisher.browser.TestRequest()
         terms = zope.component.getMultiAdapter(
             (source, request), zope.browser.interfaces.ITerms)
@@ -113,3 +113,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     def product_text(self):
         return self._product_text
 
+
+@grokcore.component.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_freetext_authors(obj, event):
+    ref_names = [x.computed_display_name for x in obj.author_references]
+    if ref_names:
+        obj.authors = ref_names
