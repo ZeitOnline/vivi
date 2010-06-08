@@ -63,10 +63,12 @@ takes precedence:
 Using authors
 =============
 
-The field author_references on ICommonMetadata is used to store authors:
+The field author_references on ICommonMetadata is used to store authors.
+It takes precedence over the freetext authors:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.author_references = [shakespeare]
+...     co.authors = ['Charles Dickens']
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
@@ -76,6 +78,19 @@ The field author_references on ICommonMetadata is used to store authors:
       <vgwortid py:pytype="int">12345</vgwortid>
       <display_name py:pytype="str">William Shakespeare</display_name>
     </author>
+    <attribute ... name="author">William Shakespeare</attribute>
+    ...
+  </head>
+  <body/>
+</testtype>
+
+>>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
+...     co.author_references = []
+...     co.authors = ['Charles Dickens']
+>>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+<testtype>
+  <head>
+    <attribute ... name="author">Charles Dickens</attribute>
     ...
   </head>
   <body/>
