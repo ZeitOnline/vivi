@@ -112,12 +112,3 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def product_text(self):
         return self._product_text
-
-
-@grokcore.component.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def update_freetext_authors(obj, event):
-    ref_names = [x.computed_display_name for x in obj.author_references]
-    if ref_names:
-        obj.authors = ref_names
