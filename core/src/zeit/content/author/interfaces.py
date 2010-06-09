@@ -17,7 +17,10 @@ class IAuthor(zope.interface.Interface):
         # see messageService.wsdl:cardNumberType
         min=10, max=9999999)
 
-    display_name = zope.schema.TextLine(
+    display_name = zope.interface.Attribute(
+        'The computed display name. Default is "firstname lastname",'
+        ' a user entered value takes precedence.')
+    entered_display_name = zope.schema.TextLine(
         title=_('Display name'),
         required=False,
         description=_(u"Default: 'Firstname Lastname'"))

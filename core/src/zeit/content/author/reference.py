@@ -22,4 +22,4 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.content.author.interfaces.IAuthor
 
     def update_with_context(self, node, context):
-        node.display_name = context.computed_display_name
+        node.display_name = context.display_name
