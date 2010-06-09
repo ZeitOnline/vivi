@@ -119,7 +119,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         self._type_dav = value
 
 
-
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 
     factory = CenterPage
@@ -130,6 +129,7 @@ class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 
 _test_helper_cp_changed = False
 
+
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
@@ -138,12 +138,24 @@ def cms_content_iter(context):
           for area in context.values()])
 
 
+@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
+@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
+def cp_references(context):
+    cms_content = list(zeit.content.cp.interfaces.ICMSContentIterable(context))
+    images = [context.header_image, context.snapshot]
+    images = [x for x in images if x]
+    return cms_content + images
+
+
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_centerpage_on_checkin(context, event):
     for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
         context.updateMetadata(content)
+
+    context.header_image = context.header_image
+    context.snapshot = context.snapshot
 
 
 @zope.component.adapter(

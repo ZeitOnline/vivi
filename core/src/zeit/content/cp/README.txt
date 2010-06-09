@@ -359,6 +359,20 @@ The data is, again, updated when the CP is checked in:
          last-semantic-change="2009-09-11T08:18:48+00:00"...
 
 
+Referenced images
++++++++++++++++++
+
+>>> img = repository['2006']['DSC00109_2.JPG']
+>>> with zeit.cms.checkout.helper.checked_out(repository['cp']) as co:
+...     co.header_image = img
+>>> with zeit.cms.checkout.helper.checked_out(img) as co:
+...     zeit.content.image.interfaces.IImageMetadata(co).title = 'updated'
+>>> gocept.async.tests.process()
+>>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
+<centerpage...
+  <header_image... title="updated"...>
+...
+
 Topic page
 ==========
 
