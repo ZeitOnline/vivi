@@ -37,6 +37,18 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         self.assertEquals('Paff', self.connector[rid].data.read())
 
 
+class TestEscaping(zeit.connector.testing.ConnectorTest):
+
+    def test_hash(self):
+        rid = 'http://xml.zeit.de/testing/foo#bar'
+        self.connector[rid] = zeit.connector.resource.Resource(
+            rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        resource = self.connector[rid]
+        self.assertEquals('Pop.', resource.data.read())
+
+
 class TestConflictDetectionBase(object):
 
     def setUp(self):

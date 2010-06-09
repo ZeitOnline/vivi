@@ -4,6 +4,8 @@ CHANGES
 1.20.1 (unreleased)
 -------------------
 
+- Correctly escape # in ids (#6042).
+
 - Using versions from the ZTK.
 
 

@@ -88,17 +88,26 @@ class HTTPBasicAuthCon(object):
             headers['Authorization'] = auth
         return
 
+    def get_quoted_path(self, uri):
+        if isinstance(uri, unicode):
+            uri = uri.encode('utf8')
+        path = urlparse.urlunparse(('', '') + urlparse.urlparse(uri)[2:])
+        # NOTE: Everything after the netloc is considered a path and will be 
+        # quoted
+        quoted = urllib.quote(path)
+        return quoted
+
     def quote_uri(self, uri):
         if isinstance(uri, unicode):
             uri = uri.encode('utf8')
-        parsed = list(urlparse.urlparse(uri))
-        # NOTE: We don't care about query arguments here
-        parsed[2] = urllib.quote(parsed[2])
-        return urlparse.urlunparse(parsed)
+        parsed = urlparse.urlparse(uri)
+        quoted = urlparse.urlunparse((parsed.scheme, parsed.netloc,
+                                      self.get_quoted_path(uri),
+                                      '', '', ''))
+        return quoted
 
     def request(self, method, uri, body=None, extra_hdrs=None):
-        uri = self.quote_uri(uri)
-        path = urlparse.urlunparse(('', '') + urlparse.urlparse(uri)[2:])
+        path = self.get_quoted_path(uri)
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
@@ -126,7 +135,6 @@ class HTTPBasicAuthCon(object):
             self.connect()
             # If that raises the error again, well let it raise.
             self._con.request(method, uri, body, headers)
-        #self._con.sock.settimeout(10)
 
     def getresponse(self):
         self._resp = self._con.getresponse()

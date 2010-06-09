@@ -593,6 +593,7 @@ class DAVResource(object):
                 lt =  '<' + self.locktoken + '>'
             hdrs['Lock-Token'] = self.locktoken
             hdrs['If'] = '<%s>(%s)' % (self.url, lt)
+        __traceback_info__ = (self.url,)
         davres = self._conn.propfind(
             self.url, body=PROPFIND_BODY, depth=depth, extra_hdrs=hdrs)
         if davres.status >= 300:

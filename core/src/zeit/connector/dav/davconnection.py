@@ -85,6 +85,7 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
 
     def get_result(self, method_name, accept_status, url,
                    *args, **kwargs):
+        __traceback_info__ = (method_name, url)
         method = getattr(super(DAVConnection, self), method_name)
         response = method(url, *args, **kwargs)
         if accept_status is None or response.status in accept_status:
