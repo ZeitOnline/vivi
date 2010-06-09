@@ -112,7 +112,7 @@ class ICommonMetadata(zope.interface.Interface):
         value_type=zope.schema.TextLine(),
         required=False,
         default=(u'',),
-        description=_(u'ignored if any non-freetext authors are set'))
+        description=_(u'overwritten if any non-freetext authors are set'))
 
     keywords = zope.schema.Tuple(
         title=_("Keywords"),
