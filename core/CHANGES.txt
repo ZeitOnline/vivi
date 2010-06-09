@@ -4,8 +4,8 @@ CHANGES
 1.20.1 (unreleased)
 -------------------
 
+- Rename supports renaming to ids with non-us-ascii chars (#7405)
 - Correctly escape # in ids (#6042).
-
 - Using versions from the ZTK.
 
 

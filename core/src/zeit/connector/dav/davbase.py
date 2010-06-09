@@ -233,7 +233,7 @@ class DAVBase(object):
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
-        headers['Destination'] = dst
+        headers['Destination'] = self.quote_uri(dst)
         if depth is not None:
             headers['Depth'] = str(depth)
         return self._request('COPY', src, extra_hdrs=headers)
