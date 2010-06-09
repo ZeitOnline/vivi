@@ -17,7 +17,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.AddContextfree"
     name="zeit.content.author.add_contextfree"
-    menu="zeit-add-menu" title="Author"
     permission="zeit.AddContent"
     />
 
