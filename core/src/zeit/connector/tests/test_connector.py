@@ -36,13 +36,27 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.assertEquals('Paff', self.connector[rid].data.read())
 
-    def test_move(self):
+    def test_copy(self):
         rid = u'http://xml.zeit.de/testing/ünicöde'
+        new_rid = rid + u'-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
-        self.connector.move(rid, rid+u'-renamed')
+        self.connector.move(rid, new_rid)
+        resource = self.connector[new_rid]
+        self.assertEquals('Pop.', resource.data.read())
+
+    def test_move(self):
+        rid = u'http://xml.zeit.de/testing/ünicöde'
+        new_rid = rid + u'-renamed'
+        self.connector[rid] = zeit.connector.resource.Resource(
+            rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain')
+        self.connector.move(rid, new_rid)
+        resource = self.connector[new_rid]
+        self.assertEquals('Pop.', resource.data.read())
 
 
 class TestEscaping(zeit.connector.testing.ConnectorTest):
