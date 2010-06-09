@@ -122,7 +122,7 @@ class HTTPBasicAuthCon(object):
             raw = "%s:%s" % self.get_auth(self._realm)
             auth = 'Basic %s' % base64.encodestring(raw).strip()
             headers['Authorization'] = auth
-        host = urlparse.urlparse(uri).netloc
+        host = str(urlparse.urlparse(uri).netloc)
         if host:
             headers['Host'] = host
         headers['Connection'] = 'keep-alive'
