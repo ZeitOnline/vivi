@@ -191,6 +191,8 @@ var ObjectReferenceWidget = Class.extend({
             'input', 'add-object', self.element);
         if (isUndefinedOrNull(self.add_view)) {
             MochiKit.DOM.hideElement(addbutton);
+        } else {
+            MochiKit.DOM.addElementClass(self.element, 'add-button')
         }
 
         // self saves a click and shows the object browser initially

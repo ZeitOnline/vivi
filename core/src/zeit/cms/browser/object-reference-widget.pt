@@ -14,7 +14,7 @@
   <input title="Show object" class="show-referenced-object" type="button"
     name="showReferencedObject" value="→"
     i18n:attributes="title" />
-  <input title="Choose object" class="add-object" type="button"
+  <input title="Add object" class="add-object" type="button"
     name="addObject" value="+"
     i18n:attributes="title" />
   <tal:workflow replace="structure view/workflow" />
