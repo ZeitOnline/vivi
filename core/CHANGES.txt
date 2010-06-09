@@ -5,7 +5,6 @@ zeit.brightcove changes
 0.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
 - Added solr indexes for banner and banner-id (#7382).
 - Update videos "latest modified first" (#7209).
 - Add uniqueId to asset references (#7381).
