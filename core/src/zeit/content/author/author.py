@@ -15,7 +15,7 @@ import zope.interface
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(zeit.content.author.interfaces.IAuthor,
-                              zeit.cms.interfaces.IEditorialContent)
+                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
