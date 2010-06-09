@@ -73,9 +73,6 @@ It takes precedence over the freetext authors:
 <testtype>
   <head>
     <author ... href="http://xml.zeit.de/shakespeare" ...>
-      <firstname py:pytype="str">William</firstname>
-      <lastname py:pytype="str">Shakespeare</lastname>
-      <vgwortid py:pytype="int">12345</vgwortid>
       <display_name py:pytype="str">William Shakespeare</display_name>
     </author>
     <attribute ... name="author">William Shakespeare</attribute>
