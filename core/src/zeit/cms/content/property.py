@@ -218,14 +218,20 @@ class SingleResource(ObjectPathProperty):
         return zeit.cms.interfaces.ICMSContent(unique_id, None)
 
     def __set__(self, instance, value):
-        if self.xml_reference_name:
-            node = zope.component.getAdapter(
-                value,
-                zeit.cms.content.interfaces.IXMLReference,
-                name=self.xml_reference_name)
+        if value is None:
+            node = None
         else:
-            node = value.uniqueId
+            if self.xml_reference_name:
+                node = zope.component.getAdapter(
+                    value,
+                    zeit.cms.content.interfaces.IXMLReference,
+                    name=self.xml_reference_name)
+            else:
+                node = value.uniqueId
         super(SingleResource, self).__set__(instance, node)
+
+    def __delete__(self, instance):
+        self.__set__(instance, None)
 
 
 class MultiResource(object):

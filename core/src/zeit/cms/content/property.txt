@@ -319,10 +319,20 @@ Of course we also can get the resource back:
 >>> content.res is referenced_obj
 True
 
+Deleting the reference is also possible:
+
+>>> content.res = None
+>>> content.res is None
+True
+>>> content.res = referenced_obj
+>>> del content.res
+>>> content.res is None
+True
 
 When the referenced object is deleted from the repository we will get None
 back:
 
+>>> content.res = referenced_obj
 >>> repository_objects.clear()
 >>> content.res is None
 True
@@ -371,6 +381,10 @@ Get the resource back:
 <Content object at 0x...>
 >>> content.res == referenced_obj
 True
+
+Delete the reference:
+
+>>> content.res = None
 
 
 Make sure we cannot instanciate invalid combinations:

@@ -13,6 +13,7 @@ zeit.cms changes
 - Fehler beim Feed-Update mit FakeEntry behoben (#7391).
 - Sortieren einer Bildergruppe nach Dateiname repariert (#7087).
 - Autoren sind nicht mehr Freitext, sondern CMS-Objekte (#7333).
+- SingleResource erlaubt Löschen (#5010).
 
 
 1.43.0 (2010-06-02)
