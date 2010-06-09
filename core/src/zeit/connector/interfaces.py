@@ -248,6 +248,7 @@ class IResource(zope.interface.Interface):
 
     data = zope.interface.Attribute(
         u"Resource main data (body, image data) as a file-like object.")
+
     contentType = zope.schema.BytesLine(
         title=u"Content Type",
         description=u'The mime content type identifies the type of data.',
