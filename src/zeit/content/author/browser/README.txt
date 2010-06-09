@@ -96,8 +96,10 @@ This is mostly a smoke-test that security is set up properly.
 >>> browser.open('http://localhost/++skin++vivi/repository/testcontent')
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Add Authors', index=0).click()
->>> browser.getControl(name='form.author_references.0.').value = (
-...     'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
+
+XXX disabled until the fields are available again.
+# >>> browser.getControl(name='form.author_references.0.').value = (
+# ...     'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
