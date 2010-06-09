@@ -67,10 +67,6 @@ label {
   display: none;
 }
 
-label[for="form.authors"] + .hint {
-  display: block;
-}
-
 /* formlib styling */
 
 fieldset {
