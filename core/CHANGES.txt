@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.37.1 (unreleased)
+0.38.0 (2010-06-09)
 -------------------
 
 - Prevent error during refresh when feed cannot be checked out (#7313).
