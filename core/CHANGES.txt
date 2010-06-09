@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.43.1 (unreleased)
+1.44.0 (2010-06-09)
 -------------------
 
 - Live-Propertys nur setzen, wenn sich der Wert geändert hat (#7392).
