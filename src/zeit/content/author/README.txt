@@ -32,7 +32,7 @@ Authors
 The default display name is 'Firstname Lastname', but any user-entered value
 takes precedence:
 
->>> shakespeare.display_name = 'Flub'
+>>> shakespeare.entered_display_name = 'Flub'
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
@@ -45,7 +45,7 @@ takes precedence:
   <entered_display_name py:pytype="str">Flub</entered_display_name>
 </author>
 
->>> shakespeare.display_name = None
+>>> shakespeare.entered_display_name = None
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)

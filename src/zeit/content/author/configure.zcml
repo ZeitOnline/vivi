@@ -26,10 +26,7 @@
       set_schema="zeit.cms.content.interfaces.IXMLContent"
       permission="zeit.EditContent" />
     <require
-      attributes="computed_display_name"
-      permission="zope.View" />
-    <require
-      set_attributes="computed_display_name"
+      set_attributes="display_name"
       permission="zeit.EditContent" />
   </class>
 

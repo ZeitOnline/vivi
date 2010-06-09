@@ -27,9 +27,9 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     vgwortid = zeit.cms.content.property.ObjectPathProperty('.vgwortid')
 
     display_name = zeit.cms.content.property.ObjectPathProperty(
-        '.entered_display_name')
-    computed_display_name = zeit.cms.content.property.ObjectPathProperty(
         '.display_name')
+    entered_display_name = zeit.cms.content.property.ObjectPathProperty(
+        '.entered_display_name')
 
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -45,10 +45,19 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     zeit.content.author.interfaces.IAuthor,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
 def update_display_name(obj, event):
-    if obj.display_name:
-        obj.computed_display_name = obj.display_name
+    if obj.entered_display_name:
+        obj.display_name = obj.entered_display_name
     else:
-        obj.computed_display_name = u'%s %s' % (obj.firstname, obj.lastname)
+        obj.display_name = u'%s %s' % (obj.firstname, obj.lastname)
+
+
+@grokcore.component.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_freetext_authors(obj, event):
+    ref_names = [x.display_name for x in obj.author_references]
+    if ref_names:
+        obj.authors = ref_names
 
 
 class Dependencies(grokcore.component.Adapter):
