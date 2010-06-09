@@ -86,3 +86,19 @@ Adding the same name again creates a different folder:
     <label for="form.vgwortid">...
     <div class="widget">9876</div>...
 ...
+
+
+Using authors
+=============
+
+This is mostly a smoke-test that security is set up properly.
+
+>>> browser.open('http://localhost/++skin++vivi/repository/testcontent')
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Add Authors', index=0).click()
+>>> browser.getControl(name='form.author_references.0.').value = (
+...     'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
+>>> browser.getControl('Apply').click()
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<..."testcontent" has been checked in...
