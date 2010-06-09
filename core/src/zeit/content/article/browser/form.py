@@ -22,6 +22,7 @@ import zope.session.interfaces
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
+
 class ArticleFormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
@@ -35,6 +36,7 @@ class ArticleFormBase(object):
         gocept.form.grouped.RemainingFields(
             _('misc.'),
             css_class='column-right'),
+        base.author_fields,
         gocept.form.grouped.Fields(
             _("Options"),
             base.option_fields.fields + (
