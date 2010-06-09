@@ -56,12 +56,15 @@ Returning location for <Content object at 0x...>
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
     type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
+  null,
   false,
   self);
   </script>
@@ -90,6 +93,8 @@ Returning location for <Content object at 0x...>
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
     type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
   <img class="publish-state" src="http://127.0.0.1/@@/zeit.cms/icons/not-published.png" title="Not published" />
 </div>
 <script>
@@ -97,6 +102,7 @@ Returning location for <Content object at 0x...>
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
+  null,
   false,
   self);
   </script>
@@ -131,12 +137,15 @@ Returning location for <Content object at 0x...>
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
     type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
+  null,
   false,
   self);
   </script>
@@ -168,12 +177,15 @@ Returning location for <Content object at 0x...>
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
     type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
 </div>
 <script>
   new ObjectReferenceWidget(
   'field.reference.outerdiv',
   'http://127.0.0.1/repo',
   'all-types',
+  null,
   false,
   self);
   </script>
