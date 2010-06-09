@@ -53,4 +53,14 @@
     name="view.html"
     />
 
+
+  <browser:icon
+    for="zeit.content.author.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="author.png"
+    />
+
 </configure>
