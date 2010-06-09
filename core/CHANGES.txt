@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.20.1 (unreleased)
+1.20.1 (2010-06-09)
 -------------------
 
 - Rename supports renaming to ids with non-us-ascii chars (#7405)
