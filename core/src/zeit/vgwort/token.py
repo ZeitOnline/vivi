@@ -45,7 +45,8 @@ class TokenStorage(persistent.Persistent,
     def order(self, amount):
         service = zope.component.getUtility(
             zeit.vgwort.interfaces.IPixelService)
-        return service.order_pixels(amount)
+        for public, private in service.order_pixels(amount):
+            self.add(public, private)
 
     def __len__(self):
         return self._len()
