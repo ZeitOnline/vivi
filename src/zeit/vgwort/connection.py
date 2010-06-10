@@ -67,7 +67,9 @@ class PixelService(VGWortWebService):
 
     def order_pixels(self, amount):
         result = self.orderPixel(amount)
-        # nyi
+        for pixel in result.pixels.pixel:
+            yield (pixel._publicIdentificationId,
+                   pixel._privateIdentificationId)
 
 
 class MessageService(VGWortWebService):

@@ -36,3 +36,4 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = SOAPLayer
+    level = 2
