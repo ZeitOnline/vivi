@@ -10,6 +10,8 @@ product_config = """
     vgwort-url https://tomtest.vgwort.de/
     username zeitonl
     password zeitabo2010
+    minimum-token-amount 10
+    order-token-amount 1
 </product-config>
 """
 
@@ -37,3 +39,20 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = SOAPLayer
     level = 2
+
+
+class PixelService(object):
+
+    zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
+
+    def order_pixels(self, amount):
+        for i in range(amount):
+            yield ('public-%s' % i, 'private-%s' % i)
+
+
+class MessageService(object):
+
+    zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
+
+    def new_document(self, content):
+        pass # nyi

@@ -17,5 +17,6 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
   <include package="zeit.cms.testcontenttype" />
   <include package="zeit.vgwort" />
+  <include package="zeit.vgwort" file="mock-webservice.zcml" />
 
 </configure>

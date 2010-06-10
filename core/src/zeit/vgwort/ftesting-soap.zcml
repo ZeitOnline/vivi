@@ -5,7 +5,6 @@
    >
 
   <include package="zeit.vgwort" file="ftesting.zcml" />
+  <include package="zeit.vgwort" file="real-webservice.zcml" />
 
-  <utility factory="zeit.vgwort.connection.PixelService" />
-  <utility factory="zeit.vgwort.connection.MessageService" />
 </configure>
