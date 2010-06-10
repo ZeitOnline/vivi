@@ -1,0 +1,11 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.vgwort" file="ftesting.zcml" />
+
+  <utility factory="zeit.vgwort.connection.PixelService" />
+  <utility factory="zeit.vgwort.connection.MessageService" />
+</configure>

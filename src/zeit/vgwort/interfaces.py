@@ -23,6 +23,9 @@ class ITokens(zope.interface.Interface):
     def add(public_token, private_token):
         """Add tokens."""
 
+    def order(amount):
+        """Order new tokens (from the VGWort web service)."""
+
 
 class IToken(zope.interface.Interface):
 
@@ -42,3 +45,17 @@ class IGenerallyReportableContent(zope.interface.Interface):
     constraints which are not supported yet (≥1800 characters etc.)
 
     """
+
+
+class IPixelService(zope.interface.Interface):
+
+    def order_pixels(amount):
+        """orders ``amount`` new tokens."""
+
+
+class IMessageService(zope.interface.Interface):
+    pass
+
+
+class WebServiceError(Exception):
+    pass
