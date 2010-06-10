@@ -1,0 +1,7 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope"
+   >
+  <utility factory="zeit.vgwort.connection.PixelService" />
+  <utility factory="zeit.vgwort.connection.MessageService" />
+</configure>

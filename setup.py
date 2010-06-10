@@ -24,4 +24,7 @@ setup(
         'zope.interface',
         'zope.testing',
     ],
+    entry_points=dict(console_scripts=[
+        'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
+        ]),
 )

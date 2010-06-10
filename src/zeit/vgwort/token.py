@@ -3,6 +3,7 @@
 
 import BTrees.Length
 import csv
+import gocept.runner
 import grokcore.component
 import persistent
 import random
@@ -11,6 +12,7 @@ import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.vgwort.interfaces
+import zope.app.appsetup.product
 import zope.component
 import zope.container.contained
 import zope.interface
@@ -84,3 +86,17 @@ def ignore_private_token(event):
     if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
         event.name == 'private_token'):
         event.veto()
+
+
+@gocept.runner.once(principal=gocept.runner.from_config(
+    'zeit.vgwort', 'token-principal'))
+def order_tokens():
+    _order_tokens()
+
+
+def _order_tokens():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
+    ts = zope.component.getUtility(
+        zeit.vgwort.interfaces.ITokens)
+    if len(ts) < int(config['minimum-token-amount']):
+        ts.order(int(config['order-token-amount']))
