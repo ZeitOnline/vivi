@@ -4,7 +4,8 @@ zeit.locales CHANGES
 0.18.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- zeit.content.author hinzugefügt
+- Übersetzungen aktualisiert  
 
 
 0.18.0 (2010-06-03)
