@@ -17,7 +17,7 @@ product_config = """
 
 
 ZCMLLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=product_config)
+    'ftesting-mock.zcml', product_config=product_config)
 
 
 SOAPLayer = zeit.cms.testing.ZCMLLayer(
