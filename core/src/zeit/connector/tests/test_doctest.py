@@ -15,6 +15,7 @@ def test_suite():
         'mock.txt',
         'resource.txt',
         'search.txt',
+        'uuid.txt',
         optionflags=zeit.connector.testing.optionflags,
         package='zeit.connector'))
 

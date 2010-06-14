@@ -380,6 +380,7 @@ class Connector(object):
         properties = dict(properties)
         properties[('cached-time', 'INTERNAL')] = (
             zeit.connector.interfaces.DeleteProperty)
+        properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         davres.change_properties(
             properties,
             delmark=zeit.connector.interfaces.DeleteProperty,

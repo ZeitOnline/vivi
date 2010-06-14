@@ -33,6 +33,7 @@ zope.security.checker.BasicTypes[_DeleteProperty] = (
 
 
 RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
+UUID_PROPERTY = ('uuid', 'http://namespaces.zeit.de/CMS/document')
 
 
 class ConnectorError(Exception):
