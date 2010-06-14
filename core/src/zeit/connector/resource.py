@@ -1,11 +1,9 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import persistent.mapping
-import zope.interface
-
 import zeit.connector.interfaces
+import zope.interface
 
 
 class WebDAVProperties(persistent.mapping.PersistentMapping):
@@ -59,7 +57,6 @@ class Resource(object):
             properties = {}
         self.properties = WebDAVProperties(properties)
         self.contentType = contentType
-
 
 
 class CachedResource(object):
