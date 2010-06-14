@@ -19,6 +19,7 @@ setup(
         'setuptools',
         'suds',
         'zeit.cms>=1.42.0',
+        'zeit.content.author',
         'zope.app.generations',
         'zope.component',
         'zope.interface',
