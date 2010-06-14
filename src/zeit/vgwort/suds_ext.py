@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """
 Extend suds to handle parameters passed as attributes of the request element.
+(filed upstream at <https://fedorahosted.org/suds/ticket/327>)
 
 There seems to be no other way than monkey-patching right into the middle of
 things, changes from the copied code are marked 'PATCH:'.
