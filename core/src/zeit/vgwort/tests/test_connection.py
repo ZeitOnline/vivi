@@ -76,12 +76,10 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             self.fail('WebServiceError should have been raised.')
 
     def test_register_new_document(self):
-        # XXX this test fails because we need to know an author with a
-        # VGWort-Id
         author = zeit.content.author.author.Author()
-        author.firstname = 'XXX'
-        author.lastname = 'XXX'
-        author.vgwortid = 12345
+        author.firstname = 'Tina'
+        author.lastname = 'Groll'
+        author.vgwortid = 2601970
         self.repository['author'] = author
         author = self.repository['author']
 
