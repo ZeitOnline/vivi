@@ -4,7 +4,7 @@ zeit.cms changes
 1.44.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix test isolation problem (#7467).
 
 
 1.44.0 (2010-06-09)

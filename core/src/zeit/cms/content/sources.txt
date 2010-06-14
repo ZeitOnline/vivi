@@ -387,3 +387,7 @@ The counter is back at 0 and collect was done once:
 0
 >>> print log.getvalue()
 Collecting caches.
+
+Clean up:
+
+>>> logging.root.setLevel(old_log_level)
