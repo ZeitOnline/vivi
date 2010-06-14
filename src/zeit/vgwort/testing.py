@@ -1,7 +1,11 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.content.interfaces
 import zeit.cms.testing
+import zope.component
+import zope.index.text.interfaces
+import zope.interface
 import zope.testing.doctest
 
 
@@ -56,3 +60,15 @@ class MessageService(object):
 
     def new_document(self, content):
         pass # nyi
+
+
+class SearchableText(object):
+
+    zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata)
+    zope.interface.implements(zope.index.text.interfaces.ISearchableText)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getSearchableText(self):
+        return self.context.teaserText

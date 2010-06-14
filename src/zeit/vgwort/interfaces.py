@@ -54,7 +54,14 @@ class IPixelService(zope.interface.Interface):
 
 
 class IMessageService(zope.interface.Interface):
-    pass
+
+    def new_document(content):
+        """notify VGWort about a published document.
+
+        We do not validate the properties of the content object ourselves (are
+        the fields we need filled out, are the length constraints satisfied,
+        etc.), but leave that to the web service and report its errors instead.
+        """
 
 
 class WebServiceError(Exception):

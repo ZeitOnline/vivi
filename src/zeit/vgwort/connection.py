@@ -27,7 +27,11 @@ class VGWortWebService(object):
             self.wsdl,
             username=self.config['username'],
             password=self.config['password'],
-            # XXX figure out cache handling
+            # disable caching of the WSDL file, since it leads to intransparent
+            # behaviour when debugging.
+            # This means it is downloaded afresh every time, but that doesn't
+            # occur often, as the utility is instantiated only once (on server
+            # startup), so it's not performance critical other otherwise bad.
             cache=suds.cache.NoCache())
 
     @property
@@ -50,13 +54,11 @@ class VGWortWebService(object):
             method = getattr(self.client.service, method_name)
             return method(*args, **kw)
         except suds.WebFault, e:
-            # the actual message is stored in a special response,
-            # luckily the VGWort services employ a naming convention,
-            # method 'foo' sends a fault as 'fooFault'.
-            fault = getattr(e.fault.detail, method_name + 'Fault')
-            # XXX unicode in Exceptions doesn't work
-            message = fault.errormsg.encode('utf-8')
-            raise zeit.vgwort.interfaces.WebServiceError(message)
+            raise zeit.vgwort.interfaces.WebServiceError(
+                str(e.fault.detail[0]))
+
+    def create(self, type_):
+        return self.client.factory.create('ns0:%s' % type_)
 
 
 class PixelService(VGWortWebService):
@@ -79,4 +81,29 @@ class MessageService(VGWortWebService):
     service_path = '/services/1.1/messageService.wsdl'
 
     def new_document(self, content):
-        pass # nyi
+        content = zeit.cms.content.interfaces.ICommonMetadata(content)
+        parties = self.create('Parties')
+        parties.authors = self.create('Authors')
+        for author in content.author_references:
+            involved = self.create('Involved')
+            involved.firstName = author.firstname
+            involved.surName = author.lastname
+            involved.cardNumber = author.vgwortid
+            parties.authors.author.append(involved)
+
+        text = self.create('MessageText')
+        text.text = self.create('Text')
+        text._lyric = False
+        text.shorttext = content.title
+        searchable = zope.index.text.interfaces.ISearchableText(content)
+        text.text.plainText = searchable.getSearchableText()
+
+        ranges = self.create('Webranges')
+        url = self.create('Webrange')
+        url.url = content.uniqueId.replace(
+            'http://xml.zeit.de', 'http://www.zeit.de')
+        ranges.webrange.append(url)
+
+        token = zeit.vgwort.interfaces.IToken(content)
+        self.newMessage(parties, text, ranges,
+                        privateidentificationid=token.private_token)

@@ -20,4 +20,5 @@
 
   <include package="zeit.content.author" />
 
+  <adapter factory=".testing.SearchableText" />
 </configure>
