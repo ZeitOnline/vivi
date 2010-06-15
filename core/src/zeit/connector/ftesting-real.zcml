@@ -1,0 +1,10 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zope.app.zcmlfiles" />
+
+  <include package="zeit.connector" />
+  <utility factory="zeit.connector.testing.realConnector" />
+
+</configure>
+

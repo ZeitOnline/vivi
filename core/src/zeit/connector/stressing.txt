@@ -1,15 +1,12 @@
 Stress tests
 ============
 
->>> import os
->>> from zeit.connector.connector import Connector
->>> connector = Connector(roots={
-...       "default": os.environ['connector-url']})
-
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 Let's change properties in a folder in parallel. The actual problem arises only
 on parallel delete on which the server just stops putting out XML.
-
 
 >>> base_id = 'http://xml.zeit.de/testing/stresslock'
 >>> import StringIO

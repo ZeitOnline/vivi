@@ -4,13 +4,12 @@ Locking tests
 Simple case
 +++++++++++
 
->>> import os
->>> import StringIO
->>> import zeit.connector.connector
->>> import zeit.connector.resource
->>> connector = zeit.connector.connector.Connector(roots={
-...       "default": os.environ['connector-url']})
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
+>>> import StringIO
+>>> import zeit.connector.resource
 >>> id = 'http://xml.zeit.de/testing/lt1'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lt1', 'text',
@@ -148,7 +147,7 @@ Edge case 2.3: PROPATCH
 Traceback (most recent call last):
     ...
 DAVLockedError: (423, 'Locked',
-    u'http://zip6.zeit.de:9000/cms/work/testing/edge2.3',
+    u'http://.../cms/work/testing/edge2.3',
     '<!DOCTYPE...')
 
 >>> connector.unlock(res.id, token)

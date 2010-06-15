@@ -5,10 +5,9 @@ Let's test the behaviour of long running transactions. That is we do something
 with the connector, wait quite a while and continue. This used to yield
 BadStatusLine errors.
 
->>> import os
->>> from zeit.connector.connector import Connector
->>> connector = Connector(roots={
-...       "default": os.environ['connector-url']})
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 
 Enable debugging of the http data:

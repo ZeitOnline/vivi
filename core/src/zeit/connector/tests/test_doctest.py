@@ -1,41 +1,42 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zope.testing import doctest
 import unittest
 import zeit.connector.testing
-import zope.app.testing.functional
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(doctest.DocFileSuite(
+
+    real = zeit.connector.testing.FunctionalDocFileSuite(
         'connector.txt',
         'locking.txt',
-        'mock.txt',
         'resource.txt',
         'search.txt',
         'uuid.txt',
-        optionflags=zeit.connector.testing.optionflags,
-        tearDown=zeit.connector.testing.reset_testing_folder,
-        package='zeit.connector'))
+        )
+    suite.addTest(real)
 
-    long_running = doctest.DocFileSuite(
+    mock = zeit.connector.testing.FunctionalDocFileSuite(
+        'mock.txt',
+        layer=zeit.connector.testing.mock_connector_layer,
+        )
+    suite.addTest(mock)
+
+    long_running = zeit.connector.testing.FunctionalDocFileSuite(
         'longrunning.txt',
         'stressing.txt',
-        optionflags=zeit.connector.testing.optionflags,
-        package='zeit.connector')
+        )
     long_running.level = 3
     suite.addTest(long_running)
 
-    functional = zope.app.testing.functional.FunctionalDocFileSuite(
+    functional = zeit.connector.testing.FunctionalDocFileSuite(
         'cache.txt',
         'functional.txt',
         'invalidator.txt',
         'invalidation-events.txt',
-        optionflags=zeit.connector.testing.optionflags,
-        package='zeit.connector')
-    functional.layer = zeit.connector.testing.real_connector_layer
+        layer=zeit.connector.testing.zope_connector_layer,
+        )
     suite.addTest(functional)
 
     return suite

@@ -20,7 +20,7 @@ import zope.site.hooks
 
 class ThreadingTest(zope.app.testing.functional.FunctionalTestCase):
 
-    layer = zeit.connector.testing.real_connector_layer
+    layer = zeit.connector.testing.zope_connector_layer
     level = 3
 
     def setUp(self):

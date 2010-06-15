@@ -2,27 +2,45 @@
 # See also LICENSE.txt
 
 from zope.testing import doctest
+import BTrees
 import StringIO
 import ZODB.blob
 import os
 import pkg_resources
-import unittest
 import zc.queue.tests
 import zeit.connector.connector
+import zeit.connector.interfaces
 import zeit.connector.mock
 import zope.app.testing.functional
 
 
-real_connector_layer = zope.app.testing.functional.ZCMLLayer(
+zope_connector_layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'ConnectorLayer', allow_teardown=True)
+    __name__, 'zope_connector_layer', allow_teardown=True)
+
+
+real_connector_layer = zope.app.testing.functional.ZCMLLayer(
+    pkg_resources.resource_filename(__name__, 'ftesting-real.zcml'),
+    __name__, 'real_connector_layer', allow_teardown=True)
+
+
+mock_connector_layer = zope.app.testing.functional.ZCMLLayer(
+    pkg_resources.resource_filename(__name__, 'ftesting-mock.zcml'),
+    __name__, 'mock_connector_layer', allow_teardown=True)
 
 
 optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
              doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
 
 
-class Test(unittest.TestCase):
+@zope.interface.implementer(zeit.connector.interfaces.IConnector)
+def realConnector():
+    return zeit.connector.connector.Connector(roots={
+        "default": os.environ['connector-url'],
+        "search": os.environ['search-connector-url']})
+
+
+class TestCase(zope.app.testing.functional.FunctionalTestCase):
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
@@ -34,33 +52,61 @@ class Test(unittest.TestCase):
             contentType=contentType)
 
 
-class ConnectorTest(Test):
+class ConnectorTest(TestCase):
+
+    layer = real_connector_layer
 
     def setUp(self):
         super(ConnectorTest, self).setUp()
-        self.connector = zeit.connector.connector.Connector(
-            roots={"default": os.environ['connector-url']})
-
-    def tearDown(self):
-        reset_testing_folder()
-        super(ConnectorTest, self).tearDown()
+        self.connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        reset_testing_folder(self)
 
 
-def reset_testing_folder(test=None):
-    connector = zeit.connector.connector.Connector(
-        roots={"default": os.environ['connector-url']})
+class MockTest(ConnectorTest):
+
+    layer = mock_connector_layer
+
+    def setUp(self):
+        super(MockTest, self).setUp()
+        self.connector._reset()
+        self.connector.add(self.get_resource(
+            '', '', contentType='httpd/x-unix-directory'))
+
+
+def FunctionalDocFileSuite(*paths, **kw):
+    layer = kw.pop('layer', real_connector_layer)
+    kw['package'] = 'zeit.connector'
+    kw['optionflags'] = optionflags
+    kw['setUp'] = reset_testing_folder
+    test = zope.app.testing.functional.FunctionalDocFileSuite(
+        *paths, **kw)
+    test.layer = layer
+    return test
+
+
+def reset_testing_folder(test):
+    no_site = object()
+    old_site = no_site
+    if hasattr(test, 'globs'):
+        root = test.globs['getRootFolder']()
+        old_site = zope.site.hooks.getSite()
+        zope.site.hooks.setSite(root)
+
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     for name, uid in connector.listCollection(
         'http://xml.zeit.de/testing/'):
         del connector[uid]
 
+    try:
+        cache = zope.component.getUtility(
+            zeit.connector.interfaces.IPropertyCache)
+        cache._storage.clear()
+    except LookupError:
+        pass
 
-class MockTest(Test):
-
-    def setUp(self):
-        super(MockTest, self).setUp()
-        self.connector = zeit.connector.mock.Connector()
-        self.connector.add(self.get_resource(
-            '', '', contentType='httpd/x-unix-directory'))
+    if old_site is not no_site:
+        zope.site.hooks.setSite(old_site)
 
 
 def get_storage(blob_dir):

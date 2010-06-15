@@ -1,7 +1,6 @@
 # coding: utf8
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-"""Connector test setup."""
 
 import BTrees
 import StringIO
@@ -14,7 +13,6 @@ import zeit.connector.resource
 import zeit.connector.testing
 import zope.app.testing.functional
 import zope.security.proxy
-
 
 
 class ConnectorCache(zeit.connector.testing.ConnectorTest):
@@ -95,7 +93,7 @@ class ConnectorCache(zeit.connector.testing.ConnectorTest):
 
 class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
 
-    layer = zeit.connector.testing.real_connector_layer
+    layer = zeit.connector.testing.zope_connector_layer
 
     def setUp(self):
         super(TestResourceCache, self).setUp()

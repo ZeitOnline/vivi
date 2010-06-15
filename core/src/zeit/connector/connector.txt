@@ -4,12 +4,9 @@ Connector
 
 Creating a connector[#loghandler]_:
 
->>> import os
->>> from pprint import pprint
->>> from zeit.connector.connector import Connector
->>> connector = Connector(roots={
-...       "default": os.environ['connector-url'],
-...       "search": os.environ['search-connector-url']})
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 >>> connector
 <zeit.connector.connector.Connector object at 0x...>
@@ -21,7 +18,7 @@ Verify the IConnector interface:
 
 >>> import zope.interface.verify
 >>> from zeit.connector.interfaces import IConnector
->>> zope.interface.verify.verifyClass(IConnector, Connector)
+>>> zope.interface.verify.verifyClass(IConnector, connector.__class__)
 True
 >>> zope.interface.verify.verifyObject(IConnector, connector)
 True

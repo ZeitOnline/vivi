@@ -31,9 +31,7 @@ We expect nothing has changed in the future
 
 .. [#connector]
 
-    >>> import os
-    >>> from zeit.connector.connector import Connector
-    >>> connector = Connector(roots={
-    ...       "default": os.environ['connector-url'],
-    ...       "search": os.environ['search-connector-url']})
-
+    >>> import zeit.connector.interfaces
+    >>> import zope.component
+    >>> connector = zope.component.getUtility(
+    ...     zeit.connector.interfaces.IConnector)

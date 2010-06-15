@@ -5,8 +5,9 @@ Zope 3 Integration of the CMS Connector
 There will be a python class provided by Tomas and Ralf. This is the Zope 3
 integration:
 
->>> from zeit.connector.mock import Connector
->>> connector = Connector()
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> connector
 <zeit.connector.mock.Connector object at 0x...>
 
@@ -17,7 +18,7 @@ Verify the IConnector interface:
 
 >>> import zope.interface.verify
 >>> from zeit.connector.interfaces import IConnector
->>> zope.interface.verify.verifyClass(IConnector, Connector)
+>>> zope.interface.verify.verifyClass(IConnector, connector.__class__)
 True
 >>> zope.interface.verify.verifyObject(IConnector, connector)
 True
@@ -171,7 +172,8 @@ Seehofer schlaegt zurueck
  ('getetag', 'DAV:'): '...',
  ('getlastmodified', 'DAV:'): u'... GMT',
  ('resourcetype', 'DAV:'): 'article',
- ('type', 'http://namespaces.zeit.de/CMS/meta'): 'article'}
+ ('type', 'http://namespaces.zeit.de/CMS/meta'): 'article',
+ ('uuid', 'http://namespaces.zeit.de/CMS/document'): '{urn:uuid:...}'}
 >>> resource_2.contentType
 'text/plain'
 
@@ -445,15 +447,7 @@ connector.
 Currently the mock holds data:
 
 >>> pprint(connector._data)
-{'http://xml.zeit.de/2006': '',
- u'http://xml.zeit.de/2006/49': '',
- u'http://xml.zeit.de/2006/49/Vorspann-S_47': '<?xml...',
- ...
- 'http://xml.zeit.de/online/2007/02/DaimlerChrysler': 'Zwischen Angst und Schock',
- 'http://xml.zeit.de/online/2007/02/Seehofer': 'Seehofer schlaegt zurueck',
- 'http://xml.zeit.de/online/2007/03': '',
- 'http://xml.zeit.de/online/2007/03/foo': ''}
-
+{'http://xml.zeit.de/2006': ...}
 
 After resetting, the data is gone:
 
