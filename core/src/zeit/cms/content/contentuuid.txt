@@ -123,15 +123,6 @@ Objects also get an UUID when they're added to the repository:
 >>> zeit.cms.content.interfaces.IUUID(repository['content']).id
 '{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
 
-Objects get an UUID when an IObjectCreatedEvent is sent:
-
->>> import zope.event
->>> import zope.lifecycleevent
->>> obj = zeit.cms.testcontenttype.testcontenttype.TestContentType()
->>> zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
->>> zeit.cms.content.interfaces.IUUID(obj).id
-'{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
-
 
 When an object is copied, it gets a new UUID:
 

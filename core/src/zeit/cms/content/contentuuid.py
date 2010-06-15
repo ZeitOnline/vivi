@@ -1,9 +1,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import grokcore.component
 import logging
-import uuid
 import zeit.cms.checkout.interfaces
 import zeit.cms.checkout.helper
 import zeit.cms.content.dav
@@ -36,50 +34,6 @@ class ContentUUID(object):
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
-
-
-@grokcore.component.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def set_uuid_checkin(context, event):
-    set_uuid(context)
-
-
-@grokcore.component.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
-def set_uuid_add(context, event):
-    set_uuid(context)
-
-
-@grokcore.component.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectCreatedEvent)
-def set_uuid_create(context, event):
-    if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
-        return
-    set_uuid(context)
-
-
-def set_uuid(context):
-    content_uuid = zeit.cms.content.interfaces.IUUID(context)
-    if content_uuid.id is not None:
-        return
-    content_uuid.id = '{urn:uuid:%s}' % uuid.uuid4()
-    return content_uuid.id
-
-
-@grokcore.component.subscribe(
-    zeit.cms.repository.interfaces.IRepositoryContent,
-    zope.lifecycleevent.IObjectCopiedEvent)
-def reset_uuid_for_copied_objects(obj, event):
-    uuid = zeit.cms.content.interfaces.IUUID(obj)
-    if uuid.id is None:
-        return
-    with zeit.cms.checkout.helper.checked_out(obj) as co:
-        uuid = zeit.cms.content.interfaces.IUUID(co)
-        uuid.id = None
-        # Checkin handler will set the UUID
 
 
 class SimpleUUID(object):

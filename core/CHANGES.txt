@@ -5,6 +5,7 @@ zeit.cms changes
 -------------------
 
 - Fix test isolation problem (#7467).
+- Removed assignment of UUIDs, this is handled by the DAV-Server now (#7366).
 
 
 1.44.0 (2010-06-09)
