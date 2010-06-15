@@ -2,15 +2,17 @@
 # See also LICENSE.txt
 """Connect to the CMS backend."""
 
+from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import datetime
-import gocept.lxml.objectify
+import httplib
 import lxml.etree
 import os
 import os.path
 import pytz
 import time
 import urlparse
+import uuid
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -109,6 +111,7 @@ class Connector(object):
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
+
         if id in self:
             old_etag = self[id].properties.get(('getetag', 'DAV:'))
         else:
@@ -118,22 +121,42 @@ class Connector(object):
             if (id not in self
                 or resource.data.read() != self[id].data.read()):
                 raise zeit.connector.dav.interfaces.PreconditionFailedError()
+
         if id in self._deleted:
             self._deleted.remove(id)
+
+        if UUID_PROPERTY not in resource.properties:
+            resource.properties[UUID_PROPERTY] = '{urn:uuid:%s}' % uuid.uuid4()
+        existing_uuid = id in self and self[id].properties.get(UUID_PROPERTY)
+        if (existing_uuid and existing_uuid !=
+            resource.properties[UUID_PROPERTY]):
+            raise httplib.HTTPException(409, 'Conflict')
+
+        for key in self._properties.keys():
+            if key == resource.id:
+                continue
+            existing_uuid = self._properties[key].get(UUID_PROPERTY)
+            if (existing_uuid and existing_uuid ==
+                resource.properties[UUID_PROPERTY]):
+                raise httplib.HTTPException(409, 'Conflict')
+
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
         self._data[id] = resource.data.read()
         path = self._path(id)[:-1]
         name = self._path(id)[-1]
         self._paths.setdefault(path, set()).add(name)
+
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         resource.properties[('getlastmodified', 'DAV:')] = unicode(
             datetime.datetime.now(pytz.UTC).strftime(
                 '%a, %d %b %Y %H:%M:%S GMT'))
         resource.properties[('getetag', 'DAV:')] = repr(time.time())
+
         self._set_properties(id, resource.properties)
         self._content_types[id] = resource.contentType
+
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
@@ -162,6 +185,7 @@ class Connector(object):
     def copy(self, old_id, new_id):
         r = self[old_id]
         r.id = new_id
+        r.properties.pop(UUID_PROPERTY, None)
         self.add(r, verify_etag=False)
         if not new_id.endswith('/'):
             new_id = new_id + '/'
@@ -179,6 +203,7 @@ class Connector(object):
         del self[old_id]
 
     def changeProperties(self, id, properties):
+        properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         self._set_properties(id, properties)
 
     def lock(self, id, principal, until):
@@ -264,7 +289,7 @@ class Connector(object):
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
         for ((name, namespace), value) in properties.items():
-            if (name.startswith('get') 
+            if (name.startswith('get')
                 and name not in ('getlastmodified', 'getetag')):
                 continue
             stored_properties[(name, namespace)] = value
