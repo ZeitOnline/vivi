@@ -24,7 +24,7 @@ None
 >>> uuid
 '{urn:uuid:...}'
 
-Changing the UUID by changing the property does not have any effect:
+Changing the property does not have any effect:
 
 >>> connector.changeProperties(
 ...     res.id, {UUID_PROPERTY: '{urn:uuid:foo}'})
@@ -49,6 +49,8 @@ But trying to add the same resource with a different UUID fails:
 >>> res.properties[UUID_PROPERTY] = uuid
 >>> connector.add(res)
 Traceback (most recent call last):
+...
+HTTPException: (409, 'Conflict'...
 
 When the resource does not exist, the UUID can be defined by the client by
 setting the property:

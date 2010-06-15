@@ -52,15 +52,16 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         return res
 
     def put(self, url, data, mime_type=None, encoding=None, locktoken=None,
-            etag=None):
+            etag=None, extra_headers=None):
         if mime_type is None:
             mime_type = 'application/octet-stream'
-        hdrs = {}
-        self.set_if_header(hdrs, url, locktoken, etag)
+        if extra_headers is None:
+            extra_headers = {}
+        self.set_if_header(extra_headers, url, locktoken, etag)
         res = self.get_result(
             'put', (httplib.OK, httplib.CREATED, httplib.NO_CONTENT),
             url, data, content_type=mime_type, content_enc=encoding,
-            extra_hdrs=hdrs)
+            extra_hdrs=extra_headers)
         return res
 
     def mkcol(self, url):

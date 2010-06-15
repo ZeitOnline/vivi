@@ -581,10 +581,18 @@ class Connector(object):
                 if verify_etag:
                     etag = resource.properties.get(('getetag', 'DAV:'))
                 conn = self.get_connection()
+
+                headers = {}
+                uuid = resource.properties.get(
+                    zeit.connector.interfaces.UUID_PROPERTY)
+                if uuid:
+                    headers['Zeit-DocID'] = uuid
+
                 try:
                     conn.put(self._id2loc(id), data,
                              mime_type=resource.contentType,
-                             locktoken=locktoken, etag=etag)
+                             locktoken=locktoken, etag=etag,
+                             extra_headers=headers)
                 except zeit.connector.dav.interfaces.PreconditionFailedError:
                     if self[id].data.read() != data:
                         raise

@@ -4,7 +4,7 @@ CHANGES
 1.20.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Set the UUID via a custom header on PUT (#7366).
 
 
 1.20.1 (2010-06-09)
