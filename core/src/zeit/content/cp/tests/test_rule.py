@@ -183,6 +183,17 @@ error_if(True)
         s = r.apply(self.teaser)
         self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
 
+    def test_globs_should_never_return_none(self):
+        del self.teaser.xml.attrib['{http://namespaces.zeit.de/CMS/cp}type']
+
+        r = Rule("""
+applicable(type != 'teaser')
+error_if(True, type)
+""")
+        s = r.apply(self.teaser)
+        self.assertEquals(zeit.content.cp.rule.ERROR, s.status)
+        self.assertEquals('__NONE__', s.message)
+
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 

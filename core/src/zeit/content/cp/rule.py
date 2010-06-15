@@ -58,8 +58,12 @@ class Rule(object):
         except ZODB.POSException.ConflictError:
             raise
         except:
-            log.error('Error while evaluating rule starting line %s' %
-                      self.line if self.line else '<unknown>', exc_info=True)
+            globs['uniqueId'] = zeit.content.cp.interfaces.ICenterPage(
+                context).uniqueId
+            log.error('Error while evaluating rule starting line %s\n'
+                      'Globals=%s' %
+                      (self.line if self.line else '<unknown>', globs),
+                      exc_info=True)
 
         return status
 
@@ -185,8 +189,7 @@ def content(context):
 def cp_type(context):
     cp = zeit.content.cp.interfaces.ICenterPage(context, None)
     if cp is None:
-        log.error(u'cp_type: %r is not adaptable to ICenterPage' % context)
-        return '__NONE__'
+        return None
     return cp.type
 
 

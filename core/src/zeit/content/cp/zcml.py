@@ -14,11 +14,30 @@ class IGlobsDirective(zope.interface.Interface):
         title=u"Module containing globs")
 
 
+class NoneGuard(object):
+    """An IRuleGlob must never return None, because then it would not show up
+    in the getAdapters() result, so its name would be undefined leading to
+    eval-errors.
+
+    XXX: using an inline function or lambda to do the wrapping didn't work, so
+    we use instances of this class instead.
+    """
+
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kw):
+        result = self.func(*args, **kw)
+        if result is None:
+            result= '__NONE__'
+        return result
+
+
 def globs_directive(_context, module):
     for func, adapts in module._globs:
         zope.component.zcml.adapter(
             _context,
             for_=(adapts,),
-            factory=(func,),
+            factory=(NoneGuard(func),),
             provides=zeit.content.cp.interfaces.IRuleGlob,
             name=unicode(func.func_name))
