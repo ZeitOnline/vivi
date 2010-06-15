@@ -98,13 +98,6 @@ def reset_testing_folder(test):
         'http://xml.zeit.de/testing/'):
         del connector[uid]
 
-    try:
-        cache = zope.component.getUtility(
-            zeit.connector.interfaces.IPropertyCache)
-        cache._storage.clear()
-    except LookupError:
-        pass
-
     if old_site is not no_site:
         zope.site.hooks.setSite(old_site)
 

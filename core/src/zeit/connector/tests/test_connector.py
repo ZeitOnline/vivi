@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 """Connector test setup."""
 
+from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import zeit.connector.resource
 import zeit.connector.testing
@@ -80,7 +81,11 @@ class TestConflictDetectionBase(object):
         r_a = self.connector[rid]
         self.r_a = self.get_resource(r_a.__name__, r_a.data.read(),
                                      r_a.properties)
-        self.connector[rid] = self.get_resource('conflicting', 'Bang.')
+
+        bang = self.get_resource('conflicting', 'Bang.')
+        bang.properties[UUID_PROPERTY] = self.connector[rid].properties[
+            UUID_PROPERTY] 
+        self.connector[rid] = bang
 
     def test_conflict(self):
         self.assertRaises(
