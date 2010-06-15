@@ -22,7 +22,6 @@ optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
              doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
 
 
-
 class Test(unittest.TestCase):
 
     def get_resource(self, name, body, properties={},
@@ -43,10 +42,16 @@ class ConnectorTest(Test):
             roots={"default": os.environ['connector-url']})
 
     def tearDown(self):
-        for name, uid in self.connector.listCollection(
-            'http://xml.zeit.de/testing/'):
-            del self.connector[uid]
+        reset_testing_folder()
         super(ConnectorTest, self).tearDown()
+
+
+def reset_testing_folder(test=None):
+    connector = zeit.connector.connector.Connector(
+        roots={"default": os.environ['connector-url']})
+    for name, uid in connector.listCollection(
+        'http://xml.zeit.de/testing/'):
+        del connector[uid]
 
 
 class MockTest(Test):
@@ -56,7 +61,6 @@ class MockTest(Test):
         self.connector = zeit.connector.mock.Connector()
         self.connector.add(self.get_resource(
             '', '', contentType='httpd/x-unix-directory'))
-
 
 
 def get_storage(blob_dir):

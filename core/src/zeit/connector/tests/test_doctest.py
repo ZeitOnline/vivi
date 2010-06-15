@@ -17,6 +17,7 @@ def test_suite():
         'search.txt',
         'uuid.txt',
         optionflags=zeit.connector.testing.optionflags,
+        tearDown=zeit.connector.testing.reset_testing_folder,
         package='zeit.connector'))
 
     long_running = doctest.DocFileSuite(
