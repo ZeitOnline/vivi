@@ -24,6 +24,7 @@ class IInvalidator(zope.interface.Interface):
 
         """
 
+
 class Invalidator(persistent.Persistent):
 
     def __init__(self):
