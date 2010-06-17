@@ -26,39 +26,46 @@ class VGWortWebService(object):
     service_path = None
     namespace = None
 
-    def __init__(self):
+    def __init__(self, base_url, username, password):
+        self.base_url = base_url
+        self.username = username
+        self.password = password
         self.lock = threading.Lock()
 
     @zope.cachedescriptors.property.Lazy
     def client(self):
         client = suds.client.Client(
             self.wsdl,
-            username=self.config['username'],
-            password=self.config['password'],
+            username=self.username,
+            password=self.password,
             # disable caching of the WSDL file, since it leads to intransparent
             # behaviour when debugging.
             # This means it is downloaded afresh every time, but that doesn't
-            # occur often, as the utility is instantiated only once (on server
-            # startup), so it's not performance critical other otherwise bad.
+            # occur often, as the utility is instantiated only once, so it's
+            # not performance critical other otherwise bad.
             cache=suds.cache.NoCache())
         return client
 
     @property
     def wsdl(self):
-        return urlparse.urljoin(self.config['vgwort-url'], self.service_path)
-
-    @property
-    def config(self):
-        return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
+        return urlparse.urljoin(self.base_url, self.service_path)
 
     def call(self, method_name, *args, **kw):
         with self.lock:
             try:
                 method = getattr(self.client.service, method_name)
-                return method(*args, **kw)
+                result = method(*args, **kw)
+                if isinstance(result, tuple):
+                    raise zeit.vgwort.interfaces.TechnicalError(result)
+                return result
             except suds.WebFault, e:
-                raise zeit.vgwort.interfaces.WebServiceError(
-                    str(e.fault.detail[0]))
+                message = str(e.fault.detail[0])
+                if hasattr(e.fault.detail, 'ValidationError'):
+                    raise TypeError(message)
+                elif int(getattr(e.fault.detail[0], 'errorcode', 0)) >= 100:
+                    raise zeit.vgwort.interfaces.TechnicalError(message)
+                else:
+                    raise zeit.vgwort.interfaces.WebServiceError(message)
 
     def create(self, type_):
         return self.client.factory.create('{%s}%s' % (self.namespace, type_))
@@ -113,3 +120,18 @@ class MessageService(VGWortWebService):
         token = zeit.vgwort.interfaces.IToken(content)
         self.call('newMessage', parties, text, ranges,
                   privateidentificationid=token.private_token)
+
+
+def service_factory(TYPE):
+    def factory():
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.vgwort')
+        return TYPE(config['vgwort-url'],
+                    config['username'],
+                    config['password'])
+    factory = zope.interface.implementer(
+        list(zope.interface.implementedBy(TYPE))[0])(factory)
+    return factory
+
+real_pixel_service = service_factory(PixelService)
+real_message_service = service_factory(MessageService)

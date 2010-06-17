@@ -38,8 +38,8 @@ class RegisterTest(zeit.vgwort.testing.TestCase):
         self.assertEqual(None, reginfo.register_error)
         self.assert_(reginfo.registered_on > now)
 
-    def test_error_should_mark_content(self):
-        self.vgwort.error = True
+    def test_semantic_error_should_mark_content(self):
+        self.vgwort.error = zeit.vgwort.interfaces.WebServiceError
 
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
@@ -47,4 +47,15 @@ class RegisterTest(zeit.vgwort.testing.TestCase):
 
         reginfo = zeit.vgwort.interfaces.IRegistrationInfo(content)
         self.assertEqual('Provoked error', reginfo.register_error)
+        self.assertEqual(None, reginfo.registered_on)
+
+    def test_technical_error_should_not_mark_content(self):
+        self.vgwort.error = zeit.vgwort.interfaces.TechnicalError
+
+        content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+        zeit.vgwort.register.register(content)
+
+        reginfo = zeit.vgwort.interfaces.IRegistrationInfo(content)
+        self.assertEqual(None, reginfo.register_error)
         self.assertEqual(None, reginfo.registered_on)

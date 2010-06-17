@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import ZODB.POSException
 import datetime
 import gocept.async
 import gocept.runner
@@ -94,6 +95,13 @@ def register(context):
     try:
         vgwort.new_document(context)
         source.mark_done(context)
-    except Exception, e:
-        log.warning('error registering %s' % context.uniqueId, exc_info=True)
+    except ZODB.POSException.ConflictError:
+        raise
+    except zeit.vgwort.interfaces.TechnicalError, e:
+        log.warning(
+            'technical error registering %s, will be retried on the next run'
+            % context.uniqueId, exc_info=True)
+    except zeit.vgwort.interfaces.WebServiceError, e:
+        log.warning(
+            'semantic error registering %s' % context.uniqueId, exc_info=True)
         source.mark_error(context, str(e))
