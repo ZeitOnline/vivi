@@ -82,4 +82,4 @@ class SearchableText(object):
         self.context = context
 
     def getSearchableText(self):
-        return [self.context.teaserText]
+        return [self.context.teaserText or '']

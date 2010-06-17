@@ -65,6 +65,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.author_references = [shakespeare]
             co.title = 'Title'
+            co.teaserText = 'asdf'
         content = self.repository['testcontent']
         self.add_token(content)
 
