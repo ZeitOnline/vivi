@@ -28,18 +28,8 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         token = zeit.vgwort.interfaces.IToken(content)
         token.public_token, token.private_token = ts.claim()
 
-    def test_nonexistent_methods_should_not_confuse(self):
-        try:
-            self.service.non_existent
-        except AttributeError, e:
-            self.assertEqual(
-                "Method not found: 'MessageService.MessagePort.non_existent'",
-                str(e))
-        else:
-            self.fail('AttributeError should have been raised.')
-
     def test_smoketest_successful_call_roundtrip(self):
-        result = self.service.qualityControl()
+        result = self.service.call('qualityControl')
         self.assert_(len(result.qualityControlValues) > 0)
 
     def test_validation_error_should_raise_error_message(self):
