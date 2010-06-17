@@ -3,6 +3,7 @@
 
 import zeit.cms.content.interfaces
 import zeit.cms.testing
+import zeit.vgwort.interfaces
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
