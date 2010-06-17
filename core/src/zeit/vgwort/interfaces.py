@@ -90,4 +90,16 @@ class TechnicalError(Exception):
 
 
 class IReportableContentSource(zope.interface.Interface):
-    pass
+
+    def __iter__():
+        """returns content objects that are eligble for reporting to VGWort
+        but have not been reported yet.
+        """
+
+    def mark_done(content):
+        """marks the content object as reported to VGWort."""
+
+    def mark_error(content, message):
+        """store that the object encountered a semantic error while reporting
+        to VGWort.
+        """
