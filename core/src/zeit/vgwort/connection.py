@@ -1,7 +1,6 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import base64
 import suds
 import suds.cache
 import suds.client
@@ -97,7 +96,8 @@ class MessageService(VGWortWebService):
         text._lyric = False
         text.shorttext = content.title
         searchable = zope.index.text.interfaces.ISearchableText(content)
-        text.text.plainText = base64.b64encode(searchable.getSearchableText())
+        text.text.plainText = u'\n'.join(
+            searchable.getSearchableText()).encode('utf-8').encode('base64')
 
         ranges = self.create('Webranges')
         url = self.create('Webrange')
