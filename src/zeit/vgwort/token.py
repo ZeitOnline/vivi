@@ -72,19 +72,29 @@ def add_token(context, event):
     if context != event.master:
         # Only assign tokens to the master
         return
+
     token = zeit.vgwort.interfaces.IToken(context)
     if token.public_token:
         # Already has a token. Do nothing then.
         return
+
     tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
     token.public_token, token.private_token = tokens.claim()
+
+    class Dummy(object):
+        def isoformat(self):
+            return ''
+    never = Dummy()
+    reginfo = zeit.vgwort.interfaces.IRegistrationInfo(context)
+    reginfo.registered_on = never
+    reginfo.register_error = ''
 
 
 @grokcore.component.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_private_token(event):
     if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
-        event.name == 'private_token'):
+        event.name != 'public_token'):
         event.veto()
 
 

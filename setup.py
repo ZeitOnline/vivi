@@ -19,6 +19,7 @@ setup(
         'setuptools',
         'suds',
         'zeit.cms>=1.42.0',
+        'zeit.connector',
         'zeit.content.author',
         'zope.app.generations',
         'zope.component',
@@ -27,5 +28,6 @@ setup(
     ],
     entry_points=dict(console_scripts=[
         'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
+        'vgwort-register = zeit.vgwort.register:register_new_documents',
         ]),
 )

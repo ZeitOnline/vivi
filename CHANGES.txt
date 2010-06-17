@@ -5,6 +5,7 @@ zeit.vgwort changes
 ------------------
 
 - Cronjob to automatically order new tokens (#7326).
+- Cronjob to automatically register documents (#7216).
 
 
 0.1.0 (2010-05-17)
