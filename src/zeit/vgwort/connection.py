@@ -42,13 +42,6 @@ class VGWortWebService(object):
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
-    def __getattr__(self, name):
-        try:
-            getattr(self.client.service, name)
-        except suds.MethodNotFound, e:
-            raise AttributeError(str(e))
-        return lambda *args, **kw: self.call(name, *args, **kw)
-
     def call(self, method_name, *args, **kw):
         try:
             method = getattr(self.client.service, method_name)
@@ -68,7 +61,7 @@ class PixelService(VGWortWebService):
     service_path = '/services/1.0/pixelService.wsdl'
 
     def order_pixels(self, amount):
-        result = self.orderPixel(amount)
+        result = self.call('orderPixel', amount)
         for pixel in result.pixels.pixel:
             yield (pixel._publicIdentificationId,
                    pixel._privateIdentificationId)
@@ -106,5 +99,5 @@ class MessageService(VGWortWebService):
         ranges.webrange.append(url)
 
         token = zeit.vgwort.interfaces.IToken(content)
-        self.newMessage(parties, text, ranges,
-                        privateidentificationid=token.private_token)
+        self.call('newMessage', parties, text, ranges,
+                  privateidentificationid=token.private_token)
