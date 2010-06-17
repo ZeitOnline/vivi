@@ -28,6 +28,6 @@ setup(
     ],
     entry_points=dict(console_scripts=[
         'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
-        'vgwort-register = zeit.vgwort.register:register_new_documents',
+        'vgwort-report = zeit.vgwort.report:report_new_documents',
         ]),
 )

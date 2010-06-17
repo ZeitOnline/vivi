@@ -85,9 +85,9 @@ def add_token(context, event):
         def isoformat(self):
             return ''
     never = Dummy()
-    reginfo = zeit.vgwort.interfaces.IRegistrationInfo(context)
-    reginfo.registered_on = never
-    reginfo.register_error = ''
+    reginfo = zeit.vgwort.interfaces.IReportInfo(context)
+    reginfo.reported_on = never
+    reginfo.reported_error = ''
 
 
 @grokcore.component.subscribe(
