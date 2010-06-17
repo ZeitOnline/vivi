@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore
 import zeit.cms.content.interfaces
+import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
