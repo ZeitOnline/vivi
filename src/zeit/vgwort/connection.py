@@ -7,6 +7,7 @@ import suds.client
 import urlparse
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
+import zope.cachedescriptors.property
 import zope.interface
 
 
@@ -24,8 +25,9 @@ class VGWortWebService(object):
     service_path = None
     namespace = None
 
-    def __init__(self):
-        self.client = suds.client.Client(
+    @zope.cachedescriptors.property.Lazy
+    def client(self):
+        client = suds.client.Client(
             self.wsdl,
             username=self.config['username'],
             password=self.config['password'],
@@ -35,6 +37,7 @@ class VGWortWebService(object):
             # occur often, as the utility is instantiated only once (on server
             # startup), so it's not performance critical other otherwise bad.
             cache=suds.cache.NoCache())
+        return client
 
     @property
     def wsdl(self):
