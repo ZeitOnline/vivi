@@ -38,14 +38,14 @@ class IToken(zope.interface.Interface):
         required=False)
 
 
-class IRegistrationInfo(zope.interface.Interface):
+class IReportInfo(zope.interface.Interface):
 
-    registered_on = zope.schema.Datetime(
+    reported_on = zope.schema.Datetime(
         title=_(
             'Timestamp when the content object was registered with VGWort'),
         required=False)
 
-    register_error = zope.schema.Text(
+    reported_error = zope.schema.Text(
         title=_('Error message that occured during registration'),
         required=False)
 

@@ -93,12 +93,12 @@ When registering documents we need to know whether an object has already been
 registered with VGWort or not. Since the DAV-Server cannot query for the
 non-existence of properties, we initialize them with empty values:
 
->>> reginfo = zeit.vgwort.interfaces.IRegistrationInfo(content)
->>> print reginfo.registered_on
+>>> info = zeit.vgwort.interfaces.IReportInfo(content)
+>>> print info.reported_on
 None
->>> reginfo.register_error
+>>> info.reported_error
 u''
->>> reginfo.register_error = u'foo'
+>>> info.reported_error = u'foo'
 
 
 Publishing the same object again does not assign a new token:
@@ -108,7 +108,7 @@ Publishing the same object again does not assign a new token:
 >>> len(tokens)
 2
 
->>> reginfo.register_error
+>>> info.reported_error
 u'foo'
 
 

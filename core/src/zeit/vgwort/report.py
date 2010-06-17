@@ -25,8 +25,8 @@ PUBLISHED = SearchVar('published', 'workflow')
 FIRST_RELEASED = SearchVar('date_first_released', 'document')
 AUTHOR = SearchVar('author', 'document')
 PRIVATE_TOKEN = SearchVar('private_token', 'vgwort')
-REGISTERED_ON = SearchVar('registered_on', 'vgwort')
-REGISTER_ERROR = SearchVar('register_error', 'vgwort')
+REPORTED_ON = SearchVar('reported_on', 'vgwort')
+REPORTED_ERROR = SearchVar('reported_error', 'vgwort')
 
 
 class ReportableContentSource(grokcore.component.GlobalUtility):
@@ -43,49 +43,49 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
             [PUBLISHED],
             (PUBLISHED == 'yes') & (FIRST_RELEASED < last_week)
             & (PRIVATE_TOKEN > '') & (AUTHOR > '')
-            & (REGISTERED_ON == '') & (REGISTER_ERROR == ''))
+            & (REPORTED_ON == '') & (REPORTED_ERROR == ''))
         result = [zeit.cms.interfaces.ICMSContent(x[0]) for x in result]
         return iter(result)
 
     def mark_done(self, content):
-        reginfo = zeit.vgwort.interfaces.IRegistrationInfo(content)
-        reginfo.registered_on = datetime.datetime.now(pytz.UTC)
+        info = zeit.vgwort.interfaces.IReportInfo(content)
+        info.reported_on = datetime.datetime.now(pytz.UTC)
 
     def mark_error(self, content, message):
-        reginfo = zeit.vgwort.interfaces.IRegistrationInfo(content)
-        reginfo.register_error = message
+        info = zeit.vgwort.interfaces.IReportInfo(content)
+        info.reported_error = message
 
     @property
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
 
-class RegistrationInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
+class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.provides(zeit.vgwort.interfaces.IRegistrationInfo)
+    grokcore.component.provides(zeit.vgwort.interfaces.IReportInfo)
 
     zeit.cms.content.dav.mapProperties(
-        zeit.vgwort.interfaces.IRegistrationInfo,
+        zeit.vgwort.interfaces.IReportInfo,
         'http://namespaces.zeit.de/CMS/vgwort',
-        ('registered_on', 'register_error'),
+        ('reported_on', 'reported_error'),
         live=True)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
     'zeit.vgwort', 'token-principal'))
-def register_new_documents():
+def report_new_documents():
     source = zope.component.getUtility(
         zeit.vgwort.interfaces.IReportableContentSource)
     for content in source:
-        async_register(content)
+        async_report(content)
 
 
 @gocept.async.function(u'events')
-def async_register(context):
-    register(context)
+def async_report(context):
+    report(context)
 
 
-def register(context):
+def report(context):
     log = logging.getLogger(__name__)
     source = zope.component.getUtility(
         zeit.vgwort.interfaces.IReportableContentSource)
