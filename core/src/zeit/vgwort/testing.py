@@ -16,6 +16,7 @@ product_config = """
     password zeitabo2010
     minimum-token-amount 10
     order-token-amount 1
+    days-before-register 7
 </product-config>
 """
 
@@ -58,8 +59,18 @@ class MessageService(object):
 
     zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
+    error = False
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.calls = []
+
     def new_document(self, content):
-        pass # nyi
+        if self.error:
+            raise RuntimeError('Provoked error')
+        self.calls.append(content)
 
 
 class SearchableText(object):

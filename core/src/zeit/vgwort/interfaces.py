@@ -32,8 +32,21 @@ class IToken(zope.interface.Interface):
     public_token = zope.schema.TextLine(
         title=_('Public VGWort token'),
         required=False)
+
     private_token = zope.schema.TextLine(
         title=_('Private VGWort token'),
+        required=False)
+
+
+class IRegistrationInfo(zope.interface.Interface):
+
+    registered_on = zope.schema.Datetime(
+        title=_(
+            'Timestamp when the content object was registered with VGWort'),
+        required=False)
+
+    register_error = zope.schema.Text(
+        title=_('Error message that occured during registration'),
         required=False)
 
 
@@ -65,4 +78,8 @@ class IMessageService(zope.interface.Interface):
 
 
 class WebServiceError(Exception):
+    pass
+
+
+class IReportableContentSource(zope.interface.Interface):
     pass
