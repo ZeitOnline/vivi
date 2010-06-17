@@ -4,6 +4,7 @@
 import suds
 import suds.cache
 import suds.client
+import threading
 import urlparse
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
@@ -24,6 +25,9 @@ class VGWortWebService(object):
     # override in subclass
     service_path = None
     namespace = None
+
+    def __init__(self):
+        self.lock = threading.Lock()
 
     @zope.cachedescriptors.property.Lazy
     def client(self):
@@ -48,12 +52,13 @@ class VGWortWebService(object):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
     def call(self, method_name, *args, **kw):
-        try:
-            method = getattr(self.client.service, method_name)
-            return method(*args, **kw)
-        except suds.WebFault, e:
-            raise zeit.vgwort.interfaces.WebServiceError(
-                str(e.fault.detail[0]))
+        with self.lock:
+            try:
+                method = getattr(self.client.service, method_name)
+                return method(*args, **kw)
+            except suds.WebFault, e:
+                raise zeit.vgwort.interfaces.WebServiceError(
+                    str(e.fault.detail[0]))
 
     def create(self, type_):
         return self.client.factory.create('{%s}%s' % (self.namespace, type_))
