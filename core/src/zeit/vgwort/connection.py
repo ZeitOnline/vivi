@@ -20,7 +20,9 @@ class VGWortWebService(object):
     provides a method 'orderPixel', call it as self.orderPixel(args).
     """
 
-    service_path = None # override in subclass
+    # override in subclass
+    service_path = None
+    namespace = None
 
     def __init__(self):
         self.client = suds.client.Client(
@@ -51,7 +53,7 @@ class VGWortWebService(object):
                 str(e.fault.detail[0]))
 
     def create(self, type_):
-        return self.client.factory.create('ns0:%s' % type_)
+        return self.client.factory.create('{%s}%s' % (self.namespace, type_))
 
 
 class PixelService(VGWortWebService):
@@ -59,6 +61,7 @@ class PixelService(VGWortWebService):
     zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
 
     service_path = '/services/1.0/pixelService.wsdl'
+    namespace = 'http://vgwort.de/1.0/PixelService/xsd'
 
     def order_pixels(self, amount):
         result = self.call('orderPixel', amount)
@@ -72,6 +75,7 @@ class MessageService(VGWortWebService):
     zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
     service_path = '/services/1.1/messageService.wsdl'
+    namespace = 'http://vgwort.de/1.1/MessageService/xsd'
 
     def new_document(self, content):
         content = zeit.cms.content.interfaces.ICommonMetadata(content)
