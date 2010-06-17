@@ -1,6 +1,9 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import pkg_resources
+import time
+import unittest
 import zeit.cms.checkout.helper
 import zeit.cms.repository.interfaces
 import zeit.vgwort.connection
@@ -35,12 +38,12 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
     def test_validation_error_should_raise_error_message(self):
         try:
             self.service.new_document(self.repository['testcontent'])
-        except zeit.vgwort.interfaces.WebServiceError, e:
+        except TypeError, e:
             self.assertContains(
                 "The value 'None' of attribute 'privateidentificationid'",
                 str(e))
         else:
-            self.fail('WebServiceError should have been raised.')
+            self.fail('TypeError should have been raised.')
 
     def test_business_fault_should_raise_error_message(self):
         shakespeare = zeit.content.author.author.Author()
@@ -85,11 +88,45 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.service.new_document(content)
 
 
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        wsdl = pkg_resources.resource_string(__name__, 'pixelService.wsdl')
+        wsdl = wsdl.replace('__PORT__', str(port))
+        self.wfile.write(wsdl)
+
+    def do_POST(self):
+        self.send_response(500)
+        self.send_header('Content-Type', 'text/html')
+        self.send_header('Content-Length', 0)
+        self.end_headers()
+        # suds expects SOAP or nothing (and may the Lord have mercy if the
+        # server should return 500 with an HTML error message instead...)
+        self.wfile.write('')
+
+HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+
+
+class HTTPErrorTest(unittest.TestCase):
+
+    layer = HTTPLayer
+
+    def test_http_error_should_raise_technical_error(self):
+        service = zeit.vgwort.connection.PixelService(
+            'http://localhost:%s' % port, '', '')
+        time.sleep(1)
+        self.assertRaises(
+            zeit.vgwort.interfaces.TechnicalError,
+            lambda: list(service.order_pixels(1)))
+
+
 class MessageServiceTest(zeit.vgwort.testing.TestCase):
 
     def setUp(self):
         super(MessageServiceTest, self).setUp()
-        self.service = zeit.vgwort.connection.MessageService()
+        self.service = zeit.vgwort.connection.real_message_service()
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 

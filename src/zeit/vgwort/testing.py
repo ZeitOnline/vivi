@@ -59,17 +59,16 @@ class MessageService(object):
 
     zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
-    error = False
-
     def __init__(self):
         self.reset()
 
     def reset(self):
         self.calls = []
+        self.error = None
 
     def new_document(self, content):
         if self.error:
-            raise RuntimeError('Provoked error')
+            raise self.error('Provoked error')
         self.calls.append(content)
 
 

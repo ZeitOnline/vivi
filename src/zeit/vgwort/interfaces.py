@@ -78,7 +78,15 @@ class IMessageService(zope.interface.Interface):
 
 
 class WebServiceError(Exception):
-    pass
+    """A VGWort web service was unable to process a request because of semantic
+    problems.
+    """
+
+
+class TechnicalError(Exception):
+    """A VGWort web service had a technical error.
+    The request should be retried again later on.
+    """
 
 
 class IReportableContentSource(zope.interface.Interface):
