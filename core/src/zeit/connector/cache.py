@@ -10,7 +10,6 @@ import persistent
 import persistent.mapping
 import tempfile
 import time
-import transaction
 import zc.set
 import zeit.connector.interfaces
 import zope.component
