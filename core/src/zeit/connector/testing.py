@@ -7,11 +7,14 @@ import StringIO
 import ZODB.blob
 import os
 import pkg_resources
+import re
+import urlparse
 import zc.queue.tests
 import zeit.connector.connector
 import zeit.connector.interfaces
 import zeit.connector.mock
 import zope.app.testing.functional
+import zope.testing.renormalizing
 
 
 zope_connector_layer = zope.app.testing.functional.ZCMLLayer(
@@ -60,7 +63,10 @@ class ConnectorTest(TestCase):
         super(ConnectorTest, self).setUp()
         self.connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
+
+    def tearDown(self):
         reset_testing_folder(self)
+        super(ConnectorTest, self).tearDown()
 
 
 class MockTest(ConnectorTest):
@@ -74,11 +80,19 @@ class MockTest(ConnectorTest):
             '', '', contentType='httpd/x-unix-directory'))
 
 
+parsed_url = urlparse.urlparse(os.environ['connector-url'])
+checker = zope.testing.renormalizing.RENormalizing([
+    (re.compile(str(parsed_url.hostname)), '<DAVHOST>'),
+    (re.compile(str(parsed_url.port)), '<DAVPORT>'),
+    ])
+
+
 def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', real_connector_layer)
     kw['package'] = 'zeit.connector'
+    kw['checker'] = checker
     kw['optionflags'] = optionflags
-    kw['setUp'] = reset_testing_folder
+    kw['tearDown'] = reset_testing_folder
     test = zope.app.testing.functional.FunctionalDocFileSuite(
         *paths, **kw)
     test.layer = layer

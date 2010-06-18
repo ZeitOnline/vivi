@@ -10,11 +10,6 @@ it at the same time [#functional]_:
 >>> invalidator = zope.component.getUtility(
 ...     zeit.connector.invalidator.IInvalidator)
 
-We need to get the effects of the test setup out of the system:
-
->>> invalidator()
-False
-
 Currently the caches are empty. The invalidator will be finished immedeately:
 
 >>> invalidator()
