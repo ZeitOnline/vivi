@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - Fehler bei Regeln ("cp_type is undefined") verhindern (#7444).
 
+- Stabilieres Quick-Publish (#7433).
+
 
 0.38.0 (2010-06-09)
 -------------------

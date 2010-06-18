@@ -25,7 +25,8 @@ zeit.content.cp.publish.Publisher = Class.extend({
                 self.error('publish');
                 $('publish.errors').innerHTML = 'Automatisches Veröffentlichen nicht möglich';
             } else {
-                self.poll_until_publish_complete(job);
+                MochiKit.Async.callLater(
+                    1, bind(self.poll_until_publish_complete, self), job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
@@ -41,7 +42,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
                 self.check_publish_error(job);
             } else {
                 MochiKit.Async.callLater(
-                    5, bind(self.poll_until_publish_complete, self), job);
+                    1, bind(self.poll_until_publish_complete, self), job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
