@@ -16,7 +16,6 @@ class ReportOverviewTest(zeit.vgwort.testing.TestCase):
         super(ReportOverviewTest, self).setUp()
         zope.security.management.endInteraction()
 
-
     def test_smoke_download_csv(self):
         # can't really test query results since the mock connector search
         # result is static
