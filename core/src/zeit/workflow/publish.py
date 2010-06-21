@@ -120,7 +120,6 @@ class Publish(object):
         log.log(obj, msg)
 
 
-
 active_objects = set()
 active_objects_lock = threading.Lock()
 
@@ -132,8 +131,9 @@ class PublishRetractTask(object):
     #outputSchema = None or an error message
 
     def __call__(self, service, jobid, input):
-        timer.start(u'Job %s started: %s (%s)' % (
-            type(self).__name__, input.uniqueId, jobid))
+        info = (type(self).__name__, input.uniqueId, jobid)
+        __traceback_info__ = info
+        timer.start(u'Job %s started: %s (%s)' % info)
         logger.info("Running job %s" % jobid)
         uniqueId = input.uniqueId
         principal = input.principal
@@ -156,8 +156,8 @@ class PublishRetractTask(object):
                         self.log(
                             obj, _('A publish/retract job is already active.'
                                    ' Aborting'))
-                        logger.info("Aborting parallel publish/retract of %r" % (
-                            uniqueId))
+                        logger.info("Aborting parallel publish/retract of %r"
+                                    % uniqueId)
                     transaction.commit()
                     timer.mark('Commited')
                 except ZODB.POSException.ConflictError, e:
