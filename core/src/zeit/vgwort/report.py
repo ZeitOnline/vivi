@@ -37,11 +37,11 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         age = self.config['days-before-report']
-        last_week = datetime.date.today() - datetime.timedelta(days=int(age))
-        last_week = last_week.isoformat()
+        age = datetime.date.today() - datetime.timedelta(days=int(age))
+        age = age.isoformat()
         result = connector.search(
             [PUBLISHED],
-            (PUBLISHED == 'yes') & (FIRST_RELEASED < last_week)
+            (PUBLISHED == 'yes') & (FIRST_RELEASED < age)
             & (PRIVATE_TOKEN > '') & (AUTHOR > '')
             & (REPORTED_ON == '') & (REPORTED_ERROR == ''))
         result = [zeit.cms.interfaces.ICMSContent(x[0]) for x in result]
