@@ -69,7 +69,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         else:
             self.fail('WebServiceError should have been raised.')
 
-    def test_register_new_document(self):
+    def test_report_new_document(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'

@@ -42,11 +42,11 @@ class IReportInfo(zope.interface.Interface):
 
     reported_on = zope.schema.Datetime(
         title=_(
-            'Timestamp when the content object was registered with VGWort'),
+            'Timestamp when the content object was reported to VGWort'),
         required=False)
 
     reported_error = zope.schema.Text(
-        title=_('Error message that occured during registration'),
+        title=_('Error message that occured while reporting'),
         required=False)
 
 

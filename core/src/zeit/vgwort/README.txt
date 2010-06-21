@@ -89,8 +89,8 @@ True
 >>> len(tokens)
 2
 
-When registering documents we need to know whether an object has already been
-registered with VGWort or not. Since the DAV-Server cannot query for the
+When reporting documents we need to know whether an object has already been
+reported with VGWort or not. Since the DAV-Server cannot query for the
 non-existence of properties, we initialize them with empty values:
 
 >>> info = zeit.vgwort.interfaces.IReportInfo(content)

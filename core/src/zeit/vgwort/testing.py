@@ -17,7 +17,7 @@ product_config = """
     password zeitabo2010
     minimum-token-amount 10
     order-token-amount 1
-    days-before-register 7
+    days-before-report 7
 </product-config>
 """
 
