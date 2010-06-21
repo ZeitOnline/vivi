@@ -3,8 +3,6 @@
 
 from StringIO import StringIO
 import csv
-import zeit.vgwort.interfaces
-import zeit.vgwort.report
 import zeit.vgwort.testing
 import zope.security.management
 import zope.testbrowser.testing
