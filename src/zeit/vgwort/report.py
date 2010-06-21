@@ -8,6 +8,7 @@ import gocept.runner
 import grokcore.component
 import logging
 import pytz
+import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -25,6 +26,7 @@ PUBLISHED = SearchVar('published', 'workflow')
 FIRST_RELEASED = SearchVar('date_first_released', 'document')
 AUTHOR = SearchVar('author', 'document')
 PRIVATE_TOKEN = SearchVar('private_token', 'vgwort')
+PUBLIC_TOKEN = SearchVar('public_token', 'vgwort')
 REPORTED_ON = SearchVar('reported_on', 'vgwort')
 REPORTED_ERROR = SearchVar('reported_error', 'vgwort')
 
@@ -34,18 +36,22 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
     zope.interface.implements(zeit.vgwort.interfaces.IReportableContentSource)
 
     def __iter__(self):
+        result = self.query()
+        result = [zeit.cms.interfaces.ICMSContent(x[0]) for x in result]
+        return iter(result)
+
+    def query(self):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         age = self.config['days-before-report']
         age = datetime.date.today() - datetime.timedelta(days=int(age))
         age = age.isoformat()
         result = connector.search(
-            [PUBLISHED],
+            [PUBLIC_TOKEN, PRIVATE_TOKEN, REPORTED_ON, REPORTED_ERROR],
             (PUBLISHED == 'yes') & (FIRST_RELEASED < age)
             & (PRIVATE_TOKEN > '') & (AUTHOR > '')
             & (REPORTED_ON == '') & (REPORTED_ERROR == ''))
-        result = [zeit.cms.interfaces.ICMSContent(x[0]) for x in result]
-        return iter(result)
+        return result
 
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
