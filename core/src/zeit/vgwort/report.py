@@ -36,7 +36,7 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
     def __iter__(self):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
-        age = self.config['days-before-register']
+        age = self.config['days-before-report']
         last_week = datetime.date.today() - datetime.timedelta(days=int(age))
         last_week = last_week.isoformat()
         result = connector.search(
@@ -91,7 +91,7 @@ def report(context):
         zeit.vgwort.interfaces.IReportableContentSource)
     vgwort = zope.component.getUtility(
         zeit.vgwort.interfaces.IMessageService)
-    log.info('registering %s' % context.uniqueId)
+    log.info('reporting %s' % context.uniqueId)
     try:
         vgwort.new_document(context)
         source.mark_done(context)
@@ -99,9 +99,9 @@ def report(context):
         raise
     except zeit.vgwort.interfaces.TechnicalError, e:
         log.warning(
-            'technical error registering %s, will be retried on the next run'
+            'technical error reporting %s, will be retried on the next run'
             % context.uniqueId, exc_info=True)
     except zeit.vgwort.interfaces.WebServiceError, e:
         log.warning(
-            'semantic error registering %s' % context.uniqueId, exc_info=True)
+            'semantic error reporting %s' % context.uniqueId, exc_info=True)
         source.mark_error(context, str(e))
