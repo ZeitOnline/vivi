@@ -77,6 +77,13 @@ Add tokens:
 >>> len(tokens)
 3
 
+The number of available tokens is provided as a view (for Nagios checks):
+
+>>> import zope.testbrowser.testing
+>>> browser = zope.testbrowser.testing.Browser()
+>>> browser.open('http://localhost/@@zeit.vgwort.available_tokens')
+>>> print browser.contents
+3
 
 >>> import zeit.cms.interfaces
 >>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')

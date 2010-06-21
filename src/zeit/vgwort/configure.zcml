@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:grok="http://namespaces.zope.org/grok">
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser">
 
   <grok:grok package="." />
 
@@ -10,5 +11,11 @@
     component=".generation.manager"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="zeit.vgwort.available_tokens"
+    class=".browser.AvailableTokens"
+    permission="zope.Public"
+    />
 </configure>
 
