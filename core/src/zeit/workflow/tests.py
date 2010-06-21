@@ -25,9 +25,8 @@ class WorkflowLayerFactory(zope.app.testing.functional.ZCMLLayer):
 
     def setUp(self):
         zope.app.testing.functional.ZCMLLayer.setUp(self)
-        product_config['publish-script']  = self._make_copy('publish.sh')
+        product_config['publish-script'] = self._make_copy('publish.sh')
         product_config['retract-script'] = self._make_copy('retract.sh')
-
 
     def tearDown(self):
         for name in self._tempfiles:
@@ -117,10 +116,6 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         t1.join()
         t2.join()
         self.assertEquals(2, len(self.task.test_log))
-
-
-
-
 
 
 def test_suite():
