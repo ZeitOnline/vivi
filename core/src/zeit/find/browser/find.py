@@ -8,7 +8,6 @@ import urlparse
 import zc.iso8601.parse
 import zc.resourcelibrary
 import zeit.cms.browser.interfaces
-import zeit.cms.browser.preview
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
@@ -146,8 +145,7 @@ class SearchResultBase(JSONView):
         return get_favorited_css_class(self.get_favorited(result))
 
     def get_preview_url(self, result):
-        return zeit.cms.browser.preview.get_preview_url(
-            'preview-prefix', self.get_uniqueId(result))
+        return zeit.cms.browser.interfaces.IPreviewURL(result, 'preview')
 
     def get_publication_status(self, result):
         r = self.resources

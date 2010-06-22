@@ -18,7 +18,7 @@ setup(
         'python-cjson',
         'setuptools',
         'zc.iso8601',
-        'zeit.cms>1.21',
+        'zeit.cms>1.44.0',
         'zeit.solr>=0.18.0',
     ],
 )
