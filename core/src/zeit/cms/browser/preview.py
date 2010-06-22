@@ -1,17 +1,14 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import urlparse
-
-import zope.app.appsetup.product
-
-import zeit.cms.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.interfaces
+import zope.app.appsetup.product
 
 
-def get_preview_url(prefix, unique_id):
+def prefixed_url(prefix, unique_id):
     """Given a prefix and a unique id, return preview URL.
     """
     path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE):]
@@ -23,30 +20,38 @@ def get_preview_url(prefix, unique_id):
     return urlparse.urljoin(prefix, path)
 
 
+# it would be nicer if this were a named adapter, but then we wouldn't have
+# access to the name, so that's not feasible
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent, basestring)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewURL)
+def preview_url(content, preview_type):
+    return prefixed_url(preview_type + '-prefix', content.uniqueId)
+
+
 class PreviewBase(zeit.cms.browser.view.Base):
     """Base class for preview."""
 
-    def get_preview_url_for(self, preview_context):
-        unique_id = preview_context.uniqueId
-        return get_preview_url(self.prefix, unique_id)
+    preview_type = None # override in subclass
 
     def __call__(self):
         preview_object = zeit.cms.browser.interfaces.IPreviewObject(
             self.context, self.context)
-        self.redirect(self.get_preview_url_for(preview_object), trusted=True)
-        return ''
+        preview_url = zope.component.getMultiAdapter(
+            (preview_object, self.preview_type),
+            zeit.cms.browser.interfaces.IPreviewURL)
+        return self.redirect(preview_url, trusted=True)
 
 
 class Preview(PreviewBase):
 
-    prefix = 'preview-prefix'
+    preview_type = 'preview'
 
 
 class Live(PreviewBase):
 
-    prefix = 'live-prefix'
+    preview_type = 'live'
 
 
 class DevelopmentPreview(PreviewBase):
 
-    prefix = 'development-preview-prefix'
+    preview_type = 'development-preview'

@@ -9,6 +9,7 @@ zeit.cms changes
 - Added trackeback info to publish/rectract tasks (#7443).
 - Show UUID when there are duplication errors (#7247).
 - Allow "checkin" for ghosts (#7152).
+- Preview URLs are now determined using an adapter (#7030).
 
 
 1.44.0 (2010-06-09)

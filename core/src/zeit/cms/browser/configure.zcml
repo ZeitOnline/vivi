@@ -378,6 +378,8 @@
     menu="zeit-context-actions-external" title="Development"
     />
 
+  <adapter factory=".preview.preview_url" />
+
   <adapter
     factory=".listing.listRepresentation_to_Lockable"
     />

@@ -171,6 +171,13 @@ class IPreviewObject(zope.interface.Interface):
     """
 
 
+class IPreviewURL(zope.interface.Interface):
+    """Adapter to get the preview URL for an object.
+
+    Returns the URL as a string.
+    """
+
+
 class IEditViewName(zope.interface.Interface):
     """Adapter to get the edit view name for context and display view name.
 
