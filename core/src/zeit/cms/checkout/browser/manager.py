@@ -39,7 +39,6 @@ class Checkout(zeit.cms.browser.view.Base):
             self.send_message(_('"${name}" was already checked out.',
                                 mapping=dict(name=self.context.__name__)))
 
-
         new_view = None
         came_from = self.request.form.get('came_from')
         if came_from is not None:
