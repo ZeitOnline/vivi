@@ -22,5 +22,6 @@
   <include package="zeit.content.text.browser" />
 
   <include package="zeit.ghost" />
+  <include package="zeit.ghost.browser" />
 
 </configure>

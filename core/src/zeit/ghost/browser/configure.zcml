@@ -1,0 +1,15 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+
+  <browser:view
+    for="zeit.ghost.interfaces.IGhost"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="checkin"
+    permission="zeit.Checkin"
+    class=".checkin.Checkin"
+    />
+
+</configure>

@@ -1,16 +1,15 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.component
-import zope.dublincore.interfaces
-import zope.interface
-
-import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.clipboard.entry
 import zeit.cms.clipboard.interfaces
+import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.ghost.interfaces
+import zope.component
+import zope.dublincore.interfaces
+import zope.interface
 
 
 @zope.component.adapter(
@@ -21,7 +20,7 @@ def add_ghost_after_checkin(context, event):
     workingcopy = event.workingcopy
     entry = zeit.cms.clipboard.entry.Entry(context)
     zope.interface.directlyProvides(
-        entry, zeit.cms.workingcopy.interfaces.ILocalContent)
+        entry, zeit.ghost.interfaces.IGhost)
     chooser = zope.app.container.interfaces.INameChooser(workingcopy)
     name = chooser.chooseName(context.__name__, entry)
     workingcopy[name] = entry

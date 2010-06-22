@@ -1,0 +1,24 @@
+==================
+ Ghosts in the UI
+==================
+
+It's not supposed to, but sometimes it happens that users trigger the checkin
+link on ghosts (#7152), probably by double clicking the checkin link or
+something. To prevent unnecessary errors, we provide a dummy checkin view that
+simply redirects to the ghost's origin -- so "checking in" a ghost has the same
+visible result as checking in an actual working copy object, namely a redirect
+to the repository object.
+
+>>> import zope.testbrowser.testing
+>>> browser = zope.testbrowser.testing.Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
+>>> browser.getLink('Checkout').click()
+>>> checkin = browser.getLink('Checkin').url
+>>> browser.getLink('Checkin').click()
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
+>>> browser.open(checkin)
+>>> browser.url
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
