@@ -27,10 +27,6 @@ Get a testcontent[#createtestcontent]_:
 
 >>> a = repository['a']
 
-Before asking for relations the content must be indexed:
-
->>> relations.index(a)
-
 The content doesn't have any relateds currently, nor is it related anywhere:
 
 >>> sorted(relations.get_relations(a))
@@ -42,9 +38,6 @@ Relate b and c to a via IRelatedContent
 >>> related = zeit.cms.related.interfaces.IRelatedContent(a)
 >>> related.related = (repository['b'], repository['c'])
 >>> repository['a'] = a
->>> relations.index(a)
->>> relations.index(repository['b'])
->>> relations.index(repository['c'])
 
 We could ask for b's relations:
 
@@ -70,7 +63,6 @@ c's references will still just yield a:
 >>> related = zeit.cms.related.interfaces.IRelatedContent(d)
 >>> related.related = (repository['a'],)
 >>> repository['d'] = d
->>> relations.index(d)
 
 >>> res = sorted(relations.get_relations(repository['c']))
 >>> len(res)

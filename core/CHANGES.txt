@@ -12,6 +12,7 @@ zeit.cms changes
 - Preview URLs are now determined using an adapter (#7030).
 - Added a Nagios checkable view for the length of the publish task queue
   (#6801).
+- Update relation index not only on checkin but also on add (#6415).
 
 
 1.44.0 (2010-06-09)
