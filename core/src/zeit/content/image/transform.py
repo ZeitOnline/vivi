@@ -1,18 +1,14 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import datetime
-
 import PIL.Image
-import pytz
-
+import zeit.cms.repository.folder
+import zeit.connector.interfaces
+import zeit.content.image.interfaces
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
 import zope.security.proxy
-
-import zeit.cms.repository.folder
-import zeit.content.image.interfaces
 
 
 class ImageTransform(object):
@@ -95,6 +91,7 @@ def persistent_thumbnail_factory(context):
         for (name, namespace), value in image_properties.items():
             if namespace != 'DAV:':
                 thumbnail_properties[(name, namespace)] = value
+        thumbnail_properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
 
         thumbnail_container[image_name] = thumbnail
 
