@@ -38,6 +38,18 @@ Adding the same resource with the same UUID again works silently:
 >>> res.properties[UUID_PROPERTY] == uuid
 True
 
+Overwriting the resource with another one that does not have a UUID works, too,
+keeping the UUID:
+
+>>> res = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/testing/uuid', 'uuid', 'text',
+...     StringIO.StringIO('Pop goes the weasel!'),
+...     contentType='text/plain')
+>>> connector.add(res)
+>>> res = connector[res.id]
+>>> res.properties[UUID_PROPERTY] == uuid
+True
+
 But trying to add the same resource with a different UUID fails:
 
 >>> uuid = '{urn:uuid:42d5d75c-25fc-424d-904a-a61b02bc0439}'
@@ -50,14 +62,6 @@ But trying to add the same resource with a different UUID fails:
 Traceback (most recent call last):
 ...
 HTTPException: (409, 'Conflict'...
-
-Overwriting the resource with another one that does not have a UUID works:
-
->>> res = zeit.connector.resource.Resource(
-...     'http://xml.zeit.de/testing/uuid', 'uuid', 'text',
-...     StringIO.StringIO('Pop goes the weasel!'),
-...     contentType='text/plain')
->>> connector.add(res)
 
 When the resource does not exist, the UUID can be defined by the client by
 setting the property:

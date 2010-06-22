@@ -127,10 +127,15 @@ class Connector(object):
 
         existing_uuid = id in self and self[id].properties.get(UUID_PROPERTY)
         new_uuid = resource.properties.get(UUID_PROPERTY)
-        if (existing_uuid and new_uuid and existing_uuid != new_uuid):
-            raise httplib.HTTPException(409, 'Conflict')
         if not new_uuid:
-            resource.properties[UUID_PROPERTY] = '{urn:uuid:%s}' % uuid.uuid4()
+            if existing_uuid:
+                new_uuid = existing_uuid
+            else:
+                new_uuid = '{urn:uuid:%s}' % uuid.uuid4()
+            resource.properties[UUID_PROPERTY] = new_uuid
+        else:
+            if existing_uuid and existing_uuid != new_uuid:
+                raise httplib.HTTPException(409, 'Conflict')
 
         for key in self._properties.keys():
             if key == resource.id:
