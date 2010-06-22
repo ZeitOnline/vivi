@@ -7,6 +7,7 @@ zeit.cms changes
 - Fix test isolation problem (#7467).
 - Removed assignment of UUIDs, this is handled by the DAV-Server now (#7366).
 - Added trackeback info to publish/rectract tasks (#7443).
+- Show UUID when there are duplication errors (#7247).
 
 
 1.44.0 (2010-06-09)

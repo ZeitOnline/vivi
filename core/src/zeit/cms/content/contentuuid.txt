@@ -49,6 +49,10 @@ After the ckeckin, the unique id is added:
 >>> zeit.cms.content.interfaces.IUUID(content).id == uuid
 True
 
+>>> str(zeit.cms.content.interfaces.IUUID(content))
+'<zeit.cms.content.contentuuid.ContentUUID
+  {urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}>'
+
 Let's verify, that when we check it out and then in again, the unique id has
 not changed:
 

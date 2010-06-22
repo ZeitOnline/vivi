@@ -29,6 +29,10 @@ class ContentUUID(object):
     def __init__(self, context):
         self.context = context
 
+    def __str__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__, self.id)
+
 
 @zope.component.adapter(ContentUUID)
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
@@ -56,7 +60,7 @@ def uuid_to_content(uuid):
     if not result:
         return None
     if len(result) > 1:
-        log.critical('There %s objects for uuid %s. Using first one.' % (
+        log.critical('There are %s objects for uuid %s. Using first one.' % (
             len(result), uuid))
     unique_id = result[0][0]
     return zeit.cms.interfaces.ICMSContent(unique_id, None)
