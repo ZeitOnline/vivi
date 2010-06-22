@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import grokcore.component
 import zeit.brightcove.interfaces
 import zeit.cms.browser.form
 import zope.formlib.form
@@ -79,3 +80,10 @@ class StillURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
         if self.context.video_still_url:
             return self.context.video_still_url
         raise TypeError("No still url")
+
+
+@grokcore.component.adapter(zeit.brightcove.interfaces.IBrightcoveContent,
+                        basestring)
+@grokcore.component.implementer(zeit.cms.browser.interfaces.IPreviewURL)
+def preview_url(content, preview_type):
+    return content.uniqueId

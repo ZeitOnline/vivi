@@ -52,7 +52,7 @@ be:
 HTTP Error 303: See Other
 http://thumbnailurl
 
-The absoloute url of the thumbnail view is actually the thumbnail url:
+The absolute url of the thumbnail view is actually the thumbnail url:
 
 >>> zeit.cms.testing.set_site()
 >>> import zeit.cms.browser.interfaces
@@ -81,10 +81,24 @@ http://videostillurl
 
 Playlists information is visible:
 
->>> browser.open('http://localhost/++skin++cms/repository-brightcove/playlist:2345')
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository-brightcove/playlist:2345')
 >>> print browser.contents
 <...
    <label for="form.__name__">
            <span>File name</span>
          </label>...
-        <div class="widget">playlist:2345</div>...         
+        <div class="widget">playlist:2345</div>...
+
+The live and preview link redirect to the video page:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository-brightcove/video:1234')
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
+HTTP Error 303: See Other
+http://video.zeit.de/video/1234
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository-brightcove/video:1234')
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Live')
+HTTP Error 303: See Other
+http://video.zeit.de/video/1234

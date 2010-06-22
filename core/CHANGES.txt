@@ -5,7 +5,7 @@ zeit.brightcove changes
 0.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use proper preview URL for brightcove content (#7030).
 
 
 0.5.0 (2010-06-09)
