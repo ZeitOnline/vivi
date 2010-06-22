@@ -32,7 +32,7 @@ When we check out an object now, it'll populate the workingcopy:
 [u'4schanzentournee-abgesang']
 
 
-When we checkin now, a ghost will poulate the workingcopy:
+When we checkin now, a ghost will populate the workingcopy:
 
 
 >>> manager = ICheckinManager(checked_out)
