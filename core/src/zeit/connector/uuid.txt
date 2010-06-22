@@ -51,6 +51,14 @@ Traceback (most recent call last):
 ...
 HTTPException: (409, 'Conflict'...
 
+Overwriting the resource with another one that does not have a UUID works:
+
+>>> res = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/testing/uuid', 'uuid', 'text',
+...     StringIO.StringIO('Pop goes the weasel!'),
+...     contentType='text/plain')
+>>> connector.add(res)
+
 When the resource does not exist, the UUID can be defined by the client by
 setting the property:
 
