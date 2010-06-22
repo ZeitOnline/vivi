@@ -30,7 +30,7 @@ class Entry(zope.app.container.contained.Contained,
             raise TypeError("Referenced object must provide ICMSContent.")
         uid = references.uniqueId
         if not uid:
-            raise ValueError("Referenced object mus have a uniqueid.")
+            raise ValueError("Referenced object must have a uniqueid.")
         self._value = uid
 
     @property
