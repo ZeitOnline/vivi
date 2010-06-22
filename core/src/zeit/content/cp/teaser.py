@@ -1,6 +1,8 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
+import z3c.flashmessage.interfaces
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
@@ -66,3 +68,27 @@ class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 def images_for_teaser(context):
     return zeit.content.image.interfaces.IImages(
         context.original_content, None)
+
+
+@zope.component.adapter(zeit.content.cp.interfaces.ITeaser)
+@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
+def teaser_references(context):
+    return [context.original_content]
+
+
+@zope.component.adapter(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def warn_about_free_teasers(context, event):
+    relations = zope.component.getUtility(
+        zeit.cms.relation.interfaces.IRelations)
+    relating_objects = relations.get_relations(context)
+    for obj in relating_objects:
+        if zeit.content.cp.interfaces.ITeaser.providedBy(obj):
+            source = zope.component.getUtility(
+                z3c.flashmessage.interfaces.IMessageSource, name='session')
+            source.send(_('"${name}" is referenced by free teaser "${teaser}"',
+                          mapping=dict(name=context.__name__,
+                                       teaser=obj.__name__)),
+                        'error')
+            break

@@ -5,8 +5,9 @@ zeit.content.cp changes
 -------------------
 
 - Fehler bei Regeln ("cp_type is undefined") verhindern (#7444).
-
 - Stabilieres Quick-Publish (#7433).
+- Warnung bei Änderungen, wenn ein freier Teaser zu einem Artikel existiert
+  (#6415).
 
 
 0.38.0 (2010-06-09)

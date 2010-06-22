@@ -44,7 +44,7 @@
   <adapter factory=".centerpage.cms_content_iter" />
   <adapter
     factory=".centerpage.cp_references"
-    name="zeit.content.cp"
+    name="zeit.content.cp.centerpage"
     />
   <adapter factory=".rule.ValidatingWorkflow"
     provides=".interfaces.IValidatingWorkflow"
@@ -130,6 +130,8 @@
   <adapter factory=".teaser.teaserFactory" name="teaser" />
   <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
   <adapter factory=".teaser.images_for_teaser" />
+  <adapter factory=".teaser.teaser_references" name="zeit.content.cp.teaser" />
+  <subscriber handler=".teaser.warn_about_free_teasers" />
 
   <!-- Blocks -->
   <include package=".blocks" />

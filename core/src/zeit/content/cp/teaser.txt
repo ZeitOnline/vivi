@@ -45,6 +45,48 @@ Create a teaser object from the article and look at its images:
 (<zeit.content.image.imagegroup.ImageGroup object at 0x...>,)
 
 
+Free teasers
+++++++++++++
+
+>>> import zope.security.management
+>>> import zope.testbrowser.testing
+>>> zope.security.management.endInteraction()
+>>> browser = zope.testbrowser.testing.Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+Create a free teaser:
+
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit teaser list').click()
+>>> lightbox_url = browser.url
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('Teaser title').value = 'Local teaser title'
+>>> browser.getControl('Apply only for this page').click()
+
+The original object now notes that it is referenced:
+
+>>> browser.open('http://localhost/++skin++cms/repository/testcontent')
+>>> browser.getLink('References').click()
+>>> print browser.contents
+<...http://localhost/++skin++cms/repository/testcontent-2...
+
+When the original object is changed, we receive a warning about the reference:
+
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Title').value = 'New title'
+>>> browser.getControl('Year').value = '2010'
+>>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl(name='form.authors.0.').value = 'foo'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<..."testcontent" is referenced by free teaser "testcontent-2"...
+
+
 .. [#functional]
 
     >>> import zeit.cms.testing
