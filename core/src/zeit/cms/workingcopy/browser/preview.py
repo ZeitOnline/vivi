@@ -1,18 +1,15 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import time
 import urllib2
-import urlparse
-import zope.app.appsetup.product
-import zope.cachedescriptors.property
-import zope.component
-
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
+import zope.app.appsetup.product
+import zope.cachedescriptors.property
+import zope.component
 
 
 class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
@@ -31,8 +28,9 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         return preview_request.read()
 
     def get_preview_url_for(self, preview_context):
-        url = super(WorkingcopyPreview, self).get_preview_url_for(
-            preview_context)
+        url = zope.component.getMultiAdapter(
+            (preview_context, self.preview_type),
+            zeit.cms.browser.interfaces.IPreviewURL)
         url = '%s?%s' % (url, self.request.environment['QUERY_STRING'])
         return url
 
@@ -40,7 +38,6 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         # create a copy and remove unique id
         content = zeit.cms.interfaces.ICMSContent(
             zeit.connector.interfaces.IResource(self.context))
-        unique_id = content.uniqueId
         content.uniqueId = None
 
         target_folder = self.repository.getContent(
