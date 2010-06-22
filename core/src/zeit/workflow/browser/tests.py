@@ -13,6 +13,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'indicator.txt',
+        'nagios.txt',
         product_config={'zeit.workflow': zeit.workflow.tests.product_config},
         layer=zeit.workflow.tests.WorkflowLayer))
     return suite

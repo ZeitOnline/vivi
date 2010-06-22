@@ -10,6 +10,8 @@ zeit.cms changes
 - Show UUID when there are duplication errors (#7247).
 - Allow "checkin" for ghosts (#7152).
 - Preview URLs are now determined using an adapter (#7030).
+- Added a Nagios checkable view for the length of the publish task queue
+  (#6801).
 
 
 1.44.0 (2010-06-09)

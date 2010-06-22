@@ -1,0 +1,21 @@
+=========================================
+ Nagios check for the publish task queue
+=========================================
+
+>>> import zope.testbrowser.testing
+>>> browser = zope.testbrowser.testing.Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.handleErrors = False
+>>> browser.open('http://localhost/@@zeit.workflow.task_queue_length')
+>>> print browser.contents
+0
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Urgent').selected = True
+>>> browser.getControl('publish').click()
+
+>>> browser.open('http://localhost/@@zeit.workflow.task_queue_length')
+>>> print browser.contents
+1
