@@ -13,6 +13,7 @@ zeit.cms changes
 - Added a Nagios checkable view for the length of the publish task queue
   (#6801).
 - Update relation index not only on checkin but also on add (#6415).
+- Enable flashmessages to be updated via javascript (#6415).
 
 
 1.44.0 (2010-06-09)

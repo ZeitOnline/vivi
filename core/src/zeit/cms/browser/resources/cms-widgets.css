@@ -518,10 +518,13 @@ table.properties textarea {
   z-index: 1;
 }
 
+#messages_container {
+  float: right;
+}
+
 .haveMessages.staticErrorText {
   background-color: #ffffff;
   padding: 0.5em 1em;
-  float: right;
   color: black;
   cursor: pointer;
 }
@@ -530,7 +533,6 @@ table.properties textarea {
   color: #ddd;
   background-color: transparent;
   cursor: pointer;
-  float: right;
   padding: 0.5em 1em;
 }
 

@@ -91,9 +91,9 @@
       lightbox.js
       dnd.js
       menu.js
-      messages.js
       json-template.js
       view.js
+      messages.js
       tab.js
       "/>
   </resourceLibrary>

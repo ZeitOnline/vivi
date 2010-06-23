@@ -1,4 +1,4 @@
-<div tal:omit-tag=""
+<div id="messages_container"
  i18n:domain="zeit.cms">
   <tal:messages tal:define="messages context/@@standard_macros/messages">
 
@@ -7,7 +7,7 @@
          tal:attributes="class python: messages and 'haveMessages staticErrorText' or 'staticErrorText'"
          i18n:translate="notices_label">
         Notices
-      </div>
+    </div>
 
 
     <div id="messages"
