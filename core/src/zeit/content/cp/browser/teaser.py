@@ -117,6 +117,9 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
         changed = zope.formlib.form.applyChanges(
             self.context, self.form_fields, data, self.adapters)
         if changed:
+            zope.event.notify(
+                zope.lifecycleevent.ObjectModifiedEvent(
+                    self.context.get_proxied_object()))
             manager = zeit.cms.checkout.interfaces.ICheckinManager(
                 self.context)
             manager.checkin()
