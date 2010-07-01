@@ -318,24 +318,29 @@ class Connector(object):
 
     def copy(self, old_id, new_id):
         """Copy the resource old_id to new_id."""
-        source = self[old_id]  # Makes sure source exists.
+        self._copy_or_move('copy', zeit.connector.interfaces.CopyError,
+                           old_id, new_id)
 
-        old_path = urlparse.urlsplit(old_id)[2].split('/')
-        new_path = urlparse.urlsplit(new_id)[2].split('/')
-        if (len(old_path) <= len(new_path)
-            and old_path == new_path[:len(old_path)]):
-                raise zeit.connector.interfaces.CopyError(
-                    old_id,
-                    'Could not copy %s to a decendant of itself.' % old_id)
+    def move(self, old_id, new_id):
+        """Move the resource with id `old_id` to `new_id`.
+        """
+        self._copy_or_move('move', zeit.connector.interfaces.MoveError,
+                           old_id, new_id)
+
+    def _copy_or_move(self, method_name, exception, old_id, new_id):
+        source = self[old_id]  # Makes sure source exists.
+        if self._is_descendant(new_id, old_id):
+            raise exception(
+                old_id,
+                'Could not copy or move %s to a decendant of itself.' % old_id)
 
         logger.debug('copy: %s to %s' % (old_id, new_id))
         if self._get_cannonical_id(new_id) in self:
-            raise zeit.connector.interfaces.CopyError(
+            raise exception(
                 old_id,
-                "Could not copy %s to %s, because target alread exists." % (
+                "Could not copy or move %s to %s, "
+                "because target alread exists." % (
                     old_id, new_id))
-        old_loc = self._id2loc(old_id)
-        new_loc = self._id2loc(new_id)
         # Make old_id and new_id canonical. Use the canonical old_id to deduct
         # the canonical new_id:
         old_id = self._get_cannonical_id(old_id)
@@ -345,32 +350,46 @@ class Connector(object):
         else:
             if new_id.endswith('/'):
                 new_id = new_id[:len(new_id)-1]
+        old_loc = self._id2loc(old_id)
+        new_loc = self._id2loc(new_id)
 
         conn = self.get_connection('default')
+        method = getattr(conn, method_name)
 
         if old_id.endswith('/'):
-            # We cannot copy folders directly
-            self._add_collection(new_id)
-            self.changeProperties(new_id, source.properties)
-            for name, child_id in self.listCollection(old_id):
-                self.copy(child_id, urlparse.urljoin(new_id, name))
+           # We cannot copy/move folders directly because the properties of all
+           # copied/moved objects lost then.
+           self._add_collection(new_id)
+           self.changeProperties(new_id, source.properties)
+           for name, child_id in self.listCollection(old_id):
+               self._copy_or_move(method_name, exception,
+                                  child_id, urlparse.urljoin(new_id, name))
+           if method_name == 'move':
+               del self[old_id]
         else:
-            response = conn.copy(old_loc, new_loc)
-            response.read()
+           response = method(old_loc, new_loc)
+           response.read()
+
+        self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)
 
-    def move(self, old_id, new_id):
-        """Move the resource with id `old_id` to `new_id`.
-        """
-        logger.debug('move: %s to %s' % (old_id, new_id))
-        if self._get_cannonical_id(new_id) in self:
-            raise zeit.connector.interfaces.MoveError(
-                old_id,
-                "Could not move %s to %s, because target alread exists." % (
-                    old_id, new_id))
+    @staticmethod
+    def _is_descendant(id1, id2):
+        """Return if id1 is descandant of id2.
 
-        self.copy(old_id, new_id)
-        del self[old_id]
+        >>> Connector._is_descendant('http://foo.bar/a/b/c',
+        ...                          'http://foo.bar/a/b/c/d/e')
+        False
+        >>> Connector._is_descendant('http://foo.bar/a/b/c',
+        ...                          'http://foo.bar/a/b')
+        True
+        >>> Connector._is_descendant('http://foo.bar/a/b/c',
+        ...                          'http://foo.bar/a/b/d')
+        False
+        """
+        path1 = urlparse.urlsplit(id1)[2].split('/')
+        path2 = urlparse.urlsplit(id2)[2].split('/')
+        return (len(path2) <= len(path1) and path2 == path1[:len(path2)])
 
     def changeProperties(self, id, properties, locktoken=None):
         id = self._get_cannonical_id(id)

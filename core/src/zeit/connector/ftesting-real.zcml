@@ -4,7 +4,6 @@
   <include package="zope.app.zcmlfiles" />
 
   <include package="zeit.connector" />
-  <utility factory="zeit.connector.testing.realConnector" />
 
 </configure>
 

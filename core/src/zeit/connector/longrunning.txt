@@ -19,6 +19,10 @@ Enable debugging of the http data:
 Remember the connection for later:
 
 >>> connection = connector.get_connection()._con
+>>> try:
+...     del connector.property_cache['http://xml.zeit.de/testing/']
+... except KeyError:
+...     pass
 
 Get a list:
 

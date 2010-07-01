@@ -1,11 +1,12 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import doctest
 import unittest
-import zeit.connector.testing
 
 
 def test_suite():
+    import zeit.connector.testing
     suite = unittest.TestSuite()
 
     real = zeit.connector.testing.FunctionalDocFileSuite(
@@ -39,5 +40,8 @@ def test_suite():
         layer=zeit.connector.testing.zope_connector_layer,
         )
     suite.addTest(functional)
+
+    import zeit.connector.connector
+    suite.addTest(doctest.DocTestSuite(zeit.connector.connector))
 
     return suite

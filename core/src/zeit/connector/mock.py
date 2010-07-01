@@ -36,6 +36,8 @@ class Connector(object):
 
     zope.interface.implements(zeit.connector.interfaces.IConnector)
 
+    _ignore_uuid_checks = False
+
     def __init__(self):
         self._reset()
 
@@ -125,25 +127,27 @@ class Connector(object):
         if id in self._deleted:
             self._deleted.remove(id)
 
-        existing_uuid = id in self and self[id].properties.get(UUID_PROPERTY)
-        new_uuid = resource.properties.get(UUID_PROPERTY)
-        if not new_uuid:
-            if existing_uuid:
-                new_uuid = existing_uuid
+        if not self._ignore_uuid_checks:
+            existing_uuid = (
+                id in self and self[id].properties.get(UUID_PROPERTY))
+            new_uuid = resource.properties.get(UUID_PROPERTY)
+            if not new_uuid:
+                if existing_uuid:
+                    new_uuid = existing_uuid
+                else:
+                    new_uuid = '{urn:uuid:%s}' % uuid.uuid4()
+                resource.properties[UUID_PROPERTY] = new_uuid
             else:
-                new_uuid = '{urn:uuid:%s}' % uuid.uuid4()
-            resource.properties[UUID_PROPERTY] = new_uuid
-        else:
-            if existing_uuid and existing_uuid != new_uuid:
-                raise httplib.HTTPException(409, 'Conflict')
+                if existing_uuid and existing_uuid != new_uuid:
+                    raise httplib.HTTPException(409, 'Conflict')
 
-        for key in self._properties.keys():
-            if key == resource.id:
-                continue
-            existing_uuid = self._properties[key].get(UUID_PROPERTY)
-            if (existing_uuid and existing_uuid ==
-                resource.properties[UUID_PROPERTY]):
-                raise httplib.HTTPException(409, 'Conflict')
+            for key in self._properties.keys():
+                if key == resource.id:
+                    continue
+                existing_uuid = self._properties[key].get(UUID_PROPERTY)
+                if (existing_uuid and existing_uuid ==
+                    resource.properties[UUID_PROPERTY]):
+                    raise httplib.HTTPException(409, 'Conflict')
 
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
@@ -171,6 +175,7 @@ class Connector(object):
             del self[uid]
         self._deleted.add(id)
         self._data.pop(id, None)
+        self._properties.pop(id, None)
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
@@ -203,9 +208,19 @@ class Connector(object):
                 old_id,
                 "Could not move %s to %s, because target alread exists." % (
                     old_id, new_id))
-
-        self.copy(old_id, new_id)
+        self._ignore_uuid_checks = True
+        r = self[old_id]
+        r.id = new_id
+        try:
+            self.add(r, verify_etag=False)
+        finally:
+            self._ignore_uuid_checks = False
+        if not new_id.endswith('/'):
+            new_id = new_id + '/'
+        for name, uid in self.listCollection(old_id):
+            self.move(uid, urlparse.urljoin(new_id, name))
         del self[old_id]
+
 
     def changeProperties(self, id, properties):
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)

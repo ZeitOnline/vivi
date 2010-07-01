@@ -108,6 +108,7 @@ class HTTPBasicAuthCon(object):
 
     def request(self, method, uri, body=None, extra_hdrs=None):
         path = self.get_quoted_path(uri)
+        uri = self.quote_uri(uri)
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
@@ -224,6 +225,7 @@ class DAVBase(object):
 
     def move(self, src, dst, extra_hdrs=None):
         headers = {}
+        dst = self.quote_uri(dst)
         if extra_hdrs:
             headers.update(extra_hdrs)
         headers['Destination'] = dst

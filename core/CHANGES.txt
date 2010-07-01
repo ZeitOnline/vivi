@@ -6,6 +6,8 @@ CHANGES
 
 - Set the UUID via a custom header on PUT (#7366).
 
+- MOVE is now doing a MOVE instead of COPY+DELETE (#7440)
+
 
 1.20.1 (2010-06-09)
 -------------------

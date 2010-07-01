@@ -5,6 +5,7 @@ from zope.testing import doctest
 import BTrees
 import StringIO
 import ZODB.blob
+import inspect
 import os
 import pkg_resources
 import re
@@ -17,14 +18,66 @@ import zope.app.testing.functional
 import zope.testing.renormalizing
 
 
+# XXX copied from zeit.cms; we need zeit.testing!
+def ZCMLLayer(
+    config_file, module=None, name=None, allow_teardown=True,
+    product_config=None):
+    if module is None:
+        module = stack = inspect.stack()[1][0].f_globals['__name__']
+    if name is None:
+        name = 'ZCMLLayer(%s)' % config_file
+    if not config_file.startswith('/'):
+        config_file = pkg_resources.resource_filename(module, config_file)
+    def setUp(cls):
+        cls.setup = zope.app.testing.functional.FunctionalTestSetup(
+            config_file, product_config=product_config)
+
+    def tearDown(cls):
+        cls.setup.tearDownCompletely()
+        if not allow_teardown:
+            raise NotImplementedError
+
+    layer = type(name, (object,), dict(
+        __module__=module,
+        setUp=classmethod(setUp),
+        tearDown=classmethod(tearDown),
+    ))
+    return layer
+
+
 zope_connector_layer = zope.app.testing.functional.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'zope_connector_layer', allow_teardown=True)
 
 
-real_connector_layer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting-real.zcml'),
-    __name__, 'real_connector_layer', allow_teardown=True)
+real_connector_zcml_layer = ZCMLLayer('ftesting-real.zcml')
+
+
+class real_connector_layer(real_connector_zcml_layer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        cls.connector = zeit.connector.connector.Connector(roots={
+            "default": os.environ['connector-url'],
+            "search": os.environ['search-connector-url']})
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerUtility(
+            cls.connector, zeit.connector.interfaces.IConnector)
+
+    @classmethod
+    def testTearDown(cls):
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.unregisterUtility(
+            cls.connector, zeit.connector.interfaces.IConnector)
+        del cls.connector
 
 
 mock_connector_layer = zope.app.testing.functional.ZCMLLayer(
@@ -34,13 +87,6 @@ mock_connector_layer = zope.app.testing.functional.ZCMLLayer(
 
 optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
              doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
-
-
-@zope.interface.implementer(zeit.connector.interfaces.IConnector)
-def realConnector():
-    return zeit.connector.connector.Connector(roots={
-        "default": os.environ['connector-url'],
-        "search": os.environ['search-connector-url']})
 
 
 class TestCase(zope.app.testing.functional.FunctionalTestCase):

@@ -44,7 +44,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             rid, None, 'text',
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
-        self.connector.move(rid, new_rid)
+        self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
         self.assertEquals('Pop.', resource.data.read())
 
@@ -84,7 +84,7 @@ class TestConflictDetectionBase(object):
 
         bang = self.get_resource('conflicting', 'Bang.')
         bang.properties[UUID_PROPERTY] = self.connector[rid].properties[
-            UUID_PROPERTY] 
+            UUID_PROPERTY]
         self.connector[rid] = bang
 
     def test_conflict(self):

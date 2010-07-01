@@ -312,7 +312,7 @@ Note that copying an object onto another doesn't work:
 ...                'http://xml.zeit.de/testing/copy-target')
 Traceback (most recent call last):
     ...
-CopyError: Could not copy http://xml.zeit.de/testing/copy-test to
+CopyError: Could not copy or move http://xml.zeit.de/testing/copy-test to
     http://xml.zeit.de/testing/copy-target, because target alread exists.
 
 Copying an non existing object raises a KeyError:
@@ -365,7 +365,7 @@ Make sure copying an folder into a decendent of itself raises an error:
 ...                'http://xml.zeit.de/testing/testroot/a/b/c')
 Traceback (most recent call last):
     ...
-CopyError: Could not copy http://xml.zeit.de/testing/testroot to a decendant
+CopyError: Could not copy or move http://xml.zeit.de/testing/testroot to a decendant
     of itself.
 
 Clean up:
@@ -418,7 +418,7 @@ We cannot move an object onto another:
 ...                'http://xml.zeit.de/testing/move-test-moved')
 Traceback (most recent call last):
     ...
-MoveError: Could not move http://xml.zeit.de/testing/move-test-2 to
+MoveError: Could not copy or move http://xml.zeit.de/testing/move-test-2 to
     http://xml.zeit.de/testing/move-test-moved, because target alread exists.
 
 

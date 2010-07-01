@@ -95,3 +95,14 @@ Copying a resource creates a new UUID:
 >>> res = connector['http://xml.zeit.de/testing/uuid3']
 >>> res.properties[UUID_PROPERTY] == uuid
 False
+
+
+Moving a resource does not create a new UUID:
+
+>>> uuid = connector['http://xml.zeit.de/testing/uuid3'].properties[
+...     UUID_PROPERTY]
+>>> connector.move('http://xml.zeit.de/testing/uuid3',
+...                'http://xml.zeit.de/testing/uuid4')
+>>> res = connector['http://xml.zeit.de/testing/uuid4']
+>>> res.properties[UUID_PROPERTY] == uuid
+True
