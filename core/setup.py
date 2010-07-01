@@ -61,7 +61,6 @@ setup(
         'zdaemon',
         'zeit.connector>1.20.1',
         'zeit.objectlog>=0.6',
-        'zeit.preview',
         'zope.app.apidoc',
         'zope.app.catalog',
         'zope.app.component>=3.4.0b3',

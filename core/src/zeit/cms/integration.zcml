@@ -24,6 +24,4 @@
   <include package="zeit.ghost" />
   <include package="zeit.ghost.browser" />
 
-  <include package="zeit.preview" />
-
 </configure>
