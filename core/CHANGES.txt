@@ -5,6 +5,8 @@ zeit.brightcove changes
 0.5.1 (unreleased)
 ------------------
 
+- since brightcove caches absolute URLs better, we use the same timestamp for
+  a requestL more often
 - Use proper preview URL for brightcove content (#7030).
 
 

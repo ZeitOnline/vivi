@@ -51,8 +51,9 @@ class Repository(persistent.Persistent,
         self._update_playlists()
 
     def _update_videos(self):
-        from_date = (datetime.datetime.now(pytz.UTC)
-                     - datetime.timedelta(hours=2))
+        now = datetime.datetime.now(pytz.UTC)
+        from_date = (datetime.datetime(now.year,now.month,now.day,now.hour)
+                     - datetime.timedelta(hours=10))
         videos = zeit.brightcove.content.Video.find_modified(
             from_date=from_date)
         for x in videos:
