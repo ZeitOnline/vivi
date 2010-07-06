@@ -25,7 +25,6 @@ one rule: If content has ICommonMetata['serie'] == 'news' it will be put to a
 news channel:
 
 >>> import zeit.cms.checkout.helper
->>> dummy = with_statement
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
 ...     co.serie = u'News'
 >>> asw.automatically_syndicate_into

@@ -126,7 +126,6 @@ def test_suite():
         'dependency.txt',
         'syndication.txt',
         layer=WorkflowLayer,
-        product_config={'zeit.workflow': product_config},
-        globs={'with_statement': __future__.with_statement}))
+        product_config={'zeit.workflow': product_config}))
     suite.addTest(unittest.makeSuite(PublishRetractLockingTest))
     return suite

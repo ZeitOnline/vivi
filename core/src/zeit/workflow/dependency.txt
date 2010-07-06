@@ -147,7 +147,6 @@ Cleanup:
     >>> tasks = zope.component.getUtility(
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
     
-    >>> dummy = with_statement
     >>> import zeit.cms.checkout.helper
     >>> import zeit.workflow.publish
     >>> old_shift = zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT
