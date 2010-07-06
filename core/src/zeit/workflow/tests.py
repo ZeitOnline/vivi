@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import __future__
+import mock
 import os
 import os.path
 import stat

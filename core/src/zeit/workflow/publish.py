@@ -16,6 +16,7 @@ import tempfile
 import threading
 import time
 import transaction
+import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
@@ -212,23 +213,23 @@ class PublishRetractTask(object):
 
         """
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
-        if not manager.canCheckout:
+        try:
+            # We do not use the user's workingcopy but a "fresh" one which we
+            # just throw away afterwards. This has two effects: 1. The users'
+            # workingcopy istn't cluttered with ghosts and 2. we can publish in
+            # parallel.
+            checked_out = manager.checkout(temporary=True)
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
             logger.warning("Could not checkout %s" % obj.uniqueId)
             return obj
-
-        # We do not use the user's workingcopy but a "fresh" one which we just
-        # throw away afterwards. This has two effects: 1. The users'
-        # workingcopy istn't cluttered with ghosts and 2. we can publish in
-        # parallel.
-        checked_out = manager.checkout(temporary=True)
-
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
-        if not manager.canCheckin:
+        try:
+            obj = manager.checkin()
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
             # XXX this codepath is not tested!
             logger.warning("Could not checkin %s" % obj.uniqueId)
             del checked_out.__parent__[checked_out.__name__]
             return obj
-        obj = manager.checkin()
         timer.mark('Cycled %s' % obj.uniqueId)
         return obj
 
