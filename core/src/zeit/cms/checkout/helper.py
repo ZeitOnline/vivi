@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
-from zeit.cms.i18n import MessageFactory as _
 import contextlib
 import logging
 import zeit.cms.checkout.interfaces
