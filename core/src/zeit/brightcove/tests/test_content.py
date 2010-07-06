@@ -118,6 +118,13 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(
             u'Glanz, Glamour und erwartungsvolle Spannung',
             metadata.teaserText)
+    
+    def test_common_metadata(self):
+        metadata = zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['video:1234'])
+        date = datetime.datetime(2010, 3, 8, 12, 59, 57)
+        date = pytz.utc.localize(date)
+        self.assertEquals(date, metadata.last_semantic_change)
 
     def test_list_repr(self):
         request = zope.publisher.browser.TestRequest(

@@ -452,6 +452,16 @@ class CommonMetadata(grokcore.component.Adapter):
         return super(CommonMetadata, self).__getattr__(key)
 
 
+class SemanticChange(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
+    grokcore.component.implements(zeit.cms.content.interfaces.ISemanticChange)
+
+    @property
+    def last_semantic_change(self):
+        return self.context.date_last_modified
+
+
 class CommonMetadataVideo(CommonMetadata):
 
     grokcore.component.context(zeit.brightcove.interfaces.IVideo)
