@@ -191,8 +191,12 @@ class Feed(zeit.cms.related.related.RelatedBase):
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def update_feed_items(context, event):
+    # The CP is cycled during publish but we need to do that again :(
+    # Ignore conflicts during checkin here. It's almost impossible that
+    # somebody else has changed the CP. Unfortunately there is no explicit test
+    # for ignoring conflicts.
     with zeit.cms.checkout.helper.checked_out(
-        context, events=False) as co:
+        context, events=False, ignore_conflicts=True) as co:
         if co is None:
             return
         feed = zeit.content.cp.interfaces.ICPFeed(co)

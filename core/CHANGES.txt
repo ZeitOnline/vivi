@@ -8,6 +8,8 @@ zeit.content.cp changes
 - Stabilieres Quick-Publish (#7433).
 - Warnung bei Änderungen, wenn ein freier Teaser zu einem Artikel existiert
   (#6415).
+- Aktualisieren des RSS-Feeds in der CP führt nicht mehr zu ConflictError
+  (#7587)
 
 
 0.38.0 (2010-06-09)
