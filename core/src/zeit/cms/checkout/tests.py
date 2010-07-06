@@ -76,6 +76,30 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
             content, set_title_and_return_false)
         self.assertTrue(self.repository['testcontent'].title is None)
 
+    def test_ignore_conflict(self):
+        content = self.repository['testcontent']
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        # Assign an etag
+        with zeit.cms.checkout.helper.checked_out(content):
+            pass
+        def cycle_without_ignore_raises():
+            with zeit.cms.checkout.helper.checked_out(content) as co:
+                # Change the etag to provoke a conflict
+                zeit.connector.interfaces.IWebDAVProperties(co)[
+                    ('getetag', 'DAV:')] = 'foo'
+        self.assertRaises(
+            zeit.cms.repository.interfaces.ConflictError,
+            cycle_without_ignore_raises)
+        with zeit.cms.checkout.helper.checked_out(content,
+                                                  ignore_conflicts=True) as co:
+            # Change the etag to provoke a conflict. No exception will be
+            # raised due to ignore_conflicts=True
+            zeit.connector.interfaces.IWebDAVProperties(co)[
+                ('getetag', 'DAV:')] = 'foo'
+
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
