@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.39.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Warnung bei Änderungen, wenn ein freier Teaser zu einem Artikel existiert
+  (#6415).
 
 
 0.39.0 (2010-07-07)
@@ -12,8 +13,6 @@ zeit.content.cp changes
 
 - Fehler bei Regeln ("cp_type is undefined") verhindern (#7444).
 - Stabilieres Quick-Publish (#7433).
-- Warnung bei Änderungen, wenn ein freier Teaser zu einem Artikel existiert
-  (#6415).
 - Aktualisieren des RSS-Feeds in der CP führt nicht mehr zu ConflictError
   (#7587)
 
