@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.38.1 (unreleased)
+0.39.0 (2010-07-07)
 -------------------
 
 - Fehler bei Regeln ("cp_type is undefined") verhindern (#7444).
