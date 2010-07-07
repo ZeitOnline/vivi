@@ -88,6 +88,7 @@ zeit.content.cp.teaser.TeaserEditBox = zeit.content.cp.LightBoxForm.extend({
                 return result_or_error
             });
         }
+        zeit.cms.messages.render();
     },
 
     remove_checked_out: function() {
