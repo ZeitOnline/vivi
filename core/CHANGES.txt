@@ -4,8 +4,8 @@ zeit.locales CHANGES
 0.19.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
-
+- zeit.vgwort hinzugefügt
+- Übersetzungen aktualisiert  
 
 0.19.0 (2010-06-10)
 +++++++++++++++++++

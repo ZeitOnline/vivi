@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 10 09:19:08 2010\n"
+"POT-Creation-Date: Wed Jul  7 15:47:09 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -327,37 +327,37 @@ msgstr ""
 msgid "Next four weeks"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:135
+#: zeit/calendar/browser/event.py:133
 msgid "Event completed."
 msgstr ""
 
-#: zeit/calendar/browser/event.py:143
+#: zeit/calendar/browser/event.py:141
 msgid "Event reactivated."
 msgstr ""
 
-#: zeit/calendar/browser/event.py:24
+#: zeit/calendar/browser/event.py:22
 msgid "Event"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:29
+#: zeit/calendar/browser/event.py:27
 #: zeit/calendar/interfaces.py:45
 msgid "Description"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:33
+#: zeit/calendar/browser/event.py:31
 msgid "Related"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:53
+#: zeit/calendar/browser/event.py:51
 #: zeit/calendar/browser/calendar_macros.pt:9
 msgid "Add event"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:72
+#: zeit/calendar/browser/event.py:70
 msgid "Edit event"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:75
+#: zeit/calendar/browser/event.py:73
 #: zeit/cms/browser/form.py:207
 #: zeit/cms/repository/browser/file.py:109
 #: zeit/content/cp/browser/blocks/block.py:65
@@ -367,15 +367,15 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:84
+#: zeit/calendar/browser/event.py:82
 msgid "Delete event"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:85
+#: zeit/calendar/browser/event.py:83
 msgid "Really delete event?"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:89
+#: zeit/calendar/browser/event.py:87
 msgid "Event deleted."
 msgstr ""
 
@@ -496,20 +496,20 @@ msgstr ""
 msgid "context sensitive actions"
 msgstr ""
 
-#: zeit/cms/browser/configure.zcml:197
 #: zeit/cms/browser/configure.zcml:205
+#: zeit/cms/browser/configure.zcml:213
 msgid "Source"
 msgstr ""
 
-#: zeit/cms/browser/configure.zcml:222
+#: zeit/cms/browser/configure.zcml:230
 msgid "View source"
 msgstr ""
 
-#: zeit/cms/browser/configure.zcml:308
+#: zeit/cms/browser/configure.zcml:316
 msgid "Zeit CMS User Preferences"
 msgstr ""
 
-#: zeit/cms/browser/configure.zcml:362
+#: zeit/cms/browser/configure.zcml:370
 msgid "Live"
 msgstr ""
 
@@ -624,15 +624,15 @@ msgstr ""
 msgid "CMS"
 msgstr ""
 
-#: zeit/cms/browser/notices.pt:22
+#: zeit/cms/browser/messages.pt:22
 msgid "Hides automatically"
 msgstr ""
 
-#: zeit/cms/browser/notices.pt:25
+#: zeit/cms/browser/messages.pt:25
 msgid "hide"
 msgstr ""
 
-#: zeit/cms/browser/notices.pt:5
+#: zeit/cms/browser/messages.pt:5
 #. Default: "Notices"
 msgid "notices_label"
 msgstr ""
@@ -689,19 +689,19 @@ msgstr ""
 msgid "There was an error while checking in your version of ${name}."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:133
+#: zeit/cms/checkout/browser/manager.py:132
 msgid "The object was removed from the repository."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:195
+#: zeit/cms/checkout/browser/manager.py:194
 msgid "Checkout ^O"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:207
+#: zeit/cms/checkout/browser/manager.py:206
 msgid "Checkin ^I"
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:218
+#: zeit/cms/checkout/browser/manager.py:217
 msgid "Checkin (correction)"
 msgstr ""
 
@@ -715,12 +715,12 @@ msgstr ""
 msgid "\"${name}\" was already checked out."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:83
+#: zeit/cms/checkout/browser/manager.py:82
 #. Default: ""
 msgid "\"${name}\" has been checked in. Conflicts were ignored."
 msgstr ""
 
-#: zeit/cms/checkout/browser/manager.py:86
+#: zeit/cms/checkout/browser/manager.py:85
 #. Default: ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
@@ -1436,7 +1436,7 @@ msgstr ""
 
 #: zeit/cms/syndication/browser/manager.py:111
 #: zeit/cms/workingcopy/browser/configure.zcml:75
-#: zeit/cms/browser/configure.zcml:353
+#: zeit/cms/browser/configure.zcml:361
 msgid "Preview"
 msgstr ""
 
@@ -1486,7 +1486,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:16
 #: zeit/cms/workflow/interfaces.py:35
-#: zeit/workflow/publish.py:404
+#: zeit/workflow/publish.py:405
 msgid "Published"
 msgstr ""
 
@@ -1887,15 +1887,15 @@ msgid "Apply for article"
 msgstr ""
 
 #: zeit/content/cp/browser/teaser.py:112
-#: zeit/content/cp/browser/teaser.py:126
+#: zeit/content/cp/browser/teaser.py:129
 msgid "Apply only for this page"
 msgstr ""
 
-#: zeit/content/cp/browser/teaser.py:174
+#: zeit/content/cp/browser/teaser.py:177
 msgid "Edit teaser"
 msgstr ""
 
-#: zeit/content/cp/browser/teaser.py:180
+#: zeit/content/cp/browser/teaser.py:183
 msgid "View teaser"
 msgstr ""
 
@@ -2103,6 +2103,11 @@ msgstr ""
 
 #: zeit/content/cp/source.py:52
 msgid "Time"
+msgstr ""
+
+#: zeit/content/cp/teaser.py:90
+#. Default: ""
+msgid "\"${name}\" is referenced by free teaser \"${teaser}\""
 msgstr ""
 
 #: zeit/content/cp/teasergroup/browser.py:24
@@ -2813,6 +2818,26 @@ msgstr ""
 msgid "Update Solr index"
 msgstr ""
 
+#: zeit/vgwort/browser.py:52
+msgid "VGWort report status"
+msgstr ""
+
+#: zeit/vgwort/interfaces.py:33
+msgid "Public VGWort token"
+msgstr ""
+
+#: zeit/vgwort/interfaces.py:37
+msgid "Private VGWort token"
+msgstr ""
+
+#: zeit/vgwort/interfaces.py:44
+msgid "Timestamp when the content object was reported to VGWort"
+msgstr ""
+
+#: zeit/vgwort/interfaces.py:49
+msgid "Error message that occured while reporting"
+msgstr ""
+
 #: zeit/workflow/browser/form.py:37
 #: zeit/workflow/browser/configure.zcml:21
 msgid "Workflow"
@@ -2911,28 +2936,28 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:103
+#: zeit/workflow/publish.py:104
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:109
+#: zeit/workflow/publish.py:110
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:157
+#: zeit/workflow/publish.py:158
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 
-#: zeit/workflow/publish.py:177
+#: zeit/workflow/publish.py:178
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:359
+#: zeit/workflow/publish.py:360
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:431
+#: zeit/workflow/publish.py:432
 msgid "Retracted"
 msgstr ""
 
