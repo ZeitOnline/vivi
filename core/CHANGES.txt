@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-0.19.1 (unreleased)
+0.20.0 (2010-07-08)
 +++++++++++++++++++
 
 - zeit.vgwort hinzugefügt
