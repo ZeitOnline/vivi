@@ -4,7 +4,7 @@ zeit.find changes
 0.20.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Updated to new API (#7030)
 
 
 0.20.1 (2010-04-12)
