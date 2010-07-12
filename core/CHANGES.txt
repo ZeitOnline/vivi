@@ -13,6 +13,8 @@ zeit.brightcove changes
   recognize null
 - Update brightcove videos if video_still is updated. Even though the
   modified_date is not updated, this might happen in upstream.  
+- Add image-tag to video XML reference (#7625)
+- Add type="video" attribute to video XML reference (#7625)
 
 
 0.5.0 (2010-06-09)

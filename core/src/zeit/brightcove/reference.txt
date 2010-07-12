@@ -1,0 +1,35 @@
+XML reference for videos
+========================
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> p = zeit.cms.testing.create_interaction()
+
+>>> video = zeit.cms.interfaces.ICMSContent(
+...     'http://video.zeit.de/video/1234')
+
+
+The video has  a still image:
+
+>>> print video.video_still
+http://videostillurl
+
+The still is noted in an xml reference:
+
+>>> import lxml.etree
+>>> import lxml.objectify
+>>> updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(video)
+>>> node = lxml.objectify.XML(
+...     '<block xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+...     ' xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>')
+>>> updater.update(node)
+>>> print lxml.etree.tostring(node, pretty_print=True)
+<block xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+  type="video" year="2010" ressort="Auto">
+  <image xmlns:xsd="http://www.w3.org/2001/XMLSchema" src="http://videostillurl"/>
+  <supertitle xsi:nil="true"/>
+  <title py:pytype="str">Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung</title>
+  <text py:pytype="str">Glanz, Glamour und erwartungsvolle Spannung</text>
+  <description py:pytype="str">Glanz, Glamour und erwartungsvolle Spannung</description>
+  <byline xsi:nil="true"/>
+</block>

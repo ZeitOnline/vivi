@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component
+import lxml.objectify
 import persistent
 import persistent.mapping
 import pytz
@@ -497,3 +498,20 @@ def list_repr(context, request):
     return zope.component.queryMultiAdapter(
         (metadata, request),
         zeit.cms.browser.interfaces.IListRepresentation)
+
+
+class VideoXMLReferenceUpdater(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
+    grokcore.component.name('brightcove-image')
+    grokcore.component.implements(
+        zeit.cms.content.interfaces.IXMLReferenceUpdater)
+
+    def update(self, node):
+        image_node = node.find('image')
+        if image_node is not None:
+            node.remove(image_node)
+        if self.context.video_still:
+            node.append(lxml.objectify.E.image(
+                src=self.context.video_still))
+        node.set('type', 'video')
