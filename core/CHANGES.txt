@@ -5,14 +5,14 @@ zeit.brightcove changes
 0.5.1 (unreleased)
 ------------------
 
-- since brightcove caches absolute URLs better, we use the same timestamp for
-  a requestL more often
+- Since brightcove caches absolute URLs better, we use the same timestamp for
+  a request more often
 - Use proper preview URL for brightcove content (#7030).
-- adapted last_semantic_change from date_last_modified
-- make sure '' instead of null is used in REST-Calls, for brightcove does not
+- Adapted last_semantic_change from date_last_modified
+- Use an empty string instead of null in REST calls for brightcove does not
   recognize null
-- update brightcove videos if video_still is updated. Even though the modified_date is not
-  updated, this might happen in upstream.  
+- Update brightcove videos if video_still is updated. Even though the
+  modified_date is not updated, this might happen in upstream.  
 
 
 0.5.0 (2010-06-09)
