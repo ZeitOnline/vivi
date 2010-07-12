@@ -156,7 +156,7 @@ class Content(persistent.Persistent,
         except AttribueError:
             pass
         __traceback_info__ = (self.data,)
-        
+
         data = dict(self.data)
         if 'customFields' in data:
             data['customFields'] = dict(data['customFields'])
@@ -253,7 +253,7 @@ class Video(Content):
             value = ()
         custom = self.data.setdefault('customFields',
                                       persistent.mapping.PersistentMapping())
-        
+
         for i in range(1, 6):
             custom['ref_link%i' % i] = ''
             custom['ref_title%i' % i] = ''
