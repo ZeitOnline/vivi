@@ -1,6 +1,9 @@
 Assets
 ======
 
+
+Videos can be referenced as assets. An audio id comes along with the videos.
+
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> p = zeit.cms.testing.create_interaction()
