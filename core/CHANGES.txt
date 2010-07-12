@@ -9,6 +9,11 @@ zeit.brightcove changes
   a requestL more often
 - Use proper preview URL for brightcove content (#7030).
 - adapted last_semantic_change from date_last_modified
+- make sure '' instead of null is used in REST-Calls, for brightcove does not
+  recognize null
+- update brightcove videos if video_still is updated. Even though the modified_date is not
+  updated, this might happen in upstream.  
+
 
 0.5.0 (2010-06-09)
 ------------------

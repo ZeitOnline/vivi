@@ -74,12 +74,13 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.repository.update_from_brightcove()
         video = self.repository['video:1234']
         self.assertEqual(u'local change', video.title)
-
+        
         soon = str(int((time.time() + 10) * 1000))
         VIDEO_1234['lastModifiedDate'] = soon
         self.repository.update_from_brightcove()
         video = self.repository['video:1234']
         self.assertEqual(u'upstream change', video.title)
+        
 
         # Playlists don't have a modified date,
         # so changes propagate immediately
@@ -89,6 +90,20 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.repository.update_from_brightcove()
         playlist = self.repository['playlist:2345']
         self.assertEqual(u'another change', playlist.title)
+
+    def test_fetch_changes_from_bc_if_video_still_differs(self):
+        video = self.repository['video:1234']
+        video.title = u'local change'
+        # update local modification timestamp
+        zope.lifecycleevent.modified(video)
+        transaction.commit()
+
+        #video_still property update might not correspond to the update time 
+        VIDEO_1234['name'] = u'upstream change'
+        VIDEO_1234['videoStillURL'] = 'http://videostillurl2'
+        self.repository.update_from_brightcove()
+        video = self.repository['video:1234']
+        self.assertEqual(u'upstream change', video.title)
 
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
         video = self.repository['video:1234']

@@ -50,8 +50,9 @@ class IBrightcoveContent(IBCContent):
 
     teaserText = zope.schema.Text(
         title=_("Teaser text"),
-        required=False,
-        max_length=170)
+        required=True,
+        max_length=170,
+        missing_value='')
 
     thumbnail = zope.schema.URI(
         title=_('URI of the thumbnail'),
@@ -78,7 +79,8 @@ class IVideo(IBrightcoveContent,
         title=_("Kicker"),
         description=_("Please take care of capitalisation."),
         max_length=1024,
-        required=False)
+        required=False,
+        missing_value='')
 
     subtitle = zope.schema.Text(
         title=_("Video subtitle"),
@@ -92,7 +94,8 @@ class IVideo(IBrightcoveContent,
     serie = zope.schema.Choice(
         title=_("Serie"),
         source= SerieSource(),
-        required=False)
+        required=False,
+        missing_value='')
 
     product_id = zope.schema.Choice(
         title=_('Product id'),
@@ -125,7 +128,8 @@ class IVideo(IBrightcoveContent,
 
     banner_id = zope.schema.TextLine(
         title=_('Banner id'),
-        required=False)
+        required=False,
+        missing_value='')
 
     breaking_news = zope.schema.Bool(
         title=_('video-breaking-news', default='Breaking news'),

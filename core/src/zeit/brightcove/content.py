@@ -73,8 +73,7 @@ class mapped_keywords(mapped):
         return ()
 
     def __set__(self, instance, value):
-        if value:
-            value = ';'.join(keyword.code for keyword in value)
+        value = ';'.join(keyword.code for keyword in value)
         super(mapped_keywords, self).__set__(instance, value)
 
 
@@ -157,6 +156,7 @@ class Content(persistent.Persistent,
         except AttribueError:
             pass
         __traceback_info__ = (self.data,)
+        
         data = dict(self.data)
         if 'customFields' in data:
             data['customFields'] = dict(data['customFields'])
@@ -253,9 +253,10 @@ class Video(Content):
             value = ()
         custom = self.data.setdefault('customFields',
                                       persistent.mapping.PersistentMapping())
+        
         for i in range(1, 6):
-            custom.pop('ref_link%i' % i, None)
-            custom.pop('ref_title%i' % i, None)
+            custom['ref_link%i' % i] = ''
+            custom['ref_title%i' % i] = ''
         for i, obj in enumerate(value, 1):
             metadata  = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
             if metadata is None:
