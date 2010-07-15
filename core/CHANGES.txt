@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.6.1 (unreleased)
+0.6.1 (2010-07-15)
 ------------------
 
 - Fix brightove SOLR updater so it implements IUpdater correctly. Otherwise
