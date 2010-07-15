@@ -15,7 +15,9 @@ class Updater(grokcore.component.Adapter):
     grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
     grokcore.component.implements(zeit.solr.interfaces.IUpdater)
 
-    def update(self):
+    def update(self, solr=''):
+        # NOTE: The solr argument is ignored. update() alwas updates the
+        # default, internal solr and the public solr.
         updater = zope.component.getAdapter(
             self.context, zeit.solr.interfaces.IUpdater, name='update')
         deleter = zope.component.getAdapter(

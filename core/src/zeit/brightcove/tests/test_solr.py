@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import zeit.brightcove.solr
 import zeit.brightcove.testing
 import zeit.cms
@@ -20,6 +21,12 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
         # clear out indexing requests queued up by the test setup
         self.solr.reset_mock()
         self.public_solr.reset_mock()
+
+    def test_interface(self):
+        import zope.interface.verify
+        updater = zeit.brightcove.solr.Updater(mock.sentinel.video)
+        zope.interface.verify.verifyObject(
+            zeit.solr.interfaces.IUpdater, updater)
 
     def test_updating_repository_should_index_contents(self):
         self.repository._data.clear()

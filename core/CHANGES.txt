@@ -5,7 +5,8 @@ zeit.brightcove changes
 0.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix brightove SOLR updater so it implements IUpdater correctly. Otherwise
+  re-indexing videos doesn't work correctly.
 
 
 0.6.0 (2010-07-12)
