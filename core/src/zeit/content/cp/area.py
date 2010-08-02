@@ -45,7 +45,7 @@ class Container(UserDict.DictMixin,
                 zeit.content.cp.interfaces.IElement,
                 name=element_type)
             if element is None:
-               return None 
+               return None
             return zope.container.contained.contained(element, self, key)
         raise KeyError(key)
 
