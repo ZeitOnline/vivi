@@ -37,7 +37,7 @@ def update_referencing_objects(context):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context)
-    for related_object in relating_objects:
+    for related_object in list(relating_objects):
         # the actual work is done by IBeforeCheckin-handlers
         zeit.cms.checkout.helper.with_checked_out(
             related_object, lambda x: True)
