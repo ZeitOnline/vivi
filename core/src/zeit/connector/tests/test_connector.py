@@ -128,3 +128,18 @@ class TestConflictDetectionMock(
     zeit.connector.testing.MockTest):
     pass
 
+
+class TestResource(zeit.connector.testing.ConnectorTest):
+
+    def test_properties_should_be_current(self):
+        rid = u'http://xml.zeit.de/testing/aresource'
+        self.connector[rid] = zeit.connector.resource.Resource(
+            rid, None, 'text',
+            StringIO.StringIO('Pop.'),
+            contentType='text/plain',
+            properties={('foo', 'bar'): 'baz'})
+        res = self.connector[rid]
+        self.assertEquals('baz', res.properties[('foo', 'bar')])
+        self.connector.changeProperties(
+            rid, {('foo', 'bar'): 'changed'})
+        self.assertEquals('changed', res.properties[('foo', 'bar')])
