@@ -104,7 +104,8 @@ class Container(UserDict.DictMixin,
 def cms_content_iter(context):
     return itertools.chain(*[
         zeit.content.cp.interfaces.ICMSContentIterable(block)
-        for block in context.values()])
+        for block in context.values()
+        if block is not None])
 
 
 class Region(Container):

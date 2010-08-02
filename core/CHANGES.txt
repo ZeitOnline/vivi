@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.40.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ``cms_content_iter`` funktioniert jetzt auch, wenn eine CP ein Modul enthält,
+  welches das CMS nicht kennt (#7727).
 
 
 0.40.0 (2010-07-07)
