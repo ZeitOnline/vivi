@@ -452,13 +452,6 @@ loose any data here.
 Note that the most common conflicts are value changes *in* the cache. We do not
 change the conflict resolution of the underling btree.
 
-
-#>>> db = DB(ConflictResolvingMappingStorage('test'))
-#>>> transactionmanager_1 = transaction.TransactionManager()
-#>>> transactionmanager_2 = transaction.TransactionManager()
-#>>> connection_1 = db.open(transaction_manager=transactionmanager_1)
-#>>> root_1 = connection_1.root()
-
 >>> c_1 = root_1["cache"] = zeit.connector.cache.PropertyCache()
 >>> c_1['id'] = {'foo': 'bar'}
 >>> transactionmanager_1.commit()
