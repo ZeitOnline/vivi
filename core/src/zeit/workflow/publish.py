@@ -167,7 +167,7 @@ class PublishRetractTask(object):
                     if retries >= 3:
                         raise
                     # Spiels noch einmal, Sam.
-                    logger.warning('Conflict while publisheing', exc_info=True)
+                    logger.warning('Conflict while publishing', exc_info=True)
                     transaction.abort()
                     # Stagger retry:
                     time.sleep(random.uniform(0, 2**(retries)))
