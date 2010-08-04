@@ -13,7 +13,7 @@ import zeit.cms.testing
 import zeit.workflow.publish
 import zope.app.testing.functional
 
-product_config = zeit.cms.testing.cms_product_config + """
+product_config = """
 <product-config zeit.workflow>
     path-prefix work
     news-channel http://xml.zeit.de/politik.feed
@@ -21,13 +21,13 @@ product_config = zeit.cms.testing.cms_product_config + """
 """
 
 WorkflowBaseLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=product_config)
+    'ftesting.zcml',
+    product_config=zeit.cms.testing.cms_product_config + product_config )
 
 
-class WorkflowLayer(WorkflowBaseLayer):
+class WorkflowScriptsLayer(object):
     """Layer which copies the publish/retract scripts and makes them
     executable."""
-
 
     @classmethod
     def setUp(cls):
@@ -61,6 +61,23 @@ class WorkflowLayer(WorkflowBaseLayer):
         return destination.name
 
 
+class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def testTearDown(cls):
+        pass
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
