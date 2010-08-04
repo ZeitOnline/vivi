@@ -202,7 +202,10 @@ product_config = """\
 
 BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=product_config + zeit.solr.testing.product_config)
+    product_config=(
+        zeit.cms.testing.cms_product_config +
+        zeit.solr.testing.product_config +
+        product_config))
 
 
 class BrightcoveLayer(BrightcoveHTTPLayer,

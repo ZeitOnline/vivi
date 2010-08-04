@@ -5,7 +5,7 @@ zeit.brightcove changes
 0.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix tests after changes in zeit.cms (#7549)
 
 
 0.6.1 (2010-07-15)
