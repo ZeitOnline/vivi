@@ -6,6 +6,8 @@ zeit.addcentral changes
 
 - Using versions from the ZTK.
 
+- Adapt for test changes in zeit.cms
+
 
 0.2 (2009-08-21)
 ----------------
