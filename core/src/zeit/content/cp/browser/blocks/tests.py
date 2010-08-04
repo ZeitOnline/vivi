@@ -32,7 +32,8 @@ def create_content(root):
 
 CPBrightcoveZCMLLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting-av.zcml',
-    product_config=(zeit.brightcove.testing.product_config +
+    product_config=(zeit.cms.testing.cms_product_config +
+                    zeit.brightcove.testing.product_config +
                     zeit.content.cp.testing.product_config +
                     zeit.solr.testing.product_config))
 

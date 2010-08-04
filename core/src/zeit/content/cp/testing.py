@@ -1,15 +1,11 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import BaseHTTPServer
 import SimpleHTTPServer
 import __future__
 import os
 import pkg_resources
-import random
 import re
-import threading
-import urllib2
 import zeit.cms.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
@@ -39,7 +35,7 @@ product_config = """
 
 layer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=product_config)
+    product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
 
