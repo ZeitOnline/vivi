@@ -15,9 +15,18 @@ import zope.app.testing.functional
 import zope.interface.verify
 
 
-imp_layer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'ImpLayer', allow_teardown=True)
+product_config = zeit.cms.testing.cms_product_config + """
+<product-config zeit.imp>
+    scale-source file://%s
+    color-source file://%s
+</product-config>
+""" % (
+    pkg_resources.resource_filename(__name__, 'scales.xml'),
+    pkg_resources.resource_filename(__name__, 'colors.xml'))
+
+
+imp_layer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', product_config=product_config)
 
 
 class TestLayerMask(unittest.TestCase):
@@ -53,10 +62,6 @@ class TestLayerMask(unittest.TestCase):
 class TestSources(zope.app.testing.functional.BrowserTestCase):
 
     layer = imp_layer
-
-    def setUp(self):
-        super(TestSources, self).setUp()
-        zeit.cms.testing.setup_product_config(product_config)
 
     def test_scale_source(self):
         source = zeit.imp.source.ScaleSource()
@@ -206,14 +211,6 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         image = self.crop.crop(200, 200, 0, 0, 200, 200,
                                border=(127, 127, 127))
         self.assertEquals('RGB', image.mode)
-
-
-scale_xml_path = pkg_resources.resource_filename(__name__, 'scales.xml')
-color_xml_path = pkg_resources.resource_filename(__name__, 'colors.xml')
-product_config = {'zeit.imp': {
-    'scale-source': 'file://%s' % scale_xml_path,
-    'color-source': 'file://%s' % color_xml_path,
-}}
 
 
 def test_suite():

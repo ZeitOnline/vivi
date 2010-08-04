@@ -149,8 +149,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.imp.tests.imp_layer,
-        product_config=zeit.imp.tests.product_config))
+        layer=zeit.imp.tests.imp_layer))
     suite.addTest(unittest.makeSuite(ImageBarTest))
     suite.addTest(unittest.makeSuite(CropTest))
     return suite
