@@ -1,14 +1,10 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import pkg_resources
 import zeit.cms.testing
-import zope.testing.doctest
 
 
-layer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, __name__, allow_teardown=True)
+layer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
 
 
 def FunctionalDocFileSuite(*args, **kw):
