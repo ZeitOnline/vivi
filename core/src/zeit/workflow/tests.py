@@ -1,9 +1,8 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import mock
 import os
-import os.path
+import pkg_resources
 import stat
 import tempfile
 import threading
@@ -14,45 +13,54 @@ import zeit.cms.testing
 import zeit.workflow.publish
 import zope.app.testing.functional
 
+product_config = zeit.cms.testing.cms_product_config + """
+<product-config zeit.workflow>
+    path-prefix work
+    news-channel http://xml.zeit.de/politik.feed
+</product-config>
+"""
 
-class WorkflowLayerFactory(zope.app.testing.functional.ZCMLLayer):
+WorkflowBaseLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', product_config=product_config)
+
+
+class WorkflowLayer(WorkflowBaseLayer):
     """Layer which copies the publish/retract scripts and makes them
     executable."""
 
-    def __init__(self, *args, **kwargs):
-        zope.app.testing.functional.ZCMLLayer.__init__(self, *args, **kwargs)
-        self._tempfiles = []
 
-    def setUp(self):
-        zope.app.testing.functional.ZCMLLayer.setUp(self)
-        product_config['publish-script'] = self._make_copy('publish.sh')
-        product_config['retract-script'] = self._make_copy('retract.sh')
+    @classmethod
+    def setUp(cls):
+        cls._tempfiles = []
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        product_config['publish-script'] = cls._make_copy('publish.sh')
+        product_config['retract-script'] = cls._make_copy('retract.sh')
 
-    def tearDown(self):
-        for name in self._tempfiles:
-            os.remove(name)
-        zope.app.testing.functional.ZCMLLayer.tearDown(self)
-
-    def _make_copy(self, script):
-        source = os.path.join(os.path.dirname(__file__), script)
-        fd, destination = tempfile.mkstemp(suffix=script)
-        self._tempfiles.append(destination)
-        f = os.fdopen(fd, 'w')
-        f.write(open(source).read())
-        f.close()
-        os.chmod(destination, stat.S_IRUSR|stat.S_IXUSR)
-        return destination
+    @classmethod
+    def tearDown(cls):
+        del cls._tempfiles
 
 
-WorkflowLayer = WorkflowLayerFactory(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'WorkflowLayer', allow_teardown=True)
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def testTearDown(cls):
+        pass
+
+    @classmethod
+    def _make_copy(cls, script):
+        source = pkg_resources.resource_string(__name__, script)
+        destination = tempfile.NamedTemporaryFile(suffix=script)
+        destination.write(source)
+        destination.flush()
+        os.chmod(destination.name, stat.S_IRUSR|stat.S_IXUSR)
+        cls._tempfiles.append(destination)
+        return destination.name
 
 
-product_config = {
-    'path-prefix': 'work',
-    'news-channel': 'http://xml.zeit.de/politik.feed',
-}
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
@@ -68,7 +76,6 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = WorkflowLayer
-    product_config = product_config
 
     def setUp(self):
         super(PublishRetractLockingTest, self).setUp()
@@ -125,7 +132,6 @@ def test_suite():
         'autosynd.txt',
         'dependency.txt',
         'syndication.txt',
-        layer=WorkflowLayer,
-        product_config={'zeit.workflow': product_config}))
+        layer=WorkflowLayer))
     suite.addTest(unittest.makeSuite(PublishRetractLockingTest))
     return suite

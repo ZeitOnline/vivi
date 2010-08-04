@@ -1,10 +1,10 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.selenium
+import zeit.cms.testing
 
 
-class TestClipboard(zeit.cms.selenium.Test):
+class TestClipboard(zeit.cms.testing.SeleniumTestCase):
 
     def test_adding_via_drag_and_drop(self):
         self.open('/repository')

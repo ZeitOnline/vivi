@@ -14,8 +14,6 @@ import zope.testbrowser.testing
 class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.tests.WorkflowLayer
-    product_config = zeit.workflow.tests.product_config
-
 
     def setUp(self):
         super(JSONTestCase, self).setUp()

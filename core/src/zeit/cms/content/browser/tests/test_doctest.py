@@ -1,12 +1,10 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import doctest
 import unittest
-
-from zope.testing import doctest
-
 import zeit.cms.testing
+
 
 def test_suite():
     suite = unittest.TestSuite()
@@ -15,9 +13,11 @@ def test_suite():
         'keyword.txt',
         'template.txt',
         'typechange.txt',
-        'widget-subnav.txt'))
+        'widget-subnav.txt',
+        package='zeit.cms.content.browser'))
     suite.addTest(doctest.DocFileSuite(
         'widget.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
+                     doctest.ELLIPSIS),
+        package='zeit.cms.content.browser'))
     return suite

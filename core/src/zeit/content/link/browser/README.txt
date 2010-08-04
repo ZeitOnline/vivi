@@ -17,6 +17,7 @@ Create a link object:
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Link']
+>>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 Now we're looking at the add form. Fill in some data:

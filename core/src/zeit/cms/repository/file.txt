@@ -165,6 +165,8 @@ when specified accordingly :
 
 >>> import zope.app.appsetup.product
 >>> cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+>>> 'default-type' in cms_config
+False
 >>> cms_config['default-type'] = 'file'
 
 >>> import zope.component
@@ -204,6 +206,11 @@ repository:
 'new data'
 >>> repository_file.mimeType
 'text/plain'
+
+
+Clean up:
+
+>>> del cms_config['default-type']
 
 
 .. [#functional]

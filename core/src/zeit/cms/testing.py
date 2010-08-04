@@ -6,11 +6,13 @@ import BaseHTTPServer
 import __future__
 import contextlib
 import copy
+import gocept.selenium.ztk
 import inspect
 import os
 import pkg_resources
 import random
 import re
+import string
 import sys
 import threading
 import time
@@ -35,6 +37,8 @@ def ZCMLLayer(
         name = 'ZCMLLayer(%s)' % config_file
     if not config_file.startswith('/'):
         config_file = pkg_resources.resource_filename(module, config_file)
+    if product_config is True:
+        product_config = cms_product_config
     def setUp(cls):
         cls.setup = zope.app.testing.functional.FunctionalTestSetup(
             config_file, product_config=product_config)
@@ -93,7 +97,29 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         pass
 
 
-cms_layer = ZCMLLayer('ftesting.zcml')
+
+cms_product_config = string.Template("""\
+<product-config zeit.cms>
+  source-serie file://${base}/content/serie.xml
+  source-navigation file://${base}/content/navigation.xml
+  source-print-ressort file://${base}/content/print-ressort.xml
+  source-keyword file://${base}/content/zeit-ontologie-prism.xml
+  source-products file://${base}/content/products.xml
+  source-badges file://${base}/asset/badges.xml
+
+  preview-prefix http://localhost/preview-prefix
+  live-prefix http://localhost/live-prefix
+  development-preview-prefix http://localhost/development-preview-prefix
+
+  suggest-keyword-email-address none@testing
+  suggest-keyword-real-name Dr. No
+</product-config>
+""").substitute(
+    base=pkg_resources.resource_filename(__name__, ''))
+
+
+cms_layer = ZCMLLayer('ftesting.zcml', product_config=True)
+selenium_layer = gocept.selenium.ztk.Layer(cms_layer)
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -129,32 +155,6 @@ def tearDown(test):
 
 
 def setup_product_config(product_config={}):
-    cms_config = zope.app.appsetup.product._configs['zeit.cms'] = {}
-    base_path = os.path.join(os.path.dirname(__file__), 'content')
-
-    cms_config['source-serie'] = 'file://%s' % os.path.join(
-        base_path, 'serie.xml')
-    cms_config['source-navigation'] = 'file://%s' % os.path.join(
-        base_path, 'navigation.xml')
-    cms_config['source-print-ressort'] = 'file://%s' % os.path.join(
-        base_path, 'print-ressort.xml')
-    cms_config['source-keyword'] = 'file://%s' % os.path.join(
-        base_path, 'zeit-ontologie-prism.xml')
-    cms_config['source-products'] = 'file://%s' % os.path.join(
-        base_path, 'products.xml')
-    cms_config['source-badges'] = 'file://%s' % (
-        pkg_resources.resource_filename(__name__, 'asset/badges.xml'),)
-
-    cms_config['preview-prefix'] = 'http://localhost/preview-prefix'
-    cms_config['live-prefix'] = 'http://localhost/live-prefix'
-    cms_config['development-preview-prefix'] = (
-        'http://localhost/development-preview-prefix')
-    cms_config['workingcopy-preview-base'] = (
-        u'http://xml.zeit.de/tmp/previews/')
-
-    cms_config['suggest-keyword-email-address'] = 'none@testing'
-    cms_config['suggest-keyword-real-name'] = 'Dr. No'
-
     zope.app.appsetup.product._configs.update(product_config)
 
 
@@ -206,6 +206,30 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
         zeit.cms.testing.tearDown(self)
         zope.site.hooks.setSite(None)
         super(FunctionalTestCase, self).tearDown()
+
+
+
+class SeleniumTestCase(gocept.selenium.ztk.TestCase):
+
+    layer = selenium_layer
+    layer.auth_sent = None
+    skin = 'cms'
+
+    def tearDown(self):
+        zeit.cms.testing.tearDown(self)
+        super(SeleniumTestCase, self).tearDown()
+
+    def open(self, path, auth='user:userpw'):
+        if auth and auth != self.layer.auth_sent:
+            # Only set auth when it changed. Firefox will be confused
+            # otherwise.
+            self.layer.auth_sent = auth
+            auth = auth + '@'
+        else:
+            auth = ''
+        self.selenium.open(
+            'http://%s%s/++skin++%s%s' % (
+                auth, self.selenium.server, self.skin, path))
 
 
 def click_wo_redirect(browser, *args, **kwargs):

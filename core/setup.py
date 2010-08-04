@@ -84,6 +84,7 @@ setup(
         'zope.site',
         'zope.testing>=3.8.0',
         'zope.xmlpickle',
+        'gocept.selenium',
     ],
     entry_points = dict(
         console_scripts=[
