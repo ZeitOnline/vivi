@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import StringIO
 import unittest
 import zeit.cms.testing
 import zeit.content.gallery.browser.ticket
@@ -16,8 +17,12 @@ class TestTicketAuthorization(unittest.TestCase):
 
     def setUp(self):
         self.config = zope.app.appsetup.product.saveConfiguration()
-        zope.app.appsetup.product.restoreConfiguration(
-            zeit.content.gallery.testing.product_config)
+        config = zope.app.appsetup.product.loadConfiguration(
+            StringIO.StringIO(zeit.content.gallery.testing.product_config))
+        config = [
+          zope.app.appsetup.product.FauxConfiguration(name, values)
+          for name, values in config.items()]
+        zope.app.appsetup.product.setProductConfigurations(config)
 
     def tearDown(self):
         zope.app.appsetup.product.restoreConfiguration(self.config)
@@ -47,6 +52,5 @@ def test_suite():
         'imp.txt',
         'ticket.txt',
         'upload.txt',
-        product_config=zeit.content.gallery.testing.product_config,
         layer=zeit.content.gallery.testing.GalleryLayer))
     return suite

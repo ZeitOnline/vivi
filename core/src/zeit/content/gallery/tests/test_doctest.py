@@ -4,7 +4,6 @@
 import unittest
 import zeit.cms.testing
 import zeit.content.gallery.testing
-import zeit.workflow.tests
 
 
 def test_suite():
@@ -16,7 +15,6 @@ def test_suite():
         layer=zeit.content.gallery.testing.GalleryLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'workflow.txt',
-        product_config={'zeit.workflow': zeit.workflow.tests.product_config},
         package='zeit.content.gallery',
-        layer=zeit.content.gallery.testing. GalleryWorkflowLayer))
+        layer=zeit.content.gallery.testing.GalleryWorkflowLayer))
     return suite

@@ -3,30 +3,57 @@
 
 import pkg_resources
 import zeit.cms.repository.interfaces
+import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.imp.tests
 import zeit.workflow.tests
-import zope.app.testing.functional
 import zope.component
 
 
-GalleryLayer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'GalleryLayer', allow_teardown=True)
+product_config = """
+<product-config zeit.content.gallery>
+    scale-source file://%s
+    ticket-secret All work and no play makes jack a dull boy
+</product-config>
+""" % (pkg_resources.resource_filename(__name__, 'scales.xml'),)
 
-GalleryWorkflowLayer = zeit.workflow.tests.WorkflowLayerFactory(
-    pkg_resources.resource_filename(__name__, 'ftesting-workflow.zcml'),
-    __name__, 'GalleryWorkflowLayer', allow_teardown=True)
+
+GalleryLayer = zeit.cms.testing.ZCMLLayer(
+  'ftesting.zcml',
+  product_config=(
+    zeit.cms.testing.cms_product_config +
+    zeit.imp.tests.product_config +
+    product_config))
 
 
-product_config = {
-    'zeit.content.gallery': {
-        'scale-source': 'file://' + pkg_resources.resource_filename(
-            __name__, 'scales.xml'),
-        'ticket-secret': 'All work and no play makes jack a dull boy.',
-}}
-product_config.update(zeit.imp.tests.product_config)
+GalleryWorkflowZCMLLayer = zeit.cms.testing.ZCMLLayer(
+  'ftesting-workflow.zcml',
+  product_config=(
+    zeit.cms.testing.cms_product_config +
+    zeit.imp.tests.product_config +
+    zeit.workflow.tests.product_config +
+    product_config))
+
+
+class GalleryWorkflowLayer(GalleryWorkflowZCMLLayer,
+                           zeit.workflow.tests.WorkflowScriptsLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def testTearDown(cls):
+        pass
 
 
 def add_image(folder, filename, name=None):
