@@ -4,7 +4,7 @@ zeit.seo changes
 1.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix tests after product config changes in zeit.cms (#7549).
 
 
 1.4.1 (2010-05-17)
