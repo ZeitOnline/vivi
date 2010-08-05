@@ -6,7 +6,6 @@ import StringIO
 import cjson
 import pkg_resources
 import transaction
-import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
@@ -21,7 +20,7 @@ import zope.component
 
 class TestBase(zope.app.testing.functional.BrowserTestCase):
 
-    layer=zeit.imp.tests.imp_layer
+    layer = zeit.imp.tests.imp_layer
     image_path = '/++skin++cms/repository/group'
     auth = 'user:userpw'
 
@@ -35,6 +34,7 @@ class TestBase(zope.app.testing.functional.BrowserTestCase):
     def tearDown(self):
         del self.repository
         self.setSite(None)
+        zeit.cms.testing.tearDown(self)
         super(TestBase, self).tearDown()
 
 
@@ -143,13 +143,3 @@ class CropTest(TestBase):
         img1 = self.get_image_data()
         img2 = self.get_image_data(**{'filter.brightness': '0.5'})
         self.assertNotEqual(img1, img2)
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        layer=zeit.imp.tests.imp_layer))
-    suite.addTest(unittest.makeSuite(ImageBarTest))
-    suite.addTest(unittest.makeSuite(CropTest))
-    return suite
