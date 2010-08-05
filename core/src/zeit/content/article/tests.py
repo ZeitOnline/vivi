@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 from zope.testing import doctest
 import __future__
@@ -16,10 +15,12 @@ import zope.app.testing.functional
 import zope.testing.renormalizing
 
 
-product_config = {
-    'cds-import-valid-path': '$ressort/$year/$volume',
-    'cds-import-invalid-path': 'cds/invalid/$year/$volume',
-}
+product_config = """
+<product-config zeit.content.article>
+    cds-import-valid-path $$ressort/$$year/$$volume
+    cds-import-invalid-path cds/invalid/$$year/$$volume
+</product-config>
+"""
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -28,34 +29,55 @@ checker = zope.testing.renormalizing.RENormalizing([
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
-ArticleLayer = zope.app.testing.functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'ArticleLayer', allow_teardown=True,
-    product_config=zeit.content.cp.testing.product_config)
+ArticleLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml',
+    product_config=(
+        product_config +
+        zeit.content.cp.testing.product_config +
+        zeit.cms.testing.cms_product_config))
 
 
-class CDSLayerFactory(zope.app.testing.functional.ZCMLLayer):
+CDSZCMLLayer = zeit.cms.testing.ZCMLLayer(
+    'cds_ftesting.zcml',
+    product_config=(
+        product_config +
+        zeit.content.cp.testing.product_config +
+        zeit.cms.testing.cms_product_config))
 
-    def __init__(self):
-        zope.app.testing.functional.ZCMLLayer.__init__(
-            self, os.path.join(os.path.dirname(__file__),
-                               'cds_ftesting.zcml'),
-            __name__, 'CDSLayer', allow_teardown=True,
-            product_config=zeit.content.cp.testing.product_config)
 
-    def setUp(self):
-        zope.app.testing.functional.ZCMLLayer.setUp(self)
+class CDSLayer(CDSZCMLLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        product_config = zope.app.appsetup.product._configs[
+            'zeit.content.article']
         product_config['cds-export'] = tempfile.mkdtemp()
         product_config['cds-import'] = tempfile.mkdtemp()
 
-    def tearDown(self):
-        zope.app.testing.functional.ZCMLLayer.tearDown(self)
-        shutil.rmtree(product_config['cds-export'])
-        shutil.rmtree(product_config['cds-import'])
+    @classmethod
+    def testTearDown(cls):
+        product_config = zope.app.appsetup.product._configs[
+            'zeit.content.article']
+        # I don't know why, but those directories get removed automatically
+        # somehow. 
+        try:
+            shutil.rmtree(product_config['cds-export'])
+        except OSError:
+            pass
+        try:
+            shutil.rmtree(product_config['cds-import'])
+        except OSError:
+            pass
         del product_config['cds-export']
         del product_config['cds-import']
-
-CDSLayer = CDSLayerFactory()
 
 
 def test_suite():
@@ -73,7 +95,6 @@ def test_suite():
         layer=CDSLayer,
         checker=checker,
         product_config={
-            'zeit.content.article': product_config,
             'zeit.workflow': {'publish-script': 'cat',
                               'path-prefix': ''}},
         globs={'with_statement': __future__.with_statement}))

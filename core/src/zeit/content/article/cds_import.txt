@@ -32,7 +32,6 @@ CDS content is imported from a filestore[#functional]_:
 ... </article>
 ... """
 
->>> dummy = with_statement
 >>> with fs.create('art1') as f:
 ...     f.write(article_xml)
 >>> with fs.create('art2') as f:
@@ -50,6 +49,7 @@ Move the created files to 'new':
 We have data in the filestore now. Call the actual import function. It returns
 True as something was imported:
 
+>>> p = zeit.cms.testing.create_interaction()
 >>> zeit.content.article.cds.import_one()
 True
 
@@ -81,7 +81,6 @@ True
 
 The information is kept, when the article is checked out and back in:
 
->>> p = zeit.cms.testing.create_interaction()
 >>> with zeit.cms.checkout.helper.checked_out(article): pass
 >>> article = container['art1']
 >>> zeit.content.article.interfaces.ITagesspiegelArticle.providedBy(article)
