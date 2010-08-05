@@ -1,12 +1,10 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import os
 import pkg_resources
-import unittest
 import zeit.cms.testing
 import zeit.find.search
-import zope.app.testing.functional
+
 
 product_config = """\
 <product-config zeit.solr>
@@ -17,10 +15,9 @@ product_config = """\
        pkg_resources.resource_filename(__name__, 'testdata'))
 
 
-SearchLayer = zope.app.testing.functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'SearchLayer', allow_teardown=True,
-    product_config=product_config)
+SearchLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml',
+    product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
 class QueryTest(zeit.cms.testing.FunctionalTestCase):
