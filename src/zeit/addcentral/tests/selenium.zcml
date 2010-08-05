@@ -1,9 +1,0 @@
-<configure
-  xmlns="http://namespaces.zope.org/zope"
-  >
-  <adapter
-    factory=".selenium.AddTest"
-    name="zeit.addcentral.AddTest"
-    permission="zope.Public"
-    />
-</configure>

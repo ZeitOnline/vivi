@@ -19,6 +19,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
+        'gocept.selenium',
         'setuptools',
         'zc.resourcelibrary',
         'zeit.cms>=1.28.5',
@@ -27,11 +28,9 @@ setup(
         'zope.cachedescriptors',
         'zope.formlib',
         'zope.interface',
+        'zope.publisher',
         'zope.schema',
         'zope.session',
         'zope.viewlet',
     ],
-    extras_require=dict(test=[
-        'zope.publisher',
-    ]),
 )
