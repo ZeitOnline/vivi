@@ -214,7 +214,6 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 
     layer = selenium_layer
-    auth_sent = None  # Class property
     skin = 'cms'
     log_errors = False
     log_errors_ignore = ()
@@ -241,10 +240,11 @@ class SeleniumTestCase(gocept.selenium.ztk.TestCase):
             logging.root.setLevel(self.old_log_level)
 
     def open(self, path, auth='user:userpw'):
-        if auth and auth != self.auth_sent:
+        auth_sent = getattr(self.layer, 'auth_sent', None)
+        if auth and auth != auth_sent:
             # Only set auth when it changed. Firefox will be confused
             # otherwise.
-            SeleniumTestCase.auth_sent = auth
+            self.layer.auth_sent = auth
             auth = auth + '@'
         else:
             auth = ''
