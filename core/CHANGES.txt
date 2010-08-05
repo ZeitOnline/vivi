@@ -6,6 +6,8 @@ zeit.imp changes
 
 - Fix tests after product config changes in zeit.cms (#7549).
 
+- Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
+
 
 0.11.0 (2010-05-03)
 +++++++++++++++++++

@@ -6,13 +6,17 @@
 import zeit.connector.interfaces
 import zeit.content.image.tests
 import zope.component
-import zeit.cms.selenium
+import zeit.cms.testing
+import gocept.selenium.ztk
 import zeit.imp.tests
 
 
-class Selenium(zeit.cms.selenium.Test):
+Layer = gocept.selenium.ztk.Layer(zeit.imp.tests.imp_layer)
 
-    product_config = zeit.imp.tests.product_config
+
+class Selenium(zeit.cms.testing.SeleniumTestCase):
+
+    layer = Layer
 
     def setUp(self):
         super(Selenium, self).setUp()
@@ -20,31 +24,28 @@ class Selenium(zeit.cms.selenium.Test):
         self.open_imp()
 
     def create_group(self):
-        self.selenium.open(
-            'http://user:userpw@%s/++skin++cms/create-image-group' %
-            self.selenium.server)
+        with zeit.cms.testing.site(self.getRootFolder()):
+            zeit.content.image.tests.create_image_group_with_master_image()
 
     def open_imp(self):
-        self.selenium.open(
-            'http://user:userpw@%s/++skin++cms/repository/group/@@imp.html' %
-            self.selenium.server)
+        self.open('/repository/group/@@imp.html')
 
 
 class SeleniumBasicTests(Selenium):
 
     def test_generic_load(self):
-        self.selenium.assertTextPresent('450×200')
+        self.selenium.assertTextPresent(u'450×200')
 
     def test_crop_mask(self):
         s = self.selenium
 
-        s.comment('After clicking on the mask choice the image is loaded')
-        self.click_label("450×200")
+        #s.comment('After clicking on the mask choice the image is loaded')
+        self.click_label(u"450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=')
 
-        s.comment('The border will be passed')
+        #s.comment('The border will be passed')
         self.click_label("grauer Rahmen")
         s.verifyAttribute(
             'id=imp-mask-image@src',
@@ -55,7 +56,7 @@ class SeleniumBasicTests(Selenium):
 
         self.click_label("schwarzer Rahmen")
         s.verifyElementNotPresent('id=imp-mask-image')
-        self.click_label("450×200")
+        self.click_label(u"450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=%23000000')
@@ -71,14 +72,14 @@ class SeleniumBasicTests(Selenium):
     def test_mask_string_parse(self):
         s = self.selenium
 
-        s.comment('Simple dimensions')
+        #s.comment('Simple dimensions')
         s.runScript(
             'window.document.imp.parse_mask_string("500x200/500/200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.name', '500x200')
 
-        s.comment('The dimensions can be variable, indicated by a ?')
+        #s.comment('The dimensions can be variable, indicated by a ?')
         s.runScript(
             'window.document.imp.parse_mask_string("art-200/?500/200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
@@ -96,19 +97,19 @@ class SeleniumBasicTests(Selenium):
 
     def test_zoom_slider(self):
         s = self.selenium
-        s.comment('Zooming works with a slider')
+        #s.comment('Zooming works with a slider')
         s.verifyEval('window.document.imp.zoom>1', 'false')
-        s.clickAt('id=imp-zoom-slider', '200,0')
-        s.verifyEval('window.document.imp.zoom>1', 'true')
+        s.clickAt('id=imp-zoom-slider', '500,0')
+        s.waitForEval('window.document.imp.zoom>1', 'true')
 
     def test_zoom_mouse_wheel(self):
         s = self.selenium
-        s.storeEval('window.document.imp.zoom.toPrecision(3)', 'zoom')
+        zoom = float(s.getEval('window.document.imp.zoom.toPrecision(3)'))
         self.zoom_with_wheel(10000)
-        s.verifyEval('window.document.imp.zoom>1', 'true')
-        self.zoom_with_wheel(-5000)
-        s.verifyEval('window.document.imp.zoom<1', 'true')
-        s.verifyEval('window.document.imp.zoom>storedVars["zoom"]', 'true')
+        self.assertTrue(float(s.getEval('window.document.imp.zoom')) > 1)
+        self.zoom_with_wheel(-9000)
+        self.assertTrue(float(s.getEval('window.document.imp.zoom')) < 1)
+        self.assertTrue(float(s.getEval('window.document.imp.zoom')) > zoom)
 
     def test_zoom_with_mouse_wheel_updates_slider(self):
         s = self.selenium
@@ -132,7 +133,7 @@ class SeleniumCropTests(Selenium):
     def test_crop_wo_mask(self):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
-        s.comment('Nothing happens when the crop button is clicked.')
+        #s.comment('Nothing happens when the crop button is clicked.')
         s.click('crop')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
@@ -141,11 +142,11 @@ class SeleniumCropTests(Selenium):
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
         s.dragAndDrop('id=imp-mask', '-30,-100')
-        self.click_label("450×200")
+        self.click_label(u"450×200")
         s.click('crop')
-        s.comment('After cropping the image is inserted in the image bar')
+        #s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
-        s.comment('The label is marked as "cropped"')
+        #s.comment('The label is marked as "cropped"')
         s.verifyElementPresent('css=label.cropped')
 
     def test_crop_outside_mask(self):
@@ -153,16 +154,16 @@ class SeleniumCropTests(Selenium):
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
         s.dragAndDrop('id=imp-mask', '+1000,+1000')
-        self.click_label("450×200")
+        self.click_label(u"450×200")
         s.click('crop')
-        s.verifyAlert('Das Bild ist nicht*', lineno=False)
+        s.verifyAlert('Das Bild ist nicht*')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
     def test_drag_outside_mask_snaps_to_mask(self):
         # As it snaps to the mask we can crop the image and no alert is
         # generated.
         s = self.selenium
-        self.click_label("450×200")
+        self.click_label(u"450×200")
         s.dragAndDrop('id=imp-mask', '+1000,+1000')
         s.click('crop')
         s.waitForElementPresent('css=#imp-image-bar > div')
@@ -172,35 +173,32 @@ class SeleniumMaskTests(Selenium):
 
     def test_input_fields_show_mask_size(self):
         s = self.selenium
-        self.click_label("450×200")
+        self.click_label(u"450×200")
         s.verifyValue('mask-w', '450')
         s.verifyValue('mask-h', '200')
-        self.click_label("210×210")
+        self.click_label(u"210×210")
         s.verifyValue('mask-w', '210')
         s.verifyValue('mask-h', '210')
 
     def test_input_fields_disabled_for_fixed_mask(self):
         s = self.selenium
-        self.click_label("450×200")
-        s.storeEval(
-            "window.document.getElementById('imp-configuration-form')", 'form')
-        s.verifyEval("storedVars['form']['mask-w'].disabled", 'true');
-        s.verifyEval("storedVars['form']['mask-h'].disabled", 'true');
+        self.click_label(u"450×200")
+        form = "window.document.getElementById('imp-configuration-form')"
+        s.verifyEval("%s['mask-w'].disabled" % form, 'true');
+        s.verifyEval("%s['mask-h'].disabled" % form, 'true');
 
     def test_input_fields_initally_disabled(self):
         s = self.selenium
-        s.storeEval(
-            "window.document.getElementById('imp-configuration-form')", 'form')
-        s.verifyEval("storedVars['form']['mask-w'].disabled", 'true');
-        s.verifyEval("storedVars['form']['mask-h'].disabled", 'true');
+        form = "window.document.getElementById('imp-configuration-form')"
+        s.verifyEval("%s['mask-w'].disabled" % form, 'true');
+        s.verifyEval("%s['mask-h'].disabled" % form, 'true');
 
     def test_input_field_enabled_for_variable_mask(self):
         s = self.selenium
         self.click_label("Artikelbild breit")
-        s.storeEval(
-            "window.document.getElementById('imp-configuration-form')", 'form')
-        s.verifyEval("storedVars['form']['mask-w'].disabled", 'true');
-        s.verifyEval("storedVars['form']['mask-h'].disabled", 'false');
+        form = "window.document.getElementById('imp-configuration-form')"
+        s.verifyEval("%s['mask-w'].disabled" % form, 'true');
+        s.verifyEval("%s['mask-h'].disabled" % form, 'false');
 
     def test_input_field_changes_are_reflected_in_the_mask(self):
         s = self.selenium
@@ -209,20 +207,19 @@ class SeleniumMaskTests(Selenium):
         s.type('mask-h', '280')
         s.verifyEval('window.document.imp.mask_dimensions.h', '280')
 
-    def test_input_field_up_arrow_once_handling(self):
-        self.selenium.comment('Pressing UP-ARROW once increases by 1.')
+    def test_input_field_up_arrow_once_handling_should_increase_by_1(self):
         self.verify_press('\\38', '201')
 
     def test_input_field_down_arrow_once_handling(self):
-        self.selenium.comment('Pressing DOWN-ARROW once decreases by 1.')
+        #self.selenium.comment('Pressing DOWN-ARROW once decreases by 1.')
         self.verify_press('\\40', '199')
 
     def test_input_field_left_arrow_once_handling(self):
-        self.selenium.comment('Pressing LEFT-ARROW once decreases by 1.')
+        #self.selenium.comment('Pressing LEFT-ARROW once decreases by 1.')
         self.verify_press('\\37', '199')
 
     def test_input_field_right_arrow_once_handling(self):
-        self.selenium.comment('Pressing RIGHT-ARROW once increases by 1.')
+        #self.selenium.comment('Pressing RIGHT-ARROW once increases by 1.')
         self.verify_press('\\39', '201')
 
     def verify_press(self, key_code, expected_value):
@@ -234,19 +231,19 @@ class SeleniumMaskTests(Selenium):
         s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
 
     def test_input_field_up_arrow_hold_handling(self):
-        self.selenium.comment('Holding UP-ARROW increases.')
+        #self.selenium.comment('Holding UP-ARROW increases.')
         self.verify_hold('\\38', '>210')
 
     def test_input_field_down_arrow_hold_handling(self):
-        self.selenium.comment('Holding DOWN-ARROW decreases.')
+        #self.selenium.comment('Holding DOWN-ARROW decreases.')
         self.verify_hold('\\40', '<190')
 
     def test_input_field_left_arrow_hold_handling(self):
-        self.selenium.comment('Holding LEFT-ARROW decreases.')
+        #self.selenium.comment('Holding LEFT-ARROW decreases.')
         self.verify_hold('\\37', '<190')
 
     def test_input_field_right_arrow_hold_handling(self):
-        self.selenium.comment('Holding RIGHT-ARROW increases.')
+        #self.selenium.comment('Holding RIGHT-ARROW increases.')
         self.verify_hold('\\39', '>210')
 
     def verify_hold(self, key_code, expected_value):
@@ -254,7 +251,7 @@ class SeleniumMaskTests(Selenium):
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.keyDown('mask-h', key_code)
-        s.pause('5000')
+        s.pause(5000)
         s.keyUp('mask-h', key_code)
         s.verifyEval(
             'window.document.imp.mask_dimensions.h %s' % expected_value,
@@ -264,54 +261,52 @@ class SeleniumMaskTests(Selenium):
 class ResizeTests(Selenium):
 
     def setUp(self):
+        super(ResizeTests, self).setUp()
         s = self.selenium
         # Remember current window dimensions to restore later.
-        s.storeEval('window.parent.outerWidth', 'window_width')
-        s.storeEval('window.parent.outerHeight', 'window_height')
+        self.window_width = s.getEval('window.parent.outerWidth')
+        self.window_height = s.getEval('window.parent.outerHeight')
 
         # Set the size to a defined value
-        s.getEval('window.parent.resizeTo(1000, 800)')
-        s.verifyEval('window.parent.outerWidth', '1000')
-        s.verifyEval('window.parent.outerHeight', '800')
+        s.getEval('window.resizeTo(1000, 800)')
+        s.verifyEval('window.outerWidth', '1000')
+        s.verifyEval('window.outerHeight', '800')
 
-        super(ResizeTests, self).setUp()
+        self.open_imp()
 
         # Choose a mask
-        self.click_label("450×200")
+        self.click_label(u"450×200")
 
     def tearDown(self):
         # Restore window dimensions
         self.selenium.getEval(
-            "window.parent.resizeTo(storedVars['window_width'], "
-            "                       storedVars['window_height'])")
+            "window.resizeTo(%s, %s)" % (self.window_width,
+                                                self.window_height))
         super(ResizeTests, self).tearDown()
 
     def test_window_resize_updates_mask(self):
         s = self.selenium
         # Store the current mask image dimensions
-        s.storeEval('window.document.imp.mask_image_dimensions.w', 'width')
-        s.storeEval('window.document.imp.mask_image_dimensions.h', 'height')
+        width = int(s.getEval('window.document.imp.mask_image_dimensions.w'))
+        height = int(s.getEval('window.document.imp.mask_image_dimensions.h'))
         # Increase the window width affects mask, try width only first:
-        s.getEval('window.parent.resizeTo(1200, 800)')
-        s.pause('500')
-        s.verifyEval(
-            "window.document.imp.mask_image_dimensions.w > storedVars['width']",
-            "true")
-        s.verifyEval(
-            "window.document.imp.mask_image_dimensions.h == "
-                "storedVars['height']",
-            "true")
+        s.getEval('window.resizeTo(1200, 800)')
+        s.waitForEval(
+            "window.document.imp.mask_image_dimensions.w > %d" % width,
+            'true')
+        self.assertEqual(
+            height,
+            int(s.getEval("window.document.imp.mask_image_dimensions.h")))
 
         # change width and height:
-        s.getEval('window.parent.resizeTo(800, 900)')
-        s.pause('500')
-        s.verifyEval(
-            "window.document.imp.mask_image_dimensions.w < storedVars['width']",
-            "true")
-        s.verifyEval(
-            "window.document.imp.mask_image_dimensions.h > "
-                "storedVars['height']",
-            "true")
+        s.getEval('window.resizeTo(800, 900)')
+        s.pause(100)
+        s.waitForEval(
+            "window.document.imp.mask_image_dimensions.w < %d" % width,
+            'true')
+        self.assertTrue(
+            int(s.getEval("window.document.imp.mask_image_dimensions.h"))
+            > height)
 
     def test_window_resize_moves_image(self):
         # When the area changes it's size the crop area remains centered. This
@@ -320,48 +315,47 @@ class ResizeTests(Selenium):
         # same.
 
         s = self.selenium
-        s.storeEval('window.MochiKit.Base.serializeJSON('
-                    '    window.document.imp.get_crop_arguments())',
-                    'cropArgs')
+        get_crop_args = ('window.MochiKit.Base.serializeJSON('
+                         '  window.document.imp.get_crop_arguments())')
+        crop_args = s.getEval(get_crop_args)
 
-        s.getEval('window.parent.resizeTo(900, 900)')
-        s.pause('500')
-        s.verifyEval("window.MochiKit.Base.serializeJSON("
-                     "    window.document.imp.get_crop_arguments()) =="
-                     "    storedVars['cropArgs']", "true")
+        s.getEval('window.resizeTo(900, 900)')
+        s.pause(500)
+        s.waitForEval("%s == '%s'" % (get_crop_args, crop_args), 'true')
 
         # Try another one, to be sure this works multiple times 
-        s.getEval('window.parent.resizeTo(1000, 800)')
-        s.verifyEval("window.MochiKit.Base.serializeJSON("
-                     "    window.document.imp.get_crop_arguments()) =="
-                     "    storedVars['cropArgs']", "true")
+        s.getEval('window.resizeTo(1000, 800)')
+        s.pause(500)
+        s.waitForEval("%s == '%s'" % (get_crop_args, crop_args), 'true')
 
     def test_window_resize_updates_zoom_slider(self):
         # The zoom slider doesn't automatically support size updates.
         s = self.selenium
-        s.storeEval('window.document.imp_zoom_slider.zoom_slider._maxLeft',
-                    'max_left')
+        max_left = s.getEval(
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft')
         s.getEval('window.parent.resizeTo(800, 900)')
-        s.pause('500')
-        s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft <'
-                     "    storedVars['max_left']", 'true')
+        s.waitForEval(
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft < %s' %
+            max_left, 'true')
 
     def test_sidebar_switch_sends_resize_event(self):
         # The sidebar can be switched on/off. This obiously doesn't send an
         # onresize event to the window. We must support this nevertheless.
 
         s = self.selenium
-        s.storeEval('window.document.imp_zoom_slider.zoom_slider._maxLeft',
-                    'max_left')
+        max_left = s.getEval(
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft')
         s.click('id=sidebar-dragger')
-        s.pause('500')
-        s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft >'
-                     "    storedVars['max_left']", 'true')
+        s.pause(50)
+        s.waitForEval(
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft > %s' %
+            max_left, 'true')
         # Clicking again resets to the original state
         s.click('id=sidebar-dragger')
-        s.pause('500')
-        s.verifyEval('window.document.imp_zoom_slider.zoom_slider._maxLeft =='
-                     "    storedVars['max_left']", 'true')
+        s.pause(50)
+        s.waitForEval(
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft == %s' %
+            max_left, 'true')
 
 
 class FilterTests(Selenium):
@@ -406,15 +400,13 @@ class FilterTests(Selenium):
         s.waitForElementPresent(selector)
 
         # Clicking 0 yields 0 as value and changes the image url
-        s.storeEval('window.document.imp.image.src', 'image_url')
+        image_url = s.getEval('window.document.imp.image.src')
         s.clickAt(selector, '0')
         s.verifyValue('filter.%s.input' % name, '-100')
         s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
                      '0');
-        s.pause('300')
-        s.verifyEval(
-            "window.document.imp.image.src == storedVars['image_url']",
-            'false')
+        s.waitForEval(
+            "window.document.imp.image.src == '%s'" % image_url, 'false')
 
         # Clicking > 0 increases the value:
         s.clickAt(selector, '100')
@@ -436,7 +428,7 @@ class FilterTests(Selenium):
         selector = 'css=*[id="filter.color"] .uislider'
         s.waitForElementPresent(selector)
         s.clickAt(selector, '0')
-        s.pause('10')
+        s.pause(10)
         s.verifyEval('window.document.imp.crop_arguments["filter.color"]', '0')
 
 
@@ -449,9 +441,3 @@ class ContentZoomTest(Selenium):
         s.verifyElementPresent('css=#content.imp-zoomed-content')
         s.click('id=imp-content-zoom-toggle')
         s.verifyElementNotPresent('css=#content.imp-zoomed-content')
-
-
-class CreateImageGroup(object):
-
-    def __call__(self):
-        zeit.content.image.tests.create_image_group_with_master_image()
