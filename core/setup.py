@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
+        'gocept.selenium',
         'python-cjson',
         'setuptools',
         'zc.iso8601',

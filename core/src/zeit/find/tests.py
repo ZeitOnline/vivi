@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.selenium.ztk
 import pkg_resources
 import zeit.cms.testing
 import zeit.find.search
@@ -18,6 +19,9 @@ product_config = """\
 SearchLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
+
+
+SeleniumLayer = gocept.selenium.ztk.Layer(SearchLayer)
 
 
 class QueryTest(zeit.cms.testing.FunctionalTestCase):

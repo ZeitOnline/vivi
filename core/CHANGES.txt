@@ -4,7 +4,7 @@ zeit.find changes
 0.20.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
 
 
 0.20.2 (2010-07-12)

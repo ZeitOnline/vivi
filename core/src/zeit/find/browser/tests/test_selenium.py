@@ -2,14 +2,22 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.selenium
+import mock
+import pkg_resources
+import zeit.cms.testing
+import zeit.find.tests
+import zope.component
 
 
-class TestTabs(zeit.cms.selenium.Test):
+class TestTabs(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.find.tests.SeleniumLayer
 
     def setUp(self):
         super(TestTabs, self).setUp()
+        self.open('/')
         self.open('/find')
+        self.selenium.waitForElementPresent('id=fulltext')
         self.selenium.waitForVisible('id=fulltext')
 
     def assertSelected(self, href):
@@ -26,12 +34,28 @@ class TestTabs(zeit.cms.selenium.Test):
         self.assertSelected('favorites')
 
 
-class TestSearch(zeit.cms.selenium.Test):
+class TestSearch(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.find.tests.SeleniumLayer
 
     def setUp(self):
+        import zeit.solr.interfaces
         super(TestSearch, self).setUp()
+        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        self.solr._send_request = mock.Mock()
+        self.set_result('defaultqueryresult.json')
+        self.open('/')
         self.open('/find')
+        self.selenium.waitForElementPresent('css=div.teaser_title')
         self.selenium.waitForVisible('css=div.teaser_title')
+
+    def tearDown(self):
+        del self.solr._send_request
+        super(TestSearch, self).tearDown()
+
+    def set_result(self, filename):
+        self.solr._send_request.return_value = pkg_resources.resource_string(
+            __name__, filename)
 
     def test_relateds(self):
         s = self.selenium
@@ -78,24 +102,25 @@ class TestSearch(zeit.cms.selenium.Test):
         s.verifyText('css=#type_search_info span', 'Unknown Resource')
 
     def test_last_query_should_be_saved(self):
+        self.set_result('empty.json')
         s = self.selenium
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')
         s.select('name=product', 'Zeit Online')
         s.type('name=author', 'foo')
         s.select('name=sort_order', 'Datum')
-        s.check('id=search-type-channel')
+        s.check('id=search-type-testcontenttype')
         s.click('id=search_button')
         s.pause(1000)
 
         self.open('/find')
-        self.selenium.waitForVisible('css=div.no_search_result')
+        self.selenium.waitForElementPresent('css=div.no_search_result')
         # The extended_search is already visible as its state is restored, too.
         s.waitForVisible('id=extended_search')
         s.verifySelectedLabel('name=product', 'Zeit Online')
         s.verifyValue('name=author', 'foo')
         s.verifySelectedLabel('name=sort_order', 'Datum')
-        s.verifyChecked('id=search-type-channel')
+        s.verifyChecked('id=search-type-testcontenttype')
 
     def test_result_filters_expand_automatically(self):
         s = self.selenium
