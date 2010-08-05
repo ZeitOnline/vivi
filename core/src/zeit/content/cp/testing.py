@@ -4,8 +4,10 @@
 import SimpleHTTPServer
 import __future__
 import os
+import gocept.selenium.ztk
 import pkg_resources
 import re
+import transaction
 import zeit.cms.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
@@ -102,4 +104,107 @@ def FunctionalDocFileSuite(*args, **kw):
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
     layer = layer
+
+
+selenium_layer = gocept.selenium.ztk.Layer(layer)
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = selenium_layer
+    skin = 'vivi'
+
+    def get_module(self, area, text):
+        return ('xpath=//div[@class="module %s-module"]'
+                '[contains(string(.), "%s")]' % (area, text))
+
+    def open_centerpage(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                repository = zope.component.getUtility(
+                    zeit.cms.repository.interfaces.IRepository)
+                repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+                cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+                    repository['cp']).checkout()
+        transaction.commit()
+
+        s = self.selenium
+        self.open('/workingcopy/zope.user/cp/@@edit.html')
+        s.waitForElementPresent('css=div.landing-zone')
+
+    def create_clip(self):
+        # Creat clip
+        s = self.selenium
+        s.click('id=clip-add-folder-link')
+        s.type('id=clip-add-folder-title', 'Clip')
+        s.click('id=clip-add-folder-submit')
+        s.waitForElementPresent('link=Clip')
+        # Open clip
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+    def clip_object(self, match):
+        s = self.selenium
+        s.click('xpath=//td[contains(string(.), "%s")]' % match)
+        s.waitForElementPresent('css=div#bottomcontent > div')
+        s.dragAndDropToObject(
+            'xpath=//td[contains(string(.), "%s")]' % match,
+            '//li[@uniqueid="Clip"]')
+        s.pause(500)
+
+    def create_teaserlist(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click('link=*Add block*')
+        teaser_module = self.get_module('informatives', 'List of teasers')
+        s.waitForElementPresent(teaser_module)
+        s.dragAndDropToObject(
+            teaser_module,
+            'css=.landing-zone.action-informatives-module-droppable')
+        s.waitForElementPresent('css=div.type-teaser')
+
+    def create_content_and_fill_clipboard(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction() as principal:
+                repository = zope.component.getUtility(
+                    zeit.cms.repository.interfaces.IRepository)
+                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+                clipboard.addClip('Clip')
+                clip = clipboard['Clip']
+                for i in range(1, 4):
+                    content = (zeit.cms.testcontenttype.testcontenttype.
+                               TestContentType())
+                    content.teaserTitle = content.shortTeaserTitle = (
+                        u'c%s teaser' % i)
+                    name = 'c%s' % i
+                    repository[name] = content
+                    clipboard.addContent(
+                        clip, repository[name], name, insert=True)
+                quiz = zeit.content.quiz.quiz.Quiz()
+                quiz.teaserTitle = quiz.shortTeaserTitle = u'MyQuiz'
+                repository['my_quiz'] = quiz
+        transaction.commit()
+
+        s = self.selenium
+        self.open('/')
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+    def create_filled_teaserlist(self):
+        s = self.selenium
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c3 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c2 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c1 teaser')

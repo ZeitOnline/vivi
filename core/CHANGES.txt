@@ -7,6 +7,8 @@ zeit.content.cp changes
 - ``cms_content_iter`` funktioniert jetzt auch, wenn eine CP ein Modul enthält,
   welches das CMS nicht kennt (#7727).
 
+- Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
+
 
 0.40.0 (2010-07-07)
 -------------------

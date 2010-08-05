@@ -1,5 +1,5 @@
 # coding: utf8
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import lovely.remotetask.interfaces
@@ -11,87 +11,15 @@ import zeit.cms.repository.interfaces
 import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.centerpage
-import zeit.content.cp.testing
 import zeit.content.quiz.quiz
 import zope.component
 
 
 def css_path(css):
-    return 'xpath=' + lxml.cssselect.CSSSelector(css).path
+    return lxml.cssselect.CSSSelector(css).path
 
 
-class Test(zeit.cms.selenium.Test):
-
-    product_config = zeit.content.cp.testing.product_config
-    skin = 'vivi'
-
-    def get_module(self, area, text):
-        return ('xpath=//div[@class="module %s-module"]'
-                '[contains(string(.), "%s")]' % (area, text))
-
-    def open_centerpage(self):
-        s = self.selenium
-        self.open('/@@create-test-cp')
-        self.open('/workingcopy/zope.user/cp/@@edit.html')
-        s.waitForElementPresent('css=div.landing-zone')
-
-    def create_clip(self):
-        # Creat clip
-        s = self.selenium
-        s.click('id=clip-add-folder-link')
-        s.type('id=clip-add-folder-title', 'Clip')
-        s.click('id=clip-add-folder-submit')
-        s.waitForElementPresent('link=Clip')
-        # Open clip
-        s.click('//li[@uniqueid="Clip"]')
-        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
-
-    def clip_object(self, match):
-        s = self.selenium
-        s.click('xpath=//td[contains(string(.), "%s")]' % match)
-        s.waitForElementPresent('css=div#bottomcontent > div')
-        s.dragAndDropToObject(
-            'xpath=//td[contains(string(.), "%s")]' % match,
-            '//li[@uniqueid="Clip"]')
-        s.pause(500)
-
-    def create_teaserlist(self):
-        self.open_centerpage()
-        s = self.selenium
-        s.click('link=*Add block*')
-        teaser_module = self.get_module('informatives', 'List of teasers')
-        s.waitForElementPresent(teaser_module)
-        s.dragAndDropToObject(
-            teaser_module,
-            'css=.landing-zone.action-informatives-module-droppable')
-        s.waitForElementPresent('css=div.type-teaser')
-
-    def create_content_and_fill_clipboard(self):
-        s = self.selenium
-        self.open('/@@create-cp-test-content')
-        self.open('/')
-        s.click('//li[@uniqueid="Clip"]')
-        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
-
-    def create_filled_teaserlist(self):
-        s = self.selenium
-        self.create_content_and_fill_clipboard()
-        self.create_teaserlist()
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c3 teaser')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c2 teaser')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c1 teaser')
-
-
-class TestDottedName(Test):
+class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_lookup(self):
         self.open_centerpage()
@@ -103,7 +31,7 @@ class TestDottedName(Test):
             '[object Object]')
 
 
-class TestGenericEditing(Test):
+class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_add_and_delete(self):
         self.create_teaserlist()
@@ -152,10 +80,11 @@ class TestGenericEditing(Test):
         s.click('css=a.edit-link')
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
+        s.waitForElementPresent('form.publisher')
         s.waitForValue('form.publisher', 'FooPublisher')
 
 
-class TestTeaserBlock(Test):
+class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_adding_via_drag_and_drop_from_clipboard(self):
         self.open('/')
@@ -223,23 +152,20 @@ class TestTeaserBlock(Test):
             if following_sibling:
                 path += '/following-sibling::li[1]'
             return path
-        s.storeElementHeight(li('c3'), 'height')
-        s.storeElementHeight(li('c3', True), 'height-landing')
 
-        s.storeEval("(new Number(storedVars['height']) + "
-                    "new Number(storedVars['height-landing'])) * 2.75",
-                    'delta_y')
-        s.dragAndDrop(li('c3'), '0,${delta_y}')
+        height = s.getElementHeight(li('c3'))
+        height_landing = s.getElementHeight(li('c3', True))
+
+        delta_y = (height + height_landing) * 2.75
+        s.dragAndDrop(li('c3'), '0,%s' % delta_y)
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.waitForOrdered(li('c2', True), li('c1'))
         s.verifyOrdered(li('c1', True), li('c3'))
 
         # Drag the c1 node .75 up; the resulting order is 1, 2, 3
-        s.storeEval("(new Number(storedVars['height']) + "
-                    "new Number(storedVars['height-landing'])) * -0.75",
-                    'delta_y')
-        s.dragAndDrop(li('c1'), '0,${delta_y}')
+        delta_y = (height + height_landing) * -0.75
+        s.dragAndDrop(li('c1'), '0,%s' % delta_y)
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.waitForOrdered(li('c1', True), li('c2'))
@@ -309,7 +235,7 @@ class TestTeaserBlock(Test):
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
 
 
-class TestSorting(Test):
+class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_blocks_in_mosaic(self):
         self.open_centerpage()
@@ -328,24 +254,25 @@ class TestSorting(Test):
             s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
             s.waitForXpathCount(path, nr+1)
 
+        path = 'xpath=' + path
         # Get the ids of the blocks
-        s.storeAttribute(path + '[1]@id', 'block1')
-        s.storeAttribute(path + '[2]@id', 'block2')
-        s.storeAttribute(path + '[3]@id', 'block3')
-        s.storeAttribute(path + '[4]@id', 'block4')
+        block1 = s.getAttribute(path + '[1]@id')
+        block2 = s.getAttribute(path + '[2]@id')
+        block3 = s.getAttribute(path + '[3]@id')
+        block4 = s.getAttribute(path + '[4]@id')
 
         # All blocks have an equal width
-        s.storeElementHeight('id=${block1}', 'width');
+        width = s.getElementWidth(block1)
 
         # Drop block3 over block1
-        s.storeEval("new Number(storedVars['width']) * -2.75", "delta_x")
-        s.dragAndDrop('css=#${block3} > .block-inner > .edit > .dragger',
-                      '${delta_x},0')
+        delta_x = width * -2.75
+        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % block3,
+                      '%s,0' % delta_x)
 
         # 1 2 3 4 ->  3 1 2 4
-        s.waitForOrdered('${block3}', '${block1}')
-        s.verifyOrdered('${block1}', '${block2}')
-        s.verifyOrdered('${block2}', '${block4}')
+        s.waitForOrdered(block3, block1)
+        s.verifyOrdered(block1, block2)
+        s.verifyOrdered(block2, block4)
 
 
     def test_mosaic(self):
@@ -361,37 +288,37 @@ class TestSorting(Test):
         s.click('link=*Add teaser bar*')
         s.waitForXpathCount(path, 3)
 
+        path = 'xpath=' + path
         # Get the ids of the bars
-        s.storeAttribute(path + '[1]@id', 'bar1')
-        s.storeAttribute(path + '[2]@id', 'bar2')
-        s.storeAttribute(path + '[3]@id', 'bar3')
+        bar1 = s.getAttribute(path + '[1]@id')
+        bar2 = s.getAttribute(path + '[2]@id')
+        bar3 = s.getAttribute(path + '[3]@id')
 
         # All bars have an equal height
-        s.storeElementHeight('id=${bar1}', 'bar-height');
-        s.storeEval("new Number(storedVars['bar-height']) * 1.75", "delta_y")
-
+        bar_height = s.getElementHeight(bar1)
+        delta_y = bar_height * 1.75
 
         # Drag bar1 below bar2: 1 2 3 -> 2 1 3
-        s.dragAndDrop('css=#${bar1} > .block-inner > .edit > .dragger',
-                      '0,${delta_y}')
-        s.waitForAttribute(path + '[1]@id', '${bar2}')
-        s.verifyAttribute(path + '[2]@id', '${bar1}')
+        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % bar1,
+                      '0,%s' % delta_y)
+        s.waitForAttribute(path + '[1]@id', bar2)
+        s.verifyAttribute(path + '[2]@id', bar1)
 
         # Drag bar3 to the first position.
         # 2 1 3 -> 3 2 1
-        s.storeEval("new Number(storedVars['bar-height']) * 2.75", "delta_y")
-        s.dragAndDrop('css=#${bar3} > .block-inner > .edit > .dragger',
-                      '0,-${delta_y}')
-        s.waitForAttribute(path + '[1]@id', '${bar3}')
-        s.verifyAttribute(path + '[2]@id', '${bar2}')
-        s.verifyAttribute(path + '[3]@id', '${bar1}')
+        delta_y = -(bar_height * 2.75)
+        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % bar3,
+                      '0,%s' % delta_y)
+        s.waitForAttribute(path + '[1]@id', bar3)
+        s.verifyAttribute(path + '[2]@id', bar2)
+        s.verifyAttribute(path + '[3]@id', bar1)
 
         # Make sure the drag survives page reloads. 
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('css=div.landing-zone')
-        s.verifyAttribute(path + '[1]@id', '${bar3}')
-        s.verifyAttribute(path + '[2]@id', '${bar2}')
-        s.verifyAttribute(path + '[3]@id', '${bar1}')
+        s.verifyAttribute(path + '[1]@id', bar3)
+        s.verifyAttribute(path + '[2]@id', bar2)
+        s.verifyAttribute(path + '[3]@id', bar1)
 
     def test_lead(self):
         s = self.selenium
@@ -403,7 +330,7 @@ class TestSorting(Test):
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
-        s.storeAttribute('css=.block.type-teaser@id', 'block2')
+        block2 = s.getAttribute('css=.block.type-teaser@id')
 
 
         # Add a second teaser list
@@ -411,37 +338,38 @@ class TestSorting(Test):
             '//li[@uniqueid="Clip/c1"]', 'css=#lead .landing-zone')
         s.waitForElementPresent(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser')
-        s.storeAttribute('css=.block.type-teaser@id', 'block1')
+        block1 = s.getAttribute('css=.block.type-teaser@id')
 
-        s.storeElementHeight('id=${block2}', 'height');
-        s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
+        height = s.getElementHeight(block2)
+        delta_y = height * 1.75
 
         # 1 2 -> 2 1
-        s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
-                      '0,${delta_y}')
+        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % block1,
+                      '0,%s' % delta_y)
         s.waitForElementPresent(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser')
         s.verifyAttribute(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
-            '${block1}')
+            block1)
 
     def test_informatives(self):
         s = self.selenium
         self.open_centerpage()
         # There are two modules in the informatives anyway, don't create any
         teaser_module = self.get_module('informatives', 'List of teasers')
-        s.storeAttribute('css=.block.type-cpextra@id', 'block1')
-        s.storeAttribute('css=.block.type-cpextra + .landing-zone + .block.type-cpextra@id', 'block2')
+        block1 = s.getAttribute('css=.block.type-cpextra@id')
+        block2 = s.getAttribute('css=.block.type-cpextra + * + .block@id')
+        s.assertElementPresent('css=#%s + * + #%s' % (block1, block2))
 
-        s.storeElementHeight('id=${block2}', 'height');
-        s.storeEval("new Number(storedVars['height']) * 1.75", "delta_y")
+        height = s.getElementHeight(block2)
+        delta_y = height * 1.75
 
-        s.dragAndDrop('css=#${block1} > .block-inner > .edit > .dragger',
-                      '0,${delta_y}')
-        s.waitForOrdered('${block2}', '${block1}')
+        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % block1,
+                      '0,%s' % delta_y)
+        s.waitForElementPresent('css=#%s + * + #%s' % (block2, block1))
 
 
-class TestLandingZone(Test):
+class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_lead(self):
         self.create_content_and_fill_clipboard()
@@ -486,7 +414,7 @@ class TestLandingZone(Test):
         s.waitForElementPresent('css=#teaser-mosaic .block.type-teaser')
 
 
-class TestVideoBlock(Test):
+class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def create_videoblock(self):
         s = self.selenium
@@ -520,7 +448,7 @@ class TestVideoBlock(Test):
         s.waitForElementNotPresent('css=.lightbox')
 
 
-class TestQuizBlock(Test):
+class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def create_quizblock(self):
         s = self.selenium
@@ -533,10 +461,11 @@ class TestQuizBlock(Test):
         s.waitForElementPresent('css=div.type-quiz')
 
     def add_quiz(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        quiz = zeit.content.quiz.quiz.Quiz()
-        repository['my_quiz'] = quiz
+        with zeit.cms.testing.site(self.getRootFolder()):
+            repository = zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+            quiz = zeit.content.quiz.quiz.Quiz()
+            repository['my_quiz'] = quiz
 
     def test_add_quiz(self):
         self.open_centerpage()
@@ -560,7 +489,7 @@ class TestQuizBlock(Test):
         s.waitForElementNotPresent('css=.lightbox')
 
 
-class TestSidebar(Test):
+class TestSidebar(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_sidebar_should_be_folded_away(self):
         s = self.selenium
@@ -569,12 +498,22 @@ class TestSidebar(Test):
             '//div[@id="sidebar-dragger" and @class="sidebar-expanded"]')
 
 
-class TestOneClickPublish(Test):
+class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestOneClickPublish, self).setUp()
-        self.open('/@@restart-remotetask')
+        with zeit.cms.testing.site(self.getRootFolder()):
+            for name, task in zope.component.getUtilitiesFor(
+                lovely.remotetask.interfaces.ITaskService):
+                task.startProcessing()
         self.create_content_and_fill_clipboard()
+
+    def tearDown(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            for name, task in zope.component.getUtilitiesFor(
+                lovely.remotetask.interfaces.ITaskService):
+                task.stopProcessing()
+        super(TestOneClickPublish, self).tearDown()
 
     def _fill_lead(self):
         s = self.selenium
@@ -599,26 +538,28 @@ class TestOneClickPublish(Test):
         self._fill_lead()
         s.click('xpath=//a[@title="Publish"]')
         s.waitForElementPresent('css=div.lightbox')
-        s.waitForPageToLoad(30000)
+        s.waitForPageToLoad()
         s.waitForElementPresent('css=div.landing-zone')
 
     def test_publish_failure_should_be_displayed(self):
-        product_config = self.product_config.copy()
-        product_config['zeit.workflow']['publish-script'] = 'invalid'
-        self.set_product_config(product_config)
+        config = zope.app.appsetup.product._configs
+        old_script = config['zeit.workflow']['publish-script']
+        config['zeit.workflow']['publish-script'] = 'invalid'
+        try:
+            s = self.selenium
+            self.open_centerpage()
+            self._fill_lead()
+            s.click('xpath=//a[@title="Publish"]')
+            s.waitForElementPresent('css=div.lightbox')
+            s.waitForPageToLoad()
+            s.waitForElementPresent('css=div.landing-zone')
+            s.verifyText('css=li.error',
+                         'Error during publish/retract: OSError*')
+        finally:
+            config['zeit.workflow']['publish-script'] = old_script
 
-        s = self.selenium
-        self.open_centerpage()
-        self._fill_lead()
-        s.click('xpath=//a[@title="Publish"]')
-        s.waitForElementPresent('css=div.lightbox')
-        s.waitForPageToLoad(30000)
-        s.waitForElementPresent('css=div.landing-zone')
 
-        s.verifyText('css=li.error', 'Error during publish/retract: OSError*')
-
-
-class TestTeaserDragging(Test):
+class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
 
 
     def test_source_removed_when_dropped_to_cp(self):
@@ -634,7 +575,7 @@ class TestTeaserDragging(Test):
         s.verifyNotText('css=#lead .block.type-teaser .teaser-list',
                      '*c2 teaser*')
         # Verify the removal in the source:
-        s.waitForTextNotPresent(
+        s.waitForNotText(
             'css=#informatives .block.type-teaser .teaser-list', '*c1 teaser*')
 
     def test_source_not_removed_when_not_dropped_to_cp(self):
@@ -648,50 +589,3 @@ class TestTeaserDragging(Test):
         # Verify text still in the drag source:
         s.verifyText(
             'css=.teaser-list > .teaser', '*c1 teaser*')
-
-class CreateTestContent(object):
-
-    def __call__(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
-            self.request.principal)
-        clipboard.addClip('Clip')
-        clip = clipboard['Clip']
-        for i in range(1, 4):
-            content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-            content.teaserTitle = content.shortTeaserTitle = u'c%s teaser' % i
-            name = 'c%s' % i
-            repository[name] = content
-            clipboard.addContent(clip, repository[name], name, insert=True)
-        quiz = zeit.content.quiz.quiz.Quiz()
-        quiz.teaserTitle = quiz.shortTeaserTitle = u'MyQuiz'
-        repository['my_quiz'] = quiz
-
-
-        return 'Done.'
-
-
-class CreateTestCP(zeit.cms.browser.view.Base):
-
-    def __call__(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        cp = zeit.cms.checkout.interfaces.ICheckoutManager(
-            repository['cp']).checkout()
-        self.url(cp)
-
-
-class RestartRemotetask(object):
-    """The remotetask utility does not automatically use the current demostorage
-    (and thus does not process any tasks generated during a selenium test).
-
-    This view provides the means to give it a nudge."""
-
-    def __call__(self):
-        for name, task in zope.component.getUtilitiesFor(
-            lovely.remotetask.interfaces.ITaskService):
-            task.stopProcessing()
-            task.startProcessing()
-
