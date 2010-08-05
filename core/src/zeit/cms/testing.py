@@ -8,7 +8,7 @@ import contextlib
 import copy
 import gocept.selenium.ztk
 import inspect
-import os
+import logging
 import pkg_resources
 import random
 import re
@@ -16,7 +16,9 @@ import string
 import sys
 import threading
 import time
+import transaction
 import urllib2
+import xml.sax.saxutils
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
@@ -212,24 +214,47 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 
     layer = selenium_layer
-    layer.auth_sent = None
+    auth_sent = None  # Class property
     skin = 'cms'
+    log_errors = False
+    log_errors_ignore = ()
+
+    def setUp(self):
+        super(SeleniumTestCase, self).setUp()
+        if self.log_errors:
+            with site(self.getRootFolder()):
+                error_log = zope.component.getUtility(
+                    zope.error.interfaces.IErrorReportingUtility)
+                error_log.copy_to_zlog = True
+                error_log._ignored_exceptions = self.log_errors_ignore
+            self.log_handler = logging.StreamHandler(sys.stdout)
+            logging.root.addHandler(self.log_handler)
+            self.old_log_level = logging.root.level
+            logging.root.setLevel(logging.ERROR)
+            transaction.commit()
 
     def tearDown(self):
         zeit.cms.testing.tearDown(self)
         super(SeleniumTestCase, self).tearDown()
+        if self.log_errors:
+            logging.root.removeHandler(self.log_handler)
+            logging.root.setLevel(self.old_log_level)
 
     def open(self, path, auth='user:userpw'):
-        if auth and auth != self.layer.auth_sent:
+        if auth and auth != self.auth_sent:
             # Only set auth when it changed. Firefox will be confused
             # otherwise.
-            self.layer.auth_sent = auth
+            SeleniumTestCase.auth_sent = auth
             auth = auth + '@'
         else:
             auth = ''
         self.selenium.open(
             'http://%s%s/++skin++%s%s' % (
                 auth, self.selenium.server, self.skin, path))
+
+    def click_label(self, label):
+        self.selenium.click('//label[contains(string(.), %s)]' %
+                            xml.sax.saxutils.quoteattr(label))
 
 
 def click_wo_redirect(browser, *args, **kwargs):
@@ -268,8 +293,8 @@ def create_interaction(name=u'zope.user'):
 
 @contextlib.contextmanager
 def interaction(principal_id=u'zope.user'):
-    create_interaction(principal_id)
-    yield
+    principal = create_interaction(principal_id)
+    yield principal
     zope.security.management.endInteraction()
 
 
