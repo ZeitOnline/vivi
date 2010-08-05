@@ -13,7 +13,7 @@ class TestPanels(zeit.cms.testing.SeleniumTestCase):
 
     def assertPanelState(self, id, state):
         s = self.selenium
-        s.verifyElementPresent('//div[@id ="%s"][@class = "panel %s"]' %(
+        s.waitForElementPresent('//div[@id ="%s"][@class = "panel %s"]' %(
             id, state))
 
     def test_panels_should_be_foldable(self):
