@@ -54,7 +54,6 @@ setup(
         'zc.relation',
         'zc.relation',
         'zc.resourcelibrary',
-        'zc.selenium',
         'zc.set',
         'zc.sourcefactory',
         'zc.table',
