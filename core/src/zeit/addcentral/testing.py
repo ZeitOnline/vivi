@@ -2,9 +2,11 @@
 # See also LICENSE.txt
 
 import zeit.cms.testing
+import gocept.selenium.ztk
 
 
 layer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
+selenium_layer  = gocept.selenium.ztk.Layer(layer)
 
 
 def FunctionalDocFileSuite(*args, **kw):

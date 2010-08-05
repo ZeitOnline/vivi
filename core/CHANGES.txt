@@ -8,6 +8,8 @@ zeit.addcentral changes
 
 - Adapt for test changes in zeit.cms
 
+- Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
+
 
 0.2 (2009-08-21)
 ----------------
