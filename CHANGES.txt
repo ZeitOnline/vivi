@@ -4,7 +4,7 @@ zeit.content.author changes
 0.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix tests after product config changes in zeit.cms (#7549).
 
 
 0.1.0 (2010-06-09)

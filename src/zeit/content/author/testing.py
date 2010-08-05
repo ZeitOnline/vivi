@@ -12,7 +12,7 @@ product_config = """
 
 ZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=product_config)
+    product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
 def FunctionalDocFileSuite(*args, **kw):
