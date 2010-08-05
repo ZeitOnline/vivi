@@ -89,6 +89,8 @@ class IVideo(IBrightcoveContent,
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),
+        required=False,
+        missing_value='',
         source=zeit.cms.content.sources.NavigationSource())
 
     serie = zope.schema.Choice(
@@ -99,7 +101,8 @@ class IVideo(IBrightcoveContent,
 
     product_id = zope.schema.Choice(
         title=_('Product id'),
-        default='ZEDE',
+        required=False,
+        missing_value='',
         source=zeit.cms.content.sources.ProductSource())
 
     keywords = zope.schema.Tuple(
@@ -120,7 +123,7 @@ class IVideo(IBrightcoveContent,
         title=_("comments allowed"),
         description=_(
             "Are comments allowed for this video?"),
-        default=False)
+        default=True)
 
     banner = zope.schema.Bool(
         title=_("Banner"),

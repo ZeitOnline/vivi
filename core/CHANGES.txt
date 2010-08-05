@@ -6,6 +6,7 @@ zeit.brightcove changes
 ------------------
 
 - Fix tests after changes in zeit.cms (#7549)
+- changes some default values  
 
 
 0.6.1 (2010-07-15)
