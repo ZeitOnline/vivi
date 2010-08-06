@@ -306,7 +306,8 @@
   background-color: #FFF7C4;
 }
 
-.edit-bar > .locked-indicator > img {
+.edit-bar > .locked-indicator {
+  padding-right:0.5em;
 }
 
 .edit-bar > .edit-link {

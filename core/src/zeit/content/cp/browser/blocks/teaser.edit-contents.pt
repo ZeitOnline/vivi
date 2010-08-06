@@ -24,12 +24,12 @@
           <span class="action-title">Edit inline</span>
         </a>
         <a class="edit-object-link"
-           tal:condition="teaser/editable"
+           tal:condition="teaser/viewable"
            tal:attributes="href string:${teaser/url}/@@view.html"
-           title="Edit in new window"
+           title="Open in new window"
            target="_blank"
            i18n:attributes="title">
-          <span class="action-title">Edit object</span>
+          <span class="action-title">Open in new window</span>
         </a>
         <a class="delete-link" title="Delete"
            tal:condition="teaser/deletable"

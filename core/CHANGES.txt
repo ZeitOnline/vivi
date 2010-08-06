@@ -6,8 +6,11 @@ zeit.content.cp changes
 
 - ``cms_content_iter`` funktioniert jetzt auch, wenn eine CP ein Modul enthält,
   welches das CMS nicht kennt (#7727).
-
 - Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
+- Auch gesperrte, oder anderweitig nicht auscheckbare Objekte, haben beim
+  Bearbeiten einer Teaser-Liste jetzt das Icon "in neuem Fenster öffnen"
+  (#7825).
+
 
 
 0.40.0 (2010-07-07)

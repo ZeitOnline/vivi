@@ -8,7 +8,6 @@ import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.selenium
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.centerpage
 import zeit.content.quiz.quiz
@@ -530,6 +529,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         # try it first with too few items to see the error message
         s.click('xpath=//a[@title="Publish"]')
         s.waitForElementPresent('css=div.lightbox')
+        s.waitForElementPresent('publish.errors')
         s.verifyText('publish.errors',
                      'Cannot publish since validation rules are violated.')
         s.click('css=a.CloseButton')

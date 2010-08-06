@@ -198,6 +198,7 @@ class EditContents(zeit.cms.browser.view.Base):
                 teaserTitle=title,
                 uniqueId=content.uniqueId,
                 url=url,
+                viewable=True,
             ))
 
         columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
@@ -210,6 +211,7 @@ class EditContents(zeit.cms.browser.view.Base):
                 locking_indicator=None,
                 teaserTitle=_('^ Left | Right v'),
                 uniqueId=COLUMN_ID,
+                viewable=False,
             ))
 
         return teasers
