@@ -25,10 +25,9 @@ Adapting `content` to IGalleryReference enables us to reference gallery:
 >>> gref
 <zeit.content.gallery.reference.GalleryReference object at 0x...>
 
-Assign the gallery and the embedded gallery:
+Assign the gallery:
 
 >>> gref.gallery = gallery
->>> gref.embedded_gallery = gallery
 
 
 The gallery is now noted in the webdav properties of `content`:
@@ -38,7 +37,6 @@ The gallery is now noted in the webdav properties of `content`:
 >>> import pprint
 >>> pprint.pprint(dict(properties))
 {('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'http://xml.zeit.de/gallery',
- ('biga-src', 'http://namespaces.zeit.de/CMS/document'): u'http://xml.zeit.de/gallery',
  ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
  
 

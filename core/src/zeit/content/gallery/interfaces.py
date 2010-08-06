@@ -113,12 +113,7 @@ gallerySource = GallerySource()
 class IGalleryReference(zope.interface.Interface):
 
     gallery = zope.schema.Choice(
-        title=_('Image gallery as box'),
-        required=False,
-        source=gallerySource)
-
-    embedded_gallery = zope.schema.Choice(
-        title=_('Embedded image gallery'),
+        title=_('Image gallery'),
         required=False,
         source=gallerySource)
 

@@ -19,9 +19,6 @@ class GalleryReference(zeit.cms.content.dav.DAVPropertiesAdapter):
     gallery = zeit.cms.content.dav.DAVProperty(
         zeit.content.gallery.interfaces.IGalleryReference['gallery'],
         'http://namespaces.zeit.de/CMS/document', 'artbox_gallery')
-    embedded_gallery = zeit.cms.content.dav.DAVProperty(
-        zeit.content.gallery.interfaces.IGalleryReference['embedded_gallery'],
-        'http://namespaces.zeit.de/CMS/document', 'biga-src')
 
     def __init__(self, context):
         self.context = self.__parent__ = context
