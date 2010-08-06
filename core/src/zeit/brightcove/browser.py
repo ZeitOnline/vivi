@@ -7,6 +7,7 @@ import grokcore.component
 import zeit.brightcove.interfaces
 import zeit.cms.browser.form
 import zope.formlib.form
+import zope.site.hooks
 import zope.traversing.browser.absoluteurl
 import zope.traversing.browser.interfaces
 
@@ -37,6 +38,25 @@ class VideoEditForm(zeit.cms.browser.form.EditForm):
             ('related',),
             'wide-widgets full-width'),
     )
+
+    _redir = False
+
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        self.applyChanges(data)
+
+    @zope.formlib.form.action(
+        _('Apply and go to search'),
+        condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_and_serach_action(self, action, data):
+        self.applyChanges(data)
+        self._redir = True
+
+    def nextURL(self):
+        if self._redir:
+            return self.url(zope.site.hooks.getSite())
+
 
 class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
 

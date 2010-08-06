@@ -6,11 +6,12 @@ Video metadata can be edited:
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> browser.open('http://localhost/++skin++cms/repository-brightcove/video:1234')
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository-brightcove/video:1234')
 >>> print browser.getControl('Title').value
 Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 >>> browser.getControl('Title').value = 'New title'
->>> browser.getControl('Apply').click()
+>>> browser.getControl('Apply', index=0).click()
 >>> print browser.contents
 <...
  <li class="message">Updated on ...
@@ -33,6 +34,16 @@ True
 >>> solr.update_raw.called
 True
 
+There is also a shortcurt which redirects directly after saving:
+
+>>> browser.getControl('Title').value = 'New title 2'
+>>> browser.getControl('Apply and go to search').click()
+>>> print browser.contents
+<...
+ <li class="message">Updated on ...
+>>> print browser.url
+http://localhost/++skin++cms/repository/online/2008/26
+
 
 The thumbnail view redirects to the url brightcove told us the thumbnail would
 be:
@@ -48,6 +59,8 @@ be:
 ...            print e.hdrs.get('location')
 ...    finally:
 ...        browser.mech_browser.set_handle_redirect(True)
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository-brightcove/video:1234/')
 >>> open_wo_redirect(browser, '@@thumbnail')
 HTTP Error 303: See Other
 http://thumbnailurl
