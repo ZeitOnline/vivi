@@ -7,6 +7,8 @@ zeit.cms changes
 - Make sure indexing referencing object doesn't break when there is change in
   the list duinng iteration (#7635).
 - Use gocept.selenium to run selenium tests (#7549).
+- Remove the automatic syndication of articles with serie 'News' to a news
+  channel.
 
 
 1.45.0 (2010-07-07)

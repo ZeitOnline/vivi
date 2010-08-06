@@ -109,21 +109,3 @@ class IPublicationDependencies(zope.interface.Interface):
     adapted object. Dependent containers will be published recursively.
 
     """
-
-class IAutoSyndicationWorkflow(zope.interface.Interface):
-    """A workflow "extension" which allows automatic syndication."""
-    # XXX the sources are actually not correct, because they should be limited
-    # to IFeed.
-
-    automatically_syndicate_into = zope.schema.Tuple(
-        title=_('Automatically syndicate into'),
-        description=_('automatically-syndicate-description'),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.syndication.interfaces.feedSource))
-
-    was_automatically_syndicated_into = zope.schema.Tuple(
-        title=_('The object was automatically syndicated into'),
-        readonly=True,
-        missing_value=(),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.syndication.interfaces.feedSource))

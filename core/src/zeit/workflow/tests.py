@@ -16,7 +16,6 @@ import zope.app.testing.functional
 product_config = """
 <product-config zeit.workflow>
     path-prefix work
-    news-channel http://xml.zeit.de/politik.feed
 </product-config>
 """
 
@@ -146,7 +145,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'autosynd.txt',
         'dependency.txt',
         'syndication.txt',
         layer=WorkflowLayer))

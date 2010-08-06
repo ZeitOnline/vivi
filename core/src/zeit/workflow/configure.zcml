@@ -63,10 +63,4 @@
   <adapter factory=".dependency.Dependencies" />
   <adapter factory=".dependency.Relateds" name="relateds" />
 
-  <!-- auto syndication -->
-  <adapter factory=".autosynd.AutoSynd" />
-  <adapter factory=".autosynd.dav_properties" />
-  <subscriber handler=".autosynd.syndicate_before_publish" />
-  <adapter factory=".autosynd.Dependencies" name="autosynd" />
-
 </configure>
