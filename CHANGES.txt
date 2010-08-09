@@ -1,7 +1,7 @@
 zeit.seo changes
 ================
 
-1.4.2 (unreleased)
+1.4.2 (2010-08-09)
 ------------------
 
 - Fix tests after product config changes in zeit.cms (#7549).
