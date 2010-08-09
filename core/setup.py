@@ -15,7 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
-        'gocept.selenium',
+        'gocept.selenium>=0.6',
         'setuptools',
         'zeit.cms>=1.46dev',
     ],
