@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.39.1 (unreleased)
+1.39.1 (2010-08-09)
 -------------------
 
 - Removed pointles selenium test (#7549).
