@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.20.3 (unreleased)
+0.20.3 (2010-08-09)
 -------------------
 
 - Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
