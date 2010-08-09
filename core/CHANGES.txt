@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.45.1 (unreleased)
+1.46.0 (2010-08-09)
 -------------------
 
 - Make sure indexing referencing object doesn't break when there is change in

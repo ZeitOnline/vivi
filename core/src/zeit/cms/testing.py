@@ -210,13 +210,13 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
         super(FunctionalTestCase, self).tearDown()
 
 
-
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 
     layer = selenium_layer
     skin = 'cms'
     log_errors = False
     log_errors_ignore = ()
+    level = 2
 
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
