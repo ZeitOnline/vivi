@@ -1,0 +1,13 @@
+<a class="countings-link" title="Countings"
+   tal:condition="view/countings"
+   i18n:domain="zeit.cms"
+   i18n:translate="">
+  Range:
+  <span 
+    tal:content="view/today"
+    i18n:name="today">
+    5
+    </span>/<span
+    tal:content="view/lifetime"
+    i18n:name="lifetime">10</span>
+</a>

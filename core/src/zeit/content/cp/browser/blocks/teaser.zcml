@@ -135,4 +135,18 @@
     permission="zeit.EditContent"
     />
 
+  <!-- countings -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="countings"
+    class=".teaser.Countings"
+    template="layout.teaser.countings.pt"
+    permission="zeit.EditContent"
+    weight="150"
+    />
+
 </configure>

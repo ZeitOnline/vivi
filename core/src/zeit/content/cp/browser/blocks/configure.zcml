@@ -142,7 +142,7 @@
     name="drag"
     template="layout.block.drag.pt"
     permission="zeit.EditContent"
-    weight="100"
+    weight="1000"
     />
 
   <browser:viewlet

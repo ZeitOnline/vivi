@@ -330,6 +330,12 @@
   background-image: url('edit-teaserlist-contents.png');
 }
 
+.edit-bar > .countings-link {
+  float: right;
+  font-size: 80%;
+  width: auto;
+}
+
 .edit-bar > .rss-refresh-link {
   background-image: url('reload.png');
 }

@@ -1,0 +1,68 @@
+Countings
+=========
+
+Setup:
+
+>>> import zeit.content.cp.browser.blocks.tests
+>>> zeit.content.cp.browser.blocks.tests.create_content(getRootFolder())
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c2')
+>>> browser.open(contents_url)
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c1')
+>>> browser.open(contents_url)
+
+
+There are no countings currently, because we haven't set up any:
+
+>>> 'Range:' in browser.contents
+False
+
+
+Create a static access counter
+
+>>> class AccessCounter(object):
+...     hits = 42
+...     total_hits = 31415
+...     def __init__(self, context):
+...         self.context = context
+...
+>>> import zope.component
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.content.interfaces
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
+...     zeit.cms.content.interfaces.IAccessCounter)
+
+There are hits counted now:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+<a class="countings-link" title="Countings">
+  Range:
+  <span>42</span>/<span>31415</span>
+</a>
+...
+
+
+An empty block doesn't cause an error:
+
+>>> browser.open('informatives/@@add?type=teaser')
+>>> browser.open(contents_url)
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
+...     zeit.cms.content.interfaces.IAccessCounter)
+True
