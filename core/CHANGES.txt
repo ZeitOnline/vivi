@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.2.7 (unreleased)
+2.3.0 (2010-08-09)
 ------------------
 
 - Es gibt in den Assets nur noch eine Bildergalerie (#6248)
