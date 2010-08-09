@@ -12,22 +12,18 @@ import zeit.content.cp.testing
 import zeit.solr.testing
 import zope.component
 import zope.security.management
-import zope.site.hooks
 
 
 def create_content(root):
-    old_site = zope.site.hooks.getSite()
-    zope.site.hooks.setSite(root)
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    with zeit.cms.testing.site(root):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
 
-    for i in range(3):
-        name = 'c%s' % (i + 1)
-        c = zeit.cms.testcontenttype.testcontenttype.TestContentType()
-        c.teaserTitle = c.shortTeaserTitle = u'%s teaser' % name
-        repository[name] = c
-
-    zope.site.hooks.setSite(old_site)
+        for i in range(3):
+            name = 'c%s' % (i + 1)
+            c = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+            c.teaserTitle = c.shortTeaserTitle = u'%s teaser' % name
+            repository[name] = c
 
 
 CPBrightcoveZCMLLLayer = zeit.cms.testing.ZCMLLayer(
@@ -72,6 +68,7 @@ def test_suite():
         'fullgraphical.txt',
         'quiz.txt',
         'teaser.txt',
+        'teaser-countings.txt',
         'teaser-two-column-layout.txt',
         'teaserbar.txt',
         'xml.txt',
