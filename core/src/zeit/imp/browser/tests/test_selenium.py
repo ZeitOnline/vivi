@@ -17,11 +17,20 @@ Layer = gocept.selenium.ztk.Layer(zeit.imp.tests.imp_layer)
 class Selenium(zeit.cms.testing.SeleniumTestCase):
 
     layer = Layer
+    window_width = 1100
+    window_height = 600
 
     def setUp(self):
         super(Selenium, self).setUp()
         self.create_group()
+        s = self.selenium
+        # Set the size to a defined value
+        s.getEval('window.resizeTo(%s, %s)' % (
+            self.window_width, self.window_height))
+        s.waitForEval('window.outerWidth', str(self.window_width))
+        s.waitForEval('window.outerHeight', str(self.window_height))
         self.open_imp()
+
 
     def create_group(self):
         with zeit.cms.testing.site(self.getRootFolder()):
@@ -260,29 +269,13 @@ class SeleniumMaskTests(Selenium):
 
 class ResizeTests(Selenium):
 
+    window_width = 1000
+    window_height = 800
+
     def setUp(self):
         super(ResizeTests, self).setUp()
-        s = self.selenium
-        # Remember current window dimensions to restore later.
-        self.window_width = s.getEval('window.parent.outerWidth')
-        self.window_height = s.getEval('window.parent.outerHeight')
-
-        # Set the size to a defined value
-        s.getEval('window.resizeTo(1000, 800)')
-        s.verifyEval('window.outerWidth', '1000')
-        s.verifyEval('window.outerHeight', '800')
-
-        self.open_imp()
-
         # Choose a mask
         self.click_label(u"450×200")
-
-    def tearDown(self):
-        # Restore window dimensions
-        self.selenium.getEval(
-            "window.resizeTo(%s, %s)" % (self.window_width,
-                                                self.window_height))
-        super(ResizeTests, self).tearDown()
 
     def test_window_resize_updates_mask(self):
         s = self.selenium
