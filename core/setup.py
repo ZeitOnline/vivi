@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.cp',
-    version = '0.40.1dev',
+    version='0.41.0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://intra.gocept.com/projects/projects/zeit-cms',
@@ -24,7 +24,7 @@ setup(
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
         'gocept.runner>-0.4',
-        'gocept.selenium',
+        'gocept.selenium>=0.6',
         'lxml',
         'python-cjson',
         'setuptools',
@@ -52,5 +52,4 @@ setup(
         refresh-feeds = zeit.content.cp.feed:refresh_all
         sweep-teasergroup-repository = zeit.content.cp.teasergroup.teasergroup:sweep_repository
     """,
-
 )
