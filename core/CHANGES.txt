@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-0.1.1 (unreleased)
+0.1.1 (2010-08-09)
 ------------------
 
 - Fix tests after product config changes in zeit.cms (#7549).
