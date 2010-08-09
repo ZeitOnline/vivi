@@ -14,7 +14,10 @@ import zope.component
 
 SecurityPolicyLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.brightcove.testing.product_config)
+    product_config=(
+        zeit.cms.testing.cms_product_config +
+        zeit.imp.tests.product_config +
+        zeit.brightcove.testing.product_config))
 
 
 class TestSecurityPolicyXLSSheet(
@@ -33,11 +36,6 @@ class TestSecurityPolicyXLSSheet(
         else:
             password = self.username + 'pw'
             self.basic = '%s:%s' % (self.username, password)
-
-    def setUp(self):
-        super(TestSecurityPolicyXLSSheet, self).setUp()
-        zeit.cms.testing.setup_product_config(
-            zeit.imp.tests.product_config)
 
     def tearDown(self):
         self.connector._reset()
