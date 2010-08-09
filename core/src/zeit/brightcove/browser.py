@@ -26,12 +26,12 @@ class VideoEditForm(zeit.cms.browser.form.EditForm):
             css_class='wide-widgets column-left'),
         gocept.form.grouped.Fields(
             _("Navigation"),
-            ('id', 'ressort', 'keywords', 'serie'),
+            ('product_id', 'ressort', 'keywords', 'serie'),
             css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Options"),
-            ('item_state', 'expires', 'dailyNewsletter', 'banner', 'banner_id',
-             'breaking_news', 'has_recensions', 'product_id', 'allow_comments'),
+            ('dailyNewsletter', 'banner', 'banner_id',
+             'breaking_news', 'has_recensions', 'allow_comments'),
             css_class='column-right checkboxes'),
         gocept.form.grouped.Fields(
             _('Teaser elements'),

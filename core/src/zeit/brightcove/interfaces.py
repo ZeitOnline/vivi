@@ -127,7 +127,7 @@ class IVideo(IBrightcoveContent,
 
     banner = zope.schema.Bool(
         title=_("Banner"),
-        default=False)
+        default=True)
 
     banner_id = zope.schema.TextLine(
         title=_('Banner id'),
