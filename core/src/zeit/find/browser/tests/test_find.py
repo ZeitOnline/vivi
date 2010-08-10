@@ -9,7 +9,7 @@ class TestSearchResult(unittest.TestCase):
 
     def setUp(self):
         from zeit.find.browser.find import SearchResult
-        self.search = SearchResult(mock.sentinel.context, mock.sentinel.request)
+        self.search = SearchResult()
         self.result = dict(uniqueId=mock.sentinel.uniqueId)
 
     def test_get_range_today_should_adapt_unique_id(self):
