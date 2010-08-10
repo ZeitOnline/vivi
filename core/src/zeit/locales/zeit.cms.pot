@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul  7 15:47:09 2010\n"
+"POT-Creation-Date: Tue Aug 10 13:06:45 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -29,7 +29,7 @@ msgid "Type"
 msgstr ""
 
 #: zeit/addcentral/interfaces.py:17
-#: zeit/brightcove/interfaces.py:89
+#: zeit/brightcove/interfaces.py:91
 #: zeit/calendar/interfaces.py:62
 #: zeit/cms/browser/listing.py:278
 #: zeit/cms/content/interfaces.py:88
@@ -62,11 +62,11 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: zeit/brightcove/browser.py:15
+#: zeit/brightcove/browser.py:17
 msgid "Edit video"
 msgstr ""
 
-#: zeit/brightcove/browser.py:22
+#: zeit/brightcove/browser.py:24
 #: zeit/cms/content/browser/form.py:46
 #: zeit/content/infobox/browser/form.py:28
 #: zeit/content/infobox/browser/form.py:83
@@ -76,23 +76,38 @@ msgstr ""
 msgid "Texts"
 msgstr ""
 
-#: zeit/brightcove/browser.py:26
+#: zeit/brightcove/browser.py:28
 #: zeit/cms/content/browser/form.py:38
 msgid "Navigation"
 msgstr ""
 
-#: zeit/brightcove/browser.py:30
+#: zeit/brightcove/browser.py:32
 #: zeit/cms/content/browser/form.py:51
 #: zeit/content/article/browser/form.py:41
 msgid "Options"
 msgstr ""
 
-#: zeit/brightcove/browser.py:35
+#: zeit/brightcove/browser.py:37
 #: zeit/cms/asset/browser/form.py:25
 msgid "Teaser elements"
 msgstr ""
 
-#: zeit/brightcove/browser.py:42
+#: zeit/brightcove/browser.py:45
+#: zeit/calendar/browser/event.py:73
+#: zeit/cms/browser/form.py:207
+#: zeit/cms/repository/browser/file.py:109
+#: zeit/content/cp/browser/blocks/block.py:65
+#: zeit/content/quiz/browser/answer.py:44
+#: zeit/content/quiz/browser/question.py:42
+#: zeit/content/quiz/browser/quiz.py:80
+msgid "Apply"
+msgstr ""
+
+#: zeit/brightcove/browser.py:50
+msgid "Apply and go to search"
+msgstr ""
+
+#: zeit/brightcove/browser.py:63
 msgid "View playlist"
 msgstr ""
 
@@ -100,100 +115,105 @@ msgstr ""
 msgid "Edit brightcove videos"
 msgstr ""
 
-#: zeit/brightcove/content.py:282
-#: zeit/brightcove/interfaces.py:212
+#: zeit/brightcove/content.py:284
+#: zeit/brightcove/interfaces.py:219
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:22
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:22
 msgid "Video"
 msgstr ""
 
-#: zeit/brightcove/content.py:322
+#: zeit/brightcove/content.py:324
 msgid "Playlist"
 msgstr ""
 
 #: zeit/brightcove/interfaces.py:103
+#: zeit/cms/content/interfaces.py:182
+msgid "Product id"
+msgstr ""
+
+#: zeit/brightcove/interfaces.py:109
 #: zeit/cms/content/interfaces.py:118
 #: zeit/cms/content/browser/keyword-tree.pt:11
 #: zeit/cms/content/browser/keyword-tree.pt:35
 msgid "Keywords"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:111
+#: zeit/brightcove/interfaces.py:117
 #: zeit/cms/content/interfaces.py:164
 msgid "Daily newsletter"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:112
+#: zeit/brightcove/interfaces.py:118
 #: zeit/cms/content/interfaces.py:165
 msgid "Should this article be listed in the daily newsletter?"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:117
+#: zeit/brightcove/interfaces.py:123
 msgid "comments allowed"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:118
+#: zeit/brightcove/interfaces.py:124
 msgid "Are comments allowed for this video?"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:123
+#: zeit/brightcove/interfaces.py:129
 #: zeit/cms/content/interfaces.py:174
 msgid "Banner"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:127
+#: zeit/brightcove/interfaces.py:133
 #: zeit/cms/content/interfaces.py:178
 msgid "Banner id"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:131
+#: zeit/brightcove/interfaces.py:138
 #. Default: "Breaking news"
 msgid "video-breaking-news"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:135
+#: zeit/brightcove/interfaces.py:142
 #: zeit/content/article/interfaces.py:38
 msgid "Has recension content"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:139
+#: zeit/brightcove/interfaces.py:146
 msgid "Video expires on"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:145
+#: zeit/brightcove/interfaces.py:152
 msgid "First released"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:151
+#: zeit/brightcove/interfaces.py:158
 msgid "Created on"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:157
+#: zeit/brightcove/interfaces.py:164
 msgid "last modified"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:163
+#: zeit/brightcove/interfaces.py:170
 msgid "URI of the still image"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:168
+#: zeit/brightcove/interfaces.py:175
 msgid "URI of the video file"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:176
+#: zeit/brightcove/interfaces.py:183
 msgid "Video IDs"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:181
+#: zeit/brightcove/interfaces.py:188
 msgid "URI of the Playlist-Video"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:208
+#: zeit/brightcove/interfaces.py:215
 #: zeit/content/video/interfaces.py:21
 msgid "Audio id"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:217
+#: zeit/brightcove/interfaces.py:224
 msgid "Video 2"
 msgstr ""
 
@@ -228,37 +248,32 @@ msgstr ""
 msgid "Teaser text"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:57
-#: zeit/brightcove/interfaces.py:62
+#: zeit/brightcove/interfaces.py:58
+#: zeit/brightcove/interfaces.py:63
 msgid "URI of the thumbnail"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:67
+#: zeit/brightcove/interfaces.py:68
 msgid "State"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:78
+#: zeit/brightcove/interfaces.py:79
 #: zeit/cms/content/interfaces.py:135
 msgid "Kicker"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:79
+#: zeit/brightcove/interfaces.py:80
 #: zeit/cms/content/interfaces.py:136
 msgid "Please take care of capitalisation."
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:84
+#: zeit/brightcove/interfaces.py:86
 msgid "Video subtitle"
 msgstr ""
 
-#: zeit/brightcove/interfaces.py:93
+#: zeit/brightcove/interfaces.py:97
 #: zeit/cms/content/interfaces.py:125
 msgid "Serie"
-msgstr ""
-
-#: zeit/brightcove/interfaces.py:98
-#: zeit/cms/content/interfaces.py:182
-msgid "Product id"
 msgstr ""
 
 #: zeit/calendar/browser/calendar_macros.pt:23
@@ -357,16 +372,6 @@ msgstr ""
 msgid "Edit event"
 msgstr ""
 
-#: zeit/calendar/browser/event.py:73
-#: zeit/cms/browser/form.py:207
-#: zeit/cms/repository/browser/file.py:109
-#: zeit/content/cp/browser/blocks/block.py:65
-#: zeit/content/quiz/browser/answer.py:44
-#: zeit/content/quiz/browser/question.py:42
-#: zeit/content/quiz/browser/quiz.py:80
-msgid "Apply"
-msgstr ""
-
 #: zeit/calendar/browser/event.py:82
 msgid "Delete event"
 msgstr ""
@@ -457,11 +462,11 @@ msgid "> suggestion"
 msgstr ""
 
 #: zeit/cms/application.zcml:34
-msgid "Menu for displaying alternate representations of an object"
+msgid "Views"
 msgstr ""
 
 #: zeit/cms/application.zcml:34
-msgid "Views"
+msgid "Menu for displaying alternate representations of an object"
 msgstr ""
 
 #: zeit/cms/application.zcml:39
@@ -576,7 +581,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:261
 #: zeit/cms/syndication/browser/feed.py:153
 #: zeit/content/article/interfaces.py:96
-#: zeit/content/author/author.py:40
+#: zeit/content/author/author.py:41
 msgid "Author"
 msgstr ""
 
@@ -1816,7 +1821,7 @@ msgid "Edit in place"
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:26
-msgid "Edit in new window"
+msgid "Open in new window"
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:49
@@ -1828,7 +1833,7 @@ msgstr ""
 msgid "Save teasers as group"
 msgstr ""
 
-#: zeit/content/cp/browser/blocks/teaser.py:211
+#: zeit/content/cp/browser/blocks/teaser.py:212
 msgid "^ Left | Right v"
 msgstr ""
 
@@ -2228,12 +2233,7 @@ msgstr ""
 
 #: zeit/content/gallery/interfaces.py:116
 #: zeit/content/gallery/interfaces.py:116
-msgid "Image gallery as box"
-msgstr ""
-
-#: zeit/content/gallery/interfaces.py:121
-#: zeit/content/gallery/interfaces.py:121
-msgid "Embedded image gallery"
+msgid "Image gallery"
 msgstr ""
 
 #: zeit/content/gallery/interfaces.py:32
@@ -2877,18 +2877,6 @@ msgstr ""
 #: zeit/workflow/browser/indicator.py:44
 #. Default: ""
 msgid "${title}: ${state}"
-msgstr ""
-
-#: zeit/workflow/interfaces.py:119
-msgid "Automatically syndicate into"
-msgstr ""
-
-#: zeit/workflow/interfaces.py:120
-msgid "automatically-syndicate-description"
-msgstr ""
-
-#: zeit/workflow/interfaces.py:125
-msgid "The object was automatically syndicated into"
 msgstr ""
 
 #: zeit/workflow/interfaces.py:36

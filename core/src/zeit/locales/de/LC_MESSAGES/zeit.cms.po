@@ -14,14 +14,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul  7 15:47:09 2010\n"
-"PO-Revision-Date: 2010-07-07 15:48+0100\n"
-"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"POT-Creation-Date: Tue Aug 10 13:06:45 2010\n"
+"PO-Revision-Date: 2010-08-10 13:29+0100\n"
+"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: zeit/addcentral/interfaces.py:13
@@ -30,7 +30,7 @@ msgid "Type"
 msgstr "Typ"
 
 #: zeit/addcentral/interfaces.py:17
-#: zeit/brightcove/interfaces.py:89
+#: zeit/brightcove/interfaces.py:91
 #: zeit/calendar/interfaces.py:62
 #: zeit/cms/browser/listing.py:278
 #: zeit/cms/content/interfaces.py:88
@@ -63,11 +63,11 @@ msgstr "Monat"
 msgid "Add"
 msgstr "Inhalte hinzufügen..."
 
-#: zeit/brightcove/browser.py:15
+#: zeit/brightcove/browser.py:17
 msgid "Edit video"
 msgstr "Video bearbeiten"
 
-#: zeit/brightcove/browser.py:22
+#: zeit/brightcove/browser.py:24
 #: zeit/cms/content/browser/form.py:46
 #: zeit/content/infobox/browser/form.py:28
 #: zeit/content/infobox/browser/form.py:83
@@ -75,23 +75,38 @@ msgstr "Video bearbeiten"
 msgid "Texts"
 msgstr "Texte"
 
-#: zeit/brightcove/browser.py:26
+#: zeit/brightcove/browser.py:28
 #: zeit/cms/content/browser/form.py:38
 msgid "Navigation"
 msgstr "Navigation"
 
-#: zeit/brightcove/browser.py:30
+#: zeit/brightcove/browser.py:32
 #: zeit/cms/content/browser/form.py:51
 #: zeit/content/article/browser/form.py:41
 msgid "Options"
 msgstr "Optionen"
 
-#: zeit/brightcove/browser.py:35
+#: zeit/brightcove/browser.py:37
 #: zeit/cms/asset/browser/form.py:25
 msgid "Teaser elements"
 msgstr "Teaser-Elemente"
 
-#: zeit/brightcove/browser.py:42
+#: zeit/brightcove/browser.py:45
+#: zeit/calendar/browser/event.py:73
+#: zeit/cms/browser/form.py:207
+#: zeit/cms/repository/browser/file.py:109
+#: zeit/content/cp/browser/blocks/block.py:65
+#: zeit/content/quiz/browser/answer.py:44
+#: zeit/content/quiz/browser/question.py:42
+#: zeit/content/quiz/browser/quiz.py:80
+msgid "Apply"
+msgstr "Speichern"
+
+#: zeit/brightcove/browser.py:50
+msgid "Apply and go to search"
+msgstr "Speichern und zur Suchseite gehen"
+
+#: zeit/brightcove/browser.py:63
 msgid "View playlist"
 msgstr "Playlist anzeigen"
 
@@ -99,99 +114,104 @@ msgstr "Playlist anzeigen"
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
 
-#: zeit/brightcove/content.py:282
-#: zeit/brightcove/interfaces.py:212
+#: zeit/brightcove/content.py:284
+#: zeit/brightcove/interfaces.py:219
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:22
 msgid "Video"
 msgstr "Video"
 
-#: zeit/brightcove/content.py:322
+#: zeit/brightcove/content.py:324
 msgid "Playlist"
 msgstr "Playlist"
 
 #: zeit/brightcove/interfaces.py:103
+#: zeit/cms/content/interfaces.py:182
+msgid "Product id"
+msgstr "Standard-Quelle"
+
+#: zeit/brightcove/interfaces.py:109
 #: zeit/cms/content/interfaces.py:118
 #: zeit/cms/content/browser/keyword-tree.pt:11
 #: zeit/cms/content/browser/keyword-tree.pt:35
 msgid "Keywords"
 msgstr "Schlagworte"
 
-#: zeit/brightcove/interfaces.py:111
+#: zeit/brightcove/interfaces.py:117
 #: zeit/cms/content/interfaces.py:164
 msgid "Daily newsletter"
 msgstr "Tages-Newsletter"
 
-#: zeit/brightcove/interfaces.py:112
+#: zeit/brightcove/interfaces.py:118
 #: zeit/cms/content/interfaces.py:165
 msgid "Should this article be listed in the daily newsletter?"
 msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
 
-#: zeit/brightcove/interfaces.py:117
+#: zeit/brightcove/interfaces.py:123
 msgid "comments allowed"
 msgstr "Kommentare erlaubt"
 
-#: zeit/brightcove/interfaces.py:118
+#: zeit/brightcove/interfaces.py:124
 msgid "Are comments allowed for this video?"
 msgstr "Kommentare erlaubt"
 
-#: zeit/brightcove/interfaces.py:123
+#: zeit/brightcove/interfaces.py:129
 #: zeit/cms/content/interfaces.py:174
 msgid "Banner"
 msgstr "Banner"
 
-#: zeit/brightcove/interfaces.py:127
+#: zeit/brightcove/interfaces.py:133
 #: zeit/cms/content/interfaces.py:178
 msgid "Banner id"
 msgstr "Banner-Id"
 
 #. Default: "Breaking news"
-#: zeit/brightcove/interfaces.py:131
+#: zeit/brightcove/interfaces.py:138
 msgid "video-breaking-news"
-msgstr "Breaking news"
+msgstr "Schlagzeile"
 
-#: zeit/brightcove/interfaces.py:135
+#: zeit/brightcove/interfaces.py:142
 #: zeit/content/article/interfaces.py:38
 msgid "Has recension content"
 msgstr "Hat Rezensionsinformationen"
 
-#: zeit/brightcove/interfaces.py:139
+#: zeit/brightcove/interfaces.py:146
 msgid "Video expires on"
 msgstr "Video gültig bis"
 
-#: zeit/brightcove/interfaces.py:145
+#: zeit/brightcove/interfaces.py:152
 msgid "First released"
 msgstr "Zuerst veröffentlicht am"
 
-#: zeit/brightcove/interfaces.py:151
+#: zeit/brightcove/interfaces.py:158
 msgid "Created on"
 msgstr "Erstellt am"
 
-#: zeit/brightcove/interfaces.py:157
+#: zeit/brightcove/interfaces.py:164
 msgid "last modified"
 msgstr "Zuletzt geändert am"
 
-#: zeit/brightcove/interfaces.py:163
+#: zeit/brightcove/interfaces.py:170
 msgid "URI of the still image"
 msgstr "URI des Standbildes"
 
-#: zeit/brightcove/interfaces.py:168
+#: zeit/brightcove/interfaces.py:175
 msgid "URI of the video file"
 msgstr "URI der Video-Datei"
 
-#: zeit/brightcove/interfaces.py:176
+#: zeit/brightcove/interfaces.py:183
 msgid "Video IDs"
 msgstr "Video-Ids"
 
-#: zeit/brightcove/interfaces.py:181
+#: zeit/brightcove/interfaces.py:188
 msgid "URI of the Playlist-Video"
 msgstr "URI der Playlist"
 
-#: zeit/brightcove/interfaces.py:208
+#: zeit/brightcove/interfaces.py:215
 #: zeit/content/video/interfaces.py:21
 msgid "Audio id"
 msgstr "Audio-Id"
 
-#: zeit/brightcove/interfaces.py:217
+#: zeit/brightcove/interfaces.py:224
 msgid "Video 2"
 msgstr "Video 2"
 
@@ -224,38 +244,33 @@ msgstr "Titel"
 msgid "Teaser text"
 msgstr "Teaser-Text"
 
-#: zeit/brightcove/interfaces.py:57
-#: zeit/brightcove/interfaces.py:62
+#: zeit/brightcove/interfaces.py:58
+#: zeit/brightcove/interfaces.py:63
 msgid "URI of the thumbnail"
 msgstr "URI des Thumbnails"
 
-#: zeit/brightcove/interfaces.py:67
+#: zeit/brightcove/interfaces.py:68
 msgid "State"
 msgstr "Status"
 
-#: zeit/brightcove/interfaces.py:78
+#: zeit/brightcove/interfaces.py:79
 #: zeit/cms/content/interfaces.py:135
 msgid "Kicker"
 msgstr "Spitzmarke"
 
-#: zeit/brightcove/interfaces.py:79
+#: zeit/brightcove/interfaces.py:80
 #: zeit/cms/content/interfaces.py:136
 msgid "Please take care of capitalisation."
 msgstr "Bitte auf Groß- und Kleinschreibung achten."
 
-#: zeit/brightcove/interfaces.py:84
+#: zeit/brightcove/interfaces.py:86
 msgid "Video subtitle"
 msgstr "Untertitel"
 
-#: zeit/brightcove/interfaces.py:93
+#: zeit/brightcove/interfaces.py:97
 #: zeit/cms/content/interfaces.py:125
 msgid "Serie"
 msgstr "Serie"
-
-#: zeit/brightcove/interfaces.py:98
-#: zeit/cms/content/interfaces.py:182
-msgid "Product id"
-msgstr "Standard-Quelle"
 
 #: zeit/calendar/browser/calendar_macros.pt:23
 msgid "Reactivate event"
@@ -353,16 +368,6 @@ msgstr "Termin hinzufügen"
 msgid "Edit event"
 msgstr "Termin bearbeiten"
 
-#: zeit/calendar/browser/event.py:73
-#: zeit/cms/browser/form.py:207
-#: zeit/cms/repository/browser/file.py:109
-#: zeit/content/cp/browser/blocks/block.py:65
-#: zeit/content/quiz/browser/answer.py:44
-#: zeit/content/quiz/browser/question.py:42
-#: zeit/content/quiz/browser/quiz.py:80
-msgid "Apply"
-msgstr "Speichern"
-
 #: zeit/calendar/browser/event.py:82
 msgid "Delete event"
 msgstr "Termin löschen"
@@ -453,12 +458,12 @@ msgid "> suggestion"
 msgstr "↝ vorschlag"
 
 #: zeit/cms/application.zcml:34
-msgid "Menu for displaying alternate representations of an object"
-msgstr "Menu for displaying alternate representations of an object"
-
-#: zeit/cms/application.zcml:34
 msgid "Views"
 msgstr "Views"
+
+#: zeit/cms/application.zcml:34
+msgid "Menu for displaying alternate representations of an object"
+msgstr "Menu for displaying alternate representations of an object"
 
 #: zeit/cms/application.zcml:39
 msgid "Actions"
@@ -571,7 +576,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 #: zeit/cms/browser/listing.py:261
 #: zeit/cms/syndication/browser/feed.py:153
 #: zeit/content/article/interfaces.py:96
-#: zeit/content/author/author.py:40
+#: zeit/content/author/author.py:41
 msgid "Author"
 msgstr "Autoren"
 
@@ -1801,7 +1806,8 @@ msgid "Edit in place"
 msgstr "Im CPE bearbeiten"
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:26
-msgid "Edit in new window"
+#, fuzzy
+msgid "Open in new window"
 msgstr "In neuem Fenster bearbeiten"
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:49
@@ -1813,7 +1819,7 @@ msgstr "Ziehen Sie Inhalte hierher um einen Teaser hinzuzufügen."
 msgid "Save teasers as group"
 msgstr "Teaser als Teasergruppe speichern"
 
-#: zeit/content/cp/browser/blocks/teaser.py:211
+#: zeit/content/cp/browser/blocks/teaser.py:212
 msgid "^ Left | Right v"
 msgstr "↑ Links | Rechts ↓"
 
@@ -2190,12 +2196,8 @@ msgid "gallery-image-caption-description"
 msgstr "Die Bildunterschrift wird nicht in das Bild übernommen sondern gilt nur für die Galerie. Bei leerem Feld wird wieder die Bildunterschrift des Bildes verwendet."
 
 #: zeit/content/gallery/interfaces.py:116
-msgid "Image gallery as box"
-msgstr "Bildergalerie als Box"
-
-#: zeit/content/gallery/interfaces.py:121
-msgid "Embedded image gallery"
-msgstr "Eingebettete Bildergalerie"
+msgid "Image gallery"
+msgstr "Bildergalerie"
 
 #: zeit/content/gallery/interfaces.py:32
 msgid "Image folder"
@@ -2817,18 +2819,6 @@ msgstr "»${id}« wird zurückgezogen."
 msgid "${title}: ${state}"
 msgstr "${title}: ${state}"
 
-#: zeit/workflow/interfaces.py:119
-msgid "Automatically syndicate into"
-msgstr "Automatisch syndizieren nach"
-
-#: zeit/workflow/interfaces.py:120
-msgid "automatically-syndicate-description"
-msgstr "Channel, in die das Objekt automatisch syndiziert wird."
-
-#: zeit/workflow/interfaces.py:125
-msgid "The object was automatically syndicated into"
-msgstr "Das Objekt wurde automatisch syndiziert nach"
-
 #: zeit/workflow/interfaces.py:36
 msgid "From"
 msgstr "Von"
@@ -3020,144 +3010,223 @@ msgstr "Löschdatum"
 msgid "with info"
 msgstr "mit Info"
 
+#~ msgid "Embedded image gallery"
+#~ msgstr "Eingebettete Bildergalerie"
+
+#~ msgid "Automatically syndicate into"
+#~ msgstr "Automatisch syndizieren nach"
+
+#~ msgid "automatically-syndicate-description"
+#~ msgstr "Channel, in die das Objekt automatisch syndiziert wird."
+
+#~ msgid "The object was automatically syndicated into"
+#~ msgstr "Das Objekt wurde automatisch syndiziert nach"
+
 #~ msgid "The given id is invalid."
 #~ msgstr "Die angegebene Id ist nicht gültig."
+
 #~ msgid "CAP context"
 #~ msgstr "CAP-Context"
+
 #~ msgid "± Zoom image area"
 #~ msgstr "± Bild-Breich zoomen"
+
 #~ msgid "Development"
 #~ msgstr "Relaunch"
+
 #~ msgid "Sub type"
 #~ msgstr "Sub-Typ"
+
 #~ msgid "Feed"
 #~ msgstr "Channel"
+
 #~ msgid "Box Most Read"
 #~ msgstr "Box „Meistgelesene Artikel“"
+
 #~ msgid "Center-Page"
 #~ msgstr "Center-Page"
+
 #~ msgid "Edit content"
 #~ msgstr "Bearbeiten"
+
 #~ msgid "Centerpage"
 #~ msgstr "Center-Page"
+
 #~ msgid "Label"
 #~ msgstr "Label"
+
 #~ msgid "Style"
 #~ msgstr "Stil"
+
 #~ msgid "Lexical resource query"
 #~ msgstr "Lexical resource query"
+
 #~ msgid "Left column"
 #~ msgstr "Linke Spalte"
+
 #~ msgid "No automatic metadata update"
 #~ msgstr "Keine automatische Aktualisierung der Metadaten"
+
 #~ msgid ""
 #~ "When this object is checked in, its metata will not automatically updated "
 #~ "in the selected channels."
 #~ msgstr ""
 #~ "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels "
 #~ "nicht automatisch aktualisiert."
+
 #~ msgid "Homepage"
 #~ msgstr "Homepage"
+
 #~ msgid "Zeit CMS Search Preferences"
 #~ msgstr "Benutzereinstellungen zur Suche"
+
 #~ msgid "Year/Vol."
 #~ msgstr "Jahr/Ausg."
+
 #~ msgid "search-status-not-corrected"
 #~ msgstr "Muss korrigiert werden"
+
 #~ msgid "search-status-no-images-added"
 #~ msgstr "Braucht Bilder"
+
 #~ msgid "The search had no results."
 #~ msgstr "Die Suche lieferte keine Ergebnisse."
+
 #~ msgid "workflow-state"
 #~ msgstr "Status"
+
 #~ msgid "Sort order"
 #~ msgstr "Sortierung"
+
 #~ msgid "Extended ..."
 #~ msgstr "Erweitert …"
+
 #~ msgid "Extended"
 #~ msgstr "Erweitert"
+
 #~ msgid "Hide ..."
 #~ msgstr "Verstecken …"
+
 #~ msgid "Unique Id"
 #~ msgstr "Eindeutige ID"
+
 #~ msgid "Realive weight of metadata freshness."
 #~ msgstr "Realive weight of metadata freshness."
+
 #~ msgid "Relevance of result"
 #~ msgstr "Relevanz des Ergebnisses"
+
 #~ msgid "Index teaser title"
 #~ msgstr "Kurzteaser-Titel"
+
 #~ msgid "Index teaser text"
 #~ msgstr "Kurzteaser-Text"
+
 #~ msgid "Homepage teaser title"
 #~ msgstr "Homepageteaser-Titel"
+
 #~ msgid "Homepage teaser text"
 #~ msgstr "Homepageteaser-Text"
+
 #~ msgid "Assets and related"
 #~ msgstr "Assets und Related"
+
 #~ msgid "Broken object"
 #~ msgstr "Broken object"
+
 #~ msgid "Add Site Management Folder"
 #~ msgstr "Add Site Management Folder"
+
 #~ msgid "Registrations"
 #~ msgstr "Registrations"
+
 #~ msgid "Registration"
 #~ msgstr "Registration"
+
 #~ msgid "Site-Management Folder"
 #~ msgstr "Site-Management Folder"
+
 #~ msgid "Make a site"
 #~ msgstr "Make a site"
+
 #~ msgid "Manage Site"
 #~ msgstr "Manage Site"
+
 #~ msgid "Find"
 #~ msgstr "Suchen"
+
 #~ msgid "Configure"
 #~ msgstr "Configure"
+
 #~ msgid "Error Reporting Utility for Logging Errors"
 #~ msgstr "Error Reporting Utility for Logging Errors"
+
 #~ msgid "Error Logging Utility"
 #~ msgstr "Error Logging Utility"
+
 #~ msgid "Errors"
 #~ msgstr "Fehler"
+
 #~ msgid "Database Schemas"
 #~ msgstr "Database Schemas"
+
 #~ msgid "Translate"
 #~ msgstr "Translate"
+
 #~ msgid "Import/Export"
 #~ msgstr "Import/Export"
+
 #~ msgid "Synchronize"
 #~ msgstr "Synchronisieren"
+
 #~ msgid "Translation Domain"
 #~ msgstr "Translation Domain"
+
 #~ msgid "A Persistent Translation Domain"
 #~ msgstr "A Persistent Translation Domain"
+
 #~ msgid "Permission"
 #~ msgstr "Permission"
+
 #~ msgid "A Security Permission"
 #~ msgstr "A Security Permission"
+
 #~ msgid "Edit Permission"
 #~ msgstr "Edit Permission"
+
 #~ msgid "Add Permission"
 #~ msgstr "Add Permission"
+
 #~ msgid "Stores Annotations for Principals"
 #~ msgstr "Stores Annotations for Principals"
+
 #~ msgid "Principal Annotation Utility"
 #~ msgstr "Principal Annotation Utility"
+
 #~ msgid "zope.app.dublincore.view-permission"
 #~ msgstr "zope.app.dublincore.view-permission"
+
 #~ msgid "zope.app.dublincore.change-permission"
 #~ msgstr "zope.app.dublincore.change-permission"
+
 #~ msgid "The media type (one of audio or video)"
 #~ msgstr "Medientype (audio oder video)"
+
 #~ msgid "The id of the audio/video."
 #~ msgstr "Video/Audio-Id"
+
 #~ msgid "The date until the audio/video is valid."
 #~ msgstr "Gültigkeitsdatum"
+
 #~ msgid "The format of the audio/video."
 #~ msgstr "Format"
+
 #~ msgid "The title of this feed."
 #~ msgstr "Feed-Titel"
+
 #~ msgid "The timestamp when this feed was last fetched."
 #~ msgstr "The timestamp when this feed was last fetched."
+
 #~ msgid "The corresponding Feed object."
 #~ msgstr "The corresponding Feed object."
 
@@ -3172,16 +3241,21 @@ msgstr "mit Info"
 #, fuzzy
 #~ msgid "Fetch image from"
 #~ msgstr "Autopilot-Teaser beziehen von"
+
 #~ msgid "Edit center page"
 #~ msgstr "Centerpage bearbeiten"
+
 #~ msgid "Remove"
 #~ msgstr "Entfernen"
+
 #~ msgid "${amount} Entries"
 #~ msgstr "${amount} Einträge"
+
 #~ msgid "Total hits between first and last count."
 #~ msgstr "Gesamttreffer zwischen der ersten und letzten Zählung."
+
 #~ msgid "Date the first hit was counted on"
 #~ msgstr "Datum wann der erste Treffer gezählt wurde"
+
 #~ msgid "Date the last hit was counted on"
 #~ msgstr "Datum wann der letzte treffer gezählt wurde"
-
