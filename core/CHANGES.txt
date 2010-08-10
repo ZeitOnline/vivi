@@ -5,7 +5,9 @@ zeit.brightcove changes
 0.7.1 (unreleased)
 ------------------
 
-- new layout for video-form 
+- New layout for video-form 
+
+- Honour the default values of the interface in mapped properties.
 
 
 0.7.0 (2010-08-09)

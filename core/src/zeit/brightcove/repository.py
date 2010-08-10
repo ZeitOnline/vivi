@@ -78,11 +78,11 @@ class Repository(persistent.Persistent,
         if current:
             curtime = zope.dublincore.interfaces.IDCTimes(current)
             bctime = zope.dublincore.interfaces.IDCTimes(newcontent)
-            
+
             # update time for video_still can fail, so we need to test for
             # equality in addition
             if (curtime.modified and bctime.modified and
-                curtime.modified >= bctime.modified and 
+                curtime.modified >= bctime.modified and
                 current.video_still == newcontent.video_still):
                 return
             curdata = current.data.copy()

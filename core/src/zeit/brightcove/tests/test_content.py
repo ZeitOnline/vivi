@@ -177,6 +177,10 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = self.repository['video:1234']
         self.assertEquals("http://thumbnailurl", video.brightcove_thumbnail)
 
+    def test_comment_should_honour_default(self):
+        video = self.repository['video:1234']
+        self.assertTrue(video.allow_comments)
+
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 

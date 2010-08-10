@@ -24,8 +24,9 @@ import zope.interface
 import zope.security.proxy
 
 
-
 class mapped(object):
+
+    field = None
 
     def __init__(self, *path):
         assert path
@@ -34,13 +35,32 @@ class mapped(object):
     def __get__(self, instance, class_):
         if instance is None:
             return self
-        return self._get_from_dict(instance.data)
+        try:
+            return self._get_from_dict(instance.data)
+        except KeyError:
+            if self.field is None:
+                self._guess_field(class_)
+            if self.field is not None:
+                return self.field.default
+
+    def _guess_field(self, class_):
+        for key, value in class_.__dict__.items():
+            if value is self:
+                break
+        else:
+            return
+        for interface in zope.interface.implementedBy(class_):
+            try:
+                field = interface[key]
+            except KeyError:
+                pass
+            else:
+                self.field = field
+                break
 
     def _get_from_dict(self, value):
         for key in self.path:
-            value = value.get(key)
-            if value is None:
-                break
+            value = value[key]
         return value
 
     def __set__(self, instance, value):
@@ -53,8 +73,8 @@ class mapped(object):
 
 class mapped_bool(mapped):
 
-    def __get__(self, instance, class_):
-        value = super(mapped_bool, self).__get__(instance, class_)
+    def _get_from_dict(self, value):
+        value = super(mapped_bool, self)._get_from_dict(value)
         return value == '1'
 
     def __set__(self, instance, value):
