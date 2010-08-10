@@ -41,17 +41,14 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         import zeit.solr.interfaces
         super(TestSearch, self).setUp()
-        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        self.solr._send_request = mock.Mock()
         self.set_result('defaultqueryresult.json')
         self.open('/')
         self.open('/find')
         self.selenium.waitForElementPresent('css=div.teaser_title')
         self.selenium.waitForVisible('css=div.teaser_title')
 
-    def tearDown(self):
-        del self.solr._send_request
-        super(TestSearch, self).tearDown()
+    def set_result(self, filename):
+        zeit.find.tests.SearchLayer.set_result(__name__, filename)
 
     def test_relateds(self):
         s = self.selenium
