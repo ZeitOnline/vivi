@@ -154,7 +154,7 @@ class Content(persistent.Persistent,
     def _save(self):
         try:
             del self._v_save_hook_registered
-        except AttribueError:
+        except AttributeError:
             pass
         __traceback_info__ = (self.data,)
 
