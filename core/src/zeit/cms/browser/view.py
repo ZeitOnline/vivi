@@ -48,9 +48,6 @@ class JSON(Base):
     resource_library = None
     template = None
 
-    def __init__(self, context, request):
-        super(JSON, self).__init__(context, request)
-
     def __call__(self):
         # XXX application/json would be correct
         self.request.response.setHeader('Content-Type', 'text/json')
