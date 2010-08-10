@@ -14,6 +14,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.find.search
 import zope.browser.interfaces
+import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
 import zope.interface
@@ -96,6 +97,9 @@ class SearchResultBase(JSONView):
         'icon',
         'preview_url',
         'publication_status',
+        'range_today',
+        'range_total',
+        'range_url',
         'related_url',
         'serie',
         'start_date',
@@ -162,7 +166,7 @@ class SearchResultBase(JSONView):
         return self.url('expanded_search_result', self.get_uniqueId(result))
 
     def get_start_date(self, result):
-        dt =self._get_unformatted_date(result)
+        dt = self._get_unformatted_date(result)
         start_date = None
         if dt is not None:
             start_date = dt.date()
@@ -243,6 +247,23 @@ class SearchResult(SearchResultBase):
 
     def _get_unformatted_publication_status(self, result):
         return result.get('published', 'published')
+
+    def get_range_today(self, result):
+        counter = zeit.cms.content.interfaces.IAccessCounter(
+            self.get_uniqueId(result), None)
+        if counter is None:
+            return '0'
+        return str(counter.hits or 0)
+
+    def get_range_total(self, result):
+        total = result.get('range') or 0
+        today = self.get_range_today(result)
+        if today:
+            total += int(today)
+        return str(total)
+
+    def get_range_url(self, result):
+        return '#'
 
     def get_subtitle(self, result):
         return result.get('subtitle', '')
@@ -490,6 +511,21 @@ class Favorites(SearchResultBase):
         status = zeit.cms.workflow.interfaces.IPublicationStatus(result, None)
         if status is not None:
             return status.published
+
+    def get_range_today(self, result):
+        counter = zeit.cms.content.interfaces.IAccessCounter(result, None)
+        if counter is None:
+            return '0'
+        return str(counter.hits or 0)
+
+    def get_range_total(self, result):
+        counter = zeit.cms.content.interfaces.IAccessCounter(result, None)
+        if counter is None:
+            return '0'
+        return str(counter.total_hits or 0)
+
+    def get_range_url(self, result):
+        return '#'
 
     def get_subtitle(self, result):
         metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)

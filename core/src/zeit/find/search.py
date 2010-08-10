@@ -30,11 +30,12 @@ def search(q, sort_order=None):
 
     result_fields = [
         'authors',
-        'icon',
         'graphical-preview-url',
+        'icon',
         'keywords',
         'last-semantic-change',
         'published',
+        'range',
         'ressort',
         'serie',
         'subtitle',
