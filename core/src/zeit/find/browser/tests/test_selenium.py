@@ -53,10 +53,6 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         del self.solr._send_request
         super(TestSearch, self).tearDown()
 
-    def set_result(self, filename):
-        self.solr._send_request.return_value = pkg_resources.resource_string(
-            __name__, filename)
-
     def test_relateds(self):
         s = self.selenium
         s.click('css=.related_links')

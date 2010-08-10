@@ -2,7 +2,15 @@
 Search UI
 =========
 
-For UI-Tests we need a Testbrowser and some setup[1]_:
+For UI-Tests we need a Testbrowser and some setup:
+
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+
+>>> import zope.security.testing
+>>> principal = zope.security.testing.Principal(u'zope.user')
+>>> participation = zope.security.testing.Participation(principal)
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
@@ -161,7 +169,8 @@ Search
 
 The search view returns all data for rendering the result:
 
->>> browser.handleErrors = False
+>>> import zeit.find.tests
+>>> zeit.find.tests.SearchLayer.set_result('zeit.find', 'testdata/obama.json')
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
 >>> result = cjson.decode(browser.contents)
 >>> pprint.pprint(result)
@@ -269,24 +278,3 @@ Add content to testcontent
               'teaser_title': 'Related title',
               'uniqueId': 'http://xml.zeit.de/related'}],
  'template_url': 'http://localhost:8080/++skin++cms/++noop++94b533aa204ba84e5cd044c4f71cae06/@@/zeit.find/expanded_search_result.jsont'}
-
-
-
-
-
-
-Footnotes
-=========
-
-.. [1] Setup
-
-    We need to set the site since we're a functional test:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    We also need an interaction as we needs to get the principal:
-
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'zope.user')
-    >>> participation = zope.security.testing.Participation(principal)
