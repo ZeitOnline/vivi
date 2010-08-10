@@ -118,8 +118,8 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(
             u'Glanz, Glamour und erwartungsvolle Spannung',
             metadata.teaserText)
-    
-    def test_common_metadata(self):
+
+    def test_videos_shouild_be_adaptable_to_isemantic_change(self):
         metadata = zeit.cms.content.interfaces.ISemanticChange(
             self.repository['video:1234'])
         date = datetime.datetime(2010, 3, 8, 12, 59, 57)
