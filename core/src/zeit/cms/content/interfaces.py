@@ -378,6 +378,11 @@ class IAccessCounter(zope.interface.Interface):
         required=False,
         default=None)
 
+    detail_url = zope.schema.URI(
+        title=_('URI to the access counting details'),
+        required=False,
+        default=None)
+
 
 class IContentSortKey(zope.interface.Interface):
     """Content objects can be adapted to this interface to get a sort key.

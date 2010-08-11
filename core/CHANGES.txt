@@ -4,7 +4,8 @@ zeit.cms changes
 1.46.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add detail url to access counter (#7860).
+
 
 
 1.46.0 (2010-08-09)
