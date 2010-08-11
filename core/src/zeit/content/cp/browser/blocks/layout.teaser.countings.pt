@@ -1,7 +1,12 @@
-<a class="countings-link" title="Countings"
+<a class="countings-link"
+   target="_blank"
    tal:condition="view/countings"
+   tal:attributes="
+   title string:Reichweite Heute ${view/today} / Gesamt ${view/lifetime};
+   href view/url"
    i18n:domain="zeit.cms"
-   i18n:translate="">
+   i18n:translate=""
+   i18n:attributes="title">
   Range:
   <span 
     tal:content="view/today"

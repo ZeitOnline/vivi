@@ -316,3 +316,10 @@ class Countings(object):
         if self.countings is not None:
             return self.countings.total_hits or 0
 
+    @property
+    def url(self):
+        if self.countings is not None:
+            try:
+                return self.countings.detail_url
+            except AttributeError:
+                pass

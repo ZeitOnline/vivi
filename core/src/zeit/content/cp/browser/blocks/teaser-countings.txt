@@ -48,11 +48,27 @@ There are hits counted now:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
-<a class="countings-link" title="Countings">
+<a class="countings-link" target="_blank"
+   title="Reichweite Heute 42 / Gesamt 31415">
   Range:
   <span>42</span>/<span>31415</span>
 </a>
 ...
+
+When the access counter issues a url it is displayed:
+
+>>> AccessCounter.detail_url = 'http://detail.invalid'
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+<a class="countings-link" target="_blank"
+   href="http://detail.invalid"
+   title="Reichweite Heute 42 / Gesamt 31415">
+  Range:
+  <span>42</span>/<span>31415</span>
+</a>
+...
+
 
 
 An empty block doesn't cause an error:
