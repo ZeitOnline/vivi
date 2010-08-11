@@ -42,10 +42,8 @@
     MochiKit.Signal.signal = signal;
 })();
 
-if (isUndefinedOrNull(zeit.content)) {
-    zeit.content = {}
-}
-zeit.content.cp = {}
+
+zeit.cms.declare_namespace('zeit.content.cp');
 
 
 // Lock to hold for asynchronous tasks.
