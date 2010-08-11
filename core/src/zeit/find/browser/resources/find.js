@@ -568,6 +568,17 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                 }));
             });
 
+            var click_range = MochiKit.Selector.findChildElements(
+                entry, ['.range']);
+            forEach(click_range, function(range) {
+                self.events.push(MochiKit.Signal.connect(
+                    range, 'onclick', function(e) {
+                    if (range.getAttribute('href') == '#') {
+                        e.stop();
+                    }
+                }));
+            });
+
         });
     }
 });

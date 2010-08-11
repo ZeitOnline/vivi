@@ -263,7 +263,7 @@ class SearchResult(SearchResultBase):
         return str(total)
 
     def get_range_url(self, result):
-        return '#'
+        return result.get('range_details', '#')
 
     def get_subtitle(self, result):
         return result.get('subtitle', '')

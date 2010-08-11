@@ -36,6 +36,7 @@ def search(q, sort_order=None):
         'last-semantic-change',
         'published',
         'range',
+        'range_details',
         'ressort',
         'serie',
         'subtitle',

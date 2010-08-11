@@ -4,7 +4,7 @@ zeit.find changes
 0.20.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Reichweite in der Suche anzeigen (#7860).
 
 
 0.20.3 (2010-08-09)

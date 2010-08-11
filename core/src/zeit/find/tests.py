@@ -67,3 +67,5 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
         query = req.call_args[0][1]
         self.assertTrue(query.startswith(
             '/select/?q=%28text%3A%28Obama%29+AND+NOT+ressort%3A%28News'))
+        self.assertTrue('range' in query)
+        self.assertTrue('range_details' in query)
