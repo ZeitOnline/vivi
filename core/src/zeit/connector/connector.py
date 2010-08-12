@@ -63,14 +63,10 @@ import datetime
 import gocept.lxml.objectify
 import httplib
 import logging
-import os
 import pytz
-import random
 import re
 import sys
 import threading
-import time
-import urllib
 import urlparse
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
