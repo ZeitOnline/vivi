@@ -72,13 +72,16 @@ def test_suite():
         'teaser-two-column-layout.txt',
         'teaserbar.txt',
         'xml.txt',
+        package='zeit.content.cp.browser.blocks',
         ))
     av_test = zeit.content.cp.testing.FunctionalDocFileSuite(
         'av.txt',
+        package='zeit.content.cp.browser.blocks',
         layer=CPBrightcoveLayer)
     suite.addTest(av_test)
     rss_test = zeit.content.cp.testing.FunctionalDocFileSuite(
         'rss.txt',
+        package='zeit.content.cp.browser.blocks',
         layer=zeit.content.cp.testing.FeedServer)
     suite.addTest(rss_test)
     return suite
