@@ -9,86 +9,8 @@ import os
 import threading
 import transaction
 import zeit.connector.cache
-import zeit.connector.resource
 import zeit.connector.testing
 import zope.app.testing.functional
-import zope.security.proxy
-
-
-class ConnectorCache(zeit.connector.testing.ConnectorTest):
-
-    rid = 'http://xml.zeit.de/testing/cache_test'
-
-    def setUp(self):
-        super(ConnectorCache, self).setUp()
-        self.connector[self.rid] = zeit.connector.resource.Resource(
-            self.rid, None, 'text',
-            StringIO.StringIO('Pop.'),
-            contentType='text/plain')
-        list(self.connector.listCollection('http://xml.zeit.de/testing/'))
-
-    def test_deleting_non_existing_resource_does_not_create_cache_entry(self):
-        children = self.connector.child_name_cache[
-            'http://xml.zeit.de/testing/']
-        children.remove(self.rid)
-        del self.connector[self.rid]
-        self.assertEquals([], list(children))
-
-    def test_delete_updates_cache(self):
-        del self.connector[self.rid]
-        children = self.connector.child_name_cache[
-            'http://xml.zeit.de/testing/']
-        self.assertEquals([], list(children))
-
-    def test_cache_time_is_not_stored_on_dav(self):
-        key = ('cached-time', 'INTERNAL')
-        properties = self.connector[self.rid].properties
-        cache_time = properties[key]
-        self.connector.changeProperties(self.rid, {key: 'foo'})
-        properties = self.connector[self.rid].properties
-        self.assertNotEqual('foo', properties[key])
-        davres = self.connector._get_dav_resource(self.rid)
-        davres.update()
-        self.assertTrue(key not in davres.get_all_properties())
-        properties = self.connector[self.rid].properties
-        self.assertEqual(cache_time, properties[key])
-
-    def test_cache_time_is_not_stored_on_dav_with_add(self):
-        key = ('cached-time', 'INTERNAL')
-        self.connector.add(self.connector[self.rid])
-        davres = self.connector._get_dav_resource(self.rid)
-        davres.update()
-        self.assertTrue(key not in davres.get_all_properties())
-
-    def test_cache_handles_webdav_keys(self):
-        key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))
-        self.connector.changeProperties(self.rid, {key: 'baz'})
-
-    def test_cache_handles_security_proxied_webdav_keys(self):
-        key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))
-        key = zope.security.proxy.ProxyFactory(key)
-        self.connector.changeProperties(self.rid, {key: 'baz'})
-
-    def test_cache_does_not_store_security_proxied_webdav_keys(self):
-        key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))
-        key = zope.security.proxy.ProxyFactory(key)
-        self.connector.property_cache['id'] = {key: 'baz'}
-        self.assertTrue(isinstance(
-            self.connector.property_cache['id'].keys()[0],
-            zeit.connector.cache.WebDAVPropertyKey))
-
-    def test_inconsistent_child_names_do_not_yields_non_existing_objects(self):
-        self.assertEquals(
-            [(u'cache_test', u'http://xml.zeit.de/testing/cache_test')],
-            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
-        cache = self.connector.child_name_cache['http://xml.zeit.de/testing/']
-        self.assertEquals(
-            [u'http://xml.zeit.de/testing/cache_test'],
-            list(cache))
-        cache.add('http://xml.zeit.de/testing/cache_test_2')
-        self.assertEquals(
-            [(u'cache_test', u'http://xml.zeit.de/testing/cache_test')],
-            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
 
 
 class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):

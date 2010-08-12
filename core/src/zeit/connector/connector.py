@@ -200,10 +200,12 @@ class Connector(object):
 
     def _get_resource_properties(self, id):
         __traceback_info__ = (id, )
-        cache = self.property_cache
+        properties = None
         try:
-            properties = cache[id]
+            properties = self.property_cache[id]
         except KeyError:
+            pass
+        if properties is None:
             logger.debug("Getting properties from dav: %s" % id)
             davres = self._get_dav_resource(id)
             if davres._result is None:
@@ -232,8 +234,12 @@ class Connector(object):
             # slash (/)
             response_id = self._loc2id(urlparse.urljoin(
                 self._roots['default'], path))
-            cache[response_id] = response.get_all_properties()
-            cache[response_id][('cached-time', 'INTERNAL')] = now
+            properties = response.get_all_properties()
+            cached_properties = dict(cache.get(response_id, {}))
+            cached_properties.pop(('cached-time', 'INTERNAL'), None)
+            if cached_properties != properties:
+                properties[('cached-time', 'INTERNAL')] = now
+                cache[response_id] = properties
 
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
@@ -728,8 +734,21 @@ class Connector(object):
 
     def invalidate_cache(self, id):
         """invalidate cache (and refill)."""
-        self._remove_from_caches(id, [self.property_cache,
-                                      self.child_name_cache])
+        try:
+            # Loads properties from dav and stores when necessary.
+            davres = self._get_dav_resource(id)
+            if davres._result is None:
+                davres.update(depth=1)
+        except zeit.connector.dav.interfaces.DAVNotFoundError:
+            exists = False
+            self._remove_from_caches(id, [self.property_cache,
+                                          self.child_name_cache])
+        else:
+            exists = True
+            self._update_property_cache(davres)
+            self._update_child_id_cache(davres)
+
+        """
         try:
             res = self[id]
             if id != res.id:
@@ -743,6 +762,7 @@ class Connector(object):
             exists = False
         else:
             exists = True
+        """
 
         parent, name = self._id_splitlast(id)
         try:
@@ -756,8 +776,6 @@ class Connector(object):
                 children.insert(unicode(id))
             elif not exists and id in children:
                 children.remove(id)
-
-            # Update the parent's properties:
             try:
                 davres = self._get_dav_resource(parent)
                 if davres._result is None:

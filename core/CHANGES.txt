@@ -4,7 +4,9 @@ CHANGES
 1.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- When the cache is invalidated it only causes write request when there
+  actually was a change. Before cached data was thrown away and stored in any
+  case (#7797).
 
 
 1.21.0 (2010-07-06)

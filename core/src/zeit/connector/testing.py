@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from zope.testing import doctest
-import BTrees
 import StringIO
 import ZODB.blob
 import inspect

@@ -2,7 +2,21 @@ Invalidation events
 ===================
 
 Invalidation events notify the connector and its caches that a resource has
-changed [#functional]_.
+changed.
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+Get the connector:
+
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> connector
+<zeit.connector.zopeconnector.ZopeConnector object at 0x...>
+
 
 There are differen scenarios.
 
@@ -65,21 +79,6 @@ Events non existing resource do not harm:
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(
 ...     testing + 'not-there'))
 
+Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
-
-.. [#functional]
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Get the connector:
-
-    >>> import zope.component
-    >>> import zeit.connector.interfaces
-    >>> connector = zope.component.getUtility(
-    ...     zeit.connector.interfaces.IConnector)
-    >>> connector
-    <zeit.connector.zopeconnector.ZopeConnector object at 0x...>
-
