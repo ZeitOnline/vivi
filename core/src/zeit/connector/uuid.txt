@@ -108,3 +108,17 @@ Moving a resource does not create a new UUID:
 >>> res = connector['http://xml.zeit.de/testing/uuid4']
 >>> res.properties[UUID_PROPERTY] == uuid
 True
+
+
+Directories also get a UUID:
+
+>>> coll = zeit.connector.resource.Resource(
+...     'http://xml.zeit.de/testing/uuid5',
+...     'uuid5', 'somedirectorytype',
+...     StringIO.StringIO(''),
+...     contentType='httpd/unix-directory')
+>>> connector.add(coll)
+>>> coll = connector[coll.id]
+>>> print coll.properties[UUID_PROPERTY]
+{urn:uuid:...}
+
