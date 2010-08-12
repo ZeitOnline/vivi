@@ -1,12 +1,14 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.cp.browser.view
-import zeit.content.cp.browser.rule
-import zeit.content.cp.interfaces
-import zope.component
-import zope.viewlet.manager
 from zeit.content.cp.i18n import MessageFactory as _
+import zeit.content.cp.browser.rule
+import zeit.content.cp.browser.view
+import zeit.content.cp.interfaces
+import zope.app.pagetemplate
+import zope.component
+import zope.formlib.form
+import zope.viewlet.manager
 
 
 class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
