@@ -33,9 +33,12 @@ class APIConnection(object):
         params['token'] = self.write_token
         data = dict(method=command, params=params)
         post_data = urllib.urlencode(dict(json=simplejson.dumps(data)))
+        log.info("Posting %s", command)
+        log.debug("Posting %s(%s)", command, data)
         request = urllib2.urlopen(self.write_url, post_data)
         response = self.decode_broken_brightcove_json(request.read())
         __traceback_info__ = (response, )
+        log.debug("response info %s", response)
         error = response.get('error')
         if error:
             raise RuntimeError(error)
