@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Aug 10 13:06:45 2010\n"
+"POT-Creation-Date: Mon Aug 16 14:52:11 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -96,7 +96,7 @@ msgstr ""
 #: zeit/calendar/browser/event.py:73
 #: zeit/cms/browser/form.py:207
 #: zeit/cms/repository/browser/file.py:109
-#: zeit/content/cp/browser/blocks/block.py:65
+#: zeit/content/cp/browser/blocks/block.py:67
 #: zeit/content/quiz/browser/answer.py:44
 #: zeit/content/quiz/browser/question.py:42
 #: zeit/content/quiz/browser/quiz.py:80
@@ -115,14 +115,14 @@ msgstr ""
 msgid "Edit brightcove videos"
 msgstr ""
 
-#: zeit/brightcove/content.py:284
+#: zeit/brightcove/content.py:314
 #: zeit/brightcove/interfaces.py:219
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:22
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:22
 msgid "Video"
 msgstr ""
 
-#: zeit/brightcove/content.py:324
+#: zeit/brightcove/content.py:354
 msgid "Playlist"
 msgstr ""
 
@@ -297,6 +297,7 @@ msgstr ""
 #: zeit/cms/browser/main_template.pt:245
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:15
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -996,7 +997,11 @@ msgstr ""
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:406
+#: zeit/cms/content/interfaces.py:382
+msgid "URI to the access counting details"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:411
 msgid "Last semantic change"
 msgstr ""
 
@@ -1812,6 +1817,10 @@ msgstr ""
 msgid "An error occurred."
 msgstr ""
 
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:15
+msgid "Range: ${today}/${lifetime}"
+msgstr ""
+
 #: zeit/content/cp/browser/blocks/layout.teaser.edit-contents.pt:1
 msgid "Edit teaser list"
 msgstr ""
@@ -1833,7 +1842,7 @@ msgstr ""
 msgid "Save teasers as group"
 msgstr ""
 
-#: zeit/content/cp/browser/blocks/teaser.py:212
+#: zeit/content/cp/browser/blocks/teaser.py:219
 msgid "^ Left | Right v"
 msgstr ""
 

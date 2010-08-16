@@ -14,14 +14,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Aug 10 13:06:45 2010\n"
-"PO-Revision-Date: 2010-08-10 13:29+0100\n"
-"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
+"POT-Creation-Date: Mon Aug 16 14:52:11 2010\n"
+"PO-Revision-Date: 2010-08-16 14:54+0100\n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: zeit/addcentral/interfaces.py:13
@@ -95,7 +95,7 @@ msgstr "Teaser-Elemente"
 #: zeit/calendar/browser/event.py:73
 #: zeit/cms/browser/form.py:207
 #: zeit/cms/repository/browser/file.py:109
-#: zeit/content/cp/browser/blocks/block.py:65
+#: zeit/content/cp/browser/blocks/block.py:67
 #: zeit/content/quiz/browser/answer.py:44
 #: zeit/content/quiz/browser/question.py:42
 #: zeit/content/quiz/browser/quiz.py:80
@@ -114,13 +114,13 @@ msgstr "Playlist anzeigen"
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
 
-#: zeit/brightcove/content.py:284
+#: zeit/brightcove/content.py:314
 #: zeit/brightcove/interfaces.py:219
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:22
 msgid "Video"
 msgstr "Video"
 
-#: zeit/brightcove/content.py:324
+#: zeit/brightcove/content.py:354
 msgid "Playlist"
 msgstr "Playlist"
 
@@ -293,6 +293,7 @@ msgstr "Termin erledigen"
 #: zeit/cms/browser/main_template.pt:245
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:15
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -989,7 +990,11 @@ msgstr "Gesamttreffer"
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr "Gibt an wie oft die Seite insgesamt angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:406
+#: zeit/cms/content/interfaces.py:382
+msgid "URI to the access counting details"
+msgstr "URI to the access counting details"
+
+#: zeit/cms/content/interfaces.py:411
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
@@ -1797,6 +1802,10 @@ msgstr "Ziehen Sie Inhalte hierher um einen neuen Teaserblock zu erzeugen."
 msgid "An error occurred."
 msgstr "Ein Fehler ist aufgetreten."
 
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:15
+msgid "Range: ${today}/${lifetime}"
+msgstr "Rw: ${today}/${lifetime}"
+
 #: zeit/content/cp/browser/blocks/layout.teaser.edit-contents.pt:1
 msgid "Edit teaser list"
 msgstr "Teaser-Liste bearbeiten"
@@ -1806,9 +1815,8 @@ msgid "Edit in place"
 msgstr "Im CPE bearbeiten"
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:26
-#, fuzzy
 msgid "Open in new window"
-msgstr "In neuem Fenster bearbeiten"
+msgstr "In neuem Fenster öffnen"
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:49
 msgid "To add content drop it here."
@@ -1819,7 +1827,7 @@ msgstr "Ziehen Sie Inhalte hierher um einen Teaser hinzuzufügen."
 msgid "Save teasers as group"
 msgstr "Teaser als Teasergruppe speichern"
 
-#: zeit/content/cp/browser/blocks/teaser.py:212
+#: zeit/content/cp/browser/blocks/teaser.py:219
 msgid "^ Left | Right v"
 msgstr "↑ Links | Rechts ↓"
 
@@ -3012,221 +3020,150 @@ msgstr "mit Info"
 
 #~ msgid "Embedded image gallery"
 #~ msgstr "Eingebettete Bildergalerie"
-
 #~ msgid "Automatically syndicate into"
 #~ msgstr "Automatisch syndizieren nach"
-
 #~ msgid "automatically-syndicate-description"
 #~ msgstr "Channel, in die das Objekt automatisch syndiziert wird."
-
 #~ msgid "The object was automatically syndicated into"
 #~ msgstr "Das Objekt wurde automatisch syndiziert nach"
-
 #~ msgid "The given id is invalid."
 #~ msgstr "Die angegebene Id ist nicht gültig."
-
 #~ msgid "CAP context"
 #~ msgstr "CAP-Context"
-
 #~ msgid "± Zoom image area"
 #~ msgstr "± Bild-Breich zoomen"
-
 #~ msgid "Development"
 #~ msgstr "Relaunch"
-
 #~ msgid "Sub type"
 #~ msgstr "Sub-Typ"
-
 #~ msgid "Feed"
 #~ msgstr "Channel"
-
 #~ msgid "Box Most Read"
 #~ msgstr "Box „Meistgelesene Artikel“"
-
 #~ msgid "Center-Page"
 #~ msgstr "Center-Page"
-
 #~ msgid "Edit content"
 #~ msgstr "Bearbeiten"
-
 #~ msgid "Centerpage"
 #~ msgstr "Center-Page"
-
 #~ msgid "Label"
 #~ msgstr "Label"
-
 #~ msgid "Style"
 #~ msgstr "Stil"
-
 #~ msgid "Lexical resource query"
 #~ msgstr "Lexical resource query"
-
 #~ msgid "Left column"
 #~ msgstr "Linke Spalte"
-
 #~ msgid "No automatic metadata update"
 #~ msgstr "Keine automatische Aktualisierung der Metadaten"
-
 #~ msgid ""
 #~ "When this object is checked in, its metata will not automatically updated "
 #~ "in the selected channels."
 #~ msgstr ""
 #~ "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels "
 #~ "nicht automatisch aktualisiert."
-
 #~ msgid "Homepage"
 #~ msgstr "Homepage"
-
 #~ msgid "Zeit CMS Search Preferences"
 #~ msgstr "Benutzereinstellungen zur Suche"
-
 #~ msgid "Year/Vol."
 #~ msgstr "Jahr/Ausg."
-
 #~ msgid "search-status-not-corrected"
 #~ msgstr "Muss korrigiert werden"
-
 #~ msgid "search-status-no-images-added"
 #~ msgstr "Braucht Bilder"
-
 #~ msgid "The search had no results."
 #~ msgstr "Die Suche lieferte keine Ergebnisse."
-
 #~ msgid "workflow-state"
 #~ msgstr "Status"
-
 #~ msgid "Sort order"
 #~ msgstr "Sortierung"
-
 #~ msgid "Extended ..."
 #~ msgstr "Erweitert …"
-
 #~ msgid "Extended"
 #~ msgstr "Erweitert"
-
 #~ msgid "Hide ..."
 #~ msgstr "Verstecken …"
-
 #~ msgid "Unique Id"
 #~ msgstr "Eindeutige ID"
-
 #~ msgid "Realive weight of metadata freshness."
 #~ msgstr "Realive weight of metadata freshness."
-
 #~ msgid "Relevance of result"
 #~ msgstr "Relevanz des Ergebnisses"
-
 #~ msgid "Index teaser title"
 #~ msgstr "Kurzteaser-Titel"
-
 #~ msgid "Index teaser text"
 #~ msgstr "Kurzteaser-Text"
-
 #~ msgid "Homepage teaser title"
 #~ msgstr "Homepageteaser-Titel"
-
 #~ msgid "Homepage teaser text"
 #~ msgstr "Homepageteaser-Text"
-
 #~ msgid "Assets and related"
 #~ msgstr "Assets und Related"
-
 #~ msgid "Broken object"
 #~ msgstr "Broken object"
-
 #~ msgid "Add Site Management Folder"
 #~ msgstr "Add Site Management Folder"
-
 #~ msgid "Registrations"
 #~ msgstr "Registrations"
-
 #~ msgid "Registration"
 #~ msgstr "Registration"
-
 #~ msgid "Site-Management Folder"
 #~ msgstr "Site-Management Folder"
-
 #~ msgid "Make a site"
 #~ msgstr "Make a site"
-
 #~ msgid "Manage Site"
 #~ msgstr "Manage Site"
-
 #~ msgid "Find"
 #~ msgstr "Suchen"
-
 #~ msgid "Configure"
 #~ msgstr "Configure"
-
 #~ msgid "Error Reporting Utility for Logging Errors"
 #~ msgstr "Error Reporting Utility for Logging Errors"
-
 #~ msgid "Error Logging Utility"
 #~ msgstr "Error Logging Utility"
-
 #~ msgid "Errors"
 #~ msgstr "Fehler"
-
 #~ msgid "Database Schemas"
 #~ msgstr "Database Schemas"
-
 #~ msgid "Translate"
 #~ msgstr "Translate"
-
 #~ msgid "Import/Export"
 #~ msgstr "Import/Export"
-
 #~ msgid "Synchronize"
 #~ msgstr "Synchronisieren"
-
 #~ msgid "Translation Domain"
 #~ msgstr "Translation Domain"
-
 #~ msgid "A Persistent Translation Domain"
 #~ msgstr "A Persistent Translation Domain"
-
 #~ msgid "Permission"
 #~ msgstr "Permission"
-
 #~ msgid "A Security Permission"
 #~ msgstr "A Security Permission"
-
 #~ msgid "Edit Permission"
 #~ msgstr "Edit Permission"
-
 #~ msgid "Add Permission"
 #~ msgstr "Add Permission"
-
 #~ msgid "Stores Annotations for Principals"
 #~ msgstr "Stores Annotations for Principals"
-
 #~ msgid "Principal Annotation Utility"
 #~ msgstr "Principal Annotation Utility"
-
 #~ msgid "zope.app.dublincore.view-permission"
 #~ msgstr "zope.app.dublincore.view-permission"
-
 #~ msgid "zope.app.dublincore.change-permission"
 #~ msgstr "zope.app.dublincore.change-permission"
-
 #~ msgid "The media type (one of audio or video)"
 #~ msgstr "Medientype (audio oder video)"
-
 #~ msgid "The id of the audio/video."
 #~ msgstr "Video/Audio-Id"
-
 #~ msgid "The date until the audio/video is valid."
 #~ msgstr "Gültigkeitsdatum"
-
 #~ msgid "The format of the audio/video."
 #~ msgstr "Format"
-
 #~ msgid "The title of this feed."
 #~ msgstr "Feed-Titel"
-
 #~ msgid "The timestamp when this feed was last fetched."
 #~ msgstr "The timestamp when this feed was last fetched."
-
 #~ msgid "The corresponding Feed object."
 #~ msgstr "The corresponding Feed object."
 
@@ -3241,21 +3178,16 @@ msgstr "mit Info"
 #, fuzzy
 #~ msgid "Fetch image from"
 #~ msgstr "Autopilot-Teaser beziehen von"
-
 #~ msgid "Edit center page"
 #~ msgstr "Centerpage bearbeiten"
-
 #~ msgid "Remove"
 #~ msgstr "Entfernen"
-
 #~ msgid "${amount} Entries"
 #~ msgstr "${amount} Einträge"
-
 #~ msgid "Total hits between first and last count."
 #~ msgstr "Gesamttreffer zwischen der ersten und letzten Zählung."
-
 #~ msgid "Date the first hit was counted on"
 #~ msgstr "Datum wann der erste Treffer gezählt wurde"
-
 #~ msgid "Date the last hit was counted on"
 #~ msgstr "Datum wann der letzte treffer gezählt wurde"
+
