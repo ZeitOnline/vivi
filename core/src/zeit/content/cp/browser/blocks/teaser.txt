@@ -456,8 +456,8 @@ LinkNotFoundError
 
 .. [#fill-dav-with-content] Create a few test objects to play with:
 
-    >>> import zeit.content.cp.browser.blocks.tests
-    >>> zeit.content.cp.browser.blocks.tests.create_content(getRootFolder())
+    >>> import zeit.content.cp.browser.blocks.testing
+    >>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
 
 .. [#setup-layout-test-needs-real-content-type-with-image]:
 

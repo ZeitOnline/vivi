@@ -20,8 +20,8 @@ Create a centerpage:
 
 Create a teaserblock with a few teasers:
 
->>> import zeit.content.cp.browser.blocks.tests
->>> zeit.content.cp.browser.blocks.tests.create_content(getRootFolder())
+>>> import zeit.content.cp.browser.blocks.testing
+>>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
 >>> browser.open(
 ...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c3')
 >>> import cjson

@@ -3,8 +3,8 @@ Countings
 
 Setup:
 
->>> import zeit.content.cp.browser.blocks.tests
->>> zeit.content.cp.browser.blocks.tests.create_content(getRootFolder())
+>>> import zeit.content.cp.browser.blocks.testing
+>>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
 >>> import z3c.etestbrowser.testing
 >>> import zeit.content.cp.browser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
