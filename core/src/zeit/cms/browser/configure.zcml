@@ -387,6 +387,7 @@
     />
 
   <adapter factory=".preview.preview_url" />
+  <adapter factory=".preview.preview_url_for_unique_id" />
 
   <adapter
     factory=".listing.listRepresentation_to_Lockable"

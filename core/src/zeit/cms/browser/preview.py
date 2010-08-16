@@ -11,6 +11,8 @@ import zope.app.appsetup.product
 def prefixed_url(prefix, unique_id):
     """Given a prefix and a unique id, return preview URL.
     """
+    if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+        raise ValueError("UniqueId doesn't start with correct prefix")
     path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE):]
     cms_config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.cms')
@@ -25,7 +27,18 @@ def prefixed_url(prefix, unique_id):
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent, basestring)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewURL)
 def preview_url(content, preview_type):
-    return prefixed_url(preview_type + '-prefix', content.uniqueId)
+    try:
+        return prefixed_url(preview_type + '-prefix', content.uniqueId)
+    except ValueError:
+        pass
+
+@zope.component.adapter(basestring, basestring)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewURL)
+def preview_url_for_unique_id(uniqueId, preview_type):
+    try:
+        return prefixed_url(preview_type + '-prefix', uniqueId)
+    except ValueError:
+        pass
 
 
 class PreviewBase(zeit.cms.browser.view.Base):
