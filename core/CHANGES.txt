@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.41.1 (unreleased)
+0.42.0 (2010-08-16)
 -------------------
 
 - Reichweite im CPE anzeigen (#7560).
