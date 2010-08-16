@@ -2,7 +2,7 @@ zeit.brightcove changes
 =======================
 
 
-0.7.1 (unreleased)
+0.8.0 (2010-08-16)
 ------------------
 
 - New layout for video-form 
