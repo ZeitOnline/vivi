@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.46.1 (unreleased)
+1.47.0 (2010-08-16)
 -------------------
 
 - Add detail url to access counter (#7860).
