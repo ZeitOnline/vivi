@@ -149,7 +149,9 @@ class SearchResultBase(JSONView):
         return get_favorited_css_class(self.get_favorited(result))
 
     def get_preview_url(self, result):
-        return zeit.cms.browser.interfaces.IPreviewURL(result, 'preview')
+        return zope.component.queryMultiAdapter(
+            (self.get_uniqueId(result), 'preview'),
+            zeit.cms.browser.interfaces.IPreviewURL)
 
     def get_publication_status(self, result):
         r = self.resources

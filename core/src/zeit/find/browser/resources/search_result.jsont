@@ -47,9 +47,11 @@
       CMS
     </a>
   </div>
-  <div class="preview object-link">
-    <a target="_blank" href="{preview_url}">Vorschau</a>
-  </div>
+  {.section preview_url}
+    <div class="preview object-link">
+      <a target="_blank" href="{@}">Vorschau</a>
+    </div>
+  {.end}
   <div class="related_info"></div>
 </div>
 {.end}

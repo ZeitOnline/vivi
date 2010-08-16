@@ -47,6 +47,15 @@ class TestSearchResult(unittest.TestCase):
     def test_get_range_url_should_return_hash_for_non_existing_result(self):
         self.assertEqual('#', self.search.get_range_url(self.result))
 
+    def test_preview_url_should_call_multiadapter(self):
+        import zeit.cms.browser.interfaces
+        with mock.patch('zope.component.queryMultiAdapter') as qma:
+            qma.return_value = mock.sentinel.url
+            self.assertEqual(mock.sentinel.url,
+                             self.search.get_preview_url(self.result))
+            qma.assert_called_with(
+                (mock.sentinel.uniqueId, 'preview'),
+                zeit.cms.browser.interfaces.IPreviewURL)
 
 class TestFavorites(unittest.TestCase):
 
