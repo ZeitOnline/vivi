@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.21.1 (unreleased)
+1.22.0 (2010-08-16)
 -------------------
 
 - When the cache is invalidated it only causes write request when there
