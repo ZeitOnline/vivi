@@ -4,7 +4,7 @@
   class view/css_class">
 
   <img tal:condition="view/image"
-       tal:attributes="src view/image/@@absolute_url" />
+       tal:attributes="src view/image" />
 
   <div class="teaser-list"
        tal:repeat="teasers view/columns">

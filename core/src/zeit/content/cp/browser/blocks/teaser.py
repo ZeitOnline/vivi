@@ -79,6 +79,9 @@ class AutoPilotEditProperties(EditProperties):
             'referenced_cp', 'autopilot', 'hide_dupes')
 
 
+
+
+
 class Display(zeit.cms.browser.view.Base):
 
     @property
@@ -124,6 +127,10 @@ class Display(zeit.cms.browser.view.Base):
             return
         images = zeit.content.image.interfaces.IImages(content, None)
         if images is None:
+            preview = zope.component.queryMultiAdapter(
+                (content, self.request), name='preview')
+            if preview:
+                return self.url(content, '@@preview')
             return
         if not images.images:
             return
@@ -131,9 +138,9 @@ class Display(zeit.cms.browser.view.Base):
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):
             for name in image:
                 if layout.image_pattern in name:
-                    return image[name]
+                    return self.url(image[name])
         else:
-            return image
+            return self.url(image)
 
 
 class AutoPilotDisplay(Display):

@@ -6,6 +6,8 @@ zeit.content.cp changes
 
 - Reichweite im CPE anzeigen (#7560).
 
+- Für Teaserbilder wird als Fallback jetzt @@preview  verwendet (#7798).
+
 
 0.41.0 (2010-08-09)
 -------------------
