@@ -741,29 +741,19 @@ class Connector(object):
                 davres.update(depth=1)
         except zeit.connector.dav.interfaces.DAVNotFoundError:
             exists = False
-            self._remove_from_caches(id, [self.property_cache,
-                                          self.child_name_cache])
+        except zeit.connector.dav.interfaces.DAVRedirectError, e:
+            exists = False
+            new_location = e.response.getheader('location')
+            if new_location:
+                self._invalidate_cache(self._loc2id(new_location))
         else:
             exists = True
+        if exists:
             self._update_property_cache(davres)
             self._update_child_id_cache(davres)
-
-        """
-        try:
-            res = self[id]
-            if id != res.id:
-                # This happens when the cache is stale and there are entries
-                # for "foo/" *and* "foo" in the cache. We remove (for instance)
-                # "foo/" from the cache, and get "foo" with self['foo/'].
-                self._remove_from_caches(res.id, [self.property_cache,
-                                                  self.child_name_cache])
-                raise KeyError
-        except KeyError:
-            exists = False
         else:
-            exists = True
-        """
-
+            self._remove_from_caches(id, [self.property_cache,
+                                          self.child_name_cache])
         parent, name = self._id_splitlast(id)
         try:
             children = self.child_name_cache[parent]

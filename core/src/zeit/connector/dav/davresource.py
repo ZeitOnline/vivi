@@ -367,14 +367,9 @@ class DAVResource(object):
             self.set_connection(conn)
         else:
             self.invalidate()  # just to be sure
-        try:
-            self._result = self._propfind(depth=depth)
-            v = self.get_property_value(('resourcetype', 'DAV:'))
-            self.collection = (v is not None) and (v.find('collection') >= 0)
-        except zeit.connector.dav.interfaces.DAVError, ex:
-            if ex.args[0] == 404:
-                raise zeit.connector.dav.interfaces.DAVNotFoundError(ex.args)
-            raise
+        self._result = self._propfind(depth=depth)
+        v = self.get_property_value(('resourcetype', 'DAV:'))
+        self.collection = (v is not None) and (v.find('collection') >= 0)
         return self._result
 
     def is_connected ( self ):
@@ -596,9 +591,6 @@ class DAVResource(object):
         __traceback_info__ = (self.url,)
         davres = self._conn.propfind(
             self.url, body=PROPFIND_BODY, depth=depth, extra_hdrs=hdrs)
-        if davres.status >= 300:
-            raise zeit.connector.dav.interfaces.DAVError(
-                davres.status, davres.reason, davres)
         return davres
 
     def _proppatch ( self, body, locktoken ):

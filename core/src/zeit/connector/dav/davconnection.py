@@ -12,6 +12,17 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
     (as opposed to resource oriented)
     """
 
+    error_map = {
+        httplib.LOCKED:
+            zeit.connector.dav.interfaces.DAVLockedError,
+        httplib.PRECONDITION_FAILED:
+            zeit.connector.dav.interfaces.PreconditionFailedError,
+        httplib.MOVED_PERMANENTLY:
+            zeit.connector.dav.interfaces.DAVRedirectError,
+        httplib.NOT_FOUND:
+            zeit.connector.dav.interfaces.DAVNotFoundError,
+    }
+
     def lock(self, url, owner=None, depth=0, timeout=None, headers={}):
         r = self.get_result(
             'lock', (httplib.OK,),
@@ -31,7 +42,7 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             tries += 1
             try:
                 return self.get_result(
-                    'propfind', None,  # Still handled by davresource
+                    'propfind', (httplib.MULTI_STATUS,),
                     *args, **kwargs)
             except zeit.connector.dav.interfaces.DavXmlParseError, e:
                 last_error = e.args[0].last_error
@@ -92,11 +103,8 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         if accept_status is None or response.status in accept_status:
             return zeit.connector.dav.davresource.DAVResult(response)
         body = response.read()
-        if response.status == httplib.LOCKED:
-            raise zeit.connector.dav.interfaces.DAVLockedError(
-                response.status, response.reason, url, body)
-        elif response.status == httplib.PRECONDITION_FAILED:
-            raise zeit.connector.dav.interfaces.PreconditionFailedError(
-                response.status, response.reason, url, body)
-        raise httplib.HTTPException(
-            response.status, response.reason, url, body)
+        exception = self.error_map.get(response.status)
+        if exception is None:
+            raise httplib.HTTPException(
+                response.status, response.reason, url, body, response)
+        raise exception(response.status, response.reason, url, body, response)

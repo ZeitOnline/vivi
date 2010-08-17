@@ -148,7 +148,7 @@ Traceback (most recent call last):
     ...
 DAVLockedError: (423, 'Locked',
     u'http://.../cms/work/testing/edge2.3',
-    '<!DOCTYPE...')
+    '<!DOCTYPE...
 
 >>> connector.unlock(res.id, token)
 'opaquelocktoken:...'

@@ -247,3 +247,30 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         self.assertEqual([], jar._registered_objects)
         self.connector.invalidate_cache(r.id)
         self.assertEqual([], jar._registered_objects)
+
+    def test_invalidation_on_folder_with_non_folder_id_should_not_fail(self):
+        self.connector.invalidate_cache('http://xml.zeit.de/testing')
+
+    def test_invalidation_with_redirect_should_clear_old_location_cache(self):
+        del self.connector.property_cache['http://xml.zeit.de/testing/']
+        self.connector.property_cache['http://xml.zeit.de/testing'] = {
+            ('foo', 'bar'): 'baz'}
+        self.connector.child_name_cache['http://xml.zeit.de/testing'] = [
+            'a', 'b', 'c']
+        self.connector.invalidate_cache('http://xml.zeit.de/testing')
+        self.assertEqual(
+            None,
+            self.connector.property_cache.get(
+                'http://xml.zeit.de/testing'))
+        self.assertEqual(
+            'httpd/unix-directory',
+            self.connector.property_cache[
+                'http://xml.zeit.de/testing/'][('getcontenttype', 'DAV:')])
+        self.assertEqual(
+            None,
+            self.connector.child_name_cache.get(
+                'http://xml.zeit.de/testing'))
+        self.assertEqual(
+            [self.rid],
+            list(self.connector.child_name_cache.get(
+                'http://xml.zeit.de/testing/')))

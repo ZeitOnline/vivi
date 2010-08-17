@@ -11,6 +11,11 @@ class DavXmlParseError(Exception):
 class DAVError(Exception):
     """Generic DAV exception"""
 
+    def __init__(self, *args):
+        if len(args) == 5:
+            self.status, self.reason, self.url, self.body, self.response = (
+                args)
+        super(DAVError, self).__init__(*args)
 
 class DAVNoFileError (DAVError):
     """Exception raised if a DAVFile specific method is invoked on a collection.
@@ -26,8 +31,13 @@ class DAVNotFoundError(DAVError):
     """Exception raised if a resource or a property was not found.
     """
 
-class DAVLockedError (DAVError):
+class DAVLockedError(DAVError):
     """Raised when modifying or locking a locked resource."""
+
+
+class DAVRedirectError(DAVError):
+    """Raised when a resource was moved."""
+
 
 
 class PreconditionFailedError(httplib.HTTPException):
