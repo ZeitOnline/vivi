@@ -147,8 +147,8 @@ zeit.imp.Imp = Class.extend({
         }
 
         this.image_server_dimensions = new MochiKit.DOM.Dimensions(
-            Math.floor(this.original_dimensions.w * grid_zoom),
-            Math.floor(this.original_dimensions.h * grid_zoom));
+            Math.max(1, Math.floor(this.original_dimensions.w * grid_zoom)),
+            Math.max(1, Math.floor(this.original_dimensions.h * grid_zoom)));
 
         if (this._zoom_deferred) {
             this._zoom_deferred.cancel();

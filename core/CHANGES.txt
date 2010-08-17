@@ -4,7 +4,7 @@ zeit.imp changes
 0.12.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Do no longer try to create 0x0 images.
 
 
 0.12.0 (2010-08-09)
