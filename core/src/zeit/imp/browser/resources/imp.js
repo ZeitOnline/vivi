@@ -639,11 +639,11 @@ zeit.imp.ImageFilter = Class.extend({
 
     to_filter: function(value) {
         if (value < 0) {
-            // scale to [0;1]
-            return (value + 100) / 100;
+            // scale to [0.75;1]
+            return (value + 100) / 750 + 0.75
         } else {
-            // scale to ]1;11]
-            return value / 10 + 1;
+            // scale to ]1;2,25]
+            return value / 80 + 1
         }
     },
 

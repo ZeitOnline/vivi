@@ -369,11 +369,11 @@ class FilterTests(Selenium):
                 'window.document.imp_color_filter.to_filter(%s)' % value,
                 str(filter))
 
-        verify_mappers(0, -100, 0)
-        verify_mappers(250, -75, 0.25)
+        verify_mappers(0, -100, 0.75)
+        verify_mappers(375, -62.5, 0.8)
         verify_mappers(1000, 0, 1)
-        verify_mappers(1750, 75, 8.5)
-        verify_mappers(2000, 100, 11)
+        verify_mappers(1800, 80, 2)
+        verify_mappers(2000, 100, 2.25)
 
     def test_brightness_slider(self):
         self.verify_slider('brightness')
@@ -392,12 +392,12 @@ class FilterTests(Selenium):
         selector = 'css=*[id="filter.%s"] .uislider' % name
         s.waitForElementPresent(selector)
 
-        # Clicking 0 yields 0 as value and changes the image url
+        # Clicking 0 yields 0.75 as value and changes the image url
         image_url = s.getEval('window.document.imp.image.src')
         s.clickAt(selector, '0')
         s.verifyValue('filter.%s.input' % name, '-100')
         s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
-                     '0');
+                     '0.75');
         s.waitForEval(
             "window.document.imp.image.src == '%s'" % image_url, 'false')
 
@@ -415,14 +415,6 @@ class FilterTests(Selenium):
         s.click('reset')
         s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
                      '1');
-
-    def test_slider_change_changes_crop_args(self):
-        s = self.selenium
-        selector = 'css=*[id="filter.color"] .uislider'
-        s.waitForElementPresent(selector)
-        s.clickAt(selector, '0')
-        s.pause(10)
-        s.verifyEval('window.document.imp.crop_arguments["filter.color"]', '0')
 
 
 class ContentZoomTest(Selenium):
