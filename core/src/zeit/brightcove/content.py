@@ -113,15 +113,15 @@ class mapped_datetime(mapped):
 
 
 class mapped_product(mapped):
-    
+
     def _get_from_dict(self, value):
-        if (value['customFields']['produkt-id'] is None and 
+        if (value['customFields']['produkt-id'] is None and
              value['referenceId'] is not None):
              return 'Reuters'
         for key in self.path:
             value = value[key]
         return value
-    
+
 class BCContent(object):
 
     zope.interface.implements(zeit.brightcove.interfaces.IBCContent)
