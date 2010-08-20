@@ -1,19 +1,13 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import copy
 import pkg_resources
-import pkg_resources
-import random
 import simplejson
-import threading
 import transaction
-import urllib2
 import urlparse
-import zeit.brightcove.connection
 import zeit.cms.testing
 import zeit.solr.testing
-import zope.app.testing.functional
+import zope.component
 
 
 VIDEO_1234 = {

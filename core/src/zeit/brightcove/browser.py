@@ -9,7 +9,6 @@ import zeit.cms.browser.form
 import zope.formlib.form
 import zope.site.hooks
 import zope.traversing.browser.absoluteurl
-import zope.traversing.browser.interfaces
 
 
 class VideoEditForm(zeit.cms.browser.form.EditForm):

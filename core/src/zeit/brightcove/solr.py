@@ -5,7 +5,6 @@ import grokcore.component
 import lxml.objectify
 import zeit.brightcove.interfaces
 import zeit.solr.interfaces
-import zeit.solr.query
 import zope.component
 import zope.lifecycleevent.interfaces
 

@@ -6,9 +6,7 @@ from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 import time
 import transaction
 import zeit.brightcove.interfaces
-import zeit.brightcove.repository
 import zeit.brightcove.testing
-import zeit.cms.interfaces
 import zope.lifecycleevent
 
 
