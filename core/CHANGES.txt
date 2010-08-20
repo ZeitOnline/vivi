@@ -9,6 +9,10 @@ zeit.imp changes
 - Sliders have a much smaller zone of action to allow finer control over the
   result (#4969).
 
+- The mask was usually 1 pixel too wide (#4971).
+
+- When a mask is selected, the image is fit into it (#5549).
+
 
 0.12.0 (2010-08-09)
 +++++++++++++++++++

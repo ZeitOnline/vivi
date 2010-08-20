@@ -32,32 +32,77 @@ imp_layer = zeit.cms.testing.ZCMLLayer(
 
 class TestLayerMask(unittest.TestCase):
 
-    def test_mask(self):
-        # Create a 20x30 mask in an 150x100 image
-        mask = zeit.imp.mask.Mask((150, 100), (20, 30))
-        mask_data = mask.open('r').read()
-        expected_data = pkg_resources.resource_string(
-            __name__, 'test_mask.png')
-        self.assertEquals(expected_data, mask_data,
-                          "Mask doesn't match expected mask.")
+    mask_colors = {(200, 200, 200, 220): 'x',
+                   (255, 0, 0, 0): ' ',
+                   (0, 0, 0, 255): '#'}
 
-    def test_mask_with_border(self):
-        # Create a 20x30 mask in an 150x100 image
-        mask = zeit.imp.mask.Mask((150, 100), (20, 30), border=(0, 0, 0))
-        mask_data = mask.open('r').read()
-        expected_data = pkg_resources.resource_string(
-            __name__, 'test_mask_border.png')
-        self.assertEquals(expected_data, mask_data,
-                          "Mask doesn't match expected mask.")
+    def assert_mask(self, expected, mask):
+        mask_image = PIL.Image.open(mask.open('r'))
+        width, height = mask_image.size
+        got = []
+        for y in range(height):
+            line = []
+            for x in range(width):
+                line.append(self.mask_colors[mask_image.getpixel((x, y))])
+            got.append(''.join(line))
+        error_message = (
+            'The computed mask did not match the expected.\n'
+            'Expected:\n%s\n\nGot:\n%s' % ('\n'.join(expected),
+                                           '\n'.join(got)))
+        self.assertEqual(expected, got, error_message)
 
-    def test_mask_color(self):
+
+    def test_mask_should_have_correct_size(self):
+        # Create a 20x30 mask in an 150x100 image
+        mask = zeit.imp.mask.Mask((10, 7), (6, 3))
+        expected = ['xxxxxxxxxx',
+                    'xxxxxxxxxx',
+                    'xx      xx',
+                    'xx      xx',
+                    'xx      xx',
+                    'xxxxxxxxxx',
+                    'xxxxxxxxxx']
+        self.assert_mask(expected, mask)
+
+
+    def test_border_should_be_inside_given_mask_size(self):
+        mask = zeit.imp.mask.Mask((20, 20), (10, 8), border=(0, 0, 0))
+        expected = ['xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxx##########xxxxx',
+                    'xxxxx#        #xxxxx',
+                    'xxxxx#        #xxxxx',
+                    'xxxxx#        #xxxxx',
+                    'xxxxx#        #xxxxx',
+                    'xxxxx#        #xxxxx',
+                    'xxxxx#        #xxxxx',
+                    'xxxxx##########xxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx',
+                    'xxxxxxxxxxxxxxxxxxxx']
+        self.assert_mask(expected, mask)
+
+    def test_given_border_colour_should_be_used(self):
         mask = zeit.imp.mask.Mask((100, 100), (100, 100), border=(255, 0, 0))
         image = PIL.Image.open(mask.open('r'))
         self.assertEquals((255, 0, 0, 255), image.getpixel((0, 0)))
 
-    def test_rect_box(self):
+    def test_rect_box_should_match_given_mask_size(self):
         mask = zeit.imp.mask.Mask((150, 100), (20, 30))
-        self.assertEquals(((65, 35), (85, 65)), mask._get_rect_box())
+        (x1, y1), (x2, y2) = mask._get_rect_box()
+        # There is a rather missleading comment in the PIL documentation which
+        # indicates that we need to pass 1px less than the expected size:
+        # "Note that the second coordinate pair defines a point just outside
+        # the rectangle, also when the rectangle is not filled."
+        self.assertEqual(19, x2 - x1)
+        self.assertEqual(29, y2 - y1)
 
 
 class TestSources(zope.app.testing.functional.BrowserTestCase):

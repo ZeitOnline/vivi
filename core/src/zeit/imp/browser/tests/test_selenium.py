@@ -83,21 +83,21 @@ class SeleniumBasicTests(Selenium):
 
         #s.comment('Simple dimensions')
         s.runScript(
-            'window.document.imp.parse_mask_string("500x200/500/200")');
+            'window.document.imp.set_mask("500x200/500/200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.name', '500x200')
 
         #s.comment('The dimensions can be variable, indicated by a ?')
         s.runScript(
-            'window.document.imp.parse_mask_string("art-200/?500/200")');
+            'window.document.imp.set_mask("art-200/?500/200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'false')
         s.verifyEval('window.document.imp.name', 'art-200')
 
-        s.runScript('window.document.imp.parse_mask_string("foo/?500/?200")');
+        s.runScript('window.document.imp.set_mask("foo/?500/?200")');
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
@@ -162,8 +162,8 @@ class SeleniumCropTests(Selenium):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
-        s.dragAndDrop('id=imp-mask', '+1000,+1000')
         self.click_label(u"450×200")
+        s.clickAt('id=imp-zoom-slider', '1,0')
         s.click('crop')
         s.verifyAlert('Das Bild ist nicht*')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
@@ -266,6 +266,32 @@ class SeleniumMaskTests(Selenium):
             'window.document.imp.mask_dimensions.h %s' % expected_value,
             'true')
 
+    def test_mask_select_should_fit_image_into_mask_x(self):
+        s = self.selenium
+        self.click_label('Artikelbild breit')
+        s.verifyEval('window.document.imp.mask_dimensions.w', '410')
+        s.verifyEval('window.document.imp.mask_dimensions.h', '200')
+        # X fits
+        s.verifyEval('window.document.imp.get_crop_arguments().x1', '0')
+        s.verifyEval('window.document.imp.get_crop_arguments().x2', '410')
+        # Y is aligned middle
+        s.verifyEval('window.document.imp.get_crop_arguments().y1', '53')
+        s.verifyEval('window.document.imp.get_crop_arguments().y2', '253')
+
+    def test_mask_select_should_fit_image_into_mask_y(self):
+        s = self.selenium
+        self.click_label('Audio')
+        s.verifyEval('window.document.imp.mask_dimensions.w', '180')
+        s.verifyEval('window.document.imp.mask_dimensions.h', '180')
+        # X is aligned centered
+        s.verifyEval('window.document.imp.get_crop_arguments().x1', '30')
+        s.verifyEval('window.document.imp.get_crop_arguments().x2', '210')
+        # Y fits
+        s.verifyEval('window.document.imp.get_crop_arguments().y1', '0')
+        s.verifyEval('window.document.imp.get_crop_arguments().y2', '180')
+
+
+
 
 class ResizeTests(Selenium):
 
@@ -314,7 +340,7 @@ class ResizeTests(Selenium):
 
         s.getEval('window.resizeTo(900, 900)')
         s.pause(500)
-        s.waitForEval("%s == '%s'" % (get_crop_args, crop_args), 'true')
+        s.waitForEval(get_crop_args, crop_args)
 
         # Try another one, to be sure this works multiple times 
         s.getEval('window.resizeTo(1000, 800)')

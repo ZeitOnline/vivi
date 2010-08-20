@@ -33,7 +33,9 @@ class Mask(object):
     def _get_rect_box(self):
         iw, ih = self.image_size
         mw, mh = self.mask_size
-        return ((iw/2-mw/2, ih/2-mh/2),(iw/2+mw/2, ih/2+mh/2))
+        mx1, my1 = (iw/2-mw/2, ih/2-mh/2)
+        mx2, my2 = (mx1 + mw - 1), (my1 + mh - 1)
+        return ((mx1, my1), (mx2, my2))
 
     def open(self, mode='r'):
         self._data.seek(0)

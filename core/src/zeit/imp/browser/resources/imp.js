@@ -124,6 +124,7 @@ zeit.imp.Imp = Class.extend({
             rnd(this.original_dimensions.h * this.zoom));
         this.current_dimensions = new_dim;
         MochiKit.Style.setElementDimensions(this.image, new_dim);
+        log('INFO', 'New size: ' + new_dim.w + 'x' + new_dim.h);
 
         // Move the image so that the center of the visual area stays fixed
         var new_center = new MochiKit.Style.Coordinates(
@@ -242,54 +243,77 @@ zeit.imp.Imp = Class.extend({
     },
 
     handle_mask_select: function(event) {
+        var self = this;
         var target = event.target();
         if (target.name == 'mask') {
-            this.parse_mask_string(target.value);
+            self.set_mask(target.value);
         } else if (target.name == 'border') {
-            this.border = target.value;
+            self.border = target.value;
         } else {
             return
         }
-        MochiKit.Signal.signal(this, 'configuration-change', {});
+        MochiKit.Signal.signal(self, 'configuration-change', {});
+        // Resize the image to fit to mask
+        var mask = self.mask_dimensions;
+        var width_for_fixed_height = self.original_dimensions.w * (
+            mask.h / self.original_dimensions.h)
+        var height_for_fixed_width = self.original_dimensions.h * (
+            mask.w / self.original_dimensions.w)
+        // prefer width matching
+        if (height_for_fixed_width < mask.h) {
+            // If we'd fix the width, the image would be to small to fill the
+            // entire mask. Fix the height then.
+            self.zoom = width_for_fixed_height / self.original_dimensions.w;
+        } else {
+            self.zoom = height_for_fixed_width / self.original_dimensions.h;
+        }
+        self.zoom_image()
+        // Position the image in the mask, centered
+        var visual_dim = this.get_visual_area_dimensions();
+        var image_position = new MochiKit.Style.Coordinates(
+            Math.floor(visual_dim.w/2 - self.current_dimensions.w/2) - 1,
+            Math.floor(visual_dim.h/2 - self.current_dimensions.h/2) - 1);
+        MochiKit.Style.setElementPosition('imp-image-drag', image_position);
     },
 
-    parse_mask_string: function(value) {
-        this.name = value.split('/')[0]
-        this.mask_variable = {w: false, h: false}
+    set_mask: function(value) {
+        var self = this;
+        self.name = value.split('/')[0]
+        self.mask_variable = {w: false, h: false}
         var mask_width = value.split('/')[1];
         if (mask_width[0] == '?') {
             mask_width = mask_width.substr(1)
-            this.mask_variable.w = true;
+            self.mask_variable.w = true;
         }
         var mask_height = value.split('/')[2];
         if (mask_height[0] == '?') {
             mask_height = mask_height .substr(1)
-            this.mask_variable.h = true;
+            self.mask_variable.h = true;
         }
-        
-        this.mask_dimensions = new MochiKit.DOM.Dimensions(
+        self.mask_dimensions = new MochiKit.DOM.Dimensions(
             new Number(mask_width), new Number(mask_height));
     },
 
     load_mask_on_configuration_change: function(event) {
-        var mask = this.mask_dimensions;
+        var self = this;
+        var mask = self.mask_dimensions;
         if (!mask) {
             return
         }
-        this.mask_image_dimensions = this.get_visual_area_dimensions();
+        self.mask_image_dimensions = self.get_visual_area_dimensions();
         var query = MochiKit.Base.queryString({
-            'image_width': this.mask_image_dimensions.w,
-            'image_height': this.mask_image_dimensions.h,
+            'image_width': self.mask_image_dimensions.w,
+            'image_height': self.mask_image_dimensions.h,
             'mask_width': mask.w,
             'mask_height': mask.h,
-            'border': this.border,
+            'border': self.border,
             });
         var image_url = window.application_url + '/@@imp-cut-mask?' + query;
-        if (this.mask_image === null) {
-            this.mask_image = $('imp-mask').appendChild(
+        if (self.mask_image === null) {
+            self.mask_image = $('imp-mask').appendChild(
                 IMG({'id': 'imp-mask-image', 'src': image_url}))
         } else {
-            this.mask_image.setAttribute('src', image_url);
+            self.mask_image.setAttribute('src', image_url);
         }
     },
 
@@ -298,16 +322,23 @@ zeit.imp.Imp = Class.extend({
         var image_pos = new MochiKit.Style.Coordinates(x, y);
         var args = self.get_crop_arguments(image_pos);
         if (!isNull(args)) {
-            var border_offset = 1;
+            if (args.border) {
+                var border_offset = 1;
+            } else {
+                var border_offset = 0;
+            }
+            var visual_dim = this.get_visual_area_dimensions();
             if (args.x1 < 0) {
-                x += args.x1 - 1 - border_offset;
-            } else if (args.x2 >= args.w) {
-                x += args.x2 - args.w - 1 + border_offset;
+                x = Math.floor(visual_dim.w/2 - this.mask_dimensions.w/2) - 1;
+            } else if (args.x2 > args.w) {
+                x = (Math.floor(visual_dim.w/2 + this.mask_dimensions.w/2) - 1
+                     - self.current_dimensions.w);
             }
             if (args.y1 < 0) {
-                y += args.y1 - 1 - border_offset;
-            } else if (args.y2 >= args.h) {
-                y += args.y2 - args.h - 1 + border_offset;
+                y = Math.floor(visual_dim.h/2 - this.mask_dimensions.h/2) - 1;
+            } else if (args.y2 > args.h) {
+                y = (Math.floor(visual_dim.h/2 + this.mask_dimensions.h/2) - 1
+                     - self.current_dimensions.h);
             }
         }
         return [x, y]
@@ -406,38 +437,48 @@ zeit.imp.ImageBar = Class.extend({
 zeit.imp.ZoomSlider = Class.extend({
 
     construct: function(imp) {
-        this.imp = imp;
-        this.zoom_slider = null;
-        this.init();
-        MochiKit.Signal.connect(this.imp, 'resize', this, 'init');
+        var self = this;
+        self.imp = imp;
+        self.zoom_slider = null;
+        self.init();
+        MochiKit.Signal.connect(self.imp, 'resize', self, 'init');
         MochiKit.Signal.connect(
-            this.imp, 'zoom-change', this, 'update_slider_from_zoom');
+            self.imp, 'zoom-change', self, 'update_slider_from_zoom');
+        self._updating_slider = false;
     },
 
     init: function() {
-        if (this.zoom_slider !== null) {
-            MochiKit.Signal.disconnectAll(this.zoom_slider);
+        var self = this;
+        if (self.zoom_slider !== null) {
+            MochiKit.Signal.disconnectAll(self.zoom_slider);
         }
-        this.zoom_slider = new UI.Slider(
+        self.zoom_slider = new UI.Slider(
             'imp-zoom-slider', 3001,
             UI.Slider.ValueMappers.range(0, 3, 0.001));
-        this.zoom_slider.setValue(this.imp.zoom);
+        self.zoom_slider.setValue(self.imp.zoom);
         MochiKit.Signal.connect(
-            this.zoom_slider, 'valueChanged',
-            this, 'update_zoom_from_slider');
+            self.zoom_slider, 'valueChanged',
+            self, 'update_zoom_from_slider');
     },
 
     update_zoom_from_slider: function(event) {
-        this.imp.zoom = this.zoom_slider.value;
-        this.imp.zoom_image();
+        var self = this;
+        if (!self._updating_slider) {
+            self.imp.zoom = self.zoom_slider.value;
+            self.imp.zoom_image();
+        }
     },
 
     update_slider_from_zoom: function(event) {
-        this.zoom_slider.setValue(this.imp.zoom);
+        var self = this;
+        self._updating_slider = true;
+        self.zoom_slider.setValue(self.imp.zoom);
+        self._updating_slider = false;
     },
 
     get_value: function() {
-        return this.zoom_slider.value;
+        var self = this;
+        return self.zoom_slider.value;
     },
 
 });
@@ -558,15 +599,15 @@ zeit.imp.AlreadyCroppedIndicator = Class.extend({
 zeit.imp.ResizeMonitor = Class.extend({
 
     construct: function(monitor_element) {
-        var othis = this;
-        this.element = $(monitor_element);
-        this.dimensions = this.get_current_dimensions();
+        var self = this;
+        self.element = $(monitor_element);
+        self.dimensions = self.get_current_dimensions();
         var check = function() {
-            var new_dimensions = othis.get_current_dimensions();
-            if (!(new_dimensions.w == othis.dimensions.w &&
-                new_dimensions.h == othis.dimensions.h)) {
-                othis.dimensions = new_dimensions;
-                MochiKit.Signal.signal(othis, 'resize');
+            var new_dimensions = self.get_current_dimensions();
+            if (!(new_dimensions.w == self.dimensions.w &&
+                new_dimensions.h == self.dimensions.h)) {
+                self.dimensions = new_dimensions;
+                MochiKit.Signal.signal(self, 'resize');
             }
             MochiKit.Async.callLater(0.25, check);
         };
