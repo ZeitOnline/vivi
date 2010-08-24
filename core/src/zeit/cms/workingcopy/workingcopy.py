@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grokcore.component
 import z3c.traverser.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.app.container.btree
@@ -108,6 +109,23 @@ def principalAdapter(context):
     location = zope.component.getUtility(
         zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
     return location.getWorkingcopyFor(context)
+
+
+@grokcore.component.adapter(None)
+@grokcore.component.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopy)
+def workingcopy_for_current_principal(ignored):
+    # Find the current principal. Note that it is possible for there
+    # to be more than one principal - in this case adapting fails
+    interaction = zope.security.management.getInteraction()
+    principal = None
+    for p in interaction.participations:
+        if principal is None:
+            principal = p.principal
+        else:
+            return
+    if principal is None:
+        return
+    return zeit.cms.workingcopy.interfaces.IWorkingcopy(principal, None)
 
 
 class WorkingcopyTraverser(object):
