@@ -2,17 +2,18 @@
 # See also LICENSE.txt
 
 import datetime
+import grokcore.component
 import persistent.mapping
 import pytz
 import time
+import zeit.cms.interfaces
+import zeit.cms.locking.interfaces
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
 import zope.app.locking.adapter
 import zope.app.locking.interfaces
 import zope.component
 import zope.interface
-
-import zeit.connector.interfaces
-import zeit.cms.interfaces
-import zeit.cms.locking.interfaces
 
 
 class LockStorage(object):
@@ -101,7 +102,13 @@ class LockInfo(persistent.mapping.PersistentMapping):
 class CMSLockingAdapter(zope.app.locking.adapter.LockingAdapter):
     """Special locking adapter with different security."""
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
     zope.interface.implements(zope.app.locking.interfaces.ILockable)
 
     __repr__ = object.__repr__
+
+
+@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent)
+@grokcore.component.implementer(zope.app.locking.interfaces.ILockable)
+def no_general_locking(context):
+    return None

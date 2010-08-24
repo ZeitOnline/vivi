@@ -41,7 +41,7 @@ class SyndicationManager(object):
             self.context):
             # Only syndicated checked in content.
             return False
-        if self.lockable.locked():
+        if self.lockable is not None and self.lockable.locked():
             # Do not syndicate locked content.
             return False
         return True
@@ -86,7 +86,7 @@ class SyndicationManager(object):
 
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
-        return zope.app.locking.interfaces.ILockable(self.context)
+        return zope.app.locking.interfaces.ILockable(self.context, None)
 
     @zope.cachedescriptors.property.Lazy
     def _target_mapping(self):

@@ -41,8 +41,9 @@ class CheckoutManager(object):
             self.context):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, "Can only checkout IRepositoryContent")
-        lockable = zope.app.locking.interfaces.ILockable(self.context)
-        if lockable.locked() and not lockable.ownLock():
+        lockable = zope.app.locking.interfaces.ILockable(self.context, None)
+        if (lockable is not None and
+            lockable.locked() and not lockable.ownLock()):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId,
                 _('The content object is locked by ${name}.', mapping=dict(
@@ -63,8 +64,8 @@ class CheckoutManager(object):
 
     def checkout(self, event=True, temporary=False):
         self._guard_checkout()
-        lockable = zope.app.locking.interfaces.ILockable(self.context)
-        if not lockable.locked():
+        lockable = zope.app.locking.interfaces.ILockable(self.context, None)
+        if lockable is not None and not lockable.locked():
             timeout = 30 if temporary else 3600
             try:
                 lockable.lock(timeout=timeout)
@@ -101,8 +102,9 @@ class CheckoutManager(object):
         if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
             self.context):
             return False
-        lockable = zope.app.locking.interfaces.ILockable(self.context)
-        if not lockable.ownLock() and lockable.locked():
+        lockable = zope.app.locking.interfaces.ILockable(self.context, None)
+        if (lockable is not None
+            and not lockable.ownLock() and lockable.locked()):
             return False
         return True
 
@@ -135,12 +137,13 @@ class CheckoutManager(object):
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
                     added, workingcopy, self.principal))
-        try:
-            lockable = zope.app.locking.interfaces.ILockable(added)
-            lockable.unlock()
-        except zope.app.locking.interfaces.LockingError:
-            # object was not locked
-            pass
+        lockable = zope.app.locking.interfaces.ILockable(added, None)
+        if lockable is not None:
+            try:
+                lockable.unlock()
+            except zope.app.locking.interfaces.LockingError:
+                # object was not locked
+                pass
         return added
 
     @zope.cachedescriptors.property.Lazy
@@ -179,6 +182,8 @@ def unlockOnWorkingcopyDelete(context, event):
     if not zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
         event.oldParent):
         return
-    lockable = zope.app.locking.interfaces.ILockable(context)
-    if lockable.ownLock():
+    # Get content from repository
+    content = zeit.cms.interfaces.ICMSContent(context.uniqueId, None)
+    lockable = zope.app.locking.interfaces.ILockable(content, None)
+    if lockable is not None and lockable.ownLock():
         lockable.unlock()

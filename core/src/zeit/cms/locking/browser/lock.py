@@ -87,13 +87,22 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     title = _('Manage lock')
 
     def img_tag(self):
-        return zope.component.getMultiAdapter(
+        return zope.component.queryMultiAdapter(
             (self.context, self.request),
             name='get_locking_indicator')
 
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
-        return zope.app.locking.interfaces.ILockable(self.context)
+        return zope.app.locking.interfaces.ILockable(self.context, None)
+
+    def update(self):
+        super(MenuItem, self).update()
+
+    def render(self):
+        if self.lockable is None:
+            return ''
+        return super(MenuItem, self).render()
+
 
 
 def get_locking_indicator(context, request):
