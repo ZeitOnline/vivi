@@ -113,13 +113,7 @@ class ShowOriginal(zeit.cms.browser.menu.ActionMenuItem):
 
     @zope.cachedescriptors.property.Lazy
     def content(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        try:
-            content = repository.getContent(self.context.uniqueId)
-        except KeyError:
-            return None
-        return content
+        return zeit.cms.interfaces.ICMSContent(self.context.uniqueId, None)
 
     def render(self):
         if self.content is None:
