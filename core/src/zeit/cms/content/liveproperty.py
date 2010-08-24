@@ -76,10 +76,12 @@ def remove_live_properties(context, event):
     This is to make sure they don't change on checkin.
 
     """
+    try:
+      properties = zeit.connector.interfaces.IWebDAVProperties(context)
+    except TypeError:
+      return
     manager = zope.component.getUtility(
         zeit.cms.content.interfaces.ILivePropertyManager)
-    properties = zeit.connector.interfaces.IWebDAVProperties(context)
-
     for live_property in manager.live_properties:
         properties.pop(live_property, None)
 
