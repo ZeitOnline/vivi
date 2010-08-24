@@ -19,7 +19,10 @@ def default_local_content_adapter(context):
         return None
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
-    content = repository.getCopyOf(context.uniqueId)
+    try:
+        content = repository.getCopyOf(context.uniqueId)
+    except (ValueError, KeyError):
+        return None
     repository_properties = zeit.connector.interfaces.IWebDAVProperties(
         context)
     zope.interface.alsoProvides(
