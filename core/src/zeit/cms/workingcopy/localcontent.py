@@ -55,7 +55,7 @@ def default_repository_content_adapter(context):
                             name=u'non-conflicting')
 @grokcore.component.implementer(
     zeit.cms.repository.interfaces.IRepositoryContent)
-def default_repository_content_adapter(context):
+def default_repository_content_adapter_non_conflicting(context):
     # Default adapter to adapt local content to repository content: add to
     # repository and return
     return add_to_repository(context, True)
