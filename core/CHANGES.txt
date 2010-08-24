@@ -4,7 +4,8 @@ zeit.cms changes
 1.47.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- A view on workingcopy objects used to lookup objects directly in the
+  repository. Replaced this by an ICMSContent() adapter lookup (#7826)
 
 
 1.47.0 (2010-08-16)
