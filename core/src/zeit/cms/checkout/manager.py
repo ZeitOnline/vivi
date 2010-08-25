@@ -130,7 +130,7 @@ class CheckoutManager(object):
             adapter_name = u''
         added = zope.component.getAdapter(
             self.context,
-            zeit.cms.repository.interfaces.IRepositoryContent,
+            zeit.cms.checkout.interfaces.IRepositoryContent,
             name=adapter_name)
         del workingcopy[self.context.__name__]
         if event:
@@ -148,12 +148,7 @@ class CheckoutManager(object):
 
     @zope.cachedescriptors.property.Lazy
     def workingcopy(self):
-        return zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
-
-    @zope.cachedescriptors.property.Lazy
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zeit.cms.checkout.interfaces.IWorkingcopy(None)
 
     @zope.cachedescriptors.property.Lazy
     def principal(self):
@@ -179,7 +174,7 @@ def unlockOnWorkingcopyDelete(context, event):
     has it locked. If so unlock it.
 
     """
-    if not zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
+    if not zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(
         event.oldParent):
         return
     # Get content from repository

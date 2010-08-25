@@ -4,13 +4,8 @@
 import zope.app.container.interfaces
 import zope.interface
 
-
-class IWorkingcopy(zope.app.container.interfaces.IContainer):
-    """The working copy is the area of the CMS where users edit content.
-
-    There is one working copy per user.
-
-    """
+# BBB:
+from zeit.cms.checkout.interfaces import IWorkingcopy, ILocalContent
 
 
 class IWorkingcopyLocation(zope.app.container.interfaces.IContainer):
@@ -22,7 +17,3 @@ class IWorkingcopyLocation(zope.app.container.interfaces.IContainer):
 
     def getWorkingcopyFor(principal):
         """Get the working copy for `principal`."""
-
-
-class ILocalContent(zope.interface.Interface):
-    """Marker interface for locally stored content."""

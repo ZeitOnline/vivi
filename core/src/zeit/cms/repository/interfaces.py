@@ -109,7 +109,19 @@ class IRepository(zope.interface.Interface):
         """
 
 
-class IUnknownResource(zeit.cms.interfaces.ICMSContent):
+class IRepositoryContent(zope.interface.Interface):
+    """Marker interface for content in the repository.
+
+    Content, which is checked out does *not* provide this interface.
+
+    """
+
+
+class IDAVContent(zeit.cms.interfaces.ICMSContent):
+    """Marker interface for content which originates in this repository."""
+
+
+class IUnknownResource(IDAVContent):
     """Unknown resource content.
 
     When an object in the repository cannot be identified or there is no way to
@@ -121,21 +133,12 @@ class IUnknownResource(zeit.cms.interfaces.ICMSContent):
     type = zope.interface.Attribute("Raw type info got from connector.")
 
 
-class IFile(zeit.cms.interfaces.ICMSContent,
-            zope.file.interfaces.IFile):
-    """A file like object in the CMS."""
-
-
 class ICollection(zope.app.container.interfaces.IContainer):
     """A collection."""
 
 
-class IFolder(ICollection, zeit.cms.interfaces.ICMSContent):
+class IFolder(ICollection, IDAVContent):
     """A normal folder in the cms."""
-
-
-class IRepositoryContent(zope.interface.Interface):
-    """Marker interface for content in the repository."""
 
 
 class IUserPreferences(zope.interface.Interface):
@@ -152,3 +155,10 @@ class IUserPreferences(zope.interface.Interface):
 
     def get_hidden_containers():
         """Returen a set of hidden containers."""
+
+
+class IFile(IDAVContent,
+            zope.file.interfaces.IFile):
+    """A file like object in the CMS."""
+
+

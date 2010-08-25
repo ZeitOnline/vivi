@@ -2,16 +2,17 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import zc.form.field
 import zc.sourcefactory.basic
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.file.interfaces
 import zope.schema
-from zeit.cms.i18n import MessageFactory as _
 
 
 IMAGE_NAMESPACE = 'http://namespaces.zeit.de/CMS/image'
@@ -104,6 +105,7 @@ class IImageMetadata(zope.interface.Interface):
 
 
 class IImage(zeit.cms.interfaces.IAsset,
+             zeit.cms.repository.interfaces.IDAVContent,
              zope.file.interfaces.IFile):
     """Image."""
 
@@ -145,7 +147,8 @@ class MasterImageSource(
             yield name
 
 
-class IImageGroup(zeit.cms.interfaces.IAsset):
+class IImageGroup(zeit.cms.interfaces.IAsset,
+                  zeit.cms.repository.interfaces.IDAVContent):
     """An image group groups images with the same motif together."""
 
     master_image = zope.schema.Choice(

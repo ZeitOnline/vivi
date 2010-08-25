@@ -1,10 +1,9 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.schema
-
-import zeit.cms.interfaces
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.repository.interfaces
+import zope.schema
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/text'
@@ -27,7 +26,7 @@ class CannotEncode(zope.schema.ValidationError):
         return '<%s %s>' % (self.__class__.__name__, self.args[2])
 
 
-class IText(zeit.cms.interfaces.ICMSContent):
+class IText(zeit.cms.repository.interfaces.IDAVContent):
     """A simple object containing unparsed text."""
 
     text = zope.schema.Text(

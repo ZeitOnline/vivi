@@ -199,7 +199,8 @@ When we change some data ...
 ... and adapt to IRepositoryContent we'll have the file updated in the
 repository:
 
->>> repository_file = zeit.cms.repository.interfaces.IRepositoryContent(local)
+>>> import zeit.cms.checkout.interfaces
+>>> repository_file = zeit.cms.checkout.interfaces.IRepositoryContent(local)
 >>> repository_file
 <zeit.cms.repository.file.RepositoryFile object at 0x...>
 >>> repository_file.open().read()

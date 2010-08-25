@@ -37,7 +37,8 @@ class LocalDCTimes(RepositoryDCTimes):
         if ts is None:
             modified = super(LocalDCTimes, self).modified
             if modified is None:
-                annotations = zope.annotation.interfaces.IAnnotations(self.context)
+                annotations = zope.annotation.interfaces.IAnnotations(
+                    self.context)
                 modified = annotations.get(__name__)
         else:
             modified = datetime.datetime.fromtimestamp(ts, pytz.UTC)

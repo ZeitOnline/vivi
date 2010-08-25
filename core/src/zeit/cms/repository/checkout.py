@@ -2,15 +2,15 @@
 # See also LICENSE.txt
 
 import grokcore.component
+import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.workingcopy.interfaces
 import zope.component
 import zope.interface
 
 
-@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent)
-@grokcore.component.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
+@grokcore.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
+@grokcore.component.implementer(zeit.cms.checkout.interfaces.ILocalContent)
 def default_local_content_adapter(context):
     # Default adapter to adapt cms content to local content: create a copy and
     # mark as local content
@@ -42,19 +42,19 @@ def add_to_repository(context, ignore_conflicts):
     return added
 
 
-@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent)
+@grokcore.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
 @grokcore.component.implementer(
-    zeit.cms.repository.interfaces.IRepositoryContent)
+    zeit.cms.checkout.interfaces.IRepositoryContent)
 def default_repository_content_adapter(context):
     # Default adapter to adapt local content to repository content: add to
     # repository and return
     return add_to_repository(context, False)
 
 
-@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent,
+@grokcore.component.adapter(zeit.cms.repository.interfaces.IDAVContent,
                             name=u'non-conflicting')
 @grokcore.component.implementer(
-    zeit.cms.repository.interfaces.IRepositoryContent)
+    zeit.cms.checkout.interfaces.IRepositoryContent)
 def default_repository_content_adapter_non_conflicting(context):
     # Default adapter to adapt local content to repository content: add to
     # repository and return

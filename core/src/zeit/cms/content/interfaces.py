@@ -1,17 +1,16 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.field
+import zeit.cms.content.sources
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.interfaces
 import zope.schema
-
-import zeit.cms.content.field
-import zeit.cms.content.sources
-import zeit.cms.interfaces
-
-from zeit.cms.i18n import MessageFactory as _
 
 
 # XXX There is too much, too unordered in here, clean this up.
@@ -311,7 +310,8 @@ class IXMLSource(zope.interface.Interface):
     """str representing the xml of an object."""
 
 
-class IXMLContent(zeit.cms.interfaces.ICMSContent, IXMLRepresentation):
+class IXMLContent(zeit.cms.repository.interfaces.IDAVContent,
+                  IXMLRepresentation):
     """Content with an XML representation."""
 
 

@@ -499,7 +499,7 @@ def restore_provides_from_dav(obj, event):
 
 class DAVPropertiesAdapter(grokcore.component.Adapter):
 
-    grokcore.component.context(zeit.cms.interfaces.ICMSContent)
+    grokcore.component.context(zeit.cms.repository.interfaces.IDAVContent)
     grokcore.component.baseclass()
 
     def __new__(cls, context):

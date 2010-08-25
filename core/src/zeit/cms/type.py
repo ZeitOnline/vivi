@@ -18,6 +18,8 @@ class TypeDeclaration(object):
 
     interface = None
     interface_type = zeit.cms.interfaces.ICMSContentType
+
+    # The "type" in DAV. If given the class will also implement IDAVContent
     type = None
     title = None
     addform = None

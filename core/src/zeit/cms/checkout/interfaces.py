@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import zope.component.interfaces
+import zope.container.interfaces
 import zope.interface
 
 
@@ -27,6 +28,7 @@ class ICheckoutManager(zope.interface.Interface):
 
         """
 
+
 class ICheckinManager(zope.interface.Interface):
 
     canCheckin = zope.interface.Attribute(
@@ -47,6 +49,44 @@ class ICheckinManager(zope.interface.Interface):
         place.
 
         """
+
+
+class IWorkingcopy(zope.container.interfaces.IContainer):
+    """The working copy is the area of the CMS where users edit content.
+
+    Objects placed in the workingcopy must provide ILocalContent.
+    There is one working copy per user.
+
+    * Adapting IWorkingcopy(principal) should return the workingcopy of the
+      given IPrincipal
+    * Adapting IWorkingcopy(None) should return the workingcopy of the
+
+
+    """
+
+class ILocalContent(zope.interface.Interface):
+    """Locally (workingcopy) stored content.
+
+    Content which should be stored in a workingcopy needs to be adaptable to
+    ILocalContent to create a local copy of the content.
+
+    """
+
+
+class IRepositoryContent(zope.interface.Interface):
+    """Content stored in a repostitory.
+
+    Adapter to place content into the (proper) repository. Adapting content to
+    IRepositoryContent returns a new objects *and* places it into the proper
+    repository. This is an asymetry to ILocalContent.
+
+    Adding to a repository can raise conflict errors. A named adapter
+    'non-conflicting' can be provided.
+
+    Note that objects do not ususally provide this interface, even when they're
+    in their repository.
+
+    """
 
 
 class CheckinCheckoutError(Exception):
