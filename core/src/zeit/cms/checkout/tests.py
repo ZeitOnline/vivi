@@ -103,6 +103,7 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt'))
+        'README.txt',
+        'manager.txt'))
     suite.addTest(unittest.makeSuite(TestHelper))
     return suite

@@ -37,10 +37,6 @@ class CheckoutManager(object):
         return True
 
     def _guard_checkout(self):
-        if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-            self.context):
-            raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                self.context.uniqueId, "Can only checkout IRepositoryContent")
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         if (lockable is not None and
             lockable.locked() and not lockable.ownLock()):
