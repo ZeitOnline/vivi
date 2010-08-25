@@ -37,13 +37,19 @@ class TeaserBlockProxyItem(object):
         self.context = context
 
     def __getattr__(self, name):
-        return getattr(self.context, name)
+        if name in zeit.cms.content.interfaces.ICommonMetadata:
+            context = zeit.cms.content.interfaces.ICommonMetadata(
+                self.context)
+        else:
+            context = self.context
+        return getattr(context, name)
 
     def __setattr__(self, name, value):
         if name in ['context', '__name__', '__parent__']:
             object.__setattr__(self, name, value)
         else:
-            setattr(self.context, name, value)
+            context = zeit.cms.content.interfaces.ICommonMetadata(self.context)
+            setattr(context, name, value)
 
     def get_proxied_object(self):
         return self.context
