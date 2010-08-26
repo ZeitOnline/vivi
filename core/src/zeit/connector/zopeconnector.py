@@ -181,4 +181,9 @@ class ConnectorSavepoint(object):
 def invalidate_cache(event):
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
-    connector.invalidate_cache(event.id)
+    try:
+        connector.invalidate_cache(event.id)
+    except ValueError:
+        # The connector isn't responsible for the id, or die id  is just plain
+        # invalid. There is nothing to invalidate then anyway.
+        pass

@@ -4,7 +4,8 @@ CHANGES
 1.22.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Connector invalidation event subscriber doesn't raise ValueError any longer
+  for UniqueIds the connector isn't responsible for (#7933)
 
 
 1.22.1 (2010-08-17)

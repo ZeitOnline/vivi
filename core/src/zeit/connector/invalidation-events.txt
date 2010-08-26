@@ -79,6 +79,16 @@ Events non existing resource do not harm:
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(
 ...     testing + 'not-there'))
 
+
+Sending an invalidation event with an id which does not belong to the connector
+at all doesn't harm either:
+
+>>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(
+...     'the quick brown fox'))
+
+
+
+
 Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
