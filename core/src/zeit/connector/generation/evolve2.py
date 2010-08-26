@@ -5,11 +5,10 @@
 generation = 1
 
 
-import zope.app.component.hooks
 import zope.app.component
+import zope.app.component.hooks
 import zope.app.zopeappgenerations
 
-import zeit.connector.generation.install
 
 
 def update(root):

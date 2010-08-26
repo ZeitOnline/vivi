@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 """Remove cruft data."""
 
-import BTrees
 import zope.app.component.hooks
 import zope.app.component
 import zope.app.zopeappgenerations

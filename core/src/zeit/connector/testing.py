@@ -12,7 +12,6 @@ import urlparse
 import zc.queue.tests
 import zeit.connector.connector
 import zeit.connector.interfaces
-import zeit.connector.mock
 import zope.app.testing.functional
 import zope.testing.renormalizing
 

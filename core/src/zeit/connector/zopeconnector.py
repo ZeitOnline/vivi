@@ -4,10 +4,8 @@
 
 import ZConfig
 import ZODB.POSException
-import gocept.cache.property
 import logging
 import os
-import threading
 import transaction
 import transaction.interfaces
 import zeit.connector.connector

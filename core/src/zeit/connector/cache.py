@@ -12,7 +12,6 @@ import tempfile
 import time
 import zc.set
 import zeit.connector.interfaces
-import zope.component
 import zope.interface
 import zope.security.proxy
 import zope.testing.cleanup

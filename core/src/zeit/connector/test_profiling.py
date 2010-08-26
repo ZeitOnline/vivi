@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 # $Id$
 
-import os
 import unittest
 
 from zope.testing import doctest
