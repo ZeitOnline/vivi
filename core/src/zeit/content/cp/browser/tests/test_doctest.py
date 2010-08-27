@@ -10,4 +10,5 @@ def test_suite():
         'landing.txt',
         'library.txt',
         'rule.txt',
+        'teaser.txt',
         package='zeit.content.cp.browser')
