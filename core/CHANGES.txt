@@ -5,7 +5,8 @@ zeit.brightcove changes
 0.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Videos can be checked out now by the system. This allows to create free
+  teasers of videos (#7826).
 
 
 0.8.0 (2010-08-16)
