@@ -158,7 +158,7 @@ class CommonMetadata(grokcore.component.Adapter):
     def __getattr__(self, key):
         if key in zeit.cms.content.interfaces.ICommonMetadata:
             return getattr(self.context, key, None)
-        return super(CommonMetadata, self).__getattr__(key)
+        raise AttributeError(key)
 
 
 class SemanticChange(grokcore.component.Adapter):
