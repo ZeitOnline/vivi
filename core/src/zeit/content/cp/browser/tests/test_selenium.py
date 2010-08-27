@@ -186,7 +186,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # Changing the value and submitting the form will reload the teaser
         # list light box. The text will be in there then.
         s.type('id=form.teaserTitle', 'A nice new teaser')
-        s.click('//form[contains(@action, "edit-teaser.html")]//input[@id="form.actions.apply"]')
+        s.click('//form[contains(@action, "edit-teaser.html")]//input[@id="form.actions.apply_in_article"]')
         s.waitForTextPresent('A nice new teaser')
 
     def test_inplace_teaser_editing_with_abort(self):

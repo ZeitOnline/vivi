@@ -11,12 +11,9 @@
           tal:attributes="
           class teaser/css_class;
           cms:uniqueId teaser/uniqueId">
-        <span class="locked-indicator"
-              tal:condition="teaser/locking_indicator"
-              tal:content="structure teaser/locking_indicator" />
         <a class="edit-link"
            tal:condition="teaser/editable"
-           tal:attributes="href string:$context_url/checkout-content?uniqueId=${teaser/uniqueId}"
+           tal:attributes="href string:$context_url/++item++${repeat/teaser/index}/@@edit-teaser.html"
            title="Edit in place"
            cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
            cms:lightbox-in="cp-forms"

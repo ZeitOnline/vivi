@@ -203,7 +203,7 @@ def update_feed_items(context, event):
         items = []
         check_items = []
         for item in feed.items:
-            if zeit.content.cp.interfaces.ITeaser.providedBy(item):
+            if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
                 check_item = item.original_content
             else:
                 check_item = item
@@ -211,7 +211,7 @@ def update_feed_items(context, event):
             check_items.append(check_item)
 
         for item in zeit.cms.syndication.interfaces.IReadFeed(context):
-            if zeit.content.cp.interfaces.ITeaser.providedBy(item):
+            if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
                 if item.original_content in check_items:
                     continue
             elif item in check_items:

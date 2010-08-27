@@ -1,14 +1,13 @@
-Free teasers
-============
+Inline teaser editing
+=====================
 
-Free teasers are stored *in* the CP.
+The CPE allows inline teaser editing.
+
+Prepare a CP and open the form:
 
 >>> import zope.testbrowser.testing
 >>> browser = zope.testbrowser.testing.Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
-
-Create a free teaser:
-
 >>> import zeit.content.cp.browser.testing
 >>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
@@ -18,16 +17,101 @@ Create a free teaser:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit teaser list').click()
 >>> lightbox_url = browser.url
+
+
+Editing article teaser
+----------------------
+
+>>> browser.getLink('Edit').click()
+
+Change the title in the article directly:
+
+>>> browser.getControl('Teaser title').value = 'New article teaser'
+>>> browser.getControl('Apply for article').click()
+>>> print browser.contents
+<...
+  <script language="javascript">
+    self.clean = true;
+    self.close();
+  </script>
+  ...
+
+
+The changed values are visible in the CPE:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+    <div class="teaser">
+      <div class="supertitle"></div>
+      <div class="teaserTitle">New article teaser</div>
+      <div class="teaserText"></div>
+      <span class="uniqueId">http://xml.zeit.de/testcontent</span>
+    </div>
+...
+
+
+Free teasers
+------------
+
+Free teasers are stored *in* the CP.
+
+Create a free teaser:
+
+>>> browser.open(lightbox_url)
 >>> browser.getLink('Edit').click()
 >>> browser.getControl('Teaser title').value = 'Local teaser title'
 >>> browser.getControl('Apply only for this page').click()
 
-The original object now notes that it is referenced:
+The local teaser title is now visible in the CP:
 
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+    <div class="teaser">
+      <div class="supertitle"></div>
+      <div class="teaserTitle">Local teaser title</div>
+      <div class="teaserText"></div>
+      <span class="uniqueId">http://teaser.vivi.zeit.de/http://xml.zeit.de/online/2007/01/island#cb53941e-dff7-4bd6-b0c6-eea584f27c65</span>
+    </div>
+...
+
+
+The lightbox doesn't show the aricle save button now:
+
+>>> browser.open(lightbox_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('Apply for article')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Apply for article'
+
+Changing the free teaser is still possible:
+
+>>> browser.getControl('Teaser title').value = 'New local teaser title'
+>>> browser.getControl('Apply only for this page').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+    <div class="teaser">
+      <div class="supertitle"></div>
+      <div class="teaserTitle">New local teaser title</div>
+      <div class="teaserText"></div>
+      <span class="uniqueId">http://teaser.vivi.zeit.de/http://xml.zeit.de/online/2007/01/island#cb53941e-dff7-4bd6-b0c6-eea584f27c65</span>
+    </div>
+...
+
+The original object still notes that it is referenced by the CP.
+
+>>> browser.open('@@edit.html')
+>>> browser.getLink('Checkin').click()
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
 >>> browser.getLink('References').click()
 >>> print browser.contents
-<...http://localhost/++skin++cms/repository/testcontent-2...
+<...
+    <h1>Referenced by</h1>...
+    ...<a.../repository/online/2007/01/island">Auf den Spuren der Elfen</a>...
+
 
 When the original object is changed, we receive a warning about the reference:
 
@@ -38,6 +122,5 @@ When the original object is changed, we receive a warning about the reference:
 >>> browser.getControl(name='form.authors.0.').value = 'foo'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
-<..."testcontent" is referenced by free teaser "testcontent-2"...
-
-
+<...<li..."http://xml.zeit.de/testcontent" is referenced by a free teaser
+in "http://xml.zeit.de/online/2007/01/island"</li>...

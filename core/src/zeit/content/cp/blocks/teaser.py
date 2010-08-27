@@ -72,7 +72,7 @@ class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
 
 
 class TeaserBlock(zeit.content.cp.blocks.block.Block,
-                 zeit.cms.syndication.feed.Feed):
+                  zeit.cms.syndication.feed.Feed):
 
     # TeaserBlock reuses Feed for its "list of IElement" behaviour
 
@@ -266,6 +266,9 @@ TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
 def cms_content_iter(context):
     for teaser in context:
         yield teaser
+        if zeit.content.cp.interfaces.IXMLTeaser.providedBy(teaser):
+            yield zeit.cms.interfaces.ICMSContent(teaser.original_uniqueId)
+
 
 
 @grokcore.component.adapter(zeit.content.cp.interfaces.IAutoPilotTeaserBlock)

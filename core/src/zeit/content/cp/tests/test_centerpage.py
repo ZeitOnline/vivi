@@ -146,11 +146,12 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
             ['http://xml.zeit.de/test2', 'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])
         # Create a teaser and insert it.
-        self.repository['t2'] = (
-            zeit.content.cp.interfaces.ITeaser(self.repository['testcontent']))
         with checked_out(cp) as working:
             teaser = self.create_teaser(working)
-            teaser.insert(0, self.repository['t2'])
+            teaser.insert(0, self.repository['test2'])
+            xml_teaser = zope.component.getMultiAdapter(
+                (teaser, 0), zeit.content.cp.interfaces.IXMLTeaser)
+            xml_teaser.free_teaser = True
         cp = self.repository['cp']
         cp = self.publish(cp)
         # The teaser was not added to the feed because the object it references
@@ -169,14 +170,15 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         # Create a teaser and insert it.
         self.repository['content'] = (
             zeit.cms.testcontenttype.testcontenttype.TestContentType())
-        self.repository['teaser'] = (
-            zeit.content.cp.interfaces.ITeaser(self.repository['content']))
         with checked_out(cp) as working:
             teaser = self.create_teaser(working)
-            teaser.insert(0, self.repository['teaser'])
+            teaser.insert(0, self.repository['content'])
+            xml_teaser = zope.component.getMultiAdapter(
+                (teaser, 0), zeit.content.cp.interfaces.IXMLTeaser)
+            xml_teaser.free_teaser = True
         cp = self.publish(cp)
         self.assertEqual(
-            ['http://xml.zeit.de/teaser',
+            [xml_teaser.uniqueId,
              'http://xml.zeit.de/test2',
              'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])
@@ -189,7 +191,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.repository['cp']
         cp = self.publish(cp)
         self.assertEqual(
-            ['http://xml.zeit.de/teaser',
+            [xml_teaser.uniqueId,
              'http://xml.zeit.de/test2',
              'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])

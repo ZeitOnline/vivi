@@ -16,52 +16,6 @@ import zope.formlib.form
 import zope.lifecycleevent
 
 
-class CheckoutContent(object):
-
-    def __call__(self, uniqueId):
-        content = zeit.cms.interfaces.ICMSContent(uniqueId)
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
-        checked_out = manager.checkout()
-        self.request.response.redirect(
-            '%s/++item++%s/edit-teaser.html' % (
-            zope.traversing.browser.absoluteURL(self.context, self.request),
-            checked_out.__name__))
-
-
-class TeaserBlockProxyItem(object):
-
-    zope.interface.implements(zeit.cms.content.interfaces.ICommonMetadata,
-                              zeit.cms.interfaces.ICMSContent)
-
-    def __init__(self, context):
-        self.context = context
-
-    def __getattr__(self, name):
-        if name in zeit.cms.content.interfaces.ICommonMetadata:
-            context = zeit.cms.content.interfaces.ICommonMetadata(
-                self.context)
-        else:
-            context = self.context
-        return getattr(context, name)
-
-    def __setattr__(self, name, value):
-        if name in ['context', '__name__', '__parent__']:
-            object.__setattr__(self, name, value)
-        else:
-            context = zeit.cms.content.interfaces.ICommonMetadata(self.context)
-            setattr(context, name, value)
-
-    def get_proxied_object(self):
-        return self.context
-
-
-@zope.component.adapter(TeaserBlockProxyItem)
-@zope.interface.implementer(zeit.cms.checkout.interfaces.ICheckinManager)
-def checkin_manager_for_proxy(proxy):
-    return zeit.cms.checkout.interfaces.ICheckinManager(
-        proxy.get_proxied_object())
-
-
 class ItemTraverser(object):
 
     zope.component.adapts(
@@ -74,15 +28,13 @@ class ItemTraverser(object):
         self.request = request
 
     def traverse(self, name, furtherPath):
-        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(
-            self.request.principal)
-
-        try:
-            return zope.location.location.located(
-                TeaserBlockProxyItem(wc[name]), self.context, name)
-        except KeyError:
+        index = int(name)
+        teaser = zope.component.queryMultiAdapter(
+            (self.context, index), zeit.content.cp.interfaces.IXMLTeaser)
+        if teaser is None:
             raise zope.publisher.interfaces.NotFound(
                 self.context, name, self.request)
+        return teaser
 
 
 class EditTeaser(zope.formlib.form.SubPageEditForm):
@@ -102,59 +54,33 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
     def form(self):
         return super(EditTeaser, self).template
 
-    def _is_teaser(self, action):
-        return zeit.content.cp.interfaces.ITeaser.providedBy(
-            self.context.get_proxied_object())
-
     def _is_not_teaser(self, action):
-        return not self._is_teaser(action)
-
-    @zope.formlib.form.action(_('Apply for article'), name='apply',
-                              condition=_is_not_teaser)
-    def apply(self, action, data):
-        self._apply(data)
+        return not self.context.free_teaser
 
     @zope.formlib.form.action(
-        _('Apply only for this page'), condition=_is_teaser)
-    def apply_in_teaser(self, action, data):
-        self._apply(data)
+        _('Apply for article'), name='apply_in_article',
+        condition=_is_not_teaser)
+    def apply_in_article(self, action, data):
+        # TODO: adapt fails
+        content = zeit.cms.interfaces.ICMSContent(self.context.uniqueId)
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            # XXX if co is None
+            self._apply(co, data)
 
-    def _apply(self, data):
+    @zope.formlib.form.action(
+        _('Apply only for this page'), name='apply_locally')
+    def apply_locally(self, action, data):
+        self._apply(self.context, data)
+        self.context.free_teaser = True
+
+    def _apply(self, context, data):
+        self.adapters = {}
         changed = zope.formlib.form.applyChanges(
-            self.context, self.form_fields, data, self.adapters)
+            context, self.form_fields, data, self.adapters)
         if changed:
             zope.event.notify(
-                zope.lifecycleevent.ObjectModifiedEvent(
-                    self.context.get_proxied_object()))
-            manager = zeit.cms.checkout.interfaces.ICheckinManager(
-                self.context)
-            manager.checkin()
+                zope.lifecycleevent.ObjectModifiedEvent(context))
             self.close = True
-
-    @zope.formlib.form.action(
-        _('Apply only for this page'), condition=_is_not_teaser)
-    def apply_local(self, action, data):
-        teaser = zeit.content.cp.interfaces.ITeaser(self.context)
-        changed = zope.formlib.form.applyChanges(
-            teaser, self.form_fields, data)
-        if not changed:
-            return
-
-        folder = zeit.cms.interfaces.ICMSContent(
-            self.context.uniqueId).__parent__
-        name = zope.container.interfaces.INameChooser(
-            folder).chooseName(self.context.__name__, teaser)
-
-        # Delete the original_content from the working copy.
-        del self.context.get_proxied_object().__parent__[self.context.__name__]
-        folder[name] = teaser
-        teaser = folder[name]
-        teaser_list = self.context.__parent__
-        teaser_list.insert(teaser_list.getPosition(self.context), teaser)
-        teaser_list.remove(self.context)
-        zope.event.notify(
-            zope.lifecycleevent.ObjectModifiedEvent(teaser_list))
-        self.close = True
 
 
 class ListRepresentation(

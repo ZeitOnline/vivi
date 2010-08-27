@@ -21,7 +21,7 @@ class TestTeaserDisplay(unittest.TestCase):
             image = self.display.get_image(self.content)
             qma.assert_called_with((self.content, self.display.request),
                                    name='preview')
-            self.display.url.assert_called_with(self.content, '@@preview')
+            self.display.url.assert_called_with(qma())
             self.assertEqual(image, self.display.url())
 
     def test_get_image_should_not_break_with_no_iimages_and_no_preview(self):

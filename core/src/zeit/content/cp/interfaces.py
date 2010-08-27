@@ -442,6 +442,17 @@ class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 
+class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
+                 zeit.cms.content.interfaces.ICommonMetadata):
+
+    free_teaser = zope.schema.Bool(u'Is it a free teaser?')
+    original_uniqueId = zope.schema.URI(
+        title=u'The unique id of the content referenced by the teaser')
+    original_content = zope.interface.Attribute(
+        u'The content referenced by the teaser')
+
+
+
 class IReadTeaserBar(IReadRegion, IElement):
 
     layout = zope.schema.Choice(

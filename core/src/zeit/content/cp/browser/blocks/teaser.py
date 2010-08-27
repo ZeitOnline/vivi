@@ -130,7 +130,7 @@ class Display(zeit.cms.browser.view.Base):
             preview = zope.component.queryMultiAdapter(
                 (content, self.request), name='preview')
             if preview:
-                return self.url(content, '@@preview')
+                return self.url(preview)
             return
         if not images.images:
             return
@@ -185,27 +185,26 @@ class EditContents(zeit.cms.browser.view.Base):
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
             locking_indicator = None
+            url = None
             if metadata is None:
                 editable = False
                 title = content.uniqueId
-                url = None
             else:
-                editable = zeit.cms.checkout.interfaces.ICheckoutManager(
-                    content).canCheckout
-                if not editable:
-                    locking_indicator = zope.component.queryMultiAdapter(
-                        (content, self.request), name='get_locking_indicator')
+                editable = True
                 title = metadata.teaserTitle
-                url = self.url(content)
+                try:
+                    url = self.url(content)
+                except TypeError:
+                    # For example, IXMLTeaser cannot be viewed that way.
+                    pass
             teasers.append(dict(
                 css_class='edit-bar teaser',
                 deletable=True,
                 editable=editable,
-                locking_indicator=locking_indicator,
                 teaserTitle=title,
                 uniqueId=content.uniqueId,
                 url=url,
-                viewable=True,
+                viewable=bool(url),
             ))
 
         columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
@@ -215,7 +214,6 @@ class EditContents(zeit.cms.browser.view.Base):
                 css_class='edit-bar column-separator',
                 deletable=False,
                 editable=False,
-                locking_indicator=None,
                 teaserTitle=_('^ Left | Right v'),
                 uniqueId=COLUMN_ID,
                 viewable=False,

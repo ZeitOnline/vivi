@@ -100,7 +100,7 @@ The teaser block can be edited:
         cms:uniqueid="http://xml.zeit.de/c1">
         <a class="edit-link" title="Edit in place"
            ...
-           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/checkout-content?uniqueId=http://xml.zeit.de/c1">
+           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/++item++1/@@edit-teaser.html">
           <span class="action-title">Edit inline</span>
         </a>
         <a class="edit-object-link"
@@ -158,131 +158,6 @@ Sort another time:
 >>> browser.open(url + '?keys=' + cjson.encode(order))
 
 
-Editing teasers
----------------
-
-Editing teasers in the CP editor is a rather complex task.
-
-* The lighbox opens another lightbox which contains the edit form.
-
-* For being editable a content objects needs to be checked out. So the first
-  request the lightbox does is actually only checking out the content object
-  and redirects to the real edit form.
-
->>> browser.open(lightbox_url)
->>> browser.getLink('Edit').click()
->>> edit_url = browser.url
->>> browser.getControl('Teaser title').value = 'Test content teaser title'
->>> browser.getControl('Teaser text').value = 'Test content teaser text'
->>> browser.getControl('Apply for article').click()
-
-# XXX make sure the widgets are the "counting" ones.
-
-
-On successful save, the object is checked in automatically. The lightbox is
-instructed to close itself:
-
->>> print browser.contents
-<div...
-<script language="javascript">
-    self.clean = true;
-    self.close();
-</script>
-...
->>> browser.open(edit_url)
-Traceback (most recent call last):
-    ...
-HTTPError: HTTP Error 404: Not Found
-
-The teasers of testcontent have been changed in the repository:
-
->>> browser.open('http://localhost/++skin++cms/repository/c1')
->>> print browser.contents
-<?xml ...
- <span>Teaser title</span>
- ...
- <div class="widget">Test content teaser title</div>
- ...
-
-When an object could not be checked out, the edit link is replaced by a lock:
-
->>> browser.open(lightbox_url)
->>> browser.getLink('Edit').click()
->>> browser.open(lightbox_url)
->>> print browser.contents
-<...
-    <li class="edit-bar teaser" cms:uniqueid="http://xml.zeit.de/c1">
-        <span class="locked-indicator"><img src="...
-
-
-When the lightbox is closed the checked out object will be deleted. This is
-completely hooked up in javascript and cannot be tested here.
-
-
-Editing teasers locally
-+++++++++++++++++++++++
-
-Instead if editing the original article it is also possible to create a local
-copy and edit that.
-
->>> browser.open(lightbox_url)
->>> browser.getLink('Edit').click()
->>> browser.getControl('Teaser title').value = 'Local teaser title'
->>> browser.getControl('Teaser text').value = 'Local teaser text'
-
-To create the local copy, press the `Apply only for this page` button:
-
->>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> browser.getControl('Apply only for this page').click()
->>> zeit.content.cp.centerpage._test_helper_cp_changed
-True
-
-The original article is unchanged:
-
->>> browser.open('http://localhost/++skin++cms/repository/c1')
->>> print browser.contents
-<?xml ...
- <span>Teaser title</span>
- ...
- <div class="widget">Test content teaser title</div>
- ...
-
-The teaser block now contains the local copy instead of the original article:
-
->>> browser.open(lightbox_url)
->>> print browser.contents
-<...<div...>Local teaser title</div>...
-
-We can now only edit the local copy:
-
->>> browser.getLink('Edit').click()
->>> browser.getControl('Teaser title').value
-'Local teaser title'
->>> browser.getControl('Teaser text').value
-'Local teaser text'
->>> browser.getControl('Teaser title').value = 'Very local teaser title'
->>> browser.getControl('Apply for article')
-Traceback (most recent call last):
-    ...
-LookupError: label 'Apply for article'
->>> browser.getControl('Apply only for this page').click()
-
-The original article is still unchanged:
-
->>> browser.open('http://localhost/++skin++cms/repository/c1')
->>> print browser.contents
-<?xml ...
- <span>Teaser title</span>
- ...
- <div class="widget">Test content teaser title</div>
- ...
-
-Again, the teaser block has been updated:
->>> browser.open(lightbox_url)
->>> print browser.contents
-<...<div...>Very local teaser title</div>...
-
-
 Deleting entries
 ----------------
 
@@ -301,7 +176,7 @@ True
     <li class="action-content-droppable...
     <li class="edit-bar teaser" ...
         ...
-      <div...>Test content teaser title</div>
+      <div...>http://xml.zeit.de/online/2007/01/Somalia</div>
     </li>
     <li class="action-content-droppable...
   </ol>
@@ -319,8 +194,8 @@ The cp contents also has changed of course:
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
-    <div class="teaserTitle">Test content teaser title</div>
-    <div class="teaserText">Test content teaser text</div>
+    <div class="teaserTitle">c1 teaser</div>
+    <div class="teaserText"></div>
     ...
   </div>
 </div>

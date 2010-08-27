@@ -126,6 +126,18 @@
       />
   </class>
 
+  <class class=".teaser.XMLTeaser">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IXMLTeaser"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IXMLTeaser"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+
   <adapter factory=".teaser.resourceFactory" />
   <adapter factory=".teaser.teaserFactory" name="teaser" />
   <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
@@ -135,8 +147,6 @@
 
   <!-- Blocks -->
   <include package=".blocks" />
-
-  <adapter factory=".teaser.metadata_to_teaser" />
 
   <zeit:globs module=".rule" />
   <adapter factory=".rule.globs" />

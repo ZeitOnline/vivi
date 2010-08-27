@@ -9,11 +9,9 @@
     tal:content="structure view/form"/>
 
   <script language="javascript"
-    tal:define="proxy context/get_proxied_object"
     tal:condition="not: view/close"
     tal:content="string:
       log(self.__name__);
-      self.cleanup_url = '${proxy/@@absolute_url}/@@delete.html?form.actions.delete=yes';
     "></script>
 
   <script language="javascript"

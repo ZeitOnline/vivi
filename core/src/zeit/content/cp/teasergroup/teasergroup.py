@@ -7,7 +7,6 @@ import gocept.runner
 import grokcore.component
 import persistent
 import pytz
-import rwproperty
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.type
@@ -61,12 +60,12 @@ class SemanticChange(grokcore.component.Adapter):
     grokcore.component.implements(
         zeit.cms.content.interfaces.ISemanticChange)
 
-    @rwproperty.getproperty
+    @property
     def last_semantic_change(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return dc.modified
 
-    @rwproperty.setproperty
+    @last_semantic_change.setter
     def last_semantic_change(self, value):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         dc.modified = value

@@ -6,6 +6,9 @@ zeit.content.cp changes
 
 - TeaserBockProxy adapts to ICommonMetadata now. 
 
+- Freie Teaser werden jetzt nur noch in der CP gespeichert. Es gibt keine extra
+  Objekte im DAV mehr dafür (#7826)
+
 
 0.42.0 (2010-08-16)
 -------------------
