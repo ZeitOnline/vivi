@@ -3,8 +3,11 @@ Teaser
 
 Teaser objects contain the metadata of and a reference to an ICMSContent.
 
-You can generate a teaser by adapting to `ITeaser` [#functional]_:
+You can generate a teaser by adapting to `ITeaser`:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
@@ -87,8 +90,3 @@ When the original object is changed, we receive a warning about the reference:
 <..."testcontent" is referenced by free teaser "testcontent-2"...
 
 
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
