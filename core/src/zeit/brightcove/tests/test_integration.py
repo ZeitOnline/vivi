@@ -23,3 +23,10 @@ class CommonMetadataTest(unittest.TestCase):
             self.assertEqual(('foo',), e.args)
         else:
             self.fail('AttributeError not raised')
+
+    def test_should_provide_unique_id(self):
+        from zeit.brightcove.integration import CommonMetadata
+        video = mock.Mock()
+        video.uniqueId = mock.sentinel.unique_id
+        metadata = CommonMetadata(video)
+        self.assertEqual(mock.sentinel.unique_id, metadata.uniqueId)

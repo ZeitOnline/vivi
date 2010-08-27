@@ -155,6 +155,10 @@ class CommonMetadata(grokcore.component.Adapter):
     def teaserTitle(self):
         return self.title
 
+    @property
+    def uniqueId(self):
+        return self.context.uniqueId
+
     def __getattr__(self, key):
         if key in zeit.cms.content.interfaces.ICommonMetadata:
             return getattr(self.context, key, None)
