@@ -12,6 +12,8 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'grokcore.component',
+        'grokcore.view',
         'lxml',
         'pytz',
         'setuptools',

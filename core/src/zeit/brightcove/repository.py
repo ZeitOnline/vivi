@@ -92,6 +92,7 @@ class Repository(persistent.Persistent,
             if curdata == newdata:
                 return
         self[newcontent.__name__] = newcontent
+        newcontent.__parent__ = self
         # XXX we should use events here
         zeit.brightcove.solr.index_content(newcontent)
 

@@ -155,6 +155,10 @@ class CommonMetadata(grokcore.component.Adapter):
     def teaserTitle(self):
         return self.title
 
+    @teaserTitle.setter
+    def teaserTitle(self, value):
+        self.context.title = value
+
     @property
     def uniqueId(self):
         return self.context.uniqueId
@@ -164,15 +168,29 @@ class CommonMetadata(grokcore.component.Adapter):
             return getattr(self.context, key, None)
         raise AttributeError(key)
 
+    def __setattr__(self, key, value):
+        if (key in zeit.cms.content.interfaces.ICommonMetadata and
+            key != 'teaserTitle'):
+            setattr(self.context, key, value)
+        else:
+            object.__setattr__(self, key, value)
 
-class SemanticChange(grokcore.component.Adapter):
 
-    grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
-    grokcore.component.implements(zeit.cms.content.interfaces.ISemanticChange)
+class SemanticChange(object):
+
+    zope.component.adapts(zeit.brightcove.interfaces.IBrightcoveContent)
+    zope.interface.implements(zeit.cms.content.interfaces.ISemanticChange)
+
+    def __init__(self, context):
+        self.context = context
 
     @property
     def last_semantic_change(self):
         return self.context.date_last_modified
+
+    @last_semantic_change.setter
+    def last_semantic_change(self, value):
+        self.context.date_last_modified = value
 
 
 class CommonMetadataVideo(CommonMetadata):

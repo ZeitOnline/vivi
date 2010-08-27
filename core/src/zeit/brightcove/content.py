@@ -139,25 +139,13 @@ class Content(persistent.Persistent,
                     persistent.mapping.PersistentMapping(
                         self.data['customFields']))
             self.uniqueId = 'http://video.zeit.de/%s/%s' % (self.type, self.data['id'])
+            self.__name__ = '%s:%s' % (self.type, self.data['id'])
+
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
         return self.__name__ == other.__name__
-
-    @property
-    def __parent__(self):
-        return zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
-
-    @__parent__.setter
-    def __parent__(self, value):
-        if self.__parent__ != value:
-            raise ValueError(value)
-
-    @property
-    def __name__(self):
-        return '%s:%s' % (self.type, self.data['id'])
 
     @property
     def thumbnail(self):
@@ -169,6 +157,8 @@ class Content(persistent.Persistent,
             zeit.brightcove.interfaces.IAPIConnection)
 
     def save_to_brightcove(self):
+        if zeit.cms.checkout.interfaces.ILocalContent.providedBy(self):
+            return
         registered = getattr(self, '_v_save_hook_registered', False)
         if not registered:
             transaction.get().addBeforeCommitHook(self._save)
@@ -193,6 +183,7 @@ class Content(persistent.Persistent,
 class Video(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
+
     type = 'video'
     id_prefix = 'vid' # for old-style asset IDs
     allow_comments = mapped_bool('customFields', 'allow_comments')

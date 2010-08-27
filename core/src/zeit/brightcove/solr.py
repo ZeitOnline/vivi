@@ -4,6 +4,7 @@
 import grokcore.component
 import lxml.objectify
 import zeit.brightcove.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.solr.interfaces
 import zope.component
 import zope.lifecycleevent.interfaces
@@ -39,7 +40,8 @@ class Updater(grokcore.component.Adapter):
     zeit.brightcove.interfaces.IBrightcoveContent,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
 def index_content_on_change(context, event):
-    index_content(context)
+    if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        index_content(context)
 
 
 def index_content(context):

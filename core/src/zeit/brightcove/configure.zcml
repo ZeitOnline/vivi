@@ -11,6 +11,7 @@
     />
 
   <include file="browser.zcml" />
+  <include file="checkout.zcml" />
 
   <utility
     name="zeit.cms/brightcove"
@@ -77,6 +78,13 @@
   </class>
 
   <adapter factory=".asset.XMLReferenceUpdater" name="audio_video"/>
+
+
+  <adapter factory=".integration.SemanticChange" trusted="yes" />
+  <class class=".integration.SemanticChange">
+    <require interface="zeit.cms.content.interfaces.ISemanticChange"
+             permission="zope.View" />
+  </class>
 
 </configure>
 
