@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import grokcore.component
-import rwproperty
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.keyword
@@ -92,11 +91,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zope.schema.TextLine(),
         'http://namespaces.zeit.de/CMS/workflow', 'product-name')
 
-    @rwproperty.getproperty
+    @property
     def product_id(self):
         return self._product_id
 
-    @rwproperty.setproperty
+    @product_id.setter
     def product_id(self, value):
         if self._product_id == value:
             return
