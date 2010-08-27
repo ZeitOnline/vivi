@@ -7,6 +7,7 @@ import gocept.lxml.objectify
 import grokcore.component
 import lxml.objectify
 import persistent
+import persistent.interfaces
 import pytz
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -81,7 +82,7 @@ class Persistent(object):
         parent = getattr(self, '__parent__', None)
         while parent is not None:
             unproxied = zope.proxy.removeAllProxies(parent)
-            if isinstance(unproxied, persistent.Persistent):
+            if persistent.interfaces.IPersistent.providedBy(unproxied):
                 return unproxied
             parent = parent.__parent__
 
