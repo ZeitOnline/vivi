@@ -4,6 +4,14 @@ zeit.cms changes
 1.47.1 (unreleased)
 -------------------
 
+-  Generalised how checkout/checkin works so it also works for non-dav content
+  (#7826)
+
+- Added IDAVContent for content from the original repository. This is to
+  separate it from content from other repositories (like brightcove) (#7826).
+
+- Made locking support optional (#7826)
+
 - A view on workingcopy objects used to lookup objects directly in the
   repository. Replaced this by an ICMSContent() adapter lookup (#7826)
 
