@@ -140,6 +140,7 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
 
     def test_adapter_grokking(self):
 
+        import zeit.cms.content.dav
         class Adapter(zeit.cms.content.dav.DAVPropertiesAdapter):
             grokcore.component.implements(ITestInterface)
 
@@ -155,11 +156,15 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(isinstance(zope.security.proxy.removeSecurityProxy(
             adapter), Adapter))
         self.assertEquals(self.content, adapter.__parent__)
-
-        zope.component.getGlobalSiteManager().unregisterAdapter(
-            Adapter, (zeit.cms.interfaces.ICMSContent,), ITestInterface)
+        # Unregister adapter so we don't leak it
+        self.assertTrue(
+            zope.component.getGlobalSiteManager().unregisterAdapter(
+                Adapter, (zeit.cms.repository.interfaces.IDAVContent,),
+                ITestInterface))
+        self.assertRaises(TypeError, ITestInterface, self.content)
 
     def test_adapter_grokking_isolation(self):
+        # Make sure the previous test does not leak the adapter registration
         self.assertRaises(TypeError, ITestInterface, self.content)
 
     def test_adatper_adaptable_to_properties(self):
