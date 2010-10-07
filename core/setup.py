@@ -34,6 +34,7 @@ setup(
         'zeit.brightcove>=0.3.0',
         'zeit.cms>1.44.0',
         'zeit.content.quiz>=0.4.2',
+        'zeit.edit',
         'zeit.find >= 0.4',
         'zeit.solr',
         'zope.app.appsetup',
