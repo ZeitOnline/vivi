@@ -60,15 +60,9 @@
 
   <!-- Editor -->
 
-  <gocept:pagelet
-    for="zeit.content.cp.interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.html"
-    class=".editor.Editor"
-    template="editor.pt"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit contents"
-    />
+  <class class="zeit.content.cp.centerpage.CenterPage">
+    <implements interface="zeit.edit.interfaces.IEditable" />
+  </class>
 
   <browser:page
     for="zeit.content.cp.interfaces.ICenterPage"

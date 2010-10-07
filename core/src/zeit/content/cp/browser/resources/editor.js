@@ -1,67 +1,6 @@
 
-/** patch mochikit ***/
-
-(function() {
-
-    var signal = function (src, sig) {
-        var self = MochiKit.Signal;
-        var observers = self._observers;
-        src = MochiKit.DOM.getElement(src);
-        var args = MochiKit.Base.extend(null, arguments, 2);
-        var errors = [];
-        self._lock += 1;
-        for (var i = 0; i < observers.length; i++) {
-            var ident = observers[i];
-            if (ident.source === src && ident.signal === sig &&
-                    ident.connected) {
-                try {
-                    ident.listener.apply(src, args);
-                } catch (e) {
-                    errors.push(e);
-                }
-            }
-        }
-        self._lock -= 1;
-        if (self._dirty && !self._lock) {
-            self._dirty = false;
-            for (var i = observers.length - 1; i >= 0; i--) {
-                if (!observers[i].connected) {
-                    observers.splice(i, 1);
-                }
-            }
-        }
-        if (errors.length == 1) {
-            throw errors[0];
-        } else if (errors.length > 1) {
-            var e = new Error("Multiple errors thrown in handling 'sig', see errors property");
-            e.errors = errors;
-            throw e;
-        }
-    }
-
-    MochiKit.Signal.signal = signal;
-})();
-
-
 zeit.cms.declare_namespace('zeit.content.cp');
 
-
-// Lock to hold for asynchronous tasks.
-zeit.content.cp.json_request_lock = new MochiKit.Async.DeferredLock();
-
-zeit.content.cp.with_lock = function(callable) {
-    var d = zeit.content.cp.json_request_lock.acquire()
-    var pfunc = MochiKit.Base.partial.apply(
-        MochiKit.Base, MochiKit.Base.extend(null, arguments));
-    d.addCallback(function(result) {
-        return pfunc();
-    });
-    d.addBoth(function(result_or_error) {
-        zeit.content.cp.json_request_lock.release()
-        return result_or_error;
-    });
-    return d;
-}
 
 
 zeit.content.cp.makeJSONRequest = function(
@@ -76,9 +15,9 @@ zeit.content.cp._locked_makeJSONRequest = function(
     url, json, target_component, options) {
 
     if (isUndefinedOrNull(target_component)) {
-        target_component = zeit.content.cp.editor;
+        target_component = zeit.edit.editor;
     }
-    zeit.content.cp.editor.busy_until_reload_of(target_component);
+    zeit.edit.editor.busy_until_reload_of(target_component);
     options = MochiKit.Base.setdefault(options, {
         method: 'GET',
     });
@@ -166,15 +105,6 @@ zeit.content.cp.handle_json_errors = function(error) {
     return error
 }
 
-zeit.content.cp.resolveDottedName = function(name) {
-    // Resolve *absolute* dotted name
-    var obj = window;
-    forEach(name.split('.'), function(step) {
-        obj = obj[step]
-    });
-    return obj;
-}
-
 
 zeit.content.cp.getParentComponent = function(context_element) {
     var parent = null;
@@ -187,152 +117,6 @@ zeit.content.cp.getParentComponent = function(context_element) {
 }
 
 
-zeit.content.cp.Editor = gocept.Class.extend({
-
-    __name__: 'zeit.content.cp.Editor',
-
-    construct: function() {
-        var self = this;
-        self.content = $('cp-content');
-        self.inner_content = null;
-        self.content.__handler__ = self;
-        self.busy = false;
-        MochiKit.Signal.connect(
-            'content', 'onclick',
-            self, self.handleContentClick);
-        MochiKit.Signal.connect(
-            self, 'reload', self, self.reload);
-        new zeit.cms.ToolTipManager(self.content);
-    },
-
-    handleContentClick: function(event) {
-        var self = this;
-        var target = event.target();
-        log("Target " + target.nodeName);
-        while (!isNull(target) && target.id != 'content') {
-            // Target can be null when it was removed from the DOM by a
-            // previous event handler (like the lightbox shade)
-            var module_name = target.getAttribute('cms:cp-module')
-            if (!isNull(module_name)) {
-                break;
-            }
-            target = target.parentNode;
-        }
-        if (module_name) {
-            log("Loading module " + module_name);
-            event.stop();
-            var module = zeit.content.cp.resolveDottedName(module_name);
-            new module(target);
-        } else if (event.target().nodeName == 'A' && event.target().target) {
-            // pass
-        } else if (event.target().nodeName == 'A') {
-            event.preventDefault();
-        }
-    },
-
-    reload: function(element_id, url) {
-        var self = this;
-        log("Reloading", element_id, url);
-        var element = null;
-        if (!isUndefinedOrNull(element_id)) {
-             element = $(element_id);
-        }
-        MochiKit.Signal.signal(self, 'before-reload');
-        if (isUndefinedOrNull(url)) {
-            url = context_url + '/contents';
-        }
-        var d = zeit.content.cp.with_lock(
-            MochiKit.Async.doSimpleXMLHttpRequest, url);
-        if (isNull(element)) {
-            d.addCallback(function(result) {
-                self.replace_whole_editor(result);
-                return result;
-            });
-        } else {
-            d.addCallback(function(result) {
-                self.replace_element(element, result);
-                return result;
-            });
-        }
-        d.addCallback(function(result) {
-            MochiKit.Signal.signal(self, 'after-reload');
-            return result;
-        });
-        d.addErrback(function(error) {
-            zeit.cms.log_error(error);
-            return error
-        });
-        return d;
-    },
-
-    replace_whole_editor: function(result) {
-        var self = this;
-        if (isNull(self.inner_content)) {
-            self.content.innerHTML = result.responseText;
-            self.inner_content = (
-                MochiKit.DOM.getFirstElementByTagAndClassName(
-                    'div', 'cp-content-inner', self.content));
-        } else {
-            var dom = DIV();
-            dom.innerHTML = result.responseText;
-            var new_inner = (
-                MochiKit.DOM.getFirstElementByTagAndClassName(
-                    'div', 'cp-content-inner', dom));
-            self.inner_content.innerHTML = new_inner.innerHTML;
-        }
-    },
-
-    replace_element: function(element, result) {
-        var self = this;
-        var dom = DIV();
-        dom.innerHTML = result.responseText;
-        MochiKit.DOM.swapDOM(element, dom.firstChild);
-    },
-
-    busy_until_reload_of: function(component, delay) {
-        var self = this;
-        if (self.busy) {
-            // Already busy
-            return;
-        }
-        log("Entering BUSY state " + component.__name__);
-        self.busy = true;
-        MochiKit.Signal.signal(self, 'busy', delay);
-        var ident = MochiKit.Signal.connect(
-            component, 'after-reload', function() {
-                MochiKit.Signal.disconnect(ident);
-                self.idle();
-        });
-    },
-
-    idle: function() {
-        var self = this;
-        log("Entering IDLE state");
-        if (self.busy) {
-            self.busy = false;
-            MochiKit.Signal.signal(self, 'idle');
-        }
-    },
-});
-
-
-(function() {
-    var ident = MochiKit.Signal.connect(window, 'onload', function() {
-        MochiKit.Signal.disconnect(ident);
-        if (isNull($('cp-content'))) {
-            return
-        }
-        zeit.content.cp.editor = new zeit.content.cp.Editor();
-        MochiKit.Signal.signal(window, 'cp-editor-initialized');
-        zeit.content.cp.editor.busy_until_reload_of(
-            zeit.content.cp.editor, 0);
-        var d = zeit.content.cp.editor.reload();
-        d.addCallback(function(result) {
-            MochiKit.Signal.signal(window, 'cp-editor-loaded');
-            return result;
-        });
-    });
-})();
 
 
 zeit.content.cp.BlockHover = gocept.Class.extend({
@@ -397,10 +181,10 @@ zeit.content.cp.in_context.Base = gocept.Class.extend({
         self.init();
 
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'single-context-start',
+            zeit.edit.editor, 'single-context-start',
             self, self.deactivate));
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'single-context-end',
+            zeit.edit.editor, 'single-context-end',
             self, self.activate));
     },
 
@@ -435,10 +219,10 @@ zeit.content.cp.in_context.Editor = zeit.content.cp.in_context.Base.extend({
         var self = this;
         // Those handlers stay forever
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'after-reload',
+            zeit.edit.editor, 'after-reload',
             self, self.activate));
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'before-reload',
+            zeit.edit.editor, 'before-reload',
             self, self.deactivate));
     },
 
@@ -453,7 +237,7 @@ zeit.content.cp.in_context.Lightbox = zeit.content.cp.in_context.Base.extend({
 
     init: function() {
         var self = this;
-        MochiKit.Signal.signal(zeit.content.cp.editor, 'single-context-start');
+        MochiKit.Signal.signal(zeit.edit.editor, 'single-context-start');
         self.activate();
         self.events.push(MochiKit.Signal.connect(
             self.context_aware.parent, 'before-close',
@@ -478,7 +262,7 @@ zeit.content.cp.ContentActionBase = gocept.Class.extend({
 
     construct: function() {
         var self = this;
-        self.editor = zeit.content.cp.editor;
+        self.editor = zeit.edit.editor;
         self.dnd_objects = [];
         self.events = [];
         if (isNull(self.context)) {
@@ -732,7 +516,7 @@ zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
     connect: function() {
         var self = this;
         self.events.push(MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'before-reload', function() {
+            zeit.edit.editor, 'before-reload', function() {
                 self.reload_parent_component_on_close = false;
                 self.close();
         }));
@@ -875,9 +659,9 @@ zeit.content.cp.LoadAndReload = gocept.Class.extend({
         function() {
             MochiKit.Signal.disconnect(ident);
             MochiKit.Signal.connect(
-                zeit.content.cp.editor, 'added', added);
+                zeit.edit.editor, 'added', added);
             MochiKit.Signal.connect(
-                zeit.content.cp.editor, 'deleted', deleted);
+                zeit.edit.editor, 'deleted', deleted);
     });
 })();
 
@@ -990,64 +774,7 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         function() {
             MochiKit.Signal.disconnect(ident);
             MochiKit.Signal.connect(
-                zeit.content.cp.editor, 'after-reload', fix_box_heights);
+                zeit.edit.editor, 'after-reload', fix_box_heights);
         });
 })();
 
-
-zeit.content.cp.BusyIndicator = gocept.Class.extend({
-
-    construct: function() {
-        var self = this;
-        MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'busy', self, self.busy_after_a_while)
-        MochiKit.Signal.connect(
-            zeit.content.cp.editor, 'idle', self, self.idle)
-        self.delayer = null; 
-        self.indicator = DIV({
-            class: 'hidden',
-            id: 'busy-indicator'},
-            DIV({class: 'shade'}),
-            IMG({src: application_url + '/@@/zeit.imp/loading.gif'})
-            );
-        $('content').appendChild(self.indicator);
-    },
-
-    busy_after_a_while: function(delay) {
-        var self = this;
-        if (isUndefinedOrNull(delay)) {
-            delay = 1;
-        }
-        self.delayer = MochiKit.Async.callLater(delay, function() {
-            self.busy();
-        });
-    },
-
-    busy: function() {
-        var self = this;
-        MochiKit.Style.setOpacity(self.indicator, 0);
-        MochiKit.DOM.removeElementClass(self.indicator, 'hidden');
-        MochiKit.Visual.appear(self.indicator);
-    },
-
-    idle: function() {
-        var self = this;
-        if (!isNull(self.delayer)) {
-            self.delayer.cancel();
-            self.delayer = null;
-        }
-        MochiKit.DOM.addElementClass(self.indicator, 'hidden');
-    },
-
-});
-
-
-(function() {
-    var ident = MochiKit.Signal.connect(
-        window, 'cp-editor-initialized',
-        function() {
-            MochiKit.Signal.disconnect(ident);
-            zeit.content.cp.busy_indicator =
-                new zeit.content.cp.BusyIndicator();
-        });
-})();
