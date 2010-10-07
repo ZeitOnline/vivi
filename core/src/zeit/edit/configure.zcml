@@ -1,0 +1,35 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <resourceLibrary name="zeit.edit.styles">
+    <directory
+      source="resources"
+      include="editor.css"/>
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.edit"
+    require="
+    zeit.cms
+    zeit.find
+    zeit.edit.styles
+    ">
+    <directory
+      source="js"
+      include="edit.js"/>
+  </resourceLibrary>
+
+  <gocept:pagelet
+    for=".interfaces.IEditable"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    template="editor.pt"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit contents"
+    />
+
+</configure>
+
