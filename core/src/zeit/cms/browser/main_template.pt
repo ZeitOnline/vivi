@@ -33,6 +33,15 @@
       context_title context/@@standard_macros/context_title;
       favicon context/++resource++zeit.cms/icons/favicon.png">
       <head>
+        <script
+          type="text/javascript"
+          src="http://code.jquery.com/jquery-1.4.2.min.js">
+        </script>
+        <script
+          type="text/javascript"
+          src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js">
+        </script>
+        <!-- zc.resourcelibrary -->
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
           var context_url = '${context/@@absolute_url}';
