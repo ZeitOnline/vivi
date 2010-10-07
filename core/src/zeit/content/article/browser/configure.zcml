@@ -5,24 +5,29 @@
   i18n_domain="zeit.cms">
 
   <adapter factory=".comment.comment_browse_location" />
+ 
+  <!-- content editor -->
+  <class class="zeit.content.article.article.Article">
+    <implements interface="zeit.edit.interfaces.IEditable" />
+  </class>
 
   <browser:page
-    name="edit.html"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.EditForm"
+    name="contents"
+    template="editor-content.pt"
     permission="zeit.EditContent"
     />
 
-  <browser:menuItem
-    for="zeit.content.article.interfaces.IArticle"
+
+  <browser:resourceDirectory
+    name="zeit.content.article"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="Edit metadata"
-    action="@@edit.html"
-    permission="zeit.EditContent"
-    icon="metadata-edit"
+    directory="resources"
     />
+
+
+  <!-- old cruft ;) -->
 
   <browser:page
     name="view.html"

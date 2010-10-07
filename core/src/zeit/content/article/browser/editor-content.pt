@@ -1,0 +1,9 @@
+<div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
+      id="cp-content-inner"
+      class="cp-content-inner">
+  <script
+    type="text/javascript"
+    tal:attributes="src
+    string:${request/++resource++zeit.content.article}/editor.js"></script>
+dadu
+</div>
