@@ -41,8 +41,4 @@ setup(name='zeit.edit',
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
-    entry_points={
-        'console_scripts':
-            ['zeit.edit=zeit.edit:main']
-    }
 )
