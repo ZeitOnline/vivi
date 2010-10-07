@@ -1,3 +1,47 @@
+/** patch mochikit ***/
+
+(function() {
+
+    var signal = function (src, sig) {
+        var self = MochiKit.Signal;
+        var observers = self._observers;
+        src = MochiKit.DOM.getElement(src);
+        var args = MochiKit.Base.extend(null, arguments, 2);
+        var errors = [];
+        self._lock += 1;
+        for (var i = 0; i < observers.length; i++) {
+            var ident = observers[i];
+            if (ident.source === src && ident.signal === sig &&
+                    ident.connected) {
+                try {
+                    ident.listener.apply(src, args);
+                } catch (e) {
+                    errors.push(e);
+                }
+            }
+        }
+        self._lock -= 1;
+        if (self._dirty && !self._lock) {
+            self._dirty = false;
+            for (var i = observers.length - 1; i >= 0; i--) {
+                if (!observers[i].connected) {
+                    observers.splice(i, 1);
+                }
+            }
+        }
+        if (errors.length == 1) {
+            throw errors[0];
+        } else if (errors.length > 1) {
+            var e = new Error("Multiple errors thrown in handling 'sig', see errors property");
+            e.errors = errors;
+            throw e;
+        }
+    }
+
+    MochiKit.Signal.signal = signal;
+})();
+
+
 (function() {
     var declare_namespace = function(namespace) {
         var obj = window;
@@ -11,6 +55,16 @@
     declare_namespace('zeit.cms');
     zeit.cms.declare_namespace = declare_namespace;
 })();
+
+
+zeit.cms.resolveDottedName = function(name) {
+    // Resolve *absolute* dotted name
+    var obj = window;
+    forEach(name.split('.'), function(step) {
+        obj = obj[step]
+    });
+    return obj;
+}
 
 
 zeit.cms.ScrollStateRestorer = gocept.Class.extend({
@@ -124,6 +178,7 @@ zeit.cms.log_error = function(err) {
 zeit.cms._imported = {}
 zeit.cms.import = function(src) {
     var d = new MochiKit.Async.Deferred();
+    logDebug('Importing', src);
     if (MochiKit.Base.isUndefined(zeit.cms._imported[src])) {
         var head = document.getElementsByTagName('head')[0]
         if (!isNull(src.match(/\.js$/))) {
