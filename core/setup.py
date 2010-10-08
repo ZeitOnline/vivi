@@ -10,9 +10,13 @@ version = '0.1dev'
 
 install_requires = [
     'setuptools',
+    'gocept.lxml',
+    'grokcore.component',
+    'lxml',
     'zc.resourcelibrary',
     'zeit.cms',
     'zeit.find',
+    'zope.schema',
     'zope.interface',
 ]
 
