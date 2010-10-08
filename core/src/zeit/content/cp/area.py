@@ -14,10 +14,14 @@ import zope.interface
 
 class Container(zeit.edit.container.Base):
 
-    _find_item = lxml.etree.XPath(
-        './*[@cms:__name__ = $name]',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
+    def _find_item(self, xml_node, name):
+        nodes = lxml.etree.XPath(
+            './*[@cms:__name__ = $name]',
+            namespaces=dict(
+                cms='http://namespaces.zeit.de/CMS/cp'))
+        if nodes:
+            return nodes[0]
+
     _get_keys = lxml.etree.XPath(
         './*/attribute::cms:__name__',
         namespaces=dict(
