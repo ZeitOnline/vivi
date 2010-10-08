@@ -15,6 +15,12 @@ class Base(UserDict.DictMixin,
 
     zope.interface.implements(zeit.edit.interfaces.IContainer)
 
+    def __init__(self, context, xml):
+        self.xml = xml
+        # Set parent last so we don't trigger a write.
+        self.__parent__ = context
+
+    # Implemented in subclasses
 
     def _find_item(self, xml_node, name):
         raise NotImplementedError
@@ -25,15 +31,11 @@ class Base(UserDict.DictMixin,
     def _get_element_type(self, xml_node):
         raise NotImplementedError
 
-    def __init__(self, context, xml):
-        self.xml = xml
-        # Set parent last so we don't trigger a write.
-        self.__parent__ = context
+    # Default implementation
 
     def __getitem__(self, key):
         node = self._find_item(self.xml, name=key)
-        if node:
-            node = node[0]
+        if node is not None:
             element_type = self._get_element_type(node)
             element = zope.component.queryMultiAdapter(
                 (self, node),
