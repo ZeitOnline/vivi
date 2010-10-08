@@ -4,30 +4,9 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
+  <include file="edit.zcml"/>
+
   <adapter factory=".comment.comment_browse_location" />
- 
-  <!-- content editor -->
-  <class class="zeit.content.article.article.Article">
-    <implements interface="zeit.edit.interfaces.IEditable" />
-  </class>
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="contents"
-    template="editor-content.pt"
-    permission="zeit.EditContent"
-    />
-
-
-  <browser:resourceDirectory
-    name="zeit.content.article"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    directory="resources"
-    />
-
-
-  <!-- old cruft ;) -->
 
   <browser:page
     name="view.html"

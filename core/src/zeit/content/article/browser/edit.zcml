@@ -1,0 +1,34 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <class class="zeit.content.article.article.Article">
+    <implements interface="zeit.edit.interfaces.IEditable" />
+  </class>
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".edit.EditorContents"
+    template="editor-content.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="..edit.EditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="edit.body.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:resourceDirectory
+    name="zeit.content.article"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    directory="resources"
+    />
+
+</configure>

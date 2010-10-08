@@ -10,7 +10,6 @@ import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.content.browser.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.content.template
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
 import zeit.wysiwyg.interfaces

@@ -1,0 +1,3 @@
+<div tal:repeat="item context/items">
+  <div tal:content="item"></div>
+</div>

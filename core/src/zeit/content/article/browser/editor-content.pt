@@ -5,5 +5,12 @@
     type="text/javascript"
     tal:attributes="src
     string:${request/++resource++zeit.content.article}/editor.js"></script>
-dadu
+
+  <div id="article-editor-forms">
+    FORMS/Metadata
+  </div>
+  <div id="article-editor-text"
+       tal:content="structure view/body/@@contents">
+  </div>
+
 </div>
