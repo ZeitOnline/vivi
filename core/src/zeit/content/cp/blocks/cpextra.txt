@@ -9,10 +9,10 @@ Create a cp extra block:
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
->>> import zeit.content.cp.interfaces
+>>> import zeit.edit.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='cpextra')
+...     lead, zeit.edit.interfaces.IElementFactory, name='cpextra')
 >>> cpextra = factory()
 >>> cpextra
 <zeit.content.cp.blocks.cpextra.CPExtraBlock object at 0x...>

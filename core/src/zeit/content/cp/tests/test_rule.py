@@ -10,6 +10,7 @@ import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
+import zeit.edit.interfaces
 import zope.app.appsetup.product
 import zope.component
 
@@ -20,7 +21,7 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
         super(RuleTest, self).setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         factory = zope.component.getAdapter(
-            self.cp['lead'], zeit.content.cp.interfaces.IElementFactory,
+            self.cp['lead'], zeit.edit.interfaces.IElementFactory,
             name='teaser')
         self.teaser = factory()
 
@@ -95,11 +96,11 @@ error_if(is_area)
     def test_is_block_in_teasermosaic_should_apply_to_block(self):
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
-            zeit.content.cp.interfaces.IElementFactory,
+            zeit.edit.interfaces.IElementFactory,
             name='teaser-bar')
         bar = factory()
         factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IElementFactory,
+            bar, zeit.edit.interfaces.IElementFactory,
             name='teaser')
         teaser = factory()
         r = Rule("""
@@ -112,7 +113,7 @@ error_if(True, u'Block in teasermosaic.')
     def test_is_region_in_teasermosaic_should_apply_to_teaserbar(self):
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
-            zeit.content.cp.interfaces.IElementFactory,
+            zeit.edit.interfaces.IElementFactory,
             name='teaser-bar')
         bar = factory()
         r = Rule("""
@@ -125,7 +126,7 @@ error_if(True, u'Region in teasermosaic.')
     def test_teaserbar_is_no_block(self):
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
-            zeit.content.cp.interfaces.IElementFactory,
+            zeit.edit.interfaces.IElementFactory,
             name='teaser-bar')
         bar = factory()
         r = Rule("""
@@ -154,7 +155,7 @@ error_unless(content == [])
 """)
         factory = zope.component.getAdapter(
             self.cp['informatives'],
-            zeit.content.cp.interfaces.IElementFactory,
+            zeit.edit.interfaces.IElementFactory,
             name='xml')
         s = r.apply(factory())
         self.assertNotEquals(zeit.content.cp.rule.ERROR, s.status)

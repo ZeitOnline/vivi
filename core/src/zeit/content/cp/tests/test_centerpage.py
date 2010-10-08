@@ -45,8 +45,9 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp'] = cp
 
     def create_teaser(self, cp):
+        import zeit.edit.interfaces
         factory = zope.component.getAdapter(
-            cp['lead'], zeit.content.cp.interfaces.IElementFactory,
+            cp['lead'], zeit.edit.interfaces.IElementFactory,
             name='teaser')
         return factory()
 

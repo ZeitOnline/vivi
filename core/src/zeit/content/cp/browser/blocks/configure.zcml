@@ -7,7 +7,7 @@
   <!-- Block -->
 
   <browser:page
-    for="zeit.content.cp.interfaces.IElement"
+    for="zeit.edit.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     template="../layout.contents.pt"
@@ -35,7 +35,7 @@
     name="zeit.content.cp.editor-contents"
     permission="zope.View"
     />
-
+edit
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -189,7 +189,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.edit.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="add"
     class=".block.Add"
@@ -197,7 +197,7 @@
     />
 
   <view
-    for="zeit.content.cp.interfaces.IRegion zeit.content.cp.interfaces.IElement"
+    for="zeit.content.cp.interfaces.IRegion zeit.edit.interfaces.IElement"
     type="zeit.cms.browser.interfaces.ICMSLayer"
     name="type-switcher"
     factory=".block.SwitchType"

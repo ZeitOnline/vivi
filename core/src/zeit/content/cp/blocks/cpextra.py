@@ -44,11 +44,11 @@ def add_blocks_to_newly_created_cp(context, event):
         return
     mostread = zope.component.getAdapter(
         context['informatives'],
-        zeit.content.cp.interfaces.IElementFactory, name='cpextra')()
+        zeit.edit.interfaces.IElementFactory, name='cpextra')()
     mostread.cpextra = 'mostread'
     mostcommented = zope.component.getAdapter(
         context['informatives'],
-        zeit.content.cp.interfaces.IElementFactory, name='cpextra')()
+        zeit.edit.interfaces.IElementFactory, name='cpextra')()
     mostcommented.cpextra = 'mostcommented'
 
 

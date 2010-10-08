@@ -54,6 +54,7 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 
 >>> cp['informatives'].__parent__
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
+>>> import zeit.content.cp.interfaces
 >>> zeit.content.cp.interfaces.ICenterPage(cp['informatives'])
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
 
@@ -63,6 +64,8 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 Header image
 ++++++++++++
 
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> cp.header_image = repository['2006']['DSC00109_2.JPG']
@@ -92,10 +95,9 @@ afterwards configured.
 Blocks are created using a block factory:
 
 >>> lead = cp['lead']
->>> import zeit.content.cp.interfaces
->>> import zope.component
+>>> import zeit.edit.interfaces
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
+...     lead, zeit.edit.interfaces.IElementFactory, name='placeholder')
 >>> factory.title is None
 True
 >>> block = factory()
@@ -119,10 +121,9 @@ Teaser block
 ------------
 
 >>> lead = cp['lead']
->>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     lead, zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> factory.title
 u'List of teasers'
 >>> block = factory()
@@ -209,7 +210,7 @@ about the weather).
 >>> transaction.commit()
 >>> mosaic = cp['teaser-mosaic']
 >>> factory = zope.component.getAdapter(
-...     mosaic, zeit.content.cp.interfaces.IElementFactory, name='teaser-bar')
+...     mosaic, zeit.edit.interfaces.IElementFactory, name='teaser-bar')
 >>> bar = factory()
 >>> bar
 <zeit.content.cp.blocks.teaserbar.TeaserBar object at 0x...>
@@ -270,7 +271,7 @@ we can check it out:
 Now we need some test objects we can edit later on:
 
 >>> factory = zope.component.getAdapter(
-...     cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
 >>> import zeit.cms.repository.interfaces
 >>> teaser = zeit.content.cp.teaser.Teaser()

@@ -7,6 +7,7 @@ import lxml.objectify
 import unittest
 import zeit.content.cp.blocks.teaserbar
 import zeit.content.cp.testing
+import zeit.edit.interfaces
 import zope.component
 
 
@@ -37,7 +38,7 @@ class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
         bar = self.bar
         del bar[bar.keys()[0]]
         teaser_factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+            bar, zeit.edit.interfaces.IElementFactory, name='teaser')
         teaser_factory()
 
         # 0=placeholder, x=teaser
@@ -59,9 +60,9 @@ class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
         for key in bar:
             del bar[key]
         teaser_factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+            bar, zeit.edit.interfaces.IElementFactory, name='teaser')
         placeholder_factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
+            bar, zeit.edit.interfaces.IElementFactory, name='placeholder')
         placeholder_factory()
         teaser_factory()
         placeholder_factory()

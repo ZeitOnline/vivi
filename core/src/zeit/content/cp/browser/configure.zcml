@@ -147,7 +147,7 @@
   <!-- Module library -->
 
   <browser:view
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.edit.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block-factories.json"
     class=".library.BlockFactories"
@@ -163,7 +163,7 @@
     />
 
   <browser:view
-    for="zeit.content.cp.interfaces.IElement"
+    for="zeit.edit.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop-module"
     class=".library.BlockLandingZone"

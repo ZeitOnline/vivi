@@ -4,8 +4,9 @@
 import gocept.lxml.interfaces
 import lxml.objectify
 import zeit.cms.content.property
-import zeit.content.cp.interfaces
 import zeit.content.cp.centerpage
+import zeit.content.cp.interfaces
+import zeit.edit.interfaces
 import zope.component
 import zope.interface
 
@@ -13,7 +14,7 @@ import zope.interface
 class ElementFactory(object):
     """Base class for block factories."""
 
-    zope.interface.implements(zeit.content.cp.interfaces.IElementFactory)
+    zope.interface.implements(zeit.edit.interfaces.IElementFactory)
 
     def __init__(self, context):
         self.context = context
@@ -29,7 +30,7 @@ class ElementFactory(object):
         container = self.get_xml()
         content = zope.component.getMultiAdapter(
             (self.context, container),
-            zeit.content.cp.interfaces.IElement,
+            zeit.edit.interfaces.IElement,
             name=self.element_type)
         self.context.add(content)
         assert zeit.content.cp.centerpage.has_changed(self.context)
@@ -50,7 +51,7 @@ def elementFactoryFactory(adapts, element_type, title=None, module=None):
 
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
-@zope.component.adapter(zeit.content.cp.interfaces.IElement)
+@zope.component.adapter(zeit.edit.interfaces.IElement)
 def cms_content_to_centerpage(context):
     return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
 
@@ -59,10 +60,10 @@ class Element(zope.container.contained.Contained,
               zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
 
-    zope.interface.implements(zeit.content.cp.interfaces.IElement)
+    zope.interface.implements(zeit.edit.interfaces.IElement)
 
     zope.component.adapts(
-        zeit.content.cp.interfaces.IContainer,
+        zeit.edit.interfaces.IContainer,
         gocept.lxml.interfaces.IObjectified)
 
     def __init__(self, context, xml):
@@ -84,14 +85,7 @@ class Element(zope.container.contained.Contained,
     def type(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}type')
 
-
-@zope.component.adapter(zeit.content.cp.interfaces.IElement)
-@zope.interface.implementer(zeit.content.cp.interfaces.IArea)
-def area_for_element(context):
-    return zeit.content.cp.interfaces.IArea(context.__parent__, None)
-
-
-@zope.component.adapter(zeit.content.cp.interfaces.IElement)
+@zope.component.adapter(zeit.edit.interfaces.IElement)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     return iter([])

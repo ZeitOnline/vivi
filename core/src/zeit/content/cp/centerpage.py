@@ -68,7 +68,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         xml = self.editable_areas[key](self.xml['body'])[0]
         area = zope.component.getMultiAdapter(
             (self, xml),
-            zeit.content.cp.interfaces.IArea,
+            zeit.edit.interfaces.IArea,
             name=key)
         return zope.container.contained.contained(area, self, key)
 

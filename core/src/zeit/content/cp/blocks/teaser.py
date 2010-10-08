@@ -257,7 +257,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IContainer, 'teaser',
+    zeit.edit.interfaces.IContainer, 'teaser',
     _('List of teasers'))
 
 
@@ -316,7 +316,7 @@ def create_cp_channel(context, event):
 
 
 @zope.component.adapter(
-    zeit.content.cp.interfaces.IElement,
+    zeit.edit.interfaces.IElement,
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     region = context.__parent__

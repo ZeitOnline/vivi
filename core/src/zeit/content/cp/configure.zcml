@@ -73,44 +73,44 @@
 
   <class class=".area.Lead">
     <require
-      interface=".interfaces.IReadContainer"
+      interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteContainer"
+      interface="zeit.edit.interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
   </class>
   <class class=".area.Informatives">
     <require
-      interface=".interfaces.IReadContainer"
+      interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteContainer"
+      interface="zeit.edit.interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
   </class>
   <class class=".area.Mosaic">
     <require
-      interface=".interfaces.IReadContainer"
+      interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
     <require
-      interface=".interfaces.IWriteContainer"
+      interface="zeit.edit.interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
   </class>
 
   <adapter
-    provides=".interfaces.IArea"
+    provides="zeit.edit.interfaces.IArea"
     name="lead"
     factory=".area.Lead"
     />
   <adapter
-    provides=".interfaces.IArea"
+    provides="zeit.edit.interfaces.IArea"
     name="informatives"
     factory=".area.Informatives"
     />
   <adapter
-    provides=".interfaces.IArea"
+    provides="zeit.edit.interfaces.IArea"
     name="teaser-mosaic"
     factory=".area.Mosaic"
     />

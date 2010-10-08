@@ -7,9 +7,10 @@ The teaser block contains a list of teasers[#functional]_.
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
+>>> import zeit.edit.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     lead, zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
 
 >>> import zeit.cms.repository.interfaces
@@ -42,10 +43,10 @@ A teaser block in autopilot mode fetches its contents from another CenterPage.
 We are actually referencing ourselves here.
 
 >>> teaserbar = zope.component.getAdapter(
-...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
 ...     name="teaser-bar")()
 >>> teasers = zope.component.getAdapter(
-...     teaserbar, zeit.content.cp.interfaces.IElementFactory,
+...     teaserbar, zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')()
 >>> repository['cp'] = cp
 
@@ -64,7 +65,7 @@ displayed teasers is limited to 4.
 >>> o200701 = repository['online']['2007']['01']
 >>> for i in xrange(10):
 ...     teaserblock = zope.component.getAdapter(
-...         cp2['lead'], zeit.content.cp.interfaces.IElementFactory,
+...         cp2['lead'], zeit.edit.interfaces.IElementFactory,
 ...         name='teaser')()
 ...     teaserblock.insert(0, list(o200701.values())[i])
 >>> repository['cp2'] = cp2
@@ -262,7 +263,7 @@ other positions:
 
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> factory = zope.component.getAdapter(
-...     cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> teaser_1 = factory()
 >>> teaser_2 = factory()
 >>> sorted(l.id for l in 
@@ -275,7 +276,7 @@ other positions:
 There are different layouts in the informatives:
 
 >>> factory = zope.component.getAdapter(
-...     cp['informatives'], zeit.content.cp.interfaces.IElementFactory,
+...     cp['informatives'], zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> teaser_i = factory()
 >>> sorted(l.id for l in 
@@ -286,11 +287,11 @@ There are different layouts in the informatives:
 And yet other ones in the mosic:
 
 >>> factory = zope.component.getAdapter(
-...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
 ...     name='teaser-bar')
 >>> bar = factory()
 >>> factory = zope.component.getAdapter(
-...     bar, zeit.content.cp.interfaces.IElementFactory,
+...     bar, zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> teaser_m = factory()
 >>> sorted(l.id for l in 
@@ -305,7 +306,7 @@ Archive centerpages should always keep the same module attribute:
 >>> print archive_cp.type
 archive-print-volume
 >>> factory = zope.component.getAdapter(
-...     archive_cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     archive_cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> archive_teaser_1 = factory()
 >>> layout = zeit.content.cp.layout.get_layout('archive-print-volume')
 >>> archive_teaser_1.layout = layout

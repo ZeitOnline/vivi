@@ -16,9 +16,10 @@ Create a teaser block and a teaser group:
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
 >>> import zeit.content.cp.interfaces
+>>> import zeit.edit.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     lead, zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> tb = factory()
 
 >>> import zeit.content.cp.teasergroup.teasergroup

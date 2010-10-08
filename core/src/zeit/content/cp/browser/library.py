@@ -49,7 +49,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
             return []
         library_name = self.context.__name__
         adapters = zope.component.getAdapters(
-            (context,), zeit.content.cp.interfaces.IElementFactory)
+            (context,), zeit.edit.interfaces.IElementFactory)
         return [(name, adapter, library_name) for (name, adapter) in adapters
                 if adapter.title]
 

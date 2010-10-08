@@ -10,10 +10,11 @@ Create a teaser block to play with:
 >>> import zeit.content.cp.interfaces
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
+>>> import zeit.edit.interfaces
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     lead, zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> tb = factory()
 
 The column information can be obtained via the ``ITeaserBlockColumn``

@@ -27,7 +27,7 @@ class LandingZone(zeit.content.cp.browser.view.Action):
 
     def create_block(self):
         factory = zope.component.getAdapter(
-            self.create_in, zeit.content.cp.interfaces.IElementFactory,
+            self.create_in, zeit.edit.interfaces.IElementFactory,
             name=self.block_type)
         self.block = factory()
         assert zeit.content.cp.centerpage.has_changed(self.context)

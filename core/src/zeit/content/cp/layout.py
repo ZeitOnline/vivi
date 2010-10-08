@@ -4,6 +4,7 @@
 
 import zc.sourcefactory.contextual
 import zeit.cms.content.sources
+import zeit.edit.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -117,8 +118,8 @@ class TeaserBlockLayoutSource(LayoutSource):
 
     def getValues(self, context):
         # Avoid circular import
-        from zeit.content.cp.interfaces import IArea, ILead
-        area = IArea(context)
+        from zeit.content.cp.interfaces import ILead
+        area = zeit.edit.interfaces.IArea(context)
         areas = [area.__name__]
         if ILead.providedBy(area):
             try:

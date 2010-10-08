@@ -18,6 +18,8 @@
 
   <include package="zeit.workflow" file="ftesting.zcml" />
 
+  <include package="zeit.edit" />
+
   <include package="zeit.content.cp" />
   <include package="zeit.content.cp.browser" />
 

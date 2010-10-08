@@ -32,7 +32,7 @@ class Add(zeit.content.cp.browser.view.Action):
 
     def update(self):
         factory = zope.component.getAdapter(
-            self.context, zeit.content.cp.interfaces.IElementFactory,
+            self.context, zeit.edit.interfaces.IElementFactory,
             name=self.type)
         created = factory()
         self.signal('after-reload', 'added', created.__name__)
@@ -84,7 +84,7 @@ class SwitchType(object):
         index = order.index(self.toswitch.__name__)
         del self.parent[self.toswitch.__name__]
         factory = zope.component.getAdapter(
-            self.parent, zeit.content.cp.interfaces.IElementFactory, name=type)
+            self.parent, zeit.edit.interfaces.IElementFactory, name=type)
         created = factory()
         order[index] = created.__name__
         self.parent.updateOrder(order)

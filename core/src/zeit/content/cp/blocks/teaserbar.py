@@ -17,7 +17,7 @@ class TeaserBar(zeit.content.cp.area.Container):
     @property
     def placeholder_factory(self):
         return zope.component.getAdapter(
-            self, zeit.content.cp.interfaces.IElementFactory,
+            self, zeit.edit.interfaces.IElementFactory,
             name='placeholder')
 
     @property
@@ -66,7 +66,7 @@ class TeaserBarFactory(zeit.content.cp.blocks.block.ElementFactory):
         bar = super(TeaserBarFactory, self).__call__()
         # Prepopulate with placeholders
         factory = zope.component.getAdapter(
-            bar, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
+            bar, zeit.edit.interfaces.IElementFactory, name='placeholder')
         for x in range(zeit.content.cp.layout.MAX_TEASER_BAR_BLOCKS):
             factory()
         return bar

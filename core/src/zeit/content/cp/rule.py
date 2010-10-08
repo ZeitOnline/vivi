@@ -119,14 +119,14 @@ def glob(adapts):
     return decorate
 
 
-@glob(zeit.content.cp.interfaces.IElement)
+@glob(zeit.edit.interfaces.IElement)
 def position(context):
     return context.__parent__.keys().index(context.__name__) + 1
 
 
-@glob(zeit.content.cp.interfaces.IElement)
+@glob(zeit.edit.interfaces.IElement)
 def area(context):
-    return zeit.content.cp.interfaces.IArea(context).__name__
+    return zeit.edit.interfaces.IArea(context).__name__
 
 
 @glob(zeit.content.cp.interfaces.IBlock)
@@ -144,7 +144,7 @@ def is_block(context):
     return False
 
 
-@glob(zeit.content.cp.interfaces.IArea)
+@glob(zeit.edit.interfaces.IArea)
 def is_area(context):
     return True
 
@@ -164,7 +164,7 @@ def is_region(context):
     return True
 
 
-@glob(zeit.content.cp.interfaces.IContainer)
+@glob(zeit.edit.interfaces.IContainer)
 def count(context):
     return len(context)
 
@@ -254,7 +254,7 @@ class RulesManager(object):
 class Validator(object):
 
     zope.interface.implements(zeit.content.cp.interfaces.IValidator)
-    zope.component.adapts(zeit.content.cp.interfaces.IElement)
+    zope.component.adapts(zeit.edit.interfaces.IElement)
 
     status = None
 

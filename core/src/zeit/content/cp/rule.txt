@@ -43,8 +43,9 @@ Validating the number of blocks in an area
 
 >>> import zope.component
 >>> import zeit.content.cp.interfaces
+>>> import zeit.edit.interfaces
 >>> teaser_factory = zope.component.getAdapter(
-...     cp['lead'], zeit.content.cp.interfaces.IElementFactory,
+...     cp['lead'], zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> dummy = teaser_factory()
 >>> dummy = teaser_factory()
@@ -61,7 +62,7 @@ Validating the layout of a teaser bar
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 >>> bar_factory = zope.component.getAdapter(
-...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
 ...     name='teaser-bar')
 
 

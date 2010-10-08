@@ -7,7 +7,7 @@
   <!-- Area -->
 
   <browser:page
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.edit.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     template="layout.contents.pt"
@@ -15,7 +15,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.edit.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
     class=".blocks.block.Delete"
@@ -106,7 +106,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.IContainer"
+    for="zeit.edit.interfaces.IContainer"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="updateOrder"
     class=".area.UpdateOrder"

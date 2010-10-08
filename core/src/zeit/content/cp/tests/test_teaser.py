@@ -19,13 +19,14 @@ class XMLTeaserBase(zeit.content.cp.testing.FunctionalTestCase):
         import zeit.cms.checkout.interfaces
         import zeit.content.cp.centerpage
         import zeit.content.cp.interfaces
+        import zeit.edit.interfaces
         import zope.component
         super(XMLTeaserBase, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.cp = zeit.cms.checkout.interfaces.ICheckoutManager(
             self.repository['cp']).checkout()
         factory = zope.component.getAdapter(
-            self.cp['lead'], zeit.content.cp.interfaces.IElementFactory,
+            self.cp['lead'], zeit.edit.interfaces.IElementFactory,
             name='teaser')
         self.block = factory()
         self.block.insert(0, self.repository['testcontent'])

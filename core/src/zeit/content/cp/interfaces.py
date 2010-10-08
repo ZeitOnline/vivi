@@ -3,7 +3,6 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
-import re
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
@@ -14,6 +13,7 @@ import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
+import zeit.edit.interfaces
 import zeit.workflow.interfaces
 import zope.container.interfaces
 import zope.interface
@@ -78,45 +78,18 @@ class IValidatingWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
     pass
 
 
-class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
-                zope.container.interfaces.IContained,
-                zope.container.interfaces.IReadContainer):
-    """Area on the CP which can be edited.
-
-    This references a <region> or <cluster>
-
-    """
-
-class IWriteContainer(zope.container.interfaces.IOrdered):
-    """Modify area."""
-
-    def add(item):
-        """Add item to container."""
-
-    def __delitem__(key):
-        """Remove item."""
-
-
-class IContainer(IReadContainer, IWriteContainer):
+class IReadRegion(zeit.edit.interfaces.IReadContainer):
     pass
 
 
-class IArea(IContainer):
-    """Combined read/write interface to areas."""
-
-
-class IReadRegion(IReadContainer):
-    pass
-
-
-class IWriteRegion(IWriteContainer):
+class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
     pass
 
 
 # IRegion wants to be an IArea, but also preserve the IReadArea/IWriteArea
 # split, so we inherit from IArea again. Absolutely no thanks to Zope for this
 # whole read/write business :-(
-class IRegion(IReadRegion, IWriteRegion, IContainer):
+class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IContainer):
     """A region contains blocks."""
 
 
@@ -128,13 +101,8 @@ class IInformatives(IRegion):
     """The informatives region."""
 
 
-class IMosaic(IContainer):
-    pass
-
-class IElement(zope.interface.Interface):
-    """XXX A module which can be instantiated and added to the page."""
-
-    type = zope.interface.Attribute("Type identifier.")
+class IMosaic(zeit.edit.interfaces.IContainer):
+    """Teaser mosaic."""
 
 
 class ICMSContentIterable(zope.interface.Interface):
@@ -150,16 +118,7 @@ class ICPFeed(zope.interface.Interface):
     items = zope.interface.Attribute("tuple of feed items")
 
 
-class IElementFactory(zope.interface.Interface):
-
-    title = zope.schema.TextLine(
-        title=_('Block type'))
-
-    def __call__():
-        """Create block."""
-
-
-class IBlock(IElement):
+class IBlock(zeit.edit.interfaces.IElement):
 
     title = zope.schema.TextLine(
         title=_("Title"),
@@ -453,7 +412,7 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
 
 
 
-class IReadTeaserBar(IReadRegion, IElement):
+class IReadTeaserBar(IReadRegion, zeit.edit.interfaces.IElement):
 
     layout = zope.schema.Choice(
         title=_("Layout"),

@@ -3,7 +3,6 @@
 
   <adapter factory=".block.cms_content_to_centerpage" />
   <adapter factory=".block.cms_content_iter" />
-  <adapter factory=".block.area_for_element" />
 
   <!-- Place holder -->
 
@@ -15,7 +14,7 @@
 
   <adapter factory=".placeholder.PlaceHolderFactory" name="placeholder" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="placeholder"
     factory=".placeholder.PlaceHolder"
     />
@@ -51,12 +50,12 @@
   <adapter factory=".teaser.feed_xi_include" name="xi:include" />
   <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="teaser"
     factory=".teaser.TeaserBlock"
     />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="teaser"
     factory=".teaser.AutoPilotTeaserBlock"
     />
@@ -101,7 +100,7 @@
     factory="..area.cms_content_iter"
     for="..interfaces.ITeaserBar" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="teaser-bar"
     factory=".teaserbar.TeaserBar"
     />
@@ -117,7 +116,7 @@
   </class>
   <adapter factory=".rss.RSSBlockFactory" name="rss" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="rss"
     factory=".rss.RSSBlock"
     />
@@ -133,7 +132,7 @@
   </class>
   <adapter factory=".xml.XMLBlockFactory" name="xml" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="xml"
     factory=".xml.XMLBlock"
     />
@@ -149,7 +148,7 @@
   </class>
   <adapter factory=".av.VideoBlockFactory" name="video" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="video"
     factory=".av.VideoBlock"
     />
@@ -165,7 +164,7 @@
   </class>
   <adapter factory=".av.AudioBlockFactory" name="audio" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="audio"
     factory=".av.AudioBlock"
     />
@@ -181,7 +180,7 @@
   </class>
   <adapter factory=".quiz.QuizBlockFactory" name="quiz" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="quiz"
     factory=".quiz.QuizBlock"
     />
@@ -197,7 +196,7 @@
   </class>
   <adapter factory=".fullgraphical.FullGraphicalFactory" name="fullgraphical" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="fullgraphical"
     factory=".fullgraphical.FullGraphicalBlock"
     />
@@ -213,7 +212,7 @@
   </class>
   <adapter factory=".cpextra.CPExtraBlockFactory" name="cpextra" />
   <adapter
-    provides="..interfaces.IElement"
+    provides="zeit.edit.interfaces.IElement"
     name="cpextra"
     factory=".cpextra.CPExtraBlock"
     />
