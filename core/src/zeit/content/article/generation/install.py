@@ -1,15 +1,12 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.app.component
-import zope.app.component.hooks
-import zope.app.zopeappgenerations
-
-import zeit.cms.generation.install
 
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
+import zeit.cms.generation.install
+import zope.app.component
+import zope.app.component.hooks
+import zope.app.zopeappgenerations
 
 
 def install(root):
