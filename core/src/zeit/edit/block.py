@@ -46,26 +46,3 @@ class Element(zope.container.contained.Contained,
 @grokcore.component.implementer(zeit.edit.interfaces.IArea)
 def area_for_element(context):
     return zeit.edit.interfaces.IArea(context.__parent__, None)
-
-
-
-class Block(Element):
-
-    title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'title')
-
-    publisher  = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'publisher')
-    publisher_url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'publisher_url')
-
-    supertitle  = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'supertitle')
-    supertitle_url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'supertitle_url')
-
-    read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'read_more')
-    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'read_more_url')
-
