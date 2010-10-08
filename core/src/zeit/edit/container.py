@@ -35,7 +35,8 @@ class Base(UserDict.DictMixin,
 
     def __getitem__(self, key):
         node = self._find_item(self.xml, name=key)
-        if node is not None:
+        if node:
+            node = node[0]
             element_type = self._get_element_type(node)
             element = zope.component.queryMultiAdapter(
                 (self, node),
