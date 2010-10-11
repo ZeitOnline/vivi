@@ -1,3 +1,6 @@
+zeit.cms.declare_namespace('zeit.edit');
+
+
 zeit.edit.makeJSONRequest = function(
     url, json, target_component, options) {
     return zeit.edit.with_lock(

@@ -20,7 +20,11 @@
     ">
     <directory
       source="js"
-      include="edit.js json.js"/>
+      include="
+      context.js
+      edit.js
+      sortable.js
+      json.js"/>
   </resourceLibrary>
 
   <gocept:pagelet
