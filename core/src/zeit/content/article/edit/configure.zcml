@@ -5,6 +5,10 @@
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" 
       />
+    <require
+      interface="zeit.edit.interfaces.IWriteContainer"
+      permission="zeit.EditContent" 
+      />
   </class>
 
   <subscriber
