@@ -1,3 +1,8 @@
-<div tal:repeat="item context/items">
-  <div tal:content="item"></div>
+<div tal:repeat="item context/values">
+  <div class="block"
+       tal:attributes="cms:url item/@@absolute_url">
+    <div class="block-inner"
+         tal:content="item">
+    </div>
+  </div>
 </div>
