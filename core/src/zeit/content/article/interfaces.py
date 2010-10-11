@@ -9,7 +9,6 @@ import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.article.source
 import zeit.content.cp.interfaces
-import zeit.edit.interfaces
 import zope.schema
 
 
@@ -170,10 +169,3 @@ class ICDSWorkflow(zope.interface.Interface):
 
     export_cds = zope.schema.Bool(
         title=_("Export to Tagesspiegel"))
-
-
-# Edit support
-
-class IEditableBody(zeit.edit.interfaces.IContainer):
-  pass
-

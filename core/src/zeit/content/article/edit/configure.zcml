@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <class class=".edit.EditableBody">
+  <class class=".body.EditableBody">
     <require
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" 
@@ -8,7 +8,7 @@
   </class>
 
   <subscriber
-    factory=".edit.BodyTraverser"
+    factory=".body.BodyTraverser"
     for="zeit.content.article.interfaces.IArticle
     zeit.cms.browser.interfaces.ICMSLayer"
     provides="z3c.traverser.interfaces.ITraverserPlugin"

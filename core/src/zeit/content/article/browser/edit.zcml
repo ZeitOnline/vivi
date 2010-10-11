@@ -18,7 +18,7 @@
     />
 
   <browser:page
-    for="..edit.EditableBody"
+    for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     template="edit.body.pt"

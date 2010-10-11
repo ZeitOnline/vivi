@@ -5,6 +5,8 @@ import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
 import z3c.traverser.interfaces
+import zeit.content.article.edit.interfaces
+import zeit.content.article.interfaces
 import zeit.edit.container
 import zope.publisher.interfaces
 
@@ -16,7 +18,8 @@ class EditableBody(zeit.edit.container.Base,
                    grokcore.component.MultiAdapter):
 
     grokcore.component.implements(zeit.edit.interfaces.IArea)
-    grokcore.component.provides(zeit.content.article.interfaces.IEditableBody)
+    grokcore.component.provides(
+        zeit.content.article.edit.interfaces.IEditableBody)
     grokcore.component.adapts(zeit.content.article.interfaces.IArticle,
                               gocept.lxml.interfaces.IObjectified)
 
@@ -46,12 +49,13 @@ class EditableBody(zeit.edit.container.Base,
 
 
 @grokcore.component.adapter(zeit.content.article.interfaces.IArticle)
-@grokcore.component.implementer(zeit.content.article.interfaces.IEditableBody)
+@grokcore.component.implementer(
+    zeit.content.article.edit.interfaces.IEditableBody)
 def get_editable_body(article):
     return zope.component.queryMultiAdapter(
         (article,
          zope.security.proxy.removeSecurityProxy(article.xml['body'])),
-        zeit.content.article.interfaces.IEditableBody)
+        zeit.content.article.edit.interfaces.IEditableBody)
 
 
 class BodyTraverser(object):
@@ -64,7 +68,7 @@ class BodyTraverser(object):
 
     def publishTraverse(self, request, name):
         if name == editable_body_name:
-            body = zeit.content.article.interfaces.IEditableBody(
+            body = zeit.content.article.edit.interfaces.IEditableBody(
                 self.context, None)
             if body is not None:
                 return body
