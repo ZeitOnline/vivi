@@ -8,7 +8,7 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
     def __init__(self, context, request, view):
         super(BlockViewletManager, self).__init__(context, request, view)
         self.validation_class, self.validation_messages = (
-          '', [])
+          '', '')
         #    zeit.content.cp.browser.rule.validate(self.context))
 
     @property
