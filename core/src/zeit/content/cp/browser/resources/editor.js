@@ -549,49 +549,6 @@ zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
 })();
 
 
-zeit.content.cp.ConfirmDelete = gocept.Class.extend({
-
-    construct: function(context_element) {
-        var self = this;
-        self.parent = zeit.content.cp.getParentComponent(context_element);
-        var url = context_element.getAttribute('href');
-        // XXX i18n
-        var delete_module = context_element.getAttribute('cms:delete-module');
-        var highlight_class = context_element.getAttribute(
-            'cms:delete-highlight')
-        self.confirm = DIV(
-            {'class': 'confirm-delete'},
-            A({'href': url,
-               'cms:cp-module': delete_module},
-               'Remove'))
-        context_element.appendChild(self.confirm);
-        MochiKit.Visual.appear(self.confirm)
-        self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            context_element, null, highlight_class);
-        MochiKit.DOM.addElementClass(self.block, 'highlight');
-
-        self.overlay = DIV({'id': 'confirm-delete-overlay'});
-        $('body').appendChild(self.overlay);
-        self.events = []
-        self.events.push(
-            MochiKit.Signal.connect(self.overlay, 'onclick', self, 'close'));
-        self.events.push(
-            MochiKit.Signal.connect(
-                self.parent, 'before-reload', self, 'close'))
-
-    },
-
-    close: function(event) {
-        var self = this;
-        MochiKit.Base.map(
-            MochiKit.Signal.disconnect, self.events)
-        self.confirm.parentNode.removeChild(self.confirm);
-        self.overlay.parentNode.removeChild(self.overlay);
-        MochiKit.DOM.removeElementClass(self.block, 'highlight');
-    },
-})
-
-
 zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     // check for unloaded images:
     
