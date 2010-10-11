@@ -2,11 +2,14 @@
 
 zeit.cms.declare_namespace('zeit.content.article');
 
+
 var ident = MochiKit.Signal.connect(
-    window, 'cp-editor-loaded',
+    zeit.edit.editor, 'script-loading-finished',
     function() {
         MochiKit.Signal.disconnect(ident);
-        log('article-editor initialized');
+
+    zeit.content.article.body_sorter = new zeit.edit.sortable.BlockSorter(
+        'editable-body');
     });
 
 })();
