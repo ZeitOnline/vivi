@@ -17,7 +17,8 @@ editable_body_name = 'editable-body'
 class EditableBody(zeit.edit.container.Base,
                    grokcore.component.MultiAdapter):
 
-    grokcore.component.implements(zeit.edit.interfaces.IArea)
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.IEditableBody)
     grokcore.component.provides(
         zeit.content.article.edit.interfaces.IEditableBody)
     grokcore.component.adapts(zeit.content.article.interfaces.IArticle,

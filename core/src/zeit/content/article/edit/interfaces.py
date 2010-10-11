@@ -6,5 +6,5 @@ import zeit.edit.interfaces
 import zope.schema
 
 
-class IEditableBody(zeit.edit.interfaces.IContainer):
-  pass
+class IEditableBody(zeit.edit.interfaces.IArea):
+    """Editable representation of an article's body."""
