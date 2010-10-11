@@ -53,284 +53,6 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 });
 
 
-//
-// Define context managers
-//
-zeit.content.cp.in_context = {};
-
-
-zeit.content.cp.in_context.Base = gocept.Class.extend({
-
-    __name__: 'zeit.content.cp.in_context.Base',
-
-    construct: function(context_aware) {
-        var self = this;
-        log("Creating " + self.__name__ + " for " + context_aware.__name__)
-        self.context_aware = context_aware;
-        if (!isUndefinedOrNull(context_aware.__context__)) {
-            throw new Error("Trying to add new context.");
-        }
-        context_aware.__context__ = self;
-        self.events = [];
-
-        self.init();
-
-        self.events.push(MochiKit.Signal.connect(
-            zeit.edit.editor, 'single-context-start',
-            self, self.deactivate));
-        self.events.push(MochiKit.Signal.connect(
-            zeit.edit.editor, 'single-context-end',
-            self, self.activate));
-    },
-
-    destroy: function() {
-        var self = this;
-        while(self.events.length) {
-          MochiKit.Signal.disconnect(self.events.pop());
-        }
-        self.context_aware.__context__ = null;
-        self.context_aware = null;
-    },
-
-    activate: function() {
-        var self = this;
-        log('Activating ' + self.context_aware.__name__);
-        self.context_aware.connect.call(self.context_aware);
-    },
-
-    deactivate: function() {
-        var self = this;
-        log('Deactivating ' + self.context_aware.__name__);
-        self.context_aware.disconnect.call(self.context_aware);
-    },
-});
-
-
-zeit.content.cp.in_context.Editor = zeit.content.cp.in_context.Base.extend({
-
-    __name__: 'zeit.content.cp.in_context.Editor',
-
-    init: function() {
-        var self = this;
-        // Those handlers stay forever
-        self.events.push(MochiKit.Signal.connect(
-            zeit.edit.editor, 'after-reload',
-            self, self.activate));
-        self.events.push(MochiKit.Signal.connect(
-            zeit.edit.editor, 'before-reload',
-            self, self.deactivate));
-    },
-
-});
-
-
-zeit.content.cp.in_context.Lightbox = zeit.content.cp.in_context.Base.extend({
-    // Context for a component running *in* a lightbox.
-    // The component needs to declare "parent".
-
-    __name__: 'zeit.content.cp.in_context.Lightbox',
-
-    init: function() {
-        var self = this;
-        MochiKit.Signal.signal(zeit.edit.editor, 'single-context-start');
-        self.activate();
-        self.events.push(MochiKit.Signal.connect(
-            self.context_aware.parent, 'before-close',
-            self, self.deactivate));
-        self.events.push(MochiKit.Signal.connect(
-            self.context_aware.parent, 'before-reload',
-            self, self.deactivate));
-    },
-
-    deactivate: function() {
-        var self = this;
-        arguments.callee.$.deactivate.call(self);
-        self.destroy();
-    },
-});
-
-
-zeit.content.cp.ContentActionBase = gocept.Class.extend({
-
-    __name__: 'zeit.content.cp.ContentActionBase',
-    context: null,  // define in sublcasses
-
-    construct: function() {
-        var self = this;
-        self.editor = zeit.edit.editor;
-        self.dnd_objects = [];
-        self.events = [];
-        if (isNull(self.context)) {
-            log("No context for "+self.__name__);
-        } else {
-            new self.context(self);
-        }
-    },
-
-    disconnect: function() {
-        var self = this;
-        while(self.dnd_objects.length) {
-          self.dnd_objects.pop().destroy();
-        }
-        while(self.events.length) {
-          MochiKit.Signal.disconnect(self.events.pop());
-        }
-    },
-
-});
-
-
-zeit.content.cp.Sortable = zeit.content.cp.ContentActionBase.extend({
-    // General sorting support.
-
-    __name__: 'zeit.content.cp.Sortable',
-    default_options: {
-        constraint: 'vertical',
-        onChange: MochiKit.Base.noop,
-        overlap: 'vertical',
-        scroll: 'cp-content-inner',
-    },
-
-    construct: function(container, passed_options) {
-        var self = this;
-
-        self.container = container;
-        var options = MochiKit.Base.update(
-            MochiKit.Base.clone(self.default_options), passed_options);
-        MochiKit.Sortable.sortables[container] = options;
-
-        arguments.callee.$.construct.call(self);
-    },
-
-    connect: function() {
-        var self = this;
-        var container = $(self.container);
-
-        var nodes = self.get_sortable_nodes();
-        forEach(nodes, function(node) {
-            var handle = self.get_handle(node);
-            self.dnd_objects.push(
-                new MochiKit.DragAndDrop.Draggable(node, {
-                    constraint: self.options()['constraint'],
-                    handle: handle,
-                    ghosting: false,
-                    revert: true,
-                    scroll: self.options()['scroll'],
-                    //selectclass: 'hover',
-                    zindex: 10000,
-            }));
-            self.dnd_objects.push(
-                new MochiKit.DragAndDrop.Droppable(node, {
-                    containment: [container],
-                    onhover: MochiKit.Sortable.onHover,
-                    overlap: self.options()['overlap'],
-           }));
-        });
-
-        self.options().lastValue = self.serialize();
-        self.events.push(MochiKit.Signal.connect(
-            MochiKit.DragAndDrop.Draggables, 'start',
-            function(draggable) { self.on_start(container, draggable); }));
-        self.events.push(MochiKit.Signal.connect(
-            MochiKit.DragAndDrop.Draggables, 'end',
-            function(draggable) { self.on_end(container, draggable); }));
-    },
-
-    on_start: function(element, draggable) {
-        var self = this;
-        self.options().lastValue = self.serialize();
-    },
-
-    on_end: function(element, draggable) {
-        var self = this;
-        MochiKit.Sortable.unmark();
-        if (!MochiKit.Base.arrayEqual(self.options().lastValue,
-                                      self.serialize())) {
-            self.on_update(element);
-        }
-        element.style.zIndex = null;  // see #4999
-    },
-
-    on_update: function(element) {
-        var self = this;
-        var data = MochiKit.Base.serializeJSON({
-            keys: self.serialize(),
-        });
-        var url = self.options()['update_url'];
-        if (isUndefinedOrNull(url)) {
-            var url = $(self.container).getAttribute(
-                'cms:url') + '/@@updateOrder';
-        }
-        var d = MochiKit.Async.doXHR(url, {
-            method: 'POST',
-            sendContent: data});
-        // We don't have do anything on success as the ordering is already
-        // applied in the HTML.
-        d.addErrback(zeit.content.cp.handle_json_errors);
-        return d;
-    },
-
-    get_handle: function(element) {
-        return null;  // make the whole element draggable
-    },
-
-    serialize: function() {
-        var self = this;
-        return MochiKit.Base.map(
-            function(e) { return e.id }, self.get_sortable_nodes());
-    },
-
-    options: function() {
-        var self = this;
-        return MochiKit.Sortable.options(self.container)
-    },
-
-});
-
-
-zeit.content.cp.BlockSorter = zeit.content.cp.Sortable.extend({
-    // Specialized block sorting
-
-    __name__: 'zeit.content.cp.BlockSorter',
-    context: zeit.content.cp.in_context.Editor,
-
-    construct: function(container_id, passed_options) {
-        var self = this;
-        arguments.callee.$.construct.call(self, container_id, passed_options);
-    },
-
-    get_sortable_nodes: function() {
-        var self = this;
-        var selector = '#' + self.container + ' > div.block[id]';
-        return $$(selector);
-    },
-
-    get_handle: function(element) {
-        return MochiKit.Selector.findChildElements(
-            element, ['> .block-inner > .edit > .dragger'])[0];
-    },
-
-    on_update: function(element) {
-        var self = this;
-        var d = arguments.callee.$.on_update.call(self);
-        d.addCallback(function(result) {
-            var url = self.options()['reload_url'];
-            if (isUndefinedOrNull(url)) {
-                var url = $(self.container).getAttribute(
-                    'cms:url') + '/@@contents';
-            }
-            var reload_id = self.options()['reload_id']
-            if (isUndefinedOrNull(reload_id)) {
-                reload_id = self.container;
-            }
-            MochiKit.Signal.signal(
-                self.editor, 'reload', reload_id, url);
-            return result
-        });
-        return d;
-    },
-});
-
 
 zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
     
@@ -338,7 +60,7 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
 
     construct: function() {
         var self = this;
-        new zeit.content.cp.in_context.Editor(self);
+        new zeit.edit.context.Editor(self);
         self.sorters = [];
     },
 
@@ -350,7 +72,7 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
             }
             var url = bar.parentNode.getAttribute(
                 'cms:url');
-            var sorter = new zeit.content.cp.BlockSorter(
+            var sorter = new zeit.edit.sortable.BlockSorter(
                 bar.id, {
                 constraint: 'horizontal',
                 overlap: 'horizontal',
@@ -376,11 +98,11 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
 
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    zeit.content.cp.lead_sorter = new zeit.content.cp.BlockSorter(
+    zeit.content.cp.lead_sorter = new zeit.edit.sortable.BlockSorter(
         'lead');
-    zeit.content.cp.informatives_sorter = new zeit.content.cp.BlockSorter(
+    zeit.content.cp.informatives_sorter = new zeit.edit.sortable.BlockSorter(
         'informatives');
-    zeit.content.cp.teaser_bar_sorter = new zeit.content.cp.BlockSorter(
+    zeit.content.cp.teaser_bar_sorter = new zeit.edit.sortable.BlockSorter(
         'teaser-mosaic');
     zeit.content.cp.teaser_bar_contents_sorter = 
         new zeit.content.cp.TeaserBarContentsSorter();
@@ -390,7 +112,7 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 zeit.content.cp.LightBoxForm = zeit.cms.LightboxForm.extend({
 
     __name__: 'zeit.content.cp.LightBoxForm',
-    context: zeit.content.cp.in_context.Lightbox,
+    context: zeit.edit.context.Lightbox,
 
     construct: function(context_element) {
         var self = this;
