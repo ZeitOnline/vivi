@@ -1,0 +1,107 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <resourceLibrary name="zeit.edit.styles">
+    <directory
+      source="resources"
+      include="editor.css"/>
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.edit"
+    require="
+    zeit.cms
+    zeit.find
+    zeit.edit.styles
+    ">
+    <directory
+      source="js"
+      include="edit.js json.js"/>
+  </resourceLibrary>
+
+  <gocept:pagelet
+    for="..interfaces.IEditable"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    template="editor.pt"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit contents"
+    />
+
+  <browser:page
+    for="..interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.contents.pt"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IReadContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IContentViewletManager"
+    name="contents"
+    template="layout.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewletManager
+    provides="..interfaces.IContentViewletManager"
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".block.BlockViewletManager"
+    template="layout.block.contents.pt"
+    name="zeit.edit.contents"
+    permission="zope.View"
+    />
+
+  <browser:viewletManager
+    provides="..interfaces.IEditBarViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.edit.edit-bar"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IContentViewletManager"
+    name="edit"
+    template="layout.block.edit.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.block.delete.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="drag"
+    template="layout.block.drag.pt"
+    permission="zeit.EditContent"
+    weight="1000"
+    />
+
+</configure>

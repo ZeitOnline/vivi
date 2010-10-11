@@ -245,3 +245,15 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
 
 
 })();
+
+
+zeit.edit.LoadAndReload = gocept.Class.extend({
+
+    construct: function(context_element) {
+        var self = this;
+        var url = context_element.getAttribute('href');
+        var d = zeit.edit.makeJSONRequest(url);
+        return d;
+    },
+
+});

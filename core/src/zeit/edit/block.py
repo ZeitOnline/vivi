@@ -10,8 +10,6 @@ import zope.component
 import zope.interface
 
 
-
-
 class Element(zope.container.contained.Contained,
               zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
