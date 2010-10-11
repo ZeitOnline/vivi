@@ -4,7 +4,7 @@
   i18n_domain="zeit.cms">
 
   <grok:grok package="." />
-  <include file="edit.zcml" />
+  <include package=".edit" />
 
   <adapter factory=".article.articleFromTemplate" />
 

@@ -69,12 +69,3 @@ class BodyTraverser(object):
             if body is not None:
                 return body
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
-
-
-class Paragraph(zeit.edit.block.Element,
-                grokcore.component.MultiAdapter):
-
-    grokcore.component.adapts(EditableBody,
-                              gocept.lxml.interfaces.IObjectified)
-    grokcore.component.name('p')
-    grokcore.component.provides(zeit.edit.interfaces.IElement)
