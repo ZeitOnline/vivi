@@ -1,8 +1,3 @@
-<div tal:repeat="item context/values">
-  <div class="block"
-       tal:attributes="cms:url item/@@absolute_url">
-    <div class="block-inner"
-         tal:content="item">
-    </div>
-  </div>
+<div id="editable-body">
+  <tal:block replace="structure provider:zeit.edit.contents" />
 </div>

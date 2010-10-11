@@ -8,3 +8,9 @@ import zope.schema
 
 class IEditableBody(zeit.edit.interfaces.IArea):
     """Editable representation of an article's body."""
+
+
+class IParagraph(zeit.edit.interfaces.IBlock):
+    """<p/> element."""
+
+    text = zope.schema.Text(title=_('Paragraph-Text'))

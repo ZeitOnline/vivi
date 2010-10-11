@@ -14,4 +14,11 @@
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
 
+  <class class=".paragraph.Paragraph">
+    <require
+      interface=".interfaces.IParagraph"
+      permission="zope.View" 
+      />
+  </class>
+
 </configure>

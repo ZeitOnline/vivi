@@ -25,6 +25,16 @@
     permission="zeit.EditContent"
     />
 
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IParagraph"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="karlheinz"
+    template="edit.paragraph.pt"
+    permission="zeit.EditContent"
+    />
+
   <browser:resourceDirectory
     name="zeit.content.article"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
