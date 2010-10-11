@@ -93,9 +93,14 @@ zeit.edit.Editor = gocept.Class.extend({
                     'SCRIPT', null, result),
                 function(script) {
                     loading.push(zeit.cms.import(script.src));
+                    MochiKit.DOM.removeElement(script);
                 });
             var dl = new MochiKit.Async.DeferredList(loading);
             return dl;
+        });
+        d.addCallback(function(result) {
+            MochiKit.Signal.signal(self, 'script-loading-finished');
+            return result;
         });
         d.addCallback(function(result) {
             MochiKit.Signal.signal(self, 'after-reload');
