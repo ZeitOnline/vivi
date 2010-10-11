@@ -74,4 +74,6 @@ class Mosaic(Container):
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
 @zope.component.adapter(zeit.edit.interfaces.IContainer)
 def container_to_centerpage(context):
-    return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
+    # Is this required? Is there any IContainer which is not an IElement at the
+    # same time?
+    return zeit.content.cp.interfaces.ICenterPage(context.__parent__, None)

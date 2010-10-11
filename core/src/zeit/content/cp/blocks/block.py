@@ -53,7 +53,7 @@ def elementFactoryFactory(adapts, element_type, title=None, module=None):
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
 @zope.component.adapter(zeit.edit.interfaces.IElement)
 def cms_content_to_centerpage(context):
-    return zeit.content.cp.interfaces.ICenterPage(context.__parent__)
+    return zeit.content.cp.interfaces.ICenterPage(context.__parent__, None)
 
 
 class Element(zope.container.contained.Contained,
