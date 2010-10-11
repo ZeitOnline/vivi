@@ -1,1 +1,4 @@
-<p tal:replace="structure context/text" ></p>
+<div class="editable"
+     cms:cp-module="zeit.content.article.Editable">
+  <p tal:replace="structure context/text" ></p>
+</div>
