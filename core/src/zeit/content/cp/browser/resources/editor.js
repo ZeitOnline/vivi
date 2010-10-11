@@ -1,111 +1,6 @@
 
 zeit.cms.declare_namespace('zeit.content.cp');
 
-
-
-zeit.content.cp.makeJSONRequest = function(
-    url, json, target_component, options) {
-    return zeit.content.cp.with_lock(
-        zeit.content.cp._locked_makeJSONRequest,
-        url, json, target_component, options);
-} 
-
-
-zeit.content.cp._locked_makeJSONRequest = function(
-    url, json, target_component, options) {
-
-    if (isUndefinedOrNull(target_component)) {
-        target_component = zeit.edit.editor;
-    }
-    zeit.edit.editor.busy_until_reload_of(target_component);
-    options = MochiKit.Base.setdefault(options, {
-        method: 'GET',
-    });
-
-    var q_index = url.indexOf('?');
-    if (q_index >= 0) {
-        json = MochiKit.Base.setdefault(
-            json,
-            MochiKit.Base.parseQueryString(url.slice(q_index + 1)));
-        url = url.slice(0, q_index);
-    }
-    
-    if (!isUndefinedOrNull(json)) {
-        options.method = 'POST';
-        json = MochiKit.Base.serializeJSON(json);
-    }
-    var d = MochiKit.Async.doXHR(url, {
-        method: options.method,
-        sendContent: json});
-    d.addCallbacks(function(result) {
-        var result_obj = null;
-        try {
-            var result_obj = MochiKit.Async.evalJSONRequest(result);
-        } catch (e if e instanceof SyntaxError) {
-        }
-        var immediate_actions = [];
-        if (!isNull(result_obj)) {
-            signals = result_obj['signals'] || [];
-            forEach(signals, function(signal) {
-                if (isNull(signal.when)) {
-                    immediate_actions.push(signal);
-                } else {
-                    log("Connecting "+ [target_component.__name__, signal.when, signal.name]);
-                    (function() {
-                        var ident = MochiKit.Signal.connect(
-                            target_component, signal.when, function() {
-                            log("Signalling "+ [target_component.__name__, signal.when, signal.name]);
-                            MochiKit.Signal.disconnect(ident);
-                            MochiKit.Signal.signal.apply(
-                                this,
-                                extend(
-                                    [target_component, signal.name],
-                                    signal.args));
-                        });
-                    })();
-                }
-            });
-        }
-        if (immediate_actions.length) {
-            immediate_actions.reverse();
-            while(immediate_actions.length) {
-                var signal = immediate_actions.pop();
-                MochiKit.Signal.signal.apply(
-                    this,
-                    extend([target_component, signal.name], signal.args));
-            }
-        } else {
-            MochiKit.Signal.signal(target_component, 'reload');
-        }
-        return result;
-    },
-    function(error) {
-        zeit.content.cp.handle_json_errors(error);
-        MochiKit.Signal.signal(target_component, 'reload');
-        return error;
-    });
-    return d;
-}
-
-
-zeit.content.cp.handle_json_errors = function(error) {
-    zeit.cms.log_error(error);
-    if (!isUndefinedOrNull(error.req)) {
-        var div = DIV();
-        div.innerHTML = error.req.responseText;
-        var message_node = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'pre', null, div);
-        if (isNull(message_node)) {
-            var message = error.req.responseText;
-        } else {
-            var message = message_node.textContent;
-        }
-        alert(message);
-    }
-    return error
-}
-
-
 zeit.content.cp.getParentComponent = function(context_element) {
     var parent = null;
     var parent_element = context_element.parentNode;
@@ -614,18 +509,6 @@ zeit.content.cp.TabbedLightBoxForm = zeit.content.cp.LightBoxForm.extend({
             }
             i = i + 1;
         });
-    },
-
-});
-
-
-zeit.content.cp.LoadAndReload = gocept.Class.extend({
-
-    construct: function(context_element) {
-        var self = this;
-        var url = context_element.getAttribute('href');
-        var d = zeit.content.cp.makeJSONRequest(url);
-        return d;
     },
 
 });

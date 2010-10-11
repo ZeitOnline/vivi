@@ -9,14 +9,6 @@
   <browser:page
     for="zeit.edit.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="contents"
-    template="layout.contents.pt"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.edit.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
     class=".blocks.block.Delete"
     permission="zope.View"
@@ -31,6 +23,7 @@
     permission="zeit.EditContent"
     />
 
+  <!--
   <browser:viewlet
     for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -41,6 +34,7 @@
     permission="zeit.EditContent"
     weight="0"
     />
+  -->
 
   <browser:page
     for="zeit.content.cp.interfaces.IInformatives"
@@ -49,28 +43,6 @@
     class=".editor.Editor"
     template="layout.informatives.contents.pt"
     permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IInformatives"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
-    name="contents"
-    template="layout.informatives.contents-provider.pt"
-    permission="zeit.EditContent"
-    weight="0"
-    />
-
-  <browser:viewlet
-    for="zope.container.interfaces.IReadContainer"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
-    name="contents"
-    template="layout.contents-provider.pt"
-    permission="zeit.EditContent"
-    weight="0"
     />
 
   <browser:viewlet

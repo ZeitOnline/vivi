@@ -1,3 +1,0 @@
-<div class="edit edit-bar"
-     tal:content="structure provider:zeit.content.cp.edit-bar">
-</div>

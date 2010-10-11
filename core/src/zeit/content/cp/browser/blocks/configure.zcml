@@ -6,66 +6,32 @@
 
   <!-- Block -->
 
-  <browser:page
-    for="zeit.edit.interfaces.IElement"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="contents"
-    template="../layout.contents.pt"
-    permission="zope.View"
-    />
+  <configure package="zeit.edit.browser">
+    <!-- Teaserbar is both an area and a block. Special treat is reaquired. -->
+    <browser:viewletManager
+      provides="..interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.ITeaserBar"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class=".block.BlockViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
 
-  <browser:viewletManager
-    provides="..interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.IBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    class=".block.BlockViewletManager"
-    template="layout.block.contents.pt"
-    name="zeit.content.cp.editor-contents"
-    permission="zope.View"
-    />
-
-  <browser:viewletManager
-    provides="..interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.ITeaserBar"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    class=".block.BlockViewletManager"
-    template="layout.block.contents.pt"
-    name="zeit.content.cp.editor-contents"
-    permission="zope.View"
-    />
-edit
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditorContentViewletManager"
-    name="edit"
-    template="layout.block.edit.pt"
-    permission="zeit.EditContent"
-    weight="-10"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBar"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditorContentViewletManager"
-    name="edit"
-    template="layout.block.edit.pt"
-    permission="zeit.EditContent"
-    weight="-10"
-    />
-
-  <browser:viewletManager
-    provides="..interfaces.IEditBarViewletManager"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    class="zope.viewlet.manager.WeightOrderedViewletManager"
-    name="zeit.content.cp.edit-bar"
-    permission="zope.View"
-    />
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.ITeaserBar"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="..interfaces.IContentViewletManager"
+      name="edit"
+      template="layout.block.edit.pt"
+      permission="zeit.EditContent"
+      weight="-10"
+      />
+  </configure>
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
@@ -112,49 +78,31 @@ edit
     weight="1"
     />
 
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="delete"
-    template="layout.block.delete.pt"
-    permission="zeit.EditContent"
-    weight="90"
-    />
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.ITeaserBar"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="..interfaces.IEditBarViewletManager"
+      name="delete"
+      template="layout.block.delete.pt"
+      permission="zeit.EditContent"
+      weight="10"
+      />
+  </configure>
 
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBar"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="delete"
-    template="layout.block.delete.pt"
-    permission="zeit.EditContent"
-    weight="10"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="drag"
-    template="layout.block.drag.pt"
-    permission="zeit.EditContent"
-    weight="1000"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBar"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="drag"
-    template="layout.block.drag.pt"
-    permission="zeit.EditContent"
-    weight="100"
-    />
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.ITeaserBar"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="..interfaces.IEditBarViewletManager"
+      name="drag"
+      template="layout.block.drag.pt"
+      permission="zeit.EditContent"
+      weight="100"
+      />
+  </configure>
 
   <browser:page
     for="zeit.content.cp.interfaces.IBlock"

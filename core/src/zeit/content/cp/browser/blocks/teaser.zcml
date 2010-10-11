@@ -13,7 +13,7 @@
     view="zope.interface.Interface"
     class=".teaser.TeaserBlockViewletManager"
     template="layout.block.contents.pt"
-    name="zeit.content.cp.editor-contents"
+    name="zeit.edit.contents"
     permission="zope.View"
     />
 

@@ -11,7 +11,7 @@
         tal:attributes="href string:${context/@@absolute_url}/change-layout?id=${layout/token};
         class layout/css_class"
         i18n:translate=""
-        cms:cp-module="zeit.content.cp.LoadAndReload">
+        cms:cp-module="zeit.edit.LoadAndReload">
         <img tal:attributes="src
              string:${context/++resource++zeit.content.cp}/${view/layout_prefix}-${layout/token}.png" />
         <span tal:content="layout/title" />

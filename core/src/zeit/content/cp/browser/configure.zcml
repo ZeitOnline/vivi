@@ -78,7 +78,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     class="zope.viewlet.manager.WeightOrderedViewletManager"
-    name="zeit.content.cp.editor-contents"
+    name="zeit.edit.contents"
     permission="zope.View"
     />
 
