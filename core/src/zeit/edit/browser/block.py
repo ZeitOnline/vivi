@@ -3,6 +3,7 @@
 
 import zope.viewlet.manager
 
+
 class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
 
     def __init__(self, context, request, view):
@@ -17,4 +18,3 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
         #if self.validation_class:
         #    classes.append(self.validation_class)
         return ' '.join(classes)
-
