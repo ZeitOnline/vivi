@@ -2,14 +2,14 @@
 # See also LICENSE.txt
 
 import zeit.cms.interfaces
-import zeit.content.cp.browser.view
+import zeit.edit.browser.view
 import zope.component
 import zope.event
 import zope.lifecycleevent
 
-class DropContent(zeit.content.cp.browser.view.Action):
+class DropContent(zeit.edit.browser.view.Action):
 
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
 
     def update(self):
         switcher = zope.component.getMultiAdapter(
@@ -26,9 +26,9 @@ class DropContent(zeit.content.cp.browser.view.Action):
                                                             '@@contents'))
 
 
-class DropModule(zeit.content.cp.browser.view.Action):
+class DropModule(zeit.edit.browser.view.Action):
 
-    block_type = zeit.content.cp.browser.view.Form('block_type')
+    block_type = zeit.edit.browser.view.Form('block_type')
 
     def update(self):
         switcher = zope.component.getMultiAdapter(

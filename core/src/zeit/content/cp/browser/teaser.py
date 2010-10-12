@@ -7,7 +7,6 @@ import zeit.cms.content.browser.commonmetadata
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zope.app.pagetemplate
 import zope.component

@@ -3,7 +3,7 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.content.cp.browser.rule
-import zeit.content.cp.browser.view
+import zeit.edit.browser.view
 import zeit.content.cp.interfaces
 import zope.app.pagetemplate
 import zope.component
@@ -26,9 +26,9 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
         return ' '.join(classes)
 
 
-class Add(zeit.content.cp.browser.view.Action):
+class Add(zeit.edit.browser.view.Action):
 
-    type = zeit.content.cp.browser.view.Form('type')
+    type = zeit.edit.browser.view.Form('type')
 
     def update(self):
         factory = zope.component.getAdapter(
@@ -38,9 +38,9 @@ class Add(zeit.content.cp.browser.view.Action):
         self.signal('after-reload', 'added', created.__name__)
 
 
-class Delete(zeit.content.cp.browser.view.Action):
+class Delete(zeit.edit.browser.view.Action):
 
-    key = zeit.content.cp.browser.view.Form('key')
+    key = zeit.edit.browser.view.Form('key')
 
     def update(self):
         del self.context[self.key]

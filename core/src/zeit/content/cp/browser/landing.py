@@ -9,12 +9,12 @@ See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-z
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.related.interfaces
-import zeit.content.cp.browser.view
+import zeit.edit.browser.view
 import zope.browser.interfaces
 import zope.component
 
 
-class LandingZone(zeit.content.cp.browser.view.Action):
+class LandingZone(zeit.edit.browser.view.Action):
 
     def update(self):
         self.create_block()
@@ -62,8 +62,8 @@ class LandingZone(zeit.content.cp.browser.view.Action):
 class TeaserBlockLandingZone(LandingZone):
 
     block_type = 'teaser'
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
-    relateds = zeit.content.cp.browser.view.Form(
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
+    relateds = zeit.edit.browser.view.Form(
         'relateds', json=True, default=True)
 
     def initialize_block(self):

@@ -85,11 +85,11 @@ class CPBlockFactories(BlockFactories):
 
 class BlockLandingZone(zeit.content.cp.browser.landing.LandingZone):
 
-    block_type = zeit.content.cp.browser.view.Form('block_type')
+    block_type = zeit.edit.browser.view.Form('block_type')
     order = 'after-context'
 
 
 class RegionLandingZone(zeit.content.cp.browser.landing.LandingZone):
 
-    block_type = zeit.content.cp.browser.view.Form('block_type')
+    block_type = zeit.edit.browser.view.Form('block_type')
     order = 0

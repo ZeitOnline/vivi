@@ -7,7 +7,7 @@ import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zope.lifecycleevent
-import zeit.content.cp.browser.view
+import zeit.edit.browser.view
 import zope.formlib.form
 
 
@@ -25,10 +25,10 @@ class VideoEditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
             'media_type', 'id', 'player', 'expires', 'format')
 
 
-class DropVideo(zeit.content.cp.browser.view.Action):
+class DropVideo(zeit.edit.browser.view.Action):
     """Drop a video to a video block."""
 
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)

@@ -8,7 +8,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
-import zeit.content.cp.browser.view
+import zeit.edit.browser.view
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.app.pagetemplate
@@ -151,11 +151,11 @@ class AutoPilotDisplay(Display):
         return self.url('@@toggle-autopilot?to=' + on_off)
 
 
-class Drop(zeit.content.cp.browser.view.Action):
+class Drop(zeit.edit.browser.view.Action):
     """Drop a content object on a teaserblock."""
 
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
-    index = zeit.content.cp.browser.view.Form('index', json=True, default=0)
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
+    index = zeit.edit.browser.view.Form('index', json=True, default=0)
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
@@ -222,12 +222,12 @@ class EditContents(zeit.cms.browser.view.Base):
         return teasers
 
 
-class ChangeLayout(zeit.content.cp.browser.view.Action):
+class ChangeLayout(zeit.edit.browser.view.Action):
     """Change the layout of a teaserblock."""
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
 
-    layout_id = zeit.content.cp.browser.view.Form('id')
+    layout_id = zeit.edit.browser.view.Form('id')
 
     def update(self):
         layout = zope.component.getMultiAdapter(
@@ -249,9 +249,9 @@ def teaserEditViewName(context):
     return 'edit-teaser.html'
 
 
-class ToggleAutopilot(zeit.content.cp.browser.view.Action):
+class ToggleAutopilot(zeit.edit.browser.view.Action):
 
-    to = zeit.content.cp.browser.view.Form('to')
+    to = zeit.edit.browser.view.Form('to')
 
     def update(self):
         self.context.autopilot = (True if self.to == 'on' else False)
@@ -260,9 +260,9 @@ class ToggleAutopilot(zeit.content.cp.browser.view.Action):
         self.signal_context_reload()
 
 
-class UpdateOrder(zeit.content.cp.browser.view.Action):
+class UpdateOrder(zeit.edit.browser.view.Action):
 
-    keys = zeit.content.cp.browser.view.Form('keys', json=True)
+    keys = zeit.edit.browser.view.Form('keys', json=True)
 
     def update(self):
         keys = self.keys
@@ -286,10 +286,10 @@ class AutoPilotUpdateOrder(UpdateOrder):
         super(AutoPilotUpdateOrder, self).update()
 
 
-class Delete(zeit.content.cp.browser.view.Action):
+class Delete(zeit.edit.browser.view.Action):
     """Delete item from TeaserBlock."""
 
-    uniqueId = zeit.content.cp.browser.view.Form('uniqueId')
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)

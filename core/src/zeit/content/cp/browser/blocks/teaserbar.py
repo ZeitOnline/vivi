@@ -23,9 +23,9 @@ class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
     interface = zeit.content.cp.interfaces.ITeaserBar
 
 
-class Delete(zeit.content.cp.browser.view.Action):
+class Delete(zeit.edit.browser.view.Action):
 
-    key = zeit.content.cp.browser.view.Form('key')
+    key = zeit.edit.browser.view.Form('key')
 
     def update(self):
         teasers = [
