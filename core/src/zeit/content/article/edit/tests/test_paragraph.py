@@ -1,0 +1,40 @@
+# Copyright (c) 2010 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+import unittest
+
+
+class ParagraphTest(unittest.TestCase):
+
+    def get_paragraph(self, p='<p/>'):
+        from zeit.content.article.edit.paragraph import Paragraph
+        import lxml.objectify
+        body = lxml.objectify.E.body(lxml.objectify.XML(p))
+        return Paragraph(None, body.p)
+
+    def test_setting_text_inserts_xml(self):
+        p = self.get_paragraph()
+        self.assertEquals(u'', p.text)
+        text =  u'The quick brown fox jumps over the lazy dog.'
+        p.text = text
+        self.assertEqual(text, p.text)
+        text =  u'The quick brown <em>fox</em> jumps over the lazy dog.'
+        p.text = text
+        self.assertEqual(text, p.text)
+
+    def test_node_tails_should_be_include_in_text(self):
+        p = self.get_paragraph('<p>Im <strong>Tal</strong> der Buchstaben</p>')
+        self.assertEqual(u'Im <strong>Tal</strong> der Buchstaben', p.text)
+
+    def test_setting_invalid_xml_raises_valueerror(self):
+        p = self.get_paragraph()
+        def fail():
+            p.text = u'4 < 3'
+        self.assertRaises(ValueError, fail)
+
+    def test_setting_text_should_keep_attributes(self):
+        p = self.get_paragraph()
+        p.xml.set('myattr', 'avalue')
+        p.text = 'Mary had a little lamb.'
+        self.assertEqual('avalue', p.xml.get('myattr'))
+

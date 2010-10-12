@@ -4,6 +4,7 @@
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
+import uuid
 import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -26,27 +27,57 @@ class EditableBody(zeit.edit.container.Base,
 
     __name__ = editable_body_name
 
-    def _find_item(self, xml_node, name):
-        __traceback_info__ = (name,)
-        xpath = name.replace('.', '/')
-        return xml_node.xpath(xpath)
+    _find_item = lxml.etree.XPath(
+        './/*[@cms:__name__ = $name]',
+        namespaces=dict(
+            cms='http://namespaces.zeit.de/CMS/cp'))
+
+    def _set_default_key(self, xml_node):
+        key = xml_node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+        if not key:
+            key = str(uuid.uuid4())
+            xml_node.set('{http://namespaces.zeit.de/CMS/cp}__name__',
+                         key)
+            self._p_changed = True
+        return key
 
     def _get_keys(self, xml_node):
         # XXX this is much too simple and needs work. and tests.
         result = []
         for didx, division in enumerate(
             xml_node.xpath('division[@type="page"]'), start=1):
-            division_path = '%s[%s]' % (division.tag, didx)
+            key = self._set_default_key(division)
             if didx > 1:
                 # Skip the first division as it isn't editable
-                result.append(division_path)
-            for cidx, child in enumerate(division.iterchildren(), start=1):
-                result.append(
-                    '%s.*[%s]' % (division_path, cidx))
+                result.append(key)
+            for child in division.iterchildren():
+                result.append(self._set_default_key(child))
         return result
 
     def _get_element_type(self, xml_node):
         return xml_node.tag
+
+    def _add(self, item):
+        # Add to last division instead of self.xml
+        name = item.__name__
+        if name:
+            if name in self:
+                raise zope.container.interfaces.DuplicateIDError(name)
+        else:
+            name = str(uuid.uuid4())
+        item.__name__ = name
+        self.xml.division[:][-1].append(item.xml)
+        return name
+
+    def _delete(self, key):
+        item = self[key]
+        if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
+            # Move contained elements to previous devision
+            prev = item.xml.getprevious()
+            for child in item.xml.iterchildren():
+                prev.append(child)
+        item.xml.getparent().remove(item.xml)
+        return item
 
 
 @grokcore.component.adapter(zeit.content.article.interfaces.IArticle)
