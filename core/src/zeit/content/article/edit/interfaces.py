@@ -14,3 +14,8 @@ class IParagraph(zeit.edit.interfaces.IBlock):
     """<p/> element."""
 
     text = zope.schema.Text(title=_('Paragraph-Text'))
+
+
+class IDivision(zeit.edit.interfaces.IBlock):
+
+    teaser = zope.schema.TextLine(title=_('Page teaser'))

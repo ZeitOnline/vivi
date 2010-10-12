@@ -25,4 +25,11 @@
       />
   </class>
 
+  <class class=".division.Division">
+    <require
+      interface=".interfaces.IDivision"
+      permission="zope.View" 
+      />
+  </class>
+
 </configure>
