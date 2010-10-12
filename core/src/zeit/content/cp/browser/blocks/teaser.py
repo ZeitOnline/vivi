@@ -7,7 +7,7 @@ import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.content.cp.browser.blocks.block
+import zeit.edit.browser.block
 import zeit.edit.browser.view
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
@@ -23,7 +23,7 @@ COLUMN_ID = 'column://'
 
 
 class TeaserBlockViewletManager(
-    zeit.content.cp.browser.blocks.block.BlockViewletManager):
+    zeit.edit.browser.block.BlockViewletManager):
 
     @property
     def css_class(self):

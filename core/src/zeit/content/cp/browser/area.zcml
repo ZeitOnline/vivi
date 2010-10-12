@@ -7,14 +7,6 @@
   <!-- Area -->
 
   <browser:page
-    for="zeit.edit.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="delete"
-    class=".blocks.block.Delete"
-    permission="zope.View"
-    />
-
-  <browser:page
     for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"

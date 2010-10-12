@@ -136,14 +136,6 @@
     weight="90"
     />
 
-  <browser:page
-    for="zeit.edit.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="add"
-    class=".block.Add"
-    permission="zeit.EditContent"
-    />
-
   <view
     for="zeit.content.cp.interfaces.IRegion zeit.edit.interfaces.IElement"
     type="zeit.cms.browser.interfaces.ICMSLayer"
