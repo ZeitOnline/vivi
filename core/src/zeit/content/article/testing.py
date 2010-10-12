@@ -1,14 +1,9 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zope.testing import doctest
-import __future__
-import os
-import pkg_resources
 import re
 import shutil
 import tempfile
-import unittest
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zope.app.testing.functional
@@ -78,24 +73,3 @@ class CDSLayer(CDSZCMLLayer):
             pass
         del product_config['cds-export']
         del product_config['cds-import']
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        'pagebreak.txt',
-        'recension.txt',
-        layer=ArticleLayer))
-
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'cds_export.txt',
-        'cds_import.txt',
-        'layout.txt',
-        layer=CDSLayer,
-        checker=checker,
-        product_config={
-            'zeit.workflow': {'publish-script': 'cat',
-                              'path-prefix': ''}},
-        globs={'with_statement': __future__.with_statement}))
-    return suite
