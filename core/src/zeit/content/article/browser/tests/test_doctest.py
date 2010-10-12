@@ -13,9 +13,11 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'recension.txt',
+        package='zeit.content.article.browser',
         layer=zeit.content.article.tests.ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'layout.txt',
+        package='zeit.content.article.browser',
         # we use the CDSLayer since it includes zeit.workflow which we need
         layer=zeit.content.article.tests.CDSLayer))
     return suite
