@@ -108,4 +108,22 @@
     weight="1000"
     />
 
+  <!-- generic actions -->
+
+  <browser:page
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="add"
+    class=".block.Add"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".block.Delete"
+    permission="zeit.EditContent"
+    />
+
 </configure>
