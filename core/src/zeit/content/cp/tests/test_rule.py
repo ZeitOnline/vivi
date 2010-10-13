@@ -221,10 +221,3 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_invalid_rules_file_should_yield_empty_ruleset(self):
         self._set_rules('syntax_error')
         self.assertEqual(0, len(self.rm.rules))
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTests(unittest.makeSuite(RuleTest))
-    suite.addTests(unittest.makeSuite(RulesManagerTest))
-    return suite
