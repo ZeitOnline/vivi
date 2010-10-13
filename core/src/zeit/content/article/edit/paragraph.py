@@ -5,6 +5,7 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.etree
+import lxml.html
 import lxml.objectify
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
@@ -30,14 +31,17 @@ class Paragraph(zeit.edit.block.Element,
     def text(self):
         # The copy.copy magically removes unnecessary namespace declarations.
         p_text = self.xml.text or ''
-        return p_text + ''.join(
+        text = p_text + ''.join(
             lxml.etree.tostring(copy.copy(c)) for c in self.xml.iterchildren())
+        return unicode(text)
 
     @text.setter
     def text(self, value):
         # XXX I guess we need to munge at least <a href> here in some way.
         try:
-            p = lxml.objectify.XML('<p>%s</p>' % value)
+            p = lxml.objectify.XML(
+                lxml.etree.tostring(
+                    lxml.html.fromstring('<p>%s</p>' % value)))
         except lxml.etree.XMLSyntaxError:
             raise ValueError('No valid XML: %s' % (value,))
         p.attrib.update(self.xml.attrib.items())

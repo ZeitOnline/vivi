@@ -43,3 +43,17 @@ class ParagraphTest(unittest.TestCase):
         p.text = u'F\xfc!'
         self.assertEqual(u'F\xfc!', p.text)
         self.assertTrue(isinstance(p.text, unicode))
+
+    def test_text_should_be_unicode(self):
+        p = self.get_paragraph()
+        p.text = 'Dadudeldum'
+        self.assertTrue(isinstance(p.text, unicode))
+
+    def test_setting_html_should_create_proper_xml(self):
+        import lxml.objectify
+        p = self.get_paragraph()
+        p.text = u'I am <strong>strong</strong><br>I am the best.'
+        self.assertEqual(u'I am <strong>strong</strong><br/>I am the best.',
+                         p.text)
+        self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
+                        type(p.xml))
