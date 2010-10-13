@@ -24,6 +24,8 @@
       context.js
       edit.js
       sortable.js
+      drop.js
+      library.js
       json.js"/>
   </resourceLibrary>
 
@@ -123,6 +125,17 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
     class=".block.Delete"
+    permission="zeit.EditContent"
+    />
+
+
+  <!-- library -->
+
+  <browser:view
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.BlockFactories"
     permission="zeit.EditContent"
     />
 

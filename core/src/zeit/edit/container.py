@@ -37,15 +37,18 @@ class Base(UserDict.DictMixin,
         node = self._find_item(self.xml, name=key)
         if node:
             node = node[0]
-            element_type = self._get_element_type(node)
-            element = zope.component.queryMultiAdapter(
-                (self, node),
-                zeit.edit.interfaces.IElement,
-                name=element_type)
+            element = self._get_element_for_node(node)
             if element is None:
                return None
             return zope.container.contained.contained(element, self, key)
         raise KeyError(key)
+
+    def _get_element_for_node(self, node):
+        element_type = self._get_element_type(node)
+        return zope.component.queryMultiAdapter(
+            (self, node),
+            zeit.edit.interfaces.IElement,
+            name=element_type)
 
     def __iter__(self):
         return (unicode(k) for k in self._get_keys(self.xml))
