@@ -53,7 +53,7 @@ class Paragraph(zeit.edit.block.Element,
 
 class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = 'p'
+    element_type = Paragraph.type
     title = _('Paragraph')
     grokcore.component.name(element_type)
 
