@@ -25,7 +25,7 @@ class Paragraph(zeit.edit.block.Element,
     grokcore.component.provides(
         zeit.content.article.edit.interfaces.IParagraph)
 
-    type = 'paragraph'
+    type = 'p'
 
     @property
     def text(self):
