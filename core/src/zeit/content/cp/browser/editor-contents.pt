@@ -5,6 +5,10 @@
     type="text/javascript"
     tal:attributes="src
     string:${request/++resource++zeit.content.cp}/editor.js"></script>
+  <script
+    type="text/javascript"
+    tal:attributes="src
+    string:${request/++resource++zeit.content.cp}/library.js"></script>
 
 
   <div class="cp-editor-top">

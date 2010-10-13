@@ -88,4 +88,4 @@ class LeaderLandingZoneDrop(TeaserBlockLandingZone):
 
 class TeaserLandingZoneInsertAfter(TeaserBlockLandingZone):
 
-    order = 'after-context'
+      order = 'after-context'

@@ -15,7 +15,6 @@
     permission="zeit.EditContent"
     />
 
-  <!--
   <browser:viewlet
     for="zeit.content.cp.interfaces.ILead"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -26,7 +25,6 @@
     permission="zeit.EditContent"
     weight="0"
     />
-  -->
 
   <browser:page
     for="zeit.content.cp.interfaces.IInformatives"

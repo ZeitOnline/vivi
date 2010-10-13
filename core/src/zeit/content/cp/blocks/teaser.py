@@ -14,6 +14,7 @@ import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.edit.interfaces
 import zeit.workflow.interfaces
 import zope.component
 import zope.container.interfaces
@@ -257,7 +258,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
 
 TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.edit.interfaces.IContainer, 'teaser',
+    zeit.content.cp.interfaces.IRegion, 'teaser',
     _('List of teasers'))
 
 

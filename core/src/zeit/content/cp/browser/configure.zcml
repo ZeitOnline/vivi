@@ -147,14 +147,6 @@
   <!-- Module library -->
 
   <browser:view
-    for="zeit.edit.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="block-factories.json"
-    class=".library.BlockFactories"
-    permission="zeit.EditContent"
-    />
-
-  <browser:view
     for="zeit.content.cp.interfaces.IMosaic"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block-factories.json"
