@@ -15,8 +15,8 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
         import zeit.content.article.article
         import zeit.content.article.edit.body
         if not body:
-            body  = ("<division><p>Para1</p><img/></division>"
-                     "<division><p>Para2</p><foo/></division>")
+            body  = ("<division><p>Para1</p><p/></division>"
+                     "<division><p>Para2</p><p/></division>")
         article = zeit.content.article.article.Article()
         article.xml.body = lxml.objectify.XML(
             '<body>%s</body>' % body)
@@ -54,4 +54,10 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
         body.add(block)
         self.assertEqual(['myblock'], body.keys())
 
-
+    def test_update_order_should_put_object_into_right_division(self):
+        body = self.get_body()
+        with mock.patch('uuid.uuid4') as uuid:
+            uuid.side_effect = lambda: uuid.call_count
+            self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
+        body.updateOrder(['2', '3', '5', '4', '6'])
+        self.assertEqual(['2', '3', '5', '4', '6'], body.keys())
