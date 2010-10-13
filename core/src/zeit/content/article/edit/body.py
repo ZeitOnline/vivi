@@ -44,6 +44,8 @@ class EditableBody(zeit.edit.container.Base,
     def _get_keys(self, xml_node):
         # XXX this is much too simple and needs work. and tests.
         result = []
+        if self.xml.find('division') is None:
+            self._migrate()
         for didx, division in enumerate(
             xml_node.xpath('division[@type="page"]'), start=1):
             key = self._set_default_key(division)
@@ -53,6 +55,17 @@ class EditableBody(zeit.edit.container.Base,
             for child in division.iterchildren():
                 result.append(self._set_default_key(child))
         return result
+
+    def _migrate(self):
+        division = lxml.objectify.E.division(type='page')
+        self.xml.append(division)
+        for node in self.xml.getchildren():
+            if node.tag == 'division':
+                # Ignore the division we've just added to the body
+                continue
+            element = self._get_element_for_node(node)
+            if element:
+                division.append(node)
 
     def _get_element_type(self, xml_node):
         return xml_node.tag

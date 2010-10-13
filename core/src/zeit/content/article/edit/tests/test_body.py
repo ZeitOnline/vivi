@@ -10,6 +10,17 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.ArticleLayer
 
+    def setUp(self):
+        super(EditableBodyTest, self).setUp()
+        import uuid
+        self.uuid4 = uuid.uuid4
+        uuid.uuid4 = mock.Mock(side_effect=lambda: uuid.uuid4.call_count)
+
+    def tearDown(self):
+        import uuid
+        uuid.uuid4 = self.uuid4
+        super(EditableBodyTest, self).tearDown()
+
     def get_body(self, body=None):
         import lxml.objectify
         import zeit.content.article.article
@@ -28,9 +39,7 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
     def test_keys_contain_division_contents(self):
         body = self.get_body()
         # The first division is omitted, thus only 5 keys
-        with mock.patch('uuid.uuid4') as uuid:
-            uuid.side_effect = lambda: uuid.call_count
-            self.assertEqual(5, len(body.keys()))
+        self.assertEqual(5, len(body.keys()))
         # Starts at 2 as the first <division> is skipped but still gets a key
         self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
 
@@ -38,9 +47,7 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
         body = self.get_body()
         # Note: calling for the first time keys() actually makes the keys
         # available.
-        with mock.patch('uuid.uuid4') as uuid:
-            uuid.side_effect = lambda: uuid.call_count
-            self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
+        self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
         del body['4']
         self.assertEqual(['2', '3', '5', '6'], body.keys())
 
@@ -56,9 +63,7 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_update_order_should_put_object_into_right_division(self):
         body = self.get_body()
-        with mock.patch('uuid.uuid4') as uuid:
-            uuid.side_effect = lambda: uuid.call_count
-            self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
+        self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
         body.updateOrder(['2', '3', '5', '4', '6'])
         self.assertEqual(['2', '3', '5', '4', '6'], body.keys())
         body.updateOrder(['2', '4', '5', '3', '6'])
@@ -66,3 +71,17 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
         del body['2']
         body.updateOrder(['4', '3', '5', '6'])
         self.assertEqual(['4', '3', '5', '6'], body.keys())
+
+    def test_articles_without_division_should_be_migrated(self):
+        body = self.get_body(
+            '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
+        self.assertEqual(['2', '3'], body.keys())
+        self.assertEqual(
+            ['foo', 'division'],
+            [child.tag for child in body.xml.iterchildren()])
+        self.assertEqual(
+            ['p', 'p'],
+            [child.tag for child in body.xml.division.iterchildren()])
+        self.assertEqual(
+            [u'I have no division', u'Only paras'],
+            [unicode(child) for child in body.xml.division.iterchildren()])
