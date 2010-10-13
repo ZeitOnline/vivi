@@ -25,6 +25,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="save_text"
+    class=".edit.SaveText"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IParagraph"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

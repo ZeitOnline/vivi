@@ -28,15 +28,17 @@ class SaveText(zeit.edit.browser.view.Action):
             insert_at = None
         for key in self.paragraphs:
             del self.context[key]
-        order = self.context.keys()
-        for i, text in enumerate(self.text):
+        order = list(self.context.keys())
+        for text in self.text:
             if not text.strip():
                 continue
             factory = zope.component.getAdapter(
                 self.context, zeit.edit.interfaces.IElementFactory, name='p')
             p = factory()
             p.text = text
-            if insert_at:
-                order.insert(insert_at + i, p.__name__)
-        if insert_at:
+            if insert_at is not None:
+                order.insert(insert_at, p.__name__)
+                # Next insert is after the paragraph we just inserted.
+                insert_at += 1
+        if insert_at is not None:
             self.context.updateOrder(order)

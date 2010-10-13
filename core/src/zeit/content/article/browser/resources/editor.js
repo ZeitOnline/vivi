@@ -19,10 +19,11 @@ zeit.content.article.Editable = gocept.Class.extend({
     construct: function(context_element) {
         var self = this;
         self.context = context_element;
+        self.edited_paragraphs = [];
         self.editable = self.merge();
         self.editable.contentEditable = true;
         self.editable.focus();
-        MochiKit.Signal.connect(self.editable, 'onblur', self, self.save);
+        MochiKit.Signal.connect(self.editable, 'onblur', self, self.save);
     },
 
     merge: function() {
@@ -33,25 +34,29 @@ zeit.content.article.Editable = gocept.Class.extend({
             null, 'block', block.parentNode);
         var i = blocks.indexOf(block);
         var paragraphs = [];
+        // XXX remove code duplication
         while (i > 0) {
             i -= 1;
             if (MochiKit.DOM.hasElementClass(blocks[i], 'type-paragraph')) {
                 paragraphs.push(blocks[i]);
             } else {
-                break
+                break;
             }
         }
         paragraphs.reverse();
         paragraphs.push(block);
-        var i = blocks.indexOf(block);
+        i = blocks.indexOf(block);
         while (i < blocks.length) {
             i += 1;
             if (MochiKit.DOM.hasElementClass(blocks[i], 'type-paragraph')) {
                 paragraphs.push(blocks[i]);
             } else {
-                break
+                break;
             }
         }
+        self.edited_paragraphs = MochiKit.Base.map(
+            function(element) { return element.id; },
+            paragraphs);
         var editable = MochiKit.DOM.getFirstElementByTagAndClassName(
             null, 'editable', paragraphs[0]);
         forEach(paragraphs.slice(1), function(paragraph) {
@@ -59,20 +64,28 @@ zeit.content.article.Editable = gocept.Class.extend({
                 paragraph, ['.editable p']), function(p) {
                 editable.appendChild(p);
             });
-            // We might need to store the id of the removed paragraph here; not
-            // sure, yet.
             MochiKit.DOM.removeElement(paragraph);
         });
-        return editable
+        return editable;
+    },
+
+    get_text_list: function() {
+        var self = this;
+        return MochiKit.Base.map(
+            function(p) { return p.innerHTML; },
+            MochiKit.DOM.getElementsByTagAndClassName(
+                'p', null, self.editable));
     },
 
     save: function() {
         var self = this;
-        log('I should save', self.editable.innerHTML);
         MochiKit.Signal.disconnectAll(self.editable, 'onblur');
         // until now, the editor can only be contained in an editable-body.
-        var url = $('editable-body').getAttribute('cms:url') + '/@@contents';
-        zeit.edit.editor.reload('editable-body', url);
+        var url = $('editable-body').getAttribute('cms:url') + '/@@save_text';
+        zeit.edit.makeJSONRequest(url, {
+            paragraphs: self.edited_paragraphs,
+            text: self.get_text_list()});
+
     }
 
 });
