@@ -59,7 +59,6 @@ class Base(UserDict.DictMixin,
             item, self, name))
 
     def _add(self, item):
-        # XXX setting the __name__ like that doesn't make sense here
         name = item.__name__
         if name:
             if name in self:
