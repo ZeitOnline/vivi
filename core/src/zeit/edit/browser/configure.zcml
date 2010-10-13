@@ -139,4 +139,20 @@
     permission="zeit.EditContent"
     />
 
+  <browser:view
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.BlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.AreaLandingZone"
+    permission="zeit.EditContent"
+    />
+
 </configure>
