@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import unittest
+import zeit.content.article.testing
 
 
 class ParagraphTest(unittest.TestCase):
@@ -57,3 +58,24 @@ class ParagraphTest(unittest.TestCase):
                          p.text)
         self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
                         type(p.xml))
+
+
+class TestFactory(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_factory_should_create_p_node(self):
+        import zeit.content.article.article
+        import zeit.content.article.edit.interfaces
+        import zeit.edit.interfaces
+        import zope.component
+        article = zeit.content.article.article.Article()
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, 'p')
+        self.assertEqual('Paragraph', factory.title)
+        p = factory()
+        self.assertTrue(
+            zeit.content.article.edit.interfaces.IParagraph.providedBy(p))
+        self.assertEqual('p', p.xml.tag)
+        self.assertEqual('division', p.xml.getparent().tag)
+
