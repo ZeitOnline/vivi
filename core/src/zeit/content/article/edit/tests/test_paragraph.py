@@ -38,3 +38,8 @@ class ParagraphTest(unittest.TestCase):
         p.text = 'Mary had a little lamb.'
         self.assertEqual('avalue', p.xml.get('myattr'))
 
+    def test_setting_unicode_should_work(self):
+        p = self.get_paragraph()
+        p.text = u'F\xfc!'
+        self.assertEqual(u'F\xfc!', p.text)
+        self.assertTrue(isinstance(p.text, unicode))
