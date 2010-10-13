@@ -1,12 +1,14 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import copy
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.etree
 import lxml.html
 import lxml.objectify
+import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -49,21 +51,11 @@ class Paragraph(zeit.edit.block.Element,
         self.xml = p
 
 
-class ParagraphFactory(grokcore.component.Adapter):
+class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
 
-    grokcore.component.implements(zeit.edit.interfaces.IElementFactory)
-    grokcore.component.context(
-        zeit.content.article.edit.interfaces.IEditableBody)
-    grokcore.component.name('p')
-
-    title = u'Paragraph'
     element_type = 'p'
+    title = _('Paragraph')
+    grokcore.component.name(element_type)
 
-    def __call__(self):
-        p = lxml.objectify.E.p()
-        content = zope.component.getMultiAdapter(
-            (self.context, p),
-            zeit.edit.interfaces.IElement,
-            name=self.element_type)
-        self.context.add(content)
-        return content
+    def get_xml(self):
+        return lxml.objectify.E.p()
