@@ -23,6 +23,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.editable = self.merge();
         self.editable.contentEditable = true;
         self.editable.focus();
+        self.command('styleWithCSS', false);
         MochiKit.Signal.connect(self.editable, 'onblur', self, self.save);
     },
 
@@ -86,6 +87,16 @@ zeit.content.article.Editable = gocept.Class.extend({
             paragraphs: self.edited_paragraphs,
             text: self.get_text_list()});
 
+    },
+
+    command: function(command, option) {
+        var self = this;
+        try {
+            document.execCommand(command, false, option);
+        } catch(e) {
+			window.console && console.log(e)
+		}
+		//this._updateToolbar();
     }
 
 });
