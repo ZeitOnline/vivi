@@ -70,6 +70,7 @@ class Base(UserDict.DictMixin,
         return name
 
     def updateOrder(self, order):
+        __traceback_info__ = (order,)
         if not isinstance(order, (tuple, list)):
             raise TypeError('order must be tuple or list, got %s.' %
                             type(order))
@@ -89,6 +90,7 @@ class Base(UserDict.DictMixin,
             zope.container.contained.ObjectRemovedEvent(item, self, key))
 
     def _delete(self, key):
+        __traceback_info__ = (key,)
         item = self[key]
         item.xml.getparent().remove(item.xml)
         return item
