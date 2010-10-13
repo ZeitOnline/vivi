@@ -26,6 +26,17 @@
     weight="0"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IInformatives"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.informatives.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.IInformatives"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
