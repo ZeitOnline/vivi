@@ -78,4 +78,3 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
             zeit.content.article.edit.interfaces.IParagraph.providedBy(p))
         self.assertEqual('p', p.xml.tag)
         self.assertEqual('division', p.xml.getparent().tag)
-
