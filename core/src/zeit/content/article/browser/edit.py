@@ -21,6 +21,7 @@ class SaveText(zeit.edit.browser.view.Action):
     paragraphs = zeit.edit.browser.view.Form('paragraphs')
 
     def update(self):
+        __traceback_info__ = (self.paragraphs, self.text)
         if self.paragraphs:
             original_keys = self.context.keys()
             insert_at = original_keys.index(self.paragraphs[0])
