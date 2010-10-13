@@ -70,6 +70,7 @@ class EditableBody(zeit.edit.container.Base,
         return name
 
     def _delete(self, key):
+        __traceback_info__ = (key,)
         item = self[key]
         if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
             # Move contained elements to previous devision
