@@ -12,6 +12,12 @@ var ident = MochiKit.Signal.connect(
         'editable-body');
     });
 
+MochiKit.Signal.connect(
+    window, 'cp-editor-loaded', function() {
+    zeit.edit.library.create(
+        'article', context_url + '/editable-body', 'Artikel');
+});
+
 
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
