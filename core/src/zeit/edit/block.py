@@ -44,3 +44,24 @@ class Element(zope.container.contained.Contained,
 @grokcore.component.implementer(zeit.edit.interfaces.IArea)
 def area_for_element(context):
     return zeit.edit.interfaces.IArea(context.__parent__, None)
+
+
+class ElementFactory(object):
+    """Base class for element factories."""
+
+    zope.interface.implements(zeit.edit.interfaces.IElementFactory)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_xml(self):
+        raise NotImplementedError('Implemented in subclasses.')
+
+    def __call__(self):
+        container = self.get_xml()
+        content = zope.component.getMultiAdapter(
+            (self.context, container),
+            zeit.edit.interfaces.IElement,
+            name=self.element_type)
+        self.context.add(content)
+        return content
