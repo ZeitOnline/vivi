@@ -6,18 +6,14 @@ import lxml.objectify
 import zeit.cms.content.property
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
+import zeit.edit.block
 import zeit.edit.interfaces
 import zope.component
 import zope.interface
 
 
-class ElementFactory(object):
-    """Base class for block factories."""
-
-    zope.interface.implements(zeit.edit.interfaces.IElementFactory)
-
-    def __init__(self, context):
-        self.context = context
+class ElementFactory(zeit.edit.block.ElementFactory):
+    """Base class for CP element factories."""
 
     def get_xml(self):
         container = lxml.objectify.E.container()
@@ -26,15 +22,6 @@ class ElementFactory(object):
         container.set('module', self.module)
         return container
 
-    def __call__(self):
-        container = self.get_xml()
-        content = zope.component.getMultiAdapter(
-            (self.context, container),
-            zeit.edit.interfaces.IElement,
-            name=self.element_type)
-        self.context.add(content)
-        assert zeit.content.cp.centerpage.has_changed(self.context)
-        return content
 
 
 def elementFactoryFactory(adapts, element_type, title=None, module=None):
