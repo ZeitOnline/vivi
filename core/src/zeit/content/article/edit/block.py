@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import grokcore.component
+import zeit.content.article.edit.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
 
