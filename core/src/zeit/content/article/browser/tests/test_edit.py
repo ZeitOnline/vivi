@@ -34,6 +34,8 @@ class SaveTextTest(zeit.cms.testing.FunctionalTestCase):
         view.context = body
         view.request = mock.Mock()
         view.request.form = {}
+        view.url = mock.Mock()
+        view.signals = []
         return view
 
     def test_update_should_remove_given_paragrahs(self):
