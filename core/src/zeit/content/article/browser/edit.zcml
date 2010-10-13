@@ -34,11 +34,22 @@
     />
 
   <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.body.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
     for="zeit.content.article.edit.interfaces.IParagraph"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="karlheinz"
+    name="contents"
     template="edit.paragraph.pt"
     permission="zeit.EditContent"
     />

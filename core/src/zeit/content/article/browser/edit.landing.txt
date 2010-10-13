@@ -1,0 +1,75 @@
+
+Mock UUID to generate known Ids.
+
+>>> import mock
+>>> import uuid
+>>> uuid4 = uuid.uuid4
+>>> uuid.uuid4 = mock.Mock(side_effect=lambda: uuid.uuid4.call_count)
+
+Open an article's editable body. It contains landing zones:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('@@edit.html')
+>>> browser.open('editable-body/@@contents')
+>>> contents_url = browser.url
+>>> print browser.contents
+<div id="editable-body"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body">
+  <div cms:tooltip="" class="block type-paragraph"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2"
+     id="2">
+  <div class="block-inner">
+    ...
+  </div>
+</div>
+  <div class="landing-zone action-editable-body-module-droppable"
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2/@@landing-zone-drop-module">
+  </div>
+  <div cms:tooltip="" class="block type-paragraph"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3"
+     id="3">
+     ...
+</div>
+  <div class="landing-zone action-editable-body-module-droppable"
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3/@@landing-zone-drop-module">
+  </div>
+  ...
+
+
+A module can be created:
+
+>>> browser.open('2/@@landing-zone-drop-module?block_type=p')
+>>> import pprint
+>>> import simplejson
+>>> pprint.pprint(simplejson.loads(browser.contents))
+{'signals': [{'args': ['13'], 'name': 'added', 'when': 'after-reload'},
+             {'args': ['editable-body',
+                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div id="editable-body"
+...
+  <div cms:tooltip="" class="block type-paragraph"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2"
+     id="2">
+     ...
+  <div cms:tooltip="" class="block type-paragraph"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/13"
+     id="13">
+     ...
+  <div cms:tooltip="" class="block type-paragraph"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3"
+     id="3">
+     ...
+
+
+
+Clean up:
+
+>>> uuid.uuid4 = uuid4
