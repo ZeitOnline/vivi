@@ -82,3 +82,13 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             [u'I have no division', u'Only paras'],
             [unicode(child) for child in body.xml.division.iterchildren()])
+
+    def test_adding_to_articles_without_division_should_migrate(self):
+        import lxml.objectify
+        body = self.get_body(
+            '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
+        ob = mock.Mock()
+        ob.__name__ = None
+        ob.xml = lxml.objectify.E.ob()
+        body.add(ob)
+

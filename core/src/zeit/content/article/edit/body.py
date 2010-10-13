@@ -78,6 +78,8 @@ class EditableBody(zeit.edit.container.Base,
                 raise zope.container.interfaces.DuplicateIDError(name)
         else:
             name = str(uuid.uuid4())
+            # may migrate so it is guaranteed that there is a division tag:
+            self.keys()
         item.__name__ = name
         self.xml.division[:][-1].append(item.xml)
         return name
