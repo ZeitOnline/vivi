@@ -72,3 +72,15 @@ class SaveTextTest(zeit.cms.testing.FunctionalTestCase):
             view.update()
         self.assertEqual(['2', '3', '4', '5', '6', '7', '8', '9'],
                          view.context.keys())
+
+    def test_update_should_trigger_reload_of_body(self):
+        view = self.get_view()
+        view.request.form['paragraphs'] = []
+        view.request.form['text'] = []
+        view.update()
+        view.url.assert_called_with(view.context, '@@contents')
+        self.assertEqual(
+            [{'args': ('editable-body', view.url.return_value),
+              'name': 'reload',
+              'when': None}],
+            view.signals)
