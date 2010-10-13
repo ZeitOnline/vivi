@@ -61,3 +61,8 @@ class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
         body.updateOrder(['2', '3', '5', '4', '6'])
         self.assertEqual(['2', '3', '5', '4', '6'], body.keys())
+        body.updateOrder(['2', '4', '5', '3', '6'])
+        self.assertEqual(['2', '4', '5', '3', '6'], body.keys())
+        del body['2']
+        body.updateOrder(['4', '3', '5', '6'])
+        self.assertEqual(['4', '3', '5', '6'], body.keys())
