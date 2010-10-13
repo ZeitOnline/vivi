@@ -73,3 +73,8 @@ class CDSLayer(CDSZCMLLayer):
             pass
         del product_config['cds-export']
         del product_config['cds-import']
+
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ArticleLayer

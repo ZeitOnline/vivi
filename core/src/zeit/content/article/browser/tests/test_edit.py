@@ -2,14 +2,10 @@
 # See also LICENSE.txt
 
 import mock
-import unittest
 import zeit.content.article.testing
-import zeit.cms.testing
 
 
-class SaveTextTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.article.testing.ArticleLayer
+class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_view(self, body=None):
         from zeit.content.article.browser.edit import SaveText

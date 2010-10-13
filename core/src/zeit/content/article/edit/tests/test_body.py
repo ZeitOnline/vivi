@@ -2,13 +2,10 @@
 # See also LICENSE.txt
 
 import mock
-import unittest
 import zeit.content.article.testing
 
 
-class EditableBodyTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.article.testing.ArticleLayer
+class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
         super(EditableBodyTest, self).setUp()
