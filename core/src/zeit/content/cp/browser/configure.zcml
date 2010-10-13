@@ -155,22 +155,6 @@
     />
 
   <browser:view
-    for="zeit.edit.interfaces.IElement"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="landing-zone-drop-module"
-    class=".library.BlockLandingZone"
-    permission="zeit.EditContent"
-    />
-
-  <browser:view
-    for="zeit.content.cp.interfaces.IRegion"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="landing-zone-drop-module"
-    class=".library.RegionLandingZone"
-    permission="zeit.EditContent"
-    />
-
-  <browser:view
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block-factories.json"

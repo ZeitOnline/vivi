@@ -40,16 +40,3 @@ class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
                 (region, self.request), name=self.__name__)
             adapters.extend(view.get_adapters())
         return adapters
-
-
-
-class BlockLandingZone(zeit.content.cp.browser.landing.LandingZone):
-
-    block_type = zeit.edit.browser.view.Form('block_type')
-    order = 'after-context'
-
-
-class RegionLandingZone(zeit.content.cp.browser.landing.LandingZone):
-
-    block_type = zeit.edit.browser.view.Form('block_type')
-    order = 0

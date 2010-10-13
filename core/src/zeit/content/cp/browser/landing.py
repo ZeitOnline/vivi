@@ -10,56 +10,10 @@ See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-z
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.related.interfaces
 import zeit.edit.browser.view
-import zope.browser.interfaces
-import zope.component
+import zeit.edit.browser.landing
 
 
-class LandingZone(zeit.edit.browser.view.Action):
-
-    def update(self):
-        self.create_block()
-        self.initialize_block()
-        self.update_order()
-        self.signal('after-reload', 'added', self.block.__name__)
-        self.signal(
-            None, 'reload',
-            self.create_in.__name__, self.url(self.create_in, '@@contents'))
-
-    def create_block(self):
-        factory = zope.component.getAdapter(
-            self.create_in, zeit.edit.interfaces.IElementFactory,
-            name=self.block_type)
-        self.block = factory()
-        assert zeit.content.cp.centerpage.has_changed(self.context)
-
-    def initialize_block(self):
-        pass
-
-    def update_order(self):
-        order = list(self.create_in)
-        order.remove(self.block.__name__)
-        order = self.get_order(order, self.block.__name__)
-        self.create_in.updateOrder(order)
-        assert zeit.content.cp.centerpage.has_changed(self.create_in)
-
-    @property
-    def create_in(self):
-        if self.order == 'after-context':
-            return self.context.__parent__
-        return self.context
-
-    def get_order(self, order, new_name):
-        if isinstance(self.order, int):
-            order.insert(self.order, new_name)
-        elif self.order == 'after-context':
-            after = order.index(self.context.__name__)
-            order.insert(after + 1, new_name)
-        else:
-            raise NotImplementedError
-        return order
-
-
-class TeaserBlockLandingZone(LandingZone):
+class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
 
     block_type = 'teaser'
     uniqueId = zeit.edit.browser.view.Form('uniqueId')
