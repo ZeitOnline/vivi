@@ -43,3 +43,6 @@ class SaveText(zeit.edit.browser.view.Action):
                 insert_at += 1
         if insert_at is not None:
             self.context.updateOrder(order)
+        self.signal(
+            None, 'reload',
+            'editable-body', self.url(self.context, '@@contents'))
