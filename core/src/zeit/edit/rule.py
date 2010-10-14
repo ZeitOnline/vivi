@@ -56,8 +56,6 @@ class Rule(object):
         except ZODB.POSException.ConflictError:
             raise
         except:
-            globs['uniqueId'] = zeit.content.cp.interfaces.ICenterPage(
-                context).uniqueId
             log.error('Error while evaluating rule starting line %s\n'
                       'Globals=%s' %
                       (self.line if self.line else '<unknown>', globs),
