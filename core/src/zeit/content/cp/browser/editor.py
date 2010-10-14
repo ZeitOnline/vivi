@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-import zeit.content.cp.browser.rule
+import zeit.edit.browser.view
 
 
 class Editor(object):
@@ -11,8 +11,7 @@ class Editor(object):
 
     def validate(self, area):
         validation_class, validation_messages = (
-            zeit.content.cp.browser.rule.validate(area))
-
+            zeit.edit.browser.view.validate(area))
         css_class = ['editable-area']
         if validation_class:
             css_class.append(validation_class)

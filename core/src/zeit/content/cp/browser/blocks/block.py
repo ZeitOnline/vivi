@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-import zeit.content.cp.browser.rule
 import zeit.edit.browser.view
 import zeit.content.cp.interfaces
 import zope.app.pagetemplate

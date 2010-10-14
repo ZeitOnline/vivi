@@ -27,11 +27,11 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         gocept.cache.method.clear()
 
         product_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.cp')
-        product_config['rules-url'] = 'file://%s' % (
-            pkg_resources.resource_filename(
-                'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
-        product_config['cp-feed-max-items'] = '5'
+            'zeit.edit')['rules-url'] = 'file://%s' % (
+                pkg_resources.resource_filename(
+                    'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')['cp-feed-max-items'] = '5'
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         cp = zeit.content.cp.centerpage.CenterPage()

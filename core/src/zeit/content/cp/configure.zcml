@@ -4,7 +4,6 @@
   xmlns:zeit="http://namespaces.zeit.de/zcml">
 
   <grok:grok package="." />
-  <include package="zeit.content.cp" file="meta.zcml" />
   <include package="zeit.find" /> <!-- XXX why?! -->
 
   <utility
@@ -148,11 +147,6 @@
   <!-- Blocks -->
   <include package=".blocks" />
 
-  <zeit:globs module=".rule" />
-  <adapter factory=".rule.globs" />
-
-  <utility factory=".rule.RulesManager" />
-  <adapter factory=".rule.Validator" />
   <adapter factory=".rule.CenterPageValidator" />
 
   <utility

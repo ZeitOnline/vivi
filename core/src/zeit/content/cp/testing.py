@@ -21,6 +21,9 @@ product_config = """
     cp-types-url file://%s
     feed-update-minimum-age 30
     rss-folder rss
+</product-config>
+
+<product-config zeit.edit>
     rules-url file://%s
 </product-config>
 

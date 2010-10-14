@@ -75,7 +75,7 @@ Check the CP out again, and go to the edit view:
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Edit contents').click()
 >>> print browser.title.strip()
-Auf den Spuren der Elfen – Edit centerpage
+Auf den Spuren der Elfen – Edit
 
 
 The inital page doens't contain much:
@@ -174,7 +174,7 @@ Blocks and teaser bars can be removed using the delete link:
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
 >>> browser.getLink('Delete').url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/delete?key=<GUID>'
+'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@delete?key=<GUID>'
 >>> browser.getLink('Delete').click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))

@@ -23,6 +23,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.image.image
+import zeit.edit.interfaces
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -166,7 +167,7 @@ class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
 
 class FeedValidator(object):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IValidator)
+    zope.interface.implements(zeit.edit.interfaces.IValidator)
 
     status = None
 
@@ -174,7 +175,7 @@ class FeedValidator(object):
         self.messages = []
         self.context = context
         if self.context.error:
-            self.status = zeit.content.cp.rule.ERROR
+            self.status = zeit.edit.rule.ERROR
             self.messages.append(self.context.error)
 
 
