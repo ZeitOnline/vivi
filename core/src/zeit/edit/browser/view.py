@@ -2,8 +2,9 @@
 # See also LICENSE.txt
 
 import ZODB.POSException
-import simplejson
+import cgi
 import logging
+import simplejson
 import transaction
 import zeit.cms.browser.view
 import zope.i18n
@@ -71,3 +72,14 @@ class Action(zeit.cms.browser.view.Base):
             return message
         return self.render()
 
+
+def validate(context):
+    validator = zeit.edit.interfaces.IValidator(context)
+    if validator.status:
+        css_class = 'validation-%s' % validator.status
+        messages = '\n'.join(validator.messages)
+        messages = cgi.escape(messages)
+    else:
+        css_class = ''
+        messages = ''
+    return (css_class, messages)

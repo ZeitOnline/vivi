@@ -33,6 +33,7 @@
     for="..interfaces.IEditable"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.html"
+    class=".editor.Editor"
     template="editor.pt"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit contents"
