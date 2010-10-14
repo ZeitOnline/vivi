@@ -55,7 +55,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         // XXX remove code duplication
         while (i > 0) {
             i -= 1;
-            if (MochiKit.DOM.hasElementClass(blocks[i], 'type-paragraph')) {
+            if (MochiKit.DOM.hasElementClass(blocks[i], 'type-p')) {
                 paragraphs.push(blocks[i]);
             } else {
                 break;
@@ -66,7 +66,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         i = blocks.indexOf(block);
         while (i < blocks.length) {
             i += 1;
-            if (MochiKit.DOM.hasElementClass(blocks[i], 'type-paragraph')) {
+            if (MochiKit.DOM.hasElementClass(blocks[i], 'type-p')) {
                 paragraphs.push(blocks[i]);
             } else {
                 break;
