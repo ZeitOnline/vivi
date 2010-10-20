@@ -11,6 +11,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'edit.txt',
+        'edit.image.txt',
         'edit.landing.txt',
         'recension.txt',
         package='zeit.content.article.browser',
