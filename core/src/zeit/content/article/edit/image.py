@@ -9,6 +9,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import zeit.content.image.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
 import zope.component
@@ -53,3 +54,12 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
     def get_xml(self):
         return lxml.objectify.E.image()
+
+
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+                            zeit.content.image.interfaces.IImage)
+@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+def factor_image_block_from_image(body, image):
+    block = Factory(body)()
+    block.image = image
+    return block

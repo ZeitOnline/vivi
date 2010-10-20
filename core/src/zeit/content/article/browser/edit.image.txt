@@ -9,6 +9,7 @@ Open editor:
 >>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
 ...              '/2007/01/Somalia/@@checkout')
 >>> browser.open('@@contents')
+>>> contents_url = browser.url
 >>> browser.open('editable-body/@@contents')
 
 Clean the article
@@ -50,3 +51,55 @@ Drop an image:
 >>> print browser.contents
 <div ...class="block type-image"...
     <img ...src="...DSC00109_2.JPG/preview"...
+
+
+Dropping images to a landing zone
+---------------------------------
+
+Images can also be dropped to a landing zone. An image will be created then.
+
+>>> for p in article.xml.body.division.getchildren():
+...     article.xml.body.division.remove(p)
+>>> article._p_changed = True
+>>> transaction.commit()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="landing-zone visible action-content-droppable"
+     cms:drop-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@article-landing-zone-drop">
+  Landing Zone
+</div>
+...
+>>> browser.open(
+...     'editable-body/@@article-landing-zone-drop?uniqueId='
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> data = simplejson.loads(browser.contents)
+>>> pprint.pprint(data)
+{'signals': [{'args': ['f00f330e-29d0-4b53-b312-fc11432e6a37'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['editable-body',
+                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+<div ...class="block type-image"...
+    <img ...src="...DSC00109_2.JPG/preview"...
+
+Each block has its own landing zone, add the image again:
+
+>>> image_id = data['signals'][0]['args'][0]
+>>> browser.open(
+...     ('editable-body/%s/@@article-landing-zone-drop?uniqueId=' % image_id) +
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> data = simplejson.loads(browser.contents)
+>>> pprint.pprint(data)
+{'signals': [{'args': ['f00f330e-29d0-4b53-b312-fc11432e6a37'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['editable-body',
+                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+              'name': 'reload',
+              'when': None}]}
