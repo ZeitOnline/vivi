@@ -89,3 +89,12 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
               'name': 'reload',
               'when': None}],
             view.signals)
+
+    def test_update_should_map_h3_to_intertitle(self):
+        view = self.get_view()
+        view.request.form['paragraphs'] = ['2', '3']
+        view.request.form['text'] = [
+            dict(factory='h3', text='Hinter')]
+        with mock.patch('uuid.uuid4', new=self.uuid):
+            view.update()
+        self.assertEqual('intertitle', view.context['7'].type)

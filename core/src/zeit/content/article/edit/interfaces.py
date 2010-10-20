@@ -24,6 +24,10 @@ class IOrderedList(IParagraph):
     """<ol/> element."""
 
 
+class IIntertitle(IParagraph):
+    """<intertitle/> element."""
+
+
 class IDivision(zeit.edit.interfaces.IBlock):
     """<division/> element"""
 

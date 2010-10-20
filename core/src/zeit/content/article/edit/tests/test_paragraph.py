@@ -77,6 +77,16 @@ class OrderedListTest(ParagraphTest):
         return UnorderedList(None, body.ol)
 
 
+class IntertitleTest(ParagraphTest):
+
+    def get_paragraph(self, p=''):
+        from zeit.content.article.edit.paragraph import UnorderedList
+        import lxml.objectify
+        body = lxml.objectify.E.body(lxml.objectify.XML(
+            '<intertitle>%s</intertitle>' % p))
+        return UnorderedList(None, body.intertitle)
+
+
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def assert_factory(self, name):
@@ -105,3 +115,6 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def test_ol(self):
         self.assert_factory('ol')
+
+    def test_intertitle(self):
+        self.assert_factory('intertitle')

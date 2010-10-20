@@ -39,6 +39,13 @@
       />
   </class>
 
+  <class class=".paragraph.Intertitle">
+    <require
+      interface=".interfaces.IIntertitle"
+      permission="zope.View" 
+      />
+  </class>
+
   <class class=".division.Division">
     <require
       interface=".interfaces.IDivision"

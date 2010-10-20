@@ -15,6 +15,10 @@ import zeit.edit.interfaces
 import zope.component
 
 
+# XXX The factory registration could be much easier with a custom grokker for
+# the Element classes itself.
+
+
 class Paragraph(zeit.edit.block.Element,
                 grokcore.component.MultiAdapter):
 
@@ -100,3 +104,23 @@ class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
     def get_xml(self):
         return lxml.objectify.E.ol()
+
+
+class Intertitle(Paragraph):
+
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.IIntertitle)
+    grokcore.component.provides(
+        zeit.content.article.edit.interfaces.IIntertitle)
+    type = 'intertitle'
+    grokcore.component.name(type)
+
+
+class IntertitleFactory(zeit.content.article.edit.block.BlockFactory):
+
+    element_type = Intertitle.type
+    title = _('<intertitle>')
+    grokcore.component.name(element_type)
+
+    def get_xml(self):
+        return lxml.objectify.E.intertitle()

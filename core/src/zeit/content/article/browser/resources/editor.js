@@ -107,8 +107,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a rel='command' href='italic'>I</a>\
             <a rel='command' href='insertunorderedlist'>UL</a>\
             <a rel='command' href='insertorderedlist'>OL</a>\
-            <a href='#' class='rteButton intertitle'>T</a>\
-            <a href='#' class='rteButton paragraph'>p</a>\
+            <a rel='command' href='formatBlock/h3'>T</a>\
+            <a rel='command' href='formatBlock/p'>p</a>\
             <a href='#' class='rteButton link'>a</a>\
             <a rel='method' href='save' class='rteButton'>save</a>\
             ";
@@ -126,8 +126,8 @@ zeit.content.article.Editable = gocept.Class.extend({
         event.stop()
         if (event.target().rel == 'command') {
             event.stop();
-            var action = event.target().getAttribute('href');
-            self.command(action);
+            var action = event.target().getAttribute('href').split('/');
+            self.command(action[0], action[1]);
         } else if (event.target().rel == 'method') {
             var method = event.target().getAttribute('href');
             self[method]();
@@ -161,6 +161,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     command: function(command, option) {
         var self = this;
+        log("Executing", command, option);
         try {
             document.execCommand(command, false, option);
         } catch(e) {

@@ -55,6 +55,17 @@
     permission="zeit.EditContent"
     />
 
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IIntertitle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.Intertitle"
+    template="edit.paragraph.pt"
+    permission="zeit.EditContent"
+    />
+
   <browser:resourceDirectory
     name="zeit.content.article"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
