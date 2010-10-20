@@ -1,0 +1,4 @@
+<div>
+  <img tal:condition="python:context.image"
+       tal:replace="structure context/image/@@preview/tag" />
+</div>

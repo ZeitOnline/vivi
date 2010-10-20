@@ -53,4 +53,11 @@
       />
   </class>
 
+  <class class=".image.Image">
+    <require
+      interface=".interfaces.IImage"
+      permission="zope.View" 
+      />
+  </class>
+
 </configure>

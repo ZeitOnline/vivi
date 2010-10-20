@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
+import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.schema
 
@@ -32,3 +33,12 @@ class IDivision(zeit.edit.interfaces.IBlock):
     """<division/> element"""
 
     teaser = zope.schema.TextLine(title=_('Page teaser'))
+
+
+class IImage(zeit.edit.interfaces.IBlock):
+
+    image = zope.schema.Choice(
+        title=_("Image"),
+        source=zeit.content.image.interfaces.ImageSource())
+
+    # layout = XXX
