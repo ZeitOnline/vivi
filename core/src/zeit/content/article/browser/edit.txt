@@ -1,6 +1,8 @@
 UnorderedList
 -------------
 
+Open editor:
+
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
@@ -9,10 +11,10 @@ UnorderedList
 >>> browser.open('@@contents')
 >>> browser.open('editable-body/@@contents')
 
-Add ul, which caused problems:
+Add ul and let it render:
 
 >>> article = getRootFolder()['workingcopy']['zope.user']['Somalia']
->>> for p in article.xml.body.division.p[:]:
+>>> for p in article.xml.body.division.getchildren():
 ...     article.xml.body.division.remove(p)
 >>> article.xml.body.division.ul = ''
 >>> article.xml.body.division.ul.li = ['eins', 'zwei']
@@ -24,4 +26,25 @@ Add ul, which caused problems:
 <...
     <div ...class="block type-ul"...
     <ul><li...>eins</li><li...>zwei</li></ul>
+    ...
+
+
+OrderedList
+-------------
+
+Add ol and let it render:
+
+>>> article = getRootFolder()['workingcopy']['zope.user']['Somalia']
+>>> for p in article.xml.body.division.getchildren():
+...     article.xml.body.division.remove(p)
+>>> article.xml.body.division.ol = ''
+>>> article.xml.body.division.ol.li = ['eins', 'zwei']
+>>> article._p_changed = True
+>>> import transaction
+>>> transaction.commit()
+>>> browser.open('@@contents')
+>>> print browser.contents
+<...
+    <div ...class="block type-ol"...
+    <ol><li...>eins</li><li...>zwei</li></ol>
     ...

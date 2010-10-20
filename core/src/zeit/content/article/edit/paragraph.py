@@ -80,3 +80,23 @@ class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
     def get_xml(self):
         return lxml.objectify.E.ul()
+
+
+class OrderedList(Paragraph):
+
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.IOrderedList)
+    grokcore.component.provides(
+        zeit.content.article.edit.interfaces.IOrderedList)
+    type = 'ol'
+    grokcore.component.name(type)
+
+
+class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
+
+    element_type = OrderedList.type
+    title = _('<ol>')
+    grokcore.component.name(element_type)
+
+    def get_xml(self):
+        return lxml.objectify.E.ol()

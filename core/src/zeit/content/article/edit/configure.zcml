@@ -24,9 +24,17 @@
       permission="zope.View" 
       />
   </class>
+
   <class class=".paragraph.UnorderedList">
     <require
       interface=".interfaces.IUnorderedList"
+      permission="zope.View" 
+      />
+  </class>
+
+  <class class=".paragraph.OrderedList">
+    <require
+      interface=".interfaces.IOrderedList"
       permission="zope.View" 
       />
   </class>

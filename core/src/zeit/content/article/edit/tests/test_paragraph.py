@@ -58,6 +58,7 @@ class ParagraphTest(unittest.TestCase):
         self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
                         type(p.xml))
 
+
 class UnorderedListTest(ParagraphTest):
 
     def get_paragraph(self, p=''):
@@ -65,6 +66,15 @@ class UnorderedListTest(ParagraphTest):
         import lxml.objectify
         body = lxml.objectify.E.body(lxml.objectify.XML('<ul>%s</ul>' % p))
         return UnorderedList(None, body.ul)
+
+
+class OrderedListTest(ParagraphTest):
+
+    def get_paragraph(self, p=''):
+        from zeit.content.article.edit.paragraph import UnorderedList
+        import lxml.objectify
+        body = lxml.objectify.E.body(lxml.objectify.XML('<ol>%s</ol>' % p))
+        return UnorderedList(None, body.ol)
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
@@ -92,3 +102,6 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def test_ul(self):
         self.assert_factory('ul')
+
+    def test_ol(self):
+        self.assert_factory('ol')

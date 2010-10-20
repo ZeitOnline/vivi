@@ -20,6 +20,10 @@ class IUnorderedList(IParagraph):
     """<ul/> element."""
 
 
+class IOrderedList(IParagraph):
+    """<ol/> element."""
+
+
 class IDivision(zeit.edit.interfaces.IBlock):
     """<division/> element"""
 
