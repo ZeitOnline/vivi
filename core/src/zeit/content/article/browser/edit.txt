@@ -51,9 +51,6 @@ Add ol and let it render:
 Intertitle
 ----------
 
-Add intertitle and let it render. Note that we just use ``<intertitle>`` as
-html element and use CSS to style it.
-
 >>> for p in article.xml.body.division.getchildren():
 ...     article.xml.body.division.remove(p)
 >>> article.xml.body.division.intertitle = 'A B C'
