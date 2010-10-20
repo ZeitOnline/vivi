@@ -29,7 +29,6 @@ class LandingZone(zeit.edit.browser.view.Action):
         order.remove(self.block.__name__)
         order = self.get_order(order, self.block.__name__)
         self.create_in.updateOrder(order)
-        assert zeit.content.cp.centerpage.has_changed(self.create_in)
 
     @property
     def create_in(self):
