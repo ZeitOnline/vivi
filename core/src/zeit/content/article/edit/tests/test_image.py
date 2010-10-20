@@ -5,6 +5,27 @@ import unittest
 import zeit.content.article.testing
 
 
+class ImageTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_image_can_be_set(self):
+        from zeit.content.article.edit.image import Image
+        import lxml.objectify
+        import zeit.cms.interfaces
+        tree = lxml.objectify.E.tree(
+            lxml.objectify.E.image())
+        image = Image(None, tree.image)
+        image.__name__ = u'myname'
+        image.image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.assertEqual(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            image.xml.get('src'))
+        self.assertEqual(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            image.image.uniqueId)
+        self.assertEqual(u'myname', image.__name__)
+
+
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 
     def test_factory_should_create_image_node(self):

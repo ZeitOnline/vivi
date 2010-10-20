@@ -5,6 +5,7 @@ import lxml.objectify
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.view
 import zope.component
+import zope.lifecycleevent
 
 
 class EditorContents(object):
@@ -69,3 +70,17 @@ class Intertitle(object):
     @property
     def text(self):
         return '<h3>%s</h3>' % (self.context.text,)
+
+
+class SetImage(zeit.edit.browser.view.Action):
+    """Drop content object on an image."""
+
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
+
+    def update(self):
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
+        # XXX validate for IImage?
+        self.context.image = content
+        zope.lifecycleevent.modified(self.context)
+        self.signal(
+            None, 'reload', self.context.__name__, self.url('@@contents'))

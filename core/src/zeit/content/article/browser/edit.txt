@@ -77,13 +77,29 @@ html element and use CSS to style it.
 ...     article.xml.body.division.remove(p)
 >>> article.xml.body.division.image = ''
 >>> article.xml.body.division.image.set(
-...     'src', 'http://xml.zeit.de/2006/DSC00109_2.JPG')
+...     '{http://namespaces.zeit.de/CMS/cp}__name__', 'myim')
 >>> article._p_changed = True
 >>> import transaction
 >>> transaction.commit()
->>> browser.handleErrors = False
 >>> browser.open('@@contents')
 >>> print browser.contents
 <...
     <div ...class="block type-image"...
+
+
+Drop an image:
+
+>>> browser.open(
+...     'myim/@@set_image?uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> import pprint
+>>> import simplejson
+>>> data = simplejson.loads(browser.contents)
+>>> pprint.pprint(data)
+{'signals': [{'args': ['myim',
+                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/myim/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(data['signals'][0]['args'][1])
+>>> print browser.contents
+<div ...class="block type-image"...
     <img ...src="...DSC00109_2.JPG/preview"...

@@ -58,6 +58,10 @@
       interface=".interfaces.IImage"
       permission="zope.View" 
       />
+    <require
+      set_schema=".interfaces.IImage"
+      permission="zeit.EditContent" 
+      />
   </class>
 
 </configure>

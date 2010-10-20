@@ -76,6 +76,15 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="set_image"
+    class=".edit.SetImage"
+    permission="zeit.EditContent"
+    />
+
+
   <browser:resourceDirectory
     name="zeit.content.article"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

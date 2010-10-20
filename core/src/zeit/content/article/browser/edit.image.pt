@@ -1,4 +1,5 @@
-<div>
+<div class="landing-zone action-content-droppable"
+     tal:attributes="cms:drop-url string:${context/@@absolute_url}/@@set_image">
   <img tal:condition="python:context.image"
        tal:replace="structure context/image/@@preview/tag" />
 </div>
