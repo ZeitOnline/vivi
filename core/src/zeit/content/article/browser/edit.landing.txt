@@ -8,6 +8,10 @@ Mock UUID to generate known Ids.
 >>> uuid4 = uuid.uuid4
 >>> uuid.uuid4 = mock.Mock(side_effect=lambda: uuid.uuid4.call_count)
 
+
+Module landing zones
+--------------------
+
 Open an article's editable body. It contains landing zones:
 
 >>> from zope.testbrowser.testing import Browser
@@ -71,6 +75,33 @@ A module can be created:
      id="3">
      ...
 
+
+Content landing zones
+---------------------
+
+There are also landing zones for content. The following only illustrates error
+cases. The working cases are tested with their respective content types.
+
+Drop of an uniqueId which doesn't resolve to an object returns an error:
+
+>>> browser.open('@@article-landing-zone-drop?uniqueId=nada')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+The object "nada" does not exist.
+
+
+Drop of an object which cannot be converted to a block returns an error:
+
+>>> browser.open(
+...     '@@article-landing-zone-drop?uniqueId='
+...     'http://xml.zeit.de/testcontent')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+Could not create block for "http://xml.zeit.de/testcontent", because I don't know which one.
 
 
 Clean up:

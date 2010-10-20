@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import lxml.objectify
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
@@ -94,15 +95,20 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
 
     def create_block(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
-        # Test this:
-        # if content is None:
-        #    raise ValueError(
-        #        _('The object "${name}" does not exist.', mapping=dict(
-        #            name=self.uniqueId)))
+        if content is None:
+           raise ValueError(
+               _('The object "${name}" does not exist.', mapping=dict(
+                   name=self.uniqueId)))
         # XXX what happens if there is no factory?
-        self.block = zope.component.getMultiAdapter(
+        self.block = zope.component.queryMultiAdapter(
             (self.create_in, content),
             zeit.edit.interfaces.IElement)
+        if self.block is None:
+            raise ValueError(
+                _('Could not create block for "${name}", because I '
+                  "don't know which one.", mapping=dict(
+                   name=self.uniqueId)))
+
 
 class BodyLandingZone(LandingZoneBase):
     """Handler to drop objects to the body's landing zone."""
